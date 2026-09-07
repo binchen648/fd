@@ -1,5 +1,15 @@
 # FD Golden Card and Flow Acceptance Plan
 
+- Document Role: SUBPLAN
+- Status: ACTIVE
+- Implementation Status: CONTRACTS_DEFINED / EXECUTION_NOT_STARTED
+- Acceptance Status: No Golden Flow is `E2E_VERIFIED`; Gate B/C remain open unless explicitly proven per flow.
+- Parent: `docs/plans/fd-card-engine-stabilization-plan.md`
+- Depends On: `docs/rules/FD-Game-Rules-Final.md`; `docs/plans/fd-rules-conformance-and-acceptance.md`; `docs/audits/fd-rule-conformance-matrix.md`; `docs/audits/fd-rule-interaction-matrix.md`
+- Consumed By: implementers and independent reviewers selecting Golden Card / Golden Flow slices
+- Supersedes: none
+- Last Verified: 2026-09-07
+
 - Date: 2026-09-07
 - Acceptance baseline: `docs/plans/fd-rules-conformance-and-acceptance.md`
 - Canonical rules: `docs/rules/FD-Game-Rules-Final.md`
@@ -68,7 +78,8 @@ Current slice status:
 - Gate A component evidence exists for tied highest winners via `packages/rules/tests/core/combat-resolver.test.ts`.
 - Gate A scoring evidence exists for multi-winner VP consumption via `packages/rules/tests/core/scoring-resolver.test.ts`.
 - Gate A projection bridge evidence exists via `apps/client/src/state/engine-bridge.test.ts`.
-- Gate B/C remain open; this flow is the recommended first full acceptance demonstration slice.
+- Gate B scenario evidence exists via `packages/rules/tests/regression/battle-winner-conformance.test.ts` for tied eligible winners, defeated high-power exclusion, VP source split, event trace, scoring consumption, and a real Artoria Caster non-sole-winner trigger.
+- Gate C remains open; this flow still needs a browser/server/projection/reconnect path before `E2E_VERIFIED`.
 
 Initial state:
 
@@ -222,7 +233,7 @@ Negative cases:
 
 ## Effect Result Binding Mapping
 
-`docs/plans/fd-effect-result-binding-plan.md` is not present in this workspace. Based on `docs/reports/2026-09-07-effect-result-binding-design-result.md`, map future Phase 3A acceptance as follows:
+`docs/plans/fd-effect-result-binding-plan.md` is present and is the active Effect Result Binding subplan. Based on that plan and `docs/reports/2026-09-07-effect-result-binding-design-result.md`, map future Phase 3A acceptance as follows:
 
 | Phase 3A Item | New Acceptance Gate |
 |---|---|

@@ -3,13 +3,14 @@
 - Date: 2026-09-07
 - Project: `D:\fd`
 - Role: Rules Conformance Integration Engineer
-- Scope: acceptance governance integration plus the first component-level Battle Winner conformance slice.
+- Scope: acceptance governance integration plus the first Gate B Battle Winner conformance slice.
 
 ## Files Inspected
 
 - `docs/plans/fd-rules-conformance-and-acceptance.md`
 - `docs/rules/FD-Game-Rules-Final.md`
 - `docs/rules/fd-rules-conformance-and-acceptance.md`
+- `docs/audits/fd-flow-runtime-inventory.md`
 - `docs/audits/fd-card-runtime-architecture-audit.md`
 - `docs/spec/engine-capability-matrix.md`
 - `docs/spec/fd-playtest-v1-content-index.md`
@@ -26,18 +27,24 @@
 - `apps/server/src/match-server.ts`
 - representative rules/content/client/server/e2e tests
 
-Missing expected files:
+Missing expected files or unrecovered historical documents:
 
-- `docs/audits/fd-flow-runtime-inventory.md`
-- `docs/plans/fd-effect-result-binding-plan.md`
 - historical body of `docs/plans/fd-card-engine-stabilization-plan.md`
 - `README.md`
 - `CONTRIBUTING.md`
 - `AGENTS.md`
 
+Present and consumed in this pass:
+
+- `docs/audits/fd-flow-runtime-inventory.md` is a Runtime Fact Source, not an acceptance PASS source.
+- `docs/plans/fd-effect-result-binding-plan.md` is present and mapped to Gate A/B/C expectations.
+
 Git state:
 
-- `D:\fd` is not a Git repository; `git status --short --branch` fails with `fatal: not a git repository`.
+- `D:\fd` is a Git worktree on `main`, tracking `origin/main`.
+- Remote: `https://github.com/binchen648/fd.git`.
+- Baseline short HEAD at repair time: `1dc6196`.
+- Working tree was dirty during this repair; unrelated untracked document governance files were left untouched.
 
 ## Generated / Updated Files
 
@@ -54,6 +61,7 @@ Git state:
 - `apps/client/src/types/props.ts`
 - `apps/client/src/state/engine-bridge.ts`
 - `apps/client/src/state/seven-authoring-smoke-fixture.ts`
+- `packages/rules/tests/regression/battle-winner-conformance.test.ts`
 - targeted rules/client tests for tied battle winners
 
 ## Executive Answers
@@ -110,19 +118,19 @@ Based on `docs/audits/fd-rule-conformance-matrix.md`:
 | Status | Count |
 |---|---:|
 | `E2E_VERIFIED` | 0 |
-| `SCENARIO_VERIFIED` | 0 |
-| `COMPONENT_VERIFIED` | 15 |
+| `SCENARIO_VERIFIED` | 2 |
+| `COMPONENT_VERIFIED` | 13 |
 | `IMPLEMENTED_UNVERIFIED` | 4 |
 | `FAILED` | 0 |
 | `BLOCKED` | 0 |
 | `NOT_VERIFIED` | 44 |
 
-No core rule is promoted to `SCENARIO_VERIFIED` or `E2E_VERIFIED` by this integration pass. Existing scenario-style tests are mapped as evidence, but the new Rule ID Gate B contracts did not exist before this pass. `FD-BATTLE-001-CANDIDATE` moved from `FAILED` to `COMPONENT_VERIFIED` after the runtime result shape and consumers were changed to preserve `winnerPlayerIds`; it still requires Golden Flow Gate B/C evidence before higher promotion.
+No core rule is promoted to `E2E_VERIFIED` by this pass. `FD-BATTLE-001-CANDIDATE` and `FD-VP-001-CANDIDATE` now have a named Gate B scenario in `packages/rules/tests/regression/battle-winner-conformance.test.ts`, covering tied eligible winners, defeated high-power exclusion, VP source split, event trace, scoring consumption, and a real Artoria Caster non-sole-winner trigger. They still require Gate C browser/server/projection/reconnect evidence before `E2E_VERIFIED`.
 
 ### 4. Largest 10 Evidence Gaps
 
 1. Forty-four canonical candidate rule units are not yet mapped and therefore count as `NOT_VERIFIED`.
-2. Battle winner and VP tied-winner semantics have Gate A/component proof only; no Golden Flow Gate B/C.
+2. Battle winner and VP tied-winner semantics have Gate A and Gate B proof, but no Golden Flow Gate C.
 3. Multiple runtime owners remain for flow, movement, play, cleanup, projection.
 4. Production abilities still use the legacy interpreter path rather than Phase 3A `executeResolution`.
 5. Golden Flow 1 complete action phase has no formal contract test.
@@ -139,7 +147,7 @@ No core rule is promoted to `SCENARIO_VERIFIED` or `E2E_VERIFIED` by this integr
 | `npm run verify:stabilization` | Release Ready | Regression aggregate only; no Rule ID coverage guarantee. |
 | `content:validate` | Cards are playable | Content shape/source checks only. |
 | `verify:playtest-v1` | No private leaks overall | Pack/fixture privacy checks only; not all runtime projections. |
-| `complex-skills-regression.test.ts` | Golden Cards are complete | Gate B fragments; no real browser or reconnect proof. |
+| `complex-skills-regression.test.ts` | Golden Cards are complete | Broad Gate B-style fragments; no real browser or reconnect proof. |
 | `resolution-dataflow.test.ts` | Result Binding production-ready | Gate A synthetic infrastructure only. |
 | Playwright clickflow | Flow is E2E verified | UI can click selected widgets; not full canonical flow. |
 | Websocket server test | Reconnect verified | Viewer reconnect after room start only; no active pending decision restore. |
@@ -174,6 +182,7 @@ Known bypass risks:
 - `packages/rules/src/tools/content-bridge.ts` loads `ContentLibraryIndex` without formal ability runtime.
 - `ability/extended-effects.ts` contains a large compatibility switch and ad hoc state writes.
 - `ability/interpreter.ts` production path still uses void mutation resolution.
+- `ability/interpreter.ts` still has a direct `controller_loses_battle` condition branch that treats "not winner" as loss if used outside derived `after_controller_loses_battle` events.
 - `legacy-v0` play classifier rollback remains executable.
 - `docs/rules/fd-rules-conformance-and-acceptance.md` duplicates the acceptance baseline under the rules directory.
 
@@ -200,13 +209,12 @@ Defined in `docs/plans/fd-golden-card-and-flow-acceptance-plan.md`:
 
 ### 10. Next Minimal Implementation Slice
 
-The next slice should finish Golden Flow 2 as the first complete Gate A -> Gate B -> Gate C demonstration, building on the Battle Winner component fix rather than starting a broad runtime rewrite:
+The next slice should finish Golden Flow 2 Gate C as the first complete Gate A -> Gate B -> Gate C demonstration, building on the Battle Winner Gate B scenario rather than starting a broad runtime rewrite:
 
-1. Promote the current tied-winner component tests into a named Gate A contract.
-2. Add Gate B scenario for tied winners, defeated highest-power participant exclusion, competition VP ceil split, personal reward separation, and after-win trigger dispatch.
-3. Add replay/event-trace assertions for `winnerPlayerIds`, `tied`, `excludedPlayerIds`, VP sources, and scoring consumption.
-4. Add one Gate C browser path that reaches combat/scoring through server-supplied actions and projection.
-5. Add reconnect during the same combat/scoring flow before any `E2E_VERIFIED` promotion.
+1. Add one Gate C browser path that reaches combat/scoring through server-supplied actions and projection.
+2. Assert browser-visible battle result projection for `winnerPlayerIds`, `tied`, `excludedPlayerIds`, VP sources, and scoring consumption.
+3. Add reconnect during the same combat/scoring flow before any `E2E_VERIFIED` promotion.
+4. Keep the direct `controller_loses_battle` condition branch marked as legacy-risk until a focused negative test or code fix proves non-participants cannot be misclassified as losers.
 
 Do not start full roster migration or Phase 3 full primitive conversion until this first flow contract is green and independently reviewed.
 
@@ -214,11 +222,12 @@ Do not start full roster migration or Phase 3 full primitive conversion until th
 
 - `npm run typecheck`: passed.
 - `npx vitest run packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/core/scoring-resolver.test.ts packages/rules/tests/core/game-loop-battle-cleanup.test.ts packages/rules/tests/regression/replay.test.ts packages/rules/tests/regression/complex-skills-regression.test.ts packages/rules/tests/match-session.test.ts packages/rules/src/__tests__/match-session-regressions.test.ts`: passed, 7 files / 110 tests.
-- `npm run test:client`: passed, 7 files / 47 tests.
-- `npm run verify:stabilization`: passed all gates; root tests 88 files / 517 tests, complex-skill regressions 37 tests, client tests 7 files / 48 tests, Playwright Chromium 4 tests.
+- `npx vitest run packages/rules/tests/regression/battle-winner-conformance.test.ts`: passed, 1 file / 1 test.
+- `npm run test:client`: passed within `npm run verify:stabilization`, 7 files / 48 tests.
+- `npm run verify:stabilization`: passed all gates; root tests 89 files / 518 tests, complex-skill regressions 37 tests, client tests 7 files / 48 tests, Playwright Chromium 4 tests.
 
 ## Final Integration Result
 
-Status: `IMPLEMENTED_UNVERIFIED`
+Status: `SCENARIO_VERIFIED` for `FD-BATTLE-001-CANDIDATE` and `FD-VP-001-CANDIDATE`; overall framework integration remains `IMPLEMENTED_UNVERIFIED` until Reviewer Gate enforcement and Golden Flow Gate C are implemented.
 
-The framework is now connected at the documentation and evidence-mapping level. Battle Winner has component-level runtime evidence for multi-winner result shape and consumers. This is not a Release Ready claim, and no core rule has been promoted to `E2E_VERIFIED`.
+The framework is now connected at the documentation and evidence-mapping level. Battle Winner now has component and scenario evidence for multi-winner result shape and consumers. This is not a Release Ready claim, and no core rule has been promoted to `E2E_VERIFIED`.

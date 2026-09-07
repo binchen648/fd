@@ -1,9 +1,37 @@
 # FD Effect Result Binding Plan
 
-日期：2026-09-07  
-项目路径：`D:\fd`  
-计划范围：Phase 3A Resolution/Data-flow Infrastructure，以及后续接入生产能力执行链的最小路线。  
-状态：补档。此前 `D:\fd\docs\reports\2026-09-07-effect-result-binding-design-result.md` 声称本计划文件已添加，但当前工作区未找到 `D:\fd\docs\plans\fd-effect-result-binding-plan.md`。
+Document Role: SUBPLAN
+Status: ACTIVE
+Implementation Status: PARTIAL - Phase 3A infrastructure implemented; production integration pending
+Acceptance Status: Gate A candidate / independent review pending; Gate B NOT VERIFIED; Gate C NOT VERIFIED
+Parent: `docs/plans/fd-card-engine-stabilization-plan.md`
+Depends On: `docs/rules/FD-Game-Rules-Final.md`; `docs/plans/fd-rules-conformance-and-acceptance.md`; `docs/audits/fd-flow-runtime-inventory.md`; `docs/plans/fd-golden-card-and-flow-acceptance-plan.md`
+Consumed By: future Phase 3A Gate B real-card binding slice and Phase 3C production flow integration
+Supersedes: none
+Last Verified: 2026-09-07
+
+日期：2026-09-07
+项目路径：`D:\fd`
+计划定位：Global Rules Runtime 的专项子计划。
+计划范围：Phase 3A Resolution/Data-flow Infrastructure，以及后续接入生产能力执行链的最小路线。它不是全项目下一步计划，也不覆盖完整 Flow Engine、UI 全迁移或全部 combat/scoring primitive 迁移。
+状态：ACTIVE — Phase 3A Infrastructure Implemented / Production Integration Pending。此前 `D:\fd\docs\reports\2026-09-07-effect-result-binding-design-result.md` 声称本计划文件已添加，但当前工作区未找到 `D:\fd\docs\plans\fd-effect-result-binding-plan.md`，本文件为补档后的活动计划。
+
+当前 Acceptance：
+
+- Gate A: 待独立 Reviewer 最终确认
+- Gate B: NOT VERIFIED
+- Gate C: NOT VERIFIED
+
+前置依赖：
+
+- Phase 2 Acceptance: PASS
+- Flow Runtime Inventory: COMPLETE (`D:\fd\docs\audits\fd-flow-runtime-inventory.md`)
+
+当前正式 Runtime：
+
+- legacy `executeAbility`: ACTIVE
+- `executeResolution`: infrastructure / synthetic path
+- production bridge: NOT IMPLEMENTED
 
 ## 1. Purpose
 
@@ -207,11 +235,21 @@ Required:
 
 1. Keep current `resolution-dataflow.ts` as the infrastructure module.
 2. Keep compiler validation in `compileExecutableCardPack` for all Phase 3A nodes.
-3. Introduce a production bridge that lets executable ability effects route either to legacy `executeAbility` or Phase 3A `executeResolution` based on node syntax.
+3. Introduce a production bridge that lets executable ability effects route either to legacy `executeAbility` or Phase 3A `executeResolution` based on node syntax. This bridge is TRANSITIONAL ONLY.
 4. Add one real-card/Golden Card fixture before migrating broader card content.
 5. Move primitive-by-primitive from legacy `resolveEffect` into registered `ResolutionPrimitive` handlers.
 6. Remove schema/runtime duplication by keeping result schemas and evaluator-supported fields in one reviewed contract.
 7. Add Flow Engine hooks only after Gate B proves the binding runtime in a real ability path.
+
+The bridge is a migration tool, not the final architecture. It must not become a permanent split where new cards use `executeResolution` and old cards continue to bypass the shared runtime through `executeAbility`.
+
+Bridge Exit Criteria:
+
+1. Phase 3A Golden Card Gate B passed.
+2. Required primitive coverage migrated.
+3. Legacy card semantics migrated.
+4. No production card requires legacy `resolveEffect`.
+5. `executeAbility` legacy branch removed.
 
 ## 7. Non-goals and intentionally retained legacy paths
 

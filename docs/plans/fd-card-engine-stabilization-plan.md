@@ -1,5 +1,15 @@
 # FD Card Engine Stabilization Plan
 
+- Document Role: ACTIVE_PLAN
+- Status: ACTIVE / BODY_INCOMPLETE
+- Implementation Status: MAINLINE_DEFINED_BY_ACCEPTANCE_REFERENCE_ONLY
+- Acceptance Status: No stabilization phase may be promoted without independent Gate A/B/C review.
+- Parent: none
+- Depends On: `docs/rules/FD-Game-Rules-Final.md`; `docs/plans/fd-rules-conformance-and-acceptance.md`; current audit facts in `docs/audits/`
+- Consumed By: all card/runtime implementers
+- Supersedes: older undocumented stabilization sequencing, if recovered later
+- Last Verified: 2026-09-07
+
 > Integration note, 2026-09-07: the original stabilization plan body is not present in this workspace. This file records the required Acceptance Reference so future stabilization phases do not redefine rule truth or release readiness locally.
 
 ## Acceptance Reference

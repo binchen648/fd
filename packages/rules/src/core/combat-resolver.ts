@@ -515,12 +515,15 @@ function buildBattleResult(
     eventVpPool,
     competitionVpPool,
     ...(vpAdjustments.length ? { vpAdjustments } : {}),
-    militaryAdjustments: ranked.map((participant) => ({
-      playerId: participant.playerId,
-      delta: winnerPlayerIds.includes(participant.playerId)
+    militaryAdjustments: ranked.map((participant) => {
+      const delta = winnerPlayerIds.includes(participant.playerId)
         ? margin
-        : ignoresBattleLossEffects(state, participant.playerId, input.battlefieldId) ? 0 : -margin,
-    })),
+        : ignoresBattleLossEffects(state, participant.playerId, input.battlefieldId) ? 0 : -margin;
+      return {
+        playerId: participant.playerId,
+        delta: Object.is(delta, -0) ? 0 : delta,
+      };
+    }),
     participantBreakdowns: ranked,
   };
 }
