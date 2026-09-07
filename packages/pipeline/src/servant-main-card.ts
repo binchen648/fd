@@ -62,7 +62,7 @@ export function parseServantMainCardAnalysis(artifact: VisionResponse): ServantM
     const parsed = parseContentLine(line);
 
     if (parsed.numbers.length > 0 && zoneIndex < zoneKeys.length) {
-      zones[zoneKeys[zoneIndex]] = parsed.numbers;
+      zones[zoneKeys[zoneIndex]!] = parsed.numbers;
       zoneIndex += 1;
     }
 

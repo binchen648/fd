@@ -114,8 +114,8 @@ async function resolveImageArtifact(input: {
   imageFile: string;
   stagedImagePath: string;
   htmPath: string;
-  artifactsByImage?: Record<string, { visionArtifact: VisionResponse; draft?: CardExtractionDraft; layoutRecognition?: ServantCardLayoutRecognition }>;
-  localOcrFallback?: (imagePath: string) => Promise<string[]>;
+  artifactsByImage?: Record<string, { visionArtifact: VisionResponse; draft?: CardExtractionDraft; layoutRecognition?: ServantCardLayoutRecognition }> | undefined;
+  localOcrFallback?: ((imagePath: string) => Promise<string[]>) | undefined;
 }): Promise<{ visionArtifact: VisionResponse; draft?: CardExtractionDraft; layoutRecognition?: ServantCardLayoutRecognition } | undefined> {
   const existing = input.artifactsByImage?.[input.imageFile];
   if (existing) {

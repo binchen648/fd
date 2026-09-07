@@ -386,7 +386,8 @@ function buildServantDeckView(
     const raw = rawCards.get(card.definitionId);
     const isNamedBasic = namedBasicAttackIds.has(card.definitionId);
     const isSpecialDeckCard = raw?.cardType === 'servant_deck_card' || raw?.cardType === 'master_deck_card';
-    const attribute = isSpecialDeckCard ? 'special' : normalizeDeckAttribute(raw?.cardFace?.attributes?.[0]);
+    const cardAttributes = Array.isArray(raw?.cardFace?.attributes) ? raw.cardFace.attributes : [];
+    const attribute = isSpecialDeckCard ? 'special' : normalizeDeckAttribute(cardAttributes[0]);
     if (!attribute) continue;
     const printedValue = formatPrintedScalar(raw?.cardFace?.basePower);
     addDeckEntry(grouped, attributeCounts, {
@@ -446,7 +447,9 @@ function mapLegalAction(action: LegalAction, index: number, ownerPlayerId: strin
     sourceCardType: sourceDefinition ? cardTypeLabel(sourceDefinition.cardType) : undefined,
     abilityId: action.type === 'activate_ability' ? action.abilityId : undefined,
     abilityLabel: ability?.printedClause,
-    effectTiming: sourceDefinition?.playTiming?.phase ? phaseLabels[sourceDefinition.playTiming.phase] ?? sourceDefinition.playTiming.phase : undefined,
+    effectTiming: typeof sourceDefinition?.playTiming?.phase === 'string'
+      ? phaseLabels[sourceDefinition.playTiming.phase as keyof typeof phaseLabels] ?? sourceDefinition.playTiming.phase
+      : undefined,
     targetId: 'candidates' in action ? action.candidates[0] : undefined,
     targetCandidates: 'candidates' in action ? action.candidates : undefined,
     minTargets: 'min' in action ? action.min : undefined,

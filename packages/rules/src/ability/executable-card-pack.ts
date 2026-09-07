@@ -1,5 +1,4 @@
 import type {
-  AuthoringArchive,
   BasicAttackDictionary,
   CompiledPlaytestContentLibrary,
 } from '@fd/content';

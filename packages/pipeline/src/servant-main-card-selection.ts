@@ -41,7 +41,7 @@ export function selectUniqueServantMainCard(
     return {
       status: "confirmed",
       reason: "unique-main-card-confirmed",
-      selectedImageFile: confirmedCandidates[0].imageFile,
+      selectedImageFile: confirmedCandidates[0]!.imageFile,
       candidateSummaries,
     };
   }

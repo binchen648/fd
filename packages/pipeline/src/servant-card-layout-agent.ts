@@ -23,12 +23,16 @@ export function recognizeServantCardLayout(visionArtifact: VisionResponse): Serv
 
   const attributes: string[] = [];
   let index = 0;
-  while (index < lines.length && ATTRIBUTE_LABELS.has(lines[index])) {
-    attributes.push(lines[index]);
+  while (index < lines.length) {
+    const line = lines[index];
+    if (line === undefined || !ATTRIBUTE_LABELS.has(line)) {
+      break;
+    }
+    attributes.push(line);
     index += 1;
   }
 
-  const cardName = index < lines.length ? lines[index] : normalizeText(visionArtifact.text.cardName) || null;
+  const cardName = lines[index] ?? (normalizeText(visionArtifact.text.cardName) || null);
   if (index < lines.length) {
     index += 1;
   }
@@ -36,6 +40,9 @@ export function recognizeServantCardLayout(visionArtifact: VisionResponse): Serv
   const numericCandidates: Array<{ value: number | null; raw: string }> = [];
   while (index < lines.length && numericCandidates.length < 2) {
     const line = lines[index];
+    if (line === undefined) {
+      break;
+    }
     const parsed = parseDisplayedNumeric(line);
     if (parsed !== undefined) {
       numericCandidates.push({ value: parsed, raw: line });
@@ -48,9 +55,15 @@ export function recognizeServantCardLayout(visionArtifact: VisionResponse): Serv
   const rulesText = lines.slice(index).join("\n");
   const uncertain_fields: string[] = [];
 
-  if (numericCandidates.length >= 2 && looksLikeMergedDisplayedPair(numericCandidates[0], numericCandidates[1])) {
-    numericCandidates[0].value = null;
-    numericCandidates[1].value = null;
+  const firstNumericCandidate = numericCandidates[0];
+  const secondNumericCandidate = numericCandidates[1];
+  if (
+    firstNumericCandidate !== undefined &&
+    secondNumericCandidate !== undefined &&
+    looksLikeMergedDisplayedPair(firstNumericCandidate, secondNumericCandidate)
+  ) {
+    firstNumericCandidate.value = null;
+    secondNumericCandidate.value = null;
   }
 
   const mana_cost = numericCandidates[0]?.value ?? visionArtifact.fields.costMarker;
@@ -152,7 +165,7 @@ function parseDisplayedNumeric(line: string): number | null | undefined {
 
   const digitsWithNoise = normalized.match(/^(\d{1,3})[^\d]+$/);
   if (digitsWithNoise) {
-    return Number.parseInt(digitsWithNoise[1], 10);
+    return Number.parseInt(digitsWithNoise[1]!, 10);
   }
 
   return null;
