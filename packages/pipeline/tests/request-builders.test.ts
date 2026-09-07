@@ -36,9 +36,9 @@ describe("request builders", () => {
     const structureRequest = buildStructureRequestFromManifest(item);
     const guardrailRequest = buildGuardrailRequestFromManifest(item);
 
-    expect(structureRequest.input.visionResultPath).toContain("data\\staged\\ocr\\event_card\\");
-    expect(guardrailRequest.input.visionResultPath).toContain("data\\staged\\ocr\\event_card\\");
-    expect(guardrailRequest.input.structureResultPath).toContain("data\\staged\\structured\\event\\");
+    expect(structureRequest.input.visionResultPath.replace(/\\/g, "/")).toContain("data/staged/ocr/event_card/");
+    expect(guardrailRequest.input.visionResultPath.replace(/\\/g, "/")).toContain("data/staged/ocr/event_card/");
+    expect(guardrailRequest.input.structureResultPath.replace(/\\/g, "/")).toContain("data/staged/structured/event/");
   });
 
   it("threads manifest family hints into structure requests for downstream prompt guidance", () => {

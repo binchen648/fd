@@ -10,6 +10,7 @@
   "scripts": {
     "typecheck": "tsc -b",
     "test": "vitest run",
+    "test:ci": "vitest run --exclude packages/rules/tests/*-authoring.test.ts --exclude packages/rules/tests/five-servants-authoring.test.ts --exclude packages/content/src/__tests__/fd-playtest-masters.test.ts --exclude packages/content/src/__tests__/fd-playtest-servants.test.ts --exclude scripts/tests/compile-playtest-content-pack.test.ts --exclude scripts/tests/verify-fd-playtest-v1.test.ts",
     "test:watch": "vitest",
     "e2e:fd-remote": "playwright test -c playwright.config.ts",
     "smoke:sample": "tsx scripts/smoke-chain-template.ts",
