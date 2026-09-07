@@ -1,0 +1,19 @@
+{
+  "jobId": "structure-servant.oda_nobunaga.mob.005",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.oda_nobunaga.mob.005",
+    "name": "织田吉法师",
+    "cardType": "servant_skill",
+    "timing": ["preparation"],
+    "conditions": [],
+    "targets": [],
+    "effects": [],
+    "duration": null,
+    "visibility": "public",
+    "tags": ["Avenger", "form"],
+    "ambiguities": []
+  },
+  "parseNotes": ["Avenger形态 - 织田吉法师"]
+}

@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+**/dist/
+coverage/
+**/coverage/
+*.tsbuildinfo
+packages/**/*.d.ts
+packages/**/*.js
+packages/**/*.js.map
+scripts/*.d.ts
+scripts/*.js
+scripts/*.js.map
+
+# Runtime/test artifacts
+test-results/
+playwright-report/
+artifacts/
+tmp/
+assessment-b-tmp/
+data/logs/
+deliverables/
+data/staged/**/*.png
+*.log
+
+# Local/editor/agent state
+.DS_Store
+Thumbs.db
+.codegraph/
+.omo/
+.opencode/
+.sisyphus/
+**/.impeccable/
+
+# Secrets and local provider credentials
+api_key.txt
+.env
+.env.*
+!.env.example
+config/providers/*.json
+!config/providers/*.example.json
+
+# Local reference dumps and extracted source material
+chm-extract/
+references/
+workspaces/
+obsidian-fd-vault/
+fengling test/
+
+# Temporary contact-sheet assets
+tmp-*.png

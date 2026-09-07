@@ -1,0 +1,38 @@
+{
+  "jobId": "vision-servant.亚瑟.潘德拉贡.008",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "event",
+    "subtypeGuess": "quest",
+    "familyConfidence": 0.8
+  },
+  "text": {
+    "cardName": "IV.卡姆兰",
+    "rawText": "IV.卡姆兰\n【旅程】\n使命-作为战果点数唯一最高者或获胜。\n亚瑟于此战场进行常规出牌时可以追加打出至多2张牌。",
+    "normalizedText": "IV.卡姆兰\n【旅程】\n使命-作为战果点数唯一最高者或获胜。\n亚瑟于此战场进行常规出牌时可以追加打出至多2张牌。"
+  },
+  "fields": {
+    "code": "IV.卡姆兰",
+    "costMarker": "1",
+    "powerMarker": "",
+    "numericSlots": [],
+    "iconTags": [
+      "1"
+    ],
+    "rarity": "",
+    "classTag": ""
+  },
+  "blocks": [
+    "IV.卡姆兰",
+    "【旅程】",
+    "使命-作为战果点数唯一最高者或获胜。",
+    "亚瑟于此战场进行常规出牌时可以追加打出至多2张牌。"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

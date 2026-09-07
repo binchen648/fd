@@ -1,0 +1,41 @@
+{
+  "jobId": "vision-servant.冲田总司.017",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Skill",
+    "subtypeGuess": "Attack",
+    "familyConfidence": 0.7
+  },
+  "text": {
+    "cardName": "无明三段突",
+    "rawText": "【真名解放】行动阶段：创造并激活2张临时的威力4的 迅捷攻击直至回合结束。",
+    "normalizedText": "【真名解放】行动阶段：创造并激活2张临时的威力4的 迅捷攻击直至回合结束。"
+  },
+  "fields": {
+    "code": null,
+    "costMarker": "8",
+    "powerMarker": "4",
+    "numericSlots": [
+      "8",
+      "4"
+    ],
+    "iconTags": [
+      "迅捷"
+    ],
+    "rarity": null,
+    "classTag": "迅捷"
+  },
+  "blocks": [
+    "character illustration",
+    "card name bar",
+    "cost and power indicators",
+    "ability text section"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

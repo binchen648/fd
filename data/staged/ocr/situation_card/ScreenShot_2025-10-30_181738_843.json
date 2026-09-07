@@ -1,0 +1,37 @@
+{
+  "jobId": "vision-situation-blankification-001",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "situation",
+    "subtypeGuess": "event",
+    "familyConfidence": 0.9
+  },
+  "text": {
+    "cardName": "白纸化",
+    "rawText": "高潮：剩余4+人\n于深山町和新都增加一张正面事件牌。\n除【异星神】外的玩家不受事件牌影响。\n当一张事件牌被展示后，【异星神】可以选择于本回合不受该事件牌影响。",
+    "normalizedText": "高潮：剩余4+人\n于深山町和新都增加一张正面事件牌。\n除【异星神】外的玩家不受事件牌影响。\n当一张事件牌被展示后，【异星神】可以选择于本回合不受该事件牌影响。"
+  },
+  "fields": {
+    "code": null,
+    "costMarker": "4",
+    "powerMarker": null,
+    "numericSlots": [
+      "4+"
+    ],
+    "iconTags": [],
+    "rarity": null,
+    "classTag": null
+  },
+  "blocks": [
+    "白纸化",
+    "高潮：剩余4+人\n于深山町和新都增加一张正面事件牌。\n除【异星神】外的玩家不受事件牌影响。\n当一张事件牌被展示后，【异星神】可以选择于本回合不受该事件牌影响。",
+    "4"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

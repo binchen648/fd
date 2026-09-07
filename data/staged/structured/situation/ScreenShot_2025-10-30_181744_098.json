@@ -1,0 +1,89 @@
+{
+  "jobId": "structure-situation-lostbelt-expansion-001",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "situation.lostbelt_expansion",
+    "name": "异闻带扩张",
+    "cardType": "situation",
+    "timing": [
+      "advance"
+    ],
+    "conditions": [],
+    "targets": [
+      {
+        "type": "battlefield_location",
+        "value": "miyama_town"
+      }
+    ],
+    "effects": [],
+    "duration": null,
+    "visibility": "public",
+    "tags": [
+      "expansion"
+    ],
+    "ambiguities": [
+      {
+        "span": "无法部署/进入新都与侦查",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "魔术工房仅限一人部署",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "于深山町增加一张正面事件牌",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "使用【异闻带】牌堆为深山町抽取事件牌",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "抽取前，所有隐匿者可进行一次【扩张】",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "剩余3+人",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map condition clause to a supported engine predicate."
+      }
+    ]
+  },
+  "parseNotes": [
+    "Repaired target '深山町' -> battlefield_location(miyama_town)"
+  ],
+  "coverage": {
+    "sourceClauses": 5,
+    "mappedClauses": 5,
+    "unmappedClauses": 0
+  },
+  "source": {
+    "visionJobId": "vision-situation-lostbelt-expansion-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

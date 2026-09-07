@@ -1,0 +1,26 @@
+{
+  "jobId": "structure-servant.galatea.berserker.003",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.galatea.berserker.003",
+    "name": "阿佛洛狄忒的恩惠",
+    "cardType": "servant_skill",
+    "timing": ["passive", "action"],
+    "conditions": [],
+    "targets": [],
+    "effects": [
+      { "type": "power_modifier", "value": 2 },
+      { "type": "transform", "value": "X_plus_1" }
+    ],
+    "duration": "turn",
+    "visibility": "public",
+    "tags": ["Berserker", "skill"],
+    "ambiguities": []
+  },
+  "parseNotes": [
+    "雕像少女-被动：此牌展示后，你无法以御主能力外的方式将弃牌堆中的牌洗回牌库",
+    "获得2点合计威力并于回合结束时将弃牌堆洗回牌库",
+    "挣脱桎梏-被动/行动阶段：花费X点魔力，切换X+1项雕像少女中的\"雕像\"为\"人\""
+  ]
+}

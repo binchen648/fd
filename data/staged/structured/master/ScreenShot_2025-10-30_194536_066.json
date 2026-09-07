@@ -1,0 +1,68 @@
+{
+  "jobId": "structure-master-matou-shinji-001",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "master.matou_shinji.profile",
+    "name": "间桐慎二",
+    "cardType": "master_skill",
+    "timing": [
+      "advance",
+      "round_start",
+      "after_battle"
+    ],
+    "conditions": [
+      {
+        "type": "location_is",
+        "value": "miyama_town"
+      }
+    ],
+    "targets": [
+      {
+        "type": "self_player"
+      }
+    ],
+    "effects": [
+      {
+        "type": "gain_mana",
+        "value": 1
+      },
+      {
+        "type": "gain_card",
+        "value": "伪臣之书"
+      },
+      {
+        "type": "lose_command_spell",
+        "value": 1
+      }
+    ],
+    "duration": null,
+    "visibility": "public",
+    "tags": [
+      "master",
+      "profile"
+    ],
+    "ambiguities": []
+  },
+  "parseNotes": [
+    "Card type determined from familyHint 'master_skill' and content structure",
+    "Repaired timing '进入深山町时' -> advance",
+    "Repaired condition '进入深山町时' -> location_is(miyama_town)",
+    "Repaired timing '游戏开始时' -> round_start",
+    "Repaired timing '当你战败时' -> after_battle",
+    "Repaired target '自己' -> self_player",
+    "Repaired effect '获得1点魔力' -> gain_mana(1)",
+    "Repaired effect '获得【伪臣之书】' -> gain_card(伪臣之书)",
+    "Repaired effect '失去一枚令咒' -> lose_command_spell(1)"
+  ],
+  "coverage": {
+    "sourceClauses": 3,
+    "mappedClauses": 3,
+    "unmappedClauses": 0
+  },
+  "source": {
+    "visionJobId": "vision-master-matou-shinji-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

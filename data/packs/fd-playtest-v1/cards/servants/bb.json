@@ -1,0 +1,43 @@
+[
+  {
+    "id": "servant.bb.overview",
+    "name": "B.B.",
+    "cardType": "servant_overview",
+    "capability": { "status": "FULL" },
+    "source": { "htmPath": "chm-extract/B.B..htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_123054_861.png", "imageIndex": 0, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.bb.skill.access_privilege",
+    "name": "权限访问",
+    "cardType": "servant_skill",
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Moon Holy Grail movement and battlefield retention are not yet implemented." },
+    "source": { "htmPath": "chm-extract/B.B..htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_123108_893.png", "imageIndex": 1, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.bb.skill.slot_machine",
+    "name": "B.B.老虎机",
+    "cardType": "servant_skill",
+    "attribute": "special",
+    "printedValue": 5,
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Random multi-player placement and reward selection are not yet implemented." },
+    "source": { "htmPath": "chm-extract/B.B..htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_123104_173.png", "imageIndex": 2, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.bb.skill.ccc",
+    "name": "C.C.C.",
+    "cardType": "servant_skill",
+    "traits": ["noble_phantasm"],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Location merge and event-set location checks are not yet implemented." },
+    "source": { "htmPath": "chm-extract/B.B..htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_123059_477.png", "imageIndex": 3, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.bb.moon_cancer",
+    "name": "月之癌",
+    "cardType": "named_attack",
+    "attribute": "magecraft",
+    "printedValue": 2,
+    "relatedEventSetIds": ["event-set.moon_holy_grail"],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Event replacement and event-effect locality are not yet implemented." },
+    "source": { "htmPath": "chm-extract/B.B..htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_123050_005.png", "imageIndex": 4, "reviewedAgainstImage": true }
+  }
+]

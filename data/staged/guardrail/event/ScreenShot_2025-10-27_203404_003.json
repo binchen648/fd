@@ -1,0 +1,29 @@
+{
+  "jobId": "guardrail-event-synergy-001",
+  "artifactVersion": "guardrail-response-v1",
+  "status": "approve",
+  "schemaOk": true,
+  "engineOk": true,
+  "decision": "approve",
+  "ambiguityLevel": "low",
+  "coverageReport": {
+    "originalClauses": 0,
+    "mappedClauses": 0,
+    "missingClauses": 0
+  },
+  "issues": [],
+  "requiredHumanReview": false,
+  "smokeTests": [
+    {
+      "name": "capability_approve_battle_power_bonus_if_shared_attribute_card_effects_0_type",
+      "setup": "Run a seeded battle where both attacks share at least one attribute on the same battlefield.",
+      "expect": "Replay resolves the shared-attribute battle modifier deterministically.",
+      "source": "capability"
+    }
+  ],
+  "source": {
+    "structureJobId": "structure-event-synergy-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

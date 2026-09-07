@@ -1,0 +1,25 @@
+{
+  "jobId": "structure-servant.galatea.berserker.002",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.galatea.berserker.002",
+    "name": "皮格马利翁之爱",
+    "cardType": "servant_skill",
+    "timing": ["passive", "preparation"],
+    "conditions": [],
+    "targets": [],
+    "effects": [
+      { "type": "prevent", "value": "face_down_attack" },
+      { "type": "allow", "value": "3_additional_attacks" }
+    ],
+    "duration": null,
+    "visibility": "public",
+    "tags": ["Berserker", "skill"],
+    "ambiguities": []
+  },
+  "parseNotes": [
+    "雕像少女-被动：此牌展示后，你无法暗置打出攻击",
+    "永恒不变-被动/行动阶段：花费X点魔力，【镌刻】X+1处位置并抽X+1张牌"
+  ]
+}

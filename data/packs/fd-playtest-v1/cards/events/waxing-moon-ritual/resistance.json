@@ -1,0 +1,19 @@
+{
+  "id": "event.waxing_moon_ritual.resistance",
+  "name": "抵御",
+  "cardType": "event",
+  "printedReward": 4,
+  "applicableLocations": ["deep_mountain", "new_capital"],
+  "printedText": "此战场未进行争夺战的获胜玩家，可获得无主从者【阿周那】。\n行动阶段结束时，此战场的所有玩家按回合顺位选择是否参与本次战斗的战力结算。",
+  "timing": ["action", "battle", "after_battle"],
+  "interactions": [
+    { "kind": "choice", "visibility": "public", "optional": true, "responseTo": ["action_phase_end"], "targetTypes": ["player_at_this_battlefield"] },
+    { "kind": "triggered", "visibility": "public", "optional": true, "responseTo": ["battle_winner_without_contest"] }
+  ],
+  "effects": [
+    { "type": "battle_participation_choice_at_action_end", "scope": "players_at_this_battlefield", "order": "turn_order" },
+    { "type": "grant_masterless_servant", "servantName": "阿周那", "recipient": "uncontested_battle_winner_at_this_battlefield", "optional": true }
+  ],
+  "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Masterless servant ownership and battle-participation choice are not yet automated." },
+  "source": { "htmPath": "chm-extract/盈月之仪.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211237_713.png", "imageIndex": 2, "reviewedAgainstImage": true }
+}

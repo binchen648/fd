@@ -1,0 +1,19 @@
+{
+  "jobId": "structure-servant.galatea.berserker.001",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.galatea.berserker.001",
+    "name": "伽拉忒亚",
+    "cardType": "servant_skill",
+    "timing": ["preparation"],
+    "conditions": [],
+    "targets": [],
+    "effects": [],
+    "duration": null,
+    "visibility": "public",
+    "tags": ["Berserker", "servant"],
+    "ambiguities": []
+  },
+  "parseNotes": ["Berserker class"]
+}

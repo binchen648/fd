@@ -1,0 +1,93 @@
+{
+  "jobId": "structure-master-matou-shinji-book-002",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "master.matou_shinji.wei_chen_zhi_shu",
+    "name": "伪臣之书",
+    "cardType": "master_skill",
+    "timing": [
+      "passive"
+    ],
+    "conditions": [],
+    "targets": [],
+    "effects": [],
+    "duration": "该回合结束时",
+    "visibility": "public",
+    "tags": [
+      "master",
+      "skill"
+    ],
+    "ambiguities": [
+      {
+        "span": "将你的御主替换为【间桐樱】",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "重置你的魔力",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "获得2令咒",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "保持战果不变",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "间桐樱不在场",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map condition clause to a supported engine predicate."
+      },
+      {
+        "span": "当你第一次失去所有令咒时",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map condition clause to a supported engine predicate."
+      },
+      {
+        "span": "target-0",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map target '你的御主' to a supported engine target."
+      }
+    ]
+  },
+  "parseNotes": [
+    "The card is identified as a master skill based on the familyHint and content context."
+  ],
+  "coverage": {
+    "sourceClauses": 3,
+    "mappedClauses": 3,
+    "unmappedClauses": 0
+  },
+  "source": {
+    "visionJobId": "vision-master-matou-shinji-book-002",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "jobId": "vision-servant-bb-001",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Servant",
+    "subtypeGuess": "Skill",
+    "familyConfidence": 0.9
+  },
+  "text": {
+    "cardName": "B.B.",
+    "rawText": "B.B.\n2,2,5\n2,3\n2,4,4\nLuck\nPreparation\nMoon Cancer\nMoon Cancer\nMoon Cancer",
+    "normalizedText": "B.B. 2,2,5 2,3 2,4,4 Luck Preparation Moon Cancer"
+  },
+  "fields": {
+    "code": null,
+    "costMarker": "2,2,5",
+    "powerMarker": "2,3",
+    "numericSlots": [
+      "2,2,5",
+      "2,3",
+      "2,4,4"
+    ],
+    "iconTags": [
+      "red star",
+      "green star",
+      "blue star"
+    ],
+    "rarity": null,
+    "classTag": "Moon Cancer"
+  },
+  "blocks": [
+    "B.B.",
+    "2,2,5",
+    "2,3",
+    "2,4,4",
+    "Luck",
+    "Preparation",
+    "Moon Cancer",
+    "Moon Cancer",
+    "Moon Cancer"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "artifactVersion": "servant-review-pending-page-v1",
+  "status": "review_required",
+  "sourceHtm": "D:/fd/chm-extract/永仓新八.htm",
+  "pageName": "�����°�",
+  "reason": "no-main-card-candidate",
+  "pngFiles": [
+    "ScreenShot_2025-11-02_115647_625.png",
+    "ScreenShot_2025-11-02_115652_712.png",
+    "ScreenShot_2025-11-02_115703_360.png",
+    "ScreenShot_2025-11-02_115658_137.png"
+  ],
+  "candidateSummaries": [
+    {
+      "imageFile": "ScreenShot_2025-11-02_115647_625.png",
+      "isMainCard": false,
+      "confidence": "low"
+    },
+    {
+      "imageFile": "ScreenShot_2025-11-02_115652_712.png",
+      "isMainCard": false,
+      "confidence": "low"
+    },
+    {
+      "imageFile": "ScreenShot_2025-11-02_115703_360.png",
+      "isMainCard": false,
+      "confidence": "low"
+    },
+    {
+      "imageFile": "ScreenShot_2025-11-02_115658_137.png",
+      "isMainCard": false,
+      "confidence": "low"
+    }
+  ]
+}

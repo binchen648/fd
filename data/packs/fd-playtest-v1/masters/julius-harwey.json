@@ -1,0 +1,19 @@
+{
+  "id": "master.julius_harwey",
+  "name": "尤里乌斯·贝尔奇斯科·哈维",
+  "overviewCardId": "master.julius_harwey.overview",
+  "initialMana": 4,
+  "commandSpellCardIds": ["master.julius_harwey.command_spell.standard"],
+  "skillCardIds": ["master.julius_harwey.skill.black_scorpion"],
+  "linkedCards": {},
+  "capability": {
+    "status": "HOST_ADJUDICATED",
+    "hostRulingReason": "Deployment skipping, action-phase deployment and discard-or-random-placement choice are not yet implemented."
+  },
+  "source": {
+    "htmPath": "chm-extract/尤里鸟斯·贝尔奇斯科·哈维.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_222531_412.png",
+    "imageIndex": 0,
+    "reviewedAgainstImage": true
+  }
+}

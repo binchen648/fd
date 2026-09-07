@@ -1,0 +1,58 @@
+{
+  "jobId": "structure-event-synergy-001",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "event.synergy.001",
+    "name": "协同",
+    "cardType": "event",
+    "timing": [
+      "passive"
+    ],
+    "conditions": [],
+    "targets": [],
+    "effects": [],
+    "duration": null,
+    "visibility": "public",
+    "tags": [
+      "synergy"
+    ],
+    "ambiguities": [
+      {
+        "span": "合计威力+4",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "于此战场的玩家，其所有攻击若至少有一种属性相同",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map condition clause to a supported engine predicate."
+      },
+      {
+        "span": "target-0",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map target '玩家' to a supported engine target."
+      }
+    ]
+  },
+  "parseNotes": [],
+  "coverage": {
+    "sourceClauses": 1,
+    "mappedClauses": 1,
+    "unmappedClauses": 0
+  },
+  "source": {
+    "visionJobId": "vision-event-synergy-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

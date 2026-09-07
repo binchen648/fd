@@ -1,0 +1,75 @@
+[
+  {
+    "id": "servant.jing_ke.overview",
+    "name": "荆轲",
+    "cardType": "servant_overview",
+    "capability": { "status": "FULL" },
+    "source": { "htmPath": "chm-extract/荆轲.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_215633_893.png", "imageIndex": 0, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.jing_ke.skill.song_of_yi_river",
+    "name": "易水歌",
+    "cardType": "servant_skill",
+    "traits": ["noble_phantasm"],
+    "printedText": "【真名解放】\n壮士去兮-被动/准备阶段：隐藏你的所有区域，你于常规出牌时可以追加打出一张牌且你可以于战斗阶段使用荆轲的行动阶段能力。回合结束时，若你未获胜，将此牌移除游戏。",
+    "timing": ["preparation", "battle", "round_end"],
+    "interactions": [
+      { "kind": "automatic", "visibility": "private" },
+      { "kind": "triggered", "visibility": "owner_only", "optional": true, "responseTo": ["regular_play"] },
+      { "kind": "activated", "visibility": "public", "optional": true, "targetTypes": ["jing_ke_action_phase_ability"] },
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["round_end"] }
+    ],
+    "effects": [
+      { "type": "hide_all_owner_zones", "timingLabel": "壮士去兮-被动/准备阶段" },
+      { "type": "allow_additional_card_play", "maxCards": 1, "timingLabel": "常规出牌" },
+      { "type": "allow_action_phase_abilities_during_battle", "appliesTo": "servant.jing_ke" },
+      { "type": "remove_this_card_from_game", "condition": "owner_did_not_win_this_round", "timingLabel": "回合结束" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Area concealment and bonus play timing are not yet implemented." },
+    "source": { "htmPath": "chm-extract/荆轲.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_215639_269.png", "imageIndex": 1, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.jing_ke.skill.no_return_dagger",
+    "name": "不归匕首",
+    "cardType": "servant_skill",
+    "attributes": ["agility"],
+    "attribute": "agility",
+    "printedValue": 4,
+    "printedCost": 3,
+    "traits": ["noble_phantasm"],
+    "printedText": "玉不留行-行动阶段：选择一名与你位于同一战场的对手，战力结算时，若其与你交战且未进行过移动，令其【败北】。",
+    "timing": ["action", "battle"],
+    "interactions": [
+      { "kind": "activated", "visibility": "public", "optional": true, "targetTypes": ["opponent_at_same_battlefield"] },
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["battle_resolution"] }
+    ],
+    "effects": [
+      { "type": "mark_opponent_for_no_movement_defeat_check", "timingLabel": "玉不留行-行动阶段" },
+      { "type": "defeat_marked_opponent", "condition": "marked_opponent_battles_you_and_has_not_moved" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Opponent movement-history condition is not yet implemented." },
+    "source": { "htmPath": "chm-extract/荆轲.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_215649_229.png", "imageIndex": 2, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.jing_ke.skill.broken_rainbow",
+    "name": "残虹",
+    "cardType": "servant_skill",
+    "attributes": ["agility"],
+    "attribute": "agility",
+    "printedValue": 4,
+    "printedCost": 6,
+    "printedText": "旁若无人-行动阶段：选择一名你所在战场的对手，战力结算时，若仅有你与之交战，此牌基本威力翻倍。否则，此牌威力减半。",
+    "timing": ["action", "battle"],
+    "interactions": [
+      { "kind": "activated", "visibility": "public", "optional": true, "targetTypes": ["opponent_at_same_battlefield"] },
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["battle_resolution"] }
+    ],
+    "effects": [
+      { "type": "mark_opponent_for_exclusive_duel_power_check", "timingLabel": "旁若无人-行动阶段" },
+      { "type": "double_base_power", "condition": "only_you_and_marked_opponent_battle_each_other" },
+      { "type": "halve_power", "condition": "exclusive_duel_condition_not_met" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Dynamic power doubling and halving are not yet implemented." },
+    "source": { "htmPath": "chm-extract/荆轲.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_215643_884.png", "imageIndex": 3, "reviewedAgainstImage": true }
+  }
+]

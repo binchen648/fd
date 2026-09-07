@@ -1,0 +1,35 @@
+{
+  "artifactVersion": "servant-review-pending-page-v1",
+  "status": "review_required",
+  "sourceHtm": "D:/fd/chm-extract/美杜莎.htm",
+  "pageName": "����ɯ",
+  "reason": "no-main-card-candidate",
+  "pngFiles": [
+    "ScreenShot_2025-11-01_163744_063.png",
+    "ScreenShot_2025-10-30_192738_090.png",
+    "ScreenShot_2025-11-01_163755_566.png",
+    "ScreenShot_2025-11-01_163750_750.png"
+  ],
+  "candidateSummaries": [
+    {
+      "imageFile": "ScreenShot_2025-11-01_163744_063.png",
+      "isMainCard": false,
+      "confidence": "low"
+    },
+    {
+      "imageFile": "ScreenShot_2025-10-30_192738_090.png",
+      "isMainCard": false,
+      "confidence": "low"
+    },
+    {
+      "imageFile": "ScreenShot_2025-11-01_163755_566.png",
+      "isMainCard": false,
+      "confidence": "low"
+    },
+    {
+      "imageFile": "ScreenShot_2025-11-01_163750_750.png",
+      "isMainCard": false,
+      "confidence": "low"
+    }
+  ]
+}

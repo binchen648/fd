@@ -1,0 +1,35 @@
+{
+  "artifactVersion": "servant-review-pending-page-v1",
+  "status": "review_required",
+  "sourceHtm": "D:/fd/chm-extract/木曾义仲.htm",
+  "pageName": "ľ������",
+  "reason": "no-main-card-candidate",
+  "pngFiles": [
+    "ScreenShot_2025-10-31_213358_109.png",
+    "ScreenShot_2025-10-31_213403_204.png",
+    "ScreenShot_2025-10-30_192748_163.png",
+    "ScreenShot_2025-10-31_213407_620.png"
+  ],
+  "candidateSummaries": [
+    {
+      "imageFile": "ScreenShot_2025-10-31_213358_109.png",
+      "isMainCard": false,
+      "confidence": "medium"
+    },
+    {
+      "imageFile": "ScreenShot_2025-10-31_213403_204.png",
+      "isMainCard": false,
+      "confidence": "low"
+    },
+    {
+      "imageFile": "ScreenShot_2025-10-30_192748_163.png",
+      "isMainCard": false,
+      "confidence": "low"
+    },
+    {
+      "imageFile": "ScreenShot_2025-10-31_213407_620.png",
+      "isMainCard": false,
+      "confidence": "low"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "jobId": "structure-situation-blankification-001",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "situation.blankification",
+    "name": "白纸化",
+    "cardType": "situation",
+    "timing": [
+      "action"
+    ],
+    "conditions": [],
+    "targets": [],
+    "effects": [],
+    "duration": "this turn",
+    "visibility": "public",
+    "tags": [
+      "situation",
+      "event"
+    ],
+    "ambiguities": [
+      {
+        "span": "add a face-up event card in Shin Yamazato and New Capital",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "players except Alien God are unaffected by event cards",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "Alien God can choose to be unaffected by an event card when revealed this turn",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "remaining players 4+",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map condition clause to a supported engine predicate."
+      },
+      {
+        "span": "target-0",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map target 'players except Alien God' to a supported engine target."
+      },
+      {
+        "span": "target-1",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map target 'Alien God' to a supported engine target."
+      }
+    ]
+  },
+  "parseNotes": [],
+  "coverage": {
+    "sourceClauses": 4,
+    "mappedClauses": 4,
+    "unmappedClauses": 0
+  },
+  "source": {
+    "visionJobId": "vision-situation-blankification-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

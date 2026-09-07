@@ -1,0 +1,78 @@
+[
+  {
+    "id": "master.maiya_hisau.overview",
+    "name": "久宇舞弥",
+    "cardType": "master_overview",
+    "printedText": "军旅-你拥有【援护射击】。\n前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
+    "timing": ["advance", "round_end"],
+    "interactions": [
+      { "kind": "activated", "visibility": "public", "optional": true, "targetTypes": ["other_player_attack"] },
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["round_end"] }
+    ],
+    "effects": [
+      { "type": "grant_skill_card", "cardId": "master.maiya_hisau.skill.supporting_fire", "timingLabel": "军旅" },
+      { "type": "attach_skill_to_other_player_attack", "cardId": "master.maiya_hisau.skill.supporting_fire", "costMana": 2, "condition": "owner_not_at_battlefield" },
+      { "type": "return_attached_skill_to_skill_zone", "timingLabel": "回合结束" },
+      { "type": "prevent_battle_winner_status", "duration": "current_round", "condition": "attached_supporting_fire_this_round" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Supporting-fire cross-player response is not yet implemented." },
+    "source": { "htmPath": "chm-extract/久宇舞弥.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_230925_200.png", "imageIndex": 0, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "master.maiya_hisau.skill.supporting_fire",
+    "name": "援护射击",
+    "cardType": "master_skill",
+    "attributes": ["agility"],
+    "attribute": "agility",
+    "printedValue": 2,
+    "printedCost": 0,
+    "printedText": "此牌需追加打出。\n压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
+    "timing": ["action"],
+    "interactions": [
+      { "kind": "activated", "visibility": "public", "optional": true, "targetTypes": ["self"] }
+    ],
+    "effects": [
+      { "type": "requires_additional_play" },
+      { "type": "pay_battle_result_to_player", "amount": 2, "recipient": "master.maiya_hisau", "condition": "user_is_not_maiya_hisau" },
+      { "type": "gain_base_terrain", "amount": 1 },
+      { "type": "double_terrain" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Additional play and defeat handling are not yet implemented." },
+    "source": { "htmPath": "chm-extract/久宇舞弥.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_230929_848.png", "imageIndex": 1, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "master.maiya_hisau.command_spell.waiting_response",
+    "name": "待应（令咒）",
+    "cardType": "command_spell",
+    "printedText": "行动阶段：获得4魔力\n行动阶段：总威力+2，如果你本回合每赢得一场战斗，获得2战果\n行动阶段：从新都或深山町移动至任意位置，无视交战状态",
+    "timing": ["action"],
+    "interactions": [
+      { "kind": "choice", "visibility": "public", "optional": true, "targetTypes": ["self", "location"] }
+    ],
+    "effects": [
+      { "type": "gain_mana", "amount": 4 },
+      { "type": "gain_total_power", "amount": 2 },
+      { "type": "gain_battle_result_per_battle_won_this_round", "amount": 2 },
+      { "type": "move_from_named_locations_to_any_position", "from": ["new_capital", "deep_mountain_town"], "ignoreBattleState": true }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "All three command-spell modes require engine actions." },
+    "source": { "htmPath": "chm-extract/久宇舞弥.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_230935_247.png", "imageIndex": 2, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "master.maiya_hisau.skill.dessert_fanatic",
+    "name": "甜品狂热者",
+    "cardType": "master_skill",
+    "printedText": "解锁此技能后，立即从手牌、牌库和弃牌堆移除所有魔术牌，每以此法移除一张魔术牌，你获得2点魔力。然后将游戏外的一张【射击】加入你的技能区。",
+    "timing": ["action"],
+    "interactions": [
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["unlock_this_skill"] }
+    ],
+    "effects": [
+      { "type": "remove_all_attribute_cards_from_zones", "attribute": "magecraft", "zones": ["hand", "deck", "discard_pile"] },
+      { "type": "gain_mana_per_card_removed_by_this_effect", "amount": 2 },
+      { "type": "add_card_from_outside_game_to_skill_zone", "cardName": "射击" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Bulk magecraft-card removal and skill-zone replacement are not yet implemented." },
+    "source": { "htmPath": "chm-extract/久宇舞弥.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_230941_863.png", "imageIndex": 3, "reviewedAgainstImage": true }
+  }
+]

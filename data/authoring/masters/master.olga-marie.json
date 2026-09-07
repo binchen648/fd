@@ -1,0 +1,169 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "id": "master.olga-marie",
+  "name": "奥尔加玛丽·阿尼姆斯菲亚",
+  "class": "Master",
+  "aliases": ["master.olga-marie-animusphere"],
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sources": [
+    {
+      "id": "chm_page",
+      "type": "chm_page",
+      "path": "D:/fd/chm-extract/奥尔加玛丽·阿尼姆斯菲亚.htm",
+      "pageTitle": "奥尔加玛丽·阿尼姆斯菲亚",
+      "imageOrder": [
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_182248_978.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_182253_810.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_182259_890.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_182304_865.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_182310_586.png"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "master.olga-marie.skill.astronomical-science",
+      "name": "天体科学",
+      "cardType": "master_skill",
+      "printedText": "天体科学-你拥有【迦勒底亚斯】。无论抵达-当你首次战败后的回合结束时，激活【特里斯墨吉斯忒斯之殇】。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "astronomical-science.has-chaldeas",
+          "kind": "forced_trigger",
+          "printedClause": "天体科学-你拥有【迦勒底亚斯】。",
+          "activation": { "trigger": "game_start" },
+          "effects": [{ "type": "create_card", "cardId": "master.olga-marie.skill.chaldeas", "to": { "zone": "skill" } }],
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "astronomical-science.first-loss",
+          "kind": "forced_trigger",
+          "printedClause": "无论抵达-当你首次战败后的回合结束时，激活【特里斯墨吉斯忒斯之殇】。",
+          "activation": { "trigger": "after_controller_first_loses_battle" },
+          "effects": [{ "type": "activate_card_by_id", "definitionId": "master.olga-marie.skill.trismegistus-grief" }],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "original_card_image", "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_182248_978.png", "imageIndex": 0 }]
+    },
+    {
+      "id": "master.olga-marie.skill.chaldeas",
+      "name": "迦勒底亚斯",
+      "cardType": "master_skill",
+      "printedText": "事务剪定-你可以查看局势牌堆底和事件牌堆底。每回合限一次，当一张属于原局势或事件牌堆的非高潮局势或事件牌被展示后将要生效前，你可以将其与相应牌堆底的牌调换。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaldeas.peek-bottoms",
+          "kind": "passive",
+          "printedClause": "事务剪定-你可以查看局势牌堆底和事件牌堆底。",
+          "activation": { "trigger": "while_active" },
+          "effects": [{ "type": "look_at_match_deck_bottoms", "deckKinds": ["situation", "event"] }],
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "chaldeas.swap-before-resolve",
+          "kind": "optional_trigger",
+          "printedClause": "每回合限一次，当一张属于原局势或事件牌堆的非高潮局势或事件牌被展示后将要生效前，你可以将其与相应牌堆底的牌调换。",
+          "activation": { "trigger": "before_situation_or_event_resolves" },
+          "responseWindow": { "opens": "chaldeas_swap_before_resolve" },
+          "limit": { "type": "per_round", "scope": "this_card", "uses": 1 },
+          "effects": [{ "type": "swap_revealed_with_deck_bottom" }],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "original_card_image", "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_182253_810.png", "imageIndex": 1 }]
+    },
+    {
+      "id": "master.olga-marie.skill.trismegistus-grief",
+      "name": "特里斯墨吉斯忒斯之殇",
+      "cardType": "master_skill",
+      "printedText": "魂离神引-你的合计威力+X，X为此牌被激活时的回合数的一半（向上取整）。当你战败后，你失去魂离神引并获得归寂。归寂-你必须部署于战场，你的战斗阶段开始时，令所有与你位于同一战场的玩家【败北】，然后移除此牌。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "trismegistus.soul-drag",
+          "kind": "passive",
+          "printedClause": "魂离神引-你的合计威力+X，X为此牌被激活时的回合数的一半（向上取整）。当你战败后，你失去魂离神引并获得归寂。",
+          "activation": { "trigger": "while_active" },
+          "effects": [{ "type": "soul_drag_power_bonus", "rounding": "ceil" }],
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "trismegistus.loss-transform",
+          "kind": "forced_trigger",
+          "printedClause": "当你战败后，你失去魂离神引并获得归寂。",
+          "activation": { "trigger": "after_controller_loses_battle" },
+          "effects": [{ "type": "transform_to_return_silence_on_loss" }],
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "trismegistus.return-silence",
+          "kind": "passive",
+          "printedClause": "归寂-你必须部署于战场，你的战斗阶段开始时，令所有与你位于同一战场的玩家【败北】，然后移除此牌。",
+          "activation": { "trigger": "while_active" },
+          "effects": [{ "type": "return_silence_battle_start" }],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "original_card_image", "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_182259_890.png", "imageIndex": 2 }]
+    },
+    {
+      "id": "master.olga-marie.command-spell",
+      "name": "令咒",
+      "cardType": "command_spell",
+      "printedText": "行动阶段：获得4点魔力。行动阶段：+2合计威力，若你获胜，获得2点战果。行动阶段：无视交战状态从深山町或新都移动至任意地点。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "command-spell.gain-mana",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：获得4点魔力。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "effects": [
+            { "type": "adjust_mana", "amount": 4 },
+            { "type": "adjust_command_seals", "amount": -1, "directive": "spend_command_spell" }
+          ],
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "command-spell.power-victory",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：+2合计威力，若你获胜，获得2点战果。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "creates": [
+            { "type": "create_modifier", "modifier": { "type": "power_bonus", "target": "controller", "amount": 2, "duration": "this_round" } }
+          ],
+          "effects": [
+            { "type": "record_master_directive", "directive": "gain_2_vp_if_win_this_round" },
+            { "type": "adjust_command_seals", "amount": -1, "directive": "spend_command_spell" }
+          ],
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "command-spell.free-move",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：无视交战状态从深山町或新都移动至任意地点。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "effects": [
+            { "type": "record_master_directive", "directive": "move_from_shinto_or_miyama_to_any_location_ignore_engagement" },
+            { "type": "adjust_command_seals", "amount": -1, "directive": "spend_command_spell" }
+          ],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "original_card_image", "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_182304_865.png", "imageIndex": 3 }]
+    }
+  ],
+  "excludedCards": [{ "id": "master.olga-marie.skill.ascension", "name": "橄榄枝", "reason": "user_scope_excluded_ascension" }],
+  "adapterNotes": ["升华技按用户规则排除。"]
+}

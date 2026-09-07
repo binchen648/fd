@@ -1,0 +1,53 @@
+{
+  "jobId": "guardrail-event-reality-marble-001",
+  "artifactVersion": "guardrail-response-v1",
+  "status": "approve",
+  "schemaOk": true,
+  "engineOk": true,
+  "decision": "approve",
+  "ambiguityLevel": "low",
+  "coverageReport": {
+    "originalClauses": 2,
+    "mappedClauses": 2,
+    "missingClauses": 0
+  },
+  "issues": [],
+  "requiredHumanReview": false,
+  "smokeTests": [
+    {
+      "name": "auto_smoke_1",
+      "setup": "cardType matches vision classification",
+      "expect": "cardType matches vision classification",
+      "source": "model"
+    },
+    {
+      "name": "auto_smoke_2",
+      "setup": "effect clauses fully mapped",
+      "expect": "effect clauses fully mapped",
+      "source": "model"
+    },
+    {
+      "name": "auto_smoke_3",
+      "setup": "no ambiguous fields detected",
+      "expect": "no ambiguous fields detected",
+      "source": "model"
+    },
+    {
+      "name": "capability_approve_forbid_special_attack_on_battlefield_card_effects_0_type",
+      "setup": "Run a seeded battle on the targeted battlefield and attempt to declare a special attack there.",
+      "expect": "Replay blocks the special attack deterministically while keeping normal battle flow intact.",
+      "source": "capability"
+    },
+    {
+      "name": "capability_approve_lock_battlefield_movement_card_effects_1_type",
+      "setup": "Run a seeded movement scenario where all_players would try to enter or leave the affected battlefield.",
+      "expect": "Replay blocks the illegal movement deterministically and preserves the battlefield lock.",
+      "source": "capability"
+    }
+  ],
+  "source": {
+    "structureJobId": "structure-event-reality-marble-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

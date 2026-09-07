@@ -1,0 +1,17 @@
+{
+  "provider": "siliconflow",
+  "baseUrl": "https://api.siliconflow.cn/v1",
+  "models": {
+    "vision": "Qwen/Qwen3-VL-235B-A22B-Thinking",
+    "structure": "Qwen/Qwen3-VL-235B-A22B-Thinking",
+    "review": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  },
+  "auth": {
+    "apiKeyFile": "D:\\fd\\api_key.txt"
+  },
+  "timeouts": {
+    "visionMs": 300000,
+    "structureMs": 180000,
+    "reviewMs": 180000
+  }
+}

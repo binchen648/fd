@@ -1,0 +1,28 @@
+{
+  "imageFile": "ScreenShot_2025-11-01_164705_550.png",
+  "character_name": "弗朗西斯·德雷克",
+  "red_cards": [
+    2,
+    3,
+    3
+  ],
+  "green_cards": [
+    2,
+    3,
+    3,
+    4,
+    5
+  ],
+  "blue_cards": [],
+  "special_cards": [
+    "Luck",
+    "Surveil",
+    "Surveil",
+    "Surveil"
+  ],
+  "red_count": 3,
+  "green_count": 5,
+  "blue_count": 0,
+  "special_count": 4,
+  "total_count": 12
+}

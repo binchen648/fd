@@ -1,0 +1,24 @@
+{
+  "card_name": "Strelgth",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "Strelgth\nNoble\nPhattaslll\n天鬼雨\n54\n[真名解放 ]\n行动阶段: 花费孓点[才智] (至多为2 ) ,从你的弃牌堆\n打出至多 +&张基础攻击。战斗阶段结束后\n改为将它们\n洗回你的牌库。",
+  "ocr_text_draft": "Strelgth Noble Phattaslll 天鬼雨 54 [真名解放 ] 行动阶段: 花费孓点[才智] (至多为2 ) ,从你的弃牌堆 打出至多 +&张基础攻击。战斗阶段结束后 改为将它们 洗回你的牌库。",
+  "rules_text": "Noble\nPhattaslll\n天鬼雨\n54\n真名解放\n行动阶段: 花费孓点 才智 (至多为2 ) ,从你的弃牌堆\n打出至多 +&张基础攻击。战斗阶段结束后\n改为将它们\n洗回你的牌库。",
+  "effect_text": "Noble\nPhattaslll\n天鬼雨\n54\n真名解放\n行动阶段: 花费孓点 才智 (至多为2 ) ,从你的弃牌堆\n打出至多 +&张基础攻击。战斗阶段结束后\n改为将它们\n洗回你的牌库。",
+  "effect_explanation": "",
+  "cost": null,
+  "power": null,
+  "displayed_cost_power_confirmed": false,
+  "tags": [],
+  "attributes": [],
+  "confidence": 0.4,
+  "needs_human_review": true,
+  "uncertain_fields": [
+    "mana_cost",
+    "attack_power"
+  ],
+  "review_notes": [
+    "Uncertain field: mana_cost",
+    "Uncertain field: attack_power"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "card_name": "花朵",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "力量\n魔术\n花朵\n0d\n5\n1作品 ]",
+  "ocr_text_draft": "力量 魔术 花朵 0d 5 1作品 ]",
+  "rules_text": "1作品",
+  "effect_text": "1作品",
+  "effect_explanation": "",
+  "cost": 0,
+  "power": 5,
+  "displayed_cost_power_confirmed": true,
+  "tags": [
+    "力量",
+    "魔术"
+  ],
+  "attributes": [
+    "力量",
+    "魔术"
+  ],
+  "confidence": 0.9,
+  "needs_human_review": false,
+  "uncertain_fields": [],
+  "review_notes": []
+}

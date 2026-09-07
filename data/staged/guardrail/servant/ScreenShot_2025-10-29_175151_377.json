@@ -1,0 +1,65 @@
+{
+  "jobId": "guardrail-servant-nanaya-shiki-001",
+  "artifactVersion": "guardrail-response-v1",
+  "status": "review",
+  "schemaOk": false,
+  "engineOk": false,
+  "decision": "review",
+  "ambiguityLevel": "medium",
+  "coverageReport": {
+    "originalClauses": 0,
+    "mappedClauses": 0,
+    "missingClauses": 0
+  },
+  "issues": [
+    {
+      "code": "MODEL_RETURNED_MINIMAL_REVIEW",
+      "severity": "warning",
+      "message": "Model returned a minimal review response."
+    },
+    {
+      "code": "ENGINE_AMBIGUITY_REVIEW",
+      "severity": "warning",
+      "message": "Ambiguity requires review: play_attack_with_mana_cost_less_than_x",
+      "fieldPath": "card.ambiguities.0"
+    },
+    {
+      "code": "ENGINE_AMBIGUITY_REVIEW",
+      "severity": "warning",
+      "message": "Ambiguity requires review: reduce_base_power_by_half_ceil",
+      "fieldPath": "card.ambiguities.1"
+    },
+    {
+      "code": "ENGINE_AMBIGUITY_REVIEW",
+      "severity": "warning",
+      "message": "Ambiguity requires review: if_possible",
+      "fieldPath": "card.ambiguities.2"
+    }
+  ],
+  "requiredHumanReview": true,
+  "smokeTests": [
+    {
+      "name": "capability_review_engine_ambiguity_review_card_ambiguities_0",
+      "setup": "Preserve card.ambiguities.0 in a seeded guardrail input and replay candidate scenario.",
+      "expect": "Guardrail downgrades to review and keeps the card out of auto-integration.",
+      "source": "capability"
+    },
+    {
+      "name": "capability_review_engine_ambiguity_review_card_ambiguities_1",
+      "setup": "Preserve card.ambiguities.1 in a seeded guardrail input and replay candidate scenario.",
+      "expect": "Guardrail downgrades to review and keeps the card out of auto-integration.",
+      "source": "capability"
+    },
+    {
+      "name": "capability_review_engine_ambiguity_review_card_ambiguities_2",
+      "setup": "Preserve card.ambiguities.2 in a seeded guardrail input and replay candidate scenario.",
+      "expect": "Guardrail downgrades to review and keeps the card out of auto-integration.",
+      "source": "capability"
+    }
+  ],
+  "source": {
+    "structureJobId": "structure-servant-nanaya-shiki-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

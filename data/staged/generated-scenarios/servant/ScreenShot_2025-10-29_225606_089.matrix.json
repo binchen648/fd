@@ -1,0 +1,34 @@
+{
+  "comparisons": [
+    {
+      "label": "generated-servant-skill-screenshot-2025-10-29-225606-089-capability-reject-engine-unsupported-timing-card-timing-0-candidate",
+      "baselinePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\minimal-7p-seeded-scenario.json",
+      "candidatePath": "D:\\fd\\data\\staged\\generated-scenarios\\servant\\ScreenShot_2025-10-29_225606_089--capability-reject-engine-unsupported-timing-card-timing-0.json",
+      "expectedIdentical": true
+    },
+    {
+      "label": "generated-servant-skill-screenshot-2025-10-29-225606-089-capability-review-engine-ambiguity-review-card-ambiguities-0-candidate",
+      "baselinePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\minimal-7p-seeded-scenario.json",
+      "candidatePath": "D:\\fd\\data\\staged\\generated-scenarios\\servant\\ScreenShot_2025-10-29_225606_089--capability-review-engine-ambiguity-review-card-ambiguities-0.json",
+      "expectedIdentical": true
+    },
+    {
+      "label": "generated-servant-skill-screenshot-2025-10-29-225606-089-capability-review-engine-ambiguity-review-card-ambiguities-1-candidate",
+      "baselinePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\minimal-7p-seeded-scenario.json",
+      "candidatePath": "D:\\fd\\data\\staged\\generated-scenarios\\servant\\ScreenShot_2025-10-29_225606_089--capability-review-engine-ambiguity-review-card-ambiguities-1.json",
+      "expectedIdentical": true
+    },
+    {
+      "label": "generated-servant-skill-screenshot-2025-10-29-225606-089-capability-review-engine-ambiguity-review-card-ambiguities-2-candidate",
+      "baselinePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\minimal-7p-seeded-scenario.json",
+      "candidatePath": "D:\\fd\\data\\staged\\generated-scenarios\\servant\\ScreenShot_2025-10-29_225606_089--capability-review-engine-ambiguity-review-card-ambiguities-2.json",
+      "expectedIdentical": true
+    },
+    {
+      "label": "generated-servant-skill-screenshot-2025-10-29-225606-089-capability-review-engine-ambiguity-review-card-ambiguities-3-candidate",
+      "baselinePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\minimal-7p-seeded-scenario.json",
+      "candidatePath": "D:\\fd\\data\\staged\\generated-scenarios\\servant\\ScreenShot_2025-10-29_225606_089--capability-review-engine-ambiguity-review-card-ambiguities-3.json",
+      "expectedIdentical": true
+    }
+  ]
+}

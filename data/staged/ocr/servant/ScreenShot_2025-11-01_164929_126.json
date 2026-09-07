@@ -1,0 +1,45 @@
+{
+  "jobId": "vision-servant.志度内.005",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "力量",
+    "subtypeGuess": "魔术",
+    "familyConfidence": 0.95
+  },
+  "text": {
+    "cardName": "连携打击",
+    "rawText": "力量\n魔术\n连携打击\n1\n5\n反转: 如果你赢得战斗，获得4点战果。\n被动/行动阶段: 如果你激活的攻击中只包含了一张力量及一张魔术属性，则你可以支付3点魔力将此卡加入到你的攻击中。",
+    "normalizedText": "力量 魔术 连携打击 1 5 反转: 如果你赢得战斗，获得4点战果。 被动/行动阶段: 如果你激活的攻击中只包含了一张力量及一张魔术属性，则你可以支付3点魔力将此卡加入到你的攻击中。"
+  },
+  "fields": {
+    "code": null,
+    "costMarker": "1",
+    "powerMarker": "5",
+    "numericSlots": [
+      1,
+      5
+    ],
+    "iconTags": [
+      "力量",
+      "魔术"
+    ],
+    "rarity": null,
+    "classTag": "魔术"
+  },
+  "blocks": [
+    "力量",
+    "魔术",
+    "连携打击",
+    "1",
+    "5",
+    "反转: 如果你赢得战斗，获得4点战果。",
+    "被动/行动阶段: 如果你激活的攻击中只包含了一张力量及一张魔术属性，则你可以支付3点魔力将此卡加入到你的攻击中。"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

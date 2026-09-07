@@ -1,0 +1,19 @@
+{
+  "jobId": "structure-servant.galatea.berserker.005",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.galatea.berserker.005",
+    "name": "【作品】",
+    "cardType": "servant_skill",
+    "timing": [],
+    "conditions": [],
+    "targets": [],
+    "effects": [],
+    "duration": null,
+    "visibility": "public",
+    "tags": ["Berserker", "artwork"],
+    "ambiguities": []
+  },
+  "parseNotes": ["【作品】标记卡"]
+}

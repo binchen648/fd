@@ -1,0 +1,37 @@
+{
+  "jobId": "vision-event-synergy-001",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "event",
+    "subtypeGuess": "synergy",
+    "familyConfidence": 0.9
+  },
+  "text": {
+    "cardName": "协同",
+    "rawText": "于此战场的玩家，其所有攻击若至少有一种属性相同，则合计威力+4。",
+    "normalizedText": "于此战场的玩家，其所有攻击若至少有一种属性相同，则合计威力+4。"
+  },
+  "fields": {
+    "code": "2",
+    "costMarker": "2",
+    "powerMarker": null,
+    "numericSlots": [
+      2
+    ],
+    "iconTags": [],
+    "rarity": null,
+    "classTag": null
+  },
+  "blocks": [
+    "2",
+    "协同",
+    "于此战场的玩家，其所有攻击若至少有一种属性相同，则合计威力+4。"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

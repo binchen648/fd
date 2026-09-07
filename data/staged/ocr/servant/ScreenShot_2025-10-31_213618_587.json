@@ -1,0 +1,48 @@
+{
+  "jobId": "vision-servant.盖鸟斯.尤利乌斯.恺撒.024",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "tactic",
+    "subtypeGuess": "passive",
+    "familyConfidence": 0.9
+  },
+  "text": {
+    "cardName": "煽动",
+    "rawText": "力量\n敏捷\n魔术\n宝具\n煽动\n4\n4\n权计—被动：每枚【煽动】标记令拥有者+1合计威力。回合开始时，若游戏内的【煽动】标记数≥12枚，切换此牌。此牌需追加打出且不会被局势牌禁止打出。行动阶段：与你位于同一战场的其他玩家各获得1枚【煽动】标记。",
+    "normalizedText": "力量\n敏捷\n魔术\n宝具\n煽动\n4\n4\n权计—被动：每枚【煽动】标记令拥有者+1合计威力。回合开始时，若游戏内的【煽动】标记数≥12枚，切换此牌。此牌需追加打出且不会被局势牌禁止打出。行动阶段：与你位于同一战场的其他玩家各获得1枚【煽动】标记。"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": "4",
+    "powerMarker": "4",
+    "numericSlots": [
+      4,
+      4
+    ],
+    "iconTags": [
+      "力量",
+      "敏捷",
+      "魔术",
+      "宝具"
+    ],
+    "rarity": "",
+    "classTag": ""
+  },
+  "blocks": [
+    "力量",
+    "敏捷",
+    "魔术",
+    "宝具",
+    "煽动",
+    "4",
+    "4",
+    "权计—被动：每枚【煽动】标记令拥有者+1合计威力。回合开始时，若游戏内的【煽动】标记数≥12枚，切换此牌。此牌需追加打出且不会被局势牌禁止打出。行动阶段：与你位于同一战场的其他玩家各获得1枚【煽动】标记。"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

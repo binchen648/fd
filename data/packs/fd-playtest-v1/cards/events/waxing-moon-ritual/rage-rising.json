@@ -1,0 +1,19 @@
+{
+  "id": "event.waxing_moon_ritual.rage_rising",
+  "name": "怒发天升",
+  "cardType": "event",
+  "printedReward": 3,
+  "applicableLocations": ["deep_mountain", "new_capital"],
+  "printedText": "以移动进入此战场的唯一获胜玩家可获得无主从者【库丘林】。\n以移动进入此战场的玩家于此获得5点合计威力。",
+  "timing": ["action", "after_battle"],
+  "interactions": [
+    { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["player_moves_into_this_battlefield"] },
+    { "kind": "triggered", "visibility": "public", "optional": true, "responseTo": ["unique_winner_entered_by_movement"] }
+  ],
+  "effects": [
+    { "type": "gain_total_power", "amount": 5, "recipient": "player_who_moved_into_this_battlefield" },
+    { "type": "grant_masterless_servant", "servantName": "库丘林", "recipient": "unique_winner_who_moved_into_this_battlefield", "optional": true }
+  ],
+  "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Movement-entry winner tracking and masterless servant ownership are not yet automated." },
+  "source": { "htmPath": "chm-extract/盈月之仪.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211232_480.png", "imageIndex": 7, "reviewedAgainstImage": true }
+}

@@ -1,0 +1,667 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.artoria-alt",
+  "aliases": [
+    "servant.artoria-alter"
+  ],
+  "name": "阿尔托莉雅·潘德拉贡 (Alter)",
+  "class": "Saber",
+  "canonicalIdSource": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json",
+  "authoringStatus": "draft_structured_from_chm_skill_pack",
+  "sourcePolicy": {
+    "priority": [
+      "original_card_image",
+      "chm_association",
+      "main_repo_legacy_content",
+      "ocr_or_manual_draft"
+    ]
+  },
+  "sources": [
+    {
+      "id": "chm_page",
+      "type": "chm_html",
+      "path": "D:/fd/chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
+      "priority": "chm_association",
+      "pageVersion": {
+        "generator": "WinCHM",
+        "charset": "gb2312",
+        "title": "阿尔托莉雅·潘德拉贡[Alter",
+        "imageOrder": [
+          "D:/fd/chm-extract/图包/ScreenShot_2025-10-31_184732_494.png",
+          "D:/fd/chm-extract/图包/ScreenShot_2025-10-31_184743_358.png",
+          "D:/fd/chm-extract/图包/ScreenShot_2025-10-31_183120_208.png",
+          "D:/fd/chm-extract/图包/ScreenShot_2025-10-31_184737_374.png"
+        ],
+        "footer": "Copyright 2019"
+      }
+    },
+    {
+      "id": "overview_image",
+      "type": "original_card_image",
+      "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-31_184732_494.png",
+      "priority": "original_card_image"
+    },
+    {
+      "id": "main_repo_legacy",
+      "type": "main_repo_legacy_content",
+      "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json",
+      "priority": "main_repo_legacy_content",
+      "locator": "servant.artoria-alt/阿尔托莉雅·潘德拉贡 (Alter)"
+    }
+  ],
+  "publicInformation": {
+    "overviewImage": "D:/fd/chm-extract/图包/ScreenShot_2025-10-31_184732_494.png",
+    "classIcon": "Saber",
+    "deckSummaryFromOverview": {
+      "strength": [
+        2,
+        3,
+        4,
+        5,
+        5,
+        5
+      ],
+      "agility": [
+        2
+      ],
+      "magic": [
+        2,
+        2,
+        3
+      ],
+      "special": [
+        "Luck",
+        "Surveil"
+      ]
+    }
+  },
+  "deck": [
+    {
+      "cardId": "card.cardb2",
+      "count": 1,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.cardb3",
+      "count": 1,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.cardb4",
+      "count": 1,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.cardb5",
+      "count": 3,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq2",
+      "count": 1,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.carda2",
+      "count": 2,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.carda3",
+      "count": 1,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.cardluck",
+      "count": 1,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.cardsurveil",
+      "count": 1,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    }
+  ],
+  "cards": [
+    {
+      "id": "servant.artoria-alt.skill.sc-artoria-alt-1",
+      "aliases": [
+        "servant.artoria-alter.skill.sc-artoria-alter-3",
+        "sc_artoria_alt_1"
+      ],
+      "legacyId": "sc_artoria_alt_1",
+      "name": "誓约胜利之剑",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.artoria-alt"
+      },
+      "printedText": "【真名解放】\n局势牌无法阻止你打出此牌。\n风王铁锤-行动阶段：花费4点魔力，此牌每被连续打出一回合，便获得+3威力。",
+      "cardFace": {
+        "typeLabel": "力量/宝具",
+        "attributes": [
+          "力量",
+          "宝具"
+        ],
+        "cost": 2,
+        "basePower": 6,
+        "requirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-artoria-alt-1.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": [
+            "真名解放"
+          ],
+          "activation": {
+            "trigger": "on_use_declared"
+          },
+          "effects": [
+            {
+              "type": "reveal_information",
+              "scope": "servant_package",
+              "subject": "controller.servant"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-artoria-alt-1.ignore-situation-restrictions",
+          "kind": "passive",
+          "printedClause": "局势牌无法阻止你打出此牌。",
+          "activation": {
+            "trigger": "when_play_requirements_checked"
+          },
+          "ruleModifiers": [
+            {
+              "id": "ignore_situation_restrictions_for_this_card",
+              "printedClause": "局势牌无法阻止你打出此牌。",
+              "type": "exception",
+              "operation": "ignore",
+              "rule": "situation_restrictions",
+              "scope": {
+                "subject": "controller",
+                "object": "source_card"
+              },
+              "priority": {
+                "tier": "card_text",
+                "specificity": "explicit_exception"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-artoria-alt-1.chain-of-wind-king",
+          "kind": "phase_action",
+          "printedClause": "风王铁锤-行动阶段：花费4点魔力，此牌每被连续打出一回合，便获得+3威力。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "cost": [
+            {
+              "type": "pay_mana",
+              "amount": 4
+            }
+          ],
+          "effects": [
+            {
+              "type": "create_modifier",
+              "modifier": {
+                "type": "power_bonus",
+                "target": "this_card",
+                "amount": {
+                  "formula": {
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "var": "consecutive_play_rounds"
+                      },
+                      3
+                    ]
+                  }
+                }
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-31_184737_374.png",
+          "imageIndex": 3,
+          "htmPath": "D:/fd/chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
+          "reviewStatus": "reviewed_against_original_image"
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
+          "imageIndex": 3
+        },
+        {
+          "type": "main_repo_legacy_content",
+          "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json",
+          "line": 14611
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "implementationStatus": "complete",
+        "canonicalOrderStatus": "matched_main_repo_legacy_content"
+      },
+      "ambiguities": []
+    },
+    {
+      "id": "servant.artoria-alt.skill.sc-artoria-alt-2",
+      "aliases": [
+        "servant.artoria-alter.skill.sc-artoria-alter-1",
+        "sc_artoria_alt_2"
+      ],
+      "legacyId": "sc_artoria_alt_2",
+      "name": "黑化诅咒",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.artoria-alt"
+      },
+      "printedText": "你拥有的魔力少于8点也可以打出此牌。\n安哥拉曼纽的拥抱-残留：当你使用宝具时，关闭此牌。\n若你的魔力少于8点，与你位于同一战场的对手无法使用宝具。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 0,
+        "basePower": 1,
+        "requirements": [
+          {
+            "type": "min_mana",
+            "value": 0,
+            "source": "card_text_override"
+          }
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sc-artoria-alt-2.low-mana-play-override",
+          "kind": "passive",
+          "printedClause": "你拥有的魔力少于8点也可以打出此牌。",
+          "activation": {
+            "trigger": "when_play_requirements_checked"
+          },
+          "ruleModifiers": [
+            {
+              "id": "ignore_skill_zone_mana_gate_for_this_card",
+              "printedClause": "你拥有的魔力少于8点也可以打出此牌。",
+              "type": "exception",
+              "operation": "ignore",
+              "rule": "skill_zone_mana_at_least",
+              "scope": {
+                "subject": "controller",
+                "object": "source_card"
+              },
+              "priority": {
+                "tier": "card_text",
+                "specificity": "explicit_exception"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-artoria-alt-2.angra-mainyu-embrace",
+          "kind": "residual",
+          "printedClause": "安哥拉曼纽的拥抱-残留：当你使用宝具时，关闭此牌。",
+          "activation": {
+            "trigger": "on_card_played",
+            "opens": "immediate"
+          },
+          "lifecycle": {
+            "starts": "immediate",
+            "duration": "while_card_active",
+            "cleanup": "when_card_leaves_active_area"
+          },
+          "conditions": [
+            {
+              "type": "source_card_in_zone",
+              "zone": "field"
+            },
+            {
+              "type": "event_played_card_has_attribute",
+              "attribute": "宝具"
+            }
+          ],
+          "effects": [
+            {
+              "type": "close_source_card"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-artoria-alt-2.forbid-noble-phantasm-when-low-mana",
+          "kind": "residual",
+          "printedClause": "若你的魔力少于8点，与你位于同一战场的对手无法使用宝具。",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [
+            {
+              "type": "controller_mana_at_least",
+              "value": 8,
+              "negated": true
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "forbid_engaged_opponent_noble_phantasm",
+              "printedClause": "若你的魔力少于8点，与你位于同一战场的对手无法使用宝具。",
+              "type": "restriction",
+              "operation": "forbid",
+              "rule": "play_card_attribute",
+              "scope": {
+                "subject": "engaged_opponents_same_battlefield",
+                "attribute": "宝具"
+              },
+              "lifecycle": {
+                "duration": "while_active"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-31_184743_358.png",
+          "imageIndex": 1,
+          "htmPath": "D:/fd/chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
+          "reviewStatus": "reviewed_against_original_image"
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
+          "imageIndex": 1
+        },
+        {
+          "type": "main_repo_legacy_content",
+          "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json",
+          "line": 14645
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "implementationStatus": "complete",
+        "canonicalOrderStatus": "matched_main_repo_legacy_content"
+      },
+      "ambiguities": [],
+      "requiresEightMana": false
+    },
+    {
+      "id": "servant.artoria-alt.skill.sc-artoria-alt-3",
+      "aliases": [
+        "servant.artoria-alter.skill.sc-artoria-alter-2",
+        "sc_artoria_alt_3"
+      ],
+      "legacyId": "sc_artoria_alt_3",
+      "name": "对魔力（saber class）",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.artoria-alt"
+      },
+      "printedText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 3,
+        "basePower": 3,
+        "requirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-artoria-alt-3.noble-bloom",
+          "kind": "optional_trigger",
+          "printedClause": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。",
+          "activation": {
+            "phase": "combat",
+            "trigger": "after_battle_result_determined"
+          },
+          "responseWindow": {
+            "opens": "after_battle_result_determined"
+          },
+          "conditions": [
+            {
+              "type": "controller_played_highest_cost_noble_phantasm_in_battle_this_round"
+            }
+          ],
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "player": "controller",
+              "amount": 1
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-artoria-alt-3.noble-bloom-extra-vp",
+          "kind": "optional_trigger",
+          "printedClause": "若其消耗≥4，你额外获得1点战果。",
+          "activation": {
+            "phase": "combat",
+            "trigger": "after_battle_result_determined"
+          },
+          "responseWindow": {
+            "opens": "after_battle_result_determined"
+          },
+          "conditions": [
+            {
+              "type": "controller_played_highest_cost_noble_phantasm_in_battle_this_round"
+            },
+            {
+              "type": "highest_cost_noble_phantasm_cost_at_least",
+              "value": 4
+            }
+          ],
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "player": "controller",
+              "amount": 1
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-artoria-alt-3.magic-resistance",
+          "kind": "phase_action",
+          "printedClause": "魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "ruleModifiers": [
+            {
+              "id": "set_engaged_opponent_magic_attack_power_zero",
+              "printedClause": "魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+              "type": "combat_power_modifier",
+              "operation": "set",
+              "rule": "attack.currentPower",
+              "scope": {
+                "controller": "engaged_opponents_same_battlefield",
+                "object": "attack_card",
+                "constraints": [
+                  {
+                    "type": "has_attribute",
+                    "attribute": "魔术"
+                  }
+                ]
+              },
+              "value": 0,
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-31_183120_208.png",
+          "imageIndex": 2,
+          "htmPath": "D:/fd/chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
+          "reviewStatus": "reviewed_against_original_image"
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
+          "imageIndex": 2
+        },
+        {
+          "type": "main_repo_legacy_content",
+          "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json",
+          "line": 14677
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "implementationStatus": "complete",
+        "canonicalOrderStatus": "matched_main_repo_legacy_content"
+      },
+      "ambiguities": [
+        {
+          "id": "artoria-alt-noble-bloom-optional-window",
+          "field": "abilities[0].kind",
+          "note": "牌文为'被动/战斗阶段'且奖励文本没有'可以'，但 main repo legacy activation.kind 为 optional-trigger；当前保留未实现，不开放自动奖励。"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "htmPath": "D:/fd/chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
+    "htmReadCommandRequirement": "PowerShell Get-Content -LiteralPath",
+    "htmImageOrderStatus": "reviewed_against_chm",
+    "overviewImageStatus": "reviewed_against_original_image",
+    "skillImageMappingStatus": "reviewed_against_original_images",
+    "canonicalIdStatus": "matched_main_repo_legacy_content",
+    "canonicalSkillOrderStatus": "matched_main_repo_legacy_content",
+    "deckStatus": "matched_overview_image_and_main_repo_legacy_content",
+    "christmasAlterExcluded": true,
+    "derivedCards": []
+  },
+  "adapterNotes": [
+    "主键已从本地旧 ID servant.artoria-alter 改为主仓库 canonical ID servant.artoria-alt；旧 ID 只保留在 aliases。",
+    "HTM 图片顺序为概览、黑化诅咒、对魔力、誓约胜利之剑；主仓库 canonical 技能顺序为誓约胜利之剑、黑化诅咒、对魔力（saber class），两类顺序分别保留。",
+    "当前没有从该 HTM 识别到派生牌。",
+    "誓约胜利之剑需要局势牌限制忽略、连续打出回合追踪和动态威力公式。",
+    "黑化诅咒需要技能区 8 魔力门槛例外、宝具使用识别、关闭来源牌、低魔力条件和交战对手宝具禁止机制。",
+    "对魔力（saber class）需要宝具消耗历史、本战斗最高消耗判断、额外战果阈值和对手魔术攻击威力设置机制。"
+  ],
+  "userConfirmedInterpretations": [
+    {
+      "id": "artoria-alt-canonical-id",
+      "field": "id",
+      "interpretation": "主仓库 canonical ID 为 servant.artoria-alt；servant.artoria-alter 仅作为 alias 保留。",
+      "source": "coordinator_check_against_main_repo_legacy_snapshot"
+    },
+    {
+      "id": "artoria-alt-skill-order",
+      "field": "cards",
+      "interpretation": "技能顺序与 ID 为 sc-artoria-alt-1 誓约胜利之剑、sc-artoria-alt-2 黑化诅咒、sc-artoria-alt-3 对魔力（saber class）。",
+      "source": "coordinator_check_against_main_repo_legacy_snapshot"
+    }
+  ],
+  "resolvedQuestions": [
+    {
+      "id": "artoria-alt-canonical-id",
+      "question": "该从者主键应使用 servant.artoria-alter 还是 servant.artoria-alt？",
+      "answer": "使用 servant.artoria-alt；旧 ID 只作为 aliases 保留。",
+      "source": "coordinator_check_against_main_repo_legacy_snapshot"
+    },
+    {
+      "id": "artoria-alt-skill-order",
+      "question": "三张技能的 canonical 顺序和 ID 如何确定？",
+      "answer": "按主仓库 legacy-content.json：1 誓约胜利之剑、2 黑化诅咒、3 对魔力（saber class）。",
+      "source": "coordinator_check_against_main_repo_legacy_snapshot"
+    },
+    {
+      "id": "artoria-alt-noble-bloom-battle-scope",
+      "question": "宝具绽放的'你战斗中魔力消耗最高的宝具攻击'是否严格限定当前战场/当前战斗，还是读取本回合所有战斗记录？",
+      "answer": "根据规则，'你战斗中魔力消耗最高的★宝具攻击' = 本回合打出的所有带【宝具】属性的卡牌中，魔力消耗最高的那张。",
+      "source": "FD-Game-Rules-Final.md"
+    },
+    {
+      "id": "artoria-alt-residual-close-source",
+      "question": "黑化诅咒的'当你使用宝具时，关闭此牌'是否包括暗置使用的宝具，还是仅包括明置/已验证为宝具的使用？",
+      "answer": "根据§11.6，暗置打出属于使用，因此'当你使用宝具时'包括暗置使用的宝具。",
+      "source": "FD-Game-Rules-Final.md §11.6"
+    }
+  ],
+  "openQuestions": []
+}

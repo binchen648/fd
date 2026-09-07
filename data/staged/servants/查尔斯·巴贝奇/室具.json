@@ -1,0 +1,24 @@
+{
+  "card_name": "室具",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "室具\n绚烂的灰烬世界\n[真名解放 ]\n被动 前哨阶段: 花费&点魔力,抽8+1张牌并将其中任意\n张基础牌怍为(齿轮」明置于 (蒸汽车间]上。\n被动[行动阶段: 花费2点魔力,重新组装 (齿轮] (前后\n数量不变 )或立即使用一次你已组装齿轮的行动阶段能力",
+  "ocr_text_draft": "室具 绚烂的灰烬世界 [真名解放 ] 被动 前哨阶段: 花费&点魔力,抽8+1张牌并将其中任意 张基础牌怍为(齿轮」明置于 (蒸汽车间]上。 被动[行动阶段: 花费2点魔力,重新组装 (齿轮] (前后 数量不变 )或立即使用一次你已组装齿轮的行动阶段能力",
+  "rules_text": "绚烂的灰烬世界\n真名解放\n被动 前哨阶段: 花费&点魔力,抽8+1张牌并将其中任意\n张基础牌怍为(齿轮」明置于 (蒸汽车间 上。\n被动 行动阶段: 花费2点魔力,重新组装 (齿轮 (前后\n数量不变 )或立即使用一次你已组装齿轮的行动阶段能力",
+  "effect_text": "绚烂的灰烬世界\n真名解放\n被动 前哨阶段: 花费&点魔力,抽8+1张牌并将其中任意\n张基础牌怍为(齿轮」明置于 (蒸汽车间 上。\n被动 行动阶段: 花费2点魔力,重新组装 (齿轮 (前后\n数量不变 )或立即使用一次你已组装齿轮的行动阶段能力",
+  "effect_explanation": "",
+  "cost": null,
+  "power": null,
+  "displayed_cost_power_confirmed": false,
+  "tags": [],
+  "attributes": [],
+  "confidence": 0.4,
+  "needs_human_review": true,
+  "uncertain_fields": [
+    "mana_cost",
+    "attack_power"
+  ],
+  "review_notes": [
+    "Uncertain field: mana_cost",
+    "Uncertain field: attack_power"
+  ]
+}

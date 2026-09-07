@@ -1,0 +1,437 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.tomoe",
+  "aliases": [
+    "servant.bae"
+  ],
+  "name": "巴御前",
+  "class": "Archer",
+  "canonicalIdSource": "coordinator_verified_main_repo_snapshot",
+  "authoringStatus": "draft_structured_from_chm_skill_pack",
+  "sourcePolicy": {
+    "priority": [
+      "original_card_image",
+      "chm_association",
+      "main_repo_legacy_content",
+      "ocr_or_manual_draft"
+    ]
+  },
+  "sources": [
+    {
+      "id": "chm_page",
+      "type": "chm_html",
+      "path": "D:/fd/chm-extract/巴御前.htm",
+      "priority": "chm_association"
+    },
+    {
+      "id": "overview_image",
+      "type": "original_card_image",
+      "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
+      "priority": "original_card_image"
+    }
+  ],
+  "publicInformation": {
+    "sourceImage": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
+    "deckSummary": {
+      "strength": [
+        3,
+        4,
+        5,
+        5
+      ],
+      "agility": [
+        2,
+        2,
+        3,
+        3,
+        4
+      ],
+      "special": [],
+      "utility": [
+        "Luck",
+        "Surveil",
+        "Preparation"
+      ]
+    }
+  },
+  "deck": [
+    {
+      "cardId": "card.cardb3",
+      "count": 1,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.cardb4",
+      "count": 1,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.cardb5",
+      "count": 2,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq2",
+      "count": 2,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq3",
+      "count": 2,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq4",
+      "count": 1,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.cardluck",
+      "count": 1,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.cardsurveil",
+      "count": 1,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    },
+    {
+      "cardId": "card.cardpreparation",
+      "count": 1,
+      "source": "deckSummaryFromOverview_2026-09-06"
+    }
+  ],
+  "cards": [
+    {
+      "id": "servant.tomoe.skill.sc-tomoe-1",
+      "aliases": [
+        "servant.bae.skill.sc-bae-2"
+      ],
+      "name": "单独行动（Archer Class）",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.tomoe"
+      },
+      "printedText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 0,
+        "basePower": 6
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-tomoe-1.independent-action",
+          "kind": "phase_action",
+          "printedClause": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "controller_seat_in_first_half"
+            }
+          ],
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "player": "controller",
+              "amount": 3
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-tomoe-1.penalty-on-defeat",
+          "kind": "forced_trigger",
+          "printedClause": "如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+          "activation": {
+            "trigger": "after_controller_loses_battle"
+          },
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "player": "controller",
+              "amount": -5
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "unpreventable_vp_loss",
+              "printedClause": "此效果不能被任何方法阻止。",
+              "operation": "ignore",
+              "rule": "effect_prevention",
+              "scope": {
+                "object": "this_effect"
+              },
+              "priority": {
+                "tier": "explicit_exception"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_192733_130.png",
+          "imageIndexInChmPage": 3,
+          "imageIndex": 2,
+          "htmPath": "D:/fd/chm-extract/巴御前.htm",
+          "reviewStatus": "reviewed_against_original_image"
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/巴御前.htm",
+          "imageIndexInChmPage": 3
+        }
+      ],
+      "verification": {
+        "pageVersionStatus": "reviewed_against_chm_html_2026-04-08",
+        "printedTextStatus": "reviewed_against_original_image",
+        "imageAssociationStatus": "confirmed_from_chm_image_order",
+        "implementationStatus": "complete"
+      },
+      "ambiguities": []
+    },
+    {
+      "id": "servant.tomoe.skill.sc-tomoe-2",
+      "aliases": [
+        "servant.bae.skill.sc-bae-1"
+      ],
+      "name": "鬼种之魔",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.tomoe"
+      },
+      "printedText": "无间业火-行动阶段：下个回合，所有对手部署于此战场前可以花费至多5点战果，所有基础地利数高于其支付战果数的地利位置视为已被占据，无法部署。\n战斗阶段：将你的地利翻倍。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "attributes": [
+          "力量"
+        ],
+        "cost": 3,
+        "basePower": 5
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-tomoe-2.inferno-fire",
+          "kind": "phase_action",
+          "printedClause": "无间业火-行动阶段：下个回合，所有对手部署于此战场前可以花费至多5点战果，所有基础地利数高于其支付战果数的地利位置视为已被占据，无法部署。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "effects": [
+            {
+              "type": "create_status",
+              "statusId": "inferno_fire",
+              "duration": "next_round",
+              "scope": "opponents_deploying_to_this_battlefield"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-tomoe-2.double-terrain",
+          "kind": "phase_action",
+          "printedClause": "战斗阶段：将你的地利翻倍。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "effects": [
+            {
+              "type": "create_modifier",
+              "modifier": {
+                "type": "terrain_multiplier",
+                "target": "controller",
+                "value": 2
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_160032_219.png",
+          "imageIndexInChmPage": 2,
+          "imageIndex": 1,
+          "htmPath": "D:/fd/chm-extract/巴御前.htm",
+          "reviewStatus": "reviewed_against_original_image"
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/巴御前.htm",
+          "imageIndexInChmPage": 2
+        }
+      ],
+      "verification": {
+        "pageVersionStatus": "reviewed_against_chm_html_2026-04-08",
+        "printedTextStatus": "reviewed_against_original_image",
+        "imageAssociationStatus": "confirmed_from_chm_image_order",
+        "implementationStatus": "complete"
+      },
+      "ambiguities": [
+        {
+          "id": "tomoe-inferno-fire-scope",
+          "question": "无间业火的'此战场'应锁定发动时巴御前所在战场；若发动后巴御前离开或该战场状态变化，是否仍按原战场持续到下个回合？",
+          "status": "needs_rules_confirmation"
+        }
+      ]
+    },
+    {
+      "id": "servant.tomoe.skill.sc-tomoe-3",
+      "aliases": [
+        "servant.bae.skill.sc-bae-3"
+      ],
+      "name": "真言·圣观世音菩萨",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.tomoe"
+      },
+      "printedText": "【真名解放】\n炽焰之雨-战斗阶段：令同一战场所有未拥有地利的对手-5合计威力。",
+      "cardFace": {
+        "typeLabel": "敏捷",
+        "attributes": [
+          "敏捷",
+          "宝具"
+        ],
+        "cost": 4,
+        "basePower": 9
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-tomoe-3.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": [
+            "真名解放"
+          ],
+          "activation": {
+            "trigger": "on_use_declared"
+          },
+          "effects": [
+            {
+              "type": "reveal_information",
+              "scope": "servant_package",
+              "subject": "controller.servant"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-tomoe-3.rain-of-fire",
+          "kind": "phase_action",
+          "printedClause": "炽焰之雨-战斗阶段：令同一战场所有未拥有地利的对手-5合计威力。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "effects": [
+            {
+              "type": "reduce_opponents_power",
+              "amount": 5,
+              "condition": "opponent_has_no_terrain",
+              "scope": "same_battlefield"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_160027_891.png",
+          "imageIndexInChmPage": 4,
+          "imageIndex": 3,
+          "htmPath": "D:/fd/chm-extract/巴御前.htm",
+          "reviewStatus": "reviewed_against_original_image"
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/巴御前.htm",
+          "imageIndex": 3
+        }
+      ],
+      "verification": {
+        "pageVersionStatus": "reviewed_against_chm_html_2026-04-08",
+        "printedTextStatus": "reviewed_against_original_image",
+        "imageAssociationStatus": "confirmed_from_chm_image_order",
+        "implementationStatus": "complete"
+      },
+      "ambiguities": []
+    }
+  ],
+  "adapterNotes": [
+    "巴御前 canonical ID 经协调者核对为 servant.tomoe；旧 servant.bae 仅作为 alias 保留。",
+    "HTM 页面 D:/fd/chm-extract/巴御前.htm 的图片顺序为概览、鬼种之魔、单独行动、真言·圣观世音菩萨；结构化技能顺序按主仓库 canonical sc-tomoe-1/2/3 排列。",
+    "巴御前(Saber).htm 不在本切片范围，未导入其图片或文本。",
+    "单独行动涉及行动顺位前半判断、战斗失败触发和不可阻止效果。",
+    "鬼种之魔涉及下回合部署前花费战果、地利位占据和地利翻倍机制。",
+    "真言·圣观世音菩萨只有真名解放揭示节点可通过现有解释器自动执行；炽焰之雨仍需专属处理。"
+  ],
+  "resolvedQuestions": [
+    {
+      "id": "tomoe-inferno-fire-targeting",
+      "resolution": "根据上下文，'所有对手' = 同一战场的所有其他玩家（不包括自己）。"
+    }
+  ],
+  "openQuestions": []
+}

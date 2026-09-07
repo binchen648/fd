@@ -1,0 +1,161 @@
+[
+  {
+    "id": "servant.galatea.overview",
+    "name": "伽拉忒亚",
+    "cardType": "servant_overview",
+    "capability": { "status": "FULL" },
+    "source": { "htmPath": "chm-extract/伽拉忒亚.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_113727_595.png", "imageIndex": 0, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.galatea.skill.pygmalions_love",
+    "name": "皮格马利翁之爱",
+    "cardType": "servant_skill",
+    "printedText": "雕像少女-被动：此牌展示后，你无法暗置打出攻击。\n（你可以于常规出牌追加打出至多3张暗置攻击。）\n永恒不变-被动/行动阶段：花费X点魔力，【镌刻】X+1处你所在地点的地利或工坊位置并抽X+1张牌。其他玩家以移动离开被【镌刻】的位置时，失去1点魔力。",
+    "timing": ["action"],
+    "interactions": [
+      { "kind": "automatic", "visibility": "public" },
+      {
+        "kind": "activated",
+        "visibility": "public",
+        "optional": true,
+        "targetTypes": ["terrain_slot", "workshop_slot"]
+      },
+      {
+        "kind": "triggered",
+        "visibility": "public",
+        "optional": false,
+        "responseTo": ["player_moves_away_from_engraved_position"]
+      }
+    ],
+    "effects": [
+      { "type": "forbid_face_down_attack_plays", "condition": "this_card_revealed" },
+      { "type": "allow_additional_face_down_attack_plays", "maxCards": 3, "timingLabel": "常规出牌" },
+      { "type": "engrave_positions", "countFormula": "X + 1", "costMana": "X", "targetTypes": ["terrain_slot", "workshop_slot"] },
+      { "type": "draw_cards", "amountFormula": "X + 1", "condition": "after_engraving_positions" },
+      { "type": "lose_mana", "amount": 1, "recipient": "other_player_leaving_engraved_position_by_movement" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Sculpture placement and departure penalty are not yet implemented." },
+    "source": { "htmPath": "chm-extract/伽拉忒亚.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_113733_051.png", "imageIndex": 1, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.galatea.skill.aphrodites_blessing",
+    "name": "阿佛洛狄忒的恩惠",
+    "cardType": "servant_skill",
+    "printedText": "雕像少女-被动：此牌展示后，你无法以御主能力外的方式将弃牌堆中的牌洗回牌库。（你获得2点合计威力并于回合结束时将弃牌堆洗回牌库。）\n挣脱桎梏-被动/行动阶段：花费X点魔力，切换X+1项雕像少女中的“雕像”为“人”直至回合结束。",
+    "timing": ["action", "round_end"],
+    "interactions": [
+      { "kind": "automatic", "visibility": "public" },
+      {
+        "kind": "activated",
+        "visibility": "public",
+        "optional": true,
+        "targetTypes": ["galatea_statue_state"]
+      }
+    ],
+    "effects": [
+      { "type": "restrict_discard_pile_shuffle_to_master_abilities", "condition": "this_card_revealed" },
+      { "type": "gain_total_power", "amount": 2, "condition": "discard_pile_shuffle_restricted" },
+      { "type": "shuffle_discard_pile_into_deck", "timingLabel": "回合结束", "condition": "discard_pile_shuffle_restricted" },
+      { "type": "set_galatea_statue_state", "from": "statue", "to": "human", "countFormula": "X + 1", "costMana": "X", "duration": "until_round_end" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Discard restriction and sculpture replacement are not yet implemented." },
+    "source": { "htmPath": "chm-extract/伽拉忒亚.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_113744_227.png", "imageIndex": 2, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.galatea.skill.chisel_of_the_ideal_king",
+    "name": "雕刻理想的王之凿",
+    "cardType": "servant_skill",
+    "traits": ["noble_phantasm"],
+    "printedText": "雕像少女-被动：此牌展示后，你本回合常规出牌的攻击威力不能高于其印刷威力。（受到双倍的力量修正。）\n被动/行动阶段：花费X点魔力，若你位于被【镌刻】的位置，令其失去【镌刻】后选择并展示X+1张你攻击区的非技能牌，将一张印刷威力不高于这些牌之和的【作品】从游戏外加入攻击后，把这些非技能牌移除游戏。",
+    "timing": ["action"],
+    "interactions": [
+      { "kind": "automatic", "visibility": "public" },
+      {
+        "kind": "activated",
+        "visibility": "public",
+        "optional": true,
+        "targetTypes": ["attack_zone_card", "work_card"]
+      }
+    ],
+    "effects": [
+      { "type": "cap_regular_play_attack_power_at_printed_value", "condition": "this_card_revealed" },
+      { "type": "double_strength_modifiers", "condition": "regular_play_attack_power_cap_active" },
+      { "type": "remove_engraving_at_current_position", "costMana": "X", "condition": "you_are_at_engraved_position" },
+      { "type": "reveal_non_skill_attack_zone_cards", "countFormula": "X + 1" },
+      { "type": "add_work_card_from_outside_game_to_attack", "maxPrintedValueFormula": "sum_revealed_printed_values" },
+      { "type": "remove_revealed_non_skill_cards_from_game", "timingLabel": "after_adding_work_card_to_attack" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Attack-zone reveal and end-of-round removal are not yet implemented." },
+    "source": { "htmPath": "chm-extract/伽拉忒亚.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_113738_139.png", "imageIndex": 3, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.galatea.work.flower",
+    "name": "花朵",
+    "cardType": "generated",
+    "attributes": ["strength", "magecraft"],
+    "attribute": "strength",
+    "printedValue": 0,
+    "printedCost": 5,
+    "printedText": "【作品】",
+    "traits": ["work"],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Generated work-card lifecycle is not yet implemented." },
+    "source": { "htmPath": "chm-extract/伽拉忒亚.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_113808_834.png", "imageIndex": 4, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.galatea.work.bird",
+    "name": "飞鸟",
+    "cardType": "generated",
+    "attributes": ["magecraft"],
+    "attribute": "magecraft",
+    "printedValue": 4,
+    "printedCost": 7,
+    "printedText": "【作品】\n谨慎-当你以常规出牌以外的方式激活或令此牌入场后，失去2点魔力。\n羽翼-打出时：此牌获得+2威力。",
+    "timing": ["action"],
+    "interactions": [{ "kind": "triggered", "visibility": "public", "optional": false }],
+    "effects": [
+      { "type": "lose_mana", "amount": 2, "condition": "activated_or_entered_by_non_regular_play" },
+      { "type": "gain_attack_power", "amount": 2, "timingLabel": "羽翼-打出时" }
+    ],
+    "traits": ["work"],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Generated work-card lifecycle is not yet implemented." },
+    "source": { "htmPath": "chm-extract/伽拉忒亚.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_113803_708.png", "imageIndex": 5, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.galatea.work.blessing",
+    "name": "祝福",
+    "cardType": "generated",
+    "attributes": ["strength"],
+    "attribute": "strength",
+    "printedValue": 6,
+    "printedCost": 12,
+    "printedText": "【真名解放】【作品】\n谨慎-当你以常规出牌以外的方式激活或令此牌入场后，失去2点战果。",
+    "timing": ["action"],
+    "interactions": [{ "kind": "triggered", "visibility": "public", "optional": false }],
+    "effects": [
+      { "type": "lose_battle_result", "amount": 2, "condition": "activated_or_entered_by_non_regular_play" }
+    ],
+    "traits": ["work", "noble_phantasm"],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Generated work-card lifecycle is not yet implemented." },
+    "source": { "htmPath": "chm-extract/伽拉忒亚.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_113756_322.png", "imageIndex": 6, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.galatea.work.life",
+    "name": "生命",
+    "cardType": "generated",
+    "attributes": ["strength", "magecraft"],
+    "attribute": "strength",
+    "printedValue": 10,
+    "printedCost": 18,
+    "printedText": "【真名解放】【作品】\n谨慎-当你以常规出牌以外的方式激活或令此牌入场后，失去2点魔力和2点战果。遮蔽-打出时：你本回合使用伽拉忒亚的技能牌的阶段能力时的魔力消耗减少共计至多10点。（此牌打出前的消耗改为令此牌打出时减少等量消耗）",
+    "timing": ["action"],
+    "interactions": [{ "kind": "triggered", "visibility": "public", "optional": false }],
+    "effects": [
+      { "type": "lose_mana", "amount": 2, "condition": "activated_or_entered_by_non_regular_play" },
+      { "type": "lose_battle_result", "amount": 2, "condition": "activated_or_entered_by_non_regular_play" },
+      { "type": "reduce_galatea_skill_stage_mana_costs", "maxTotalReduction": 10, "timingLabel": "遮蔽-打出时", "duration": "current_round" }
+    ],
+    "traits": ["work", "noble_phantasm"],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Generated work-card lifecycle is not yet implemented." },
+    "source": { "htmPath": "chm-extract/伽拉忒亚.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_113749_410.png", "imageIndex": 7, "reviewedAgainstImage": true }
+  }
+]

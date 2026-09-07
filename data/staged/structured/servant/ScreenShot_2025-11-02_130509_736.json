@@ -1,0 +1,26 @@
+{
+  "jobId": "structure-servant.oda_nobunaga.mob.004",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.oda_nobunaga.mob.004",
+    "name": "波旬变生",
+    "cardType": "servant_skill",
+    "timing": ["action", "battle"],
+    "conditions": [],
+    "targets": [],
+    "effects": [
+      { "type": "draw", "value": "2X" },
+      { "type": "place", "value": "hellfire" },
+      { "type": "defeat", "value": "all" }
+    ],
+    "duration": "turn",
+    "visibility": "public",
+    "tags": ["Avenger", "宝具", "Noble Phantasm"],
+    "ambiguities": []
+  },
+  "parseNotes": [
+    "【真名解放】神佛尽灭: 花费X点魔力(至多为5)，抽取2X张事件牌，将【地狱之火】放置于你所在的战场",
+    "战斗阶段：战力结算时，令所有合计威力低于你的交战对手【败北】"
+  ]
+}

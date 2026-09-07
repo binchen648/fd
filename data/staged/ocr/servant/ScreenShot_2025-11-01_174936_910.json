@@ -1,0 +1,45 @@
+{
+  "jobId": "vision-servant.玛尔达.010",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Noble Phantasm",
+    "subtypeGuess": "Power",
+    "familyConfidence": 0.8
+  },
+  "text": {
+    "cardName": "不识爱的悲哀之龙啊",
+    "rawText": "力量\n宝具\n不识爱的悲哀之龙啊\n【真名解放】\n利维坦之子，化为流星-战斗阶段：花费一枚【令咒】或【裁决者令咒】，【不识爱的悲哀之龙啊】获得+4威力且你的所有交战对手于下回合前哨阶段如若可能，必须部署于魔术工房。",
+    "normalizedText": "力量 宝具 不识爱的悲哀之龙啊 【真名解放】 利维坦之子，化为流星-战斗阶段：花费一枚【令咒】或【裁决者令咒】，【不识爱的悲哀之龙啊】获得+4威力且你的所有交战对手于下回合前哨阶段如若可能，必须部署于魔术工房。"
+  },
+  "fields": {
+    "code": "010",
+    "costMarker": "7",
+    "powerMarker": "10",
+    "numericSlots": [
+      7,
+      10
+    ],
+    "iconTags": [
+      "力量",
+      "宝具"
+    ],
+    "rarity": null,
+    "classTag": "Servant"
+  },
+  "blocks": [
+    "力量",
+    "宝具",
+    "不识爱的悲哀之龙啊",
+    "【真名解放】",
+    "利维坦之子，化为流星-战斗阶段：花费一枚【令咒】或【裁决者令咒】，【不识爱的悲哀之龙啊】获得+4威力且你的所有交战对手于下回合前哨阶段如若可能，必须部署于魔术工房。"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "sourcePage": "D:\\fd\\chm-extract\\玛尔达.htm",
+    "sourceSet": "servant",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

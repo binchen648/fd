@@ -1,0 +1,19 @@
+{
+  "jobId": "structure-servant.oda_nobunaga.mob.001",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.oda_nobunaga.mob.001",
+    "name": "织田信长",
+    "cardType": "servant_attack",
+    "timing": [],
+    "conditions": [],
+    "targets": [],
+    "effects": [],
+    "duration": null,
+    "visibility": "public",
+    "tags": ["Avenger", "servant", "Preparation"],
+    "ambiguities": []
+  },
+  "parseNotes": ["Avenger class - 主卡"]
+}

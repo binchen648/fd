@@ -1,0 +1,24 @@
+{
+  "card_name": "皮格马利翁之爱",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "皮格马利翁之爱\n雕像少女-被动: 此牌展示后\n你无法暗置打出攻击。\n(你可以于常规出牌追加打出至多张暗置攻击。\n永恒不变-被动行动阶段: 花费正点魔力, (镌刻 ]8+1\n处你所在地点的地利或工坊位置井抽{+1张牌。其他玩家\n以移动脔开被 |镌刻|的位置时,失去1点魔力。",
+  "ocr_text_draft": "皮格马利翁之爱 雕像少女-被动: 此牌展示后 你无法暗置打出攻击。 (你可以于常规出牌追加打出至多张暗置攻击。 永恒不变-被动行动阶段: 花费正点魔力, (镌刻 ]8+1 处你所在地点的地利或工坊位置井抽{+1张牌。其他玩家 以移动脔开被 |镌刻|的位置时,失去1点魔力。",
+  "rules_text": "雕像少女-被动: 此牌展示后\n你无法暗置打出攻击。\n(你可以于常规出牌追加打出至多张暗置攻击。\n永恒不变-被动行动阶段: 花费正点魔力, (镌刻 8+1\n处你所在地点的地利或工坊位置井抽 +1张牌。其他玩家\n以移动脔开被 镌刻 的位置时,失去1点魔力。",
+  "effect_text": "雕像少女-被动: 此牌展示后\n你无法暗置打出攻击。\n(你可以于常规出牌追加打出至多张暗置攻击。\n永恒不变-被动行动阶段: 花费正点魔力, (镌刻 8+1\n处你所在地点的地利或工坊位置井抽 +1张牌。其他玩家\n以移动脔开被 镌刻 的位置时,失去1点魔力。",
+  "effect_explanation": "",
+  "cost": null,
+  "power": null,
+  "displayed_cost_power_confirmed": false,
+  "tags": [],
+  "attributes": [],
+  "confidence": 0.4,
+  "needs_human_review": true,
+  "uncertain_fields": [
+    "mana_cost",
+    "attack_power"
+  ],
+  "review_notes": [
+    "Uncertain field: mana_cost",
+    "Uncertain field: attack_power"
+  ]
+}

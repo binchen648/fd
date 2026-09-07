@@ -1,0 +1,45 @@
+{
+  "jobId": "vision-servant.伊斯坎达尔.001",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "宝具",
+    "subtypeGuess": "特殊",
+    "familyConfidence": 0
+  },
+  "text": {
+    "cardName": "王之军势",
+    "rawText": "特殊\n宝具\n王之军势\n【真名解放】\n行动阶段：创造并激活5张临时的威力2的★或☆属性的基础攻击直至回合结束。",
+    "normalizedText": "王之军势\n【真名解放】\n行动阶段：创造并激活5张临时的威力2的★或☆属性的基础攻击直至回合结束。"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": null,
+    "powerMarker": null,
+    "numericSlots": [
+      8,
+      0
+    ],
+    "iconTags": [
+      "green",
+      "blue"
+    ],
+    "rarity": "",
+    "classTag": ""
+  },
+  "blocks": [
+    "特殊",
+    "宝具",
+    "王之军势",
+    "【真名解放】",
+    "行动阶段：创造并激活5张临时的威力2的★或☆属性的基础攻击直至回合结束。",
+    "8",
+    "0"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

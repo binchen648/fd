@@ -1,0 +1,59 @@
+{
+  "jobId": "structure-servant-ryogi-shiki-001",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.ryogi_shiki.skill",
+    "name": "两仪式",
+    "cardType": "servant_skill",
+    "timing": [
+      "round_start"
+    ],
+    "conditions": [],
+    "targets": [],
+    "effects": [],
+    "duration": null,
+    "visibility": "public",
+    "tags": [
+      "servant",
+      "skill"
+    ],
+    "ambiguities": [
+      {
+        "span": "Add 【生·切断】 to your skill zone at the start of the game.",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "Add 【死·紧握】 to your skill zone at the start of the game.",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "You may view the bottom card of all players' decks. During power resolution, all players with no cards in their deck are defeated in the battle you are in.",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      }
+    ]
+  },
+  "parseNotes": [],
+  "coverage": {
+    "sourceClauses": 3,
+    "mappedClauses": 3,
+    "unmappedClauses": 0
+  },
+  "source": {
+    "visionJobId": "vision-servant-ryogi-shiki-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

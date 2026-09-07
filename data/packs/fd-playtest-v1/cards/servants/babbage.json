@@ -1,0 +1,31 @@
+[
+  {
+    "id": "servant.babbage.overview",
+    "name": "查尔斯·巴贝奇",
+    "cardType": "servant_overview",
+    "capability": { "status": "FULL" },
+    "source": { "htmPath": "chm-extract/查尔斯·巴贝奇.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_211944_712.png", "imageIndex": 0, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.babbage.skill.resplendent_ashen_world",
+    "name": "绚烂的灰烬世界",
+    "cardType": "servant_skill",
+    "traits": ["noble_phantasm"],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Draw, assembly and reassembly effects are not yet implemented." },
+    "source": { "htmPath": "chm-extract/查尔斯·巴贝奇.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_211959_889.png", "imageIndex": 1, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.babbage.skill.mechanical_armor",
+    "name": "机械铠甲",
+    "cardType": "servant_skill",
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Assembly sequence and multi-mode resolution are not yet implemented." },
+    "source": { "htmPath": "chm-extract/查尔斯·巴贝奇.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_211955_601.png", "imageIndex": 2, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.babbage.skill.steam_workshop",
+    "name": "蒸汽车间",
+    "cardType": "servant_skill",
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Tooth-gear assembly selection is not yet implemented." },
+    "source": { "htmPath": "chm-extract/查尔斯·巴贝奇.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_211949_520.png", "imageIndex": 3, "reviewedAgainstImage": true }
+  }
+]

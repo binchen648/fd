@@ -1,0 +1,77 @@
+{
+  "name": "@fd/content",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "FD Content Library - CHM Base Game card management system",
+  "keywords": [
+    "fate-domination",
+    "card-game",
+    "content-management",
+    "chm-base-game"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./types": {
+      "import": "./dist/chm-card-types.js",
+      "require": "./dist/chm-card-types.js",
+      "types": "./dist/chm-card-types.d.ts"
+    },
+    "./lib/*": "./dist/lib/*",
+    "./schema": {
+      "import": "./dist/library-index-schema.js",
+      "require": "./dist/library-index-schema.js",
+      "types": "./dist/library-index-schema.d.ts"
+    },
+    "./rules": {
+      "import": "./dist/rules-api.js",
+      "require": "./dist/rules-api.js",
+      "types": "./dist/rules-api.d.ts"
+    },
+    "./playtest-pack": {
+      "import": "./dist/playtest-content-pack.js",
+      "require": "./dist/playtest-content-pack.js",
+      "types": "./dist/playtest-content-pack.d.ts"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fd-game/fd-content-pipeline"
+  },
+  "bugs": {
+    "url": "https://github.com/fd-game/fd-content-pipeline/issues"
+  },
+  "homepage": "https://github.com/fd-game/fd-content-pipeline#readme",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

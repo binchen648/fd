@@ -1,0 +1,52 @@
+{
+  "artifactVersion": "recognition-bundle-v1",
+  "status": "recognized",
+  "familyId": "servant.铃鹿御前",
+  "displayName": "铃鹿御前",
+  "sourceHtm": "D:/fd/chm-extract/铃鹿御前.htm",
+  "images": [
+    "D:/fd/chm-extract/图包/ScreenShot_2025-10-31_213233_669.png",
+    "D:/fd/chm-extract/图包/ScreenShot_2025-10-31_213243_197.png",
+    "D:/fd/chm-extract/图包/ScreenShot_2025-10-31_213247_716.png",
+    "D:/fd/chm-extract/图包/ScreenShot_2025-10-31_213238_852.png"
+  ],
+  "visionArtifactPath": "D:/fd/data/staged/ocr/servant/ScreenShot_2025-10-31_213233_669.json",
+  "classificationRule": {
+    "method": "fd-card-recognition-v1",
+    "legend": {
+      "red": "red_cards numeric entries",
+      "green": "green_cards numeric entries",
+      "blue": "blue_cards numeric entries",
+      "white": "special_cards repeated text entries"
+    }
+  },
+  "mainCardfaceAnalysis": {
+    "imageFile": "ScreenShot_2025-10-31_213233_669.png",
+    "character_name": "铃鹿御前",
+    "red_cards": [
+      2,
+      2,
+      3,
+      4
+    ],
+    "green_cards": [
+      2,
+      3,
+      3,
+      4,
+      4
+    ],
+    "blue_cards": [
+      2
+    ],
+    "special_cards": [
+      "Surveil",
+      "Preparation"
+    ],
+    "red_count": 4,
+    "green_count": 5,
+    "blue_count": 1,
+    "special_count": 2,
+    "total_count": 12
+  }
+}

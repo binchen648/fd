@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "id": "master.gatou",
+  "name": "卧藤门司",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sources": [
+    {
+      "id": "chm_page",
+      "type": "chm_page",
+      "path": "D:/fd/chm-extract/卧藤门司.htm",
+      "pageTitle": "卧藤门司",
+      "imageOrder": [
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_222919_276.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_222924_628.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_222929_556.png"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "master.gatou.skill.seeker",
+      "name": "求道者",
+      "cardType": "master_skill",
+      "printedText": "求道者-战斗阶段结束时，每有一名位于你所在地地点且以移动进入该地点的其他玩家，你获得1点魔力。若你获胜，改为获得1点战果。冥想-你使用过令咒的回合不受其他玩家的能力影响。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "seeker.battle-end-reward",
+          "kind": "forced_trigger",
+          "printedClause": "求道者-战斗阶段结束时，每有一名位于你所在地地点且以移动进入该地点的其他玩家，你获得1点魔力。若你获胜，改为获得1点战果。",
+          "activation": { "trigger": "after_battle_ended" },
+          "effects": [
+            { "type": "record_master_directive", "directive": "gatou_battle_end_mobile_players_reward" }
+          ],
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "seeker.meditation",
+          "kind": "passive",
+          "printedClause": "冥想-你使用过令咒的回合不受其他玩家的能力影响。",
+          "activation": { "trigger": "while_active" },
+          "effects": [
+            { "type": "record_master_directive", "directive": "ignore_other_player_abilities_after_command_spell_this_round" }
+          ],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "original_card_image", "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_222919_276.png", "imageIndex": 0 }]
+    },
+    {
+      "id": "master.gatou.command-spell",
+      "name": "令咒",
+      "cardType": "command_spell",
+      "printedText": "行动阶段：获得4魔力。行动阶段：总威力+2，如果你本回合每赢得一场战斗，获得2战果。行动阶段：从新都或深山町移动至任意位置，无视交战状态。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "command-spell.gain-mana",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：获得4魔力。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "effects": [
+            { "type": "adjust_mana", "amount": 4 },
+            { "type": "adjust_command_seals", "amount": -1, "directive": "spend_command_spell" }
+          ],
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "command-spell.power-victory",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：总威力+2，如果你本回合每赢得一场战斗，获得2战果。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "creates": [
+            { "type": "create_modifier", "modifier": { "type": "power_bonus", "target": "controller", "amount": 2, "duration": "this_round" } }
+          ],
+          "effects": [
+            { "type": "record_master_directive", "directive": "gain_2_vp_for_each_battle_won_this_round" },
+            { "type": "adjust_command_seals", "amount": -1, "directive": "spend_command_spell" }
+          ],
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "command-spell.free-move",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：从新都或深山町移动至任意位置，无视交战状态。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "effects": [
+            { "type": "record_master_directive", "directive": "move_from_shinto_or_miyama_to_any_location_ignore_engagement" },
+            { "type": "adjust_command_seals", "amount": -1, "directive": "spend_command_spell" }
+          ],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "original_card_image", "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_222924_628.png", "imageIndex": 1 }]
+    }
+  ],
+  "excludedCards": [{ "id": "master.gatou.skill.ascension", "name": "豪快战意", "reason": "user_scope_excluded_ascension" }],
+  "adapterNotes": ["升华技按用户规则排除。"]
+}

@@ -1,0 +1,36 @@
+{
+  "id": "servant.francis_drake",
+  "name": "弗朗西斯·德雷克",
+  "classTag": "Rider",
+  "overviewCardId": "servant.francis_drake.overview",
+  "startingDeck": {
+    "size": 12,
+    "entries": [
+      { "entryType": "basic", "attribute": "strength", "printedValue": 2, "copies": 1 },
+      { "entryType": "basic", "attribute": "strength", "printedValue": 3, "copies": 2 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 2, "copies": 1 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 3, "copies": 2 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 4, "copies": 1 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 5, "copies": 1 },
+      { "entryType": "named", "attribute": "special", "cardId": "basic.luck", "copies": 1 },
+      { "entryType": "named", "attribute": "special", "cardId": "basic.surveil", "copies": 3 }
+    ],
+    "attributeCounts": { "strength": 3, "agility": 5, "magecraft": 0, "special": 4 }
+  },
+  "skillCardIds": [
+    "servant.francis_drake.skill.riding",
+    "servant.francis_drake.skill.golden_hind_and_stormy_night",
+    "servant.francis_drake.skill.stormy_voyager"
+  ],
+  "linkedCards": {},
+  "capability": {
+    "status": "HOST_ADJUDICATED",
+    "hostRulingReason": "Skill effects are preserved on reviewed source images but are not yet expressed as engine primitives."
+  },
+  "source": {
+    "htmPath": "chm-extract/弗朗西斯·德雷克.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164705_550.png",
+    "imageIndex": 0,
+    "reviewedAgainstImage": true
+  }
+}

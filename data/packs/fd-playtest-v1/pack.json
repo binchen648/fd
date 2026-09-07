@@ -1,0 +1,53 @@
+{
+  "id": "fd-playtest-v1",
+  "name": "FD 首批可玩内容包",
+  "version": 1,
+  "dictionaries": {
+    "basicAttacks": "data/packs/fd-playtest-v1/dictionaries/basic-attacks.json"
+  },
+  "servantFiles": [],
+  "servantCardFiles": [],
+  "masterFiles": [],
+  "masterCardFiles": [],
+  "authoringServantFiles": [
+    "data/authoring/servants/servant.artoriac.json",
+    "data/authoring/servants/servant.drake.json",
+    "data/authoring/servants/servant.achilles.json",
+    "data/authoring/servants/servant.artoria-alt.json",
+    "data/authoring/servants/servant.ereshkigal.json",
+    "data/authoring/servants/servant.tomoe.json",
+    "data/authoring/servants/servant.kintoki.json"
+  ],
+  "authoringMasterFiles": [
+    "data/authoring/masters/master.kayneth.json",
+    "data/authoring/masters/master.shinji.json",
+    "data/authoring/masters/master.kiritsugu.json",
+    "data/authoring/masters/master.maiya.json",
+    "data/authoring/masters/master.gatou.json",
+    "data/authoring/masters/master.irisviel.json",
+    "data/authoring/masters/master.olga-marie.json"
+  ],
+  "eventSetFiles": [
+    "data/packs/fd-playtest-v1/events/waxing-moon-ritual.json"
+  ],
+  "eventCardFiles": [
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/ritual.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/resistance.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/dark-current.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/sudden-loss.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/bloody-sunset.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/banquet.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/rage-rising.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/curse-god.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/white-night-walk.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/edo.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/yokosuka.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/akasaka.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/vengeful-spirit-barrier.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/beautiful-thing.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/narrow-path-encounter.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/gentle-hometown.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/growth.json",
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/keian-ceremony.json"
+  ]
+}

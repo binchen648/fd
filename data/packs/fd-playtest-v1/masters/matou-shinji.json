@@ -1,0 +1,24 @@
+{
+  "id": "master.matou_shinji",
+  "name": "间桐慎二",
+  "overviewCardId": "master.matou_shinji.overview",
+  "initialMana": 4,
+  "commandSpellCardIds": ["master.matou_shinji.command_spell.standard"],
+  "skillCardIds": ["master.matou_shinji.skill.holy_grail_core"],
+  "linkedCards": {
+    "replacements": [
+      "master.matou_shinji.book_of_false_attendant.absent",
+      "master.matou_shinji.book_of_false_attendant.present"
+    ]
+  },
+  "capability": {
+    "status": "HOST_ADJUDICATED",
+    "hostRulingReason": "Book replacement, command-spell refresh and failure penalties are not yet implemented."
+  },
+  "source": {
+    "htmPath": "chm-extract/间桐慎二.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194536_066.png",
+    "imageIndex": 0,
+    "reviewedAgainstImage": true
+  }
+}

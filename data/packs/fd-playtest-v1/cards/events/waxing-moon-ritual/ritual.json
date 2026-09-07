@@ -1,0 +1,15 @@
+{
+  "id": "event.waxing_moon_ritual.ritual",
+  "name": "盈月之仪",
+  "cardType": "event",
+  "printedReward": 4,
+  "applicableLocations": ["deep_mountain", "new_capital"],
+  "printedText": "战果倒数排名第一/二/三者于此战场的激活攻击分别获得+4/+3/+2威力。",
+  "timing": ["battle"],
+  "interactions": [{ "kind": "automatic", "visibility": "public" }],
+  "effects": [
+    { "type": "battle_result_rank_power_bonus", "scope": "this_battlefield", "rankOrder": "ascending_battle_result", "bonuses": [4, 3, 2] }
+  ],
+  "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Battle-result ranking power bonus is not yet automated." },
+  "source": { "htmPath": "chm-extract/盈月之仪.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211319_640.png", "imageIndex": 0, "reviewedAgainstImage": true }
+}

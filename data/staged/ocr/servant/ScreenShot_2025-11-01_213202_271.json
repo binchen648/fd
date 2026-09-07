@@ -1,0 +1,57 @@
+{
+  "jobId": "vision-servant.酒吞童子1.004",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Magic",
+    "subtypeGuess": "",
+    "familyConfidence": 0.5
+  },
+  "text": {
+    "cardName": "神使鬼毒酒",
+    "rawText": "此牌需追加打出且你拥有的魔力少于8点也可打出此牌。\n激突-战斗阶段开始时，你战斗中所有激活的基础攻击获得<每局游戏限一次>。",
+    "normalizedText": "此牌需追加打出且你拥有的魔力少于8点也可打出此牌。\n激突-战斗阶段开始时，你战斗中所有激活的基础攻击获得<每局游戏限一次>。"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": "2",
+    "powerMarker": "5",
+    "numericSlots": [
+      "2",
+      "5"
+    ],
+    "iconTags": [
+      "sword"
+    ],
+    "rarity": "",
+    "classTag": ""
+  },
+  "blocks": [
+    {
+      "bbox": [
+        10,
+        480,
+        500,
+        540
+      ],
+      "text": "神使鬼毒酒"
+    },
+    {
+      "bbox": [
+        10,
+        680,
+        600,
+        820
+      ],
+      "text": "此牌需追加打出且你拥有的魔力少于8点也可打出此牌。\n激突-战斗阶段开始时，你战斗中所有激活的基础攻击获得<每局游戏限一次>。"
+    }
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "page": "D:\\fd\\chm-extract\\酒吞童子1.htm",
+    "set": "servant",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

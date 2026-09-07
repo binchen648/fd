@@ -1,0 +1,29 @@
+{
+  "imageFile": "ScreenShot_2025-11-02_113727_595.png",
+  "character_name": "伽拉忒亚",
+  "red_cards": [
+    2,
+    3,
+    3,
+    4,
+    4
+  ],
+  "green_cards": [
+    2,
+    3
+  ],
+  "blue_cards": [
+    2,
+    2,
+    4
+  ],
+  "special_cards": [
+    "Preparation",
+    "Preparation"
+  ],
+  "red_count": 5,
+  "green_count": 2,
+  "blue_count": 3,
+  "special_count": 2,
+  "total_count": 12
+}

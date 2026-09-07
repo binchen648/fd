@@ -1,0 +1,389 @@
+{
+  "packId": "fd-starter-pack-001",
+  "name": "FD Starter Pack",
+  "description": "Starter card pack for FD prototype - 7 Masters and 28 Servants",
+  "version": "0.1.0",
+  "cards": [
+    {
+      "id": "master-1",
+      "name": "Lord Miyama",
+      "type": "master_identity",
+      "subtype": "noble",
+      "cost": 0,
+      "tags": ["noble", "leader"],
+      "effects": []
+    },
+    {
+      "id": "master-2",
+      "name": "Shinto Priest",
+      "type": "master_identity",
+      "subtype": "priest",
+      "cost": 0,
+      "tags": ["sacred", "healer"],
+      "effects": []
+    },
+    {
+      "id": "master-3",
+      "name": "Arcane Architect",
+      "type": "master_identity",
+      "subtype": "mage",
+      "cost": 0,
+      "tags": ["magic", "builder"],
+      "effects": []
+    },
+    {
+      "id": "master-4",
+      "name": "Field Commander",
+      "type": "master_identity",
+      "subtype": "commander",
+      "cost": 0,
+      "tags": ["military", "tactician"],
+      "effects": []
+    },
+    {
+      "id": "master-5",
+      "name": "Resource Master",
+      "type": "master_identity",
+      "subtype": "merchant",
+      "cost": 0,
+      "tags": ["economy", "builder"],
+      "effects": []
+    },
+    {
+      "id": "master-6",
+      "name": "Shadow Agent",
+      "type": "master_identity",
+      "subtype": "rogue",
+      "cost": 0,
+      "tags": ["stealth", "assassin"],
+      "effects": []
+    },
+    {
+      "id": "master-7",
+      "name": "Berserker Lord",
+      "type": "master_identity",
+      "subtype": "warrior",
+      "cost": 0,
+      "tags": ["rage", "destroyer"],
+      "effects": []
+    }
+  ],
+  "servants": [
+    {
+      "id": "servant-1a",
+      "name": "Miyama Guard",
+      "type": "servant_attack",
+      "cost": 1,
+      "basePower": 2,
+      "tags": ["infantry", "defense"],
+      "effects": []
+    },
+    {
+      "id": "servant-1b",
+      "name": "Miyama Archer",
+      "type": "servant_attack",
+      "cost": 1,
+      "basePower": 1,
+      "tags": ["ranged", "attack"],
+      "effects": []
+    },
+    {
+      "id": "servant-1c",
+      "name": "Miyama Scout",
+      "type": "servant_skill",
+      "cost": 1,
+      "basePower": 0,
+      "tags": ["recon", "utility"],
+      "effects": [],
+      "combatModifiers": [
+        {
+          "sourceId": "servant-1c",
+          "targetTag": "infantry",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "servant-1d",
+      "name": "Miyama Healer",
+      "type": "servant_skill",
+      "cost": 2,
+      "basePower": 0,
+      "tags": ["healing", "support"],
+      "effects": [
+        {
+          "id": "servant-1d-battle-buff",
+          "timing": "battle",
+          "handler": "grant_combat_modifier",
+          "conditions": [
+            "same_battlefield",
+            "requires_public_attack"
+          ],
+          "payload": {
+            "targetTag": "infantry",
+            "value": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "servant-2a",
+      "name": "Shinto Acolyte",
+      "type": "servant_skill",
+      "cost": 1,
+      "basePower": 0,
+      "tags": ["holy", "support"],
+      "effects": []
+    },
+    {
+      "id": "servant-2b",
+      "name": "Shinto Guardian",
+      "type": "servant_attack",
+      "cost": 2,
+      "basePower": 3,
+      "tags": [" holy", "tank"],
+      "effects": []
+    },
+    {
+      "id": "servant-2c",
+      "name": "Shinto Seer",
+      "type": "servant_skill",
+      "cost": 2,
+      "basePower": 0,
+      "tags": ["divination", "utility"],
+      "effects": []
+    },
+    {
+      "id": "servant-2d",
+      "name": "Shinto Monk",
+      "type": "servant_skill",
+      "cost": 1,
+      "basePower": 1,
+      "tags": ["holy", "attack"],
+      "effects": []
+    },
+    {
+      "id": "servant-3a",
+      "name": "Workshop Apprentice",
+      "type": "servant_skill",
+      "cost": 1,
+      "basePower": 0,
+      "tags": ["craft", "utility"],
+      "effects": []
+    },
+    {
+      "id": "servant-3b",
+      "name": "Workshop Alchemist",
+      "type": "servant_skill",
+      "cost": 2,
+      "basePower": 0,
+      "tags": ["alchemy", "utility"],
+      "effects": []
+    },
+    {
+      "id": "servant-3c",
+      "name": "Workshop Golem",
+      "type": "servant_attack",
+      "cost": 3,
+      "basePower": 4,
+      "tags": ["construct", "tank"],
+      "effects": []
+    },
+    {
+      "id": "servant-3d",
+      "name": "Workshop Engineer",
+      "type": "servant_skill",
+      "cost": 2,
+      "basePower": 0,
+      "tags": ["engineering", "utility"],
+      "effects": [
+        {
+          "id": "servant-3d-construct-buff",
+          "timing": "battle",
+          "handler": "grant_combat_modifier",
+          "conditions": [
+            "same_battlefield",
+            "requires_public_attack"
+          ],
+          "payload": {
+            "targetTag": "construct",
+            "value": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "servant-4a",
+      "name": "Recon Squad",
+      "type": "servant_skill",
+      "cost": 1,
+      "basePower": 0,
+      "tags": ["recon", "utility"],
+      "effects": []
+    },
+    {
+      "id": "servant-4b",
+      "name": "Sniper Team",
+      "type": "servant_attack",
+      "cost": 2,
+      "basePower": 3,
+      "tags": ["ranged", "attack"],
+      "effects": []
+    },
+    {
+      "id": "servant-4c",
+      "name": "Tactical Officer",
+      "type": "servant_skill",
+      "cost": 2,
+      "basePower": 0,
+      "tags": ["tactics", "support"],
+      "effects": [
+        {
+          "id": "servant-4c-declared-shot",
+          "timing": "battle",
+          "handler": "grant_combat_modifier",
+          "conditions": [
+            "same_battlefield",
+            "requires_public_attack",
+            "requires_declared_battle"
+          ],
+          "payload": {
+            "targetTag": "ranged",
+            "value": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "servant-4d",
+      "name": "Logistics Specialist",
+      "type": "servant_skill",
+      "cost": 1,
+      "basePower": 0,
+      "tags": ["logistics", "utility"],
+      "effects": []
+    },
+    {
+      "id": "servant-5a",
+      "name": "Merchant Guard",
+      "type": "servant_attack",
+      "cost": 1,
+      "basePower": 1,
+      "tags": ["mercantile", "attack"],
+      "effects": []
+    },
+    {
+      "id": "servant-5b",
+      "name": "Supply Cart",
+      "type": "servant_skill",
+      "cost": 2,
+      "basePower": 0,
+      "tags": ["supply", "utility"],
+      "effects": []
+    },
+    {
+      "id": "servant-5c",
+      "name": "Trade Envoy",
+      "type": "servant_skill",
+      "cost": 2,
+      "basePower": 0,
+      "tags": ["diplomacy", "utility"],
+      "effects": []
+    },
+    {
+      "id": "servant-5d",
+      "name": "Treasurer",
+      "type": "servant_skill",
+      "cost": 1,
+      "basePower": 0,
+      "tags": ["economics", "utility"],
+      "effects": []
+    },
+    {
+      "id": "servant-6a",
+      "name": "Assassin",
+      "type": "servant_attack",
+      "cost": 2,
+      "basePower": 3,
+      "tags": ["stealth", "attack"],
+      "effects": []
+    },
+    {
+      "id": "servant-6b",
+      "name": "Spy Network",
+      "type": "servant_skill",
+      "cost": 2,
+      "basePower": 0,
+      "tags": ["espionage", "utility"],
+      "effects": []
+    },
+    {
+      "id": "servant-6c",
+      "name": "Infiltrator",
+      "type": "servant_skill",
+      "cost": 1,
+      "basePower": 1,
+      "tags": ["stealth", "attack"],
+      "effects": []
+    },
+    {
+      "id": "servant-6d",
+      "name": "Poisoner",
+      "type": "servant_skill",
+      "cost": 2,
+      "basePower": 0,
+      "tags": ["chemical", "attack"],
+      "effects": []
+    },
+    {
+      "id": "servant-7a",
+      "name": "Berserker",
+      "type": "servant_attack",
+      "cost": 2,
+      "basePower": 4,
+      "tags": ["rage", "attack"],
+      "effects": []
+    },
+    {
+      "id": "servant-7b",
+      "name": "Savage",
+      "type": "servant_attack",
+      "cost": 1,
+      "basePower": 2,
+      "tags": ["rage", "attack"],
+      "effects": []
+    },
+    {
+      "id": "servant-7c",
+      "name": "War Shaman",
+      "type": "servant_skill",
+      "cost": 2,
+      "basePower": 0,
+      "tags": ["war", "support"],
+      "effects": [
+        {
+          "id": "servant-7c-rage-buff",
+          "timing": "battle",
+          "handler": "grant_combat_modifier",
+          "conditions": [
+            "same_battlefield",
+            "requires_public_attack"
+          ],
+          "payload": {
+            "targetTag": "rage",
+            "value": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "servant-7d",
+      "name": "Battle Totem",
+      "type": "servant_skill",
+      "cost": 3,
+      "basePower": 0,
+      "tags": ["totem", "support"],
+      "effects": []
+    }
+  ]
+}

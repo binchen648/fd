@@ -1,0 +1,24 @@
+{
+  "card_name": "蒸汽车间",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "蒸汽车间\n被动: 当你的基础牌因打出而进入弃牌堆时。你可以将其\n明置于此牌上作为 |齿轮 ] ,失效的 |齿轮 ]进入弃牌堆。\n被动行动阶段: 选择至多四张 [齿轮 ]并花费等量的魔力\n将其组装井获得相应效果,你同时只能组装一组 (齿轮 ]",
+  "ocr_text_draft": "蒸汽车间 被动: 当你的基础牌因打出而进入弃牌堆时。你可以将其 明置于此牌上作为 |齿轮 ] ,失效的 |齿轮 ]进入弃牌堆。 被动行动阶段: 选择至多四张 [齿轮 ]并花费等量的魔力 将其组装井获得相应效果,你同时只能组装一组 (齿轮 ]",
+  "rules_text": "被动: 当你的基础牌因打出而进入弃牌堆时。你可以将其\n明置于此牌上作为 齿轮 ,失效的 齿轮 进入弃牌堆。\n被动行动阶段: 选择至多四张 齿轮 并花费等量的魔力\n将其组装井获得相应效果,你同时只能组装一组 (齿轮",
+  "effect_text": "被动: 当你的基础牌因打出而进入弃牌堆时。你可以将其\n明置于此牌上作为 齿轮 ,失效的 齿轮 进入弃牌堆。\n被动行动阶段: 选择至多四张 齿轮 并花费等量的魔力\n将其组装井获得相应效果,你同时只能组装一组 (齿轮",
+  "effect_explanation": "",
+  "cost": null,
+  "power": null,
+  "displayed_cost_power_confirmed": false,
+  "tags": [],
+  "attributes": [],
+  "confidence": 0.4,
+  "needs_human_review": true,
+  "uncertain_fields": [
+    "mana_cost",
+    "attack_power"
+  ],
+  "review_notes": [
+    "Uncertain field: mana_cost",
+    "Uncertain field: attack_power"
+  ]
+}

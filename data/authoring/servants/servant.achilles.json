@@ -1,0 +1,480 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.achilles",
+  "name": "阿喀琉斯",
+  "class": "Rider",
+  "canonicalIdSource": "main_repo",
+  "authoringStatus": "draft_structured_from_chm_skill_pack",
+  "sourcePolicy": {
+    "priority": [
+      "original_card_image",
+      "chm_association",
+      "main_repo_legacy_content",
+      "ocr_or_manual_draft"
+    ]
+  },
+  "sources": [
+    {
+      "id": "chm_page",
+      "type": "chm_html",
+      "path": "D:/fd/chm-extract/阿喀琉斯.htm",
+      "encoding": "gb2312",
+      "pageTitle": "阿喀琉斯",
+      "priority": "chm_association",
+      "imageOrder": [
+        "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_164211_781.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_164221_598.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_164226_270.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_164216_582.png"
+      ]
+    },
+    {
+      "id": "overview_image",
+      "type": "original_card_image",
+      "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_164211_781.png",
+      "chmImageIndex": 0,
+      "interpretedAs": "servant_overview",
+      "priority": "original_card_image",
+      "imageIndex": 0,
+      "reviewStatus": "reviewed_against_original_image"
+    }
+  ],
+  "deck": [
+    {
+      "cardId": "card.cardb2",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardb3",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardb4",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardb5",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq2",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq3",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq4",
+      "count": 2,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq5",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardluck",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardsurveil",
+      "count": 2,
+      "source": "overview_image_reviewed_2026-09-06"
+    }
+  ],
+  "cards": [
+    {
+      "id": "servant.achilles.skill.sc-achilles-1",
+      "name": "勇者的不凋花",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.achilles"
+      },
+      "printedText": "阿喀琉斯之踵-被动：当你战败后，你【真名解放】。\n疾风驰骋-被动/战斗阶段：若你真名隐藏，令你的所有交战对手随机弃置一张手牌，然后将未弃置牌或弃置的牌不是【幸运】或敏捷牌的对手的合计威力设为0。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-achilles-1.achilles-heel",
+          "kind": "forced_trigger",
+          "printedClause": "阿喀琉斯之踵-被动：当你战败后，你【真名解放】。",
+          "activation": {
+            "trigger": "after_controller_loses_battle"
+          },
+          "effects": [
+            {
+              "type": "reveal_information",
+              "scope": "servant_package",
+              "subject": "controller.servant"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-achilles-1.gale-advance",
+          "kind": "phase_action",
+          "printedClause": "疾风驰骋-被动/战斗阶段：若你真名隐藏，令你的所有交战对手随机弃置一张手牌，然后将未弃置牌或弃置的牌不是【幸运】或敏捷牌的对手的合计威力设为0。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "not",
+              "condition": {
+                "type": "controller_servant_revealed"
+              }
+            }
+          ],
+          "effects": [
+            {
+              "type": "opponents_random_discard",
+              "count": 1
+            },
+            {
+              "type": "set_opponent_power_to_zero",
+              "condition": "not_luck_or_agility"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_164221_598.png",
+          "imageIndex": 1,
+          "htmPath": "D:/fd/chm-extract/阿喀琉斯.htm",
+          "reviewStatus": "reviewed_against_original_image"
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/阿喀琉斯.htm",
+          "imageIndex": 1
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "htmAssociationStatus": "verified_image_order_2026-09-04",
+        "cardFaceStatus": "reviewed_against_original_image",
+        "rulesMappingStatus": "interpreter_slice_tested",
+        "implementationStatus": "complete",
+        "failureMode": "disabled_until_shared_mechanics_exist"
+      },
+      "ambiguities": []
+    },
+    {
+      "id": "servant.achilles.skill.sc-achilles-2",
+      "name": "包围苍天的小世界",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.achilles"
+      },
+      "printedText": "湛蓝天空-行动阶段：选择下列一项：\n1. 与你位于同一战场的对手立即随机弃置一张手牌。\n2. 与你位于同一战场的对手无法使用技能牌。\n3. 花费3点魔力，隐藏你的从者真名直至回合结束。",
+      "cardFace": {
+        "typeLabel": "特殊/宝具",
+        "attributes": [
+          "特殊",
+          "宝具"
+        ],
+        "cost": 3,
+        "basePower": 2
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-achilles-2.blue-sky",
+          "kind": "phase_action",
+          "printedClause": "湛蓝天空-行动阶段：选择下列一项：",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "targets": [
+            {
+              "id": "chosen_option",
+              "type": "choice",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "options": [
+                {
+                  "id": "discard_hand",
+                  "label": "对手随机弃置一张手牌"
+                },
+                {
+                  "id": "forbid_skills",
+                  "label": "对手无法使用技能牌"
+                },
+                {
+                  "id": "hide_true_name",
+                  "label": "花费3点魔力隐藏真名"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "branch",
+              "branches": [
+                {
+                  "if": {
+                    "type": "choice_is",
+                    "choiceId": "chosen_option",
+                    "value": "discard_hand"
+                  },
+                  "then": [
+                    {
+                      "type": "opponents_random_discard",
+                      "count": 1
+                    }
+                  ]
+                },
+                {
+                  "if": {
+                    "type": "choice_is",
+                    "choiceId": "chosen_option",
+                    "value": "forbid_skills"
+                  },
+                  "then": []
+                },
+                {
+                  "if": {
+                    "type": "choice_is",
+                    "choiceId": "chosen_option",
+                    "value": "hide_true_name"
+                  },
+                  "then": [
+                    {
+                      "type": "pay_mana",
+                      "amount": 3
+                    },
+                    {
+                      "type": "hide_servant_true_name",
+                      "duration": "until_round_end"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "forbid_same_battlefield_opponents_skill_cards",
+              "printedClause": "与你位于同一战场的对手无法使用技能牌。",
+              "type": "restriction",
+              "operation": "forbid",
+              "rule": "use_skill_card",
+              "scope": {
+                "subject": "opponents_at_same_battlefield"
+              },
+              "conditions": [
+                {
+                  "type": "choice_is",
+                  "choiceId": "chosen_option",
+                  "value": "forbid_skills"
+                }
+              ],
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_164226_270.png",
+          "imageIndex": 2,
+          "htmPath": "D:/fd/chm-extract/阿喀琉斯.htm",
+          "reviewStatus": "reviewed_against_original_image"
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/阿喀琉斯.htm",
+          "imageIndex": 2
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "htmAssociationStatus": "verified_image_order_2026-09-04",
+        "cardFaceStatus": "reviewed_against_original_image",
+        "rulesMappingStatus": "interpreter_slice_tested",
+        "implementationStatus": "complete",
+        "failureMode": "disabled_until_shared_mechanics_exist"
+      },
+      "ambiguities": []
+    },
+    {
+      "id": "servant.achilles.skill.sc-achilles-3",
+      "name": "驰骋天际星之枪尖",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.achilles"
+      },
+      "printedText": "英雄对决-行动阶段：当你所在的战场只有1名对手时，所有人无法进入或离开此战场，同时，你与此对手无法被地利和所有不属于你们的从者或NPC的牌或效果影响。",
+      "cardFace": {
+        "typeLabel": "特殊/宝具",
+        "attributes": [
+          "特殊",
+          "宝具"
+        ],
+        "cost": 6,
+        "basePower": 8
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-achilles-3.hero-duel",
+          "kind": "phase_action",
+          "printedClause": "英雄对决-行动阶段：当你所在的战场只有1名对手时，所有人无法进入或离开此战场，同时，你与此对手无法被地利和所有不属于你们的从者或NPC的牌或效果影响。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "controller_at_battlefield_with_exactly_one_opponent"
+            }
+          ],
+          "effects": [],
+          "ruleModifiers": [
+            {
+              "id": "lock_current_battlefield",
+              "printedClause": "所有人无法进入或离开此战场",
+              "type": "restriction",
+              "operation": "forbid",
+              "rule": "enter_or_leave_current_battlefield",
+              "scope": {
+                "subject": "all_players",
+                "location": "controller_current_battlefield"
+              },
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            },
+            {
+              "id": "ignore_terrain_and_external_servant_or_npc_effects",
+              "printedClause": "你与此对手无法被地利和所有不属于你们的从者或NPC的牌或效果影响。",
+              "type": "immunity",
+              "operation": "ignore",
+              "rule": "terrain_and_external_servant_or_npc_effects",
+              "scope": {
+                "subject": [
+                  "controller",
+                  "single_opponent"
+                ]
+              },
+              "priority": {
+                "tier": "card_text",
+                "specificity": "specific"
+              },
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_164216_582.png",
+          "imageIndex": 3,
+          "htmPath": "D:/fd/chm-extract/阿喀琉斯.htm",
+          "reviewStatus": "reviewed_against_original_image"
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/阿喀琉斯.htm",
+          "imageIndex": 3
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "htmAssociationStatus": "verified_image_order_2026-09-04",
+        "cardFaceStatus": "reviewed_against_original_image",
+        "rulesMappingStatus": "interpreter_slice_tested",
+        "implementationStatus": "complete",
+        "failureMode": "disabled_until_shared_mechanics_exist"
+      },
+      "ambiguities": []
+    }
+  ],
+  "adapterNotes": [
+    "阿喀琉斯的技能涉及随机弃牌、战场锁定、地利免疫等复杂机制，当前解释器不支持。",
+    "勇者的不凋花的战败触发真名解放需要新的触发类型。",
+    "包围苍天的小世界的三选一分支需要 choice 类型目标支持。",
+    "驰骋天际星之枪尖的英雄对决需要战场锁定和效果免疫机制。"
+  ],
+  "userConfirmedInterpretations": [],
+  "resolvedQuestions": [
+    {
+      "id": "achilles-gale-advance-targeting",
+      "resolution": "根据§9.2，'所有交战对手' = 同一战场所有处于交战状态的对手（包括NPC）。"
+    }
+  ],
+  "openQuestions": []
+}

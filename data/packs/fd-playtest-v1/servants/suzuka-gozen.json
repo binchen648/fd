@@ -1,0 +1,37 @@
+{
+  "id": "servant.suzuka_gozen",
+  "name": "铃鹿御前",
+  "classTag": "Saber",
+  "overviewCardId": "servant.suzuka_gozen.overview",
+  "startingDeck": {
+    "size": 12,
+    "entries": [
+      { "entryType": "basic", "attribute": "strength", "printedValue": 2, "copies": 2 },
+      { "entryType": "basic", "attribute": "strength", "printedValue": 3, "copies": 1 },
+      { "entryType": "basic", "attribute": "strength", "printedValue": 4, "copies": 1 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 2, "copies": 1 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 3, "copies": 2 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 4, "copies": 2 },
+      { "entryType": "basic", "attribute": "magecraft", "printedValue": 2, "copies": 1 },
+      { "entryType": "named", "attribute": "special", "cardId": "basic.surveil", "copies": 1 },
+      { "entryType": "named", "attribute": "special", "cardId": "basic.preparation", "copies": 1 }
+    ],
+    "attributeCounts": { "strength": 4, "agility": 5, "magecraft": 1, "special": 2 }
+  },
+  "skillCardIds": [
+    "servant.suzuka_gozen.skill.blessing_of_wisdom",
+    "servant.suzuka_gozen.skill.tenkiame",
+    "servant.suzuka_gozen.skill.three_thousand_worlds"
+  ],
+  "linkedCards": {},
+  "capability": {
+    "status": "HOST_ADJUDICATED",
+    "hostRulingReason": "Skill effects are preserved on reviewed source images but are not yet expressed as engine primitives."
+  },
+  "source": {
+    "htmPath": "chm-extract/铃鹿御前.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_213233_669.png",
+    "imageIndex": 0,
+    "reviewedAgainstImage": true
+  }
+}

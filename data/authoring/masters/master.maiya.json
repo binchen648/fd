@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "id": "master.maiya",
+  "name": "久宇舞弥",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sources": [
+    {
+      "id": "chm_page",
+      "type": "chm_page",
+      "path": "D:/fd/chm-extract/久宇舞弥.htm",
+      "pageTitle": "久宇舞弥",
+      "imageOrder": [
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_230925_200.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_230929_848.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_230935_247.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_230941_863.png"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "master.maiya.skill.military",
+      "name": "军旅",
+      "cardType": "master_skill",
+      "printedText": "你拥有【援护射击】。前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "military.has-support-shot",
+          "kind": "forced_trigger",
+          "printedClause": "你拥有【援护射击】。",
+          "activation": { "trigger": "game_start" },
+          "effects": [{ "type": "create_card", "cardId": "master.maiya.deck.support-shot", "to": { "zone": "skill" } }],
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "military.attach-support-shot",
+          "kind": "phase_action",
+          "printedClause": "前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
+          "activation": { "phase": "advance", "opens": "controller_action_window" },
+          "conditions": [{ "type": "not", "condition": { "type": "controller_at_battlefield" } }],
+          "targets": [
+            {
+              "id": "supported_player",
+              "type": "player",
+              "constraints": [{ "type": "not_controller" }],
+              "count": { "min": 1, "max": 1 }
+            }
+          ],
+          "cost": [{ "type": "pay_mana", "amount": 2 }],
+          "effects": [
+            {
+              "type": "attach_card_to_player_attack",
+              "cardId": "master.maiya.deck.support-shot",
+              "target": "supported_player",
+              "returnAtRoundEnd": true,
+              "controllerCannotWinStatus": "maiya_cannot_win_battle_this_round"
+            }
+          ],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+    },
+    {
+      "id": "master.maiya.deck.support-shot",
+      "name": "援护射击",
+      "cardType": "master_skill",
+      "printedText": "迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
+      "cardFace": { "cost": 2, "basePower": 0, "attributes": ["迅捷"] },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "support-shot.append-only",
+          "kind": "passive",
+          "printedClause": "此牌需追加打出。",
+          "activation": { "trigger": "while_active" },
+          "effects": [{ "type": "append_only_rule" }],
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "support-shot.suppress",
+          "kind": "phase_action",
+          "printedClause": "压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
+          "activation": { "phase": "action", "opens": "controller_action_window", "requiresSourceState": "active" },
+          "effects": [
+            { "type": "terrain_multiplier", "value": 2 },
+            { "type": "transfer_vp_to_owner", "amount": 2 }
+          ],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+    }
+  ],
+  "excludedCards": [{ "id": "master.maiya.skill.ascension", "name": "甜品狂热者", "reason": "user_scope_excluded_ascension" }],
+  "adapterNotes": ["升华技按用户规则排除。"]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "event.waxing_moon_ritual.keian_ceremony",
+  "name": "庆安神前比武",
+  "cardType": "event",
+  "printedReward": 1,
+  "applicableLocations": ["deep_mountain", "new_capital"],
+  "printedText": "此战场发生战斗后的唯一胜者可从游戏外或其他玩家处获得无主从者【吉尔伽美什】。\n此牌出场时，抽取另一张事件牌放置于此地点。\n此牌进入弃牌堆或被移除时改为返回事件牌堆。",
+  "timing": ["action", "after_battle", "cleanup"],
+  "interactions": [
+    { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["this_card_enters_play"] },
+    { "kind": "triggered", "visibility": "public", "optional": true, "responseTo": ["unique_winner_after_battle"] },
+    { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["this_card_would_enter_discard_or_be_removed"] }
+  ],
+  "effects": [
+    { "type": "grant_masterless_servant", "servantName": "吉尔伽美什", "recipient": "unique_winner_after_battle_at_this_battlefield", "from": ["outside_game", "other_players"], "optional": true },
+    { "type": "draw_and_place_another_event_here", "timingLabel": "此牌出场时" },
+    { "type": "return_to_event_deck_instead_of_discard_or_removal" }
+  ],
+  "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Nested event placement, cross-player masterless servant transfer, and deck-return replacement are not yet automated." },
+  "source": { "htmPath": "chm-extract/盈月之仪.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211220_295.png", "imageIndex": 19, "reviewedAgainstImage": true }
+}

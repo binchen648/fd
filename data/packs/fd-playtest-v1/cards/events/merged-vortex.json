@@ -1,0 +1,32 @@
+{
+  "id": "event.moon_holy_grail.merged_vortex",
+  "name": "嵌合涡流",
+  "cardType": "event",
+  "printedReward": 2,
+  "applicableLocations": ["deep_mountain", "new_capital"],
+  "printedText": "当一名玩家移动至此战场时，此时每有一名已位于此战场的对手，该玩家便获得+1合计威力直至回合结束。玩家无法以移动从此战场离开。",
+  "effects": [
+    {
+      "type": "presence_scaling_bonus",
+      "trigger": "player_moves_to_this_battlefield",
+      "amountPerOpponentAlreadyPresent": 1,
+      "duration": "until_round_end"
+    },
+    {
+      "type": "movement_lock",
+      "scope": "players_at_this_battlefield",
+      "prohibits": "move_from_this_battlefield"
+    }
+  ],
+  "capability": {
+    "status": "PARTIAL",
+    "supportedDimensions": ["trigger", "duration", "movement_restriction"],
+    "hostRulingReason": "Automatic event resolution is not yet connected to the rules engine."
+  },
+  "source": {
+    "htmPath": "chm-extract/月之圣杯.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205523_825.png",
+    "imageIndex": 11,
+    "reviewedAgainstImage": true
+  }
+}

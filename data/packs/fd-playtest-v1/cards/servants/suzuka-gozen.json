@@ -1,0 +1,71 @@
+[
+  {
+    "id": "servant.suzuka_gozen.overview",
+    "name": "铃鹿御前",
+    "cardType": "servant_overview",
+    "capability": { "status": "FULL" },
+    "source": { "htmPath": "chm-extract/铃鹿御前.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_213233_669.png", "imageIndex": 0, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.suzuka_gozen.skill.blessing_of_wisdom",
+    "name": "才智的祝福",
+    "cardType": "servant_skill",
+    "printedText": "被动：当你重洗牌库时，你获得1点【才智】且可选择至多3张弃牌堆中的牌不返回牌库。\n被动/前哨阶段：花费1点【才智】，你本回合无视【败北】效果。",
+    "timing": ["advance", "cleanup"],
+    "interactions": [
+      { "kind": "triggered", "visibility": "owner_only", "optional": true, "responseTo": ["deck_reshuffle"] },
+      { "kind": "activated", "visibility": "public", "optional": true, "targetTypes": ["self"] }
+    ],
+    "effects": [
+      { "type": "gain_named_resource", "resource": "才智", "amount": 1, "condition": "when_owner_reshuffles_deck" },
+      { "type": "exclude_cards_from_discard_reshuffle", "maxCards": 3, "targetTypes": ["discard_pile_card"] },
+      { "type": "ignore_defeat_effects", "costResource": "才智", "costAmount": 1, "duration": "current_round", "timingLabel": "被动/前哨阶段" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Discard recovery and defeat immunity are not yet implemented." },
+    "source": { "htmPath": "chm-extract/铃鹿御前.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_213243_197.png", "imageIndex": 1, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.suzuka_gozen.skill.tenkiame",
+    "name": "天鬼雨",
+    "cardType": "servant_skill",
+    "attributes": ["strength"],
+    "attribute": "strength",
+    "printedValue": 5,
+    "printedCost": 0,
+    "traits": ["noble_phantasm"],
+    "printedText": "【真名解放】\n行动阶段：花费X点【才智】（至多为2），从你的弃牌堆打出至多3+X张基础攻击。战斗阶段结束后，改为将它们洗回你的牌库。",
+    "timing": ["action", "after_battle"],
+    "interactions": [
+      { "kind": "activated", "visibility": "public", "optional": true, "targetTypes": ["discard_pile_basic_attack"] },
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["after_battle"] }
+    ],
+    "effects": [
+      { "type": "pay_named_resource", "resource": "才智", "amountFormula": "X", "maxAmount": 2, "timingLabel": "行动阶段" },
+      { "type": "play_basic_attacks_from_discard_pile", "maxCardsFormula": "3 + X" },
+      { "type": "shuffle_played_cards_into_deck_instead_of_discarding", "timingLabel": "战斗阶段结束后" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Multi-card attack and end-of-battle return are not yet implemented." },
+    "source": { "htmPath": "chm-extract/铃鹿御前.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_213247_716.png", "imageIndex": 2, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.suzuka_gozen.skill.three_thousand_worlds",
+    "name": "三千大千世界",
+    "cardType": "servant_skill",
+    "attributes": ["agility"],
+    "attribute": "agility",
+    "printedValue": 0,
+    "printedCost": 5,
+    "printedText": "打出时：此牌+1魔力消耗（可叠加）直至游戏结束。\n然后展示并弃置你牌堆顶的3张牌，若你以此法弃置了任意印刷威力为4的牌，此牌+X威力，X为此牌的魔力消耗。",
+    "timing": ["action"],
+    "interactions": [
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["play_this_card"] }
+    ],
+    "effects": [
+      { "type": "increase_this_card_mana_cost", "amount": 1, "stackable": true, "duration": "until_game_end" },
+      { "type": "reveal_and_discard_deck_top", "count": 3 },
+      { "type": "gain_attack_power", "amountFormula": "this_card_mana_cost", "condition": "discarded_any_printed_value_4_by_this_effect" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Stacked mana scaling and top-deck reveal are not yet implemented." },
+    "source": { "htmPath": "chm-extract/铃鹿御前.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_213238_852.png", "imageIndex": 3, "reviewedAgainstImage": true }
+  }
+]

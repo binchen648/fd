@@ -1,0 +1,1226 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.artoriac",
+  "name": "阿尔托莉雅·卡斯特",
+  "class": "Caster",
+  "canonicalIdSource": "main_repo",
+  "authoringStatus": "draft_structured_from_chm_skill_pack",
+  "userConfirmedInterpretations": [
+    {
+      "date": "2026-09-03",
+      "field": "face_down_attack",
+      "interpretation": "背面向上的攻击 = 暗置打出的攻击；不消耗魔力、不发动效果、没有伤害结算。"
+    },
+    {
+      "date": "2026-09-03",
+      "field": "core_skill_play_requirement",
+      "interpretation": "选王剑、选定之杖、真圆集结誓约之星在没有特殊说明或御主技能影响时，均要求御主魔力值大于等于 8 才能打出。"
+    },
+    {
+      "date": "2026-09-03",
+      "field": "luck_card_id",
+      "interpretation": "【幸运】就是特殊基础牌库的 luck，当前 canonical ID 写作 card.luck。"
+    },
+    {
+      "date": "2026-09-03",
+      "field": "unique_keyword",
+      "interpretation": "同时有多张带“唯一”的牌可触发时，只能激活其中一张卡牌的唯一效果，不能一起激活。"
+    }
+  ],
+  "sourcePolicy": {
+    "priority": [
+      "original_card_image",
+      "chm_association",
+      "main_repo_legacy_content",
+      "ocr_or_manual_draft"
+    ],
+    "notes": [
+      "本档案以 chm-extract 中阿尔托莉雅·卡斯特页面关联图片为主要证据。",
+      "主仓库 legacy content 用于 canonical ID、requirement、既有文本交叉校验。",
+      "所有 execution.mode=host_adjudicated 或 implementationStatus 非 complete 的能力，不应直接进入正式自动结算。"
+    ]
+  },
+  "sources": [
+    {
+      "id": "chm_page",
+      "type": "chm_html",
+      "path": "D:/fd/chm-extract/阿尔托莉雅·卡斯特.htm",
+      "priority": "chm_association"
+    },
+    {
+      "id": "overview_image",
+      "type": "original_card_image",
+      "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_194003_539.png",
+      "priority": "original_card_image"
+    },
+    {
+      "id": "main_repo_legacy",
+      "type": "main_repo_content",
+      "repository": "https://github.com/fengling20011118-dotcom/fate-domination",
+      "locator": "src/content/generated/legacy-content.json:servant.artoriac",
+      "priority": "main_repo_legacy_content"
+    }
+  ],
+  "deck": [
+    {
+      "cardId": "card.cardq2",
+      "count": 2,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq3",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.carda2",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.carda3",
+      "count": 2,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.carda4",
+      "count": 2,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.carda5",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.x-pilgrimcall",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.x-pilgrimrespite",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.x-pilgrimdestiny",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    }
+  ],
+  "cards": [
+    {
+      "id": "servant.artoriac.skill.sc-artoriac-1",
+      "name": "选王剑",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.artoriac"
+      },
+      "printedText": "【真名解放】\n残留：此卡持续激活两回合。你的其他特殊属性攻击威力+2。\n战斗阶段：将一张你本回合打出的非技能卡或背面向上的攻击返回你的手牌。",
+      "cardFace": {
+        "typeLabel": "特殊/宝具",
+        "attributes": [
+          "特殊",
+          "宝具"
+        ],
+        "cost": 3,
+        "basePower": 4,
+        "requirements": [
+          {
+            "type": "min_mana",
+            "value": 8,
+            "source": "main_repo_legacy_and_user_confirmed_2026-09-03"
+          }
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window",
+        "note": "牌文中的“战斗阶段”是已激活卡牌的能力发动窗口，不表示可在战斗阶段打出此牌。"
+      },
+      "playRequirements": [
+        {
+          "type": "controller_mana_at_least",
+          "value": 8,
+          "source": "cardFace.requirements_user_confirmed_2026-09-03"
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-artoriac-1.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": [
+            "真名解放"
+          ],
+          "activation": {
+            "trigger": "on_use_declared"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "reveal_information",
+              "scope": "servant_package",
+              "subject": "controller.servant"
+            }
+          ],
+          "visibility": {
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-artoriac-1.residual-special-power-bonus",
+          "kind": "residual",
+          "printedClause": "残留：此卡持续激活两回合。你的其他特殊属性攻击威力+2。",
+          "activation": {
+            "trigger": "on_card_played",
+            "opens": "immediate"
+          },
+          "lifecycle": {
+            "starts": "immediate",
+            "duration": "round_count",
+            "rounds": 2,
+            "cleanup": "expire_after_duration"
+          },
+          "conditions": [],
+          "targets": [],
+          "ruleModifiers": [
+            {
+              "id": "other-special-attack-power-plus-2",
+              "printedClause": "你的其他特殊属性攻击威力+2。",
+              "operation": "add",
+              "rule": "attack.currentPower",
+              "value": 2,
+              "scope": {
+                "controller": "self",
+                "object": "attack_card",
+                "constraints": [
+                  {
+                    "type": "has_attribute",
+                    "attribute": "特殊"
+                  },
+                  {
+                    "type": "not_source_card",
+                    "sourceCard": "servant.artoriac.skill.sc-artoriac-1"
+                  }
+                ]
+              }
+            }
+          ],
+          "effects": [],
+          "execution": {
+            "mode": "automatic",
+            "implementation": "packages/rules/src/ability/interpreter.ts",
+            "previousHostReason": "需要接入持续两回合的残留状态与战力修正规则。"
+          }
+        },
+        {
+          "id": "sc-artoriac-1.return-current-round-attack",
+          "kind": "phase_action",
+          "printedClause": "战斗阶段：将一张你本回合打出的非技能卡或背面向上的攻击返回你的手牌。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "exists_target",
+              "targetRef": "target_attack"
+            }
+          ],
+          "targets": [
+            {
+              "id": "target_attack",
+              "type": "card_instance",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "required": true,
+              "scope": {
+                "zone": "battle_area",
+                "controller": "self"
+              },
+              "constraints": [
+                {
+                  "type": "played_this_round",
+                  "value": true
+                },
+                {
+                  "type": "or",
+                  "conditions": [
+                    {
+                      "type": "not_card_type",
+                      "cardType": "servant_skill"
+                    },
+                    {
+                      "type": "is_attack",
+                      "face": "face_down",
+                      "interpretation": "暗置打出的攻击；不消耗魔力、不发动效果、没有伤害结算。"
+                    }
+                  ]
+                }
+              ],
+              "visibility": "controller_private_until_resolution"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_card",
+              "target": "target_attack",
+              "to": {
+                "zone": "hand",
+                "owner": "controller"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "implementation": "packages/rules/src/ability/interpreter.ts",
+            "previousHostReason": "目标可包含本回合打出的非技能卡，或用户已确认的暗置攻击。"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "sourceId": "chm_page",
+          "role": "association"
+        },
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_194015_795.png",
+          "role": "card_face_and_text"
+        },
+        {
+          "sourceId": "main_repo_legacy",
+          "role": "canonical_id_and_requirement_crosscheck"
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "confirmed_from_image_and_main_repo",
+        "rulesMappingStatus": "engine_integrated",
+        "implementationStatus": "complete",
+        "completion": "tested_authoring_vertical_slice",
+        "testEvidence": "packages/rules/tests/authoring-interpreter.test.ts"
+      },
+      "ambiguities": [
+        {
+          "field": "cardFace.requirements",
+          "issue": "卡图可确认 cost=3、basePower=4；requirement=8 已由用户于 2026-09-03 确认。"
+        }
+      ]
+    },
+    {
+      "id": "servant.artoriac.skill.sc-artoriac-2",
+      "name": "选定之杖",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.artoriac"
+      },
+      "printedText": "行动阶段：花费X点魔力，然后查看你牌库顶的X+2张牌，你可以将其中一张加入手牌，然后弃置其余被查看的牌。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 3,
+        "basePower": 7,
+        "requirements": [
+          {
+            "type": "min_mana",
+            "value": 8,
+            "source": "user_confirmed_2026-09-03_overrides_main_repo_legacy_requirement_3"
+          }
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "controller_mana_at_least",
+          "value": 8,
+          "source": "cardFace.requirements_user_confirmed_2026-09-03"
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-artoriac-2.pay-x-look-x-plus-two",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：花费X点魔力，然后查看你牌库顶的X+2张牌，你可以将其中一张加入手牌，然后弃置其余被查看的牌。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "cost": [
+            {
+              "id": "additional_x_mana",
+              "type": "pay_mana",
+              "amount": {
+                "var": "X",
+                "constraints": [
+                  {
+                    "type": "integer",
+                    "min": 0
+                  },
+                  {
+                    "type": "lte",
+                    "left": "X",
+                    "right": "controller.availableMana"
+                  }
+                ]
+              }
+            }
+          ],
+          "conditions": [],
+          "targets": [
+            {
+              "id": "chosen_card",
+              "type": "card_instance",
+              "count": {
+                "min": 0,
+                "max": 1
+              },
+              "required": false,
+              "scope": {
+                "zone": "looked_cards",
+                "owner": "controller"
+              },
+              "constraints": [],
+              "visibility": "controller_private_until_resolution"
+            }
+          ],
+          "effects": [
+            {
+              "type": "look_at_deck_top",
+              "owner": "controller",
+              "count": {
+                "op": "add",
+                "args": [
+                  {
+                    "var": "X"
+                  },
+                  2
+                ]
+              },
+              "resultZone": "looked_cards",
+              "visibility": "controller_private"
+            },
+            {
+              "type": "move_card",
+              "target": "chosen_card",
+              "to": {
+                "zone": "hand",
+                "owner": "controller"
+              },
+              "optional": true
+            },
+            {
+              "type": "move_all_remaining",
+              "from": "looked_cards",
+              "excluding": [
+                "chosen_card"
+              ],
+              "to": {
+                "zone": "discard",
+                "owner": "controller"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "implementation": "packages/rules/src/ability/interpreter.ts",
+            "previousHostReason": "需要运行时支持变量 X、私密查看、可选选择与剩余弃置。"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_194011_668.png",
+          "role": "card_face_and_text"
+        },
+        {
+          "sourceId": "main_repo_legacy",
+          "role": "canonical_id_and_requirement_crosscheck"
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "confirmed_from_image_and_main_repo",
+        "rulesMappingStatus": "engine_integrated",
+        "implementationStatus": "complete",
+        "completion": "tested_authoring_vertical_slice",
+        "testEvidence": "packages/rules/tests/authoring-interpreter.test.ts"
+      },
+      "ambiguities": []
+    },
+    {
+      "id": "servant.artoriac.skill.sc-artoriac-3",
+      "name": "真圆集结誓约之星",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.artoriac"
+      },
+      "printedText": "残留：你的弃牌堆持续公开，X为你弃牌堆中幸运牌的数量×5（至多为15）。当X大于0时，【真名解放】。当你获得一场胜利时，将你的弃牌堆洗回牌库，此效果无法被阻止。",
+      "cardFace": {
+        "typeLabel": "魔术/宝具",
+        "attributes": [
+          "魔术",
+          "宝具"
+        ],
+        "cost": 0,
+        "basePower": {
+          "formula": {
+            "op": "min",
+            "args": [
+              {
+                "op": "multiply",
+                "args": [
+                  {
+                    "op": "count_cards",
+                    "zone": "discard",
+                    "owner": "controller",
+                    "constraints": [
+                      {
+                        "type": "has_card_id",
+                        "cardId": "card.luck"
+                      }
+                    ]
+                  },
+                  5
+                ]
+              },
+              15
+            ]
+          },
+          "printedExpression": "弃牌堆中幸运牌的数量×5（至多为15）"
+        },
+        "requirements": [
+          {
+            "type": "min_mana",
+            "value": 8,
+            "source": "main_repo_legacy_and_user_confirmed_2026-09-03"
+          }
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "controller_mana_at_least",
+          "value": 8,
+          "source": "cardFace.requirements_user_confirmed_2026-09-03"
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-artoriac-3.discard-public-and-power-formula",
+          "kind": "residual",
+          "printedClause": "残留：你的弃牌堆持续公开，X为你弃牌堆中幸运牌的数量×5（至多为15）。",
+          "activation": {
+            "trigger": "on_card_played",
+            "opens": "immediate"
+          },
+          "lifecycle": {
+            "starts": "immediate",
+            "duration": "while_card_active",
+            "cleanup": "when_card_leaves_active_area"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "set_zone_visibility",
+              "zone": "discard",
+              "owner": "controller",
+              "visibility": "public"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "x-power-from-luck-in-discard",
+              "printedClause": "X为你弃牌堆中幸运牌的数量×5（至多为15）。",
+              "operation": "set",
+              "rule": "card.currentPower",
+              "scope": {
+                "object": "source_card"
+              },
+              "value": {
+                "formulaRef": "cardFace.basePower"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "implementation": "packages/rules/src/ability/interpreter.ts",
+            "previousHostReason": "需要弃牌堆持续公开与动态威力公式接入运行时。"
+          }
+        },
+        {
+          "id": "sc-artoriac-3.conditional-true-name-release",
+          "kind": "conditional_reveal",
+          "printedClause": "当X大于0时，【真名解放】。",
+          "markers": [
+            "真名解放"
+          ],
+          "activation": {
+            "trigger": "when_formula_condition_met",
+            "opens": "immediate",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "gt",
+              "left": {
+                "formulaRef": "cardFace.basePower"
+              },
+              "right": 0
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "reveal_information",
+              "scope": "servant_package",
+              "subject": "controller.servant"
+            }
+          ],
+          "visibility": {
+            "revealTiming": "when_condition_met",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic",
+            "implementation": "packages/rules/src/ability/interpreter.ts",
+            "previousHostReason": "真名解放不是默认 on_use_declared，而是 X>0 条件触发。"
+          }
+        },
+        {
+          "id": "sc-artoriac-3.shuffle-discard-on-victory",
+          "kind": "forced_trigger",
+          "printedClause": "当你获得一场胜利时，将你的弃牌堆洗回牌库，此效果无法被阻止。",
+          "activation": {
+            "trigger": "after_controller_gains_victory",
+            "opens": "immediate",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "shuffle_zone_into_deck",
+              "from": {
+                "zone": "discard",
+                "owner": "controller"
+              },
+              "to": {
+                "zone": "deck",
+                "owner": "controller"
+              }
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "shuffle-discard-cannot-be-prevented",
+              "printedClause": "此效果无法被阻止。",
+              "operation": "ignore",
+              "rule": "effect_prevention",
+              "scope": {
+                "object": "this_effect"
+              },
+              "priority": {
+                "tier": "explicit_exception"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "implementation": "packages/rules/src/ability/interpreter.ts",
+            "previousHostReason": "需要洗牌动作与“无法被阻止”的规则优先级接入。"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_194007_626.png",
+          "role": "card_face_and_text"
+        },
+        {
+          "sourceId": "main_repo_legacy",
+          "role": "canonical_id_and_requirement_crosscheck"
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "confirmed_from_image_and_main_repo",
+        "rulesMappingStatus": "engine_integrated",
+        "implementationStatus": "complete",
+        "completion": "tested_authoring_vertical_slice",
+        "testEvidence": "packages/rules/tests/authoring-interpreter.test.ts"
+      },
+      "ambiguities": [
+        {
+          "field": "cardFace.basePower",
+          "issue": "卡图牌面为 X，主仓库 legacy basePower 为 0；本档案按卡图和原文设为公式 X，保留主仓库差异供 adapter 处理。"
+        },
+        {
+          "field": "cardFace.requirements",
+          "issue": "requirement=8 来自主仓库 legacy；卡图可见 cost=0、power=X，但 requirement 需要继续与最终规则/版式确认。"
+        }
+      ]
+    },
+    {
+      "id": "servant.artoriac.skill.sc-artoriac-4",
+      "name": "朝圣者的召唤",
+      "cardId": "card.x-pilgrimcall",
+      "cardType": "servant_deck_card",
+      "owner": {
+        "type": "servant",
+        "id": "servant.artoriac"
+      },
+      "printedText": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n行动阶段：如果你位于侦察，获得2点战果。沿着箭头移动至多两个地点。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 1,
+        "basePower": 4,
+        "requirements": [
+          {
+            "type": "min_mana",
+            "value": 1,
+            "source": "main_repo_legacy"
+          }
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "controller_mana_at_least",
+          "value": 1,
+          "source": "cardFace.requirements"
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-artoriac-4.unique-passive-luck-on-win",
+          "kind": "optional_trigger",
+          "printedClause": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。",
+          "activation": {
+            "trigger": "after_controller_wins_battle",
+            "opens": "post_battle_optional_trigger_window"
+          },
+          "limit": {
+            "type": "unique",
+            "scope": "unique_keyword_group",
+            "groupId": "artoriac-pilgrim-unique-on-win",
+            "window": "trigger_window",
+            "conflictPolicy": "only_one_effect_may_activate_per_window"
+          },
+          "responseWindow": {
+            "opens": "post_battle_optional_trigger_window",
+            "eligiblePlayers": [
+              "controller"
+            ],
+            "order": "turn_order",
+            "passDefault": "decline_this_window",
+            "nonEligibleView": "等待响应结算"
+          },
+          "conditions": [
+            {
+              "type": "source_card_in_zone",
+              "zone": "hand",
+              "owner": "controller"
+            }
+          ],
+          "targets": [],
+          "cost": [
+            {
+              "type": "move_source_card",
+              "from": {
+                "zone": "hand",
+                "owner": "controller"
+              },
+              "to": {
+                "zone": "removed_from_game",
+                "owner": "controller"
+              }
+            }
+          ],
+          "creates": [
+            {
+              "type": "create_card",
+              "cardId": "card.luck",
+              "to": {
+                "zone": "deck",
+                "owner": "controller"
+              },
+              "then": [
+                {
+                  "type": "shuffle_deck",
+                  "owner": "controller"
+                }
+              ]
+            }
+          ],
+          "effects": [],
+          "execution": {
+            "mode": "automatic",
+            "implementation": "packages/rules/src/ability/interpreter.ts",
+            "previousHostReason": "需要从手牌公开/移出游戏、生成幸运并洗回牌库。"
+          }
+        },
+        {
+          "id": "sc-artoriac-4.recon-gain-vp-and-move",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：如果你位于侦察，获得2点战果。沿着箭头移动至多两个地点。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "controller_at_location_kind",
+              "locationKind": "侦察"
+            }
+          ],
+          "targets": [
+            {
+              "id": "destination",
+              "type": "location",
+              "count": {
+                "min": 0,
+                "max": 1
+              },
+              "required": false,
+              "scope": {
+                "board": "current"
+              },
+              "constraints": [
+                {
+                  "type": "reachable_along_arrows",
+                  "from": "controller.currentLocation",
+                  "maxSteps": 2
+                }
+              ],
+              "visibility": "public"
+            }
+          ],
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "player": "controller",
+              "amount": 2
+            },
+            {
+              "type": "move_player",
+              "player": "controller",
+              "to": "destination",
+              "optional": true
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "implementation": "packages/rules/src/ability/interpreter.ts",
+            "previousHostReason": "需要棋盘箭头可达路径、地点类型与玩家移动动作接入；玩家移动不属于当前 HostAdjudicationRequest 五类受限操作，应由正式规则动作发现/执行入口处理。"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_194020_420.png",
+          "role": "card_face_and_text"
+        },
+        {
+          "sourceId": "main_repo_legacy",
+          "role": "canonical_id_and_requirement_crosscheck"
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "confirmed_from_image_and_main_repo",
+        "rulesMappingStatus": "engine_integrated",
+        "implementationStatus": "complete",
+        "completion": "tested_authoring_vertical_slice",
+        "testEvidence": "packages/rules/tests/authoring-interpreter.test.ts"
+      },
+      "ambiguities": [
+        {
+          "field": "abilities[1].targets[0].count.min",
+          "issue": "“至多两个地点”允许不移动的含义暂按 min=0 处理；如规则要求必须移动，应改为 min=1。"
+        }
+      ]
+    },
+    {
+      "id": "servant.artoriac.skill.sc-artoriac-5",
+      "name": "朝圣者的休憩",
+      "cardId": "card.x-pilgrimrespite",
+      "cardType": "servant_deck_card",
+      "owner": {
+        "type": "servant",
+        "id": "servant.artoriac"
+      },
+      "printedText": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n行动阶段：获得2点魔力，如果你无法增加魔力则获得2点战果。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 0,
+        "basePower": 0,
+        "requirements": [
+          {
+            "type": "min_mana",
+            "value": 0,
+            "source": "main_repo_legacy"
+          }
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sc-artoriac-5.unique-passive-luck-on-win",
+          "kind": "optional_trigger",
+          "printedClause": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。",
+          "activation": {
+            "trigger": "after_controller_wins_battle",
+            "opens": "post_battle_optional_trigger_window"
+          },
+          "limit": {
+            "type": "unique",
+            "scope": "unique_keyword_group",
+            "groupId": "artoriac-pilgrim-unique-on-win",
+            "window": "trigger_window",
+            "conflictPolicy": "only_one_effect_may_activate_per_window"
+          },
+          "responseWindow": {
+            "opens": "post_battle_optional_trigger_window",
+            "eligiblePlayers": [
+              "controller"
+            ],
+            "order": "turn_order",
+            "passDefault": "decline_this_window",
+            "nonEligibleView": "等待响应结算"
+          },
+          "conditions": [
+            {
+              "type": "source_card_in_zone",
+              "zone": "hand",
+              "owner": "controller"
+            }
+          ],
+          "targets": [],
+          "cost": [
+            {
+              "type": "move_source_card",
+              "from": {
+                "zone": "hand",
+                "owner": "controller"
+              },
+              "to": {
+                "zone": "removed_from_game",
+                "owner": "controller"
+              }
+            }
+          ],
+          "creates": [
+            {
+              "type": "create_card",
+              "cardId": "card.luck",
+              "to": {
+                "zone": "deck",
+                "owner": "controller"
+              },
+              "then": [
+                {
+                  "type": "shuffle_deck",
+                  "owner": "controller"
+                }
+              ]
+            }
+          ],
+          "effects": [],
+          "execution": {
+            "mode": "automatic",
+            "implementation": "packages/rules/src/ability/interpreter.ts",
+            "previousHostReason": "与朝圣者共通被动相同，需要生成/洗入幸运。"
+          }
+        },
+        {
+          "id": "sc-artoriac-5.gain-mana-or-vp",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：获得2点魔力，如果你无法增加魔力则获得2点战果。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "branch",
+              "branches": [
+                {
+                  "if": {
+                    "type": "can_adjust_mana",
+                    "player": "controller",
+                    "amount": 2
+                  },
+                  "then": [
+                    {
+                      "type": "adjust_mana",
+                      "player": "controller",
+                      "amount": 2
+                    }
+                  ]
+                },
+                {
+                  "else": [
+                    {
+                      "type": "adjust_victory_points",
+                      "player": "controller",
+                      "amount": 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "implementation": "packages/rules/src/ability/interpreter.ts",
+            "previousHostReason": "需要运行时判断魔力上限/是否可增加。"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_194025_123.png",
+          "role": "card_face_and_text"
+        },
+        {
+          "sourceId": "main_repo_legacy",
+          "role": "canonical_id_and_requirement_crosscheck"
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "confirmed_from_image_and_main_repo",
+        "rulesMappingStatus": "engine_integrated",
+        "implementationStatus": "complete",
+        "completion": "tested_authoring_vertical_slice",
+        "testEvidence": "packages/rules/tests/authoring-interpreter.test.ts"
+      },
+      "ambiguities": []
+    },
+    {
+      "id": "servant.artoriac.skill.sc-artoriac-6",
+      "name": "朝圣者的命运",
+      "cardId": "card.x-pilgrimdestiny",
+      "cardType": "servant_deck_card",
+      "owner": {
+        "type": "servant",
+        "id": "servant.artoriac"
+      },
+      "printedText": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n战斗阶段：如果你赢得战斗且不是单独获胜，获得2点战果。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 1,
+        "basePower": 6,
+        "requirements": [
+          {
+            "type": "min_mana",
+            "value": 1,
+            "source": "main_repo_legacy"
+          }
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window",
+        "note": "牌文中的“战斗阶段”是已激活卡牌的能力发动窗口，不表示可在战斗阶段打出此牌。"
+      },
+      "playRequirements": [
+        {
+          "type": "controller_mana_at_least",
+          "value": 1,
+          "source": "cardFace.requirements"
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-artoriac-6.unique-passive-luck-on-win",
+          "kind": "optional_trigger",
+          "printedClause": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。",
+          "activation": {
+            "trigger": "after_controller_wins_battle",
+            "opens": "post_battle_optional_trigger_window"
+          },
+          "limit": {
+            "type": "unique",
+            "scope": "unique_keyword_group",
+            "groupId": "artoriac-pilgrim-unique-on-win",
+            "window": "trigger_window",
+            "conflictPolicy": "only_one_effect_may_activate_per_window"
+          },
+          "responseWindow": {
+            "opens": "post_battle_optional_trigger_window",
+            "eligiblePlayers": [
+              "controller"
+            ],
+            "order": "turn_order",
+            "passDefault": "decline_this_window",
+            "nonEligibleView": "等待响应结算"
+          },
+          "conditions": [
+            {
+              "type": "source_card_in_zone",
+              "zone": "hand",
+              "owner": "controller"
+            }
+          ],
+          "targets": [],
+          "cost": [
+            {
+              "type": "move_source_card",
+              "from": {
+                "zone": "hand",
+                "owner": "controller"
+              },
+              "to": {
+                "zone": "removed_from_game",
+                "owner": "controller"
+              }
+            }
+          ],
+          "creates": [
+            {
+              "type": "create_card",
+              "cardId": "card.luck",
+              "to": {
+                "zone": "deck",
+                "owner": "controller"
+              },
+              "then": [
+                {
+                  "type": "shuffle_deck",
+                  "owner": "controller"
+                }
+              ]
+            }
+          ],
+          "effects": [],
+          "execution": {
+            "mode": "automatic",
+            "implementation": "packages/rules/src/ability/interpreter.ts",
+            "previousHostReason": "与朝圣者共通被动相同，需要生成/洗入幸运。"
+          }
+        },
+        {
+          "id": "sc-artoriac-6.gain-vp-if-not-sole-winner",
+          "kind": "forced_trigger",
+          "printedClause": "战斗阶段：如果你赢得战斗且不是单独获胜，获得2点战果。",
+          "activation": {
+            "phase": "combat",
+            "trigger": "after_battle_result_determined",
+            "opens": "immediate",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "controller_won_battle"
+            },
+            {
+              "type": "not",
+              "condition": {
+                "type": "controller_sole_winner"
+              }
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "player": "controller",
+              "amount": 2
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "implementation": "packages/rules/src/ability/interpreter.ts",
+            "previousHostReason": "需要战斗结算结果中提供共同胜利/非单独获胜判定。"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_194029_723.png",
+          "role": "card_face_and_text"
+        },
+        {
+          "sourceId": "main_repo_legacy",
+          "role": "canonical_id_and_requirement_crosscheck"
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "confirmed_from_image_and_main_repo",
+        "rulesMappingStatus": "engine_integrated",
+        "implementationStatus": "complete",
+        "completion": "tested_authoring_vertical_slice",
+        "testEvidence": "packages/rules/tests/authoring-interpreter.test.ts"
+      },
+      "ambiguities": []
+    }
+  ],
+  "adapterNotes": [
+    "main_repo legacy skill implementation 当前为 pending；本档案可作为 authoring 源，由 adapter 生成主仓库兼容 rules 字段和 unmapped report。",
+    "三个朝圣者牌的“唯一/被动”共通能力可以在 adapter 或编译器层抽取模板；authoring 档案保留展开文本，并用 groupId=artoriac-pilgrim-unique-on-win 表达同一窗口只能激活其中一张。",
+    "所有 responseWindow.opens 均显式填写；非资格玩家展示“等待响应结算”；pass 默认 decline_this_window。",
+    "【残留】默认 starts=immediate，符合当前已确认修正。",
+    "选王剑、选定之杖、真圆集结誓约之星的 playRequirements 均按用户 2026-09-03 确认为御主魔力大于等于 8；其中选定之杖覆盖主仓库 legacy requirement=3 的旧值。",
+    "选定之杖 chosen_card.count.max=1 来自原文“其中一张”，不是 X 的上限；X 只受整数与 controller.availableMana 限制。"
+  ],
+  "resolvedQuestions": [
+    {
+      "id": "artoriac-face-down-attack-wording",
+      "resolution": "用户确认：理解为暗置打出的攻击，不消耗魔力、不发动效果、没有伤害结算。"
+    },
+    {
+      "id": "artoriac-noble-phantasm-requirement",
+      "resolution": "用户确认：三张技能牌在没有特殊说明或御主技能影响时都要求御主魔力值大于等于 8 才能打出。"
+    },
+    {
+      "id": "artoriac-luck-card-id",
+      "resolution": "用户确认：【幸运】就是特殊基础牌库的 luck，当前 card.luck 没有问题。"
+    }
+  ],
+  "openQuestions": []
+}

@@ -1,0 +1,28 @@
+{
+  "card_name": "飞鸟",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "魔术\n飞鸟\n43\n7\n[作品]\n遗憾-当你以常规出牌以外的方式激活或令此牌人场后\n失去2点魔力。\n羽黧-打出时: 此牌获符+3威力。",
+  "ocr_text_draft": "魔术 飞鸟 43 7 [作品] 遗憾-当你以常规出牌以外的方式激活或令此牌人场后 失去2点魔力。 羽黧-打出时: 此牌获符+3威力。",
+  "rules_text": "作品\n遗憾-当你以常规出牌以外的方式激活或令此牌人场后\n失去2点魔力。\n羽黧-打出时: 此牌获符+3威力。",
+  "effect_text": "作品\n遗憾-当你以常规出牌以外的方式激活或令此牌人场后\n失去2点魔力。\n羽黧-打出时: 此牌获符+3威力。",
+  "effect_explanation": "",
+  "cost": null,
+  "power": null,
+  "displayed_cost_power_confirmed": false,
+  "tags": [
+    "魔术"
+  ],
+  "attributes": [
+    "魔术"
+  ],
+  "confidence": 0.4,
+  "needs_human_review": true,
+  "uncertain_fields": [
+    "mana_cost",
+    "attack_power"
+  ],
+  "review_notes": [
+    "Uncertain field: mana_cost",
+    "Uncertain field: attack_power"
+  ]
+}

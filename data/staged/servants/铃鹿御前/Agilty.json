@@ -1,0 +1,24 @@
+{
+  "card_name": "Agilty",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "Agilty\n三干大千世界\n5\n打出时: 此牌+1魔力消耗\n可叠加\n苴至游戏结束。\n然后展示并葬置你牌堆顶的3张牌;若你以此法弃置了任意\n印刷威力为4的牌;此牌+玉威力,玉为此牌的魔力消耗。",
+  "ocr_text_draft": "Agilty 三干大千世界 5 打出时: 此牌+1魔力消耗 可叠加 苴至游戏结束。 然后展示并葬置你牌堆顶的3张牌;若你以此法弃置了任意 印刷威力为4的牌;此牌+玉威力,玉为此牌的魔力消耗。",
+  "rules_text": "三干大千世界\n5\n打出时: 此牌+1魔力消耗\n可叠加\n苴至游戏结束。\n然后展示并葬置你牌堆顶的3张牌;若你以此法弃置了任意\n印刷威力为4的牌;此牌+玉威力,玉为此牌的魔力消耗。",
+  "effect_text": "三干大千世界\n5\n打出时: 此牌+1魔力消耗\n可叠加\n苴至游戏结束。\n然后展示并葬置你牌堆顶的3张牌;若你以此法弃置了任意\n印刷威力为4的牌;此牌+玉威力,玉为此牌的魔力消耗。",
+  "effect_explanation": "",
+  "cost": null,
+  "power": null,
+  "displayed_cost_power_confirmed": false,
+  "tags": [],
+  "attributes": [],
+  "confidence": 0.4,
+  "needs_human_review": true,
+  "uncertain_fields": [
+    "mana_cost",
+    "attack_power"
+  ],
+  "review_notes": [
+    "Uncertain field: mana_cost",
+    "Uncertain field: attack_power"
+  ]
+}

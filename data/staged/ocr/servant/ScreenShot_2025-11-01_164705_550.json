@@ -1,0 +1,37 @@
+{
+  "jobId": "vision-servant.弗朗西斯.德雷克.003",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Servant",
+    "subtypeGuess": "Rider",
+    "familyConfidence": 0.95
+  },
+  "text": {
+    "cardName": "弗朗西斯·德雷克",
+    "rawText": "弗朗西斯·德雷克\n2,3,3\n2,3,3,4,5\nLuck\nSurveil\nSurveil\nSurveil",
+    "normalizedText": "弗朗西斯·德雷克\n2,3,3\n2,3,3,4,5\nLuck\nSurveil\nSurveil\nSurveil"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": "2,3,3",
+    "powerMarker": "2,3,3,4,5",
+    "numericSlots": [
+      3,
+      5
+    ],
+    "iconTags": [
+      "star",
+      "circle"
+    ],
+    "rarity": "",
+    "classTag": "Rider"
+  },
+  "blocks": [],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

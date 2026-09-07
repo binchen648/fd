@@ -1,0 +1,36 @@
+{
+  "jobId": "vision-master-matou-shinji-001",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "",
+    "subtypeGuess": "",
+    "familyConfidence": 0
+  },
+  "text": {
+    "cardName": "间桐慎二",
+    "rawText": "间桐慎二\n吸魔命令-进入深山町时，获得1点魔力。\n无用之人-游戏开始时，获得【伪臣之书】。\n小丑-当你战败时，失去一枚令咒。",
+    "normalizedText": "间桐慎二\n吸魔命令-进入深山町时，获得1点魔力。\n无用之人-游戏开始时，获得【伪臣之书】。\n小丑-当你战败时，失去一枚令咒。"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": "",
+    "powerMarker": "",
+    "numericSlots": [],
+    "iconTags": [],
+    "rarity": "",
+    "classTag": ""
+  },
+  "blocks": [
+    "间桐慎二",
+    "吸魔命令-进入深山町时，获得1点魔力。",
+    "无用之人-游戏开始时，获得【伪臣之书】。",
+    "小丑-当你战败时，失去一枚令咒。"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

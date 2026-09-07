@@ -1,0 +1,43 @@
+{
+  "generatedScenarioDirs": [
+    "D:\\fd\\data\\staged\\generated-scenarios"
+  ],
+  "scenarios": [
+    {
+      "label": "minimal-seeded-self",
+      "baselinePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\minimal-7p-seeded-scenario.json",
+      "candidatePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\minimal-7p-seeded-scenario.json",
+      "expectedIdentical": true
+    },
+    {
+      "label": "shinto-hidden-self",
+      "baselinePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\shinto-hidden-event-scenario.json",
+      "candidatePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\shinto-hidden-event-scenario.json",
+      "expectedIdentical": true
+    },
+    {
+      "label": "default-map-without-moon-self",
+      "baselinePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\default-map-without-moon.json",
+      "candidatePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\default-map-without-moon.json",
+      "expectedIdentical": true
+    },
+    {
+      "label": "moon-threshold-divergent-001",
+      "baselinePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\moon-holy-grail-threshold-scenario.json",
+      "candidatePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\moon-holy-grail-threshold-scenario-divergent-001.json",
+      "expectedIdentical": false
+    },
+    {
+      "label": "moon-threshold-divergent-002",
+      "baselinePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\moon-holy-grail-threshold-scenario.json",
+      "candidatePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\moon-holy-grail-threshold-scenario-divergent-002.json",
+      "expectedIdentical": false
+    },
+    {
+      "label": "climax-situation-card-self",
+      "baselinePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\climax-situation-card.json",
+      "candidatePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\climax-situation-card.json",
+      "expectedIdentical": true
+    }
+  ]
+}

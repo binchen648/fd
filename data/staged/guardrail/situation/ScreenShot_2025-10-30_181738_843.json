@@ -1,0 +1,113 @@
+{
+  "jobId": "guardrail-situation-blankification-001",
+  "artifactVersion": "guardrail-response-v1",
+  "status": "review",
+  "schemaOk": false,
+  "engineOk": false,
+  "decision": "review",
+  "ambiguityLevel": "medium",
+  "coverageReport": {
+    "originalClauses": 0,
+    "mappedClauses": 0,
+    "missingClauses": 0
+  },
+  "issues": [
+    {
+      "code": "MODEL_RETURNED_MINIMAL_REVIEW",
+      "severity": "warning",
+      "message": "Model returned a minimal review response."
+    },
+    {
+      "code": "ENGINE_DURATION_REVIEW",
+      "severity": "warning",
+      "message": "Duration requires review: this turn",
+      "fieldPath": "card.duration"
+    },
+    {
+      "code": "ENGINE_AMBIGUITY_REVIEW",
+      "severity": "warning",
+      "message": "Ambiguity requires review: add a face-up event card in Shin Yamazato and New Capital",
+      "fieldPath": "card.ambiguities.0"
+    },
+    {
+      "code": "ENGINE_AMBIGUITY_REVIEW",
+      "severity": "warning",
+      "message": "Ambiguity requires review: players except Alien God are unaffected by event cards",
+      "fieldPath": "card.ambiguities.1"
+    },
+    {
+      "code": "ENGINE_AMBIGUITY_REVIEW",
+      "severity": "warning",
+      "message": "Ambiguity requires review: Alien God can choose to be unaffected by an event card when revealed this turn",
+      "fieldPath": "card.ambiguities.2"
+    },
+    {
+      "code": "ENGINE_AMBIGUITY_REVIEW",
+      "severity": "warning",
+      "message": "Ambiguity requires review: remaining players 4+",
+      "fieldPath": "card.ambiguities.3"
+    },
+    {
+      "code": "ENGINE_AMBIGUITY_REVIEW",
+      "severity": "warning",
+      "message": "Ambiguity requires review: target-0",
+      "fieldPath": "card.ambiguities.4"
+    },
+    {
+      "code": "ENGINE_AMBIGUITY_REVIEW",
+      "severity": "warning",
+      "message": "Ambiguity requires review: target-1",
+      "fieldPath": "card.ambiguities.5"
+    }
+  ],
+  "requiredHumanReview": true,
+  "smokeTests": [
+    {
+      "name": "capability_review_engine_duration_review_card_duration",
+      "setup": "Preserve card.duration in a seeded guardrail input and replay candidate scenario.",
+      "expect": "Guardrail downgrades to review and keeps the card out of auto-integration.",
+      "source": "capability"
+    },
+    {
+      "name": "capability_review_engine_ambiguity_review_card_ambiguities_0",
+      "setup": "Preserve card.ambiguities.0 in a seeded guardrail input and replay candidate scenario.",
+      "expect": "Guardrail downgrades to review and keeps the card out of auto-integration.",
+      "source": "capability"
+    },
+    {
+      "name": "capability_review_engine_ambiguity_review_card_ambiguities_1",
+      "setup": "Preserve card.ambiguities.1 in a seeded guardrail input and replay candidate scenario.",
+      "expect": "Guardrail downgrades to review and keeps the card out of auto-integration.",
+      "source": "capability"
+    },
+    {
+      "name": "capability_review_engine_ambiguity_review_card_ambiguities_2",
+      "setup": "Preserve card.ambiguities.2 in a seeded guardrail input and replay candidate scenario.",
+      "expect": "Guardrail downgrades to review and keeps the card out of auto-integration.",
+      "source": "capability"
+    },
+    {
+      "name": "capability_review_engine_ambiguity_review_card_ambiguities_3",
+      "setup": "Preserve card.ambiguities.3 in a seeded guardrail input and replay candidate scenario.",
+      "expect": "Guardrail downgrades to review and keeps the card out of auto-integration.",
+      "source": "capability"
+    },
+    {
+      "name": "capability_review_engine_ambiguity_review_card_ambiguities_4",
+      "setup": "Preserve card.ambiguities.4 in a seeded guardrail input and replay candidate scenario.",
+      "expect": "Guardrail downgrades to review and keeps the card out of auto-integration.",
+      "source": "capability"
+    },
+    {
+      "name": "capability_review_engine_ambiguity_review_card_ambiguities_5",
+      "setup": "Preserve card.ambiguities.5 in a seeded guardrail input and replay candidate scenario.",
+      "expect": "Guardrail downgrades to review and keeps the card out of auto-integration.",
+      "source": "capability"
+    }
+  ],
+  "source": {
+    "structureJobId": "structure-situation-blankification-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

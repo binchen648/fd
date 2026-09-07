@@ -1,0 +1,59 @@
+{
+  "jobId": "guardrail-master-matou-shinji-001",
+  "artifactVersion": "guardrail-response-v1",
+  "status": "approve",
+  "schemaOk": true,
+  "engineOk": true,
+  "decision": "approve",
+  "ambiguityLevel": "low",
+  "coverageReport": {
+    "originalClauses": 3,
+    "mappedClauses": 3,
+    "missingClauses": 0
+  },
+  "issues": [],
+  "requiredHumanReview": false,
+  "smokeTests": [
+    {
+      "name": "auto_smoke_1",
+      "setup": "All source clauses mapped to structured effects",
+      "expect": "All source clauses mapped to structured effects",
+      "source": "model"
+    },
+    {
+      "name": "auto_smoke_2",
+      "setup": "No ambiguous timing or effect interpretations",
+      "expect": "No ambiguous timing or effect interpretations",
+      "source": "model"
+    },
+    {
+      "name": "auto_smoke_3",
+      "setup": "Card type consistent with master_skill family",
+      "expect": "Card type consistent with master_skill family",
+      "source": "model"
+    },
+    {
+      "name": "capability_approve_gain_mana_card_effects_0_type",
+      "setup": "Run a seeded scenario where the controlling player resolves the gain_mana effect and gains 1 mana.",
+      "expect": "Replay deterministically adds the mana to the player's pool and records the transaction.",
+      "source": "capability"
+    },
+    {
+      "name": "capability_approve_gain_card_card_effects_1_type",
+      "setup": "Run a seeded scenario where the controlling player resolves the gain_card effect and gains 伪臣之书.",
+      "expect": "Replay deterministically adds the card to the player's hand and records the transaction.",
+      "source": "capability"
+    },
+    {
+      "name": "capability_approve_lose_command_spell_card_effects_2_type",
+      "setup": "Run a seeded scenario where the controlling player resolves the lose_command_spell effect and loses 1 command spell(s).",
+      "expect": "Replay deterministically removes the command spell(s) from the player's pool and records the transaction.",
+      "source": "capability"
+    }
+  ],
+  "source": {
+    "structureJobId": "structure-master-matou-shinji-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

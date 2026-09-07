@@ -1,0 +1,48 @@
+{
+  "jobId": "vision-servant.妖精骑士高文.巴格斯特.019",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Berserker",
+    "subtypeGuess": "",
+    "familyConfidence": 0.9
+  },
+  "text": {
+    "cardName": "狂战士",
+    "rawText": "狂战士",
+    "normalizedText": "狂战士"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": [
+      "3",
+      "5"
+    ],
+    "powerMarker": [
+      "7",
+      "9"
+    ],
+    "numericSlots": [
+      3,
+      7,
+      5,
+      9
+    ],
+    "iconTags": [],
+    "rarity": "",
+    "classTag": [
+      "力量",
+      "出牌",
+      "探听",
+      "游技",
+      "魔所"
+    ]
+  },
+  "blocks": [],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

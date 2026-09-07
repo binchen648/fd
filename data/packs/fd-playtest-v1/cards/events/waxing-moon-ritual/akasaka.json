@@ -1,0 +1,16 @@
+{
+  "id": "event.waxing_moon_ritual.akasaka",
+  "name": "赤坂",
+  "cardType": "event",
+  "printedReward": 2,
+  "applicableLocations": ["deep_mountain", "new_capital"],
+  "printedText": "力量攻击于此战场获得+1威力。\n不具有力量属性的攻击于此战场获得-1威力。",
+  "timing": ["battle"],
+  "interactions": [{ "kind": "automatic", "visibility": "public" }],
+  "effects": [
+    { "type": "attribute_power_bonus", "attribute": "strength", "amount": 1, "scope": "this_battlefield" },
+    { "type": "non_attribute_power_modifier", "attribute": "strength", "amount": -1, "scope": "this_battlefield" }
+  ],
+  "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Attribute-based battlefield modifier is not yet automated." },
+  "source": { "htmPath": "chm-extract/盈月之仪.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211337_375.png", "imageIndex": 12, "reviewedAgainstImage": true }
+}

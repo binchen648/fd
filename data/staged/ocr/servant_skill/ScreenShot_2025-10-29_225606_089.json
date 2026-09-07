@@ -1,0 +1,37 @@
+{
+  "jobId": "vision-servant-ryogi-shiki-001",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "skill",
+    "subtypeGuess": "servant",
+    "familyConfidence": 0.9
+  },
+  "text": {
+    "cardName": "两仪式",
+    "rawText": "死线-游戏开始时，将【生·切断】加入你的技能区。\n欠损-游戏开始时，将【死·紧握】加入你的技能区。\n虚无-你可以查看所有玩家牌库底部的牌。战力结算时，\n你所在的战斗中所有牌库没有牌的玩家【败北】。",
+    "normalizedText": "死线-游戏开始时，将【生·切断】加入你的技能区。\n欠损-游戏开始时，将【死·紧握】加入你的技能区。\n虚无-你可以查看所有玩家牌库底部的牌。战力结算时，\n你所在的战斗中所有牌库没有牌的玩家【败北】。"
+  },
+  "fields": {
+    "code": null,
+    "costMarker": null,
+    "powerMarker": null,
+    "numericSlots": [],
+    "iconTags": [],
+    "rarity": null,
+    "classTag": null
+  },
+  "blocks": [
+    "两仪式",
+    "死线-游戏开始时，将【生·切断】加入你的技能区。",
+    "欠损-游戏开始时，将【死·紧握】加入你的技能区。",
+    "虚无-你可以查看所有玩家牌库底部的牌。战力结算时，",
+    "你所在的战斗中所有牌库没有牌的玩家【败北】。"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

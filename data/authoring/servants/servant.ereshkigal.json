@@ -1,0 +1,469 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.ereshkigal",
+  "name": "埃列什基伽勒",
+  "class": "Lancer",
+  "canonicalIdSource": "main_repo",
+  "authoringStatus": "draft_structured_from_chm_skill_pack",
+  "sourcePolicy": {
+    "priority": [
+      "original_card_image",
+      "chm_association",
+      "main_repo_legacy_content",
+      "ocr_or_manual_draft"
+    ]
+  },
+  "sources": [
+    {
+      "id": "chm_page",
+      "type": "chm_html",
+      "path": "D:/fd/chm-extract/埃列什基伽勒.htm",
+      "priority": "chm_association"
+    },
+    {
+      "id": "overview_image",
+      "type": "original_card_image",
+      "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_111906_400.png",
+      "priority": "original_card_image"
+    }
+  ],
+  "deck": [
+    {
+      "cardId": "card.cardb2",
+      "count": 1,
+      "source": "overview_image_user_confirmed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardb4",
+      "count": 1,
+      "source": "overview_image_user_confirmed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq2",
+      "count": 1,
+      "source": "overview_image_user_confirmed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq3",
+      "count": 2,
+      "source": "overview_image_user_confirmed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq4",
+      "count": 1,
+      "source": "overview_image_user_confirmed_2026-09-06"
+    },
+    {
+      "cardId": "card.carda2",
+      "count": 1,
+      "source": "overview_image_user_confirmed_2026-09-06"
+    },
+    {
+      "cardId": "card.carda4",
+      "count": 1,
+      "source": "overview_image_user_confirmed_2026-09-06"
+    },
+    {
+      "cardId": "card.carda5",
+      "count": 1,
+      "source": "overview_image_user_confirmed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardluck",
+      "count": 1,
+      "source": "overview_image_user_confirmed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardpreparation",
+      "count": 2,
+      "source": "overview_image_user_confirmed_2026-09-06"
+    }
+  ],
+  "cards": [
+    {
+      "id": "servant.ereshkigal.skill.sc-ereshkigal-1",
+      "name": "战斗续行（Lancer Class）",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.ereshkigal"
+      },
+      "printedText": "行动阶段：移动至除魔术工房外的任意地点。",
+      "cardFace": {
+        "typeLabel": "迅捷/特殊",
+        "attributes": [
+          "迅捷",
+          "特殊"
+        ],
+        "cost": 3,
+        "basePower": 5
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "controller_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-ereshkigal-1.battle-continuation",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：移动至除魔术工房外的任意地点。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "targets": [
+            {
+              "id": "destination",
+              "type": "location",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "scope": {
+                "board": "current"
+              },
+              "constraints": [
+                {
+                  "type": "any_enabled_location"
+                },
+                {
+                  "type": "not_location_kind",
+                  "locationKind": "workshop"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_player",
+              "player": "controller",
+              "to": "destination"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_192743_490.png",
+          "imageIndex": 2,
+          "htmPath": "D:/fd/chm-extract/埃列什基伽勒.htm",
+          "reviewStatus": "reviewed_against_original_image"
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/埃列什基伽勒.htm",
+          "imageIndex": 2
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "implementationStatus": "complete"
+      },
+      "ambiguities": []
+    },
+    {
+      "id": "servant.ereshkigal.skill.sc-ereshkigal-2",
+      "name": "冥界佑护",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.ereshkigal"
+      },
+      "printedText": "位于此战场的玩家计算威力时，来自局势牌和事件牌的所有力量修正值乘以-1。每当有玩家部署于此战场时，埃列什基伽勒获得1点魔力。\n被动/行动阶段：埃列什基伽勒不受【冥界佑护】的影响。\n战斗阶段结束后将此牌放还于技能区。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "controller_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-ereshkigal-2.netherworld-protection",
+          "kind": "residual",
+          "printedClause": "位于此战场的玩家计算威力时，来自局势牌和事件牌的所有力量修正值乘以-1。",
+          "activation": {
+            "trigger": "on_card_played",
+            "opens": "immediate"
+          },
+          "lifecycle": {
+            "starts": "immediate",
+            "duration": "while_card_active",
+            "cleanup": "remain_active"
+          },
+          "effects": [
+            {
+              "type": "reverse_situation_and_event_power_modifiers",
+              "scope": "players_at_this_battlefield"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-ereshkigal-2.gain-mana-on-deploy",
+          "kind": "forced_trigger",
+          "printedClause": "每当有玩家部署于此战场时，埃列什基伽勒获得1点魔力。",
+          "activation": {
+            "trigger": "after_player_deployed_to_battlefield"
+          },
+          "effects": [
+            {
+              "type": "adjust_mana",
+              "player": "controller",
+              "amount": 1
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-ereshkigal-2.self-exempt",
+          "kind": "passive",
+          "printedClause": "被动/行动阶段：埃列什基伽勒不受【冥界佑护】的影响。",
+          "activation": {
+            "trigger": "when_power_calculation_applied"
+          },
+          "ruleModifiers": [
+            {
+              "id": "self_exempt_from_netherworld",
+              "printedClause": "埃列什基伽勒不受【冥界佑护】的影响。",
+              "operation": "ignore",
+              "rule": "netherworld_protection",
+              "scope": {
+                "subject": "controller"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-ereshkigal-2.return-to-skill-zone",
+          "kind": "forced_trigger",
+          "printedClause": "战斗阶段结束后将此牌放还于技能区。",
+          "activation": {
+            "phase": "combat",
+            "trigger": "after_battle_ended"
+          },
+          "effects": [
+            {
+              "type": "move_card",
+              "target": "this_card",
+              "to": {
+                "zone": "skill",
+                "owner": "controller"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_111916_240.png",
+          "imageIndex": 1,
+          "htmPath": "D:/fd/chm-extract/埃列什基伽勒.htm",
+          "reviewStatus": "reviewed_against_original_image"
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/埃列什基伽勒.htm",
+          "imageIndex": 1
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "implementationStatus": "complete"
+      },
+      "ambiguities": []
+    },
+    {
+      "id": "servant.ereshkigal.skill.sc-ereshkigal-3",
+      "name": "灵峰踏抱冥府之鞴",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.ereshkigal"
+      },
+      "printedText": "【真名解放】花开冥界-行动阶段：若【冥界佑护】未位于版图内，将其放置于你所在的战场。若其已位于你所在的战场，你+6合计威力。",
+      "cardFace": {
+        "typeLabel": "特殊/宝具",
+        "attributes": [
+          "特殊",
+          "宝具"
+        ],
+        "cost": 7,
+        "basePower": 7
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "controller_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-ereshkigal-3.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": [
+            "真名解放"
+          ],
+          "activation": {
+            "trigger": "on_use_declared"
+          },
+          "effects": [
+            {
+              "type": "reveal_information",
+              "scope": "servant_package",
+              "subject": "controller.servant"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-ereshkigal-3.blooming-netherworld",
+          "kind": "phase_action",
+          "printedClause": "花开冥界-行动阶段：若【冥界佑护】未位于版图内，将其放置于你所在的战场。若其已位于你所在的战场，你+6合计威力。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "effects": [
+            {
+              "type": "branch",
+              "branches": [
+                {
+                  "if": {
+                    "type": "card_not_on_board",
+                    "cardId": "servant.ereshkigal.skill.sc-ereshkigal-2"
+                  },
+                  "then": [
+                    {
+                      "type": "move_card",
+                      "target": "sc-ereshkigal-2",
+                      "to": {
+                        "zone": "field",
+                        "owner": "controller"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "else": [
+                    {
+                      "type": "create_modifier",
+                      "modifier": {
+                        "type": "power_bonus",
+                        "target": "controller",
+                        "amount": 6
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_111911_088.png",
+          "imageIndex": 3,
+          "htmPath": "D:/fd/chm-extract/埃列什基伽勒.htm",
+          "reviewStatus": "reviewed_against_original_image"
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/埃列什基伽勒.htm",
+          "imageIndex": 3
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "implementationStatus": "complete"
+      },
+      "ambiguities": []
+    }
+  ],
+  "adapterNotes": [
+    "埃列什基伽勒的技能涉及局势牌修正反转、部署触发、自身豁免和卡牌存在检查等复杂机制。",
+    "冥界佑护的修正反转需要新的规则修改器类型。",
+    "战斗续行的地点选择需要排除工房的约束。",
+    "灵峰踏抱冥府之鞴的分支效果需要卡牌存在检查。",
+    "已按 2026-09-04 协调者快照修正主仓库 canonical ID：sc-ereshkigal-1=战斗续行（Lancer Class），sc-ereshkigal-2=冥界佑护，sc-ereshkigal-3=灵峰踏抱冥府之鞴。",
+    "HTM 页面图片顺序为概览、冥界佑护、战斗续行、灵峰踏抱冥府之鞴；该顺序作为 pageImageOrder 证据保留，不导入埃列什基伽勒1/2.htm。"
+  ],
+  "resolvedQuestions": [
+    {
+      "id": "ereshkigal-netherworld-scope",
+      "resolution": "根据§12.2，'位于此战场的玩家' = 参与该战场结算的所有玩家（包括自己）。"
+    }
+  ],
+  "openQuestions": [],
+  "pageImageOrder": [
+    {
+      "role": "overview",
+      "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_111906_400.png"
+    },
+    {
+      "role": "skill",
+      "name": "冥界佑护",
+      "canonicalCardId": "servant.ereshkigal.skill.sc-ereshkigal-2",
+      "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_111916_240.png"
+    },
+    {
+      "role": "skill",
+      "name": "战斗续行（Lancer Class）",
+      "canonicalCardId": "servant.ereshkigal.skill.sc-ereshkigal-1",
+      "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_192743_490.png"
+    },
+    {
+      "role": "skill",
+      "name": "灵峰踏抱冥府之鞴",
+      "canonicalCardId": "servant.ereshkigal.skill.sc-ereshkigal-3",
+      "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_111911_088.png"
+    }
+  ]
+}

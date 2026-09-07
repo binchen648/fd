@@ -1,0 +1,20 @@
+{
+  "card_name": "祝福",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "【真名解放】【作品】祝福\n遗憾：当你以常规出牌以外的方式激活或令此牌入场后，失去2点战果",
+  "ocr_text_draft": "【真名解放】【作品】祝福 遗憾：当你以常规出牌以外的方式激活或令此牌入场后，失去2点战果",
+  "effect_text": "【真名解放】【作品】祝福\n遗憾：当你以常规出牌以外的方式激活或令此牌入场后，失去2点战果",
+  "effect_explanation": "",
+  "cost": null,
+  "power": null,
+  "tags": [
+    "Berserker",
+    "artwork",
+    "真名解放"
+  ],
+  "confidence": 0.7,
+  "needs_human_review": true,
+  "review_notes": [
+    "Fallback draft from structured artifact; OCR artifact missing."
+  ]
+}

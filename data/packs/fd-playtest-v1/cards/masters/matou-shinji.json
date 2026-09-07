@@ -1,0 +1,93 @@
+[
+  {
+    "id": "master.matou_shinji.overview",
+    "name": "间桐慎二",
+    "cardType": "master_overview",
+    "printedText": "吸魔命令-进入深山町时，获得1点魔力。\n无用之人-游戏开始时，获得【伪臣之书】。\n小丑-当你战败时，失去一枚令咒。",
+    "timing": ["round_start", "action", "after_battle"],
+    "interactions": [
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["enter_deep_mountain_town"] },
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["game_start"] },
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["battle_defeat"] }
+    ],
+    "effects": [
+      { "type": "gain_mana", "amount": 1, "timingLabel": "吸魔命令", "condition": "enters_deep_mountain_town" },
+      { "type": "gain_replacement_card", "cardName": "伪臣之书", "timingLabel": "无用之人" },
+      { "type": "lose_command_spell", "amount": 1, "timingLabel": "小丑", "condition": "owner_loses_battle" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Book acquisition, mana gain and failure penalty are not yet implemented." },
+    "source": { "htmPath": "chm-extract/间桐慎二.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194536_066.png", "imageIndex": 0, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "master.matou_shinji.book_of_false_attendant.absent",
+    "name": "伪臣之书（间桐樱不在场）",
+    "cardType": "replacement",
+    "printedText": "替代品-当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+    "timing": ["round_end"],
+    "interactions": [
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["first_time_losing_all_command_spells"] }
+    ],
+    "effects": [
+      { "type": "replace_master", "newMasterName": "间桐樱", "timingLabel": "该回合结束时" },
+      { "type": "reset_mana" },
+      { "type": "gain_command_spell", "amount": 2 },
+      { "type": "preserve_battle_result" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "End-of-round master replacement is not yet implemented." },
+    "source": { "htmPath": "chm-extract/间桐慎二.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194540_736.png", "imageIndex": 1, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "master.matou_shinji.book_of_false_attendant.present",
+    "name": "伪臣之书（间桐樱在场）",
+    "cardType": "replacement",
+    "printedText": "契约再续-当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。",
+    "timing": ["round_end"],
+    "interactions": [
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["first_time_losing_all_command_spells"] }
+    ],
+    "effects": [
+      { "type": "replace_servant_with_random_unused_servant", "timingLabel": "该回合结束时" },
+      { "type": "set_command_spell_count", "amount": 3 }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Contract renewal and command-spell reset are not yet implemented." },
+    "source": { "htmPath": "chm-extract/间桐慎二.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194545_992.png", "imageIndex": 2, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "master.matou_shinji.command_spell.standard",
+    "name": "令咒",
+    "cardType": "command_spell",
+    "printedText": "行动阶段：获得4魔力\n行动阶段：总威力+2，如果你本回合每赢得一场战斗，获得2战果\n行动阶段：从新都或深山町移动至任意位置，无视交战状态",
+    "timing": ["action"],
+    "interactions": [
+      { "kind": "choice", "visibility": "public", "optional": true, "targetTypes": ["self", "location"] }
+    ],
+    "effects": [
+      { "type": "gain_mana", "amount": 4 },
+      { "type": "gain_total_power", "amount": 2 },
+      { "type": "gain_battle_result_per_battle_won_this_round", "amount": 2 },
+      { "type": "move_from_named_locations_to_any_position", "from": ["new_capital", "deep_mountain_town"], "ignoreBattleState": true }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "All three command-spell modes require engine actions." },
+    "source": { "htmPath": "chm-extract/间桐慎二.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194550_681.png", "imageIndex": 3, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "master.matou_shinji.skill.holy_grail_core",
+    "name": "圣杯核心",
+    "cardType": "master_skill",
+    "printedText": "此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。\n若莎士比亚是你的第一名从者，你位于深山町时合计威力+12，当你获得X点战果时，所有位于深山町的对手失去X点战果；若莎士比亚并非你的第一名从者，你获得8点战果。",
+    "timing": ["round_end", "battle"],
+    "interactions": [
+      { "kind": "automatic", "visibility": "public" },
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["gain_battle_result"] }
+    ],
+    "effects": [
+      { "type": "activate_if_round_ended_after_number_and_servant_present", "roundNumber": 8, "servantName": "莎士比亚" },
+      { "type": "lose_replacement_card", "cardName": "伪臣之书" },
+      { "type": "gain_total_power", "amount": 12, "condition": "shakespeare_is_first_servant_and_owner_at_deep_mountain_town" },
+      { "type": "opponents_at_location_lose_battle_result_equal_to_owner_gain", "location": "deep_mountain_town", "condition": "owner_gains_battle_result" },
+      { "type": "gain_battle_result", "amount": 8, "condition": "shakespeare_is_not_first_servant" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Round-eight substitute scoring and battlefield penalties are not yet implemented." },
+    "source": { "htmPath": "chm-extract/间桐慎二.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194556_480.png", "imageIndex": 4, "reviewedAgainstImage": true }
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "jobId": "structure-servant-bb-001",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.bb.skill",
+    "name": "B.B.",
+    "cardType": "servant_skill",
+    "timing": [
+      "passive"
+    ],
+    "conditions": [],
+    "targets": [],
+    "effects": [],
+    "duration": null,
+    "visibility": "public",
+    "tags": [
+      "servant",
+      "skill",
+      "moon_cancer"
+    ],
+    "ambiguities": []
+  },
+  "parseNotes": [
+    "Class tag 'Moon Cancer' repeated three times in raw text but normalized to single instance"
+  ],
+  "coverage": {
+    "sourceClauses": 9,
+    "mappedClauses": 3,
+    "unmappedClauses": 6
+  },
+  "source": {
+    "visionJobId": "vision-servant-bb-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "card_name": "ScreenShot_2025-11-01_211959_889",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "ScreenShot_2025-11-01_211959_889",
+  "ocr_text_draft": "ScreenShot_2025-11-01_211959_889",
+  "effect_text": "",
+  "effect_explanation": "",
+  "cost": null,
+  "power": null,
+  "tags": [
+    "fallback"
+  ],
+  "confidence": 0.2,
+  "needs_human_review": true,
+  "review_notes": [
+    "No OCR/structured artifact yet; generated fallback draft for workflow preview."
+  ]
+}

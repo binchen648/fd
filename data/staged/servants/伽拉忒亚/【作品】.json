@@ -1,0 +1,19 @@
+{
+  "card_name": "【作品】",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "【作品】标记卡",
+  "ocr_text_draft": "【作品】标记卡",
+  "effect_text": "【作品】标记卡",
+  "effect_explanation": "",
+  "cost": null,
+  "power": null,
+  "tags": [
+    "Berserker",
+    "artwork"
+  ],
+  "confidence": 0.7,
+  "needs_human_review": true,
+  "review_notes": [
+    "Fallback draft from structured artifact; OCR artifact missing."
+  ]
+}

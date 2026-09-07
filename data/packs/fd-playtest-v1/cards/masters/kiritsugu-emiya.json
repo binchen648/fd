@@ -1,0 +1,75 @@
+[
+  {
+    "id": "master.kiritsugu_emiya.overview",
+    "name": "卫宫切嗣",
+    "cardType": "master_overview",
+    "printedText": "魔术师杀手-游戏开始时，将你牌库的一张牌替换为【起源弹】。\n固有时制御-行动阶段：暗置打出一张牌，然后抽一张牌。\n四倍速-战斗阶段：关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
+    "timing": ["round_start", "action", "battle"],
+    "interactions": [
+      { "kind": "choice", "visibility": "owner_only", "optional": false, "responseTo": ["game_start"], "targetTypes": ["deck_card"] },
+      { "kind": "activated", "visibility": "private", "optional": true, "targetTypes": ["hand_card"] },
+      { "kind": "activated", "visibility": "public", "optional": true, "targetTypes": ["active_attack", "face_down_origin_bullet"] }
+    ],
+    "effects": [
+      { "type": "replace_one_deck_card_with_replacement", "cardName": "起源弹", "timingLabel": "魔术师杀手" },
+      { "type": "play_card_face_down_then_draw", "timingLabel": "固有时制御-行动阶段" },
+      { "type": "close_active_attack_then_activate_face_down_card", "requiredFaceDownCardName": "起源弹", "timingLabel": "四倍速-战斗阶段" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Initial replacement and face-down draw/reveal are not yet implemented." },
+    "source": { "htmPath": "chm-extract/卫宫切嗣.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215423_544.png", "imageIndex": 0, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "master.kiritsugu.origin_bullet",
+    "name": "起源弹",
+    "cardType": "replacement",
+    "attributes": ["agility"],
+    "attribute": "agility",
+    "printedValue": 0,
+    "printedCost": 2,
+    "printedText": "切断与结合-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
+    "timing": ["battle"],
+    "interactions": [
+      { "kind": "activated", "visibility": "public", "optional": true, "targetTypes": ["battle_opponent"] }
+    ],
+    "effects": [
+      { "type": "opponent_loses_mana_fraction", "fraction": "1/3", "rounding": "up", "targetTypes": ["battle_opponent"] },
+      { "type": "gain_attack_power", "amountFormula": "lost_mana * 2" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Mana reduction and dynamic power calculation are not yet implemented." },
+    "source": { "htmPath": "chm-extract/卫宫切嗣.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215428_559.png", "imageIndex": 1, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "master.kiritsugu_emiya.command_spell.standard",
+    "name": "令咒",
+    "cardType": "command_spell",
+    "printedText": "行动阶段：获得4魔力\n行动阶段：总威力+2,如果你本回合每赢得一场战斗，获得2战果\n行动阶段：从新都或深山町移动至任意位置，无视交战状态",
+    "timing": ["action"],
+    "interactions": [
+      { "kind": "choice", "visibility": "public", "optional": true, "targetTypes": ["self", "location"] }
+    ],
+    "effects": [
+      { "type": "gain_mana", "amount": 4 },
+      { "type": "gain_total_power", "amount": 2 },
+      { "type": "gain_battle_result_per_battle_won_this_round", "amount": 2 },
+      { "type": "move_from_named_locations_to_any_position", "from": ["new_capital", "deep_mountain_town"], "ignoreBattleState": true }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "All three command-spell modes require engine actions." },
+    "source": { "htmPath": "chm-extract/卫宫切嗣.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215432_872.png", "imageIndex": 2, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "master.kiritsugu_emiya.skill.cold_blooded_killer",
+    "name": "冷血杀手",
+    "cardType": "master_skill",
+    "printedText": "解锁此技能后立刻移除你弃牌堆中的2张牌并将2张游戏外的起源弹加入手牌。",
+    "timing": ["action"],
+    "interactions": [
+      { "kind": "triggered", "visibility": "owner_only", "optional": false, "responseTo": ["unlock_this_skill"], "targetTypes": ["discard_pile_card"] }
+    ],
+    "effects": [
+      { "type": "remove_cards_from_discard_pile", "count": 2, "timingLabel": "解锁此技能后" },
+      { "type": "add_cards_from_outside_game_to_hand", "cardName": "起源弹", "count": 2 }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Deck purge and out-of-game origin-bullet insertion are not yet implemented." },
+    "source": { "htmPath": "chm-extract/卫宫切嗣.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215437_375.png", "imageIndex": 3, "reviewedAgainstImage": true }
+  }
+]

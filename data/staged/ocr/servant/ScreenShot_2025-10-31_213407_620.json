@@ -1,0 +1,47 @@
+{
+  "jobId": "vision-servant.木曾义仲.007",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Noble Phantasm",
+    "subtypeGuess": "Active Skill",
+    "familyConfidence": 0.95
+  },
+  "text": {
+    "cardName": "旭将军",
+    "rawText": "宝具\n旭将军\n4\n3\n【真名解放】\n初日-被动：本曾义伸印刷威力为3的牌获得“唯一：你可以于常规出牌时追加打出此牌。”\n行动阶段：此牌获得所有你激活的印刷威力为3的攻击的属性且受到局势牌和事件牌三倍的力量修正。",
+    "normalizedText": "宝具 旭将军 4 3 【真名解放】 初日-被动：本曾义伸印刷威力为3的牌获得“唯一：你可以于常规出牌时追加打出此牌。” 行动阶段：此牌获得所有你激活的印刷威力为3的攻击的属性且受到局势牌和事件牌三倍的力量修正。"
+  },
+  "fields": {
+    "code": "007",
+    "costMarker": "4",
+    "powerMarker": "3",
+    "numericSlots": [
+      4,
+      3
+    ],
+    "iconTags": [
+      "green circle",
+      "blue number with sword icon"
+    ],
+    "rarity": null,
+    "classTag": "Noble Phantasm"
+  },
+  "blocks": [
+    "宝具",
+    "旭将军",
+    "4",
+    "3",
+    "【真名解放】",
+    "初日-被动：本曾义伸印刷威力为3的牌获得“唯一：你可以于常规出牌时追加打出此牌。”",
+    "行动阶段：此牌获得所有你激活的印刷威力为3的攻击的属性且受到局势牌和事件牌三倍的力量修正。"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "sourcePage": "D:\\fd\\chm-extract\\木曾义仲.htm",
+    "sourceSet": "servant",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "jobId": "structure-servant-ryogi-shiki-001",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.ryogi_shiki.skill",
+    "name": "两仪式",
+    "cardType": "servant_skill",
+    "timing": [
+      "round_start"
+    ],
+    "conditions": [],
+    "targets": [],
+    "effects": [
+      {"type": "gain_skill", "value": "生·切断", "timing": "round_start"},
+      {"type": "gain_skill", "value": "死·紧握", "timing": "round_start"},
+      {"type": "view_deck_bottom", "value": "all_players"},
+      {"type": "defeat_on_empty_deck", "value": "battle_players"}
+    ],
+    "duration": null,
+    "visibility": "public",
+    "tags": [
+      "servant",
+      "skill",
+      "death_line",
+      "deficit",
+      "void"
+    ],
+    "ambiguities": []
+  },
+  "parseNotes": [
+    "Normalized card name from Chinese to Ryogi Shiki convention",
+    "Mapped three skill clauses to effects with standardized tokens"
+  ],
+  "coverage": {
+    "sourceClauses": 3,
+    "mappedClauses": 3,
+    "unmappedClauses": 0
+  },
+  "source": {
+    "visionJobId": "vision-servant-ryogi-shiki-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

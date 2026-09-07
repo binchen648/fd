@@ -1,0 +1,52 @@
+{
+  "jobId": "vision-servant-nanaya-shiki-001",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "character",
+    "subtypeGuess": "servant",
+    "familyConfidence": 0.85
+  },
+  "text": {
+    "cardName": "七夜志贵",
+    "rawText": "净眼-你可以查看暗置的攻击牌。\n七夜流体-行动阶段：若可能，弃置X张牌并选择一项：\n闪走-沿箭头移动一步，X为此地点的移动成本。\n闪斩-打出一张魔力消耗低于X的攻击并令其基本威力减半（向上取整）",
+    "normalizedText": "净眼-你可以查看暗置的攻击牌。七夜流体-行动阶段：若可能，弃置X张牌并选择一项：闪走-沿箭头移动一步，X为此地点的移动成本。闪斩-打出一张魔力消耗低于X的攻击并令其基本威力减半（向上取整）"
+  },
+  "fields": {
+    "code": null,
+    "costMarker": null,
+    "powerMarker": null,
+    "numericSlots": [],
+    "iconTags": [],
+    "rarity": null,
+    "classTag": null
+  },
+  "blocks": [
+    {
+      "type": "name",
+      "text": "七夜志贵",
+      "bbox": [
+        14,
+        682,
+        228,
+        728
+      ]
+    },
+    {
+      "type": "ability",
+      "text": "净眼-你可以查看暗置的攻击牌。\n七夜流体-行动阶段：若可能，弃置X张牌并选择一项：\n闪走-沿箭头移动一步，X为此地点的移动成本。\n闪斩-打出一张魔力消耗低于X的攻击并令其基本威力减半（向上取整）",
+      "bbox": [
+        14,
+        742,
+        982,
+        986
+      ]
+    }
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.92,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

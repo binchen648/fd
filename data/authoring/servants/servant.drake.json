@@ -1,0 +1,507 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.drake",
+  "aliases": [
+    "servant.francis_drake"
+  ],
+  "name": "弗朗西斯·德雷克",
+  "class": "Rider",
+  "canonicalIdSource": {
+    "repository": "https://github.com/fengling20011118-dotcom/fate-domination",
+    "path": "src/content/generated/legacy-content.json",
+    "note": "核对本地主仓库审计快照；canonical ID 原样保留，旧 requirement 不作为牌面例外。"
+  },
+  "sourcePolicy": {
+    "priority": [
+      "original_card_image",
+      "chm_association",
+      "final_rules",
+      "ocr_draft"
+    ]
+  },
+  "publicInformation": {
+    "overviewImage": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_164705_550.png",
+    "htmPath": "D:/fd/chm-extract/弗朗西斯·德雷克.htm"
+  },
+  "deck": [
+    {
+      "cardId": "card.cardb2",
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardb3",
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardb3",
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq2",
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq3",
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq3",
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq4",
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq5",
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardluck",
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardsurveil",
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardsurveil",
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardsurveil",
+      "source": "overview_image_reviewed_2026-09-06"
+    }
+  ],
+  "cards": [
+    {
+      "id": "servant.drake.skill.sc-drake-1",
+      "aliases": [
+        "servant.francis_drake.skill.riding"
+      ],
+      "name": "骑乘",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.drake"
+      },
+      "printedText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 3,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-drake-1.draw",
+          "kind": "forced_trigger",
+          "printedClause": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。",
+          "activation": {
+            "trigger": "on_card_played",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "played_with_basic_attack"
+            }
+          ],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "owner": "controller",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "id": "sc-drake-1.mount-summon",
+          "kind": "phase_action",
+          "printedClause": "坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "targets": [
+            {
+              "id": "selected_hand_cards",
+              "type": "card_instance",
+              "scope": {
+                "zone": "hand",
+                "controller": "self"
+              },
+              "count": {
+                "min": 0,
+                "max": 3
+              },
+              "visibility": "private_to_controller",
+              "constraints": [
+                {
+                  "type": "base_power_at_most",
+                  "value": 3
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "play_selected_cards",
+              "target": "selected_hand_cards"
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_192738_090.png",
+          "imageIndex": 1
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/弗朗西斯·德雷克.htm"
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "rulesMappingStatus": "interpreter_slice_tested",
+        "implementationStatus": "complete",
+        "testEvidence": "packages/rules/tests/drake-authoring.test.ts",
+        "integrationStatus": "server_batch_hook_requires_application_wiring"
+      },
+      "ambiguities": []
+    },
+    {
+      "id": "servant.drake.skill.sc-drake-2",
+      "aliases": [
+        "servant.francis_drake.skill.golden_hind_and_stormy_night"
+      ],
+      "name": "黄金鹿与暴风夜",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.drake"
+      },
+      "printedText": "【真名解放】\n战斗阶段：如果无人与你对战，获得你所处战场上的所有事件牌的战果并弃置它们。如果你在侦察，立刻获得2点战果。\n无视花费移动至任一地点。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "attributes": [
+          "宝具"
+        ],
+        "cost": 7,
+        "basePower": 13
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-drake-2.reveal",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "activation": {
+            "trigger": "on_use_declared",
+            "requiresSourceState": "active"
+          },
+          "effects": [
+            {
+              "type": "reveal_information",
+              "subject": "controller.servant",
+              "scope": "servant_package"
+            }
+          ]
+        },
+        {
+          "id": "sc-drake-2.reward-and-move",
+          "kind": "phase_action",
+          "printedClause": "战斗阶段：如果无人与你对战，获得你所处战场上的所有事件牌的战果并弃置它们。如果你在侦察，立刻获得2点战果。\n无视花费移动至任一地点。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "targets": [
+            {
+              "id": "destination",
+              "type": "location",
+              "scope": {
+                "board": "current"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "any_enabled_location"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "branch",
+              "branches": [
+                {
+                  "if": {
+                    "type": "controller_alone_at_battlefield"
+                  },
+                  "then": [
+                    {
+                      "type": "claim_and_discard_location_events"
+                    }
+                  ]
+                },
+                {
+                  "if": {
+                    "type": "controller_at_location_kind",
+                    "locationKind": "侦察"
+                  },
+                  "then": [
+                    {
+                      "type": "adjust_victory_points",
+                      "player": "controller",
+                      "amount": 2
+                    }
+                  ]
+                },
+                {
+                  "else": []
+                }
+              ]
+            },
+            {
+              "type": "move_player",
+              "player": "controller",
+              "to": "destination"
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_164710_406.png",
+          "imageIndex": 2
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/弗朗西斯·德雷克.htm"
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "rulesMappingStatus": "interpreter_slice_tested",
+        "implementationStatus": "complete",
+        "testEvidence": "packages/rules/tests/drake-authoring.test.ts",
+        "integrationStatus": "requires_content_event_vp_and_event_deck_wiring"
+      },
+      "ambiguities": []
+    },
+    {
+      "id": "servant.drake.skill.sc-drake-3",
+      "aliases": [
+        "servant.francis_drake.skill.stormy_voyager"
+      ],
+      "name": "暴风雨的航海家",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.drake"
+      },
+      "printedText": "【真名解放】\nX为你本回合移动距离的4倍。\n被动：你的【急行】可以反向移动。\n劫掠-战斗阶段：本回合每经过或停留一个战场获得1战果。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 2,
+        "basePower": {
+          "printedExpression": "X",
+          "formula": {
+            "op": "multiply",
+            "args": [
+              {
+                "var": "controller.movement_distance_this_round"
+              },
+              4
+            ]
+          }
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-drake-3.reveal",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "activation": {
+            "trigger": "on_use_declared",
+            "requiresSourceState": "active"
+          },
+          "effects": [
+            {
+              "type": "reveal_information",
+              "subject": "controller.servant",
+              "scope": "servant_package"
+            }
+          ]
+        },
+        {
+          "id": "sc-drake-3.movement-power",
+          "kind": "continuous_formula",
+          "printedClause": "X为你本回合移动距离的4倍。",
+          "activation": {
+            "trigger": "on_card_played",
+            "requiresSourceState": "active"
+          },
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-drake-3.reverse-dash",
+          "kind": "passive",
+          "printedClause": "被动：你的【急行】可以反向移动。",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "effects": [
+            {
+              "type": "movement_rule_override",
+              "rule": "reverse_arrow_movement"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-drake-3.plunder",
+          "kind": "phase_action",
+          "printedClause": "劫掠-战斗阶段：本回合每经过或停留一个战场获得1战果。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "player": "controller",
+              "amount": {
+                "var": "controller.battlefields_passed_or_stayed_this_round"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_164715_253.png",
+          "imageIndex": 3
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/弗朗西斯·德雷克.htm"
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "rulesMappingStatus": "interpreter_slice_tested",
+        "implementationStatus": "complete"
+      },
+      "ambiguities": []
+    }
+  ],
+  "userConfirmedInterpretations": [
+    {
+      "date": "2026-09-03",
+      "field": "movement_distance_this_round",
+      "unit": "route_segment",
+      "interpretation": "移动距离按起终点在基础路线之间的箭头段数计算，不按消耗魔力计算；任意地点移动在已确认的基础路线中同样按此距离计算。",
+      "examples": [
+        { "from": "magic_workshop", "to": "miyama_town", "distance": 1 },
+        { "from": "miyama_town", "to": "shinto", "distance": 1 },
+        { "from": "shinto", "to": "recon", "distance": 1 },
+        { "from": "magic_workshop", "to": "shinto", "distance": 2 },
+        { "from": "magic_workshop", "to": "recon", "distance": 3 }
+      ],
+      "scopeNote": "本次给定的是基础线性路线；月杯等独立扩展地点的距离不从未知连线猜测。距离也不自动证明效果实际经过所有中间地点。"
+    },
+    {
+      "date": "2026-09-03",
+      "field": "battlefields_passed_or_stayed_this_round",
+      "countRepeatedVisits": true,
+      "mergePassAndStay": false,
+      "interpretation": "用户回答：重复计数，应该不合并，毕竟是两个不一样的意思。重复经过同一战场仍累计，经过记录与停留记录独立统计，不按战场 ID 去重。"
+    },
+    {
+      "date": "2026-09-03",
+      "field": "golden_hind_no_opponent",
+      "interpretation": "无人与你对战的事件战果分支仅在战场触发，包括深山町、新都，以及启用并定义为战场的月杯等地点。工房不触发该分支；侦察仍按单独的2战果分支处理。"
+    }
+  ],
+  "resolvedQuestions": [
+    {
+      "id": "drake-movement-distance",
+      "field": "cards[2].cardFace.basePower",
+      "question": "移动距离是否按实际箭头段数计算？无指定路径的任意地点移动如何计数？",
+      "status": "confirmed_for_base_route",
+      "resolution": "按基础路线段数：相邻为1，工房到新都为2、到侦察为3。"
+    },
+    {
+      "id": "drake-plunder-count",
+      "field": "cards[2].abilities",
+      "question": "重复经过同一战场是否重复计数？经过与停留是否去重？",
+      "status": "confirmed",
+      "resolution": "重复计数；经过与停留不合并。旧问项中的初始停留时点拆出保留，不伪装为已回答。"
+    },
+    {
+      "id": "drake-battlefield-only",
+      "status": "confirmed",
+      "resolution": "无人与你对战仅是战场上的奖励分支条件，不泛化为所有无对手地点。"
+    }
+  ],
+  "openQuestions": [],
+  "adapterNotes": [
+    "2026-09-03 用户已确认基础路线距离按箭头段数、劫掠重复经过累计且经过与停留不合并、黄金鹿事件奖励限战场。2026-09-04 已接入 ability runtime 的可信移动距离和战场经过/停留计数变量。",
+    "技能区门槛按最终规则 9.4 为 8；牌面 3/7/2 是费用，不是技能区使用门槛。主仓库旧 requirement=3/8/2 的差异保留在报告，不反向覆盖规则。",
+    "坐骑召唤属于效果出牌：至多三张、明置、正常付费；不消耗常规两张出牌名额。",
+    "技能能力适配不等于已接入桌面 UI 或主仓库最终运行。急行反向移动以通用后端 directive 暴露给移动选项消费器。"
+  ]
+}

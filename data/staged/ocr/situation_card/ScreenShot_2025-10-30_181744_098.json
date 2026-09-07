@@ -1,0 +1,40 @@
+{
+  "jobId": "vision-situation-lostbelt-expansion-001",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "situation",
+    "subtypeGuess": "expansion",
+    "familyConfidence": 0.9
+  },
+  "text": {
+    "cardName": "异闻带扩张",
+    "rawText": "异闻带扩张\n高潮：剩余3+人\n无法部署/进入新都与侦查。魔术工房仅限一人部署。\n于深山町增加一张正面事件牌。\n使用【异闻带】牌堆为深山町抽取事件牌。抽取前，所有\n隐匿者可进行一次【扩张】。",
+    "normalizedText": "异闻带扩张\n高潮：剩余3+人\n无法部署/进入新都与侦查。魔术工房仅限一人部署。\n于深山町增加一张正面事件牌。\n使用【异闻带】牌堆为深山町抽取事件牌。抽取前，所有\n隐匿者可进行一次【扩张】。"
+  },
+  "fields": {
+    "code": null,
+    "costMarker": "4",
+    "powerMarker": null,
+    "numericSlots": [
+      4
+    ],
+    "iconTags": [],
+    "rarity": null,
+    "classTag": null
+  },
+  "blocks": [
+    "异闻带扩张",
+    "高潮：剩余3+人",
+    "无法部署/进入新都与侦查。魔术工房仅限一人部署。",
+    "于深山町增加一张正面事件牌。",
+    "使用【异闻带】牌堆为深山町抽取事件牌。抽取前，所有",
+    "隐匿者可进行一次【扩张】。"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

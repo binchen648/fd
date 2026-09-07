@@ -1,0 +1,40 @@
+{
+  "id": "master.kayneth_archibald",
+  "name": "肯尼斯·阿其波卢德",
+  "overviewCardId": "master.kayneth_archibald.overview",
+  "initialMana": 4,
+  "commandSpellCardIds": ["master.kayneth_archibald.command_spell.standard"],
+  "skillCardIds": ["master.kayneth_archibald.skill.fluid_mechanics"],
+  "linkedCards": {
+    "generated": [
+      "master.kayneth_archibald.moon_spirit_ichor.zero_two",
+      "master.kayneth_archibald.moon_spirit_ichor.zero_one",
+      "master.kayneth_archibald.moon_spirit_ichor.zero_zero"
+    ]
+  },
+  "independentDeck": {
+    "entries": [
+      { "cardId": "master.kayneth_archibald.moon_spirit_ichor.zero_two", "copies": 3 },
+      { "cardId": "master.kayneth_archibald.moon_spirit_ichor.zero_one", "copies": 2 },
+      { "cardId": "master.kayneth_archibald.moon_spirit_ichor.zero_zero", "copies": 1 }
+    ]
+  },
+  "ruleOverrides": [
+    {
+      "dimension": "skill_mana_eligibility",
+      "description": "Kayneth may use skill cards while his mana is below 8.",
+      "capability": { "status": "FULL" }
+    }
+  ],
+  "capability": {
+    "status": "PARTIAL",
+    "supportedDimensions": ["skill_mana_eligibility"],
+    "hostRulingReason": "Independent-deck draw, battlefield deployment gate and deployment choice require host adjudication."
+  },
+  "source": {
+    "htmPath": "chm-extract/肯尼斯·阿其波卢德.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163037_577.png",
+    "imageIndex": 0,
+    "reviewedAgainstImage": true
+  }
+}

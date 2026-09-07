@@ -1,0 +1,43 @@
+{
+  "jobId": "vision-servant.欧罗巴.012",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Special",
+    "subtypeGuess": "",
+    "familyConfidence": 0
+  },
+  "text": {
+    "cardName": "骑乘",
+    "rawText": "打出时: 若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段: 打出至多3张基本威力为3或更低的手牌。",
+    "normalizedText": "打出时: 若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段: 打出至多3张基本威力为3或更低的手牌。"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": "3",
+    "powerMarker": "0",
+    "numericSlots": [
+      "3",
+      "0"
+    ],
+    "iconTags": [
+      "sword"
+    ],
+    "rarity": "",
+    "classTag": ""
+  },
+  "blocks": [
+    "Special",
+    "骑乘",
+    "3",
+    "0",
+    "打出时: 若此牌与一张基础攻击一同打出，抽一张牌。",
+    "坐骑召唤-行动阶段: 打出至多3张基本威力为3或更低的手牌。"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

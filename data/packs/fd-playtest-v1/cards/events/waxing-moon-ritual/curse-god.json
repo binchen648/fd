@@ -1,0 +1,15 @@
+{
+  "id": "event.waxing_moon_ritual.curse_god",
+  "name": "祸神",
+  "cardType": "event",
+  "printedReward": 3,
+  "applicableLocations": ["deep_mountain", "new_capital"],
+  "printedText": "此战场基本威力最高的激活攻击以外的激活攻击威力无法超过其印刷威力。",
+  "timing": ["battle"],
+  "interactions": [{ "kind": "automatic", "visibility": "public" }],
+  "effects": [
+    { "type": "cap_non_highest_base_power_active_attacks_at_printed_power", "scope": "this_battlefield" }
+  ],
+  "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Printed-power cap based on highest base power is not yet automated." },
+  "source": { "htmPath": "chm-extract/盈月之仪.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211331_063.png", "imageIndex": 8, "reviewedAgainstImage": true }
+}

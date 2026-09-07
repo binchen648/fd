@@ -1,0 +1,26 @@
+{
+  "card_name": "暴风雨的航海家",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "特殊\n暴风雨的航海家\n2\nXd\n1真名解放 ]\n&为你本回合移动距离的4倍。\n被动: 你的 |怠行]可以反向移动。\n劫掠-战斗阶段; 本回合每经过或停留一个战场获得1战果。",
+  "ocr_text_draft": "特殊 暴风雨的航海家 2 Xd 1真名解放 ] &为你本回合移动距离的4倍。 被动: 你的 |怠行]可以反向移动。 劫掠-战斗阶段; 本回合每经过或停留一个战场获得1战果。",
+  "rules_text": "Xd\n1真名解放\n&为你本回合移动距离的4倍。\n被动: 你的 怠行 可以反向移动。\n劫掠-战斗阶段; 本回合每经过或停留一个战场获得1战果。",
+  "effect_text": "Xd\n1真名解放\n&为你本回合移动距离的4倍。\n被动: 你的 怠行 可以反向移动。\n劫掠-战斗阶段; 本回合每经过或停留一个战场获得1战果。",
+  "effect_explanation": "",
+  "cost": 2,
+  "power": null,
+  "displayed_cost_power_confirmed": false,
+  "tags": [
+    "特殊"
+  ],
+  "attributes": [
+    "特殊"
+  ],
+  "confidence": 0.65,
+  "needs_human_review": true,
+  "uncertain_fields": [
+    "attack_power"
+  ],
+  "review_notes": [
+    "Uncertain field: attack_power"
+  ]
+}

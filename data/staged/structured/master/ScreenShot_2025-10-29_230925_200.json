@@ -1,0 +1,79 @@
+{
+  "jobId": "structure-master-maiya-hisau-001",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "master.matou_maiya.skill",
+    "name": "久宇舞弥",
+    "cardType": "master_skill",
+    "timing": [
+      "preliminary"
+    ],
+    "conditions": [],
+    "targets": [],
+    "effects": [],
+    "duration": "turn",
+    "visibility": "public",
+    "tags": [
+      "master",
+      "military"
+    ],
+    "ambiguities": [
+      {
+        "span": "add [Cover Fire] to attack",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "return to skill zone at end of turn",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "cannot be battle winner this turn",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "not on battlefield",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map condition clause to a supported engine predicate."
+      },
+      {
+        "span": "target-0",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map target 'one other player's attack' to a supported engine target."
+      }
+    ]
+  },
+  "parseNotes": [
+    "Normalized text matches raw text; no corrections needed",
+    "Icon tag '援护射击' mapped to [Cover Fire]",
+    "Cost marker '2' mapped to 2魔力 (magic points)"
+  ],
+  "coverage": {
+    "sourceClauses": 3,
+    "mappedClauses": 3,
+    "unmappedClauses": 0
+  },
+  "source": {
+    "visionJobId": "vision-master-maiya-hisau-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

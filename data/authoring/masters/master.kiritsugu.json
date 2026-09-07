@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "id": "master.kiritsugu",
+  "name": "卫宫切嗣",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sources": [
+    {
+      "id": "chm_page",
+      "type": "chm_page",
+      "path": "D:/fd/chm-extract/卫宫切嗣.htm",
+      "pageTitle": "卫宫切嗣",
+      "imageOrder": [
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_215423_544.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_215428_559.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_215432_872.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_215437_375.png"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "master.kiritsugu.skill.magus-killer",
+      "name": "魔术师杀手",
+      "cardType": "master_skill",
+      "printedText": "游戏开始时，将你牌库的一张牌替换为【起源弹】。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "magus-killer.setup",
+          "kind": "phase_action",
+          "printedClause": "游戏开始时，将你牌库的一张牌替换为【起源弹】。",
+          "activation": { "phase": "preparation", "opens": "controller_action_window" },
+          "targets": [
+            { "id": "card_to_replace", "type": "card_instance", "scope": { "zone": "deck", "owner": "controller" }, "count": { "min": 1, "max": 1 }, "constraints": [{ "type": "not_card_id", "cardId": "master.kiritsugu.deck.origin-bullet" }] }
+          ],
+          "effects": [{ "type": "replace_card_in_deck", "target": "card_to_replace", "definitionId": "master.kiritsugu.deck.origin-bullet", "directive": "replace_one_deck_card_with_origin_bullet" }],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+    },
+    {
+      "id": "master.kiritsugu.skill.time-alter",
+      "name": "固有时制御",
+      "cardType": "master_skill",
+      "printedText": "行动阶段：暗置打出一张牌，然后抽一张牌。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "time-alter.action",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：暗置打出一张牌，然后抽一张牌。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "targets": [
+            { "id": "card_to_play", "type": "card_instance", "scope": { "zone": "hand", "owner": "controller" }, "count": { "min": 1, "max": 1 }, "constraints": [{ "type": "is_attack" }] }
+          ],
+          "effects": [
+            { "type": "play_selected_cards", "target": "card_to_play", "face": "face_down" },
+            { "type": "draw_cards", "count": 1 }
+          ],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+    },
+    {
+      "id": "master.kiritsugu.skill.square-accel",
+      "name": "四倍速",
+      "cardType": "master_skill",
+      "printedText": "战斗阶段：关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "square-accel.combat",
+          "kind": "phase_action",
+          "printedClause": "战斗阶段：关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
+          "activation": { "phase": "combat", "opens": "controller_combat_action_window" },
+          "effects": [{ "type": "record_master_directive", "directive": "close_active_attack_activate_face_down_origin_bullet" }],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+    },
+    {
+      "id": "master.kiritsugu.deck.origin-bullet",
+      "name": "起源弹",
+      "cardType": "master_deck_card",
+      "printedText": "迅捷0耗2威。[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
+      "cardFace": { "cost": 0, "basePower": 2, "attributes": ["迅捷"] },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "origin-bullet.cut-bind",
+          "kind": "phase_action",
+          "printedClause": "[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
+          "activation": { "phase": "combat", "opens": "controller_combat_action_window", "requiresSourceState": "active" },
+          "effects": [{ "type": "record_master_directive", "directive": "engaged_opponent_loses_one_third_mana_then_source_gains_twice_lost_power", "rounding": "ceil" }],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+    }
+  ],
+  "excludedCards": [{ "id": "master.kiritsugu.skill.ascension", "name": "冷血杀手", "reason": "user_scope_excluded_ascension" }],
+  "adapterNotes": ["升华技按用户规则排除。"]
+}

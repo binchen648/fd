@@ -1,0 +1,47 @@
+{
+  "jobId": "vision-servant.galatea.berserker",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Servant",
+    "subtypeGuess": "Berserker",
+    "familyConfidence": 0.99
+  },
+  "text": {
+    "cardName": "伽拉忒亚",
+    "rawText": "Berserker\n伽拉忒亚\n2,3,3,4,4\n2,3\n2,2,4\nPreparation\nPreparation",
+    "normalizedText": "Berserker 伽拉忒亚 2,3,3,4,4 2,3 2,2,4 Preparation Preparation"
+  },
+  "fields": {
+    "code": null,
+    "costMarker": null,
+    "powerMarker": null,
+    "numericSlots": [
+      "2,3,3,4,4",
+      "2,3",
+      "2,2,4"
+    ],
+    "iconTags": [
+      "red star",
+      "green circle",
+      "blue star"
+    ],
+    "rarity": null,
+    "classTag": "Berserker"
+  },
+  "blocks": [
+    "Berserker",
+    "伽拉忒亚",
+    "2,3,3,4,4",
+    "2,3",
+    "2,2,4",
+    "Preparation",
+    "Preparation"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "event.waxing_moon_ritual.bloody_sunset",
+  "name": "残阳如血",
+  "cardType": "event",
+  "printedReward": 3,
+  "applicableLocations": ["deep_mountain", "new_capital"],
+  "printedText": "力量攻击于此战场获得+2威力。\n拥有无主从者的玩家的力量攻击于此战场额外获得+2威力。",
+  "timing": ["battle"],
+  "interactions": [{ "kind": "automatic", "visibility": "public" }],
+  "effects": [
+    { "type": "attribute_power_bonus", "attribute": "strength", "amount": 2, "scope": "this_battlefield" },
+    { "type": "attribute_power_bonus", "attribute": "strength", "amount": 2, "scope": "this_battlefield", "condition": "controller_has_masterless_servant" }
+  ],
+  "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Masterless-servant conditional bonus is not yet automated." },
+  "source": { "htmPath": "chm-extract/盈月之仪.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211243_871.png", "imageIndex": 5, "reviewedAgainstImage": true }
+}

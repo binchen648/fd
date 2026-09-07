@@ -1,0 +1,48 @@
+{
+  "id": "fd-playtest-v1-7p",
+  "contentPackId": "fd-playtest-v1",
+  "seats": [
+    {
+      "seat": 1,
+      "playerId": "player-1",
+      "masterId": "master.kayneth",
+      "servantId": "servant.artoriac"
+    },
+    {
+      "seat": 2,
+      "playerId": "player-2",
+      "masterId": "master.shinji",
+      "servantId": "servant.drake"
+    },
+    {
+      "seat": 3,
+      "playerId": "player-3",
+      "masterId": "master.kiritsugu",
+      "servantId": "servant.achilles"
+    },
+    {
+      "seat": 4,
+      "playerId": "player-4",
+      "masterId": "master.maiya",
+      "servantId": "servant.artoria-alt"
+    },
+    {
+      "seat": 5,
+      "playerId": "player-5",
+      "masterId": "master.gatou",
+      "servantId": "servant.ereshkigal"
+    },
+    {
+      "seat": 6,
+      "playerId": "player-6",
+      "masterId": "master.irisviel",
+      "servantId": "servant.tomoe"
+    },
+    {
+      "seat": 7,
+      "playerId": "player-7",
+      "masterId": "master.olga-marie",
+      "servantId": "servant.kintoki"
+    }
+  ]
+}

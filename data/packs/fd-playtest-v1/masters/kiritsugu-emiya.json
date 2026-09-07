@@ -1,0 +1,21 @@
+{
+  "id": "master.kiritsugu_emiya",
+  "name": "卫宫切嗣",
+  "overviewCardId": "master.kiritsugu_emiya.overview",
+  "initialMana": 4,
+  "commandSpellCardIds": ["master.kiritsugu_emiya.command_spell.standard"],
+  "skillCardIds": ["master.kiritsugu_emiya.skill.cold_blooded_killer"],
+  "linkedCards": {
+    "replacements": ["master.kiritsugu.origin_bullet"]
+  },
+  "capability": {
+    "status": "HOST_ADJUDICATED",
+    "hostRulingReason": "Deck replacement, face-down draw and named-card reveal are not yet implemented."
+  },
+  "source": {
+    "htmPath": "chm-extract/卫宫切嗣.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215423_544.png",
+    "imageIndex": 0,
+    "reviewedAgainstImage": true
+  }
+}

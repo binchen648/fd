@@ -1,0 +1,26 @@
+{
+  "jobId": "structure-servant.galatea.berserker.006",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.galatea.berserker.006",
+    "name": "飞鸟",
+    "cardType": "servant_skill",
+    "timing": [],
+    "conditions": [],
+    "targets": [],
+    "effects": [
+      { "type": "power_modifier", "value": -2 },
+      { "type": "power_modifier", "value": 2 }
+    ],
+    "duration": null,
+    "visibility": "public",
+    "tags": ["Berserker", "artwork"],
+    "ambiguities": []
+  },
+  "parseNotes": [
+    "【作品】飞鸟",
+    "遗憾：当你以常规出牌以外的方式激活或令此牌入场后，失去2点魔力",
+    "羽翼-打出时：此牌获得+2威力"
+  ]
+}

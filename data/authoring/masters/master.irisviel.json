@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "id": "master.irisviel",
+  "name": "爱丽丝菲尔·冯·爱因兹贝伦",
+  "class": "Master",
+  "aliases": ["master.irisviel-von-einzbern"],
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sources": [
+    {
+      "id": "chm_page",
+      "type": "chm_page",
+      "path": "D:/fd/chm-extract/爱丽丝菲尔·冯·爱因兹贝伦.htm",
+      "pageTitle": "爱丽丝菲尔·冯·爱因兹贝伦",
+      "imageOrder": [
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_200845_151.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_200849_886.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_200854_918.png"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "master.irisviel.skill.proxy-master",
+      "name": "代理御主",
+      "cardType": "master_skill",
+      "printedText": "令咒改为在前哨阶段使用。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "proxy-master.command-spell-timing",
+          "kind": "passive",
+          "printedClause": "令咒改为在前哨阶段使用。",
+          "activation": { "trigger": "while_active" },
+          "effects": [{ "type": "record_master_directive", "directive": "command_spells_used_in_preparation_phase" }],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+    },
+    {
+      "id": "master.irisviel.skill.conversion-magic",
+      "name": "转换魔术",
+      "cardType": "master_skill",
+      "printedText": "前哨阶段：弃置所有手牌，每1张获得1点魔力。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "conversion-magic.preparation",
+          "kind": "phase_action",
+          "printedClause": "前哨阶段：弃置所有手牌，每1张获得1点魔力。",
+          "activation": { "phase": "advance", "opens": "controller_action_window" },
+          "effects": [
+            { "type": "move_all_remaining", "from": "hand", "to": { "zone": "discard" }, "resultVar": "discarded_cards" },
+            { "type": "adjust_mana", "amount": { "var": "discarded_cards" } }
+          ],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+    }
+  ],
+  "excludedCards": [{ "id": "master.irisviel.skill.ascension", "name": "生命赋予", "reason": "user_scope_excluded_ascension" }],
+  "adapterNotes": ["升华技按用户规则排除。"]
+}

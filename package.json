@@ -1,0 +1,41 @@
+{
+  "name": "fd-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "typecheck": "tsc -b",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e:fd-remote": "playwright test -c playwright.config.ts",
+    "smoke:sample": "tsx scripts/smoke-chain-template.ts",
+    "sample:card": "tsx scripts/run-sample-card.ts",
+    "sample:from-vision": "tsx scripts/run-from-vision-artifact.ts",
+    "sample:from-structured": "tsx scripts/run-from-structured-artifact.ts",
+    "scenario:seeded": "tsx scripts/run-seeded-scenario.ts",
+    "scenario:matrix-compare": "tsx scripts/batch-compare-scenarios.ts",
+    "replay:compare": "tsx scripts/compare-replays.ts",
+    "content:compile": "tsx scripts/compile-playtest-content-pack.ts --pack data/packs/fd-playtest-v1/pack.json",
+    "content:validate": "tsx scripts/compile-playtest-content-pack.ts --pack data/packs/fd-playtest-v1/pack.json --validate-only",
+    "test:complex-skills": "vitest run packages/rules/tests/regression/complex-skills-regression.test.ts",
+    "test:client": "npm test --workspace @fd/client -- --run",
+    "verify:playtest-v1": "tsx scripts/verify-fd-playtest-v1.ts",
+    "verify:generated-content": "tsx scripts/verify-generated-content-determinism.ts",
+    "verify:stabilization": "tsx scripts/verify-card-engine-stabilization.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^24.0.0",
+    "@types/ws": "^8.18.1",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.0"
+  },
+  "dependencies": {
+    "ws": "^8.21.3"
+  }
+}

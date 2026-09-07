@@ -1,0 +1,79 @@
+{
+  "jobId": "structure-servant-nanaya-shiki-001",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.nanaya_shiki.skill",
+    "name": "七夜志贵",
+    "cardType": "servant_skill",
+    "timing": [
+      "action"
+    ],
+    "conditions": [],
+    "targets": [],
+    "effects": [
+      {
+        "type": "discard_card",
+        "value": 1
+      },
+      {
+        "type": "select_option",
+        "value": true
+      },
+      {
+        "type": "move_along_arrow",
+        "value": true
+      }
+    ],
+    "duration": null,
+    "visibility": "public",
+    "tags": [
+      "servant",
+      "skill"
+    ],
+    "ambiguities": [
+      {
+        "span": "play_attack_with_mana_cost_less_than_x",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "reduce_base_power_by_half_ceil",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "if_possible",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map condition clause to a supported engine predicate."
+      }
+    ]
+  },
+  "parseNotes": [
+    "Normalized text contains multiple abilities: '净眼' and '七夜流体'.",
+    "The '七夜流体' ability includes two options: '闪走' and '闪斩'.",
+    "X is used as a variable for both discard count and movement cost.",
+    "Repaired effect 'discard_x_cards' -> discard_card(1)",
+    "Repaired effect 'choose_one_option' -> select_option",
+    "Repaired effect 'move_one_step_along_arrow' -> move_along_arrow"
+  ],
+  "coverage": {
+    "sourceClauses": 4,
+    "mappedClauses": 4,
+    "unmappedClauses": 0
+  },
+  "source": {
+    "visionJobId": "vision-servant-nanaya-shiki-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

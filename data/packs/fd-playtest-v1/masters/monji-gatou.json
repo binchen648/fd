@@ -1,0 +1,19 @@
+{
+  "id": "master.monji_gatou",
+  "name": "卧藤门司",
+  "overviewCardId": "master.monji_gatou.overview",
+  "initialMana": 4,
+  "commandSpellCardIds": ["master.monji_gatou.command_spell.standard"],
+  "skillCardIds": ["master.monji_gatou.skill.bold_fighting_spirit"],
+  "linkedCards": {},
+  "capability": {
+    "status": "HOST_ADJUDICATED",
+    "hostRulingReason": "Post-battle movement rewards, victory recovery and command-spell immunity are not yet implemented."
+  },
+  "source": {
+    "htmPath": "chm-extract/卧藤门司.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_222919_276.png",
+    "imageIndex": 0,
+    "reviewedAgainstImage": true
+  }
+}

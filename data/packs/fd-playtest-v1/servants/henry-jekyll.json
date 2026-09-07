@@ -1,0 +1,45 @@
+{
+  "id": "servant.henry_jekyll",
+  "name": "亨利·杰基尔博士",
+  "classTag": "Assassin",
+  "overviewCardId": "servant.henry_jekyll.overview",
+  "startingDeck": {
+    "size": 12,
+    "entries": [
+      { "entryType": "basic", "attribute": "strength", "printedValue": 2, "copies": 1 },
+      { "entryType": "basic", "attribute": "strength", "printedValue": 3, "copies": 1 },
+      { "entryType": "basic", "attribute": "strength", "printedValue": 5, "copies": 1 },
+      { "entryType": "basic", "attribute": "strength", "printedValue": 7, "copies": 1 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 2, "copies": 1 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 4, "copies": 2 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 5, "copies": 1 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 7, "copies": 1 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 9, "copies": 1 },
+      { "entryType": "named", "attribute": "special", "cardId": "basic.surveil", "copies": 1 },
+      { "entryType": "named", "attribute": "special", "cardId": "basic.preparation", "copies": 1 }
+    ],
+    "attributeCounts": { "strength": 4, "agility": 6, "magecraft": 0, "special": 2 }
+  },
+  "skillCardIds": [
+    "servant.henry_jekyll.skill.secret_game_passive",
+    "servant.henry_jekyll.skill.presence_concealment",
+    "servant.henry_jekyll.skill.secret_game_attack"
+  ],
+  "linkedCards": {
+    "replacements": [
+      "servant.henry_jekyll.replacement.berserker_strength_3",
+      "servant.henry_jekyll.replacement.berserker_agility_3",
+      "servant.henry_jekyll.replacement.berserker_agility_5"
+    ]
+  },
+  "capability": {
+    "status": "HOST_ADJUDICATED",
+    "hostRulingReason": "Jekyll-to-Hyde transformation and replacement-card handling are not yet implemented."
+  },
+  "source": {
+    "htmPath": "chm-extract/亨利·杰基尔博士.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_213232_943.png",
+    "imageIndex": 0,
+    "reviewedAgainstImage": true
+  }
+}

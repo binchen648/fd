@@ -1,0 +1,26 @@
+{
+  "id": "event.moon_holy_grail.cheat_device",
+  "name": "作弊器",
+  "cardType": "event",
+  "printedReward": 3,
+  "applicableLocations": ["deep_mountain", "new_capital"],
+  "printedText": "局势牌不会禁止此战场宝具的使用。",
+  "effects": [
+    {
+      "type": "protect_noble_phantasm_usage",
+      "scope": "this_battlefield",
+      "fromRestrictionSource": "situation_card"
+    }
+  ],
+  "capability": {
+    "status": "PARTIAL",
+    "supportedDimensions": ["trait", "restriction_source", "battlefield_scope"],
+    "hostRulingReason": "Automatic event resolution is not yet connected to the rules engine."
+  },
+  "source": {
+    "htmPath": "chm-extract/月之圣杯.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205545_209.png",
+    "imageIndex": 8,
+    "reviewedAgainstImage": true
+  }
+}

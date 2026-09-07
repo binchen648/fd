@@ -1,0 +1,43 @@
+{
+  "jobId": "vision-servant.稗田阿礼.018",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Servant",
+    "subtypeGuess": "Caster",
+    "familyConfidence": 0
+  },
+  "text": {
+    "cardName": "稗田阿礼",
+    "rawText": "Caster\n稗田阿礼\n2,3,3\n2,3,4,4,4,5\nLuck\nPreparation\nPreparation",
+    "normalizedText": "Caster 稗田阿礼 2,3,3 2,3,4,4,4,5 Luck Preparation Preparation"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": null,
+    "powerMarker": null,
+    "numericSlots": [],
+    "iconTags": [
+      "Luck",
+      "Preparation",
+      "Preparation"
+    ],
+    "rarity": "",
+    "classTag": "Caster"
+  },
+  "blocks": [
+    "Caster",
+    "稗田阿礼",
+    "2,3,3",
+    "2,3,4,4,4,5",
+    "Luck",
+    "Preparation",
+    "Preparation"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

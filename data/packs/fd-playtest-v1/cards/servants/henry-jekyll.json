@@ -1,0 +1,109 @@
+[
+  {
+    "id": "servant.henry_jekyll.overview",
+    "name": "亨利·杰基尔博士",
+    "cardType": "servant_overview",
+    "capability": { "status": "FULL" },
+    "source": { "htmPath": "chm-extract/亨利·杰基尔博士.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_213232_943.png", "imageIndex": 0, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.henry_jekyll.skill.secret_game_passive",
+    "name": "隐秘的罪之游戏",
+    "cardType": "servant_skill",
+    "printedText": "被动：奇数回合中，杰基尔变为海德。此牌的效果无法失去。\n被动：杰基尔禁止使用【狂战士】。杰基尔移动时每个地点可以少花费1点魔力。\n被动：海德禁止使用【气息遮断】。",
+    "timing": ["round_start", "action"],
+    "interactions": [
+      { "kind": "automatic", "visibility": "public" },
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["movement_cost_calculation"] }
+    ],
+    "effects": [
+      { "type": "set_servant_form", "form": "hyde", "condition": "odd_round" },
+      { "type": "make_this_card_effects_unlosable" },
+      { "type": "forbid_card_use", "form": "jekyll", "cardName": "狂战士" },
+      { "type": "reduce_movement_cost_per_location", "form": "jekyll", "amount": 1 },
+      { "type": "forbid_card_use", "form": "hyde", "cardName": "气息遮断" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Odd-round Jekyll-to-Hyde transformation is not yet implemented." },
+    "source": { "htmPath": "chm-extract/亨利·杰基尔博士.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_213243_870.png", "imageIndex": 1, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.henry_jekyll.skill.presence_concealment",
+    "name": "气息遮断",
+    "cardType": "servant_skill",
+    "attributes": ["agility"],
+    "attribute": "agility",
+    "printedValue": 3,
+    "printedCost": 4,
+    "printedText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+    "timing": ["battle", "after_battle"],
+    "interactions": [
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["battle_resolution"] }
+    ],
+    "effects": [
+      { "type": "defeat_highest_power_battle_opponents", "timingLabel": "刺杀-战斗阶段", "condition": "owner_is_lower_than_all_highest_power_opponents_and_no_non_highest_opponent_exceeds_owner_and_battle_has_at_least_3_participants" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Conditional maximum-power override is not yet implemented." },
+    "source": { "htmPath": "chm-extract/亨利·杰基尔博士.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_213248_495.png", "imageIndex": 2, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.henry_jekyll.skill.secret_game_attack",
+    "name": "隐秘的罪之游戏",
+    "cardType": "servant_skill",
+    "attributes": ["strength"],
+    "attribute": "strength",
+    "printedValue": 5,
+    "printedCost": 5,
+    "traits": ["noble_phantasm"],
+    "printedText": "你可以免费打出此牌，若如此做，你【真名解放】且下个回合你的威力为0。\n兽化症-战斗阶段：杰基尔和海德的非基础攻击+3威力。若杰基尔获得战斗胜利，其获得1点战果。海德无视【败北】。",
+    "timing": ["action", "battle"],
+    "interactions": [
+      { "kind": "choice", "visibility": "public", "optional": true, "responseTo": ["play_this_card"] },
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["battle_phase"] }
+    ],
+    "effects": [
+      { "type": "allow_free_play_this_card" },
+      { "type": "set_true_name_release_and_next_round_power_zero", "condition": "played_for_free" },
+      { "type": "modify_non_basic_attack_power", "appliesToForms": ["jekyll", "hyde"], "amount": 3, "timingLabel": "兽化症-战斗阶段" },
+      { "type": "gain_battle_result", "form": "jekyll", "amount": 1, "condition": "form_wins_battle" },
+      { "type": "ignore_defeat_effects", "form": "hyde" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Free play, Jekyll/Hyde modifiers and result immunity are not yet implemented." },
+    "source": { "htmPath": "chm-extract/亨利·杰基尔博士.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_213238_455.png", "imageIndex": 3, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.henry_jekyll.replacement.berserker_strength_3",
+    "name": "狂战士（力量3）",
+    "cardType": "replacement",
+    "attributes": ["strength"],
+    "attribute": "strength",
+    "printedValue": 3,
+    "printedCost": 7,
+    "printedText": "",
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Replacement-card lifecycle is not yet implemented." },
+    "source": { "htmPath": "chm-extract/亨利·杰基尔博士.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_213407_206.png", "imageIndex": 4, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.henry_jekyll.replacement.berserker_agility_3",
+    "name": "狂战士（敏捷3）",
+    "cardType": "replacement",
+    "attributes": ["agility"],
+    "attribute": "agility",
+    "printedValue": 3,
+    "printedCost": 7,
+    "printedText": "",
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Replacement-card lifecycle is not yet implemented." },
+    "source": { "htmPath": "chm-extract/亨利·杰基尔博士.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_213407_206.png", "imageIndex": 4, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "servant.henry_jekyll.replacement.berserker_agility_5",
+    "name": "狂战士（敏捷5）",
+    "cardType": "replacement",
+    "attributes": ["agility"],
+    "attribute": "agility",
+    "printedValue": 5,
+    "printedCost": 9,
+    "printedText": "",
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Replacement-card lifecycle is not yet implemented." },
+    "source": { "htmPath": "chm-extract/亨利·杰基尔博士.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_213407_206.png", "imageIndex": 4, "reviewedAgainstImage": true }
+  }
+]

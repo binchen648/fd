@@ -1,0 +1,239 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-10-30T00:00:00.000Z",
+  "stats": {
+    "totalCards": 13,
+    "bySourceSet": {
+      "event": 2,
+      "master": 3,
+      "servant": 6,
+      "situation": 2
+    },
+    "byNamespace": {
+      "event": 2,
+      "master": 3,
+      "servant": 6,
+      "situation": 2
+    }
+  },
+  "cards": {
+    "event.reality_marble": {
+      "id": "event.reality_marble",
+      "name": "固有结界",
+      "language": "zh-CN",
+      "sourceSet": "event",
+      "namespace": "event",
+      "approvedAt": "2025-10-30T00:00:00.000Z",
+      "guardrailJobId": "structure-event-reality-marble-001",
+      "tags": [
+        "restriction"
+      ],
+      "cardType": "event",
+      "battlefield": "deep_mountain",
+      "competitionReward": 2,
+      "display": "revealed"
+    },
+    "event.synergy.001": {
+      "id": "event.synergy.001",
+      "name": "协同",
+      "language": "zh-CN",
+      "sourceSet": "event",
+      "namespace": "event",
+      "approvedAt": "2025-10-30T00:00:00.000Z",
+      "guardrailJobId": "structure-event-synergy-001",
+      "tags": [
+        "synergy"
+      ],
+      "cardType": "event",
+      "battlefield": "deep_mountain",
+      "competitionReward": 2,
+      "display": "revealed"
+    },
+    "master.matou_maiya.skill": {
+      "id": "master.matou_maiya.skill",
+      "name": "久宇舞弥",
+      "language": "zh-CN",
+      "sourceSet": "master",
+      "namespace": "master",
+      "approvedAt": "2025-10-30T00:00:00.000Z",
+      "guardrailJobId": "structure-master-maiya-hisau-001",
+      "tags": [
+        "master",
+        "military"
+      ],
+      "cardType": "master_skill",
+      "abilityType": "preliminary",
+      "triggerPhase": "preliminary"
+    },
+    "master.matou_shinji.profile": {
+      "id": "master.matou_shinji.profile",
+      "name": "间桐慎二",
+      "language": "zh-CN",
+      "sourceSet": "master",
+      "namespace": "master",
+      "approvedAt": "2025-10-30T00:00:00.000Z",
+      "guardrailJobId": "structure-master-matou-shinji-001",
+      "tags": [
+        "master",
+        "profile"
+      ],
+      "cardType": "master_skill",
+      "abilityType": "advance",
+      "triggerPhase": "advance"
+    },
+    "master.matou_shinji.wei_chen_zhi_shu": {
+      "id": "master.matou_shinji.wei_chen_zhi_shu",
+      "name": "伪臣之书",
+      "language": "zh-CN",
+      "sourceSet": "master",
+      "namespace": "master",
+      "approvedAt": "2025-10-30T00:00:00.000Z",
+      "guardrailJobId": "structure-master-matou-shinji-book-002",
+      "tags": [
+        "master",
+        "skill"
+      ],
+      "cardType": "master_skill",
+      "abilityType": "passive",
+      "triggerPhase": "passive"
+    },
+    "servant.nanaya_shiki.skill": {
+      "id": "servant.nanaya_shiki.skill",
+      "name": "七夜志贵",
+      "language": "zh-CN",
+      "sourceSet": "servant",
+      "namespace": "servant",
+      "approvedAt": "2025-10-30T00:00:00.000Z",
+      "guardrailJobId": "structure-servant-nanaya-shiki-001",
+      "tags": [
+        "servant",
+        "skill"
+      ],
+      "cardType": "servant_skill",
+      "magicCostRequired": 1,
+      "basePower": 0,
+      "abilityText": ""
+    },
+    "servant.ryogi_shiki.skill": {
+      "id": "servant.ryogi_shiki.skill",
+      "name": "两仪式",
+      "language": "zh-CN",
+      "sourceSet": "servant",
+      "namespace": "servant",
+      "approvedAt": "2025-10-30T00:00:00.000Z",
+      "guardrailJobId": "structure-servant-ryogi-shiki-001",
+      "tags": [
+        "servant",
+        "skill"
+      ],
+      "cardType": "servant_skill",
+      "magicCostRequired": 1,
+      "basePower": 0,
+      "abilityText": ""
+    },
+    "servant.henry_jekyll.skill": {
+      "id": "servant.henry_jekyll.skill",
+      "name": "亨利·杰基尔博士",
+      "language": "zh-CN",
+      "sourceSet": "servant",
+      "namespace": "servant",
+      "approvedAt": "2025-10-30T00:00:00.000Z",
+      "guardrailJobId": "structure-servant-henry-jekyll-001",
+      "tags": [
+        "surveil",
+        "preparation"
+      ],
+      "cardType": "servant_skill",
+      "magicCostRequired": 1,
+      "basePower": 0,
+      "abilityText": ""
+    },
+    "servant.bb.skill": {
+      "id": "servant.bb.skill",
+      "name": "B.B.",
+      "language": "zh-CN",
+      "sourceSet": "servant",
+      "namespace": "servant",
+      "approvedAt": "2025-10-30T00:00:00.000Z",
+      "guardrailJobId": "structure-servant-bb-001",
+      "tags": [
+        "servant",
+        "skill",
+        "moon_cancer"
+      ],
+      "cardType": "servant_skill",
+      "magicCostRequired": 1,
+      "basePower": 0,
+      "abilityText": ""
+    },
+    "situation.blankification": {
+      "id": "situation.blankification",
+      "name": "白纸化",
+      "language": "zh-CN",
+      "sourceSet": "situation",
+      "namespace": "situation",
+      "approvedAt": "2025-10-30T00:00:00.000Z",
+      "guardrailJobId": "structure-situation-blankification-001",
+      "tags": [
+        "situation",
+        "event"
+      ],
+      "cardType": "situation",
+      "situationType": "regular",
+      "manaGrantToAll": 1,
+      "hasInstantEffect": true,
+      "hasPersistentEffect": false,
+      "applicableRounds": [
+        2
+      ]
+    },
+    "situation.lostbelt_expansion": {
+      "id": "situation.lostbelt_expansion",
+      "name": "异闻带扩张",
+      "language": "zh-CN",
+      "sourceSet": "situation",
+      "namespace": "situation",
+      "approvedAt": "2025-10-30T00:00:00.000Z",
+      "guardrailJobId": "structure-situation-lostbelt-expansion-001",
+      "tags": [
+        "expansion"
+      ],
+      "cardType": "situation",
+      "situationType": "regular",
+      "manaGrantToAll": 1,
+      "hasInstantEffect": true,
+      "hasPersistentEffect": false,
+      "applicableRounds": [
+        2
+      ]
+    },
+    "servant.oda_nobunaga.mob": {
+      "id": "servant.oda_nobunaga.mob",
+      "name": "织田信长",
+      "language": "zh-CN",
+      "sourceSet": "servant",
+      "namespace": "servant",
+      "approvedAt": "2025-11-02T13:00:00.000Z",
+      "guardrailJobId": "structure-servant.oda_nobunaga.mob",
+      "tags": [
+        "Avenger",
+        "Preparation"
+      ],
+      "cardType": "servant_attack"
+    },
+    "servant.galatea.berserker": {
+      "id": "servant.galatea.berserker",
+      "name": "伽拉忒亚",
+      "language": "zh-CN",
+      "sourceSet": "servant",
+      "namespace": "servant",
+      "approvedAt": "2025-11-02T11:00:00.000Z",
+      "guardrailJobId": "structure-servant.galatea.berserker",
+      "tags": [
+        "berserker",
+        "servant"
+      ],
+      "cardType": "servant_skill"
+    }
+  }
+}

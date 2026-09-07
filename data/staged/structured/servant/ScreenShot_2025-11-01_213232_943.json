@@ -1,0 +1,34 @@
+{
+  "jobId": "structure-servant-henry-jekyll-001",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.henry_jekyll.skill",
+    "name": "亨利·杰基尔博士",
+    "cardType": "servant_skill",
+    "timing": [
+      "passive"
+    ],
+    "conditions": [],
+    "targets": [],
+    "effects": [],
+    "duration": null,
+    "visibility": "public",
+    "tags": [
+      "surveil",
+      "preparation"
+    ],
+    "ambiguities": []
+  },
+  "parseNotes": [],
+  "coverage": {
+    "sourceClauses": 5,
+    "mappedClauses": 5,
+    "unmappedClauses": 0
+  },
+  "source": {
+    "visionJobId": "vision-servant-henry-jekyll-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

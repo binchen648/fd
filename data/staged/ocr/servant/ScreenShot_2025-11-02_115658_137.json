@@ -1,0 +1,48 @@
+{
+  "jobId": "vision-servant.永仓新八.026",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Action",
+    "subtypeGuess": "",
+    "familyConfidence": 0
+  },
+  "text": {
+    "cardName": "龙飞剑",
+    "rawText": "力量\n敏捷\n龙飞剑\n3\n7\n落山风-行动阶段：展示你的两张手牌并分别选择将其弃置或置于牌堆顶。",
+    "normalizedText": "力量\n敏捷\n龙飞剑\n3\n7\n落山风-行动阶段：展示你的两张手牌并分别选择将其弃置或置于牌堆顶。"
+  },
+  "fields": {
+    "code": null,
+    "costMarker": "3",
+    "powerMarker": "7",
+    "numericSlots": [
+      3,
+      7
+    ],
+    "iconTags": [
+      "力量",
+      "敏捷"
+    ],
+    "rarity": null,
+    "classTag": [
+      "力量",
+      "敏捷"
+    ]
+  },
+  "blocks": [
+    "top-tags",
+    "character-art",
+    "name-bar",
+    "cost-power-section",
+    "ability-text"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "sourcePage": "D:\\fd\\chm-extract\\永仓新八.htm",
+    "sourceSet": "servant",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

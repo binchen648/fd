@@ -1,0 +1,78 @@
+{
+  "jobId": "vision-servant.加雷斯.011",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "宝具",
+    "subtypeGuess": "特殊",
+    "familyConfidence": 0
+  },
+  "text": {
+    "cardName": "变身戒指",
+    "rawText": "特殊\n宝具\n变身戒指\n1\n2\n荣光之冠-被动: 当你赢得一场战斗时，你【真名解放】。\n若你以此法【真名解放】，你获得1点战果。\n伪装-打出时: 隐藏真名。\n无名骑士-被动/行动阶段: 花费2点魔力，若你真名隐藏，\n移动至一处相邻的地点。",
+    "normalizedText": "特殊\n宝具\n变身戒指\n1\n2\n荣光之冠-被动: 当你赢得一场战斗时，你【真名解放】。\n若你以此法【真名解放】，你获得1点战果。\n伪装-打出时: 隐藏真名。\n无名骑士-被动/行动阶段: 花费2点魔力，若你真名隐藏，移动至一处相邻的地点。"
+  },
+  "fields": {
+    "code": null,
+    "costMarker": null,
+    "powerMarker": null,
+    "numericSlots": [
+      1,
+      2
+    ],
+    "iconTags": [
+      "green-circle",
+      "blue-arrow"
+    ],
+    "rarity": null,
+    "classTag": "特殊"
+  },
+  "blocks": [
+    {
+      "text": "特殊",
+      "bbox": null
+    },
+    {
+      "text": "宝具",
+      "bbox": null
+    },
+    {
+      "text": "变身戒指",
+      "bbox": null
+    },
+    {
+      "text": "1",
+      "bbox": null
+    },
+    {
+      "text": "2",
+      "bbox": null
+    },
+    {
+      "text": "荣光之冠-被动: 当你赢得一场战斗时，你【真名解放】。",
+      "bbox": null
+    },
+    {
+      "text": "若你以此法【真名解放】，你获得1点战果。",
+      "bbox": null
+    },
+    {
+      "text": "伪装-打出时: 隐藏真名。",
+      "bbox": null
+    },
+    {
+      "text": "无名骑士-被动/行动阶段: 花费2点魔力，若你真名隐藏，",
+      "bbox": null
+    },
+    {
+      "text": "移动至一处相邻的地点。",
+      "bbox": null
+    }
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

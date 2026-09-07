@@ -1,0 +1,150 @@
+{
+  "manifestVersion": "sample-manifest-v1",
+  "name": "fd-real-sample-pack",
+  "description": "Representative real-card pack for end-to-end content-pipeline validation across masters, servants, events, situations, replacement mechanics, hidden information, and Moon Cancer support.",
+  "items": [
+    {
+      "id": "master-matou-shinji-001",
+      "imagePath": "D:\\output\\fd_chm_extract\\图包\\ScreenShot_2025-10-30_194536_066.png",
+      "sourcePage": "间桐慎二.htm",
+      "sourceSet": "master",
+      "familyHint": "master_skill",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "master",
+      "tags": ["real", "sample", "master", "sample:simple_master", "sample:resource"]
+    },
+    {
+      "id": "master-matou-shinji-book-002",
+      "imagePath": "D:\\output\\fd_chm_extract\\图包\\ScreenShot_2025-10-30_194540_736.png",
+      "sourcePage": "间桐慎二.htm",
+      "sourceSet": "master",
+      "familyHint": "master_skill",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "master",
+      "tags": ["real", "sample", "master", "sample:transform_or_replacement", "sample:master_switch"]
+    },
+    {
+      "id": "master-maiya-hisau-001",
+      "imagePath": "D:\\output\\fd_chm_extract\\图包\\ScreenShot_2025-10-29_230925_200.png",
+      "sourcePage": "久宇舞弥.htm",
+      "sourceSet": "master",
+      "familyHint": "master_skill",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "master",
+      "tags": ["real", "sample", "master", "sample:simple_master", "sample:phase_cost"]
+    },
+    {
+      "id": "master-kuonji-alice-001",
+      "imagePath": "D:\\output\\fd_chm_extract\\图包\\ScreenShot_2025-10-30_201344_398.png",
+      "sourcePage": "久远寺有珠.htm",
+      "sourceSet": "master",
+      "familyHint": "master_skill",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "master",
+      "tags": ["real", "sample", "master", "sample:complex_master", "sample:subdeck_mechanic"]
+    },
+    {
+      "id": "master-illyasviel-001",
+      "imagePath": "D:\\output\\fd_chm_extract\\图包\\ScreenShot_2025-10-29_163935_232.png",
+      "sourcePage": "伊莉雅斯菲尔.htm",
+      "sourceSet": "master",
+      "familyHint": "master_skill",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "master",
+      "tags": ["real", "sample", "master", "sample:complex_master", "sample:delayed_trigger"]
+    },
+    {
+      "id": "servant-bb-001",
+      "imagePath": "D:\\output\\fd_chm_extract\\图包\\ScreenShot_2025-11-02_123054_861.png",
+      "sourcePage": "B.B..htm",
+      "sourceSet": "servant",
+      "familyHint": "servant_skill",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "servant",
+      "tags": ["real", "sample", "servant", "sample:servant_timing_complex", "sample:moon_cancer"]
+    },
+    {
+      "id": "servant-henry-jekyll-001",
+      "imagePath": "D:\\output\\fd_chm_extract\\图包\\ScreenShot_2025-11-01_213232_943.png",
+      "sourcePage": "亨利·杰基尔博士.htm",
+      "sourceSet": "servant",
+      "familyHint": "servant_skill",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "servant",
+      "tags": ["real", "sample", "servant", "sample:servant_timing_complex", "sample:transform_or_replacement"]
+    },
+    {
+      "id": "servant-ryogi-shiki-001",
+      "imagePath": "D:\\output\\fd_chm_extract\\图包\\ScreenShot_2025-10-29_225606_089.png",
+      "sourcePage": "两仪式.htm",
+      "sourceSet": "servant",
+      "familyHint": "servant_skill",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "servant",
+      "tags": ["real", "sample", "servant", "sample:servant_timing_complex", "sample:combat_resolution"]
+    },
+    {
+      "id": "servant-nanaya-shiki-001",
+      "imagePath": "D:\\output\\fd_chm_extract\\图包\\ScreenShot_2025-10-29_175151_377.png",
+      "sourcePage": "七夜志贵.htm",
+      "sourceSet": "servant",
+      "familyHint": "servant_skill",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "servant",
+      "tags": ["real", "sample", "servant", "sample:hidden_or_reveal", "sample:servant_timing_complex"]
+    },
+    {
+      "id": "event-synergy-001",
+      "imagePath": "D:\\output\\fd_chm_extract\\ScreenShot_2025-10-27_203404_003.png",
+      "sourcePage": "冬木1.htm",
+      "sourceSet": "event",
+      "familyHint": "event_card",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "event",
+      "tags": ["real", "sample", "event", "sample:event", "sample:battlefield_modifier"]
+    },
+    {
+      "id": "event-reality-marble-001",
+      "imagePath": "D:\\output\\fd_chm_extract\\ScreenShot_2025-10-27_203345_444.png",
+      "sourcePage": "冬木1.htm",
+      "sourceSet": "event",
+      "familyHint": "event_card",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "event",
+      "tags": ["real", "sample", "event", "sample:event", "sample:lockdown"]
+    },
+    {
+      "id": "situation-blankification-001",
+      "imagePath": "D:\\output\\fd_chm_extract\\图包\\ScreenShot_2025-10-30_181738_843.png",
+      "sourcePage": "【异闻带】高潮局势牌.htm",
+      "sourceSet": "situation",
+      "familyHint": "situation_card",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "situation",
+      "tags": ["real", "sample", "situation", "sample:situation", "sample:climax"]
+    },
+    {
+      "id": "situation-lostbelt-expansion-001",
+      "imagePath": "D:\\output\\fd_chm_extract\\图包\\ScreenShot_2025-10-30_181744_098.png",
+      "sourcePage": "【异闻带】高潮局势牌.htm",
+      "sourceSet": "situation",
+      "familyHint": "situation_card",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "situation",
+      "tags": ["real", "sample", "situation", "sample:situation", "sample:map_lockdown"]
+    }
+  ]
+}

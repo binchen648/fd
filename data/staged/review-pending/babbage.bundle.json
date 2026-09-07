@@ -1,0 +1,51 @@
+{
+  "artifactVersion": "recognition-bundle-v1",
+  "status": "recognized",
+  "familyId": "servant.babbage",
+  "displayName": "查尔斯·巴贝奇",
+  "sourceHtm": "D:/fd/chm-extract/查尔斯·巴贝奇.htm",
+  "images": [
+    "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_211944_712.png",
+    "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_211959_889.png",
+    "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_211955_601.png",
+    "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_211949_520.png"
+  ],
+  "visionArtifactPath": "D:/fd/data/staged/ocr/caster/ScreenShot_2025-11-01_211944_712.json",
+  "classificationRule": {
+    "method": "fd-card-recognition-v1",
+    "legend": {
+      "red": "red_cards numeric entries",
+      "green": "green_cards numeric entries",
+      "blue": "blue_cards numeric entries",
+      "white": "special_cards repeated text entries"
+    }
+  },
+  "mainCardfaceAnalysis": {
+    "imageFile": "ScreenShot_2025-11-01_211944_712.png",
+    "character_name": "查尔斯·巴贝奇",
+    "red_cards": [
+      2,
+      3,
+      3,
+      5
+    ],
+    "green_cards": [
+      2,
+      2,
+      4,
+      4
+    ],
+    "blue_cards": [
+      2,
+      3,
+      3,
+      5
+    ],
+    "special_cards": [],
+    "red_count": 4,
+    "green_count": 4,
+    "blue_count": 4,
+    "special_count": 0,
+    "total_count": 12
+  }
+}

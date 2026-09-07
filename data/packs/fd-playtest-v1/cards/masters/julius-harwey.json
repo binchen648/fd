@@ -1,0 +1,54 @@
+[
+  {
+    "id": "master.julius_harwey.overview",
+    "name": "尤里乌斯·贝尔奇斯科·哈维",
+    "cardType": "master_overview",
+    "printedText": "代码-潜行-前哨阶段：本阶段不进行部署，于你的行动阶段开始时部署于一处战场。\n快速老化-每回合结束时移除你弃牌堆中两张牌或随机弃置一张牌。若无法执行，需要先抽一张牌。",
+    "timing": ["advance", "action", "round_end"],
+    "interactions": [
+      { "kind": "automatic", "visibility": "public" },
+      { "kind": "triggered", "visibility": "owner_only", "optional": false, "responseTo": ["round_end"], "targetTypes": ["discard_pile_card", "hand_card"] }
+    ],
+    "effects": [
+      { "type": "skip_advance_deployment" },
+      { "type": "deploy_to_battlefield_at_action_phase_start" },
+      { "type": "remove_cards_from_discard_pile_or_randomly_discard", "count": 2, "fallbackDrawCards": 1, "timingLabel": "快速老化" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Deployment-phase skipping and action-phase deployment are not yet implemented." },
+    "source": { "htmPath": "chm-extract/尤里鸟斯·贝尔奇斯科·哈维.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_222531_412.png", "imageIndex": 0, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "master.julius_harwey.command_spell.standard",
+    "name": "令咒",
+    "cardType": "command_spell",
+    "printedText": "行动阶段：获得4魔力\n行动阶段：总威力+2,如果你本回合每赢得一场战斗，获得2战果\n行动阶段：从新都或深山町移动至任意位置，无视交战状态",
+    "timing": ["action"],
+    "interactions": [
+      { "kind": "choice", "visibility": "public", "optional": true, "targetTypes": ["self", "location"] }
+    ],
+    "effects": [
+      { "type": "gain_mana", "amount": 4 },
+      { "type": "gain_total_power", "amount": 2 },
+      { "type": "gain_battle_result_per_battle_won_this_round", "amount": 2 },
+      { "type": "move_from_named_locations_to_any_position", "from": ["new_capital", "deep_mountain_town"], "ignoreBattleState": true }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "All three command-spell modes require engine actions." },
+    "source": { "htmPath": "chm-extract/尤里鸟斯·贝尔奇斯科·哈维.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_222536_373.png", "imageIndex": 1, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "master.julius_harwey.skill.black_scorpion",
+    "name": "黑蝎",
+    "cardType": "master_skill",
+    "printedText": "安全增强方案-当你使用【潜行】时，可以部署于魔术工房。\n隐身增强方案-当你使用【潜行】时，可以花费2点魔力，改为于自己的战斗阶段中进行部署。",
+    "timing": ["action", "battle"],
+    "interactions": [
+      { "kind": "choice", "visibility": "public", "optional": true, "responseTo": ["use_stealth"], "targetTypes": ["workshop", "own_battle_phase"] }
+    ],
+    "effects": [
+      { "type": "allow_stealth_deploy_to_workshop", "timingLabel": "安全增强方案" },
+      { "type": "allow_stealth_deploy_during_own_battle_phase", "costMana": 2, "timingLabel": "隐身增强方案" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Stealth deployment and paid action-phase redeployment are not yet implemented." },
+    "source": { "htmPath": "chm-extract/尤里鸟斯·贝尔奇斯科·哈维.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_222541_772.png", "imageIndex": 2, "reviewedAgainstImage": true }
+  }
+]

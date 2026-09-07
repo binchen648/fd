@@ -1,0 +1,10 @@
+{
+  "comparisons": [
+    {
+      "label": "generated-servant-skill-screenshot-2025-11-02-123054-861-capability-reject-engine-unsupported-timing-card-timing-0-candidate",
+      "baselinePath": "D:\\fd\\packages\\rules\\src\\data\\scenarios\\minimal-7p-seeded-scenario.json",
+      "candidatePath": "D:\\fd\\data\\staged\\generated-scenarios\\servant\\ScreenShot_2025-11-02_123054_861--capability-reject-engine-unsupported-timing-card-timing-0.json",
+      "expectedIdentical": true
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "jobId": "vision-master-matou-shinji-book-002",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "skill",
+    "subtypeGuess": "",
+    "familyConfidence": 0
+  },
+  "text": {
+    "cardName": "伪臣之书",
+    "rawText": "伪臣之书\n(间桐樱不在场)\n替代品-当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+    "normalizedText": "伪臣之书 (间桐樱不在场) 替代品-当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": null,
+    "powerMarker": null,
+    "numericSlots": [],
+    "iconTags": [
+      "令咒"
+    ],
+    "rarity": "",
+    "classTag": ""
+  },
+  "blocks": [
+    {
+      "type": "title",
+      "text": "伪臣之书"
+    },
+    {
+      "type": "subtitle",
+      "text": "(间桐樱不在场)"
+    },
+    {
+      "type": "body",
+      "text": "替代品-当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。"
+    }
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

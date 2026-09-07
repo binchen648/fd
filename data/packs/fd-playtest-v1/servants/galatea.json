@@ -1,0 +1,43 @@
+{
+  "id": "servant.galatea",
+  "name": "伽拉忒亚",
+  "classTag": "Berserker",
+  "overviewCardId": "servant.galatea.overview",
+  "startingDeck": {
+    "size": 12,
+    "entries": [
+      { "entryType": "basic", "attribute": "strength", "printedValue": 2, "copies": 1 },
+      { "entryType": "basic", "attribute": "strength", "printedValue": 3, "copies": 2 },
+      { "entryType": "basic", "attribute": "strength", "printedValue": 4, "copies": 2 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 2, "copies": 1 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 3, "copies": 1 },
+      { "entryType": "basic", "attribute": "magecraft", "printedValue": 2, "copies": 2 },
+      { "entryType": "basic", "attribute": "magecraft", "printedValue": 4, "copies": 1 },
+      { "entryType": "named", "attribute": "special", "cardId": "basic.preparation", "copies": 2 }
+    ],
+    "attributeCounts": { "strength": 5, "agility": 2, "magecraft": 3, "special": 2 }
+  },
+  "skillCardIds": [
+    "servant.galatea.skill.pygmalions_love",
+    "servant.galatea.skill.aphrodites_blessing",
+    "servant.galatea.skill.chisel_of_the_ideal_king"
+  ],
+  "linkedCards": {
+    "generated": [
+      "servant.galatea.work.flower",
+      "servant.galatea.work.bird",
+      "servant.galatea.work.blessing",
+      "servant.galatea.work.life"
+    ]
+  },
+  "capability": {
+    "status": "HOST_ADJUDICATED",
+    "hostRulingReason": "Work-card generation and skill effects require host adjudication until their primitives are implemented."
+  },
+  "source": {
+    "htmPath": "chm-extract/伽拉忒亚.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_113727_595.png",
+    "imageIndex": 0,
+    "reviewedAgainstImage": true
+  }
+}

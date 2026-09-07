@@ -1,0 +1,47 @@
+{
+  "jobId": "guardrail-servant.oda_nobunaga.mob.001",
+  "artifactVersion": "guardrail-response-v1",
+  "status": "approve",
+  "schemaOk": true,
+  "engineOk": true,
+  "decision": "approve",
+  "ambiguityLevel": "low",
+  "coverageReport": {
+    "originalClauses": 6,
+    "mappedClauses": 6,
+    "missingClauses": 0
+  },
+  "issues": [],
+  "requiredHumanReview": false,
+  "smokeTests": [
+    {
+      "name": "auto_smoke_1",
+      "setup": "vision status is ok",
+      "expect": "vision status is ok",
+      "source": "model"
+    },
+    {
+      "name": "auto_smoke_2",
+      "setup": "structure status is ok",
+      "expect": "structure status is ok",
+      "source": "model"
+    },
+    {
+      "name": "auto_smoke_3",
+      "setup": "all source clauses mapped",
+      "expect": "all source clauses mapped",
+      "source": "model"
+    },
+    {
+      "name": "auto_smoke_4",
+      "setup": "no ambiguous fields detected",
+      "expect": "no ambiguous fields detected",
+      "source": "model"
+    }
+  ],
+  "source": {
+    "structureJobId": "structure-servant.oda_nobunaga.mob.001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "jobId": "vision-servant.赫拉克勒斯.014",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Noble Phantasm",
+    "subtypeGuess": "",
+    "familyConfidence": 0.85
+  },
+  "text": {
+    "cardName": "十二试炼",
+    "rawText": "【真名解放】\n若你战败，获得3点战果并令此战斗的所有胜者分别失去3点战果，然后将此牌移除游戏并令你的其他【十二试炼】获得+3威力直至游戏结束。",
+    "normalizedText": "【真名解放】\n若你战败，获得3点战果并令此战斗的所有胜者分别失去3点战果，然后将此牌移除游戏并令你的其他【十二试炼】获得+3威力直至游戏结束。"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": "1",
+    "powerMarker": "5",
+    "numericSlots": [
+      "1",
+      "5"
+    ],
+    "iconTags": [
+      "sword"
+    ],
+    "rarity": "",
+    "classTag": ""
+  },
+  "blocks": [
+    "Noble Phantasm",
+    "十二试炼",
+    "【真名解放】\n若你战败，获得3点战果并令此战斗的所有胜者分别失去3点战果，然后将此牌移除游戏并令你的其他【十二试炼】获得+3威力直至游戏结束。",
+    "1",
+    "5"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.92,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

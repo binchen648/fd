@@ -1,0 +1,78 @@
+{
+  "jobId": "structure-servant-ryogi-shiki-001",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.ryogi_shiki.skill",
+    "name": "两仪式",
+    "cardType": "servant_skill",
+    "timing": [
+      "round_start"
+    ],
+    "conditions": [],
+    "targets": [],
+    "effects": [],
+    "duration": null,
+    "visibility": "public",
+    "tags": [
+      "servant",
+      "skill"
+    ],
+    "ambiguities": [
+      {
+        "span": "add_skill:生·切断",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "add_skill:死·紧握",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "view_all_players_deck_bottom",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "defeat_if_deck_empty",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map effect clause to a supported engine effect."
+      },
+      {
+        "span": "target-0",
+        "category": "effect_mapping",
+        "severity": "medium",
+        "options": [],
+        "recommendedAction": "human_review",
+        "notes": "Could not map target 'self' to a supported engine target."
+      }
+    ]
+  },
+  "parseNotes": [
+    "Normalized card name from Chinese to Ryogi Shiki convention",
+    "Mapped three skill clauses to effects with standardized tokens"
+  ],
+  "coverage": {
+    "sourceClauses": 3,
+    "mappedClauses": 3,
+    "unmappedClauses": 0
+  },
+  "source": {
+    "visionJobId": "vision-servant-ryogi-shiki-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

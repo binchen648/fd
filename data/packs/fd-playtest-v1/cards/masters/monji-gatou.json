@@ -1,0 +1,58 @@
+[
+  {
+    "id": "master.monji_gatou.overview",
+    "name": "卧藤门司",
+    "cardType": "master_overview",
+    "printedText": "求道者-战斗阶段结束时，每有一名位于你所在地且以移动进入该地点的其他玩家，你获得1点魔力。若你获胜，改为获得1点战果。\n冥想-你使用过令咒的回合不受其他玩家的能力影响。",
+    "timing": ["after_battle"],
+    "interactions": [
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["after_battle"] },
+      { "kind": "automatic", "visibility": "public" }
+    ],
+    "effects": [
+      { "type": "gain_mana_per_other_player_at_same_location_who_entered_by_movement", "amount": 1, "timingLabel": "求道者-战斗阶段结束时" },
+      { "type": "gain_battle_result_instead_if_owner_won", "amount": 1 },
+      { "type": "ignore_other_player_abilities_if_used_command_spell_this_round", "timingLabel": "冥想" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Post-battle movement, mana gain and command-spell immunity are not yet implemented." },
+    "source": { "htmPath": "chm-extract/卧藤门司.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_222919_276.png", "imageIndex": 0, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "master.monji_gatou.command_spell.standard",
+    "name": "令咒",
+    "cardType": "command_spell",
+    "printedText": "行动阶段：获得4魔力\n行动阶段：总威力+2，如果你本回合每赢得一场战斗，获得2战果\n行动阶段：从新都或深山町移动至任意位置，无视交战状态",
+    "timing": ["action"],
+    "interactions": [
+      { "kind": "choice", "visibility": "public", "optional": true, "targetTypes": ["self", "location"] }
+    ],
+    "effects": [
+      { "type": "gain_mana", "amount": 4 },
+      { "type": "gain_total_power", "amount": 2 },
+      { "type": "gain_battle_result_per_battle_won_this_round", "amount": 2 },
+      { "type": "move_from_named_locations_to_any_position", "from": ["new_capital", "deep_mountain_town"], "ignoreBattleState": true }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "All three command-spell modes require engine actions." },
+    "source": { "htmPath": "chm-extract/卧藤门司.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_222924_628.png", "imageIndex": 1, "reviewedAgainstImage": true }
+  },
+  {
+    "id": "master.monji_gatou.skill.bold_fighting_spirit",
+    "name": "豪快战意",
+    "cardType": "master_skill",
+    "attributes": ["strength"],
+    "attribute": "strength",
+    "printedValue": 4,
+    "printedCost": 8,
+    "printedText": "（将此牌加入你的技能区）\n故则杀之，战则胜之-若你获胜，恢复一枚令咒。",
+    "timing": ["after_battle"],
+    "interactions": [
+      { "kind": "triggered", "visibility": "public", "optional": false, "responseTo": ["battle_win"] }
+    ],
+    "effects": [
+      { "type": "add_this_card_to_skill_zone" },
+      { "type": "recover_command_spell", "amount": 1, "condition": "owner_wins_battle", "timingLabel": "故则杀之，战则胜之" }
+    ],
+    "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "Victory-triggered command-spell recovery is not yet implemented." },
+    "source": { "htmPath": "chm-extract/卧藤门司.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_222929_556.png", "imageIndex": 2, "reviewedAgainstImage": true }
+  }
+]

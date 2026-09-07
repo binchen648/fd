@@ -1,0 +1,49 @@
+﻿{
+    "version":  "1.0.0",
+    "name":  "CHM Base Game Sample Card Manifest",
+    "baseRulesReference":  "FD-Game-Rules-Final.md",
+    "createdAt":  "2026-04-13",
+    "description":  "Representative sample cards for testing FD content pipeline against CHM base rules",
+    "items":  [
+                  {
+                      "targetNamespace":  "master",
+                      "familyHint":  "master_identity",
+                      "sourceSet":  "master",
+                      "id":  "master-shinji-001",
+                      "name":  "间桐慎二",
+                      "language":  "zh-CN",
+                      "imagePath":  "D:\\fd\\chm-extract\\間桐慎二.htm",
+                      "expectedCardType":  "master_identity"
+                  },
+                  {
+                      "targetNamespace":  "servant",
+                      "familyHint":  "servant_overview",
+                      "sourceSet":  "servant",
+                      "id":  "servant-nanaya-shiki-001",
+                      "name":  "七夜志贵",
+                      "language":  "zh-CN",
+                      "imagePath":  "D:\\fd\\chm-extract\\七夜志贵.htm",
+                      "expectedCardType":  "servant_overview"
+                  },
+                  {
+                      "targetNamespace":  "situation",
+                      "familyHint":  "situation_climax",
+                      "sourceSet":  "situation",
+                      "id":  "situation-001",
+                      "name":  "【异闻带】牌堆",
+                      "language":  "zh-CN",
+                      "imagePath":  "D:\\fd\\chm-extract\\【异闻带】牌堆.htm",
+                      "expectedCardType":  "situation"
+                  },
+                  {
+                      "targetNamespace":  "event",
+                      "familyHint":  "event_deep_mountain",
+                      "sourceSet":  "event",
+                      "id":  "event-001",
+                      "name":  "事件",
+                      "language":  "zh-CN",
+                      "imagePath":  "D:\\fd\\chm-extract\\事件.htm",
+                      "expectedCardType":  "event"
+                  }
+              ]
+}

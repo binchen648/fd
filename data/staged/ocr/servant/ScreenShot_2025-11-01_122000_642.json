@@ -1,0 +1,36 @@
+{
+  "jobId": "vision-servant.贞德.f.sr.021",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Skill",
+    "subtypeGuess": "Passive",
+    "familyConfidence": 0.5
+  },
+  "text": {
+    "cardName": "炼狱之炎",
+    "rawText": "被动：当一名对手失去战果时，弃置你的手牌并抽3张牌。然后你将被弃置牌中至多一张 / 特殊基础攻击加入攻击并令其失去所有卡牌文字效果直至被关闭。",
+    "normalizedText": "被动：当一名对手失去战果时，弃置你的手牌并抽3张牌。然后你将被弃置牌中至多一张 / 特殊基础攻击加入攻击并令其失去所有卡牌文字效果直至被关闭。"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": null,
+    "powerMarker": null,
+    "numericSlots": [],
+    "iconTags": [],
+    "rarity": "",
+    "classTag": ""
+  },
+  "blocks": [],
+  "uncertainSpans": [
+    {
+      "text": " / ",
+      "reason": "unclear symbol"
+    }
+  ],
+  "overallConfidence": 0.85,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "Preparation": {
+    "id": "basic.preparation",
+    "canonicalKey": "ranged_operation",
+    "displayName": "远隔",
+    "rulesName": "远隔操作",
+    "attribute": "special",
+    "cost": 1,
+    "power": 2
+  },
+  "Surveil": {
+    "id": "basic.surveil",
+    "canonicalKey": "dash",
+    "displayName": "急行",
+    "rulesName": "急行",
+    "attribute": "special",
+    "cost": 1,
+    "power": 3
+  },
+  "Luck": {
+    "id": "basic.luck",
+    "canonicalKey": "luck",
+    "displayName": "幸运",
+    "rulesName": "幸运",
+    "attribute": "special",
+    "cost": 0,
+    "power": 4
+  }
+}

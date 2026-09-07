@@ -1,0 +1,43 @@
+{
+  "id": "event.moon_holy_grail.superior_firepower",
+  "name": "优势火力学说",
+  "cardType": "event",
+  "printedReward": 3,
+  "applicableLocations": ["deep_mountain", "new_capital"],
+  "printedText": "此战场的玩家获得“行动阶段：创造并激活一张你控制的基础/特殊攻击的临时复制直至你失去此效果。”",
+  "effects": [
+    {
+      "type": "temporary_attack_copy_request",
+      "timing": "action_phase",
+      "recipient": "players_at_this_battlefield",
+      "eligibleSource": "controlled_basic_or_special_attack",
+      "activation": "immediate",
+      "usesPerPlayerPerRound": 1,
+      "duration": "until_effect_lost",
+      "fallback": "host_ruling"
+    }
+  ],
+  "capability": {
+    "status": "HOST_ADJUDICATED",
+    "hostRulingReason": "Temporary copies do not yet have a complete engine lifecycle."
+  },
+  "ambiguities": [
+    {
+      "field": "effects.temporary_attack_copy_request.copy_state",
+      "description": "牌面未逐项说明临时复制是否继承来源攻击的使用次数状态、被赋予状态及其他非印刷状态，需要用户确认。",
+      "source": {
+        "htmPath": "chm-extract/月之圣杯.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205441_186.png",
+        "imageIndex": 6,
+        "reviewedAgainstImage": true
+      },
+      "requiresConfirmation": true
+    }
+  ],
+  "source": {
+    "htmPath": "chm-extract/月之圣杯.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205441_186.png",
+    "imageIndex": 6,
+    "reviewedAgainstImage": true
+  }
+}

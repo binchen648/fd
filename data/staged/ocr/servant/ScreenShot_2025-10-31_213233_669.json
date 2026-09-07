@@ -1,0 +1,39 @@
+{
+  "jobId": "vision-servant.铃鹿御前.013",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Servant",
+    "subtypeGuess": "Saber",
+    "familyConfidence": 0.95
+  },
+  "text": {
+    "cardName": "铃鹿御前",
+    "rawText": "Saber\n铃鹿御前\n2,2,3,4\n2,3,3,4,4\n2\nSurveil\nPreparation",
+    "normalizedText": "Saber\n铃鹿御前\n2,2,3,4\n2,3,3,4,4\n2\nSurveil\nPreparation"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": "2,2,3,4",
+    "powerMarker": "2",
+    "numericSlots": [
+      "2,2,3,4",
+      "2,3,3,4,4",
+      "2"
+    ],
+    "iconTags": [
+      "star",
+      "circle",
+      "star"
+    ],
+    "rarity": "",
+    "classTag": "Saber"
+  },
+  "blocks": [],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

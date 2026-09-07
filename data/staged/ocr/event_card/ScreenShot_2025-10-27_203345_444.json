@@ -1,0 +1,37 @@
+{
+  "jobId": "vision-event-reality-marble-001",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "event",
+    "subtypeGuess": "",
+    "familyConfidence": 0.9
+  },
+  "text": {
+    "cardName": "固有结界",
+    "rawText": "特殊攻击于此战场禁止打出。所有玩家不能移动至此地点也不能离开此地点。",
+    "normalizedText": "特殊攻击于此战场禁止打出。所有玩家不能移动至此地点也不能离开此地点。"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": "2",
+    "powerMarker": "",
+    "numericSlots": [],
+    "iconTags": [
+      "restriction"
+    ],
+    "rarity": "",
+    "classTag": ""
+  },
+  "blocks": [
+    "cardName",
+    "costMarker",
+    "effectText"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

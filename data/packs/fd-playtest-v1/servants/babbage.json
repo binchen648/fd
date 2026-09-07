@@ -1,0 +1,36 @@
+{
+  "id": "servant.babbage",
+  "name": "查尔斯·巴贝奇",
+  "classTag": "Caster",
+  "overviewCardId": "servant.babbage.overview",
+  "startingDeck": {
+    "size": 12,
+    "entries": [
+      { "entryType": "basic", "attribute": "strength", "printedValue": 2, "copies": 1 },
+      { "entryType": "basic", "attribute": "strength", "printedValue": 3, "copies": 2 },
+      { "entryType": "basic", "attribute": "strength", "printedValue": 5, "copies": 1 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 2, "copies": 2 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 4, "copies": 2 },
+      { "entryType": "basic", "attribute": "magecraft", "printedValue": 2, "copies": 1 },
+      { "entryType": "basic", "attribute": "magecraft", "printedValue": 3, "copies": 2 },
+      { "entryType": "basic", "attribute": "magecraft", "printedValue": 5, "copies": 1 }
+    ],
+    "attributeCounts": { "strength": 4, "agility": 4, "magecraft": 4, "special": 0 }
+  },
+  "skillCardIds": [
+    "servant.babbage.skill.resplendent_ashen_world",
+    "servant.babbage.skill.mechanical_armor",
+    "servant.babbage.skill.steam_workshop"
+  ],
+  "linkedCards": {},
+  "capability": {
+    "status": "HOST_ADJUDICATED",
+    "hostRulingReason": "Skill effects are preserved on reviewed source images but are not yet expressed as engine primitives."
+  },
+  "source": {
+    "htmPath": "chm-extract/查尔斯·巴贝奇.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_211944_712.png",
+    "imageIndex": 0,
+    "reviewedAgainstImage": true
+  }
+}

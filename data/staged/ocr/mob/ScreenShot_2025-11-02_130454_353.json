@@ -1,0 +1,42 @@
+{
+  "jobId": "vision-servant.oda_nobunaga.mob.001",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "",
+    "subtypeGuess": "Avenger",
+    "familyConfidence": 0
+  },
+  "text": {
+    "cardName": "织田信长",
+    "rawText": "织田信长\n3,3,3,4,4,4,5,5,5\nPreparation\nPreparation\nPreparation\nAvenger",
+    "normalizedText": "织田信长 3,3,3,4,4,4,5,5,5 Preparation Preparation Preparation Avenger"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": null,
+    "powerMarker": null,
+    "numericSlots": [],
+    "iconTags": [
+      "Preparation",
+      "Preparation",
+      "Preparation"
+    ],
+    "rarity": "",
+    "classTag": "Avenger"
+  },
+  "blocks": [
+    "织田信长",
+    "3,3,3,4,4,4,5,5,5",
+    "Preparation",
+    "Preparation",
+    "Preparation",
+    "Avenger"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

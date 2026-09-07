@@ -1,0 +1,137 @@
+{
+  "manifestVersion": "sample-manifest-v1",
+  "name": "CHM Test Batch 10 Cards",
+  "description": "Test batch of 10 cards from chm-extract for pipeline testing",
+  "items": [
+    {
+      "id": "test-01-b.b.",
+      "imagePath": "D:\\fd\\chm-extract\\B.B..htm",
+      "sourceSet": "master",
+      "familyHint": "master_identity",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "master",
+      "tags": [
+        "master",
+        "test"
+      ]
+    },
+    {
+      "id": "test-02-fa",
+      "imagePath": "D:\\fd\\chm-extract\\FA.htm",
+      "sourceSet": "master",
+      "familyHint": "master_identity",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "master",
+      "tags": [
+        "master",
+        "test"
+      ]
+    },
+    {
+      "id": "test-03-fe",
+      "imagePath": "D:\\fd\\chm-extract\\FE.htm",
+      "sourceSet": "master",
+      "familyHint": "master_identity",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "master",
+      "tags": [
+        "master",
+        "test"
+      ]
+    },
+    {
+      "id": "test-04-fgo1",
+      "imagePath": "D:\\fd\\chm-extract\\FGO1.htm",
+      "sourceSet": "servant",
+      "familyHint": "servant_overview",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "servant",
+      "tags": [
+        "servant",
+        "test"
+      ]
+    },
+    {
+      "id": "test-05-fgo2",
+      "imagePath": "D:\\fd\\chm-extract\\FGO2.htm",
+      "sourceSet": "servant",
+      "familyHint": "servant_overview",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "servant",
+      "tags": [
+        "servant",
+        "test"
+      ]
+    },
+    {
+      "id": "test-06-fha",
+      "imagePath": "D:\\fd\\chm-extract\\FHA.htm",
+      "sourceSet": "servant",
+      "familyHint": "servant_overview",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "servant",
+      "tags": [
+        "servant",
+        "test"
+      ]
+    },
+    {
+      "id": "test-07-fp",
+      "imagePath": "D:\\fd\\chm-extract\\FP.htm",
+      "sourceSet": "situation",
+      "familyHint": "situation_regular",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "situation",
+      "tags": [
+        "situation",
+        "test"
+      ]
+    },
+    {
+      "id": "test-08-fsf",
+      "imagePath": "D:\\fd\\chm-extract\\FSF.htm",
+      "sourceSet": "situation",
+      "familyHint": "situation_regular",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "situation",
+      "tags": [
+        "situation",
+        "test"
+      ]
+    },
+    {
+      "id": "test-09-fsn",
+      "imagePath": "D:\\fd\\chm-extract\\FSN.htm",
+      "sourceSet": "situation",
+      "familyHint": "situation_regular",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "situation",
+      "tags": [
+        "situation",
+        "test"
+      ]
+    },
+    {
+      "id": "test-10-fsr",
+      "imagePath": "D:\\fd\\chm-extract\\FSR.htm",
+      "sourceSet": "situation",
+      "familyHint": "situation_regular",
+      "layoutHint": "single_card_vertical",
+      "language": "zh-CN",
+      "targetNamespace": "situation",
+      "tags": [
+        "situation",
+        "test"
+      ]
+    }
+  ]
+}

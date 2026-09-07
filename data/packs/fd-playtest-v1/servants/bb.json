@@ -1,0 +1,37 @@
+{
+  "id": "servant.bb",
+  "name": "B.B.",
+  "classTag": "MoonCancer",
+  "overviewCardId": "servant.bb.overview",
+  "startingDeck": {
+    "size": 12,
+    "entries": [
+      { "entryType": "basic", "attribute": "strength", "printedValue": 2, "copies": 2 },
+      { "entryType": "basic", "attribute": "strength", "printedValue": 5, "copies": 1 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 2, "copies": 1 },
+      { "entryType": "basic", "attribute": "agility", "printedValue": 3, "copies": 1 },
+      { "entryType": "basic", "attribute": "magecraft", "printedValue": 2, "copies": 1 },
+      { "entryType": "basic", "attribute": "magecraft", "printedValue": 4, "copies": 2 },
+      { "entryType": "named", "attribute": "magecraft", "cardId": "servant.bb.moon_cancer", "copies": 2 },
+      { "entryType": "named", "attribute": "special", "cardId": "basic.luck", "copies": 1 },
+      { "entryType": "named", "attribute": "special", "cardId": "basic.preparation", "copies": 1 }
+    ],
+    "attributeCounts": { "strength": 3, "agility": 2, "magecraft": 5, "special": 2 }
+  },
+  "skillCardIds": [
+    "servant.bb.skill.access_privilege",
+    "servant.bb.skill.slot_machine",
+    "servant.bb.skill.ccc"
+  ],
+  "linkedCards": {},
+  "capability": {
+    "status": "HOST_ADJUDICATED",
+    "hostRulingReason": "Event swapping, location merging and random reward selection require host adjudication."
+  },
+  "source": {
+    "htmPath": "chm-extract/B.B..htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_123054_861.png",
+    "imageIndex": 0,
+    "reviewedAgainstImage": true
+  }
+}

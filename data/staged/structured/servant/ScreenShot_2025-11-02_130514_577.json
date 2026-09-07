@@ -1,0 +1,24 @@
+{
+  "jobId": "structure-servant.oda_nobunaga.mob.002",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.oda_nobunaga.mob.002",
+    "name": "无可奈何",
+    "cardType": "servant_skill",
+    "timing": ["passive", "preparation"],
+    "conditions": [],
+    "targets": [],
+    "effects": [],
+    "duration": null,
+    "visibility": "public",
+    "tags": ["Avenger", "skill"],
+    "ambiguities": []
+  },
+  "parseNotes": [
+    "①织田信长-唯一：若你获胜，将此战场的【地狱之火】洗回事件牌堆",
+    "②织田吉法师-唯一：战斗阶段结束时，若你位于此战场，失去2点魔力",
+    "③魔王信长-唯一：战力结算时，关闭你激活的【幸运】",
+    "罪业-被动：若你位于【地狱之火】所在的战场，与你位于同一战场的交战对手根据你的形态获得上述效果"
+  ]
+}

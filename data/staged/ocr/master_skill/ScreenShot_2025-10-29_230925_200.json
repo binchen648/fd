@@ -1,0 +1,36 @@
+{
+  "jobId": "vision-master-maiya-hisau-001",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Skill",
+    "subtypeGuess": "Master",
+    "familyConfidence": 0.9
+  },
+  "text": {
+    "cardName": "久宇舞弥",
+    "rawText": "军旅-你拥有【援护射击】。\n前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
+    "normalizedText": "军旅-你拥有【援护射击】。\n前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。"
+  },
+  "fields": {
+    "code": "",
+    "costMarker": "2",
+    "powerMarker": "",
+    "numericSlots": [],
+    "iconTags": [
+      "援护射击"
+    ],
+    "rarity": "",
+    "classTag": "军旅"
+  },
+  "blocks": [
+    "军旅-你拥有【援护射击】。",
+    "前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。"
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

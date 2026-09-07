@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "id": "master.shinji",
+  "name": "间桐慎二",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sources": [
+    {
+      "id": "chm_page",
+      "type": "chm_page",
+      "path": "D:/fd/chm-extract/间桐慎二.htm",
+      "pageTitle": "间桐慎二",
+      "imageOrder": [
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_194536_066.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_194540_736.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_194545_992.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_194550_681.png",
+        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_194556_480.png"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "master.shinji.skill.drain-command",
+      "name": "吸魔命令",
+      "cardType": "master_skill",
+      "printedText": "进入深山町时，获得1点魔力。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "drain-command.enter-miyama",
+          "kind": "forced_trigger",
+          "printedClause": "进入深山町时，获得1点魔力。",
+          "activation": { "trigger": "after_controller_enters_location" },
+          "effects": [{ "type": "adjust_mana", "amount": 1 }],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+    },
+    {
+      "id": "master.shinji.skill.useless-person",
+      "name": "无用之人",
+      "cardType": "master_skill",
+      "printedText": "开局获得【伪臣之书】。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "useless-person.setup",
+          "kind": "forced_trigger",
+          "printedClause": "开局获得【伪臣之书】。",
+          "activation": { "trigger": "game_start" },
+          "effects": [{ "type": "create_card", "cardId": "master.shinji.skill.false-attendant-book", "to": { "zone": "skill" } }],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+    },
+    {
+      "id": "master.shinji.skill.clown",
+      "name": "小丑",
+      "cardType": "master_skill",
+      "printedText": "当你战败时，失去一枚令咒。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "clown.lose-command-seal",
+          "kind": "forced_trigger",
+          "printedClause": "当你战败时，失去一枚令咒。",
+          "activation": { "trigger": "after_controller_loses_battle" },
+          "effects": [{ "type": "adjust_command_seals", "amount": -1, "directive": "lose_command_seal_after_battle_loss" }],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+    },
+    {
+      "id": "master.shinji.skill.false-attendant-book",
+      "name": "伪臣之书",
+      "cardType": "master_skill",
+      "printedText": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。 当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+      "cardFace": { "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "false-attendant-book.first-empty-seals",
+          "kind": "forced_trigger",
+          "printedClause": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。 当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+          "activation": { "trigger": "after_controller_loses_all_command_seals" },
+          "limit": { "type": "per_game", "scope": "this_card", "uses": 1 },
+          "effects": [{ "type": "false_attendant_book_replacement", "sakuraMasterId": "master.sakura", "preserveVictoryPoints": true }],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+    }
+  ],
+  "excludedCards": [{ "id": "master.shinji.skill.ascension", "name": "圣杯核心", "reason": "user_scope_excluded_ascension" }],
+  "adapterNotes": ["升华技按用户规则排除。"]
+}

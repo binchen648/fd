@@ -1,0 +1,29 @@
+{
+  "id": "event.moon_holy_grail.close_quarters",
+  "name": "短兵相接",
+  "cardType": "event",
+  "printedReward": 3,
+  "applicableLocations": ["deep_mountain", "new_capital"],
+  "printedText": "力量与敏捷攻击于此战场获得+2威力。同时控制具有力量属性和另一张具有敏捷属性攻击的玩家额外获得+4合计威力。",
+  "effects": [
+    {
+      "type": "dual_attribute_power_bonus",
+      "scope": "this_battlefield",
+      "attributes": ["strength", "agility"],
+      "perAttackBonus": 2,
+      "combinedControlBonus": 4,
+      "requiresDistinctAttacksForCombinedBonus": true
+    }
+  ],
+  "capability": {
+    "status": "PARTIAL",
+    "supportedDimensions": ["attribute", "power_modifier"],
+    "hostRulingReason": "Automatic event resolution is not yet connected to the rules engine."
+  },
+  "source": {
+    "htmPath": "chm-extract/月之圣杯.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205435_568.png",
+    "imageIndex": 3,
+    "reviewedAgainstImage": true
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "master.maiya_hisau",
+  "name": "久宇舞弥",
+  "overviewCardId": "master.maiya_hisau.overview",
+  "initialMana": 4,
+  "commandSpellCardIds": ["master.maiya_hisau.command_spell.waiting_response"],
+  "skillCardIds": [
+    "master.maiya_hisau.skill.supporting_fire",
+    "master.maiya_hisau.skill.dessert_fanatic"
+  ],
+  "linkedCards": {},
+  "capability": {
+    "status": "HOST_ADJUDICATED",
+    "hostRulingReason": "Cross-player battle response and support-attack return timing are not yet implemented."
+  },
+  "source": {
+    "htmPath": "chm-extract/久宇舞弥.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_230925_200.png",
+    "imageIndex": 0,
+    "reviewedAgainstImage": true
+  }
+}

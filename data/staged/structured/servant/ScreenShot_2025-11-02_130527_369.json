@@ -1,0 +1,26 @@
+{
+  "jobId": "structure-servant.oda_nobunaga.mob.007",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.oda_nobunaga.mob.007",
+    "name": "地狱之火",
+    "cardType": "event",
+    "timing": [],
+    "conditions": [],
+    "targets": [],
+    "effects": [
+      { "type": "draw", "value": 1 },
+      { "type": "power_modifier", "value": "X" }
+    ],
+    "duration": null,
+    "visibility": "public",
+    "tags": ["Avenger", "event"],
+    "ambiguities": []
+  },
+  "parseNotes": [
+    "若此牌未因织田信长的效果出场，抽取另一张事件牌放置于此战场",
+    "织田信长于此战场合计威力+X，X为其形态级别",
+    "若织田信长于此战场获得胜利，将此战场除【地狱之火】外的所有事件牌移除游戏"
+  ]
+}

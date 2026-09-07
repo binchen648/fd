@@ -1,0 +1,29 @@
+{
+  "imageFile": "ScreenShot_2025-10-31_213233_669.png",
+  "character_name": "铃鹿御前",
+  "red_cards": [
+    2,
+    2,
+    3,
+    4
+  ],
+  "green_cards": [
+    2,
+    3,
+    3,
+    4,
+    4
+  ],
+  "blue_cards": [
+    2
+  ],
+  "special_cards": [
+    "Surveil",
+    "Preparation"
+  ],
+  "red_count": 4,
+  "green_count": 5,
+  "blue_count": 1,
+  "special_count": 2,
+  "total_count": 12
+}

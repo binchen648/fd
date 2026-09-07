@@ -1,0 +1,22 @@
+{
+  "card_name": "黄金鹿与暴风夜",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "宝具\n黄金鹿与暴风夜\n7\n13\n[真名解放 ]\n战斗阶段: 如果无人与你对战\n获得你所处战场上的所有事\n件牌的战果并弃罾它们。妒果你在侦察,立刻获得2点战果。\n无视花费移动至任一地点。",
+  "ocr_text_draft": "宝具 黄金鹿与暴风夜 7 13 [真名解放 ] 战斗阶段: 如果无人与你对战 获得你所处战场上的所有事 件牌的战果并弃罾它们。妒果你在侦察,立刻获得2点战果。 无视花费移动至任一地点。",
+  "rules_text": "真名解放\n战斗阶段: 如果无人与你对战\n获得你所处战场上的所有事\n件牌的战果并弃罾它们。妒果你在侦察,立刻获得2点战果。\n无视花费移动至任一地点。",
+  "effect_text": "真名解放\n战斗阶段: 如果无人与你对战\n获得你所处战场上的所有事\n件牌的战果并弃罾它们。妒果你在侦察,立刻获得2点战果。\n无视花费移动至任一地点。",
+  "effect_explanation": "",
+  "cost": 7,
+  "power": 13,
+  "displayed_cost_power_confirmed": true,
+  "tags": [
+    "宝具"
+  ],
+  "attributes": [
+    "宝具"
+  ],
+  "confidence": 0.9,
+  "needs_human_review": false,
+  "uncertain_fields": [],
+  "review_notes": []
+}

@@ -1,0 +1,24 @@
+{
+  "card_name": "Special",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "Special\n骑乘\n33\n打出时: 若此牌与一张基础攻击一同打出。抽一张牌。\n坐骑召唤-行动阶段: 打出至多张基本威力为或更低的手\n牌。",
+  "ocr_text_draft": "Special 骑乘 33 打出时: 若此牌与一张基础攻击一同打出。抽一张牌。 坐骑召唤-行动阶段: 打出至多张基本威力为或更低的手 牌。",
+  "rules_text": "骑乘\n33\n打出时: 若此牌与一张基础攻击一同打出。抽一张牌。\n坐骑召唤-行动阶段: 打出至多张基本威力为或更低的手\n牌。",
+  "effect_text": "骑乘\n33\n打出时: 若此牌与一张基础攻击一同打出。抽一张牌。\n坐骑召唤-行动阶段: 打出至多张基本威力为或更低的手\n牌。",
+  "effect_explanation": "",
+  "cost": null,
+  "power": null,
+  "displayed_cost_power_confirmed": false,
+  "tags": [],
+  "attributes": [],
+  "confidence": 0.4,
+  "needs_human_review": true,
+  "uncertain_fields": [
+    "mana_cost",
+    "attack_power"
+  ],
+  "review_notes": [
+    "Uncertain field: mana_cost",
+    "Uncertain field: attack_power"
+  ]
+}

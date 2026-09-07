@@ -1,0 +1,51 @@
+{
+  "artifactVersion": "recognition-bundle-v1",
+  "status": "recognized",
+  "familyId": "servant.稗田阿礼",
+  "displayName": "稗田阿礼",
+  "sourceHtm": "D:/fd/chm-extract/稗田阿礼.htm",
+  "images": [
+    "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_210735_034.png",
+    "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+    "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_210745_555.png",
+    "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_210740_018.png"
+  ],
+  "visionArtifactPath": "D:/fd/data/staged/ocr/servant/ScreenShot_2025-11-01_210735_034.json",
+  "classificationRule": {
+    "method": "fd-card-recognition-v1",
+    "legend": {
+      "red": "red_cards numeric entries",
+      "green": "green_cards numeric entries",
+      "blue": "blue_cards numeric entries",
+      "white": "special_cards repeated text entries"
+    }
+  },
+  "mainCardfaceAnalysis": {
+    "imageFile": "ScreenShot_2025-11-01_210735_034.png",
+    "character_name": "稗田阿礼",
+    "red_cards": [
+      2,
+      3,
+      3
+    ],
+    "green_cards": [
+      2,
+      3,
+      4,
+      4,
+      4,
+      5
+    ],
+    "blue_cards": [],
+    "special_cards": [
+      "Luck",
+      "Preparation",
+      "Preparation"
+    ],
+    "red_count": 3,
+    "green_count": 6,
+    "blue_count": 0,
+    "special_count": 3,
+    "total_count": 12
+  }
+}

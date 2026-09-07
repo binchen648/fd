@@ -1,0 +1,22 @@
+{
+  "jobId": "guardrail-servant-bb-001",
+  "artifactVersion": "guardrail-response-v1",
+  "status": "approve",
+  "schemaOk": true,
+  "engineOk": true,
+  "decision": "approve",
+  "ambiguityLevel": "low",
+  "coverageReport": {
+    "originalClauses": 0,
+    "mappedClauses": 0,
+    "missingClauses": 0
+  },
+  "issues": [],
+  "requiredHumanReview": false,
+  "smokeTests": [],
+  "source": {
+    "structureJobId": "structure-servant-bb-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

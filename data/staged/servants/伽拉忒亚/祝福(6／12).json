@@ -1,0 +1,24 @@
+{
+  "card_name": "祝福",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "力量\n宝具\n祝福\n6\n12c\n{真名解放 ] [作品 )\n遗蔻-当你以常规出牌以外的方式激活或令此牌人场后\n失去2点战果。",
+  "ocr_text_draft": "力量 宝具 祝福 6 12c {真名解放 ] [作品 ) 遗蔻-当你以常规出牌以外的方式激活或令此牌人场后 失去2点战果。",
+  "rules_text": "真名解放 作品 )\n遗蔻-当你以常规出牌以外的方式激活或令此牌人场后\n失去2点战果。",
+  "effect_text": "真名解放 作品 )\n遗蔻-当你以常规出牌以外的方式激活或令此牌人场后\n失去2点战果。",
+  "effect_explanation": "",
+  "cost": 6,
+  "power": 12,
+  "displayed_cost_power_confirmed": true,
+  "tags": [
+    "力量",
+    "宝具"
+  ],
+  "attributes": [
+    "力量",
+    "宝具"
+  ],
+  "confidence": 0.9,
+  "needs_human_review": false,
+  "uncertain_fields": [],
+  "review_notes": []
+}

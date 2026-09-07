@@ -1,0 +1,150 @@
+{
+  "id": "default-7p",
+  "playerCount": 7,
+  "locations": [
+    {
+      "id": "miyama_town",
+      "displayName": "Miyama Town",
+      "enabledByDefault": true,
+      "optional": false,
+      "occupancyMode": "multi",
+      "eventPolicy": "public",
+      "movementLinks": [
+        "shinto"
+      ],
+      "rewardHooks": [
+        "battle_rewards",
+        "location_rewards",
+        "competition_rewards"
+      ],
+      "visibilityHooks": [],
+      "tags": [
+        "battlefield",
+        "primary_city"
+      ],
+      "vpRewardRules": {
+        "battle": 1,
+        "competition": 2
+      },
+      "terrainBonuses": [
+        3,
+        1
+      ],
+      "movementCost": 2
+    },
+    {
+      "id": "shinto",
+      "displayName": "Shinto",
+      "enabledByDefault": true,
+      "optional": false,
+      "occupancyMode": "multi",
+      "eventPolicy": "hidden",
+      "movementLinks": [
+        "recon"
+      ],
+      "rewardHooks": [
+        "battle_rewards",
+        "location_rewards",
+        "competition_rewards"
+      ],
+      "visibilityHooks": [
+        "hidden_event_default"
+      ],
+      "tags": [
+        "battlefield",
+        "primary_city"
+      ],
+      "vpRewardRules": {
+        "battle": 1,
+        "competition": 3
+      },
+      "terrainBonuses": [
+        3,
+        1
+      ],
+      "movementCost": 2
+    },
+    {
+      "id": "magic_workshop",
+      "displayName": "Magic Workshop",
+      "enabledByDefault": true,
+      "optional": false,
+      "occupancyMode": "policy_defined",
+      "occupancyLimit": 4,
+      "eventPolicy": "none",
+      "movementLinks": [
+        "miyama_town"
+      ],
+      "rewardHooks": [
+        "setup_hooks",
+        "resource_hooks"
+      ],
+      "visibilityHooks": [],
+      "tags": [
+        "support_location"
+      ],
+      "movementCost": 0
+    },
+    {
+      "id": "recon",
+      "displayName": "Recon",
+      "enabledByDefault": true,
+      "optional": false,
+      "occupancyMode": "policy_defined",
+      "occupancyLimit": 1,
+      "eventPolicy": "none",
+      "movementLinks": [],
+      "rewardHooks": [
+        "recon_rewards"
+      ],
+      "visibilityHooks": [
+        "scouting_visibility"
+      ],
+      "tags": [
+        "support_location"
+      ],
+      "vpRewardRules": {
+        "recon": 2
+      },
+      "movementCost": 1
+    },
+    {
+      "id": "moon_holy_grail",
+      "displayName": "Moon Holy Grail",
+      "enabledByDefault": false,
+      "optional": true,
+      "occupancyMode": "policy_defined",
+      "eventPolicy": "custom",
+      "movementLinks": [],
+      "battleModifiers": [
+        {
+          "sourceId": "moon_trigger_hooks",
+          "targetTag": "moon",
+          "value": 2
+        }
+      ],
+      "rewardHooks": [
+        "moon_trigger_hooks",
+        "score_hooks",
+        "battle_rewards"
+      ],
+      "visibilityHooks": [
+        "moon_visibility_hooks"
+      ],
+      "tags": [
+        "optional_location",
+        "battlefield",
+        "moon_cancer_support"
+      ],
+      "vpRewardRules": {
+        "battle": 2
+      },
+      "terrainBonuses": [
+        4,
+        2,
+        1
+      ],
+      "movementCost": 0
+    }
+  ]
+}

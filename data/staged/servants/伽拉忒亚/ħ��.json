@@ -1,0 +1,24 @@
+{
+  "card_name": "ħ��",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "ħ��\n����\n43\n7\n[��Ʒ]\n�ź�-�����Գ����������ķ�ʽ�����������˳���\nʧȥ2��ħ����\n����-���ʱ: ���ƻ��+3������",
+  "ocr_text_draft": "ħ�� ���� 43 7 [��Ʒ] �ź�-�����Գ����������ķ�ʽ�����������˳��� ʧȥ2��ħ���� ����-���ʱ: ���ƻ��+3������",
+  "rules_text": "����\n43\n7\n��Ʒ\n�ź�-�����Գ����������ķ�ʽ�����������˳���\nʧȥ2��ħ����\n����-���ʱ: ���ƻ��+3������",
+  "effect_text": "����\n43\n7\n��Ʒ\n�ź�-�����Գ����������ķ�ʽ�����������˳���\nʧȥ2��ħ����\n����-���ʱ: ���ƻ��+3������",
+  "effect_explanation": "",
+  "cost": null,
+  "power": null,
+  "displayed_cost_power_confirmed": false,
+  "tags": [],
+  "attributes": [],
+  "confidence": 0.4,
+  "needs_human_review": true,
+  "uncertain_fields": [
+    "mana_cost",
+    "attack_power"
+  ],
+  "review_notes": [
+    "Uncertain field: mana_cost",
+    "Uncertain field: attack_power"
+  ]
+}

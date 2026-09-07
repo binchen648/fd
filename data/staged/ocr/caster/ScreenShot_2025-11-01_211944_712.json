@@ -1,0 +1,35 @@
+{
+  "jobId": "vision-servant.babbage.001",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Servant",
+    "subtypeGuess": "Caster",
+    "familyConfidence": 0.99
+  },
+  "text": {
+    "cardName": "查尔斯·巴贝奇",
+    "rawText": "查尔斯·巴贝奇\n2,3,3,5\n2,2,4,4\n2,3,3,5",
+    "normalizedText": "查尔斯·巴贝奇 2,3,3,5 2,2,4,4 2,3,3,5"
+  },
+  "fields": {
+    "code": null,
+    "costMarker": null,
+    "powerMarker": null,
+    "numericSlots": [
+      "2,3,3,5",
+      "2,2,4,4",
+      "2,3,3,5"
+    ],
+    "iconTags": [],
+    "rarity": null,
+    "classTag": "Caster"
+  },
+  "blocks": [],
+  "uncertainSpans": [],
+  "overallConfidence": 0.99,
+  "source": {
+    "provider": "manual-review",
+    "model": "fd-card-recognition-v1"
+  }
+}

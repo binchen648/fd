@@ -1,0 +1,28 @@
+{
+  "name": "@fd/rules",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts",
+    "./ability-client": "./src/ability/client.ts",
+    "./ability-interpreter": "./src/ability/interpreter.ts",
+    "./ability-loader": "./src/ability/loader.ts",
+    "./ability-resolution-dataflow": "./src/ability/resolution-dataflow.ts",
+    "./core/combat-resolver": "./src/core/combat-resolver.ts",
+    "./core/scoring-resolver": "./src/core/scoring-resolver.ts",
+    "./schema/game": "./src/schema/game.ts",
+    "./tools/seeded-state": "./src/tools/seeded-state.ts",
+    "./match-session": "./src/match-session.ts",
+    "./match-room": "./src/match-room.ts",
+    "./match-room-protocol": "./src/match-room-protocol.ts"
+  },
+  "scripts": {
+    "test": "vitest run --root ../.."
+  },
+  "dependencies": {
+    "@fd/content": "^1.0.0",
+    "@fd/game-contracts": "^0.1.0"
+  }
+}

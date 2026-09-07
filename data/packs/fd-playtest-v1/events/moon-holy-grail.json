@@ -1,0 +1,22 @@
+{
+  "id": "event-set.moon_holy_grail",
+  "name": "月之圣杯",
+  "cardIds": [
+    "event.moon_holy_grail.merged_vortex",
+    "event.moon_holy_grail.close_quarters",
+    "event.moon_holy_grail.core_intrusion",
+    "event.moon_holy_grail.superior_firepower",
+    "event.moon_holy_grail.cheat_device"
+  ],
+  "capability": {
+    "status": "PARTIAL",
+    "supportedDimensions": ["printed_reward", "battlefield_applicability", "effect_intent"],
+    "hostRulingReason": "Temporary copying and several event effect primitives are not yet resolved automatically."
+  },
+  "source": {
+    "htmPath": "chm-extract/月之圣杯.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205523_825.png",
+    "imageIndex": 11,
+    "reviewedAgainstImage": true
+  }
+}

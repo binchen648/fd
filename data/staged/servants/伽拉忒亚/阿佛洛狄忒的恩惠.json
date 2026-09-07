@@ -1,0 +1,24 @@
+{
+  "card_name": "阿佛洛狄忒的恩惠",
+  "card_type": "servant_skill",
+  "ocr_text_raw": "阿佛洛狄忒的恩惠\n雕像少女-被动:\n此牌展示后,你无法以御主能力外的方\n式将弃牌堆中的牌洗回牌库。\n你获得己点合计威力并于\n回合结束时将弃牌堆洗回牌库。\n挣脱桎梏-被动行动阶段: 花费&点魔力。切换&+1项\n雕像少女中的 \"雕像\" 为 \"人\" 直至回合结束。",
+  "ocr_text_draft": "阿佛洛狄忒的恩惠 雕像少女-被动: 此牌展示后,你无法以御主能力外的方 式将弃牌堆中的牌洗回牌库。 你获得己点合计威力并于 回合结束时将弃牌堆洗回牌库。 挣脱桎梏-被动行动阶段: 花费&点魔力。切换&+1项 雕像少女中的 \"雕像\" 为 \"人\" 直至回合结束。",
+  "rules_text": "雕像少女-被动:\n此牌展示后,你无法以御主能力外的方\n式将弃牌堆中的牌洗回牌库。\n你获得己点合计威力并于\n回合结束时将弃牌堆洗回牌库。\n挣脱桎梏-被动行动阶段: 花费&点魔力。切换&+1项\n雕像少女中的 \"雕像\" 为 \"人\" 直至回合结束。",
+  "effect_text": "雕像少女-被动:\n此牌展示后,你无法以御主能力外的方\n式将弃牌堆中的牌洗回牌库。\n你获得己点合计威力并于\n回合结束时将弃牌堆洗回牌库。\n挣脱桎梏-被动行动阶段: 花费&点魔力。切换&+1项\n雕像少女中的 \"雕像\" 为 \"人\" 直至回合结束。",
+  "effect_explanation": "",
+  "cost": null,
+  "power": null,
+  "displayed_cost_power_confirmed": false,
+  "tags": [],
+  "attributes": [],
+  "confidence": 0.4,
+  "needs_human_review": true,
+  "uncertain_fields": [
+    "mana_cost",
+    "attack_power"
+  ],
+  "review_notes": [
+    "Uncertain field: mana_cost",
+    "Uncertain field: attack_power"
+  ]
+}

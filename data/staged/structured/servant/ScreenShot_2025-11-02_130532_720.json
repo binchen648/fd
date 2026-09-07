@@ -1,0 +1,25 @@
+{
+  "jobId": "structure-servant.oda_nobunaga.mob.003",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "servant.oda_nobunaga.mob.003",
+    "name": "忘却补正",
+    "cardType": "servant_skill",
+    "timing": ["action"],
+    "conditions": [],
+    "targets": [],
+    "effects": [
+      { "type": "transform", "value": "avenger_count" }
+    ],
+    "duration": null,
+    "visibility": "public",
+    "tags": ["Avenger", "真名解放"],
+    "ambiguities": []
+  },
+  "parseNotes": [
+    "X为你激活的【复仇者】数的两倍",
+    "第六天魔王-被动：根据你激活的【复仇者】数量，你视为相应形态",
+    "行动阶段：移除一张手牌，创造并激活一张【复仇者】"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "jobId": "vision-servant-henry-jekyll-001",
+  "artifactVersion": "vision-response-v1",
+  "status": "ok",
+  "classification": {
+    "cardTypeGuess": "Servant",
+    "subtypeGuess": "Assassin",
+    "familyConfidence": 0.9
+  },
+  "text": {
+    "cardName": "亨利·杰基尔博士",
+    "rawText": "亨利·杰基尔博士\nAssassin\n★ 2,3,5,7\n● 2,4,4,5,7,9\nSurveil\nPreparation",
+    "normalizedText": "亨利·杰基尔博士 Assassin ★ 2,3,5,7 ● 2,4,4,5,7,9 Surveil Preparation"
+  },
+  "fields": {
+    "code": null,
+    "costMarker": "2,3,5,7",
+    "powerMarker": "2,4,4,5,7,9",
+    "numericSlots": [
+      "2,3,5,7",
+      "2,4,4,5,7,9"
+    ],
+    "iconTags": [
+      "★",
+      "●"
+    ],
+    "rarity": null,
+    "classTag": "Assassin"
+  },
+  "blocks": [
+    {
+      "type": "name",
+      "text": "亨利·杰基尔博士"
+    },
+    {
+      "type": "class",
+      "text": "Assassin"
+    },
+    {
+      "type": "cost",
+      "text": "★ 2,3,5,7"
+    },
+    {
+      "type": "power",
+      "text": "● 2,4,4,5,7,9"
+    },
+    {
+      "type": "tags",
+      "text": "Surveil\nPreparation"
+    }
+  ],
+  "uncertainSpans": [],
+  "overallConfidence": 0.95,
+  "source": {
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}

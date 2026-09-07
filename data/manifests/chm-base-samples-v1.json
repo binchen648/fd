@@ -1,0 +1,15 @@
+﻿{
+  "manifestVersion": "sample-manifest-v1",
+  "name": "CHM Base Game Complete Sample Manifest",
+  "description": "Complete representative sample cards for testing FD content pipeline against CHM base rules",
+  "items": [
+    {"id": "master-shinji-identity", "imagePath": "D:\\fd\\chm-extract\\间桐慎二.htm", "sourceSet": "master", "familyHint": "master_identity", "layoutHint": "single_card_vertical", "language": "zh-CN", "targetNamespace": "master", "tags": ["master", "identity", "chm-base"]},
+    {"id": "servant-nanaya-shiki-overview", "imagePath": "D:\\fd\\chm-extract\\七夜志贵.htm", "sourceSet": "servant", "familyHint": "servant_overview", "layoutHint": "single_card_vertical", "language": "zh-CN", "targetNamespace": "servant", "tags": ["servant", "overview", "chm-base"]},
+    {"id": "servant-nanaya-shiki-attack", "imagePath": "D:\\fd\\chm-extract\\七夜志贵【杀】.htm", "sourceSet": "servant", "familyHint": "servant_attack", "layoutHint": "single_card_vertical", "language": "zh-CN", "targetNamespace": "servant", "tags": ["servant", "attack", "chm-base"]},
+    {"id": "situation-regular", "imagePath": "D:\\fd\\chm-extract\\不列颠异闻带.htm", "sourceSet": "situation", "familyHint": "situation_regular", "layoutHint": "single_card_vertical", "language": "zh-CN", "targetNamespace": "situation", "tags": ["situation", "regular", "chm-base"]},
+    {"id": "situation-climax", "imagePath": "D:\\fd\\chm-extract\\【异闻带】高潮局势牌.htm", "sourceSet": "situation", "familyHint": "situation_climax", "layoutHint": "single_card_vertical", "language": "zh-CN", "targetNamespace": "situation", "tags": ["situation", "climax", "chm-base"]},
+    {"id": "event-deep-mountain", "imagePath": "D:\\fd\\chm-extract\\事件.htm", "sourceSet": "event", "familyHint": "event_deep_mountain", "layoutHint": "single_card_vertical", "language": "zh-CN", "targetNamespace": "event", "tags": ["event", "deep_mountain", "chm-base"]},
+    {"id": "command-spell-1", "imagePath": "D:\\fd\\chm-extract\\ScreenShot_2025-10-30_181738_843.png", "sourceSet": "command_spell", "familyHint": "command_spell", "layoutHint": "single_card_vertical", "language": "zh-CN", "targetNamespace": "master", "tags": ["command_spell", "chm-base"]},
+    {"id": "master-skill-ex", "imagePath": "D:\\fd\\chm-extract\\【EX技能_】.htm", "sourceSet": "master", "familyHint": "master_skill", "layoutHint": "single_card_vertical", "language": "zh-CN", "targetNamespace": "master", "tags": ["master", "skill", "chm-base"]}
+  ]
+}

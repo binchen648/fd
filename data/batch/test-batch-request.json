@@ -1,0 +1,15 @@
+{
+  "jobId": "test-batch-10",
+  "inputs": [
+    "D:\\fd\\data\\manifests\\test-batch-10.json"
+  ],
+  "retryPolicy": {
+    "maxAttempts": 1,
+    "retryableStages": [],
+    "backoffMs": 0
+  },
+  "timeoutOverridesMs": {
+    "vision": 300000,
+    "structure": 180000
+  }
+}

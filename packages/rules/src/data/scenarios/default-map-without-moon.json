@@ -1,0 +1,86 @@
+{
+  "id": "seeded-default-map-no-moon-001",
+  "seed": "validation-seed-no-moon-001",
+  "steps": [
+    {
+      "type": "resolve_battle",
+      "battlefieldId": "moon_holy_grail",
+      "participants": [
+        { "playerId": "p1", "totalPower": 9, "attackTags": ["moon"] }
+      ]
+    },
+    {
+      "type": "apply_scoring"
+    }
+  ],
+  "initialState": {
+    "id": "match-no-moon-001",
+    "players": [
+      { "id": "p1", "seat": 1, "status": "active", "masterCardId": "master-1", "servantCardId": "servant-1", "vp": 0, "militaryResult": 0, "mana": 0 },
+      { "id": "p2", "seat": 2, "status": "active", "masterCardId": "master-2", "servantCardId": "servant-2", "vp": 0, "militaryResult": 0, "mana": 0 }
+    ],
+    "round": {
+      "roundNumber": 1,
+      "activePhase": "battle",
+      "prioritySeat": 1
+    },
+    "map": {
+      "id": "default-7p",
+      "playerCount": 7,
+      "locations": [
+        {
+          "id": "miyama_town",
+          "displayName": "Miyama Town",
+          "enabledByDefault": true,
+          "optional": false,
+          "occupancyMode": "multi",
+          "eventPolicy": "public",
+          "movementLinks": ["shinto", "magic_workshop", "recon"],
+          "rewardHooks": ["battle_rewards", "location_rewards"],
+          "visibilityHooks": [],
+          "tags": ["battlefield", "primary_city"]
+        },
+        {
+          "id": "shinto",
+          "displayName": "Shinto",
+          "enabledByDefault": true,
+          "optional": false,
+          "occupancyMode": "multi",
+          "eventPolicy": "hidden",
+          "movementLinks": ["miyama_town", "magic_workshop", "recon", "moon_holy_grail"],
+          "rewardHooks": ["battle_rewards", "location_rewards"],
+          "visibilityHooks": ["hidden_event_default"],
+          "tags": ["battlefield", "primary_city"]
+        },
+        {
+          "id": "moon_holy_grail",
+          "displayName": "Moon Holy Grail",
+          "enabledByDefault": false,
+          "optional": true,
+          "occupancyMode": "policy_defined",
+          "eventPolicy": "custom",
+          "movementLinks": ["shinto"],
+          "battleModifiers": [
+            {
+              "sourceId": "moon_trigger_hooks",
+              "targetTag": "moon",
+              "value": 2
+            }
+          ],
+          "rewardHooks": ["moon_trigger_hooks", "score_hooks"],
+          "visibilityHooks": ["moon_visibility_hooks"],
+          "tags": ["optional_location", "moon_cancer_support"]
+        }
+      ]
+    },
+    "locationConfig": {
+      "enabledLocationIds": []
+    },
+    "cards": [],
+    "eventPlacements": [],
+    "battleResults": [],
+    "scoringBreakdown": [],
+    "effectStack": [],
+    "log": []
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/contracts"
+    },
+    {
+      "path": "./packages/providers"
+    },
+    {
+      "path": "./packages/pipeline"
+    },
+    {
+      "path": "./packages/rules"
+    },
+    {
+      "path": "./packages/content"
+    },
+    {
+      "path": "./packages/game-contracts"
+    },
+    {
+      "path": "./apps/server"
+    }
+  ]
+}

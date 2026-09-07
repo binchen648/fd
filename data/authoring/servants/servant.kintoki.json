@@ -1,0 +1,672 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.kintoki",
+  "name": "坂田金时",
+  "class": "Berserker",
+  "canonicalIdSource": {
+    "repository": "https://github.com/fengling20011118-dotcom/fate-domination",
+    "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json",
+    "locator": "servant.kintoki"
+  },
+  "authoringStatus": "draft_structured_from_chm_skill_pack",
+  "sourcePolicy": {
+    "priority": [
+      "original_card_image",
+      "chm_association",
+      "main_repo_legacy_content",
+      "ocr_or_manual_draft"
+    ]
+  },
+  "sources": [
+    {
+      "id": "chm_page",
+      "type": "chm_html",
+      "path": "D:/fd/chm-extract/坂田金时.htm",
+      "priority": "chm_association"
+    },
+    {
+      "id": "overview_image",
+      "type": "original_card_image",
+      "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-02_112043_708.png",
+      "imageIndex": 0,
+      "priority": "original_card_image",
+      "reviewStatus": "reviewed_against_original_image"
+    },
+    {
+      "id": "chm_duplicate_skill_image",
+      "type": "chm_duplicate_image_reference",
+      "path": "D:/fd/chm-extract/坂田金时.htm",
+      "imagePath": "D:/fd/chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
+      "imageIndexes": [
+        3,
+        4
+      ],
+      "note": "HTM 第 3、4 张图片重复引用同一黄金冲击牌图；仍保留 sc-kintoki-1 与 sc-kintoki-2 两张独立 canonical 技能。"
+    }
+  ],
+  "deck": [
+    {
+      "cardId": "card.cardb2",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardb3",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardb5",
+      "count": 4,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq2",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq2",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq4",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardq5",
+      "count": 1,
+      "source": "overview_image_reviewed_2026-09-06"
+    },
+    {
+      "cardId": "card.cardluck",
+      "count": 2,
+      "source": "overview_image_reviewed_2026-09-06"
+    }
+  ],
+  "cards": [
+    {
+      "id": "servant.kintoki.skill.sc-kintoki-1",
+      "name": "黄金冲击",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.kintoki"
+      },
+      "printedText": "【真名解放】\n你拥有的魔力少于8点也可打出此牌。\n局势牌无法禁止你打出此牌。\n每局游戏限一次",
+      "cardFace": {
+        "typeLabel": "力量/宝具",
+        "attributes": [
+          "力量",
+          "宝具"
+        ],
+        "cost": 0,
+        "basePower": 11
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sc-kintoki-1.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": [
+            "真名解放"
+          ],
+          "activation": {
+            "trigger": "on_use_declared"
+          },
+          "effects": [
+            {
+              "type": "reveal_information",
+              "scope": "servant_package",
+              "subject": "controller.servant"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-kintoki-1.ignore-skill-zone-mana-requirement",
+          "kind": "passive",
+          "printedClause": "你拥有的魔力少于8点也可打出此牌。",
+          "activation": {
+            "trigger": "when_play_requirements_checked"
+          },
+          "ruleModifiers": [
+            {
+              "id": "ignore_skill_zone_mana_requirement",
+              "printedClause": "你拥有的魔力少于8点也可打出此牌。",
+              "type": "exception",
+              "operation": "ignore",
+              "rule": "skill_zone_mana_requirement",
+              "scope": {
+                "subject": "controller",
+                "object": "this_card"
+              },
+              "priority": {
+                "tier": "card_text",
+                "specificity": "explicit_exception"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-kintoki-1.ignore-situation-play-forbid",
+          "kind": "passive",
+          "printedClause": "局势牌无法禁止你打出此牌。",
+          "activation": {
+            "trigger": "when_play_requirements_checked"
+          },
+          "ruleModifiers": [
+            {
+              "id": "ignore_situation_play_forbid",
+              "printedClause": "局势牌无法禁止你打出此牌。",
+              "type": "exception",
+              "operation": "ignore",
+              "rule": "situation_play_forbid",
+              "scope": {
+                "subject": "controller",
+                "object": "this_card"
+              },
+              "priority": {
+                "tier": "card_text",
+                "specificity": "explicit_exception"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-kintoki-1.once-per-game",
+          "kind": "passive",
+          "printedClause": "每局游戏限一次",
+          "activation": {
+            "trigger": "when_play_requirements_checked"
+          },
+          "limit": {
+            "type": "per_game",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
+          "imageIndex": 2,
+          "htmImageIndex": 3,
+          "duplicateOfHtmImageIndex": 4,
+          "htmPath": "D:/fd/chm-extract/坂田金时.htm",
+          "reviewStatus": "reviewed_against_original_image",
+          "duplicateHtmImageIndex": 3
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/坂田金时.htm",
+          "imageIndex": 2
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "imageAssociationStatus": "htm_duplicate_reference_confirmed",
+        "canonicalIdStatus": "coordinator_confirmed",
+        "implementationStatus": "complete"
+      },
+      "ambiguities": [
+        {
+          "id": "kintoki-golden-impact-physical-copy-1-image",
+          "status": "resolved_for_authoring",
+          "note": "第 3、4 张 HTM 图片重复不代表只有一张黄金冲击；按协调者核对结果保留两张独立 canonical 技能。"
+        }
+      ],
+      "requiresEightMana": false
+    },
+    {
+      "id": "servant.kintoki.skill.sc-kintoki-2",
+      "name": "黄金冲击",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.kintoki"
+      },
+      "printedText": "【真名解放】\n你拥有的魔力少于8点也可打出此牌。\n局势牌无法禁止你打出此牌。\n每局游戏限一次",
+      "cardFace": {
+        "typeLabel": "力量/宝具",
+        "attributes": [
+          "力量",
+          "宝具"
+        ],
+        "cost": 0,
+        "basePower": 11
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sc-kintoki-2.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": [
+            "真名解放"
+          ],
+          "activation": {
+            "trigger": "on_use_declared"
+          },
+          "effects": [
+            {
+              "type": "reveal_information",
+              "scope": "servant_package",
+              "subject": "controller.servant"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-kintoki-2.ignore-skill-zone-mana-requirement",
+          "kind": "passive",
+          "printedClause": "你拥有的魔力少于8点也可打出此牌。",
+          "activation": {
+            "trigger": "when_play_requirements_checked"
+          },
+          "ruleModifiers": [
+            {
+              "id": "ignore_skill_zone_mana_requirement",
+              "printedClause": "你拥有的魔力少于8点也可打出此牌。",
+              "type": "exception",
+              "operation": "ignore",
+              "rule": "skill_zone_mana_requirement",
+              "scope": {
+                "subject": "controller",
+                "object": "this_card"
+              },
+              "priority": {
+                "tier": "card_text",
+                "specificity": "explicit_exception"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-kintoki-2.ignore-situation-play-forbid",
+          "kind": "passive",
+          "printedClause": "局势牌无法禁止你打出此牌。",
+          "activation": {
+            "trigger": "when_play_requirements_checked"
+          },
+          "ruleModifiers": [
+            {
+              "id": "ignore_situation_play_forbid",
+              "printedClause": "局势牌无法禁止你打出此牌。",
+              "type": "exception",
+              "operation": "ignore",
+              "rule": "situation_play_forbid",
+              "scope": {
+                "subject": "controller",
+                "object": "this_card"
+              },
+              "priority": {
+                "tier": "card_text",
+                "specificity": "explicit_exception"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-kintoki-2.once-per-game",
+          "kind": "passive",
+          "printedClause": "每局游戏限一次",
+          "activation": {
+            "trigger": "when_play_requirements_checked"
+          },
+          "limit": {
+            "type": "per_game",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
+          "imageIndex": 3,
+          "htmImageIndex": 4,
+          "duplicateOfHtmImageIndex": 3,
+          "htmPath": "D:/fd/chm-extract/坂田金时.htm",
+          "reviewStatus": "reviewed_against_original_image",
+          "duplicateHtmImageIndex": 4
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/坂田金时.htm",
+          "imageIndex": 3
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "imageAssociationStatus": "htm_duplicate_reference_confirmed",
+        "canonicalIdStatus": "coordinator_confirmed",
+        "implementationStatus": "complete"
+      },
+      "ambiguities": [
+        {
+          "id": "kintoki-golden-impact-physical-copy-1-image",
+          "status": "resolved_for_authoring",
+          "note": "第 3、4 张 HTM 图片重复不代表只有一张黄金冲击；按协调者核对结果保留两张独立 canonical 技能。"
+        }
+      ],
+      "requiresEightMana": false
+    },
+    {
+      "id": "servant.kintoki.skill.sc-kintoki-3",
+      "name": "黄金噬者",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.kintoki"
+      },
+      "printedText": "【真名解放】\n战斗阶段：将一张被移除游戏的【黄金冲击】加入你的技能区，你可以花费7点魔力将另一张黄金冲击也加入你的技能区。若你位于一处战场，每加入一张【黄金冲击】便获得2点战果。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "attributes": [
+          "宝具"
+        ],
+        "cost": 5,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "controller_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-kintoki-3.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": [
+            "真名解放"
+          ],
+          "activation": {
+            "trigger": "on_use_declared"
+          },
+          "effects": [
+            {
+              "type": "reveal_information",
+              "scope": "servant_package",
+              "subject": "controller.servant"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-kintoki-3.golden-eater",
+          "kind": "phase_action",
+          "printedClause": "战斗阶段：将一张被移除游戏的【黄金冲击】加入你的技能区，你可以花费7点魔力将另一张黄金冲击也加入你的技能区。若你位于一处战场，每加入一张【黄金冲击】便获得2点战果。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "effects": [
+            {
+              "type": "move_card",
+              "target": "firstGoldenImpact",
+              "to": {
+                "zone": "skill"
+              },
+              "resultVar": "golden_impact_cards_added_this_resolution"
+            },
+            {
+              "type": "move_card",
+              "target": "secondGoldenImpact",
+              "to": {
+                "zone": "skill"
+              },
+              "optionalCost": {
+                "type": "pay_mana",
+                "amount": 7
+              },
+              "resultVar": "golden_impact_cards_added_this_resolution"
+            },
+            {
+              "type": "branch",
+              "branches": [
+                {
+                  "if": {
+                    "type": "controller_at_battlefield"
+                  },
+                  "then": [
+                    {
+                      "type": "adjust_victory_points",
+                      "player": "controller",
+                      "amount": {
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "var": "golden_impact_cards_added_this_resolution"
+                          },
+                          {
+                            "op": "const",
+                            "value": 2
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "targets": [
+            {
+              "id": "firstGoldenImpact",
+              "type": "card_instance",
+              "scope": {
+                "zone": "removed_from_game",
+                "owner": "controller"
+              },
+              "constraints": [
+                {
+                  "type": "or",
+                  "conditions": [
+                    {
+                      "type": "has_card_id",
+                      "cardId": "servant.kintoki.skill.sc-kintoki-1"
+                    },
+                    {
+                      "type": "has_card_id",
+                      "cardId": "servant.kintoki.skill.sc-kintoki-2"
+                    }
+                  ]
+                }
+              ],
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "visibility": "private_to_controller"
+            },
+            {
+              "id": "secondGoldenImpact",
+              "type": "card_instance",
+              "scope": {
+                "zone": "removed_from_game",
+                "owner": "controller"
+              },
+              "constraints": [
+                {
+                  "type": "or",
+                  "conditions": [
+                    {
+                      "type": "has_card_id",
+                      "cardId": "servant.kintoki.skill.sc-kintoki-1"
+                    },
+                    {
+                      "type": "has_card_id",
+                      "cardId": "servant.kintoki.skill.sc-kintoki-2"
+                    }
+                  ]
+                }
+              ],
+              "count": {
+                "min": 0,
+                "max": 1
+              },
+              "conditions": [
+                {
+                  "type": "controller_mana_at_least",
+                  "value": 7
+                }
+              ],
+              "visibility": "private_to_controller"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "type": "original_card_image",
+          "path": "D:/fd/chm-extract/图包/ScreenShot_2025-11-02_112048_572.png",
+          "imageIndex": 1,
+          "htmPath": "D:/fd/chm-extract/坂田金时.htm",
+          "reviewStatus": "reviewed_against_original_image"
+        },
+        {
+          "type": "chm_association",
+          "path": "D:/fd/chm-extract/坂田金时.htm",
+          "imageIndex": 1
+        }
+      ],
+      "verification": {
+        "printedTextStatus": "reviewed_against_original_image",
+        "imageAssociationStatus": "htm_second_skill_image",
+        "canonicalIdStatus": "coordinator_confirmed",
+        "implementationStatus": "complete"
+      },
+      "ambiguities": [
+        {
+          "id": "kintoki-golden-eater-second-impact-choice-window",
+          "status": "user_confirmed",
+          "question": "可选支付 7 魔力加入另一张黄金冲击，需要由后端提供选择窗口与支付原子性。",
+          "resolution": "正式入口采用独立支付窗口；玩家选择多花费 7 点魔力后加入另一张黄金冲击。"
+        }
+      ]
+    }
+  ],
+  "adapterNotes": [
+    "HTM 第 3、4 张图片重复引用同一黄金冲击牌图；按协调者核对结果仍保留 sc-kintoki-1 与 sc-kintoki-2 两张独立【黄金冲击】。",
+    "坂田金时 canonical ID 为 servant.kintoki；技能顺序为 sc-kintoki-1 黄金冲击、sc-kintoki-2 黄金冲击、sc-kintoki-3 黄金噬者。",
+    "黄金冲击的低于 8 魔力仍可打出、局势牌无法禁止和每局一次均需要接入正式出牌合法性入口。",
+    "黄金噬者需要从移除游戏区域检索指定黄金冲击、可选支付 7 魔力检索第二张、将牌加入技能区，并按本次加入数量在战场奖励 VP。",
+    "2026-09-04 核对 HTM 与主仓库快照后，补齐两张 canonical 黄金冲击 sc-kintoki-1/sc-kintoki-2；HTM 第 3、4 张引用同一黄金冲击图。黄金噬者为 sc-kintoki-3，cost=5，basePower=0。"
+  ],
+  "userConfirmedInterpretations": [
+    {
+      "id": "kintoki-canonical-skill-order",
+      "source": "coordinator_local_main_repo_snapshot",
+      "checkedAt": "2026-09-04",
+      "servantId": "servant.kintoki",
+      "skillOrder": [
+        {
+          "id": "servant.kintoki.skill.sc-kintoki-1",
+          "name": "黄金冲击"
+        },
+        {
+          "id": "servant.kintoki.skill.sc-kintoki-2",
+          "name": "黄金冲击"
+        },
+        {
+          "id": "servant.kintoki.skill.sc-kintoki-3",
+          "name": "黄金噬者"
+        }
+      ]
+    },
+    {
+      "id": "kintoki-duplicate-golden-impact-image",
+      "source": "coordinator_and_local_htm_check",
+      "checkedAt": "2026-09-04",
+      "interpretation": "HTM 第 3、4 张图片重复，但不能因此删除第二张黄金冲击。"
+    },
+    {
+      "id": "kintoki-golden-eater-payment-window",
+      "source": "user_confirmation",
+      "checkedAt": "2026-09-04",
+      "interpretation": "黄金噬者加入第二张黄金冲击时，采用独立支付窗口；该功能等价于额外花费 7 点魔力加入一张技能卡。"
+    },
+    {
+      "id": "kintoki-golden-eater-vp-count-source",
+      "source": "user_confirmation",
+      "checkedAt": "2026-09-04",
+      "interpretation": "黄金噬者的 VP 奖励按本次实际加入技能区的黄金冲击数量计算，优先由通用移动卡牌结果统计。"
+    }
+  ],
+  "resolvedQuestions": [
+    {
+      "id": "kintoki-canonical-id",
+      "question": "坂田金时从者与技能 canonical ID 如何写入？",
+      "answer": "从者为 servant.kintoki；技能为 sc-kintoki-1 黄金冲击、sc-kintoki-2 黄金冲击、sc-kintoki-3 黄金噬者。",
+      "source": "coordinator_local_main_repo_snapshot"
+    },
+    {
+      "id": "kintoki-duplicate-image-does-not-collapse-card",
+      "question": "HTM 第 3、4 张图片重复时是否合并黄金冲击？",
+      "answer": "不合并。两张图片重复是页面证据问题，仍保留两张独立黄金冲击技能。",
+      "source": "coordinator_local_main_repo_snapshot_and_htm_check"
+    },
+    {
+      "id": "kintoki-golden-eater-second-impact-choice-window",
+      "question": "黄金噬者可选花费 7 点魔力加入另一张黄金冲击时，正式入口应采用独立选择窗口还是固定按另一张 canonical ID 自动检索？",
+      "answer": "采用独立支付窗口。该功能等价于玩家额外花费 7 点魔力加入一张技能卡。",
+      "source": "user_confirmation_2026-09-04"
+    },
+    {
+      "id": "kintoki-golden-eater-battlefield-vp-count-source",
+      "question": "黄金噬者的战场 VP 奖励需要解释器提供本次结算实际加入技能区的黄金冲击数量变量；该变量应由 move-card 结果还是专属 handler 产生？",
+      "answer": "优先由通用移动卡牌结果统计本次实际加入技能区的黄金冲击数量，不为坂田金时专门创建计数来源。",
+      "source": "user_confirmation_2026-09-04"
+    }
+  ],
+  "openQuestions": []
+}

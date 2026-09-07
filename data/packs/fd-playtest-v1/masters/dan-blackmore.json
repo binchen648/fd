@@ -1,0 +1,19 @@
+{
+  "id": "master.dan_blackmore",
+  "name": "丹·布拉克莫尔",
+  "overviewCardId": "master.dan_blackmore.overview",
+  "initialMana": 4,
+  "commandSpellCardIds": ["master.dan_blackmore.command_spell.standard"],
+  "skillCardIds": ["master.dan_blackmore.skill.may_day_knight"],
+  "linkedCards": {},
+  "capability": {
+    "status": "HOST_ADJUDICATED",
+    "hostRulingReason": "Movement rewards, timing and battlefield reward restriction are not yet implemented."
+  },
+  "source": {
+    "htmPath": "chm-extract/丹·布拉克莫尔.htm",
+    "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_231113_375.png",
+    "imageIndex": 0,
+    "reviewedAgainstImage": true
+  }
+}

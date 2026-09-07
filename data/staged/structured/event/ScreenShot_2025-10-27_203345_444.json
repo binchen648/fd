@@ -1,0 +1,50 @@
+{
+  "jobId": "structure-event-reality-marble-001",
+  "artifactVersion": "structure-response-v1",
+  "status": "ok",
+  "card": {
+    "id": "event.reality_marble",
+    "name": "固有结界",
+    "cardType": "event",
+    "timing": [
+      "advance",
+      "battle"
+    ],
+    "conditions": [],
+    "targets": [
+      {
+        "type": "self_battlefield"
+      }
+    ],
+    "effects": [
+      {
+        "type": "forbid_special_attack_on_battlefield",
+        "value": true
+      },
+      {
+        "type": "lock_battlefield_movement",
+        "value": "all_players"
+      }
+    ],
+    "duration": null,
+    "visibility": "public",
+    "tags": [
+      "restriction"
+    ],
+    "ambiguities": []
+  },
+  "parseNotes": [
+    "Repaired reality-marble clause into forbid_special_attack_on_battlefield(true).",
+    "Repaired reality-marble clause into lock_battlefield_movement(all_players)."
+  ],
+  "coverage": {
+    "sourceClauses": 2,
+    "mappedClauses": 2,
+    "unmappedClauses": 0
+  },
+  "source": {
+    "visionJobId": "vision-event-reality-marble-001",
+    "provider": "siliconflow",
+    "model": "Qwen/Qwen3-VL-235B-A22B-Thinking"
+  }
+}
