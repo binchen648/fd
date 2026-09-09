@@ -8,6 +8,11 @@ import {
   classifyAbilityForCoverage,
   type AuthoringArchiveLike,
 } from '../phase3-coverage';
+import {
+  auditPromotionEvidence,
+  buildP3A02AutomationAudit,
+  summarizeLegacyOwners,
+} from '../phase3-automation-audit';
 import { buildReviewPacket, hotRuntimeTouchSummary, loadCoverage } from '../phase3-review-packet';
 
 function archiveWithAbilities(abilities: unknown[]): AuthoringArchiveLike {
@@ -207,5 +212,81 @@ describe('phase3 coverage taxonomy drift protections', () => {
     } finally {
       rmSync(workspace, { recursive: true, force: true });
     }
+  });
+
+  it('groups remaining legacy and unclassified consumers by owner for B planning', () => {
+    const coverage = buildCoverageFromArchives([archiveWithAbilities([
+      {
+        id: 'ability.legacy-resource',
+        kind: 'phase_action',
+        activation: { phase: 'action' },
+        effects: [{ type: 'move_card' }],
+      },
+      {
+        id: 'ability.unknown',
+        kind: 'phase_action',
+        activation: { phase: 'action' },
+        effects: [{ type: 'future_primitive' }],
+      },
+    ])], { generatedAt: '2026-09-09T00:00:00.000Z' });
+
+    const report = summarizeLegacyOwners(coverage);
+
+    expect(report.totals).toEqual({
+      legacyResolveEffect: 1,
+      legacyExecuteAbility: 0,
+      notClassifiable: 1,
+    });
+    expect(report.owners).toContainEqual(expect.objectContaining({
+      owner: 'primitive:move_card',
+      runtimeRoute: 'LEGACY_RESOLVE_EFFECT',
+      abilityCount: 1,
+    }));
+    expect(report.owners).toContainEqual(expect.objectContaining({
+      owner: 'unclassified:unknown_effect_primitive:future_primitive',
+      runtimeRoute: 'NOT_CLASSIFIABLE',
+      abilityCount: 1,
+    }));
+  });
+
+  it('flags Gate C report claims that reference missing E2E specs', () => {
+    const audit = auditPromotionEvidence([
+      {
+        path: 'docs/reports/example.md',
+        text: [
+          '# Example',
+          '## Gate C Evidence',
+          '`e2e/fd-missing.spec.ts` covers browser, expectedRevision, reconnect, and stale replay.',
+        ].join('\n'),
+      },
+    ], new Set(['e2e/fd-existing.spec.ts']));
+
+    expect(audit.findings).toContainEqual({
+      severity: 'BLOCKING',
+      reportPath: 'docs/reports/example.md',
+      finding: 'GATE_C_REFERENCES_MISSING_E2E_SPEC',
+      reference: 'e2e/fd-missing.spec.ts',
+    });
+  });
+
+  it('builds a P3-A02 automation packet without promoting Gate status', () => {
+    const coverage = buildCoverageFromArchives([archiveWithAbilities([
+      {
+        id: 'ability.legacy',
+        kind: 'phase_action',
+        activation: { phase: 'action' },
+        effects: [{ type: 'move_card' }],
+      },
+    ])], { generatedAt: '2026-09-09T00:00:00.000Z' });
+
+    const packet = buildP3A02AutomationAudit(coverage, [], new Set());
+
+    expect(packet.task).toBe('P3-A02');
+    expect(packet.claimedAcceptance).toBe('AUTOMATION_BASELINE_CANDIDATE');
+    expect(packet.gatePromotion).toEqual({
+      promotedStatuses: [],
+      reviewerRequiredForPromotion: true,
+    });
+    expect(packet.legacyOwnerReport.totals.legacyResolveEffect).toBe(1);
   });
 });
