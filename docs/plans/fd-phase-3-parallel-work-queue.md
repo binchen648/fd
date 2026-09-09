@@ -11,14 +11,14 @@ This queue is for dispatching future Phase 3 work without putting multiple agent
 
 | Task ID | Track | Goal | Dependencies | Expected Unlock | Legacy Reduction Target | Files | Gate | Parallel With | Conflicts With | Status |
 |---|---|---|---|---|---|---|---|---|---|---|
-| P3-TO-01 | Automation | Design consolidated coverage JSON schema and command contract. | Current audit scripts | Enables all later burn-down reporting. | none | `docs/audits/*.mjs`, package scripts later | Evidence infra | P3-TO-03, P3-TO-04, P3-TO-07 | none | READY_NEXT |
-| P3-TO-02 | Automation | Implement read-only `phase3:coverage` reporter and docs drift check. | P3-TO-01 | Replaces manual matrix sync. | measurable baseline only | `docs/audits/fd-phase-3-coverage*.mjs`, `package.json` | Evidence infra | P3-TO-03, P3-TO-04 | any package-script owner | BLOCKED_BY_SCHEMA |
-| P3-TO-03 | Gateway Specs | Define Trigger Gateway top-5 bucket contracts. | current trigger inventory | Unlocks 58-trigger-family decomposition. | none yet | `docs/plans`, `docs/audits` | Gate A design | P3-TO-01, P3-TO-04, P3-TO-05 | runtime trigger implementation | READY_NEXT |
-| P3-TO-04 | Gateway Specs | Define Lifecycle Policy Gateway top-4 contracts. | lifecycle inventory | Unlocks residual/source/duration cleanup. | none yet | `docs/plans`, `docs/audits` | Gate A design | P3-TO-01, P3-TO-03, P3-TO-05 | runtime cleanup implementation | READY_NEXT |
-| P3-TO-05 | Gateway Specs | Define Interaction Template contracts for target/optional/response/private windows. | acceptance baseline, existing pending evidence | Unlocks reusable Gate B/C fixtures. | none yet | `docs/plans`, `docs/audits` | Gate A design | P3-TO-01, P3-TO-03, P3-TO-04 | runtime pending/response implementation | READY_NEXT |
+| P3-TO-01 | Automation | Design taxonomy validator plus consolidated coverage JSON schema and command contract. | Corrected semantic-axis matrix | Enables all later burn-down reporting without axis contamination. | none | `docs/audits/*.mjs`, package scripts later | Evidence infra | P3-TO-03, P3-TO-04, P3-TO-05, P3-TO-08 | none | READY_NEXT |
+| P3-TO-02 | Automation | Implement read-only `phase3:coverage` reporter, legacy/new/dual counter, and docs drift check. | P3-TO-01 | Replaces manual matrix sync. | measurable baseline only | `docs/audits/fd-phase-3-coverage*.mjs`, `package.json` | Evidence infra | P3-TO-03, P3-TO-04, P3-TO-05 | any package-script owner | BLOCKED_BY_SCHEMA |
+| P3-TO-03 | Gateway Specs | Define Trigger Gateway contracts for strict Domain Event Trigger only. | corrected semantic-axis inventory | Unlocks 37 strict domain-event trigger decomposition. | none yet | `docs/plans`, `docs/audits` | Gate A design | P3-TO-01, P3-TO-04, P3-TO-05, P3-TO-08 | runtime trigger implementation | READY_NEXT |
+| P3-TO-04 | Gateway Specs | Define Lifecycle Policy Gateway for explicit duration/persistence/source/reset/cleanup only. | corrected lifecycle/reset inventory | Unlocks 11 explicit lifecycle/reset abilities plus modifier/source cleanup. | none yet | `docs/plans`, `docs/audits` | Gate A design | P3-TO-01, P3-TO-03, P3-TO-05, P3-TO-08 | runtime cleanup implementation | READY_NEXT |
+| P3-TO-05 | Gateway Specs | Define Interaction Template contracts for target/response/branch/yes-no/amount/order only. | acceptance baseline, corrected interaction inventory | Unlocks 20 explicit interaction abilities and 11 strict PendingInteraction abilities. | none yet | `docs/plans`, `docs/audits` | Gate A design | P3-TO-01, P3-TO-03, P3-TO-04, P3-TO-08 | runtime pending/response implementation | READY_NEXT |
 | P3-TO-06 | Reviewer | Generate reviewer packet template for mechanic batches. | P3-TO-01 optional | Faster independent review. | none | `docs/reports/*checklist.md` | Reviewer | P3-TO-03, P3-TO-04 | none | READY_NEXT |
 | P3-TO-07 | Gate C Factory | Design shared Playwright stale/reconnect helpers. | existing E2E patterns | Reduces per-card Gate C cost. | none | `e2e/support/*` | Gate C infra | P3-TO-01, P3-TO-06 | active E2E support edits | READY_NEXT |
-| P3-TO-08 | Low-Risk Runtime | Review-promote or reject existing Resource Numeric direct-action candidate. | reviewer checklist | Converts candidate evidence to accepted or failed status. | no new reduction | docs/tests only unless fixes needed | Reviewer Gate | P3-TO-01 | any runtime edit if fixes required | PENDING_REVIEW |
+| P3-TO-08 | Low-Risk Primitive Factory | Resource Numeric Core direct-action factory candidate: typed resource primitive contract, compiler fail-closed, semantic routing, Gate A, representative Gate B. | corrected semantic-axis inventory; hot-file owner reserved | Validates first production mechanic factory without trigger/battle/hidden/lifecycle contamination. | direct resource ability-id fallback deletion and 3 direct consumers | `interpreter.ts`, `resolution-dataflow.ts`, `executable-card-pack.ts`, focused tests only if implementation authorized | Gate A/B candidate | P3-TO-01, P3-TO-03, P3-TO-04, P3-TO-05 docs-only work | any runtime hot-file task | READY_NEXT_RUNTIME_OWNER |
 | P3-TO-09 | Low-Risk Runtime | Review-promote or reject Card Zone direct-action candidate. | reviewer checklist | Confirms pilot allowlist deletion. | no new reduction | docs/tests only unless fixes needed | Reviewer Gate | P3-TO-01 | any runtime edit if fixes required | PENDING_REVIEW |
 | P3-TO-10 | Low-Risk Runtime | Review-promote or reject Card Action scoped candidates: PLAY, PLAY_SOURCE, ADD_TO_ATTACK, ACTIVATE, CLOSE. | reviewer packets | Prevents candidate pile-up. | no new reduction | docs/tests only unless fixes needed | Reviewer Gate | P3-TO-01 | any runtime edit if fixes required | PENDING_REVIEW |
 | P3-TO-11 | Trigger Runtime | First gateway-backed trigger slice: deployment/location resource trigger representative. | P3-TO-03, P3-TO-02 preferred | Starts trigger-family burn-down. | 1-2 abilities | `interpreter.ts`, `resolution-dataflow.ts`, tests, E2E if needed | Gate A/B, C if projection/reconnect changes | P3-TO-06 only | any runtime hot-file task | WAIT_GATEWAY |
@@ -28,12 +28,13 @@ This queue is for dispatching future Phase 3 work without putting multiple agent
 | P3-TO-15 | Modifier/Power | Modifier source and power trace contract design. | Lifecycle Gateway, existing Artoria/Tomoe evidence | Unlocks 24 modifier / 18 power abilities. | none first | docs first, later power runtime | Gate A design | P3-TO-01 | runtime lifecycle/battle edits | WAIT_GATEWAY |
 | P3-TO-16 | Special Isolation | Special subsystem inventory and quarantine/deletion criteria. | P3-TO-02 useful | Prevents special cases from polluting core primitives. | none first | `docs/audits`, `docs/plans` | Planning | P3-TO-03, P3-TO-04 | none | READY_NEXT |
 
-Recommended immediate queue:
+Recommended corrected immediate queue:
 
 1. P3-TO-01
-2. P3-TO-03
-3. P3-TO-04
-4. P3-TO-05
-5. P3-TO-06
+2. P3-TO-08, only if one runtime hot-file owner is reserved
+3. P3-TO-03
+4. P3-TO-04
+5. P3-TO-05
+6. P3-TO-06
 
-Runtime implementation should resume only after those tasks make the next gateway-backed slice explicit.
+Runtime implementation may resume for Resource Numeric Core direct-action only because it is the low-risk primitive factory lane. Trigger, Lifecycle, Interaction, Battle, Modifier, and Hidden runtime implementation should wait until their corrected gateway specs are independently reviewed.

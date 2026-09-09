@@ -8,7 +8,14 @@
 - Related Audits: `docs/audits/fd-skill-rule-normalization-audit.md`; `docs/audits/fd-skill-primitive-conformance-matrix.md`
 - Last Verified: 2026-09-08
 
-This matrix is a planning audit, not acceptance evidence. Counts below use the reproducible strict family classifier in this file. Multi-family membership is allowed, but every family assignment must be explainable from the ability's top-level effect types, ability kind, explicit targets, explicit rule/power modifiers, activation fields, or the narrow printed-text markers used by the classifier.
+This matrix is a planning audit, not acceptance evidence. Counts below are broad mechanic-family and risk-summary counts. Multi-family membership is allowed, but the family view must not be used as the source of truth for Trigger Gateway, Lifecycle Policy Gateway, Interaction/Pending Gateway, or Dependency DAG priority.
+
+Corrected source of truth for orthogonal semantic axes:
+
+- `docs/audits/fd-skill-semantic-axis-inventory.mjs`
+- `docs/audits/fd-skill-semantic-axis-matrix.md`
+
+The previous broad counts `TRIGGER=58`, `LIFECYCLE=49`, and `INTERACTION=48` are `INVALID FOR PRIORITY` because they include ability kind, timing/window hooks, continuous passives, requirement checks, lifecycle/reset policies, and player-input semantics in overlapping family buckets. Current gateway priority must use the corrected semantic-axis baseline: strict Domain Event Trigger = 37 abilities, explicit Lifecycle/Reset/Persistence = 11 abilities, explicit Interaction union = 20 abilities, and strict target-based PendingInteraction = 11 abilities.
 
 ## Reproducible Counting Contract
 

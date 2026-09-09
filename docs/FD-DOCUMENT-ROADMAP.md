@@ -42,7 +42,7 @@ CURRENT:
 
 NEXT:
 
-- Execute the Phase 3 throughput queue in `docs/plans/fd-phase-3-parallel-work-queue.md`: first build coverage automation, Trigger Gateway specs, Lifecycle Gateway specs, Interaction Template specs, and reviewer packets. Runtime migration should resume only after the next gateway-backed slice has explicit dependencies, hot-file ownership, and burn-down metrics.
+- Execute the corrected Phase 3 throughput queue in `docs/plans/fd-phase-3-parallel-work-queue.md`: first build taxonomy/coverage automation, run `RESOURCE_NUMERIC_CORE_DIRECT_ACTION` as the low-risk primitive factory only if one runtime hot-file owner is reserved, and write Trigger/Lifecycle/Interaction Gateway specs from the corrected semantic-axis baseline. Trigger/Lifecycle/Interaction runtime migration must wait for independently reviewed gateway contracts.
 
 LATER:
 
@@ -108,6 +108,7 @@ AUDIT:
 - `docs/audits/fd-rule-conformance-matrix.md`
 - `docs/audits/fd-rule-interaction-matrix.md`
 - `docs/audits/fd-skill-mechanic-family-matrix.md`
+- `docs/audits/fd-skill-semantic-axis-matrix.md`
 - `docs/audits/fd-skill-rule-normalization-audit.md`
 - `docs/audits/fd-skill-primitive-conformance-matrix.md`
 - `docs/audits/fd-card-runtime-architecture-audit.md`
@@ -118,7 +119,7 @@ AUDIT:
 | Phase | Parent Plan | Required Subplan / Audit | Primary Acceptance Vehicle |
 |---|---|---|---|
 | Phase 3A | `docs/plans/fd-card-engine-stabilization-plan.md` | `docs/plans/fd-effect-result-binding-plan.md` | Golden Result-Binding Card |
-| Phase 3B | `docs/plans/fd-card-engine-stabilization-plan.md` | `docs/plans/fd-phase-3-mechanic-family-rollout-plan.md` + `docs/audits/fd-skill-mechanic-family-matrix.md` | Mechanic Batch Gate A/B/C + representative Golden Cards |
+| Phase 3B | `docs/plans/fd-card-engine-stabilization-plan.md` | `docs/plans/fd-phase-3-mechanic-family-rollout-plan.md` + `docs/audits/fd-skill-mechanic-family-matrix.md` + `docs/audits/fd-skill-semantic-axis-matrix.md` | Mechanic Batch Gate A/B/C + representative Golden Cards |
 | Phase 4A | `docs/plans/fd-card-engine-stabilization-plan.md` | `docs/audits/fd-flow-runtime-inventory.md` | Golden Flow 2 / Golden Flow 5 |
 | Phase 4B/C | `docs/plans/fd-card-engine-stabilization-plan.md` | `docs/audits/fd-rule-interaction-matrix.md` | Golden Flow 3 / Golden Flow 5 |
 | Phase 5 | `docs/plans/fd-card-engine-stabilization-plan.md` | Flow Inventory + ActionOffer design | Golden Flow 1 |
@@ -135,7 +136,8 @@ Every phase implementer or reviewer must read these inputs before making impleme
 4. `docs/plans/fd-card-engine-stabilization-plan.md`
 5. Current phase related subplan
 6. Current phase latest related audit
-7. Current phase Golden Acceptance Contract
+7. Current phase corrected semantic-axis audit when the phase touches Trigger, Lifecycle, Interaction, Pending, Resource, or Gateway priority
+8. Current phase Golden Acceptance Contract
 
 Historical reports may be read after these inputs for provenance only.
 

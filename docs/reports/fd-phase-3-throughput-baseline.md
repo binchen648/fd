@@ -19,6 +19,7 @@ Read before this baseline:
 - `docs/plans/fd-effect-result-binding-plan.md`
 - `docs/plans/fd-golden-card-and-flow-acceptance-plan.md`
 - `docs/audits/fd-skill-mechanic-family-matrix.md`
+- `docs/audits/fd-skill-semantic-axis-matrix.md`
 - `docs/audits/fd-skill-primitive-conformance-matrix.md`
 - `docs/audits/fd-skill-rule-normalization-audit.md`
 - `docs/audits/fd-rule-conformance-matrix.md`
@@ -36,9 +37,10 @@ node docs/audits/fd-card-action-play-inventory.mjs
 node docs/audits/fd-card-action-add-to-attack-inventory.mjs
 node docs/audits/fd-card-action-activate-inventory.mjs
 node docs/audits/fd-card-action-close-inventory.mjs
+node docs/audits/fd-skill-semantic-axis-inventory.mjs
 ```
 
-One temporary read-only Node inventory was also run to count primary trigger/kind, lifecycle/kind, and interaction-template buckets directly from `data/authoring`.
+The semantic-axis inventory is the current source for Trigger/Lifecycle/Interaction gateway priority. Earlier temporary trigger/kind, lifecycle/kind, and interaction-template buckets are retained below only as historical invalidated taxonomy notes.
 
 ## Current Total
 
@@ -174,7 +176,9 @@ Current Phase 3 candidate batches have implementer evidence only. They remain `I
 
 ## Trigger Baseline
 
-Primary trigger/kind buckets from fresh scan:
+Previous trigger/kind taxonomy: `INVALID FOR PRIORITY`. It mixed ability kind, timing/window hooks, continuous passives, and requirement checks into Trigger counts.
+
+Invalidated historical buckets:
 
 | Bucket | Count |
 |---|---:|
@@ -189,11 +193,47 @@ Primary trigger/kind buckets from fresh scan:
 | `after_controller_wins_battle` | 3 |
 | `after_battle_ended` | 2 |
 
-Top 5 buckets cover 67 memberships. Top 10 cover 83 memberships.
+Corrected strict Domain Event Trigger baseline:
+
+| Domain Event Trigger | Count |
+|---|---:|
+| `on_use_declared` | 9 |
+| `on_card_played` | 6 |
+| `after_controller_loses_battle` | 4 |
+| `game_start` | 4 |
+| `after_battle_result_determined` | 3 |
+| `after_controller_wins_battle` | 3 |
+| `after_battle_ended` | 2 |
+| `after_controller_enters_location` | 1 |
+| `after_controller_first_loses_battle` | 1 |
+| `after_controller_gains_victory` | 1 |
+| `after_controller_loses_all_command_seals` | 1 |
+| `after_player_deployed_to_battlefield` | 1 |
+| `before_situation_or_event_resolves` | 1 |
+
+Corrected coverage:
+
+- strict Domain Event Trigger abilities: 37;
+- Top 5 corrected trigger types: 26 abilities;
+- Top 8 corrected trigger types: 30 abilities;
+- Top 12 corrected trigger types: 36 abilities.
+
+Separated non-trigger buckets for KPI:
+
+| Bucket | Correct Axis |
+|---|---|
+| `phase_action` | Ability Kind / Flow Timing / Ability Legality |
+| `while_active` | Continuous Passive / Source-Active Requirement / Modifier |
+| `when_play_requirements_checked` | Requirement Check Hook |
+| `when_formula_condition_met` | Continuous Formula Condition |
+| `controller_combat_action_window` | Ability Window / Response Window |
+| `when_power_calculation_applied` | Modifier Calculation Hook |
 
 ## Lifecycle Baseline
 
-Primary lifecycle/kind buckets:
+Previous lifecycle/kind taxonomy: `INVALID FOR PRIORITY`. Ability kinds are not lifecycle policies.
+
+Invalidated historical buckets:
 
 | Bucket | Count |
 |---|---:|
@@ -204,9 +244,27 @@ Primary lifecycle/kind buckets:
 | `kind:phase_action + lifecycle effect` | 3 |
 | `unique optional trigger` | 3 |
 
-Top 4 buckets cover 71 memberships.
+Corrected explicit lifecycle/reset baseline:
+
+- explicit lifecycle/reset abilities: 11;
+- policy memberships: 22, because one ability can carry multiple lifecycle dimensions.
+
+| Lifecycle / Reset Policy | Memberships |
+|---|---:|
+| `source_or_reset_marker` | 7 |
+| `limit:this_card` | 4 |
+| `duration:while_card_active` | 3 |
+| `limit:unique_keyword_group` | 3 |
+| `cleanup:when_card_leaves_active_area` | 2 |
+| `duration:round_count` | 1 |
+| `cleanup:expire_after_duration` | 1 |
+| `cleanup:remain_active` | 1 |
 
 ## Interaction Template Baseline
+
+Previous interaction-template taxonomy: `INVALID FOR PRIORITY`. Timing/event buckets are not Interaction templates unless they require player choice, confirmation, response, ordering, or amount selection.
+
+Invalidated historical buckets:
 
 | Template | Count |
 |---|---:|
@@ -221,7 +279,21 @@ Top 4 buckets cover 71 memberships.
 | `after_controller_wins_battle` | 3 |
 | branch | 2 |
 
-Top 5 non-empty templates cover 35 abilities.
+Corrected interaction baseline:
+
+| Interaction Shape | Count |
+|---|---:|
+| explicit target abilities | 11 |
+| target type `card_instance` | 7 |
+| target type `location` | 3 |
+| target type `choice` | 1 |
+| target type `player` | 1 |
+| response / optional response-window abilities | 7 |
+| branch / yes-no candidates | 5 |
+| explicit target, response/window, or branch union | 20 |
+| strict target-based PendingInteraction | 11 |
+
+Current KPI uses the corrected union count for Interaction semantic risk and the strict target-based count for PendingInteraction runtime pressure.
 
 ## Core / Special Split
 
@@ -234,7 +306,7 @@ The strict split is better for roadmap KPIs. The conservative split is better fo
 
 ## Baseline Conclusion
 
-The current Phase 3 throughput blocker is not raw primitive absence. It is the lack of reusable gateway contracts, automated evidence, and burn-down reporting around Trigger, Lifecycle, Interaction, Result Binding, and projection/reconnect.
+The current Phase 3 throughput blocker is not raw primitive absence. It is the lack of reusable gateway contracts, automated evidence, and burn-down reporting around corrected Domain Event Trigger, explicit Lifecycle/Reset/Persistence, explicit Interaction/Pending semantics, Result Binding, and projection/reconnect.
 
 Permitted final status:
 
