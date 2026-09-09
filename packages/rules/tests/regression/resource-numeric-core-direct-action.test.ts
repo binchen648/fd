@@ -60,6 +60,35 @@ describe('RESOURCE_NUMERIC_CORE_DIRECT_ACTION', () => {
     }));
   });
 
+  it('fails closed through MatchSession dispatch when migrated resource definitions are corrupted', () => {
+    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const pairing = session.pairings.find((candidate) => candidate.master.id === 'master.gatou')!;
+    preparePlayerForAction(session, pairing.playerId);
+
+    const source = session.state.cards.find((card) =>
+      card.controllerPlayerId === pairing.playerId &&
+      session.rawCards.get(card.definitionId)?.cardType === 'command_spell')!;
+    const player = session.state.players.find((candidate) => candidate.id === pairing.playerId)!;
+    player.mana = 8;
+    (player as { commandSpells: number }).commandSpells = 3;
+    const eventCount = session.state.abilityRuntime!.events.length;
+    const ability = session.state.abilityRuntime!.pack.cards[source.definitionId]!.abilities.find((candidate) =>
+      candidate.id === 'command-spell.gain-mana')!;
+    ability.effects[0] = { type: 'adjust_mana', amount: 'four' } as never;
+
+    const result = session.dispatchPlayerAction(pairing.playerId, {
+      type: 'activate_ability',
+      cardInstanceId: source.instanceId,
+      abilityId: 'command-spell.gain-mana',
+    });
+
+    expect(result.ok).toBe(false);
+    expect(result.rejection).toEqual(expect.objectContaining({ code: 'resolution_failed' }));
+    expect(player.mana).toBe(8);
+    expect(commandSpells(player)).toBe(3);
+    expect(session.state.abilityRuntime!.events).toHaveLength(eventCount);
+  });
+
   it('routes Tomoe direct VP action from real compiled content without legacy fallback', () => {
     const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
     const pairing = session.pairings.find((candidate) => candidate.servant.id === 'servant.tomoe')!;

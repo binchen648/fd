@@ -5,8 +5,10 @@ import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { node, nodes, str } from './loader';
 import {
+  DataFlowValidationError,
   normalizeResolutionDataFlowNodes,
   executeResolution,
+  ResolutionRuntimeError,
   type KnownEffectResult,
 } from './resolution-dataflow';
 import type {
@@ -969,28 +971,35 @@ function pushResourceDirectives(s: GameState, ctx: EffectContext, results: Known
 }
 
 function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
-  const normalized = normalizeResolutionDataFlowNodes(effects, `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
-  const result = executeResolution({
-    state: s,
-    controllerId: ctx.controllerId,
-    sourceCardId: ctx.sourceCardId,
-    abilityId: ctx.abilityId,
-    effects: normalized,
-    resolutionId: nextId(s, 'resolution'),
-    causationId: `${ctx.sourceCardId}:${ctx.abilityId}:${runtime(s).revision}`,
-  });
-  Object.assign(s, result.nextState);
-  runtime(s).events.push(...result.emittedEvents);
-  for (const envelope of result.results) {
-    runtime(s).events.push({
-      type: 'effect_resolved',
-      playerId: ctx.controllerId,
+  try {
+    const normalized = normalizeResolutionDataFlowNodes(effects, `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
+    const result = executeResolution({
+      state: s,
+      controllerId: ctx.controllerId,
       sourceCardId: ctx.sourceCardId,
       abilityId: ctx.abilityId,
-      resultId: `${result.context.resolutionId}.${envelope.effectId}`,
+      effects: normalized,
+      resolutionId: nextId(s, 'resolution'),
+      causationId: `${ctx.sourceCardId}:${ctx.abilityId}:${runtime(s).revision}`,
     });
+    Object.assign(s, result.nextState);
+    runtime(s).events.push(...result.emittedEvents);
+    for (const envelope of result.results) {
+      runtime(s).events.push({
+        type: 'effect_resolved',
+        playerId: ctx.controllerId,
+        sourceCardId: ctx.sourceCardId,
+        abilityId: ctx.abilityId,
+        resultId: `${result.context.resolutionId}.${envelope.effectId}`,
+      });
+    }
+    pushResourceDirectives(s, ctx, result.results);
+  } catch (error) {
+    if (error instanceof DataFlowValidationError || error instanceof ResolutionRuntimeError) {
+      reject('resolution_failed', error.message);
+    }
+    throw error;
   }
-  pushResourceDirectives(s, ctx, result.results);
 }
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {

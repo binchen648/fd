@@ -103,7 +103,7 @@ Additional browser Gate C is required when a batch adds or materially changes:
 
 Bulk-migrated abilities can inherit Gate C only when they use an already accepted executable semantic form and do not introduce one of the deltas above.
 
-For `RESOURCE_NUMERIC_CORE_DIRECT_ACTION`, Gate C inheritance is intentionally narrow. A migrated ability may inherit the command spell/Tomoe representative Gate C only when it is a visible direct action whose only runtime mutation is mana, command-seal, or VP arithmetic through the accepted resource primitive path. It cannot inherit that Gate C if it introduces any trigger timing, battle result dependency, hidden choice or private target, pending payment, card movement, source lifecycle, cleanup, or modifier/power interaction. Those abilities must wait for the relevant family Gate C or provide their own production browser/server/reconnect evidence.
+For `RESOURCE_NUMERIC_CORE_DIRECT_ACTION`, Gate C is currently `REQUIRED / NOT_VERIFIED`. No migrated ability may inherit command spell or Tomoe Gate C until a real browser/WS/reconnect/stale representative exists and receives independent review. After that future evidence exists, inheritance must still remain limited to visible direct actions whose only runtime mutation is mana, command-seal, or VP arithmetic through the accepted resource primitive path. Inheritance is invalidated by any trigger timing, battle result dependency, hidden choice or private target, pending payment, card movement, source lifecycle, cleanup, or modifier/power interaction.
 
 ## Card Action Contract Split
 
@@ -226,8 +226,8 @@ Use 3-5 representatives:
 Golden Resource Scenario:
 
 1. Start a seven-player `MatchSession`.
-2. Resolve a command spell action and assert mana +4, command seals -1, event payload, revision increment, and no duplicate on stale replay.
-3. Resolve Tomoe `sc-tomoe-1.independent-action` through an action-window ability path and assert +3 VP, explicit timing-condition rejection outside eligible turn-order state, and no duplicate on stale replay.
+2. Resolve a command spell action through `MatchSession.dispatchPlayerAction` and assert mana +4, command seals -1, event payload, and semantic routing.
+3. Resolve Tomoe `sc-tomoe-1.independent-action` through an action-window ability path and assert +3 VP plus explicit timing-condition rejection outside eligible turn-order state.
 4. Verify command spell and Tomoe both route by executable semantic form, not ability id.
 5. Do not enter movement-trigger, defeat-trigger, battle-result, card-zone, or result-binding scenarios in this batch.
 
@@ -257,12 +257,12 @@ Required scenario evidence:
 - each representative ability compiles from canonical authoring JSON;
 - every resource mutation is routed by semantic form, not ability id;
 - no migrated representative calls legacy `resolveEffect`;
-- repeated/stale dispatch does not duplicate deltas;
+- corrupted migrated resource definitions return `resolution_failed` instead of throwing or falling back to legacy `resolveEffect`;
 - event log and projection carry enough information for reviewer diagnosis.
 
 ### Gate C
 
-Gate C is required for the command spell representative because it is a user-facing production command and currently lacks browser evidence.
+Gate C is required for the command spell representative because it is a user-facing production command and currently lacks browser evidence. There is no current `e2e/fd-command-spell-resource-core.spec.ts` in this checkout.
 
 Gate C is not required for Shinji trigger or defeat branches because they are no longer first-batch representatives. Tomoe direct VP may remain Gate B unless the implementation changes user-facing command/projection behavior beyond the existing action ability route.
 
@@ -329,7 +329,7 @@ Required deletion proof:
 
 - test fails if `command-spell.gain-mana` is reintroduced as an ability-id route;
 - test passes when command spell is classified only by `adjust_mana + adjust_command_seals`;
-- stale/replay command does not duplicate mana or command-seal deltas;
+- corrupted migrated resource definitions return `resolution_failed` without state mutation;
 - implementation report includes before/after counts.
 
 ### Legacy Paths Retained

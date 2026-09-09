@@ -73,16 +73,16 @@ Required scope:
 
 The remaining pilot allowlist is transitional only. As of the 2026-09-08 `RESOURCE_NUMERIC_CORE_DIRECT_ACTION` implementation candidate, `command-spell.gain-mana` exited the allowlist and routed by executable semantic form. As of the 2026-09-08 `CARD_ZONE_CORE_DIRECT_ACTION` implementation candidate, `conversion-magic.preparation` and `time-alter.action` also exited ability-id pilot routing. The Phase 3 reference pilot allowlist is currently empty.
 
-Current implementation-candidate evidence, 2026-09-08:
+Current implementation-candidate evidence, 2026-09-09:
 
 - Scope: `command-spell.gain-mana` on Gatou/Olga command spell cards plus Tomoe `sc-tomoe-1.independent-action`; no trigger, battle-result, hidden-choice, pending-payment, card-movement, lifecycle, modifier, or power-dependent resource abilities migrated.
-- Authoring inventory: `docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs` reports 18 RESOURCE_NUMERIC abilities from `data/authoring`, 3 eligible, 15 skipped with explicit skip reasons.
+- Authoring inventory: `docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs` reports 17 RESOURCE_NUMERIC abilities from `data/authoring`, 3 eligible, 14 skipped with explicit skip reasons.
 - Routing: `command-spell.gain-mana` no longer requires ability-id pilot routing; direct resources route by executable semantic form plus `phase_action` metadata. After the subsequent `CARD_ZONE_CORE_DIRECT_ACTION` implementation candidate, no Phase 3 reference vertical pilot allowlist entry remains.
 - Gate A: implementer evidence covers primitive registration, direct positive/negative deltas, reviewer event envelope, invalid controller, invalid result field, command-seal underflow fail-closed, VP clamp behavior, rollback, unknown primitive, and bad numeric expression.
 - Gate B: implementer evidence covers real `MatchSession.dispatchPlayerAction` for `command-spell.gain-mana` and Tomoe `sc-tomoe-1.independent-action`, with typed resource events and `effect_resolved` payloads that distinguish data-flow runtime from legacy `resolveEffect`.
-- Gate C: implementer evidence covers command spell browser activation, WebSocket `expectedRevision`, server revalidation, state mutation, projection log envelope, reconnect, and stale replay rejection in `e2e/fd-command-spell-resource-core.spec.ts`.
-- Metrics: direct-action legacy resource consumers 3 -> 0; new-runtime semantic-routed direct resource consumers 0 -> 3; dual-compatible migrated consumers 1 -> 0; skipped resource abilities remain 15.
-- Evidence report: `docs/reports/2026-09-08-resource-numeric-core-direct-action-result.md`.
+- Gate C: `GATE_C_REQUIRED / NOT_VERIFIED`; no current `e2e/fd-command-spell-resource-core.spec.ts` exists in this checkout. Browser activation, WebSocket `expectedRevision`, projection, reconnect, and stale replay evidence must be added before any Resource/Numeric Gate C promotion.
+- Metrics: direct-action legacy resource consumers 3 -> 0; new-runtime semantic-routed direct resource consumers 0 -> 3; dual-compatible migrated consumers 1 -> 0; skipped resource abilities remain 14.
+- Evidence report: `docs/reports/2026-09-09-resource-numeric-core-result.md`.
 
 Current selected batch:
 

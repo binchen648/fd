@@ -15,7 +15,7 @@ Implemented the low-risk direct-action Resource/Numeric slice only:
 - typed `adjust_victory_points`
 - compiler fail-closed validation for strict direct resource action semantic form
 - semantic-form routing for strict direct resource action abilities
-- real `MatchSession.dispatchPlayerAction` representative tests for command spell mana/seal and Tomoe VP
+- real `MatchSession.dispatchPlayerAction` representative tests for command spell mana/seal, Tomoe VP, and corrupted direct-resource fail-closed behavior
 
 No card JSON, canonical rules, trigger engine, interaction subsystem, lifecycle subsystem, battle runtime, or full result-binding subsystem was rewritten.
 
@@ -126,8 +126,8 @@ node docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs
 Results:
 
 - typecheck: PASS
-- focused vitest: PASS, 3 files / 36 tests
-- test:ci: PASS, 79 files / 452 tests
+- focused vitest: PASS, 3 files / 37 tests
+- test:ci: PASS, 79 files / 453 tests
 - content validate: PASS, 7 masters / 7 servants / 20 events / 0 blocking issues
 - inventory: PASS, 17 resource abilities / 3 eligible / 14 skipped
 
@@ -144,6 +144,7 @@ Covered:
 - bad numeric expression fails closed
 - later runtime failure rolls back prior resource mutations
 - compiler rejects malformed direct resource authoring before runtime
+- corrupted migrated direct-resource definitions return `resolution_failed` through `MatchSession.dispatchPlayerAction` without throwing or mutating resource state
 
 ## Gate C Status
 
