@@ -155,9 +155,7 @@ Test file:
 
 ## Gate C Evidence
 
-Current checkout status: `GATE_C_REQUIRED / NOT_VERIFIED`.
-
-No current Resource/Numeric command-spell browser E2E file exists in this checkout. Browser activation, WebSocket `expectedRevision`, projection, reconnect, and stale replay evidence must be added before any Resource/Numeric Gate C promotion.
+Current checkout status is superseded by `docs/reports/2026-09-09-resource-numeric-core-result.md`: Resource/Numeric command-spell Gate C candidate evidence now exists in `e2e/fd-command-spell-resource-core.spec.ts`, pending independent review.
 
 ## Tests Run
 

@@ -16,6 +16,7 @@ Implemented the low-risk direct-action Resource/Numeric slice only:
 - compiler fail-closed validation for strict direct resource action semantic form
 - semantic-form routing for strict direct resource action abilities
 - real `MatchSession.dispatchPlayerAction` representative tests for command spell mana/seal, Tomoe VP, and corrupted direct-resource fail-closed behavior
+- browser/WS/reconnect/stale Gate C candidate for command spell direct resource routing
 
 No card JSON, canonical rules, trigger engine, interaction subsystem, lifecycle subsystem, battle runtime, or full result-binding subsystem was rewritten.
 
@@ -25,6 +26,7 @@ Command:
 
 ```powershell
 node docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs
+npx playwright test -c playwright.config.ts fd-command-spell-resource-core --project=chromium
 ```
 
 Current source result:
@@ -130,6 +132,7 @@ Results:
 - test:ci: PASS, 79 files / 453 tests
 - content validate: PASS, 7 masters / 7 servants / 20 events / 0 blocking issues
 - inventory: PASS, 17 resource abilities / 3 eligible / 14 skipped
+- command spell Gate C candidate: PASS, 1 Chromium test
 
 ## Negative Evidence
 
@@ -148,7 +151,7 @@ Covered:
 
 ## Gate C Status
 
-`GATE_C_REQUIRED` for a future browser/WS/reconnect representative if this slice is submitted for production-path Gate C promotion. This implementation pass verifies `MatchSession.dispatchPlayerAction` Gate B candidate behavior only.
+Implementer Gate C candidate evidence exists in `e2e/fd-command-spell-resource-core.spec.ts` for command spell direct resource routing: real remote room create/select/start, browser-driven phase progression, real ability activation, WebSocket `expectedRevision`, server projection resource envelopes, reconnect consistency, and stale replay rejection. Independent review is still required before any Gate C or Phase 3 promotion.
 
 ## Known Retained Legacy
 
@@ -170,7 +173,7 @@ YES:
 
 ## Areas Not Verified
 
-- Browser E2E / WebSocket stale replay / reconnect Gate C
+- independent Gate C promotion review
 - independent reviewer promotion
 - full Resource/Numeric family
 - trigger, battle, hidden, interaction, lifecycle, modifier, and special subsystem migration

@@ -167,7 +167,7 @@ export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variabl
   { type: 'pass'; windowId: string } | DeployPlayerAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction;
 export interface AbilityPlayerView {
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];
-  players: { id: PlayerId; seat: number; mana: number; vp: number; locationId?: string; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
+  players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
   cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean }[];
   stagedAttacks?: { playerId: PlayerId; cards: PlayCardAction[] }[];
   pendingDecision?: { id: string; candidates: string[]; min: number; max: number };

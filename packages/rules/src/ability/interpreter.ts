@@ -1149,7 +1149,7 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
           cardFace: r.pack.cards[cardId]!.cardFace,
         })),
       } : r.pack.servantPackage;
-      return { id: p.id, seat: p.seat, mana: p.mana, vp: p.vp, masterCardId: p.masterCardId,
+      return { id: p.id, seat: p.seat, mana: p.mana, vp: p.vp, commandSpells: Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3), masterCardId: p.masterCardId,
         ...(p.locationId ? { locationId: p.locationId } : {}), handCount: s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'hand').length,
         deckCount: s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'deck').length,
         ...(r.revealedServants.includes(p.id) && servantPackage && p.servantCardId === servantPackage.id

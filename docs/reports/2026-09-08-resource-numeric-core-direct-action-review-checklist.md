@@ -4,7 +4,7 @@
 - Scope: Independent review checklist for `RESOURCE_NUMERIC_CORE_DIRECT_ACTION`.
 - Implementer claim available for review: `IMPLEMENTATION_COMPLETE_CANDIDATE`.
 - This document does not promote the batch to `COMPONENT_VERIFIED`, `SCENARIO_VERIFIED`, or `E2E_VERIFIED`.
-- Superseded: Current repository fact is recorded in `docs/reports/2026-09-09-resource-numeric-core-result.md`. Gate C is currently `REQUIRED / NOT_VERIFIED` for this slice.
+- Superseded: Current repository fact is recorded in `docs/reports/2026-09-09-resource-numeric-core-result.md`. Gate C candidate evidence now exists in `e2e/fd-command-spell-resource-core.spec.ts`, pending independent review.
 
 ## Review Inputs
 
@@ -81,7 +81,7 @@ Required evidence:
 
 ## Gate C Checklist
 
-Current checkout status: `GATE_C_REQUIRED / NOT_VERIFIED`.
+Current checkout status is superseded by `docs/reports/2026-09-09-resource-numeric-core-result.md`: Resource/Numeric command-spell Gate C candidate evidence exists in `e2e/fd-command-spell-resource-core.spec.ts`, pending independent review.
 
 Required evidence:
 
@@ -94,7 +94,11 @@ Required evidence:
 - reconnect preserves state and event evidence;
 - stale replay is rejected and does not duplicate resource mutation.
 
-No current `e2e/fd-command-spell-resource-core.spec.ts` exists in this checkout. Add and run a real browser/WS/reconnect/stale representative before any Resource/Numeric Gate C promotion.
+Run the current Gate C candidate before any Resource/Numeric Gate C promotion:
+
+```powershell
+npx playwright test -c playwright.config.ts fd-command-spell-resource-core --project=chromium
+```
 
 ## Inventory And Metrics Checklist
 

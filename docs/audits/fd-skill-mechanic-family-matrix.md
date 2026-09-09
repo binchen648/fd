@@ -91,7 +91,7 @@ TRIGGER 58 abilities / 34 cards
 
 | Mechanic Family | Ability Count | Cards Affected | Existing Primitives / Owners | Missing Primitives | Legacy Runtime Dependency | New Runtime Coverage | Semantic Complexity | Interaction Complexity | Result-Binding Dependency | Lifecycle Dependency | Gate Status |
 |---|---:|---:|---|---|---|---|---|---|---|---|---|
-| `RESOURCE_NUMERIC` | 17 | 12 | `adjust_mana`, `pay_mana`, `adjust_command_seals`, `adjust_victory_points`; mixed Resolution Data-flow and legacy interpreter | numeric expression contract, clamp/underflow contract, semantic-form routing, event envelope | High outside pilots | Partial: Golden Eater, Conversion Magic, command spell/Tomoe Gate B candidate only | Medium | Low for direct action; high when trigger/battle-owned | Medium for actual affected counts | Low for direct action | `IMPLEMENTED_UNVERIFIED` / family not verified; command spell Gate C REQUIRED / NOT_VERIFIED |
+| `RESOURCE_NUMERIC` | 17 | 12 | `adjust_mana`, `pay_mana`, `adjust_command_seals`, `adjust_victory_points`; mixed Resolution Data-flow and legacy interpreter | numeric expression contract, clamp/underflow contract, semantic-form routing, event envelope | High outside pilots | Partial: Golden Eater, Conversion Magic, command spell Gate C candidate, Tomoe Gate B candidate | Medium | Low for direct action; high when trigger/battle-owned | Medium for actual affected counts | Low for direct action | `IMPLEMENTED_UNVERIFIED` / family not verified; command spell Gate C candidate pending independent review |
 | `CARD_ZONE` | 14 | 13 | `move_card`, `draw_cards`, `move_all_remaining`, `play_selected_cards`; `playBatch` hook | typed draw/shuffle/create/look/move-all result envelopes, destination policy, face-down ownership | High | Partial pilots only | Medium-High | Medium | High | Medium | `IMPLEMENTED_UNVERIFIED` / family not verified |
 | `CARD_ACTION_SEMANTICS` | 13 | 10 | shared playBatch, ruleModifiers, legacy play rules | separate contracts for `PLAY`, `PLAY_SOURCE_CARD_WITH_COST_RESPONSE`, `ADD_TO_ATTACK`, `CREATE_AND_ACTIVATE`, `ACTIVATE`, and `CLOSE` | High | Time Alter, Volumen, Maiya, Olga, and Artoria Alter scoped implementation candidates only | High | High | Medium | Medium | `IMPLEMENTED_UNVERIFIED` representatives / family not verified |
 | `TARGET_SELECTION` | 11 | 11 | pending target owner, candidate validation, Golden Eater private targets | closed target constraint registry, semantic candidate routing, private projection contract | High | Golden Eater and Time Alter representatives | High | High | High | Medium | `IMPLEMENTED_UNVERIFIED` representatives only |
@@ -180,12 +180,12 @@ Original selection rationale:
 - strict full family count is 17 abilities / 12 cards, not 45 / 35;
 - the first batch only claims the direct-action subset, not trigger, battle, movement, card-zone, or result-binding hybrids;
 - it can remove ability-id routing for `command-spell.gain-mana`;
-- it has immediate command spell Gate C value, but that browser/WS/reconnect/stale evidence is still required and not currently present;
+- it has command spell browser/WS/reconnect/stale Gate C candidate evidence, pending independent review;
 - it prepares later Card/Zone, Cost/Payment, Result Binding, Battle Result, and Power work without binding them into this slice.
 
 Gate C inheritance rule:
 
-`RESOURCE_NUMERIC_CORE_DIRECT_ACTION` currently has no inheritable Gate C representative. Command spell Gate C remains `REQUIRED / NOT_VERIFIED`; after future browser/WS/reconnect/stale evidence exists and is independently reviewed, inheritance may apply only to visible direct-action abilities whose accepted executable semantic form mutates mana, command seals, or VP and does not introduce another runtime family. Inheritance is not allowed when the ability introduces any of:
+`RESOURCE_NUMERIC_CORE_DIRECT_ACTION` has command spell Gate C candidate evidence in `e2e/fd-command-spell-resource-core.spec.ts`, pending independent review. If promoted, inheritance may apply only to visible direct-action abilities whose accepted executable semantic form mutates mana, command seals, or VP and does not introduce another runtime family. Inheritance is not allowed when the ability introduces any of:
 
 - trigger timing;
 - battle result, battle winner, battle loss, or defeat dependency;
@@ -203,7 +203,7 @@ Implementation-candidate status, 2026-09-09:
 - Direct-action legacy resource consumers: 3 before, 0 after.
 - New-runtime semantic-routed direct resource consumers: 0 before, 3 after.
 - Dual-compatible migrated consumers: 1 before, 0 after.
-- Command spell Gate C is `REQUIRED / NOT_VERIFIED`; no current `e2e/fd-command-spell-resource-core.spec.ts` exists in this checkout.
+- Command spell Gate C implementer evidence exists in `e2e/fd-command-spell-resource-core.spec.ts`; independent review is required before promotion.
 - Status claim remains `IMPLEMENTATION_COMPLETE_CANDIDATE`; independent review is required before any `COMPONENT_VERIFIED`, `SCENARIO_VERIFIED`, or `E2E_VERIFIED` promotion.
 
 Resource event envelope requirement:

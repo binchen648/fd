@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-09T04:49:50.601Z",
+  "generatedAt": "2026-09-09T05:16:48.753Z",
   "sourceFingerprint": "4efa585d747b2f765d8248601c77daa12d247e6bfaa775a9d033afcd6b881854",
   "counts": {
     "totalArchives": 14,
@@ -4139,43 +4139,43 @@
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1231,
+        "line": 1235,
         "id": "master_main",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1232,
+        "line": 1236,
         "id": "servant_identity",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1234,
+        "line": 1238,
         "id": "servant_deck",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1235,
+        "line": 1239,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1235,
+        "line": 1239,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1236,
+        "line": 1240,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1236,
+        "line": 1240,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },

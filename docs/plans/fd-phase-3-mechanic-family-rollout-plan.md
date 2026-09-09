@@ -103,7 +103,7 @@ Additional browser Gate C is required when a batch adds or materially changes:
 
 Bulk-migrated abilities can inherit Gate C only when they use an already accepted executable semantic form and do not introduce one of the deltas above.
 
-For `RESOURCE_NUMERIC_CORE_DIRECT_ACTION`, Gate C is currently `REQUIRED / NOT_VERIFIED`. No migrated ability may inherit command spell or Tomoe Gate C until a real browser/WS/reconnect/stale representative exists and receives independent review. After that future evidence exists, inheritance must still remain limited to visible direct actions whose only runtime mutation is mana, command-seal, or VP arithmetic through the accepted resource primitive path. Inheritance is invalidated by any trigger timing, battle result dependency, hidden choice or private target, pending payment, card movement, source lifecycle, cleanup, or modifier/power interaction.
+For `RESOURCE_NUMERIC_CORE_DIRECT_ACTION`, command spell now has implementer Gate C candidate evidence in `e2e/fd-command-spell-resource-core.spec.ts`; inheritance still requires independent review. If promoted, inheritance must remain limited to visible direct actions whose only runtime mutation is mana, command-seal, or VP arithmetic through the accepted resource primitive path. Inheritance is invalidated by any trigger timing, battle result dependency, hidden choice or private target, pending payment, card movement, source lifecycle, cleanup, or modifier/power interaction.
 
 ## Card Action Contract Split
 
@@ -181,7 +181,7 @@ This batch was selected because the strict direct-action subset was small enough
 - strict family coverage: 18 abilities across 12 cards;
 - first-batch direct-action target set: 3 abilities across 3 cards;
 - existing primitives: `adjust_mana`, `pay_mana`, `adjust_command_seals`, `adjust_victory_points`;
-- existing representative evidence: Golden Eater for `pay_mana`/`adjust_victory_points`, Conversion Magic for `adjust_mana`, command spell for `adjust_command_seals` Gate B only;
+- existing representative evidence: Golden Eater for `pay_mana`/`adjust_victory_points`, Conversion Magic for `adjust_mana`, command spell for `adjust_command_seals` Gate B plus Gate C candidate evidence;
 - future dependency value: Card/Zone, Cost/Payment, Result Binding, Battle Result, and Power families all consume numeric/resource deltas.
 
 Battle Winner, Flow Runtime, Power Pipeline, Trigger/Lifecycle, and Golden Flow gaps remain high priority, but they are either Phase 4/5 flow issues or higher-complexity families. Starting with them would preserve the same multiple-owner problem instead of shrinking legacy ability consumers first.
@@ -262,7 +262,7 @@ Required scenario evidence:
 
 ### Gate C
 
-Gate C is required for the command spell representative because it is a user-facing production command and currently lacks browser evidence. There is no current `e2e/fd-command-spell-resource-core.spec.ts` in this checkout.
+Gate C candidate evidence for the command spell representative exists in `e2e/fd-command-spell-resource-core.spec.ts`: browser activation, WebSocket `expectedRevision`, server projection resource envelopes, reconnect, and stale replay rejection. It still requires independent review before promotion.
 
 Gate C is not required for Shinji trigger or defeat branches because they are no longer first-batch representatives. Tomoe direct VP may remain Gate B unless the implementation changes user-facing command/projection behavior beyond the existing action ability route.
 
@@ -438,7 +438,7 @@ An independent reviewer must reject promotion if:
 - routing is still based on card id or ability id after the batch;
 - migrated abilities can still fall back to legacy `resolveEffect`;
 - legacy consumer count is not reported;
-- command spell lacks Gate C evidence;
+- command spell Gate C evidence exists only as an implementation candidate pending independent review;
 - any status is promoted solely because content JSON is complete or tests are green.
 
 ## Final Candidate Status
