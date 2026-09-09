@@ -1,11 +1,14 @@
 import { describe, expect, it } from 'vitest';
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 import {
   buildCoverageFromArchives,
   classifyAbilityForCoverage,
   type AuthoringArchiveLike,
 } from '../phase3-coverage';
-import { buildReviewPacket } from '../phase3-review-packet';
+import { buildReviewPacket, hotRuntimeTouchSummary, loadCoverage } from '../phase3-review-packet';
 
 function archiveWithAbilities(abilities: unknown[]): AuthoringArchiveLike {
   return {
@@ -119,7 +122,7 @@ describe('phase3 coverage taxonomy drift protections', () => {
 
     expect(coverage.gateEvidenceMetadata).toEqual({
       authority: 'IMPLEMENTER_EVIDENCE_ONLY',
-      allowedClaim: 'IMPLEMENTATION_COMPLETE_CANDIDATE',
+      allowedClaim: 'AUTOMATION_BASELINE_CANDIDATE',
       reviewerRequiredForPromotion: true,
       promotedStatuses: [],
     });
@@ -139,9 +142,70 @@ describe('phase3 coverage taxonomy drift protections', () => {
       batch: 'PHASE_3_COVERAGE_AND_EVIDENCE_AUTOMATION',
     });
 
-    expect(packet.hotRuntimeFilesTouched).toBe('NO');
-    expect(packet.claimedAcceptance).toBe('IMPLEMENTATION_COMPLETE_CANDIDATE');
+    expect(packet.hotRuntimeFilesTouched.status).toBe('NO');
+    expect(packet.claimedAcceptance).toBe('AUTOMATION_BASELINE_CANDIDATE');
     expect(packet.knownLimitations).toContain('Runtime routing classification is conservative static evidence, not a complete call graph.');
     expect(packet.areasNotVerified).toContain('Independent reviewer promotion.');
+  });
+
+  it('does not classify unknown primitives as new runtime only because data-flow syntax exists', () => {
+    const coverage = buildCoverageFromArchives([archiveWithAbilities([
+      {
+        id: 'ability.unknown-dataflow',
+        kind: 'phase_action',
+        activation: { phase: 'action' },
+        effects: [{ type: 'future_primitive', bind: 'futureResult' }],
+      },
+    ])], { generatedAt: '2026-09-09T00:00:00.000Z' });
+
+    expect(coverage.runtimeRouting.newRuntimeConsumers.after).toBe(0);
+    expect(coverage.runtimeRouting.notClassifiable.after).toBe(1);
+    expect(coverage.unclassifiedItems).toContainEqual(expect.objectContaining({
+      abilityId: 'ability.unknown-dataflow',
+      reason: 'NOT_CLASSIFIABLE:unknown_effect_primitive:future_primitive',
+    }));
+  });
+
+  it('reports hot runtime files from the reviewed diff file list', () => {
+    expect(hotRuntimeTouchSummary([
+      'scripts/phase3-coverage.ts',
+      'packages/rules/src/ability/interpreter.ts',
+      'packages/rules/src/match-session.ts',
+    ])).toEqual({
+      status: 'YES',
+      files: [
+        'packages/rules/src/ability/interpreter.ts',
+        'packages/rules/src/match-session.ts',
+      ],
+    });
+
+    expect(hotRuntimeTouchSummary([
+      'scripts/phase3-coverage.ts',
+      'docs/reports/result.md',
+    ])).toEqual({ status: 'NO', files: [] });
+  });
+
+  it('regenerates review coverage from current authoring instead of stale artifact files', () => {
+    const workspace = mkdtempSync(join(tmpdir(), 'fd-phase3-coverage-'));
+    try {
+      mkdirSync(join(workspace, 'data/authoring/masters'), { recursive: true });
+      mkdirSync(join(workspace, 'data/authoring/servants'), { recursive: true });
+      mkdirSync(join(workspace, 'artifacts'), { recursive: true });
+      writeFileSync(join(workspace, 'artifacts/phase3-skill-coverage.json'), JSON.stringify({
+        schemaVersion: 'fd-phase3-skill-coverage-v1',
+        sourceFingerprint: 'stale',
+        counts: { totalAbilities: 99 },
+      }));
+      writeFileSync(join(workspace, 'data/authoring/masters/master.test.json'), JSON.stringify(archiveWithAbilities([
+        { id: 'ability.current', kind: 'phase_action', activation: { phase: 'action' }, effects: [] },
+      ])));
+
+      const coverage = loadCoverage(workspace);
+
+      expect(coverage.counts.totalAbilities).toBe(1);
+      expect(coverage.sourceFingerprint).not.toBe('stale');
+    } finally {
+      rmSync(workspace, { recursive: true, force: true });
+    }
   });
 });

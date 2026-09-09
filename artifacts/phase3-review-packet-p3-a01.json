@@ -1,11 +1,20 @@
 {
   "schemaVersion": "fd-phase3-review-packet-v1",
-  "generatedAt": "2026-09-09T08:07:08.528Z",
+  "generatedAt": "2026-09-09T08:28:15.712Z",
   "task": "P3-A01",
   "batch": "PHASE_3_COVERAGE_AND_EVIDENCE_AUTOMATION",
-  "claimedAcceptance": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
   "reviewerAuthorityNotice": "Implementation packet only. It does not promote Gate A/B/C, Phase 3, or Release status.",
-  "hotRuntimeFilesTouched": "NO",
+  "hotRuntimeFilesTouched": {
+    "status": "YES",
+    "files": [
+      "packages/rules/src/ability/executable-card-pack.ts",
+      "packages/rules/src/ability/interpreter.ts",
+      "packages/rules/src/ability/resolution-dataflow.ts",
+      "packages/rules/src/ability/types.ts",
+      "packages/rules/src/match-session.ts"
+    ]
+  },
   "changedSemanticPrimitives": [],
   "affectedAbilities": [
     {
@@ -94,8 +103,8 @@
     },
     "newRuntimeConsumers": {
       "before": 0,
-      "after": 9,
-      "delta": 9
+      "after": 8,
+      "delta": 8
     },
     "legacyExecuteAbilityConsumers": {
       "before": 3,
@@ -103,8 +112,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 58,
-      "after": 58,
+      "before": 53,
+      "after": 53,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -114,8 +123,8 @@
     },
     "notClassifiable": {
       "before": 33,
-      "after": 22,
-      "delta": -11
+      "after": 28,
+      "delta": -5
     },
     "pilotAllowlistEntries": {
       "before": 0,
@@ -324,8 +333,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 58,
-      "after": 58,
+      "before": 53,
+      "after": 53,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -562,9 +571,9 @@
   },
   "remainingLegacy": {
     "legacyExecuteAbilityConsumers": 3,
-    "legacyResolveEffectConsumers": 58,
+    "legacyResolveEffectConsumers": 53,
     "dualRuntimeConsumers": 0,
-    "notClassifiable": 22
+    "notClassifiable": 28
   },
   "knownLimitations": [
     "Runtime routing classification is conservative static evidence, not a complete call graph.",

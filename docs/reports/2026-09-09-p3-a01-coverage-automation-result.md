@@ -1,7 +1,7 @@
 # P3-A01 Phase 3 Coverage And Evidence Automation Result
 
 - Document Role: RESULT REPORT
-- Status: IMPLEMENTATION_COMPLETE_CANDIDATE
+- Status: AUTOMATION_BASELINE_CANDIDATE
 - Date: 2026-09-09
 - Scope: coverage/evidence automation only
 - Acceptance Status: This report does not promote Phase 3, Gate A/B/C, SCENARIO_VERIFIED, E2E_VERIFIED, or Release status.
@@ -32,12 +32,12 @@ Fresh `npm run phase3:coverage` output:
 | Compiled cards | 70 |
 | Compiled characters | 14 |
 | Blocking compile issues | 93 |
-| New runtime semantic routed consumers | 9 |
+| New runtime semantic routed consumers | 8 |
 | Legacy executeAbility consumers | 3 |
-| Legacy resolveEffect consumers | 58 |
+| Legacy resolveEffect consumers | 53 |
 | Dual runtime consumers | 0 |
 | Pilot allowlist entries | 0 |
-| Not classifiable | 22 |
+| Not classifiable | 28 |
 | Taxonomy drift warnings | 79 |
 
 Compiled pack identity:
@@ -76,12 +76,19 @@ These are KPI-style routing metrics. They do not use raw ability count as a burn
 
 The generated packet now explicitly records:
 
-- `claimedAcceptance: IMPLEMENTATION_COMPLETE_CANDIDATE`
-- `hotRuntimeFilesTouched: NO`
+- `claimedAcceptance: AUTOMATION_BASELINE_CANDIDATE`
+- `hotRuntimeFilesTouched` computed from the reviewed git diff range
 - known limitations
 - areas not verified
 
 This prevents the automation packet from being misread as a runtime, Gate A/B/C, or Release promotion.
+
+Current reviewed diff scope:
+
+- Default scope: `origin/main...HEAD`
+- Result: `hotRuntimeFilesTouched.status: YES`
+- Files reported by the packet include hot runtime files already present in the target branch history: `packages/rules/src/ability/executable-card-pack.ts`, `packages/rules/src/ability/interpreter.ts`, `packages/rules/src/ability/resolution-dataflow.ts`, `packages/rules/src/ability/types.ts`, and `packages/rules/src/match-session.ts`.
+- This P3-A01 repair patch itself does not modify those runtime files; the packet now exposes the branch-level risk instead of clearing it.
 
 ## Tests
 
@@ -91,7 +98,7 @@ Fresh targeted automation tests:
 npx vitest run scripts/tests/phase3-coverage.test.ts
 ```
 
-Result: 8/8 PASS.
+Result: 11/11 PASS.
 
 Current hardening rerun:
 
@@ -106,7 +113,7 @@ npm run test:ci
 
 Result:
 
-- taxonomy / artifact / packet tests: 8/8 PASS
+- taxonomy / artifact / packet tests: 11/11 PASS
 - typecheck: PASS
 - coverage command: PASS, with current content blockers reported
 - review packet command: PASS
@@ -115,11 +122,15 @@ Result:
 
 ## Hot Runtime Files
 
-This P3-A01 slice intentionally does not modify hot runtime files. The working tree may still contain pre-existing uncommitted runtime edits from earlier slices; they are outside this automation slice and are not part of this result report.
+This P3-A01 repair patch intentionally does not modify hot runtime files.
+
+The generated review packet now reports hot runtime files from the target branch diff scope instead of hard-coding `NO`, so branch-level runtime-touch risk remains visible to reviewers.
 
 ## Known Limitations
 
 - Runtime routing classification is conservative and static. Unknown paths are preserved as `NOT_CLASSIFIABLE`.
+- Unknown primitives remain `NOT_CLASSIFIABLE` even when they use data-flow syntax such as `bind`, `resultVar`, or `binding_field`.
+- `phase3:review-packet` regenerates coverage from current authoring inputs instead of trusting an existing `artifacts/phase3-skill-coverage.json`.
 - Card-specific handler detection is static literal scanning only; it is evidence for reviewer attention, not a complete call graph.
 - Gate A/B/C evidence is not promoted by this task. Reviewer packet generation only packages evidence for later review.
 

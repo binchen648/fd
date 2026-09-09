@@ -1,13 +1,15 @@
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { buildCoverageFromArchives, type AuthoringArchiveLike } from './phase3-coverage';
+import { buildCoverageFromArchives, loadAuthoringArchives } from './phase3-coverage';
 
 interface PacketArgs {
   task: string;
   batch: string;
   out: string;
+  diffBase: string;
 }
 
 function parseArgs(argv: string[], workspaceRoot: string): PacketArgs {
@@ -20,23 +22,12 @@ function parseArgs(argv: string[], workspaceRoot: string): PacketArgs {
     task,
     batch: readValue('--batch', 'PHASE_3_COVERAGE_AND_EVIDENCE_AUTOMATION'),
     out: resolve(workspaceRoot, readValue('--out', `artifacts/phase3-review-packet-${task.toLowerCase()}.json`)),
+    diffBase: readValue('--diff-base', 'origin/main'),
   };
 }
 
-function loadCoverage(workspaceRoot: string) {
-  const artifactPath = resolve(workspaceRoot, 'artifacts/phase3-skill-coverage.json');
-  if (existsSync(artifactPath)) return JSON.parse(readFileSync(artifactPath, 'utf8'));
-  const archiveFiles = [
-    ...['data/authoring/masters', 'data/authoring/servants'].flatMap((directory) => {
-      const fullDirectory = resolve(workspaceRoot, directory);
-      return readdirSync(fullDirectory)
-        .filter((name: string) => name.endsWith('.json'))
-        .sort()
-        .map((name: string) => resolve(fullDirectory, name));
-    }),
-  ];
-  const archives = archiveFiles.map((file) => JSON.parse(readFileSync(file, 'utf8')) as AuthoringArchiveLike);
-  return buildCoverageFromArchives(archives, { workspaceRoot });
+export function loadCoverage(workspaceRoot: string) {
+  return buildCoverageFromArchives(loadAuthoringArchives(workspaceRoot), { workspaceRoot });
 }
 
 function semanticPrimitiveSummary(coverage: ReturnType<typeof buildCoverageFromArchives>): string[] {
@@ -48,6 +39,7 @@ function semanticPrimitiveSummary(coverage: ReturnType<typeof buildCoverageFromA
 export function buildReviewPacket(
   coverage: ReturnType<typeof buildCoverageFromArchives>,
   args: Pick<PacketArgs, 'task' | 'batch'>,
+  hotRuntimeFiles = hotRuntimeTouchSummary([]),
 ) {
   const affectedAbilities = coverage.semanticAxes
     .filter((row) => row.semanticRoutes.length > 0)
@@ -64,9 +56,9 @@ export function buildReviewPacket(
     generatedAt: new Date().toISOString(),
     task: args.task,
     batch: args.batch,
-    claimedAcceptance: 'IMPLEMENTATION_COMPLETE_CANDIDATE',
+    claimedAcceptance: 'AUTOMATION_BASELINE_CANDIDATE',
     reviewerAuthorityNotice: 'Implementation packet only. It does not promote Gate A/B/C, Phase 3, or Release status.',
-    hotRuntimeFilesTouched: 'NO',
+    hotRuntimeFilesTouched: hotRuntimeFiles,
     changedSemanticPrimitives: args.task === 'P3-A01' ? [] : semanticPrimitiveSummary(coverage),
     affectedAbilities,
     runtimeRoutingBeforeAfter: coverage.runtimeRouting,
@@ -103,15 +95,54 @@ export function buildReviewPacket(
   };
 }
 
+const hotRuntimeFiles = new Set([
+  'packages/rules/src/ability/interpreter.ts',
+  'packages/rules/src/ability/resolution-dataflow.ts',
+  'packages/rules/src/ability/executable-card-pack.ts',
+  'packages/rules/src/ability/types.ts',
+  'packages/rules/src/match-session.ts',
+  'packages/rules/src/core/combat-resolver.ts',
+  'packages/rules/src/core/effect-resolver.ts',
+]);
+
+export function hotRuntimeTouchSummary(changedFiles: string[]) {
+  const files = changedFiles
+    .map((file) => file.replace(/\\/g, '/'))
+    .filter((file) => hotRuntimeFiles.has(file))
+    .sort();
+  return { status: files.length > 0 ? 'YES' : 'NO', files };
+}
+
+function diffFiles(workspaceRoot: string, diffBase: string): string[] {
+  const commands = [
+    ['diff', '--name-only', `${diffBase}...HEAD`],
+    ['diff', '--name-only', `${diffBase}..HEAD`],
+  ];
+  for (const args of commands) {
+    try {
+      return execFileSync('git', args, { cwd: workspaceRoot, encoding: 'utf8' })
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean);
+    } catch {
+      // Try the next diff form before giving up.
+    }
+  }
+  return [];
+}
+
 export function runReviewPacketCli(argv = process.argv.slice(2), workspaceRoot = resolve('.')): void {
   const args = parseArgs(argv, workspaceRoot);
   const coverage = loadCoverage(workspaceRoot);
-  const packet = buildReviewPacket(coverage, args);
+  const changedFiles = diffFiles(workspaceRoot, args.diffBase);
+  const packet = buildReviewPacket(coverage, args, hotRuntimeTouchSummary(changedFiles));
   mkdirSync(dirname(args.out), { recursive: true });
   writeFileSync(args.out, `${JSON.stringify(packet, null, 2)}\n`, 'utf8');
   process.stdout.write('PHASE_3_REVIEW_PACKET\n');
   process.stdout.write(`task=${args.task}\n`);
   process.stdout.write(`batch=${args.batch}\n`);
+  process.stdout.write(`diffBase=${args.diffBase}\n`);
+  process.stdout.write(`hotRuntimeFilesTouched=${packet.hotRuntimeFilesTouched.status}\n`);
   process.stdout.write(`affectedSemanticAbilities=${packet.affectedAbilities.length}\n`);
   process.stdout.write(`remainingLegacyResolveEffect=${packet.remainingLegacy.legacyResolveEffectConsumers}\n`);
   process.stdout.write(`notClassifiable=${packet.remainingLegacy.notClassifiable}\n`);
