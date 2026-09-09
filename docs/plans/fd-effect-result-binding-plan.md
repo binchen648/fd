@@ -2,11 +2,11 @@
 
 Document Role: SUBPLAN
 Status: ACTIVE
-Implementation Status: PARTIAL - Phase 3A infrastructure implemented; production integration pending
-Acceptance Status: Gate A candidate / independent review pending; Gate B NOT VERIFIED; Gate C NOT VERIFIED
+Implementation Status: PHASE_3A_PRODUCTION_BRIDGE_IMPLEMENTATION_COMPLETE_CANDIDATE
+Acceptance Status: Gate A/B/C implementer evidence for the complete Golden Eater candidate / independent review pending
 Parent: `docs/plans/fd-card-engine-stabilization-plan.md`
 Depends On: `docs/rules/FD-Game-Rules-Final.md`; `docs/plans/fd-rules-conformance-and-acceptance.md`; `docs/audits/fd-flow-runtime-inventory.md`; `docs/plans/fd-golden-card-and-flow-acceptance-plan.md`
-Consumed By: future Phase 3A Gate B real-card binding slice and Phase 3C production flow integration
+Consumed By: independent Phase 3A Gate A/B/C review and later primitive migration
 Supersedes: none
 Last Verified: 2026-09-07
 
@@ -14,24 +14,25 @@ Last Verified: 2026-09-07
 项目路径：`D:\fd`
 计划定位：Global Rules Runtime 的专项子计划。
 计划范围：Phase 3A Resolution/Data-flow Infrastructure，以及后续接入生产能力执行链的最小路线。它不是全项目下一步计划，也不覆盖完整 Flow Engine、UI 全迁移或全部 combat/scoring primitive 迁移。
-状态：ACTIVE — Phase 3A Infrastructure Implemented / Production Integration Pending。此前 `D:\fd\docs\reports\2026-09-07-effect-result-binding-design-result.md` 声称本计划文件已添加，但当前工作区未找到 `D:\fd\docs\plans\fd-effect-result-binding-plan.md`，本文件为补档后的活动计划。
+状态：ACTIVE — Phase 3A Production Bridge `IMPLEMENTATION_COMPLETE_CANDIDATE`，独立 review 待执行。
 
 当前 Acceptance：
 
-- Gate A: 待独立 Reviewer 最终确认
-- Gate B: NOT VERIFIED
-- Gate C: NOT VERIFIED
+- Gate A: implementer evidence complete，待独立 Reviewer 确认
+- Gate B: first Golden Card implementer evidence complete，待独立 Reviewer 确认
+- Gate C: complete Golden Eater candidate implementer evidence complete; independent Reviewer confirmation pending
 
 前置依赖：
 
-- Phase 2 Acceptance: PASS
+- Phase 2 Acceptance: historical prerequisite claim only; not re-adjudicated by this slice
 - Flow Runtime Inventory: COMPLETE (`D:\fd\docs\audits\fd-flow-runtime-inventory.md`)
 
 当前正式 Runtime：
 
 - legacy `executeAbility`: ACTIVE
-- `executeResolution`: infrastructure / synthetic path
-- production bridge: NOT IMPLEMENTED
+- `executeResolution`: infrastructure plus first production-dispatch path
+- production bridge: IMPLEMENTATION_COMPLETE_CANDIDATE / TRANSITIONAL ONLY
+- first Golden contract: Kintoki `sc-kintoki-3.golden-eater` complete canonical single-card migration
 
 ## 1. Purpose
 
@@ -91,10 +92,16 @@ Effect A executes
   - covers synthetic result binding, validator failures, registry lookup, rollback, and schema/runtime consistency.
 - `D:\fd\packages\rules\tests\executable-card-pack.test.ts`
   - covers compiler-path binding/reference failures.
+- `D:\fd\packages\rules\src\ability\interpreter.ts`
+  - contains the transitional production bridge in `executeEffects`; Phase 3A graph failures return `resolution_failed` and do not fall back to legacy.
+- `D:\fd\packages\rules\tests\regression\production-resolution-bridge.test.ts`
+  - covers the complete canonical Kintoki Golden Eater through `MatchSession.dispatchPlayerAction`, both private target stages, optional typed payment, invalid target/reference, insufficient mana, and stage-local transaction rollback.
+- `D:\fd\e2e\fd-golden-eater-result-binding.spec.ts`
+  - covers real browser target selection, captured WebSocket `expectedRevision`, server-side illegal-target revalidation, `executeResolution` state/projection effects, controller reconnect, and stale replay rejection.
 
 Current legacy boundary:
 
-- `D:\fd\packages\rules\src\ability\interpreter.ts` production `activate_ability` still calls `executeAbility`, not `executeResolution`.
+- `activate_ability` still enters `executeAbility` for shared legality, activation costs, and pending-target ownership; `executeEffects` routes detected Phase 3A graphs into staged `executeResolution` calls. Golden Eater's optional 7-mana effect is executed by the typed `pay_mana` primitive.
 - Existing real card roster is not generally authored as Phase 3A resolution nodes.
 
 ## 4. Design model
@@ -230,6 +237,8 @@ Required:
 - rejected resolution does not mutate authoritative state
 - reconnect/projection path shows consistent post-resolution state
 - browser or server-level E2E proves the path outside synthetic tests
+
+Current candidate evidence: `IMPLEMENTED_UNVERIFIED`. The complete Golden Eater definition satisfies the listed browser/WS/reconnect path as implementer evidence, including reconnect while the second target is pending, successful and insufficient 7-mana branches, and stale replay rejection. Only an independent Reviewer may promote Gate C.
 
 ## 6. Implementation sequence
 
