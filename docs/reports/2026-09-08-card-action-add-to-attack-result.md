@@ -67,29 +67,32 @@ remainingSkippedCardActionCount.after=6
 ## Gate A Evidence
 
 - `attach_card_to_player_attack` is registered as a typed Resolution Data-flow primitive.
+- The typed result payload exposes `attachedCount: number`; downstream Result Binding can consume it, and unknown attach result fields fail closed.
 - `isAddToAttackDirectAction` accepts only the exact semantic shape above.
-- Negative coverage rejects missing cost, wrong phase, missing `not_controller`, missing return marker, wrong cannot-win status, `play_source_card`, and `append_only_rule`.
+- Negative coverage rejects missing cost, wrong phase, missing `not_controller`, missing canonical not-at-battlefield condition, missing return marker, wrong cannot-win status, `play_source_card`, and `append_only_rule`.
 - Canonical condition negative coverage proves Maiya cannot activate this ability while already at a battlefield, and the failed dispatch does not spend the 2 mana cost or move `援护射击`.
-- Activation fails closed before spending mana if the required support-shot card is absent.
+- Activation fails closed before spending mana if the migrated graph is corrupted, if the required support-shot card is absent, or if the support-shot card is in `hand`, `deck`, `discard`, or `field` instead of `skill`.
 
 ## Gate B Evidence
 
 - `packages/rules/tests/regression/card-action-add-to-attack.test.ts` dispatches Maiya `military.attach-support-shot` through a real `MatchSession`.
 - The ability is compiled from canonical authoring through the executable pack.
 - The runtime opens server target selection, rejects self-target through server revalidation, attaches `援护射击` to another player's `attack_area`, records `modeState.supportShotAttachments`, creates the cannot-win status, and emits traceable `attack_added` / `effect_resolved` events.
+- Corrupted migrated data-flow returns `resolution_failed` and does not fall back to the legacy extended-effect branch.
 
 ## Gate C Evidence
 
-- `e2e/fd-add-to-attack-card-action.spec.ts` restores a real room snapshot and starts from the browser ability button.
-- The WebSocket command carries `expectedRevision`.
+- `e2e/fd-add-to-attack-card-action.spec.ts` restores a real room snapshot at the advance-phase representative window and starts from the browser ability button.
+- The WebSocket activation and target-selection commands carry `expectedRevision`.
 - Reconnect while target selection is pending preserves the target window.
 - Browser target selection resolves through the server, mutates state, and projects the card in `attack_area`.
 - Stale replay of the same target command is rejected and does not duplicate `attack_added`.
 - Reconnect after settlement preserves the attachment projection and event trace.
+- Evidence scope: this is restored-snapshot browser/WS/reconnect/stale candidate evidence. It does not prove natural create/select/start progression into this exact action window.
 
 ## Verification
 
-Fresh commands run on 2026-09-08:
+Fresh commands run on 2026-09-09:
 
 ```text
 node docs/audits/fd-card-action-add-to-attack-inventory.mjs
@@ -97,8 +100,8 @@ PASS: sourceFiles=14, cardActionSemanticAbilities=7, eligible=1, skipped=6
 ```
 
 ```text
-npx vitest run packages/rules/tests/regression/card-action-add-to-attack.test.ts packages/rules/tests/regression/phase-3a-core-primitives.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts
-PASS: 3 test files, 33 tests
+npx vitest run packages/rules/tests/regression/card-action-add-to-attack.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts
+PASS: 3 test files, 41 tests
 ```
 
 ```text
@@ -107,8 +110,13 @@ PASS: tsc -b
 ```
 
 ```text
-npx playwright test e2e/fd-add-to-attack-card-action.spec.ts --project=chromium
+npx playwright test -c playwright.config.ts e2e/fd-add-to-attack-card-action.spec.ts --project=chromium
 PASS: 1 test
+```
+
+```text
+npx playwright test -c playwright.config.ts e2e/fd-add-to-attack-card-action.spec.ts --project=chromium --repeat-each=5
+PASS: 5 tests
 ```
 
 ## Boundaries

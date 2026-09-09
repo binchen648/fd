@@ -38,7 +38,14 @@ function baseState(): TerrainState {
       movementLinks: [],
     },
     locationConfig: { disabledLocationIds: [] },
-    cards: [],
+    cards: [{
+      instanceId: 'support-shot',
+      definitionId: 'master.maiya.deck.support-shot',
+      ownerPlayerId: 'P1',
+      controllerPlayerId: 'P1',
+      zone: 'skill',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'P1' },
+    }],
     eventPlacements: [],
     battleResults: [],
     effectStack: [],
@@ -107,6 +114,16 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
       return { id: `produce-${binding}`, type: 'draw_cards', player: 'controller', count: 0, bind: binding };
     case 'play_selected_cards':
       return { id: `produce-${binding}`, type: 'play_selected_cards', target: 'selected_cards', face: 'face_down', bind: binding };
+    case 'attach_card_to_player_attack':
+      return {
+        id: `produce-${binding}`,
+        type: 'attach_card_to_player_attack',
+        cardId: 'master.maiya.deck.support-shot',
+        target: 'supported_player',
+        returnAtRoundEnd: true,
+        controllerCannotWinStatus: 'maiya_cannot_win_battle_this_round',
+        bind: binding,
+      };
     case 'adjust_victory_points':
       return { id: `produce-${binding}`, type: 'adjust_victory_points', player: 'controller', amount: 1, bind: binding };
     case 'adjust_mana':
@@ -329,7 +346,7 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
           sourceCardId: 'synthetic-source',
           abilityId: 'synthetic-ability',
           effects,
-          selections: { selected_cards: [] },
+          selections: { selected_cards: [], supported_player: ['P2'] },
           hooks: { playSelectedCards: ({ cardInstanceIds }) => ({ playedCount: cardInstanceIds.length }) },
         })).not.toThrow();
       }
@@ -384,6 +401,26 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
         type: 'adjust_victory_points',
         player: 'controller',
         amount: { expr: 'binding_field', binding: 'removedAdvantages', field: 'targetCount', valueType: 'number' },
+      },
+    ], 'invalid_result_field');
+  });
+
+  it('fails closed for invalid add-to-attack result fields', () => {
+    expectDataFlowIssue([
+      {
+        id: 'effect-a',
+        type: 'attach_card_to_player_attack',
+        cardId: 'master.maiya.deck.support-shot',
+        target: 'supported_player',
+        returnAtRoundEnd: true,
+        controllerCannotWinStatus: 'maiya_cannot_win_battle_this_round',
+        bind: 'supportAttachment',
+      },
+      {
+        id: 'effect-b',
+        type: 'adjust_victory_points',
+        player: 'controller',
+        amount: { expr: 'binding_field', binding: 'supportAttachment', field: 'attachedTotal', valueType: 'number' },
       },
     ], 'invalid_result_field');
   });

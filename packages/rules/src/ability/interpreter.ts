@@ -544,6 +544,7 @@ function effectiveActivationPhase(s: GameState, sourceId: string, a: AuthoringAb
 }
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
+  if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
@@ -966,6 +967,33 @@ function isCardZoneCoreDirectActionRouteCandidate(a: AuthoringAbility): boolean 
     referencesMovedCountBinding(mana?.amount, binding);
 }
 
+export function isAddToAttackDirectAction(a: AuthoringAbility): boolean {
+  return isAddToAttackSemantic(a);
+}
+
+function isAddToAttackRouteCandidate(a: AuthoringAbility): boolean {
+  return isAddToAttackStructuralCandidate(a) &&
+    hasNotControllerAtBattlefieldCondition(a);
+}
+
+function isAddToAttackStructuralCandidate(a: AuthoringAbility): boolean {
+  if (a.kind !== 'phase_action' || str(a.activation.phase) !== 'advance' || str(a.activation.opens) !== 'controller_action_window') return false;
+  if (a.targets.length !== 1 || a.cost.length !== 1 || a.creates.length || a.effects.length !== 1) return false;
+  const [effect] = a.effects;
+  return str(effect?.type) === 'attach_card_to_player_attack' &&
+    typeof effect?.cardId === 'string' &&
+    typeof effect?.target === 'string' &&
+    hasFixedManaCost(a.cost, 2) &&
+    hasSingleNonControllerPlayerTarget(a.targets, str(effect.target));
+}
+
+function isAddToAttackSemantic(a: AuthoringAbility): boolean {
+  if (!isAddToAttackRouteCandidate(a)) return false;
+  const [effect] = a.effects;
+  return effect?.returnAtRoundEnd === true &&
+    str(effect?.controllerCannotWinStatus) === 'maiya_cannot_win_battle_this_round';
+}
+
 function isMoveAllRemainingManaBindingSemantic(a: AuthoringAbility): boolean {
   if (a.kind !== 'phase_action' || str(a.activation.phase) !== 'advance' || str(a.activation.opens) !== 'controller_action_window') return false;
   if (a.targets.length || a.cost.length || a.creates.length || a.effects.length !== 2) return false;
@@ -977,6 +1005,35 @@ function isMoveAllRemainingManaBindingSemantic(a: AuthoringAbility): boolean {
     !!binding &&
     str(mana?.type) === 'adjust_mana' &&
     referencesMovedCountBinding(mana?.amount, binding);
+}
+
+function hasFixedManaCost(costs: RuleNode[], amount: number): boolean {
+  if (costs.length !== 1 || str(costs[0]?.type) !== 'pay_mana') return false;
+  const amountNode = node(costs[0]?.amount);
+  return Number(costs[0]?.amount) === amount ||
+    ((str(amountNode.expr) === 'literal' || str(amountNode.op) === 'literal' || str(amountNode.op) === 'const') && Number(amountNode.value) === amount);
+}
+
+function hasSingleNonControllerPlayerTarget(targets: RuleNode[], targetId: string): boolean {
+  const target = targets.find((candidate) => str(candidate.id) === targetId);
+  if (!target || str(target.type) !== 'player') return false;
+  const count = node(target.count);
+  return Number(count.min ?? 1) === 1 &&
+    Number(count.max ?? 1) === 1 &&
+    nodes(target.constraints).some((constraint) => str(constraint.type) === 'not_controller');
+}
+
+function hasNotControllerAtBattlefieldCondition(a: AuthoringAbility): boolean {
+  return a.conditions.some((condition) => str(condition.type) === 'not' && str(node(condition.condition).type) === 'controller_at_battlefield');
+}
+
+function assertAddToAttackSupportAvailable(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  const [effect] = a.effects;
+  const support = s.cards.find((candidate) =>
+    candidate.ownerPlayerId === ctx.controllerId &&
+    candidate.definitionId === str(effect?.cardId) &&
+    candidate.zone === 'skill');
+  if (!support) reject('resolution_failed', `Missing skill-zone support card '${str(effect?.cardId)}'.`);
 }
 
 function referencesMovedCountBinding(value: unknown, binding: string): boolean {
@@ -1059,6 +1116,15 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isAddToAttackRouteCandidate(a)) {
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    executeResolutionEffects(s, ctx, effects);
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
+  if (isAddToAttackStructuralCandidate(a)) reject('resolution_failed', 'Unsupported add-to-attack semantic shape.');
   const pending = findPendingTarget(s, ctx, a, effects);
   if (pending) { runtime(s).pendingDecision = pending; return; }
   for (let i = 0; i < effects.length; i++) {
@@ -1079,6 +1145,15 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
+  if (isCardZoneCoreDirectActionRouteCandidate(a) || isAddToAttackRouteCandidate(a)) {
+    try {
+      normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
+    } catch (error) {
+      if (error instanceof DataFlowValidationError) reject('resolution_failed', error.message);
+      throw error;
+    }
+  }
+  if (isAddToAttackRouteCandidate(a)) assertAddToAttackSupportAvailable(s, ctx, a);
   const p = player(s, ctx.controllerId); let manaCost = 0;
   
   // Check usage limits

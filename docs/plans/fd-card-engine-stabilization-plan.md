@@ -115,13 +115,13 @@ Required scope:
 - no normal `PLAY`, `CREATE_AND_ACTIVATE`, `ACTIVATE`, `CLOSE`, broad Card Action migration, or roster JSON changes;
 - the support card must exist before activation is legal, target selection must remain server-projected, and stale target replay must not duplicate the attachment.
 
-Current implementation-candidate evidence, 2026-09-08:
+Current implementation-candidate evidence, 2026-09-09:
 
 - Authoring inventory: `docs/audits/fd-card-action-add-to-attack-inventory.mjs` reports 7 card-action semantic abilities from `data/authoring`, 1 eligible, and 6 skipped with explicit skip reasons.
 - Routing: Maiya `military.attach-support-shot` routes by executable semantic form through `isAddToAttackDirectAction`; it does not use an ability-id pilot route. The Phase 3 reference pilot allowlist remains empty.
-- Gate A: implementer evidence covers primitive registration, exact semantic classifier positive, wrong-cost/wrong-phase/self-target/missing-return/wrong-status/play/append-only negatives, required support-card activation fail-closed, and typed `attack_added` result/event payload.
+- Gate A: implementer evidence covers primitive registration, exact semantic classifier positive, wrong-cost/wrong-phase/self-target/missing-canonical-condition/missing-return/wrong-status/play/append-only negatives, required skill-zone support-card activation fail-closed, and typed `attachedCount` / `attack_added` result/event payload.
 - Gate B: implementer evidence covers real `MatchSession.dispatchPlayerAction` activation from compiled canonical authoring, pending target revalidation, support card movement to `attack_area`, `modeState.supportShotAttachments`, cannot-win status, and event/projection trace.
-- Gate C: implementer evidence covers browser activation, WebSocket `expectedRevision`, pending target reconnect, server target selection, projection of the attached attack, stale replay rejection, and reconnect consistency in `e2e/fd-add-to-attack-card-action.spec.ts`.
+- Gate C: restored-snapshot implementer evidence covers browser activation, WebSocket activation/target `expectedRevision`, pending target reconnect, server target selection, projection of the attached attack, stale replay rejection, reconnect consistency, and repeat-each stability in `e2e/fd-add-to-attack-card-action.spec.ts`. It does not prove natural create/select/start progression into this action window.
 - Metrics: legacy add-to-attack consumer count 1 -> 0 for the migrated exact representative; new-runtime semantic-routed add-to-attack count 0 -> 1; dual-compatible migrated add-to-attack count 1 -> 0; skipped card-action abilities remain 6.
 - Evidence report: `docs/reports/2026-09-08-card-action-add-to-attack-result.md`.
 

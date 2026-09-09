@@ -221,7 +221,7 @@ Selection rationale:
 - it proves card-zone typed result envelopes continue to support Result Binding;
 - it avoids broad Card Action migration by excluding `ADD_TO_ATTACK`, `CREATE_AND_ACTIVATE`, `ACTIVATE`, and `CLOSE`.
 
-Implementation-candidate status, 2026-09-08:
+Implementation-candidate status, 2026-09-09:
 
 - Inventory source: `docs/audits/fd-card-zone-core-direct-action-inventory.mjs`.
 - Eligible direct card-zone abilities from `data/authoring`: 1.
@@ -257,12 +257,12 @@ Implementation-candidate status, 2026-09-08:
 - Legacy add-to-attack consumers for the exact representative: 1 before, 0 after.
 - New-runtime semantic-routed add-to-attack consumers: 0 before, 1 after.
 - Dual-compatible migrated add-to-attack consumers: 1 before, 0 after.
-- Gate C implementer evidence exists in `e2e/fd-add-to-attack-card-action.spec.ts`.
+- Gate C restored-snapshot implementer evidence exists in `e2e/fd-add-to-attack-card-action.spec.ts`, including browser activation, pending target reconnect, target command `expectedRevision`, stale replay rejection, post-settlement reconnect, and repeat-each stability. It does not prove natural create/select/start progression into this action window.
 - Status claim remains `IMPLEMENTATION_COMPLETE_CANDIDATE`; independent review is required before any `COMPONENT_VERIFIED`, `SCENARIO_VERIFIED`, or `E2E_VERIFIED` promotion.
 
 Gate C inheritance rule:
 
-`CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK` can inherit the Maiya representative Gate C only for exact visible direct phase-action `attach_card_to_player_attack` semantic matches with the same fixed mana cost, server-projected non-controller player target, required support-card source, return-at-round-end marker, and cannot-win status semantics. It cannot inherit Gate C if an ability introduces normal `PLAY`, `CREATE_AND_ACTIVATE`, `ACTIVATE`, `CLOSE`, trigger timing, battle result dependency, hidden/private choice, variable or pending payment, non-player target, source-close, modifier/power calculation, defeat, scoring, or a different lifecycle/cleanup rule.
+`CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK` can inherit the Maiya representative Gate C only for exact visible direct phase-action `attach_card_to_player_attack` semantic matches with the same fixed mana cost, server-projected non-controller player target, required skill-zone support-card source, return-at-round-end marker, cannot-win status semantics, and typed `attachedCount` payload. It cannot inherit Gate C if an ability introduces normal `PLAY`, `CREATE_AND_ACTIVATE`, `ACTIVATE`, `CLOSE`, trigger timing, battle result dependency, hidden/private choice, variable or pending payment, non-player target, non-skill source zone, source-close, modifier/power calculation, defeat, scoring, or a different lifecycle/cleanup rule.
 
 ## Current Implementation-Candidate Batch
 

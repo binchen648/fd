@@ -9,6 +9,7 @@ export type EffectResultType =
   | 'move_all_remaining'
   | 'draw_cards'
   | 'play_selected_cards'
+  | 'attach_card_to_player_attack'
   | 'adjust_mana'
   | 'pay_mana'
   | 'adjust_command_seals'
@@ -90,6 +91,15 @@ export interface PlaySelectedCardsResult {
   faceDown: boolean;
 }
 
+export interface AttachCardToPlayerAttackResult {
+  sourceOwnerId: PlayerId;
+  targetPlayerId: PlayerId;
+  cardInstanceId: string;
+  attachedCount: number;
+  returnAtRoundEnd: boolean;
+  controllerCannotWinStatus: string;
+}
+
 export interface NoopResult {
   reason: string;
 }
@@ -103,6 +113,7 @@ export type KnownEffectResult =
   | EffectResultEnvelope<'move_all_remaining', MoveAllRemainingResult>
   | EffectResultEnvelope<'draw_cards', DrawCardsResult>
   | EffectResultEnvelope<'play_selected_cards', PlaySelectedCardsResult>
+  | EffectResultEnvelope<'attach_card_to_player_attack', AttachCardToPlayerAttackResult>
   | EffectResultEnvelope<'adjust_mana', AdjustManaResult>
   | EffectResultEnvelope<'pay_mana', PayManaResult>
   | EffectResultEnvelope<'adjust_command_seals', AdjustCommandSealsResult>
@@ -130,6 +141,10 @@ export const resultSchemas: Record<EffectResultType, BindingFieldSchema> = {
   play_selected_cards: {
     requestedCount: 'number',
     playedCount: 'number',
+    status: 'status',
+  },
+  attach_card_to_player_attack: {
+    attachedCount: 'number',
     status: 'status',
   },
   adjust_victory_points: {
@@ -224,6 +239,7 @@ export type ResolutionEffectNode =
   | { id: string; type: 'move_all_remaining'; owner: 'controller'; from: string; to: string; bind?: string }
   | { id: string; type: 'draw_cards'; player: 'controller'; count: ValueExpression; bind?: string }
   | { id: string; type: 'play_selected_cards'; target: string; face: 'face_down' | 'face_up'; bind?: string }
+  | { id: string; type: 'attach_card_to_player_attack'; cardId: string; target: string; returnAtRoundEnd: boolean; controllerCannotWinStatus: string; bind?: string }
   | { id: string; type: 'adjust_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'pay_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'adjust_command_seals'; player: 'controller'; amount: ValueExpression; directive?: string; bind?: string }
@@ -318,6 +334,11 @@ const primitiveDefinitions: ResolutionPrimitive[] = [
     type: 'play_selected_cards',
     resultSchema: resultSchemas.play_selected_cards,
     execute: playSelectedCardsPrimitive,
+  },
+  {
+    type: 'attach_card_to_player_attack',
+    resultSchema: resultSchemas.attach_card_to_player_attack,
+    execute: attachCardToPlayerAttackPrimitive,
   },
   {
     type: 'adjust_victory_points',
@@ -534,6 +555,22 @@ function validateEffectReferences(
       break;
     case 'play_selected_cards':
       break;
+    case 'attach_card_to_player_attack':
+      if (!effect.cardId || !effect.target) {
+        issues.push({
+          code: 'invalid_resolution_node',
+          path,
+          message: 'attach_card_to_player_attack requires cardId and target.',
+        });
+      }
+      if (effect.returnAtRoundEnd !== true || effect.controllerCannotWinStatus !== 'maiya_cannot_win_battle_this_round') {
+        issues.push({
+          code: 'invalid_resolution_node',
+          path,
+          message: 'Only return-at-round-end Maiya cannot-win support attachments are supported.',
+        });
+      }
+      break;
     case 'adjust_victory_points':
       validateValueExpression(effect.amount, available, unsafeBranchBindings, issues, `${path}.amount`);
       break;
@@ -687,6 +724,14 @@ function playSelectedCardsPrimitive(
 ): KnownEffectResult {
   if (effect.type !== 'play_selected_cards') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
   return playSelectedCards(transaction, effect);
+}
+
+function attachCardToPlayerAttackPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'attach_card_to_player_attack') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return attachCardToPlayerAttack(transaction, effect);
 }
 
 function adjustVictoryPointsPrimitive(
@@ -883,6 +928,84 @@ function playSelectedCards(
   };
 }
 
+function attachCardToPlayerAttack(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'attach_card_to_player_attack' }>,
+): KnownEffectResult {
+  if (effect.returnAtRoundEnd !== true || effect.controllerCannotWinStatus !== 'maiya_cannot_win_battle_this_round') {
+    throw new ResolutionRuntimeError('unsupported_add_to_attack_shape', 'Only return-at-round-end Maiya cannot-win support attachments are supported.');
+  }
+  const targetPlayerId = transaction.context.selections[effect.target]?.[0];
+  if (!targetPlayerId || targetPlayerId === transaction.context.controllerId) {
+    throw new ResolutionRuntimeError('invalid_target', 'Support attachment requires one non-controller target player.');
+  }
+  const target = transaction.workingState.players.find((player) => player.id === targetPlayerId && player.status === 'active');
+  if (!target) throw new ResolutionRuntimeError('invalid_target', `Missing active target player '${targetPlayerId}'.`);
+  const support = transaction.workingState.cards.find((candidate) =>
+    candidate.ownerPlayerId === transaction.context.controllerId &&
+    candidate.definitionId === effect.cardId &&
+    candidate.zone === 'skill');
+  if (!support) throw new ResolutionRuntimeError('missing_support_card', `Missing support card '${effect.cardId}'.`);
+  support.zone = 'attack_area';
+  support.controllerPlayerId = targetPlayerId;
+  support.visibility = { scope: 'public' };
+  if (transaction.workingState.abilityRuntime) {
+    transaction.workingState.abilityRuntime.cardState[support.instanceId] = {
+      active: true,
+      faceDown: false,
+      playedRound: transaction.workingState.round.roundNumber,
+    };
+  }
+  const stateWithMode = transaction.workingState as GameState & {
+    modeState?: { supportShotAttachments?: Array<Record<string, unknown>> };
+    activeStatuses?: Array<Record<string, unknown>>;
+  };
+  stateWithMode.modeState ??= {};
+  stateWithMode.modeState.supportShotAttachments = [
+    ...(stateWithMode.modeState.supportShotAttachments ?? []),
+    {
+      sourceOwnerId: transaction.context.controllerId,
+      targetPlayerId,
+      cardInstanceId: support.instanceId,
+      sourceCardId: transaction.context.sourceCardId,
+      abilityId: transaction.context.abilityId,
+      returnAtRoundEnd: true,
+    },
+  ];
+  stateWithMode.activeStatuses = [
+    ...(stateWithMode.activeStatuses ?? []),
+    {
+      id: effect.controllerCannotWinStatus,
+      sourceControllerId: transaction.context.controllerId,
+      duration: 'this_round',
+    },
+  ];
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.attack_added`;
+  transaction.emittedEvents.push({
+    type: 'attack_added',
+    playerId: targetPlayerId,
+    sourceCardId: transaction.context.sourceCardId,
+    abilityId: transaction.context.abilityId,
+    resultId: eventId,
+    revision: transaction.workingState.abilityRuntime?.revision ?? 0,
+  });
+  return {
+    effectId: effect.id,
+    effectType: 'attach_card_to_player_attack',
+    status: 'applied',
+    affectedEntities: [{ kind: 'player', id: targetPlayerId }],
+    payload: {
+      sourceOwnerId: transaction.context.controllerId,
+      targetPlayerId,
+      cardInstanceId: support.instanceId,
+      attachedCount: 1,
+      returnAtRoundEnd: true,
+      controllerCannotWinStatus: effect.controllerCannotWinStatus,
+    },
+    emittedEventIds: [eventId],
+  };
+}
+
 function adjustVictoryPoints(
   transaction: AbilityResolutionTransaction,
   effect: Extract<ResolutionEffectNode, { type: 'adjust_victory_points' }>,
@@ -1017,6 +1140,7 @@ function evaluateValue(transaction: AbilityResolutionTransaction, expression: Va
     if (expression.field === 'requestedCount') return result.payload.requestedCount;
     if (expression.field === 'playedCount') return result.payload.playedCount;
   }
+  if (result.effectType === 'attach_card_to_player_attack' && expression.field === 'attachedCount') return result.payload.attachedCount;
   if (result.effectType === 'adjust_victory_points') {
     if (expression.field === 'amount') return result.payload.amount;
     if (expression.field === 'before') return result.payload.before;
@@ -1167,6 +1291,16 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
         type,
         target: stringField(current, 'target', `${path}.target`, issues),
         face: current.face === 'face_down' || current.face === 'face_up' ? current.face : reportFace(path, issues),
+        ...coerceBind(current.bind),
+      };
+    case 'attach_card_to_player_attack':
+      return {
+        id,
+        type,
+        cardId: stringField(current, 'cardId', `${path}.cardId`, issues),
+        target: stringField(current, 'target', `${path}.target`, issues),
+        returnAtRoundEnd: current.returnAtRoundEnd === true,
+        controllerCannotWinStatus: stringField(current, 'controllerCannotWinStatus', `${path}.controllerCannotWinStatus`, issues),
         ...coerceBind(current.bind),
       };
     case 'adjust_victory_points':
