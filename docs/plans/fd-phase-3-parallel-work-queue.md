@@ -9,7 +9,7 @@
 
 This queue is for dispatching future Phase 3 work without putting multiple agents on the same runtime hot files. Status values here are planning statuses only.
 
-All Phase 3 agents must read `docs/agents/PHASE3-AGENT-CONTRACT.md` before using this queue. Role ownership lives there; this queue only assigns concrete work items.
+All Phase 3 agents must read `docs/agents/PHASE3-AGENT-CONTRACT.md` first, then read only their assigned task block in `docs/agents/PHASE3-TASK-INDEX.md`. Do not read this full queue during agent startup unless the assigned task block explicitly requires it. Role ownership lives in the contract; this queue is the human scheduling overview.
 
 | Task ID | Track | Goal | Dependencies | Expected Unlock | Legacy Reduction Target | Files | Gate | Parallel With | Conflicts With | Status |
 |---|---|---|---|---|---|---|---|---|---|---|

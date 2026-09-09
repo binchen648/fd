@@ -84,6 +84,7 @@ GOVERNANCE:
 
 - `docs/FD-DOCUMENT-ROADMAP.md` - this navigation and authority map.
 - `docs/agents/PHASE3-AGENT-CONTRACT.md` - short first-read role and startup contract for Phase 3 agents.
+- `docs/agents/PHASE3-TASK-INDEX.md` - task-block startup index for Phase 3 agents; agents read only their assigned block by default.
 - `docs/plans/fd-rules-conformance-and-acceptance.md` - acceptance and release gate baseline.
 - `docs/product/FD本地化游戏PRD.md` - product target proposal; not runtime proof.
 - `docs/spec/guardrail-policy.md` - content pipeline guardrail policy, subordinate to the acceptance baseline.
@@ -133,13 +134,14 @@ Every phase implementer or reviewer must read these inputs before making impleme
 
 1. `docs/FD-DOCUMENT-ROADMAP.md`
 2. `docs/agents/PHASE3-AGENT-CONTRACT.md` before Phase 3 agent dispatch
-3. `docs/rules/FD-Game-Rules-Final.md`
-4. `docs/plans/fd-rules-conformance-and-acceptance.md`
-5. `docs/plans/fd-card-engine-stabilization-plan.md`
-6. Current phase related subplan
-7. Current phase latest related audit
-8. Current phase corrected semantic-axis audit when the phase touches Trigger, Lifecycle, Interaction, Pending, Resource, or Gateway priority
-9. Current phase Golden Acceptance Contract
+3. assigned task block in `docs/agents/PHASE3-TASK-INDEX.md` before reading broader Phase 3 plans
+4. `docs/rules/FD-Game-Rules-Final.md`
+5. `docs/plans/fd-rules-conformance-and-acceptance.md`
+6. `docs/plans/fd-card-engine-stabilization-plan.md`
+7. Current phase related subplan
+8. Current phase latest related audit
+9. Current phase corrected semantic-axis audit when the phase touches Trigger, Lifecycle, Interaction, Pending, Resource, or Gateway priority
+10. Current phase Golden Acceptance Contract
 
 Historical reports may be read after these inputs for provenance only.
 
