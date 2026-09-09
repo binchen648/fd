@@ -9,6 +9,8 @@
 
 This queue is for dispatching future Phase 3 work without putting multiple agents on the same runtime hot files. Status values here are planning statuses only.
 
+All Phase 3 agents must read `docs/agents/PHASE3-AGENT-CONTRACT.md` before using this queue. Role ownership lives there; this queue only assigns concrete work items.
+
 | Task ID | Track | Goal | Dependencies | Expected Unlock | Legacy Reduction Target | Files | Gate | Parallel With | Conflicts With | Status |
 |---|---|---|---|---|---|---|---|---|---|---|
 | P3-TO-01 | Automation | Design taxonomy validator plus consolidated coverage JSON schema and command contract. | Corrected semantic-axis matrix | Enables all later burn-down reporting without axis contamination. | none | `docs/audits/*.mjs`, package scripts later | Evidence infra | P3-TO-03, P3-TO-04, P3-TO-05, P3-TO-08 | none | READY_NEXT |

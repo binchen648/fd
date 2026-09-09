@@ -83,6 +83,7 @@ CANONICAL:
 GOVERNANCE:
 
 - `docs/FD-DOCUMENT-ROADMAP.md` - this navigation and authority map.
+- `docs/agents/PHASE3-AGENT-CONTRACT.md` - short first-read role and startup contract for Phase 3 agents.
 - `docs/plans/fd-rules-conformance-and-acceptance.md` - acceptance and release gate baseline.
 - `docs/product/FD本地化游戏PRD.md` - product target proposal; not runtime proof.
 - `docs/spec/guardrail-policy.md` - content pipeline guardrail policy, subordinate to the acceptance baseline.
@@ -131,13 +132,14 @@ Phase labels are planning ownership labels. They do not declare implementation o
 Every phase implementer or reviewer must read these inputs before making implementation or acceptance claims:
 
 1. `docs/FD-DOCUMENT-ROADMAP.md`
-2. `docs/rules/FD-Game-Rules-Final.md`
-3. `docs/plans/fd-rules-conformance-and-acceptance.md`
-4. `docs/plans/fd-card-engine-stabilization-plan.md`
-5. Current phase related subplan
-6. Current phase latest related audit
-7. Current phase corrected semantic-axis audit when the phase touches Trigger, Lifecycle, Interaction, Pending, Resource, or Gateway priority
-8. Current phase Golden Acceptance Contract
+2. `docs/agents/PHASE3-AGENT-CONTRACT.md` before Phase 3 agent dispatch
+3. `docs/rules/FD-Game-Rules-Final.md`
+4. `docs/plans/fd-rules-conformance-and-acceptance.md`
+5. `docs/plans/fd-card-engine-stabilization-plan.md`
+6. Current phase related subplan
+7. Current phase latest related audit
+8. Current phase corrected semantic-axis audit when the phase touches Trigger, Lifecycle, Interaction, Pending, Resource, or Gateway priority
+9. Current phase Golden Acceptance Contract
 
 Historical reports may be read after these inputs for provenance only.
 
