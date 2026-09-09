@@ -627,6 +627,12 @@ export function buildCoverageFromArchives(archives: AuthoringArchiveLike[], opti
       primitiveFamilyCounts: countAxis(rows, 'effectPrimitiveFamilies'),
       unknownPrimitiveCounts,
     },
+    gateEvidenceMetadata: {
+      authority: 'IMPLEMENTER_EVIDENCE_ONLY',
+      allowedClaim: 'IMPLEMENTATION_COMPLETE_CANDIDATE',
+      reviewerRequiredForPromotion: true,
+      promotedStatuses: [],
+    },
     taxonomyDriftProtections: {
       warnings: rows.flatMap((row) =>
         row.taxonomyWarnings.map((warning) => ({

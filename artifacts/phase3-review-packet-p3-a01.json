@@ -1,9 +1,11 @@
 {
   "schemaVersion": "fd-phase3-review-packet-v1",
-  "generatedAt": "2026-09-09T04:31:54.777Z",
+  "generatedAt": "2026-09-09T08:07:08.528Z",
   "task": "P3-A01",
   "batch": "PHASE_3_COVERAGE_AND_EVIDENCE_AUTOMATION",
+  "claimedAcceptance": "IMPLEMENTATION_COMPLETE_CANDIDATE",
   "reviewerAuthorityNotice": "Implementation packet only. It does not promote Gate A/B/C, Phase 3, or Release status.",
+  "hotRuntimeFilesTouched": "NO",
   "changedSemanticPrimitives": [],
   "affectedAbilities": [
     {
@@ -123,97 +125,97 @@
     "cardSpecificRuntimeHandlers": [
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 61,
+        "line": 63,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 61,
+        "line": 63,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 61,
+        "line": 63,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 68,
+        "line": 70,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 68,
+        "line": 70,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 68,
+        "line": 70,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 82,
+        "line": 84,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 82,
+        "line": 84,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 82,
+        "line": 84,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 82,
+        "line": 84,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 507,
+        "line": 509,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 561,
+        "line": 563,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 757,
+        "line": 759,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 764,
+        "line": 766,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 814,
+        "line": 816,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1132,
+        "line": 1141,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
@@ -237,43 +239,43 @@
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1231,
+        "line": 1235,
         "id": "master_main",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1232,
+        "line": 1236,
         "id": "servant_identity",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1234,
+        "line": 1238,
         "id": "servant_deck",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1235,
+        "line": 1239,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1235,
+        "line": 1239,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1236,
+        "line": 1240,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1236,
+        "line": 1240,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
@@ -564,6 +566,18 @@
     "dualRuntimeConsumers": 0,
     "notClassifiable": 22
   },
+  "knownLimitations": [
+    "Runtime routing classification is conservative static evidence, not a complete call graph.",
+    "Card-specific handler detection is static literal scanning only.",
+    "Gate A/B/C promotion remains reviewer-owned and is not decided by this packet.",
+    "Content blocking issues in compiled definitions remain release-gate evidence, not automation acceptance."
+  ],
+  "areasNotVerified": [
+    "Independent reviewer promotion.",
+    "Complete runtime call graph ownership.",
+    "Full roster migration.",
+    "Release readiness."
+  ],
   "unclassifiedItems": [
     {
       "archiveId": "master.kayneth",

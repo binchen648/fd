@@ -5,6 +5,7 @@ import {
   classifyAbilityForCoverage,
   type AuthoringArchiveLike,
 } from '../phase3-coverage';
+import { buildReviewPacket } from '../phase3-review-packet';
 
 function archiveWithAbilities(abilities: unknown[]): AuthoringArchiveLike {
   return {
@@ -104,5 +105,43 @@ describe('phase3 coverage taxonomy drift protections', () => {
     expect(coverage.runtimeRouting.legacyResolveEffectConsumers.after).toBe(0);
     expect(coverage.runtimeRouting.dualRuntimeConsumers.after).toBe(0);
     expect(coverage.runtimeRouting.notClassifiable.after).toBe(1);
+  });
+
+  it('emits machine-readable Gate evidence metadata without promoting acceptance', () => {
+    const coverage = buildCoverageFromArchives([archiveWithAbilities([
+      {
+        id: 'ability.resource',
+        kind: 'phase_action',
+        activation: { phase: 'action' },
+        effects: [{ type: 'adjust_mana', amount: 1 }],
+      },
+    ])], { generatedAt: '2026-09-09T00:00:00.000Z' });
+
+    expect(coverage.gateEvidenceMetadata).toEqual({
+      authority: 'IMPLEMENTER_EVIDENCE_ONLY',
+      allowedClaim: 'IMPLEMENTATION_COMPLETE_CANDIDATE',
+      reviewerRequiredForPromotion: true,
+      promotedStatuses: [],
+    });
+  });
+
+  it('builds reviewer packets with explicit non-runtime ownership boundaries', () => {
+    const coverage = buildCoverageFromArchives([archiveWithAbilities([
+      {
+        id: 'ability.resource',
+        kind: 'phase_action',
+        activation: { phase: 'action' },
+        effects: [{ type: 'adjust_mana', amount: 1 }],
+      },
+    ])], { generatedAt: '2026-09-09T00:00:00.000Z' });
+    const packet = buildReviewPacket(coverage, {
+      task: 'P3-A01',
+      batch: 'PHASE_3_COVERAGE_AND_EVIDENCE_AUTOMATION',
+    });
+
+    expect(packet.hotRuntimeFilesTouched).toBe('NO');
+    expect(packet.claimedAcceptance).toBe('IMPLEMENTATION_COMPLETE_CANDIDATE');
+    expect(packet.knownLimitations).toContain('Runtime routing classification is conservative static evidence, not a complete call graph.');
+    expect(packet.areasNotVerified).toContain('Independent reviewer promotion.');
   });
 });

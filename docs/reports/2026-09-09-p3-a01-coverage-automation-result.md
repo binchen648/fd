@@ -31,7 +31,7 @@ Fresh `npm run phase3:coverage` output:
 | Abilities | 92 |
 | Compiled cards | 70 |
 | Compiled characters | 14 |
-| Blocking compile issues | 0 |
+| Blocking compile issues | 93 |
 | New runtime semantic routed consumers | 9 |
 | Legacy executeAbility consumers | 3 |
 | Legacy resolveEffect consumers | 58 |
@@ -43,7 +43,12 @@ Fresh `npm run phase3:coverage` output:
 Compiled pack identity:
 
 - pack: `fd-playtest-v1@1`
-- definitionHash: `f140e032bf241825577c0b78c6c3fa08f7a7f49bd7046feaa5deadabb13f5baa`
+- definitionHash: `1bccc97dd813d9b48208ff6223db40f11a995ca123a513e78e7e444d9bdafe2f`
+
+Current worktree note:
+
+- `phase3:coverage` is functioning and records compiled-content blockers instead of hiding them.
+- The 93 blocking issues are `MISSING_IMAGE` issues caused by absent `chm-extract` source assets in this worktree; they block Release Gate/content validation, not P3-A01 automation behavior.
 
 ## Taxonomy Drift Protections
 
@@ -67,6 +72,17 @@ The current automation reports before/after counters for:
 
 These are KPI-style routing metrics. They do not use raw ability count as a burn-down success metric.
 
+## Reviewer Packet Boundaries
+
+The generated packet now explicitly records:
+
+- `claimedAcceptance: IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `hotRuntimeFilesTouched: NO`
+- known limitations
+- areas not verified
+
+This prevents the automation packet from being misread as a runtime, Gate A/B/C, or Release promotion.
+
 ## Tests
 
 Fresh targeted automation tests:
@@ -75,7 +91,27 @@ Fresh targeted automation tests:
 npx vitest run scripts/tests/phase3-coverage.test.ts
 ```
 
-Result: 6/6 PASS.
+Result: 8/8 PASS.
+
+Current hardening rerun:
+
+```powershell
+npx vitest run scripts/tests/phase3-coverage.test.ts
+npm run typecheck
+npm run phase3:coverage
+npm run phase3:review-packet -- --task P3-A01
+npm run content:validate
+npm run test:ci
+```
+
+Result:
+
+- taxonomy / artifact / packet tests: 8/8 PASS
+- typecheck: PASS
+- coverage command: PASS, with current content blockers reported
+- review packet command: PASS
+- content validate: FAIL, 93 `MISSING_IMAGE` blocking issues
+- test:ci: FAIL, 3 files failed due to missing image assets and compiled-pack hash drift in the current worktree
 
 ## Hot Runtime Files
 
@@ -86,3 +122,9 @@ This P3-A01 slice intentionally does not modify hot runtime files. The working t
 - Runtime routing classification is conservative and static. Unknown paths are preserved as `NOT_CLASSIFIABLE`.
 - Card-specific handler detection is static literal scanning only; it is evidence for reviewer attention, not a complete call graph.
 - Gate A/B/C evidence is not promoted by this task. Reviewer packet generation only packages evidence for later review.
+
+## Known Failures
+
+- Current worktree source-image assets under `chm-extract` are absent, producing 93 `MISSING_IMAGE` content blockers.
+- `packages/rules/tests/regression/golden-card-content-pipeline.test.ts` fails because the freshly compiled definition hash is `1bccc97dd813d9b48208ff6223db40f11a995ca123a513e78e7e444d9bdafe2f`, while the checked-in expected hash is `f140e032bf241825577c0b78c6c3fa08f7a7f49bd7046feaa5deadabb13f5baa`.
+- These failures block Release Gate / full regression acceptance, but they are outside the P3-A01 automation-only implementation scope.

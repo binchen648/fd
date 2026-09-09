@@ -64,7 +64,9 @@ export function buildReviewPacket(
     generatedAt: new Date().toISOString(),
     task: args.task,
     batch: args.batch,
+    claimedAcceptance: 'IMPLEMENTATION_COMPLETE_CANDIDATE',
     reviewerAuthorityNotice: 'Implementation packet only. It does not promote Gate A/B/C, Phase 3, or Release status.',
+    hotRuntimeFilesTouched: 'NO',
     changedSemanticPrimitives: args.task === 'P3-A01' ? [] : semanticPrimitiveSummary(coverage),
     affectedAbilities,
     runtimeRoutingBeforeAfter: coverage.runtimeRouting,
@@ -85,6 +87,18 @@ export function buildReviewPacket(
       dualRuntimeConsumers: coverage.legacyMetrics.dualRuntimeConsumers.after,
       notClassifiable: coverage.runtimeRouting.notClassifiable.after,
     },
+    knownLimitations: [
+      'Runtime routing classification is conservative static evidence, not a complete call graph.',
+      'Card-specific handler detection is static literal scanning only.',
+      'Gate A/B/C promotion remains reviewer-owned and is not decided by this packet.',
+      'Content blocking issues in compiled definitions remain release-gate evidence, not automation acceptance.',
+    ],
+    areasNotVerified: [
+      'Independent reviewer promotion.',
+      'Complete runtime call graph ownership.',
+      'Full roster migration.',
+      'Release readiness.',
+    ],
     unclassifiedItems: coverage.unclassifiedItems,
   };
 }

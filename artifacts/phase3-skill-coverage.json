@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-09T05:16:48.753Z",
+  "generatedAt": "2026-09-09T08:07:08.507Z",
   "sourceFingerprint": "4efa585d747b2f765d8248601c77daa12d247e6bfaa775a9d033afcd6b881854",
   "counts": {
     "totalArchives": 14,
@@ -4319,6 +4319,12 @@
       "transfer_vp_to_owner": 1
     }
   },
+  "gateEvidenceMetadata": {
+    "authority": "IMPLEMENTER_EVIDENCE_ONLY",
+    "allowedClaim": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+    "reviewerRequiredForPromotion": true,
+    "promotedStatuses": []
+  },
   "taxonomyDriftProtections": {
     "warnings": [
       {
@@ -5007,9 +5013,9 @@
   "compiledDefinitions": {
     "packId": "fd-playtest-v1",
     "version": 1,
-    "definitionHash": "f140e032bf241825577c0b78c6c3fa08f7a7f49bd7046feaa5deadabb13f5baa",
+    "definitionHash": "1bccc97dd813d9b48208ff6223db40f11a995ca123a513e78e7e444d9bdafe2f",
     "compiledCards": 70,
     "compiledCharacters": 14,
-    "blockingIssues": 0
+    "blockingIssues": 93
   }
 }
