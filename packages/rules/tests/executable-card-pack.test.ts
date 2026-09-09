@@ -96,6 +96,12 @@ describe('ExecutableCardPack compiler', () => {
     ['missing target reference', (input: ReturnType<typeof sourceInput>) => {
       input.rules.archives[7]!.cards[0]!.abilities![2]!.effects![0]!.target = 'missing_target';
     }, /references missing target/],
+    ['invalid direct resource amount', (input: ReturnType<typeof sourceInput>) => {
+      input.rules.archives.flatMap((archive) => archive.cards).find((card) => card.cardType === 'command_spell')!.abilities![0]!.effects![0]!.amount = 'four';
+    }, /Executable compilation rejected unsupported semantics[\s\S]*Expected a numeric amount or controlled AST/],
+    ['unsupported direct resource target', (input: ReturnType<typeof sourceInput>) => {
+      input.rules.archives.flatMap((archive) => archive.cards).find((card) => card.cardType === 'command_spell')!.abilities![0]!.effects![0]!.player = 'opponent';
+    }, /Executable compilation rejected unsupported semantics[\s\S]*Only controller resource\/movement effects are supported/],
   ])('fails closed for %s', (_name, mutate, expected) => {
     const input = sourceInput();
     mutate(input);

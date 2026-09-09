@@ -295,7 +295,7 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
 function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
-    if (!hasResolutionDataFlowSyntax(effects)) continue;
+    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability)) continue;
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
     try {
       validateResolutionDataFlowNodes(effects, path);
@@ -305,6 +305,19 @@ function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition): void
       throw new Error(`Resolution data-flow validation failed at ${path}:\n${detail}`);
     }
   }
+}
+
+const directResourcePrimitiveTypes = new Set(['adjust_mana', 'adjust_command_seals', 'adjust_victory_points']);
+
+function isResourceNumericDirectActionSemantic(ability: AuthoringAbility): boolean {
+  return ability.kind === 'phase_action' &&
+    str(ability.activation.phase) === 'action' &&
+    str(ability.activation.opens) === 'controller_action_window' &&
+    ability.targets.length === 0 &&
+    ability.cost.length === 0 &&
+    ability.creates.length === 0 &&
+    ability.effects.length > 0 &&
+    ability.effects.every((effect) => directResourcePrimitiveTypes.has(str(effect.type)));
 }
 
 function validatePresentationReferences(input: CompileInput, cards: Record<string, ExecutableCardDefinition>): void {

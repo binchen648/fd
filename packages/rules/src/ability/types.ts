@@ -115,7 +115,22 @@ export interface AbilityInteractionClassification {
   commandType?: 'activate_ability' | 'resolve_response';
   reason?: string;
 }
-export interface SafeEvent { type: string; playerId?: PlayerId; sourceCardId?: string; abilityId?: string; unpreventable?: boolean; visibility?: PlayerId }
+export interface SafeEvent {
+  type: string;
+  playerId?: PlayerId;
+  sourceCardId?: string;
+  abilityId?: string;
+  unpreventable?: boolean;
+  visibility?: PlayerId;
+  sourceAbilityId?: string;
+  controllerId?: PlayerId;
+  resource?: 'mana' | 'command_seals' | 'victory_points';
+  delta?: number;
+  before?: number;
+  after?: number;
+  resultId?: string;
+  revision?: number;
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, { active: boolean; faceDown: boolean; playedRound: number }>;
