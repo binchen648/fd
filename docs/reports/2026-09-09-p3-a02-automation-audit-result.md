@@ -39,7 +39,7 @@ PHASE_3_A02_AUTOMATION_AUDIT
 legacyResolveEffect=53
 legacyExecuteAbility=3
 notClassifiable=28
-promotionFindings=9
+promotionFindings=14
 artifact=artifacts\phase3-a02-automation-audit.json
 ```
 
@@ -61,13 +61,16 @@ Top static owner groups from the generated packet:
 
 The first run intentionally reports blocking documentation/spec consistency findings where reports reference Gate C spec files that are not present in this A checkout. These are evidence governance findings, not runtime semantic fixes.
 
-Blocking examples include:
+Blocking examples now include reports for:
 
-- `docs/reports/2026-09-08-card-action-play-result.md` references `e2e/fd-time-alter-core-primitive.spec.ts`;
-- `docs/reports/2026-09-08-card-action-play-source-response-result.md` references `e2e/fd-volumen-extra-play-card-action.spec.ts`;
-- `docs/reports/2026-09-08-card-action-add-to-attack-result.md` references `e2e/fd-add-to-attack-card-action.spec.ts`;
-- `docs/reports/2026-09-08-card-action-activate-result.md` references `e2e/fd-olga-activate-card-action.spec.ts`;
-- `docs/reports/2026-09-08-card-action-close-result.md` references `e2e/fd-artoria-alt-close-card-action.spec.ts`.
+- scoped PLAY;
+- scoped PLAY source response;
+- scoped ADD_TO_ATTACK;
+- scoped ACTIVATE;
+- scoped CLOSE;
+- Artoria Caster modifier/lifecycle;
+- Time Alter and Conversion Magic Gate C result reports;
+- Phase 3A core primitive partial Gate C evidence.
 
 These findings should block evidence promotion in this branch until the referenced specs exist in the reviewed checkout or the reports are scoped to the branch that contains them.
 
@@ -77,12 +80,12 @@ Fresh commands:
 
 ```text
 npx vitest run scripts/tests/phase3-coverage.test.ts
-PASS: 1 file, 14 tests
+PASS: 1 file, 15 tests
 ```
 
 ```text
 npm run phase3:automation-audit
-PASS: artifact generated, promotionFindings=9
+PASS: artifact generated, promotionFindings=14
 ```
 
 ## Known Legacy Paths Intentionally Retained

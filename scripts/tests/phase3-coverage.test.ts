@@ -269,6 +269,45 @@ describe('phase3 coverage taxonomy drift protections', () => {
     });
   });
 
+  it('flags missing E2E specs when Gate C is declared outside a level-two section', () => {
+    const audit = auditPromotionEvidence([
+      {
+        path: 'docs/reports/gate-c-title.md',
+        text: [
+          '# Time Alter Core Primitive Gate C Result',
+          '',
+          '- Gate C status: candidate evidence added.',
+          '- Browser evidence: `e2e/fd-time-alter-core-primitive.spec.ts`.',
+        ].join('\n'),
+      },
+      {
+        path: 'docs/reports/inline-gate-c.md',
+        text: [
+          '# Artoria Caster Result',
+          '',
+          'Gate C implementer evidence:',
+          '',
+          '- `e2e/fd-artoriac-sword-modifier-lifecycle.spec.ts` covers reconnect.',
+        ].join('\n'),
+      },
+    ], new Set());
+
+    expect(audit.findings).toEqual(expect.arrayContaining([
+      {
+        severity: 'BLOCKING',
+        reportPath: 'docs/reports/gate-c-title.md',
+        finding: 'GATE_C_REFERENCES_MISSING_E2E_SPEC',
+        reference: 'e2e/fd-time-alter-core-primitive.spec.ts',
+      },
+      {
+        severity: 'BLOCKING',
+        reportPath: 'docs/reports/inline-gate-c.md',
+        finding: 'GATE_C_REFERENCES_MISSING_E2E_SPEC',
+        reference: 'e2e/fd-artoriac-sword-modifier-lifecycle.spec.ts',
+      },
+    ]));
+  });
+
   it('builds a P3-A02 automation packet without promoting Gate status', () => {
     const coverage = buildCoverageFromArchives([archiveWithAbilities([
       {

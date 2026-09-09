@@ -97,6 +97,14 @@ function reportGateCSection(text: string): string {
   return nextSection >= 0 ? rest.slice(0, nextSection + 1) : rest;
 }
 
+function gateCEvidenceText(text: string): string {
+  const gateCSection = reportGateCSection(text);
+  if (gateCSection) return gateCSection;
+  const claimsGateEvidence = /Gate C|E2E_VERIFIED|browser|WebSocket|expectedRevision|reconnect|stale/i.test(text);
+  const referencesE2eSpec = /e2e\/[\w./-]+\.spec\.ts/.test(text);
+  return claimsGateEvidence && referencesE2eSpec ? text : '';
+}
+
 export function auditPromotionEvidence(reports: ReportText[], e2eFiles: Set<string>) {
   const findings: Array<{
     severity: 'BLOCKING' | 'WARNING';
@@ -106,7 +114,7 @@ export function auditPromotionEvidence(reports: ReportText[], e2eFiles: Set<stri
   }> = [];
 
   for (const report of reports) {
-    const gateC = reportGateCSection(report.text);
+    const gateC = gateCEvidenceText(report.text);
     if (!gateC) continue;
     const references = [...gateC.matchAll(/e2e\/[\w./-]+\.spec\.ts/g)].map((match) => match[0]!);
     for (const reference of references) {

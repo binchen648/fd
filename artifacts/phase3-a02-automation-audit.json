@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-a02-automation-audit-v1",
-  "generatedAt": "2026-09-09T11:51:11.585Z",
+  "generatedAt": "2026-09-09T12:09:39.808Z",
   "task": "P3-A02",
   "batch": "LEGACY_OWNER_AND_PROMOTION_EVIDENCE_AUTOMATION",
   "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
@@ -1195,6 +1195,12 @@
       },
       {
         "severity": "BLOCKING",
+        "reportPath": "docs/reports/2026-09-08-artoriac-sword-modifier-lifecycle-result.md",
+        "finding": "GATE_C_REFERENCES_MISSING_E2E_SPEC",
+        "reference": "e2e/fd-artoriac-sword-modifier-lifecycle.spec.ts"
+      },
+      {
+        "severity": "BLOCKING",
         "reportPath": "docs/reports/2026-09-08-card-action-activate-result.md",
         "finding": "GATE_C_REFERENCES_MISSING_E2E_SPEC",
         "reference": "e2e/fd-olga-activate-card-action.spec.ts"
@@ -1237,9 +1243,33 @@
       },
       {
         "severity": "BLOCKING",
+        "reportPath": "docs/reports/2026-09-08-conversion-magic-core-primitive-gate-c-result.md",
+        "finding": "GATE_C_REFERENCES_MISSING_E2E_SPEC",
+        "reference": "e2e/fd-conversion-magic-core-primitive.spec.ts"
+      },
+      {
+        "severity": "BLOCKING",
         "reportPath": "docs/reports/2026-09-08-golden-flow-1-action-phase-result.md",
         "finding": "GATE_C_REFERENCES_MISSING_E2E_SPEC",
         "reference": "e2e/fd-golden-flow-1-action-phase.spec.ts"
+      },
+      {
+        "severity": "BLOCKING",
+        "reportPath": "docs/reports/2026-09-08-phase-3a-core-primitives-result.md",
+        "finding": "GATE_C_REFERENCES_MISSING_E2E_SPEC",
+        "reference": "e2e/fd-time-alter-core-primitive.spec.ts"
+      },
+      {
+        "severity": "BLOCKING",
+        "reportPath": "docs/reports/2026-09-08-phase-3a-core-primitives-result.md",
+        "finding": "GATE_C_REFERENCES_MISSING_E2E_SPEC",
+        "reference": "e2e/fd-conversion-magic-core-primitive.spec.ts"
+      },
+      {
+        "severity": "BLOCKING",
+        "reportPath": "docs/reports/2026-09-08-time-alter-core-primitive-gate-c-result.md",
+        "finding": "GATE_C_REFERENCES_MISSING_E2E_SPEC",
+        "reference": "e2e/fd-time-alter-core-primitive.spec.ts"
       }
     ]
   },
