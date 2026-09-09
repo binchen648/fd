@@ -129,8 +129,16 @@ Results:
 
 - typecheck: PASS
 - focused vitest: PASS, 3 files / 37 tests
-- test:ci: PASS, 79 files / 453 tests
-- content validate: PASS, 7 masters / 7 servants / 20 events / 0 blocking issues
+- current hardening rerun:
+  - `npm run typecheck`: PASS
+  - `npm test --workspace @fd/server -- --run`: PASS, 1 file / 3 tests
+  - `npx vitest run packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts`: PASS, 2 files / 17 tests
+  - `npx playwright test -c playwright.config.ts e2e/fd-command-spell-resource-core.spec.ts --project=chromium`: PASS, 1 Chromium test
+  - `node docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs`: PASS, 17 resource abilities / 3 eligible / 14 skipped
+  - `npm run phase3:coverage`: PASS, but reports current worktree content blocking issues from missing image assets
+  - `npm run phase3:review-packet -- --task P3-B01`: PASS
+  - `npm run content:validate`: FAIL, 93 `MISSING_IMAGE` blocking issues in current worktree
+  - `npm run test:ci`: FAIL, 3 files failed; failures are current worktree content/image and compiled-pack-hash drift, not Resource/Numeric runtime assertions
 - inventory: PASS, 17 resource abilities / 3 eligible / 14 skipped
 - command spell Gate C candidate: PASS, 1 Chromium test
 
@@ -151,7 +159,7 @@ Covered:
 
 ## Gate C Status
 
-Implementer Gate C candidate evidence exists in `e2e/fd-command-spell-resource-core.spec.ts` for command spell direct resource routing: real remote room create/select/start, browser-driven phase progression, real ability activation, WebSocket `expectedRevision`, server projection resource envelopes, reconnect consistency, and stale replay rejection. Independent review is still required before any Gate C or Phase 3 promotion.
+Implementer Gate C candidate evidence exists in `e2e/fd-command-spell-resource-core.spec.ts` for command spell direct resource routing: real remote room create/select/start, browser-driven phase progression, real ability activation, required WebSocket `expectedRevision`, server projection resource envelopes, reconnect consistency, missing-revision rejection, and stale replay rejection. Independent review is still required before any Gate C or Phase 3 promotion.
 
 ## Known Retained Legacy
 

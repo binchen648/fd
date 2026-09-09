@@ -262,7 +262,7 @@ Required scenario evidence:
 
 ### Gate C
 
-Gate C candidate evidence for the command spell representative exists in `e2e/fd-command-spell-resource-core.spec.ts`: browser activation, WebSocket `expectedRevision`, server projection resource envelopes, reconnect, and stale replay rejection. It still requires independent review before promotion.
+Gate C candidate evidence for the command spell representative exists in `e2e/fd-command-spell-resource-core.spec.ts`: browser activation, required WebSocket `expectedRevision`, server projection resource envelopes, reconnect, missing-revision rejection, and stale replay rejection. It still requires independent review before promotion.
 
 Gate C is not required for Shinji trigger or defeat branches because they are no longer first-batch representatives. Tomoe direct VP may remain Gate B unless the implementation changes user-facing command/projection behavior beyond the existing action ability route.
 

@@ -66,6 +66,75 @@ function nextMessage(socket: WebSocket, messages: ServerRoomMessage[], predicate
 }
 
 describe('match websocket server', () => {
+  it('rejects missing expectedRevision mutation commands before mutating a room', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const httpBase = `http://127.0.0.1:${port}`;
+    const wsBase = `ws://127.0.0.1:${port}`;
+
+    const host = await postJson<RoomHttpResponse>(`${httpBase}/rooms`, {
+      roomId: 'missing-revision-room',
+      hostClientId: 'host-missing-revision',
+      hostName: 'Host',
+      seed: 20260905,
+    });
+    const hostSocket = await connectSocket(`${wsBase}/rooms/missing-revision-room?clientId=host-missing-revision&reconnectToken=${host.reconnectToken}`);
+    await hostSocket.next((message) => message.type === 'server:projection');
+    hostSocket.socket.send(JSON.stringify({ type: 'client:select_seat', seat: 5 }));
+    await hostSocket.next((message) => message.type === 'server:projection' && message.projection.seats[4]?.clientId === 'host-missing-revision');
+    hostSocket.socket.send(JSON.stringify({ type: 'client:start_match' }));
+    let projection = await hostSocket.next((message) => message.type === 'server:projection' && message.projection.status === 'running');
+    expect(projection.type).toBe('server:projection');
+    if (projection.type !== 'server:projection') return;
+
+    const preparationRevision = projection.projection.match?.view.revision;
+    hostSocket.socket.send(JSON.stringify({ type: 'client:end_turn', requestId: 'missing-end' }));
+    const missingEnd = await hostSocket.next((message) => message.type === 'server:error' && message.requestId === 'missing-end');
+    expect(missingEnd.type).toBe('server:error');
+    if (missingEnd.type === 'server:error') expect(missingEnd.message).toContain('missing_expected_revision');
+    hostSocket.socket.send(JSON.stringify({ type: 'client:request_projection' }));
+    projection = await hostSocket.next((message) => message.type === 'server:projection' && message.projection.match?.view.revision === preparationRevision);
+    expect(projection.type).toBe('server:projection');
+
+    hostSocket.socket.send(JSON.stringify({ type: 'client:end_turn', requestId: 'end-prep', expectedRevision: preparationRevision }));
+    projection = await hostSocket.next((message) => message.type === 'server:projection' && message.projection.match?.phase === 'advance');
+    expect(projection.type).toBe('server:projection');
+    if (projection.type !== 'server:projection') return;
+    hostSocket.socket.send(JSON.stringify({ type: 'client:end_turn', requestId: 'end-advance', expectedRevision: projection.projection.match?.view.revision }));
+    projection = await hostSocket.next((message) => message.type === 'server:projection' && message.projection.match?.phase === 'action');
+    expect(projection.type).toBe('server:projection');
+    if (projection.type !== 'server:projection') return;
+    const actionRevision = projection.projection.match?.view.revision;
+    const beforePlayer = projection.projection.match?.view.players.find((player) => player.id === 'p5');
+    const logCount = projection.projection.match?.logs.length ?? 0;
+
+    hostSocket.socket.send(JSON.stringify({
+      type: 'client:dispatch_command',
+      requestId: 'missing-dispatch',
+      command: {
+        type: 'activate_ability',
+        cardInstanceId: 'p5-master.gatou.command-spell',
+        abilityId: 'command-spell.gain-mana',
+      },
+    }));
+    const missingDispatch = await hostSocket.next((message) => message.type === 'server:error' && message.requestId === 'missing-dispatch');
+    expect(missingDispatch.type).toBe('server:error');
+    if (missingDispatch.type === 'server:error') expect(missingDispatch.message).toContain('missing_expected_revision');
+    hostSocket.socket.send(JSON.stringify({ type: 'client:request_projection' }));
+    const afterMissing = await hostSocket.next((message) =>
+      message.type === 'server:projection' &&
+      message.projection.match?.phase === 'action' &&
+      message.projection.match?.view.revision === actionRevision);
+    expect(afterMissing.type).toBe('server:projection');
+    if (afterMissing.type === 'server:projection') {
+      const afterPlayer = afterMissing.projection.match?.view.players.find((player) => player.id === 'p5');
+      expect(afterPlayer?.mana).toBe(beforePlayer?.mana);
+      expect(afterPlayer?.commandSpells).toBe(beforePlayer?.commandSpells);
+      expect(afterMissing.projection.match?.logs).toHaveLength(logCount);
+    }
+    hostSocket.socket.close();
+  });
+
   it('rejects stale expectedRevision commands before mutating a room', async () => {
     serverHandle = createMatchServer();
     const port = await serverHandle.listen();
