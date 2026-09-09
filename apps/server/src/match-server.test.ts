@@ -107,6 +107,53 @@ describe('match websocket server', () => {
     hostSocket.socket.close();
   });
 
+  it('rejects missing expectedRevision websocket mutations before mutating a room', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const httpBase = `http://127.0.0.1:${port}`;
+    const wsBase = `ws://127.0.0.1:${port}`;
+
+    const host = await postJson<RoomHttpResponse>(`${httpBase}/rooms`, {
+      roomId: 'missing-revision-room',
+      hostClientId: 'host-missing-rev',
+      hostName: 'Host',
+      seed: 20260905,
+    });
+    const hostSocket = await connectSocket(`${wsBase}/rooms/missing-revision-room?clientId=host-missing-rev&reconnectToken=${host.reconnectToken}`);
+    await hostSocket.next((message) => message.type === 'server:projection');
+    hostSocket.socket.send(JSON.stringify({ type: 'client:select_seat', seat: 1 }));
+    await hostSocket.next((message) => message.type === 'server:projection' && message.projection.seats[0]?.clientId === 'host-missing-rev');
+    hostSocket.socket.send(JSON.stringify({ type: 'client:start_match' }));
+    const started = await hostSocket.next((message) => message.type === 'server:projection' && message.projection.status === 'running');
+    expect(started.type).toBe('server:projection');
+    if (started.type !== 'server:projection') return;
+    const revision = started.projection.match?.view.revision;
+    const phase = started.projection.match?.view.phase;
+    const logCount = started.projection.match?.logs.length ?? 0;
+    const version = serverHandle.hub.version('missing-revision-room');
+
+    hostSocket.socket.send(JSON.stringify({ type: 'client:end_turn', requestId: 'missing-end' }));
+    const missingEnd = await hostSocket.next((message) => message.type === 'server:error' && message.requestId === 'missing-end');
+    expect(missingEnd.type).toBe('server:error');
+    if (missingEnd.type === 'server:error') expect(missingEnd.message).toContain('missing_expected_revision');
+
+    hostSocket.socket.send(JSON.stringify({
+      type: 'client:dispatch_command',
+      requestId: 'missing-dispatch',
+      command: { type: 'activate_ability', sourceCardId: 'missing-card', abilityId: 'missing-ability' },
+    }));
+    const missingDispatch = await hostSocket.next((message) => message.type === 'server:error' && message.requestId === 'missing-dispatch');
+    expect(missingDispatch.type).toBe('server:error');
+    if (missingDispatch.type === 'server:error') expect(missingDispatch.message).toContain('missing_expected_revision');
+
+    expect(serverHandle.hub.version('missing-revision-room')).toBe(version);
+    const afterMissing = serverHandle.hub.project('missing-revision-room', 'host-missing-rev');
+    expect(afterMissing.match?.view.revision).toBe(revision);
+    expect(afterMissing.match?.view.phase).toBe(phase);
+    expect(afterMissing.match?.logs).toHaveLength(logCount);
+    hostSocket.socket.close();
+  });
+
   it('syncs room projections across browser clients without leaking private hands', async () => {
     serverHandle = createMatchServer();
     const port = await serverHandle.listen();
@@ -169,5 +216,46 @@ describe('match websocket server', () => {
     if (reconnectedProjection.type === 'server:projection') expect(reconnectedProjection.projection.viewer.playerId).toBe('p2');
     hostSocket.socket.close();
     reconnected.socket.close();
+  });
+
+  it('keeps a client connected when an older socket closes after reconnecting on a newer socket', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const httpBase = `http://127.0.0.1:${port}`;
+    const wsBase = `ws://127.0.0.1:${port}`;
+
+    const host = await postJson<RoomHttpResponse>(`${httpBase}/rooms`, {
+      roomId: 'socket-race-room',
+      hostClientId: 'host-race',
+      hostName: 'Host',
+      seed: 20260905,
+    });
+    const hostSocket = await connectSocket(`${wsBase}/rooms/socket-race-room?clientId=host-race&reconnectToken=${host.reconnectToken}`);
+    await hostSocket.next((message) => message.type === 'server:projection');
+    hostSocket.socket.send(JSON.stringify({ type: 'client:select_seat', seat: 1 }));
+    await hostSocket.next((message) => message.type === 'server:projection' && message.projection.seats[0]?.clientId === 'host-race');
+    hostSocket.socket.send(JSON.stringify({ type: 'client:start_match' }));
+    const started = await hostSocket.next((message) => message.type === 'server:projection' && message.projection.status === 'running');
+    expect(started.type).toBe('server:projection');
+    if (started.type !== 'server:projection') return;
+
+    const newSocket = await connectSocket(`${wsBase}/rooms/socket-race-room?clientId=host-race&reconnectToken=${host.reconnectToken}`);
+    await newSocket.next((message) => message.type === 'server:projection');
+    hostSocket.socket.close();
+    await new Promise((resolve) => hostSocket.socket.once('close', resolve));
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    expect(serverHandle.hub.project('socket-race-room', 'host-race').clients.find((client) => client.id === 'host-race')?.connected).toBe(true);
+
+    newSocket.socket.send(JSON.stringify({
+      type: 'client:end_turn',
+      requestId: 'after-overlapped-close',
+      expectedRevision: started.projection.match?.view.revision,
+    }));
+    const afterEndTurn = await newSocket.next((message) =>
+      message.type === 'server:projection' || (message.type === 'server:error' && message.requestId === 'after-overlapped-close'));
+    expect(afterEndTurn.type).toBe('server:projection');
+    if (afterEndTurn.type === 'server:error') expect(afterEndTurn.message).not.toContain('Client is disconnected');
+
+    newSocket.socket.close();
   });
 });

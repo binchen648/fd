@@ -90,21 +90,19 @@ Current selected batch:
 
 Required scope:
 
-- typed `move_all_remaining` and `play_selected_cards` for the two exact direct-action semantic matches below; `draw_cards` is covered only as the paired Time Alter companion effect;
+- typed `move_all_remaining` for the exact direct-action semantic match below;
 - `conversion-magic.preparation` as the `move_all_remaining -> adjust_mana` Result Binding representative;
-- `time-alter.action` as the `play_selected_cards -> draw_cards` migration exit from the reference vertical pilot;
-- no `ADD_TO_ATTACK`, `CREATE_AND_ACTIVATE`, `ACTIVATE`, `CLOSE`, trigger, hidden/private look, pending payment, lifecycle, modifier, or full roster migration;
-- standalone `draw_cards` direct action and standalone `move_card` direct action remain `NOT_VERIFIED` and are not routed by this slice;
-- one representative browser Gate C path is sufficient for this batch.
+- no `PLAY`, `ADD_TO_ATTACK`, `CREATE_AND_ACTIVATE`, `ACTIVATE`, `CLOSE`, trigger, hidden/private look, pending payment, lifecycle, modifier, or full roster migration;
+- standalone `draw_cards`, standalone `move_card`, and `time-alter.action` `play_selected_cards -> draw_cards` remain outside this slice.
 
-Current implementation-candidate evidence, 2026-09-08:
+Current implementation-candidate evidence, 2026-09-09:
 
-- Authoring inventory: `docs/audits/fd-card-zone-core-direct-action-inventory.mjs` reports 8 card-zone abilities from `data/authoring`, 2 eligible, and 6 skipped with explicit skip reasons.
-- Routing: `conversion-magic.preparation` and `time-alter.action` no longer require ability-id pilot routing; they route by executable semantic form. The Phase 3 reference pilot allowlist is empty after this slice.
-- Gate A: implementer evidence covers primitive registration, exact semantic classifier positives, trigger/private/add/activate/close/bad-binding/direct-draw/direct-zone-move negatives, hookless `play_selected_cards` fail-closed, invalid result-field validation, and runtime rollback through the existing data-flow transaction.
-- Gate B: implementer evidence covers real `MatchSession.dispatchPlayerAction` for Irisviel `conversion-magic.preparation` and Kiritsugu `time-alter.action`, both compiled from canonical authoring through the executable pack and resolved through data-flow without legacy fallback.
-- Gate C: implementer evidence reuses one representative browser path for the batch: Kiritsugu `time-alter.action` in `e2e/fd-time-alter-core-primitive.spec.ts`, including browser activation, WebSocket `expectedRevision`, pending target reconnect, shared play batch placement, draw projection, and stale replay rejection. Irisviel Conversion Magic browser evidence remains supporting evidence but is not required as a second Gate C for the batch.
-- Metrics: card-zone pilot ability-id routes 2 -> 0; exact direct card-zone legacy consumers 2 -> 0; new-runtime semantic-routed card-zone consumers 0 -> 2; dual-compatible migrated consumers 2 -> 0; skipped card-zone abilities remain 6.
+- Authoring inventory: `docs/audits/fd-card-zone-core-direct-action-inventory.mjs` reports 8 card-zone abilities from `data/authoring`, 1 eligible, and 7 skipped with explicit skip reasons.
+- Routing: `conversion-magic.preparation` no longer requires ability-id pilot routing; it routes by executable semantic form. Time Alter is excluded from Card/Zone and remains owned by `CARD_ACTION_SEMANTICS_MINIMAL_PLAY`.
+- Gate A: implementer evidence covers primitive registration, exact semantic classifier positive, route-candidate fail-closed handling for corrupted migrated graph parameters, Time Alter/play/direct-draw/direct-zone-move/add/activate/close/bad-binding negatives, invalid result-field validation, and runtime rollback through the existing data-flow transaction.
+- Gate B: implementer evidence covers real `MatchSession.dispatchPlayerAction` for Irisviel `conversion-magic.preparation`, compiled from canonical authoring through the executable pack and resolved through data-flow without legacy fallback, including classifier-mismatch corruptions that now return `resolution_failed`.
+- Gate C: `IMPLEMENTED_UNVERIFIED`; `e2e/fd-conversion-magic-core-primitive.spec.ts` is present as implementer candidate evidence for Irisviel `conversion-magic.preparation`, including browser activation, WS `expectedRevision`, server-authoritative missing-revision rejection, projection/reconnect consistency, stale replay rejection, actual `movedCount` mana settlement, and repeat-each stability after same-client socket close race hardening. Independent reviewer promotion remains pending.
+- Metrics: card-zone pilot ability-id routes 1 -> 0; exact direct card-zone legacy consumers 1 -> 0; new-runtime semantic-routed card-zone consumers 0 -> 1; dual-compatible migrated consumers 1 -> 0; skipped card-zone abilities remain 7.
 - Evidence report: `docs/reports/2026-09-08-card-zone-core-direct-action-result.md`.
 
 Current selected batch:
@@ -143,7 +141,7 @@ Current implementation-candidate evidence, 2026-09-08:
 - Routing: Kiritsugu `time-alter.action` routes by executable semantic form through `isPlayActionDirectAction`; it does not use an ability-id pilot route. The Phase 3 reference pilot allowlist remains empty.
 - Gate A: implementer evidence covers exact semantic classifier positives, wrong-phase/costed-play/missing-draw/face-up/hidden-target/non-hand/non-attack/play-source/add/activate/close negatives for Time Alter; `play_selected_cards` remains hook-fail-closed.
 - Gate B: implementer evidence covers real `MatchSession.dispatchPlayerAction` activation from compiled canonical authoring for Time Alter, including mandatory hand-attack target availability, shared playBatch face-down attack placement, typed result events, draw companion, and no-legal-hand-attack fail-closed.
-- Gate C: implementer evidence exists in `e2e/fd-time-alter-core-primitive.spec.ts`, covering browser activation, WebSocket `expectedRevision`, server revalidation, pending target reconnect, projection, reconnect consistency, and stale replay rejection.
+- Gate C: `GATE_C_REQUIRED / NOT_PRESENT_IN_CURRENT_CHECKOUT`; the intended Time Alter Play representative remains `e2e/fd-time-alter-core-primitive.spec.ts`, but that file is absent from the current checkout.
 - Metrics: scoped legacy play consumer count 1 -> 0 for the migrated exact representative; new-runtime semantic-routed PLAY count 0 -> 1; dual-compatible migrated PLAY count 1 -> 0; skipped card-action abilities remain 6.
 - Evidence report: `docs/reports/2026-09-08-card-action-play-result.md`. Kayneth response-play evidence remains in `docs/reports/2026-09-08-card-action-play-source-response-result.md` under its separate contract.
 
@@ -213,10 +211,10 @@ Complete JSON or use of a verified primitive does not automatically promote a ca
 - Scope: minimum shared primitive expansion originally covered `conversion-magic.preparation`, `time-alter.action`, and `command-spell.gain-mana`. As of the 2026-09-08 Resource/Numeric direct-action slice, `command-spell.gain-mana` has migrated out of ability-id pilot routing and is tracked under the Resource/Numeric batch below.
 - Implementation claim: `IMPLEMENTATION_COMPLETE_CANDIDATE`.
 - Gate A: implementer evidence recorded for typed `adjust_mana`, `adjust_command_seals`, `draw_cards`, `move_all_remaining`, and `play_selected_cards` primitive registration/result schemas, invalid bound field rejection, hookless `play_selected_cards` fail-closed, and runtime rollback after a corrupted later node; independent review pending.
-- Gate B: implementer evidence recorded in `packages/rules/tests/regression/phase-3a-core-primitives.test.ts` for canonical source JSON compiled through content-library/executable definitions and executed in real `MatchSession` dispatch for Irisviel, Kiritsugu, and Gatou command spell; independent review pending.
-- Gate C: partial implementer evidence recorded for Kiritsugu `time-alter.action` in `e2e/fd-time-alter-core-primitive.spec.ts`, including browser activation, WebSocket `expectedRevision`, pending target reconnect, server-projected state mutation, and stale replay rejection. Partial implementer evidence is also recorded for Irisviel `conversion-magic.preparation` in `e2e/fd-conversion-magic-core-primitive.spec.ts`, including browser activation, WebSocket `expectedRevision`, hand-to-discard movement, mana gain from actual moved count, reconnect consistency, and stale replay rejection. `command-spell.gain-mana` Gate C candidate evidence now belongs to the Resource/Numeric direct-action slice.
+- Gate B: implementer evidence recorded in `packages/rules/tests/regression/card-zone-core-direct-action.test.ts`, `packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts`, and `packages/rules/tests/regression/resolution-dataflow.test.ts` for canonical source JSON compiled through content-library/executable definitions and executed in real `MatchSession` dispatch; independent review pending.
+- Gate C: `IMPLEMENTED_UNVERIFIED` for the historical Phase 3A core primitive slice members with current candidate evidence. `e2e/fd-time-alter-core-primitive.spec.ts` remains absent and belongs to `CARD_ACTION_SEMANTICS_MINIMAL_PLAY`; `e2e/fd-conversion-magic-core-primitive.spec.ts` is present as Card/Zone candidate evidence. `command-spell.gain-mana` Gate C candidate evidence now belongs to the Resource/Numeric direct-action slice.
 - Legacy boundary: the runtime intentionally uses explicit data-flow syntax plus a narrow pilot allowlist. Non-pilot draw/play/mana/seal effects remain on legacy `resolveEffect`; this avoids accidental full-card-pool migration before each card has acceptance coverage.
-- Evidence inventory: `packages/rules/tests/regression/phase-3a-core-primitives.test.ts`, `packages/rules/tests/regression/resolution-dataflow.test.ts`, `e2e/support/build-time-alter-snapshot.ts`, `e2e/fd-time-alter-core-primitive.spec.ts`, `docs/reports/2026-09-08-time-alter-core-primitive-gate-c-result.md`, `e2e/support/build-conversion-magic-snapshot.ts`, `e2e/fd-conversion-magic-core-primitive.spec.ts`, and `docs/reports/2026-09-08-conversion-magic-core-primitive-gate-c-result.md`.
+- Evidence inventory: current checkout evidence is `packages/rules/tests/regression/card-zone-core-direct-action.test.ts`, `packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts`, `packages/rules/tests/regression/resolution-dataflow.test.ts`, and `e2e/fd-conversion-magic-core-primitive.spec.ts`. Historical Time Alter browser evidence is not present in the current checkout and must be restored or recreated before any PLAY Gate C citation.
 
 ## Current Phase 3B Slice
 

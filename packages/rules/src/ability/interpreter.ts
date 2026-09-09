@@ -951,6 +951,40 @@ export function isResourceNumericDirectActionSemantic(a: AuthoringAbility): bool
     a.effects.every((effect) => directResourcePrimitiveTypes.has(str(effect.type)));
 }
 
+export function isCardZoneCoreDirectActionSemantic(a: AuthoringAbility): boolean {
+  return isMoveAllRemainingManaBindingSemantic(a);
+}
+
+function isCardZoneCoreDirectActionRouteCandidate(a: AuthoringAbility): boolean {
+  if (a.kind !== 'phase_action' || str(a.activation.phase) !== 'advance' || str(a.activation.opens) !== 'controller_action_window') return false;
+  if (a.targets.length || a.cost.length || a.creates.length || a.effects.length !== 2) return false;
+  const [move, mana] = a.effects;
+  const binding = str(move?.resultVar ?? move?.bind);
+  return str(move?.type) === 'move_all_remaining' &&
+    !!binding &&
+    str(mana?.type) === 'adjust_mana' &&
+    referencesMovedCountBinding(mana?.amount, binding);
+}
+
+function isMoveAllRemainingManaBindingSemantic(a: AuthoringAbility): boolean {
+  if (a.kind !== 'phase_action' || str(a.activation.phase) !== 'advance' || str(a.activation.opens) !== 'controller_action_window') return false;
+  if (a.targets.length || a.cost.length || a.creates.length || a.effects.length !== 2) return false;
+  const [move, mana] = a.effects;
+  const binding = str(move?.resultVar ?? move?.bind);
+  return str(move?.type) === 'move_all_remaining' &&
+    str(move?.from) === 'hand' &&
+    str(node(move?.to).zone) === 'discard' &&
+    !!binding &&
+    str(mana?.type) === 'adjust_mana' &&
+    referencesMovedCountBinding(mana?.amount, binding);
+}
+
+function referencesMovedCountBinding(value: unknown, binding: string): boolean {
+  const current = node(value);
+  return str(current.var) === binding ||
+    (str(current.expr) === 'binding_field' && str(current.binding) === binding && str(current.field) === 'movedCount' && str(current.valueType) === 'number');
+}
+
 function pushResourceDirectives(s: GameState, ctx: EffectContext, results: KnownEffectResult[]): void {
   for (const result of results) {
     if (result.effectType !== 'adjust_command_seals') continue;
@@ -979,6 +1013,13 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
       sourceCardId: ctx.sourceCardId,
       abilityId: ctx.abilityId,
       effects: normalized,
+      selections: ctx.selections,
+      hooks: {
+        playSelectedCards: ({ state, playerId, cardInstanceIds, faceDown }) => {
+          playBatch(state, playerId, cardInstanceIds.map((cardInstanceId) => ({ type: 'play_card', cardInstanceId, faceDown })), 'effect');
+          return { playedCount: cardInstanceIds.length };
+        },
+      },
       resolutionId: nextId(s, 'resolution'),
       causationId: `${ctx.sourceCardId}:${ctx.abilityId}:${runtime(s).revision}`,
     });
@@ -1005,6 +1046,14 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (isResourceNumericDirectActionSemantic(a)) {
+    executeResolutionEffects(s, ctx, effects);
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
+  if (isCardZoneCoreDirectActionRouteCandidate(a)) {
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
     cleanupOngoing(s);

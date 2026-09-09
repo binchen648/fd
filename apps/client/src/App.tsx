@@ -443,7 +443,9 @@ function RemoteRoomApp({ connection }: { connection: RemoteRoomConnection }) {
   const fixture = projection ? projectRemoteRoomFixture(projection) : null;
   const dispatchAction = (action: ClientAvailableAction) => {
     if (!action.backendCommand) return;
-    client.send({ type: 'client:dispatch_command', command: action.backendCommand, expectedRevision: projection?.match?.view.revision });
+    const expectedRevision = projection?.match?.view.revision;
+    if (typeof expectedRevision !== 'number') return;
+    client.send({ type: 'client:dispatch_command', command: action.backendCommand, expectedRevision });
   };
 
   return (
@@ -480,7 +482,10 @@ function RemoteRoomApp({ connection }: { connection: RemoteRoomConnection }) {
           onConsumeDirective={(directiveId) => client.send({ type: 'client:consume_directive', directiveId })}
           onPauseForFix={(directiveId) => setPauseNotice(`已暂停在 directive：${directiveId}。请保留当前房间 ${connection.roomId} 供排查。`)}
           onRestoreReplay={(checkpointId) => client.send({ type: 'client:restore_replay', checkpointId })}
-          onEndTurn={() => client.send({ type: 'client:end_turn', expectedRevision: projection?.match?.view.revision })}
+          onEndTurn={() => {
+            const expectedRevision = projection?.match?.view.revision;
+            if (typeof expectedRevision === 'number') client.send({ type: 'client:end_turn', expectedRevision });
+          }}
           canAdjudicate={projection?.viewer.isHost ?? false}
         />
       ) : null}

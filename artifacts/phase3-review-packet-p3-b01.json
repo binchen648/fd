@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-review-packet-v1",
-  "generatedAt": "2026-09-09T05:15:37.335Z",
+  "generatedAt": "2026-09-09T11:49:51.128Z",
   "task": "P3-B01",
   "batch": "PHASE_3_COVERAGE_AND_EVIDENCE_AUTOMATION",
   "reviewerAuthorityNotice": "Implementation packet only. It does not promote Gate A/B/C, Phase 3, or Release status.",
@@ -10,7 +10,6 @@
     "CARD_ACTION_SEMANTICS_MINIMAL:PLAY:1",
     "CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE:1",
     "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA:1",
-    "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW:1",
     "RESOURCE_NUMERIC_CORE_DIRECT_ACTION:3"
   ],
   "affectedAbilities": [
@@ -46,8 +45,7 @@
       "cardId": "master.kiritsugu.skill.time-alter",
       "abilityId": "time-alter.action",
       "semanticRoutes": [
-        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY",
-        "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW"
+        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY"
       ],
       "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
     },
@@ -95,7 +93,6 @@
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY": 1,
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE": 1,
       "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA": 1,
-      "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW": 1,
       "RESOURCE_NUMERIC_CORE_DIRECT_ACTION": 3
     },
     "newRuntimeConsumers": {
@@ -221,7 +218,7 @@
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1141,
+        "line": 1190,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },

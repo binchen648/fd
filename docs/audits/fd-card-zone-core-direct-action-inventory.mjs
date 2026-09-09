@@ -72,13 +72,13 @@ for (const row of gateCBlocked) {
 console.log("");
 
 console.log("Before/after metrics");
-console.log("pilotAbilityIdRoutes.before=2");
+console.log("pilotAbilityIdRoutes.before=1");
 console.log("pilotAbilityIdRoutes.after=0");
-console.log("legacyCardZoneDirectConsumerCount.before=2");
+console.log("legacyCardZoneDirectConsumerCount.before=1");
 console.log("legacyCardZoneDirectConsumerCount.after=0");
 console.log("newRuntimeSemanticRoutedCount.before=0");
 console.log(`newRuntimeSemanticRoutedCount.after=${eligible.length}`);
-console.log("dualCompatibleCount.before=2");
+console.log("dualCompatibleCount.before=1");
 console.log("dualCompatibleCount.after=0");
 console.log(`remainingSkippedCount.after=${skipped.length}`);
 
@@ -89,7 +89,7 @@ function classify(ability, effects) {
   if (effects.some((effect) => blockedActionTypes.has(effect))) return skip("out_of_scope:blocked_card_action_semantics", true);
   if (effects.some((effect) => !cardZoneTypes.has(effect) && effect !== "adjust_mana")) return skip("out_of_scope:mixed_non_card_zone_effect", true);
   if (isMoveAllRemainingManaBindingShape(ability)) return { eligible: true, skipReason: "", cannotInheritGateC: false };
-  if (isPlaySelectedThenDrawShape(ability)) return { eligible: true, skipReason: "", cannotInheritGateC: false };
+  if (isPlaySelectedThenDrawShape(ability)) return skip("separate_contract:card_action_play_semantics", true);
   if (isDirectDrawShape(ability)) return skip("not_verified:direct_draw_no_representative", true);
   if (isDirectZoneMoveShape(ability)) return skip("not_verified:direct_zone_move_no_representative", true);
   return skip(specificSkipReason(ability), true);

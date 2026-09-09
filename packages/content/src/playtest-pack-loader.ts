@@ -483,6 +483,11 @@ function entitySources(pack: LoadedPlaytestContentPack): Array<{
   ];
 }
 
+function sourceImageExists(workspaceRoot: string, imagePath: string): boolean {
+  const fullPath = isAbsolute(imagePath) ? imagePath : resolve(workspaceRoot, imagePath);
+  return existsSync(fullPath);
+}
+
 function referenceIssue(entityId: string, referenceId: string): PackValidationIssue {
   return {
     code: 'UNRESOLVED_CARD_REFERENCE',
@@ -520,7 +525,7 @@ export function validateLoadedPlaytestPack(
   }
 
   for (const entity of entitySources(pack)) {
-    if (isAbsolute(entity.source.imagePath) || !existsSync(resolve(options.workspaceRoot, entity.source.imagePath))) {
+    if (!sourceImageExists(options.workspaceRoot, entity.source.imagePath)) {
       issues.push({
         code: 'MISSING_IMAGE',
         message: `${entity.id} references missing image ${entity.source.imagePath}`,

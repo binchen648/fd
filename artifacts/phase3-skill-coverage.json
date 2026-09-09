@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-09T05:16:48.753Z",
+  "generatedAt": "2026-09-09T11:54:01.107Z",
   "sourceFingerprint": "4efa585d747b2f765d8248601c77daa12d247e6bfaa775a9d033afcd6b881854",
   "counts": {
     "totalArchives": 14,
@@ -738,8 +738,7 @@
       "specialSubsystems": [],
       "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
       "semanticRoutes": [
-        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY",
-        "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW"
+        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY"
       ],
       "taxonomyWarnings": [
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
@@ -3989,7 +3988,6 @@
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY": 1,
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE": 1,
       "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA": 1,
-      "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW": 1,
       "RESOURCE_NUMERIC_CORE_DIRECT_ACTION": 3
     },
     "newRuntimeConsumers": {
@@ -4115,7 +4113,7 @@
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1141,
+        "line": 1190,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
@@ -5007,7 +5005,7 @@
   "compiledDefinitions": {
     "packId": "fd-playtest-v1",
     "version": 1,
-    "definitionHash": "f140e032bf241825577c0b78c6c3fa08f7a7f49bd7046feaa5deadabb13f5baa",
+    "definitionHash": "2c6b15a98d25e80770da2517d7413fe24fdc695cd238f1247b3c24d8d691f3ed",
     "compiledCards": 70,
     "compiledCharacters": 14,
     "blockingIssues": 0

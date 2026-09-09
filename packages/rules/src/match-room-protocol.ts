@@ -4,8 +4,8 @@ import type { MatchRoomProjection, MatchRoomSnapshot } from './match-room';
 export type ClientRoomMessage =
   | { type: 'client:select_seat'; requestId?: string; seat: number }
   | { type: 'client:start_match'; requestId?: string }
-  | { type: 'client:end_turn'; requestId?: string; expectedRevision?: number }
-  | { type: 'client:dispatch_command'; requestId?: string; command: AbilityCommand; expectedRevision?: number }
+  | { type: 'client:end_turn'; requestId?: string; expectedRevision: number }
+  | { type: 'client:dispatch_command'; requestId?: string; command: AbilityCommand; expectedRevision: number }
   | { type: 'client:consume_directive'; requestId?: string; directiveId: string }
   | { type: 'client:restore_replay'; requestId?: string; checkpointId: string }
   | { type: 'client:request_projection'; requestId?: string };

@@ -295,7 +295,7 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
 function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
-    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability)) continue;
+    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability)) continue;
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
     try {
       validateResolutionDataFlowNodes(effects, path);
@@ -318,6 +318,40 @@ function isResourceNumericDirectActionSemantic(ability: AuthoringAbility): boole
     ability.creates.length === 0 &&
     ability.effects.length > 0 &&
     ability.effects.every((effect) => directResourcePrimitiveTypes.has(str(effect.type)));
+}
+
+function isCardZoneCoreDirectActionSemantic(ability: AuthoringAbility): boolean {
+  return isMoveAllRemainingManaBindingSemantic(ability);
+}
+
+function isCardZoneCoreDirectActionRouteCandidate(ability: AuthoringAbility): boolean {
+  if (ability.kind !== 'phase_action' || str(ability.activation.phase) !== 'advance' || str(ability.activation.opens) !== 'controller_action_window') return false;
+  if (ability.targets.length || ability.cost.length || ability.creates.length || ability.effects.length !== 2) return false;
+  const [move, mana] = ability.effects;
+  const binding = str(move?.resultVar ?? move?.bind);
+  return str(move?.type) === 'move_all_remaining' &&
+    !!binding &&
+    str(mana?.type) === 'adjust_mana' &&
+    referencesMovedCountBinding(mana?.amount, binding);
+}
+
+function isMoveAllRemainingManaBindingSemantic(ability: AuthoringAbility): boolean {
+  if (ability.kind !== 'phase_action' || str(ability.activation.phase) !== 'advance' || str(ability.activation.opens) !== 'controller_action_window') return false;
+  if (ability.targets.length || ability.cost.length || ability.creates.length || ability.effects.length !== 2) return false;
+  const [move, mana] = ability.effects;
+  const binding = str(move?.resultVar ?? move?.bind);
+  return str(move?.type) === 'move_all_remaining' &&
+    str(move?.from) === 'hand' &&
+    str(node(move?.to).zone) === 'discard' &&
+    !!binding &&
+    str(mana?.type) === 'adjust_mana' &&
+    referencesMovedCountBinding(mana?.amount, binding);
+}
+
+function referencesMovedCountBinding(value: unknown, binding: string): boolean {
+  const current = node(value);
+  return str(current.var) === binding ||
+    (str(current.expr) === 'binding_field' && str(current.binding) === binding && str(current.field) === 'movedCount' && str(current.valueType) === 'number');
 }
 
 function validatePresentationReferences(input: CompileInput, cards: Record<string, ExecutableCardDefinition>): void {

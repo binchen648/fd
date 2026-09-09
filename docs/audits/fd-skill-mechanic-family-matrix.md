@@ -216,27 +216,27 @@ Every direct VP/mana/seal event emitted by this family must expose `sourceAbilit
 
 Selection rationale:
 
-- current authoring contains 8 card-zone abilities, but only 2 are exact direct phase-action matches without trigger, hidden/private, cost, lifecycle, add/activate/close, battle, or modifier dependencies;
-- it removes the remaining Phase 3 reference pilot ability-id routes for `conversion-magic.preparation` and `time-alter.action`;
-- it proves card-zone typed result envelopes continue to support Result Binding and shared `playBatch` delegation;
+- current authoring contains 8 card-zone abilities, but only 1 is an exact direct phase-action card-zone match without trigger, hidden/private, cost, lifecycle, play/add/activate/close, battle, or modifier dependencies;
+- it removes the Phase 3 reference pilot ability-id route for `conversion-magic.preparation`;
+- it proves card-zone typed result envelopes continue to support Result Binding;
 - it avoids broad Card Action migration by excluding `ADD_TO_ATTACK`, `CREATE_AND_ACTIVATE`, `ACTIVATE`, and `CLOSE`.
 
 Implementation-candidate status, 2026-09-08:
 
 - Inventory source: `docs/audits/fd-card-zone-core-direct-action-inventory.mjs`.
-- Eligible direct card-zone abilities from `data/authoring`: 2.
-- Skipped card-zone abilities: 6, each with explicit skip reason.
-- Migrated representatives: Irisviel `conversion-magic.preparation`, Kiritsugu `time-alter.action`.
-- Pilot ability-id routes: 2 before, 0 after.
-- Exact direct card-zone legacy consumers: 2 before, 0 after.
-- New-runtime semantic-routed card-zone consumers: 0 before, 2 after.
-- Dual-compatible migrated consumers: 2 before, 0 after.
-- Gate C implementer evidence exists for Time Alter in `e2e/fd-time-alter-core-primitive.spec.ts`; Conversion Magic browser evidence remains supporting evidence.
+- Eligible direct card-zone abilities from `data/authoring`: 1.
+- Skipped card-zone abilities: 7, each with explicit skip reason.
+- Migrated representative: Irisviel `conversion-magic.preparation`.
+- Pilot ability-id routes: 1 before, 0 after.
+- Exact direct card-zone legacy consumers: 1 before, 0 after.
+- New-runtime semantic-routed card-zone consumers: 0 before, 1 after.
+- Dual-compatible migrated consumers: 1 before, 0 after.
+- Gate C: `IMPLEMENTED_UNVERIFIED`. `e2e/fd-conversion-magic-core-primitive.spec.ts` is present as implementer candidate evidence for the exact Conversion Magic representative and remains pending independent review.
 - Status claim remains `IMPLEMENTATION_COMPLETE_CANDIDATE`; independent review is required before any `COMPONENT_VERIFIED`, `SCENARIO_VERIFIED`, or `E2E_VERIFIED` promotion.
 
 Gate C inheritance rule:
 
-`CARD_ZONE_CORE_DIRECT_ACTION` can inherit the Time Alter representative Gate C only for exact visible direct phase-action semantic matches in this batch. It cannot inherit Gate C if an ability introduces trigger timing, battle result dependency, hidden/private choice, pending payment, raw movement to `attack_area` or `field`, `ADD_TO_ATTACK`, `CREATE_AND_ACTIVATE`, `ACTIVATE`, `CLOSE`, lifecycle cleanup, source-close, modifier, power, defeat, or scoring dependency.
+`CARD_ZONE_CORE_DIRECT_ACTION` can inherit Gate C only for the exact Conversion Magic semantic match in this batch. It cannot inherit Gate C if an ability introduces `PLAY`, trigger timing, battle result dependency, hidden/private choice, pending payment, raw movement to `attack_area` or `field`, `ADD_TO_ATTACK`, `CREATE_AND_ACTIVATE`, `ACTIVATE`, `CLOSE`, lifecycle cleanup, source-close, modifier, power, defeat, or scoring dependency.
 
 ## Current Implementation-Candidate Batch
 
@@ -283,7 +283,7 @@ Implementation-candidate status, 2026-09-08:
 - Scoped legacy play consumers for the exact representative: 1 before, 0 after.
 - New-runtime semantic-routed PLAY consumers: 0 before, 1 after.
 - Dual-compatible migrated PLAY consumers: 1 before, 0 after.
-- Gate C implementer evidence exists in `e2e/fd-time-alter-core-primitive.spec.ts`.
+- Gate C: `GATE_C_REQUIRED / NOT_PRESENT_IN_CURRENT_CHECKOUT`; `e2e/fd-time-alter-core-primitive.spec.ts` is absent from the current checkout.
 - Status claim remains `IMPLEMENTATION_COMPLETE_CANDIDATE`; independent review is required before any `COMPONENT_VERIFIED`, `SCENARIO_VERIFIED`, or `E2E_VERIFIED` promotion.
 
 Gate C inheritance rule:
@@ -360,7 +360,7 @@ Required after implementation:
 - `conversion-magic.preparation` and `time-alter.action` ability-id routes removed.
 - `conversion-magic.preparation` routes by semantic form: `move_all_remaining(hand -> discard) + adjust_mana(bound moved count)`.
 - `time-alter.action` routes by semantic form: `play_selected_cards(controller hand attack, face_down) + draw_cards(1)`.
-- no legacy fallback after classification into the card-zone primitive path;
+- no legacy fallback after classification into the card-zone primitive path; corrupted migrated Card/Zone route candidates fail closed through data-flow validation and do not inherit exact Gate C coverage;
 - regression proves deleting the remaining pilot allowlist entries does not break Gate A/B/C candidate evidence for Time Alter and Conversion Magic.
 
 ## Full Ability Family Membership

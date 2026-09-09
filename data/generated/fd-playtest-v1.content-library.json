@@ -324,7 +324,7 @@
         "hostRulingReason": "Authoring servant converted for seven-player product playtest."
       },
       "source": {
-        "htmPath": "chm-extract/阿喀琉斯.htm",
+        "htmPath": "D:/fd/chm-extract/阿喀琉斯.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164211_781.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
@@ -413,7 +413,7 @@
         "hostRulingReason": "Authoring servant converted for seven-player product playtest."
       },
       "source": {
-        "htmPath": "chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
+        "htmPath": "D:/fd/chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_184732_494.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
@@ -589,7 +589,7 @@
         "hostRulingReason": "Authoring servant converted for seven-player product playtest."
       },
       "source": {
-        "htmPath": "chm-extract/弗朗西斯·德雷克.htm",
+        "htmPath": "D:/fd/chm-extract/弗朗西斯·德雷克.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164705_550.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
@@ -684,7 +684,7 @@
         "hostRulingReason": "Authoring servant converted for seven-player product playtest."
       },
       "source": {
-        "htmPath": "chm-extract/埃列什基伽勒.htm",
+        "htmPath": "D:/fd/chm-extract/埃列什基伽勒.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_111906_400.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
@@ -761,8 +761,8 @@
         "hostRulingReason": "Authoring servant converted for seven-player product playtest."
       },
       "source": {
-        "htmPath": "chm-extract/坂田金时.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
+        "htmPath": "D:/fd/chm-extract/坂田金时.htm",
+        "imagePath": "D:/fd/chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -850,8 +850,8 @@
         "hostRulingReason": "Authoring servant converted for seven-player product playtest."
       },
       "source": {
-        "htmPath": "chm-extract/巴御前.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
+        "htmPath": "D:/fd/chm-extract/巴御前.htm",
+        "imagePath": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -2332,7 +2332,7 @@
         "status": "FULL"
       },
       "source": {
-        "htmPath": "chm-extract/阿喀琉斯.htm",
+        "htmPath": "D:/fd/chm-extract/阿喀琉斯.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164211_781.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
@@ -2357,7 +2357,7 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/阿喀琉斯.htm",
+        "htmPath": "D:/fd/chm-extract/阿喀琉斯.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164221_598.png",
         "imageIndex": 1,
         "reviewedAgainstImage": true
@@ -2383,7 +2383,7 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/阿喀琉斯.htm",
+        "htmPath": "D:/fd/chm-extract/阿喀琉斯.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164226_270.png",
         "imageIndex": 2,
         "reviewedAgainstImage": true
@@ -2409,7 +2409,7 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/阿喀琉斯.htm",
+        "htmPath": "D:/fd/chm-extract/阿喀琉斯.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164216_582.png",
         "imageIndex": 3,
         "reviewedAgainstImage": true
@@ -2423,7 +2423,7 @@
         "status": "FULL"
       },
       "source": {
-        "htmPath": "chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
+        "htmPath": "D:/fd/chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_184732_494.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
@@ -2449,7 +2449,7 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
+        "htmPath": "D:/fd/chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_184743_358.png",
         "imageIndex": 1,
         "reviewedAgainstImage": true
@@ -2474,7 +2474,7 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
+        "htmPath": "D:/fd/chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_183120_208.png",
         "imageIndex": 2,
         "reviewedAgainstImage": true
@@ -2499,7 +2499,7 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
+        "htmPath": "D:/fd/chm-extract/阿尔托莉雅·潘德拉贡[Alter.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_184737_374.png",
         "imageIndex": 3,
         "reviewedAgainstImage": true
@@ -2679,7 +2679,7 @@
         "status": "FULL"
       },
       "source": {
-        "htmPath": "chm-extract/弗朗西斯·德雷克.htm",
+        "htmPath": "D:/fd/chm-extract/弗朗西斯·德雷克.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164705_550.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
@@ -2704,7 +2704,7 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/弗朗西斯·德雷克.htm",
+        "htmPath": "D:/fd/chm-extract/弗朗西斯·德雷克.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_192738_090.png",
         "imageIndex": 1,
         "reviewedAgainstImage": true
@@ -2729,7 +2729,7 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/弗朗西斯·德雷克.htm",
+        "htmPath": "D:/fd/chm-extract/弗朗西斯·德雷克.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164710_406.png",
         "imageIndex": 2,
         "reviewedAgainstImage": true
@@ -2754,7 +2754,7 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/弗朗西斯·德雷克.htm",
+        "htmPath": "D:/fd/chm-extract/弗朗西斯·德雷克.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164715_253.png",
         "imageIndex": 3,
         "reviewedAgainstImage": true
@@ -2768,7 +2768,7 @@
         "status": "FULL"
       },
       "source": {
-        "htmPath": "chm-extract/埃列什基伽勒.htm",
+        "htmPath": "D:/fd/chm-extract/埃列什基伽勒.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_111906_400.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
@@ -2793,7 +2793,7 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/埃列什基伽勒.htm",
+        "htmPath": "D:/fd/chm-extract/埃列什基伽勒.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_111916_240.png",
         "imageIndex": 1,
         "reviewedAgainstImage": true
@@ -2818,7 +2818,7 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/埃列什基伽勒.htm",
+        "htmPath": "D:/fd/chm-extract/埃列什基伽勒.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_192743_490.png",
         "imageIndex": 2,
         "reviewedAgainstImage": true
@@ -2844,7 +2844,7 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/埃列什基伽勒.htm",
+        "htmPath": "D:/fd/chm-extract/埃列什基伽勒.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_111911_088.png",
         "imageIndex": 3,
         "reviewedAgainstImage": true
@@ -2858,8 +2858,8 @@
         "status": "FULL"
       },
       "source": {
-        "htmPath": "chm-extract/坂田金时.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
+        "htmPath": "D:/fd/chm-extract/坂田金时.htm",
+        "imagePath": "D:/fd/chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -2884,8 +2884,8 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/坂田金时.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
+        "htmPath": "D:/fd/chm-extract/坂田金时.htm",
+        "imagePath": "D:/fd/chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
         "imageIndex": 1,
         "reviewedAgainstImage": true
       }
@@ -2910,8 +2910,8 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/坂田金时.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
+        "htmPath": "D:/fd/chm-extract/坂田金时.htm",
+        "imagePath": "D:/fd/chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
         "imageIndex": 2,
         "reviewedAgainstImage": true
       }
@@ -2935,8 +2935,8 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/坂田金时.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
+        "htmPath": "D:/fd/chm-extract/坂田金时.htm",
+        "imagePath": "D:/fd/chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
         "imageIndex": 3,
         "reviewedAgainstImage": true
       }
@@ -2949,8 +2949,8 @@
         "status": "FULL"
       },
       "source": {
-        "htmPath": "chm-extract/巴御前.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
+        "htmPath": "D:/fd/chm-extract/巴御前.htm",
+        "imagePath": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -2974,8 +2974,8 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/巴御前.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
+        "htmPath": "D:/fd/chm-extract/巴御前.htm",
+        "imagePath": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
         "imageIndex": 1,
         "reviewedAgainstImage": true
       }
@@ -2999,8 +2999,8 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/巴御前.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
+        "htmPath": "D:/fd/chm-extract/巴御前.htm",
+        "imagePath": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
         "imageIndex": 2,
         "reviewedAgainstImage": true
       }
@@ -3025,8 +3025,8 @@
         "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
       },
       "source": {
-        "htmPath": "chm-extract/巴御前.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
+        "htmPath": "D:/fd/chm-extract/巴御前.htm",
+        "imagePath": "D:/fd/chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
         "imageIndex": 3,
         "reviewedAgainstImage": true
       }
@@ -10449,11 +10449,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "f140e032bf241825577c0b78c6c3fa08f7a7f49bd7046feaa5deadabb13f5baa",
+    "definitionHash": "2c6b15a98d25e80770da2517d7413fe24fdc695cd238f1247b3c24d8d691f3ed",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "f140e032bf241825577c0b78c6c3fa08f7a7f49bd7046feaa5deadabb13f5baa"
+      "definitionHash": "2c6b15a98d25e80770da2517d7413fe24fdc695cd238f1247b3c24d8d691f3ed"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

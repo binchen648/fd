@@ -315,7 +315,6 @@ function semanticRoutesForAbility(ability: AuthoringAbilityLike, topLevelTypes: 
   if (isResourceNumericDirectAction(ability, topLevelTypes)) routes.push('RESOURCE_NUMERIC_CORE_DIRECT_ACTION');
   if (isConversionMagicCardZoneShape(ability, topLevelTypes)) routes.push('CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA');
   if (isTimeAlterPlayShape(ability, topLevelTypes)) {
-    routes.push('CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW');
     routes.push('CARD_ACTION_SEMANTICS_MINIMAL:PLAY');
   }
   if (isPlaySourceResponseShape(ability, topLevelTypes)) routes.push('CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE');

@@ -348,11 +348,10 @@ This batch exits the remaining Phase 3 reference pilot allowlist without promoti
 ### Primitive List
 
 - `move_all_remaining`
-- `play_selected_cards`
-- `draw_cards` only as the paired companion effect in the selected Time Alter exact shape
 
 Out of scope:
 
+- `PLAY` semantics, including Time Alter `play_selected_cards + draw_cards`;
 - standalone `draw_cards` direct action until a real representative exists;
 - standalone `move_card` direct action until a real representative exists;
 - `ADD_TO_ATTACK`
@@ -370,9 +369,8 @@ Out of scope:
 Initial migration candidates from exact semantic matches:
 
 - `conversion-magic.preparation`: `move_all_remaining(hand -> discard) + adjust_mana(bound moved count)`.
-- `time-alter.action`: `play_selected_cards(controller hand attack, face_down) + draw_cards(1)`.
 
-No standalone direct `draw_cards` representative exists in the current real authoring data. Drake `sc-drake-1.draw` is a forced trigger and cannot be migrated in this batch. No standalone direct `move_card` representative is promoted either; single-card move effects in current data introduce hidden/private, trigger, lifecycle, battle, or add/activate/close semantics.
+Time Alter `time-alter.action` is owned by `CARD_ACTION_SEMANTICS_MINIMAL_PLAY`, not this Card/Zone batch. No standalone direct `draw_cards` representative exists in the current real authoring data. Drake `sc-drake-1.draw` is a forced trigger and cannot be migrated in this batch. No standalone direct `move_card` representative is promoted either; single-card move effects in current data introduce hidden/private, trigger, lifecycle, battle, or add/activate/close semantics.
 
 ### Inventory
 
@@ -386,20 +384,18 @@ Current implementation-candidate inventory, 2026-09-08:
 
 ```text
 cardZoneAbilities=8
-eligible=2
-skipped=6
+eligible=1
+skipped=7
 
 eligible:
 master.irisviel / master.irisviel.skill.conversion-magic / conversion-magic.preparation / move_all_remaining,adjust_mana
-master.kiritsugu / master.kiritsugu.skill.time-alter / time-alter.action / play_selected_cards,draw_cards
 ```
 
 ### Gate C Inheritance
 
-`CARD_ZONE_CORE_DIRECT_ACTION` may inherit the Time Alter representative Gate C only for visible direct phase actions whose accepted executable semantic form is one of the two exact shapes in this batch and whose only card-zone consequences are:
+`CARD_ZONE_CORE_DIRECT_ACTION` may inherit Gate C only for visible direct phase actions whose accepted executable semantic form is the exact Conversion Magic shape in this batch and whose only card-zone consequences are:
 
-- move all controller hand cards to discard, bind actual moved count, then consume that count for a resource companion effect; or
-- select one controller hand attack, effect-play it face-down through shared `playBatch`, then draw one card.
+- move all controller hand cards to discard, bind actual moved count, then consume that count for a resource companion effect.
 
 Gate C inheritance is forbidden when an ability introduces any of:
 
@@ -413,22 +409,22 @@ Gate C inheritance is forbidden when an ability introduces any of:
 
 ### Required Deletion Proof
 
-- `conversion-magic.preparation` and `time-alter.action` no longer appear in the Phase 3 ability-id pilot allowlist.
-- Both representatives route by semantic form and fail closed if their effects are replaced by non-matching legacy-shaped effects.
+- `conversion-magic.preparation` no longer appears in the Phase 3 ability-id pilot allowlist.
+- The representative routes by semantic form for Gate C inheritance. Execution uses a broader two-node route-candidate guard so corrupted migrated graph parameters are validated by data-flow and fail closed instead of falling back to legacy effects.
 - Once routed to data-flow, validation/runtime errors return `resolution_failed` and do not fall back to `resolveEffect`.
 - Inventory reports eligible/skipped abilities and before/after legacy route counts.
 
 ### Implementation-Candidate Status
 
 - Inventory source: `docs/audits/fd-card-zone-core-direct-action-inventory.mjs`.
-- Eligible direct card-zone abilities from `data/authoring`: 2.
-- Skipped card-zone abilities: 6, each with explicit skip reason.
-- Migrated representatives: Irisviel `conversion-magic.preparation`, Kiritsugu `time-alter.action`.
-- Pilot ability-id routes: 2 -> 0.
-- Exact direct card-zone legacy consumers: 2 -> 0.
-- New-runtime semantic-routed card-zone consumers: 0 -> 2.
-- Dual-compatible migrated consumers: 2 -> 0.
-- Gate C implementer evidence exists in `e2e/fd-time-alter-core-primitive.spec.ts`; `e2e/fd-conversion-magic-core-primitive.spec.ts` remains supporting browser evidence.
+- Eligible direct card-zone abilities from `data/authoring`: 1.
+- Skipped card-zone abilities: 7, each with explicit skip reason.
+- Migrated representative: Irisviel `conversion-magic.preparation`.
+- Pilot ability-id routes: 1 -> 0.
+- Exact direct card-zone legacy consumers: 1 -> 0.
+- New-runtime semantic-routed card-zone consumers: 0 -> 1.
+- Dual-compatible migrated consumers: 1 -> 0.
+- Gate C: `IMPLEMENTED_UNVERIFIED`. `e2e/fd-conversion-magic-core-primitive.spec.ts` is present as implementer candidate evidence for the exact Conversion Magic representative, including browser activation, WS `expectedRevision`, server-authoritative missing-revision rejection, projection/reconnect consistency, stale replay rejection, actual moved-count mana settlement, and repeat-each stability after same-client socket close race hardening.
 - Status claim remains `IMPLEMENTATION_COMPLETE_CANDIDATE`; independent review is required before any `COMPONENT_VERIFIED`, `SCENARIO_VERIFIED`, or `E2E_VERIFIED` promotion.
 
 ## Reviewer Stop Conditions

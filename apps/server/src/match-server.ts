@@ -96,6 +96,12 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
       });
     }
   };
+  const hasActiveSocket = (roomId: string, clientId: string): boolean => {
+    for (const clientSocket of sockets) {
+      if (clientSocket.roomId === roomId && clientSocket.clientId === clientId && clientSocket.socket.readyState === WebSocket.OPEN) return true;
+    }
+    return false;
+  };
 
   const server = createServer(async (request, response) => {
     try {
@@ -198,6 +204,7 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
 
     socket.on('close', () => {
       sockets.delete(clientSocket);
+      if (hasActiveSocket(roomId, clientId)) return;
       try {
         hub.disconnect(roomId, clientId);
         broadcastRoom(roomId, 'client_disconnected');

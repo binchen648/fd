@@ -46,14 +46,21 @@ export class RemoteMatchRoomClient {
     this.socket = null;
   }
 
-  send(message: ClientRoomMessage): void {
+  send(message: ClientRoomMessage): boolean {
+    if (isMutationCommand(message) && typeof message.expectedRevision !== 'number') return false;
+    if (!this.socket) return false;
     this.socket?.send(JSON.stringify(message));
+    return true;
   }
 
   subscribe(listener: RemoteRoomListener): () => void {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
   }
+}
+
+function isMutationCommand(message: ClientRoomMessage): message is Extract<ClientRoomMessage, { type: 'client:dispatch_command' | 'client:end_turn' }> {
+  return message.type === 'client:dispatch_command' || message.type === 'client:end_turn';
 }
 
 export async function createRemoteRoom(httpBaseUrl: string, request: CreateRoomHttpRequest): Promise<RoomHttpResponse> {

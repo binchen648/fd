@@ -102,6 +102,24 @@ describe('ExecutableCardPack compiler', () => {
     ['unsupported direct resource target', (input: ReturnType<typeof sourceInput>) => {
       input.rules.archives.flatMap((archive) => archive.cards).find((card) => card.cardType === 'command_spell')!.abilities![0]!.effects![0]!.player = 'opponent';
     }, /Executable compilation rejected unsupported semantics[\s\S]*Only controller resource\/movement effects are supported/],
+    ['unsupported card-zone move owner', (input: ReturnType<typeof sourceInput>) => {
+      const conversion = input.rules.archives.find((archive) => archive.id === 'master.irisviel')!
+        .cards.find((card) => card.id === 'master.irisviel.skill.conversion-magic')!
+        .abilities!.find((ability) => ability.id === 'conversion-magic.preparation')!;
+      conversion.effects![0]!.owner = 'opponent';
+    }, /Executable compilation rejected unsupported semantics[\s\S]*Only controller ownership is supported/],
+    ['unsupported card-zone move destination', (input: ReturnType<typeof sourceInput>) => {
+      const conversion = input.rules.archives.find((archive) => archive.id === 'master.irisviel')!
+        .cards.find((card) => card.id === 'master.irisviel.skill.conversion-magic')!
+        .abilities!.find((ability) => ability.id === 'conversion-magic.preparation')!;
+      conversion.effects![0]!.to = { zone: 'attack_area' };
+    }, /Resolution data-flow validation failed[\s\S]*Only controller hand to discard move_all_remaining is supported/],
+    ['unsupported card-zone draw player', (input: ReturnType<typeof sourceInput>) => {
+      const timeAlter = input.rules.archives.find((archive) => archive.id === 'master.kiritsugu')!
+        .cards.find((card) => card.id === 'master.kiritsugu.skill.time-alter')!
+        .abilities!.find((ability) => ability.id === 'time-alter.action')!;
+      timeAlter.effects![1]!.player = 'opponent';
+    }, /Executable compilation rejected unsupported semantics[\s\S]*Only controller resource\/movement effects are supported/],
   ])('fails closed for %s', (_name, mutate, expected) => {
     const input = sourceInput();
     mutate(input);
