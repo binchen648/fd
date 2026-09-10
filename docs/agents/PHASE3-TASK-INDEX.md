@@ -195,6 +195,83 @@ Evidence rule:
 - Codex B may produce implementer evidence only.
 - Codex R must independently judge Gate A/B/C promotion.
 
+## TASK P3-B05
+
+Owner: Codex B
+Status: READY_RUNTIME_OWNER
+Branch: `codex/b-p3-b05-play-source-response`
+
+Goal:
+
+`CARD_ACTION_SEMANTICS_PLAY_SOURCE_RESPONSE`.
+
+Depends on:
+
+- P3-B04 scoped `PLAY` accepted by Codex R or explicitly accepted as the runtime baseline.
+- Runtime hot-file ownership reserved.
+- Relevant taxonomy baseline and P3-B05 handoff consumed as read-only input.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- `TASK P3-B05` from this file
+- `docs/reports/2026-09-10-p3-b05-play-source-response-handoff.md`
+- `artifacts/phase3-b05-play-source-response-handoff.json`
+- `docs/rules/FD-Game-Rules-Final.md` response timing, cost payment, and card play semantics only
+- `docs/plans/fd-card-engine-stabilization-plan.md` Phase 3 only
+- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant `PLAY_SOURCE_CARD_WITH_COST_RESPONSE` rows only
+- `docs/audits/fd-skill-semantic-axis-matrix.md` relevant Volumen / response rows only
+
+May touch:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/types.ts` only if the primitive contract requires it
+- focused mechanic tests
+- scoped implementation report
+- one scoped browser/server spec if required by Gate C candidate evidence
+
+Must not touch:
+
+- coverage KPI
+- taxonomy classifier rules
+- evidence classification
+- scoped normal `PLAY` contract
+- unrelated card-action contracts
+- Trigger runtime beyond the existing response-window hook needed to open the Volumen prompt
+- Lifecycle runtime
+- Hidden projection runtime
+- Battle result runtime
+
+Hot files:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+
+Concurrent conflicts:
+
+- any other runtime task touching hot files
+
+Required output:
+
+- before/after legacy route count against the accepted A/B04 baseline
+- exact `play_source_card(face_up)` semantic routing proof
+- fixed `pay_mana(2)` fail-closed proof
+- source-card identity and source-still-in-hand revalidation proof
+- focused tests
+- implementation report
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+
+Evidence rule:
+
+- Codex B may produce implementer evidence only.
+- Codex R must independently judge Gate A/B/C promotion.
+
 ## Prompt Templates
 
 Codex A startup prompt:
@@ -216,8 +293,8 @@ Codex B startup prompt:
 You are Codex B for FD Phase 3.
 
 Read docs/agents/PHASE3-AGENT-CONTRACT.md first.
-Then read only TASK P3-B04 from docs/agents/PHASE3-TASK-INDEX.md.
-Do not read the full parallel work queue unless P3-B04 explicitly tells you to.
+Then read only the assigned TASK from docs/agents/PHASE3-TASK-INDEX.md.
+Do not read the full parallel work queue unless the assigned task explicitly tells you to.
 You own runtime implementation only for this task's declared hot files.
 Do not redefine taxonomy, KPI, or evidence classification.
 Do not expand scope into Trigger, Lifecycle, Interaction, Hidden, or Battle runtime.
