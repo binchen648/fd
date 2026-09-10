@@ -1,0 +1,173 @@
+{
+  "schemaVersion": "fd-phase3-agent-handoff-v1",
+  "generatedAt": "2026-09-10T00:00:00.000Z",
+  "fromAgent": "Codex A",
+  "toAgent": "Codex B",
+  "sourceTask": "P3-A02",
+  "targetTask": "P3-B05",
+  "targetBranch": "codex/b-p3-b05-play-source-response",
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
+  "reviewerAuthorityNotice": "Automation handoff only. It does not promote Gate A/B/C, Phase 3, or Release status.",
+  "targetScope": {
+    "mechanicBatch": "CARD_ACTION_SEMANTICS_PLAY_SOURCE_RESPONSE",
+    "contract": "PLAY_SOURCE_CARD_WITH_COST_RESPONSE",
+    "eligibleAbilityCount": 1,
+    "eligibleAbilities": [
+      {
+        "archiveId": "master.kayneth",
+        "cardId": "master.kayneth.deck.volumen-hydrargyrum",
+        "abilityId": "volumen.extra-play",
+        "abilityKind": "response",
+        "activationTrigger": "controller_combat_action_window",
+        "responseWindowOpens": "controller_combat_action_window",
+        "costPrimitives": [
+          "pay_mana"
+        ],
+        "fixedManaCost": 2,
+        "effectPrimitives": [
+          "play_source_card"
+        ],
+        "playFace": "face_up",
+        "semanticRoute": "CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE"
+      }
+    ],
+    "skippedAbilityCount": 6,
+    "skippedAbilities": [
+      {
+        "archiveId": "master.kiritsugu",
+        "cardId": "master.kiritsugu.skill.time-alter",
+        "abilityId": "time-alter.action",
+        "effectPrimitives": [
+          "play_selected_cards",
+          "draw_cards"
+        ],
+        "skipReason": "separate_contract:normal_play_selected_cards"
+      },
+      {
+        "archiveId": "master.maiya",
+        "cardId": "master.maiya.skill.military",
+        "abilityId": "military.attach-support-shot",
+        "effectPrimitives": [
+          "attach_card_to_player_attack"
+        ],
+        "skipReason": "out_of_scope:add_to_attack_semantics"
+      },
+      {
+        "archiveId": "master.maiya",
+        "cardId": "master.maiya.deck.support-shot",
+        "abilityId": "support-shot.append-only",
+        "effectPrimitives": [
+          "append_only_rule"
+        ],
+        "skipReason": "out_of_scope:append_only_rule_marker"
+      },
+      {
+        "archiveId": "master.olga-marie",
+        "cardId": "master.olga-marie.skill.astronomical-science",
+        "abilityId": "astronomical-science.first-loss",
+        "effectPrimitives": [
+          "activate_card_by_id"
+        ],
+        "skipReason": "out_of_scope:activate_semantics"
+      },
+      {
+        "archiveId": "servant.artoria-alt",
+        "cardId": "servant.artoria-alt.skill.sc-artoria-alt-2",
+        "abilityId": "sc-artoria-alt-2.angra-mainyu-embrace",
+        "effectPrimitives": [
+          "close_source_card"
+        ],
+        "skipReason": "out_of_scope:close_semantics"
+      },
+      {
+        "archiveId": "servant.drake",
+        "cardId": "servant.drake.skill.sc-drake-1",
+        "abilityId": "sc-drake-1.mount-summon",
+        "effectPrimitives": [
+          "play_selected_cards"
+        ],
+        "skipReason": "not_verified:hidden_power_lifecycle_play_selected_shape"
+      }
+    ]
+  },
+  "baselineForB": {
+    "baselineRule": "Use the accepted post-P3-B04 coverage output as the numeric before baseline. The provisional A automation baseline remains totalAbilities=92, newRuntimeSemanticRouted=8, legacyExecuteAbility=3, legacyResolveEffect=53, dualRuntime=0, pilotAllowlist=0, notClassifiable=28.",
+    "requiresB04AcceptedBaseline": true,
+    "provisionalA02Baseline": {
+      "totalAbilities": 92,
+      "newRuntimeSemanticRouted": 8,
+      "legacyExecuteAbility": 3,
+      "legacyResolveEffect": 53,
+      "dualRuntime": 0,
+      "pilotAllowlist": 0,
+      "notClassifiable": 28,
+      "compiledDefinitionHash": "1bccc97dd813d9b48208ff6223db40f11a995ca123a513e78e7e444d9bdafe2f"
+    }
+  },
+  "p3b05RequiredReadList": [
+    "docs/agents/PHASE3-AGENT-CONTRACT.md",
+    "TASK P3-B05 from docs/agents/PHASE3-TASK-INDEX.md",
+    "docs/reports/2026-09-10-p3-b05-play-source-response-handoff.md",
+    "artifacts/phase3-b05-play-source-response-handoff.json",
+    "docs/rules/FD-Game-Rules-Final.md response timing, cost payment, and card play semantics only",
+    "docs/plans/fd-card-engine-stabilization-plan.md Phase 3 only",
+    "docs/audits/fd-skill-mechanic-family-matrix.md relevant PLAY_SOURCE_CARD_WITH_COST_RESPONSE rows only",
+    "docs/audits/fd-skill-semantic-axis-matrix.md relevant Volumen / response rows only"
+  ],
+  "bMayTouch": [
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/resolution-dataflow.ts",
+    "packages/rules/src/ability/executable-card-pack.ts",
+    "packages/rules/src/ability/types.ts only if the primitive contract requires it",
+    "focused mechanic tests",
+    "scoped implementation report",
+    "one scoped browser/server spec if required by Gate C candidate evidence"
+  ],
+  "bMustNotTouch": [
+    "coverage KPI",
+    "taxonomy classifier rules",
+    "evidence classification",
+    "scoped normal PLAY contract",
+    "unrelated card-action contracts",
+    "Trigger runtime beyond the existing response-window hook needed to open the Volumen prompt",
+    "Lifecycle runtime",
+    "Hidden projection runtime",
+    "Battle result runtime"
+  ],
+  "hotFilesReservedForB": [
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/resolution-dataflow.ts",
+    "packages/rules/src/ability/executable-card-pack.ts"
+  ],
+  "handoffChecksForB": [
+    "Do not inherit B04 scoped PLAY Gate C.",
+    "Route by exact response/source-card semantic shape, not by ability id.",
+    "Require response kind and controller_combat_action_window trigger/window.",
+    "Require fixed pay_mana(2) and fail closed for missing, variable, pending, or wrong cost.",
+    "Require source card to still be owned by the controller and in hand at server revalidation.",
+    "Do not migrate normal play_selected_cards, Drake mount-summon, add, activate, close, or create-and-activate.",
+    "Report before/after legacy route count against the accepted post-P3-B04 baseline."
+  ],
+  "gateCInheritanceInvalidationsForPlaySourceResponse": [
+    "normal phase_action PLAY",
+    "play_selected_cards",
+    "multiple selected cards",
+    "face_down source play",
+    "non-hand source card",
+    "missing source identity revalidation",
+    "variable cost",
+    "pending payment",
+    "target selection",
+    "hidden/private choice",
+    "ADD_TO_ATTACK",
+    "CREATE_AND_ACTIVATE",
+    "ACTIVATE",
+    "CLOSE",
+    "lifecycle cleanup",
+    "source close",
+    "modifier or power calculation",
+    "battle result dependency",
+    "defeat or scoring side effects",
+    "recursive trigger processing beyond the scoped source-card play result"
+  ]
+}
