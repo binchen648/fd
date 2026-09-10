@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-10T01:30:07.617Z",
+  "generatedAt": "2026-09-10T04:15:02.966Z",
   "sourceFingerprint": "4efa585d747b2f765d8248601c77daa12d247e6bfaa775a9d033afcd6b881854",
   "counts": {
     "totalArchives": 14,
@@ -4089,31 +4089,31 @@
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 566,
+        "line": 572,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 762,
+        "line": 768,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 769,
+        "line": 775,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 819,
+        "line": 825,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1318,
+        "line": 1367,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },

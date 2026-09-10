@@ -65,7 +65,7 @@ Volumen is not a `CARD_ACTION_SEMANTICS_MINIMAL_PLAY` eligible ability. Its evid
 
 ## Verification
 
-Fresh commands run on 2026-09-08:
+Fresh commands run on 2026-09-10:
 
 ```text
 node docs/audits/fd-card-action-play-inventory.mjs
@@ -73,13 +73,33 @@ PASS: sourceFiles=14, cardActionSemanticAbilities=7, eligible=1, skipped=6; Volu
 ```
 
 ```text
-npx vitest run packages/rules/tests/regression/card-action-play-source-response.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts
-PASS: 2 test files, 20 tests
+npx vitest run packages/rules/tests/regression/card-action-play-source-response.test.ts packages/rules/tests/regression/card-action-play.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/regression/complex-skills-regression.test.ts
+PASS: 5 test files, 85 tests
 ```
 
 ```text
-npx playwright test e2e/fd-volumen-extra-play-card-action.spec.ts --project=chromium
+npx playwright test -c playwright.config.ts e2e/fd-volumen-extra-play-card-action.spec.ts --project=chromium
 PASS: 1 test
+```
+
+```text
+npx playwright test -c playwright.config.ts e2e/fd-volumen-extra-play-card-action.spec.ts --project=chromium --repeat-each=5
+PASS: 5 tests
+```
+
+```text
+npm run content:compile
+PASS: 7 masters, 7 servants, 20 events, 0 blocking issues
+```
+
+```text
+npm run phase3:coverage
+PASS: blockingIssues=0, newRuntimeSemanticRouted=8, legacyResolveEffect=53, dualRuntime=0, notClassifiable=28
+```
+
+```text
+npm run test:ci
+PASS: 83 files, 490 tests
 ```
 
 ## Boundaries
