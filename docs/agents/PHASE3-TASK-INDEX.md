@@ -352,6 +352,88 @@ Evidence rule:
 - Codex B may produce implementer evidence only.
 - Codex R must independently judge Gate A/B/C promotion.
 
+## TASK P3-B07
+
+Owner: Codex B
+Status: READY_RUNTIME_OWNER
+Branch: `codex/b-p3-b07-activate`
+
+Goal:
+
+`CARD_ACTION_SEMANTICS_ACTIVATE`.
+
+Depends on:
+
+- P3-B06 scoped `ADD_TO_ATTACK` accepted by Codex R or explicitly accepted as the runtime baseline.
+- Runtime hot-file ownership reserved.
+- Relevant taxonomy baseline and P3-B07 handoff consumed as read-only input.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- `TASK P3-B07` from this file
+- `docs/reports/2026-09-10-p3-b07-activate-handoff.md`
+- `artifacts/phase3-b07-activate-handoff.json`
+- `docs/rules/FD-Game-Rules-Final.md` battle loss, round-end timing, and existing-card activation semantics only
+- `docs/plans/fd-card-engine-stabilization-plan.md` Phase 3 only
+- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant `ACTIVATE` rows only
+- `docs/audits/fd-skill-semantic-axis-matrix.md` relevant Olga / Trismegistus rows only
+
+May touch:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/types.ts` only if the primitive contract requires it
+- focused mechanic tests
+- scoped implementation report
+- one scoped browser/server spec if required by Gate C candidate evidence
+
+Must not touch:
+
+- coverage KPI
+- taxonomy classifier rules
+- evidence classification
+- scoped normal `PLAY` contract
+- scoped `PLAY_SOURCE_RESPONSE` contract
+- scoped `ADD_TO_ATTACK` contract
+- unrelated card-action contracts
+- broad Trigger runtime beyond the exact Olga first-loss pending marker and round-end consumption
+- Lifecycle runtime beyond this exact delayed activation consumption
+- Hidden projection runtime
+- Battle result runtime beyond consuming the existing first-loss event
+- roster-wide JSON
+
+Hot files:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+
+Concurrent conflicts:
+
+- any other runtime task touching hot files
+
+Required output:
+
+- before/after legacy route count against the accepted post-P3-B06 baseline
+- exact `activate_card_by_id` semantic routing proof
+- explicit proof that first battle loss only records a pending delayed activation
+- explicit proof that formal `round_end` consumes the pending activation and only then runs `activate_card_by_id`
+- target card identity and allowed source-zone revalidation proof
+- no immediate activation, duplicate pending, wrong-zone, missing-target, already-active, and stale/duplicate round-end negative proof
+- focused tests
+- implementation report
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+
+Evidence rule:
+
+- Codex B may produce implementer evidence only.
+- Codex R must independently judge Gate A/B/C promotion.
+
 ## Prompt Templates
 
 Codex A startup prompt:
