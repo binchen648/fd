@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-09T14:14:45.306Z",
+  "generatedAt": "2026-09-09T08:28:15.554Z",
   "sourceFingerprint": "4efa585d747b2f765d8248601c77daa12d247e6bfaa775a9d033afcd6b881854",
   "counts": {
     "totalArchives": 14,
@@ -738,7 +738,8 @@
       "specialSubsystems": [],
       "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
       "semanticRoutes": [
-        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY"
+        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY",
+        "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW"
       ],
       "taxonomyWarnings": [
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
@@ -1694,7 +1695,7 @@
         "BATTLE_INTEGRATION"
       ],
       "specialSubsystems": [],
-      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "runtimeRoute": "NOT_CLASSIFIABLE",
       "semanticRoutes": [],
       "taxonomyWarnings": [
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
@@ -1857,7 +1858,7 @@
       "resultBinding": [],
       "battleIntegration": [],
       "specialSubsystems": [],
-      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "runtimeRoute": "NOT_CLASSIFIABLE",
       "semanticRoutes": [],
       "taxonomyWarnings": [
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger",
@@ -2604,7 +2605,7 @@
       "resultBinding": [],
       "battleIntegration": [],
       "specialSubsystems": [],
-      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "runtimeRoute": "NOT_CLASSIFIABLE",
       "semanticRoutes": [],
       "taxonomyWarnings": [
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
@@ -2869,7 +2870,7 @@
         "BATTLE_INTEGRATION"
       ],
       "specialSubsystems": [],
-      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "runtimeRoute": "NOT_CLASSIFIABLE",
       "semanticRoutes": [],
       "taxonomyWarnings": [
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
@@ -3323,7 +3324,7 @@
       "resultBinding": [],
       "battleIntegration": [],
       "specialSubsystems": [],
-      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "runtimeRoute": "NOT_CLASSIFIABLE",
       "semanticRoutes": [],
       "taxonomyWarnings": [
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger",
@@ -3723,7 +3724,7 @@
         "BATTLE_INTEGRATION"
       ],
       "specialSubsystems": [],
-      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "runtimeRoute": "NOT_CLASSIFIABLE",
       "semanticRoutes": [],
       "taxonomyWarnings": [
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
@@ -3988,12 +3989,13 @@
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY": 1,
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE": 1,
       "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA": 1,
+      "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW": 1,
       "RESOURCE_NUMERIC_CORE_DIRECT_ACTION": 3
     },
     "newRuntimeConsumers": {
       "before": 0,
-      "after": 9,
-      "delta": 9
+      "after": 8,
+      "delta": 8
     },
     "legacyExecuteAbilityConsumers": {
       "before": 3,
@@ -4001,8 +4003,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 58,
-      "after": 58,
+      "before": 53,
+      "after": 53,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -4012,8 +4014,8 @@
     },
     "notClassifiable": {
       "before": 33,
-      "after": 22,
-      "delta": -11
+      "after": 28,
+      "delta": -5
     },
     "pilotAllowlistEntries": {
       "before": 0,
@@ -4089,31 +4091,31 @@
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 564,
+        "line": 563,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 760,
+        "line": 759,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 767,
+        "line": 766,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 817,
+        "line": 816,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1265,
+        "line": 1141,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
@@ -4222,8 +4224,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 58,
-      "after": 58,
+      "before": 53,
+      "after": 53,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -4316,6 +4318,12 @@
       "power_bonus": 2,
       "transfer_vp_to_owner": 1
     }
+  },
+  "gateEvidenceMetadata": {
+    "authority": "IMPLEMENTER_EVIDENCE_ONLY",
+    "allowedClaim": "AUTOMATION_BASELINE_CANDIDATE",
+    "reviewerRequiredForPromotion": true,
+    "promotedStatuses": []
   },
   "taxonomyDriftProtections": {
     "warnings": [
@@ -5005,9 +5013,9 @@
   "compiledDefinitions": {
     "packId": "fd-playtest-v1",
     "version": 1,
-    "definitionHash": "2c6b15a98d25e80770da2517d7413fe24fdc695cd238f1247b3c24d8d691f3ed",
+    "definitionHash": "1bccc97dd813d9b48208ff6223db40f11a995ca123a513e78e7e444d9bdafe2f",
     "compiledCards": 70,
     "compiledCharacters": 14,
-    "blockingIssues": 0
+    "blockingIssues": 93
   }
 }

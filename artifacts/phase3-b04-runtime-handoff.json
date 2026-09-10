@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "fd-phase3-agent-handoff-v1",
+  "generatedAt": "2026-09-09T11:35:00.000Z",
+  "fromAgent": "Codex A",
+  "toAgent": "Codex B",
+  "sourceTask": "P3-A01",
+  "targetTask": "P3-B04",
+  "targetBranch": "codex/b-p3-b04-card-action-play",
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
+  "reviewerAuthorityNotice": "Automation handoff only. It does not promote Gate A/B/C, Phase 3, or Release status.",
+  "targetScope": {
+    "mechanicBatch": "CARD_ACTION_SEMANTICS_MINIMAL_PLAY",
+    "contract": "PLAY",
+    "eligibleAbilityCount": 1,
+    "eligibleAbilities": [
+      {
+        "archiveId": "master.kiritsugu",
+        "cardId": "master.kiritsugu.skill.time-alter",
+        "abilityId": "time-alter.action",
+        "effectPrimitives": [
+          "play_selected_cards",
+          "draw_cards"
+        ],
+        "semanticRoute": "CARD_ACTION_SEMANTICS_MINIMAL:PLAY"
+      }
+    ],
+    "skippedAbilityCount": 6,
+    "skippedAbilities": [
+      {
+        "archiveId": "master.kayneth",
+        "cardId": "master.kayneth.deck.volumen-hydrargyrum",
+        "abilityId": "volumen.extra-play",
+        "effectPrimitives": [
+          "play_source_card"
+        ],
+        "skipReason": "separate_contract:play_source_card_response"
+      },
+      {
+        "archiveId": "master.maiya",
+        "cardId": "master.maiya.skill.military",
+        "abilityId": "military.attach-support-shot",
+        "effectPrimitives": [
+          "attach_card_to_player_attack"
+        ],
+        "skipReason": "out_of_scope:add_to_attack_semantics"
+      },
+      {
+        "archiveId": "master.maiya",
+        "cardId": "master.maiya.deck.support-shot",
+        "abilityId": "support-shot.append-only",
+        "effectPrimitives": [
+          "append_only_rule"
+        ],
+        "skipReason": "out_of_scope:append_only_rule_marker"
+      },
+      {
+        "archiveId": "master.olga-marie",
+        "cardId": "master.olga-marie.skill.astronomical-science",
+        "abilityId": "astronomical-science.first-loss",
+        "effectPrimitives": [
+          "activate_card_by_id"
+        ],
+        "skipReason": "out_of_scope:activate_semantics"
+      },
+      {
+        "archiveId": "servant.artoria-alt",
+        "cardId": "servant.artoria-alt.skill.sc-artoria-alt-2",
+        "abilityId": "sc-artoria-alt-2.angra-mainyu-embrace",
+        "effectPrimitives": [
+          "close_source_card"
+        ],
+        "skipReason": "out_of_scope:close_semantics"
+      },
+      {
+        "archiveId": "servant.drake",
+        "cardId": "servant.drake.skill.sc-drake-1",
+        "abilityId": "sc-drake-1.mount-summon",
+        "effectPrimitives": [
+          "play_selected_cards"
+        ],
+        "skipReason": "not_verified:play_selected_shape_not_exact_match"
+      }
+    ]
+  },
+  "baselineForB": {
+    "totalAbilities": 92,
+    "newRuntimeSemanticRouted": 8,
+    "legacyExecuteAbility": 3,
+    "legacyResolveEffect": 53,
+    "dualRuntime": 0,
+    "pilotAllowlist": 0,
+    "notClassifiable": 28,
+    "compiledDefinitionHash": "1bccc97dd813d9b48208ff6223db40f11a995ca123a513e78e7e444d9bdafe2f"
+  },
+  "p3b04RequiredReadList": [
+    "docs/agents/PHASE3-AGENT-CONTRACT.md",
+    "TASK P3-B04 from docs/agents/PHASE3-TASK-INDEX.md",
+    "docs/rules/FD-Game-Rules-Final.md card play semantics only",
+    "docs/plans/fd-card-engine-stabilization-plan.md Phase 3 only",
+    "docs/audits/fd-skill-mechanic-family-matrix.md relevant CARD_ACTION_SEMANTICS rows only",
+    "docs/audits/fd-skill-semantic-axis-matrix.md relevant ability rows only"
+  ],
+  "bMayTouch": [
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/resolution-dataflow.ts",
+    "packages/rules/src/ability/executable-card-pack.ts",
+    "packages/rules/src/ability/types.ts only if primitive contract requires it",
+    "focused mechanic tests",
+    "scoped implementation report"
+  ],
+  "bMustNotTouch": [
+    "coverage KPI",
+    "taxonomy classifier rules",
+    "evidence classification",
+    "unrelated card-action contracts",
+    "Trigger runtime",
+    "Lifecycle runtime",
+    "Interaction runtime",
+    "Hidden projection runtime",
+    "Battle runtime"
+  ],
+  "hotFilesReservedForB": [
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/resolution-dataflow.ts",
+    "packages/rules/src/ability/executable-card-pack.ts"
+  ],
+  "handoffChecksForB": [
+    "Consume this baseline as read-only input before editing runtime.",
+    "Report before/after legacy route count against the A baseline.",
+    "Keep Volumen under PLAY_SOURCE_CARD_WITH_COST_RESPONSE, not scoped PLAY.",
+    "Keep Drake mount-summon skipped until hidden/private, power, and lifecycle dependencies are handled by separate tasks.",
+    "Do not redefine taxonomy or evidence classification to improve B metrics."
+  ],
+  "gateCInheritanceInvalidationsForPlay": [
+    "play_source_card",
+    "costed play",
+    "response-window play",
+    "hidden/private target or choice",
+    "power or lifecycle dependency",
+    "ADD_TO_ATTACK",
+    "CREATE_AND_ACTIVATE",
+    "ACTIVATE",
+    "CLOSE",
+    "card movement outside exact selected controller hand attack to attack_area face_down",
+    "missing mandatory target availability check before activation"
+  ]
+}

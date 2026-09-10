@@ -324,9 +324,9 @@ function semanticRoutesForAbility(ability: AuthoringAbilityLike, topLevelTypes: 
   return unique(routes);
 }
 
-function classifyRuntimeRoute(ability: AuthoringAbilityLike, topLevelTypes: string[], semanticRoutes: string[]): RuntimeRoute {
+function classifyRuntimeRoute(ability: AuthoringAbilityLike, topLevelTypes: string[], semanticRoutes: string[], hasUnknownPrimitive: boolean): RuntimeRoute {
+  if (hasUnknownPrimitive) return 'NOT_CLASSIFIABLE';
   if (semanticRoutes.length > 0 || hasDataFlowSyntax(ability)) return 'NEW_RUNTIME_SEMANTIC_ROUTED';
-  if (topLevelTypes.some((type) => !knownPrimitiveTypes.has(type))) return 'NOT_CLASSIFIABLE';
   if (topLevelTypes.some((type) => legacyCompatibleTypes.has(type))) return 'LEGACY_RESOLVE_EFFECT';
   if ((ability.requirements ?? []).length > 0 || (ability.targets ?? []).length > 0 || (ability.cost ?? []).length > 0) {
     return 'LEGACY_EXECUTE_ABILITY';
@@ -428,14 +428,16 @@ export function classifyAbilityForCoverage(
     : [];
   const specialSubsystems = allTypes.some((type) => specialTypes.has(type)) ? ['SPECIAL_SUBSYSTEM'] : [];
 
+  let hasUnknownPrimitive = false;
   for (const primitive of allTypes) {
     if (!knownPrimitiveTypes.has(primitive)) {
+      hasUnknownPrimitive = true;
       unclassifiedReasons.push(`NOT_CLASSIFIABLE:unknown_effect_primitive:${primitive}`);
     }
   }
 
   const semanticRoutes = semanticRoutesForAbility(ability, topLevelTypes);
-  const runtimeRoute = classifyRuntimeRoute(ability, topLevelTypes, semanticRoutes);
+  const runtimeRoute = classifyRuntimeRoute(ability, topLevelTypes, semanticRoutes, hasUnknownPrimitive);
   if (runtimeRoute === 'NOT_CLASSIFIABLE' && unclassifiedReasons.length === 0) {
     unclassifiedReasons.push('NOT_CLASSIFIABLE:runtime_route_unknown');
   }
@@ -626,6 +628,12 @@ export function buildCoverageFromArchives(archives: AuthoringArchiveLike[], opti
       primitiveFamilyCounts: countAxis(rows, 'effectPrimitiveFamilies'),
       unknownPrimitiveCounts,
     },
+    gateEvidenceMetadata: {
+      authority: 'IMPLEMENTER_EVIDENCE_ONLY',
+      allowedClaim: 'AUTOMATION_BASELINE_CANDIDATE',
+      reviewerRequiredForPromotion: true,
+      promotedStatuses: [],
+    },
     taxonomyDriftProtections: {
       warnings: rows.flatMap((row) =>
         row.taxonomyWarnings.map((warning) => ({
@@ -649,7 +657,7 @@ export function buildCoverageFromArchives(archives: AuthoringArchiveLike[], opti
   return artifact;
 }
 
-function loadAuthoringArchives(workspaceRoot: string): AuthoringArchiveLike[] {
+export function loadAuthoringArchives(workspaceRoot: string): AuthoringArchiveLike[] {
   const archives: AuthoringArchiveLike[] = [];
   for (const root of authoringRoots) {
     const directory = resolve(workspaceRoot, root);

@@ -1,9 +1,20 @@
 {
   "schemaVersion": "fd-phase3-review-packet-v1",
-  "generatedAt": "2026-09-09T11:49:51.110Z",
+  "generatedAt": "2026-09-09T08:28:15.712Z",
   "task": "P3-A01",
   "batch": "PHASE_3_COVERAGE_AND_EVIDENCE_AUTOMATION",
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
   "reviewerAuthorityNotice": "Implementation packet only. It does not promote Gate A/B/C, Phase 3, or Release status.",
+  "hotRuntimeFilesTouched": {
+    "status": "YES",
+    "files": [
+      "packages/rules/src/ability/executable-card-pack.ts",
+      "packages/rules/src/ability/interpreter.ts",
+      "packages/rules/src/ability/resolution-dataflow.ts",
+      "packages/rules/src/ability/types.ts",
+      "packages/rules/src/match-session.ts"
+    ]
+  },
   "changedSemanticPrimitives": [],
   "affectedAbilities": [
     {
@@ -38,7 +49,8 @@
       "cardId": "master.kiritsugu.skill.time-alter",
       "abilityId": "time-alter.action",
       "semanticRoutes": [
-        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY"
+        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY",
+        "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW"
       ],
       "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
     },
@@ -86,12 +98,13 @@
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY": 1,
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE": 1,
       "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA": 1,
+      "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW": 1,
       "RESOURCE_NUMERIC_CORE_DIRECT_ACTION": 3
     },
     "newRuntimeConsumers": {
       "before": 0,
-      "after": 9,
-      "delta": 9
+      "after": 8,
+      "delta": 8
     },
     "legacyExecuteAbilityConsumers": {
       "before": 3,
@@ -99,8 +112,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 58,
-      "after": 58,
+      "before": 53,
+      "after": 53,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -110,8 +123,8 @@
     },
     "notClassifiable": {
       "before": 33,
-      "after": 22,
-      "delta": -11
+      "after": 28,
+      "delta": -5
     },
     "pilotAllowlistEntries": {
       "before": 0,
@@ -211,7 +224,7 @@
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1190,
+        "line": 1141,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
@@ -320,8 +333,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 58,
-      "after": 58,
+      "before": 53,
+      "after": 53,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -558,10 +571,22 @@
   },
   "remainingLegacy": {
     "legacyExecuteAbilityConsumers": 3,
-    "legacyResolveEffectConsumers": 58,
+    "legacyResolveEffectConsumers": 53,
     "dualRuntimeConsumers": 0,
-    "notClassifiable": 22
+    "notClassifiable": 28
   },
+  "knownLimitations": [
+    "Runtime routing classification is conservative static evidence, not a complete call graph.",
+    "Card-specific handler detection is static literal scanning only.",
+    "Gate A/B/C promotion remains reviewer-owned and is not decided by this packet.",
+    "Content blocking issues in compiled definitions remain release-gate evidence, not automation acceptance."
+  ],
+  "areasNotVerified": [
+    "Independent reviewer promotion.",
+    "Complete runtime call graph ownership.",
+    "Full roster migration.",
+    "Release readiness."
+  ],
   "unclassifiedItems": [
     {
       "archiveId": "master.kayneth",
