@@ -124,6 +124,65 @@ Runtime defect handling:
 - Record `RUNTIME_SEMANTIC_GAP` with evidence and hand to Codex B.
 - Do not fix runtime behavior.
 
+## TASK P3-A03
+
+Owner: Codex A
+Status: READY
+Branch: `codex/a-p3-a01-coverage-automation`
+
+Goal:
+
+Synchronize reviewer outcomes into Phase 3 automation evidence without changing runtime behavior or independently promoting Gate A/B/C status.
+
+Depends on:
+
+- P3-A01 accepted as the automation baseline.
+- P3-A02 automation audit and reusable evidence checklist available.
+- Codex R or user-provided review decision for a completed Codex B slice.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- `TASK P3-A03` from this file
+- the relevant B handoff packet
+- the relevant B implementation report or reviewer summary
+- `artifacts/phase3-skill-coverage.json` only as generated evidence, not as authority over runtime correctness
+
+May touch:
+
+- `docs/agents/PHASE3-TASK-INDEX.md`
+- `docs/reports/*`
+- machine-readable evidence artifacts
+
+Do not touch:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/match-session.ts`
+- runtime semantics
+- primitive behavior
+- semantic routing
+- card-specific runtime behavior
+- Gate A/B/C status promotion
+
+Required output:
+
+- reviewer outcome sync report
+- machine-readable sync artifact
+- explicit before/after coverage numbers reported by the reviewed B slice
+- explicit remaining legacy / secondary runtime boundaries
+- next B-slice handoff or reviewer packet only when the reviewed slice is accepted as a candidate
+
+Completion status allowed:
+
+- `AUTOMATION_BASELINE_CANDIDATE`
+
+Runtime defect handling:
+
+- Record `RUNTIME_SEMANTIC_GAP` with evidence and hand to Codex B.
+- Do not fix runtime behavior.
+
 ## TASK P3-B04
 
 Owner: Codex B
@@ -423,6 +482,89 @@ Required output:
 - explicit proof that formal `round_end` consumes the pending activation and only then runs `activate_card_by_id`
 - target card identity and allowed source-zone revalidation proof
 - no immediate activation, duplicate pending, wrong-zone, missing-target, already-active, and stale/duplicate round-end negative proof
+- focused tests
+- implementation report
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+
+Evidence rule:
+
+- Codex B may produce implementer evidence only.
+- Codex R must independently judge Gate A/B/C promotion.
+
+## TASK P3-B08
+
+Owner: Codex B
+Status: READY_RUNTIME_OWNER
+Branch: `codex/b-p3-b08-close`
+
+Goal:
+
+`CARD_ACTION_SEMANTICS_CLOSE`.
+
+Depends on:
+
+- P3-B07 scoped `ACTIVATE` accepted by Codex R or explicitly accepted as the runtime baseline.
+- Runtime hot-file ownership reserved.
+- Relevant taxonomy baseline and P3-B08 handoff consumed as read-only input.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- `TASK P3-B08` from this file
+- `docs/reports/2026-09-10-p3-b08-close-handoff.md`
+- `artifacts/phase3-b08-close-handoff.json`
+- `docs/rules/FD-Game-Rules-Final.md` residual source close, card-play trigger, and active-card close semantics only
+- `docs/plans/fd-card-engine-stabilization-plan.md` Phase 3 only
+- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant `CLOSE` rows only
+- `docs/audits/fd-skill-semantic-axis-matrix.md` relevant Artoria Alter source-close rows only
+
+May touch:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/types.ts` only if the primitive contract requires it
+- focused mechanic tests
+- scoped implementation report
+- one scoped browser/server spec if required by Gate C candidate evidence
+
+Must not touch:
+
+- coverage KPI
+- taxonomy classifier rules
+- evidence classification
+- scoped normal `PLAY` contract
+- scoped `PLAY_SOURCE_RESPONSE` contract
+- scoped `ADD_TO_ATTACK` contract
+- scoped `ACTIVATE` contract
+- unrelated card-action contracts
+- broad Trigger runtime beyond exact residual `on_card_played` source-close dispatch
+- broad Lifecycle runtime beyond validating active face-up source close for this exact contract
+- Hidden projection runtime
+- Battle result runtime
+- roster-wide JSON
+
+Hot files:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+
+Concurrent conflicts:
+
+- any other runtime task touching hot files
+
+Required output:
+
+- before/after legacy route count against the accepted post-P3-B07 baseline
+- exact `close_source_card` semantic routing proof
+- explicit proof that only Artoria Alter `sc-artoria-alt-2.angra-mainyu-embrace` exact residual source-close shape is migrated
+- source-card identity, active-zone, face-up, controller, and compiled-definition revalidation proof
+- triggering played-card visibility and `宝具` attribute revalidation proof
+- wrong-kind, wrong-trigger, targeted, costed, creates, extra-effect, missing-source-zone condition, missing-played-card-attribute condition, off-board, inactive, face-down, wrong-controller, and stale replay negative proof
 - focused tests
 - implementation report
 
