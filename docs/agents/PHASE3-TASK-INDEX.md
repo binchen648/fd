@@ -272,6 +272,86 @@ Evidence rule:
 - Codex B may produce implementer evidence only.
 - Codex R must independently judge Gate A/B/C promotion.
 
+## TASK P3-B06
+
+Owner: Codex B
+Status: READY_RUNTIME_OWNER
+Branch: `codex/b-p3-b06-add-to-attack`
+
+Goal:
+
+`CARD_ACTION_SEMANTICS_ADD_TO_ATTACK`.
+
+Depends on:
+
+- P3-B05 scoped `PLAY_SOURCE_RESPONSE` accepted by Codex R or explicitly accepted as the runtime baseline.
+- Runtime hot-file ownership reserved.
+- Relevant taxonomy baseline and P3-B06 handoff consumed as read-only input.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- `TASK P3-B06` from this file
+- `docs/reports/2026-09-10-p3-b06-add-to-attack-handoff.md`
+- `artifacts/phase3-b06-add-to-attack-handoff.json`
+- `docs/rules/FD-Game-Rules-Final.md` support/append-to-attack, cost payment, and battle winner exclusion semantics only
+- `docs/plans/fd-card-engine-stabilization-plan.md` Phase 3 only
+- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant `ADD_TO_ATTACK` rows only
+- `docs/audits/fd-skill-semantic-axis-matrix.md` relevant Maiya / support-shot rows only
+
+May touch:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/types.ts` only if the primitive contract requires it
+- focused mechanic tests
+- scoped implementation report
+- one scoped browser/server spec if required by Gate C candidate evidence
+
+Must not touch:
+
+- coverage KPI
+- taxonomy classifier rules
+- evidence classification
+- scoped normal `PLAY` contract
+- scoped `PLAY_SOURCE_RESPONSE` contract
+- unrelated card-action contracts
+- Trigger runtime
+- Lifecycle runtime beyond the exact round-end return marker already present on the `attach_card_to_player_attack` contract
+- Hidden projection runtime
+- Battle result runtime beyond the exact cannot-win status required by this contract
+
+Hot files:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+
+Concurrent conflicts:
+
+- any other runtime task touching hot files
+
+Required output:
+
+- before/after legacy route count against the accepted post-P3-B05 baseline
+- exact `attach_card_to_player_attack` semantic routing proof
+- fixed `pay_mana(2)` fail-closed proof
+- support-shot identity and skill-zone availability revalidation proof
+- non-controller target revalidation proof
+- controller-not-at-battlefield canonical condition negative proof
+- focused tests
+- implementation report
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+
+Evidence rule:
+
+- Codex B may produce implementer evidence only.
+- Codex R must independently judge Gate A/B/C promotion.
+
 ## Prompt Templates
 
 Codex A startup prompt:
