@@ -248,7 +248,7 @@ Selection rationale:
 - it separates appending/attaching to another player's attack from normal `PLAY`, `CREATE_AND_ACTIVATE`, `ACTIVATE`, and `CLOSE`;
 - it migrates Maiya `military.attach-support-shot` by executable semantic form without ability-id pilot routing or roster-wide JSON edits.
 
-Implementation-candidate status, 2026-09-08:
+Implementation-candidate status, 2026-09-09:
 
 - Inventory source: `docs/audits/fd-card-action-add-to-attack-inventory.mjs`.
 - Eligible ADD_TO_ATTACK abilities from `data/authoring`: 1.
@@ -283,7 +283,7 @@ Implementation-candidate status, 2026-09-08:
 - Scoped legacy play consumers for the exact representative: 1 before, 0 after.
 - New-runtime semantic-routed PLAY consumers: 0 before, 1 after.
 - Dual-compatible migrated PLAY consumers: 1 before, 0 after.
-- Gate C: `GATE_C_REQUIRED / NOT_PRESENT_IN_CURRENT_CHECKOUT`; `e2e/fd-time-alter-core-primitive.spec.ts` is absent from the current checkout.
+- Gate C restored-snapshot implementer evidence exists in `e2e/fd-time-alter-core-primitive.spec.ts`, including browser activation, pending target reconnect, target command `expectedRevision`, face-down attack projection, draw projection, stale replay rejection, post-settlement reconnect, and repeat-each stability. It does not prove natural create/select/start progression into this action window.
 - Status claim remains `IMPLEMENTATION_COMPLETE_CANDIDATE`; independent review is required before any `COMPONENT_VERIFIED`, `SCENARIO_VERIFIED`, or `E2E_VERIFIED` promotion.
 
 Gate C inheritance rule:

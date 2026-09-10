@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-09T08:28:15.554Z",
+  "generatedAt": "2026-09-10T01:30:07.617Z",
   "sourceFingerprint": "4efa585d747b2f765d8248601c77daa12d247e6bfaa775a9d033afcd6b881854",
   "counts": {
     "totalArchives": 14,
@@ -738,8 +738,7 @@
       "specialSubsystems": [],
       "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
       "semanticRoutes": [
-        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY",
-        "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW"
+        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY"
       ],
       "taxonomyWarnings": [
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
@@ -3989,7 +3988,6 @@
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY": 1,
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE": 1,
       "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA": 1,
-      "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW": 1,
       "RESOURCE_NUMERIC_CORE_DIRECT_ACTION": 3
     },
     "newRuntimeConsumers": {
@@ -4091,31 +4089,31 @@
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 563,
+        "line": 566,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 759,
+        "line": 762,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 766,
+        "line": 769,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 816,
+        "line": 819,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1141,
+        "line": 1318,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
@@ -5013,9 +5011,9 @@
   "compiledDefinitions": {
     "packId": "fd-playtest-v1",
     "version": 1,
-    "definitionHash": "1bccc97dd813d9b48208ff6223db40f11a995ca123a513e78e7e444d9bdafe2f",
+    "definitionHash": "2c6b15a98d25e80770da2517d7413fe24fdc695cd238f1247b3c24d8d691f3ed",
     "compiledCards": 70,
     "compiledCharacters": 14,
-    "blockingIssues": 93
+    "blockingIssues": 0
   }
 }
