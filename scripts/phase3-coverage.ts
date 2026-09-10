@@ -250,6 +250,12 @@ function noTargetsCostOrCreates(ability: AuthoringAbilityLike): boolean {
   return (ability.targets ?? []).length === 0 && (ability.cost ?? []).length === 0 && (ability.creates ?? []).length === 0;
 }
 
+function isFixedManaCost(costs: JsonObject[] | undefined, amount: number): boolean {
+  if ((costs ?? []).length !== 1) return false;
+  const cost = costs?.[0];
+  return cost?.type === 'pay_mana' && cost.amount === amount;
+}
+
 function isResourceNumericDirectAction(ability: AuthoringAbilityLike, topLevelTypes: string[]): boolean {
   return ability.kind === 'phase_action'
     && ability.activation?.phase === 'action'
@@ -279,11 +285,17 @@ function isTimeAlterPlayShape(ability: AuthoringAbilityLike, topLevelTypes: stri
 
 function isPlaySourceResponseShape(ability: AuthoringAbilityLike, topLevelTypes: string[]): boolean {
   const responseWindow = ability.responseWindow as JsonObject | undefined;
+  const effects = ability.effects ?? [];
   return ability.kind === 'response'
-    && (ability.activation?.trigger === 'controller_combat_action_window' || responseWindow?.opens === 'controller_combat_action_window')
+    && ability.activation?.trigger === 'controller_combat_action_window'
+    && responseWindow?.opens === 'controller_combat_action_window'
+    && (ability.targets ?? []).length === 0
+    && (ability.creates ?? []).length === 0
+    && effects.length === 1
     && topLevelTypes.length === 1
     && topLevelTypes[0] === 'play_source_card'
-    && rawText(ability.cost ?? []).includes('"pay_mana"');
+    && effects[0]?.face === 'face_up'
+    && isFixedManaCost(ability.cost, 2);
 }
 
 function isAddToAttackShape(ability: AuthoringAbilityLike, topLevelTypes: string[]): boolean {

@@ -30,6 +30,8 @@ This does not migrate variable payment, pending payment, normal play batches, Ti
 - Added compiler fail-closed validation for exact source-card response play shape.
 - Withheld legal response actions when the source card is no longer in hand or controller mana is below 2.
 - Fixed response-window cleanup after data-flow execution so `resolve_response` does not shift a stale runtime object after `Object.assign()`.
+- Aligned the Phase 3 coverage classifier to the same exact B05 contract: `response`, exact trigger/window, no targets, no creates, single `play_source_card(face_up)`, and fixed `pay_mana(2)`.
+- Updated the primitive matrix current-boundary evidence summary to include `e2e/fd-volumen-extra-play-card-action.spec.ts` for Volumen only.
 
 ## Before / After
 
@@ -95,7 +97,7 @@ PASS: blockingIssues=0, newRuntimeSemanticRouted=8, legacyResolveEffect=53, dual
 
 ```text
 npm run test:ci
-PASS: 83 files, 490 tests
+PASS: 83 files, 491 tests
 ```
 
 ## Evidence Boundary

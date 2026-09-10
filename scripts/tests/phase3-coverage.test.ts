@@ -133,6 +133,41 @@ describe('phase3 coverage taxonomy drift protections', () => {
     });
   });
 
+  it('keeps B05 play-source response coverage aligned to the exact runtime contract', () => {
+    const semanticRoute = 'CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE';
+    const exactAbility = {
+      id: 'ability.play-source-response',
+      kind: 'response',
+      activation: { trigger: 'controller_combat_action_window' },
+      responseWindow: { opens: 'controller_combat_action_window' },
+      cost: [{ type: 'pay_mana', amount: 2 }],
+      targets: [],
+      creates: [],
+      effects: [{ type: 'play_source_card', face: 'face_up' }],
+    };
+
+    expect(classifyAbilityForCoverage(
+      { id: 'test.archive' },
+      { id: 'test.card' },
+      exactAbility,
+    ).semanticRoutes).toContain(semanticRoute);
+
+    const variants = [
+      { name: 'wrong cost', patch: { cost: [{ type: 'pay_mana', amount: 1 }] } },
+      { name: 'face-down source play', patch: { effects: [{ type: 'play_source_card', face: 'face_down' }] } },
+      { name: 'targets present', patch: { targets: [{ type: 'player', id: 'target-player' }] } },
+      { name: 'creates present', patch: { creates: [{ type: 'card', definitionId: 'created-card' }] } },
+      { name: 'wrong trigger', patch: { activation: { trigger: 'on_card_played' } } },
+      { name: 'wrong response window', patch: { responseWindow: { opens: 'controller_action_window' } } },
+    ];
+
+    for (const { name, patch } of variants) {
+      const ability = { ...structuredClone(exactAbility), ...patch, id: `ability.play-source-response.${name}` };
+      const row = classifyAbilityForCoverage({ id: 'test.archive' }, { id: 'test.card' }, ability);
+      expect(row.semanticRoutes, name).not.toContain(semanticRoute);
+    }
+  });
+
   it('builds reviewer packets with explicit non-runtime ownership boundaries', () => {
     const coverage = buildCoverageFromArchives([archiveWithAbilities([
       {
