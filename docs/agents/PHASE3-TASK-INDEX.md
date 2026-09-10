@@ -111,6 +111,7 @@ Required output:
 - legacy owner report grouped by static owner / primitive / unclassified reason
 - mechanism coverage trend baseline for future B before/after checks
 - promotion evidence audit that detects report/spec inconsistencies
+- reusable B-slice evidence checklist/template for P3-B05 through P3-B09
 - machine-readable P3-A02 packet
 - reviewer-facing result report
 
