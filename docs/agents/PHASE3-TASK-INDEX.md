@@ -580,7 +580,7 @@ Evidence rule:
 ## TASK P3-B09
 
 Owner: Codex B
-Status: READY_RUNTIME_OWNER
+Status: REVIEW_ACCEPTED_NO_ELIGIBLE_REPRESENTATIVE
 Branch: `codex/b-p3-b09-create-and-activate`
 
 Goal:
@@ -650,6 +650,88 @@ Required output:
 - exact semantic routing proof
 - create identity, ownership, source, activation zone, visibility, duplicate activation, and cleanup proof
 - focused tests
+- implementation report
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+
+Evidence rule:
+
+- Codex B may produce implementer evidence only.
+- Codex R must independently judge Gate A/B/C promotion.
+
+## TASK P3-B10
+
+Owner: Codex B
+Status: READY_RUNTIME_OWNER
+Branch: `codex/b-p3-b10-setup-create-to-skill`
+
+Goal:
+
+`SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL`.
+
+Depends on:
+
+- P3-B09 `NO_ELIGIBLE_REPRESENTATIVE` outcome accepted by independent review.
+- Runtime hot-file ownership reserved.
+- P3-B10 handoff consumed as read-only input.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- `TASK P3-B10` from this file
+- `docs/reports/2026-09-11-p3-b10-setup-create-to-skill-handoff.md`
+- `artifacts/phase3-b10-setup-create-to-skill-handoff.json`
+- `docs/rules/FD-Game-Rules-Final.md` Section 5.4 game-start ability ordering only
+- `docs/plans/fd-card-engine-stabilization-plan.md` Phase 3 only
+- `docs/audits/fd-skill-mechanic-family-matrix.md` `create_card` and `game_start` rows only
+- canonical authoring for Maiya, Olga-Marie, Shinji, and Artoria Caster `create_card` abilities only
+
+May touch:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/types.ts` only if the typed result contract requires it
+- focused setup/create tests
+- scoped implementation report
+- one scoped browser/server spec if Gate C candidate evidence is attempted
+
+Must not touch:
+
+- coverage KPI
+- taxonomy classifier rules
+- evidence classification
+- `CREATE_AND_ACTIVATE`
+- optional post-battle creation
+- source-card removal from hand
+- deck insertion or shuffle semantics
+- hidden choice or response windows
+- battle-result runtime
+- broad Trigger or Lifecycle runtime
+- roster JSON
+- unrelated card-action contracts
+
+Hot files:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+
+Concurrent conflicts:
+
+- any other runtime task touching the hot files
+
+Required output:
+
+- inventory of all six canonical `create_card` abilities with eligible/skipped reason
+- exact semantic route for `forced_trigger + game_start + one create_card -> skill + automatic`
+- typed creation result containing created instance identity and count
+- compiler fail-closed and runtime rollback evidence
+- real MatchSession game-start evidence for the three exact eligible abilities
+- explicit proof that the three Artoria Caster post-battle Luck abilities remain skipped
+- before/after legacy/new/dual counts against the accepted post-P3-B08 runtime baseline
 - implementation report
 
 Completion status allowed:

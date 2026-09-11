@@ -19,6 +19,8 @@ NO_ELIGIBLE_REPRESENTATIVE
 
 Codex A treats this as the correct B09 outcome for the current source authoring state. Because no exact source-authoring representative exists, there is no B09 runtime migration candidate and no B09 Gate A/B/C promotion packet to prepare.
 
+Independent review subsequently accepted this qualification outcome on 2026-09-11. The accepted status is limited to `NO_ELIGIBLE_REPRESENTATIVE`; it does not promote any B09 Gate A/B/C evidence because no runtime candidate exists.
+
 ## A Fresh Evidence Checks
 
 Codex A reran the B09 inventory in the B09 worktree at commit `450954d`:
@@ -81,6 +83,8 @@ B09 closes as a qualification/inventory slice only:
 - no roster JSON change.
 
 The next runtime work should move to a mechanism family with real eligible representatives in current canonical source authoring.
+
+Codex A therefore prepares `P3-B10: SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL`. Its exact candidate shape is `forced_trigger + game_start + one create_card -> skill + automatic`. Maiya, Olga-Marie, and Shinji provide three source-authoring matches. The three Artoria Caster Luck abilities are explicitly excluded because they require an optional post-battle response, moving the source card from hand, creating into deck, and shuffling.
 
 ## Machine-Readable Artifact
 
