@@ -838,6 +838,7 @@ May touch:
 - `packages/rules/src/ability/resolution-dataflow.ts`
 - focused result-binding and production-bridge tests
 - `e2e/fd-golden-eater-result-binding.spec.ts`
+- `e2e/support/build-golden-eater-snapshot.ts` only for the scoped Golden Eater room fixture
 - `e2e/fd-conversion-magic-core-primitive.spec.ts` only for regression assertions required by this task
 - scoped B11 implementation report
 
