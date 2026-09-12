@@ -186,7 +186,7 @@ Runtime defect handling:
 ## TASK P3-A04
 
 Owner: Codex A
-Status: IN_PROGRESS
+Status: AUTOMATION_BASELINE_CANDIDATE
 Branch: `codex/a-p3-a01-coverage-automation`
 
 Goal:
