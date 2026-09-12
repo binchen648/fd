@@ -46,7 +46,7 @@ A04 also reconciles the already accepted B06-B08 classifier boundaries so global
 - B08 `CARD_ACTION_SEMANTICS_MINIMAL:CLOSE`
 - B10 `SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL`
 
-Fresh combined verification used B10 commit `9fba6d9` plus the A04 classifier in a disposable integration checkout:
+Fresh classifier verification is reproducible from the A worktree with 20 automation tests. The reviewed-runtime integration check used B10 commit `9fba6d9` plus the same A04 classifier:
 
 ```text
 newRuntimeSemanticRouted: 9 -> 12
@@ -57,25 +57,31 @@ notClassifiable:                28
 pilotAllowlist:                  0
 ```
 
-The compiled content result was `fd-playtest-v1@1`, definition hash `f4aeaddb88f3018efed31ca74a8a0c91a614c9a61752237952285b017de4d192`, with 70 cards, 14 characters, and zero blocking issues.
+The reviewed-runtime integration result was `fd-playtest-v1@1`, definition hash `f4aeaddb88f3018efed31ca74a8a0c91a614c9a61752237952285b017de4d192`, with 70 cards, 14 characters, and zero blocking issues.
+
+The committed generated artifacts are intentionally generated from the A checkout itself. They report the same `12/49/0` classifier baseline but 10 compiled-content blocking issues because the A automation branch does not merge the accepted B10 runtime commit. This is an explicit integration-baseline difference, not hidden as a zero-blocking current-checkout result.
 
 ## Fresh Checks
 
 ```text
 npx vitest run scripts/tests/phase3-coverage.test.ts
-PASS: combined checkout 1 file / 22 tests
+PASS: A checkout and B10 integration baseline, 1 file / 20 tests
 
 npm run typecheck
-PASS: combined checkout
+PASS: A checkout
 
 npm run phase3:coverage
+PASS: current A checkout generated artifacts synchronized at new=12,
+legacyResolveEffect=49, dual=0, blockingIssues=10
+
+Reviewed-runtime integration check:
 PASS: new=12, legacyResolveEffect=49, dual=0, blockingIssues=0
 
 npm run phase3:automation-audit
-PASS: command completed; promotionFindings=3 remain governance findings
+PASS: current A checkout artifact synchronized; promotionFindings=14 remain governance findings
 ```
 
-The first combined run lacked the ignored `chm-extract` asset junction and reported missing-image issues. Repeating with the same project asset junction used by the reviewed B10 checkout produced the zero-blocking result above. No `chm-extract` content or junction is committed.
+No `chm-extract` content or junction is committed. The generated artifact was refreshed with the same local asset junction used by the project worktrees, reducing environment-only missing-image findings before recording the 10 actual A-versus-B10 integration issues.
 
 ## Evidence Boundary
 
@@ -83,7 +89,7 @@ The first combined run lacked the ignored `chm-extract` asset junction and repor
 - No Gate A/B/C claim is inherited or promoted.
 - The remaining 49 `legacyResolveEffect`, 3 `legacyExecuteAbility`, and 28 `NOT_CLASSIFIABLE` consumers remain explicit.
 - The three Artoria Caster Luck abilities remain outside the B10 contract.
-- The three automation-audit promotion findings are not converted into runtime failures and require their normal owners/reviewer handling.
+- The 14 current-checkout automation-audit promotion findings are not converted into runtime failures and require their normal owners/reviewer handling.
 
 ## Machine-Readable Artifact
 

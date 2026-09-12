@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-10T04:57:30.033Z",
+  "generatedAt": "2026-09-12T07:09:39.498Z",
   "sourceFingerprint": "4efa585d747b2f765d8248601c77daa12d247e6bfaa775a9d033afcd6b881854",
   "counts": {
     "totalArchives": 14,
@@ -861,8 +861,10 @@
       "resultBinding": [],
       "battleIntegration": [],
       "specialSubsystems": [],
-      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
-      "semanticRoutes": [],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticRoutes": [
+        "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL"
+      ],
       "taxonomyWarnings": [],
       "unclassifiedReasons": []
     },
@@ -909,8 +911,10 @@
         "BATTLE_INTEGRATION"
       ],
       "specialSubsystems": [],
-      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
-      "semanticRoutes": [],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticRoutes": [
+        "CARD_ACTION_SEMANTICS_MINIMAL:ADD_TO_ATTACK"
+      ],
       "taxonomyWarnings": [
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
@@ -1024,8 +1028,10 @@
       "resultBinding": [],
       "battleIntegration": [],
       "specialSubsystems": [],
-      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
-      "semanticRoutes": [],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticRoutes": [
+        "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL"
+      ],
       "taxonomyWarnings": [],
       "unclassifiedReasons": []
     },
@@ -1472,8 +1478,10 @@
       "resultBinding": [],
       "battleIntegration": [],
       "specialSubsystems": [],
-      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
-      "semanticRoutes": [],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticRoutes": [
+        "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL"
+      ],
       "taxonomyWarnings": [],
       "unclassifiedReasons": []
     },
@@ -3984,16 +3992,18 @@
   "runtimeRouting": {
     "semanticRouteCounts": {
       "CARD_ACTION_SEMANTICS_MINIMAL:ACTIVATE": 1,
+      "CARD_ACTION_SEMANTICS_MINIMAL:ADD_TO_ATTACK": 1,
       "CARD_ACTION_SEMANTICS_MINIMAL:CLOSE": 1,
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY": 1,
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE": 1,
       "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA": 1,
-      "RESOURCE_NUMERIC_CORE_DIRECT_ACTION": 3
+      "RESOURCE_NUMERIC_CORE_DIRECT_ACTION": 3,
+      "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL": 3
     },
     "newRuntimeConsumers": {
       "before": 0,
-      "after": 8,
-      "delta": 8
+      "after": 12,
+      "delta": 12
     },
     "legacyExecuteAbilityConsumers": {
       "before": 3,
@@ -4001,8 +4011,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 53,
-      "after": 53,
+      "before": 49,
+      "after": 49,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -4222,8 +4232,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 53,
-      "after": 53,
+      "before": 49,
+      "after": 49,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -5011,9 +5021,9 @@
   "compiledDefinitions": {
     "packId": "fd-playtest-v1",
     "version": 1,
-    "definitionHash": "1bccc97dd813d9b48208ff6223db40f11a995ca123a513e78e7e444d9bdafe2f",
+    "definitionHash": "2c6b15a98d25e80770da2517d7413fe24fdc695cd238f1247b3c24d8d691f3ed",
     "compiledCards": 70,
     "compiledCharacters": 14,
-    "blockingIssues": 93
+    "blockingIssues": 10
   }
 }

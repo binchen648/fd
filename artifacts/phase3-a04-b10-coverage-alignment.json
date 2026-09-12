@@ -62,26 +62,34 @@
       "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL": 3
     }
   },
+  "currentCheckoutGeneratedArtifacts": {
+    "newRuntimeSemanticRouted": 12,
+    "legacyResolveEffect": 49,
+    "dualRuntime": 0,
+    "compiledBlockingIssues": 10,
+    "promotionFindings": 14,
+    "note": "The A automation branch does not merge reviewed B10 runtime commit 9fba6d9; zero blocking issues applies only to the reviewed-runtime integration baseline."
+  },
   "checks": [
     {
       "command": "npx vitest run scripts/tests/phase3-coverage.test.ts",
       "result": "PASS",
-      "summary": "combined checkout: 1 file / 22 tests"
+      "summary": "A checkout and reviewed-runtime integration baseline: 1 file / 20 tests"
     },
     {
       "command": "npm run typecheck",
       "result": "PASS",
-      "summary": "combined checkout"
+      "summary": "A checkout"
     },
     {
       "command": "npm run phase3:coverage",
       "result": "PASS",
-      "summary": "new=12 legacyResolveEffect=49 dual=0 blockingIssues=0"
+      "summary": "current A checkout: new=12 legacyResolveEffect=49 dual=0 blockingIssues=10; reviewed-runtime integration: blockingIssues=0"
     },
     {
       "command": "npm run phase3:automation-audit",
       "result": "PASS",
-      "summary": "promotionFindings=3"
+      "summary": "current A checkout promotionFindings=14"
     }
   ],
   "knownLegacyPaths": {

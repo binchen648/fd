@@ -1,13 +1,13 @@
 {
   "schemaVersion": "fd-phase3-a02-automation-audit-v1",
-  "generatedAt": "2026-09-09T12:09:39.808Z",
+  "generatedAt": "2026-09-12T07:09:40.408Z",
   "task": "P3-A02",
   "batch": "LEGACY_OWNER_AND_PROMOTION_EVIDENCE_AUTOMATION",
   "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
   "reviewerAuthorityNotice": "Automation packet only. It does not promote Gate A/B/C, Phase 3, or Release status.",
   "legacyOwnerReport": {
     "totals": {
-      "legacyResolveEffect": 53,
+      "legacyResolveEffect": 49,
       "legacyExecuteAbility": 3,
       "notClassifiable": 28
     },
@@ -512,40 +512,6 @@
         ]
       },
       {
-        "owner": "primitive:create_card",
-        "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
-        "abilityCount": 3,
-        "abilities": [
-          {
-            "archiveId": "master.maiya",
-            "cardId": "master.maiya.skill.military",
-            "abilityId": "military.has-support-shot",
-            "exactEffectPrimitives": [
-              "create_card"
-            ],
-            "unclassifiedReasons": []
-          },
-          {
-            "archiveId": "master.olga-marie",
-            "cardId": "master.olga-marie.skill.astronomical-science",
-            "abilityId": "astronomical-science.has-chaldeas",
-            "exactEffectPrimitives": [
-              "create_card"
-            ],
-            "unclassifiedReasons": []
-          },
-          {
-            "archiveId": "master.shinji",
-            "cardId": "master.shinji.skill.useless-person",
-            "abilityId": "useless-person.setup",
-            "exactEffectPrimitives": [
-              "create_card"
-            ],
-            "unclassifiedReasons": []
-          }
-        ]
-      },
-      {
         "owner": "primitive:adjust_mana",
         "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
         "abilityCount": 2,
@@ -677,22 +643,6 @@
             "abilityId": "support-shot.append-only",
             "exactEffectPrimitives": [
               "append_only_rule"
-            ],
-            "unclassifiedReasons": []
-          }
-        ]
-      },
-      {
-        "owner": "primitive:attach_card_to_player_attack",
-        "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
-        "abilityCount": 1,
-        "abilities": [
-          {
-            "archiveId": "master.maiya",
-            "cardId": "master.maiya.skill.military",
-            "abilityId": "military.attach-support-shot",
-            "exactEffectPrimitives": [
-              "attach_card_to_player_attack"
             ],
             "unclassifiedReasons": []
           }
@@ -1275,9 +1225,9 @@
   },
   "coverageTrendBaseline": {
     "totalAbilities": 92,
-    "newRuntimeSemanticRouted": 8,
+    "newRuntimeSemanticRouted": 12,
     "legacyExecuteAbility": 3,
-    "legacyResolveEffect": 53,
+    "legacyResolveEffect": 49,
     "dualRuntime": 0,
     "pilotAllowlist": 0,
     "notClassifiable": 28,
