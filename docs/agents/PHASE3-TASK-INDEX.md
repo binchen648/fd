@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.1
+- Version: P3-TI-1.2
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -23,11 +23,11 @@ This map is the task-level bridge back to the total project goals. It does not p
 |---|---|---|---|---|---|---|
 | Agent ownership and read minimization | `docs/FD-DOCUMENT-ROADMAP.md` Mandatory Inputs; `docs/agents/PHASE3-AGENT-CONTRACT.md` | Agents read the contract first, then only the assigned task block and explicit dependencies. | All P3-A/P3-B/P3-R tasks | ACTIVE | Coordinator enforcement plus R review of role drift | Keep future task blocks small and explicit. |
 | Automation / coverage / evidence baseline | Roadmap NEXT; throughput plan Sections 13-15 | Build reproducible coverage schema, taxonomy drift checks, legacy/new/dual counters, and reviewer packet inputs. | P3-A01 | READY | Automation output plus reviewer-readable baseline candidate | Needs actual command or accepted manual schema before downstream status sync. |
-| Reviewer packet generation | Acceptance route Gate A/B/C; Golden acceptance plan | Convert implementation claims into checklists and missing-evidence packets without changing runtime behavior. | P3-A02 | READY_AFTER_P3_A01 | R-consumable review packet for B04 and reusable template for B05-B09 | Waits for P3-A01 or accepted packet schema. |
+| Reviewer packet generation | Acceptance route Gate A/B/C; Golden acceptance plan | Convert implementation claims into checklists and missing-evidence packets without changing runtime behavior. | P3-A02 | READY_AFTER_P3_A01 | R-consumable review packet for B04, B10, and reusable template for B05-B10 | Waits for P3-A01 or accepted packet schema. |
 | Legacy burn-down sync | Roadmap KPI: Legacy Burn-down plus Mechanic Coverage | Update metrics only after R judgment; preserve rejected/candidate/accepted separation. | P3-A03 | READY_AFTER_REVIEW | Coverage report with before/after legacy, semantic, dual, skipped, and Gate status counts | Waits for R review result and accepted measurement method. |
 | Resource Numeric Core direct action | Stabilization plan Phase 3B; throughput plan first low-risk factory slice | Route command-spell style direct resource effects by executable semantic form with fail-closed validation. | P3-TO-08; A evidence support through P3-A01/A03 | IMPLEMENTATION_COMPLETE_CANDIDATE in current docs | Gate A/B/C evidence for representative direct-resource cards | Independent review and coverage sync still required before promotion. |
 | Card Zone Core direct action | Stabilization plan Phase 3B; primitive conformance matrix | Route direct zone/draw movement by executable semantic form and remove ability-id pilot fallback. | P3-TO-09; R follow-up as needed | PENDING_REVIEW / candidate evidence recorded | Gate A/B/C representative card-zone evidence | Needs R judgment and burn-down sync. |
-| Card Action semantic split | Roadmap Phase 3B; mechanic family and primitive matrices | Keep `PLAY`, `PLAY_SOURCE_RESPONSE`, `ADD_TO_ATTACK`, `ACTIVATE`, `CLOSE`, `CREATE_AND_ACTIVATE`, and setup create-to-skill routing as separate contracts with only shared helpers underneath. | P3-B04 through P3-B10; P3-R04/P3-R05 | PARTIAL_CANDIDATE / queued by task; B10 FAILED_REVIEW_REPAIR | Separate Gate A/B/C judgment per action contract | B09 does not finish Phase 3; B10 must also clear semantic-form routing and provenance fail-closed review before A03 can sync it. |
+| Card Action semantic split | Roadmap Phase 3B; mechanic family and primitive matrices; `docs/plans/2026-09-12-phase-3-completion-execution-plan.md` | Keep `PLAY`, `PLAY_SOURCE_RESPONSE`, `ADD_TO_ATTACK`, `ACTIVATE`, `CLOSE`, `CREATE_AND_ACTIVATE`, and setup create-to-skill routing as separate contracts with only shared helpers underneath. | P3-B04 through P3-B10; P3-R04/P3-R05 | PARTIAL_CANDIDATE / queued by task; B10 FAILED_REVIEW_REPAIR | Separate Gate A/B/C judgment per action contract | B09 does not finish Phase 3; B10 must also clear semantic-form routing and provenance fail-closed review before A03 can sync it. |
 | Result Binding | Roadmap Phase 3A; `docs/plans/fd-effect-result-binding-plan.md` | Bind multi-step effect results to subsequent costs, awards, events, rollback, and production path. | Existing Phase 3A result-binding slice; future B/R tasks when reopened | IMPLEMENTER_EVIDENCE_RECORDED / review pending | Golden Result-Binding Card Gate B/C | Production bridge and independent promotion remain pending. |
 | Target / Interaction Gateway | Roadmap NEXT; corrected semantic-axis matrix | Define target selection and pending interaction templates before broad runtime migration. | P3-TO-05; later B runtime task after spec review | SPEC_READY_NEXT / runtime waiting | Gateway contract review, then representative Gate B/C | Runtime implementation must wait for accepted gateway contract. |
 | Trigger Gateway | Roadmap NEXT; corrected semantic-axis matrix | Define event payload, source ability/card identity, ordering, optional/forced handling, and projection rules. | P3-TO-03; P3-B07 only after trigger spec or explicit override | SPEC_READY_NEXT / B07 WAIT_TRIGGER_SPEC_OR_EXPLICIT_OVERRIDE | Gateway contract review, then representative trigger Gate B/C | Runtime migration blocked until spec is accepted. |
@@ -129,7 +129,8 @@ Do not touch:
 Required output:
 
 - B04 reviewer packet
-- reusable packet template for B05-B09
+- B10 reviewer packet when B10 report is available
+- reusable packet template for B05-B10
 - explicit missing-evidence list for R
 
 Completion status allowed:
@@ -424,7 +425,7 @@ Hot files:
 
 Concurrent conflicts:
 
-- P3-B05, P3-B07, P3-B08, P3-B09, or any runtime task touching hot files
+- P3-B05, P3-B07, P3-B08, P3-B09, P3-B10, or any runtime task touching hot files
 
 Required output:
 

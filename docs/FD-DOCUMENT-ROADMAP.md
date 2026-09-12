@@ -103,6 +103,7 @@ SUBPLAN:
 - `docs/plans/fd-phase-3-mechanic-family-rollout-plan.md` - Phase 3 mechanic-family rollout and pilot-bridge exit subplan.
 - `docs/plans/fd-phase-3-throughput-optimization-plan.md` - Phase 3 dependency-DAG, gateway primitive, parallel factory, automation, and legacy burn-down scheduling subplan.
 - `docs/plans/fd-phase-3-parallel-work-queue.md` - Phase 3 dispatch queue derived from the throughput optimization plan.
+- `docs/plans/2026-09-12-phase-3-completion-execution-plan.md` - concrete Phase 3 completion execution plan for A/B/R sequencing, B10 repair, seven-domain review/spec work, A03 sync, and release-readiness blockers.
 
 AUDIT:
 
@@ -180,6 +181,9 @@ Historical reports may be read after these inputs for provenance only.
 `docs/plans/fd-phase-3-parallel-work-queue.md`
 -> dispatch document derived from the throughput optimization plan; coordinates future tasks by dependencies, hot-file conflicts, and Gate expectations.
 
+`docs/plans/2026-09-12-phase-3-completion-execution-plan.md`
+-> executable coordination plan for remaining Phase 3 work; clarifies that B10 is a failed-review repair inside setup create-to-skill/Card Zone scope, A03 runs only after R judgments, and the seven target domains are not a linear post-B09 queue.
+
 `docs/audits/fd-skill-mechanic-family-matrix.md`
 -> provides current real-skill family coverage, reuse, complexity, and next-batch selection evidence for Phase 3.
 
@@ -238,6 +242,7 @@ Green tests, implementation reports, content metadata, `FULL`, `COMPLETE`, `auto
 ## 13. Next Recommended Step
 
 Execute the Phase 3 throughput queue from `docs/plans/fd-phase-3-parallel-work-queue.md`.
+Use `docs/plans/2026-09-12-phase-3-completion-execution-plan.md` as the concrete A/B/R coordination plan.
 
 Immediate next work is documentation, inventory, and evidence infrastructure:
 
@@ -246,6 +251,7 @@ Immediate next work is documentation, inventory, and evidence infrastructure:
 3. Define Lifecycle Gateway contracts for the top lifecycle policy buckets.
 4. Define Interaction Template contracts for target, optional, response, private, reconnect, and stale-command patterns.
 5. Generate reviewer packet templates for existing implementation candidates.
+6. Repair P3-B10 setup create-to-skill only if it is the active runtime lane and B has exclusive hot-file ownership.
 
 Runtime migration should resume only after the next gateway-backed slice has explicit dependencies, hot-file ownership, Gate A/B/C expectations, and legacy burn-down metrics.
 

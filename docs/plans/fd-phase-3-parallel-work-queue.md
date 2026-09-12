@@ -5,7 +5,8 @@
 - Implementation Status: DOCUMENTATION_ONLY
 - Acceptance Status: No task in this queue is accepted until the relevant Gate A/B/C evidence is independently reviewed.
 - Parent: `docs/plans/fd-phase-3-throughput-optimization-plan.md`
-- Last Verified: 2026-09-09
+- Concrete Execution Plan: `docs/plans/2026-09-12-phase-3-completion-execution-plan.md`
+- Last Verified: 2026-09-12
 
 This queue is for dispatching future Phase 3 work without putting multiple agents on the same runtime hot files. Status values here are planning statuses only.
 
@@ -34,11 +35,11 @@ All Phase 3 agents must read `docs/agents/PHASE3-AGENT-CONTRACT.md` first, then 
 Recommended corrected immediate queue:
 
 1. P3-TO-01
-2. P3-TO-08, only if one runtime hot-file owner is reserved
+2. P3-TO-17, only if B10 repair is the active runtime lane and no other runtime hot-file task is active
 3. P3-TO-03
 4. P3-TO-04
 5. P3-TO-05
 6. P3-TO-06
-7. P3-TO-17, only if B10 repair is the active runtime lane and no other runtime hot-file task is active
+7. P3-TO-08, only if one runtime hot-file owner is reserved and B10 is not active
 
 Runtime implementation may resume for Resource Numeric Core direct-action only because it is the low-risk primitive factory lane. B10 may run as a failed-review repair lane only when it has exclusive hot-file ownership. Trigger, Lifecycle, Interaction, Battle, Modifier, and Hidden runtime implementation should wait until their corrected gateway specs are independently reviewed.
