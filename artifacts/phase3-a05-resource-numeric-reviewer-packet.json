@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-packet-v1",
+  "generatedAt": "2026-09-12T07:24:13.000Z",
+  "owner": "Codex A",
+  "sourceTask": "P3-A05",
+  "mechanic": "RESOURCE_NUMERIC_CORE_DIRECT_ACTION",
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
+  "promotionVerdict": "BLOCKED_BY_RUNTIME_SEMANTIC_GAP",
+  "promotionNotice": "This packet does not promote Gate A/B/C, Phase 3, or Release status.",
+  "inventory": {
+    "sourceFiles": 14,
+    "resourceNumericAbilities": 17,
+    "eligible": 3,
+    "migrated": 3,
+    "blocked": 8,
+    "special": 6,
+    "skipped": 14,
+    "eligibleAbilities": [
+      { "archiveId": "master.gatou", "cardId": "master.gatou.command-spell", "abilityId": "command-spell.gain-mana", "primitives": ["adjust_mana", "adjust_command_seals"] },
+      { "archiveId": "master.olga-marie", "cardId": "master.olga-marie.command-spell", "abilityId": "command-spell.gain-mana", "primitives": ["adjust_mana", "adjust_command_seals"] },
+      { "archiveId": "servant.tomoe", "cardId": "servant.tomoe.skill.sc-tomoe-1", "abilityId": "sc-tomoe-1.independent-action", "primitives": ["adjust_victory_points"] }
+    ],
+    "skippedAbilities": [
+      { "abilityId": "command-spell.power-victory", "reason": "out_of_scope:mixed_non_resource_effect", "dependencies": ["BATTLE", "LIFECYCLE", "SPECIAL_SUBSYSTEM"] },
+      { "abilityId": "command-spell.free-move", "reason": "out_of_scope:mixed_non_resource_effect", "dependencies": ["BATTLE", "SPECIAL_SUBSYSTEM"] },
+      { "abilityId": "conversion-magic.preparation", "reason": "out_of_scope:mixed_non_resource_effect", "dependencies": ["RESULT_BINDING", "CARD_MOVEMENT"] },
+      { "abilityId": "command-spell.power-victory", "reason": "out_of_scope:mixed_non_resource_effect", "dependencies": ["BATTLE", "LIFECYCLE", "SPECIAL_SUBSYSTEM"] },
+      { "abilityId": "command-spell.free-move", "reason": "out_of_scope:mixed_non_resource_effect", "dependencies": ["BATTLE", "SPECIAL_SUBSYSTEM"] },
+      { "abilityId": "drain-command.enter-miyama", "reason": "out_of_scope:forced_trigger", "dependencies": ["TRIGGER_GATEWAY"] },
+      { "abilityId": "clown.lose-command-seal", "reason": "out_of_scope:forced_trigger", "dependencies": ["TRIGGER_GATEWAY", "BATTLE_RESULT"] },
+      { "abilityId": "sc-artoria-alt-3.noble-bloom", "reason": "out_of_scope:optional_trigger", "dependencies": ["TRIGGER_GATEWAY", "INTERACTION_GATEWAY", "BATTLE_RESULT"] },
+      { "abilityId": "sc-artoria-alt-3.noble-bloom-extra-vp", "reason": "out_of_scope:optional_trigger", "dependencies": ["TRIGGER_GATEWAY", "INTERACTION_GATEWAY", "BATTLE_RESULT"] },
+      { "abilityId": "sc-artoriac-4.recon-gain-vp-and-move", "reason": "out_of_scope:mixed_non_resource_effect", "dependencies": ["INTERACTION_GATEWAY", "CARD_MOVEMENT"] },
+      { "abilityId": "sc-artoriac-6.gain-vp-if-not-sole-winner", "reason": "out_of_scope:forced_trigger", "dependencies": ["TRIGGER_GATEWAY", "BATTLE_RESULT"] },
+      { "abilityId": "sc-drake-3.plunder", "reason": "out_of_scope:combat_window", "dependencies": ["BATTLE_RESULT"] },
+      { "abilityId": "sc-ereshkigal-2.gain-mana-on-deploy", "reason": "out_of_scope:forced_trigger", "dependencies": ["TRIGGER_GATEWAY", "BATTLE"] },
+      { "abilityId": "sc-tomoe-1.penalty-on-defeat", "reason": "out_of_scope:forced_trigger", "dependencies": ["TRIGGER_GATEWAY", "BATTLE_RESULT"] }
+    ]
+  },
+  "burnDown": {
+    "resourceDirectAction": {
+      "legacyBefore": 3,
+      "legacyAfter": 0,
+      "newBefore": 0,
+      "newAfter": 3,
+      "dualAfter": 0,
+      "remainingSkipped": 14
+    },
+    "global": {
+      "newRuntimeSemanticRouted": 12,
+      "legacyResolveEffect": 49,
+      "legacyExecuteAbility": 3,
+      "dualRuntime": 0,
+      "notClassifiable": 28
+    }
+  },
+  "gateEvidence": {
+    "gateA": { "status": "IMPLEMENTER_EVIDENCE_PRESENT_REVIEW_REQUIRED", "freshTests": "PASS 37/37 combined Gate A/B/compiler suite" },
+    "gateB": { "status": "IMPLEMENTER_EVIDENCE_PRESENT_REVIEW_REQUIRED", "freshTests": "PASS 37/37 combined Gate A/B/compiler suite" },
+    "gateC": { "status": "BLOCKED", "freshTests": "FAIL 0/1", "failurePoint": "browser activation produced no projected mana mutation" }
+  },
+  "runtimeSemanticGap": {
+    "code": "RUNTIME_SEMANTIC_GAP:RESOURCE_GATE_C_COMMAND_NO_STATE_MUTATION",
+    "owner": "Codex B",
+    "expected": { "mana": 12, "commandSpells": 2 },
+    "observed": { "mana": 8, "commandSpellsBeforeFailure": 3 },
+    "notReached": ["reconnect assertion", "stale replay assertion"],
+    "aSideRuntimeFixAttempted": false
+  },
+  "gateCBoundary": {
+    "setup": "restore_action_phase_fixture",
+    "doesNotProve": ["browser room creation", "browser seat selection", "browser match start", "browser phase progression"],
+    "cannotBeInheritedBy": ["trigger", "battle_result", "hidden_choice", "private_target", "pending_payment", "card_movement", "lifecycle", "modifier", "power", "special_subsystem"]
+  },
+  "checks": [
+    { "command": "node docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs", "result": "PASS", "summary": "17 total, 3 eligible/migrated, 14 skipped" },
+    { "command": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts packages/rules/tests/executable-card-pack.test.ts", "result": "PASS", "summary": "3 files / 37 tests" },
+    { "command": "npx playwright test -c playwright.config.ts fd-command-spell-resource-core --project=chromium", "result": "FAIL", "summary": "1 failed; projected mana remained 8 after browser activation" }
+  ],
+  "areasNotVerified": [
+    "Gate A/B/C promotion",
+    "Gate C reconnect consistency",
+    "Gate C stale replay rejection",
+    "full Resource Numeric family",
+    "global Phase 3 or Release readiness"
+  ]
+}

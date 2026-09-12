@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-review-packet-v1",
-  "generatedAt": "2026-09-09T08:28:15.712Z",
+  "generatedAt": "2026-09-12T07:19:58.698Z",
   "task": "P3-A01",
   "batch": "PHASE_3_COVERAGE_AND_EVIDENCE_AUTOMATION",
   "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
@@ -49,8 +49,34 @@
       "cardId": "master.kiritsugu.skill.time-alter",
       "abilityId": "time-alter.action",
       "semanticRoutes": [
-        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY",
-        "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW"
+        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY"
+      ],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
+    },
+    {
+      "archiveId": "master.maiya",
+      "cardId": "master.maiya.skill.military",
+      "abilityId": "military.has-support-shot",
+      "semanticRoutes": [
+        "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL"
+      ],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
+    },
+    {
+      "archiveId": "master.maiya",
+      "cardId": "master.maiya.skill.military",
+      "abilityId": "military.attach-support-shot",
+      "semanticRoutes": [
+        "CARD_ACTION_SEMANTICS_MINIMAL:ADD_TO_ATTACK"
+      ],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
+    },
+    {
+      "archiveId": "master.olga-marie",
+      "cardId": "master.olga-marie.skill.astronomical-science",
+      "abilityId": "astronomical-science.has-chaldeas",
+      "semanticRoutes": [
+        "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL"
       ],
       "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
     },
@@ -69,6 +95,15 @@
       "abilityId": "command-spell.gain-mana",
       "semanticRoutes": [
         "RESOURCE_NUMERIC_CORE_DIRECT_ACTION"
+      ],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
+    },
+    {
+      "archiveId": "master.shinji",
+      "cardId": "master.shinji.skill.useless-person",
+      "abilityId": "useless-person.setup",
+      "semanticRoutes": [
+        "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL"
       ],
       "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
     },
@@ -94,17 +129,18 @@
   "runtimeRoutingBeforeAfter": {
     "semanticRouteCounts": {
       "CARD_ACTION_SEMANTICS_MINIMAL:ACTIVATE": 1,
+      "CARD_ACTION_SEMANTICS_MINIMAL:ADD_TO_ATTACK": 1,
       "CARD_ACTION_SEMANTICS_MINIMAL:CLOSE": 1,
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY": 1,
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE": 1,
       "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA": 1,
-      "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW": 1,
-      "RESOURCE_NUMERIC_CORE_DIRECT_ACTION": 3
+      "RESOURCE_NUMERIC_CORE_DIRECT_ACTION": 3,
+      "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL": 3
     },
     "newRuntimeConsumers": {
       "before": 0,
-      "after": 8,
-      "delta": 8
+      "after": 12,
+      "delta": 12
     },
     "legacyExecuteAbilityConsumers": {
       "before": 3,
@@ -112,8 +148,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 53,
-      "after": 53,
+      "before": 49,
+      "after": 49,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -333,8 +369,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 53,
-      "after": 53,
+      "before": 49,
+      "after": 49,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -571,7 +607,7 @@
   },
   "remainingLegacy": {
     "legacyExecuteAbilityConsumers": 3,
-    "legacyResolveEffectConsumers": 53,
+    "legacyResolveEffectConsumers": 49,
     "dualRuntimeConsumers": 0,
     "notClassifiable": 28
   },

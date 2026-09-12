@@ -132,7 +132,7 @@ Results:
 - test:ci: PASS, 79 files / 453 tests
 - content validate: PASS, 7 masters / 7 servants / 20 events / 0 blocking issues
 - inventory: PASS, 17 resource abilities / 3 eligible / 14 skipped
-- command spell Gate C candidate: PASS, 1 Chromium test
+- command spell Gate C historical candidate: a fresh P3-A05 rerun on 2026-09-12 failed before resource mutation; see `docs/reports/2026-09-12-p3-a05-resource-numeric-reviewer-packet.md`
 
 ## Negative Evidence
 
@@ -151,7 +151,7 @@ Covered:
 
 ## Gate C Status
 
-Implementer Gate C candidate evidence exists in `e2e/fd-command-spell-resource-core.spec.ts` for command spell direct resource routing: real remote room create/select/start, browser-driven phase progression, real ability activation, WebSocket `expectedRevision`, server projection resource envelopes, reconnect consistency, and stale replay rejection. Independent review is still required before any Gate C or Phase 3 promotion.
+Implementer Gate C candidate code exists in `e2e/fd-command-spell-resource-core.spec.ts` for command spell direct resource routing. Its setup restores an already-started action-phase room; it does not prove browser-driven room creation, seat selection, match start, or phase progression. A fresh P3-A05 run failed after browser activation because projected mana remained unchanged, before reconnect and stale-replay assertions were reached. Gate C is therefore blocked pending a Codex B runtime investigation and a fresh passing run; independent review remains required before any Gate C or Phase 3 promotion.
 
 ## Known Retained Legacy
 

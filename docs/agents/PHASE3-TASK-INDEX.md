@@ -236,6 +236,62 @@ Completion status allowed:
 
 - `AUTOMATION_BASELINE_CANDIDATE`
 
+## TASK P3-A05
+
+Owner: Codex A
+Status: AUTOMATION_BASELINE_CANDIDATE
+Branch: `codex/a-p3-a01-coverage-automation`
+
+Goal:
+
+Package the existing `RESOURCE_NUMERIC_CORE_DIRECT_ACTION` implementation as independently reviewable evidence and reconcile its accepted semantic consumers with the current legacy/new/dual burn-down baseline. This task measures and packages evidence; it does not modify runtime behavior or promote Gate status.
+
+Depends on:
+
+- P3-A04 coverage alignment accepted at commit `f13a547`.
+- Existing Resource Numeric Core implementation candidate and reviewer checklist.
+- Current `phase3:coverage` and `phase3:automation-audit` generated baselines.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- `TASK P3-A05` from this file
+- `docs/reports/2026-09-08-resource-numeric-core-direct-action-result.md`
+- `docs/reports/2026-09-08-resource-numeric-core-direct-action-review-checklist.md`
+- `docs/reports/2026-09-09-resource-numeric-core-result.md`
+- `docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs`
+- `artifacts/phase3-skill-coverage.json` only as generated evidence
+- `artifacts/phase3-a02-automation-audit.json` only as generated evidence
+
+May touch:
+
+- `docs/agents/PHASE3-TASK-INDEX.md`
+- `docs/reports/*`
+- machine-readable evidence artifacts
+- coverage/evidence automation and its tests only if a demonstrable evidence-classification defect blocks the packet
+
+Do not touch:
+
+- rule runtime semantics
+- primitive behavior
+- semantic routing in `packages/rules`
+- `MatchSession` game behavior
+- card authoring JSON
+- Gate A/B/C status promotion
+
+Required output:
+
+- exact eligible and skipped inventory snapshot with skip reasons
+- semantic-route and legacy-fallback boundary summary
+- Gate A/B/C evidence-location checklist without inheriting evidence across excluded shapes
+- current legacy/new/dual burn-down and Resource Numeric Core consumer count
+- reviewer-ready report and machine-readable packet
+- any runtime defect recorded as `RUNTIME_SEMANTIC_GAP` and handed to Codex B without an A-side fix
+
+Completion status allowed:
+
+- `AUTOMATION_BASELINE_CANDIDATE`
+
 ## TASK P3-B04
 
 Owner: Codex B
