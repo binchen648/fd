@@ -292,6 +292,62 @@ Completion status allowed:
 
 - `AUTOMATION_BASELINE_CANDIDATE`
 
+## TASK P3-TO-05
+
+Owner: Codex B (specification lane only)
+Status: READY_SPEC_OWNER
+Runtime Authorization: NONE
+
+Goal:
+
+Define reusable Interaction Template contracts for explicit target selection, response, branch, yes/no, amount, and ordering decisions. Separate interaction semantics from timing hooks, triggers, lifecycle, and hidden-information policy before any broad PendingInteraction runtime migration.
+
+Depends on:
+
+- P3-A03 B11 synchronization available.
+- Corrected semantic-axis inventory: 20 explicit interaction abilities and 11 strict target-based PendingInteraction abilities.
+- B11 Golden Eater staged interaction evidence is a reference input, not automatic contract acceptance.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- `TASK P3-TO-05` from this file
+- `docs/plans/fd-rules-conformance-and-acceptance.md` pending-interaction requirements only
+- `docs/plans/fd-phase-3-throughput-optimization-plan.md` Interaction Template Strategy only
+- `docs/audits/fd-skill-semantic-axis-matrix.md` Interaction Semantic section only
+- `docs/reports/2026-09-12-p3-a03-b11-synchronization.md`
+
+May touch:
+
+- `docs/plans/*` for the Interaction Template contract
+- `docs/audits/*` for interaction inventory/contract matrices
+- `docs/reports/*` for the spec handoff/result
+- machine-readable specification artifacts
+- `docs/agents/PHASE3-TASK-INDEX.md` status only
+
+Do not touch:
+
+- `packages/rules/**`
+- `apps/client/**`
+- `apps/server/**`
+- `e2e/**`
+- card authoring or generated content
+- runtime PendingInteraction/response behavior
+- Gate A/B/C promotion
+
+Required output:
+
+- typed template definitions for target, response, branch, yes/no, amount, and ordering
+- ownership, visibility, source identity, revision, reconnect, cancel/timeout, and stale-command policies
+- explicit distinction between 20 interaction abilities and 11 strict target-based PendingInteraction abilities
+- representative mapping and skipped/dependency reasons
+- compiler/runtime acceptance requirements for a later Codex B implementation slice
+- independent reviewer checklist
+
+Completion status allowed:
+
+- `SPEC_REVIEW_READY`
+
 ## TASK P3-B04
 
 Owner: Codex B

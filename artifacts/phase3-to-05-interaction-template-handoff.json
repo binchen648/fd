@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "fd-phase3-spec-handoff-v1",
+  "generatedAt": "2026-09-12T15:18:27.004Z",
+  "task": "P3-TO-05",
+  "name": "Interaction Template Contract",
+  "owner": "Codex B",
+  "lane": "SPECIFICATION_ONLY",
+  "status": "READY_SPEC_OWNER",
+  "maximumCompletionClaim": "SPEC_REVIEW_READY",
+  "runtimeAuthorized": false,
+  "denominators": {
+    "explicitInteractionAbilities": 20,
+    "strictPendingInteractionAbilities": 11
+  },
+  "templateKinds": [
+    "TARGET_SELECTION",
+    "RESPONSE",
+    "BRANCH_CHOICE",
+    "YES_NO",
+    "AMOUNT_SELECTION",
+    "ORDERING"
+  ],
+  "requiredPolicies": [
+    "server_derived_legal_choices",
+    "source_and_controller_identity",
+    "visibility",
+    "revision_and_stale_rejection",
+    "reconnect_serialization_projection",
+    "continuation_and_result_binding",
+    "cancel_timeout_and_cleanup",
+    "unauthorized_duplicate_and_malformed_rejection"
+  ],
+  "referenceEvidence": [
+    "P3-B11 Golden Eater staged interaction",
+    "existing response-window source identity",
+    "existing reconnect and stale transport tests"
+  ],
+  "forbidden": [
+    "runtime changes",
+    "card-specific exceptions",
+    "Gate promotion",
+    "interaction inference from timing hooks alone"
+  ]
+}
