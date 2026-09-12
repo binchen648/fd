@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.2
+- Version: P3-TI-1.3
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -28,7 +28,7 @@ This map is the task-level bridge back to the total project goals. It does not p
 | Resource Numeric Core direct action | Stabilization plan Phase 3B; throughput plan first low-risk factory slice | Route command-spell style direct resource effects by executable semantic form with fail-closed validation. | P3-TO-08; A evidence support through P3-A01/A03 | IMPLEMENTATION_COMPLETE_CANDIDATE in current docs | Gate A/B/C evidence for representative direct-resource cards | Independent review and coverage sync still required before promotion. |
 | Card Zone Core direct action | Stabilization plan Phase 3B; primitive conformance matrix | Route direct zone/draw movement by executable semantic form and remove ability-id pilot fallback. | P3-TO-09; R follow-up as needed | PENDING_REVIEW / candidate evidence recorded | Gate A/B/C representative card-zone evidence | Needs R judgment and burn-down sync. |
 | Card Action semantic split | Roadmap Phase 3B; mechanic family and primitive matrices; `docs/plans/2026-09-12-phase-3-completion-execution-plan.md` | Keep `PLAY`, `PLAY_SOURCE_RESPONSE`, `ADD_TO_ATTACK`, `ACTIVATE`, `CLOSE`, `CREATE_AND_ACTIVATE`, and setup create-to-skill routing as separate contracts with only shared helpers underneath. | P3-B04 through P3-B10; P3-R04/P3-R05 | PARTIAL_CANDIDATE / queued by task; B10 FAILED_REVIEW_REPAIR | Separate Gate A/B/C judgment per action contract | B09 does not finish Phase 3; B10 must also clear semantic-form routing and provenance fail-closed review before A03 can sync it. |
-| Result Binding | Roadmap Phase 3A; `docs/plans/fd-effect-result-binding-plan.md` | Bind multi-step effect results to subsequent costs, awards, events, rollback, and production path. | Existing Phase 3A result-binding slice; future B/R tasks when reopened | IMPLEMENTER_EVIDENCE_RECORDED / review pending | Golden Result-Binding Card Gate B/C | Production bridge and independent promotion remain pending. |
+| Result Binding | Roadmap Phase 3A; `docs/plans/fd-effect-result-binding-plan.md` | Bind multi-step effect results to subsequent costs, awards, events, rollback, and production path. | P3-B11; independent R review after implementation | READY_FOR_PRODUCTION_BRIDGE | Golden Eater plus Conversion Magic Gate B/C | B11 must prove reusable production routing, staged rollback, interaction continuation, and no legacy bypass without expanding the card pool. |
 | Target / Interaction Gateway | Roadmap NEXT; corrected semantic-axis matrix | Define target selection and pending interaction templates before broad runtime migration. | P3-TO-05; later B runtime task after spec review | SPEC_READY_NEXT / runtime waiting | Gateway contract review, then representative Gate B/C | Runtime implementation must wait for accepted gateway contract. |
 | Trigger Gateway | Roadmap NEXT; corrected semantic-axis matrix | Define event payload, source ability/card identity, ordering, optional/forced handling, and projection rules. | P3-TO-03; P3-B07 only after trigger spec or explicit override | SPEC_READY_NEXT / B07 WAIT_TRIGGER_SPEC_OR_EXPLICIT_OVERRIDE | Gateway contract review, then representative trigger Gate B/C | Runtime migration blocked until spec is accepted. |
 | Lifecycle Gateway | Roadmap NEXT; corrected semantic-axis matrix | Define source-close, reset, persistence, cleanup, and duration ownership before broad migration. | P3-TO-04; P3-B08 only after lifecycle spec or explicit override | SPEC_READY_NEXT / B08 WAIT_LIFECYCLE_SPEC_OR_EXPLICIT_OVERRIDE | Gateway contract review, then representative lifecycle Gate B/C | Runtime migration blocked until lifecycle owner contract is accepted. |
@@ -704,6 +704,86 @@ Required output:
 - focused passing test output
 - B10 implementation report with before/after evidence
 - explicit note that `phase3:coverage` still belongs to Codex A after R accepts the repair
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+
+## TASK P3-B11
+
+Owner: Codex B
+Status: READY
+Branch: `codex/b-p3-b11-result-binding-production-bridge`
+
+Goal:
+
+Implement `RESULT_BINDING_PRODUCTION_BRIDGE` for the existing Golden Eater and Conversion Magic representatives only. Prove that validated typed results can be consumed by later nodes through the production `MatchSession` path, including staged interaction continuation and transactional rollback, without any legacy `resolveEffect` bypass.
+
+Depends on:
+
+- P3-B10 accepted by R05 at runtime baseline commit `9fba6d9`.
+- P3-A03/A04 B10 automation sync may run in parallel and does not block B11.
+- No outstanding R-required Resource Numeric or Card Zone runtime blocker.
+- Codex B has exclusive ownership of the runtime hot files listed below.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- TASK P3-B11 only
+- `docs/reports/2026-09-12-p3-b11-result-binding-production-bridge-handoff.md`
+- `artifacts/phase3-b11-result-binding-production-bridge-handoff.json`
+- `docs/plans/fd-effect-result-binding-plan.md` only for result-envelope, rollback, and production-bridge requirements
+- canonical Golden Eater and Conversion Magic authoring definitions only
+
+May touch:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- focused result-binding and production-bridge tests
+- `e2e/fd-golden-eater-result-binding.spec.ts`
+- `e2e/fd-conversion-magic-core-primitive.spec.ts` only for regression assertions required by this task
+- scoped B11 implementation report
+
+Must not touch:
+
+- cards or abilities outside Golden Eater and Conversion Magic
+- coverage KPI, taxonomy, classifier, or evidence-promotion rules
+- broad Target/Interaction, Trigger, Lifecycle, Battle, Modifier, or Hidden Information runtime
+- card- or ability-id fallback routing
+- unrelated client/server behavior
+- Gate A/B/C status promotion
+
+Hot files:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+
+Concurrent conflicts:
+
+- any runtime task touching the same hot files
+- any attempt by Codex A or R to edit runtime while B11 is active
+
+Required implementation contract:
+
+- route only a compiler-validated, fully supported result-binding graph; routing eligibility must be semantic and must not depend on Golden Eater or Conversion Magic ids
+- retain Conversion Magic as the no-interaction control for `move_all_remaining -> movedCount -> adjust_mana`
+- migrate Golden Eater through the same typed binding infrastructure while preserving its two server-owned target stages and optional 7-mana branch
+- persist only the minimum validated continuation data needed across pending interaction stages; never accept client-supplied binding values
+- use dispatch transaction boundaries: a failed first stage commits nothing; a failed second stage preserves the already committed first stage but rolls back payment, movement, VP, events, and revision from the failing dispatch
+- reject compiler, binding, target-reference, and runtime invariant failures as `resolution_failed` without calling legacy `resolveEffect`
+- leave unsupported result-binding or interaction shapes on their existing route and report them as skipped; do not broaden eligibility to improve counts
+
+Required output:
+
+- focused compiler and runtime negative tests written before implementation
+- real `MatchSession.dispatchPlayerAction` proof for both representatives
+- interaction continuation, reconnect/projection, stale replay, and rollback evidence appropriate to Golden Eater
+- regression proof that Conversion Magic still settles mana from actual `movedCount`
+- explicit legacy-bypass instrumentation or equivalent proof for eligible success and failure paths
+- B11 implementation report with before/after `legacyResolveEffect`, `newRuntimeSemanticRouted`, `dualRuntime`, local eligible/migrated/skipped counts, and unchanged skipped abilities
+- explicit note that global KPI/classifier synchronization belongs to Codex A after R judgment
 
 Completion status allowed:
 
