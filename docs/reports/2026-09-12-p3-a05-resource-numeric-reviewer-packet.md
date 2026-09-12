@@ -5,7 +5,7 @@
 - Source Task: `P3-A05`
 - Mechanic: `RESOURCE_NUMERIC_CORE_DIRECT_ACTION`
 - Claimed Acceptance: `AUTOMATION_BASELINE_CANDIDATE`
-- Promotion Verdict: `BLOCKED_BY_RUNTIME_SEMANTIC_GAP`
+- Promotion Verdict: `READY_FOR_INDEPENDENT_REVIEW`
 - Promotion Notice: this packet does not promote Gate A/B/C, Phase 3, or Release status.
 
 ## Objective
@@ -85,17 +85,19 @@ Evidence locations:
 
 These are implementer/component/scenario evidence for independent R review. A05 does not convert them into Gate A or Gate B promotion.
 
-## Runtime Semantic Gap
+## Runtime Semantic Gap Follow-up
 
 Code: `RUNTIME_SEMANTIC_GAP:RESOURCE_GATE_C_COMMAND_NO_STATE_MUTATION`
 
-Fresh command:
+Codex B supplied fix candidate `c2eafe0` on `codex/b-resource-gatec-command-fix`. The root cause was an older socket close callback marking a client disconnected even when that client already owned a newer open socket. The fix only disconnects the client when no open socket remains.
+
+Original A05 command on the A branch:
 
 ```text
 npx playwright test -c playwright.config.ts fd-command-spell-resource-core --project=chromium
 ```
 
-Fresh result: `FAIL`, 1 failed.
+Original result: `FAIL`, 1 failed.
 
 Observed behavior:
 
@@ -107,7 +109,23 @@ Expected projected mana=12.
 Actual projected mana remained 8 until the 10-second poll timed out.
 ```
 
-The test failed before reconnect and stale-replay assertions, so those portions are not fresh passing evidence in this checkout. Ownership is Codex B because the observed failure is on the browser/WS/server mutation path. Codex A did not change runtime, protocol, E2E behavior, or authoring data.
+Codex A then independently reran evidence on B fix commit `c2eafe0`:
+
+```text
+npx vitest run apps/server/src/match-server.test.ts
+NOT EXECUTED: root Vitest config excludes apps/server; replaced by workspace command below.
+
+npm test --workspace apps/server
+PASS: 1 file / 3 tests
+
+npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts packages/rules/tests/executable-card-pack.test.ts
+PASS: 3 files / 37 tests
+
+npx playwright test -c playwright.config.ts fd-command-spell-resource-core --project=chromium --repeat-each=5
+PASS: 5/5
+```
+
+The fix candidate closes the observed runtime gap under A's fresh verification. Independent R review is still required before the gap is accepted as closed or Gate C is promoted. Codex A did not merge or modify B runtime, protocol, E2E behavior, or authoring data.
 
 ## Gate C Evidence Boundary
 
@@ -129,7 +147,7 @@ It must not be described as a browser create/select/start flow. The 2026-09-09 i
 
 - Gate A: implementation evidence present; independent R judgment required.
 - Gate B: implementation evidence present; independent R judgment required.
-- Gate C: `BLOCKED`, fresh candidate run failed before mutation/reconnect/stale completion.
+- Gate C: B fix candidate has fresh A evidence (`5/5 PASS`), but remains unpromoted pending independent R review.
 - Resource Numeric family: only the three exact direct-action consumers are in scope.
 - Global Phase 3 and Release Gate: not claimed.
 

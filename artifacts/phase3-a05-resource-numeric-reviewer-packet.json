@@ -5,7 +5,7 @@
   "sourceTask": "P3-A05",
   "mechanic": "RESOURCE_NUMERIC_CORE_DIRECT_ACTION",
   "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
-  "promotionVerdict": "BLOCKED_BY_RUNTIME_SEMANTIC_GAP",
+  "promotionVerdict": "READY_FOR_INDEPENDENT_REVIEW",
   "promotionNotice": "This packet does not promote Gate A/B/C, Phase 3, or Release status.",
   "inventory": {
     "sourceFiles": 14,
@@ -57,7 +57,7 @@
   "gateEvidence": {
     "gateA": { "status": "IMPLEMENTER_EVIDENCE_PRESENT_REVIEW_REQUIRED", "freshTests": "PASS 37/37 combined Gate A/B/compiler suite" },
     "gateB": { "status": "IMPLEMENTER_EVIDENCE_PRESENT_REVIEW_REQUIRED", "freshTests": "PASS 37/37 combined Gate A/B/compiler suite" },
-    "gateC": { "status": "BLOCKED", "freshTests": "FAIL 0/1", "failurePoint": "browser activation produced no projected mana mutation" }
+    "gateC": { "status": "B_FIX_CANDIDATE_A_VERIFIED_R_REVIEW_REQUIRED", "originalA05Test": "FAIL 0/1", "bFixTest": "PASS 5/5", "bFixCommit": "c2eafe0" }
   },
   "runtimeSemanticGap": {
     "code": "RUNTIME_SEMANTIC_GAP:RESOURCE_GATE_C_COMMAND_NO_STATE_MUTATION",
@@ -65,7 +65,18 @@
     "expected": { "mana": 12, "commandSpells": 2 },
     "observed": { "mana": 8, "commandSpellsBeforeFailure": 3 },
     "notReached": ["reconnect assertion", "stale replay assertion"],
-    "aSideRuntimeFixAttempted": false
+    "aSideRuntimeFixAttempted": false,
+    "bFixCandidate": {
+      "branch": "codex/b-resource-gatec-command-fix",
+      "commit": "c2eafe0",
+      "rootCause": "An older socket close callback disconnected a client that still owned a newer open socket.",
+      "aFreshVerification": {
+        "serverSuite": "PASS 3/3",
+        "resourceSuite": "PASS 37/37",
+        "gateCRepeat": "PASS 5/5"
+      },
+      "status": "R_REVIEW_REQUIRED"
+    }
   },
   "gateCBoundary": {
     "setup": "restore_action_phase_fixture",
@@ -76,6 +87,10 @@
     { "command": "node docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs", "result": "PASS", "summary": "17 total, 3 eligible/migrated, 14 skipped" },
     { "command": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts packages/rules/tests/executable-card-pack.test.ts", "result": "PASS", "summary": "3 files / 37 tests" },
     { "command": "npx playwright test -c playwright.config.ts fd-command-spell-resource-core --project=chromium", "result": "FAIL", "summary": "1 failed; projected mana remained 8 after browser activation" }
+    ,
+    { "command": "npm test --workspace apps/server", "checkout": "c2eafe0", "result": "PASS", "summary": "1 file / 3 tests" },
+    { "command": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts packages/rules/tests/executable-card-pack.test.ts", "checkout": "c2eafe0", "result": "PASS", "summary": "3 files / 37 tests" },
+    { "command": "npx playwright test -c playwright.config.ts fd-command-spell-resource-core --project=chromium --repeat-each=5", "checkout": "c2eafe0", "result": "PASS", "summary": "5/5" }
   ],
   "areasNotVerified": [
     "Gate A/B/C promotion",
