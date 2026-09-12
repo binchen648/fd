@@ -183,6 +183,59 @@ Runtime defect handling:
 - Record `RUNTIME_SEMANTIC_GAP` with evidence and hand to Codex B.
 - Do not fix runtime behavior.
 
+## TASK P3-A04
+
+Owner: Codex A
+Status: IN_PROGRESS
+Branch: `codex/a-p3-a01-coverage-automation`
+
+Goal:
+
+Align Phase 3 coverage automation with the independently accepted P3-B10 exact `SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL` runtime contract, while reconciling the accepted B06-B08 classifier baseline required for accurate global burn-down.
+
+Depends on:
+
+- P3-B10 review fix accepted at runtime commit `9fba6d9`.
+- P3-A03 B10 reviewer packet available.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- `TASK P3-A04` from this file
+- `docs/reports/2026-09-12-p3-a03-b10-reviewer-packet.md`
+- P3-B10 final implementation report at reviewed commit `9fba6d9`
+- `artifacts/phase3-skill-coverage.json` only as generated evidence
+
+May touch:
+
+- `scripts/phase3-coverage.ts`
+- `scripts/tests/phase3-coverage.test.ts`
+- `docs/agents/PHASE3-TASK-INDEX.md`
+- `docs/reports/*`
+- machine-readable evidence artifacts
+
+Do not touch:
+
+- rule runtime semantics
+- primitive behavior
+- semantic routing in `packages/rules`
+- `MatchSession` game behavior
+- card authoring JSON
+- Gate A/B/C status promotion
+
+Required output:
+
+- exact coverage classifier matching the accepted B10 semantic shape without card or ability ids
+- cumulative classifier alignment for accepted B06 `ADD_TO_ATTACK`, B07 `ACTIVATE`, and B08 `CLOSE` contracts
+- positive, negative, and card-id-independence automation regressions
+- actual global legacy/new/dual burn-down numbers
+- B10 review-outcome and coverage-alignment report
+- machine-readable sync artifact
+
+Completion status allowed:
+
+- `AUTOMATION_BASELINE_CANDIDATE`
+
 ## TASK P3-B04
 
 Owner: Codex B

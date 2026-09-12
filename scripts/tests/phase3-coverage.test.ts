@@ -168,6 +168,154 @@ describe('phase3 coverage taxonomy drift protections', () => {
     }
   });
 
+  it('classifies only the accepted B10 setup create-to-skill semantic shape', () => {
+    const semanticRoute = 'SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL';
+    const exactAbility = {
+      id: 'renamed.setup-create-to-skill',
+      kind: 'forced_trigger',
+      activation: { trigger: 'game_start' },
+      conditions: [],
+      targets: [],
+      cost: [],
+      creates: [],
+      effects: [{ type: 'create_card', cardId: 'card.luck', to: { zone: 'skill' } }],
+      execution: { mode: 'automatic' },
+    };
+
+    const exact = classifyAbilityForCoverage({ id: 'test.archive' }, { id: 'renamed.card' }, exactAbility);
+    expect(exact.semanticRoutes).toContain(semanticRoute);
+    expect(exact.runtimeRoute).toBe('NEW_RUNTIME_SEMANTIC_ROUTED');
+
+    const variants = [
+      { name: 'wrong kind', patch: { kind: 'optional_trigger' } },
+      { name: 'wrong trigger', patch: { activation: { trigger: 'after_controller_wins_battle' } } },
+      { name: 'condition present', patch: { conditions: [{ type: 'source_card_in_zone', zone: 'hand' }] } },
+      { name: 'target present', patch: { targets: [{ id: 'target', type: 'player' }] } },
+      { name: 'cost present', patch: { cost: [{ type: 'pay_mana', amount: 1 }] } },
+      { name: 'creates present', patch: { creates: [{ type: 'create_card', cardId: 'other', to: { zone: 'skill' } }] } },
+      { name: 'extra effect', patch: { effects: [...exactAbility.effects, { type: 'shuffle_deck' }] } },
+      { name: 'missing card id', patch: { effects: [{ type: 'create_card', to: { zone: 'skill' } }] } },
+      { name: 'wrong destination', patch: { effects: [{ type: 'create_card', cardId: 'card.luck', to: { zone: 'deck' } }] } },
+      { name: 'owner override', patch: { effects: [{ type: 'create_card', cardId: 'card.luck', to: { zone: 'skill', owner: 'controller' } }] } },
+      { name: 'nested then', patch: { effects: [{ type: 'create_card', cardId: 'card.luck', to: { zone: 'skill' }, then: [{ type: 'shuffle_deck' }] }] } },
+      { name: 'wrong mode', patch: { execution: { mode: 'host_adjudicated' } } },
+    ];
+
+    for (const { name, patch } of variants) {
+      const ability = { ...structuredClone(exactAbility), ...patch, id: `variant.${name}` };
+      const row = classifyAbilityForCoverage({ id: 'test.archive' }, { id: 'test.card' }, ability);
+      expect(row.semanticRoutes, name).not.toContain(semanticRoute);
+    }
+  });
+
+  it('reports three exact B10 consumers without inheriting Artoria Caster Luck', () => {
+    const exact = (id: string, cardId: string) => ({
+      id,
+      kind: 'forced_trigger',
+      activation: { trigger: 'game_start' },
+      conditions: [],
+      targets: [],
+      cost: [],
+      creates: [],
+      effects: [{ type: 'create_card', cardId, to: { zone: 'skill' } }],
+      execution: { mode: 'automatic' },
+    });
+    const luck = (id: string) => ({
+      id,
+      kind: 'optional_trigger',
+      activation: { trigger: 'after_controller_wins_battle', opens: 'post_battle_optional_trigger_window' },
+      conditions: [{ type: 'source_card_in_zone', zone: 'hand', owner: 'controller' }],
+      targets: [],
+      cost: [{ type: 'move_source_card', from: { zone: 'hand', owner: 'controller' }, to: { zone: 'removed_from_game', owner: 'controller' } }],
+      creates: [{ type: 'create_card', cardId: 'card.luck', to: { zone: 'deck', owner: 'controller' }, then: [{ type: 'shuffle_deck', owner: 'controller' }] }],
+      effects: [],
+      execution: { mode: 'automatic' },
+    });
+    const coverage = buildCoverageFromArchives([archiveWithAbilities([
+      exact('military.has-support-shot', 'master.maiya.deck.support-shot'),
+      exact('astronomical-science.has-chaldeas', 'master.olga-marie.skill.chaldeas'),
+      exact('useless-person.setup', 'master.shinji.skill.false-attendant-book'),
+      luck('sc-artoriac-4.unique-passive-luck-on-win'),
+      luck('sc-artoriac-5.unique-passive-luck-on-win'),
+      luck('sc-artoriac-6.unique-passive-luck-on-win'),
+    ])], { generatedAt: '2026-09-12T00:00:00.000Z' });
+
+    expect(coverage.runtimeRouting.semanticRouteCounts['SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL']).toBe(3);
+    expect(coverage.runtimeRouting.newRuntimeConsumers.after).toBe(3);
+    expect(coverage.runtimeRouting.legacyResolveEffectConsumers.after).toBe(0);
+    expect(coverage.runtimeRouting.legacyExecuteAbilityConsumers.after).toBe(3);
+    expect(coverage.runtimeRouting.notClassifiable.after).toBe(0);
+    expect(coverage.runtimeRouting.dualRuntimeConsumers.after).toBe(0);
+  });
+
+  it('reconciles the accepted B06 add-to-attack classifier baseline', () => {
+    const semanticRoute = 'CARD_ACTION_SEMANTICS_MINIMAL:ADD_TO_ATTACK';
+    const exactAbility = {
+      id: 'renamed.add-to-attack',
+      kind: 'phase_action',
+      activation: { phase: 'advance', opens: 'controller_action_window' },
+      conditions: [{ type: 'not', condition: { type: 'controller_at_battlefield' } }],
+      targets: [{ id: 'supported_player', type: 'player', constraints: [{ type: 'not_controller' }], count: { min: 1, max: 1 } }],
+      cost: [{ type: 'pay_mana', amount: 2 }],
+      creates: [],
+      effects: [{
+        type: 'attach_card_to_player_attack',
+        cardId: 'master.maiya.deck.support-shot',
+        target: 'supported_player',
+        returnAtRoundEnd: true,
+        controllerCannotWinStatus: 'maiya_cannot_win_battle_this_round',
+      }],
+    };
+
+    expect(classifyAbilityForCoverage({ id: 'test.archive' }, { id: 'test.card' }, exactAbility).semanticRoutes)
+      .toContain(semanticRoute);
+    const wrongCard = structuredClone(exactAbility);
+    wrongCard.effects[0]!.cardId = 'master.maiya.deck.other-card';
+    expect(classifyAbilityForCoverage({ id: 'test.archive' }, { id: 'test.card' }, wrongCard).semanticRoutes)
+      .not.toContain(semanticRoute);
+  });
+
+  it('reconciles accepted B07 and B08 exact classifier boundaries', () => {
+    const activateRoute = 'CARD_ACTION_SEMANTICS_MINIMAL:ACTIVATE';
+    const activate = {
+      id: 'renamed.activate',
+      kind: 'forced_trigger',
+      activation: { trigger: 'after_controller_first_loses_battle' },
+      targets: [],
+      cost: [],
+      creates: [],
+      effects: [{ type: 'activate_card_by_id', definitionId: 'master.olga-marie.skill.trismegistus-grief' }],
+    };
+    const wrongDefinition = structuredClone(activate);
+    wrongDefinition.effects[0]!.definitionId = 'master.olga-marie.skill.chaldeas';
+    expect(classifyAbilityForCoverage({ id: 'test.archive' }, { id: 'test.card' }, activate).semanticRoutes)
+      .toContain(activateRoute);
+    expect(classifyAbilityForCoverage({ id: 'test.archive' }, { id: 'test.card' }, wrongDefinition).semanticRoutes)
+      .not.toContain(activateRoute);
+
+    const closeRoute = 'CARD_ACTION_SEMANTICS_MINIMAL:CLOSE';
+    const close = {
+      id: 'renamed.close',
+      kind: 'residual',
+      activation: { trigger: 'on_card_played', opens: 'immediate' },
+      conditions: [
+        { type: 'source_card_in_zone', zone: 'field' },
+        { type: 'event_played_card_has_attribute', attribute: '宝具' },
+      ],
+      targets: [],
+      cost: [],
+      creates: [],
+      lifecycle: { duration: 'while_card_active', cleanup: 'when_card_leaves_active_area' },
+      effects: [{ type: 'close_source_card' }],
+    };
+    const missingSourceCondition = structuredClone(close);
+    missingSourceCondition.conditions.shift();
+    expect(classifyAbilityForCoverage({ id: 'test.archive' }, { id: 'test.card' }, close).semanticRoutes)
+      .toContain(closeRoute);
+    expect(classifyAbilityForCoverage({ id: 'test.archive' }, { id: 'test.card' }, missingSourceCondition).semanticRoutes)
+      .not.toContain(closeRoute);
+  });
+
   it('builds reviewer packets with explicit non-runtime ownership boundaries', () => {
     const coverage = buildCoverageFromArchives([archiveWithAbilities([
       {

@@ -253,7 +253,50 @@ function noTargetsCostOrCreates(ability: AuthoringAbilityLike): boolean {
 function isFixedManaCost(costs: JsonObject[] | undefined, amount: number): boolean {
   if ((costs ?? []).length !== 1) return false;
   const cost = costs?.[0];
-  return cost?.type === 'pay_mana' && cost.amount === amount;
+  if (cost?.type !== 'pay_mana') return false;
+  if (cost.amount === amount) return true;
+  const amountNode = cost.amount as JsonObject | undefined;
+  return typeof amountNode === 'object'
+    && (amountNode?.expr === 'literal' || amountNode?.op === 'literal' || amountNode?.op === 'const')
+    && amountNode.value === amount;
+}
+
+function conditionsOf(ability: AuthoringAbilityLike): JsonObject[] {
+  return Array.isArray(ability.conditions) ? ability.conditions as JsonObject[] : [];
+}
+
+function hasNotControllerAtBattlefieldCondition(ability: AuthoringAbilityLike): boolean {
+  return conditionsOf(ability).some((condition) => {
+    const nested = condition.condition as JsonObject | undefined;
+    return condition.type === 'not' && nested?.type === 'controller_at_battlefield';
+  });
+}
+
+function hasSingleNonControllerPlayerTarget(targets: JsonObject[] | undefined, targetId: string | undefined): boolean {
+  if (!targetId) return false;
+  const target = (targets ?? []).find((candidate) => candidate.id === targetId);
+  if (!target || target.type !== 'player') return false;
+  const count = target.count as JsonObject | undefined;
+  const constraints = Array.isArray(target.constraints) ? target.constraints as JsonObject[] : [];
+  return (count?.min ?? 1) === 1
+    && (count?.max ?? 1) === 1
+    && constraints.some((constraint) => constraint.type === 'not_controller');
+}
+
+function hasSourceCardInFieldCondition(ability: AuthoringAbilityLike): boolean {
+  return conditionsOf(ability).some((condition) =>
+    condition.type === 'source_card_in_zone' && condition.zone === 'field');
+}
+
+function hasEventPlayedCardNoblePhantasmCondition(ability: AuthoringAbilityLike): boolean {
+  return conditionsOf(ability).some((condition) =>
+    condition.type === 'event_played_card_has_attribute' && condition.attribute === '宝具');
+}
+
+function hasSourceCloseLifecycle(ability: AuthoringAbilityLike): boolean {
+  const lifecycle = ability.lifecycle as JsonObject | undefined;
+  return (!lifecycle?.duration || lifecycle.duration === 'while_card_active')
+    && (!lifecycle?.cleanup || lifecycle.cleanup === 'when_card_leaves_active_area');
 }
 
 function isResourceNumericDirectAction(ability: AuthoringAbilityLike, topLevelTypes: string[]): boolean {
@@ -299,27 +342,76 @@ function isPlaySourceResponseShape(ability: AuthoringAbilityLike, topLevelTypes:
 }
 
 function isAddToAttackShape(ability: AuthoringAbilityLike, topLevelTypes: string[]): boolean {
+  const effects = ability.effects ?? [];
+  const effect = effects[0];
   return ability.kind === 'phase_action'
     && ability.activation?.phase === 'advance'
     && ability.activation?.opens === 'controller_action_window'
+    && hasNotControllerAtBattlefieldCondition(ability)
     && (ability.targets ?? []).length === 1
+    && (ability.creates ?? []).length === 0
+    && effects.length === 1
     && topLevelTypes.length === 1
     && topLevelTypes[0] === 'attach_card_to_player_attack'
-    && rawText(ability).includes('"support-shot"')
-    && rawText(ability.cost ?? []).includes('"pay_mana"');
+    && effect?.cardId === 'master.maiya.deck.support-shot'
+    && typeof effect?.target === 'string'
+    && hasSingleNonControllerPlayerTarget(ability.targets, effect.target)
+    && effect.returnAtRoundEnd === true
+    && effect.controllerCannotWinStatus === 'maiya_cannot_win_battle_this_round'
+    && isFixedManaCost(ability.cost, 2);
 }
 
 function isActivateShape(ability: AuthoringAbilityLike, topLevelTypes: string[]): boolean {
+  const effects = ability.effects ?? [];
+  const effect = effects[0];
   return ability.kind === 'forced_trigger'
     && ability.activation?.trigger === 'after_controller_first_loses_battle'
+    && (ability.targets ?? []).length === 0
+    && (ability.cost ?? []).length === 0
+    && (ability.creates ?? []).length === 0
+    && effects.length === 1
     && topLevelTypes.length === 1
-    && topLevelTypes[0] === 'activate_card_by_id';
+    && topLevelTypes[0] === 'activate_card_by_id'
+    && effect?.definitionId === 'master.olga-marie.skill.trismegistus-grief';
 }
 
 function isCloseShape(ability: AuthoringAbilityLike, topLevelTypes: string[]): boolean {
-  return topLevelTypes.length === 1
+  const effects = ability.effects ?? [];
+  const opens = ability.activation?.opens;
+  return ability.kind === 'residual'
+    && ability.activation?.trigger === 'on_card_played'
+    && (!opens || opens === 'immediate')
+    && hasSourceCardInFieldCondition(ability)
+    && hasEventPlayedCardNoblePhantasmCondition(ability)
+    && hasSourceCloseLifecycle(ability)
+    && (ability.targets ?? []).length === 0
+    && (ability.cost ?? []).length === 0
+    && (ability.creates ?? []).length === 0
+    && effects.length === 1
+    && topLevelTypes.length === 1
     && topLevelTypes[0] === 'close_source_card'
-    && ability.activation?.trigger === 'on_card_played';
+    && effects[0]?.type === 'close_source_card';
+}
+
+function isSetupCreateToSkillShape(ability: AuthoringAbilityLike, topLevelTypes: string[]): boolean {
+  const conditions = Array.isArray(ability.conditions) ? ability.conditions : [];
+  const effects = ability.effects ?? [];
+  const effect = effects[0];
+  const destination = effect?.to && typeof effect.to === 'object' ? effect.to as JsonObject : undefined;
+  const execution = ability.execution && typeof ability.execution === 'object' ? ability.execution as JsonObject : undefined;
+  return ability.kind === 'forced_trigger'
+    && ability.activation?.trigger === 'game_start'
+    && conditions.length === 0
+    && noTargetsCostOrCreates(ability)
+    && effects.length === 1
+    && topLevelTypes.length === 1
+    && topLevelTypes[0] === 'create_card'
+    && typeof effect?.cardId === 'string'
+    && destination?.zone === 'skill'
+    && effect.owner === undefined
+    && destination.owner === undefined
+    && effect.then === undefined
+    && execution?.mode === 'automatic';
 }
 
 function semanticRoutesForAbility(ability: AuthoringAbilityLike, topLevelTypes: string[]): string[] {
@@ -333,6 +425,7 @@ function semanticRoutesForAbility(ability: AuthoringAbilityLike, topLevelTypes: 
   if (isAddToAttackShape(ability, topLevelTypes)) routes.push('CARD_ACTION_SEMANTICS_MINIMAL:ADD_TO_ATTACK');
   if (isActivateShape(ability, topLevelTypes)) routes.push('CARD_ACTION_SEMANTICS_MINIMAL:ACTIVATE');
   if (isCloseShape(ability, topLevelTypes)) routes.push('CARD_ACTION_SEMANTICS_MINIMAL:CLOSE');
+  if (isSetupCreateToSkillShape(ability, topLevelTypes)) routes.push('SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL');
   return unique(routes);
 }
 
