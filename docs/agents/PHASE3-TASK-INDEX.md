@@ -27,7 +27,7 @@ This map is the task-level bridge back to the total project goals. It does not p
 | Legacy burn-down sync | Roadmap KPI: Legacy Burn-down plus Mechanic Coverage | Update metrics only after R judgment; preserve rejected/candidate/accepted separation. | P3-A03 | READY_AFTER_REVIEW | Coverage report with before/after legacy, semantic, dual, skipped, and Gate status counts | Waits for R review result and accepted measurement method. |
 | Resource Numeric Core direct action | Stabilization plan Phase 3B; throughput plan first low-risk factory slice | Route command-spell style direct resource effects by executable semantic form with fail-closed validation. | P3-TO-08; A evidence support through P3-A01/A03 | IMPLEMENTATION_COMPLETE_CANDIDATE in current docs | Gate A/B/C evidence for representative direct-resource cards | Independent review and coverage sync still required before promotion. |
 | Card Zone Core direct action | Stabilization plan Phase 3B; primitive conformance matrix | Route direct zone/draw movement by executable semantic form and remove ability-id pilot fallback. | P3-TO-09; R follow-up as needed | PENDING_REVIEW / candidate evidence recorded | Gate A/B/C representative card-zone evidence | Needs R judgment and burn-down sync. |
-| Card Action semantic split | Roadmap Phase 3B; mechanic family and primitive matrices | Keep `PLAY`, `PLAY_SOURCE_RESPONSE`, `ADD_TO_ATTACK`, `ACTIVATE`, `CLOSE`, and `CREATE_AND_ACTIVATE` as separate contracts with only shared helpers underneath. | P3-B04 through P3-B09; P3-R04/P3-R05 | PARTIAL_CANDIDATE / queued by task | Separate Gate A/B/C judgment per action contract | B09 does not finish Phase 3; it only closes the minimal card-action family if accepted. |
+| Card Action semantic split | Roadmap Phase 3B; mechanic family and primitive matrices | Keep `PLAY`, `PLAY_SOURCE_RESPONSE`, `ADD_TO_ATTACK`, `ACTIVATE`, `CLOSE`, `CREATE_AND_ACTIVATE`, and setup create-to-skill routing as separate contracts with only shared helpers underneath. | P3-B04 through P3-B10; P3-R04/P3-R05 | PARTIAL_CANDIDATE / queued by task; B10 FAILED_REVIEW_REPAIR | Separate Gate A/B/C judgment per action contract | B09 does not finish Phase 3; B10 must also clear semantic-form routing and provenance fail-closed review before A03 can sync it. |
 | Result Binding | Roadmap Phase 3A; `docs/plans/fd-effect-result-binding-plan.md` | Bind multi-step effect results to subsequent costs, awards, events, rollback, and production path. | Existing Phase 3A result-binding slice; future B/R tasks when reopened | IMPLEMENTER_EVIDENCE_RECORDED / review pending | Golden Result-Binding Card Gate B/C | Production bridge and independent promotion remain pending. |
 | Target / Interaction Gateway | Roadmap NEXT; corrected semantic-axis matrix | Define target selection and pending interaction templates before broad runtime migration. | P3-TO-05; later B runtime task after spec review | SPEC_READY_NEXT / runtime waiting | Gateway contract review, then representative Gate B/C | Runtime implementation must wait for accepted gateway contract. |
 | Trigger Gateway | Roadmap NEXT; corrected semantic-axis matrix | Define event payload, source ability/card identity, ordering, optional/forced handling, and projection rules. | P3-TO-03; P3-B07 only after trigger spec or explicit override | SPEC_READY_NEXT / B07 WAIT_TRIGGER_SPEC_OR_EXPLICIT_OVERRIDE | Gateway contract review, then representative trigger Gate B/C | Runtime migration blocked until spec is accepted. |
@@ -634,6 +634,80 @@ Completion status allowed:
 
 - `IMPLEMENTATION_COMPLETE_CANDIDATE`
 
+## TASK P3-B10
+
+Owner: Codex B
+Status: FAILED_REVIEW_REPAIR
+Branch: `codex/b-p3-b10-setup-create-to-skill`
+
+Goal:
+
+Repair `SETUP_CREATE_TO_SKILL` semantic-form routing and duplicate-created-card provenance handling after failed independent review.
+
+Depends on:
+
+- failed review findings `CARD_SPECIFIC_SEMANTIC_EXCLUSION` and `EXISTING_CARD_PROVENANCE_ADOPTION`.
+- Runtime hot-file ownership reserved.
+- A must not classify or promote B10 coverage until this repair passes independent review.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- TASK P3-B10 only
+- relevant B10 failed review report or reviewer findings
+- `docs/audits/fd-skill-semantic-axis-matrix.md` relevant setup/create-to-skill rows only
+- relevant canonical setup/create card rule sections
+
+May touch:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- focused setup/create-to-skill tests
+- scoped B10 implementation report
+
+Must not touch:
+
+- coverage KPI or taxonomy rules
+- reviewer packet classification
+- unrelated card-action contracts
+- trigger gateway runtime
+- lifecycle gateway runtime
+- broad special subsystem behavior
+
+Hot files:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+
+Concurrent conflicts:
+
+- any runtime task touching the same hot files
+- P3-A03 KPI sync for B10 before R accepts the repair
+
+Required repair:
+
+- remove card-id-specific semantic exclusion such as `cardId !== 'card.luck'`
+- prove routing is based on semantic axes, not definition id
+- add a positive case showing an arbitrary valid card id with the same legal shape can route
+- keep Artoria Caster excluded by its non-matching semantic form, not by its card id
+- allow duplicate no-op only when the existing card was already generated by the same `sourceCardId`
+- fail closed with `duplicate_created_card` when existing card provenance is missing or different
+- prove fail-closed duplicate rejection leaves state, events, and revision unchanged
+
+Required output:
+
+- focused failing tests for both review blockers
+- runtime repair
+- focused passing test output
+- B10 implementation report with before/after evidence
+- explicit note that `phase3:coverage` still belongs to Codex A after R accepts the repair
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+
 ## TASK P3-R05
 
 Owner: Codex R
@@ -642,7 +716,7 @@ Branch: `codex/r-p3-card-action-followup-review`
 
 Goal:
 
-Independent review for B05-B09 Card Action follow-up slices.
+Independent review for B05-B10 Card Action follow-up slices.
 
 Depends on:
 
