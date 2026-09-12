@@ -14,8 +14,8 @@ All Phase 3 agents must read `docs/agents/PHASE3-AGENT-CONTRACT.md` first, then 
 
 | Task ID | Track | Goal | Dependencies | Expected Unlock | Legacy Reduction Target | Files | Gate | Parallel With | Conflicts With | Status |
 |---|---|---|---|---|---|---|---|---|---|---|
-| P3-TO-01 | Automation | Design taxonomy validator plus consolidated coverage JSON schema and command contract. | Corrected semantic-axis matrix | Enables all later burn-down reporting without axis contamination. | none | `docs/audits/*.mjs`, package scripts later | Evidence infra | P3-TO-03, P3-TO-04, P3-TO-05, P3-TO-08 | none | READY_NEXT |
-| P3-TO-02 | Automation | Implement read-only `phase3:coverage` reporter, legacy/new/dual counter, and docs drift check. | P3-TO-01 | Replaces manual matrix sync. | measurable baseline only | `docs/audits/fd-phase-3-coverage*.mjs`, `package.json` | Evidence infra | P3-TO-03, P3-TO-04, P3-TO-05 | any package-script owner | BLOCKED_BY_SCHEMA |
+| P3-TO-01 | Automation | Design taxonomy validator plus consolidated coverage JSON schema and command contract. | Corrected semantic-axis matrix | Enables all later burn-down reporting without axis contamination. | none | automation design, tests, and reports | Evidence infra | all docs-only gateway work | none | REVIEW_ACCEPTED |
+| P3-TO-02 | Automation | Maintain the read-only `phase3:coverage` reporter, legacy/new/dual counter, and docs drift check. | P3-TO-01 | Replaces manual matrix sync. | measurable baseline only | Codex A coverage scripts/tests and generated artifacts | Evidence infra | P3-B11 while A avoids runtime files | any runtime edit or KPI redefinition by B | ACTIVE_ALIGNMENT |
 | P3-TO-03 | Gateway Specs | Define Trigger Gateway contracts for strict Domain Event Trigger only. | corrected semantic-axis inventory | Unlocks 37 strict domain-event trigger decomposition. | none yet | `docs/plans`, `docs/audits` | Gate A design | P3-TO-01, P3-TO-04, P3-TO-05, P3-TO-08 | runtime trigger implementation | READY_NEXT |
 | P3-TO-04 | Gateway Specs | Define Lifecycle Policy Gateway for explicit duration/persistence/source/reset/cleanup only. | corrected lifecycle/reset inventory | Unlocks 11 explicit lifecycle/reset abilities plus modifier/source cleanup. | none yet | `docs/plans`, `docs/audits` | Gate A design | P3-TO-01, P3-TO-03, P3-TO-05, P3-TO-08 | runtime cleanup implementation | READY_NEXT |
 | P3-TO-05 | Gateway Specs | Define Interaction Template contracts for target/response/branch/yes-no/amount/order only. | acceptance baseline, corrected interaction inventory | Unlocks 20 explicit interaction abilities and 11 strict PendingInteraction abilities. | none yet | `docs/plans`, `docs/audits` | Gate A design | P3-TO-01, P3-TO-03, P3-TO-04, P3-TO-08 | runtime pending/response implementation | READY_NEXT |
@@ -24,7 +24,8 @@ All Phase 3 agents must read `docs/agents/PHASE3-AGENT-CONTRACT.md` first, then 
 | P3-TO-08 | Low-Risk Primitive Factory | Resource Numeric Core direct-action factory candidate: typed resource primitive contract, compiler fail-closed, semantic routing, Gate A, representative Gate B. | corrected semantic-axis inventory; hot-file owner reserved | Validates first production mechanic factory without trigger/battle/hidden/lifecycle contamination. | direct resource ability-id fallback deletion and 3 direct consumers | `interpreter.ts`, `resolution-dataflow.ts`, `executable-card-pack.ts`, focused tests only if implementation authorized | Gate A/B candidate | P3-TO-01, P3-TO-03, P3-TO-04, P3-TO-05 docs-only work | any runtime hot-file task | READY_NEXT_RUNTIME_OWNER |
 | P3-TO-09 | Low-Risk Runtime | Review-promote or reject Card Zone direct-action candidate. | reviewer checklist | Confirms pilot allowlist deletion. | no new reduction | docs/tests only unless fixes needed | Reviewer Gate | P3-TO-01 | any runtime edit if fixes required | PENDING_REVIEW |
 | P3-TO-10 | Low-Risk Runtime | Review-promote or reject Card Action scoped candidates: PLAY, PLAY_SOURCE, ADD_TO_ATTACK, ACTIVATE, CLOSE. | reviewer packets | Prevents candidate pile-up. | no new reduction | docs/tests only unless fixes needed | Reviewer Gate | P3-TO-01 | any runtime edit if fixes required | PENDING_REVIEW |
-| P3-TO-17 | Low-Risk Runtime Repair | P3-B10 setup create-to-skill repair: remove card-id-specific exclusion and fail closed on duplicate created-card provenance mismatch. | failed B10 review; hot-file owner reserved | Restores semantic-form routing discipline before coverage/KPI sync. | B10 not eligible for burn-down until R accepts repair | `interpreter.ts`, `executable-card-pack.ts`, `resolution-dataflow.ts`, focused tests, B10 report | Gate A/B repair candidate | P3-TO-01 docs-only work | any runtime hot-file task; P3-A03 sync for B10 before R acceptance | FAILED_REVIEW_REPAIR |
+| P3-TO-17 | Low-Risk Runtime Repair | P3-B10 setup create-to-skill semantic routing and provenance repair. | completed R review | Supplies the fixed runtime baseline for B11. | local exact contract 3 legacy -> 0; A-owned global sync follows | accepted commit `9fba6d9` and B10 report | R-accepted runtime baseline | P3-A04 evidence sync | reopening runtime during B11 | REVIEW_ACCEPTED |
+| P3-TO-18 | Result Binding Runtime | P3-B11 production bridge for Golden Eater and Conversion Magic. | P3-B10 accepted at `9fba6d9`; exclusive runtime hot files | Proves reusable typed result consumption through production `MatchSession`, staged interaction, rollback, and no legacy bypass. | report local eligible/migrated/skipped; A syncs global counts after R06 | `interpreter.ts`, `executable-card-pack.ts`, `resolution-dataflow.ts`, focused tests, scoped E2E, B11 report | Gate A/B/C candidate, then P3-R06 | P3-A04/P3-A05 docs and automation only | any runtime hot-file task | READY_RUNTIME_OWNER |
 | P3-TO-11 | Trigger Runtime | First gateway-backed trigger slice: deployment/location resource trigger representative. | P3-TO-03, P3-TO-02 preferred | Starts trigger-family burn-down. | 1-2 abilities | `interpreter.ts`, `resolution-dataflow.ts`, tests, E2E if needed | Gate A/B, C if projection/reconnect changes | P3-TO-06 only | any runtime hot-file task | WAIT_GATEWAY |
 | P3-TO-12 | Lifecycle Runtime | First lifecycle policy slice: source-active duration/cleanup representative. | P3-TO-04, P3-TO-02 preferred | Starts lifecycle burn-down. | 1-3 abilities | `interpreter.ts`, `match-session.ts`, `combat-resolver.ts`, tests | Gate A/B/C representative | P3-TO-06 only | P3-TO-11, P3-TO-13 | WAIT_GATEWAY |
 | P3-TO-13 | Interaction Runtime | First private/optional target template representative. | P3-TO-05, P3-TO-07 | Starts interaction burn-down. | 1 ability | `interpreter.ts`, `match-session.ts`, client projection, E2E | Gate A/B/C | P3-TO-06 only | P3-TO-11, P3-TO-12 | WAIT_GATEWAY |
@@ -34,12 +35,13 @@ All Phase 3 agents must read `docs/agents/PHASE3-AGENT-CONTRACT.md` first, then 
 
 Recommended corrected immediate queue:
 
-1. P3-TO-01
-2. P3-TO-17, only if B10 repair is the active runtime lane and no other runtime hot-file task is active
-3. P3-TO-03
-4. P3-TO-04
-5. P3-TO-05
-6. P3-TO-06
-7. P3-TO-08, only if one runtime hot-file owner is reserved and B10 is not active
+1. P3-TO-18 with Codex B as the exclusive runtime owner
+2. P3-A04 and P3-A05 in Codex A's automation/evidence lane
+3. P3-R06 after the B11 implementation report exists
+4. P3-A03 synchronization after each independent review judgment
+5. P3-TO-03 Trigger Gateway contract
+6. P3-TO-04 Lifecycle Gateway contract
+7. P3-TO-05 Interaction Template contract
+8. P3-TO-14/P3-TO-15 Phase 4 dependency boundary work
 
-Runtime implementation may resume for Resource Numeric Core direct-action only because it is the low-risk primitive factory lane. B10 may run as a failed-review repair lane only when it has exclusive hot-file ownership. Trigger, Lifecycle, Interaction, Battle, Modifier, and Hidden runtime implementation should wait until their corrected gateway specs are independently reviewed.
+P3-B11 is the current and only runtime hot-file lane. Resource Numeric and Card Zone may receive runtime changes only for new R-confirmed blockers and only after B11 releases those files. Trigger, Lifecycle, Interaction, Battle, Modifier, and Hidden runtime implementation must wait until their corrected gateway specs are independently reviewed.

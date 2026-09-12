@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.3
+- Version: P3-TI-1.4
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -22,12 +22,12 @@ This map is the task-level bridge back to the total project goals. It does not p
 | Objective | Total Goal Reference | Implementation Path | Concrete Tasks | Current Status | Acceptance Vehicle | Remaining Gap |
 |---|---|---|---|---|---|---|
 | Agent ownership and read minimization | `docs/FD-DOCUMENT-ROADMAP.md` Mandatory Inputs; `docs/agents/PHASE3-AGENT-CONTRACT.md` | Agents read the contract first, then only the assigned task block and explicit dependencies. | All P3-A/P3-B/P3-R tasks | ACTIVE | Coordinator enforcement plus R review of role drift | Keep future task blocks small and explicit. |
-| Automation / coverage / evidence baseline | Roadmap NEXT; throughput plan Sections 13-15 | Build reproducible coverage schema, taxonomy drift checks, legacy/new/dual counters, and reviewer packet inputs. | P3-A01 | READY | Automation output plus reviewer-readable baseline candidate | Needs actual command or accepted manual schema before downstream status sync. |
-| Reviewer packet generation | Acceptance route Gate A/B/C; Golden acceptance plan | Convert implementation claims into checklists and missing-evidence packets without changing runtime behavior. | P3-A02 | READY_AFTER_P3_A01 | R-consumable review packet for B04, B10, and reusable template for B05-B10 | Waits for P3-A01 or accepted packet schema. |
+| Automation / coverage / evidence baseline | Roadmap NEXT; throughput plan Sections 13-15 | Build reproducible coverage schema, taxonomy drift checks, legacy/new/dual counters, and reviewer packet inputs. | P3-A01 | REVIEW_ACCEPTED | Automation output plus reviewer-readable baseline candidate | Continue slice-specific classifier alignment without changing runtime semantics. |
+| Reviewer packet generation | Acceptance route Gate A/B/C; Golden acceptance plan | Convert implementation claims into checklists and missing-evidence packets without changing runtime behavior. | P3-A02, P3-A04, P3-A05 | ACTIVE | R-consumable packets and machine-readable evidence | B10 alignment is a candidate; Resource Numeric packet is the next independent review input. |
 | Legacy burn-down sync | Roadmap KPI: Legacy Burn-down plus Mechanic Coverage | Update metrics only after R judgment; preserve rejected/candidate/accepted separation. | P3-A03 | READY_AFTER_REVIEW | Coverage report with before/after legacy, semantic, dual, skipped, and Gate status counts | Waits for R review result and accepted measurement method. |
 | Resource Numeric Core direct action | Stabilization plan Phase 3B; throughput plan first low-risk factory slice | Route command-spell style direct resource effects by executable semantic form with fail-closed validation. | P3-TO-08; A evidence support through P3-A01/A03 | IMPLEMENTATION_COMPLETE_CANDIDATE in current docs | Gate A/B/C evidence for representative direct-resource cards | Independent review and coverage sync still required before promotion. |
 | Card Zone Core direct action | Stabilization plan Phase 3B; primitive conformance matrix | Route direct zone/draw movement by executable semantic form and remove ability-id pilot fallback. | P3-TO-09; R follow-up as needed | PENDING_REVIEW / candidate evidence recorded | Gate A/B/C representative card-zone evidence | Needs R judgment and burn-down sync. |
-| Card Action semantic split | Roadmap Phase 3B; mechanic family and primitive matrices; `docs/plans/2026-09-12-phase-3-completion-execution-plan.md` | Keep `PLAY`, `PLAY_SOURCE_RESPONSE`, `ADD_TO_ATTACK`, `ACTIVATE`, `CLOSE`, `CREATE_AND_ACTIVATE`, and setup create-to-skill routing as separate contracts with only shared helpers underneath. | P3-B04 through P3-B10; P3-R04/P3-R05 | PARTIAL_CANDIDATE / queued by task; B10 FAILED_REVIEW_REPAIR | Separate Gate A/B/C judgment per action contract | B09 does not finish Phase 3; B10 must also clear semantic-form routing and provenance fail-closed review before A03 can sync it. |
+| Card Action semantic split | Roadmap Phase 3B; mechanic family and primitive matrices; `docs/plans/2026-09-12-phase-3-completion-execution-plan.md` | Keep `PLAY`, `PLAY_SOURCE_RESPONSE`, `ADD_TO_ATTACK`, `ACTIVATE`, `CLOSE`, `CREATE_AND_ACTIVATE`, and setup create-to-skill routing as separate contracts with only shared helpers underneath. | P3-B04 through P3-B10; P3-R04/P3-R05 | B10 REVIEW_ACCEPTED at `9fba6d9`; other slices retain their recorded judgments | Separate Gate A/B/C judgment per action contract | B09/B10 do not finish Phase 3; accepted slices still require A-owned coverage synchronization. |
 | Result Binding | Roadmap Phase 3A; `docs/plans/fd-effect-result-binding-plan.md` | Bind multi-step effect results to subsequent costs, awards, events, rollback, and production path. | P3-B11; independent R review after implementation | READY_FOR_PRODUCTION_BRIDGE | Golden Eater plus Conversion Magic Gate B/C | B11 must prove reusable production routing, staged rollback, interaction continuation, and no legacy bypass without expanding the card pool. |
 | Target / Interaction Gateway | Roadmap NEXT; corrected semantic-axis matrix | Define target selection and pending interaction templates before broad runtime migration. | P3-TO-05; later B runtime task after spec review | SPEC_READY_NEXT / runtime waiting | Gateway contract review, then representative Gate B/C | Runtime implementation must wait for accepted gateway contract. |
 | Trigger Gateway | Roadmap NEXT; corrected semantic-axis matrix | Define event payload, source ability/card identity, ordering, optional/forced handling, and projection rules. | P3-TO-03; P3-B07 only after trigger spec or explicit override | SPEC_READY_NEXT / B07 WAIT_TRIGGER_SPEC_OR_EXPLICIT_OVERRIDE | Gateway contract review, then representative trigger Gate B/C | Runtime migration blocked until spec is accepted. |
@@ -39,7 +39,7 @@ This map is the task-level bridge back to the total project goals. It does not p
 ## TASK P3-A01
 
 Owner: Codex A
-Status: READY
+Status: REVIEW_ACCEPTED
 Branch: `codex/a-p3-a01-coverage-automation`
 
 Goal:
@@ -94,7 +94,7 @@ Runtime defect handling:
 ## TASK P3-A02
 
 Owner: Codex A
-Status: READY_AFTER_P3_A01
+Status: READY
 Branch: `codex/a-p3-a02-review-packets`
 
 Goal:
@@ -140,7 +140,7 @@ Completion status allowed:
 ## TASK P3-A03
 
 Owner: Codex A
-Status: READY_AFTER_REVIEW
+Status: READY
 Branch: `codex/a-p3-a03-burndown-sync`
 
 Goal:
@@ -181,6 +181,97 @@ Required output:
 Completion status allowed:
 
 - `COVERAGE_SYNC_CANDIDATE`
+
+## TASK P3-A04
+
+Owner: Codex A
+Status: AUTOMATION_BASELINE_CANDIDATE
+Branch: `codex/a-p3-a01-coverage-automation`
+
+Goal:
+
+Align Phase 3 coverage automation with the independently accepted P3-B10 `SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL` contract and reconcile the accepted B06-B08 classifier baseline.
+
+Depends on:
+
+- P3-B10 accepted at runtime commit `9fba6d9`.
+- P3-A03 B10 reviewer packet available.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- TASK P3-A04 only
+- P3-A03 B10 reviewer packet from Codex A evidence commit `e7f7908`
+- P3-B10 final implementation report at `9fba6d9`
+- current `phase3-skill-coverage` output from Codex A's workspace as generated evidence only
+
+May touch:
+
+- `scripts/phase3-coverage.ts`
+- `scripts/tests/phase3-coverage.test.ts`
+- reports and machine-readable evidence artifacts
+
+Must not touch:
+
+- rule runtime semantics, primitive behavior, semantic routing, or `MatchSession`
+- card authoring JSON
+- Gate A/B/C promotion
+
+Required output:
+
+- semantic-shape classifier for B10 without card or ability ids
+- cumulative B06-B08 classifier alignment
+- positive, negative, and id-independence automation tests
+- global legacy/new/dual counts and B10 synchronization report
+
+Completion status allowed:
+
+- `AUTOMATION_BASELINE_CANDIDATE`
+
+## TASK P3-A05
+
+Owner: Codex A
+Status: AUTOMATION_BASELINE_CANDIDATE
+Branch: `codex/a-p3-a01-coverage-automation`
+
+Goal:
+
+Package `RESOURCE_NUMERIC_CORE_DIRECT_ACTION` as independently reviewable evidence and reconcile its semantic consumers with the accepted coverage baseline.
+
+Depends on:
+
+- P3-A04 coverage alignment candidate exists.
+- Resource Numeric implementation candidate and reviewer checklist exist.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- TASK P3-A05 only
+- `docs/reports/2026-09-08-resource-numeric-core-direct-action-result.md`
+- `docs/reports/2026-09-08-resource-numeric-core-direct-action-review-checklist.md`
+- current generated coverage and automation-audit artifacts from Codex A's workspace
+
+May touch:
+
+- reports and machine-readable evidence artifacts
+- coverage/evidence automation tests only when an evidence-classification defect blocks the packet
+
+Must not touch:
+
+- runtime semantics, primitive behavior, semantic routing, `MatchSession`, or card authoring
+- Gate A/B/C promotion
+
+Required output:
+
+- eligible/skipped inventory with reasons
+- semantic-route and legacy-fallback boundary
+- Gate A/B/C evidence-location checklist
+- current legacy/new/dual counts
+- reviewer-ready report and machine-readable packet
+
+Completion status allowed:
+
+- `AUTOMATION_BASELINE_CANDIDATE`
 
 ## TASK P3-R04
 
@@ -638,18 +729,18 @@ Completion status allowed:
 ## TASK P3-B10
 
 Owner: Codex B
-Status: FAILED_REVIEW_REPAIR
+Status: REVIEW_ACCEPTED
 Branch: `codex/b-p3-b10-setup-create-to-skill`
 
 Goal:
 
-Repair `SETUP_CREATE_TO_SKILL` semantic-form routing and duplicate-created-card provenance handling after failed independent review.
+Historical completed task: repair `SETUP_CREATE_TO_SKILL` semantic-form routing and duplicate-created-card provenance handling after failed independent review. The accepted runtime baseline is commit `9fba6d9`.
 
 Depends on:
 
-- failed review findings `CARD_SPECIFIC_SEMANTIC_EXCLUSION` and `EXISTING_CARD_PROVENANCE_ADOPTION`.
-- Runtime hot-file ownership reserved.
-- A must not classify or promote B10 coverage until this repair passes independent review.
+- Historical failed-review findings `CARD_SPECIFIC_SEMANTIC_EXCLUSION` and `EXISTING_CARD_PROVENANCE_ADOPTION`.
+- Runtime hot-file ownership was reserved for the repair.
+- The repair and focused evidence were accepted for downstream baseline use at `9fba6d9`.
 
 Read:
 
@@ -684,8 +775,8 @@ Hot files:
 
 Concurrent conflicts:
 
-- any runtime task touching the same hot files
-- P3-A03 KPI sync for B10 before R accepts the repair
+- do not reopen the accepted B10 hot files from this historical task while B11 is active
+- B10 coverage classification remains A-owned
 
 Required repair:
 
@@ -708,6 +799,11 @@ Required output:
 Completion status allowed:
 
 - `IMPLEMENTATION_COMPLETE_CANDIDATE`
+
+Recorded outcome:
+
+- Runtime baseline accepted for downstream work: `9fba6d9`.
+- Coverage synchronization remains Codex A-owned and does not alter the runtime acceptance baseline.
 
 ## TASK P3-B11
 
@@ -835,6 +931,53 @@ Required output:
 - rejected evidence
 - missing tests or residual risk
 - Gate A/B/C judgment
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
+## TASK P3-R06
+
+Owner: Codex R
+Status: READY_AFTER_P3_B11
+Branch: reviewer-selected read-only workspace
+
+Goal:
+
+Independently review P3-B11 Result Binding Production Bridge without implementing fixes or inheriting acceptance from B10, Conversion Magic, or historical Golden Eater evidence.
+
+Depends on:
+
+- P3-B11 implementation report and clean diff.
+- Focused Gate A/B evidence and relevant Gate C production-path evidence.
+- Codex A packet when available; absence of classifier support must be reported, not repaired by R.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- TASK P3-R06 only
+- TASK P3-B11
+- P3-B11 handoff, implementation report, focused test output, and diff
+- `docs/plans/fd-effect-result-binding-plan.md` relevant acceptance sections only
+- canonical Golden Eater and Conversion Magic definitions
+
+Must not:
+
+- implement fixes
+- broaden P3-B11 to other cards or gateway families
+- accept client-authored result bindings
+- infer Gate C from unit tests or historical candidate reports
+- change coverage KPI or classifier behavior
+
+Required output:
+
+- findings ordered by severity
+- semantic-routing and no-legacy-bypass judgment
+- transaction/rollback and interaction-continuation judgment
+- Gate A/B/C judgment per representative
+- explicit residual risks and A synchronization input
 
 Completion status allowed:
 

@@ -33,32 +33,34 @@ Codex R must stay read-only while reviewing. If R finds a defect, it returns fin
 ## Phase 3 Critical Path
 
 1. Stabilize measurement before broad status claims.
-2. Repair failed runtime slices before KPI sync.
+2. Preserve independently accepted runtime baselines before KPI sync.
 3. Review-promote or reject existing low-risk direct-action candidates.
 4. Lock gateway contracts before high-risk runtime migration.
 5. Use A03 after each R judgment, not as a final-only cleanup pass.
 
 Current immediate priority:
 
-1. P3-B10 repair, if B has runtime hot-file ownership.
-2. P3-A01 coverage/evidence schema in parallel with B10, if A stays out of runtime files.
-3. P3-R05 review of B10 after the repair report exists.
-4. P3-A03 sync for B10 only after R accepts the repair.
-5. Resource Numeric and Card Zone review packets / A03 sync.
-6. Trigger, Lifecycle, and Interaction contract specs.
-7. Modifier / Power / Battle Result dependency boundary.
+1. Preserve the R-accepted P3-B10 runtime baseline at `9fba6d9`.
+2. Execute P3-B11 Result Binding Production Bridge from that exact baseline with exclusive runtime hot-file ownership.
+3. Run P3-A04/A05 evidence alignment in parallel, limited to automation, reports, and artifacts.
+4. Send P3-B11 to P3-R06; Codex B stops after the implementation report.
+5. Run A03 synchronization for B11 only after R06 judgment.
+6. Review Resource Numeric and Card Zone evidence, then define Trigger, Lifecycle, and Interaction contracts.
+7. Fix the Modifier / Power / Battle Result dependency boundary before Phase 4 runtime work.
 
 ## Current Dispatch Assignments
 
 | Agent | Start Now | Parallel Safety | Stop Condition |
 |---|---|---|---|
-| Codex A | P3-A01 coverage schema and drift guard; P3-A02 packet template if schema is accepted or explicitly bypassed | May run beside B10 only if it stays in docs/audit/report/package-script scope and avoids runtime files | Stop before A03 for any slice without an R judgment |
-| Codex B | P3-B10 failed-review repair if hot-file ownership is reserved | Must be the only writer to `interpreter.ts`, `executable-card-pack.ts`, and `resolution-dataflow.ts` | Stop after implementation report; do not update KPI or acceptance status |
-| Codex R | Review B10 after B report exists; review Resource Numeric/Card Zone packets when A prepares them | Read-only only | Return findings and Gate judgment; do not fix |
+| Codex A | P3-A04 B10 classifier alignment and P3-A05 Resource Numeric reviewer packet | May run beside B11 only in automation/report/artifact scope | Do not edit runtime; do not sync B11 before R06 judgment |
+| Codex B | P3-B11 Result Binding Production Bridge from `9fba6d9` | Must be the only writer to `interpreter.ts`, `executable-card-pack.ts`, and `resolution-dataflow.ts` | Stop after implementation report; do not update KPI or acceptance status |
+| Codex R | P3-R06 after B11 report; Resource Numeric/Card Zone review when packets exist | Read-only only | Return findings and Gate judgment; do not fix |
 
 ## Lane A: Automation / Coverage / Evidence
 
 ### Task A1: Coverage Schema And Drift Guard
+
+Current state: P3-A01 baseline reviewed and accepted. Keep this section as the invariant for later classifier changes.
 
 **Files:**
 - Modify: `docs/audits/*.mjs`
@@ -77,6 +79,8 @@ Current immediate priority:
 **Acceptance:** A output is reproducible and does not make runtime acceptance claims.
 
 ### Task A2: Reviewer Packets
+
+Current state: reusable packet infrastructure exists; continue with slice-specific packets without changing runtime or Gate status.
 
 **Files:**
 - Create/modify: `docs/reports/*review-packet.md`
@@ -110,33 +114,46 @@ Current immediate priority:
 
 **Acceptance:** A03 runs repeatedly after each R judgment. It does not wait for B09/B10 or all seven domains to complete.
 
+### Task A4: P3-B10 Coverage Alignment
+
+1. Read TASK P3-A04 only and consume the accepted B10 commit `9fba6d9` plus its reviewer packet.
+2. Classify the exact accepted semantic shape without card or ability ids.
+3. Reconcile B06-B08 classifier coverage required by the cumulative baseline.
+4. Publish global legacy/new/dual counts and automation regressions.
+5. Stop at `AUTOMATION_BASELINE_CANDIDATE`; do not alter B10 runtime acceptance.
+
+### Task A5: Resource Numeric Review Packet
+
+1. Read TASK P3-A05 only and consume the existing Resource Numeric implementation evidence.
+2. Publish eligible/skipped inventory, fallback boundary, and Gate evidence locations.
+3. Reconcile counts against the accepted A baseline.
+4. Hand the packet to Codex R and record runtime defects as `RUNTIME_SEMANTIC_GAP` without fixing them.
+
 ## Lane B: Runtime Implementation
 
-### Task B1: P3-B10 Failed-Review Repair
+### Task B1: P3-B10 Accepted Runtime Baseline
+
+P3-B10 is complete for downstream baseline purposes. Its R-accepted runtime commit is `9fba6d9`. Do not reopen or rewrite it during B11; any newly discovered B10 regression becomes a separate reviewer finding and repair task.
+
+### Task B2: P3-B11 Result Binding Production Bridge
 
 **Files:**
-- Modify: `packages/rules/src/ability/interpreter.ts`
-- Modify: `packages/rules/src/ability/executable-card-pack.ts`
-- Modify: `packages/rules/src/ability/resolution-dataflow.ts`
-- Test: focused setup/create-to-skill tests
-- Create/modify: scoped B10 implementation report
+- Follow: `docs/agents/PHASE3-TASK-INDEX.md` TASK P3-B11
+- Follow: `docs/plans/2026-09-12-p3-b11-result-binding-production-bridge-implementation-plan.md`
+- Base: `codex/b-p3-b10-setup-create-to-skill` at `9fba6d9`
+- Branch: `codex/b-p3-b11-result-binding-production-bridge`
 
 **Steps:**
 
-1. Read P3-B10 only.
-2. Write failing tests for `CARD_SPECIFIC_SEMANTIC_EXCLUSION`.
-3. Remove card-id-specific routing exclusions such as `cardId !== 'card.luck'`.
-4. Prove routing accepts arbitrary valid card ids with matching semantic form.
-5. Prove Artoria Caster remains excluded by non-matching semantic axes.
-6. Write failing tests for `EXISTING_CARD_PROVENANCE_ADOPTION`.
-7. Allow duplicate no-op only when the existing card has `generatedBy === sourceCardId`.
-8. Fail closed with `duplicate_created_card` when provenance is missing or different.
-9. Prove failed duplicate rejection leaves state, events, and revision unchanged.
-10. Run focused tests and write the B10 implementation report.
+1. Confirm the branch descends from `9fba6d9` and reserve all declared hot files for Codex B.
+2. Keep scope to Golden Eater and Conversion Magic.
+3. Prove semantic graph routing, typed result consumption, pending continuation, transaction rollback, and no legacy fallback.
+4. Produce focused Gate A/B and relevant Gate C candidate evidence.
+5. Write the B11 implementation report and stop for P3-R06.
 
-**Acceptance:** B10 returns to `IMPLEMENTATION_COMPLETE_CANDIDATE`; it is not accepted until R reviews it.
+**Acceptance:** B11 may claim only `IMPLEMENTATION_COMPLETE_CANDIDATE`; P3-R06 owns acceptance.
 
-### Task B2: Existing Direct-Action Candidate Fixes
+### Task B3: Existing Direct-Action Candidate Fixes
 
 **Files:**
 - Runtime files only if R review requires fixes
@@ -145,14 +162,14 @@ Current immediate priority:
 
 **Steps:**
 
-1. Do not start while B10 owns the same hot files.
+1. Do not start while B11 owns the same hot files.
 2. For Resource Numeric and Card Zone, fix only R-confirmed blockers.
 3. Preserve semantic-form routing and fail-closed behavior.
 4. Produce focused test output and before/after route evidence.
 
 **Acceptance:** Each slice returns to R as a separate candidate.
 
-### Task B3: Gateway-Backed Runtime Slices
+### Task B4: Gateway-Backed Runtime Slices
 
 **Files:**
 - Runtime hot files declared by the accepted gateway contract
@@ -175,7 +192,7 @@ Current immediate priority:
 |---|---|---:|---:|---|
 | Resource Numeric Core | R/A | Only R-required fixes | Yes | Review candidate, then A03 burn-down |
 | Card Zone Core | R/A | Only R-required fixes | Yes | Review candidate, then A03 burn-down |
-| Result Binding | R/B later | No broad runtime until production-reuse gap is scoped | Yes, packet/gap tracking | Production reuse review |
+| Result Binding | B now, R next | P3-B11 only; no broader migration | Yes, packet/gap tracking | P3-R06 production reuse review |
 | Target / Interaction | A/R spec, B later | No | Yes | Contract review before runtime |
 | Trigger Gateway | A/R spec, B later | No | Yes | Contract review before runtime |
 | Lifecycle Gateway | A/R spec, B later | No | Yes | Contract review before runtime |
@@ -183,18 +200,18 @@ Current immediate priority:
 
 ## B10 Relationship To The Seven Domains
 
-B10 is not an eighth domain. It is a failed-review repair inside the Card Zone / setup create-to-skill area and a blocker for any accepted coverage sync of that slice.
+B10 is not an eighth domain. It is an accepted setup create-to-skill runtime slice inside the Card Zone area and the fixed baseline for B11.
 
-B10 may run before the seven-domain review cycle resumes because it repairs a concrete semantic-routing violation. A can work in parallel on P3-A01/A02, but A03 must not sync B10 until R accepts the repair.
+B11 is the current Result Binding domain slice. A may work in parallel on P3-A04/A05, but only R06 may judge B11 and only A may synchronize the resulting coverage status.
 
 ## Done Criteria For Phase 3
 
-Phase 3 is not done when B09 or B10 completes. Phase 3 is done only when:
+Phase 3 is not done when B09, B10, or B11 completes. Phase 3 is done only when:
 
 1. A coverage command or accepted equivalent reports corrected semantic-axis coverage.
 2. Resource Numeric and Card Zone candidates are independently accepted or explicitly rejected with next repairs.
-3. B10 is repaired, reviewed, and either accepted or returned with a new blocker.
-4. Result Binding has a production-reuse decision, not only Golden Eater candidate evidence.
+3. B10 remains fixed at its accepted runtime baseline and its coverage classification is synchronized by A.
+4. B11 receives an independent production-reuse decision, not only implementer or historical Golden Eater evidence.
 5. Target/Interaction, Trigger, and Lifecycle gateway contracts are reviewed.
 6. Modifier/Power/Battle dependency boundaries are fixed for Phase 4 / Golden Flow.
 7. A03 has synced accepted/rejected status and burn-down after each R judgment.
