@@ -24,7 +24,7 @@ The gateway owns only:
 - duplicate/idempotency protection;
 - source-validity and event-validity revalidation before settlement;
 - representing pending trigger work across projection/reconnect;
-- terminal processed/declined/invalidated bookkeeping;
+- terminal processed/declined/cancelled/invalidated bookkeeping;
 - handing player input to the accepted Interaction Template contract when required.
 
 The gateway does **not** own:
@@ -75,7 +75,7 @@ type StrictDomainEventType =
   | 'after_player_deployed_to_battlefield';
 
 type TriggerPolicy = 'forced' | 'optional';
-type TriggerTerminalState = 'processed' | 'declined' | 'invalidated';
+type TriggerTerminalState = 'processed' | 'declined' | 'cancelled' | 'invalidated';
 type TriggerVisibility = 'public' | 'controller_only' | 'redacted';
 
 type EventProducerRef =
@@ -210,6 +210,18 @@ An optional trigger:
 
 TO-03 does not define the interaction wire schema; it only defines when and how the trigger scheduler hands off to TO-05.
 
+### 6.3 Cancellation
+
+Trigger cancellation is distinct from decline and invalidation.
+
+- Forced triggers are not cancellable by the client. A cancel attempt against a forced trigger is rejected with no mutation.
+- Optional trigger cancellation delegates to the accepted P3-TO-05 `cancelPolicy`; TO-03 does not create a second cancellation protocol.
+- The default optional-trigger cancellation policy is therefore `forbidden` unless the authored/accepted interaction contract explicitly permits `explicit_cancel`.
+- `decline` is a player decision not to execute an optional trigger. It terminates as `declined`, not `cancelled`.
+- A permitted `explicit_cancel` terminates the trigger as `cancelled`, executes no trigger effect continuation, and cannot roll back an earlier successfully committed command.
+- Cancellation closes only scheduler/interaction bookkeeping for that trigger identity. It does not close, move, reset, reveal, or otherwise clean up the source card; Lifecycle, Card Zone, Hidden, Battle, or another accepted owner remains responsible for such state.
+- `cancelled` is replay-protected and idempotent for the same `(eventId, sourceCardInstanceId, sourceAbilityId)` key. Reconnect or duplicate commands cannot reopen it.
+
 ## 7. Deterministic Ordering
 
 The gateway must maintain a deterministic event queue and deterministic ordering metadata, but it must not invent game semantics.
@@ -283,13 +295,13 @@ Reconnect:
 
 ## 11. Terminal States And Cleanup Ownership
 
-`processed`, `declined`, and `invalidated` trigger records are terminal for the same trigger identity. Effect-settlement failure is non-terminal and leaves authoritative trigger state unchanged after rollback.
+`processed`, `declined`, `cancelled`, and `invalidated` trigger records are terminal for the same trigger identity. Effect-settlement failure is non-terminal and leaves authoritative trigger state unchanged after rollback.
 
 The Trigger Gateway owns scheduler bookkeeping only. It may remove a trigger from the live queue and retain replay-protection history.
 
 It does not own:
 
-- source-card cleanup;
+- source-card cleanup, including cleanup after a trigger is cancelled;
 - duration expiration;
 - once-per-round / once-per-game reset policy;
 - battle cleanup;

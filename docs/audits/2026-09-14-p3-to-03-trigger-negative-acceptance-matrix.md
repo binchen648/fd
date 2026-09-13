@@ -47,6 +47,9 @@
 | 36 | terminal trigger is rescheduled by retry logic | reject/no-op | none | no |
 | 37 | phase timing/continuous hook not in strict 13-type inventory is coerced into domain event | reject classification | none | no |
 | 38 | event producer is empty, or `card_ability` omits card/ability identity, or `system` omits stable system identity | reject admission | none | no |
+| 39 | client attempts to cancel a forced trigger | reject cancellation | none | no |
+| 40 | optional trigger cancellation is attempted when accepted TO-05 `cancelPolicy` is `forbidden` | reject cancellation | none | no |
+| 41 | permitted explicit cancellation executes trigger effects or rolls back an earlier committed command | reject/rollback failing cancellation; valid cancellation may commit scheduler terminal state only | no effect mutation; prior commit remains | no |
 
 ## Preservation Set For Failing Dispatches
 

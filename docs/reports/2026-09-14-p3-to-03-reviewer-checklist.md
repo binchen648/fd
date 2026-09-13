@@ -73,7 +73,16 @@ Expected: `37 13`.
 - [ ] Nested legitimate events receive new event IDs plus causation links.
 - [ ] Nested/reentrant execution cannot become an uncontrolled card-specific recursive callback stack.
 
-## 7. Revalidation And Rollback
+## 7. Cancellation Ownership
+
+- [ ] Forced triggers are not client-cancellable.
+- [ ] Optional cancellation delegates to accepted P3-TO-05 `cancelPolicy` and defaults to forbidden.
+- [ ] `decline` and `cancelled` are distinct terminal meanings.
+- [ ] A permitted explicit cancellation executes no trigger effect continuation and cannot roll back an earlier committed command.
+- [ ] `cancelled` is replay-protected for the same trigger identity.
+- [ ] Cancellation closes scheduler/interaction bookkeeping only; source/lifecycle cleanup remains with external owners.
+
+## 8. Revalidation And Rollback
 
 - [ ] Source card and ability are revalidated at settlement.
 - [ ] Controller/ownership, source-active, location, battle, lifecycle/limit state are revalidated when required.
@@ -82,7 +91,7 @@ Expected: `37 13`.
 - [ ] Effect-settlement failure remains non-terminal/unprocessed; `invalidated` may commit only as a separate successful revalidation outcome that retains no failed effect mutation.
 - [ ] Failure in a later command does not roll back an earlier successfully committed command.
 
-## 8. Projection And Reconnect
+## 9. Projection And Reconnect
 
 - [ ] Forced trigger projection does not leak server-only continuation or hidden payload data.
 - [ ] Optional owner projection is delegated to accepted Interaction Template semantics.
@@ -90,7 +99,7 @@ Expected: `37 13`.
 - [ ] Reconnect restores the same pending identity and does not increment revision by itself.
 - [ ] Already processed forced triggers are not rerun on restore/reconnect.
 
-## 9. External Ownership Boundaries
+## 10. External Ownership Boundaries
 
 - [ ] Trigger Gateway schedules; it does not execute/own Resource, Card Zone, Card Action, Movement, Visibility, or other effect primitive semantics.
 - [ ] Lifecycle owns duration/reset/source-close/cleanup.
@@ -100,7 +109,7 @@ Expected: `37 13`.
 - [ ] Interaction Template owns player intent after an optional trigger is valid.
 - [ ] An ability with an unresolved external dependency remains blocked after spec acceptance.
 
-## 10. Negative Acceptance Matrix
+## 11. Negative Acceptance Matrix
 
 Reviewer samples at least one case from each class and confirms the specification requires fail-closed behavior:
 
@@ -113,7 +122,7 @@ Reviewer samples at least one case from each class and confirms the specificatio
 - [ ] external-owner boundary;
 - [ ] card/ability-ID or translated-text fallback.
 
-## 11. Runtime Handoff Decision
+## 12. Runtime Handoff Decision
 
 `SPEC_ACCEPTED` may authorize only later task planning. It does not authorize broad trigger migration by itself.
 
@@ -126,7 +135,7 @@ Before the first runtime slice, a separate dispatch should:
 - reserve runtime hot files;
 - define Gate A/B and Gate C only if projection/reconnect changes are in scope.
 
-## 12. Reviewer Decision
+## 13. Reviewer Decision
 
 Record one result:
 
