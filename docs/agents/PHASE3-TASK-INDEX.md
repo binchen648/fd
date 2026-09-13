@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.5
+- Version: P3-TI-1.6
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -20,6 +20,21 @@ This file is the task lookup entry point for Phase 3 agents. Do not read the ful
 ## Full-Roster Flow
 
 `P3-FS00 -> FS01 -> FS02 -> FS03 -> FS04 -> FS05 -> FA01 -> FR01` is analysis-only through F1. Runtime and migration work is dispatched later as `P3-FB2-*` and `P3-FM-*` against accepted contracts.
+
+## TASK P3-CI01
+
+Owner: Coordinator, with separate Codex A, Codex B, and Codex R stages
+Status: READY
+
+Goal: Restore a reproducible green Linux clean-checkout CI baseline without weakening tests or changing card-rule execution behavior.
+
+Execution: `P3-CI01-A baseline/path portability -> P3-CI01-B content determinism -> P3-CI01-A integration -> P3-CI01-R acceptance`.
+
+Read: `docs/agents/PHASE3-CI-BASELINE-REPAIR-PROMPT.md` and `docs/plans/2026-09-13-phase-3-ci-baseline-repair-plan.md`.
+
+May run in parallel with: FS00-FS05 analysis, provided file leases do not overlap. It does not change B11/R06/A03 status.
+
+Acceptance: GitHub Build and Test pass on Ubuntu; no new excludes, weakened assertions, runtime behavior changes, KPI changes, or Gate promotion.
 
 ## TASK P3-FS00
 
