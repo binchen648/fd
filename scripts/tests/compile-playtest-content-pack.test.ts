@@ -1,5 +1,5 @@
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
@@ -8,6 +8,10 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { compilePlaytestContentPack } from '../compile-playtest-content-pack';
 
 const temporaryDirectories: string[] = [];
+const tsxCliArguments = [
+  resolve('node_modules/tsx/dist/cli.mjs'),
+  resolve('scripts/compile-playtest-content-pack.ts'),
+];
 
 afterEach(() => {
   for (const directory of temporaryDirectories.splice(0)) {
@@ -20,8 +24,7 @@ describe('compile playtest content pack CLI', () => {
     const output = execFileSync(
       process.execPath,
       [
-        resolve('node_modules/tsx/dist/cli.mjs'),
-        resolve('scripts/compile-playtest-content-pack.ts'),
+        ...tsxCliArguments,
         '--pack',
         'data/packs/fd-playtest-v1/pack.json',
         '--validate-only',
@@ -30,6 +33,41 @@ describe('compile playtest content pack CLI', () => {
     );
 
     expect(output.trim()).toBe('7 masters, 7 servants, 20 events, 0 blocking issues');
+  });
+
+  it('rejects invalid source asset validation modes', () => {
+    const result = spawnSync(
+      process.execPath,
+      [
+        ...tsxCliArguments,
+        '--pack',
+        'data/packs/fd-playtest-v1/pack.json',
+        '--validate-only',
+        '--source-assets',
+        'typo',
+      ],
+      { cwd: resolve('.'), encoding: 'utf8' },
+    );
+
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain('Invalid --source-assets mode "typo"');
+  });
+
+  it('rejects missing source asset validation mode values', () => {
+    const result = spawnSync(
+      process.execPath,
+      [
+        ...tsxCliArguments,
+        '--pack',
+        'data/packs/fd-playtest-v1/pack.json',
+        '--validate-only',
+        '--source-assets',
+      ],
+      { cwd: resolve('.'), encoding: 'utf8' },
+    );
+
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain('--source-assets requires one of: required, metadata_only');
   });
 
   it('writes deterministic library, fixture and evidence artifacts without absolute paths', () => {
