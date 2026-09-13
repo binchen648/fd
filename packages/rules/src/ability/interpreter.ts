@@ -175,7 +175,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, ongoingEffects: [], responseWindows: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
+    cardState: {}, ongoingEffects: [], responseWindows: [], pendingDelayedActivations: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
@@ -967,6 +967,13 @@ function isCardZoneCoreDirectActionRouteCandidate(a: AuthoringAbility): boolean 
     referencesMovedCountBinding(mana?.amount, binding);
 }
 
+export function isActivateCardByIdTrigger(a: AuthoringAbility): boolean {
+  if (a.kind !== 'forced_trigger' || str(a.activation.trigger) !== 'after_controller_first_loses_battle') return false;
+  if (a.conditions.length || a.targets.length || a.cost.length || a.creates.length || a.effects.length !== 1) return false;
+  const [effect] = a.effects;
+  return str(effect?.type) === 'activate_card_by_id' && typeof effect?.definitionId === 'string' && effect.definitionId.length > 0;
+}
+
 export function isAddToAttackDirectAction(a: AuthoringAbility): boolean {
   return isAddToAttackSemantic(a);
 }
@@ -1116,6 +1123,12 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isActivateCardByIdTrigger(a)) {
+    executeResolutionEffects(s, ctx, effects);
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
   if (isAddToAttackRouteCandidate(a)) {
     const pending = findPendingTarget(s, ctx, a, effects);
     if (pending) { runtime(s).pendingDecision = pending; return; }
@@ -1145,7 +1158,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
-  if (isCardZoneCoreDirectActionRouteCandidate(a) || isAddToAttackRouteCandidate(a)) {
+  if (isCardZoneCoreDirectActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a)) {
     try {
       normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     } catch (error) {
@@ -1194,14 +1207,53 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   executeEffects(s, ctx, [...a.effects, ...a.creates]);
 }
 
+function stageDelayedActivation(s: GameState, trigger: TriggeredAbility, ability: AuthoringAbility, event: AbilityEvent): void {
+  const effect = ability.effects[0]!;
+  const pending = runtime(s).pendingDelayedActivations ??= [];
+  if (pending.some((entry) =>
+    entry.sourceCardId === trigger.cardInstanceId &&
+    entry.abilityId === trigger.abilityId &&
+    entry.round === s.round.roundNumber)) return;
+  pending.push({
+    controllerId: trigger.controllerId,
+    sourceCardId: trigger.cardInstanceId,
+    abilityId: trigger.abilityId,
+    definitionId: str(effect.definitionId),
+    triggerEventId: event.id,
+    round: s.round.roundNumber,
+  });
+}
+
+function consumeDelayedActivations(s: GameState, event: AbilityEvent): void {
+  const r = runtime(s);
+  const pending = r.pendingDelayedActivations ?? [];
+  const due = pending.filter((entry) => entry.round === s.round.roundNumber);
+  if (due.length === 0) return;
+  r.pendingDelayedActivations = pending.filter((entry) => entry.round !== s.round.roundNumber);
+  for (const entry of due) {
+    const source = card(s, entry.sourceCardId);
+    if (source.controllerPlayerId !== entry.controllerId) reject('resolution_failed', 'Delayed activation source controller changed before round end');
+    const ability = abilityDefinition(s, entry.sourceCardId, entry.abilityId);
+    if (!isActivateCardByIdTrigger(ability) || str(ability.effects[0]?.definitionId) !== entry.definitionId) {
+      reject('resolution_failed', 'Delayed activation semantic contract changed before round end');
+    }
+    executeAbility(s, context(s, entry.sourceCardId, entry.abilityId, event));
+  }
+}
+
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s); if (r.processedEvents.includes(event.id)) return;
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
+  if (event.type === 'round_end') consumeDelayedActivations(s, event);
   const triggered = collectTriggeredAbilities(s, event);
   for (const t of triggered) {
     const a = abilityDefinition(s, t.cardInstanceId, t.abilityId);
     if (a.kind === 'phase_action') continue; // phase windows expose a choice, never auto-spend a phase ability
+    if (event.type === 'after_controller_first_loses_battle' && isActivateCardByIdTrigger(a)) {
+      stageDelayedActivation(s, t, a, event);
+      continue;
+    }
     const interaction = classifyAbilityInteraction(a);
     if (interaction.kind === 'response_window') {
       const groupId = str(a.limit.groupId);
@@ -1244,7 +1296,7 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
   }
   copy.round.activePhase = next; copy.round.roundNumber = round; cleanupOngoing(copy);
-  const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : 'phase_changed';
+  const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
   processEvent(copy, { id: nextId(copy, 'phase'), type }); runtime(copy).revision++; Object.assign(s, copy);
 }
 

@@ -296,7 +296,7 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
 function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
-    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isAddToAttackRouteCandidate(ability)) continue;
+    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability)) continue;
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
     try {
       validateResolutionDataFlowNodes(effects, path);
@@ -334,6 +334,13 @@ function isCardZoneCoreDirectActionRouteCandidate(ability: AuthoringAbility): bo
     !!binding &&
     str(mana?.type) === 'adjust_mana' &&
     referencesMovedCountBinding(mana?.amount, binding);
+}
+
+function isActivateCardByIdTrigger(ability: AuthoringAbility): boolean {
+  if (ability.kind !== 'forced_trigger' || str(ability.activation.trigger) !== 'after_controller_first_loses_battle') return false;
+  if (ability.conditions.length || ability.targets.length || ability.cost.length || ability.creates.length || ability.effects.length !== 1) return false;
+  const [effect] = ability.effects;
+  return str(effect?.type) === 'activate_card_by_id' && typeof effect?.definitionId === 'string' && effect.definitionId.length > 0;
 }
 
 function isAddToAttackRouteCandidate(ability: AuthoringAbility): boolean {

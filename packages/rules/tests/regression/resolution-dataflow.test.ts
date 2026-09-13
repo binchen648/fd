@@ -45,6 +45,13 @@ function baseState(): TerrainState {
       controllerPlayerId: 'P1',
       zone: 'skill',
       visibility: { scope: 'owner_only', ownerPlayerId: 'P1' },
+    }, {
+      instanceId: 'activation-target',
+      definitionId: 'fixture.skill.delayed',
+      ownerPlayerId: 'P1',
+      controllerPlayerId: 'P1',
+      zone: 'skill',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'P1' },
     }],
     eventPlacements: [],
     battleResults: [],
@@ -124,6 +131,8 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
         controllerCannotWinStatus: 'maiya_cannot_win_battle_this_round',
         bind: binding,
       };
+    case 'activate_card_by_id':
+      return { id: `produce-${binding}`, type: 'activate_card_by_id', definitionId: 'fixture.skill.delayed', bind: binding };
     case 'adjust_victory_points':
       return { id: `produce-${binding}`, type: 'adjust_victory_points', player: 'controller', amount: 1, bind: binding };
     case 'adjust_mana':

@@ -100,6 +100,14 @@ export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
 }
+export interface PendingDelayedActivation {
+  controllerId: PlayerId;
+  sourceCardId: string;
+  abilityId: string;
+  definitionId: string;
+  triggerEventId: string;
+  round: number;
+}
 export type AbilityInteractionKind =
   'phase_activation' |
   'response_window' |
@@ -135,6 +143,7 @@ export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, { active: boolean; faceDown: boolean; playedRound: number }>;
   ongoingEffects: OngoingEffect[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
+  pendingDelayedActivations?: PendingDelayedActivation[];
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];
