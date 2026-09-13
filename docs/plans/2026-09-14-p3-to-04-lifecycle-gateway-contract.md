@@ -112,10 +112,24 @@ type RoundBoundaryConvention =
   | 'start_round_inclusive'
   | 'next_round_boundary';
 
+interface ResolvedSourceValidityPolicy {
+  kind: 'accepted_source_state_policy';
+  owner: 'card_zone_source_state';
+  policyId: string;
+}
+
+interface ResolvedExpiryBoundary {
+  kind: 'accepted_round_scheduler_boundary';
+  owner: 'round_controller';
+  boundaryPolicyId: string;
+  orderingPolicyId: string;
+}
+
 type DurationPolicy =
   | {
       kind: 'while_card_active';
       starts: 'immediate';
+      sourceValidity: ResolvedSourceValidityPolicy;
       cleanup: 'when_card_leaves_active_area' | 'remain_active';
     }
   | {
@@ -123,12 +137,14 @@ type DurationPolicy =
       starts: 'immediate';
       rounds: number;
       boundaryConvention: RoundBoundaryConvention;
+      expiresOn: ResolvedExpiryBoundary;
       cleanup: 'expire_after_duration';
       cleanupDestination: ResolvedCleanupDestination;
     }
   | {
       kind: 'this_round';
       starts: 'immediate';
+      expiresOn: ResolvedExpiryBoundary;
       cleanup: 'expire_after_duration';
       cleanupDestination?: ResolvedCleanupDestination;
     };
@@ -253,9 +269,11 @@ Rules:
 
 ## 8. Source Validity And Active-Area Semantics
 
-`while_card_active` depends on authoritative source state supplied by Card Zone/Card Action/Lifecycle integration.
+`while_card_active` depends on authoritative source state supplied by Card Zone/source-state integration.
 
-A source-bound policy must revalidate:
+Before runtime admission, each source-bound duration must resolve a `sourceValidity` reference to an accepted Card Zone/source-state policy. Lifecycle treats that policy as authoritative input; it does not define active zones itself. The policy ID must be stable semantic metadata, not a card/ability ID branch or printed-text interpretation.
+
+A source-bound policy must revalidate through that resolved source-validity policy:
 
 - source card instance still exists;
 - controller/owner semantics required by the policy still hold;
@@ -296,14 +314,17 @@ A normalized fixed-duration state records at minimum:
 - authoritative install round;
 - positive finite duration;
 - explicit `boundaryConvention`;
+- resolved `expiresOn` scheduler boundary with both semantic boundary and ordering policy IDs;
 - resolved cleanup directive before runtime admission;
-- stable expiry/transition identity.
+- stable expiry/expiration transition identity causally linked to the authoritative scheduler-boundary event.
 
-There is **no implicit default** for how an authored `round_count` counts the install round. A runtime packet must bind the card/rules evidence to one accepted boundary convention. The current Artoria Caster `rounds=2` row remains blocked from Gate promotion until that exact timing is confirmed.
+There is **no implicit default** for how an authored `round_count` counts the install round or where expiry is ordered within the round transition. A runtime packet must bind card/rules evidence to both one accepted counting convention and one accepted `expiresOn` scheduler boundary/order policy. The current Artoria Caster `rounds=2` row remains blocked from Gate promotion until both are independently confirmed.
+
+The expiry transition is triggered only by the resolved scheduler boundary. Its causation links to that authoritative boundary event/transition identity. Duplicate delivery of the same boundary identity cannot create a second expiry, and Lifecycle may not substitute phase polling, source-file order, or card-specific conditionals for the resolved boundary policy.
 
 `this_round` may be represented for composition with separately reviewed modifier-local lifecycle policies, but it does not add abilities to the 11-row denominator and is not promoted by P3-TO-04 alone.
 
-For `this_round`, an omitted `cleanupDestination` means **state-only expiry**: Lifecycle removes only lifecycle-owned effect/state at the accepted round boundary and must not move the source. If the reviewed rule requires source movement, a resolved cleanup destination becomes mandatory before runtime admission.
+For `this_round`, `expiresOn` is still mandatory. An omitted `cleanupDestination` means **state-only expiry**: Lifecycle removes only lifecycle-owned effect/state at the resolved accepted scheduler boundary and must not move the source. If the reviewed rule requires source movement, a resolved cleanup destination becomes mandatory before runtime admission.
 
 Duplicate round-boundary processing must not expire a lifecycle twice or move a source twice.
 
@@ -422,7 +443,8 @@ Admission/compiler/runtime setup rejects:
 - missing source card/ability identity;
 - invalid/zero/negative/non-integer `uses` or `rounds`;
 - unknown cadence, scope, start, duration, cleanup, conflict, or consumption boundary;
-- `round_count` without explicit boundary convention;
+- `round_count` without explicit counting convention **or** resolved expiry scheduler boundary/order policy;
+- `while_card_active` without a resolved accepted source-validity policy;
 - movement-producing expiry without resolved cleanup destination;
 - unique group without groupId/window/conflict policy;
 - unsupported contradictory lifecycle combination;
@@ -462,7 +484,8 @@ P3-TO-04 may leave `SPEC_REVIEW_READY` only after independent review confirms:
 - per-round/per-game reset ownership is explicit;
 - unique-group arbitration composes with Trigger/Interaction and cannot double-claim;
 - source-close/move and mandatory lifecycle cleanup are atomically composed without Lifecycle owning movement;
-- fixed-duration policies require explicit counting convention and cleanup destination;
+- fixed-duration policies require explicit counting convention, resolved scheduler expiry boundary/order policy, and cleanup destination when movement is required;
+- source-bound durations require a resolved accepted Card Zone/source-validity policy rather than Lifecycle-owned zone hard-coding;
 - `remain_active` is not confused with immunity;
 - projection/reconnect/replay are idempotent and hidden-safe;
 - external Trigger/Interaction/Card Zone/Battle/Hidden/Modifier/Special ownership remains separate;

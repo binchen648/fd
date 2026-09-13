@@ -63,6 +63,10 @@
 | 52 | failed lifecycle transition appends terminal/history/revision evidence | rollback failing transition evidence | none | no |
 | 53 | distinct later valid use is suppressed merely because policy/source values resemble an earlier transition | allow new transition when authoritative identity differs and policy permits | valid new commit | no |
 | 54 | modifier-local lifecycle metadata is counted as a new ability denominator row without corrected taxonomy evidence | reject coverage/classification change | none | no |
+| 55 | `while_card_active` lacks resolved accepted source-validity policy | reject admission/runtime route | none | no |
+| 56 | Lifecycle hard-codes `field`, `attack_area`, or other zones instead of consuming source-validity policy | reject design/runtime candidate | none | no |
+| 57 | fixed-duration policy lacks resolved scheduler expiry boundary/order policy | reject admission/runtime route | none | no |
+| 58 | expiry is driven by ad-hoc phase polling/card-specific branch rather than resolved scheduler boundary identity | reject design/runtime candidate | none | no |
 
 ## Preservation Set For Failing Dispatches
 

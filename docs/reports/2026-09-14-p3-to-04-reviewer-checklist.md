@@ -51,7 +51,8 @@
 
 ## 6. Source Active / CLOSE Composition
 
-- [ ] `while_card_active` revalidates source existence, active state, controller, ability/policy validity.
+- [ ] `while_card_active` requires a resolved accepted Card Zone/source-validity policy; Lifecycle does not hard-code active zones.
+- [ ] Source existence, active state, controller, ability/policy validity are revalidated through that resolved source-state contract.
 - [ ] `when_card_leaves_active_area` cleans lifecycle-owned state but does not itself move/close source.
 - [ ] External source transition + mandatory lifecycle cleanup are atomic when one command owns both consequences.
 - [ ] Cleanup failure rolls back the composed source transition.
@@ -60,8 +61,9 @@
 ## 7. Fixed Duration
 
 - [ ] Positive round count required.
-- [ ] Explicit boundary convention required; no implicit install-round default.
-- [ ] Current `round_count=2` row remains runtime-blocked until exact timing is confirmed by its runtime/reviewer packet.
+- [ ] Explicit counting convention required; no implicit install-round default.
+- [ ] Resolved authoritative expiry scheduler boundary and ordering policy are required; phase polling/card-specific placement is forbidden.
+- [ ] Current `round_count=2` row remains runtime-blocked until both counting convention and exact scheduler expiry boundary/order are confirmed by its runtime/reviewer packet.
 - [ ] `this_round` schema support does not enlarge the 11-row denominator.
 - [ ] Duplicate round-boundary processing cannot expire twice.
 
