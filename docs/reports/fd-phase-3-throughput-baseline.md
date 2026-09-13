@@ -363,3 +363,13 @@ Scoped PLAY burn-down is now independently accepted: legacy `1 -> 0`, new typed 
 The A raw classifier already counted Time Alter, so accepted global aggregate counters are not incremented again. The previous B11 overlay remains `newRuntimeSemanticRouted=13`, `legacyExecuteAbility=3`, `legacyResolveEffect=48`, `dualRuntime=0`.
 
 This closes the R04 dependency for P3-B05 without promoting unrelated Card Action shapes or Phase 3 completion.
+
+## 2026-09-14 P3-A03 B05 Acceptance Sync
+
+P3-R05 accepted repaired B05 target `c505c4748251feb9d151f4af52f091162a64a5b6` with reviewer evidence `47cc524d802fdac0432ef6e95aa180122a0f8161`.
+
+Scoped source-card response burn-down is now independently accepted: legacy `1 -> 0`, new typed semantic route `0 -> 1`, dual `1 -> 0`, eligible/migrated/skipped `1/1/0`.
+
+The A raw classifier already counted Volumen, so accepted global aggregate counters stay `newRuntimeSemanticRouted=13`, `legacyExecuteAbility=3`, `legacyResolveEffect=48`, `dualRuntime=0`; no duplicate global delta is applied.
+
+R05 r2 also closes the first-review shared card-play-forbid bypass. P3-B05 releases the runtime hot files, allowing P3-B06 ADD_TO_ATTACK to proceed under its existing task boundary.
