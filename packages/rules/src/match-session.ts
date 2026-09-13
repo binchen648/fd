@@ -593,7 +593,7 @@ export class MatchSession {
     const deployedLocation = getEnabledLocations(this.state.map, this.state.locationConfig).find((location) => location.id === locationId);
     if (deployedLocation?.tags.includes('battlefield')) {
       this.assignTerrainOnDeployment(playerId, locationId);
-      processAbilityEvent(this.state, { id: `deploy:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_battlefield', playerId });
+      processAbilityEvent(this.state, { id: `deploy:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_battlefield', playerId, locationId });
     }
     this.consumeAppliedDirectives();
     this.advanceToNextDecision();

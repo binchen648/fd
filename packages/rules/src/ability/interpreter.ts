@@ -627,13 +627,18 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   return result;
 }
 
-export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): TriggeredAbility[] {
+export function triggerEventScopeMatches(a: AuthoringAbility, event: AbilityEvent): boolean {
+  const eventLocationId = str(a.activation.eventLocationId);
+  if (eventLocationId && event.locationId !== eventLocationId) return false;
+  return true;
+}
+function collectTriggeredAbilities(s: GameState, event: AbilityEvent): TriggeredAbility[] {
   const found: TriggeredAbility[] = [];
   for (const c of s.cards) {
     if (player(s, c.controllerPlayerId).status !== 'active') continue;
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
       const matches = a.activation.trigger === event.type || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
-      if (!matches || !canActivate(s, c.instanceId, a, event)) continue;
+      if (!matches || !canActivate(s, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
       if (['on_card_played', 'on_use_declared'].includes(event.type) && event.sourceCardId !== c.instanceId &&
         !a.conditions.some((condition) => condition.type === 'event_played_card_has_attribute')) continue;
       if (event.type.startsWith('after_controller_') && event.playerId !== c.controllerPlayerId) continue;
@@ -877,6 +882,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
         const from = p.locationId;
         p.locationId = to as LocationId;
         recordMovementForAbilityRuntime(s, p.id, from, to);
+        processEvent(s, { id: nextId(s, 'enter-location'), type: 'after_controller_enters_location', playerId: p.id, locationId: to });
       }
       break;
     }
@@ -939,6 +945,23 @@ function findPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility
 }
 
 const directResourcePrimitiveTypes = new Set(['adjust_mana', 'adjust_command_seals', 'adjust_victory_points']);
+
+function isResourceNumericTriggerCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'forced_trigger' &&
+    str(a.activation.trigger) === 'after_controller_enters_location' &&
+    !!str(a.activation.eventLocationId);
+}
+
+export function isResourceNumericTriggerSemantic(a: AuthoringAbility): boolean {
+  if (!isResourceNumericTriggerCandidate(a)) return false;
+  if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
+  if (a.effects.length !== 1) return false;
+  const effect = a.effects[0]!;
+  return effect.type === 'adjust_mana' &&
+    (effect.player === undefined || effect.player === 'controller') &&
+    Number.isSafeInteger(effect.amount);
+}
 
 export function isResourceNumericDirectActionSemantic(a: AuthoringAbility): boolean {
   return a.kind === 'phase_action' &&
@@ -1004,12 +1027,13 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
-  if (isResourceNumericDirectActionSemantic(a)) {
+  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
     cleanupOngoing(s);
     return;
   }
+  if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
   const pending = findPendingTarget(s, ctx, a, effects);
   if (pending) { runtime(s).pendingDecision = pending; return; }
   for (let i = 0; i < effects.length; i++) {
@@ -1107,6 +1131,13 @@ function processEvent(s: GameState, event: AbilityEvent): void {
 export function processAbilityEvent(s: GameState, event: AbilityEvent): void {
   if (runtime(s).processedEvents.includes(event.id)) return;
   const copy = structuredClone(s); processEvent(copy, event); runtime(copy).revision++;
+  Object.assign(s, copy);
+}
+/** Trusted backend producer helper. Allocates event identity inside the same cloned transaction. */
+export function processAbilitySystemEvent(s: GameState, label: string, event: Omit<AbilityEvent, 'id'>): void {
+  const copy = structuredClone(s);
+  processEvent(copy, { ...event, id: nextId(copy, label) });
+  runtime(copy).revision++;
   Object.assign(s, copy);
 }
 export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.round.roundNumber): void {

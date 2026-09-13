@@ -18,7 +18,7 @@ import { assignInitialPlayerLocations, movePlayer } from "./movement";
 import { resolveBattlefield } from "./combat-resolver";
 import { resolveEffectsForWindow } from "./effect-resolver";
 import { getEnabledLocations } from "./map-engine";
-import { advanceAbilityPhase } from '../ability/interpreter';
+import { advanceAbilityPhase, processAbilitySystemEvent } from '../ability/interpreter';
 
 function hasPendingAbilityResolution(state: GameState): boolean {
   return !!state.abilityRuntime && (!!state.abilityRuntime.pendingDecision || state.abilityRuntime.responseWindows.length > 0 || state.abilityRuntime.hostRequests.length > 0);
@@ -356,11 +356,19 @@ export function stepGameLoop(
   }
 
   if (state.round.activePhase === "action" && input?.action?.type === "move") {
-    nextState = movePlayer(state, {
+    const movement = movePlayer(state, {
       playerId: input.action.playerId,
       to: input.action.to,
       movementKind: input.action.movementKind,
-    }).nextState;
+    });
+    nextState = movement.nextState;
+    if (movement.moved && nextState.abilityRuntime) {
+      processAbilitySystemEvent(nextState, 'enter-location', {
+        type: 'after_controller_enters_location',
+        playerId: input.action.playerId,
+        locationId: input.action.to,
+      });
+    }
     nextState = {
       ...nextState,
       round: {

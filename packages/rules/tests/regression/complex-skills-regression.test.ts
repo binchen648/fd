@@ -1144,7 +1144,7 @@ describe('complex master and session regressions', () => {
     const book = add(state, 'master.shinji.skill.false-attendant-book', 'skill');
 
     state.players[0]!.mana = 4;
-    rules.processAbilityEvent(state, { id: 'shinji-enter-miyama', type: 'after_controller_enters_location', playerId: 'p1' });
+    rules.processAbilityEvent(state, { id: 'shinji-enter-miyama', type: 'after_controller_enters_location', playerId: 'p1', locationId: 'miyama_town' });
     expect(state.players[0]!.mana).toBe(5);
     expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({
       type: 'effect_resolved',

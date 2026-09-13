@@ -143,6 +143,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (activation.trigger && !triggers.has(str(activation.trigger))) issue('activation.trigger', 'Unmapped trigger', id);
       if (activation.phase && !['preparation', 'advance', 'action', 'combat'].includes(str(activation.phase))) issue('activation.phase', 'Unmapped phase', id);
       if (activation.requiresSourceState && activation.requiresSourceState !== 'active') issue('activation.requiresSourceState', 'Unmapped source state', id);
+      if (activation.eventLocationId !== undefined && (!str(activation.eventLocationId) || !['after_controller_enters_location', 'after_player_deployed_to_battlefield'].includes(str(activation.trigger)))) issue('activation.eventLocationId', 'Event location requires a supported location-bearing trigger', id);
       if (a.kind === 'phase_action' && !['controller_action_window', 'controller_combat_action_window'].includes(str(activation.opens))) issue('activation.opens', 'Unsupported phase action window', id);
       if (activation.step) issue('activation.step', 'Subphase step mapping is not implemented', id);
       if (!['phase_action', 'passive', 'residual', 'declaration_reveal', 'conditional_reveal', 'forced_trigger', 'optional_trigger', 'response', 'continuous_formula'].includes(str(a.kind))) issue('kind', 'Unmapped ability kind', id);
