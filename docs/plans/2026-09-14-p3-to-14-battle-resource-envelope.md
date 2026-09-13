@@ -24,6 +24,8 @@ However, only **13** rows are direct post-result / battle-ended event consumers:
 - `after_controller_wins_battle`: 3
 - `after_battle_ended`: 2
 
+The 13 split into **11 per-battlefield result consumers** (first-loss/loss/result/win) plus **2 battle-phase-terminal `after_battle_ended` consumers**. `after_battle_ended` is not a per-battlefield event.
+
 The other 26 rows are broader battle integration and must compose with their real owner (combat action, power/modifier, movement/deployment, lifecycle, interaction, hidden information, special subsystem, or resource), rather than consuming a fake Battle Result envelope. Exact membership is in `docs/audits/2026-09-14-p3-to-14-battle-integration-map.md`.
 
 Separately, the accepted Trigger Gateway has one **cross-axis Scoring/Battle producer dependency** outside the 39-row denominator: `servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.shuffle-discard-on-victory` consumes `after_controller_gains_victory`. TO-14 must define that producer event without changing the 39/28 battle-integration denominator.
@@ -76,6 +78,7 @@ interface BattleResultEnvelope {
   causationId: string;
   createdRevision: number;
   roundNumber: number;
+  battlePhaseResolutionId: string;
   battlefieldId: string;
   participants: BattleParticipantOutcome[];
   winnerPlayerIds: [string, ...string[]];
@@ -97,6 +100,14 @@ type BattleResultAdmission =
       participantIds: string[];
       exclusionPolicyRefs: string[];
     };
+
+interface BattlePhaseResolutionEnvelope {
+  battlePhaseResolutionId: string;
+  roundNumber: number;
+  battlefieldIds: string[];
+  admissions: BattleResultAdmission[];
+  postBattleBarrierId: string;
+}
 
 type BaseBattlefieldVpSource =
   | {
@@ -185,36 +196,42 @@ No card/ability ID may be used to decide generic winner, loser, tie, margin, or 
 
 ## 6. Result And Trigger Event Production
 
-Battle Result is a system event producer under the accepted TO-03 envelope. Every produced event carries the same immutable `battleId/resultId` and causation chain.
+Battle Result is a system event producer under the accepted TO-03 envelope. Per-battlefield result events carry immutable `battlePhaseResolutionId + battleId + resultId` causation. The phase-terminal event carries `battlePhaseResolutionId` plus the complete resolved result/scoring-receipt set.
 
 Minimum payloads:
 
-| Event | TO-14 payload requirement |
-|---|---|
-| `after_battle_result_determined` | result identity, battlefield, participant IDs, winners, losers, excluded IDs, tie/sole-winner facts |
-| `after_controller_wins_battle` | result identity, controller, winner set, sole/shared-win fact |
-| `after_controller_loses_battle` | result identity, controller, winner set, authoritative loser membership, controller loss-effect eligibility/suppression |
-| `after_controller_first_loses_battle` | result identity, controller, authoritative loss ordinal/history identity |
-| `after_controller_gains_victory` | result identity, scoring receipt/victory transition identity, controller, reviewed victory-policy identity and causation |
-| `after_battle_ended` | result identity plus terminal scoring receipt/status |
+| Event | TO-14 payload requirement | Scope |
+|---|---|---|
+| `after_battle_result_determined` | phase/result identity, battlefield, participant IDs, winners, losers, excluded IDs, tie/sole-winner facts | per resolved battlefield; settlement waits behind phase barrier |
+| `after_controller_wins_battle` | phase/result identity, controller, winner set, sole/shared-win fact | per resolved battlefield; settlement waits behind phase barrier |
+| `after_controller_loses_battle` | phase/result identity, controller, winner set, authoritative loser membership, controller loss-effect eligibility/suppression | per resolved battlefield; settlement waits behind phase barrier |
+| `after_controller_first_loses_battle` | phase/result identity, controller, authoritative loss ordinal/history identity | per resolved battlefield; settlement waits behind phase barrier |
+| `after_controller_gains_victory` | phase/result identity, scoring receipt/victory transition identity, controller, reviewed victory-policy identity and causation | post-all-battlefield-scoring |
+| `after_battle_ended` | phase identity, ordered resolved `resultIds`, required scoring receipt IDs, aggregate participant references, terminal post-battle status | **once per battle-power-resolution phase**, after all ordinary post-battle consumers are terminal |
+
+The two current `after_battle_ended` authoring rows say `战斗阶段结束时/后`; they are phase-terminal consumers. TO-14 must not emit `after_battle_ended` once per battlefield.
 
 Trigger Gateway owns discovery, forced/optional scheduling, ordering, idempotency, cancellation, interaction handoff, and revalidation. TO-14 must not implement a second trigger queue.
 
 ## 7. Stage Ordering
 
-The generic stage model is:
+The generic stage model is battle-phase-wide:
 
-1. at battle-power-resolution start, build and consume one round/phase-scoped `ReconRewardPlan` exactly once; commit legal Recon +2 VP adjustments atomically and record `ReconRewardReceipt` before battlefield winner determination;
-2. freeze each battlefield's participant/power inputs;
-3. admit the battlefield result shape: no participants -> explicit `no_participants` skip; participants with zero eligible winners -> `NO_ELIGIBLE_WINNER_POLICY_REQUIRED` and halt that unsupported result route before result/scoring/events; otherwise determine and commit one immutable Battle Result together with its immutable **base battlefield** scoring plan;
-4. for a resolved result only, create stable result/win/loss/first-loss event identities and queue their trigger candidates behind a server-owned `post_base_scoring` settlement barrier; event identity exists, but ordinary post-result continuations do not settle yet;
-5. consume the base battlefield scoring plan exactly once; for each winner commit exactly one combined `base_pool_share` equal to `ceil((eventVpPool + competitionVpPool) / winnerCount)`, plus any separately reviewed typed location reward and military adjustments, atomically in one scoring receipt; event and competition provenance remain components of the same base-pool source and are never independently rounded;
-6. release the `post_base_scoring` barrier; Trigger Gateway may now settle the queued result/win/loss/first-loss consumers according to accepted semantic ordering; their personal VP/rewards are separate typed Resource results and never re-enter the base pool;
-7. when a reviewed Battle/Scoring rule says the controller has **gained a victory**, produce `after_controller_gains_victory` exactly once from the committed result + scoring/victory transition and settle it through the same post-base-scoring Trigger Gateway stage;
-8. only after all required post-battle result/win/loss/first-loss/gains-victory triggers are terminal, produce and settle `after_battle_ended`;
-9. hand off to battle cleanup/lifecycle.
+1. At battle-power-resolution start, build and consume one round/phase-scoped `ReconRewardPlan` exactly once; commit legal Recon +2 VP adjustments atomically and record `ReconRewardReceipt`.
+2. Freeze participant/power inputs for **all enabled battlefields** under one `battlePhaseResolutionId`.
+3. Run a **read-only admission pass for every battlefield before committing any battlefield result or base scoring**. `no_participants` is a legal skip. If any non-empty battlefield has zero eligible winners, return `NO_ELIGIBLE_WINNER_POLICY_REQUIRED` for the phase and stop before creating any battlefield `BattleResultEnvelope`, base scoring plan, scoring receipt, or result/win/loss event. The already committed Recon receipt remains committed.
+4. If all battlefield admissions are supported, determine and commit each immutable Battle Result plus its immutable base battlefield scoring plan. Create stable per-battlefield result/win/loss/first-loss event identities, but keep every ordinary continuation behind one server-owned **`post_all_battlefield_scoring`** barrier keyed by `battlePhaseResolutionId`.
+5. Consume **every** resolved battlefield's base scoring plan exactly once. For each winner commit one combined `base_pool_share = ceil((eventVpPool + competitionVpPool) / winnerCount)`, plus typed location reward and military adjustments, producing one scoring receipt per resolved battlefield. No ordinary post-battle trigger may settle while any required battlefield scoring receipt is missing.
+6. Open `post_all_battlefield_scoring` only when the phase can prove that every resolved result has its required scoring receipt and every no-participant battlefield is an explicit skip. Then Trigger Gateway may settle queued result/win/loss/first-loss consumers across all battlefields using accepted ordering. Personal VP/rewards remain separate typed Resource results and never re-enter any base pool.
+7. Produce/settle reviewed `after_controller_gains_victory` transitions only in this post-all-battlefield-scoring stage, with exactly-once `victoryTransitionId`.
+8. After **all** result/win/loss/first-loss/gains-victory consumers for the phase are terminal, produce exactly one phase-terminal `after_battle_ended` event for `battlePhaseResolutionId`, settle its consumers, and wait for them to become terminal.
+9. Only then hand off to battle cleanup/lifecycle.
 
-The `post_base_scoring` barrier is normative: ordinary "获胜后额外获得" personal VP and other post-battle win/loss effects cannot settle before base battlefield rewards are committed. If an accepted rule defines a true **pre-scoring** modification to the base scoring plan, that mechanic requires a distinct reviewed pre-scoring contribution contract and explicit `orderingRef`; it cannot bypass the barrier merely because its event type is `after_battle_result_determined`. If an accepted rule requires a different relative order among post-base-scoring collisions, that collision also requires an explicit `orderingRef`. Runtime migration remains blocked when the semantic order is material and unresolved; current implementation order is not automatically normative.
+The phase-wide barrier is normative. Canonical flow is Recon -> all battlefield winner/base-scoring settlement -> post-battle win/loss/result effects -> phase-end effects -> cleanup. A per-battlefield barrier that allows Miyama post-battle effects to settle before Shinto base scoring is forbidden.
+
+If a base-scoring dispatch fails after earlier battlefield receipts have committed, the phase-wide barrier remains closed; retry may complete only the missing scoring receipt. Previously committed receipts are not rerun. If a semantic failure cannot be retried safely, the phase remains blocked rather than opening post-battle settlement against a partially scored set.
+
+If an accepted rule defines a true pre-scoring modification to a base scoring plan, that mechanic requires a distinct reviewed pre-scoring contribution contract and explicit `orderingRef`; it cannot bypass the phase-wide barrier because its event type happens to be `after_battle_result_determined`.
 
 ## 8. Scoring / Resource Composition
 
@@ -242,7 +259,7 @@ All committed VP/mana/command-seal mutations use the typed resource envelope alr
 - result identity;
 - revision.
 
-Base battle scoring uses a system producer linked to `battleResultId/scoringPlanId`. Trigger-earned VP uses the trigger's source ability identity, retains the same battle result causation link, and has a committed revision strictly after (or in a later atomic dispatch than) the base scoring receipt.
+Base battle scoring uses a system producer linked to `battleResultId/scoringPlanId`. Trigger-earned VP uses the trigger's source ability identity, retains the same battle result causation link, and can settle only after **all required battlefield scoring receipts for that `battlePhaseResolutionId`** exist and the phase-wide barrier opens.
 
 `after_controller_gains_victory` is **not** inferred from arbitrary positive VP, a display label, or merely being in `winnerPlayerIds`. Its producer requires a reviewed Battle/Scoring victory rule and a stable `victoryTransitionId` linked to the committed result/scoring receipt. If that qualification rule is absent or ambiguous for a future runtime slice, that producer remains blocked.
 
@@ -254,52 +271,56 @@ Semantic idempotency keys:
 - result determination: `battleId -> resultId` exactly once;
 - trigger scheduling: accepted TO-03 key `(eventId, sourceCardInstanceId, sourceAbilityId)`;
 - scoring consumption: `scoringPlanId` exactly once;
+- phase-wide post-battle barrier opening: `postBattleBarrierId` exactly once after all required scoring receipts exist;
 - scoring-derived victory production: `victoryTransitionId` exactly once per reviewed victory transition;
+- phase-terminal event production: `battlePhaseResolutionId + after_battle_ended` exactly once;
 - resource mutation: typed resource result identity exactly once.
 
-Reconnect or stale replay may re-project an existing Recon/result/scoring receipt but cannot:
+Reconnect or stale replay may re-project existing Recon/result/scoring/barrier/terminal identities but cannot:
 
-- consume the Recon reward plan a second time for the same battle-phase resolution;
+- consume Recon a second time;
 - determine a second result for the same battle;
+- re-consume an existing battlefield scoring plan;
+- open the phase-wide barrier before all required receipts exist or open it twice;
 - reschedule a terminal trigger;
-- consume scoring twice;
+- emit a second `after_battle_ended` for the same phase resolution;
 - duplicate VP/military/resource adjustment;
 - increment revision merely by projection/reconnect.
 
-Golden Flow 2 accepted evidence demonstrates the representative browser/reconnect/stale-command property; family-wide inheritance still requires the exact same accepted semantic form and no new external dependency.
+Golden Flow 2 accepted evidence demonstrates a representative browser/reconnect/stale-command property. It does not by itself prove the new phase-wide trigger barrier; later runtime work needs dedicated evidence for two-battlefield ordering.
 
 ## 10. Transaction Semantics
 
-Result determination and its immutable base scoring plan are committed before optional post-result interaction can pause. The base scoring dispatch then commits exactly once before ordinary post-result trigger effects are allowed to settle. A later trigger failure must not roll back the previously committed battle result or the already committed base scoring receipt.
+Recon is an earlier, separate battle-phase settlement. The battlefield admission pass is read-only. A phase-level admission blocker therefore preserves Recon but commits no battlefield result, base scoring, result-trigger event, or post-battle barrier state.
 
-For each subsequent dispatch:
+After admission succeeds:
 
-- Recon plan consumption and all of its typed +2 VP Resource results commit atomically; a failed Recon dispatch creates no receipt/resource/log/revision and remains retryable at the same authoritative stage;
-- a trigger dispatch rolls back only that trigger dispatch on failure, per TO-03;
-- base scoring consumption and its resource/military mutations commit atomically before the post-base-scoring trigger barrier opens;
-- a failed base scoring dispatch creates no scoring receipt/consumption-ledger entry, no resource result, and no logs/events/revision from the failed dispatch, and the barrier remains closed;
-- a successful base scoring commit cannot be undone by a later personal trigger or cleanup failure;
-- a failed personal post-result trigger rolls back only that trigger dispatch and cannot erase/rewrite the base scoring receipt;
-- a failed later cleanup cannot cause base scoring or a terminal trigger to run again.
+- each Battle Result/base scoring plan may commit under its stable identity;
+- each base scoring dispatch commits its Resource/military mutations and receipt atomically;
+- a failed scoring dispatch creates no receipt/result mutation from that failing dispatch and leaves `post_all_battlefield_scoring` closed;
+- already committed scoring receipts are preserved and never rerun while a missing receipt is retried;
+- ordinary post-battle trigger dispatches cannot begin until the phase-wide barrier opens;
+- once open, a trigger dispatch rolls back only that trigger dispatch on failure, per TO-03; it cannot erase prior Recon/result/scoring receipts;
+- a successful terminal trigger cannot be replayed after reconnect;
+- `after_battle_ended` cannot be produced until every earlier post-battle consumer for the phase is terminal;
+- cleanup failure cannot reopen scoring, ordinary post-battle triggers, or the phase-terminal event.
+
+No client command may partially open the barrier or supply the expected result/receipt set.
 
 ## 11. Projection / Hidden Information
 
-The server retains the full authoritative result and full Power Trace refs. Viewer projection may redact hidden source detail through the accepted projection policy, but public battle facts required by the game remain stable: battlefield, winner/tie outcome, allowed participant facts, permitted power summary, and committed VP changes.
+The server retains authoritative `battlePhaseResolutionId`, admissions, results, Power Trace refs, scoring receipts, barrier identity/state, victory-transition identities, and phase-terminal event identity. Viewer projection may redact hidden source detail through accepted projection policy, but public battle facts required by the game remain stable.
 
-Projection must never redact authoritative server storage in place. Reconnect receives the same Recon/result/scoring receipt identities and terminal state. Projection/reconnect alone never re-consumes the Recon plan or any battlefield scoring plan.
+Reconnect receives the same phase/result/receipt/barrier/terminal identities. Projection/reconnect alone never consumes Recon, creates a battlefield result, re-scores a battlefield, opens the barrier, or re-emits `after_battle_ended`.
 
 ## 12. 39-Row Admission Boundary
 
-Only the 13 direct post-result/ended consumers are candidates to consume this result-event envelope directly.
+The 13 direct event consumers split into:
 
-The other 26 battle-integration rows remain with their real owners, for example:
+- **11 per-battlefield result consumers**: first-loss/loss/result/win events;
+- **2 phase-terminal consumers**: `after_battle_ended`.
 
-- combat actions: Interaction/Card Action/Power/Card Zone;
-- deployment/battlefield rules: Movement + Trigger + Battle context;
-- battle power/status: TO-15 Modifier/Power + Lifecycle;
-- hidden/reveal: Hidden Information + Trigger;
-- special directives/replacement: reviewed Special subsystem;
-- result-bound VP/movement: Result Binding / Resource / Movement.
+The other 26 battle-integration rows remain with their real owners, for example combat actions, deployment/battlefield rules, Modifier/Power/Lifecycle, Hidden Information, Special subsystem, Result Binding, Resource, and Movement.
 
 TO-14 acceptance therefore does **not** make 39 abilities runtime-ready. Each row remains blocked on every unresolved external owner shown by the semantic-axis map.
 
@@ -307,27 +328,20 @@ TO-14 acceptance therefore does **not** make 39 abilities runtime-ready. Each ro
 
 Reject without legacy fallback when a claimed Battle Result route has:
 
-- missing/duplicate battle or result identity;
-- missing or stale Power Trace ref;
-- non-finite final power or margin;
-- participant marked winner while ineligible to win;
-- participating non-winner omitted from loser membership without an accepted rule saying the player did not participate;
-- nonparticipating player inserted into participant/winner/loser sets;
-- eligible/ineligible flag inconsistent with its typed win-exclusion record;
-- loss-effect suppression missing its reviewed policy identity;
-- winner not in the participating eligible set;
-- empty winner set after non-empty participation without a reviewed no-eligible-winner policy; return `NO_ELIGIBLE_WINNER_POLICY_REQUIRED` before result/scoring/event creation;
-- any attempt to evaluate base-pool rounding, margin, military adjustment, or normal win/loss events with `winnerCount === 0`;
-- malformed tie/sole-winner facts;
-- unknown exclusion/loss-effect policy;
+- missing/duplicate battle, result, or `battlePhaseResolutionId`;
+- missing/stale Power Trace ref or non-finite final power/margin;
+- inconsistent participant/winner/loser/exclusion/loss-suppression facts;
+- non-empty participation with no eligible winner and no reviewed policy: return `NO_ELIGIBLE_WINNER_POLICY_REQUIRED` during phase admission, before any battlefield result/scoring/event commit;
+- any zero-winner base-pool rounding, margin, military, or normal win/loss inference;
 - scoring plan/result identity mismatch;
-- unknown/generic base VP source kind, missing base-pool event/competition provenance, or missing reviewed location reward policy;
-- a winner's combined base-pool delta not equal to `ceil((eventVpPool + competitionVpPool) / winnerCount)`;
-- event and competition components independently rounded or attributed so their sum exceeds the single combined base-pool share;
-- Recon reward attached to a battlefield winner/scoring plan instead of its phase-level plan;
-- Recon delta or recipient set inconsistent with the reviewed `rewardRuleId` (base rules require +2 VP for each legal Recon occupant at battle-power-resolution start);
-- duplicate Recon or battlefield scoring consumption;
-- client-authored winner, score, resource delta, processed state, or result payload;
+- generic/unknown VP source, missing combined base-pool provenance, independent event/competition rounding, or winner delta inconsistent with `ceil((eventVpPool + competitionVpPool) / winnerCount)`;
+- Recon attached to a battlefield result, wrong recipient/delta for its reviewed policy, or duplicate Recon consumption;
+- phase admission that commits some battlefield result/scoring before discovering a later unsupported battlefield;
+- phase-wide barrier opened while any supported resolved battlefield lacks its scoring receipt;
+- ordinary result/win/loss/first-loss/gains-victory continuation settled before `post_all_battlefield_scoring` opens;
+- `after_battle_ended` emitted per battlefield, emitted before all earlier post-battle consumers are terminal, or emitted more than once per `battlePhaseResolutionId`;
+- phase-terminal payload missing the resolved result/scoring-receipt identities needed for deterministic replay;
+- client-authored winner, score, barrier state, resource delta, processed state, or result payload;
 - unresolved semantic ordering that can change outcome;
 - unsupported external owner dependency in a runtime slice that claims full support.
 
@@ -338,17 +352,17 @@ A recognized Battle Result envelope failure must not fall back to `resolveEffect
 TO-14 may be independently accepted as a specification only if review confirms:
 
 - 39/28 battle-integration set reconciles exactly;
-- 13 direct result/ended consumers are not conflated with the other 26 rows;
-- the one cross-axis `after_controller_gains_victory` Scoring/Battle producer dependency is covered without changing 39/28;
-- Power Trace input, Battle Result, Trigger Gateway, Scoring and Resource owners are non-overlapping;
-- stage ordering and unresolved-order policy are explicit;
-- Recon/result/scoring/resource identities support exactly-once replay safety;
-- base battlefield VP sources are a closed discriminated union with no generic `reviewed_rule`/`battle_vp` escape hatch;
-- event + competition VP are combined before the single winner-count rounding step, with component provenance preserved but never independently rounded; the formula is admissible only for `winnerCount >= 1`;
-- no-participant battlefields are explicit skips, while non-empty/zero-eligible-winner battlefields are blocked by `NO_ELIGIBLE_WINNER_POLICY_REQUIRED` until a reviewed policy exists;
-- the post-base-scoring barrier guarantees base battlefield rewards commit before ordinary personal win/loss rewards/effects;
-- optional trigger pauses do not roll back committed result state;
-- projection/reconnect preserves authoritative identities without leaking hidden detail;
-- no runtime migration or Gate promotion is claimed by the spec itself.
+- direct 13 split explicitly into 11 per-battlefield result consumers + 2 phase-terminal `after_battle_ended` consumers;
+- the one cross-axis `after_controller_gains_victory` producer dependency is covered without changing 39/28;
+- Power Trace, Battle Result, Trigger Gateway, Scoring, Resource and phase-terminal cleanup owners are non-overlapping;
+- Recon is phase-level and exactly-once;
+- all battlefield admissions are preflighted before any battlefield result/base-scoring commit;
+- no-participant is an explicit skip and zero-eligible-winner is fail-closed;
+- event + competition VP use one combined, single-rounding base pool for non-empty winner sets;
+- **all supported battlefield base scoring receipts exist before any ordinary post-battle trigger settlement**;
+- phase-wide barrier/open/replay semantics are explicit and reconnect-safe;
+- `after_battle_ended` is emitted exactly once per `battlePhaseResolutionId`, only after earlier post-battle consumers are terminal;
+- unresolved collision ordering remains blocked rather than guessed;
+- no runtime migration or Gate promotion is claimed by this spec.
 
-Runtime work after spec acceptance requires a fresh B task and independent Gate A/B/C evidence for the chosen representative slice.
+Runtime work after spec acceptance requires a fresh B task and independent Gate A/B/C evidence for the chosen representative slice, including a two-battlefield ordering scenario.

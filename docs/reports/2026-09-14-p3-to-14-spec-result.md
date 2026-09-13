@@ -17,7 +17,7 @@
 - Current corrected semantic-axis: **39 BATTLE_INTEGRATION abilities / 28 cards**.
 - Historical mechanic-family membership: **39 / 28**.
 - Exact set difference: **0**.
-- Direct post-result / battle-ended event consumers: **13**.
+- Direct post-result / battle-ended event consumers: **13** = **11 per-battlefield result consumers + 2 phase-terminal `after_battle_ended` consumers**.
 - Other broader battle integration rows: **26**.
 - Cross-axis Scoring/Battle strict producer dependency outside 39: **1** `after_controller_gains_victory` consumer.
 
@@ -39,10 +39,10 @@ The spec separates:
 3. TO-03 result-event scheduling ownership;
 4. exactly-once battle-phase Recon reward plan/receipt at power-resolution start;
 5. immutable base battlefield scoring plan with closed typed VP sources and exactly-once scoring receipt;
-6. normative `post_base_scoring` barrier before ordinary personal result/win/loss trigger settlement;
+6. normative phase-wide `post_all_battlefield_scoring` barrier after every supported battlefield base scoring receipt and before ordinary personal result/win/loss trigger settlement;
 7. typed Resource settlement for personal VP/mana/seals after the base receipt;
 8. scoring-derived `after_controller_gains_victory` producer/trigger handoff;
-9. terminal `after_battle_ended` event and cleanup handoff.
+9. exactly-once phase-terminal `after_battle_ended` event and cleanup handoff.
 
 The 13 result consumers may later consume the accepted result-event envelope. The remaining 26 rows stay with their real external owner and are not made runtime-ready by this spec.
 
@@ -53,7 +53,8 @@ The 13 result consumers may later consume the accepted result-event envelope. Th
 - 13 direct post-result/ended consumers: PASS.
 - cross-axis `after_controller_gains_victory` producer dependency: PASS, covered without denominator change.
 - win eligibility vs loser outcome vs loss-effect suppression: orthogonalized; true nonparticipants are neither winner nor loser.
-- base-score-before-personal-reward invariant: explicit via `post_base_scoring` barrier; personal VP cannot modify the base pool.
+- all-battlefields-score-before-post-battle invariant: explicit via phase-wide `post_all_battlefield_scoring`; no battlefield post-battle trigger can settle before every supported battlefield base scoring receipt exists.
+- `after_battle_ended`: phase-terminal and exactly once per `battlePhaseResolutionId`, never per battlefield.
 - Recon reward: separate phase-level exactly-once plan/receipt.
 - base VP source union: one combined event+competition `base_pool_share` plus reviewed-location variant; no generic `reviewed_rule` or ambiguous `battle_vp` source.
 - base-pool rounding: exactly one `ceil((eventVpPool + competitionVpPool) / winnerCount)` per winner, only when `winnerCount >= 1`; event/competition attribution cannot change the total.

@@ -7,7 +7,7 @@
 
 - [ ] Current semantic-axis has exactly 39 `BATTLE_INTEGRATION` abilities / 28 cards.
 - [ ] Historical matrix and current semantic-axis are exact-set equal.
-- [ ] Exactly 13 rows use the five post-result/ended battle event types.
+- [ ] Exactly 13 rows use the five post-result/ended battle event types: 11 per-battlefield result consumers + 2 phase-terminal `after_battle_ended` consumers.
 - [ ] The other 26 are not falsely declared direct Battle Result consumers.
 - [ ] The one cross-axis `after_controller_gains_victory` consumer is covered as a Scoring/Battle producer dependency without changing 39/28.
 
@@ -39,12 +39,15 @@
 - [ ] For every winner, base-pool delta is exactly `ceil((eventVpPool + competitionVpPool) / winnerCount)`; the 1+1 pool / 2-winner case yields 1 per winner, not 2.
 - [ ] Base-pool rounding is never evaluated with `winnerCount === 0`.
 - [ ] Reviewed location rewards remain separate; personal card/master/servant rewards remain outside the base plan.
-- [ ] Base event/competition/location battle rewards and base military adjustments commit before ordinary post-result personal rewards/effects.
+- [ ] **Every supported battlefield** event/competition/location base reward and base military adjustment commits before any ordinary post-battle result/win/loss/first-loss effect settles.
+- [ ] All battlefield admissions are preflighted before any battlefield result/base-score commit; one unsupported battlefield cannot leave another battlefield scored and then open post-battle settlement.
+- [ ] One phase-wide `post_all_battlefield_scoring` barrier is keyed by `battlePhaseResolutionId`; no per-battlefield trigger barrier is accepted.
 - [ ] Result/win/loss/first-loss event identities may be queued before scoring, but their ordinary continuations are blocked by `post_base_scoring` until the base scoring receipt commits.
 - [ ] Personal trigger VP never re-enters or rewrites the base battle reward pool.
 - [ ] Any true pre-scoring modifier requires a distinct reviewed contract/orderingRef rather than bypassing the barrier.
 - [ ] `after_controller_gains_victory` cannot be inferred from arbitrary positive VP/display text and has exactly-once `victoryTransitionId`.
 - [ ] Scoring-derived victory triggers settle before terminal `after_battle_ended` / cleanup.
+- [ ] `after_battle_ended` is emitted exactly once per battle-power-resolution phase, never once per battlefield, and only after all earlier post-battle consumers are terminal.
 - [ ] Optional post-result interaction can pause after result commit without losing result identity.
 - [ ] Failed trigger/scoring dispatch rollback boundaries are explicit.
 - [ ] Unknown semantic ordering remains blocked rather than guessed.

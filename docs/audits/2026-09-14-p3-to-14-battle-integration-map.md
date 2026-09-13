@@ -4,7 +4,7 @@
 - Status: AUTHORITATIVE_DENOMINATOR_FOR_TO14_REVIEW
 - Source: `artifacts/phase3-skill-coverage.json` corrected semantic-axis plus `docs/audits/fd-skill-mechanic-family-matrix.md` reconciliation
 - Strict battle-integration denominator: **39 abilities / 28 cards**
-- Direct post-result / battle-ended event consumers: **13**
+- Direct post-result / battle-ended event consumers: **13** = **11 per-battlefield result consumers + 2 battle-phase-terminal `after_battle_ended` consumers**
 - Other battle integration rows: **26**
 
 ## Reconciliation
@@ -17,7 +17,7 @@ Cross-axis producer note: `servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.sh
 
 | Cluster | Count | Meaning |
 |---|---:|---|
-| RESULT_EVENT_CONSUMER | 13 | Directly consumes a post-result / post-battle domain event and therefore needs Battle Result -> Trigger Gateway payload. |
+| RESULT_EVENT_CONSUMER | 13 | 11 consume per-battlefield result events; 2 consume phase-terminal `after_battle_ended`. Both use Trigger Gateway, but the latter must not be emitted per battlefield. |
 | BATTLE_DEPLOY_EVENT | 1 | Deployment-to-battlefield trigger; composes Movement + Trigger + Battle context, not a battle result. |
 | BATTLE_MODIFIER_EVENT | 1 | Card-play event installs/changes battle power semantics; composes Card Action/Trigger/Modifier. |
 | BATTLE_STATE_OR_COMBAT_INTEGRATION | 24 | Combat action/passive/state rule that consumes battle state, power, location, movement, lifecycle, or interaction, but not a result event. |
