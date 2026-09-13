@@ -23,7 +23,12 @@ function writeJson(path: string, value: unknown): void {
   writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
 }
 
-function createMinimalWorkspace(includeSourceAsset: boolean): { root: string; packPath: string } {
+function createMinimalWorkspace(
+  includeSourceAsset: boolean,
+  options: { declareSourceImage?: boolean; includeHtmSource?: boolean } = {},
+): { root: string; packPath: string } {
+  const declareSourceImage = options.declareSourceImage ?? true;
+  const includeHtmSource = options.includeHtmSource ?? true;
   const root = mkdtempSync(join(tmpdir(), `fd-pack-${includeSourceAsset ? 'assets' : 'clean'}-`));
   const packPath = join(root, 'data/packs/minimal/pack.json');
   writeJson(join(root, 'data/packs/minimal/dictionaries/basic-attacks.json'), {});
@@ -46,12 +51,12 @@ function createMinimalWorkspace(includeSourceAsset: boolean): { root: string; pa
     id: 'master.test',
     name: 'Test Master',
     sources: [
-      { type: 'chm_html', path: 'D:/fd/chm-extract/Test Master.htm' },
-      { type: 'original_card_image', path: 'D:/fd/chm-extract/图包/declared.png' },
+      ...(includeHtmSource ? [{ type: 'chm_html', path: 'D:/fd/chm-extract/Test Master.htm' }] : []),
+      ...(declareSourceImage ? [{ type: 'original_card_image', path: 'D:/fd/chm-extract/图包/declared.png' }] : []),
     ],
-    publicInformation: {
+    ...(declareSourceImage ? { publicInformation: {
       sourceImage: 'D:/fd/chm-extract/图包/declared.png',
-    },
+    } } : {}),
     cards: [
       {
         id: 'master.test.skill.one',
@@ -61,17 +66,25 @@ function createMinimalWorkspace(includeSourceAsset: boolean): { root: string; pa
         cardFace: { cost: 0, basePower: 0 },
         playTiming: { phase: 'action' },
         abilities: [],
-        evidence: [
+        evidence: declareSourceImage ? [
           {
             type: 'original_card_image',
             path: 'D:/fd/chm-extract/图包/declared.png',
             imageIndex: 0,
             htmPath: 'D:/fd/chm-extract/Test Master.htm',
           },
+        ] : [
+          {
+            type: 'chm_html',
+            path: 'D:/fd/chm-extract/Test Master.htm',
+          },
         ],
       },
     ],
   });
+  const htmPath = join(root, 'chm-extract/Test Master.htm');
+  mkdirSync(dirname(htmPath), { recursive: true });
+  writeFileSync(htmPath, '<img src="图包/ScreenShot_should_not_be_inferred.png">', 'utf8');
   if (includeSourceAsset) {
     const imagePath = join(root, 'chm-extract/图包/declared.png');
     mkdirSync(dirname(imagePath), { recursive: true });
@@ -128,6 +141,32 @@ describe('playtest pack loader', () => {
     } finally {
       rmSync(withAssets.root, { recursive: true, force: true });
       rmSync(withoutAssets.root, { recursive: true, force: true });
+    }
+  });
+
+  it('requires explicit source image declarations instead of inferring from local HTM', () => {
+    const workspace = createMinimalWorkspace(false, { declareSourceImage: false });
+    try {
+      const loaded = loadPlaytestContentPack(workspace.packPath, { workspaceRoot: workspace.root });
+      const compiled = compileLoadedPlaytestPack(loaded).library;
+
+      expect(compiled.masters[0]!.source).toEqual({
+        htmPath: 'chm-extract/Test Master.htm',
+        imagePath: '',
+        imageIndex: 0,
+        reviewedAgainstImage: false,
+      });
+      expect(JSON.stringify(compiled)).not.toContain('ScreenShot_should_not_be_inferred.png');
+      expect(validateLoadedPlaytestPack(loaded, { workspaceRoot: workspace.root })).toContainEqual(
+        expect.objectContaining({
+          code: 'SOURCE_EVIDENCE_REQUIRED',
+          entityId: 'master.test',
+          field: 'source.imagePath',
+          blocking: true,
+        }),
+      );
+    } finally {
+      rmSync(workspace.root, { recursive: true, force: true });
     }
   });
 

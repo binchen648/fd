@@ -91,15 +91,26 @@ function parseArguments(argv: string[]): CliArguments {
   }
 
   const outputIndex = argv.indexOf('--output');
+  const sourceAssetsIndex = argv.indexOf('--source-assets');
+  let sourceAssetValidation: SourceAssetValidation = 'metadata_only';
+  if (sourceAssetsIndex >= 0) {
+    const value = argv[sourceAssetsIndex + 1];
+    if (!value || value.startsWith('--')) {
+      throw new Error('--source-assets requires one of: required, metadata_only');
+    }
+    if (value !== 'required' && value !== 'metadata_only') {
+      throw new Error(`Invalid --source-assets mode "${value}". Expected one of: required, metadata_only`);
+    }
+    sourceAssetValidation = value;
+  }
+
   return {
     packPath: argv[packIndex + 1]!,
     outputDirectory: outputIndex >= 0 && argv[outputIndex + 1]
       ? argv[outputIndex + 1]!
       : 'data/generated',
     validateOnly: argv.includes('--validate-only'),
-    sourceAssetValidation: argv.includes('--source-assets')
-      ? argv[argv.indexOf('--source-assets') + 1] as SourceAssetValidation
-      : 'metadata_only',
+    sourceAssetValidation,
   };
 }
 

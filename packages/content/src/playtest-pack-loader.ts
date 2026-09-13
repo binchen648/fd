@@ -214,19 +214,9 @@ function htmPathForArchive(archive: AuthoringArchive, workspaceRoot: string): st
   return sourceRelative(nested ?? `chm-extract/${archive.name}.htm`, workspaceRoot);
 }
 
-function imagesForArchive(archive: AuthoringArchive, workspaceRoot: string): string[] {
-  const directImages = [...JSON.stringify(archive).matchAll(/"([^"]+\.(?:png|jpg|jpeg|webp))"/gi)]
+function declaredImagesForArchive(archive: AuthoringArchive, workspaceRoot: string): string[] {
+  return [...JSON.stringify(archive).matchAll(/"([^"]+\.(?:png|jpg|jpeg|webp))"/gi)]
     .map((match) => sourceRelative(match[1]!, workspaceRoot));
-  if (directImages.length > 0) return directImages;
-
-  const htmPath = htmPathForArchive(archive, workspaceRoot);
-  const htmAbsolutePath = resolve(workspaceRoot, htmPath);
-  if (!existsSync(htmAbsolutePath)) return ['chm-extract/图包/图片1.png'];
-
-  const htm = readFileSync(htmAbsolutePath, 'utf8');
-  const screenshots = [...htm.matchAll(/ScreenShot_[^"'<>\\]+\.png/g)]
-    .map((match) => `chm-extract/图包/${match[0]}`);
-  return screenshots.length > 0 ? screenshots : ['chm-extract/图包/图片1.png'];
 }
 
 function sourceForArchive(
@@ -234,12 +224,12 @@ function sourceForArchive(
   workspaceRoot: string,
   imageIndex = 0,
 ): SourceEvidence {
-  const images = imagesForArchive(archive, workspaceRoot);
+  const images = declaredImagesForArchive(archive, workspaceRoot);
   return {
     htmPath: htmPathForArchive(archive, workspaceRoot),
-    imagePath: images[Math.min(imageIndex, images.length - 1)]!,
+    imagePath: images.length > 0 ? images[Math.min(imageIndex, images.length - 1)]! : '',
     imageIndex,
-    reviewedAgainstImage: true,
+    reviewedAgainstImage: images.length > 0,
   };
 }
 
@@ -535,6 +525,17 @@ export function validateLoadedPlaytestPack(
   }
 
   for (const entity of entitySources(pack)) {
+    if (!entity.source.reviewedAgainstImage) {
+      issues.push({
+        code: 'SOURCE_EVIDENCE_REQUIRED',
+        message: `${entity.id} requires an explicit source image declaration in authoring content`,
+        entityId: entity.id,
+        field: 'source.imagePath',
+        blocking: true,
+      });
+      continue;
+    }
+
     if (isAbsolute(entity.source.imagePath)) {
       issues.push({
         code: 'SOURCE_PATH_ABSOLUTE',
