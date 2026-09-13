@@ -38,14 +38,24 @@ function baseState(): TerrainState {
       movementLinks: [],
     },
     locationConfig: { disabledLocationIds: [] },
-    cards: [{
-      instanceId: 'support-shot',
-      definitionId: 'master.maiya.deck.support-shot',
-      ownerPlayerId: 'P1',
-      controllerPlayerId: 'P1',
-      zone: 'skill',
-      visibility: { scope: 'owner_only', ownerPlayerId: 'P1' },
-    }],
+    cards: [
+      {
+        instanceId: 'synthetic-source',
+        definitionId: 'synthetic-source-card',
+        ownerPlayerId: 'P1',
+        controllerPlayerId: 'P1',
+        zone: 'hand',
+        visibility: { scope: 'owner_only', ownerPlayerId: 'P1' },
+      },
+      {
+        instanceId: 'support-shot',
+        definitionId: 'master.maiya.deck.support-shot',
+        ownerPlayerId: 'P1',
+        controllerPlayerId: 'P1',
+        zone: 'skill',
+        visibility: { scope: 'owner_only', ownerPlayerId: 'P1' },
+      },
+    ],
     eventPlacements: [],
     battleResults: [],
     effectStack: [],
@@ -114,6 +124,8 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
       return { id: `produce-${binding}`, type: 'draw_cards', player: 'controller', count: 0, bind: binding };
     case 'play_selected_cards':
       return { id: `produce-${binding}`, type: 'play_selected_cards', target: 'selected_cards', face: 'face_down', bind: binding };
+    case 'play_source_card':
+      return { id: `produce-${binding}`, type: 'play_source_card', face: 'face_up', bind: binding };
     case 'attach_card_to_player_attack':
       return {
         id: `produce-${binding}`,
@@ -347,7 +359,15 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
           abilityId: 'synthetic-ability',
           effects,
           selections: { selected_cards: [], supported_player: ['P2'] },
-          hooks: { playSelectedCards: ({ cardInstanceIds }) => ({ playedCount: cardInstanceIds.length }) },
+          hooks: {
+            playSelectedCards: ({ cardInstanceIds }) => ({ playedCount: cardInstanceIds.length }),
+            playSourceCard: ({ state, sourceCardId }) => {
+              const source = state.cards.find((card) => card.instanceId === sourceCardId)!;
+              source.zone = 'attack_area';
+              source.visibility = { scope: 'public' };
+              return { playedCount: 1, destinationZone: 'attack_area' };
+            },
+          },
         })).not.toThrow();
       }
     }

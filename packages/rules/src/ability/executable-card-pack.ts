@@ -296,7 +296,7 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
 function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
-    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isAddToAttackRouteCandidate(ability)) continue;
+    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability)) continue;
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
     try {
       validateResolutionDataFlowNodes(effects, path);
@@ -346,6 +346,13 @@ function isPlayActionRouteCandidate(ability: AuthoringAbility): boolean {
     str(draw?.type) === 'draw_cards' &&
     Number(draw?.count) === 1 &&
     hasSingleControllerHandAttackTarget(ability.targets, str(play.target));
+}
+
+function isPlaySourceCardWithCostResponseStructuralCandidate(ability: AuthoringAbility): boolean {
+  if (ability.kind !== 'response' || str(ability.activation.trigger) !== 'controller_combat_action_window') return false;
+  if (str(ability.responseWindow.opens) !== 'controller_combat_action_window') return false;
+  if (ability.targets.length || ability.creates.length || ability.effects.length !== 1) return false;
+  return hasFixedManaCost(ability.cost, 2) && str(ability.effects[0]?.type) === 'play_source_card';
 }
 
 function isAddToAttackRouteCandidate(ability: AuthoringAbility): boolean {
