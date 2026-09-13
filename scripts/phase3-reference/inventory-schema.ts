@@ -1,11 +1,28 @@
 export type InventoryOwnerType = 'master' | 'servant';
 export type ReferenceExecutionRoute = 'deterministic' | 'shared_handler' | 'specific_handler';
+export type InventoryClauseClassification = 'DISCOVERED' | 'SOURCE_GROUNDED';
+export type InventoryClauseDerivation =
+  | 'reference_structured_clause'
+  | 'v2_printed_clause'
+  | 'mechanical_line_split';
 
 export interface InventorySourceRef {
   kind: string;
   document: string;
   locator: string;
   [key: string]: unknown;
+}
+
+export interface InventoryClauseRecord {
+  text: string;
+  classification: InventoryClauseClassification;
+  derivation: InventoryClauseDerivation;
+  source: {
+    document: string;
+    locator: string;
+    sha256: string;
+  };
+  sourceAbilityId?: string;
 }
 
 export interface FullRosterStaticSkillEntry {
@@ -16,6 +33,7 @@ export interface FullRosterStaticSkillEntry {
   ownerName: string;
   skillName: string;
   printedText: string;
+  clauses: InventoryClauseRecord[];
   sources: InventorySourceRef[];
   reference: {
     skillId: string;
@@ -26,7 +44,7 @@ export interface FullRosterStaticSkillEntry {
     hasConfirmedOverride: boolean;
     dynamic: false;
   };
-  classification: 'DISCOVERED';
+  classification: 'DISCOVERED' | 'SOURCE_GROUNDED';
   blockedBy: string[];
 }
 
@@ -38,6 +56,7 @@ export interface FullRosterDynamicSkillEntry {
   ownerName: string;
   skillName: null;
   printedText: null;
+  clauses: InventoryClauseRecord[];
   sources: InventorySourceRef[];
   reference: {
     skillId: string;
@@ -85,6 +104,52 @@ function assertUnique(values: string[], label: string): void {
   }
 }
 
+function assertClauseArray(
+  clauses: unknown,
+  blockedBy: unknown,
+  skillId: string,
+  allowEmptyWhenBlocked: boolean,
+): void {
+  if (!Array.isArray(clauses)) {
+    throw new Error(`Skill clauses must be an array: ${skillId}`);
+  }
+  if (clauses.length === 0 && allowEmptyWhenBlocked) {
+    if (!Array.isArray(blockedBy) || !blockedBy.includes('SOURCE_EVIDENCE_REQUIRED')) {
+      throw new Error(`Skill without clauses must carry SOURCE_EVIDENCE_REQUIRED: ${skillId}`);
+    }
+  }
+  if (clauses.length === 0 && !allowEmptyWhenBlocked) {
+    throw new Error(`Static skill must preserve printed text as one or more clauses: ${skillId}`);
+  }
+
+  for (const clause of clauses) {
+    assertRecord(clause, `Clause for ${skillId}`);
+    assertRecord(clause.source, `Clause source for ${skillId}`);
+    if (typeof clause.text !== 'string' || clause.text.length === 0) {
+      throw new Error(`Clause text is required for ${skillId}.`);
+    }
+    if (clause.classification !== 'DISCOVERED' && clause.classification !== 'SOURCE_GROUNDED') {
+      throw new Error(`Unsupported clause classification for ${skillId}.`);
+    }
+    if (
+      clause.derivation !== 'reference_structured_clause' &&
+      clause.derivation !== 'v2_printed_clause' &&
+      clause.derivation !== 'mechanical_line_split'
+    ) {
+      throw new Error(`Unsupported clause derivation for ${skillId}.`);
+    }
+    if (typeof clause.source.document !== 'string' || clause.source.document.length === 0) {
+      throw new Error(`Clause source document is required for ${skillId}.`);
+    }
+    if (typeof clause.source.locator !== 'string' || clause.source.locator.length === 0) {
+      throw new Error(`Clause source locator is required for ${skillId}.`);
+    }
+    if (typeof clause.source.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(clause.source.sha256)) {
+      throw new Error(`Clause source SHA-256 is invalid for ${skillId}.`);
+    }
+  }
+}
+
 export function assertFullRosterInventory(value: unknown): asserts value is FullRosterAbilityInventory {
   assertRecord(value, 'Full-roster inventory');
 
@@ -128,6 +193,7 @@ export function assertFullRosterInventory(value: unknown): asserts value is Full
     if (entry.reference.dynamic !== false) {
       throw new Error(`Static skill cannot be marked dynamic: ${entry.reference.skillId}`);
     }
+    assertClauseArray(entry.clauses, entry.blockedBy, entry.reference.skillId, true);
     return entry.reference.skillId;
   });
 
@@ -143,6 +209,7 @@ export function assertFullRosterInventory(value: unknown): asserts value is Full
     if (entry.reference.dynamic !== true) {
       throw new Error(`Dynamic skill must be marked dynamic: ${entry.reference.skillId}`);
     }
+    assertClauseArray(entry.clauses, entry.blockedBy, entry.reference.skillId, true);
     return entry.reference.skillId;
   });
 

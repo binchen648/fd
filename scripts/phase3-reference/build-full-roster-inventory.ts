@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
   assertFullRosterInventory,
   type FullRosterAbilityInventory,
+  type InventoryClauseRecord,
   type InventoryOwnerType,
   type InventorySourceRef,
   type ReferenceExecutionRoute,
@@ -23,7 +24,19 @@ export interface FullRosterSourceSkill {
   legacyId?: string;
   name: string;
   text: string;
+  clauses?: Array<string | { text?: string; printedClause?: string }>;
+  sourceLocator?: string;
   sourceRefs: InventorySourceRef[];
+}
+
+export interface FullRosterAuthoringCardSource {
+  id: string;
+  printedText: string;
+  sourceIndex?: number;
+  abilities: Array<{
+    id: string;
+    printedClause: string;
+  }>;
 }
 
 export interface FullRosterSourceOwner {
@@ -48,6 +61,7 @@ export interface FullRosterSourceData {
   owners: FullRosterSourceOwner[];
   programs: FullRosterProgramSource[];
   authoringSkillIds: string[];
+  authoringCards?: FullRosterAuthoringCardSource[];
   confirmedOverrideSkillIds: string[];
   dynamicSkillIds: string[];
 }
@@ -71,7 +85,14 @@ interface SkillProgramsFile {
 }
 
 interface AuthoringCardsFile {
-  skillCards: Array<{ id: string }>;
+  skillCards: Array<{
+    id: string;
+    printedText: string;
+    abilities: Array<{
+      id: string;
+      printedClause: string;
+    }>;
+  }>;
 }
 
 interface SkillAuditFile {
@@ -88,6 +109,10 @@ function compareIds(left: string, right: string): number {
 
 function sha256File(path: string): string {
   return createHash('sha256').update(readFileSync(path)).digest('hex');
+}
+
+function sha256Text(text: string): string {
+  return createHash('sha256').update(text).digest('hex');
 }
 
 function readJson<T>(path: string): T {
@@ -152,6 +177,76 @@ function referenceExecutionRoute(
   return (handlerUseCounts.get(handlerId) ?? 0) > 1 ? 'shared_handler' : 'specific_handler';
 }
 
+function structuredClauseText(clause: string | { text?: string; printedClause?: string }): string | undefined {
+  if (typeof clause === 'string') return clause.length > 0 ? clause : undefined;
+  if (typeof clause.printedClause === 'string' && clause.printedClause.length > 0) return clause.printedClause;
+  if (typeof clause.text === 'string' && clause.text.length > 0) return clause.text;
+  return undefined;
+}
+
+function sourceLocatorFor(skill: FullRosterSourceSkill, owner: FullRosterSourceOwner): string {
+  return skill.sourceLocator ?? `${owner.ownerType}s[${owner.ownerId}].skills[${skill.id}].text`;
+}
+
+function buildClauseRecords(
+  owner: FullRosterSourceOwner,
+  skill: FullRosterSourceSkill,
+  authoringCard: FullRosterAuthoringCardSource | undefined,
+): InventoryClauseRecord[] {
+  if (Array.isArray(skill.clauses) && skill.clauses.length > 0) {
+    return skill.clauses.flatMap((clause, index) => {
+      const text = structuredClauseText(clause);
+      if (!text) return [];
+      return [{
+        text,
+        classification: 'SOURCE_GROUNDED' as const,
+        derivation: 'reference_structured_clause' as const,
+        source: {
+          document: LEGACY_CONTENT_PATH,
+          locator: `${sourceLocatorFor(skill, owner)}.clauses[${index}]`,
+          sha256: sha256Text(text),
+        },
+      }];
+    });
+  }
+
+  if (authoringCard) {
+    if (authoringCard.printedText !== skill.text) {
+      throw new Error(`Authoring printedText does not match legacy printed text for ${skill.id}.`);
+    }
+    const cardIndex = authoringCard.sourceIndex ?? 0;
+    const structured = authoringCard.abilities.flatMap((ability, abilityIndex) => {
+      if (typeof ability.printedClause !== 'string' || ability.printedClause.length === 0) return [];
+      return [{
+        text: ability.printedClause,
+        classification: 'SOURCE_GROUNDED' as const,
+        derivation: 'v2_printed_clause' as const,
+        sourceAbilityId: ability.id,
+        source: {
+          document: AUTHORING_CARDS_PATH,
+          locator: `skillCards[${cardIndex}].abilities[${abilityIndex}].printedClause`,
+          sha256: sha256Text(ability.printedClause),
+        },
+      }];
+    });
+    if (structured.length > 0) return structured;
+  }
+
+  return skill.text
+    .split(/\r?\n/)
+    .filter((line) => line.length > 0)
+    .map((line, lineIndex) => ({
+      text: line,
+      classification: 'DISCOVERED' as const,
+      derivation: 'mechanical_line_split' as const,
+      source: {
+        document: LEGACY_CONTENT_PATH,
+        locator: `${sourceLocatorFor(skill, owner)}#line=${lineIndex + 1}`,
+        sha256: sha256Text(line),
+      },
+    }));
+}
+
 export function buildFullRosterInventoryFromSourceData(sourceData: FullRosterSourceData): FullRosterAbilityInventory {
   const flattenedSkills = sourceData.owners.flatMap((owner) =>
     owner.skills.map((skill) => ({ owner, skill })),
@@ -186,6 +281,9 @@ export function buildFullRosterInventoryFromSourceData(sourceData: FullRosterSou
 
   const programsById = new Map(sourceData.programs.map((program) => [program.skillId, program]));
   const authoringSet = new Set(sourceData.authoringSkillIds);
+  const authoringCardsById = new Map(
+    (sourceData.authoringCards ?? []).map((card) => [card.id, card] as const),
+  );
   const overrideSet = new Set(sourceData.confirmedOverrideSkillIds);
   const handlerUseCounts = new Map<string, number>();
 
@@ -204,6 +302,12 @@ export function buildFullRosterInventoryFromSourceData(sourceData: FullRosterSou
         throw new Error(`Static identity mismatch: no skill-rule program for ${skill.id}`);
       }
       const handlerId = handlerIdFor(program);
+      const clauses = buildClauseRecords(owner, skill, authoringCardsById.get(skill.id));
+      const blockedBy = clauses.length === 0 ? ['SOURCE_EVIDENCE_REQUIRED'] : [];
+      const classification =
+        clauses.length > 0 && clauses.every((clause) => clause.classification === 'SOURCE_GROUNDED')
+          ? 'SOURCE_GROUNDED' as const
+          : 'DISCOVERED' as const;
       const reference = {
         skillId: skill.id,
         ...(skill.legacyId ? { legacySkillId: skill.legacyId } : {}),
@@ -222,10 +326,11 @@ export function buildFullRosterInventoryFromSourceData(sourceData: FullRosterSou
         ownerName: owner.ownerName,
         skillName: skill.name,
         printedText: skill.text,
+        clauses,
         sources: skill.sourceRefs.map((source) => ({ ...source })),
         reference,
-        classification: 'DISCOVERED' as const,
-        blockedBy: [],
+        classification,
+        blockedBy,
       };
     });
 
@@ -251,6 +356,7 @@ export function buildFullRosterInventoryFromSourceData(sourceData: FullRosterSou
         ownerName: owner.ownerName,
         skillName: null,
         printedText: null,
+        clauses: [],
         sources: [
           {
             kind: 'reference-audit',
@@ -266,7 +372,7 @@ export function buildFullRosterInventoryFromSourceData(sourceData: FullRosterSou
           dynamic: true as const,
         },
         classification: 'DISCOVERED' as const,
-        blockedBy: [],
+        blockedBy: ['SOURCE_EVIDENCE_REQUIRED'],
       };
     });
 
@@ -324,6 +430,21 @@ export async function loadFullRosterSourceData(referenceRoot: string): Promise<F
   if (!Array.isArray(authoringCards.skillCards)) {
     throw new Error('Reference authoring cards.json is missing skillCards.');
   }
+  for (const [cardIndex, card] of authoringCards.skillCards.entries()) {
+    if (typeof card.printedText !== 'string' || !Array.isArray(card.abilities)) {
+      throw new Error(`Reference authoring card at index ${cardIndex} is missing printedText or abilities.`);
+    }
+    for (const [abilityIndex, ability] of card.abilities.entries()) {
+      if (
+        typeof ability.id !== 'string' ||
+        ability.id.length === 0 ||
+        typeof ability.printedClause !== 'string' ||
+        ability.printedClause.length === 0
+      ) {
+        throw new Error(`Reference authoring card ${card.id} has an invalid ability at index ${abilityIndex}.`);
+      }
+    }
+  }
   if (!Array.isArray(audit.dynamicRuntimeSkills)) {
     throw new Error('Reference skill-audit.json is missing dynamicRuntimeSkills.');
   }
@@ -337,17 +458,23 @@ export async function loadFullRosterSourceData(referenceRoot: string): Promise<F
   }
 
   const owners: FullRosterSourceOwner[] = [
-    ...legacy.masters.map((master) => ({
+    ...legacy.masters.map((master, masterIndex) => ({
       ownerType: 'master' as const,
       ownerId: master.id,
       ownerName: master.name,
-      skills: master.skills,
+      skills: master.skills.map((skill, skillIndex) => ({
+        ...skill,
+        sourceLocator: `masters[${masterIndex}].skills[${skillIndex}].text`,
+      })),
     })),
-    ...legacy.servants.map((servant) => ({
+    ...legacy.servants.map((servant, servantIndex) => ({
       ownerType: 'servant' as const,
       ownerId: servant.id,
       ownerName: servant.name,
-      skills: servant.skills,
+      skills: servant.skills.map((skill, skillIndex) => ({
+        ...skill,
+        sourceLocator: `servants[${servantIndex}].skills[${skillIndex}].text`,
+      })),
     })),
   ];
 
@@ -357,6 +484,7 @@ export async function loadFullRosterSourceData(referenceRoot: string): Promise<F
     owners,
     programs: programFile.programs,
     authoringSkillIds: authoringCards.skillCards.map((card) => card.id),
+    authoringCards: authoringCards.skillCards.map((card, sourceIndex) => ({ ...card, sourceIndex })),
     confirmedOverrideSkillIds,
     dynamicSkillIds: audit.dynamicRuntimeSkills,
   };
