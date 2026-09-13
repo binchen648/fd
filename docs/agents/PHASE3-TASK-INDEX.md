@@ -99,6 +99,8 @@ Status: WAIT_FA01
 
 Goal: Review all decisions and special candidates plus a stratified, reproducible sample across every mechanic wave.
 
+Startup prompt: `docs/agents/PHASE3-FULL-ROSTER-REVIEWER-PROMPT.md` after replacing all commit and Reference-root placeholders.
+
 Allowed result: `F0_ACCEPTED`, `F1_ACCEPTED`, or `INTAKE_NEEDS_REVISION`. No runtime Gate promotion.
 
 ## Phase 3 Objective Coverage Map
