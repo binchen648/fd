@@ -632,7 +632,7 @@ export function triggerEventScopeMatches(a: AuthoringAbility, event: AbilityEven
   if (eventLocationId && event.locationId !== eventLocationId) return false;
   return true;
 }
-function collectTriggeredAbilities(s: GameState, event: AbilityEvent): TriggeredAbility[] {
+export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): TriggeredAbility[] {
   const found: TriggeredAbility[] = [];
   for (const c of s.cards) {
     if (player(s, c.controllerPlayerId).status !== 'active') continue;
