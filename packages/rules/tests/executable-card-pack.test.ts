@@ -109,6 +109,16 @@ describe('ExecutableCardPack compiler', () => {
     expect(() => compileExecutableCardPack(input)).toThrow(expected);
   });
 
+  it('fails closed for an unsupported lifecycle source-validity policy through the executable compiler path', () => {
+    const input = sourceInput();
+    const archive = input.rules.archives.find((candidate) => candidate.id === 'servant.artoriac')!;
+    const card = archive.cards.find((candidate) => candidate.id === 'servant.artoriac.skill.sc-artoriac-3')!;
+    const ability = card.abilities!.find((candidate) => candidate.id === 'sc-artoriac-3.discard-public-and-power-formula')!;
+    (ability.lifecycle!.sourceValidity as { policyId: string }).policyId = 'unknown-source-state-policy';
+
+    expect(() => compileExecutableCardPack(input)).toThrow(/Unsupported Card Zone source-validity policy/);
+  });
+
   it('accepts Phase 3A resolution data-flow nodes through the executable compiler path', () => {
     const input = sourceInput();
     installResolutionFixture(input, [

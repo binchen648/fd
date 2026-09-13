@@ -5455,7 +5455,12 @@
             "lifecycle": {
               "starts": "immediate",
               "duration": "while_card_active",
-              "cleanup": "when_card_leaves_active_area"
+              "cleanup": "when_card_leaves_active_area",
+              "sourceValidity": {
+                "kind": "accepted_source_state_policy",
+                "owner": "card_zone_source_state",
+                "policyId": "fd.card-zone.active-card-source.v1"
+              }
             },
             "responseWindow": {
               "order": "turn_order",
@@ -10450,11 +10455,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "8e9cf402f9f918693de5a19afc85ed582a9e236a547cb38818249d1f601fbc0e",
+    "definitionHash": "26167661823b52de598c77a59df4d05440a6bfced7d68cd3e04d11353d72dbaa",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "8e9cf402f9f918693de5a19afc85ed582a9e236a547cb38818249d1f601fbc0e"
+      "definitionHash": "26167661823b52de598c77a59df4d05440a6bfced7d68cd3e04d11353d72dbaa"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

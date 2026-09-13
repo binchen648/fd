@@ -90,6 +90,11 @@ export interface OngoingEffect {
   id: string; sourceCardId: string; abilityId: string; controllerId: PlayerId;
   starts: 'immediate'; duration: string; startRound: number; expiresAtRound?: number;
   cleanup: string; ruleModifiers: RuleModifier[]; publicZones: string[]; sourceMustRemainActive?: boolean;
+  policyKey?: string; sourceDefinitionIdAtInstall?: string; sourceValidityPolicyId?: string; installedRevision?: number;
+}
+export interface LifecycleTransition {
+  transitionId: string; lifecycleId: string; kind: 'install' | 'source_invalidated';
+  causationId: string; createdRevision: number; roundId: number;
 }
 export interface EffectContext {
   controllerId: PlayerId; sourceCardId: string; abilityId: string;
@@ -134,7 +139,7 @@ export interface SafeEvent {
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, { active: boolean; faceDown: boolean; playedRound: number }>;
-  ongoingEffects: OngoingEffect[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
+  ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];
