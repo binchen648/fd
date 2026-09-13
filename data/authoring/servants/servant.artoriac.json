@@ -538,7 +538,12 @@
           "lifecycle": {
             "starts": "immediate",
             "duration": "while_card_active",
-            "cleanup": "when_card_leaves_active_area"
+            "cleanup": "when_card_leaves_active_area",
+            "sourceValidity": {
+              "kind": "accepted_source_state_policy",
+              "owner": "card_zone_source_state",
+              "policyId": "fd.card-zone.active-card-source.v1"
+            }
           },
           "conditions": [],
           "targets": [],

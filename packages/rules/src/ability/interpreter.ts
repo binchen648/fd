@@ -2,6 +2,7 @@ import type { GameState, PhaseName } from '../schema/game';
 import type { CardInstance } from '../schema/card';
 import type { LocationId } from '../schema/location';
 import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
+import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID, evaluateCardSourceValidity } from '../core/card-source-state';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { node, nodes, str } from './loader';
 import {
@@ -175,7 +176,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, ongoingEffects: [], responseWindows: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
+    cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
@@ -296,9 +297,27 @@ export function evaluateFormula(input: unknown, s: GameState, controllerId: stri
 function numeric(s: GameState, ctx: EffectContext, input: unknown): number {
   return evaluateFormula(input, s, ctx.controllerId, ctx.sourceCardId, ctx.variables).value;
 }
+function sourceBoundOngoingIsLive(s: GameState, ongoing: OngoingEffect): boolean {
+  if (!ongoing.sourceValidityPolicyId) return ongoing.sourceMustRemainActive === false || active(s, ongoing.sourceCardId);
+  if (!ongoing.sourceDefinitionIdAtInstall || !ongoing.policyKey || !Number.isInteger(ongoing.installedRevision)) {
+    reject('resolution_failed', 'Corrupt source-bound lifecycle state');
+  }
+  const installTransition = lifecycleTransitions(s).find((entry) =>
+    entry.lifecycleId === ongoing.id && entry.kind === 'install');
+  if (!installTransition) reject('resolution_failed', 'Source-bound lifecycle install transition is missing');
+  const validity = evaluateCardSourceValidity(s, {
+    policyId: ongoing.sourceValidityPolicyId,
+    sourceCardInstanceId: ongoing.sourceCardId,
+    sourceAbilityId: ongoing.abilityId,
+    controllerPlayerId: ongoing.controllerId,
+    sourceDefinitionIdAtInstall: ongoing.sourceDefinitionIdAtInstall,
+  });
+  if (!validity.supported) reject('resolution_failed', 'Unknown lifecycle source-validity policy');
+  return validity.valid;
+}
 function liveOngoing(s: GameState): OngoingEffect[] {
   return runtime(s).ongoingEffects.filter(o =>
-    (o.sourceMustRemainActive === false || active(s, o.sourceCardId)) &&
+    sourceBoundOngoingIsLive(s, o) &&
     (o.expiresAtRound === undefined || s.round.roundNumber < o.expiresAtRound));
 }
 function modifierControllerApplies(s: GameState, modifierControllerId: string, source: CardInstance, scope: RuleNode): boolean {
@@ -745,11 +764,72 @@ function recordMovementForAbilityRuntime(s: GameState, playerId: string, from: s
   const battlefields = path.slice(1).filter(locationId => isBattlefield(s, locationId)).length;
   r.battlefieldsPassedOrStayedThisRound[playerId] = (r.battlefieldsPassedOrStayedThisRound[playerId] ?? 0) + battlefields;
 }
+function lifecycleTransitions(s: GameState) {
+  const r = runtime(s);
+  r.lifecycleTransitions ??= [];
+  return r.lifecycleTransitions;
+}
+function pushLifecycleTransition(s: GameState, ongoing: OngoingEffect, kind: 'install' | 'source_invalidated'): void {
+  const transitions = lifecycleTransitions(s);
+  if (kind === 'source_invalidated' && transitions.some((entry) => entry.lifecycleId === ongoing.id && entry.kind === kind)) return;
+  transitions.push({
+    transitionId: nextId(s, `lifecycle-${kind}`),
+    lifecycleId: ongoing.id,
+    kind,
+    causationId: `${ongoing.sourceCardId}:${ongoing.abilityId}:${runtime(s).revision}`,
+    createdRevision: runtime(s).revision,
+    roundId: s.round.roundNumber,
+  });
+}
 function installOngoing(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
   const applicableModifiers = a.ruleModifiers.filter(m => m.rule !== 'effect_prevention' && nodes(m.conditions).every(c => condition(s, ctx, c)));
   const duration = str(a.lifecycle.duration) || str(node(applicableModifiers[0]?.lifecycle).duration);
   if (!duration) return;
-  const r = runtime(s); const key = `${ctx.sourceCardId}:${a.id}`;
+  const r = runtime(s);
+  const sourceValidity = node(a.lifecycle.sourceValidity);
+  const usesResolvedSourceValidity = a.lifecycle.sourceValidity !== undefined;
+  if (usesResolvedSourceValidity) {
+    const cleanup = str(a.lifecycle.cleanup);
+    const policyId = str(sourceValidity.policyId);
+    if (duration !== 'while_card_active' || !['when_card_leaves_active_area', 'remain_active'].includes(cleanup) ||
+      sourceValidity.kind !== 'accepted_source_state_policy' || sourceValidity.owner !== 'card_zone_source_state' ||
+      policyId !== ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID) {
+      reject('resolution_failed', 'Unsupported resolved source-bound lifecycle policy');
+    }
+    const source = card(s, ctx.sourceCardId);
+    const policyKey = `while_card_active:${cleanup}:${policyId}`;
+    if (r.ongoingEffects.some(o =>
+      o.sourceCardId === ctx.sourceCardId && o.abilityId === a.id && o.policyKey === policyKey)) return;
+    const validity = evaluateCardSourceValidity(s, {
+      policyId,
+      sourceCardInstanceId: ctx.sourceCardId,
+      sourceAbilityId: a.id,
+      controllerPlayerId: ctx.controllerId,
+      sourceDefinitionIdAtInstall: source.definitionId,
+    });
+    if (!validity.supported || !validity.valid) reject('resolution_failed', 'Lifecycle source is not valid at installation');
+    const ongoing: OngoingEffect = {
+      id: nextId(s, 'lifecycle'),
+      sourceCardId: ctx.sourceCardId,
+      abilityId: a.id,
+      controllerId: ctx.controllerId,
+      starts: 'immediate',
+      duration,
+      startRound: s.round.roundNumber,
+      cleanup,
+      ruleModifiers: applicableModifiers.map(m => ({ sourceCardId: ctx.sourceCardId, controllerId: ctx.controllerId, definition: m })),
+      publicZones: [],
+      sourceMustRemainActive: true,
+      policyKey,
+      sourceDefinitionIdAtInstall: source.definitionId,
+      sourceValidityPolicyId: policyId,
+      installedRevision: r.revision,
+    };
+    r.ongoingEffects.push(ongoing);
+    pushLifecycleTransition(s, ongoing, 'install');
+    return;
+  }
+  const key = `${ctx.sourceCardId}:${a.id}`;
   if (r.ongoingEffects.some(o => o.id === key)) return;
   const rounds = duration === 'this_round' ? 1 : duration === 'round_count' ? Number(a.lifecycle.rounds) : undefined;
   const ruleModifiers = applicableModifiers.map(m => ({ sourceCardId: ctx.sourceCardId, controllerId: ctx.controllerId, definition: m }));
@@ -760,6 +840,19 @@ function installOngoing(s: GameState, ctx: EffectContext, a: AuthoringAbility): 
 function cleanupOngoing(s: GameState): void {
   const r = runtime(s);
   for (const o of r.ongoingEffects) {
+    if (o.sourceValidityPolicyId) {
+      if (!o.sourceDefinitionIdAtInstall || !o.policyKey) reject('resolution_failed', 'Corrupt source-bound lifecycle state');
+      const validity = evaluateCardSourceValidity(s, {
+        policyId: o.sourceValidityPolicyId,
+        sourceCardInstanceId: o.sourceCardId,
+        sourceAbilityId: o.abilityId,
+        controllerPlayerId: o.controllerId,
+        sourceDefinitionIdAtInstall: o.sourceDefinitionIdAtInstall,
+      });
+      if (!validity.supported) reject('resolution_failed', 'Unknown lifecycle source-validity policy');
+      if (!validity.valid) pushLifecycleTransition(s, o, 'source_invalidated');
+      continue;
+    }
     if (o.expiresAtRound !== undefined && s.round.roundNumber >= o.expiresAtRound && active(s, o.sourceCardId)) {
       moveCard(s, o.sourceCardId, o.cleanup === 'remove_from_game' ? 'removed_from_game' : definition(s, o.sourceCardId)?.cardType === 'servant_skill' ? 'skill' : 'discard');
     }
