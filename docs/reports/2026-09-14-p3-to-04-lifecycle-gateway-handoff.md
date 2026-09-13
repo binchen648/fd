@@ -1,8 +1,8 @@
-# P3-TO-04 Lifecycle Policy Gateway Handoff
+﻿# P3-TO-04 Lifecycle Policy Gateway Handoff
 
 - Document Role: SPEC_HANDOFF
 - Owner: Codex B, specification lane only
-- Status: `READY_SPEC_OWNER`
+- Status: `SPEC_ACCEPTED`
 - Runtime Authorization: `NONE`
 - Maximum Completion Claim: `SPEC_REVIEW_READY`
 - Dispatch Authority: corrected Phase 3 parallel queue marks P3-TO-04 `READY_NEXT`; P3-TO-03 is now independently `SPEC_ACCEPTED`.
@@ -84,3 +84,17 @@ Map all 11 explicit lifecycle abilities exactly once. Each row must identify:
 5. Scoped spec result/handoff.
 
 Stop at `SPEC_REVIEW_READY`. Do not implement runtime and do not mark P3-B08 ready until independent review accepts this specification and runtime hot-file ownership is separately available.
+## Acceptance Record — 2026-09-14
+
+P3-TO-04 was independently accepted after one repair cycle:
+
+- final spec: `b46cfa4439c27112d14066e2239e7524f5a1e137`;
+- independent review: `d1e13d84b31bcbb57a6326ce9ea803fa877c651c`;
+- decision: `SPEC_ACCEPTED`;
+- exact lifecycle denominator: `11` abilities / `22` policy memberships;
+- runtime authorization: none;
+- Gate promotion: none.
+
+The accepted contract closes the prior fixed-duration scheduler-boundary and source-validity blockers. It still requires unresolved per-consumer external policies to remain runtime-blocked.
+
+P3-B08 Lifecycle-spec dependency is satisfied by this acceptance, but B08 is **not runtime-ready** while shared runtime hot-file ownership is unavailable.

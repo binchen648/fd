@@ -320,3 +320,11 @@ Permitted final status:
 - Fresh compiled evidence uses definition hash `5aa5a186bb201ce1f491cb6f38907a6267a4f30775113d9dd95651d58ba735d2` with `0` blocking compile issues after the accepted CI baseline repair.
 - P3-B07 Trigger-spec dependency is satisfied and inactive existing-card activation scope is confirmed, but B07 remains `WAIT_RUNTIME_HOT_FILE_OWNERSHIP` because `fd-b11-repair1` still has uncommitted shared runtime hot-file edits.
 - P3-TO-04 Lifecycle Policy Gateway is dispatched `READY_SPEC_OWNER` in the specification-only lane with corrected denominator `11`; runtime authorization remains `NONE`.
+## P3-A03 TO-04 Synchronization — 2026-09-14
+
+- P3-TO-04 Lifecycle Gateway: `SPEC_ACCEPTED` at spec `b46cfa4439c27112d14066e2239e7524f5a1e137`, R evidence `d1e13d84b31bcbb57a6326ce9ea803fa877c651c`.
+- Correct denominator remains `11` explicit lifecycle/reset abilities and `22` lifecycle policy memberships.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0`; accepted aggregate remains `new=13 / legacyExecute=3 / legacyResolve=48 / dual=0`. TO-04 contributes no runtime delta.
+- Compiled evidence remains definition hash `5aa5a186bb201ce1f491cb6f38907a6267a4f30775113d9dd95651d58ba735d2` with `0` blocking issues.
+- P3-B08 Lifecycle-spec dependency is satisfied, but B08 remains `WAIT_RUNTIME_HOT_FILE_OWNERSHIP` because `fd-b11-repair1` still has uncommitted edits in shared runtime hot files.
+- P3-B07 remains blocked by the same hot-file ownership conflict.
