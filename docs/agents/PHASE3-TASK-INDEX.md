@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.4
+- Version: P3-TI-1.5
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -14,6 +14,92 @@ This file is the task lookup entry point for Phase 3 agents. Do not read the ful
 3. Codex R owns independent acceptance review and must stay read-only.
 4. B runtime work may run in parallel with A documentation/tooling work only when B has exclusive ownership of its declared hot files.
 5. B may not start the next runtime task until its previous implementation report exists and either R has reviewed it or the coordinator explicitly accepts the risk.
+6. Full-roster S work may run in parallel as a read-only intake lane under `PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`; it does not change current runtime task status.
+7. B2 runtime work starts only from an explicit `READY` block after the active hot-file lane and all listed gates are closed.
+
+## Full-Roster Flow
+
+`P3-FS00 -> FS01 -> FS02 -> FS03 -> FS04 -> FS05 -> FA01 -> FR01` is analysis-only through F1. Runtime and migration work is dispatched later as `P3-FB2-*` and `P3-FM-*` against accepted contracts.
+
+## TASK P3-FS00
+
+Owner: Codex S
+Status: READY
+
+Goal: Verify the read-only Reference repository, exact commit, clean status, required inputs, and deterministic hashes.
+
+Read: full-roster collaboration contract; Tasks 2 only in the full-roster implementation plan.
+
+May touch: `scripts/phase3-reference/**`, focused script tests, and `package.json` for the intake command.
+
+Do not touch: `packages/**`, `apps/**`, coverage KPI definitions, current task statuses, or Gate judgments.
+
+## TASK P3-FS01
+
+Owner: Codex S
+Status: READY_AFTER_FS00
+
+Goal: Account for 943 unique static Reference skills and the known dynamic skill in a deterministic canonical identity inventory.
+
+Depends on: P3-FS00 passes against the locked Reference commit.
+
+Read: full-roster collaboration contract; Task 3 only in the full-roster implementation plan.
+
+May touch: intake scripts/tests and `data/phase3/full-roster-ability-inventory.json`.
+
+## TASK P3-FS02
+
+Owner: Codex S
+Status: WAIT_FS01
+
+Goal: Preserve every printed rule clause with exact provenance or an explicit source block.
+
+Read: Task 4 only in the full-roster implementation plan.
+
+## TASK P3-FS03
+
+Owner: Codex S
+Status: WAIT_FS02
+
+Goal: Normalize timing, trigger, condition, cost, target, effect, interaction, lifecycle, modifier, visibility, and binding axes without treating Reference handlers as authority.
+
+Read: current semantic-axis definitions and Task 5 only in the full-roster implementation plan.
+
+## TASK P3-FS04
+
+Owner: Codex S
+Status: WAIT_FS03
+
+Goal: Map every ability to existing Phase 3 contracts, a generic capability request, a reviewed-special candidate, or an explicit block.
+
+Read: current mechanic/primitive inventories and Task 6 only in the full-roster implementation plan.
+
+## TASK P3-FS05
+
+Owner: Codex S
+Status: WAIT_FS04
+
+Goal: Generate grouped user rule-decision packets and separate technical runtime capability requests.
+
+Read: Task 7 only in the full-roster implementation plan.
+
+## TASK P3-FA01
+
+Owner: Codex A
+Status: WAIT_FS05
+
+Goal: Independently recompute Reference totals, identity coverage, clauses, categories, blocks, and capability membership without trusting S-generated totals.
+
+Must not: repair runtime or semantic classifications while auditing.
+
+## TASK P3-FR01
+
+Owner: Codex R
+Status: WAIT_FA01
+
+Goal: Review all decisions and special candidates plus a stratified, reproducible sample across every mechanic wave.
+
+Allowed result: `F0_ACCEPTED`, `F1_ACCEPTED`, or `INTAKE_NEEDS_REVISION`. No runtime Gate promotion.
 
 ## Phase 3 Objective Coverage Map
 

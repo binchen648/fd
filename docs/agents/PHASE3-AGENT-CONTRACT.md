@@ -7,6 +7,8 @@
 
 This contract is the first-read file for Phase 3 agents. It prevents role drift between automation, runtime implementation, and independent acceptance. After this file, read only the assigned task block in `docs/agents/PHASE3-TASK-INDEX.md`; read larger Phase 3 documents only when that task block explicitly requires them.
 
+Full-roster collaborators must also read `docs/agents/PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`. That contract adds S and conditional B2 roles without changing A/B/R ownership or the active runtime sequence.
+
 ## Codex A
 
 Role: Automation / Coverage / Evidence.
@@ -85,6 +87,8 @@ Codex R may return `PLAN_NEEDS_REVISION`, `IMPLEMENTATION_NEEDS_REVISION`, or ca
 | Changes how implementation is measured? | Codex A |
 | Changes taxonomy, KPI, or evidence classification? | Codex A |
 | Judges whether evidence proves correctness? | Codex R |
+| Normalizes Reference sources or migrates against an accepted contract? | Codex S |
+| Implements one explicitly authorized full-roster capability gap? | Codex B2, under Codex B rules |
 
 ## Startup Rule
 

@@ -23,6 +23,8 @@
 
 **Role:** Coordinator documentation
 
+**Status:** Governance files are installed on the planning branch. The executor must still add the documentation test below before marking Task 1 complete.
+
 **Files:**
 - Create: `docs/agents/PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`
 - Modify: `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -451,4 +453,3 @@ git diff --check
 ```
 
 Add client/server/Playwright verification only when the capability changes or inherits a production interaction pattern that requires Gate C.
-
