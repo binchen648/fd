@@ -29,6 +29,10 @@
 - [ ] Tie/sole-winner/margin facts are internally consistent.
 - [ ] Result identity, trigger identity, scoring plan identity and resource result identity are distinct.
 - [ ] Duplicate/stale scoring is impossible by contract.
+- [ ] Base event/competition/location battle rewards and base military adjustments commit before ordinary post-result personal rewards/effects.
+- [ ] Result/win/loss/first-loss event identities may be queued before scoring, but their ordinary continuations are blocked by `post_base_scoring` until the base scoring receipt commits.
+- [ ] Personal trigger VP never re-enters or rewrites the base battle reward pool.
+- [ ] Any true pre-scoring modifier requires a distinct reviewed contract/orderingRef rather than bypassing the barrier.
 - [ ] `after_controller_gains_victory` cannot be inferred from arbitrary positive VP/display text and has exactly-once `victoryTransitionId`.
 - [ ] Scoring-derived victory triggers settle before terminal `after_battle_ended` / cleanup.
 - [ ] Optional post-result interaction can pause after result commit without losing result identity.

@@ -158,20 +158,19 @@ Trigger Gateway owns discovery, forced/optional scheduling, ordering, idempotenc
 The generic stage model is:
 
 1. freeze participant/power inputs;
-2. determine and commit one immutable Battle Result;
-3. produce result/win/loss/first-loss events;
-4. Trigger Gateway schedules and settles required result-dependent trigger windows;
-5. once blocking result-trigger windows are resolved, consume the scoring plan exactly once;
-6. commit typed resource/military mutations and one scoring receipt;
-7. when a reviewed Battle/Scoring rule says the controller has **gained a victory**, produce `after_controller_gains_victory` exactly once from the committed result + scoring/victory transition, then settle its Trigger Gateway consumers;
-8. produce `after_battle_ended` with terminal scoring status only after scoring-derived victory triggers are terminal;
-9. hand off to battle cleanup/lifecycle.
+2. determine and commit one immutable Battle Result together with its immutable **base** scoring plan;
+3. create stable result/win/loss/first-loss event identities and queue their trigger candidates behind a server-owned `post_base_scoring` settlement barrier; event identity exists, but ordinary post-result continuations do not settle yet;
+4. consume the base scoring plan exactly once; commit the battlefield's base event/competition/location VP and military adjustments atomically and create one scoring receipt;
+5. release the `post_base_scoring` barrier; Trigger Gateway may now settle the queued result/win/loss/first-loss consumers according to accepted semantic ordering; their personal VP/rewards are separate typed Resource results and never re-enter the base pool;
+6. when a reviewed Battle/Scoring rule says the controller has **gained a victory**, produce `after_controller_gains_victory` exactly once from the committed result + scoring/victory transition and settle it through the same post-base-scoring Trigger Gateway stage;
+7. only after all required post-battle result/win/loss/first-loss/gains-victory triggers are terminal, produce and settle `after_battle_ended`;
+8. hand off to battle cleanup/lifecycle.
 
-If an accepted rule requires a different relative order for a specific collision, that collision requires an explicit `orderingRef`. Runtime migration remains blocked when the semantic order is material and unresolved; current implementation order is not automatically normative.
+The `post_base_scoring` barrier is normative: ordinary "获胜后额外获得" personal VP and other post-battle win/loss effects cannot settle before base battlefield rewards are committed. If an accepted rule defines a true **pre-scoring** modification to the base scoring plan, that mechanic requires a distinct reviewed pre-scoring contribution contract and explicit `orderingRef`; it cannot bypass the barrier merely because its event type is `after_battle_result_determined`. If an accepted rule requires a different relative order among post-base-scoring collisions, that collision also requires an explicit `orderingRef`. Runtime migration remains blocked when the semantic order is material and unresolved; current implementation order is not automatically normative.
 
 ## 8. Scoring / Resource Composition
 
-The scoring plan is immutable once the result is committed. Post-result trigger awards or penalties do **not** rewrite that plan; they settle as separate typed Resource results linked by causation to the same battle result. Card-specific code may not mutate an arbitrary scoring accumulator.
+The **base** scoring plan is immutable once the result is committed. It contains the shared battlefield reward calculation (event/competition/location reward components as applicable) plus the reviewed base military-result plan. Post-result personal trigger awards or penalties do **not** rewrite that plan; they settle only after the base scoring receipt as separate typed Resource results linked by causation to the same battle result. Card-specific code may not mutate an arbitrary scoring accumulator or fold personal rewards back into the shared pool.
 
 All committed VP/mana/command-seal mutations use the typed resource envelope already required by Resource/Numeric:
 
@@ -183,7 +182,7 @@ All committed VP/mana/command-seal mutations use the typed resource envelope alr
 - result identity;
 - revision.
 
-Base battle scoring uses a system producer linked to `battleResultId/scoringPlanId`. Trigger-earned VP uses the trigger's source ability identity and retains the same battle result causation link.
+Base battle scoring uses a system producer linked to `battleResultId/scoringPlanId`. Trigger-earned VP uses the trigger's source ability identity, retains the same battle result causation link, and has a committed revision strictly after (or in a later atomic dispatch than) the base scoring receipt.
 
 `after_controller_gains_victory` is **not** inferred from arbitrary positive VP, a display label, or merely being in `winnerPlayerIds`. Its producer requires a reviewed Battle/Scoring victory rule and a stable `victoryTransitionId` linked to the committed result/scoring receipt. If that qualification rule is absent or ambiguous for a future runtime slice, that producer remains blocked.
 
@@ -209,15 +208,16 @@ Golden Flow 2 accepted evidence demonstrates the representative browser/reconnec
 
 ## 10. Transaction Semantics
 
-Result determination is committed as its own authoritative stage before optional post-result interaction can pause. A later trigger failure must not roll back a previously committed battle result.
+Result determination and its immutable base scoring plan are committed before optional post-result interaction can pause. The base scoring dispatch then commits exactly once before ordinary post-result trigger effects are allowed to settle. A later trigger failure must not roll back the previously committed battle result or the already committed base scoring receipt.
 
 For each subsequent dispatch:
 
 - a trigger dispatch rolls back only that trigger dispatch on failure, per TO-03;
-- scoring consumption and its resource/military mutations commit atomically;
-- a failed scoring dispatch creates no scoring receipt/consumption-ledger entry, no resource result, and no logs/events/revision from the failed dispatch;
-- a successful scoring commit cannot be undone by a later cleanup failure;
-- a failed later cleanup cannot cause scoring to run again.
+- base scoring consumption and its resource/military mutations commit atomically before the post-base-scoring trigger barrier opens;
+- a failed base scoring dispatch creates no scoring receipt/consumption-ledger entry, no resource result, and no logs/events/revision from the failed dispatch, and the barrier remains closed;
+- a successful base scoring commit cannot be undone by a later personal trigger or cleanup failure;
+- a failed personal post-result trigger rolls back only that trigger dispatch and cannot erase/rewrite the base scoring receipt;
+- a failed later cleanup cannot cause base scoring or a terminal trigger to run again.
 
 ## 11. Projection / Hidden Information
 
@@ -273,6 +273,7 @@ TO-14 may be independently accepted as a specification only if review confirms:
 - Power Trace input, Battle Result, Trigger Gateway, Scoring and Resource owners are non-overlapping;
 - stage ordering and unresolved-order policy are explicit;
 - result/scoring/resource identities support exactly-once replay safety;
+- the post-base-scoring barrier guarantees base battlefield rewards commit before ordinary personal win/loss rewards/effects;
 - optional trigger pauses do not roll back committed result state;
 - projection/reconnect preserves authoritative identities without leaking hidden detail;
 - no runtime migration or Gate promotion is claimed by the spec itself.
