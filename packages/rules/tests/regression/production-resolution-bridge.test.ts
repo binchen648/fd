@@ -209,6 +209,34 @@ describe('RESULT_BINDING_PRODUCTION_BRIDGE', () => {
     }));
   });
 
+  it('rolls back a failed first-stage typed move without consuming the pending decision', () => {
+    const fixture = prepareGoldenEater();
+    activateGoldenEater(fixture);
+    const runtime = fixture.session.state.abilityRuntime!;
+    const pending = runtime.pendingDecision!;
+    const firstImpact = fixture.session.state.cards.find((card) => card.instanceId === fixture.firstImpactId)!;
+
+    // Simulate a trusted server-side race after the first decision has opened:
+    // candidate discovery now sees the card in hand, but the typed move primitive
+    // still requires removed_from_game -> skill and must fail transactionally.
+    firstImpact.zone = 'hand';
+    pending.target.scope = { ...pending.target.scope, zone: 'hand' };
+    const snapshot = structuredClone(fixture.session.state);
+    const revisionBefore = runtime.revision;
+    const eventsBefore = structuredClone(runtime.events);
+
+    const result = choosePending(fixture, [fixture.firstImpactId]);
+
+    expect(result.ok).toBe(false);
+    expect(result.rejection).toEqual(expect.objectContaining({ code: 'resolution_failed' }));
+    expect(fixture.session.state).toEqual(snapshot);
+    expect(fixture.session.state.abilityRuntime!.revision).toBe(revisionBefore);
+    expect(fixture.session.state.abilityRuntime!.events).toEqual(eventsBefore);
+    expect(fixture.session.state.abilityRuntime!.pendingDecision?.id).toBe(pending.id);
+    expect(fixture.session.state.cards.find((card) => card.instanceId === fixture.firstImpactId)?.zone).toBe('hand');
+    expect(fixture.session.state.cards.find((card) => card.instanceId === fixture.secondImpactId)?.zone).toBe('removed_from_game');
+  });
+
   it('continues from the server-owned first-stage result and pays/moves/awards from actual movedCount', () => {
     const fixture = prepareGoldenEater();
     activateGoldenEater(fixture);
