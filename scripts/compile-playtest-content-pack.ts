@@ -5,6 +5,7 @@ import { dirname, resolve } from 'node:path';
 import {
   compileLoadedPlaytestPack,
   loadPlaytestContentPack,
+  type SourceAssetValidation,
   validateLoadedPlaytestPack,
 } from '../packages/content/src/playtest-pack-loader';
 import { compileExecutableCardPack } from '../packages/rules/src/ability/executable-card-pack';
@@ -14,6 +15,8 @@ export interface CompilePlaytestContentPackOptions {
   outputDirectory: string;
   workspaceRoot: string;
   validateOnly?: boolean;
+  sourceAssetValidation?: SourceAssetValidation;
+  sourceAssetRoot?: string;
 }
 
 export interface CompilePlaytestContentPackResult {
@@ -42,6 +45,8 @@ export function compilePlaytestContentPack(
   });
   const issues = validateLoadedPlaytestPack(loaded, {
     workspaceRoot: options.workspaceRoot,
+    sourceAssetValidation: options.sourceAssetValidation,
+    sourceAssetRoot: options.sourceAssetRoot,
   });
   const compiled = compileLoadedPlaytestPack(loaded, issues);
   compiled.library.rules = compileExecutableCardPack(compiled.library);
@@ -76,6 +81,7 @@ interface CliArguments {
   packPath: string;
   outputDirectory: string;
   validateOnly: boolean;
+  sourceAssetValidation: SourceAssetValidation;
 }
 
 function parseArguments(argv: string[]): CliArguments {
@@ -91,6 +97,9 @@ function parseArguments(argv: string[]): CliArguments {
       ? argv[outputIndex + 1]!
       : 'data/generated',
     validateOnly: argv.includes('--validate-only'),
+    sourceAssetValidation: argv.includes('--source-assets')
+      ? argv[argv.indexOf('--source-assets') + 1] as SourceAssetValidation
+      : 'metadata_only',
   };
 }
 
@@ -102,6 +111,10 @@ function runCli(): void {
     outputDirectory: resolve(workspaceRoot, args.outputDirectory),
     workspaceRoot,
     validateOnly: args.validateOnly,
+    sourceAssetValidation: args.sourceAssetValidation,
+    sourceAssetRoot: process.env.FD_SOURCE_ASSET_ROOT
+      ? resolve(process.env.FD_SOURCE_ASSET_ROOT)
+      : workspaceRoot,
   });
 
   process.stdout.write(
