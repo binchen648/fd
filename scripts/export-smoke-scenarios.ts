@@ -12,15 +12,16 @@ import {
   writeJsonArtifact,
 } from "../packages/pipeline/src";
 import type { ReplayScenarioInput, ScenarioMatrixCase } from "../packages/rules/src/index";
+import { portableDirBasename, portableStem, resolveRepositoryPath } from "./project-paths";
 
 export const DEFAULT_SCENARIO_TEMPLATE_PATHS = {
-  default: "D:\\fd\\packages\\rules\\src\\data\\scenarios\\minimal-7p-seeded-scenario.json",
-  event: "D:\\fd\\packages\\rules\\src\\data\\scenarios\\shinto-hidden-event-scenario.json",
-  moon: "D:\\fd\\packages\\rules\\src\\data\\scenarios\\moon-holy-grail-threshold-scenario.json",
-  situation: "D:\\fd\\packages\\rules\\src\\data\\scenarios\\climax-situation-card.json",
+  default: resolveRepositoryPath("packages", "rules", "src", "data", "scenarios", "minimal-7p-seeded-scenario.json"),
+  event: resolveRepositoryPath("packages", "rules", "src", "data", "scenarios", "shinto-hidden-event-scenario.json"),
+  moon: resolveRepositoryPath("packages", "rules", "src", "data", "scenarios", "moon-holy-grail-threshold-scenario.json"),
+  situation: resolveRepositoryPath("packages", "rules", "src", "data", "scenarios", "climax-situation-card.json"),
 } as const;
 
-export const DEFAULT_OUTPUT_ROOT_DIR = "D:\\fd\\data\\staged\\generated-scenarios";
+export const DEFAULT_OUTPUT_ROOT_DIR = resolveRepositoryPath("data", "staged", "generated-scenarios");
 
 export interface SmokeScenarioExportInput {
   namespace: string;
@@ -527,8 +528,7 @@ function areReplayComparableContentsEqual(
 }
 
 function toGeneratedComparisonLabel(outputPath: string, familyLabel?: string): string {
-  const parsed = path.parse(outputPath);
-  return `${familyLabel ?? slugify(path.basename(parsed.dir))}-${slugify(parsed.name)}`;
+  return `${familyLabel ?? slugify(portableDirBasename(outputPath))}-${slugify(portableStem(outputPath))}`;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

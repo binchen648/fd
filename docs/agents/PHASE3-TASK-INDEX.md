@@ -1,11 +1,143 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.1
+- Version: P3-TI-1.6
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
 
 This file is the task lookup entry point for Phase 3 agents. Do not read the full `docs/plans/fd-phase-3-parallel-work-queue.md` by default. Read only the assigned task block below, then follow its explicit `Read` list.
+
+## Flow Summary
+
+1. Codex A owns measurement, automation, evidence packets, and taxonomy drift protection.
+2. Codex B owns scoped runtime implementation, one hot-file lane at a time.
+3. Codex R owns independent acceptance review and must stay read-only.
+4. B runtime work may run in parallel with A documentation/tooling work only when B has exclusive ownership of its declared hot files.
+5. B may not start the next runtime task until its previous implementation report exists and either R has reviewed it or the coordinator explicitly accepts the risk.
+6. Full-roster S work may run in parallel as a read-only intake lane under `PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`; it does not change current runtime task status.
+7. B2 runtime work starts only from an explicit `READY` block after the active hot-file lane and all listed gates are closed.
+
+## Full-Roster Flow
+
+`P3-FS00 -> FS01 -> FS02 -> FS03 -> FS04 -> FS05 -> FA01 -> FR01` is analysis-only through F1. Runtime and migration work is dispatched later as `P3-FB2-*` and `P3-FM-*` against accepted contracts.
+
+## TASK P3-CI01
+
+Owner: Coordinator, with separate Codex A, Codex B, and Codex R stages
+Status: READY
+
+Goal: Restore a reproducible green Linux clean-checkout CI baseline without weakening tests or changing card-rule execution behavior.
+
+Execution: `P3-CI01-A baseline/path portability -> P3-CI01-B content determinism -> P3-CI01-A integration -> P3-CI01-R acceptance`.
+
+Read: `docs/agents/PHASE3-CI-BASELINE-REPAIR-PROMPT.md` and `docs/plans/2026-09-13-phase-3-ci-baseline-repair-plan.md`.
+
+May run in parallel with: FS00-FS05 analysis, provided file leases do not overlap. It does not change B11/R06/A03 status.
+
+Acceptance: GitHub Build and Test pass on Ubuntu; no new excludes, weakened assertions, runtime behavior changes, KPI changes, or Gate promotion.
+
+## TASK P3-FS00
+
+Owner: Codex S
+Status: READY
+
+Goal: Verify the read-only Reference repository, exact commit, clean status, required inputs, and deterministic hashes.
+
+Read: full-roster collaboration contract; Tasks 2 only in the full-roster implementation plan.
+
+May touch: `scripts/phase3-reference/**`, focused script tests, and `package.json` for the intake command.
+
+Do not touch: `packages/**`, `apps/**`, coverage KPI definitions, current task statuses, or Gate judgments.
+
+## TASK P3-FS01
+
+Owner: Codex S
+Status: READY_AFTER_FS00
+
+Goal: Account for 943 unique static Reference skills and the known dynamic skill in a deterministic canonical identity inventory.
+
+Depends on: P3-FS00 passes against the locked Reference commit.
+
+Read: full-roster collaboration contract; Task 3 only in the full-roster implementation plan.
+
+May touch: intake scripts/tests and `data/phase3/full-roster-ability-inventory.json`.
+
+## TASK P3-FS02
+
+Owner: Codex S
+Status: WAIT_FS01
+
+Goal: Preserve every printed rule clause with exact provenance or an explicit source block.
+
+Read: Task 4 only in the full-roster implementation plan.
+
+## TASK P3-FS03
+
+Owner: Codex S
+Status: WAIT_FS02
+
+Goal: Normalize timing, trigger, condition, cost, target, effect, interaction, lifecycle, modifier, visibility, and binding axes without treating Reference handlers as authority.
+
+Read: current semantic-axis definitions and Task 5 only in the full-roster implementation plan.
+
+## TASK P3-FS04
+
+Owner: Codex S
+Status: WAIT_FS03
+
+Goal: Map every ability to existing Phase 3 contracts, a generic capability request, a reviewed-special candidate, or an explicit block.
+
+Read: current mechanic/primitive inventories and Task 6 only in the full-roster implementation plan.
+
+## TASK P3-FS05
+
+Owner: Codex S
+Status: WAIT_FS04
+
+Goal: Generate grouped user rule-decision packets and separate technical runtime capability requests.
+
+Read: Task 7 only in the full-roster implementation plan.
+
+## TASK P3-FA01
+
+Owner: Codex A
+Status: WAIT_FS05
+
+Goal: Independently recompute Reference totals, identity coverage, clauses, categories, blocks, and capability membership without trusting S-generated totals.
+
+Must not: repair runtime or semantic classifications while auditing.
+
+## TASK P3-FR01
+
+Owner: Codex R
+Status: WAIT_FA01
+
+Goal: Review all decisions and special candidates plus a stratified, reproducible sample across every mechanic wave.
+
+Startup prompt: `docs/agents/PHASE3-FULL-ROSTER-REVIEWER-PROMPT.md` after replacing all commit and Reference-root placeholders.
+
+Allowed result: `F0_ACCEPTED`, `F1_ACCEPTED`, or `INTAKE_NEEDS_REVISION`. No runtime Gate promotion.
+
+## Phase 3 Objective Coverage Map
+
+This map is the task-level bridge back to the total project goals. It does not promote any runtime, card, flow, or release status. Promotion still requires the acceptance route in `docs/FD-DOCUMENT-ROADMAP.md` and `docs/plans/fd-rules-conformance-and-acceptance.md`.
+
+| Objective | Total Goal Reference | Implementation Path | Concrete Tasks | Current Status | Acceptance Vehicle | Remaining Gap |
+|---|---|---|---|---|---|---|
+| Agent ownership and read minimization | `docs/FD-DOCUMENT-ROADMAP.md` Mandatory Inputs; `docs/agents/PHASE3-AGENT-CONTRACT.md` | Agents read the contract first, then only the assigned task block and explicit dependencies. | All P3-A/P3-B/P3-R tasks | ACTIVE | Coordinator enforcement plus R review of role drift | Keep future task blocks small and explicit. |
+| Automation / coverage / evidence baseline | Roadmap NEXT; throughput plan Sections 13-15 | Build reproducible coverage schema, taxonomy drift checks, legacy/new/dual counters, and reviewer packet inputs. | P3-A01 | REVIEW_ACCEPTED | Automation output plus reviewer-readable baseline candidate | Continue slice-specific classifier alignment without changing runtime semantics. |
+| Reviewer packet generation | Acceptance route Gate A/B/C; Golden acceptance plan | Convert implementation claims into checklists and missing-evidence packets without changing runtime behavior. | P3-A02, P3-A04, P3-A05 | ACTIVE | R-consumable packets and machine-readable evidence | B10 alignment is a candidate; Resource Numeric packet is the next independent review input. |
+| Legacy burn-down sync | Roadmap KPI: Legacy Burn-down plus Mechanic Coverage | Update metrics only after R judgment; preserve rejected/candidate/accepted separation. | P3-A03 | READY_AFTER_REVIEW | Coverage report with before/after legacy, semantic, dual, skipped, and Gate status counts | Waits for R review result and accepted measurement method. |
+| Resource Numeric Core direct action | Stabilization plan Phase 3B; throughput plan first low-risk factory slice | Route command-spell style direct resource effects by executable semantic form with fail-closed validation. | P3-TO-08; A evidence support through P3-A01/A03 | IMPLEMENTATION_COMPLETE_CANDIDATE in current docs | Gate A/B/C evidence for representative direct-resource cards | Independent review and coverage sync still required before promotion. |
+| Card Zone Core direct action | Stabilization plan Phase 3B; primitive conformance matrix | Route direct zone/draw movement by executable semantic form and remove ability-id pilot fallback. | P3-TO-09; R follow-up as needed | PENDING_REVIEW / candidate evidence recorded | Gate A/B/C representative card-zone evidence | Needs R judgment and burn-down sync. |
+| Card Action semantic split | Roadmap Phase 3B; mechanic family and primitive matrices; `docs/plans/2026-09-12-phase-3-completion-execution-plan.md` | Keep `PLAY`, `PLAY_SOURCE_RESPONSE`, `ADD_TO_ATTACK`, `ACTIVATE`, `CLOSE`, `CREATE_AND_ACTIVATE`, and setup create-to-skill routing as separate contracts with only shared helpers underneath. | P3-B04 through P3-B10; P3-R04/P3-R05 | B10 REVIEW_ACCEPTED at `9fba6d9`; other slices retain their recorded judgments | Separate Gate A/B/C judgment per action contract | B09/B10 do not finish Phase 3; accepted slices still require A-owned coverage synchronization. |
+| Result Binding | Roadmap Phase 3A; `docs/plans/fd-effect-result-binding-plan.md` | Bind multi-step effect results to subsequent costs, awards, events, rollback, and production path. | P3-B11; independent R review after implementation | READY_FOR_PRODUCTION_BRIDGE | Golden Eater plus Conversion Magic Gate B/C | B11 must prove reusable production routing, staged rollback, interaction continuation, and no legacy bypass without expanding the card pool. |
+| Target / Interaction Gateway | Roadmap NEXT; corrected semantic-axis matrix | Define target selection and pending interaction templates before broad runtime migration. | P3-TO-05; later B runtime task after spec review | SPEC_READY_NEXT / runtime waiting | Gateway contract review, then representative Gate B/C | Runtime implementation must wait for accepted gateway contract. |
+| Trigger Gateway | Roadmap NEXT; corrected semantic-axis matrix | Define event payload, source ability/card identity, ordering, optional/forced handling, and projection rules. | P3-TO-03; P3-B07 only after trigger spec or explicit override | SPEC_READY_NEXT / B07 WAIT_TRIGGER_SPEC_OR_EXPLICIT_OVERRIDE | Gateway contract review, then representative trigger Gate B/C | Runtime migration blocked until spec is accepted. |
+| Lifecycle Gateway | Roadmap NEXT; corrected semantic-axis matrix | Define source-close, reset, persistence, cleanup, and duration ownership before broad migration. | P3-TO-04; P3-B08 only after lifecycle spec or explicit override | SPEC_READY_NEXT / B08 WAIT_LIFECYCLE_SPEC_OR_EXPLICIT_OVERRIDE | Gateway contract review, then representative lifecycle Gate B/C | Runtime migration blocked until lifecycle owner contract is accepted. |
+| Modifier / Power / Battle Result Envelope | Roadmap blockers; stabilization plan current Phase 3B note | Keep high-risk battle and power behavior behind reviewed owner contracts; do not treat card-action success as battle readiness. | P3-TO-14; P3-TO-15; future B tasks | WAIT_REVIEW / WAIT_GATEWAY | Representative modifier, power, and battle Gate A/B/C | Needs envelope design, owner decision, and legacy bypass audit. |
+| Golden Flow coverage | Roadmap release blockers; Golden acceptance plan | Prove browser/server/projection/reconnect paths for named flows, not raw card count. | Existing Golden Flow reports plus future R review | IMPLEMENTER_EVIDENCE_RECORDED / independent review pending | Golden Flow Gate B/C | Release readiness remains blocked until R promotes required flows. |
+| Release readiness | Roadmap Current Project Status and Acceptance Route | Close named Gate A/B/C gaps, eliminate conflicting runtime owners, and prove production paths. | Aggregate of A/B/R tasks | BLOCKED | Roadmap acceptance route plus independent release gate review | B09 alone cannot complete Phase 3 or release readiness. |
 
 ## TASK P3-A01
 
@@ -15,7 +147,7 @@ Branch: `codex/a-p3-a01-coverage-automation`
 
 Goal:
 
-Phase 3 coverage and evidence automation.
+Phase 3 coverage and evidence automation baseline.
 
 Depends on:
 
@@ -66,122 +198,92 @@ Runtime defect handling:
 
 Owner: Codex A
 Status: READY
-Branch: `codex/a-p3-a01-coverage-automation`
+Branch: `codex/a-p3-a02-review-packets`
 
 Goal:
 
-Legacy owner and promotion evidence automation for Phase 3 throughput.
+Generate reviewer packet templates and per-slice evidence checklists for current Card Action candidates.
 
 Depends on:
 
-- P3-A01 reviewed and accepted as the automation baseline.
-- Codex B P3-B04 handoff packet prepared from the accepted baseline.
+- P3-A01 completed or an explicit reviewer-packet schema accepted by coordinator.
+- B04 implementation report available for the first packet.
 
 Read:
 
 - `docs/agents/PHASE3-AGENT-CONTRACT.md`
-- `TASK P3-A02` from this file
-- `docs/plans/fd-phase-3-throughput-optimization-plan.md` Sections 13-15
-- `docs/reports/fd-phase-3-throughput-baseline.md`
-- `docs/reports/2026-09-09-p3-b04-runtime-handoff.md`
+- TASK P3-A02 only
+- `docs/reports/2026-09-08-card-action-play-result.md`
+- `docs/audits/fd-skill-primitive-conformance-matrix.md` relevant card-action rows only
+- `docs/plans/fd-golden-card-and-flow-acceptance-plan.md` relevant Gate C evidence section only
 
 May touch:
 
-- `docs/agents/PHASE3-TASK-INDEX.md`
-- `scripts/phase3-*.ts`
-- `scripts/tests/phase3-*.test.ts`
-- `docs/reports/*`
-- machine-readable evidence artifacts
-- `package.json` only for script registration
+- `docs/reports/*checklist.md`
+- `docs/reports/*review-packet.md`
+- `docs/audits/*.mjs` only for packet generation
 
 Do not touch:
 
-- `packages/rules/src/ability/interpreter.ts`
-- `packages/rules/src/ability/resolution-dataflow.ts`
-- `packages/rules/src/ability/executable-card-pack.ts`
-- `packages/rules/src/match-session.ts`
-- runtime semantics
-- primitive behavior
-- semantic routing
-- card-specific runtime behavior
-- Gate A/B/C status promotion
+- runtime files
+- tests
+- taxonomy KPI rules unless P3-A01 explicitly left them incomplete
 
 Required output:
 
-- legacy owner report grouped by static owner / primitive / unclassified reason
-- mechanism coverage trend baseline for future B before/after checks
-- promotion evidence audit that detects report/spec inconsistencies
-- reusable B-slice evidence checklist/template for P3-B05 through P3-B09
-- machine-readable P3-A02 packet
-- reviewer-facing result report
+- B04 reviewer packet
+- B10 reviewer packet when B10 report is available
+- reusable packet template for B05-B10
+- explicit missing-evidence list for R
 
 Completion status allowed:
 
-- `AUTOMATION_BASELINE_CANDIDATE`
-
-Runtime defect handling:
-
-- Record `RUNTIME_SEMANTIC_GAP` with evidence and hand to Codex B.
-- Do not fix runtime behavior.
+- `REVIEW_PACKET_BASELINE_CANDIDATE`
 
 ## TASK P3-A03
 
 Owner: Codex A
-Status: AUTOMATION_BASELINE_CANDIDATE
-Branch: `codex/a-p3-a01-coverage-automation`
+Status: READY
+Branch: `codex/a-p3-a03-burndown-sync`
 
 Goal:
 
-Synchronize reviewer outcomes into Phase 3 automation evidence without changing runtime behavior or independently promoting Gate A/B/C status.
+Update coverage and legacy burn-down records after R reviews B04 or later B tasks.
 
 Depends on:
 
-- P3-A01 accepted as the automation baseline.
-- P3-A02 automation audit and reusable evidence checklist available.
-- Codex R or user-provided review decision for a completed Codex B slice.
+- R review result for the relevant B task.
+- A coverage command or manual baseline accepted for the task.
 
 Read:
 
 - `docs/agents/PHASE3-AGENT-CONTRACT.md`
-- `TASK P3-A03` from this file
-- the relevant B handoff packet
-- the relevant B implementation report or reviewer summary
-- `artifacts/phase3-skill-coverage.json` only as generated evidence, not as authority over runtime correctness
+- TASK P3-A03 only
+- relevant R review report
+- relevant B implementation report
+- `docs/reports/fd-phase-3-throughput-baseline.md`
 
 May touch:
 
-- `docs/agents/PHASE3-TASK-INDEX.md`
-- `docs/reports/*`
-- machine-readable evidence artifacts
+- coverage output artifacts
+- `docs/reports/fd-phase-3-throughput-baseline.md`
+- relevant `docs/reports/*`
 
 Do not touch:
 
-- `packages/rules/src/ability/interpreter.ts`
-- `packages/rules/src/ability/resolution-dataflow.ts`
-- `packages/rules/src/ability/executable-card-pack.ts`
-- `packages/rules/src/match-session.ts`
-- runtime semantics
-- primitive behavior
-- semantic routing
-- card-specific runtime behavior
-- Gate A/B/C status promotion
+- runtime files
+- implementation tests
+- evidence classification rules beyond recording R's result
 
 Required output:
 
-- reviewer outcome sync report
-- machine-readable sync artifact
-- explicit before/after coverage numbers reported by the reviewed B slice
-- explicit remaining legacy / secondary runtime boundaries
-- next B-slice handoff or reviewer packet only when the reviewed slice is accepted as a candidate
+- updated legacy / new / dual count
+- explicit accepted / rejected / pending status
+- named next task dependency changes if needed
 
 Completion status allowed:
 
-- `AUTOMATION_BASELINE_CANDIDATE`
-
-Runtime defect handling:
-
-- Record `RUNTIME_SEMANTIC_GAP` with evidence and hand to Codex B.
-- Do not fix runtime behavior.
+- `COVERAGE_SYNC_CANDIDATE`
 
 ## TASK P3-A04
 
@@ -191,46 +293,39 @@ Branch: `codex/a-p3-a01-coverage-automation`
 
 Goal:
 
-Align Phase 3 coverage automation with the independently accepted P3-B10 exact `SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL` runtime contract, while reconciling the accepted B06-B08 classifier baseline required for accurate global burn-down.
+Align Phase 3 coverage automation with the independently accepted P3-B10 `SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL` contract and reconcile the accepted B06-B08 classifier baseline.
 
 Depends on:
 
-- P3-B10 review fix accepted at runtime commit `9fba6d9`.
+- P3-B10 accepted at runtime commit `9fba6d9`.
 - P3-A03 B10 reviewer packet available.
 
 Read:
 
 - `docs/agents/PHASE3-AGENT-CONTRACT.md`
-- `TASK P3-A04` from this file
-- `docs/reports/2026-09-12-p3-a03-b10-reviewer-packet.md`
-- P3-B10 final implementation report at reviewed commit `9fba6d9`
-- `artifacts/phase3-skill-coverage.json` only as generated evidence
+- TASK P3-A04 only
+- P3-A03 B10 reviewer packet from Codex A evidence commit `e7f7908`
+- P3-B10 final implementation report at `9fba6d9`
+- current `phase3-skill-coverage` output from Codex A's workspace as generated evidence only
 
 May touch:
 
 - `scripts/phase3-coverage.ts`
 - `scripts/tests/phase3-coverage.test.ts`
-- `docs/agents/PHASE3-TASK-INDEX.md`
-- `docs/reports/*`
-- machine-readable evidence artifacts
+- reports and machine-readable evidence artifacts
 
-Do not touch:
+Must not touch:
 
-- rule runtime semantics
-- primitive behavior
-- semantic routing in `packages/rules`
-- `MatchSession` game behavior
+- rule runtime semantics, primitive behavior, semantic routing, or `MatchSession`
 - card authoring JSON
-- Gate A/B/C status promotion
+- Gate A/B/C promotion
 
 Required output:
 
-- exact coverage classifier matching the accepted B10 semantic shape without card or ability ids
-- cumulative classifier alignment for accepted B06 `ADD_TO_ATTACK`, B07 `ACTIVATE`, and B08 `CLOSE` contracts
-- positive, negative, and card-id-independence automation regressions
-- actual global legacy/new/dual burn-down numbers
-- B10 review-outcome and coverage-alignment report
-- machine-readable sync artifact
+- semantic-shape classifier for B10 without card or ability ids
+- cumulative B06-B08 classifier alignment
+- positive, negative, and id-independence automation tests
+- global legacy/new/dual counts and B10 synchronization report
 
 Completion status allowed:
 
@@ -244,177 +339,97 @@ Branch: `codex/a-p3-a01-coverage-automation`
 
 Goal:
 
-Package the existing `RESOURCE_NUMERIC_CORE_DIRECT_ACTION` implementation as independently reviewable evidence and reconcile its accepted semantic consumers with the current legacy/new/dual burn-down baseline. This task measures and packages evidence; it does not modify runtime behavior or promote Gate status.
+Package `RESOURCE_NUMERIC_CORE_DIRECT_ACTION` as independently reviewable evidence and reconcile its semantic consumers with the accepted coverage baseline.
 
 Depends on:
 
-- P3-A04 coverage alignment accepted at commit `f13a547`.
-- Existing Resource Numeric Core implementation candidate and reviewer checklist.
-- Current `phase3:coverage` and `phase3:automation-audit` generated baselines.
+- P3-A04 coverage alignment candidate exists.
+- Resource Numeric implementation candidate and reviewer checklist exist.
 
 Read:
 
 - `docs/agents/PHASE3-AGENT-CONTRACT.md`
-- `TASK P3-A05` from this file
+- TASK P3-A05 only
 - `docs/reports/2026-09-08-resource-numeric-core-direct-action-result.md`
 - `docs/reports/2026-09-08-resource-numeric-core-direct-action-review-checklist.md`
-- `docs/reports/2026-09-09-resource-numeric-core-result.md`
-- `docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs`
-- `artifacts/phase3-skill-coverage.json` only as generated evidence
-- `artifacts/phase3-a02-automation-audit.json` only as generated evidence
+- current generated coverage and automation-audit artifacts from Codex A's workspace
 
 May touch:
 
-- `docs/agents/PHASE3-TASK-INDEX.md`
-- `docs/reports/*`
-- machine-readable evidence artifacts
-- coverage/evidence automation and its tests only if a demonstrable evidence-classification defect blocks the packet
+- reports and machine-readable evidence artifacts
+- coverage/evidence automation tests only when an evidence-classification defect blocks the packet
 
-Do not touch:
+Must not touch:
 
-- rule runtime semantics
-- primitive behavior
-- semantic routing in `packages/rules`
-- `MatchSession` game behavior
-- card authoring JSON
-- Gate A/B/C status promotion
+- runtime semantics, primitive behavior, semantic routing, `MatchSession`, or card authoring
+- Gate A/B/C promotion
 
 Required output:
 
-- exact eligible and skipped inventory snapshot with skip reasons
-- semantic-route and legacy-fallback boundary summary
-- Gate A/B/C evidence-location checklist without inheriting evidence across excluded shapes
-- current legacy/new/dual burn-down and Resource Numeric Core consumer count
+- eligible/skipped inventory with reasons
+- semantic-route and legacy-fallback boundary
+- Gate A/B/C evidence-location checklist
+- current legacy/new/dual counts
 - reviewer-ready report and machine-readable packet
-- any runtime defect recorded as `RUNTIME_SEMANTIC_GAP` and handed to Codex B without an A-side fix
 
 Completion status allowed:
 
 - `AUTOMATION_BASELINE_CANDIDATE`
 
-## TASK P3-TO-05
+## TASK P3-R04
 
-Owner: Codex B (specification lane only)
-Status: SPEC_ACCEPTED
-Runtime Authorization: NONE
-Final Spec Branch: `codex/b-p3-to-05-interaction-template-contract-v2`
-Final Spec Commit: `8e3588c`
-Taxonomy Baseline Commit: `146213f`
+Owner: Codex R
+Status: READY_AFTER_P3_B04
+Branch: `codex/r-p3-r04-card-action-play-review`
 
 Goal:
 
-Define reusable Interaction Template contracts for explicit target selection, response, branch, yes/no, amount, and ordering decisions. Separate interaction semantics from timing hooks, triggers, lifecycle, and hidden-information policy before any broad PendingInteraction runtime migration.
+Independent review of `CARD_ACTION_SEMANTICS_MINIMAL_PLAY`.
 
 Depends on:
 
-- P3-A03 B11 synchronization available.
-- Corrected semantic-axis inventory: 18 explicit interaction abilities and 11 strict target-based PendingInteraction abilities.
-- B11 Golden Eater staged interaction evidence is a reference input, not automatic contract acceptance.
+- B04 implementation report and diff available.
+- B04 test command output available.
 
 Read:
 
 - `docs/agents/PHASE3-AGENT-CONTRACT.md`
-- `TASK P3-TO-05` from this file
-- `docs/plans/fd-rules-conformance-and-acceptance.md` pending-interaction requirements only
-- `docs/plans/fd-phase-3-throughput-optimization-plan.md` Interaction Template Strategy only
-- `docs/audits/fd-skill-semantic-axis-matrix.md` Interaction Semantic section only
-- `docs/reports/2026-09-12-p3-a03-b11-synchronization.md`
+- TASK P3-R04 only
+- `docs/rules/FD-Game-Rules-Final.md` card play semantics only
+- B04 implementation report
+- B04 diff
+- B04 focused test output
+- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant `CARD_ACTION_SEMANTICS_MINIMAL_PLAY` rows only
+- `docs/audits/fd-skill-primitive-conformance-matrix.md` relevant `play_selected_cards` row only
 
-May touch:
+May inspect:
 
-- `docs/plans/*` for the Interaction Template contract
-- `docs/audits/*` for interaction inventory/contract matrices
-- `docs/reports/*` for the spec handoff/result
-- machine-readable specification artifacts
-- `docs/agents/PHASE3-TASK-INDEX.md` status only
+- runtime implementation diff
+- focused tests
+- evidence reports
+- relevant source files touched by B04
 
-Do not touch:
+Must not:
 
-- `packages/rules/**`
-- `apps/client/**`
-- `apps/server/**`
-- `e2e/**`
-- card authoring or generated content
-- runtime PendingInteraction/response behavior
-- Gate A/B/C promotion
-
-Required output:
-
-- typed template definitions for target, response, branch, yes/no, amount, and ordering
-- ownership, visibility, source identity, revision, reconnect, cancel/timeout, and stale-command policies
-- explicit distinction between 18 interaction abilities and 11 strict target-based PendingInteraction abilities
-- representative mapping and skipped/dependency reasons
-- compiler/runtime acceptance requirements for a later Codex B implementation slice
-- independent reviewer checklist
-
-Completion status allowed:
-
-- `SPEC_REVIEW_READY`
-
-Recorded reviewer outcome:
-
-- `SPEC_ACCEPTED` on 2026-09-13, supplied by the user after independent review.
-- No Gate A/B/C promotion is implied by this specification acceptance.
-
-## TASK P3-TO-03
-
-Owner: Codex B (specification lane only)
-Status: READY_SPEC_OWNER
-Runtime Authorization: NONE
-
-Goal:
-
-Define the reusable Domain Event Trigger Gateway contract for the 37 strict trigger abilities. Keep event detection, trigger scheduling, player interaction, lifecycle cleanup, and effect execution as explicit owners rather than combining them in card-specific handlers.
-
-Depends on:
-
-- P3-TO-05 Interaction Template Contract accepted as a specification.
-- Corrected semantic-axis inventory: 37 strict Domain Event Trigger abilities.
-- Existing setup, delayed activation, response, and battle-result implementations are reference evidence only and do not define the generic contract.
-
-Read:
-
-- `docs/agents/PHASE3-AGENT-CONTRACT.md`
-- `TASK P3-TO-03` from this file
-- `docs/plans/fd-rules-conformance-and-acceptance.md` event/trigger requirements only
-- `docs/plans/fd-phase-3-throughput-optimization-plan.md` Trigger Pareto Strategy only
-- `docs/audits/fd-skill-semantic-axis-matrix.md` Strict Domain Event Trigger section only
-- `docs/reports/2026-09-13-p3-a03-to-05-synchronization.md`
-
-May touch:
-
-- `docs/plans/*` for the Trigger Gateway contract
-- `docs/audits/*` for trigger event/ability maps
-- `docs/reports/*` for the specification result and reviewer checklist
-- machine-readable specification artifacts
-- `docs/agents/PHASE3-TASK-INDEX.md` status only
-
-Do not touch:
-
-- `packages/rules/**`
-- `apps/client/**`
-- `apps/server/**`
-- `e2e/**`
-- card authoring or generated content
-- runtime event dispatch, trigger scheduling, or ability execution
-- PendingInteraction implementation
-- lifecycle, modifier, power, or battle-result runtime
-- Gate A/B/C promotion
+- implement fixes
+- modify runtime
+- modify tests
+- redefine B04 scope
+- promote based on implementer-only claims without fresh verification
 
 Required output:
 
-- typed domain-event envelope with event id/type, revision, actor/controller, source identity, causation id, and visibility policy
-- deterministic event ordering and processed-event/idempotency rules
-- forced versus optional trigger scheduling contract
-- explicit separation of event detection, trigger eligibility, interaction creation, effect execution, and lifecycle cleanup
-- projection/reconnect rules for pending or processed triggers
-- mapping of all 37 strict trigger abilities to event contracts or dependency-blocked reasons
-- negative acceptance requirements for malformed events, missing source identity, duplicate delivery, stale revision, invalid ordering, and unsupported events
-- independent reviewer checklist and later runtime hot-file recommendation
+- findings ordered by severity
+- rule conformance judgment
+- secondary runtime path audit
+- legacy fallback audit
+- Gate A/B/C judgment or blocker list
 
 Completion status allowed:
 
-- `SPEC_REVIEW_READY`
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
 
 ## TASK P3-B04
 
@@ -435,9 +450,10 @@ Depends on:
 Read:
 
 - `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- TASK P3-B04 only
 - `docs/rules/FD-Game-Rules-Final.md` card play semantics only
 - `docs/plans/fd-card-engine-stabilization-plan.md` Phase 3 only
-- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant `CARD_ACTION_SEMANTICS` rows only
+- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant `CARD_ACTION_SEMANTICS_MINIMAL_PLAY` rows only
 - `docs/audits/fd-skill-semantic-axis-matrix.md` relevant ability rows only
 
 May touch:
@@ -491,51 +507,45 @@ Evidence rule:
 ## TASK P3-B05
 
 Owner: Codex B
-Status: READY_RUNTIME_OWNER
+Status: READY_AFTER_P3_R04
 Branch: `codex/b-p3-b05-play-source-response`
 
 Goal:
 
-`CARD_ACTION_SEMANTICS_PLAY_SOURCE_RESPONSE`.
+`CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE`.
 
 Depends on:
 
-- P3-B04 scoped `PLAY` accepted by Codex R or explicitly accepted as the runtime baseline.
+- P3-R04 accepts or clears B04 `PLAY` contract boundaries.
 - Runtime hot-file ownership reserved.
-- Relevant taxonomy baseline and P3-B05 handoff consumed as read-only input.
+- Fixed response-window source-card play representative selected.
 
 Read:
 
 - `docs/agents/PHASE3-AGENT-CONTRACT.md`
-- `TASK P3-B05` from this file
-- `docs/reports/2026-09-10-p3-b05-play-source-response-handoff.md`
-- `artifacts/phase3-b05-play-source-response-handoff.json`
-- `docs/rules/FD-Game-Rules-Final.md` response timing, cost payment, and card play semantics only
-- `docs/plans/fd-card-engine-stabilization-plan.md` Phase 3 only
-- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant `PLAY_SOURCE_CARD_WITH_COST_RESPONSE` rows only
-- `docs/audits/fd-skill-semantic-axis-matrix.md` relevant Volumen / response rows only
+- TASK P3-B05 only
+- `docs/rules/FD-Game-Rules-Final.md` response and card play semantics only
+- `docs/reports/2026-09-08-card-action-play-source-response-result.md`
+- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant Volumen / play-source row only
+- `docs/audits/fd-skill-primitive-conformance-matrix.md` `play_source_card` row only
 
 May touch:
 
 - `packages/rules/src/ability/interpreter.ts`
 - `packages/rules/src/ability/resolution-dataflow.ts`
 - `packages/rules/src/ability/executable-card-pack.ts`
-- `packages/rules/src/ability/types.ts` only if the primitive contract requires it
-- focused mechanic tests
+- focused response-play tests
 - scoped implementation report
-- one scoped browser/server spec if required by Gate C candidate evidence
 
 Must not touch:
 
-- coverage KPI
-- taxonomy classifier rules
-- evidence classification
-- scoped normal `PLAY` contract
-- unrelated card-action contracts
-- Trigger runtime beyond the existing response-window hook needed to open the Volumen prompt
-- Lifecycle runtime
-- Hidden projection runtime
-- Battle result runtime
+- normal `PLAY` acceptance rules except shared helper fixes needed by B05
+- `ADD_TO_ATTACK`
+- `CREATE_AND_ACTIVATE`
+- `ACTIVATE`
+- `CLOSE`
+- Trigger/Lifecycle/Interaction/Battle runtime beyond the exact response-play contract
+- coverage KPI or taxonomy rules
 
 Hot files:
 
@@ -545,75 +555,61 @@ Hot files:
 
 Concurrent conflicts:
 
-- any other runtime task touching hot files
+- any runtime task touching hot files
 
 Required output:
 
-- before/after legacy route count against the accepted A/B04 baseline
-- exact `play_source_card(face_up)` semantic routing proof
-- fixed `pay_mana(2)` fail-closed proof
-- source-card identity and source-still-in-hand revalidation proof
-- focused tests
-- implementation report
+- fixed cost payment proof
+- source-card-in-hand revalidation proof
+- response-window legality proof
+- before/after legacy route count
+- focused tests and implementation report
 
 Completion status allowed:
 
 - `IMPLEMENTATION_COMPLETE_CANDIDATE`
-
-Evidence rule:
-
-- Codex B may produce implementer evidence only.
-- Codex R must independently judge Gate A/B/C promotion.
 
 ## TASK P3-B06
 
 Owner: Codex B
-Status: READY_RUNTIME_OWNER
+Status: READY_AFTER_P3_R04_OR_COORDINATOR
 Branch: `codex/b-p3-b06-add-to-attack`
 
 Goal:
 
-`CARD_ACTION_SEMANTICS_ADD_TO_ATTACK`.
+`CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK`.
 
 Depends on:
 
-- P3-B05 scoped `PLAY_SOURCE_RESPONSE` accepted by Codex R or explicitly accepted as the runtime baseline.
+- B04 `PLAY` boundary understood, so ADD_TO_ATTACK cannot inherit normal play counters.
 - Runtime hot-file ownership reserved.
-- Relevant taxonomy baseline and P3-B06 handoff consumed as read-only input.
 
 Read:
 
 - `docs/agents/PHASE3-AGENT-CONTRACT.md`
-- `TASK P3-B06` from this file
-- `docs/reports/2026-09-10-p3-b06-add-to-attack-handoff.md`
-- `artifacts/phase3-b06-add-to-attack-handoff.json`
-- `docs/rules/FD-Game-Rules-Final.md` support/append-to-attack, cost payment, and battle winner exclusion semantics only
-- `docs/plans/fd-card-engine-stabilization-plan.md` Phase 3 only
-- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant `ADD_TO_ATTACK` rows only
-- `docs/audits/fd-skill-semantic-axis-matrix.md` relevant Maiya / support-shot rows only
+- TASK P3-B06 only
+- `docs/rules/FD-Game-Rules-Final.md` attack/add/support card semantics only
+- `docs/reports/2026-09-08-card-action-add-to-attack-result.md`
+- `docs/audits/fd-card-action-add-to-attack-inventory.mjs`
+- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant ADD_TO_ATTACK row only
 
 May touch:
 
 - `packages/rules/src/ability/interpreter.ts`
 - `packages/rules/src/ability/resolution-dataflow.ts`
 - `packages/rules/src/ability/executable-card-pack.ts`
-- `packages/rules/src/ability/types.ts` only if the primitive contract requires it
-- focused mechanic tests
+- focused add-to-attack tests
 - scoped implementation report
-- one scoped browser/server spec if required by Gate C candidate evidence
 
 Must not touch:
 
-- coverage KPI
-- taxonomy classifier rules
-- evidence classification
-- scoped normal `PLAY` contract
-- scoped `PLAY_SOURCE_RESPONSE` contract
-- unrelated card-action contracts
-- Trigger runtime
-- Lifecycle runtime beyond the exact round-end return marker already present on the `attach_card_to_player_attack` contract
-- Hidden projection runtime
-- Battle result runtime beyond the exact cannot-win status required by this contract
+- normal `PLAY` counters except tests proving ADD_TO_ATTACK does not consume them
+- `PLAY_SOURCE_CARD_WITH_COST_RESPONSE`
+- `CREATE_AND_ACTIVATE`
+- `ACTIVATE`
+- `CLOSE`
+- Trigger/Lifecycle/Battle runtime beyond exact add-to-attack representative requirements
+- coverage KPI or taxonomy rules
 
 Hot files:
 
@@ -623,358 +619,475 @@ Hot files:
 
 Concurrent conflicts:
 
-- any other runtime task touching hot files
+- P3-B05, P3-B07, P3-B08, P3-B09, P3-B10, or any runtime task touching hot files
 
 Required output:
 
-- before/after legacy route count against the accepted post-P3-B05 baseline
-- exact `attach_card_to_player_attack` semantic routing proof
-- fixed `pay_mana(2)` fail-closed proof
-- support-shot identity and skill-zone availability revalidation proof
-- non-controller target revalidation proof
-- controller-not-at-battlefield canonical condition negative proof
-- focused tests
-- implementation report
+- attach-to-existing-attack proof
+- proof normal play counters are not consumed unless rule text says so
+- target validation proof
+- before/after legacy route count
+- focused tests and implementation report
 
 Completion status allowed:
 
 - `IMPLEMENTATION_COMPLETE_CANDIDATE`
-
-Evidence rule:
-
-- Codex B may produce implementer evidence only.
-- Codex R must independently judge Gate A/B/C promotion.
 
 ## TASK P3-B07
 
 Owner: Codex B
-Status: READY_RUNTIME_OWNER
+Status: WAIT_TRIGGER_SPEC_OR_EXPLICIT_OVERRIDE
 Branch: `codex/b-p3-b07-activate`
 
 Goal:
 
-`CARD_ACTION_SEMANTICS_ACTIVATE`.
+`CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE`.
 
 Depends on:
 
-- P3-B06 scoped `ADD_TO_ATTACK` accepted by Codex R or explicitly accepted as the runtime baseline.
+- Trigger/Event gateway spec reviewed if the activate representative depends on trigger timing.
 - Runtime hot-file ownership reserved.
-- Relevant taxonomy baseline and P3-B07 handoff consumed as read-only input.
+- Existing inactive target card activation scope confirmed.
 
 Read:
 
 - `docs/agents/PHASE3-AGENT-CONTRACT.md`
-- `TASK P3-B07` from this file
-- `docs/reports/2026-09-10-p3-b07-activate-handoff.md`
-- `artifacts/phase3-b07-activate-handoff.json`
-- `docs/rules/FD-Game-Rules-Final.md` battle loss, round-end timing, and existing-card activation semantics only
-- `docs/plans/fd-card-engine-stabilization-plan.md` Phase 3 only
-- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant `ACTIVATE` rows only
-- `docs/audits/fd-skill-semantic-axis-matrix.md` relevant Olga / Trismegistus rows only
+- TASK P3-B07 only
+- `docs/reports/2026-09-08-card-action-activate-result.md`
+- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant ACTIVATE row only
+- `docs/audits/fd-skill-semantic-axis-matrix.md` relevant activation ability rows only
 
 May touch:
 
 - `packages/rules/src/ability/interpreter.ts`
 - `packages/rules/src/ability/resolution-dataflow.ts`
 - `packages/rules/src/ability/executable-card-pack.ts`
-- `packages/rules/src/ability/types.ts` only if the primitive contract requires it
-- focused mechanic tests
+- `packages/rules/src/match-session.ts` only if the reviewed ACTIVATE contract explicitly requires scheduler or round-end ownership
+- focused activate tests
 - scoped implementation report
-- one scoped browser/server spec if required by Gate C candidate evidence
 
 Must not touch:
 
-- coverage KPI
-- taxonomy classifier rules
-- evidence classification
-- scoped normal `PLAY` contract
-- scoped `PLAY_SOURCE_RESPONSE` contract
-- scoped `ADD_TO_ATTACK` contract
-- unrelated card-action contracts
-- broad Trigger runtime beyond the exact Olga first-loss pending marker and round-end consumption
-- Lifecycle runtime beyond this exact delayed activation consumption
-- Hidden projection runtime
-- Battle result runtime beyond consuming the existing first-loss event
-- roster-wide JSON
+- normal `PLAY`
+- `ADD_TO_ATTACK`
+- `CREATE_AND_ACTIVATE`
+- `CLOSE`
+- broad Trigger runtime
+- broad Lifecycle runtime
+- coverage KPI or taxonomy rules
 
 Hot files:
 
 - `packages/rules/src/ability/interpreter.ts`
 - `packages/rules/src/ability/resolution-dataflow.ts`
 - `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/match-session.ts` if reserved
 
 Concurrent conflicts:
 
-- any other runtime task touching hot files
+- any runtime task touching hot files
 
 Required output:
 
-- before/after legacy route count against the accepted post-P3-B06 baseline
-- exact `activate_card_by_id` semantic routing proof
-- explicit proof that first battle loss only records a pending delayed activation
-- explicit proof that formal `round_end` consumes the pending activation and only then runs `activate_card_by_id`
-- target card identity and allowed source-zone revalidation proof
-- no immediate activation, duplicate pending, wrong-zone, missing-target, already-active, and stale/duplicate round-end negative proof
-- focused tests
-- implementation report
+- existing-card activation proof
+- duplicate activation rejection
+- trigger/scheduler dependency proof or explicit non-dependency
+- before/after legacy route count
+- focused tests and implementation report
 
 Completion status allowed:
 
 - `IMPLEMENTATION_COMPLETE_CANDIDATE`
-
-Evidence rule:
-
-- Codex B may produce implementer evidence only.
-- Codex R must independently judge Gate A/B/C promotion.
 
 ## TASK P3-B08
 
 Owner: Codex B
-Status: READY_RUNTIME_OWNER
+Status: WAIT_LIFECYCLE_SPEC_OR_EXPLICIT_OVERRIDE
 Branch: `codex/b-p3-b08-close`
 
 Goal:
 
-`CARD_ACTION_SEMANTICS_CLOSE`.
+`CARD_ACTION_SEMANTICS_MINIMAL_CLOSE`.
 
 Depends on:
 
-- P3-B07 scoped `ACTIVATE` accepted by Codex R or explicitly accepted as the runtime baseline.
+- Lifecycle/source-close cleanup boundary reviewed if close affects active source cleanup.
 - Runtime hot-file ownership reserved.
-- Relevant taxonomy baseline and P3-B08 handoff consumed as read-only input.
 
 Read:
 
 - `docs/agents/PHASE3-AGENT-CONTRACT.md`
-- `TASK P3-B08` from this file
-- `docs/reports/2026-09-10-p3-b08-close-handoff.md`
-- `artifacts/phase3-b08-close-handoff.json`
-- `docs/rules/FD-Game-Rules-Final.md` residual source close, card-play trigger, and active-card close semantics only
-- `docs/plans/fd-card-engine-stabilization-plan.md` Phase 3 only
-- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant `CLOSE` rows only
-- `docs/audits/fd-skill-semantic-axis-matrix.md` relevant Artoria Alter source-close rows only
+- TASK P3-B08 only
+- `docs/reports/2026-09-08-card-action-close-result.md`
+- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant CLOSE row only
+- `docs/audits/fd-skill-semantic-axis-matrix.md` relevant close/source lifecycle rows only
 
 May touch:
 
 - `packages/rules/src/ability/interpreter.ts`
 - `packages/rules/src/ability/resolution-dataflow.ts`
 - `packages/rules/src/ability/executable-card-pack.ts`
-- `packages/rules/src/ability/types.ts` only if the primitive contract requires it
-- focused mechanic tests
+- `packages/rules/src/match-session.ts` only if reviewed lifecycle cleanup requires it
+- focused close tests
 - scoped implementation report
-- one scoped browser/server spec if required by Gate C candidate evidence
 
 Must not touch:
 
-- coverage KPI
-- taxonomy classifier rules
-- evidence classification
-- scoped normal `PLAY` contract
-- scoped `PLAY_SOURCE_RESPONSE` contract
-- scoped `ADD_TO_ATTACK` contract
-- scoped `ACTIVATE` contract
-- unrelated card-action contracts
-- broad Trigger runtime beyond exact residual `on_card_played` source-close dispatch
-- broad Lifecycle runtime beyond validating active face-up source close for this exact contract
-- Hidden projection runtime
-- Battle result runtime
-- roster-wide JSON
+- targeted close
+- close-then-activate
+- `CREATE_AND_ACTIVATE`
+- normal `PLAY`
+- `ADD_TO_ATTACK`
+- response-window close
+- broad lifecycle cleanup matrix
+- coverage KPI or taxonomy rules
 
 Hot files:
 
 - `packages/rules/src/ability/interpreter.ts`
 - `packages/rules/src/ability/resolution-dataflow.ts`
 - `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/match-session.ts` if reserved
 
 Concurrent conflicts:
 
-- any other runtime task touching hot files
+- any runtime task touching hot files
 
 Required output:
 
-- before/after legacy route count against the accepted post-P3-B07 baseline
-- exact `close_source_card` semantic routing proof
-- explicit proof that only Artoria Alter `sc-artoria-alt-2.angra-mainyu-embrace` exact residual source-close shape is migrated
-- source-card identity, active-zone, face-up, controller, and compiled-definition revalidation proof
-- triggering played-card visibility and `宝具` attribute revalidation proof
-- wrong-kind, wrong-trigger, targeted, costed, creates, extra-effect, missing-source-zone condition, missing-played-card-attribute condition, off-board, inactive, face-down, wrong-controller, and stale replay negative proof
-- focused tests
-- implementation report
+- source-close proof
+- destination / active-state cleanup proof
+- stale duplicate rejection proof
+- before/after legacy route count
+- focused tests and implementation report
 
 Completion status allowed:
 
 - `IMPLEMENTATION_COMPLETE_CANDIDATE`
-
-Evidence rule:
-
-- Codex B may produce implementer evidence only.
-- Codex R must independently judge Gate A/B/C promotion.
 
 ## TASK P3-B09
 
 Owner: Codex B
-Status: REVIEW_ACCEPTED_NO_ELIGIBLE_REPRESENTATIVE
+Status: WAIT_INVENTORY_AND_GATEWAY_SPECS
 Branch: `codex/b-p3-b09-create-and-activate`
 
 Goal:
 
-`CARD_ACTION_SEMANTICS_CREATE_AND_ACTIVATE`.
+`CARD_ACTION_SEMANTICS_MINIMAL_CREATE_AND_ACTIVATE`.
 
 Depends on:
 
-- P3-B08 scoped `CLOSE` accepted by Codex R or explicitly accepted as the runtime baseline.
+- dedicated create-and-activate inventory proves one exact representative and skip reasons.
+- Card Zone create contract reviewed.
+- ACTIVATE boundary reviewed.
+- Lifecycle/source identity boundary reviewed.
 - Runtime hot-file ownership reserved.
-- Relevant taxonomy baseline and P3-B09 handoff consumed as read-only input.
 
 Read:
 
 - `docs/agents/PHASE3-AGENT-CONTRACT.md`
-- `TASK P3-B09` from this file
-- `docs/reports/2026-09-10-p3-b09-create-and-activate-handoff.md`
-- `artifacts/phase3-b09-create-and-activate-handoff.json`
-- `docs/rules/FD-Game-Rules-Final.md` card creation, activation, source identity, and cleanup semantics only
-- `docs/plans/fd-card-engine-stabilization-plan.md` Phase 3 only
-- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant `CREATE_AND_ACTIVATE` and remaining `CARD_ACTION_SEMANTICS` rows only
-- `docs/audits/fd-skill-semantic-axis-matrix.md` relevant Drake and `create_card` rows only
+- TASK P3-B09 only
+- relevant future create-and-activate inventory
+- `docs/audits/fd-skill-mechanic-family-matrix.md` relevant CREATE_AND_ACTIVATE rows only
+- `docs/audits/fd-skill-semantic-axis-matrix.md` relevant create/activate/lifecycle rows only
 
 May touch:
 
-- `packages/rules/src/ability/interpreter.ts`
-- `packages/rules/src/ability/resolution-dataflow.ts`
-- `packages/rules/src/ability/executable-card-pack.ts`
-- `packages/rules/src/ability/types.ts` only if the primitive contract requires it
-- focused mechanic tests
+- runtime hot files only after all dependencies are cleared
+- focused create-and-activate tests
 - scoped implementation report
-- one scoped browser/server spec if required by Gate C candidate evidence
 
 Must not touch:
 
-- coverage KPI
-- taxonomy classifier rules
-- evidence classification
-- scoped normal `PLAY` contract
-- scoped `PLAY_SOURCE_RESPONSE` contract
-- scoped `ADD_TO_ATTACK` contract
-- scoped `ACTIVATE` contract
-- scoped `CLOSE` contract
-- unrelated card-action contracts
-- broad Trigger runtime
-- broad Lifecycle runtime
-- Hidden projection runtime except source/created-card identity redaction required by the exact contract
-- Battle result runtime
-- roster-wide JSON
+- broad create-card semantics
+- broad activate semantics
+- normal `PLAY`
+- `ADD_TO_ATTACK`
+- `CLOSE`
+- hidden/private create flows
+- special subsystem create flows
+- coverage KPI or taxonomy rules
 
 Hot files:
 
-- `packages/rules/src/ability/interpreter.ts`
-- `packages/rules/src/ability/resolution-dataflow.ts`
-- `packages/rules/src/ability/executable-card-pack.ts`
+- to be declared by the future inventory before implementation starts
 
 Concurrent conflicts:
 
-- any other runtime task touching hot files
+- any runtime task touching declared hot files
 
 Required output:
 
-- source-authoring inventory proving whether an exact `CREATE_AND_ACTIVATE` representative exists
-- explicit handling of the current A finding that authoring has no `create_and_activate_card` or `activate_card` primitive and Drake `sc-drake-1.mount-summon` is `play_selected_cards`, not create-and-activate
-- if no exact representative exists, record `RUNTIME_SEMANTIC_GAP` or `NO_ELIGIBLE_REPRESENTATIVE` and stop without runtime migration
-- if an exact representative is proven, before/after legacy route count against the accepted post-P3-B08 baseline
-- exact semantic routing proof
-- create identity, ownership, source, activation zone, visibility, duplicate activation, and cleanup proof
-- focused tests
-- implementation report
+- inventory with exact representative and skip reasons
+- create identity proof
+- immediate activation proof
+- lifecycle/source ownership proof
+- before/after legacy route count
+- focused tests and implementation report
 
 Completion status allowed:
 
 - `IMPLEMENTATION_COMPLETE_CANDIDATE`
-
-Evidence rule:
-
-- Codex B may produce implementer evidence only.
-- Codex R must independently judge Gate A/B/C promotion.
 
 ## TASK P3-B10
 
 Owner: Codex B
-Status: READY_RUNTIME_OWNER
+Status: REVIEW_ACCEPTED
 Branch: `codex/b-p3-b10-setup-create-to-skill`
 
 Goal:
 
-`SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL`.
+Historical completed task: repair `SETUP_CREATE_TO_SKILL` semantic-form routing and duplicate-created-card provenance handling after failed independent review. The accepted runtime baseline is commit `9fba6d9`.
 
 Depends on:
 
-- P3-B09 `NO_ELIGIBLE_REPRESENTATIVE` outcome accepted by independent review.
-- Runtime hot-file ownership reserved.
-- P3-B10 handoff consumed as read-only input.
+- Historical failed-review findings `CARD_SPECIFIC_SEMANTIC_EXCLUSION` and `EXISTING_CARD_PROVENANCE_ADOPTION`.
+- Runtime hot-file ownership was reserved for the repair.
+- The repair and focused evidence were accepted for downstream baseline use at `9fba6d9`.
 
 Read:
 
 - `docs/agents/PHASE3-AGENT-CONTRACT.md`
-- `TASK P3-B10` from this file
-- `docs/reports/2026-09-11-p3-b10-setup-create-to-skill-handoff.md`
-- `artifacts/phase3-b10-setup-create-to-skill-handoff.json`
-- `docs/rules/FD-Game-Rules-Final.md` Section 5.4 game-start ability ordering only
-- `docs/plans/fd-card-engine-stabilization-plan.md` Phase 3 only
-- `docs/audits/fd-skill-mechanic-family-matrix.md` `create_card` and `game_start` rows only
-- canonical authoring for Maiya, Olga-Marie, Shinji, and Artoria Caster `create_card` abilities only
+- TASK P3-B10 only
+- relevant B10 failed review report or reviewer findings
+- `docs/audits/fd-skill-semantic-axis-matrix.md` relevant setup/create-to-skill rows only
+- relevant canonical setup/create card rule sections
 
 May touch:
 
 - `packages/rules/src/ability/interpreter.ts`
-- `packages/rules/src/ability/resolution-dataflow.ts`
 - `packages/rules/src/ability/executable-card-pack.ts`
-- `packages/rules/src/ability/types.ts` only if the typed result contract requires it
-- focused setup/create tests
-- scoped implementation report
-- one scoped browser/server spec if Gate C candidate evidence is attempted
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- focused setup/create-to-skill tests
+- scoped B10 implementation report
 
 Must not touch:
 
-- coverage KPI
-- taxonomy classifier rules
-- evidence classification
-- `CREATE_AND_ACTIVATE`
-- optional post-battle creation
-- source-card removal from hand
-- deck insertion or shuffle semantics
-- hidden choice or response windows
-- battle-result runtime
-- broad Trigger or Lifecycle runtime
-- roster JSON
+- coverage KPI or taxonomy rules
+- reviewer packet classification
 - unrelated card-action contracts
+- trigger gateway runtime
+- lifecycle gateway runtime
+- broad special subsystem behavior
 
 Hot files:
 
 - `packages/rules/src/ability/interpreter.ts`
-- `packages/rules/src/ability/resolution-dataflow.ts`
 - `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
 
 Concurrent conflicts:
 
-- any other runtime task touching the hot files
+- do not reopen the accepted B10 hot files from this historical task while B11 is active
+- B10 coverage classification remains A-owned
+
+Required repair:
+
+- remove card-id-specific semantic exclusion such as `cardId !== 'card.luck'`
+- prove routing is based on semantic axes, not definition id
+- add a positive case showing an arbitrary valid card id with the same legal shape can route
+- keep Artoria Caster excluded by its non-matching semantic form, not by its card id
+- allow duplicate no-op only when the existing card was already generated by the same `sourceCardId`
+- fail closed with `duplicate_created_card` when existing card provenance is missing or different
+- prove fail-closed duplicate rejection leaves state, events, and revision unchanged
 
 Required output:
 
-- inventory of all six canonical `create_card` abilities with eligible/skipped reason
-- exact semantic route for `forced_trigger + game_start + one create_card -> skill + automatic`
-- typed creation result containing created instance identity and count
-- compiler fail-closed and runtime rollback evidence
-- real MatchSession game-start evidence for the three exact eligible abilities
-- explicit proof that the three Artoria Caster post-battle Luck abilities remain skipped
-- before/after legacy/new/dual counts against the accepted post-P3-B08 runtime baseline
-- implementation report
+- focused failing tests for both review blockers
+- runtime repair
+- focused passing test output
+- B10 implementation report with before/after evidence
+- explicit note that `phase3:coverage` still belongs to Codex A after R accepts the repair
 
 Completion status allowed:
 
 - `IMPLEMENTATION_COMPLETE_CANDIDATE`
 
-Evidence rule:
+Recorded outcome:
 
-- Codex B may produce implementer evidence only.
-- Codex R must independently judge Gate A/B/C promotion.
+- Runtime baseline accepted for downstream work: `9fba6d9`.
+- Coverage synchronization remains Codex A-owned and does not alter the runtime acceptance baseline.
+
+## TASK P3-B11
+
+Owner: Codex B
+Status: READY
+Branch: `codex/b-p3-b11-result-binding-production-bridge`
+
+Goal:
+
+Implement `RESULT_BINDING_PRODUCTION_BRIDGE` for the existing Golden Eater and Conversion Magic representatives only. Prove that validated typed results can be consumed by later nodes through the production `MatchSession` path, including staged interaction continuation and transactional rollback, without any legacy `resolveEffect` bypass.
+
+Depends on:
+
+- P3-B10 accepted by R05 at runtime baseline commit `9fba6d9`.
+- P3-A03/A04 B10 automation sync may run in parallel and does not block B11.
+- No outstanding R-required Resource Numeric or Card Zone runtime blocker.
+- Codex B has exclusive ownership of the runtime hot files listed below.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- TASK P3-B11 only
+- `docs/reports/2026-09-12-p3-b11-result-binding-production-bridge-handoff.md`
+- `artifacts/phase3-b11-result-binding-production-bridge-handoff.json`
+- `docs/plans/fd-effect-result-binding-plan.md` only for result-envelope, rollback, and production-bridge requirements
+- canonical Golden Eater and Conversion Magic authoring definitions only
+
+May touch:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- focused result-binding and production-bridge tests
+- `e2e/fd-golden-eater-result-binding.spec.ts`
+- `e2e/support/build-golden-eater-snapshot.ts` only for the scoped Golden Eater room fixture
+- `e2e/fd-conversion-magic-core-primitive.spec.ts` only for regression assertions required by this task
+- scoped B11 implementation report
+
+Must not touch:
+
+- cards or abilities outside Golden Eater and Conversion Magic
+- coverage KPI, taxonomy, classifier, or evidence-promotion rules
+- broad Target/Interaction, Trigger, Lifecycle, Battle, Modifier, or Hidden Information runtime
+- card- or ability-id fallback routing
+- unrelated client/server behavior
+- Gate A/B/C status promotion
+
+Hot files:
+
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+
+Concurrent conflicts:
+
+- any runtime task touching the same hot files
+- any attempt by Codex A or R to edit runtime while B11 is active
+
+Required implementation contract:
+
+- route only a compiler-validated, fully supported result-binding graph; routing eligibility must be semantic and must not depend on Golden Eater or Conversion Magic ids
+- retain Conversion Magic as the no-interaction control for `move_all_remaining -> movedCount -> adjust_mana`
+- migrate Golden Eater through the same typed binding infrastructure while preserving its two server-owned target stages and optional 7-mana branch
+- persist only the minimum validated continuation data needed across pending interaction stages; never accept client-supplied binding values
+- use dispatch transaction boundaries: a failed first stage commits nothing; a failed second stage preserves the already committed first stage but rolls back payment, movement, VP, events, and revision from the failing dispatch
+- reject compiler, binding, target-reference, and runtime invariant failures as `resolution_failed` without calling legacy `resolveEffect`
+- leave unsupported result-binding or interaction shapes on their existing route and report them as skipped; do not broaden eligibility to improve counts
+
+Required output:
+
+- focused compiler and runtime negative tests written before implementation
+- real `MatchSession.dispatchPlayerAction` proof for both representatives
+- interaction continuation, reconnect/projection, stale replay, and rollback evidence appropriate to Golden Eater
+- regression proof that Conversion Magic still settles mana from actual `movedCount`
+- explicit legacy-bypass instrumentation or equivalent proof for eligible success and failure paths
+- B11 implementation report with before/after `legacyResolveEffect`, `newRuntimeSemanticRouted`, `dualRuntime`, local eligible/migrated/skipped counts, and unchanged skipped abilities
+- explicit note that global KPI/classifier synchronization belongs to Codex A after R judgment
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+
+## TASK P3-R05
+
+Owner: Codex R
+Status: READY_AFTER_EACH_B_TASK
+Branch: `codex/r-p3-card-action-followup-review`
+
+Goal:
+
+Independent review for B05-B10 Card Action follow-up slices.
+
+Depends on:
+
+- corresponding B implementation report and diff.
+- corresponding A reviewer packet when available.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- TASK P3-R05 only
+- relevant B task block
+- relevant B implementation report
+- relevant focused test output
+- relevant canonical rule sections listed by the B task
+- relevant mechanic matrix rows listed by the B task
+
+May inspect:
+
+- implementation diff
+- focused tests
+- generated evidence packet
+- secondary runtime paths named by the task
+
+Must not:
+
+- implement fixes
+- rewrite task scope
+- merge independent card-action contracts
+- accept inheritance across `PLAY`, `PLAY_SOURCE`, `ADD_TO_ATTACK`, `ACTIVATE`, `CLOSE`, and `CREATE_AND_ACTIVATE`
+
+Required output:
+
+- findings ordered by severity
+- accepted evidence
+- rejected evidence
+- missing tests or residual risk
+- Gate A/B/C judgment
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
+## TASK P3-R06
+
+Owner: Codex R
+Status: READY_AFTER_P3_B11
+Branch: reviewer-selected read-only workspace
+
+Goal:
+
+Independently review P3-B11 Result Binding Production Bridge without implementing fixes or inheriting acceptance from B10, Conversion Magic, or historical Golden Eater evidence.
+
+Depends on:
+
+- P3-B11 implementation report and clean diff.
+- Focused Gate A/B evidence and relevant Gate C production-path evidence.
+- Codex A packet when available; absence of classifier support must be reported, not repaired by R.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- TASK P3-R06 only
+- TASK P3-B11
+- P3-B11 handoff, implementation report, focused test output, and diff
+- `docs/plans/fd-effect-result-binding-plan.md` relevant acceptance sections only
+- canonical Golden Eater and Conversion Magic definitions
+
+Must not:
+
+- implement fixes
+- broaden P3-B11 to other cards or gateway families
+- accept client-authored result bindings
+- infer Gate C from unit tests or historical candidate reports
+- change coverage KPI or classifier behavior
+
+Required output:
+
+- findings ordered by severity
+- semantic-routing and no-legacy-bypass judgment
+- transaction/rollback and interaction-continuation judgment
+- Gate A/B/C judgment per representative
+- explicit residual risks and A synchronization input
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
 
 ## Prompt Templates
 
@@ -984,11 +1097,11 @@ Codex A startup prompt:
 You are Codex A for FD Phase 3.
 
 Read docs/agents/PHASE3-AGENT-CONTRACT.md first.
-Then read only the assigned TASK from docs/agents/PHASE3-TASK-INDEX.md.
-Do not read the full parallel work queue unless the assigned task explicitly tells you to.
-Do not modify files outside the assigned task's May touch list.
+Then read only your assigned TASK block from docs/agents/PHASE3-TASK-INDEX.md.
+Do not read the full parallel work queue unless your TASK block explicitly tells you to.
+Do not modify files outside your TASK block's May touch list.
 If you find a runtime semantic defect, record RUNTIME_SEMANTIC_GAP and stop; do not fix it.
-Final status may only be AUTOMATION_BASELINE_CANDIDATE.
+Final status must be one of the statuses allowed by your TASK block.
 ```
 
 Codex B startup prompt:
@@ -997,10 +1110,24 @@ Codex B startup prompt:
 You are Codex B for FD Phase 3.
 
 Read docs/agents/PHASE3-AGENT-CONTRACT.md first.
-Then read only the assigned TASK from docs/agents/PHASE3-TASK-INDEX.md.
-Do not read the full parallel work queue unless the assigned task explicitly tells you to.
+Then read only your assigned TASK block from docs/agents/PHASE3-TASK-INDEX.md.
+Do not read the full parallel work queue unless your TASK block explicitly tells you to.
 You own runtime implementation only for this task's declared hot files.
 Do not redefine taxonomy, KPI, or evidence classification.
-Do not expand scope into Trigger, Lifecycle, Interaction, Hidden, or Battle runtime.
-Final status may only be IMPLEMENTATION_COMPLETE_CANDIDATE.
+Do not expand scope into Trigger, Lifecycle, Interaction, Hidden, or Battle runtime unless your TASK block explicitly permits that exact dependency.
+Final status must be one of the statuses allowed by your TASK block.
+```
+
+Codex R startup prompt:
+
+```text
+You are Codex R for FD Phase 3.
+
+Read docs/agents/PHASE3-AGENT-CONTRACT.md first.
+Then read only your assigned TASK block from docs/agents/PHASE3-TASK-INDEX.md.
+Default to READ ONLY.
+Do not implement fixes while reviewing.
+Do not merge independent card-action contracts for acceptance.
+Return findings first, then Gate judgment.
+Final status must be one of the statuses allowed by your TASK block.
 ```

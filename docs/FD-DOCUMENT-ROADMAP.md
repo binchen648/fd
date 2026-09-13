@@ -83,6 +83,8 @@ CANONICAL:
 GOVERNANCE:
 
 - `docs/FD-DOCUMENT-ROADMAP.md` - this navigation and authority map.
+- `docs/agents/PHASE3-AGENT-CONTRACT.md` - short first-read role and startup contract for Phase 3 agents.
+- `docs/agents/PHASE3-TASK-INDEX.md` - task-block startup index for Phase 3 agents; agents read only their assigned block by default.
 - `docs/plans/fd-rules-conformance-and-acceptance.md` - acceptance and release gate baseline.
 - `docs/product/FD本地化游戏PRD.md` - product target proposal; not runtime proof.
 - `docs/spec/guardrail-policy.md` - content pipeline guardrail policy, subordinate to the acceptance baseline.
@@ -101,6 +103,7 @@ SUBPLAN:
 - `docs/plans/fd-phase-3-mechanic-family-rollout-plan.md` - Phase 3 mechanic-family rollout and pilot-bridge exit subplan.
 - `docs/plans/fd-phase-3-throughput-optimization-plan.md` - Phase 3 dependency-DAG, gateway primitive, parallel factory, automation, and legacy burn-down scheduling subplan.
 - `docs/plans/fd-phase-3-parallel-work-queue.md` - Phase 3 dispatch queue derived from the throughput optimization plan.
+- `docs/plans/2026-09-12-phase-3-completion-execution-plan.md` - concrete Phase 3 completion execution plan for A/B/R sequencing, the accepted B10 baseline, current B11 production bridge, seven-domain review/spec work, A03 sync, and release-readiness blockers.
 
 AUDIT:
 
@@ -131,13 +134,15 @@ Phase labels are planning ownership labels. They do not declare implementation o
 Every phase implementer or reviewer must read these inputs before making implementation or acceptance claims:
 
 1. `docs/FD-DOCUMENT-ROADMAP.md`
-2. `docs/rules/FD-Game-Rules-Final.md`
-3. `docs/plans/fd-rules-conformance-and-acceptance.md`
-4. `docs/plans/fd-card-engine-stabilization-plan.md`
-5. Current phase related subplan
-6. Current phase latest related audit
-7. Current phase corrected semantic-axis audit when the phase touches Trigger, Lifecycle, Interaction, Pending, Resource, or Gateway priority
-8. Current phase Golden Acceptance Contract
+2. `docs/agents/PHASE3-AGENT-CONTRACT.md` before Phase 3 agent dispatch
+3. assigned task block in `docs/agents/PHASE3-TASK-INDEX.md` before reading broader Phase 3 plans
+4. `docs/rules/FD-Game-Rules-Final.md`
+5. `docs/plans/fd-rules-conformance-and-acceptance.md`
+6. `docs/plans/fd-card-engine-stabilization-plan.md`
+7. Current phase related subplan
+8. Current phase latest related audit
+9. Current phase corrected semantic-axis audit when the phase touches Trigger, Lifecycle, Interaction, Pending, Resource, or Gateway priority
+10. Current phase Golden Acceptance Contract
 
 Historical reports may be read after these inputs for provenance only.
 
@@ -175,6 +180,12 @@ Historical reports may be read after these inputs for provenance only.
 
 `docs/plans/fd-phase-3-parallel-work-queue.md`
 -> dispatch document derived from the throughput optimization plan; coordinates future tasks by dependencies, hot-file conflicts, and Gate expectations.
+
+`docs/plans/2026-09-12-phase-3-completion-execution-plan.md`
+-> executable coordination plan for remaining Phase 3 work; records B10 commit `9fba6d9` as the accepted runtime baseline, B11 as the current Result Binding runtime lane, A synchronization after R judgments, and the seven target domains as a dependency plan rather than a linear post-B09 queue.
+
+`docs/reports/2026-09-12-phase-3-current-work-brief.md`
+-> maintainer-facing summary of the current objective, verified baseline, A/B/R ownership, P3-B11 scope, remaining seven-domain path, and Phase 3 completion criteria.
 
 `docs/audits/fd-skill-mechanic-family-matrix.md`
 -> provides current real-skill family coverage, reuse, complexity, and next-batch selection evidence for Phase 3.
@@ -229,19 +240,21 @@ Green tests, implementation reports, content metadata, `FULL`, `COMPLETE`, `auto
 - `docs/spec/rules-spec-v0.md` still calls itself a v0 source of truth and is superseded by `FD-Game-Rules-Final.md`.
 - Several older documents use `FULL`, `COMPLETE`, `Production Ready`, `automatic`, or local `PASS` language that conflicts with the newer acceptance baseline if read as final proof.
 - Current runtime still has multiple owners and secondary paths for flow, movement, play, cleanup, projection, and ability resolution.
-- Effect Result Binding has no production `MatchSession` integration.
+- Effect Result Binding production `MatchSession` integration is the active P3-B11 task and is not accepted until P3-R06 reviews it.
 
 ## 13. Next Recommended Step
 
 Execute the Phase 3 throughput queue from `docs/plans/fd-phase-3-parallel-work-queue.md`.
+Use `docs/plans/2026-09-12-phase-3-completion-execution-plan.md` as the concrete A/B/R coordination plan.
 
-Immediate next work is documentation, inventory, and evidence infrastructure:
+Immediate next work is:
 
-1. Define the consolidated Phase 3 coverage reporter schema.
-2. Define Trigger Gateway contracts for the top trigger buckets.
-3. Define Lifecycle Gateway contracts for the top lifecycle policy buckets.
-4. Define Interaction Template contracts for target, optional, response, private, reconnect, and stale-command patterns.
-5. Generate reviewer packet templates for existing implementation candidates.
+1. Run P3-B11 Result Binding Production Bridge from the R-accepted P3-B10 runtime commit `9fba6d9` with Codex B holding exclusive runtime hot-file ownership.
+2. Run P3-A04 B10 coverage alignment and P3-A05 Resource Numeric evidence packaging in parallel without runtime edits.
+3. Send the completed B11 candidate to P3-R06, then let Codex A synchronize the judgment.
+4. Complete Resource Numeric and Card Zone independent reviews and burn-down sync.
+5. Define and review Trigger, Lifecycle, and Interaction gateway contracts.
+6. Fix the Modifier / Power / Battle Result dependency boundary before Phase 4 runtime work.
 
 Runtime migration should resume only after the next gateway-backed slice has explicit dependencies, hot-file ownership, Gate A/B/C expectations, and legacy burn-down metrics.
 
