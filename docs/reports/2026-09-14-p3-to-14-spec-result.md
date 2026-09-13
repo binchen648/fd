@@ -55,7 +55,8 @@ The 13 result consumers may later consume the accepted result-event envelope. Th
 - win eligibility vs loser outcome vs loss-effect suppression: orthogonalized; true nonparticipants are neither winner nor loser.
 - base-score-before-personal-reward invariant: explicit via `post_base_scoring` barrier; personal VP cannot modify the base pool.
 - Recon reward: separate phase-level exactly-once plan/receipt.
-- base VP source union: closed event-pool / competition-pool / reviewed-location variants; no generic `reviewed_rule` or ambiguous `battle_vp` source.
+- base VP source union: one combined event+competition `base_pool_share` plus reviewed-location variant; no generic `reviewed_rule` or ambiguous `battle_vp` source.
+- base-pool rounding: exactly one `ceil((eventVpPool + competitionVpPool) / winnerCount)` per winner; event/competition attribution cannot change the total.
 - semantic-axis vs historical BATTLE_RESULT exact set: PASS, difference 0.
 - canonical schema arbitrary `unknown` payload: none.
 - mutable `consumed` flag inside immutable scoring plan: none.

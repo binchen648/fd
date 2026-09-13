@@ -88,8 +88,12 @@ interface BattleResultEnvelope {
 }
 
 type BaseBattlefieldVpSource =
-  | { kind: 'event_pool_share'; battlefieldId: string; eventInstanceIds: string[] }
-  | { kind: 'competition_pool_share'; battlefieldId: string; competitionRuleId: string }
+  | {
+      kind: 'base_pool_share';
+      battlefieldId: string;
+      eventInstanceIds: string[];
+      competitionRuleId?: string;
+    }
   | { kind: 'location_reward'; locationId: string; rewardRuleId: string };
 
 interface BattleVpAdjustment {
@@ -186,7 +190,7 @@ The generic stage model is:
 2. freeze each battlefield's participant/power inputs;
 3. determine and commit one immutable Battle Result together with its immutable **base battlefield** scoring plan;
 4. create stable result/win/loss/first-loss event identities and queue their trigger candidates behind a server-owned `post_base_scoring` settlement barrier; event identity exists, but ordinary post-result continuations do not settle yet;
-5. consume the base battlefield scoring plan exactly once; commit that battlefield's event-pool share / competition-pool share / typed reviewed location reward and military adjustments atomically and create one scoring receipt; event-pool and competition-pool shares belonging to the same base reward commit in the same scoring transaction;
+5. consume the base battlefield scoring plan exactly once; for each winner commit exactly one combined `base_pool_share` equal to `ceil((eventVpPool + competitionVpPool) / winnerCount)`, plus any separately reviewed typed location reward and military adjustments, atomically in one scoring receipt; event and competition provenance remain components of the same base-pool source and are never independently rounded;
 6. release the `post_base_scoring` barrier; Trigger Gateway may now settle the queued result/win/loss/first-loss consumers according to accepted semantic ordering; their personal VP/rewards are separate typed Resource results and never re-enter the base pool;
 7. when a reviewed Battle/Scoring rule says the controller has **gained a victory**, produce `after_controller_gains_victory` exactly once from the committed result + scoring/victory transition and settle it through the same post-base-scoring Trigger Gateway stage;
 8. only after all required post-battle result/win/loss/first-loss/gains-victory triggers are terminal, produce and settle `after_battle_ended`;
@@ -196,7 +200,15 @@ The `post_base_scoring` barrier is normative: ordinary "获胜后额外获得" p
 
 ## 8. Scoring / Resource Composition
 
-The **base battlefield** scoring plan is immutable once the result is committed. Its VP adjustments use only the closed `BaseBattlefieldVpSource` union: event-pool share, competition-pool share, or a location reward carrying a reviewed `rewardRuleId`. There is no generic `reviewed_rule`, `battle_vp`, display-label, or card-ID escape hatch. Post-result personal trigger awards or penalties do **not** rewrite that plan; they settle only after the base scoring receipt as separate typed Resource results linked by causation to the same battle result. Card-specific code may not mutate an arbitrary scoring accumulator or fold personal rewards back into the shared pool.
+The **base battlefield** scoring plan is immutable once the result is committed. Its VP adjustments use only the closed `BaseBattlefieldVpSource` union: one combined `base_pool_share` carrying both event and competition provenance, or a separately reviewed location reward carrying a `rewardRuleId`. There is no generic `reviewed_rule`, `battle_vp`, display-label, or card-ID escape hatch. Post-result personal trigger awards or penalties do **not** rewrite that plan; they settle only after the base scoring receipt as separate typed Resource results linked by causation to the same battle result. Card-specific code may not mutate an arbitrary scoring accumulator or fold personal rewards back into the shared pool.
+
+Canonical base-pool arithmetic is a hard invariant:
+
+`baseVpPool = eventVpPool + competitionVpPool`
+
+`baseVpPerWinner = ceil(baseVpPool / winnerCount)`
+
+Each winner receives exactly one `base_pool_share` with `delta === baseVpPerWinner`. Event and competition components are simultaneous provenance only; they are not independently rounded adjustments. If an audit needs component attribution, that attribution must sum exactly to `baseVpPerWinner` and cannot change the awarded total. Counterexample guard: with 2 winners, event pool 1 and competition pool 1, each winner receives 1, never 2.
 
 Recon is a separate **battle-phase** resource settlement because canonical rules award legal Recon occupants +2 VP at battle-power-resolution start rather than as a battlefield winner reward. `ReconRewardPlan` is scoped by `battlePhaseResolutionId` and round, consumed once, and cannot be attached to a Miyama/Shinto winner or folded into a battlefield base pool.
 
@@ -287,7 +299,9 @@ Reject without legacy fallback when a claimed Battle Result route has:
 - malformed tie/sole-winner facts;
 - unknown exclusion/loss-effect policy;
 - scoring plan/result identity mismatch;
-- unknown/generic base VP source kind, missing event/source identity, or missing reviewed location reward policy;
+- unknown/generic base VP source kind, missing base-pool event/competition provenance, or missing reviewed location reward policy;
+- a winner's combined base-pool delta not equal to `ceil((eventVpPool + competitionVpPool) / winnerCount)`;
+- event and competition components independently rounded or attributed so their sum exceeds the single combined base-pool share;
 - Recon reward attached to a battlefield winner/scoring plan instead of its phase-level plan;
 - Recon delta or recipient set inconsistent with the reviewed `rewardRuleId` (base rules require +2 VP for each legal Recon occupant at battle-power-resolution start);
 - duplicate Recon or battlefield scoring consumption;
@@ -308,6 +322,7 @@ TO-14 may be independently accepted as a specification only if review confirms:
 - stage ordering and unresolved-order policy are explicit;
 - Recon/result/scoring/resource identities support exactly-once replay safety;
 - base battlefield VP sources are a closed discriminated union with no generic `reviewed_rule`/`battle_vp` escape hatch;
+- event + competition VP are combined before the single winner-count rounding step, with component provenance preserved but never independently rounded;
 - the post-base-scoring barrier guarantees base battlefield rewards commit before ordinary personal win/loss rewards/effects;
 - optional trigger pauses do not roll back committed result state;
 - projection/reconnect preserves authoritative identities without leaking hidden detail;
