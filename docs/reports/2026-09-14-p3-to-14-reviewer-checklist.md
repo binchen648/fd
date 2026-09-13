@@ -9,6 +9,7 @@
 - [ ] Historical matrix and current semantic-axis are exact-set equal.
 - [ ] Exactly 13 rows use the five post-result/ended battle event types.
 - [ ] The other 26 are not falsely declared direct Battle Result consumers.
+- [ ] The one cross-axis `after_controller_gains_victory` consumer is covered as a Scoring/Battle producer dependency without changing 39/28.
 
 ## Owner separation
 
@@ -27,6 +28,8 @@
 - [ ] Tie/sole-winner/margin facts are internally consistent.
 - [ ] Result identity, trigger identity, scoring plan identity and resource result identity are distinct.
 - [ ] Duplicate/stale scoring is impossible by contract.
+- [ ] `after_controller_gains_victory` cannot be inferred from arbitrary positive VP/display text and has exactly-once `victoryTransitionId`.
+- [ ] Scoring-derived victory triggers settle before terminal `after_battle_ended` / cleanup.
 - [ ] Optional post-result interaction can pause after result commit without losing result identity.
 - [ ] Failed trigger/scoring dispatch rollback boundaries are explicit.
 - [ ] Unknown semantic ordering remains blocked rather than guessed.

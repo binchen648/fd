@@ -11,6 +11,8 @@
 
 Current semantic-axis membership and the historical `BATTLE_RESULT` membership are exact-set equal: 39 vs 39, with no added or missing row. TO-14 therefore keeps 39/28 as the **battle-integration** denominator. It does **not** relabel all 39 rows as result-trigger consumers.
 
+Cross-axis producer note: `servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.shuffle-discard-on-victory` consumes Trigger Gateway event `after_controller_gains_victory`. It is not tagged BATTLE_INTEGRATION and is **not** denominator row 40, but Scoring/Battle still owns production of that strict event.
+
 ## Cluster Counts
 
 | Cluster | Count | Meaning |

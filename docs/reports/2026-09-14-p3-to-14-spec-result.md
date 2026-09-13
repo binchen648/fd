@@ -19,6 +19,7 @@
 - Exact set difference: **0**.
 - Direct post-result / battle-ended event consumers: **13**.
 - Other broader battle integration rows: **26**.
+- Cross-axis Scoring/Battle strict producer dependency outside 39: **1** `after_controller_gains_victory` consumer.
 
 Cluster split:
 
@@ -38,7 +39,8 @@ The spec separates:
 3. TO-03 result-event scheduling ownership;
 4. immutable battle scoring plan and exactly-once scoring receipt;
 5. typed Resource settlement for VP/mana/seals;
-6. terminal `after_battle_ended` event and cleanup handoff.
+6. scoring-derived `after_controller_gains_victory` producer/trigger handoff;
+7. terminal `after_battle_ended` event and cleanup handoff.
 
 The 13 result consumers may later consume the accepted result-event envelope. The remaining 26 rows stay with their real external owner and are not made runtime-ready by this spec.
 
@@ -47,6 +49,7 @@ The 13 result consumers may later consume the accepted result-event envelope. Th
 - 39 semantic-axis rows: PASS.
 - 28 unique cards: PASS.
 - 13 direct post-result/ended consumers: PASS.
+- cross-axis `after_controller_gains_victory` producer dependency: PASS, covered without denominator change.
 - semantic-axis vs historical BATTLE_RESULT exact set: PASS, difference 0.
 - canonical schema arbitrary `unknown` payload: none.
 - mutable `consumed` flag inside immutable scoring plan: none.

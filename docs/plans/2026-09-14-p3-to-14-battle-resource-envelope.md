@@ -26,6 +26,8 @@ However, only **13** rows are direct post-result / battle-ended event consumers:
 
 The other 26 rows are broader battle integration and must compose with their real owner (combat action, power/modifier, movement/deployment, lifecycle, interaction, hidden information, special subsystem, or resource), rather than consuming a fake Battle Result envelope. Exact membership is in `docs/audits/2026-09-14-p3-to-14-battle-integration-map.md`.
 
+Separately, the accepted Trigger Gateway has one **cross-axis Scoring/Battle producer dependency** outside the 39-row denominator: `servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.shuffle-discard-on-victory` consumes `after_controller_gains_victory`. TO-14 must define that producer event without changing the 39/28 battle-integration denominator.
+
 ## 3. Ownership Boundary
 
 | Concern | Canonical owner | TO-14 relationship |
@@ -141,6 +143,7 @@ Minimum payloads:
 | `after_controller_wins_battle` | result identity, controller, winner set, sole/shared-win fact |
 | `after_controller_loses_battle` | result identity, controller, winner set, controller loss-effect eligibility |
 | `after_controller_first_loses_battle` | result identity, controller, authoritative loss ordinal/history identity |
+| `after_controller_gains_victory` | result identity, scoring receipt/victory transition identity, controller, reviewed victory-policy identity and causation |
 | `after_battle_ended` | result identity plus terminal scoring receipt/status |
 
 Trigger Gateway owns discovery, forced/optional scheduling, ordering, idempotency, cancellation, interaction handoff, and revalidation. TO-14 must not implement a second trigger queue.
@@ -155,8 +158,9 @@ The generic stage model is:
 4. Trigger Gateway schedules and settles required result-dependent trigger windows;
 5. once blocking result-trigger windows are resolved, consume the scoring plan exactly once;
 6. commit typed resource/military mutations and one scoring receipt;
-7. produce `after_battle_ended` with terminal scoring status;
-8. hand off to battle cleanup/lifecycle.
+7. when a reviewed Battle/Scoring rule says the controller has **gained a victory**, produce `after_controller_gains_victory` exactly once from the committed result + scoring/victory transition, then settle its Trigger Gateway consumers;
+8. produce `after_battle_ended` with terminal scoring status only after scoring-derived victory triggers are terminal;
+9. hand off to battle cleanup/lifecycle.
 
 If an accepted rule requires a different relative order for a specific collision, that collision requires an explicit `orderingRef`. Runtime migration remains blocked when the semantic order is material and unresolved; current implementation order is not automatically normative.
 
@@ -176,6 +180,8 @@ All committed VP/mana/command-seal mutations use the typed resource envelope alr
 
 Base battle scoring uses a system producer linked to `battleResultId/scoringPlanId`. Trigger-earned VP uses the trigger's source ability identity and retains the same battle result causation link.
 
+`after_controller_gains_victory` is **not** inferred from arbitrary positive VP, a display label, or merely being in `winnerPlayerIds`. Its producer requires a reviewed Battle/Scoring victory rule and a stable `victoryTransitionId` linked to the committed result/scoring receipt. If that qualification rule is absent or ambiguous for a future runtime slice, that producer remains blocked.
+
 ## 9. Exactly-Once And Replay Safety
 
 Semantic idempotency keys:
@@ -183,6 +189,7 @@ Semantic idempotency keys:
 - result determination: `battleId -> resultId` exactly once;
 - trigger scheduling: accepted TO-03 key `(eventId, sourceCardInstanceId, sourceAbilityId)`;
 - scoring consumption: `scoringPlanId` exactly once;
+- scoring-derived victory production: `victoryTransitionId` exactly once per reviewed victory transition;
 - resource mutation: typed resource result identity exactly once.
 
 Reconnect or stale replay may re-project an existing result/receipt but cannot:
@@ -253,6 +260,7 @@ TO-14 may be independently accepted as a specification only if review confirms:
 
 - 39/28 battle-integration set reconciles exactly;
 - 13 direct result/ended consumers are not conflated with the other 26 rows;
+- the one cross-axis `after_controller_gains_victory` Scoring/Battle producer dependency is covered without changing 39/28;
 - Power Trace input, Battle Result, Trigger Gateway, Scoring and Resource owners are non-overlapping;
 - stage ordering and unresolved-order policy are explicit;
 - result/scoring/resource identities support exactly-once replay safety;
