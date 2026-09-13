@@ -3,8 +3,10 @@
 - Document Role: RUNTIME_RECOVERY_IMPLEMENTATION
 - Owner: Codex B recovery lane
 - Task: `P3-B10`
-- Branch: `codex/b-p3-b10-recovery`
+- Branch: `codex/b-p3-b10-recovery-r1`
 - BaseCommit: `76dbbd92a17ed1a9c89236a4d3db0cb7aea02cbf`
+- RecoveryCandidateV1: `cbfef6659ec9e5fd3c0d5c3f57bd544e4fdd52b3`
+- R05V1Review: `d765d62` -> `IMPLEMENTATION_NEEDS_REVISION`
 - Historical accepted B10 object: `9fba6d9` (unavailable in the current local/remote Git object graph)
 - MechanicFamily: `SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL`
 - Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
@@ -63,7 +65,7 @@ Unsupported destination or owner shapes fail data-flow validation and cannot sil
 
 ## Historical Review Blockers Reproduced as Tests
 
-The recovery explicitly covers the two recorded failed-review findings:
+The recovery explicitly covers the two recorded historical failed-review findings. The first fresh recovery review (`d765d62`) then found an additional mixed-duplicate provenance bypass; r1 repairs that boundary by validating the complete controller-owned same-definition set before permitting the idempotent no-op.
 
 ### `CARD_SPECIFIC_SEMANTIC_EXCLUSION`
 
@@ -107,13 +109,13 @@ npx vitest run \
   packages/rules/tests/regression/card-action-add-to-attack.test.ts \
   packages/rules/tests/regression/complex-skills-regression.test.ts \
   packages/rules/tests/regression/card-zone-core-direct-action.test.ts
-PASS: 7 files / 81 tests
+PASS: 7 files / 85 tests
 
 git diff --check
 PASS
 ```
 
-The dedicated B10 regression contributes eight passing tests covering the three canonical setup creations, arbitrary-card semantic routing, `card.luck` semantic separation, same-source idempotence, and atomic rejection for missing/different provenance.
+The dedicated B10 regression contributes twelve passing tests covering the three canonical setup creations, arbitrary-card semantic routing, `card.luck` semantic separation, same-source idempotence, single-card provenance rejection, and mixed same-definition provenance rejection with atomic rollback.
 
 ## Full Rules Baseline Comparison
 
@@ -122,7 +124,7 @@ Recovery stack:
 ```text
 npx vitest run packages/rules/tests
 42 passed files / 9 failed files
-349 passed tests / 19 failed tests
+353 passed tests / 19 failed tests
 ```
 
 B08 recovery base immediately before this slice:
@@ -132,7 +134,7 @@ B08 recovery base immediately before this slice:
 341 passed tests / 19 failed tests
 ```
 
-The failure set is unchanged. Eighteen failures depend on unavailable historical CHM/image evidence paths (`D:\fd\chm-extract` or local `chm-extract`), and one is the existing versioned generated-content definition-hash mismatch in `golden-card-content-pipeline.test.ts`. B10 recovery adds eight passing tests and introduces no additional full-suite failure.
+The failure set is unchanged. Eighteen failures depend on unavailable historical CHM/image evidence paths (`D:\fd\chm-extract` or local `chm-extract`), and one is the existing versioned generated-content definition-hash mismatch in `golden-card-content-pipeline.test.ts`. B10 recovery plus r1 adds twelve passing dedicated tests and introduces no additional full-suite failure.
 
 ## Local Before / After
 

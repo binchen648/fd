@@ -190,4 +190,61 @@ describe('SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL recovery', () => {
 
     expect(s.state).toEqual(snapshot);
   });
+
+  it.each([
+    ['mixed missing provenance', undefined],
+    ['mixed different provenance', 'other-source-card'],
+  ] as const)('returns duplicate_created_card when a valid same-source card is followed by %s', (_label, generatedBy) => {
+    const s = session();
+    const military = sourceFor(s, 'master.maiya.skill.military');
+    const support = generatedFor(s, 'master.maiya.deck.support-shot');
+    s.state.cards.push({
+      ...structuredClone(support),
+      instanceId: `b10-${_label.replaceAll(' ', '-')}`,
+      generatedBy,
+    });
+    const ability = s.state.abilityRuntime!.pack.cards[military.definitionId]!.abilities
+      .find((candidate) => candidate.id === 'military.has-support-shot')!;
+    const effects = normalizeResolutionDataFlowNodes(ability.effects, 'b10.mixed-duplicate.effects');
+    const snapshot = structuredClone(s.state);
+
+    let thrown: unknown;
+    try {
+      executeResolution({
+        state: s.state,
+        controllerId: military.controllerPlayerId,
+        sourceCardId: military.instanceId,
+        abilityId: ability.id,
+        effects,
+        resolutionId: 'b10-mixed-duplicate-resolution',
+      });
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown).toBeInstanceOf(ResolutionRuntimeError);
+    expect((thrown as ResolutionRuntimeError).code).toBe('duplicate_created_card');
+    expect(s.state).toEqual(snapshot);
+  });
+
+  it.each([
+    ['mixed missing provenance', undefined],
+    ['mixed different provenance', 'other-source-card'],
+  ] as const)('fails the trusted game-start transaction atomically when a valid card is followed by %s', (_label, generatedBy) => {
+    const s = session();
+    const support = generatedFor(s, 'master.maiya.deck.support-shot');
+    s.state.cards.push({
+      ...structuredClone(support),
+      instanceId: `b10-trusted-${_label.replaceAll(' ', '-')}`,
+      generatedBy,
+    });
+    const snapshot = structuredClone(s.state);
+
+    expect(() => processAbilityEvent(s.state, {
+      id: `b10-mixed-fail-closed-${_label}`,
+      type: 'game_start',
+    })).toThrow(/incompatible creation provenance/);
+
+    expect(s.state).toEqual(snapshot);
+  });
 });

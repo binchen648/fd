@@ -1212,12 +1212,13 @@ function createCard(
   if (!runtime?.pack.cards[effect.cardId]) {
     throw new ResolutionRuntimeError('missing_created_definition', `Created card definition '${effect.cardId}' is not compiled.`);
   }
-  const existing = transaction.workingState.cards.find((candidate) =>
+  const existingCards = transaction.workingState.cards.filter((candidate) =>
     candidate.ownerPlayerId === transaction.context.controllerId && candidate.definitionId === effect.cardId);
-  if (existing) {
-    if (existing.generatedBy !== transaction.context.sourceCardId) {
+  if (existingCards.length > 0) {
+    if (existingCards.some((candidate) => candidate.generatedBy !== transaction.context.sourceCardId)) {
       throw new ResolutionRuntimeError('duplicate_created_card', `Existing card '${effect.cardId}' has incompatible creation provenance.`);
     }
+    const existing = existingCards[0]!;
     return {
       effectId: effect.id,
       effectType: 'create_card',
