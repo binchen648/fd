@@ -23,8 +23,9 @@
 ## Adversarial schema checks
 
 - [ ] No arbitrary client winner/score/result payload is admissible.
-- [ ] Participant cannot be in winner/loser/excluded sets inconsistently.
-- [ ] Loss outcome is not conflated with suppression of loss effects.
+- [ ] Winner eligibility exclusion is orthogonal to winner/loser outcome: an ineligible participating non-winner can still be a loser.
+- [ ] A true nonparticipant is neither winner nor loser and is not inserted into the participant outcome set.
+- [ ] Loss outcome is not conflated with suppression of loss effects; suppressed loss effects keep a reviewed policy identity.
 - [ ] Tie/sole-winner/margin facts are internally consistent.
 - [ ] Result identity, trigger identity, scoring plan identity and resource result identity are distinct.
 - [ ] Duplicate/stale scoring is impossible by contract.

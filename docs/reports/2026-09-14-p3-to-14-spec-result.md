@@ -35,7 +35,7 @@ Current runtime distribution is evidence only and receives no promotion in this 
 The spec separates:
 
 1. TO-15 final participant power + immutable trace input;
-2. Battle Result winner/tie/loser/exclusion/margin ownership;
+2. Battle Result participation, winner-eligibility exclusion, winner/loser outcome, loss-effect policy, tie and margin ownership;
 3. TO-03 result-event scheduling ownership;
 4. immutable battle scoring plan and exactly-once scoring receipt;
 5. typed Resource settlement for VP/mana/seals;
@@ -50,6 +50,7 @@ The 13 result consumers may later consume the accepted result-event envelope. Th
 - 28 unique cards: PASS.
 - 13 direct post-result/ended consumers: PASS.
 - cross-axis `after_controller_gains_victory` producer dependency: PASS, covered without denominator change.
+- win eligibility vs loser outcome vs loss-effect suppression: orthogonalized; true nonparticipants are neither winner nor loser.
 - semantic-axis vs historical BATTLE_RESULT exact set: PASS, difference 0.
 - canonical schema arbitrary `unknown` payload: none.
 - mutable `consumed` flag inside immutable scoring plan: none.

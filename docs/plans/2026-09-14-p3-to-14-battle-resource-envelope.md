@@ -47,21 +47,26 @@ Separately, the accepted Trigger Gateway has one **cross-axis Scoring/Battle pro
 These are normative concepts, not a requirement to copy these exact TypeScript declarations.
 
 ```ts
-type BattleExclusion =
+type BattleWinExclusion =
   | { kind: 'defeated' }
   | { kind: 'cannot_win' }
   | { kind: 'rule_excluded'; policyId: string };
 
-type BattleOutcome =
-  | { class: 'winner' }
-  | { class: 'loser'; lossEffectsEligible: boolean }
-  | { class: 'excluded'; exclusion: BattleExclusion };
+type BattleOutcomeClass = 'winner' | 'loser';
+
+type BattleLossEffectPolicy =
+  | { eligible: true }
+  | { eligible: false; suppressionPolicyId: string };
 
 interface BattleParticipantOutcome {
   playerId: string;
+  participated: true;
   finalPower: number;
   powerTraceRef: string;
-  outcome: BattleOutcome;
+  eligibleForWin: boolean;
+  winExclusion?: BattleWinExclusion;
+  outcome: BattleOutcomeClass;
+  lossEffects: BattleLossEffectPolicy;
 }
 
 interface BattleResultEnvelope {
@@ -119,15 +124,15 @@ Every identity above is server-authored. Clients may reference an offered intera
 
 Battle Result consumes a frozen authoritative participant set and final Power Trace refs. It must determine:
 
-1. the eligible participant set;
-2. typed exclusions, including defeated/cannot-win rules;
-3. winner set from eligible final power;
+1. the participating set;
+2. winner eligibility for each participant plus typed exclusion, including defeated/cannot-win rules;
+3. winner set from **eligible** final power only;
 4. tie / sole-winner fact;
-5. loser set separately from excluded participants;
+5. loser set from participating non-winners, including participants who were ineligible to win unless an accepted rule explicitly says they did not participate;
 6. margin from the accepted rules definition;
-7. loss-effect eligibility separately from the fact that a participant did not win.
+7. loss-effect eligibility/suppression separately from both winner eligibility and the winner/loser outcome.
 
-A participant may have lost the battle while a separate rule suppresses defeat/loss side effects. The result model must not erase the outcome merely because a later loss effect is ignored. Trigger production uses the reviewed loss-effect policy for the specific event.
+Winner eligibility, battle outcome, and loss-effect settlement are three independent rule dimensions. A participating player may be excluded from winning and still be a loser; a loser may separately ignore/suppress some loss effects. The result model must not erase a loss because the player was ineligible to win or because a later loss effect is suppressed. Only a player who did **not participate** in that battlefield's power resolution is neither a winner nor a loser and must not appear in `BattleParticipantOutcome[]`. Trigger production uses the authoritative loser set plus the reviewed loss-effect policy for the specific event.
 
 No card/ability ID may be used to decide generic winner, loser, tie, margin, or exclusion semantics. Card-specific rules must first normalize into typed eligibility/power/loss-effect inputs owned by their proper gateway.
 
@@ -141,7 +146,7 @@ Minimum payloads:
 |---|---|
 | `after_battle_result_determined` | result identity, battlefield, participant IDs, winners, losers, excluded IDs, tie/sole-winner facts |
 | `after_controller_wins_battle` | result identity, controller, winner set, sole/shared-win fact |
-| `after_controller_loses_battle` | result identity, controller, winner set, controller loss-effect eligibility |
+| `after_controller_loses_battle` | result identity, controller, winner set, authoritative loser membership, controller loss-effect eligibility/suppression |
 | `after_controller_first_loses_battle` | result identity, controller, authoritative loss ordinal/history identity |
 | `after_controller_gains_victory` | result identity, scoring receipt/victory transition identity, controller, reviewed victory-policy identity and causation |
 | `after_battle_ended` | result identity plus terminal scoring receipt/status |
@@ -242,8 +247,12 @@ Reject without legacy fallback when a claimed Battle Result route has:
 - missing/duplicate battle or result identity;
 - missing or stale Power Trace ref;
 - non-finite final power or margin;
-- participant duplicated across winner/loser/excluded classes;
-- winner not in eligible participant set;
+- participant marked winner while ineligible to win;
+- participating non-winner omitted from loser membership without an accepted rule saying the player did not participate;
+- nonparticipating player inserted into participant/winner/loser sets;
+- eligible/ineligible flag inconsistent with its typed win-exclusion record;
+- loss-effect suppression missing its reviewed policy identity;
+- winner not in the participating eligible set;
 - malformed tie/sole-winner facts;
 - unknown exclusion/loss-effect policy;
 - scoring plan/result identity mismatch;
