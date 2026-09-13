@@ -124,6 +124,8 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
       return { id: `produce-${binding}`, type: 'remove_advantage_position', target: { expr: 'same_battlefield_opponents' }, bind: binding };
     case 'move_all_remaining':
       return { id: `produce-${binding}`, type: 'move_all_remaining', owner: 'controller', from: 'hand', to: 'discard', bind: binding };
+    case 'move_card':
+      return { id: `produce-${binding}`, type: 'move_card', target: 'selected_cards', to: 'skill', bind: binding };
     case 'draw_cards':
       return { id: `produce-${binding}`, type: 'draw_cards', player: 'controller', count: 0, bind: binding };
     case 'play_selected_cards':
@@ -347,7 +349,7 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
       { id: 'fractional-mana', type: 'adjust_mana', player: 'controller', amount: 1.5 },
     ], 'invalid_resolution_node');
     expectRawDataFlowIssue([
-      { id: 'bad-mana', type: 'adjust_mana', player: 'controller', amount: { op: 'add', args: [1, 2] } },
+      { id: 'bad-mana', type: 'adjust_mana', player: 'controller', amount: { op: 'add', args: [] } },
     ], 'invalid_resolution_node');
   });
 
