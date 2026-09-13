@@ -133,15 +133,16 @@ Core 路径实际阶段：
 
 当前实现：
 
-- `D:\fd\packages\rules\src\ability\types.ts` 的 `LegalAction` 没有普通 `move` action，只有 `deploy_player`。
-- `D:\fd\packages\rules\src\ability\interpreter.ts` 的 `getLegalActions` 在同一个优先决策中同时暴露可用 `play_card`、`stage_attack_card`、`activate_ability`。
-- `D:\fd\packages\rules\src\match-session.ts` 的 `passPriority` 会结束当前玩家在当前阶段的 decision，而不是推进行动阶段子步骤。
+- `D:\fd\packages\rules\src\ability\types.ts` 的 `LegalAction` 已新增 scoped `normal_move` / `pass_move` action。
+- `D:\fd\packages\rules\src\ability\interpreter.ts` 在 `modeState.strictActionFlow === true` 时通过 `AbilityRuntime.actionTurn` 暴露 Action Phase 子步骤：`before_move_ability_window`、`normal_move_or_pass`、`after_move_ability_window`、`play_batch`、`after_play_ability_window`。
+- `D:\fd\packages\rules\src\match-session.ts` 的 `passPriority` 在 strict flow 下不直接结束玩家 decision，而是先推进行动阶段窗口；在 play step 如果仍有 legal playable hand card，则以 `play_required` fail-closed。普通出牌义务按手牌计算：0 张可 pass，1 张可确认 1 张，2 张及以上必须 staged 满 2 张普通手牌攻击再确认；技能区卡牌不计入普通手牌出牌义务。
 - `D:\fd\packages\rules\src\core\game-loop.ts` 的 `stepGameLoop` 有 action 阶段 `move` 和 `play` input，但该路径按 phase transition 处理，不是产品联机路径的子状态机。
 
 结论：
 
-- 当前没有结构化 Action Phase sub-state machine。
-- “常规移动已执行/跳过”、“常规出牌批次已执行/跳过”、“当前处于第几个行动能力窗口”未在 `GameState` 或 `AbilityRuntime` 中作为权威字段存在。
+- Golden Flow 1 范围内已经存在结构化 Action Phase sub-state machine candidate。
+- “常规移动已执行/跳过”、“常规手牌出牌批次已执行/跳过”、“当前处于第几个行动能力窗口”在 strict flow 中由 `AbilityRuntime.actionTurn` 持有。
+- 该能力仍是 scoped transitional owner；未启用 strict flow 的旧 action-phase 路径仍可同时暴露 play/ability，并不构成全局 FlowEngine 完成证据。
 
 ## 7. Movement architecture
 
@@ -156,12 +157,13 @@ Core 路径实际阶段：
 产品路径差异：
 
 - `D:\fd\packages\rules\src\match-session.ts` 的 `dispatchDeployPlayer` 在 `advance` 阶段直接写 `player.locationId = locationId`，记录 `player_deployed`，并处理工房部署魔力、战场地利。
-- 未找到产品路径中把普通行动移动作为 `AbilityCommand` 执行的证据。
+- Golden Flow 1 scoped path 已把普通行动移动作为 `AbilityCommand` 的 `normal_move` 执行，并调用 `core/movement.ts::movePlayer`。
+- 旧产品路径中仍不存在全局 always-on 普通行动移动 command。
 
 结论：
 
 - 移动规则能力存在于 core helper。
-- 产品 Flow 尚未把常规移动作为结构化 action sub-step 暴露。
+- 产品 Flow 在 `strictActionFlow` 场景中已把常规移动作为结构化 action sub-step 暴露。
 - `deploy`、`move`、`effect move`、`round cleanup remove from board` 当前不是同一套 domain command/event。
 
 ## 8. Play Batch architecture
@@ -358,7 +360,7 @@ P2:
 - 以 `D:\fd\packages\rules\src\match-session.ts` 的 `MatchSession` 作为当前产品 Flow Engine 迁移入口，不从 `core/game-loop.ts` 反向扩展新产品流程。
 - 新增 `FlowState` 时挂载到 `GameState`，不要替代 `AbilityRuntime`；`AbilityRuntime` 继续负责卡牌/能力窗口，`FlowState` 负责阶段、座位、子步骤、动作配额和暂停原因。
 - 把 `D:\fd\packages\rules\src\core\movement.ts` 的 `movePlayer` 包装成产品 `normal_move` command，并由 Action Phase sub-state 控制只能在 move step 执行。
-- 保留 `D:\fd\packages\rules\src\ability\interpreter.ts` 的 `playBatch`，但只允许 Flow 的 `commit_play_batch` 在 play step 调用常规批次；单张 `play_card` 应明确限制为非攻击/效果出牌或进入 staging 规则。
+- 保留 `D:\fd\packages\rules\src\ability\interpreter.ts` 的 `playBatch`；Golden Flow 1 strict path 已要求普通手牌攻击通过 staged batch 的 `confirm_staged_attack` 进入 `playBatch`，技能区卡牌不计入普通手牌出牌义务，但非 strict legacy path 仍允许单张 `play_card`。
 - 将 `dispatchDeployPlayer` 改造为 deploy domain service，并纳入 Flow command transaction boundary。
 - 战斗阶段拆分为：battle ability seats、battlefield resolution、battle scoring、post battle triggers、cleanup、round_end。每步都应可暂停并能投影给客户端。
 - 将 `combat-resolver.ts` 内的具体卡牌特例迁出到 ability/effect primitive 或 registered battle hooks。
