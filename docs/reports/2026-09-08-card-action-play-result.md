@@ -76,7 +76,7 @@ remainingSkippedCardActionCount.after=6
 
 ## Verification
 
-Fresh commands run on 2026-09-08:
+Fresh commands run on 2026-09-09:
 
 ```text
 node docs/audits/fd-card-action-play-inventory.mjs
@@ -84,18 +84,33 @@ PASS: sourceFiles=14, cardActionSemanticAbilities=7, eligible=1, skipped=6
 ```
 
 ```text
-npx vitest run packages/rules/tests/regression/card-action-play.test.ts packages/rules/tests/regression/card-action-add-to-attack.test.ts packages/rules/tests/regression/phase-3a-core-primitives.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts
-PASS: 4 test files, 36 tests
+npx vitest run packages/rules/tests/regression/card-action-play.test.ts packages/rules/tests/regression/attack-play-classifier-regression.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts
+PASS: 4 test files, 54 tests
 ```
 
 ```text
-npx playwright test e2e/fd-time-alter-core-primitive.spec.ts --project=chromium
+npx playwright test -c playwright.config.ts e2e/fd-time-alter-core-primitive.spec.ts --project=chromium
 PASS: 1 test
+```
+
+```text
+npx playwright test -c playwright.config.ts e2e/fd-time-alter-core-primitive.spec.ts --project=chromium --repeat-each=5
+PASS: 5 tests
 ```
 
 ```text
 npm run typecheck
 PASS: tsc -b
+```
+
+```text
+npm run content:compile
+PASS: 7 masters, 7 servants, 20 events, 0 blocking issues
+```
+
+```text
+npm run phase3:coverage
+PASS: blockingIssues=0, newRuntimeSemanticRouted=8, legacyResolveEffect=53, dualRuntime=0
 ```
 
 ## Boundaries
@@ -104,3 +119,4 @@ PASS: tsc -b
 - `play_source_card` is now covered only for Kayneth `volumen.extra-play` as the separate `PLAY_SOURCE_CARD_WITH_COST_RESPONSE` scoped contract.
 - Drake's `play_selected_cards` remains unverified because it introduces hidden/private, power, and lifecycle dependencies.
 - Normal action-phase hand-card play remains owned by the shared PlayBatch/flow runtime and is not promoted by this scoped ability slice.
+- Gate C evidence is restored-snapshot browser/WS/reconnect/stale candidate evidence. It does not prove natural create/select/start progression into this action window.

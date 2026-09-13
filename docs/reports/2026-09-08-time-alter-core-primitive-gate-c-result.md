@@ -1,21 +1,17 @@
 # Time Alter Core Primitive Gate C Result
 
-- Date: 2026-09-08
+- Date: 2026-09-09
 - Claim: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 - Scope: Kiritsugu `master.kiritsugu.skill.time-alter` ability `time-alter.action` only
-- Parent slice: Phase 3A Core Primitive Pilot
+- Parent slice: `CARD_ACTION_SEMANTICS_MINIMAL_PLAY`
 - Gate C status: candidate evidence added; independent review required before any promotion
 
 ## Implemented
 
-- Added a deterministic remote-room fixture for `time-alter.action` that restores a real `MatchSession` with Kiritsugu, the compiled Time Alter skill, one legal hand attack card, and one deck card to draw.
+- Added a deterministic remote-room fixture inside `e2e/fd-time-alter-core-primitive.spec.ts` that restores a real `MatchRoom` with Kiritsugu, the compiled Time Alter skill, one legal hand attack card, and one deck card to draw.
 - Added browser/server coverage that starts from the real skill activation button, sends WebSocket commands with `expectedRevision`, keeps the pending hand-card target window across reconnect, resolves through server revalidation, and checks the authoritative projection after resolution.
 
 ## Evidence
-
-- `e2e/support/build-time-alter-snapshot.ts`
-  - creates the fixture from `createMatchSession` and the executable pack, then restores it through the server room restore path
-  - exposes stable instance IDs only for test-side state assertions; the browser still consumes the projected UI
 
 - `e2e/fd-time-alter-core-primitive.spec.ts`
   - activates `固有时制御` from the browser skill window
@@ -26,8 +22,23 @@
   - verifies `draw_cards` moved the deck top card to hand
   - sends the same command with a stale revision and verifies rejection without duplicate movement or draw
 
+## Verification
+
+Fresh commands run on 2026-09-09:
+
+```text
+npx playwright test -c playwright.config.ts e2e/fd-time-alter-core-primitive.spec.ts --project=chromium
+PASS: 1 test
+```
+
+```text
+npx playwright test -c playwright.config.ts e2e/fd-time-alter-core-primitive.spec.ts --project=chromium --repeat-each=5
+PASS: 5 tests
+```
+
 ## Boundary
 
+- This is restored-snapshot browser/WS/reconnect/stale candidate evidence. It does not prove natural create/select/start progression into this action window.
 - This report does not claim Gate C for `command-spell.gain-mana`; Irisviel `conversion-magic.preparation` has a separate Gate C candidate report.
 - This report does not migrate any additional cards or primitives.
 - This report does not promote Time Alter, Phase 3A, or any primitive to `E2E_VERIFIED`.
