@@ -130,6 +130,13 @@ interface LoaderOptions {
   workspaceRoot: string;
 }
 
+export type SourceAssetValidation = 'required' | 'metadata_only';
+
+interface ValidationOptions extends LoaderOptions {
+  sourceAssetValidation?: SourceAssetValidation;
+  sourceAssetRoot?: string;
+}
+
 export interface AuthoringCard {
   id: string;
   name: string;
@@ -184,36 +191,61 @@ function definitionHash(archives: AuthoringArchive[]): string {
     .digest('hex');
 }
 
-function workspaceRelative(path: string, workspaceRoot: string): string {
-  const normalized = path.replaceAll('\\', '/');
+function workspaceRelative(pathValue: string, workspaceRoot: string): string {
+  const normalized = pathValue.replaceAll('\\', '/');
   const root = workspaceRoot.replaceAll('\\', '/').replace(/\/$/, '');
   return normalized.startsWith(`${root}/`) ? normalized.slice(root.length + 1) : normalized;
+}
+
+function sourceRelative(pathValue: string, workspaceRoot: string): string {
+  const relative = workspaceRelative(pathValue, workspaceRoot);
+  const chmIndex = relative.indexOf('chm-extract/');
+  if (chmIndex >= 0) return relative.slice(chmIndex);
+  return relative.replace(/^\.\//, '');
 }
 
 function firstRegexMatch(value: unknown, pattern: RegExp): string | undefined {
   return JSON.stringify(value).match(pattern)?.[1];
 }
 
-function htmPathForArchive(archive: AuthoringArchive, workspaceRoot: string): string {
-  const nested = firstRegexMatch(archive, /"htmPath"\s*:\s*"([^"]+)"/);
-  return workspaceRelative(nested ?? `chm-extract/${archive.name}.htm`, workspaceRoot);
+function isSourceImagePath(value: unknown): value is string {
+  return typeof value === 'string' && /\.(?:png|jpg|jpeg|webp)$/i.test(value);
 }
 
-function imagesForArchive(archive: AuthoringArchive, workspaceRoot: string): string[] {
-  const directImages = [...JSON.stringify(archive).matchAll(/"(?:imagePath|sourceImage)"\s*:\s*"([^"]+)"/g)]
-    .map((match) => workspaceRelative(match[1]!, workspaceRoot))
-    .filter((path) => existsSync(resolve(workspaceRoot, path)));
-  if (directImages.length > 0) return directImages;
+function htmPathForArchive(archive: AuthoringArchive, workspaceRoot: string): string {
+  const nested = firstRegexMatch(archive, /"htmPath"\s*:\s*"([^"]+)"/)
+    ?? firstRegexMatch(archive, /"([^"]+\.htm)"/);
+  return sourceRelative(nested ?? `chm-extract/${archive.name}.htm`, workspaceRoot);
+}
 
-  const htmPath = htmPathForArchive(archive, workspaceRoot);
-  const htmAbsolutePath = resolve(workspaceRoot, htmPath);
-  if (!existsSync(htmAbsolutePath)) return ['chm-extract/图包/图片1.png'];
+function declaredImagesForArchive(archive: AuthoringArchive, workspaceRoot: string): string[] {
+  const images: string[] = [];
 
-  const htm = readFileSync(htmAbsolutePath, 'utf8');
-  const screenshots = [...htm.matchAll(/ScreenShot_[^"'<>\\]+\.png/g)]
-    .map((match) => `chm-extract/图包/${match[0]}`)
-    .filter((path) => existsSync(resolve(workspaceRoot, path)));
-  return screenshots.length > 0 ? screenshots : ['chm-extract/图包/图片1.png'];
+  const visit = (value: unknown): void => {
+    if (Array.isArray(value)) {
+      value.forEach(visit);
+      return;
+    }
+    if (!value || typeof value !== 'object') return;
+
+    const record = value as Record<string, unknown>;
+    if (Array.isArray(record.imageOrder)) {
+      record.imageOrder.filter(isSourceImagePath).forEach((image) => images.push(image));
+    }
+    for (const key of ['sourceImage', 'overviewImage', 'imagePath']) {
+      if (isSourceImagePath(record[key])) images.push(record[key]);
+    }
+    if (record.type === 'original_card_image' && isSourceImagePath(record.path)) {
+      images.push(record.path);
+    }
+    for (const [key, child] of Object.entries(record)) {
+      if (['imageOrder', 'sourceImage', 'overviewImage', 'imagePath', 'path'].includes(key)) continue;
+      visit(child);
+    }
+  };
+
+  visit(archive);
+  return images.map((image) => sourceRelative(image, workspaceRoot));
 }
 
 function sourceForArchive(
@@ -221,12 +253,12 @@ function sourceForArchive(
   workspaceRoot: string,
   imageIndex = 0,
 ): SourceEvidence {
-  const images = imagesForArchive(archive, workspaceRoot);
+  const images = declaredImagesForArchive(archive, workspaceRoot);
   return {
     htmPath: htmPathForArchive(archive, workspaceRoot),
-    imagePath: images[Math.min(imageIndex, images.length - 1)]!,
+    imagePath: images.length > 0 ? images[Math.min(imageIndex, images.length - 1)]! : '',
     imageIndex,
-    reviewedAgainstImage: true,
+    reviewedAgainstImage: images.length > 0,
   };
 }
 
@@ -495,8 +527,10 @@ function referenceIssue(entityId: string, referenceId: string): PackValidationIs
 
 export function validateLoadedPlaytestPack(
   pack: LoadedPlaytestContentPack,
-  options: LoaderOptions,
+  options: ValidationOptions,
 ): PackValidationIssue[] {
+  const sourceAssetValidation = options.sourceAssetValidation ?? 'metadata_only';
+  const sourceAssetRoot = options.sourceAssetRoot ?? options.workspaceRoot;
   const issues: PackValidationIssue[] = validateContentPack(pack).map((issue) => ({
     ...issue,
     blocking: true,
@@ -520,13 +554,46 @@ export function validateLoadedPlaytestPack(
   }
 
   for (const entity of entitySources(pack)) {
-    if (isAbsolute(entity.source.imagePath) || !existsSync(resolve(options.workspaceRoot, entity.source.imagePath))) {
+    if (!entity.source.reviewedAgainstImage) {
       issues.push({
-        code: 'MISSING_IMAGE',
-        message: `${entity.id} references missing image ${entity.source.imagePath}`,
+        code: 'SOURCE_EVIDENCE_REQUIRED',
+        message: `${entity.id} requires an explicit source image declaration in authoring content`,
         entityId: entity.id,
         field: 'source.imagePath',
         blocking: true,
+      });
+      continue;
+    }
+
+    if (isAbsolute(entity.source.imagePath)) {
+      issues.push({
+        code: 'SOURCE_PATH_ABSOLUTE',
+        message: `${entity.id} references absolute source image path ${entity.source.imagePath}`,
+        entityId: entity.id,
+        field: 'source.imagePath',
+        blocking: true,
+      });
+      continue;
+    }
+
+    const imageExists = existsSync(resolve(sourceAssetRoot, entity.source.imagePath));
+    if (sourceAssetValidation === 'required') {
+      if (!imageExists) {
+        issues.push({
+          code: 'MISSING_IMAGE',
+          message: `${entity.id} references missing image ${entity.source.imagePath}`,
+          entityId: entity.id,
+          field: 'source.imagePath',
+          blocking: true,
+        });
+      }
+    } else if (!imageExists) {
+      issues.push({
+        code: 'SOURCE_ASSET_UNVERIFIED',
+        message: `${entity.id} source image was not verified in this checkout: ${entity.source.imagePath}`,
+        entityId: entity.id,
+        field: 'source.imagePath',
+        blocking: false,
       });
     }
   }

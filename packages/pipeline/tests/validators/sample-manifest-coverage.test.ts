@@ -3,9 +3,10 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 import type { SampleCardManifest } from "@fd/contracts";
+import { resolveRepositoryPath } from "../../../../scripts/project-paths";
 import { validateSampleManifest } from "../../src/validators";
 
-const SAMPLE_MANIFEST_PATH = "D:\\fd\\data\\manifests\\sample-cards.json";
+const SAMPLE_MANIFEST_PATH = resolveRepositoryPath("data", "manifests", "sample-cards.json");
 
 function loadManifest(): SampleCardManifest {
   const raw = readFileSync(SAMPLE_MANIFEST_PATH, "utf8");
