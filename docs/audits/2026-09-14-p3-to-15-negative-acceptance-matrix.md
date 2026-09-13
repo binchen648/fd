@@ -55,3 +55,13 @@ The reviewer must additionally reject:
 - a Power Trace that redacts or deletes provenance in the authoritative server record;
 - a projection policy that cannot represent authorized/controller-only source visibility separately from public/redacted viewers;
 - reconnect that restores only a redacted projection as if it were authoritative trace state.
+
+## r2 Addendum — RULE/EFFECT Axis Separation
+
+The reviewer must additionally reject:
+
+- any canonical schema that requires an ability-level `EFFECT_MODIFIER` to pretend its whole effect is one rule operation;
+- an effect modifier without a typed reviewed `effectPolicyId`;
+- an effect owner that absorbs movement, VP transfer, random discard, Card Zone, branching, status, or other non-modifier semantics merely because the ability also has modifier output;
+- a modifier contribution that lacks its own operation/rule-or-layer/scope/value/priority validation;
+- branch effects that lose original transaction ordering when only one branch emits a power contribution.

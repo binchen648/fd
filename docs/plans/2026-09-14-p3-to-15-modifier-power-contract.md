@@ -122,20 +122,45 @@ interface ModifierScopeRef {
   constraints: ModifierConstraint[];
 }
 
-interface ModifierContract {
+interface ModifierContractBase {
   modifierId: string;
   source: ModifierSourceRef;
-  axis: ModifierAxis;
-  operation: ModifierOperation;
-  ruleKey: string;
   scope: ModifierScopeRef;
   applicability: ModifierApplicability[];
-  value?: ModifierValue;
   priorityPolicyId: string;
-  layer?: PowerLayer;
   sourceValidityPolicyId?: string;
   durationPolicyId?: string;
 }
+
+interface RuleModifierContract extends ModifierContractBase {
+  axis: 'rule_modifier';
+  operation: ModifierOperation;
+  ruleKey: string;
+  value?: ModifierValue;
+  layer?: PowerLayer;
+}
+
+type ModifierContributionTarget =
+  | { kind: 'rule'; ruleKey: string; layer?: PowerLayer }
+  | { kind: 'power_layer'; layer: PowerLayer; ruleKey?: string };
+
+interface ModifierContribution {
+  contributionId: string;
+  operation: 'set' | 'add' | 'multiply' | 'ignore';
+  target: ModifierContributionTarget;
+  scope: ModifierScopeRef;
+  value?: ModifierValue;
+  priorityPolicyId: string;
+}
+
+interface EffectModifierContract extends ModifierContractBase {
+  axis: 'effect_modifier';
+  effectPolicyId: string;
+  effectStateRef?: string;
+  contributions: ModifierContribution[];
+}
+
+type ModifierContract = RuleModifierContract | EffectModifierContract;
 
 interface PowerTraceLine {
   traceLineId: string;
@@ -199,7 +224,9 @@ A modifier may enter the authoritative store only when:
 
 - source card instance and source ability are authoritative and validated;
 - the authored semantic shape maps to a reviewed rule/effect contract;
-- operation and `ruleKey` are supported as a pair;
+- a `rule_modifier` has a supported operation + `ruleKey` pair;
+- an `effect_modifier` has a reviewed typed `effectPolicyId`; only modifier-relevant outputs are emitted as normalized `ModifierContribution` records, while non-modifier effects remain with their typed effect owners;
+- each emitted contribution has a non-empty typed `target` (`rule` or `power_layer`) and validates its own operation/target/scope/value/priority independently;
 - target/scope and applicability predicates are compiler-normalized to the closed typed unions above or to an independently accepted policy reference;
 - unknown subject/object/constraint/applicability shapes fail admission before a modifier reaches runtime storage;
 - priority is explicit or supplied by an accepted default policy ID;
@@ -235,7 +262,7 @@ A rule modifier must preserve its `ruleKey`; two modifiers with the same numeric
 
 These are effect-driven state changes such as power bonus, terrain multiplier, status creation, reversal of situation/event modifiers, or opponent-power reduction/set.
 
-Effect modifiers must be normalized to typed state/result contracts before they participate in Power. A legacy extended-effect tag alone is not a final modifier contract.
+`EFFECT_MODIFIER` is an ability-level semantic-axis classification, not permission for Modifier/Power to own the entire ability effect list. An effect modifier must bind to a reviewed typed `effectPolicyId`. That effect owner may emit zero or more normalized `ModifierContribution` records when the effect actually changes a rule/power layer. Movement, random discard, VP transfer, card-zone mutation, status creation, branching, and other non-modifier consequences remain with their own typed effect owners and keep their original transaction ordering. A legacy extended-effect tag alone is not a final modifier contract.
 
 ## 7. Source Identity And Lifecycle
 
@@ -408,7 +435,10 @@ Both remain implementer/transitional evidence. TO-15 specification acceptance mu
 Reject without semantic fallback:
 
 - missing/stale source card or ability;
-- unsupported operation/rule pair;
+- unsupported rule-modifier operation/rule pair;
+- effect modifier missing reviewed `effectPolicyId`;
+- effect modifier that absorbs non-modifier side effects instead of composing typed owners;
+- malformed modifier contribution, missing contribution target, or contribution whose operation/target/scope/value/priority is unsupported;
 - missing priority where ordering can change outcome;
 - invalid scope/constraint;
 - unsupported or ambiguous Power layer;

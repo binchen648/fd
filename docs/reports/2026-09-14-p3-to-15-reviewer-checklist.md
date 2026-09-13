@@ -50,3 +50,12 @@ Decision: `SPEC_ACCEPTED` or `PLAN_NEEDS_REVISION`.
 - [ ] authoritative `PowerTraceLine` always retains full provenance and uses a projection-policy reference rather than being internally `redacted`.
 - [ ] viewer projection is derived and can distinguish public, controller/authorized-only, and redacted outcomes without mutating authoritative trace.
 - [ ] `redaction='details'` projected trace is structurally unable to leak source/input/operand/output fields; redaction is enforced by the type shape, not prose alone.
+
+## r2 Review Addendum
+
+- [ ] canonical contract is discriminated: RULE modifier vs EFFECT modifier;
+- [ ] RULE modifier owns `operation + ruleKey` directly;
+- [ ] EFFECT modifier owns a typed `effectPolicyId` and emits only normalized modifier/power contributions;
+- [ ] effect-level non-modifier side effects remain with their typed owners and retain transaction order;
+- [ ] each contribution validates operation/rule-or-layer/scope/value/priority independently;
+- [ ] ability-level EFFECT_MODIFIER membership is not treated as permission to migrate the entire ability into Modifier/Power.
