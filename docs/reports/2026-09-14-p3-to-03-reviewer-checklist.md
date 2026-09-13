@@ -42,6 +42,7 @@ Expected: `37 13`.
 ## 3. Identity Contract
 
 - [ ] Event identity is distinct from event producer identity and consuming trigger-source identity.
+- [ ] Event producer is a non-empty discriminated identity; `card_ability` requires both card-instance and ability ID, `card` requires card-instance ID, and `system` requires stable system ID.
 - [ ] The processed/idempotency key includes event ID + source card instance + source ability.
 - [ ] Controller/actor identities are explicit where semantically required.
 - [ ] Causation identity is mandatory enough to audit nested and derived events.
@@ -77,7 +78,8 @@ Expected: `37 13`.
 - [ ] Source card and ability are revalidated at settlement.
 - [ ] Controller/ownership, source-active, location, battle, lifecycle/limit state are revalidated when required.
 - [ ] Stale/corrupt optional interaction state fails closed.
-- [ ] Failing dispatch preserves resources, zones, status, phase/priority, pending state, events/logs, processed state, and revision.
+- [ ] Failing dispatch preserves resources, zones, status, phase/priority, pending state, events/logs, processed state, revision, and terminal trigger state.
+- [ ] Effect-settlement failure remains non-terminal/unprocessed; `invalidated` may commit only as a separate successful revalidation outcome that retains no failed effect mutation.
 - [ ] Failure in a later command does not roll back an earlier successfully committed command.
 
 ## 8. Projection And Reconnect

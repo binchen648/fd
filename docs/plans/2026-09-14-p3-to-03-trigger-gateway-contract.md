@@ -75,14 +75,23 @@ type StrictDomainEventType =
   | 'after_player_deployed_to_battlefield';
 
 type TriggerPolicy = 'forced' | 'optional';
-type TriggerTerminalState = 'processed' | 'declined' | 'invalidated' | 'failed';
+type TriggerTerminalState = 'processed' | 'declined' | 'invalidated';
 type TriggerVisibility = 'public' | 'controller_only' | 'redacted';
 
-interface EventProducerRef {
-  sourceCardInstanceId?: string;
-  sourceAbilityId?: string;
-  sourceSystem?: string;
-}
+type EventProducerRef =
+  | {
+      kind: 'card_ability';
+      sourceCardInstanceId: string;
+      sourceAbilityId: string;
+    }
+  | {
+      kind: 'card';
+      sourceCardInstanceId: string;
+    }
+  | {
+      kind: 'system';
+      sourceSystem: string;
+    };
 
 interface DomainEventEnvelope<TPayload = unknown> {
   eventId: string;
@@ -124,6 +133,7 @@ interface ProcessedTriggerKey {
 
 All strict events require:
 
+- a non-empty discriminated producer identity: either `card_ability` with both card-instance and ability identity, `card` with card-instance identity, or `system` with a stable system identity;
 - unique stable `eventId`;
 - event type from the accepted 13-type inventory;
 - authoritative creation revision;
@@ -184,7 +194,7 @@ A forced trigger:
 - is scheduled automatically after discovery and revalidation;
 - cannot be declined by the client;
 - executes only after its ordering slot is authoritative;
-- becomes `processed`, `invalidated`, or `failed` exactly once.
+- becomes `processed` or `invalidated` exactly once; effect-settlement failure itself does not create a terminal state.
 
 ### 6.2 Optional
 
@@ -251,6 +261,10 @@ A failing dispatch or forced settlement rolls back all mutation performed by tha
 
 A failure in a later command does not roll back an earlier successfully committed command. This matches the accepted staged-interaction transaction boundary.
 
+Effect-settlement failure is not an authoritative terminal transition. After rollback, the trigger remains non-terminal/unprocessed with the same live scheduling state unless a later authoritative revalidation proves the source/event permanently invalid.
+
+`invalidated` is a successful scheduler outcome, not a failed-dispatch side effect. It may commit only when a revalidation dispatch itself succeeds in proving that the trigger can no longer legally settle (for example, a required source no longer exists). That invalidation transition may update scheduler bookkeeping, terminal history, revision, and an audit log as one atomic successful scheduler transaction, but it may not retain any failed effect mutation.
+
 ## 10. Projection And Reconnect
 
 Projection must expose enough information to render server progress without leaking hidden data.
@@ -269,7 +283,7 @@ Reconnect:
 
 ## 11. Terminal States And Cleanup Ownership
 
-`processed`, `declined`, `invalidated`, and `failed` trigger records are terminal for the same trigger identity.
+`processed`, `declined`, and `invalidated` trigger records are terminal for the same trigger identity. Effect-settlement failure is non-terminal and leaves authoritative trigger state unchanged after rollback.
 
 The Trigger Gateway owns scheduler bookkeeping only. It may remove a trigger from the live queue and retain replay-protection history.
 

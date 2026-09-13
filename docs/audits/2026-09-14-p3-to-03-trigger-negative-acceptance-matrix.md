@@ -42,10 +42,11 @@
 | 31 | hidden payload is projected to unauthorized viewer | reject projection; no leak | none | no |
 | 32 | source/card translated text is parsed at runtime to decide eligibility | reject design/runtime candidate | none | no |
 | 33 | card or ability ID is used as generic gateway eligibility branch | reject design/runtime candidate | none | no |
-| 34 | failed effect settlement marks trigger processed | rollback processed mark with dispatch | none | no |
+| 34 | failed effect settlement writes any terminal state or processed mark | rollback all settlement/scheduler mutation; trigger remains non-terminal/unprocessed | none | no |
 | 35 | failed optional second command rolls back an earlier committed command | forbidden cross-command rollback | earlier commit remains | no |
 | 36 | terminal trigger is rescheduled by retry logic | reject/no-op | none | no |
 | 37 | phase timing/continuous hook not in strict 13-type inventory is coerced into domain event | reject classification | none | no |
+| 38 | event producer is empty, or `card_ability` omits card/ability identity, or `system` omits stable system identity | reject admission | none | no |
 
 ## Preservation Set For Failing Dispatches
 
