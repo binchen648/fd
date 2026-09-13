@@ -339,3 +339,11 @@ Permitted final status:
 - Coverage artifact now records the accepted source-validity metadata (`kind=accepted_source_state_policy`, `owner=card_zone_source_state`, policy `fd.card-zone.active-card-source.v1`) while preserving the raw runtime counters above.
 - P3-TO-12 releases the runtime hot-file lane. P3-TO-13 remains `WAIT_TO07`; P3-TO-07 is the next prerequisite lane.
 - No other Lifecycle/reset row inherits migration or Gate acceptance from SC3.
+## P3-A03 TO-07 Synchronization — 2026-09-14
+
+- P3-TO-07 Gate C Factory: `REVIEW_ACCEPTED` at factory candidate `5515d57adaf7ed31c12bad377700498cc5051b28`, independent review `5951985194fdb60c949d6c9535d81a4215480bf4`.
+- Fresh review evidence: typecheck PASS; factory reconnect/stale contract `5/5` PASS; compatibility Gate C set `4/4` PASS.
+- TO-07 changes no rule runtime, compiler, content, projection implementation, taxonomy, or coverage KPI, so Phase 3 raw/accepted legacy-new-dual counters do not change in this synchronization.
+- The harness requires a new post-reload projection before reconnect success and a newly received stale-revision error before stale rejection success; it cannot satisfy those assertions from old trace entries alone.
+- P3-TO-13 is unblocked from `WAIT_TO07` to `READY_RUNTIME_OWNER` and may consume the accepted harness for stale/reconnect mechanics.
+- TO-07 itself promotes no card or mechanic Gate state; TO-13 still requires its own scoped Gate A/B/C implementation and independent review.
