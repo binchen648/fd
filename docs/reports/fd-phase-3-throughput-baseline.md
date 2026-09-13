@@ -347,3 +347,15 @@ Permitted final status:
 - The harness requires a new post-reload projection before reconnect success and a newly received stale-revision error before stale rejection success; it cannot satisfy those assertions from old trace entries alone.
 - P3-TO-13 is unblocked from `WAIT_TO07` to `READY_RUNTIME_OWNER` and may consume the accepted harness for stale/reconnect mechanics.
 - TO-07 itself promotes no card or mechanic Gate state; TO-13 still requires its own scoped Gate A/B/C implementation and independent review.
+
+## P3-A03 TO-13 Synchronization — 2026-09-14
+
+- P3-TO-13 Interaction Runtime: `REVIEW_ACCEPTED` for the single Drake private/optional hand-play representative at runtime `3964556699dafc116a67d7f43af9a740d17a0a04`, independent R2 evidence `8c7349e8a36a198f0f83bf114fe94bc588bc8569`.
+- The rejected predecessor `914934a3854b6128665917459438f6f1c07c0e86` was not promoted; its three P1 production-boundary findings are independently closed in R2.
+- Strict target-based PendingInteraction denominator remains `11`; TO13 synchronizes exactly `1` migrated representative with scoped dual runtime `0`, and the other `10` rows inherit nothing.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0`; the raw reporter does not classify the accepted TO13 route, so no synthetic global legacy/new delta is inferred.
+- Fresh compiled evidence remains definition hash `26167661823b52de598c77a59df4d05440a6bfced7d68cd3e04d11353d72dbaa`, `70` cards, `14` characters, and `0` blocking issues.
+- The generated coverage artifact changed only timestamp/source-line metadata and is intentionally not committed; classifier/taxonomy logic remains untouched.
+- TO13 releases the exclusive runtime hot-file lane.
+- Exact P3-B04 PLAY candidate `628238a696d9adfdbfb3a3c404871a8405a6ff8d` remains reachable and already has an A02 reviewer packet; the next dependency is P3-R04 independent review rather than duplicate B04 implementation.
+- P3-B05 remains gated on P3-R04 acceptance/clearance. TO14/TO15 spec acceptance does not by itself authorize Battle/Modifier runtime implementation.
