@@ -5,7 +5,7 @@
   "name": "Domain Event Trigger Gateway",
   "owner": "Codex B",
   "lane": "SPECIFICATION_ONLY",
-  "status": "READY_SPEC_OWNER",
+  "status": "SPEC_ACCEPTED",
   "maximumCompletionClaim": "SPEC_REVIEW_READY",
   "runtimeAuthorized": false,
   "denominators": {
@@ -22,12 +22,23 @@
     "interaction_template_handoff",
     "projection_and_reconnect",
     "terminal_cleanup",
-    "fail_closed_invalid_event"
+    "fail_closed_invalid_event",
+    "cancellation_ownership",
+    "cleanup_ownership"
   ],
   "forbidden": [
     "runtime changes",
     "card-specific trigger cases",
     "Gate promotion",
     "classifying phase or continuous hooks as domain events"
-  ]
+  ],
+  "acceptedSpec": {
+    "branch": "codex/b-p3-to-03-trigger-gateway-contract-r2",
+    "commit": "ac70c33cb943d99d02f1f7077d80b36337014439",
+    "reviewBranch": "codex/r-p3-to-03-trigger-gateway-r2-review",
+    "reviewCommit": "6ce17aab18ea20cec7e5fcfc6efb4fc5f6384f6e",
+    "reviewDecision": "SPEC_ACCEPTED",
+    "runtimeAuthorized": false,
+    "gatePromotionPerformed": false
+  }
 }

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "fd-phase3-review-sync-v1",
+  "date": "2026-09-14",
+  "owner": "Codex A",
+  "sourceTask": "P3-A03",
+  "specificationTask": "P3-TO-03",
+  "status": "COVERAGE_SYNC_CANDIDATE",
+  "reviewOutcome": {
+    "decision": "SPEC_ACCEPTED",
+    "specificationCommit": "ac70c33cb943d99d02f1f7077d80b36337014439",
+    "reviewCommit": "6ce17aab18ea20cec7e5fcfc6efb4fc5f6384f6e",
+    "runtimeAuthorized": false,
+    "gatePromotionPerformed": false
+  },
+  "denominators": {
+    "strictDomainTriggerAbilities": 37,
+    "eventTypes": 13,
+    "explicitLifecycleAbilities": 11
+  },
+  "rawCoverage": {
+    "newRuntimeSemanticRouted": 12,
+    "legacyExecuteAbility": 3,
+    "legacyResolveEffect": 49,
+    "dualRuntime": 0,
+    "notClassifiable": 28,
+    "pilotAllowlist": 0,
+    "compiledDefinitionHash": "5aa5a186bb201ce1f491cb6f38907a6267a4f30775113d9dd95651d58ba735d2",
+    "compiledBlockingIssues": 0
+  },
+  "acceptedAggregate": {
+    "source": "P3-A03 B06 sync 5751bc8b143451f22ea07b17fc20e428e910fbb8",
+    "newRuntimeSemanticRouted": 13,
+    "legacyExecuteAbility": 3,
+    "legacyResolveEffect": 48,
+    "dualRuntime": 0,
+    "changeFromTo03": {
+      "new": 0,
+      "legacyExecute": 0,
+      "legacyResolve": 0,
+      "dual": 0
+    }
+  },
+  "b07Dependencies": {
+    "triggerGatewaySpec": {
+      "status": "SATISFIED",
+      "specCommit": "ac70c33cb943d99d02f1f7077d80b36337014439",
+      "reviewCommit": "6ce17aab18ea20cec7e5fcfc6efb4fc5f6384f6e"
+    },
+    "inactiveTargetActivationScope": {
+      "status": "CONFIRMED_FOR_TASK_SCOPE",
+      "evidence": [
+        "data/authoring/masters/master.olga-marie.json#astronomical-science.first-loss",
+        "docs/reports/2026-09-08-card-action-activate-result.md",
+        "E:/Codex/FD/fd-b07-recovery/packages/rules/tests/regression/card-action-activate.test.ts"
+      ],
+      "contract": "existing controller-owned target card; skill zone; inactive before activation"
+    },
+    "runtimeHotFileOwnership": {
+      "status": "BLOCKED",
+      "reason": "E:/Codex/FD/fd-b11-repair1 has uncommitted edits in shared runtime hot files.",
+      "conflictingFiles": [
+        "packages/rules/src/ability/interpreter.ts",
+        "packages/rules/src/ability/resolution-dataflow.ts",
+        "packages/rules/src/ability/executable-card-pack.ts"
+      ]
+    },
+    "resultingStatus": "WAIT_RUNTIME_HOT_FILE_OWNERSHIP"
+  },
+  "nextSpecTask": {
+    "id": "P3-TO-04",
+    "name": "Lifecycle Policy Gateway",
+    "status": "READY_SPEC_OWNER",
+    "lane": "SPECIFICATION_ONLY",
+    "runtimeAuthorized": false,
+    "authority": "docs/plans/fd-phase-3-parallel-work-queue.md marks P3-TO-04 READY_NEXT and places it after Trigger Gateway in the corrected immediate queue."
+  }
+}

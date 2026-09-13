@@ -311,3 +311,12 @@ The current Phase 3 throughput blocker is not raw primitive absence. It is the l
 Permitted final status:
 
 `PHASE_3_THROUGHPUT_OPTIMIZATION_CANDIDATE`
+
+## P3-A03 TO-03 Synchronization — 2026-09-14
+
+- P3-TO-03 Trigger Gateway: `SPEC_ACCEPTED` at spec `ac70c33cb943d99d02f1f7077d80b36337014439`, R evidence `6ce17aab18ea20cec7e5fcfc6efb4fc5f6384f6e`.
+- Correct denominator remains `37` strict Domain Event Trigger abilities across `13` event types.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0`; accepted aggregate remains `new=13 / legacyExecute=3 / legacyResolve=48 / dual=0`. TO-03 contributes no runtime delta.
+- Fresh compiled evidence uses definition hash `5aa5a186bb201ce1f491cb6f38907a6267a4f30775113d9dd95651d58ba735d2` with `0` blocking compile issues after the accepted CI baseline repair.
+- P3-B07 Trigger-spec dependency is satisfied and inactive existing-card activation scope is confirmed, but B07 remains `WAIT_RUNTIME_HOT_FILE_OWNERSHIP` because `fd-b11-repair1` still has uncommitted shared runtime hot-file edits.
+- P3-TO-04 Lifecycle Policy Gateway is dispatched `READY_SPEC_OWNER` in the specification-only lane with corrected denominator `11`; runtime authorization remains `NONE`.

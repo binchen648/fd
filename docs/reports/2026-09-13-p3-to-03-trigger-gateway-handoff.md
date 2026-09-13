@@ -48,3 +48,9 @@ Existing setup, Olga delayed activation, response, and battle-result implementat
 - no collapsing trigger detection into interaction or lifecycle semantics.
 
 Stop at `SPEC_REVIEW_READY` and submit the specification, 37-ability map, negative acceptance matrix, and independent reviewer checklist.
+
+## Acceptance Record
+
+This kickoff handoff is satisfied by P3-TO-03 r2 specification commit `ac70c33cb943d99d02f1f7077d80b36337014439` and independent review commit `6ce17aab18ea20cec7e5fcfc6efb4fc5f6384f6e`, verdict `SPEC_ACCEPTED`.
+
+Specification acceptance authorizes no runtime migration or Gate promotion. P3-B07's Trigger-spec dependency is satisfied, but B07 remains blocked on exclusive runtime hot-file ownership as recorded by P3-A03 on 2026-09-14.
