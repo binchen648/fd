@@ -208,6 +208,10 @@ function firstRegexMatch(value: unknown, pattern: RegExp): string | undefined {
   return JSON.stringify(value).match(pattern)?.[1];
 }
 
+function isSourceImagePath(value: unknown): value is string {
+  return typeof value === 'string' && /\.(?:png|jpg|jpeg|webp)$/i.test(value);
+}
+
 function htmPathForArchive(archive: AuthoringArchive, workspaceRoot: string): string {
   const nested = firstRegexMatch(archive, /"htmPath"\s*:\s*"([^"]+)"/)
     ?? firstRegexMatch(archive, /"([^"]+\.htm)"/);
@@ -215,8 +219,33 @@ function htmPathForArchive(archive: AuthoringArchive, workspaceRoot: string): st
 }
 
 function declaredImagesForArchive(archive: AuthoringArchive, workspaceRoot: string): string[] {
-  return [...JSON.stringify(archive).matchAll(/"([^"]+\.(?:png|jpg|jpeg|webp))"/gi)]
-    .map((match) => sourceRelative(match[1]!, workspaceRoot));
+  const images: string[] = [];
+
+  const visit = (value: unknown): void => {
+    if (Array.isArray(value)) {
+      value.forEach(visit);
+      return;
+    }
+    if (!value || typeof value !== 'object') return;
+
+    const record = value as Record<string, unknown>;
+    if (Array.isArray(record.imageOrder)) {
+      record.imageOrder.filter(isSourceImagePath).forEach((image) => images.push(image));
+    }
+    for (const key of ['sourceImage', 'overviewImage', 'imagePath']) {
+      if (isSourceImagePath(record[key])) images.push(record[key]);
+    }
+    if (record.type === 'original_card_image' && isSourceImagePath(record.path)) {
+      images.push(record.path);
+    }
+    for (const [key, child] of Object.entries(record)) {
+      if (['imageOrder', 'sourceImage', 'overviewImage', 'imagePath', 'path'].includes(key)) continue;
+      visit(child);
+    }
+  };
+
+  visit(archive);
+  return images.map((image) => sourceRelative(image, workspaceRoot));
 }
 
 function sourceForArchive(
