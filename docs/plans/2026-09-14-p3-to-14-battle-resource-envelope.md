@@ -37,8 +37,9 @@ Separately, the accepted Trigger Gateway has one **cross-axis Scoring/Battle pro
 | winner/tie/loser/exclusion/margin | Battle Result owner | owned here |
 | post-result domain events | Battle Result producer + accepted TO-03 Trigger Gateway | producer payload owned here; scheduling owned by Trigger Gateway |
 | optional result-trigger intent | accepted TO-05 Interaction contract | external owner |
-| base/event/competition VP plan + military result plan | Battle Scoring owner | typed plan owned here |
-| actual VP/mana/seal mutation | typed Resource primitive | consumes scoring/trigger continuation |
+| battle-phase Recon reward plan/receipt | Battle Phase Resource owner | typed phase-level plan owned here; not tied to a battlefield winner |
+| base event/competition/location VP plan + military result plan | Battle Scoring owner | typed per-battlefield plan owned here |
+| actual VP/mana/seal mutation | typed Resource primitive | consumes recon/scoring/trigger continuation |
 | movement/card-zone/lifecycle/hidden/special side effects | their reviewed owner | never absorbed into Battle Result |
 | reconnect/projection | MatchSession/Projection | projects immutable result + permitted trace only |
 
@@ -86,11 +87,35 @@ interface BattleResultEnvelope {
   scoringPlanId: string;
 }
 
+type BaseBattlefieldVpSource =
+  | { kind: 'event_pool_share'; battlefieldId: string; eventInstanceIds: string[] }
+  | { kind: 'competition_pool_share'; battlefieldId: string; competitionRuleId: string }
+  | { kind: 'location_reward'; locationId: string; rewardRuleId: string };
+
 interface BattleVpAdjustment {
   playerId: string;
   delta: number;
-  source: 'battle_vp' | 'event_vp' | 'competition_vp' | 'reviewed_rule';
-  sourceRef: string;
+  source: BaseBattlefieldVpSource;
+}
+
+interface ReconRewardAdjustment {
+  playerId: string;
+  delta: number;
+  source: { kind: 'recon_reward'; locationId: string; rewardRuleId: string };
+}
+
+interface ReconRewardPlan {
+  reconRewardPlanId: string;
+  battlePhaseResolutionId: string;
+  roundNumber: number;
+  adjustments: ReconRewardAdjustment[];
+}
+
+interface ReconRewardReceipt {
+  reconRewardReceiptId: string;
+  reconRewardPlanId: string;
+  committedRevision: number;
+  resourceResultIds: string[];
 }
 
 interface BattleMilitaryAdjustment {
@@ -157,20 +182,23 @@ Trigger Gateway owns discovery, forced/optional scheduling, ordering, idempotenc
 
 The generic stage model is:
 
-1. freeze participant/power inputs;
-2. determine and commit one immutable Battle Result together with its immutable **base** scoring plan;
-3. create stable result/win/loss/first-loss event identities and queue their trigger candidates behind a server-owned `post_base_scoring` settlement barrier; event identity exists, but ordinary post-result continuations do not settle yet;
-4. consume the base scoring plan exactly once; commit the battlefield's base event/competition/location VP and military adjustments atomically and create one scoring receipt;
-5. release the `post_base_scoring` barrier; Trigger Gateway may now settle the queued result/win/loss/first-loss consumers according to accepted semantic ordering; their personal VP/rewards are separate typed Resource results and never re-enter the base pool;
-6. when a reviewed Battle/Scoring rule says the controller has **gained a victory**, produce `after_controller_gains_victory` exactly once from the committed result + scoring/victory transition and settle it through the same post-base-scoring Trigger Gateway stage;
-7. only after all required post-battle result/win/loss/first-loss/gains-victory triggers are terminal, produce and settle `after_battle_ended`;
-8. hand off to battle cleanup/lifecycle.
+1. at battle-power-resolution start, build and consume one round/phase-scoped `ReconRewardPlan` exactly once; commit legal Recon +2 VP adjustments atomically and record `ReconRewardReceipt` before battlefield winner determination;
+2. freeze each battlefield's participant/power inputs;
+3. determine and commit one immutable Battle Result together with its immutable **base battlefield** scoring plan;
+4. create stable result/win/loss/first-loss event identities and queue their trigger candidates behind a server-owned `post_base_scoring` settlement barrier; event identity exists, but ordinary post-result continuations do not settle yet;
+5. consume the base battlefield scoring plan exactly once; commit that battlefield's event-pool share / competition-pool share / typed reviewed location reward and military adjustments atomically and create one scoring receipt; event-pool and competition-pool shares belonging to the same base reward commit in the same scoring transaction;
+6. release the `post_base_scoring` barrier; Trigger Gateway may now settle the queued result/win/loss/first-loss consumers according to accepted semantic ordering; their personal VP/rewards are separate typed Resource results and never re-enter the base pool;
+7. when a reviewed Battle/Scoring rule says the controller has **gained a victory**, produce `after_controller_gains_victory` exactly once from the committed result + scoring/victory transition and settle it through the same post-base-scoring Trigger Gateway stage;
+8. only after all required post-battle result/win/loss/first-loss/gains-victory triggers are terminal, produce and settle `after_battle_ended`;
+9. hand off to battle cleanup/lifecycle.
 
 The `post_base_scoring` barrier is normative: ordinary "获胜后额外获得" personal VP and other post-battle win/loss effects cannot settle before base battlefield rewards are committed. If an accepted rule defines a true **pre-scoring** modification to the base scoring plan, that mechanic requires a distinct reviewed pre-scoring contribution contract and explicit `orderingRef`; it cannot bypass the barrier merely because its event type is `after_battle_result_determined`. If an accepted rule requires a different relative order among post-base-scoring collisions, that collision also requires an explicit `orderingRef`. Runtime migration remains blocked when the semantic order is material and unresolved; current implementation order is not automatically normative.
 
 ## 8. Scoring / Resource Composition
 
-The **base** scoring plan is immutable once the result is committed. It contains the shared battlefield reward calculation (event/competition/location reward components as applicable) plus the reviewed base military-result plan. Post-result personal trigger awards or penalties do **not** rewrite that plan; they settle only after the base scoring receipt as separate typed Resource results linked by causation to the same battle result. Card-specific code may not mutate an arbitrary scoring accumulator or fold personal rewards back into the shared pool.
+The **base battlefield** scoring plan is immutable once the result is committed. Its VP adjustments use only the closed `BaseBattlefieldVpSource` union: event-pool share, competition-pool share, or a location reward carrying a reviewed `rewardRuleId`. There is no generic `reviewed_rule`, `battle_vp`, display-label, or card-ID escape hatch. Post-result personal trigger awards or penalties do **not** rewrite that plan; they settle only after the base scoring receipt as separate typed Resource results linked by causation to the same battle result. Card-specific code may not mutate an arbitrary scoring accumulator or fold personal rewards back into the shared pool.
+
+Recon is a separate **battle-phase** resource settlement because canonical rules award legal Recon occupants +2 VP at battle-power-resolution start rather than as a battlefield winner reward. `ReconRewardPlan` is scoped by `battlePhaseResolutionId` and round, consumed once, and cannot be attached to a Miyama/Shinto winner or folded into a battlefield base pool.
 
 All committed VP/mana/command-seal mutations use the typed resource envelope already required by Resource/Numeric:
 
@@ -190,14 +218,16 @@ Base battle scoring uses a system producer linked to `battleResultId/scoringPlan
 
 Semantic idempotency keys:
 
+- battle-phase Recon settlement: `reconRewardPlanId` exactly once per authoritative `battlePhaseResolutionId` / round;
 - result determination: `battleId -> resultId` exactly once;
 - trigger scheduling: accepted TO-03 key `(eventId, sourceCardInstanceId, sourceAbilityId)`;
 - scoring consumption: `scoringPlanId` exactly once;
 - scoring-derived victory production: `victoryTransitionId` exactly once per reviewed victory transition;
 - resource mutation: typed resource result identity exactly once.
 
-Reconnect or stale replay may re-project an existing result/receipt but cannot:
+Reconnect or stale replay may re-project an existing Recon/result/scoring receipt but cannot:
 
+- consume the Recon reward plan a second time for the same battle-phase resolution;
 - determine a second result for the same battle;
 - reschedule a terminal trigger;
 - consume scoring twice;
@@ -212,6 +242,7 @@ Result determination and its immutable base scoring plan are committed before op
 
 For each subsequent dispatch:
 
+- Recon plan consumption and all of its typed +2 VP Resource results commit atomically; a failed Recon dispatch creates no receipt/resource/log/revision and remains retryable at the same authoritative stage;
 - a trigger dispatch rolls back only that trigger dispatch on failure, per TO-03;
 - base scoring consumption and its resource/military mutations commit atomically before the post-base-scoring trigger barrier opens;
 - a failed base scoring dispatch creates no scoring receipt/consumption-ledger entry, no resource result, and no logs/events/revision from the failed dispatch, and the barrier remains closed;
@@ -223,7 +254,7 @@ For each subsequent dispatch:
 
 The server retains the full authoritative result and full Power Trace refs. Viewer projection may redact hidden source detail through the accepted projection policy, but public battle facts required by the game remain stable: battlefield, winner/tie outcome, allowed participant facts, permitted power summary, and committed VP changes.
 
-Projection must never redact authoritative server storage in place. Reconnect receives the same result/receipt identities and terminal state.
+Projection must never redact authoritative server storage in place. Reconnect receives the same Recon/result/scoring receipt identities and terminal state. Projection/reconnect alone never re-consumes the Recon plan or any battlefield scoring plan.
 
 ## 12. 39-Row Admission Boundary
 
@@ -256,7 +287,10 @@ Reject without legacy fallback when a claimed Battle Result route has:
 - malformed tie/sole-winner facts;
 - unknown exclusion/loss-effect policy;
 - scoring plan/result identity mismatch;
-- duplicate scoring consumption;
+- unknown/generic base VP source kind, missing event/source identity, or missing reviewed location reward policy;
+- Recon reward attached to a battlefield winner/scoring plan instead of its phase-level plan;
+- Recon delta or recipient set inconsistent with the reviewed `rewardRuleId` (base rules require +2 VP for each legal Recon occupant at battle-power-resolution start);
+- duplicate Recon or battlefield scoring consumption;
 - client-authored winner, score, resource delta, processed state, or result payload;
 - unresolved semantic ordering that can change outcome;
 - unsupported external owner dependency in a runtime slice that claims full support.
@@ -272,7 +306,8 @@ TO-14 may be independently accepted as a specification only if review confirms:
 - the one cross-axis `after_controller_gains_victory` Scoring/Battle producer dependency is covered without changing 39/28;
 - Power Trace input, Battle Result, Trigger Gateway, Scoring and Resource owners are non-overlapping;
 - stage ordering and unresolved-order policy are explicit;
-- result/scoring/resource identities support exactly-once replay safety;
+- Recon/result/scoring/resource identities support exactly-once replay safety;
+- base battlefield VP sources are a closed discriminated union with no generic `reviewed_rule`/`battle_vp` escape hatch;
 - the post-base-scoring barrier guarantees base battlefield rewards commit before ordinary personal win/loss rewards/effects;
 - optional trigger pauses do not roll back committed result state;
 - projection/reconnect preserves authoritative identities without leaking hidden detail;

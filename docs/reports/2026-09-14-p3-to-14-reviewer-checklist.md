@@ -28,7 +28,11 @@
 - [ ] Loss outcome is not conflated with suppression of loss effects; suppressed loss effects keep a reviewed policy identity.
 - [ ] Tie/sole-winner/margin facts are internally consistent.
 - [ ] Result identity, trigger identity, scoring plan identity and resource result identity are distinct.
-- [ ] Duplicate/stale scoring is impossible by contract.
+- [ ] Duplicate/stale Recon and battlefield scoring are impossible by contract.
+- [ ] Recon +2 VP is a phase-level exactly-once plan/receipt at battle-power-resolution start, not a per-battlefield winner adjustment.
+- [ ] Recon recipient set and delta are validated by the reviewed reward policy; arbitrary numeric Recon deltas fail closed.
+- [ ] Base battlefield VP source is a closed discriminated union; no `reviewed_rule`, ambiguous `battle_vp`, label parser, or card-ID escape hatch exists.
+- [ ] Event-pool share, competition-pool share and reviewed location reward retain typed provenance; personal card/master/servant rewards remain outside the base plan.
 - [ ] Base event/competition/location battle rewards and base military adjustments commit before ordinary post-result personal rewards/effects.
 - [ ] Result/win/loss/first-loss event identities may be queued before scoring, but their ordinary continuations are blocked by `post_base_scoring` until the base scoring receipt commits.
 - [ ] Personal trigger VP never re-enters or rewrites the base battle reward pool.

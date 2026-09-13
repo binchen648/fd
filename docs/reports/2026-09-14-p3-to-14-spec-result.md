@@ -37,11 +37,12 @@ The spec separates:
 1. TO-15 final participant power + immutable trace input;
 2. Battle Result participation, winner-eligibility exclusion, winner/loser outcome, loss-effect policy, tie and margin ownership;
 3. TO-03 result-event scheduling ownership;
-4. immutable base battle scoring plan and exactly-once scoring receipt;
-5. normative `post_base_scoring` barrier before ordinary personal result/win/loss trigger settlement;
-6. typed Resource settlement for personal VP/mana/seals after the base receipt;
-7. scoring-derived `after_controller_gains_victory` producer/trigger handoff;
-8. terminal `after_battle_ended` event and cleanup handoff.
+4. exactly-once battle-phase Recon reward plan/receipt at power-resolution start;
+5. immutable base battlefield scoring plan with closed typed VP sources and exactly-once scoring receipt;
+6. normative `post_base_scoring` barrier before ordinary personal result/win/loss trigger settlement;
+7. typed Resource settlement for personal VP/mana/seals after the base receipt;
+8. scoring-derived `after_controller_gains_victory` producer/trigger handoff;
+9. terminal `after_battle_ended` event and cleanup handoff.
 
 The 13 result consumers may later consume the accepted result-event envelope. The remaining 26 rows stay with their real external owner and are not made runtime-ready by this spec.
 
@@ -53,6 +54,8 @@ The 13 result consumers may later consume the accepted result-event envelope. Th
 - cross-axis `after_controller_gains_victory` producer dependency: PASS, covered without denominator change.
 - win eligibility vs loser outcome vs loss-effect suppression: orthogonalized; true nonparticipants are neither winner nor loser.
 - base-score-before-personal-reward invariant: explicit via `post_base_scoring` barrier; personal VP cannot modify the base pool.
+- Recon reward: separate phase-level exactly-once plan/receipt.
+- base VP source union: closed event-pool / competition-pool / reviewed-location variants; no generic `reviewed_rule` or ambiguous `battle_vp` source.
 - semantic-axis vs historical BATTLE_RESULT exact set: PASS, difference 0.
 - canonical schema arbitrary `unknown` payload: none.
 - mutable `consumed` flag inside immutable scoring plan: none.
