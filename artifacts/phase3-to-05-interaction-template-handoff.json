@@ -1,15 +1,15 @@
 {
   "schemaVersion": "fd-phase3-spec-handoff-v1",
-  "generatedAt": "2026-09-12T15:18:27.004Z",
+  "generatedAt": "2026-09-13T14:04:41.727Z",
   "task": "P3-TO-05",
   "name": "Interaction Template Contract",
   "owner": "Codex B",
   "lane": "SPECIFICATION_ONLY",
-  "status": "READY_SPEC_OWNER",
+  "status": "SPEC_ACCEPTED",
   "maximumCompletionClaim": "SPEC_REVIEW_READY",
   "runtimeAuthorized": false,
   "denominators": {
-    "explicitInteractionAbilities": 20,
+    "explicitInteractionAbilities": 18,
     "strictPendingInteractionAbilities": 11
   },
   "templateKinds": [
@@ -40,5 +40,13 @@
     "card-specific exceptions",
     "Gate promotion",
     "interaction inference from timing hooks alone"
-  ]
+  ],
+  "supersededBy": {
+    "specBranch": "codex/b-p3-to-05-interaction-template-contract-v2",
+    "specCommit": "8e3588c",
+    "taxonomyBaselineCommit": "146213f",
+    "reviewDecision": "SPEC_ACCEPTED",
+    "reviewRecordedFrom": "user-provided independent review decision",
+    "gatePromotionPerformed": false
+  }
 }

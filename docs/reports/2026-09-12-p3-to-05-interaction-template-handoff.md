@@ -2,7 +2,7 @@
 
 - Document Role: SPEC_HANDOFF
 - Owner: Codex B, specification lane only
-- Status: `READY_SPEC_OWNER`
+- Status: `SUPERSEDED_BY_ACCEPTED_SPEC`
 - Runtime Authorization: `NONE`
 - Maximum Completion Claim: `SPEC_REVIEW_READY`
 
@@ -22,11 +22,11 @@ Timing hooks, domain triggers, continuous conditions, lifecycle policies, and hi
 ## Corrected Denominators
 
 ```text
-explicitInteractionAbilities=20
+explicitInteractionAbilities=18
 strictPendingInteractionAbilities=11
 ```
 
-The spec must preserve both counts. It must not treat all 20 interactions as target-based pending decisions.
+The accepted taxonomy preserves both counts. It must not treat all 18 interactions as target-based pending decisions.
 
 ## Required Contract Fields
 
@@ -64,10 +64,16 @@ Reference implementations do not define the generic contract by themselves.
 ## Required Deliverables
 
 1. Interaction Template specification with typed shapes and invariants.
-2. Mapping of 20 explicit interaction abilities to templates or dependency-blocked reasons.
+2. Mapping of 18 explicit interaction abilities to templates or dependency-blocked reasons.
 3. Separate mapping of 11 strict target-based PendingInteraction abilities.
 4. Compiler/runtime acceptance requirements for a later implementation task.
 5. Gate A design checklist and independent reviewer checklist.
 6. Explicit runtime owner and hot-file reservation recommendation for the later slice.
 
 Stop at `SPEC_REVIEW_READY`. Do not implement runtime.
+
+## Supersession Record
+
+This kickoff handoff is retained as history. Its original `20/11` denominator was corrected by taxonomy baseline commit `146213f` to `18/11`.
+
+The final specification is commit `8e3588c` on `codex/b-p3-to-05-interaction-template-contract-v2`. Independent review acceptance was supplied by the user on 2026-09-13 and is synchronized in `docs/reports/2026-09-13-p3-a03-to-05-synchronization.md`. Specification acceptance does not authorize runtime work or promote Gate A/B/C.

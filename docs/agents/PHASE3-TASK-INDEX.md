@@ -127,7 +127,7 @@ Runtime defect handling:
 ## TASK P3-A03
 
 Owner: Codex A
-Status: READY
+Status: AUTOMATION_BASELINE_CANDIDATE
 Branch: `codex/a-p3-a01-coverage-automation`
 
 Goal:
@@ -295,8 +295,11 @@ Completion status allowed:
 ## TASK P3-TO-05
 
 Owner: Codex B (specification lane only)
-Status: READY_SPEC_OWNER
+Status: SPEC_ACCEPTED
 Runtime Authorization: NONE
+Final Spec Branch: `codex/b-p3-to-05-interaction-template-contract-v2`
+Final Spec Commit: `8e3588c`
+Taxonomy Baseline Commit: `146213f`
 
 Goal:
 
@@ -305,7 +308,7 @@ Define reusable Interaction Template contracts for explicit target selection, re
 Depends on:
 
 - P3-A03 B11 synchronization available.
-- Corrected semantic-axis inventory: 20 explicit interaction abilities and 11 strict target-based PendingInteraction abilities.
+- Corrected semantic-axis inventory: 18 explicit interaction abilities and 11 strict target-based PendingInteraction abilities.
 - B11 Golden Eater staged interaction evidence is a reference input, not automatic contract acceptance.
 
 Read:
@@ -339,10 +342,75 @@ Required output:
 
 - typed template definitions for target, response, branch, yes/no, amount, and ordering
 - ownership, visibility, source identity, revision, reconnect, cancel/timeout, and stale-command policies
-- explicit distinction between 20 interaction abilities and 11 strict target-based PendingInteraction abilities
+- explicit distinction between 18 interaction abilities and 11 strict target-based PendingInteraction abilities
 - representative mapping and skipped/dependency reasons
 - compiler/runtime acceptance requirements for a later Codex B implementation slice
 - independent reviewer checklist
+
+Completion status allowed:
+
+- `SPEC_REVIEW_READY`
+
+Recorded reviewer outcome:
+
+- `SPEC_ACCEPTED` on 2026-09-13, supplied by the user after independent review.
+- No Gate A/B/C promotion is implied by this specification acceptance.
+
+## TASK P3-TO-03
+
+Owner: Codex B (specification lane only)
+Status: READY_SPEC_OWNER
+Runtime Authorization: NONE
+
+Goal:
+
+Define the reusable Domain Event Trigger Gateway contract for the 37 strict trigger abilities. Keep event detection, trigger scheduling, player interaction, lifecycle cleanup, and effect execution as explicit owners rather than combining them in card-specific handlers.
+
+Depends on:
+
+- P3-TO-05 Interaction Template Contract accepted as a specification.
+- Corrected semantic-axis inventory: 37 strict Domain Event Trigger abilities.
+- Existing setup, delayed activation, response, and battle-result implementations are reference evidence only and do not define the generic contract.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- `TASK P3-TO-03` from this file
+- `docs/plans/fd-rules-conformance-and-acceptance.md` event/trigger requirements only
+- `docs/plans/fd-phase-3-throughput-optimization-plan.md` Trigger Pareto Strategy only
+- `docs/audits/fd-skill-semantic-axis-matrix.md` Strict Domain Event Trigger section only
+- `docs/reports/2026-09-13-p3-a03-to-05-synchronization.md`
+
+May touch:
+
+- `docs/plans/*` for the Trigger Gateway contract
+- `docs/audits/*` for trigger event/ability maps
+- `docs/reports/*` for the specification result and reviewer checklist
+- machine-readable specification artifacts
+- `docs/agents/PHASE3-TASK-INDEX.md` status only
+
+Do not touch:
+
+- `packages/rules/**`
+- `apps/client/**`
+- `apps/server/**`
+- `e2e/**`
+- card authoring or generated content
+- runtime event dispatch, trigger scheduling, or ability execution
+- PendingInteraction implementation
+- lifecycle, modifier, power, or battle-result runtime
+- Gate A/B/C promotion
+
+Required output:
+
+- typed domain-event envelope with event id/type, revision, actor/controller, source identity, causation id, and visibility policy
+- deterministic event ordering and processed-event/idempotency rules
+- forced versus optional trigger scheduling contract
+- explicit separation of event detection, trigger eligibility, interaction creation, effect execution, and lifecycle cleanup
+- projection/reconnect rules for pending or processed triggers
+- mapping of all 37 strict trigger abilities to event contracts or dependency-blocked reasons
+- negative acceptance requirements for malformed events, missing source identity, duplicate delivery, stale revision, invalid ordering, and unsupported events
+- independent reviewer checklist and later runtime hot-file recommendation
 
 Completion status allowed:
 

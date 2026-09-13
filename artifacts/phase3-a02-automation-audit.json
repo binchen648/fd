@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-a02-automation-audit-v1",
-  "generatedAt": "2026-09-12T07:19:46.548Z",
+  "generatedAt": "2026-09-13T14:04:19.381Z",
   "task": "P3-A02",
   "batch": "LEGACY_OWNER_AND_PROMOTION_EVIDENCE_AUTOMATION",
   "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
@@ -1220,6 +1220,11 @@
         "reportPath": "docs/reports/2026-09-08-time-alter-core-primitive-gate-c-result.md",
         "finding": "GATE_C_REFERENCES_MISSING_E2E_SPEC",
         "reference": "e2e/fd-time-alter-core-primitive.spec.ts"
+      },
+      {
+        "severity": "WARNING",
+        "reportPath": "docs/reports/2026-09-12-p3-a05-resource-numeric-reviewer-packet.md",
+        "finding": "GATE_C_SECTION_WITHOUT_E2E_SPEC_REFERENCE"
       }
     ]
   },
