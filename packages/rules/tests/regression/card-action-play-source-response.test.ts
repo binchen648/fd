@@ -100,6 +100,52 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE', ()
     expect(session.state.abilityRuntime!.events).toHaveLength(eventCount);
   });
 
+  it('revalidates fixed mana at dispatch time without committing stale response actions', () => {
+    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const { playerId, volumen } = prepareVolumenResponse(session);
+    const action = responseAction(session, playerId, volumen)!;
+    session.state.players.find((player) => player.id === playerId)!.mana = 1;
+    const eventCount = session.state.abilityRuntime!.events.length;
+    const revision = session.state.abilityRuntime!.revision;
+    const windowCount = session.state.abilityRuntime!.responseWindows.length;
+
+    const result = session.dispatchPlayerAction(playerId, action);
+
+    expect(result.ok).toBe(false);
+    expect(result.rejection).toEqual(expect.objectContaining({ code: 'illegal_response' }));
+    expect(session.state.players.find((player) => player.id === playerId)!.mana).toBe(1);
+    expect(session.state.cards.find((card) => card.instanceId === volumen)).toMatchObject({ zone: 'hand' });
+    expect(session.state.abilityRuntime!.events).toHaveLength(eventCount);
+    expect(session.state.abilityRuntime!.revision).toBe(revision);
+    expect(session.state.abilityRuntime!.responseWindows).toHaveLength(windowCount);
+  });
+
+  it('revalidates shared card-play forbids before resolving the response', () => {
+    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const { playerId, volumen } = prepareVolumenResponse(session);
+    const action = responseAction(session, playerId, volumen)!;
+    const modeState = (session.state as unknown as { modeState?: { cardPlayForbids?: unknown[] } }).modeState ??= {};
+    modeState.cardPlayForbids = [{
+      sourceId: 'review-probe',
+      sourceType: 'event',
+      attribute: '魔术',
+      rule: 'play_card_attribute',
+    }];
+    const eventCount = session.state.abilityRuntime!.events.length;
+    const revision = session.state.abilityRuntime!.revision;
+    const windowCount = session.state.abilityRuntime!.responseWindows.length;
+
+    const result = session.dispatchPlayerAction(playerId, action);
+
+    expect(result.ok).toBe(false);
+    expect(result.rejection).toEqual(expect.objectContaining({ code: 'illegal_response' }));
+    expect(session.state.players.find((player) => player.id === playerId)!.mana).toBe(5);
+    expect(session.state.cards.find((card) => card.instanceId === volumen)).toMatchObject({ zone: 'hand' });
+    expect(session.state.abilityRuntime!.events).toHaveLength(eventCount);
+    expect(session.state.abilityRuntime!.revision).toBe(revision);
+    expect(session.state.abilityRuntime!.responseWindows).toHaveLength(windowCount);
+  });
+
   it('classifies only the exact Volumen source-card response play shape without ability ids', () => {
     const ability: AuthoringAbility = {
       id: 'renamed-extra-play',
