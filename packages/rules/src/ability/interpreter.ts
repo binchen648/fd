@@ -3,6 +3,7 @@ import type { CardInstance } from '../schema/card';
 import type { LocationId } from '../schema/location';
 import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID, evaluateCardSourceValidity } from '../core/card-source-state';
+import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { node, nodes, str } from './loader';
 import {
@@ -600,7 +601,12 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
 export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   const r = runtime(s); const p = s.players.find(p => p.id === playerId); if (!p || p.status !== 'active') return [];
   const pending = r.pendingDecision;
-  if (pending) return pending.controllerId === playerId ? [{ type: 'choose_target', decisionId: pending.id, candidates: candidates(s, pending.context, pending.target), min: pending.min, max: pending.max }] : [];
+  if (pending) {
+    const projectedCandidates = pending.interaction ? pending.candidates : candidates(s, pending.context, pending.target);
+    return pending.controllerId === playerId
+      ? [{ type: 'choose_target', decisionId: pending.id, candidates: [...projectedCandidates], min: pending.min, max: pending.max }]
+      : [];
+  }
   const window = r.responseWindows[0];
   if (window) return window.controllerId === playerId ? [
     ...window.choices.filter(c => canActivate(s, c.cardInstanceId, abilityDefinition(s, c.cardInstanceId, c.abilityId), window.event))
@@ -1037,6 +1043,25 @@ function findPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility
   return undefined;
 }
 
+function createPrivateOptionalHandPlayInteraction(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): PendingDecision {
+  if (!isPrivateOptionalHandPlayInteractionSemantic(a)) reject('resolution_failed', 'Unsupported private optional hand-play interaction semantic shape');
+  const target = a.targets[0]!;
+  const count = node(target.count);
+  const min = Number(count.min); const max = Number(count.max);
+  const snapshot = candidates(s, ctx, target);
+  const id = nextId(s, 'interaction');
+  return {
+    id, controllerId: ctx.controllerId, target, candidates: [...snapshot], min, max,
+    context: structuredClone(ctx), remainingEffects: effects,
+    interaction: {
+      kind: 'private_optional_hand_play_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`,
+      constraints: { kind: 'target', targetKind: 'card', min, max, distinct: true },
+    },
+  };
+}
+
 const directResourcePrimitiveTypes = new Set(['adjust_mana', 'adjust_command_seals', 'adjust_victory_points']);
 
 function isResourceNumericTriggerCandidate(a: AuthoringAbility): boolean {
@@ -1127,6 +1152,14 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     return;
   }
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
+  if (isPrivateOptionalHandPlayInteractionCandidate(a)) {
+    if (!isPrivateOptionalHandPlayInteractionSemantic(a)) reject('resolution_failed', 'Unsupported private optional hand-play interaction semantic shape');
+    const interactionTargetId = str(a.targets[0]?.id);
+    if (!Object.prototype.hasOwnProperty.call(ctx.selections, interactionTargetId)) {
+      runtime(s).pendingDecision = createPrivateOptionalHandPlayInteraction(s, ctx, a, effects);
+      return;
+    }
+  }
   const pending = findPendingTarget(s, ctx, a, effects);
   if (pending) { runtime(s).pendingDecision = pending; return; }
   for (let i = 0; i < effects.length; i++) {
@@ -1306,8 +1339,14 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
   }
   const d = r.pendingDecision;
   if (d) {
-    if (d.controllerId === viewerId) view.pendingDecision = { id: d.id, candidates: candidates(s, d.context, d.target), min: d.min, max: d.max };
-    else view.waitingLabel = '等待响应结算';
+    if (d.controllerId === viewerId) {
+      const projectedCandidates = d.interaction ? d.candidates : candidates(s, d.context, d.target);
+      view.pendingDecision = { id: d.id, candidates: [...projectedCandidates], min: d.min, max: d.max,
+        ...(d.interaction ? {
+          template: d.interaction.template, sourceCardInstanceId: d.interaction.sourceCardInstanceId, abilityId: d.interaction.abilityId,
+          createdRevision: d.interaction.createdRevision, visibility: d.interaction.visibility, cancelPolicy: d.interaction.cancelPolicy,
+        } : {}) };
+    } else view.waitingLabel = '等待响应结算';
   } else if (r.responseWindows[0]) {
     const w = r.responseWindows[0];
     if (w.controllerId === viewerId) view.responseWindow = { id: w.id, kind: w.kind, opens: w.opens };
@@ -1361,8 +1400,27 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
     case 'choose_target': {
       const d = r.pendingDecision;
       if (!d || d.controllerId !== playerId || d.id !== command.decisionId) reject('illegal_decision', 'Decision is not available');
-      const selected = command.selectedIds; const allowed = candidates(s, d.context, d.target);
-      if (!Array.isArray(selected) || selected.length < d.min || selected.length > d.max || new Set(selected).size !== selected.length || selected.some(id => !allowed.includes(id))) reject('illegal_target', 'Selected targets are not legal');
+      const selected = command.selectedIds;
+      if (d.interaction) {
+        const meta = d.interaction;
+        const a = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
+        if (meta.kind !== 'private_optional_hand_play_v1' || meta.template !== 'target' || meta.visibility !== 'owner_only' ||
+          meta.cancelPolicy !== 'forbidden' || meta.continuationRef !== `${d.id}:continuation` ||
+          meta.createdRevision !== runtime(s).revision || meta.sourceCardInstanceId !== d.context.sourceCardId ||
+          meta.abilityId !== d.context.abilityId || meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' ||
+          meta.constraints.min !== d.min || meta.constraints.max !== d.max || meta.constraints.distinct !== true ||
+          !isPrivateOptionalHandPlayInteractionSemantic(a)) {
+          reject('resolution_failed', 'Corrupt private optional hand-play interaction state');
+        }
+        const currentAllowed = candidates(s, d.context, d.target);
+        if (!Array.isArray(selected) || selected.length < d.min || selected.length > d.max || new Set(selected).size !== selected.length ||
+          selected.some(id => !d.candidates.includes(id) || !currentAllowed.includes(id))) {
+          reject('illegal_target', 'Selected targets are not legal');
+        }
+      } else {
+        const allowed = candidates(s, d.context, d.target);
+        if (!Array.isArray(selected) || selected.length < d.min || selected.length > d.max || new Set(selected).size !== selected.length || selected.some(id => !allowed.includes(id))) reject('illegal_target', 'Selected targets are not legal');
+      }
       d.context.selections[str(d.target.id)] = selected; delete r.pendingDecision;
       executeEffects(s, d.context, d.remainingEffects); break;
     }

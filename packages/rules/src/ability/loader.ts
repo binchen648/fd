@@ -1,6 +1,7 @@
 import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, RuleNode, AdapterReportEntry } from './types';
 import { hostOperations } from './types';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state';
+import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -208,17 +209,22 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       const allowed = Array.isArray(requested) ? hostOperations.filter(op => requested.includes(op)) : [];
       if (Array.isArray(requested) && requested.some(op => !hostOperations.includes(op as typeof hostOperations[number]))) issue('execution.hostOps', 'Operation outside the host allowlist', id);
       if (mode !== 'automatic') issue('execution.mode', str(execution.reason) || mode, id, mode as ExecutionMode);
-      const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
-      const visibility = node(a.visibility);
-      if (Array.isArray(a.markers) && a.markers.includes('真名解放') && !visibility.revealTiming) {
-        visibility.revealsTrueName = true; visibility.revealTiming = 'on_use_declared'; visibility.revealScope = 'servant_package';
-      }
-      return { id, kind: str(a.kind), printedClause: str(a.printedClause), activation,
+      const candidateAbility: AuthoringAbility = { id, kind: str(a.kind), printedClause: str(a.printedClause), activation,
         conditions: nodes(a.conditions), targets: nodes(a.targets), effects: nodes(a.effects),
         cost: Array.isArray(a.cost) ? nodes(a.cost) : a.cost ? [node(a.cost)] : [],
         ruleModifiers: nodes(a.ruleModifiers), creates: nodes(a.creates), lifecycle,
         responseWindow: { ...response, order: 'turn_order', passBehavior: 'decline_this_window' },
-        limit, visibility, execution: { mode: failure ? 'unsupported' : mode as ExecutionMode, allowedOperations: allowed } };
+        limit, visibility: node(a.visibility), execution: { mode: mode as ExecutionMode, allowedOperations: allowed } };
+      if (isPrivateOptionalHandPlayInteractionCandidate(candidateAbility) && !isPrivateOptionalHandPlayInteractionSemantic(candidateAbility)) {
+        issue('interaction.gateway', 'Unsupported private optional hand-play interaction semantic shape', id);
+      }
+      const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
+      const visibility = candidateAbility.visibility;
+      if (Array.isArray(a.markers) && a.markers.includes('真名解放') && !visibility.revealTiming) {
+        visibility.revealsTrueName = true; visibility.revealTiming = 'on_use_declared'; visibility.revealScope = 'servant_package';
+      }
+      return { ...candidateAbility, visibility,
+        execution: { mode: failure ? 'unsupported' : mode as ExecutionMode, allowedOperations: allowed } };
     });
     cards[cardId] = { id: cardId, name: str(raw.name), cardType: str(raw.cardType), cardFace: face,
       playTiming: timing, playRequirements: nodes(raw.playRequirements), abilities,

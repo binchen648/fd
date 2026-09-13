@@ -92,6 +92,7 @@ export interface MatchInteractionWindow {
   title: string;
   controllerId: string;
   sourceCardInstanceId?: string;
+  abilityId?: string;
   sourceLabel?: string;
   min?: number;
   max?: number;
@@ -99,6 +100,10 @@ export interface MatchInteractionWindow {
   variableCosts?: Array<{ name: string; min: number; max: number }>;
   candidates?: Array<{ id: string; label: string; kind: 'card' | 'player' | 'location' | 'option'; zone?: string }>;
   legalActions: LegalAction[];
+  template?: 'target';
+  createdRevision?: number;
+  visibility?: 'owner_only';
+  cancelPolicy?: 'forbidden';
 }
 
 export interface MatchZoneProjection {
@@ -407,6 +412,11 @@ function projectInteractionWindows(state: GameState, viewerId: string): MatchInt
       max: view.pendingDecision.max,
       candidates: view.pendingDecision.candidates.map((id) => labelCandidate(state, id)),
       legalActions: view.legalActions.filter((action) => action.type === 'choose_target'),
+      ...(view.pendingDecision.template ? {
+        template: view.pendingDecision.template, createdRevision: view.pendingDecision.createdRevision,
+        visibility: view.pendingDecision.visibility, cancelPolicy: view.pendingDecision.cancelPolicy,
+        sourceCardInstanceId: view.pendingDecision.sourceCardInstanceId, abilityId: view.pendingDecision.abilityId,
+      } : {}),
     });
   }
   if (view.responseWindow) {

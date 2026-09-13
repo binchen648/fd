@@ -101,9 +101,15 @@ export interface EffectContext {
   variables: Record<string, number>; selections: Record<string, string[]>;
   event?: AbilityEvent;
 }
+export interface PendingInteractionMetadata {
+  kind: 'private_optional_hand_play_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  constraints: { kind: 'target'; targetKind: 'card'; min: number; max: number; distinct: true };
+}
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
+  interaction?: PendingInteractionMetadata;
 }
 export type AbilityInteractionKind =
   'phase_activation' |
@@ -175,7 +181,11 @@ export interface AbilityPlayerView {
   players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
   cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean }[];
   stagedAttacks?: { playerId: PlayerId; cards: PlayCardAction[] }[];
-  pendingDecision?: { id: string; candidates: string[]; min: number; max: number };
+  pendingDecision?: {
+    id: string; candidates: string[]; min: number; max: number;
+    template?: 'target'; sourceCardInstanceId?: string; abilityId?: string; createdRevision?: number;
+    visibility?: 'owner_only'; cancelPolicy?: 'forbidden';
+  };
   responseWindow?: { id: string; kind: string; opens: string };
   waitingLabel?: string;
   /** Owner-only diagnostics. Clients must not use these reasons as rule authority. */

@@ -109,6 +109,21 @@ describe('ExecutableCardPack compiler', () => {
     expect(() => compileExecutableCardPack(input)).toThrow(expected);
   });
 
+  it.each([
+    ['private target visibility drift', (ability: any) => { ability.targets[0].visibility = 'public'; }],
+    ['optional target max drift', (ability: any) => { ability.targets[0].count.max = 2; }],
+    ['hand scope drift', (ability: any) => { ability.targets[0].scope.zone = 'discard'; }],
+    ['base-power constraint drift', (ability: any) => { ability.targets[0].constraints[0].value = 4; }],
+    ['continuation effect drift', (ability: any) => { ability.effects[0].type = 'draw_cards'; ability.effects[0].count = 1; delete ability.effects[0].target; }],
+  ])('fails closed for TO13 private optional interaction %s', (_name, mutate) => {
+    const input = sourceInput();
+    const archive = input.rules.archives.find((candidate) => candidate.id === 'servant.drake')!;
+    const card = archive.cards.find((candidate) => candidate.id === 'servant.drake.skill.sc-drake-1')!;
+    const ability = card.abilities!.find((candidate) => candidate.id === 'sc-drake-1.mount-summon')!;
+    mutate(ability);
+    expect(() => compileExecutableCardPack(input)).toThrow(/Unsupported private optional hand-play interaction semantic shape/);
+  });
+
   it('fails closed for an unsupported lifecycle source-validity policy through the executable compiler path', () => {
     const input = sourceInput();
     const archive = input.rules.archives.find((candidate) => candidate.id === 'servant.artoriac')!;
