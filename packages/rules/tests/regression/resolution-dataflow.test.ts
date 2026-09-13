@@ -39,6 +39,13 @@ function baseState(): TerrainState {
     },
     locationConfig: { disabledLocationIds: [] },
     cards: [{
+      instanceId: 'synthetic-source',
+      definitionId: 'fixture.skill.source',
+      ownerPlayerId: 'P1',
+      controllerPlayerId: 'P1',
+      zone: 'field',
+      visibility: { scope: 'public' },
+    }, {
       instanceId: 'support-shot',
       definitionId: 'master.maiya.deck.support-shot',
       ownerPlayerId: 'P1',
@@ -133,6 +140,8 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
       };
     case 'activate_card_by_id':
       return { id: `produce-${binding}`, type: 'activate_card_by_id', definitionId: 'fixture.skill.delayed', bind: binding };
+    case 'close_source_card':
+      return { id: `produce-${binding}`, type: 'close_source_card', bind: binding };
     case 'adjust_victory_points':
       return { id: `produce-${binding}`, type: 'adjust_victory_points', player: 'controller', amount: 1, bind: binding };
     case 'adjust_mana':
