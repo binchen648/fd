@@ -545,6 +545,7 @@ function effectiveActivationPhase(s: GameState, sourceId: string, a: AuthoringAb
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
   if (isPlayActionStructuralCandidate(a) && !isPlayActionRouteCandidate(a)) return false;
+  if (isPlaySourceCardWithCostResponseStructuralCandidate(a) && !isPlaySourceCardWithCostResponseRouteCandidate(a)) return false;
   if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
@@ -555,6 +556,11 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (!isCommandSpellCard(s, sourceId) && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
   if (abilityLimitReached(s, sourceId, a)) return false;
   if (isPlayActionRouteCandidate(a) && !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
+  if (isPlaySourceCardWithCostResponseRouteCandidate(a)) {
+    const ctx = context(s, sourceId, a.id, event);
+    if (!hasPlayableSourceCardInHand(s, ctx)) return false;
+    if (!hasAvailableManaForFixedCosts(s, ctx, a)) return false;
+  }
   return a.conditions.every(c => condition(s, context(s, sourceId, a.id, event), c));
 }
 function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false): string | undefined {
@@ -962,6 +968,10 @@ export function isPlayActionDirectAction(a: AuthoringAbility): boolean {
   return isPlayActionRouteCandidate(a);
 }
 
+export function isPlaySourceCardWithCostResponse(a: AuthoringAbility): boolean {
+  return isPlaySourceCardWithCostResponseRouteCandidate(a);
+}
+
 function isPlayActionRouteCandidate(a: AuthoringAbility): boolean {
   if (!isPlayActionStructuralCandidate(a)) return false;
   const [play, draw] = a.effects;
@@ -977,6 +987,17 @@ function isPlayActionStructuralCandidate(a: AuthoringAbility): boolean {
   return str(play?.type) === 'play_selected_cards' &&
     typeof play?.target === 'string' &&
     str(draw?.type) === 'draw_cards';
+}
+
+function isPlaySourceCardWithCostResponseRouteCandidate(a: AuthoringAbility): boolean {
+  return isPlaySourceCardWithCostResponseStructuralCandidate(a) && str(a.effects[0]?.face) === 'face_up';
+}
+
+function isPlaySourceCardWithCostResponseStructuralCandidate(a: AuthoringAbility): boolean {
+  if (a.kind !== 'response' || str(a.activation.trigger) !== 'controller_combat_action_window') return false;
+  if (str(a.responseWindow.opens) !== 'controller_combat_action_window') return false;
+  if (a.targets.length || a.creates.length || a.effects.length !== 1) return false;
+  return hasFixedManaCost(a.cost, 2) && str(a.effects[0]?.type) === 'play_source_card';
 }
 
 function isCardZoneCoreDirectActionRouteCandidate(a: AuthoringAbility): boolean {
@@ -1058,6 +1079,18 @@ function hasSingleControllerHandAttackTarget(targets: RuleNode[], targetId: stri
     nodes(target.constraints).some((constraint) => str(constraint.type) === 'is_attack');
 }
 
+function hasPlayableSourceCardInHand(s: GameState, ctx: EffectContext): boolean {
+  const source = s.cards.find((candidate) => candidate.instanceId === ctx.sourceCardId);
+  return !!source && source.controllerPlayerId === ctx.controllerId && source.zone === 'hand';
+}
+
+function hasAvailableManaForFixedCosts(s: GameState, ctx: EffectContext, a: AuthoringAbility): boolean {
+  const total = a.cost
+    .filter((cost) => str(cost.type) === 'pay_mana')
+    .reduce((sum, cost) => sum + Number(cost.amount ?? 0), 0);
+  return Number.isSafeInteger(total) && player(s, ctx.controllerId).mana >= total;
+}
+
 function hasMandatoryTargetAvailability(s: GameState, ctx: EffectContext, a: AuthoringAbility): boolean {
   for (const target of a.targets) {
     const count = node(target.count);
@@ -1120,6 +1153,15 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
           playBatch(state, playerId, cardInstanceIds.map((cardInstanceId) => ({ type: 'play_card', cardInstanceId, faceDown })), 'effect');
           return { playedCount: cardInstanceIds.length };
         },
+        playSourceCard: ({ state, playerId, sourceCardId, faceDown }) => {
+          const source = card(state, sourceCardId);
+          if (source.controllerPlayerId !== playerId || source.zone !== 'hand') reject('resolution_failed', 'Source card must still be in the controller hand.');
+          const destinationZone = cardPlayClassification(state, sourceCardId).destinationZone;
+          const playedCount = moveCard(state, sourceCardId, destinationZone);
+          runtime(state).cardState[sourceCardId] = { active: !faceDown, faceDown, playedRound: state.round.roundNumber };
+          if (faceDown) source.visibility = { scope: 'owner_only', ownerPlayerId: playerId };
+          return { playedCount, destinationZone };
+        },
       },
       resolutionId: nextId(s, 'resolution'),
       causationId: `${ctx.sourceCardId}:${ctx.abilityId}:${runtime(s).revision}`,
@@ -1169,6 +1211,13 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     return;
   }
   if (isPlayActionStructuralCandidate(a)) reject('resolution_failed', 'Unsupported play action semantic shape.');
+  if (isPlaySourceCardWithCostResponseRouteCandidate(a)) {
+    executeResolutionEffects(s, ctx, effects);
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
+  if (isPlaySourceCardWithCostResponseStructuralCandidate(a)) reject('resolution_failed', 'Unsupported source-card response play semantic shape.');
   if (isAddToAttackRouteCandidate(a)) {
     const pending = findPendingTarget(s, ctx, a, effects);
     if (pending) { runtime(s).pendingDecision = pending; return; }
@@ -1198,7 +1247,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
-  if (isCardZoneCoreDirectActionRouteCandidate(a) || isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a)) {
+  if (isCardZoneCoreDirectActionRouteCandidate(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a)) {
     try {
       normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     } catch (error) {
@@ -1422,7 +1471,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
     case 'resolve_response': {
       const w = r.responseWindows[0];
       if (!w || w.controllerId !== playerId || w.id !== command.windowId || !legal.some(a => a.type === command.type && a.cardInstanceId === command.cardInstanceId && a.abilityId === command.abilityId)) reject('illegal_response', 'Response is not available');
-      executeAbility(s, context(s, command.cardInstanceId, command.abilityId, w.event)); r.responseWindows.shift(); break;
+      executeAbility(s, context(s, command.cardInstanceId, command.abilityId, w.event)); runtime(s).responseWindows.shift(); break;
     }
     case 'pass': case 'decline_this_window': {
       const w = r.responseWindows[0]; if (!w || w.controllerId !== playerId || w.id !== command.windowId) reject('illegal_response', 'Window is not available');

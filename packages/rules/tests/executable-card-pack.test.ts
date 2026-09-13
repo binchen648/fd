@@ -126,6 +126,12 @@ describe('ExecutableCardPack compiler', () => {
         .abilities!.find((ability) => ability.id === 'military.attach-support-shot')!;
       support.effects![0]!.returnAtRoundEnd = false;
     }, /Resolution data-flow validation failed[\s\S]*Only return-at-round-end Maiya cannot-win support attachments are supported/],
+    ['unsupported source-card response face-down play', (input: ReturnType<typeof sourceInput>) => {
+      const volumen = input.rules.archives.find((archive) => archive.id === 'master.kayneth')!
+        .cards.find((card) => card.id === 'master.kayneth.deck.volumen-hydrargyrum')!
+        .abilities!.find((ability) => ability.id === 'volumen.extra-play')!;
+      volumen.effects![0]!.face = 'face_down';
+    }, /Resolution data-flow validation failed[\s\S]*Only face-up source-card response play is supported/],
   ])('fails closed for %s', (_name, mutate, expected) => {
     const input = sourceInput();
     mutate(input);

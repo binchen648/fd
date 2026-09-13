@@ -9,6 +9,7 @@ export type EffectResultType =
   | 'move_all_remaining'
   | 'draw_cards'
   | 'play_selected_cards'
+  | 'play_source_card'
   | 'attach_card_to_player_attack'
   | 'adjust_mana'
   | 'pay_mana'
@@ -91,6 +92,14 @@ export interface PlaySelectedCardsResult {
   faceDown: boolean;
 }
 
+export interface PlaySourceCardResult {
+  playerId: PlayerId;
+  cardInstanceId: string;
+  destinationZone: string;
+  playedCount: number;
+  faceDown: boolean;
+}
+
 export interface AttachCardToPlayerAttackResult {
   sourceOwnerId: PlayerId;
   targetPlayerId: PlayerId;
@@ -113,6 +122,7 @@ export type KnownEffectResult =
   | EffectResultEnvelope<'move_all_remaining', MoveAllRemainingResult>
   | EffectResultEnvelope<'draw_cards', DrawCardsResult>
   | EffectResultEnvelope<'play_selected_cards', PlaySelectedCardsResult>
+  | EffectResultEnvelope<'play_source_card', PlaySourceCardResult>
   | EffectResultEnvelope<'attach_card_to_player_attack', AttachCardToPlayerAttackResult>
   | EffectResultEnvelope<'adjust_mana', AdjustManaResult>
   | EffectResultEnvelope<'pay_mana', PayManaResult>
@@ -140,6 +150,10 @@ export const resultSchemas: Record<EffectResultType, BindingFieldSchema> = {
   },
   play_selected_cards: {
     requestedCount: 'number',
+    playedCount: 'number',
+    status: 'status',
+  },
+  play_source_card: {
     playedCount: 'number',
     status: 'status',
   },
@@ -218,6 +232,7 @@ export interface AbilityResolutionContext {
 
 export interface AbilityResolutionHooks {
   playSelectedCards?: (input: { state: GameState; playerId: PlayerId; cardInstanceIds: string[]; faceDown: boolean }) => { playedCount: number };
+  playSourceCard?: (input: { state: GameState; playerId: PlayerId; sourceCardId: string; faceDown: boolean }) => { playedCount: number; destinationZone: string };
 }
 
 export type ValueExpression =
@@ -239,6 +254,7 @@ export type ResolutionEffectNode =
   | { id: string; type: 'move_all_remaining'; owner: 'controller'; from: string; to: string; bind?: string }
   | { id: string; type: 'draw_cards'; player: 'controller'; count: ValueExpression; bind?: string }
   | { id: string; type: 'play_selected_cards'; target: string; face: 'face_down' | 'face_up'; bind?: string }
+  | { id: string; type: 'play_source_card'; face: 'face_down' | 'face_up'; bind?: string }
   | { id: string; type: 'attach_card_to_player_attack'; cardId: string; target: string; returnAtRoundEnd: boolean; controllerCannotWinStatus: string; bind?: string }
   | { id: string; type: 'adjust_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'pay_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
@@ -334,6 +350,11 @@ const primitiveDefinitions: ResolutionPrimitive[] = [
     type: 'play_selected_cards',
     resultSchema: resultSchemas.play_selected_cards,
     execute: playSelectedCardsPrimitive,
+  },
+  {
+    type: 'play_source_card',
+    resultSchema: resultSchemas.play_source_card,
+    execute: playSourceCardPrimitive,
   },
   {
     type: 'attach_card_to_player_attack',
@@ -555,6 +576,15 @@ function validateEffectReferences(
       break;
     case 'play_selected_cards':
       break;
+    case 'play_source_card':
+      if (effect.face !== 'face_up') {
+        issues.push({
+          code: 'invalid_resolution_node',
+          path,
+          message: 'Only face-up source-card response play is supported.',
+        });
+      }
+      break;
     case 'attach_card_to_player_attack':
       if (!effect.cardId || !effect.target) {
         issues.push({
@@ -724,6 +754,14 @@ function playSelectedCardsPrimitive(
 ): KnownEffectResult {
   if (effect.type !== 'play_selected_cards') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
   return playSelectedCards(transaction, effect);
+}
+
+function playSourceCardPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'play_source_card') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return playSourceCard(transaction, effect);
 }
 
 function attachCardToPlayerAttackPrimitive(
@@ -925,6 +963,51 @@ function playSelectedCards(
       faceDown,
     },
     emittedEventIds: [],
+  };
+}
+
+function playSourceCard(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'play_source_card' }>,
+): KnownEffectResult {
+  const source = transaction.workingState.cards.find((candidate) => candidate.instanceId === transaction.context.sourceCardId);
+  if (!source) throw new ResolutionRuntimeError('missing_source_card', 'Source card is not available.');
+  if (source.controllerPlayerId !== transaction.context.controllerId || source.zone !== 'hand') {
+    throw new ResolutionRuntimeError('source_not_playable', 'Source card must still be in the controller hand.');
+  }
+  const hook = transaction.context.hooks.playSourceCard;
+  if (!hook) throw new ResolutionRuntimeError('missing_runtime_hook', 'play_source_card requires a trusted source-card play hook.');
+  const faceDown = effect.face === 'face_down';
+  const result = hook({
+    state: transaction.workingState,
+    playerId: transaction.context.controllerId,
+    sourceCardId: transaction.context.sourceCardId,
+    faceDown,
+  });
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.source_card_played`;
+  if (result.playedCount > 0) {
+    transaction.emittedEvents.push({
+      type: 'source_card_played',
+      playerId: transaction.context.controllerId,
+      sourceCardId: transaction.context.sourceCardId,
+      abilityId: transaction.context.abilityId,
+      resultId: eventId,
+      revision: transaction.workingState.abilityRuntime?.revision ?? 0,
+    });
+  }
+  return {
+    effectId: effect.id,
+    effectType: 'play_source_card',
+    status: result.playedCount === 0 ? 'no_op' : 'applied',
+    affectedEntities: result.playedCount === 0 ? [] : [{ kind: 'player', id: transaction.context.controllerId }],
+    payload: {
+      playerId: transaction.context.controllerId,
+      cardInstanceId: transaction.context.sourceCardId,
+      destinationZone: result.destinationZone,
+      playedCount: result.playedCount,
+      faceDown,
+    },
+    emittedEventIds: result.playedCount === 0 ? [] : [eventId],
   };
 }
 
@@ -1140,6 +1223,7 @@ function evaluateValue(transaction: AbilityResolutionTransaction, expression: Va
     if (expression.field === 'requestedCount') return result.payload.requestedCount;
     if (expression.field === 'playedCount') return result.payload.playedCount;
   }
+  if (result.effectType === 'play_source_card' && expression.field === 'playedCount') return result.payload.playedCount;
   if (result.effectType === 'attach_card_to_player_attack' && expression.field === 'attachedCount') return result.payload.attachedCount;
   if (result.effectType === 'adjust_victory_points') {
     if (expression.field === 'amount') return result.payload.amount;
@@ -1290,6 +1374,13 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
         id,
         type,
         target: stringField(current, 'target', `${path}.target`, issues),
+        face: current.face === 'face_down' || current.face === 'face_up' ? current.face : reportFace(path, issues),
+        ...coerceBind(current.bind),
+      };
+    case 'play_source_card':
+      return {
+        id,
+        type,
         face: current.face === 'face_down' || current.face === 'face_up' ? current.face : reportFace(path, issues),
         ...coerceBind(current.bind),
       };
