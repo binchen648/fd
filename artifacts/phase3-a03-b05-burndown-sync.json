@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "fd-phase3-burndown-sync-v1",
+  "date": "2026-09-14",
+  "task": "P3-A03",
+  "status": "COVERAGE_SYNC_CANDIDATE",
+  "scope": "P3-B05 CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE after P3-R05 r2 acceptance",
+  "automationBaseline": {
+    "parentSyncCommit": "17a0306119ad02c7392526fc4eed427eace1c5da",
+    "rawCountsAlreadyIncludeVolumenSemanticRoute": true,
+    "rawCounts": {
+      "newRuntimeSemanticRouted": 12,
+      "legacyExecuteAbility": 3,
+      "legacyResolveEffect": 49,
+      "dualRuntime": 0,
+      "notClassifiable": 28,
+      "pilotAllowlist": 0
+    },
+    "acceptedAggregateBeforeB05": {
+      "newRuntimeSemanticRouted": 13,
+      "legacyExecuteAbility": 3,
+      "legacyResolveEffect": 48,
+      "dualRuntime": 0
+    }
+  },
+  "acceptedRuntime": {
+    "task": "P3-B05",
+    "candidateCommit": "c505c4748251feb9d151f4af52f091162a64a5b6",
+    "reviewTask": "P3-R05",
+    "reviewEvidenceCommit": "47cc524d802fdac0432ef6e95aa180122a0f8161",
+    "reviewStatus": "GATE_A_B_CANDIDATE_ACCEPTED",
+    "representative": "master.kayneth.deck.volumen-hydrargyrum#volumen.extra-play",
+    "scopedBeforeAfter": {
+      "legacyPlaySourceResponseConsumerCount": {
+        "before": 1,
+        "after": 0,
+        "delta": -1
+      },
+      "newRuntimeSemanticRoutedPlaySourceResponseCount": {
+        "before": 0,
+        "after": 1,
+        "delta": 1
+      },
+      "dualCompatiblePlaySourceResponseCount": {
+        "before": 1,
+        "after": 0,
+        "delta": -1
+      },
+      "eligible": {
+        "before": 1,
+        "after": 1,
+        "delta": 0
+      },
+      "migrated": {
+        "before": 0,
+        "after": 1,
+        "delta": 1
+      },
+      "skipped": {
+        "before": 0,
+        "after": 0,
+        "delta": 0
+      }
+    }
+  },
+  "acceptedBurnDown": {
+    "method": "B05 Volumen was already represented in the A-owned raw semantic-route count, so R05 acceptance updates acceptance state only; global accepted aggregate remains unchanged.",
+    "newRuntimeSemanticRouted": 13,
+    "legacyExecuteAbility": 3,
+    "legacyResolveEffect": 48,
+    "dualRuntime": 0
+  },
+  "cardActionPlaySourceResponse": {
+    "eligible": 1,
+    "migrated": 1,
+    "skipped": 0,
+    "acceptedRepresentative": "master.kayneth.deck.volumen-hydrargyrum#volumen.extra-play",
+    "gateA": "PASS",
+    "gateB": "PASS",
+    "gateC": "PASS_SCOPED_CANDIDATE_EVIDENCE"
+  },
+  "judgments": {
+    "accepted": [
+      "P3-B05@c505c4748251feb9d151f4af52f091162a64a5b6 by P3-R05@47cc524d802fdac0432ef6e95aa180122a0f8161"
+    ],
+    "rejected": [
+      "P3-B05 r1 d03cde2 was superseded after R05@b2e8db3 reproduced a shared card-play-forbid bypass."
+    ],
+    "pending": [
+      "Other Card Action families remain independent and cannot inherit B05 acceptance.",
+      "Phase 3 and release readiness remain open."
+    ]
+  },
+  "nextDependencies": {
+    "satisfied": [
+      "P3-B05 repaired implementation candidate",
+      "P3-R05 independent acceptance",
+      "P3-A03 post-review synchronization for B05"
+    ],
+    "unblocked": [
+      "P3-B06 CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK with hot-file ownership now released by B05"
+    ],
+    "stillBlocked": [
+      "Other Card Action families until their own task/review contracts are accepted",
+      "Trigger/Lifecycle/Interaction runtime families until their gateway contracts are accepted",
+      "full-roster FB2/FM migration until explicitly dispatched READY",
+      "Phase 3 completion and release readiness"
+    ]
+  }
+}
