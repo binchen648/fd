@@ -1,0 +1,180 @@
+{
+  "schemaVersion": "fd-phase3-agent-handoff-v1",
+  "generatedAt": "2026-09-10T00:00:00.000Z",
+  "from": "Codex A",
+  "to": "Codex B",
+  "sourceTask": "P3-A02",
+  "targetTask": "P3-B07",
+  "targetBranch": "codex/b-p3-b07-activate",
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
+  "promotionNotice": "This handoff does not promote Gate A/B/C, Phase 3, or Release status.",
+  "targetScope": {
+    "mechanicFamily": "CARD_ACTION_SEMANTICS",
+    "contract": "ACTIVATE",
+    "representative": "master.olga-marie.skill.astronomical-science#astronomical-science.first-loss",
+    "description": "Exact Olga existing-card activation contract with first-loss pending marker and formal round-end consumption."
+  },
+  "criticalDelayedTriggerSplit": {
+    "canonicalPrintedText": "当你首次战败后的回合结束时，激活【特里斯墨吉斯忒斯之殇】。",
+    "currentAuthoringTrigger": "after_controller_first_loses_battle",
+    "requiredRuntimeSteps": [
+      {
+        "event": "after_controller_first_loses_battle",
+        "responsibility": "Record one stable pending delayed activation. Do not activate or move Trismegistus here."
+      },
+      {
+        "event": "round_end",
+        "responsibility": "Consume the pending delayed activation and execute activate_card_by_id through data-flow exactly once."
+      }
+    ],
+    "runtimeSemanticGapRule": "If this split cannot be expressed without card-specific hardcode or broad scheduler work, record RUNTIME_SEMANTIC_GAP and stop rather than claiming B07 complete."
+  },
+  "baselineForB": {
+    "instruction": "Use the accepted post-P3-B06 checkout as the numeric before baseline. Regenerate phase3:coverage in B07 before reporting before/after.",
+    "provisionalA02Baseline": {
+      "totalAbilities": 92,
+      "newRuntimeSemanticRouted": 8,
+      "legacyExecuteAbility": 3,
+      "legacyResolveEffect": 53,
+      "dualRuntime": 0,
+      "pilotAllowlist": 0,
+      "notClassifiable": 28,
+      "compiledDefinitionHash": "1bccc97dd813d9b48208ff6223db40f11a995ca123a513e78e7e444d9bdafe2f"
+    }
+  },
+  "inventory": {
+    "command": "node docs/audits/fd-card-action-activate-inventory.mjs",
+    "sourceFiles": 14,
+    "cardActionSemanticAbilities": 7,
+    "eligibleCount": 1,
+    "skippedCount": 6,
+    "eligible": [
+      {
+        "archiveId": "master.olga-marie",
+        "cardId": "master.olga-marie.skill.astronomical-science",
+        "abilityId": "astronomical-science.first-loss",
+        "kind": "forced_trigger",
+        "activation": {
+          "trigger": "after_controller_first_loses_battle",
+          "delayedConsumptionEvent": "round_end"
+        },
+        "targets": [],
+        "cost": [],
+        "creates": [],
+        "effects": [
+          {
+            "type": "activate_card_by_id",
+            "definitionId": "master.olga-marie.skill.trismegistus-grief"
+          }
+        ],
+        "semanticRoute": "CARD_ACTION_SEMANTICS_MINIMAL:ACTIVATE"
+      }
+    ],
+    "skipped": [
+      {
+        "archiveId": "master.kayneth",
+        "cardId": "master.kayneth.deck.volumen-hydrargyrum",
+        "abilityId": "volumen.extra-play",
+        "effects": [
+          "play_source_card"
+        ],
+        "skipReason": "out_of_scope:play_semantics"
+      },
+      {
+        "archiveId": "master.kiritsugu",
+        "cardId": "master.kiritsugu.skill.time-alter",
+        "abilityId": "time-alter.action",
+        "effects": [
+          "play_selected_cards",
+          "draw_cards"
+        ],
+        "skipReason": "out_of_scope:play_semantics"
+      },
+      {
+        "archiveId": "master.maiya",
+        "cardId": "master.maiya.skill.military",
+        "abilityId": "military.attach-support-shot",
+        "effects": [
+          "attach_card_to_player_attack"
+        ],
+        "skipReason": "out_of_scope:add_to_attack_semantics"
+      },
+      {
+        "archiveId": "master.maiya",
+        "cardId": "master.maiya.deck.support-shot",
+        "abilityId": "support-shot.append-only",
+        "effects": [
+          "append_only_rule"
+        ],
+        "skipReason": "out_of_scope:append_only_rule_marker"
+      },
+      {
+        "archiveId": "servant.artoria-alt",
+        "cardId": "servant.artoria-alt.skill.sc-artoria-alt-2",
+        "abilityId": "sc-artoria-alt-2.angra-mainyu-embrace",
+        "effects": [
+          "close_source_card"
+        ],
+        "skipReason": "out_of_scope:close_semantics"
+      },
+      {
+        "archiveId": "servant.drake",
+        "cardId": "servant.drake.skill.sc-drake-1",
+        "abilityId": "sc-drake-1.mount-summon",
+        "effects": [
+          "play_selected_cards"
+        ],
+        "skipReason": "out_of_scope:play_semantics"
+      }
+    ]
+  },
+  "exactShapeRequirements": [
+    "forced_trigger",
+    "authoring activation.trigger=after_controller_first_loses_battle",
+    "runtime delayedConsumptionEvent=round_end",
+    "no targets",
+    "no cost",
+    "no creates",
+    "exactly one activate_card_by_id effect",
+    "effect.definitionId=master.olga-marie.skill.trismegistus-grief",
+    "first-loss does not immediately activate target card",
+    "round_end consumes pending delayed activation exactly once",
+    "target card already exists",
+    "target card is owned or controlled by the Olga controller according to runtime ownership model",
+    "target card is in allowed inactive source zone, expected skill",
+    "target card is not already active"
+  ],
+  "gateCInvalidatedBy": [
+    "immediate activation at battle-loss time",
+    "trigger other than after_controller_first_loses_battle",
+    "no formal round_end consumption",
+    "optional response timing",
+    "client-command activation",
+    "target selection",
+    "variable_payment",
+    "pending_payment",
+    "hidden_private_choice",
+    "create_card before activation",
+    "target outside allowed inactive source zone",
+    "already-active target",
+    "ambiguous duplicate cards with same definitionId",
+    "source close",
+    "modifier_power_follow_up",
+    "Trismegistus follow-up abilities",
+    "CREATE_AND_ACTIVATE",
+    "CLOSE",
+    "roster-wide JSON migration"
+  ],
+  "bChecklist": [
+    "Prove routing by exact semantic form, not ability id.",
+    "Prove after_controller_first_loses_battle records pending delayed activation without moving the target.",
+    "Prove repeated first-loss event does not duplicate pending activation or repeated activation.",
+    "Prove formal round_end consumes the pending activation exactly once.",
+    "Prove target lookup fails closed for missing target, wrong owner/controller, wrong zone, duplicate ambiguous target, and already-active target.",
+    "Prove activation writes active face-up card state and emits traceable card_activated/effect_resolved events.",
+    "Prove browser/server evidence does not claim client-command activation; this path is event-driven.",
+    "Keep Trismegistus soul-drag, loss-transform, and return-silence as secondary runtime paths outside B07.",
+    "Keep Time Alter under PLAY, Volumen under PLAY_SOURCE_RESPONSE, Maiya under ADD_TO_ATTACK, and Drake skipped.",
+    "Report before/after legacy route counts against accepted post-P3-B06 baseline."
+  ]
+}

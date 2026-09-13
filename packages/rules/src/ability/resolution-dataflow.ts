@@ -4,7 +4,14 @@ import type { PlayerId, SafeEvent } from './types';
 
 export type EffectExecutionStatus = 'applied' | 'no_op';
 export type BindingFieldType = 'number' | 'player_ids' | 'boolean' | 'status';
-export type EffectResultType = 'remove_advantage_position' | 'adjust_victory_points' | 'noop' | 'fail_invariant';
+export type EffectResultType =
+  | 'remove_advantage_position'
+  | 'adjust_mana'
+  | 'pay_mana'
+  | 'adjust_command_seals'
+  | 'adjust_victory_points'
+  | 'noop'
+  | 'fail_invariant';
 
 export interface AffectedEntityRef {
   kind: 'player';
@@ -27,7 +34,34 @@ export interface RemoveAdvantagePositionResult {
 
 export interface AdjustVictoryPointsResult {
   playerId: PlayerId;
+  before: number;
+  after: number;
   amount: number;
+}
+
+export interface AdjustManaResult {
+  playerId: PlayerId;
+  requestedAmount: number;
+  actualAmount: number;
+  before: number;
+  after: number;
+}
+
+export interface PayManaResult {
+  playerId: PlayerId;
+  requestedAmount: number;
+  actualAmount: number;
+  before: number;
+  after: number;
+}
+
+export interface AdjustCommandSealsResult {
+  playerId: PlayerId;
+  requestedAmount: number;
+  actualAmount: number;
+  before: number;
+  after: number;
+  directive?: string;
 }
 
 export interface NoopResult {
@@ -40,6 +74,9 @@ export interface FailInvariantResult {
 
 export type KnownEffectResult =
   | EffectResultEnvelope<'remove_advantage_position', RemoveAdvantagePositionResult>
+  | EffectResultEnvelope<'adjust_mana', AdjustManaResult>
+  | EffectResultEnvelope<'pay_mana', PayManaResult>
+  | EffectResultEnvelope<'adjust_command_seals', AdjustCommandSealsResult>
   | EffectResultEnvelope<'adjust_victory_points', AdjustVictoryPointsResult>
   | EffectResultEnvelope<'noop', NoopResult>
   | EffectResultEnvelope<'fail_invariant', FailInvariantResult>;
@@ -53,7 +90,30 @@ export const resultSchemas: Record<EffectResultType, BindingFieldSchema> = {
     status: 'status',
   },
   adjust_victory_points: {
+    before: 'number',
+    after: 'number',
     amount: 'number',
+    status: 'status',
+  },
+  adjust_mana: {
+    before: 'number',
+    after: 'number',
+    requestedAmount: 'number',
+    actualAmount: 'number',
+    status: 'status',
+  },
+  pay_mana: {
+    before: 'number',
+    after: 'number',
+    requestedAmount: 'number',
+    actualAmount: 'number',
+    status: 'status',
+  },
+  adjust_command_seals: {
+    before: 'number',
+    after: 'number',
+    requestedAmount: 'number',
+    actualAmount: 'number',
     status: 'status',
   },
   noop: {
@@ -113,6 +173,9 @@ export type ConditionExpression =
 
 export type ResolutionEffectNode =
   | { id: string; type: 'remove_advantage_position'; target: TargetExpression; bind?: string }
+  | { id: string; type: 'adjust_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
+  | { id: string; type: 'pay_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
+  | { id: string; type: 'adjust_command_seals'; player: 'controller'; amount: ValueExpression; directive?: string; bind?: string }
   | { id: string; type: 'adjust_victory_points'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'noop'; reason: string; bind?: string }
   | { id: string; type: 'fail_invariant'; message: string }
@@ -194,6 +257,21 @@ const primitiveDefinitions: ResolutionPrimitive[] = [
     execute: adjustVictoryPointsPrimitive,
   },
   {
+    type: 'adjust_mana',
+    resultSchema: resultSchemas.adjust_mana,
+    execute: adjustManaPrimitive,
+  },
+  {
+    type: 'pay_mana',
+    resultSchema: resultSchemas.pay_mana,
+    execute: payManaPrimitive,
+  },
+  {
+    type: 'adjust_command_seals',
+    resultSchema: resultSchemas.adjust_command_seals,
+    execute: adjustCommandSealsPrimitive,
+  },
+  {
     type: 'noop',
     resultSchema: resultSchemas.noop,
     execute: noopPrimitive,
@@ -227,11 +305,16 @@ export function hasResolutionDataFlowSyntax(value: unknown): boolean {
   return Object.values(current).some(hasResolutionDataFlowSyntax);
 }
 
-export function validateResolutionDataFlowNodes(effects: unknown[], rootPath = 'effects'): void {
+export function normalizeResolutionDataFlowNodes(effects: unknown[], rootPath = 'effects'): ResolutionEffectNode[] {
   const issues: DataFlowIssue[] = [];
   const nodes = effects.map((effect, index) => coerceResolutionEffectNode(effect, `${rootPath}[${index}]`, issues));
   if (issues.length > 0) throw new DataFlowValidationError(issues);
   validateResolutionDataFlow(nodes);
+  return nodes;
+}
+
+export function validateResolutionDataFlowNodes(effects: unknown[], rootPath = 'effects'): void {
+  normalizeResolutionDataFlowNodes(effects, rootPath);
 }
 
 export function validateResolutionDataFlow(effects: ResolutionEffectNode[]): void {
@@ -371,6 +454,11 @@ function validateEffectReferences(
     case 'adjust_victory_points':
       validateValueExpression(effect.amount, available, unsafeBranchBindings, issues, `${path}.amount`);
       break;
+    case 'adjust_mana':
+    case 'pay_mana':
+    case 'adjust_command_seals':
+      validateValueExpression(effect.amount, available, unsafeBranchBindings, issues, `${path}.amount`);
+      break;
     case 'noop':
     case 'fail_invariant':
       break;
@@ -502,6 +590,30 @@ function adjustVictoryPointsPrimitive(
   return adjustVictoryPoints(transaction, effect);
 }
 
+function adjustManaPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'adjust_mana') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return adjustMana(transaction, effect);
+}
+
+function payManaPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'pay_mana') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return payMana(transaction, effect);
+}
+
+function adjustCommandSealsPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'adjust_command_seals') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return adjustCommandSeals(transaction, effect);
+}
+
 function noopPrimitive(_transaction: AbilityResolutionTransaction, effect: ResolutionPrimitiveNode): KnownEffectResult {
   if (effect.type !== 'noop') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
   return {
@@ -555,23 +667,119 @@ function adjustVictoryPoints(
   transaction: AbilityResolutionTransaction,
   effect: Extract<ResolutionEffectNode, { type: 'adjust_victory_points' }>,
 ): KnownEffectResult {
-  const amount = evaluateValue(transaction, effect.amount);
+  const amount = evaluateIntegerAmount(transaction, effect.amount, 'adjust_victory_points');
   const player = findPlayer(transaction.workingState, transaction.context.controllerId);
-  player.vp = Math.max(0, player.vp + amount);
+  const before = player.vp;
+  player.vp = Math.max(0, before + amount);
+  const actualAmount = player.vp - before;
   const eventId = `${transaction.context.resolutionId}.${effect.id}.vp_adjusted`;
-  transaction.emittedEvents.push({
-    type: 'victory_points_adjusted',
-    playerId: player.id,
-    sourceCardId: transaction.context.sourceCardId,
-    abilityId: transaction.context.abilityId,
-  });
+  transaction.emittedEvents.push(resourceEvent(transaction, eventId, 'victory_points_adjusted', player.id, 'victory_points', actualAmount, before, player.vp));
   return {
     effectId: effect.id,
     effectType: 'adjust_victory_points',
+    status: actualAmount === 0 ? 'no_op' : 'applied',
+    affectedEntities: actualAmount === 0 ? [] : [{ kind: 'player', id: player.id }],
+    payload: { playerId: player.id, before, after: player.vp, amount: actualAmount },
+    emittedEventIds: [eventId],
+  };
+}
+
+function adjustMana(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'adjust_mana' }>,
+): KnownEffectResult {
+  const amount = evaluateIntegerAmount(transaction, effect.amount, 'adjust_mana');
+  const player = findPlayer(transaction.workingState, transaction.context.controllerId);
+  const runtime = transaction.workingState.abilityRuntime;
+  const before = player.mana;
+  const cap = runtime?.manaCaps[player.id] ?? 12;
+  const blocked = amount > 0 && runtime?.manaGainBlocked.includes(player.id);
+  const after = blocked ? before : amount > 0 ? Math.min(cap, before + amount) : Math.max(0, before + amount);
+  player.mana = after;
+  const actualAmount = after - before;
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.mana_adjusted`;
+  if (actualAmount !== 0) {
+    transaction.emittedEvents.push(resourceEvent(transaction, eventId, 'mana_adjusted', player.id, 'mana', actualAmount, before, after));
+  }
+  return {
+    effectId: effect.id,
+    effectType: 'adjust_mana',
+    status: actualAmount === 0 ? 'no_op' : 'applied',
+    affectedEntities: actualAmount === 0 ? [] : [{ kind: 'player', id: player.id }],
+    payload: { playerId: player.id, requestedAmount: amount, actualAmount, before, after },
+    emittedEventIds: actualAmount === 0 ? [] : [eventId],
+  };
+}
+
+function payMana(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'pay_mana' }>,
+): KnownEffectResult {
+  const amount = evaluateIntegerAmount(transaction, effect.amount, 'pay_mana');
+  if (amount < 0) throw new ResolutionRuntimeError('invalid_amount', 'Mana payment amount must be nonnegative.');
+  const player = findPlayer(transaction.workingState, transaction.context.controllerId);
+  const before = player.mana;
+  if (amount > before) throw new ResolutionRuntimeError('insufficient_mana', 'Cannot pay mana.');
+  player.mana = before - amount;
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.mana_paid`;
+  transaction.emittedEvents.push(resourceEvent(transaction, eventId, 'mana_paid', player.id, 'mana', -amount, before, player.mana));
+  return {
+    effectId: effect.id,
+    effectType: 'pay_mana',
     status: amount === 0 ? 'no_op' : 'applied',
     affectedEntities: amount === 0 ? [] : [{ kind: 'player', id: player.id }],
-    payload: { playerId: player.id, amount },
+    payload: { playerId: player.id, requestedAmount: amount, actualAmount: amount, before, after: player.mana },
     emittedEventIds: [eventId],
+  };
+}
+
+function adjustCommandSeals(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'adjust_command_seals' }>,
+): KnownEffectResult {
+  const amount = evaluateIntegerAmount(transaction, effect.amount, 'adjust_command_seals');
+  const player = findPlayer(transaction.workingState, transaction.context.controllerId) as PlayerState & { commandSpells?: number };
+  const before = Number(player.commandSpells ?? 3);
+  const after = before + amount;
+  if (!Number.isSafeInteger(before) || !Number.isSafeInteger(after) || after < 0) {
+    throw new ResolutionRuntimeError('insufficient_command_seals', 'Command seal adjustment would go below zero.');
+  }
+  player.commandSpells = after;
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.command_seals_adjusted`;
+  transaction.emittedEvents.push(resourceEvent(transaction, eventId, 'command_seals_adjusted', player.id, 'command_seals', amount, before, after));
+  return {
+    effectId: effect.id,
+    effectType: 'adjust_command_seals',
+    status: amount === 0 ? 'no_op' : 'applied',
+    affectedEntities: amount === 0 ? [] : [{ kind: 'player', id: player.id }],
+    payload: { playerId: player.id, requestedAmount: amount, actualAmount: amount, before, after, ...(effect.directive ? { directive: effect.directive } : {}) },
+    emittedEventIds: [eventId],
+  };
+}
+
+function resourceEvent(
+  transaction: AbilityResolutionTransaction,
+  resultId: string,
+  type: SafeEvent['type'],
+  playerId: PlayerId,
+  resource: NonNullable<SafeEvent['resource']>,
+  delta: number,
+  before: number,
+  after: number,
+): SafeEvent {
+  return {
+    type,
+    playerId,
+    sourceCardId: transaction.context.sourceCardId,
+    abilityId: transaction.context.abilityId,
+    sourceAbilityId: transaction.context.abilityId,
+    controllerId: transaction.context.controllerId,
+    resource,
+    delta,
+    before,
+    after,
+    resultId,
+    revision: transaction.workingState.abilityRuntime?.revision ?? 0,
   };
 }
 
@@ -580,8 +788,25 @@ function evaluateValue(transaction: AbilityResolutionTransaction, expression: Va
   const result = transaction.context.bindings.get(expression.binding);
   if (!result) throw new ResolutionRuntimeError('missing_binding', `Missing binding '${expression.binding}'`);
   if (result.effectType === 'remove_advantage_position' && expression.field === 'removedCount') return result.payload.removedCount;
-  if (result.effectType === 'adjust_victory_points' && expression.field === 'amount') return result.payload.amount;
+  if (result.effectType === 'adjust_victory_points') {
+    if (expression.field === 'amount') return result.payload.amount;
+    if (expression.field === 'before') return result.payload.before;
+    if (expression.field === 'after') return result.payload.after;
+  }
+  if (['adjust_mana', 'pay_mana', 'adjust_command_seals'].includes(result.effectType)) {
+    const payload = result.payload as AdjustManaResult | PayManaResult | AdjustCommandSealsResult;
+    if (expression.field === 'requestedAmount') return payload.requestedAmount;
+    if (expression.field === 'actualAmount') return payload.actualAmount;
+    if (expression.field === 'before') return payload.before;
+    if (expression.field === 'after') return payload.after;
+  }
   throw new ResolutionRuntimeError('invalid_binding_field', `Invalid numeric binding field '${expression.binding}.${expression.field}'`);
+}
+
+function evaluateIntegerAmount(transaction: AbilityResolutionTransaction, expression: ValueExpression, primitive: string): number {
+  const value = evaluateValue(transaction, expression);
+  if (!Number.isSafeInteger(value)) throw new ResolutionRuntimeError('invalid_amount', `${primitive} amount must be a safe integer.`);
+  return value;
 }
 
 function evaluateTargets(transaction: AbilityResolutionTransaction, expression: TargetExpression): PlayerId[] {
@@ -659,8 +884,26 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
       return {
         id,
         type,
-        player: current.player === 'controller' ? 'controller' : reportControllerPlayer(path, issues),
+        player: current.player === undefined || current.player === 'controller' ? 'controller' : reportControllerPlayer(path, issues),
         amount: coerceValueExpression(current.amount, `${path}.amount`, issues),
+        ...coerceBind(current.bind),
+      };
+    case 'adjust_mana':
+    case 'pay_mana':
+      return {
+        id,
+        type,
+        player: current.player === undefined || current.player === 'controller' ? 'controller' : reportControllerPlayer(path, issues),
+        amount: coerceValueExpression(current.amount, `${path}.amount`, issues),
+        ...coerceBind(current.bind),
+      };
+    case 'adjust_command_seals':
+      return {
+        id,
+        type,
+        player: current.player === undefined || current.player === 'controller' ? 'controller' : reportControllerPlayer(path, issues),
+        amount: coerceValueExpression(current.amount, `${path}.amount`, issues),
+        ...(typeof current.directive === 'string' ? { directive: current.directive } : {}),
         ...coerceBind(current.bind),
       };
     case 'noop':
@@ -705,7 +948,11 @@ function coerceResolutionBranch(value: unknown, path: string, issues: DataFlowIs
 }
 
 function coerceValueExpression(value: unknown, path: string, issues: DataFlowIssue[]): ValueExpression {
-  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value === 'number') {
+    if (Number.isSafeInteger(value)) return value;
+    invalidNode(path, 'Expected a safe integer amount.', issues);
+    return 0;
+  }
   const expression = objectExpression(value, path, issues);
   if (expression?.expr === 'binding_field') {
     return {

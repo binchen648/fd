@@ -66,6 +66,47 @@ function nextMessage(socket: WebSocket, messages: ServerRoomMessage[], predicate
 }
 
 describe('match websocket server', () => {
+  it('rejects stale expectedRevision commands before mutating a room', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const httpBase = `http://127.0.0.1:${port}`;
+    const wsBase = `ws://127.0.0.1:${port}`;
+
+    const host = await postJson<RoomHttpResponse>(`${httpBase}/rooms`, {
+      roomId: 'stale-room',
+      hostClientId: 'host-stale',
+      hostName: 'Host',
+      seed: 20260905,
+    });
+    const hostSocket = await connectSocket(`${wsBase}/rooms/stale-room?clientId=host-stale&reconnectToken=${host.reconnectToken}`);
+    await hostSocket.next((message) => message.type === 'server:projection');
+    hostSocket.socket.send(JSON.stringify({ type: 'client:select_seat', seat: 1 }));
+    await hostSocket.next((message) => message.type === 'server:projection' && message.projection.seats[0]?.clientId === 'host-stale');
+    hostSocket.socket.send(JSON.stringify({ type: 'client:start_match' }));
+    const started = await hostSocket.next((message) => message.type === 'server:projection' && message.projection.status === 'running');
+    expect(started.type).toBe('server:projection');
+    if (started.type !== 'server:projection') return;
+    const revision = started.projection.match?.view.revision;
+    const logCount = started.projection.match?.logs.length ?? 0;
+
+    hostSocket.socket.send(JSON.stringify({ type: 'client:end_turn', requestId: 'stale-end', expectedRevision: Number(revision) - 1 }));
+    const stale = await hostSocket.next((message) => message.type === 'server:error' && message.requestId === 'stale-end');
+    expect(stale.type).toBe('server:error');
+    if (stale.type === 'server:error') expect(stale.message).toContain('Stale command revision');
+
+    hostSocket.socket.send(JSON.stringify({ type: 'client:request_projection' }));
+    const afterStale = await hostSocket.next((message) =>
+      message.type === 'server:projection' &&
+      message.projection.status === 'running' &&
+      message.projection.match?.view.revision === revision);
+    expect(afterStale.type).toBe('server:projection');
+    if (afterStale.type === 'server:projection') {
+      expect(afterStale.projection.match?.view.revision).toBe(revision);
+      expect(afterStale.projection.match?.logs).toHaveLength(logCount);
+    }
+    hostSocket.socket.close();
+  });
+
   it('syncs room projections across browser clients without leaking private hands', async () => {
     serverHandle = createMatchServer();
     const port = await serverHandle.listen();

@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "fd-phase3-agent-handoff-v1",
+  "generatedAt": "2026-09-11T00:00:00.000Z",
+  "from": "Codex A",
+  "to": "Codex B",
+  "sourceTask": "P3-A03",
+  "targetTask": "P3-B10",
+  "targetBranch": "codex/b-p3-b10-setup-create-to-skill",
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
+  "promotionNotice": "This handoff does not promote Gate A/B/C, Phase 3, or Release status.",
+  "targetScope": {
+    "mechanicFamily": "SETUP_CARD_CREATION_MINIMAL",
+    "contract": "CREATE_TO_SKILL",
+    "semanticShape": {
+      "kind": "forced_trigger",
+      "trigger": "game_start",
+      "conditions": 0,
+      "targets": 0,
+      "cost": 0,
+      "creates": 0,
+      "effects": ["create_card:skill"],
+      "executionMode": "automatic"
+    }
+  },
+  "sourceInventory": {
+    "totalCreateCardAbilities": 6,
+    "eligible": [
+      {
+        "ability": "master.maiya.skill.military#military.has-support-shot",
+        "cardId": "master.maiya.deck.support-shot",
+        "destination": "skill"
+      },
+      {
+        "ability": "master.olga-marie.skill.astronomical-science#astronomical-science.has-chaldeas",
+        "cardId": "master.olga-marie.skill.chaldeas",
+        "destination": "skill"
+      },
+      {
+        "ability": "master.shinji.skill.useless-person#useless-person.setup",
+        "cardId": "master.shinji.skill.false-attendant-book",
+        "destination": "skill"
+      }
+    ],
+    "skipped": [
+      {
+        "abilityGroup": "servant.artoriac.skill.sc-artoriac-{4,5,6}#unique-passive-luck-on-win",
+        "count": 3,
+        "reason": "optional post-battle response moves source from hand, creates to deck, shuffles, and uses a unique limit"
+      }
+    ]
+  },
+  "runtimeBaseline": {
+    "newRuntimeSemanticRouted": 9,
+    "legacyResolveEffect": 52,
+    "dualRuntime": 0,
+    "blockingIssues": 0,
+    "instruction": "Regenerate and report actual before/after from the B10 checkout; do not assume a delta."
+  },
+  "requiredTypedResult": [
+    "createdInstanceIds",
+    "createdCount"
+  ],
+  "gateAChecklist": [
+    "exact classifier positive for the three eligible definitions",
+    "wrong kind and wrong trigger fail closed",
+    "condition, target, cost, creates, extra effect, and wrong execution mode fail closed",
+    "missing or unresolved cardId fails closed",
+    "wrong destination, owner override, and nested then fail closed",
+    "typed result fields are validated",
+    "duplicate event replay does not duplicate creation",
+    "runtime corruption rolls back without legacy fallback"
+  ],
+  "gateBChecklist": [
+    "canonical authoring compiles through executable pack into MatchSession",
+    "formal game_start event drives resolution",
+    "Maiya, Olga-Marie, and Shinji execute through one semantic route",
+    "created identity, owner, controller, skill zone, generatedBy, event, and projection are asserted",
+    "duplicate game_start delivery is idempotent",
+    "three Artoria Caster Luck abilities remain skipped"
+  ],
+  "gateCBoundary": {
+    "required": false,
+    "inheritanceAllowed": false,
+    "validOnlyIf": "Browser create/select/start drives real server game_start, projection shows the created skill card, reconnect preserves it, and no duplicate is created.",
+    "invalidEvidence": "Restored post-setup snapshot or inherited Card Action E2E."
+  },
+  "stopConditions": [
+    "formal MatchSession startup does not emit a usable game_start event",
+    "duplicate startup processing has no shared idempotency owner",
+    "compiled definitions lose created-card identity or destination",
+    "implementation requires broad Trigger, Lifecycle, Hidden, or Battle runtime changes",
+    "eligible source JSON requires semantic correction"
+  ]
+}

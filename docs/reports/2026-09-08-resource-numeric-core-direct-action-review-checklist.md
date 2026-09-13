@@ -4,6 +4,7 @@
 - Scope: Independent review checklist for `RESOURCE_NUMERIC_CORE_DIRECT_ACTION`.
 - Implementer claim available for review: `IMPLEMENTATION_COMPLETE_CANDIDATE`.
 - This document does not promote the batch to `COMPONENT_VERIFIED`, `SCENARIO_VERIFIED`, or `E2E_VERIFIED`.
+- Superseded: Current repository fact is recorded in `docs/reports/2026-09-09-resource-numeric-core-result.md`. Gate C candidate evidence now exists in `e2e/fd-command-spell-resource-core.spec.ts`, pending independent review.
 
 ## Review Inputs
 
@@ -63,7 +64,7 @@ Required evidence:
 Reviewer should rerun:
 
 ```powershell
-npx vitest run packages/rules/tests/regression/phase-3a-core-primitives.test.ts
+npx vitest run packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts
 ```
 
 Expected: all tests pass.
@@ -80,13 +81,7 @@ Required evidence:
 
 ## Gate C Checklist
 
-Reviewer should rerun:
-
-```powershell
-npx playwright test -c playwright.config.ts e2e/fd-command-spell-resource-core.spec.ts --project=chromium
-```
-
-Expected: one Chromium test passes.
+Current checkout status is superseded by `docs/reports/2026-09-09-resource-numeric-core-result.md`: Resource/Numeric command-spell Gate C candidate evidence exists in `e2e/fd-command-spell-resource-core.spec.ts`, pending independent review.
 
 Required evidence:
 
@@ -99,6 +94,12 @@ Required evidence:
 - reconnect preserves state and event evidence;
 - stale replay is rejected and does not duplicate resource mutation.
 
+Run the current Gate C candidate before any Resource/Numeric Gate C promotion:
+
+```powershell
+npx playwright test -c playwright.config.ts fd-command-spell-resource-core --project=chromium
+```
+
 ## Inventory And Metrics Checklist
 
 Reviewer should rerun:
@@ -110,16 +111,16 @@ node docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs
 Expected metrics:
 
 ```text
-resourceNumericAbilities=18
+resourceNumericAbilities=17
 eligible=3
-skipped=15
+skipped=14
 legacyResourceConsumerCount.before=3
 legacyResourceConsumerCount.after=0
 newRuntimeSemanticRoutedCount.before=0
 newRuntimeSemanticRoutedCount.after=3
 dualCompatibleCount.before=1
 dualCompatibleCount.after=0
-remainingSkippedCount.after=15
+remainingSkippedCount.after=14
 ```
 
 Reviewer should confirm every skipped ability has a scope reason and that no trigger, combat, battle-result, hidden-choice, pending-payment, card-movement, lifecycle, modifier, or power-dependent ability is promoted by this batch.
@@ -142,7 +143,7 @@ If all checklist items pass under independent review, the reviewer may consider 
 
 - Gate A: direct resource primitive/compiler/runtime component behavior.
 - Gate B: command spell and Tomoe direct-action representative scenarios.
-- Gate C: command spell production browser/server/reconnect path.
+- Gate C: remains required and not verified until a real command spell production browser/server/reconnect/stale path exists.
 
 Promotion must not imply:
 

@@ -4,6 +4,13 @@ import type { LocationId } from '../schema/location';
 import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { node, nodes, str } from './loader';
+import {
+  DataFlowValidationError,
+  normalizeResolutionDataFlowNodes,
+  executeResolution,
+  ResolutionRuntimeError,
+  type KnownEffectResult,
+} from './resolution-dataflow';
 import type {
   AbilityCommand, AbilityDefinitionPack, AbilityEvent, AbilityPlayerView, AbilityRuntime, AuthoringAbility, AuthoringCard,
   BattleResult, BattleResultData, CalculationLine, CardPlayClassification, DispatchResult, EffectContext,
@@ -930,8 +937,79 @@ function findPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility
   }
   return undefined;
 }
+
+const directResourcePrimitiveTypes = new Set(['adjust_mana', 'adjust_command_seals', 'adjust_victory_points']);
+
+export function isResourceNumericDirectActionSemantic(a: AuthoringAbility): boolean {
+  return a.kind === 'phase_action' &&
+    str(a.activation.phase) === 'action' &&
+    str(a.activation.opens) === 'controller_action_window' &&
+    a.targets.length === 0 &&
+    a.cost.length === 0 &&
+    a.creates.length === 0 &&
+    a.effects.length > 0 &&
+    a.effects.every((effect) => directResourcePrimitiveTypes.has(str(effect.type)));
+}
+
+function pushResourceDirectives(s: GameState, ctx: EffectContext, results: KnownEffectResult[]): void {
+  for (const result of results) {
+    if (result.effectType !== 'adjust_command_seals') continue;
+    const directive = result.payload.directive ?? 'adjust_command_seals';
+    pushModeDirective(s, {
+      controllerId: result.payload.playerId,
+      directive,
+      sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId,
+      amount: result.payload.actualAmount,
+      commandSpells: result.payload.after,
+      consumed: true,
+    });
+    if (result.payload.before > 0 && result.payload.after === 0) {
+      processEvent(s, { id: nextId(s, 'empty-seals'), type: 'after_controller_loses_all_command_seals', playerId: result.payload.playerId });
+    }
+  }
+}
+
+function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
+  try {
+    const normalized = normalizeResolutionDataFlowNodes(effects, `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
+    const result = executeResolution({
+      state: s,
+      controllerId: ctx.controllerId,
+      sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId,
+      effects: normalized,
+      resolutionId: nextId(s, 'resolution'),
+      causationId: `${ctx.sourceCardId}:${ctx.abilityId}:${runtime(s).revision}`,
+    });
+    Object.assign(s, result.nextState);
+    runtime(s).events.push(...result.emittedEvents);
+    for (const envelope of result.results) {
+      runtime(s).events.push({
+        type: 'effect_resolved',
+        playerId: ctx.controllerId,
+        sourceCardId: ctx.sourceCardId,
+        abilityId: ctx.abilityId,
+        resultId: `${result.context.resolutionId}.${envelope.effectId}`,
+      });
+    }
+    pushResourceDirectives(s, ctx, result.results);
+  } catch (error) {
+    if (error instanceof DataFlowValidationError || error instanceof ResolutionRuntimeError) {
+      reject('resolution_failed', error.message);
+    }
+    throw error;
+  }
+}
+
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (isResourceNumericDirectActionSemantic(a)) {
+    executeResolutionEffects(s, ctx, effects);
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
   const pending = findPendingTarget(s, ctx, a, effects);
   if (pending) { runtime(s).pendingDecision = pending; return; }
   for (let i = 0; i < effects.length; i++) {
@@ -1071,7 +1149,7 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
           cardFace: r.pack.cards[cardId]!.cardFace,
         })),
       } : r.pack.servantPackage;
-      return { id: p.id, seat: p.seat, mana: p.mana, vp: p.vp, masterCardId: p.masterCardId,
+      return { id: p.id, seat: p.seat, mana: p.mana, vp: p.vp, commandSpells: Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3), masterCardId: p.masterCardId,
         ...(p.locationId ? { locationId: p.locationId } : {}), handCount: s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'hand').length,
         deckCount: s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'deck').length,
         ...(r.revealedServants.includes(p.id) && servantPackage && p.servantCardId === servantPackage.id

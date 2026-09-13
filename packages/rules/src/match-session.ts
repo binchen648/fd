@@ -482,7 +482,11 @@ export class MatchSession {
     if (command.type === 'deploy_player') return this.dispatchDeployPlayer(playerId, command.locationId as LocationId);
     const result = dispatchAbilityCommand(this.state, playerId, command);
     this.rejection = result.rejection;
-    this.record(result.ok ? 'dispatch_ok' : 'dispatch_rejected', `${playerId}:${command.type}`, { command: command as Record<string, unknown>, rejection: result.rejection });
+    this.record(result.ok ? 'dispatch_ok' : 'dispatch_rejected', `${playerId}:${command.type}`, {
+      command: command as Record<string, unknown>,
+      ...(result.events.length ? { events: result.events as unknown as Record<string, unknown>[] } : {}),
+      rejection: result.rejection,
+    });
     this.consumeAppliedDirectives();
     this.checkpoint(`${playerId}:${command.type}`);
     return result;
