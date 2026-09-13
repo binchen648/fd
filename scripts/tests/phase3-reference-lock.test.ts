@@ -92,13 +92,57 @@ describe('Phase 3 locked Reference verifier', () => {
     const root = mkdtempSync(join(tmpdir(), 'fd-phase3-not-git-'));
     temporaryDirectories.push(root);
 
-    expect(() =>
+    let message = '';
+    try {
       verifyReferenceRootAgainst(root, {
         repository: repositoryUrl,
         commit: '0000000000000000000000000000000000000000',
         requiredFiles,
-      }),
-    ).toThrow(/git/i);
+      });
+    } catch (error) {
+      message = error instanceof Error ? error.message : String(error);
+    }
+
+    expect(message).toMatch(/git/i);
+    expect(message).not.toContain(root);
+  });
+
+  it('locks the transitive local TypeScript input closure used by confirmed overrides', () => {
+    const { root, lock } = createReferenceFixture();
+    const overridePath = join(root, 'src/content/confirmed-skill-overrides.ts');
+    const dependencyRelative = 'src/content/override-dependency.ts';
+    const dependencyPath = join(root, dependencyRelative);
+
+    writeFileSync(dependencyPath, 'export const fixtureOverride = {};\n', 'utf8');
+    writeFileSync(
+      overridePath,
+      "import { fixtureOverride } from './override-dependency.ts';\nexport const confirmedSkillOverrides = { fixture: fixtureOverride };\n",
+      'utf8',
+    );
+    git(root, 'add', '.');
+    git(root, 'commit', '-m', 'add override dependency');
+    lock.commit = git(root, 'rev-parse', 'HEAD');
+
+    const result = verifyReferenceRootAgainst(root, lock);
+
+    expect(result.requiredFiles).toContain(dependencyRelative);
+    expect(result.inputDigests[dependencyRelative]).toMatch(/^[a-f0-9]{64}$/);
+  });
+
+  it('fails closed before intake when a local confirmed-override dependency is missing', () => {
+    const { root, lock } = createReferenceFixture();
+    const overridePath = join(root, 'src/content/confirmed-skill-overrides.ts');
+
+    writeFileSync(
+      overridePath,
+      "import { missingOverride } from './missing-override-dependency.ts';\nexport const confirmedSkillOverrides = { fixture: missingOverride };\n",
+      'utf8',
+    );
+    git(root, 'add', '.');
+    git(root, 'commit', '-m', 'add missing override dependency import');
+    lock.commit = git(root, 'rev-parse', 'HEAD');
+
+    expect(() => verifyReferenceRootAgainst(root, lock)).toThrow(/dependency.*missing|missing.*dependency/i);
   });
 
   it('rejects missing required Reference inputs', () => {

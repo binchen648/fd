@@ -1,8 +1,9 @@
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { existsSync, readFileSync, statSync } from 'node:fs';
+import { dirname, extname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import ts from 'typescript';
 
 import type { ReferenceLock, VerifiedReference } from './types';
 
@@ -12,6 +13,7 @@ export const LOCKED_REFERENCE: ReferenceLock = {
   repository: 'https://github.com/fengling20011118-dotcom/fate-domination.git',
   commit: 'b2f9fa15fba07c63530bbf4612b03b8b704755f9',
   requiredFiles: [
+    'docs/skill-audit.json',
     'docs/skill-rule-programs.json',
     'src/content/confirmed-skill-overrides.ts',
     'src/content/authoring/cards.json',
@@ -25,14 +27,82 @@ function git(root: string, ...args: string[]): string {
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'pipe'],
     }).trim();
-  } catch (error) {
-    const detail = error instanceof Error ? error.message : String(error);
-    throw new Error(`Reference root is not a usable Git checkout: ${detail}`);
+  } catch {
+    throw new Error('Reference root is not a usable Git checkout.');
   }
 }
 
 function sha256(path: string): string {
   return createHash('sha256').update(readFileSync(path)).digest('hex');
+}
+
+function portableRelativePath(path: string): string {
+  return path.split(sep).join('/');
+}
+
+function isInsideRoot(root: string, candidate: string): boolean {
+  const rel = relative(root, candidate);
+  return rel === '' || (!isAbsolute(rel) && !rel.startsWith(`..${sep}`) && rel !== '..');
+}
+
+function resolveLocalImport(root: string, importer: string, specifier: string): string | undefined {
+  if (!specifier.startsWith('.')) return undefined;
+
+  const base = resolve(dirname(importer), specifier);
+  const candidates = extname(base)
+    ? [base]
+    : [
+        base,
+        `${base}.ts`,
+        `${base}.tsx`,
+        `${base}.mts`,
+        `${base}.cts`,
+        `${base}.json`,
+        resolve(base, 'index.ts'),
+        resolve(base, 'index.tsx'),
+      ];
+
+  for (const candidate of candidates) {
+    if (!existsSync(candidate)) continue;
+    if (!statSync(candidate).isFile()) continue;
+    if (!isInsideRoot(root, candidate)) {
+      throw new Error(`Reference input imports a local file outside the checkout: ${specifier}`);
+    }
+    return candidate;
+  }
+
+  throw new Error(`Required Reference dependency is missing for import: ${specifier}`);
+}
+
+function discoverReferenceInputClosure(root: string, requiredFiles: string[]): string[] {
+  const rootAbsolute = resolve(root);
+  const ordered = [...requiredFiles];
+  const seen = new Set(ordered);
+  const queue = [...ordered];
+
+  while (queue.length > 0) {
+    const relativePath = queue.shift()!;
+    const absolutePath = resolve(rootAbsolute, relativePath);
+    if (!existsSync(absolutePath)) {
+      throw new Error(`Required Reference input is missing: ${relativePath}`);
+    }
+
+    if (!/\.(?:[cm]?ts|tsx)$/i.test(relativePath)) continue;
+    const source = readFileSync(absolutePath, 'utf8');
+    const imports = ts.preProcessFile(source, true, true).importedFiles.map((entry) => entry.fileName);
+
+    for (const specifier of imports) {
+      const dependency = resolveLocalImport(rootAbsolute, absolutePath, specifier);
+      if (!dependency) continue;
+      const dependencyRelative = portableRelativePath(relative(rootAbsolute, dependency));
+      if (seen.has(dependencyRelative)) continue;
+      seen.add(dependencyRelative);
+      ordered.push(dependencyRelative);
+      queue.push(dependencyRelative);
+    }
+  }
+
+  return ordered;
 }
 
 export function verifyReferenceRootAgainst(root: string, lock: ReferenceLock): VerifiedReference {
@@ -51,7 +121,7 @@ export function verifyReferenceRootAgainst(root: string, lock: ReferenceLock): V
     throw new Error('Reference checkout is dirty; FS00 requires a clean read-only input checkout.');
   }
 
-  const requiredFiles = [...lock.requiredFiles];
+  const requiredFiles = discoverReferenceInputClosure(root, lock.requiredFiles);
   const inputDigests: Record<string, string> = {};
 
   for (const relativePath of requiredFiles) {

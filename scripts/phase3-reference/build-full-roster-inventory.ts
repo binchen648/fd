@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname, resolve, sep } from 'node:path';
+import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
+import { basename, dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import {
@@ -10,7 +10,12 @@ import {
   type InventorySourceRef,
   type ReferenceExecutionRoute,
 } from './inventory-schema';
-import { verifyReferenceRoot, type VerifiedReference } from './verify-reference';
+import {
+  verifyReferenceRoot,
+  verifyReferenceRootAgainst,
+  type ReferenceLock,
+  type VerifiedReference,
+} from './verify-reference';
 
 const AUDIT_PATH = 'docs/skill-audit.json';
 const PROGRAMS_PATH = 'docs/skill-rule-programs.json';
@@ -44,7 +49,6 @@ export interface FullRosterProgramSource {
 
 export interface FullRosterSourceData {
   verifiedReference: VerifiedReference;
-  auditDigest: string;
   owners: FullRosterSourceOwner[];
   programs: FullRosterProgramSource[];
   authoringSkillIds: string[];
@@ -84,10 +88,6 @@ function compareIds(left: string, right: string): number {
   if (left < right) return -1;
   if (left > right) return 1;
   return 0;
-}
-
-function sha256File(path: string): string {
-  return createHash('sha256').update(readFileSync(path)).digest('hex');
 }
 
 function readJson<T>(path: string): T {
@@ -276,10 +276,7 @@ export function buildFullRosterInventoryFromSourceData(sourceData: FullRosterSou
     provenance: {
       repository: sourceData.verifiedReference.repository,
       commit: sourceData.verifiedReference.commit,
-      inputDigests: {
-        ...sourceData.verifiedReference.inputDigests,
-        [AUDIT_PATH]: sourceData.auditDigest,
-      },
+      inputDigests: { ...sourceData.verifiedReference.inputDigests },
     },
     summary: {
       staticSkillCount: staticSkills.length,
@@ -307,8 +304,13 @@ async function loadConfirmedOverrideSkillIds(referenceRoot: string): Promise<str
   return Object.keys(module.confirmedSkillOverrides);
 }
 
-export async function loadFullRosterSourceData(referenceRoot: string): Promise<FullRosterSourceData> {
-  const verifiedReference = verifyReferenceRoot(referenceRoot);
+export async function loadFullRosterSourceData(
+  referenceRoot: string,
+  lock?: ReferenceLock,
+): Promise<FullRosterSourceData> {
+  const verifiedReference = lock
+    ? verifyReferenceRootAgainst(referenceRoot, lock)
+    : verifyReferenceRoot(referenceRoot);
   const legacy = readJson<LegacyContentFile>(resolve(referenceRoot, LEGACY_CONTENT_PATH));
   const programFile = readJson<SkillProgramsFile>(resolve(referenceRoot, PROGRAMS_PATH));
   const authoringCards = readJson<AuthoringCardsFile>(resolve(referenceRoot, AUTHORING_CARDS_PATH));
@@ -353,7 +355,6 @@ export async function loadFullRosterSourceData(referenceRoot: string): Promise<F
 
   return {
     verifiedReference,
-    auditDigest: sha256File(resolve(referenceRoot, AUDIT_PATH)),
     owners,
     programs: programFile.programs,
     authoringSkillIds: authoringCards.skillCards.map((card) => card.id),
@@ -362,8 +363,11 @@ export async function loadFullRosterSourceData(referenceRoot: string): Promise<F
   };
 }
 
-export async function buildFullRosterInventory(referenceRoot: string): Promise<FullRosterAbilityInventory> {
-  return buildFullRosterInventoryFromSourceData(await loadFullRosterSourceData(referenceRoot));
+export async function buildFullRosterInventory(
+  referenceRoot: string,
+  lock?: ReferenceLock,
+): Promise<FullRosterAbilityInventory> {
+  return buildFullRosterInventoryFromSourceData(await loadFullRosterSourceData(referenceRoot, lock));
 }
 
 export function serializeFullRosterInventory(inventory: FullRosterAbilityInventory): string {
@@ -378,6 +382,34 @@ function parseArgument(args: string[], name: string): string | undefined {
   return value;
 }
 
+function canonicalPath(path: string): string {
+  const unresolved: string[] = [];
+  let cursor = resolve(path);
+
+  while (!existsSync(cursor)) {
+    const parent = dirname(cursor);
+    if (parent === cursor) break;
+    unresolved.push(basename(cursor));
+    cursor = parent;
+  }
+
+  const canonicalBase = existsSync(cursor) ? realpathSync.native(cursor) : resolve(cursor);
+  const rebuilt = unresolved.reverse().reduce((current, segment) => resolve(current, segment), canonicalBase);
+  return process.platform === 'win32' ? rebuilt.toLowerCase() : rebuilt;
+}
+
+export function assertOutputOutsideReference(referenceRoot: string, outputPath: string): void {
+  const canonicalReference = canonicalPath(referenceRoot);
+  const canonicalOutput = canonicalPath(outputPath);
+  const rel = relative(canonicalReference, canonicalOutput);
+  const insideReference =
+    rel === '' || (!isAbsolute(rel) && rel !== '..' && !rel.startsWith(`..${sep}`));
+
+  if (insideReference) {
+    throw new Error('Refusing to write generated inventory into the read-only Reference checkout.');
+  }
+}
+
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const referenceRootArgument = parseArgument(args, '--reference-root');
@@ -389,10 +421,7 @@ async function main(): Promise<void> {
   const outputPath = resolve(
     parseArgument(args, '--output') ?? 'data/phase3/full-roster-ability-inventory.json',
   );
-  const referencePrefix = referenceRoot.endsWith(sep) ? referenceRoot : `${referenceRoot}${sep}`;
-  if (outputPath === referenceRoot || outputPath.startsWith(referencePrefix)) {
-    throw new Error('Refusing to write generated inventory into the read-only Reference checkout.');
-  }
+  assertOutputOutsideReference(referenceRoot, outputPath);
 
   const inventory = await buildFullRosterInventory(referenceRoot);
   const serialized = serializeFullRosterInventory(inventory);
