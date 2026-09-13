@@ -11,6 +11,7 @@ export type EffectResultType =
   | 'play_selected_cards'
   | 'attach_card_to_player_attack'
   | 'activate_card_by_id'
+  | 'close_source_card'
   | 'adjust_mana'
   | 'pay_mana'
   | 'adjust_command_seals'
@@ -107,6 +108,13 @@ export interface ActivateCardByIdResult {
   activatedCount: number;
 }
 
+export interface CloseSourceCardResult {
+  cardInstanceId: string;
+  fromZone: string;
+  toZone: 'skill';
+  closedCount: number;
+}
+
 export interface NoopResult {
   reason: string;
 }
@@ -122,6 +130,7 @@ export type KnownEffectResult =
   | EffectResultEnvelope<'play_selected_cards', PlaySelectedCardsResult>
   | EffectResultEnvelope<'attach_card_to_player_attack', AttachCardToPlayerAttackResult>
   | EffectResultEnvelope<'activate_card_by_id', ActivateCardByIdResult>
+  | EffectResultEnvelope<'close_source_card', CloseSourceCardResult>
   | EffectResultEnvelope<'adjust_mana', AdjustManaResult>
   | EffectResultEnvelope<'pay_mana', PayManaResult>
   | EffectResultEnvelope<'adjust_command_seals', AdjustCommandSealsResult>
@@ -157,6 +166,10 @@ export const resultSchemas: Record<EffectResultType, BindingFieldSchema> = {
   },
   activate_card_by_id: {
     activatedCount: 'number',
+    status: 'status',
+  },
+  close_source_card: {
+    closedCount: 'number',
     status: 'status',
   },
   adjust_victory_points: {
@@ -253,6 +266,7 @@ export type ResolutionEffectNode =
   | { id: string; type: 'play_selected_cards'; target: string; face: 'face_down' | 'face_up'; bind?: string }
   | { id: string; type: 'attach_card_to_player_attack'; cardId: string; target: string; returnAtRoundEnd: boolean; controllerCannotWinStatus: string; bind?: string }
   | { id: string; type: 'activate_card_by_id'; definitionId: string; bind?: string }
+  | { id: string; type: 'close_source_card'; bind?: string }
   | { id: string; type: 'adjust_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'pay_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'adjust_command_seals'; player: 'controller'; amount: ValueExpression; directive?: string; bind?: string }
@@ -357,6 +371,11 @@ const primitiveDefinitions: ResolutionPrimitive[] = [
     type: 'activate_card_by_id',
     resultSchema: resultSchemas.activate_card_by_id,
     execute: activateCardByIdPrimitive,
+  },
+  {
+    type: 'close_source_card',
+    resultSchema: resultSchemas.close_source_card,
+    execute: closeSourceCardPrimitive,
   },
   {
     type: 'adjust_victory_points',
@@ -598,6 +617,8 @@ function validateEffectReferences(
         });
       }
       break;
+    case 'close_source_card':
+      break;
     case 'adjust_victory_points':
       validateValueExpression(effect.amount, available, unsafeBranchBindings, issues, `${path}.amount`);
       break;
@@ -767,6 +788,14 @@ function activateCardByIdPrimitive(
 ): KnownEffectResult {
   if (effect.type !== 'activate_card_by_id') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
   return activateCardById(transaction, effect);
+}
+
+function closeSourceCardPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'close_source_card') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return closeSourceCard(transaction, effect);
 }
 
 function adjustVictoryPointsPrimitive(
@@ -1091,6 +1120,51 @@ function activateCardById(
   };
 }
 
+function closeSourceCard(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'close_source_card' }>,
+): KnownEffectResult {
+  const source = transaction.workingState.cards.find((candidate) => candidate.instanceId === transaction.context.sourceCardId);
+  if (!source) throw new ResolutionRuntimeError('missing_close_source', 'Close source card is missing.');
+  if (source.controllerPlayerId !== transaction.context.controllerId) {
+    throw new ResolutionRuntimeError('invalid_close_controller', 'Close source card is not controlled by the ability controller.');
+  }
+  if (!['field', 'attack_area'].includes(source.zone)) {
+    throw new ResolutionRuntimeError('invalid_close_zone', 'Close source card must be active on the board.');
+  }
+  const runtime = transaction.workingState.abilityRuntime;
+  if (runtime) {
+    const state = runtime.cardState[source.instanceId];
+    if (!runtime.pack.cards[source.definitionId]) {
+      throw new ResolutionRuntimeError('missing_close_definition', 'Close source card has no compiled definition.');
+    }
+    if (!state?.active) throw new ResolutionRuntimeError('inactive_close_source', 'Close source card is not active.');
+    if (state.faceDown) throw new ResolutionRuntimeError('face_down_close_source', 'Close source card must be face up.');
+    state.active = false;
+    state.faceDown = false;
+  }
+  const fromZone = source.zone;
+  source.zone = 'skill';
+  source.visibility = { scope: 'owner_only', ownerPlayerId: source.ownerPlayerId };
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.source_card_closed`;
+  transaction.emittedEvents.push({
+    type: 'source_card_closed',
+    playerId: transaction.context.controllerId,
+    sourceCardId: source.instanceId,
+    abilityId: transaction.context.abilityId,
+    resultId: eventId,
+    revision: runtime?.revision ?? 0,
+  });
+  return {
+    effectId: effect.id,
+    effectType: 'close_source_card',
+    status: 'applied',
+    affectedEntities: [{ kind: 'player', id: transaction.context.controllerId }],
+    payload: { cardInstanceId: source.instanceId, fromZone, toZone: 'skill', closedCount: 1 },
+    emittedEventIds: [eventId],
+  };
+}
+
 function adjustVictoryPoints(
   transaction: AbilityResolutionTransaction,
   effect: Extract<ResolutionEffectNode, { type: 'adjust_victory_points' }>,
@@ -1227,6 +1301,7 @@ function evaluateValue(transaction: AbilityResolutionTransaction, expression: Va
   }
   if (result.effectType === 'attach_card_to_player_attack' && expression.field === 'attachedCount') return result.payload.attachedCount;
   if (result.effectType === 'activate_card_by_id' && expression.field === 'activatedCount') return result.payload.activatedCount;
+  if (result.effectType === 'close_source_card' && expression.field === 'closedCount') return result.payload.closedCount;
   if (result.effectType === 'adjust_victory_points') {
     if (expression.field === 'amount') return result.payload.amount;
     if (expression.field === 'before') return result.payload.before;
@@ -1396,6 +1471,8 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
         definitionId: stringField(current, 'definitionId', `${path}.definitionId`, issues),
         ...coerceBind(current.bind),
       };
+    case 'close_source_card':
+      return { id, type, ...coerceBind(current.bind) };
     case 'adjust_victory_points':
       return {
         id,

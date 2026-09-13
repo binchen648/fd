@@ -553,6 +553,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
   if (!isCommandSpellCard(s, sourceId) && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
   if (abilityLimitReached(s, sourceId, a)) return false;
+  if (isCloseSourceCardOnPlayedTrigger(a) && closeSourceStateError(s, sourceId, card(s, sourceId).controllerPlayerId)) return false;
   return a.conditions.every(c => condition(s, context(s, sourceId, a.id, event), c));
 }
 function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean {
@@ -981,6 +982,32 @@ export function isActivateCardByIdTrigger(a: AuthoringAbility): boolean {
   return str(effect?.type) === 'activate_card_by_id' && typeof effect?.definitionId === 'string' && effect.definitionId.length > 0;
 }
 
+export function isCloseSourceCardOnPlayedTrigger(a: AuthoringAbility): boolean {
+  if (a.kind !== 'residual' || str(a.activation.trigger) !== 'on_card_played' || str(a.activation.opens) !== 'immediate') return false;
+  if (a.conditions.length !== 2 || a.targets.length || a.cost.length || a.creates.length || a.effects.length !== 1) return false;
+  if (str(a.effects[0]?.type) !== 'close_source_card') return false;
+  const sourceZone = a.conditions.some((condition) => str(condition.type) === 'source_card_in_zone' && str(condition.zone) === 'field');
+  const noblePlay = a.conditions.some((condition) => str(condition.type) === 'event_played_card_has_attribute' && str(condition.attribute) === '宝具');
+  return sourceZone && noblePlay;
+}
+
+function closeSourceStateError(s: GameState, sourceCardId: string, controllerId: string): string | undefined {
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceCardId);
+  if (!source) return 'Close source card is missing.';
+  if (source.controllerPlayerId !== controllerId) return 'Close source card is not controlled by the ability controller.';
+  if (!['field', 'attack_area'].includes(source.zone)) return 'Close source card must be active on the board.';
+  if (!runtime(s).pack.cards[source.definitionId]) return 'Close source card has no compiled definition.';
+  const state = runtime(s).cardState[source.instanceId];
+  if (!state?.active) return 'Close source card is not active.';
+  if (state.faceDown) return 'Close source card must be face up.';
+  return undefined;
+}
+
+function assertCloseSourceState(s: GameState, sourceCardId: string, controllerId: string): void {
+  const error = closeSourceStateError(s, sourceCardId, controllerId);
+  if (error) reject('resolution_failed', error);
+}
+
 export function isAddToAttackDirectAction(a: AuthoringAbility): boolean {
   return isAddToAttackSemantic(a);
 }
@@ -1136,6 +1163,13 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isCloseSourceCardOnPlayedTrigger(a)) {
+    assertCloseSourceState(s, ctx.sourceCardId, ctx.controllerId);
+    executeResolutionEffects(s, ctx, effects);
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
   if (isAddToAttackRouteCandidate(a)) {
     const pending = findPendingTarget(s, ctx, a, effects);
     if (pending) { runtime(s).pendingDecision = pending; return; }
@@ -1165,7 +1199,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
-  if (isCardZoneCoreDirectActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a)) {
+  if (isCardZoneCoreDirectActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a)) {
     try {
       normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     } catch (error) {
