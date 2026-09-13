@@ -163,6 +163,126 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK', () => {
     expect(session.state.abilityRuntime!.events).toHaveLength(eventCount);
   });
 
+  it('does not offer add-to-attack when no legal non-controller player target remains', () => {
+    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const { playerId, military, supportShot } = prepareMaiyaAdvance(session);
+    for (const candidate of session.state.players) {
+      if (candidate.id !== playerId) candidate.status = 'eliminated';
+    }
+    const eventCount = session.state.abilityRuntime!.events.length;
+    const revision = session.state.abilityRuntime!.revision;
+
+    expect(session.getPlayerView(playerId).legalActions).not.toContainEqual(expect.objectContaining({
+      type: 'activate_ability',
+      cardInstanceId: military,
+      abilityId: 'military.attach-support-shot',
+    }));
+
+    const activation = session.dispatchPlayerAction(playerId, {
+      type: 'activate_ability',
+      cardInstanceId: military,
+      abilityId: 'military.attach-support-shot',
+    });
+
+    expect(activation.ok).toBe(false);
+    expect(activation.rejection).toEqual(expect.objectContaining({ code: 'illegal_action' }));
+    expect(session.state.players.find((candidate) => candidate.id === playerId)!.mana).toBe(6);
+    expect(session.state.cards.find((card) => card.instanceId === supportShot)).toMatchObject({ zone: 'skill' });
+    expect(session.state.abilityRuntime!.pendingDecision).toBeUndefined();
+    expect(session.state.abilityRuntime!.events).toHaveLength(eventCount);
+    expect(session.state.abilityRuntime!.revision).toBe(revision);
+  });
+
+  it('rejects a target that becomes inactive after activation without rolling back the committed activation cost', () => {
+    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const { playerId, military, supportShot } = prepareMaiyaAdvance(session);
+
+    const activation = session.dispatchPlayerAction(playerId, {
+      type: 'activate_ability',
+      cardInstanceId: military,
+      abilityId: 'military.attach-support-shot',
+    });
+    expect(activation.ok).toBe(true);
+    const targetAction = session.getPlayerView(playerId).legalActions.find((action) =>
+      action.type === 'choose_target' && action.candidates.includes('p2'));
+    expect(targetAction).toBeDefined();
+    const pendingId = session.state.abilityRuntime!.pendingDecision!.id;
+    session.state.players.find((candidate) => candidate.id === 'p2')!.status = 'eliminated';
+    const eventCount = session.state.abilityRuntime!.events.length;
+    const revision = session.state.abilityRuntime!.revision;
+
+    const result = session.dispatchPlayerAction(playerId, {
+      type: 'choose_target',
+      decisionId: targetAction!.decisionId,
+      selectedIds: ['p2'],
+    });
+
+    expect(result.ok).toBe(false);
+    expect(result.rejection).toEqual(expect.objectContaining({ code: 'illegal_target' }));
+    expect(session.state.players.find((candidate) => candidate.id === playerId)!.mana).toBe(4);
+    expect(session.state.cards.find((card) => card.instanceId === supportShot)).toMatchObject({
+      ownerPlayerId: playerId,
+      controllerPlayerId: playerId,
+      zone: 'skill',
+    });
+    expect(session.state.abilityRuntime!.pendingDecision?.id).toBe(pendingId);
+    expect(session.state.abilityRuntime!.events).toHaveLength(eventCount);
+    expect(session.state.abilityRuntime!.revision).toBe(revision);
+  });
+
+  it('attaches beside an existing target attack without consuming normal play counters or printed card cost', () => {
+    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const { playerId, military, supportShot } = prepareMaiyaAdvance(session);
+    const existingAttack = session.state.cards.find((card) =>
+      card.controllerPlayerId === 'p2' &&
+      session.state.abilityRuntime!.pack.cards[card.definitionId]?.cardType === 'basic_attack')!;
+    existingAttack.zone = 'attack_area';
+    existingAttack.visibility = { scope: 'public' };
+    session.state.abilityRuntime!.cardState[existingAttack.instanceId] = {
+      active: true,
+      faceDown: false,
+      playedRound: session.state.round.roundNumber,
+    };
+    const counters = session.state.abilityRuntime!.playCounters!;
+    counters.cardsPlayedByPlayer[playerId] = 7;
+    counters.attacksDeclaredByPlayer[playerId] = 5;
+    counters.cardsPlayedByPlayer.p2 = 4;
+    counters.attacksDeclaredByPlayer.p2 = 3;
+    const countersBefore = structuredClone(counters);
+
+    const activation = session.dispatchPlayerAction(playerId, {
+      type: 'activate_ability',
+      cardInstanceId: military,
+      abilityId: 'military.attach-support-shot',
+    });
+    expect(activation.ok).toBe(true);
+    const targetAction = session.getPlayerView(playerId).legalActions.find((action) =>
+      action.type === 'choose_target' && action.candidates.includes('p2'))!;
+    const result = session.dispatchPlayerAction(playerId, {
+      type: 'choose_target',
+      decisionId: targetAction.decisionId,
+      selectedIds: ['p2'],
+    });
+
+    expect(result.ok).toBe(true);
+    expect(session.state.players.find((candidate) => candidate.id === playerId)!.mana).toBe(4);
+    expect(session.state.abilityRuntime!.playCounters).toEqual(countersBefore);
+    expect(session.state.cards.find((card) => card.instanceId === existingAttack.instanceId)).toMatchObject({
+      controllerPlayerId: 'p2',
+      zone: 'attack_area',
+    });
+    expect(session.state.cards.find((card) => card.instanceId === supportShot)).toMatchObject({
+      ownerPlayerId: playerId,
+      controllerPlayerId: 'p2',
+      zone: 'attack_area',
+    });
+    expect(session.state.cards.filter((card) => card.controllerPlayerId === 'p2' && card.zone === 'attack_area'))
+      .toEqual(expect.arrayContaining([
+        expect.objectContaining({ instanceId: existingAttack.instanceId }),
+        expect.objectContaining({ instanceId: supportShot }),
+      ]));
+  });
+
   it('classifies only the exact Maiya add-to-attack semantic shape without ability ids', () => {
     const addToAttack: AuthoringAbility = {
       id: 'renamed-add-to-attack',

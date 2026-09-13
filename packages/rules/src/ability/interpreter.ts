@@ -555,7 +555,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
   if (!isCommandSpellCard(s, sourceId) && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
   if (abilityLimitReached(s, sourceId, a)) return false;
-  if (isPlayActionRouteCandidate(a) && !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
+  if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a)) &&
+    !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
   if (isPlaySourceCardWithCostResponseRouteCandidate(a)) {
     const ctx = context(s, sourceId, a.id, event);
     if (!hasPlayableSourceCardInHand(s, ctx)) return false;
