@@ -559,16 +559,17 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isPlaySourceCardWithCostResponseRouteCandidate(a)) {
     const ctx = context(s, sourceId, a.id, event);
     if (!hasPlayableSourceCardInHand(s, ctx)) return false;
+    if (playFailure(s, ctx.controllerId, sourceId, false, true, true, true)) return false;
     if (!hasAvailableManaForFixedCosts(s, ctx, a)) return false;
   }
   return a.conditions.every(c => condition(s, context(s, sourceId, a.id, event), c));
 }
-function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false): string | undefined {
+function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false): string | undefined {
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (d.mode !== 'automatic') return d.mode;
   if (c.controllerPlayerId !== p || !['hand', 'skill'].includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
   if (d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'))) return 'append_only';
-  if (phase(s) !== d.playTiming.phase || s.round.prioritySeat !== player(s, p).seat) return 'illegal_timing';
+  if (!ignoreTiming && (phase(s) !== d.playTiming.phase || s.round.prioritySeat !== player(s, p).seat)) return 'illegal_timing';
   if (faceDown && (!isAttack(d) || d.cardType === 'servant_skill')) return 'illegal_face_down';
   const forbidRules = ongoingCardPlayForbidRules(s, p, sourceId);
   if (forbidRules.some(rule => !hasPlayRuleException(d, rule))) return 'play_forbidden';
@@ -1085,9 +1086,14 @@ function hasPlayableSourceCardInHand(s: GameState, ctx: EffectContext): boolean 
 }
 
 function hasAvailableManaForFixedCosts(s: GameState, ctx: EffectContext, a: AuthoringAbility): boolean {
-  const total = a.cost
+  const abilityCost = a.cost
     .filter((cost) => str(cost.type) === 'pay_mana')
     .reduce((sum, cost) => sum + Number(cost.amount ?? 0), 0);
+  const sourcePlay = a.effects.find((effect) => str(effect.type) === 'play_source_card');
+  const printedPlayCost = sourcePlay && str(sourcePlay.face) !== 'face_down'
+    ? Number(definition(s, ctx.sourceCardId)?.cardFace.cost ?? 0)
+    : 0;
+  const total = abilityCost + printedPlayCost;
   return Number.isSafeInteger(total) && player(s, ctx.controllerId).mana >= total;
 }
 
@@ -1156,11 +1162,11 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
         playSourceCard: ({ state, playerId, sourceCardId, faceDown }) => {
           const source = card(state, sourceCardId);
           if (source.controllerPlayerId !== playerId || source.zone !== 'hand') reject('resolution_failed', 'Source card must still be in the controller hand.');
-          const destinationZone = cardPlayClassification(state, sourceCardId).destinationZone;
-          const playedCount = moveCard(state, sourceCardId, destinationZone);
-          runtime(state).cardState[sourceCardId] = { active: !faceDown, faceDown, playedRound: state.round.roundNumber };
-          if (faceDown) source.visibility = { scope: 'owner_only', ownerPlayerId: playerId };
-          return { playedCount, destinationZone };
+          playBatch(state, playerId, [{ type: 'play_card', cardInstanceId: sourceCardId, ...(faceDown ? { faceDown: true } : {}) }], 'effect');
+          return {
+            playedCount: 1,
+            destinationZone: card(state, sourceCardId).zone,
+          };
         },
       },
       resolutionId: nextId(s, 'resolution'),
@@ -1490,7 +1496,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   }
   let cost = 0;
   for (const c of choices) {
-    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect');
+    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect');
     if (failure) reject(failure, 'Card cannot be played in this batch');
     if (!c.faceDown) cost += Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0);
   }
