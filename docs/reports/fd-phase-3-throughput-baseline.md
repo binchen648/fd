@@ -114,6 +114,48 @@ Planning baseline:
 - remaining abilities requiring legacy/special/shared transitional review: approximately 82;
 - independent Gate promotions: none recorded by this report.
 
+## 2026-09-14 Accepted Burn-Down Sync Through P3-R06 / B11
+
+This section is a post-review synchronization and does not rewrite the historical 2026-09-09 implementation-candidate table above.
+
+Fresh A-owned automation baseline from `codex/a-p3-a03-burndown-sync` (`1dcf311`):
+
+| Metric | Raw A Coverage | R06-Accepted B11 Delta | Accepted Synchronized Count |
+|---|---:|---:|---:|
+| New semantic runtime consumers | 12 | +1 | **13** |
+| Legacy `executeAbility` consumers | 3 | 0 | **3** |
+| Legacy `resolveEffect` consumers | 49 | -1 | **48** |
+| Dual runtime consumers | 0 | 0 | **0** |
+
+The raw automation output remains `12 / 49 / 0` for new / legacy-resolveEffect / dual because P3-A03 is not authorized to change classifier rules. The independently accepted P3-B11 transition is therefore recorded as a review overlay rather than forged into the generator output.
+
+Accepted result-binding slice:
+
+| Contract | Eligible | Migrated | Skipped | Review Status |
+|---|---:|---:|---:|---|
+| `RESULT_BINDING_PRODUCTION_BRIDGE` | 2 | 2 | 0 | `GATE_A_B_CANDIDATE_ACCEPTED` by P3-R06 |
+
+Acceptance evidence:
+
+- runtime/evidence target: `29ecaf9621af43b554c060958b6824c9e815e41c`;
+- independent reviewer evidence: `6e13752`;
+- accepted representatives: Conversion Magic and Golden Eater;
+- B11 scoped legacy/new/dual transition: `1 -> 0 / 1 -> 2 / 0 -> 0`;
+- first- and second-dispatch rollback, reconnect/projection, stale replay, and no-legacy-bypass evidence accepted by R06.
+
+Dependency state after this sync:
+
+- `P3-B11`: accepted for the scoped result-binding production bridge;
+- `P3-R06`: satisfied;
+- `P3-A03`: synchronized as `COVERAGE_SYNC_CANDIDATE`;
+- native B11 classifier/KPI alignment: still A-owned follow-up, not performed here;
+- `P3-TO-03` Trigger Gateway, `P3-TO-04` Lifecycle Gateway, and `P3-TO-05` Interaction Template: planning dependencies are no longer blocked by the B11 runtime hot-file lane, but the current Task Index contains no detailed executable TASK block for these IDs;
+- downstream `P3-TO-11/12/13` runtime slices: remain `WAIT_GATEWAY`;
+- full-roster FB2/FM migration: still requires an explicit `READY` task;
+- Phase 3 / release readiness: still open.
+
+Machine-readable synchronization: `artifacts/phase3-a03-b11-burndown-sync.json`.
+
 ## Card-Specific / Special Handlers
 
 Special subsystem strict matrix count: 18 abilities / 13 cards.
