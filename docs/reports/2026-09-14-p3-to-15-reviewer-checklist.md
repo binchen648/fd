@@ -41,3 +41,12 @@
 - [ ] acceptance only authorizes later runtime planning subject to exclusive hot-file ownership.
 
 Decision: `SPEC_ACCEPTED` or `PLAN_NEEDS_REVISION`.
+
+## r1 Review Addendum
+
+- [ ] `ModifierScopeRef` has no `unknown[]`; subject/object/constraints are closed normalized refs or accepted policy IDs.
+- [ ] applicability/choice conditions are represented separately from scope and fail closed when unsupported.
+- [ ] modifier values are finite literals or compiler-normalized numeric-expression references with declared authoritative input policies; no arbitrary `unknown` payload survives admission.
+- [ ] authoritative `PowerTraceLine` always retains full provenance and uses a projection-policy reference rather than being internally `redacted`.
+- [ ] viewer projection is derived and can distinguish public, controller/authorized-only, and redacted outcomes without mutating authoritative trace.
+- [ ] `redaction='details'` projected trace is structurally unable to leak source/input/operand/output fields; redaction is enforced by the type shape, not prose alone.

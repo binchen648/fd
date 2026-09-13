@@ -83,11 +83,43 @@ interface ModifierSourceRef {
   causationId: string;
 }
 
+type ModifierSubjectRef =
+  | { kind: 'controller' }
+  | { kind: 'all_players' }
+  | { kind: 'opponents_at_same_battlefield' }
+  | { kind: 'engaged_opponents_same_battlefield' }
+  | { kind: 'duel_pair' }
+  | { kind: 'accepted_subject_policy'; policyId: string };
+
+type ModifierObjectRef =
+  | { kind: 'source_card' }
+  | { kind: 'this_card' }
+  | { kind: 'attack_card' }
+  | { kind: 'this_effect' }
+  | { kind: 'accepted_object_policy'; policyId: string };
+
+type ModifierConstraint =
+  | { kind: 'has_attribute'; attribute: string }
+  | { kind: 'not_modifier_source_card' }
+  | { kind: 'accepted_constraint_policy'; policyId: string };
+
+type ModifierApplicability =
+  | { kind: 'choice_equals'; choiceRef: string; expectedValue: string }
+  | { kind: 'accepted_condition_policy'; policyId: string };
+
+type ModifierValue =
+  | { kind: 'literal'; value: number }
+  | {
+      kind: 'compiled_numeric_expression';
+      expressionId: string;
+      declaredInputPolicyIds: string[];
+    };
+
 interface ModifierScopeRef {
-  subject?: string | string[];
-  object?: string;
-  locationRef?: string;
-  constraints: unknown[];
+  subject?: ModifierSubjectRef;
+  object?: ModifierObjectRef;
+  locationPolicyId?: string;
+  constraints: ModifierConstraint[];
 }
 
 interface ModifierContract {
@@ -97,7 +129,8 @@ interface ModifierContract {
   operation: ModifierOperation;
   ruleKey: string;
   scope: ModifierScopeRef;
-  value?: unknown;
+  applicability: ModifierApplicability[];
+  value?: ModifierValue;
   priorityPolicyId: string;
   layer?: PowerLayer;
   sourceValidityPolicyId?: string;
@@ -115,7 +148,7 @@ interface PowerTraceLine {
   operand?: number;
   outputValue: number;
   causationId: string;
-  visibility: 'public' | 'redacted';
+  projectionPolicyId: string;
 }
 
 interface PowerTrace {
@@ -126,6 +159,36 @@ interface PowerTrace {
   finalPower: number;
   calculationRevision: number;
 }
+
+type ProjectedPowerTraceLine =
+  | {
+      traceLineId: string;
+      layer: PowerLayer;
+      operation: PowerTraceLine['operation'];
+      inputValue: number;
+      operand?: number;
+      outputValue: number;
+      source: {
+        sourceType: PowerTraceLine['sourceType'];
+        sourceId: string;
+        modifierId?: string;
+      };
+      redaction: 'none';
+    }
+  | {
+      traceLineId: string;
+      layer: PowerLayer;
+      operation: PowerTraceLine['operation'];
+      inputValue: number;
+      operand?: number;
+      outputValue: number;
+      redaction: 'source_identity';
+    }
+  | {
+      traceLineId: string;
+      layer: PowerLayer;
+      redaction: 'details';
+    }
 ```
 
 The schema may be implemented differently later, but every accepted implementation must preserve these identities and semantic distinctions.
@@ -137,10 +200,11 @@ A modifier may enter the authoritative store only when:
 - source card instance and source ability are authoritative and validated;
 - the authored semantic shape maps to a reviewed rule/effect contract;
 - operation and `ruleKey` are supported as a pair;
-- target/scope is typed and server derived;
+- target/scope and applicability predicates are compiler-normalized to the closed typed unions above or to an independently accepted policy reference;
+- unknown subject/object/constraint/applicability shapes fail admission before a modifier reaches runtime storage;
 - priority is explicit or supplied by an accepted default policy ID;
 - source-validity and duration refs are supplied when persistence depends on source/lifecycle;
-- numeric values/formulas are finite and typed;
+- modifier values are either finite literals or compiler-validated numeric-expression references with declared authoritative input policies; arbitrary object payloads are forbidden;
 - the same authoritative install transition cannot duplicate the modifier.
 
 Unknown operation/rule/scope/priority/layer combinations fail closed. A recognized modifier shape never falls back to translated text, card-name routing, `modeState` interpretation, or a legacy handler after admission.
@@ -238,7 +302,7 @@ A valid power calculation exposes, at minimum:
 
 A complex power test that only checks `finalPower` is insufficient.
 
-Private information may be redacted from client projection, but server/reviewer evidence must retain enough authoritative trace to explain the result without leaking hidden identities to unauthorized viewers.
+The authoritative server trace is never internally redacted: it retains the real source identity, modifier identity, causation, inputs, and outputs needed to reconstruct the result. Each line carries a stable `projectionPolicyId` owned by the accepted Hidden/Projection layer. Viewer-specific projection derives a `ProjectedPowerTraceLine` and may expose full source identity to an authorized/controller viewer, redact only source identity, or redact additional details as the policy requires. Projection must never mutate or replace the authoritative trace record.
 
 ## 11. Terrain / Situation / Event Polarity
 
@@ -307,7 +371,9 @@ Authoritative modifier state and power trace survive server serialization/reconn
 
 Projection must:
 
+- derive viewer output from the immutable authoritative trace plus its accepted `projectionPolicyId`;
 - preserve public final power and permitted source trace;
+- support public, controller/authorized-only, and redacted source-detail outcomes without deleting authoritative server provenance;
 - redact hidden source/card identity where required;
 - never expose private formulas/candidates solely because a modifier exists;
 - restore the same modifier identity after reconnect;

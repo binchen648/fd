@@ -44,3 +44,14 @@
 | 40 | Artoria/Tomoe implementer evidence is promoted to family-wide runtime acceptance | reject Gate claim |
 
 Failing single-command mutations preserve modifier/lifecycle/card/resource/terrain/battle/pending/log/revision state unless a separately committed earlier command is explicitly part of the reviewed transaction boundary.
+
+## r1 Addendum — Typed Canonical Payloads And Projection Separation
+
+The reviewer must additionally reject:
+
+- any canonical scope containing `unknown`/arbitrary constraint objects;
+- any modifier value carried as an arbitrary object rather than finite literal or compiler-normalized numeric-expression reference;
+- unrecognized subject/object/constraint/applicability policies reaching runtime storage;
+- a Power Trace that redacts or deletes provenance in the authoritative server record;
+- a projection policy that cannot represent authorized/controller-only source visibility separately from public/redacted viewers;
+- reconnect that restores only a redacted projection as if it were authoritative trace state.
