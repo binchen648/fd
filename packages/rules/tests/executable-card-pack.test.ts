@@ -120,6 +120,24 @@ describe('ExecutableCardPack compiler', () => {
         .abilities!.find((ability) => ability.id === 'time-alter.action')!;
       timeAlter.effects![1]!.player = 'opponent';
     }, /Executable compilation rejected unsupported semantics[\s\S]*Only controller resource\/movement effects are supported/],
+    ['Golden Eater missing target reference', (input: ReturnType<typeof sourceInput>) => {
+      const goldenEater = input.rules.archives.find((archive) => archive.id === 'servant.kintoki')!
+        .cards.find((card) => card.id === 'servant.kintoki.skill.sc-kintoki-3')!
+        .abilities!.find((ability) => ability.id === 'sc-kintoki-3.golden-eater')!;
+      goldenEater.effects![0]!.target = 'missing_target';
+    }, /references missing target/],
+    ['Golden Eater mismatched staged binding', (input: ReturnType<typeof sourceInput>) => {
+      const goldenEater = input.rules.archives.find((archive) => archive.id === 'servant.kintoki')!
+        .cards.find((card) => card.id === 'servant.kintoki.skill.sc-kintoki-3')!
+        .abilities!.find((ability) => ability.id === 'sc-kintoki-3.golden-eater')!;
+      goldenEater.effects![1]!.resultVar = 'other_result';
+    }, /unsupported staged result-binding semantic shape/],
+    ['Golden Eater unsupported optional payment', (input: ReturnType<typeof sourceInput>) => {
+      const goldenEater = input.rules.archives.find((archive) => archive.id === 'servant.kintoki')!
+        .cards.find((card) => card.id === 'servant.kintoki.skill.sc-kintoki-3')!
+        .abilities!.find((ability) => ability.id === 'sc-kintoki-3.golden-eater')!;
+      goldenEater.effects![1]!.optionalCost!.amount = 6;
+    }, /unsupported staged result-binding semantic shape/],
     ['unsupported add-to-attack return marker', (input: ReturnType<typeof sourceInput>) => {
       const support = input.rules.archives.find((archive) => archive.id === 'master.maiya')!
         .cards.find((card) => card.id === 'master.maiya.skill.military')!

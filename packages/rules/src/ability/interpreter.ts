@@ -10,6 +10,7 @@ import {
   executeResolution,
   ResolutionRuntimeError,
   type KnownEffectResult,
+  type ResolutionBindingSeed,
 } from './resolution-dataflow';
 import type {
   AbilityCommand, AbilityDefinitionPack, AbilityEvent, AbilityPlayerView, AbilityRuntime, AuthoringAbility, AuthoringCard,
@@ -1059,6 +1060,58 @@ function isMoveAllRemainingManaBindingSemantic(a: AuthoringAbility): boolean {
     referencesMovedCountBinding(mana?.amount, binding);
 }
 
+function isResultBindingCardTarget(target: RuleNode, min: number, max: number, manaGate?: number): boolean {
+  const scope = node(target.scope);
+  const count = node(target.count);
+  if (str(target.type) !== 'card_instance' || str(scope.zone) !== 'removed_from_game' || str(scope.owner) !== 'controller') return false;
+  if (Number(count.min) !== min || Number(count.max) !== max || str(target.visibility) !== 'private_to_controller') return false;
+  const conditions = nodes(target.conditions);
+  if (manaGate === undefined) return conditions.length === 0;
+  return conditions.length === 1 && str(conditions[0]?.type) === 'controller_mana_at_least' && Number(conditions[0]?.value) === manaGate;
+}
+
+function isResultBindingProductionBridgeStructuralCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'phase_action' &&
+    str(a.activation.phase) === 'combat' &&
+    str(a.activation.opens) === 'controller_combat_action_window' &&
+    a.targets.length === 2 &&
+    a.cost.length === 0 &&
+    a.creates.length === 0 &&
+    a.effects.length === 3 &&
+    str(a.effects[0]?.type) === 'move_card' &&
+    str(a.effects[1]?.type) === 'move_card' &&
+    str(a.effects[2]?.type) === 'branch';
+}
+
+export function isResultBindingProductionBridgeSemantic(a: AuthoringAbility): boolean {
+  if (!isResultBindingProductionBridgeStructuralCandidate(a)) return false;
+  if (a.conditions.length !== 0 || str(a.activation.requiresSourceState) !== 'active') return false;
+  const [firstTarget, secondTarget] = a.targets;
+  if (!isResultBindingCardTarget(firstTarget!, 1, 1) || !isResultBindingCardTarget(secondTarget!, 0, 1, 7)) return false;
+  const [firstMove, secondMove, branch] = a.effects;
+  const firstBinding = str(firstMove?.resultVar ?? firstMove?.bind);
+  const secondBinding = str(secondMove?.resultVar ?? secondMove?.bind);
+  if (!firstBinding || firstBinding !== secondBinding) return false;
+  if (str(firstMove?.target) !== str(firstTarget?.id) || str(node(firstMove?.to).zone) !== 'skill' || firstMove?.optionalCost !== undefined) return false;
+  const optionalCost = node(secondMove?.optionalCost);
+  if (str(secondMove?.target) !== str(secondTarget?.id) || str(node(secondMove?.to).zone) !== 'skill' ||
+    str(optionalCost.type) !== 'pay_mana' || Number(optionalCost.amount) !== 7) return false;
+  const branches = nodes(branch?.branches);
+  if (branches.length !== 1 || str(node(branches[0]?.if).type) !== 'controller_at_battlefield') return false;
+  const then = nodes(branches[0]?.then);
+  if (then.length !== 1 || str(then[0]?.type) !== 'adjust_victory_points' || str(then[0]?.player || 'controller') !== 'controller') return false;
+  const amount = node(then[0]?.amount);
+  const args = nodes(amount.args);
+  if (str(amount.op) !== 'multiply' || args.length !== 2) return false;
+  const hasBinding = args.some((arg) => str(arg.var) === firstBinding);
+  const hasFactorTwo = args.some((arg) => str(arg.op) === 'const' && Number(arg.value) === 2);
+  return hasBinding && hasFactorTwo;
+}
+
+function resultBindingContinuationKey(binding: string): string {
+  return `__result_binding_moved_count:${binding}`;
+}
+
 function hasFixedManaCost(costs: RuleNode[], amount: number): boolean {
   if (costs.length !== 1 || str(costs[0]?.type) !== 'pay_mana') return false;
   const amountNode = node(costs[0]?.amount);
@@ -1113,7 +1166,12 @@ function pushResourceDirectives(s: GameState, ctx: EffectContext, results: Known
   }
 }
 
-function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
+function executeResolutionEffects(
+  s: GameState,
+  ctx: EffectContext,
+  effects: RuleNode[],
+  options: { initialBindings?: ResolutionBindingSeed[] } = {},
+): ReturnType<typeof executeResolution> {
   try {
     const normalized = normalizeResolutionDataFlowNodes(effects, `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     const result = executeResolution({
@@ -1123,6 +1181,7 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
       abilityId: ctx.abilityId,
       effects: normalized,
       selections: ctx.selections,
+      ...(options.initialBindings ? { initialBindings: options.initialBindings } : {}),
       hooks: {
         playSelectedCards: ({ state, playerId, cardInstanceIds, faceDown }) => {
           playBatch(state, playerId, cardInstanceIds.map((cardInstanceId) => ({ type: 'play_card', cardInstanceId, faceDown })), 'effect');
@@ -1144,6 +1203,7 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
       });
     }
     pushResourceDirectives(s, ctx, result.results);
+    return result;
   } catch (error) {
     if (error instanceof DataFlowValidationError || error instanceof ResolutionRuntimeError) {
       reject('resolution_failed', error.message);
@@ -1152,8 +1212,91 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
   }
 }
 
+function resultBindingContinuationSeed(
+  ctx: EffectContext,
+  bindingId: string,
+  movedCount: number,
+): ResolutionBindingSeed {
+  if (!Number.isSafeInteger(movedCount) || movedCount < 0 || movedCount > 1) {
+    reject('resolution_failed', 'Invalid staged movedCount continuation.');
+  }
+  return {
+    bindingId,
+    result: {
+      effectId: 'staged-result-binding-continuation',
+      effectType: 'move_card',
+      status: movedCount > 0 ? 'applied' : 'no_op',
+      affectedEntities: movedCount > 0 ? [{ kind: 'player', id: ctx.controllerId }] : [],
+      payload: {
+        ownerPlayerId: ctx.controllerId,
+        from: 'removed_from_game',
+        to: 'skill',
+        movedCount,
+        movedCardIds: [],
+      },
+      emittedEventIds: [],
+    },
+  };
+}
+
+function executeResultBindingProductionBridge(
+  s: GameState,
+  ctx: EffectContext,
+  a: AuthoringAbility,
+  effects: RuleNode[],
+): void {
+  const [firstMove, secondMove, finalBranch] = a.effects;
+  const [firstTarget, secondTarget] = a.targets;
+  const bindingId = str(firstMove?.resultVar ?? firstMove?.bind);
+  const continuationKey = resultBindingContinuationKey(bindingId);
+  const firstTargetId = str(firstTarget?.id);
+  const secondTargetId = str(secondTarget?.id);
+
+  if (!Object.prototype.hasOwnProperty.call(ctx.selections, firstTargetId)) {
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (!pending) reject('resolution_failed', 'Result-binding bridge failed to stage the first target.');
+    runtime(s).pendingDecision = pending;
+    return;
+  }
+
+  if (!Object.prototype.hasOwnProperty.call(ctx.variables, continuationKey)) {
+    const firstResult = executeResolutionEffects(s, ctx, [firstMove!]);
+    const moved = firstResult.results.find((result): result is Extract<KnownEffectResult, { effectType: 'move_card' }> =>
+      result.effectType === 'move_card');
+    if (!moved) reject('resolution_failed', 'First result-binding stage did not return move_card result.');
+    ctx.variables[continuationKey] = moved.payload.movedCount;
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (!pending || str(pending.target.id) !== secondTargetId) {
+      reject('resolution_failed', 'Result-binding bridge failed to stage the optional second target.');
+    }
+    runtime(s).pendingDecision = pending;
+    return;
+  }
+
+  if (!Object.prototype.hasOwnProperty.call(ctx.selections, secondTargetId)) {
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (!pending || str(pending.target.id) !== secondTargetId) {
+      reject('resolution_failed', 'Result-binding bridge lost the second target continuation.');
+    }
+    runtime(s).pendingDecision = pending;
+    return;
+  }
+
+  const seed = resultBindingContinuationSeed(ctx, bindingId, ctx.variables[continuationKey]!);
+  executeResolutionEffects(s, ctx, [secondMove!, finalBranch!], { initialBindings: [seed] });
+  installOngoing(s, ctx, a);
+  cleanupOngoing(s);
+}
+
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (isResultBindingProductionBridgeSemantic(a)) {
+    executeResultBindingProductionBridge(s, ctx, a, effects);
+    return;
+  }
+  if (isResultBindingProductionBridgeStructuralCandidate(a)) {
+    reject('resolution_failed', 'Unsupported staged result-binding semantic shape.');
+  }
   if (isResourceNumericDirectActionSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
@@ -1216,7 +1359,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
-  if (isCardZoneCoreDirectActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a) || isSetupCreateToSkillTrigger(a)) {
+  if (isResultBindingProductionBridgeSemantic(a) || isCardZoneCoreDirectActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a) || isSetupCreateToSkillTrigger(a)) {
     try {
       normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     } catch (error) {
