@@ -1,7 +1,7 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-13T20:42:52.259Z",
-  "sourceFingerprint": "4efa585d747b2f765d8248601c77daa12d247e6bfaa775a9d033afcd6b881854",
+  "generatedAt": "2026-09-13T23:00:28.246Z",
+  "sourceFingerprint": "2350e4949a4757fb6417080f63b8698c0c45492c2e03f36bdc8f4672f1276c6f",
   "counts": {
     "totalArchives": 14,
     "totalCards": 46,
@@ -95,6 +95,9 @@
       "lifecycle:duration:round_count": 1,
       "lifecycle:duration:while_card_active": 3,
       "lifecycle:rounds:2": 1,
+      "lifecycle:sourceValidity:kind:accepted_source_state_policy": 1,
+      "lifecycle:sourceValidity:owner:card_zone_source_state": 1,
+      "lifecycle:sourceValidity:policyId:fd.card-zone.active-card-source.v1": 1,
       "lifecycle:starts:immediate": 4,
       "limit:conflictPolicy:only_one_effect_may_activate_per_window": 3,
       "limit:groupId:artoriac-pilgrim-unique-on-win": 3,
@@ -2340,6 +2343,9 @@
       "lifecyclePolicies": [
         "lifecycle:cleanup:when_card_leaves_active_area",
         "lifecycle:duration:while_card_active",
+        "lifecycle:sourceValidity:kind:accepted_source_state_policy",
+        "lifecycle:sourceValidity:owner:card_zone_source_state",
+        "lifecycle:sourceValidity:policyId:fd.card-zone.active-card-source.v1",
         "lifecycle:starts:immediate"
       ],
       "hiddenInformation": [
@@ -4031,97 +4037,97 @@
     "cardSpecificRuntimeHandlers": [
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 63,
+        "line": 64,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 63,
+        "line": 64,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 63,
+        "line": 64,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 70,
+        "line": 71,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 70,
+        "line": 71,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 70,
+        "line": 71,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 84,
+        "line": 85,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 84,
+        "line": 85,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 84,
+        "line": 85,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 84,
+        "line": 85,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 509,
+        "line": 528,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 563,
+        "line": 582,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 759,
+        "line": 857,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 766,
+        "line": 864,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 816,
+        "line": 914,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1141,
+        "line": 1265,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
@@ -5019,7 +5025,7 @@
   "compiledDefinitions": {
     "packId": "fd-playtest-v1",
     "version": 1,
-    "definitionHash": "5aa5a186bb201ce1f491cb6f38907a6267a4f30775113d9dd95651d58ba735d2",
+    "definitionHash": "26167661823b52de598c77a59df4d05440a6bfced7d68cd3e04d11353d72dbaa",
     "compiledCards": 70,
     "compiledCharacters": 14,
     "blockingIssues": 0

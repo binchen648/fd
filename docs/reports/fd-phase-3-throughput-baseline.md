@@ -328,3 +328,14 @@ Permitted final status:
 - Compiled evidence remains definition hash `5aa5a186bb201ce1f491cb6f38907a6267a4f30775113d9dd95651d58ba735d2` with `0` blocking issues.
 - P3-B08 Lifecycle-spec dependency is satisfied, but B08 remains `WAIT_RUNTIME_HOT_FILE_OWNERSHIP` because `fd-b11-repair1` still has uncommitted edits in shared runtime hot files.
 - P3-B07 remains blocked by the same hot-file ownership conflict.
+## P3-A03 TO-12 Synchronization — 2026-09-14
+
+- P3-TO-12 Lifecycle Runtime: `REVIEW_ACCEPTED` at runtime `da563815415e5f6240a6a0b9f62f6310e2c1146e`, independent R2 evidence `26dc0b2ddcff4d0786f3c08800ef0030c0e606d2`.
+- External Card Zone/source-state policy dependency is independently accepted at policy candidate `0b8c6bf611447b416581694d807b9bb52badc30b`, reviewer evidence `f7435cca3d884357c7fc2aeb829610421f8e357a`.
+- Correct Lifecycle denominator remains `11` explicit lifecycle/reset abilities and `22` lifecycle policy memberships; only the SC3 source-active representative is synchronized as migrated by this review.
+- Fresh A raw coverage on the accepted runtime remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0`; no classifier rule was changed and no synthetic global legacy delta is inferred for the lifecycle row.
+- Scoped R-accepted TO-12 transition: migrated `1`, dual runtime `0`, Gate A/B/C all accepted for SC3 only.
+- Fresh compiled evidence uses definition hash `26167661823b52de598c77a59df4d05440a6bfced7d68cd3e04d11353d72dbaa` with `70` cards, `14` characters, and `0` blocking issues.
+- Coverage artifact now records the accepted source-validity metadata (`kind=accepted_source_state_policy`, `owner=card_zone_source_state`, policy `fd.card-zone.active-card-source.v1`) while preserving the raw runtime counters above.
+- P3-TO-12 releases the runtime hot-file lane. P3-TO-13 remains `WAIT_TO07`; P3-TO-07 is the next prerequisite lane.
+- No other Lifecycle/reset row inherits migration or Gate acceptance from SC3.
