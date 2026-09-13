@@ -35,7 +35,7 @@ Current runtime distribution is evidence only and receives no promotion in this 
 The spec separates:
 
 1. TO-15 final participant power + immutable trace input;
-2. Battle Result participation, winner-eligibility exclusion, winner/loser outcome, loss-effect policy, tie and margin ownership;
+2. Battle Result participation, winner-eligibility exclusion, winner/loser outcome, loss-effect policy, tie and margin ownership, with explicit no-participant skip and fail-closed no-eligible-winner admission;
 3. TO-03 result-event scheduling ownership;
 4. exactly-once battle-phase Recon reward plan/receipt at power-resolution start;
 5. immutable base battlefield scoring plan with closed typed VP sources and exactly-once scoring receipt;
@@ -56,7 +56,8 @@ The 13 result consumers may later consume the accepted result-event envelope. Th
 - base-score-before-personal-reward invariant: explicit via `post_base_scoring` barrier; personal VP cannot modify the base pool.
 - Recon reward: separate phase-level exactly-once plan/receipt.
 - base VP source union: one combined event+competition `base_pool_share` plus reviewed-location variant; no generic `reviewed_rule` or ambiguous `battle_vp` source.
-- base-pool rounding: exactly one `ceil((eventVpPool + competitionVpPool) / winnerCount)` per winner; event/competition attribution cannot change the total.
+- base-pool rounding: exactly one `ceil((eventVpPool + competitionVpPool) / winnerCount)` per winner, only when `winnerCount >= 1`; event/competition attribution cannot change the total.
+- zero-winner boundary: empty participation skips result/scoring; non-empty participation with zero eligible winners is typed-blocked as `NO_ELIGIBLE_WINNER_POLICY_REQUIRED` with no guessed margin/scoring/military/events and no legacy fallback.
 - semantic-axis vs historical BATTLE_RESULT exact set: PASS, difference 0.
 - canonical schema arbitrary `unknown` payload: none.
 - mutable `consumed` flag inside immutable scoring plan: none.

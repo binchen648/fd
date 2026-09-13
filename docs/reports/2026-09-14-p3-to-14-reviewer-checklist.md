@@ -27,6 +27,9 @@
 - [ ] A true nonparticipant is neither winner nor loser and is not inserted into the participant outcome set.
 - [ ] Loss outcome is not conflated with suppression of loss effects; suppressed loss effects keep a reviewed policy identity.
 - [ ] Tie/sole-winner/margin facts are internally consistent.
+- [ ] A resolved `BattleResultEnvelope` requires at least one winner; `winnerPlayerIds` cannot be empty.
+- [ ] No participants is an explicit no-result/no-scoring skip, not an invented zero-winner result.
+- [ ] Non-empty participants with zero eligible winners fail closed as `NO_ELIGIBLE_WINNER_POLICY_REQUIRED`; no margin/base scoring/military/result-trigger semantics are guessed and no legacy fallback is used.
 - [ ] Result identity, trigger identity, scoring plan identity and resource result identity are distinct.
 - [ ] Duplicate/stale Recon and battlefield scoring are impossible by contract.
 - [ ] Recon +2 VP is a phase-level exactly-once plan/receipt at battle-power-resolution start, not a per-battlefield winner adjustment.
@@ -34,6 +37,7 @@
 - [ ] Base battlefield VP source is a closed discriminated union; no `reviewed_rule`, ambiguous `battle_vp`, label parser, or card-ID escape hatch exists.
 - [ ] Event and competition provenance are carried together by one combined `base_pool_share`; they are not independently rounded adjustments.
 - [ ] For every winner, base-pool delta is exactly `ceil((eventVpPool + competitionVpPool) / winnerCount)`; the 1+1 pool / 2-winner case yields 1 per winner, not 2.
+- [ ] Base-pool rounding is never evaluated with `winnerCount === 0`.
 - [ ] Reviewed location rewards remain separate; personal card/master/servant rewards remain outside the base plan.
 - [ ] Base event/competition/location battle rewards and base military adjustments commit before ordinary post-result personal rewards/effects.
 - [ ] Result/win/loss/first-loss event identities may be queued before scoring, but their ordinary continuations are blocked by `post_base_scoring` until the base scoring receipt commits.

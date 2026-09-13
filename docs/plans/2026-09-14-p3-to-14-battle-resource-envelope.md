@@ -78,7 +78,7 @@ interface BattleResultEnvelope {
   roundNumber: number;
   battlefieldId: string;
   participants: BattleParticipantOutcome[];
-  winnerPlayerIds: string[];
+  winnerPlayerIds: [string, ...string[]];
   loserPlayerIds: string[];
   excludedPlayerIds: string[];
   tied: boolean;
@@ -86,6 +86,17 @@ interface BattleResultEnvelope {
   margin: number;
   scoringPlanId: string;
 }
+
+type BattleResultAdmission =
+  | { kind: 'no_participants'; battlefieldId: string }
+  | { kind: 'resolved'; result: BattleResultEnvelope }
+  | {
+      kind: 'blocked';
+      blocker: 'NO_ELIGIBLE_WINNER_POLICY_REQUIRED';
+      battlefieldId: string;
+      participantIds: string[];
+      exclusionPolicyRefs: string[];
+    };
 
 type BaseBattlefieldVpSource =
   | {
@@ -163,6 +174,13 @@ Battle Result consumes a frozen authoritative participant set and final Power Tr
 
 Winner eligibility, battle outcome, and loss-effect settlement are three independent rule dimensions. A participating player may be excluded from winning and still be a loser; a loser may separately ignore/suppress some loss effects. The result model must not erase a loss because the player was ineligible to win or because a later loss effect is suppressed. Only a player who did **not participate** in that battlefield's power resolution is neither a winner nor a loser and must not appear in `BattleParticipantOutcome[]`. Trigger production uses the authoritative loser set plus the reviewed loss-effect policy for the specific event.
 
+A normal `BattleResultEnvelope` is admissible only when `winnerPlayerIds` is non-empty. Two non-normal admissions are explicit:
+
+- no participants: return `{ kind: 'no_participants' }`; do not fabricate a result, scoring plan, win/loss events, margin, or military adjustment;
+- participants exist but the eligible-for-win set is empty: return the typed blocker `NO_ELIGIBLE_WINNER_POLICY_REQUIRED`. Current reviewed rules do not define the missing no-eligible-winner margin/scoring/loss policy, so the claimed runtime slice must stop before creating a `BattleResultEnvelope`, scoring plan, or result/win/loss event. It must preserve any separately committed earlier battle-phase receipt (for example Recon), and must not fall back to legacy behavior.
+
+This is an admission boundary, not a new game ruling. A future reviewed no-eligible-winner rule may replace the blocker with a typed policy; until then, zero-winner arithmetic and inferred loser/military semantics are forbidden.
+
 No card/ability ID may be used to decide generic winner, loser, tie, margin, or exclusion semantics. Card-specific rules must first normalize into typed eligibility/power/loss-effect inputs owned by their proper gateway.
 
 ## 6. Result And Trigger Event Production
@@ -188,8 +206,8 @@ The generic stage model is:
 
 1. at battle-power-resolution start, build and consume one round/phase-scoped `ReconRewardPlan` exactly once; commit legal Recon +2 VP adjustments atomically and record `ReconRewardReceipt` before battlefield winner determination;
 2. freeze each battlefield's participant/power inputs;
-3. determine and commit one immutable Battle Result together with its immutable **base battlefield** scoring plan;
-4. create stable result/win/loss/first-loss event identities and queue their trigger candidates behind a server-owned `post_base_scoring` settlement barrier; event identity exists, but ordinary post-result continuations do not settle yet;
+3. admit the battlefield result shape: no participants -> explicit `no_participants` skip; participants with zero eligible winners -> `NO_ELIGIBLE_WINNER_POLICY_REQUIRED` and halt that unsupported result route before result/scoring/events; otherwise determine and commit one immutable Battle Result together with its immutable **base battlefield** scoring plan;
+4. for a resolved result only, create stable result/win/loss/first-loss event identities and queue their trigger candidates behind a server-owned `post_base_scoring` settlement barrier; event identity exists, but ordinary post-result continuations do not settle yet;
 5. consume the base battlefield scoring plan exactly once; for each winner commit exactly one combined `base_pool_share` equal to `ceil((eventVpPool + competitionVpPool) / winnerCount)`, plus any separately reviewed typed location reward and military adjustments, atomically in one scoring receipt; event and competition provenance remain components of the same base-pool source and are never independently rounded;
 6. release the `post_base_scoring` barrier; Trigger Gateway may now settle the queued result/win/loss/first-loss consumers according to accepted semantic ordering; their personal VP/rewards are separate typed Resource results and never re-enter the base pool;
 7. when a reviewed Battle/Scoring rule says the controller has **gained a victory**, produce `after_controller_gains_victory` exactly once from the committed result + scoring/victory transition and settle it through the same post-base-scoring Trigger Gateway stage;
@@ -206,7 +224,9 @@ Canonical base-pool arithmetic is a hard invariant:
 
 `baseVpPool = eventVpPool + competitionVpPool`
 
-`baseVpPerWinner = ceil(baseVpPool / winnerCount)`
+`baseVpPerWinner = ceil(baseVpPool / winnerCount)`, with the hard precondition `winnerCount >= 1`.
+
+A zero-winner battlefield never evaluates this formula. It must have been rejected by the admission boundary above unless a future reviewed no-eligible-winner policy explicitly defines a replacement scoring rule.
 
 Each winner receives exactly one `base_pool_share` with `delta === baseVpPerWinner`. Event and competition components are simultaneous provenance only; they are not independently rounded adjustments. If an audit needs component attribution, that attribution must sum exactly to `baseVpPerWinner` and cannot change the awarded total. Counterexample guard: with 2 winners, event pool 1 and competition pool 1, each winner receives 1, never 2.
 
@@ -296,6 +316,8 @@ Reject without legacy fallback when a claimed Battle Result route has:
 - eligible/ineligible flag inconsistent with its typed win-exclusion record;
 - loss-effect suppression missing its reviewed policy identity;
 - winner not in the participating eligible set;
+- empty winner set after non-empty participation without a reviewed no-eligible-winner policy; return `NO_ELIGIBLE_WINNER_POLICY_REQUIRED` before result/scoring/event creation;
+- any attempt to evaluate base-pool rounding, margin, military adjustment, or normal win/loss events with `winnerCount === 0`;
 - malformed tie/sole-winner facts;
 - unknown exclusion/loss-effect policy;
 - scoring plan/result identity mismatch;
@@ -322,7 +344,8 @@ TO-14 may be independently accepted as a specification only if review confirms:
 - stage ordering and unresolved-order policy are explicit;
 - Recon/result/scoring/resource identities support exactly-once replay safety;
 - base battlefield VP sources are a closed discriminated union with no generic `reviewed_rule`/`battle_vp` escape hatch;
-- event + competition VP are combined before the single winner-count rounding step, with component provenance preserved but never independently rounded;
+- event + competition VP are combined before the single winner-count rounding step, with component provenance preserved but never independently rounded; the formula is admissible only for `winnerCount >= 1`;
+- no-participant battlefields are explicit skips, while non-empty/zero-eligible-winner battlefields are blocked by `NO_ELIGIBLE_WINNER_POLICY_REQUIRED` until a reviewed policy exists;
 - the post-base-scoring barrier guarantees base battlefield rewards commit before ordinary personal win/loss rewards/effects;
 - optional trigger pauses do not roll back committed result state;
 - projection/reconnect preserves authoritative identities without leaking hidden detail;
