@@ -353,3 +353,13 @@ The current Phase 3 throughput blocker is not raw primitive absence. It is the l
 Permitted final status:
 
 `PHASE_3_THROUGHPUT_OPTIMIZATION_CANDIDATE`
+
+## 2026-09-14 P3-A03 B04 Acceptance Sync
+
+P3-R04 accepted clean B04 target `56376bea590eda20d3c7d9ad359df1cabf4371d1` with reviewer evidence `1cecb7c8864f023f05c63402a3332eac912b0f71`.
+
+Scoped PLAY burn-down is now independently accepted: legacy `1 -> 0`, new typed semantic route `0 -> 1`, dual `1 -> 0`, eligible/migrated/skipped `1/1/6`.
+
+The A raw classifier already counted Time Alter, so accepted global aggregate counters are not incremented again. The previous B11 overlay remains `newRuntimeSemanticRouted=13`, `legacyExecuteAbility=3`, `legacyResolveEffect=48`, `dualRuntime=0`.
+
+This closes the R04 dependency for P3-B05 without promoting unrelated Card Action shapes or Phase 3 completion.
