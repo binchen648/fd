@@ -373,3 +373,11 @@ Scoped source-card response burn-down is now independently accepted: legacy `1 -
 The A raw classifier already counted Volumen, so accepted global aggregate counters stay `newRuntimeSemanticRouted=13`, `legacyExecuteAbility=3`, `legacyResolveEffect=48`, `dualRuntime=0`; no duplicate global delta is applied.
 
 R05 r2 also closes the first-review shared card-play-forbid bypass. P3-B05 releases the runtime hot files, allowing P3-B06 ADD_TO_ATTACK to proceed under its existing task boundary.
+
+## 2026-09-14 P3-A03 B06 Acceptance Sync
+
+P3-R05 accepted B06 target `f619df5479ed733b76c096410f7ccdc700abd661` with reviewer evidence `3445de4aca46b4ec1c63fcb7b7642eaaf28cb0c1`. Scoped ADD_TO_ATTACK burn-down is accepted at legacy `1 -> 0`, new `0 -> 1`, dual `1 -> 0`.
+
+A raw coverage already records Maiya as `NEW_RUNTIME_SEMANTIC_ROUTED`, so accepted aggregate counters remain `newRuntimeSemanticRouted=13`, `legacyExecuteAbility=3`, `legacyResolveEffect=48`, `dualRuntime=0`. No duplicate global delta is applied.
+
+B07/B08/B09 remain dependency-gated by Trigger, Lifecycle, and create-and-activate inventory/gateway requirements respectively; B06 acceptance does not bypass those gates.
