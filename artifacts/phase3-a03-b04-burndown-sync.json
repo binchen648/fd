@@ -1,0 +1,85 @@
+﻿{
+  "schemaVersion": "fd-phase3-burndown-sync-v1",
+  "date": "2026-09-14",
+  "task": "P3-A03",
+  "status": "COVERAGE_SYNC_CANDIDATE",
+  "scope": "P3-B04 CARD_ACTION_SEMANTICS_MINIMAL_PLAY after P3-R04 r1 acceptance",
+  "automationBaseline": {
+    "parentSyncCommit": "2262c609100d8a2a6c236628c1e31dedee14a593",
+    "rawCountsAlreadyIncludeTimeAlterSemanticRoute": true,
+    "rawCounts": {
+      "newRuntimeSemanticRouted": 12,
+      "legacyExecuteAbility": 3,
+      "legacyResolveEffect": 49,
+      "dualRuntime": 0,
+      "notClassifiable": 28,
+      "pilotAllowlist": 0
+    },
+    "priorAcceptedB11Overlay": {
+      "newRuntimeSemanticRouted": 13,
+      "legacyExecuteAbility": 3,
+      "legacyResolveEffect": 48,
+      "dualRuntime": 0
+    }
+  },
+  "acceptedRuntime": {
+    "task": "P3-B04",
+    "candidateCommit": "56376bea590eda20d3c7d9ad359df1cabf4371d1",
+    "reviewTask": "P3-R04",
+    "reviewEvidenceCommit": "1cecb7c8864f023f05c63402a3332eac912b0f71",
+    "reviewStatus": "GATE_A_B_CANDIDATE_ACCEPTED",
+    "representative": "master.kiritsugu.skill.time-alter#time-alter.action",
+    "scopedBeforeAfter": {
+      "legacyPlayConsumerCount": { "before": 1, "after": 0, "delta": -1 },
+      "newRuntimeSemanticRoutedPlayCount": { "before": 0, "after": 1, "delta": 1 },
+      "dualCompatiblePlayCount": { "before": 1, "after": 0, "delta": -1 },
+      "eligible": { "before": 1, "after": 1, "delta": 0 },
+      "migrated": { "before": 0, "after": 1, "delta": 1 },
+      "skipped": { "before": 6, "after": 6, "delta": 0 }
+    }
+  },
+  "acceptedBurnDown": {
+    "method": "B04 was already present in the A-owned raw semantic-route count, so R04 acceptance changes acceptance status only and must not be added to global route counters a second time. Prior accepted B11 overlay remains authoritative.",
+    "newRuntimeSemanticRouted": 13,
+    "legacyExecuteAbility": 3,
+    "legacyResolveEffect": 48,
+    "dualRuntime": 0
+  },
+  "cardActionPlay": {
+    "eligible": 1,
+    "migrated": 1,
+    "skipped": 6,
+    "acceptedRepresentative": "master.kiritsugu.skill.time-alter#time-alter.action",
+    "gateA": "PASS",
+    "gateB": "PASS",
+    "gateC": "PASS_SCOPED_REPRESENTATIVE"
+  },
+  "judgments": {
+    "accepted": [
+      "P3-B04@56376bea590eda20d3c7d9ad359df1cabf4371d1 by P3-R04@1cecb7c8864f023f05c63402a3332eac912b0f71"
+    ],
+    "rejected": [
+      "Original mixed-role B04 candidate 628238a was superseded after R04@98aa785 required clean role-boundary repacking."
+    ],
+    "pending": [
+      "The six skipped Card Action abilities retain their separate mechanic contracts and do not inherit Time Alter acceptance.",
+      "Phase 3 and release readiness remain open."
+    ]
+  },
+  "nextDependencies": {
+    "satisfied": [
+      "P3-B04 clean implementation candidate",
+      "P3-R04 independent acceptance",
+      "P3-A03 post-review synchronization for B04"
+    ],
+    "unblocked": [
+      "P3-B05 CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE",
+      "P3-B06 when coordinator/contract conditions are satisfied"
+    ],
+    "stillBlocked": [
+      "Trigger/Lifecycle/Interaction runtime families until their gateway contracts are accepted",
+      "full-roster FB2/FM migration until explicitly dispatched READY",
+      "Phase 3 completion and release readiness"
+    ]
+  }
+}
