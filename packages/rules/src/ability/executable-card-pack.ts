@@ -296,7 +296,7 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
 function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
-    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability)) continue;
+    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability) && !isSetupCreateToSkillTrigger(ability)) continue;
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
     try {
       validateResolutionDataFlowNodes(effects, path);
@@ -350,6 +350,17 @@ function isCloseSourceCardOnPlayedTrigger(ability: AuthoringAbility): boolean {
   const sourceZone = ability.conditions.some((condition) => str(condition.type) === 'source_card_in_zone' && str(condition.zone) === 'field');
   const noblePlay = ability.conditions.some((condition) => str(condition.type) === 'event_played_card_has_attribute' && str(condition.attribute) === '宝具');
   return sourceZone && noblePlay;
+}
+
+function isSetupCreateToSkillTrigger(ability: AuthoringAbility): boolean {
+  if (ability.kind !== 'forced_trigger' || str(ability.activation.trigger) !== 'game_start') return false;
+  if (ability.conditions.length || ability.targets.length || ability.cost.length || ability.creates.length || ability.effects.length !== 1) return false;
+  const [effect] = ability.effects;
+  const destination = node(effect?.to);
+  return str(effect?.type) === 'create_card' &&
+    typeof effect?.cardId === 'string' && effect.cardId.length > 0 &&
+    str(destination.zone) === 'skill' &&
+    (!destination.owner || str(destination.owner) === 'controller');
 }
 
 function isAddToAttackRouteCandidate(ability: AuthoringAbility): boolean {
