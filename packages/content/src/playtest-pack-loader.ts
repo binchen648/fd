@@ -515,11 +515,6 @@ function entitySources(pack: LoadedPlaytestContentPack): Array<{
   ];
 }
 
-function sourceImageExists(workspaceRoot: string, imagePath: string): boolean {
-  const fullPath = isAbsolute(imagePath) ? imagePath : resolve(workspaceRoot, imagePath);
-  return existsSync(fullPath);
-}
-
 function referenceIssue(entityId: string, referenceId: string): PackValidationIssue {
   return {
     code: 'UNRESOLVED_CARD_REFERENCE',
