@@ -82,6 +82,53 @@ describe('phase3 coverage taxonomy drift protections', () => {
     expect(row.strictPendingInteractions).toEqual([]);
   });
 
+  it('does not classify automatic branches or fixed amounts as player interactions', () => {
+    const automatic = classifyAbilityForCoverage(
+      { id: 'test.archive' },
+      { id: 'test.card' },
+      {
+        id: 'ability.automatic-branch',
+        kind: 'phase_action',
+        targets: [],
+        effects: [{ type: 'branch', branches: [{ if: { type: 'can_adjust_mana' }, then: [{ type: 'adjust_mana', amount: 2 }] }] }],
+      },
+    );
+    const fixedAmountChoice = classifyAbilityForCoverage(
+      { id: 'test.archive' },
+      { id: 'test.card' },
+      {
+        id: 'ability.fixed-amount-choice',
+        kind: 'phase_action',
+        targets: [{ id: 'chosen_option', type: 'choice', options: [{ id: 'pay_three' }] }],
+        effects: [{ type: 'branch', branches: [{ if: { type: 'choice_is' }, then: [{ type: 'pay_mana', amount: 3 }] }] }],
+      },
+    );
+
+    expect(automatic.interactions).toEqual([]);
+    expect(fixedAmountChoice.interactions).toEqual(['BRANCH_CHOICE']);
+    expect(fixedAmountChoice.interactions).not.toContain('CHOOSE_AMOUNT');
+  });
+
+  it('classifies structured private targets as hidden information', () => {
+    const row = classifyAbilityForCoverage(
+      { id: 'test.archive' },
+      { id: 'test.card' },
+      {
+        id: 'ability.private-target',
+        kind: 'phase_action',
+        targets: [{
+          id: 'selected_card',
+          type: 'card_instance',
+          scope: { zone: 'hand', controller: 'self' },
+          visibility: 'private_to_controller',
+        }],
+        effects: [],
+      },
+    );
+
+    expect(row.hiddenInformation).toContain('HIDDEN_OR_PRIVATE');
+  });
+
   it('keeps unknown primitive classifications visible', () => {
     const coverage = buildCoverageFromArchives([archiveWithAbilities([
       {

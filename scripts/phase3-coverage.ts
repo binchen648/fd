@@ -492,8 +492,6 @@ export function classifyAbilityForCoverage(
   const interactions: string[] = [...targetShapes];
   if (ability.kind === 'response' || String(activation.opens ?? '').includes('response')) interactions.push('RESPONSE');
   if (ability.kind === 'optional_trigger' || String(activation.opens ?? '').includes('optional')) interactions.push('YES_NO');
-  if (allTypes.includes('branch')) interactions.push('BRANCH_CHOICE');
-  if (raw.includes('"amount"') && raw.includes('"choice"')) interactions.push('CHOOSE_AMOUNT');
 
   const strictPendingInteractions = targets.length > 0 ? [...targetShapes] : [];
   if (targets.length === 0 && allTypes.length > 0 && raw.includes('"target"')) {
@@ -521,7 +519,17 @@ export function classifyAbilityForCoverage(
   if (allTypes.includes('reveal_information')) hiddenInformation.push('REVEAL');
   if (allTypes.includes('set_zone_visibility')) hiddenInformation.push('ZONE_VISIBILITY');
   if (allTypes.includes('look_at_deck_top') || allTypes.includes('look_at_match_deck_bottoms')) hiddenInformation.push('PRIVATE_LOOK');
-  if (raw.includes('face_down') || /暗置|隐藏|真名|查看|展示/.test(String(ability.printedClause ?? ''))) hiddenInformation.push('HIDDEN_OR_PRIVATE');
+  const hasPrivateTarget = targets.some((target) => {
+    const declaredVisibility = String(target.visibility ?? '');
+    if (declaredVisibility.includes('private')) return true;
+    if (target.type !== 'card_instance') return false;
+    const scope = (target.scope ?? {}) as JsonObject;
+    const privateZone = ['hand', 'deck', 'looked_cards'].includes(String(scope.zone ?? ''));
+    const controllerOwned = ['controller', 'self'].includes(String(scope.owner ?? '')) ||
+      ['controller', 'self'].includes(String(scope.controller ?? ''));
+    return privateZone && controllerOwned;
+  });
+  if (hasPrivateTarget || raw.includes('face_down') || /暗置|隐藏|真名|查看|展示/.test(String(ability.printedClause ?? ''))) hiddenInformation.push('HIDDEN_OR_PRIVATE');
 
   const resultBinding: string[] = [];
   if (raw.includes('"resultVar"')) resultBinding.push('RESULT_VAR');

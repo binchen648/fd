@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-13T05:28:59.274Z",
+  "generatedAt": "2026-09-13T14:00:24.879Z",
   "sourceFingerprint": "4efa585d747b2f765d8248601c77daa12d247e6bfaa775a9d033afcd6b881854",
   "counts": {
     "totalArchives": 14,
@@ -64,8 +64,7 @@
       "MANA": 6
     },
     "interactionCounts": {
-      "BRANCH_CHOICE": 5,
-      "CHOOSE_AMOUNT": 1,
+      "BRANCH_CHOICE": 1,
       "CHOOSE_LOCATION": 3,
       "CHOOSE_N_CARDS": 6,
       "CHOOSE_ONE_PLAYER": 1,
@@ -108,7 +107,7 @@
       "limit:window:trigger_window": 3
     },
     "hiddenInformationCounts": {
-      "HIDDEN_OR_PRIVATE": 18,
+      "HIDDEN_OR_PRIVATE": 21,
       "PRIVATE_LOOK": 2,
       "REVEAL": 11,
       "ZONE_VISIBILITY": 1
@@ -683,7 +682,9 @@
       ],
       "modifiers": [],
       "lifecyclePolicies": [],
-      "hiddenInformation": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
       "resultBinding": [],
       "battleIntegration": [],
       "specialSubsystems": [
@@ -1678,8 +1679,7 @@
         "MANA"
       ],
       "interactions": [
-        "BRANCH_CHOICE",
-        "CHOOSE_AMOUNT"
+        "BRANCH_CHOICE"
       ],
       "strictPendingInteractions": [
         "BRANCH_CHOICE"
@@ -2595,9 +2595,7 @@
       ],
       "targets": [],
       "costs": [],
-      "interactions": [
-        "BRANCH_CHOICE"
-      ],
+      "interactions": [],
       "strictPendingInteractions": [],
       "effectPrimitiveFamilies": [],
       "exactEffectPrimitives": [
@@ -2777,7 +2775,9 @@
       ],
       "modifiers": [],
       "lifecyclePolicies": [],
-      "hiddenInformation": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
       "resultBinding": [],
       "battleIntegration": [],
       "specialSubsystems": [],
@@ -2852,7 +2852,6 @@
         "DISCARD_OR_CLOSE"
       ],
       "interactions": [
-        "BRANCH_CHOICE",
         "CHOOSE_LOCATION"
       ],
       "strictPendingInteractions": [
@@ -3311,9 +3310,7 @@
       ],
       "targets": [],
       "costs": [],
-      "interactions": [
-        "BRANCH_CHOICE"
-      ],
+      "interactions": [],
       "strictPendingInteractions": [],
       "effectPrimitiveFamilies": [],
       "exactEffectPrimitives": [
@@ -3705,7 +3702,6 @@
         "MANA"
       ],
       "interactions": [
-        "BRANCH_CHOICE",
         "CHOOSE_N_CARDS"
       ],
       "strictPendingInteractions": [
@@ -3723,7 +3719,9 @@
       ],
       "modifiers": [],
       "lifecyclePolicies": [],
-      "hiddenInformation": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
       "resultBinding": [
         "RESULT_VAR"
       ],
