@@ -110,7 +110,9 @@ Focused rules set after repair:
 - `match-room.test.ts`
 - `match-room-hub.test.ts`
 
-Result: **6 files / 44 tests PASS**.
+Result: **6 files / 45 tests PASS**.
+
+The final R1 candidate also adds a direct `MatchRoomHub` boundary regression covering the same missing-revision / rejected-private-selection / redacted-success path independently from the dedicated interaction-room-boundary suite.
 
 Server WebSocket package:
 
@@ -142,9 +144,9 @@ Result: **5 / 5 PASS**.
 `npm.cmd test`:
 
 - test files: **89 passed / 10 failed (99 total)**
-- tests: **590 passed / 20 failed (610 total)**
+- tests: **591 passed / 20 failed (611 total)**
 
-All 20 failures remain the inherited local CHM/original-image source-asset absence class already present in the accepted TO12 baseline and TO13 v0. The repair adds three passing production-boundary tests; no new failure class appears.
+All 20 failures remain the inherited local CHM/original-image source-asset absence class already present in the accepted TO12 baseline and TO13 v0. The final R1 candidate adds four passing production-boundary/room-level tests over the original TO13 candidate; no new failure class appears.
 
 ## Required next step
 
