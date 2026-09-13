@@ -87,12 +87,47 @@ test('TO13 keeps private optional candidates owner-only across reconnect and set
   const interactionRevision = latestGateCMatch(hostTrace)!.view.revision;
   await expect.poll(() => latestGateCMatch(observerTrace)?.view.revision).toBe(interactionRevision);
   expect(targetWindow(latestGateCMatch(observerTrace))).toBeUndefined();
-  const observerJson = JSON.stringify(latestGateCMatch(observerTrace));
+  let observerJson = JSON.stringify(latestGateCMatch(observerTrace));
   expect(observerJson).not.toContain(interactionLowTwoCardId);
   expect(observerJson).not.toContain(interactionLowThreeCardId);
   expect(observerJson).not.toContain('continuationRef');
 
   const interactionId = ownerWindow.id;
+  const logsBeforeRejected = latestGateCMatch(hostTrace)!.logs.length;
+  const replayBeforeRejected = latestGateCMatch(hostTrace)!.replay.length;
+
+  const missingRevisionErrors = hostTrace.errors.length;
+  const missingRevisionMessage = {
+    type: 'client:dispatch_command',
+    requestId: 'missing-interaction-revision',
+    command: { type: 'choose_target', decisionId: interactionId, selectedIds: [interactionLowTwoCardId] },
+  } as unknown as ClientRoomMessage;
+  await sendGateCRoomMessage(hostPage, host, missingRevisionMessage);
+  await expect.poll(() => hostTrace.errors.length).toBeGreaterThan(missingRevisionErrors);
+  expect(hostTrace.errors.at(-1)?.message).toContain('missing_expected_revision');
+  expect(latestGateCMatch(hostTrace)!.view.revision).toBe(interactionRevision);
+  expect(latestGateCMatch(hostTrace)!.logs).toHaveLength(logsBeforeRejected);
+  expect(latestGateCMatch(hostTrace)!.replay).toHaveLength(replayBeforeRejected);
+  expect(targetWindow(latestGateCMatch(hostTrace))?.id).toBe(interactionId);
+
+  const hostProjectionCountBeforeInvalid = hostTrace.projections.length;
+  const observerProjectionCountBeforeInvalid = observerTrace.projections.length;
+  const invalidPrivateMessage: ClientRoomMessage = {
+    type: 'client:dispatch_command',
+    requestId: 'invalid-private-target',
+    expectedRevision: interactionRevision,
+    command: { type: 'choose_target', decisionId: interactionId, selectedIds: [interactionHighCardId] },
+  };
+  await sendGateCRoomMessage(hostPage, host, invalidPrivateMessage);
+  await expect.poll(() => hostTrace.projections.length).toBeGreaterThan(hostProjectionCountBeforeInvalid);
+  await expect.poll(() => observerTrace.projections.length).toBeGreaterThan(observerProjectionCountBeforeInvalid);
+  expect(latestGateCMatch(hostTrace)!.view.revision).toBe(interactionRevision);
+  expect(latestGateCMatch(hostTrace)!.logs).toHaveLength(logsBeforeRejected);
+  expect(latestGateCMatch(hostTrace)!.replay).toHaveLength(replayBeforeRejected);
+  expect(targetWindow(latestGateCMatch(hostTrace))?.id).toBe(interactionId);
+  observerJson = JSON.stringify(latestGateCMatch(observerTrace));
+  expect(observerJson).not.toContain(interactionHighCardId);
+
   await reloadGateCRoomAndWaitForRevision(hostPage, hostTrace, interactionRevision);
   const restoredWindow = targetWindow(latestGateCMatch(hostTrace));
   expect(restoredWindow?.id).toBe(interactionId);
@@ -115,6 +150,9 @@ test('TO13 keeps private optional candidates owner-only across reconnect and set
     instanceId: interactionLowTwoCardId,
     zone: 'attack_area',
   }));
+  await expect.poll(() => latestGateCMatch(observerTrace)?.view.revision).toBe(settledRevision);
+  expect(JSON.stringify(latestGateCMatch(observerTrace)?.logs)).not.toContain(interactionLowTwoCardId);
+  expect(JSON.stringify(latestGateCMatch(observerTrace)?.replay)).not.toContain(interactionLowTwoCardId);
 
   await reloadGateCRoomAndWaitForRevision(hostPage, hostTrace, settledRevision);
   expect(targetWindow(latestGateCMatch(hostTrace))).toBeUndefined();

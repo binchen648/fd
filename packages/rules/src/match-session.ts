@@ -490,10 +490,16 @@ export class MatchSession {
 
   dispatchPlayerAction(playerId: string, command: AbilityCommand): DispatchResult {
     if (command.type === 'deploy_player') return this.dispatchDeployPlayer(playerId, command.locationId as LocationId);
+    const privateInteractionMutation = command.type === 'choose_target' &&
+      this.state.abilityRuntime?.pendingDecision?.interaction?.visibility === 'owner_only';
     const result = dispatchAbilityCommand(this.state, playerId, command);
+    if (!result.ok && privateInteractionMutation) return result;
     this.rejection = result.rejection;
+    const sharedCommand = privateInteractionMutation
+      ? { type: 'choose_target', privateSelection: 'redacted' }
+      : command as Record<string, unknown>;
     this.record(result.ok ? 'dispatch_ok' : 'dispatch_rejected', `${playerId}:${command.type}`, {
-      command: command as Record<string, unknown>,
+      command: sharedCommand,
       ...(result.events.length ? { events: result.events as unknown as Record<string, unknown>[] } : {}),
       rejection: result.rejection,
     });

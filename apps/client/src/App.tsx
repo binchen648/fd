@@ -442,8 +442,9 @@ function RemoteRoomApp({ connection }: { connection: RemoteRoomConnection }) {
 
   const fixture = projection ? projectRemoteRoomFixture(projection) : null;
   const dispatchAction = (action: ClientAvailableAction) => {
-    if (!action.backendCommand) return;
-    client.send({ type: 'client:dispatch_command', command: action.backendCommand, expectedRevision: projection?.match?.view.revision });
+    const expectedRevision = projection?.match?.view.revision;
+    if (!action.backendCommand || expectedRevision === undefined) return;
+    client.send({ type: 'client:dispatch_command', command: action.backendCommand, expectedRevision });
   };
 
   return (

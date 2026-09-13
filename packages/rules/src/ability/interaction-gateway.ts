@@ -42,4 +42,3 @@ export function isPrivateOptionalHandPlayInteractionSemantic(ability: AuthoringA
     constraints.length === 1 && constraints[0]!.type === 'base_power_at_most' && Number(constraints[0]!.value) === 3 &&
     effect.type === 'play_selected_cards' && effect.target === target.id && effect.face === undefined;
 }
-
