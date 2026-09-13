@@ -42,10 +42,13 @@
 - [ ] **Every supported battlefield** event/competition/location base reward and base military adjustment commits before any ordinary post-battle result/win/loss/first-loss effect settles.
 - [ ] All battlefield admissions are preflighted before any battlefield result/base-score commit; one unsupported battlefield cannot leave another battlefield scored and then open post-battle settlement.
 - [ ] One phase-wide `post_all_battlefield_scoring` barrier is keyed by `battlePhaseResolutionId`; no per-battlefield trigger barrier is accepted.
-- [ ] Result/win/loss/first-loss event identities may be queued before scoring, but their ordinary continuations are blocked by `post_base_scoring` until the base scoring receipt commits.
+- [ ] Result/win/loss/first-loss event identities may be queued before scoring, but their continuations remain behind phase-wide `post_all_battlefield_scoring` until **all** required battlefield scoring receipts exist.
 - [ ] Personal trigger VP never re-enters or rewrites the base battle reward pool.
 - [ ] Any true pre-scoring modifier requires a distinct reviewed contract/orderingRef rather than bypassing the barrier.
+- [ ] Every per-battlefield post-result payload explicitly carries `battlePhaseResolutionId + battleId + resultId`; phase-terminal payload carries ordered `battleIds/resultIds`.
+- [ ] First-loss event production requires authoritative reviewed loss ordinal/history; ambiguous same-phase multiple-loss ordinal remains blocked.
 - [ ] `after_controller_gains_victory` cannot be inferred from arbitrary positive VP/display text and has exactly-once `victoryTransitionId`.
+- [ ] Gains-victory joins the same phase-wide Trigger Gateway ordering set as result/win/loss/first-loss; TO-14 does not invent a relative event-family order.
 - [ ] Scoring-derived victory triggers settle before terminal `after_battle_ended` / cleanup.
 - [ ] `after_battle_ended` is emitted exactly once per battle-power-resolution phase, never once per battlefield, and only after all earlier post-battle consumers are terminal.
 - [ ] Optional post-result interaction can pause after result commit without losing result identity.

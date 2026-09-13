@@ -41,7 +41,7 @@ The spec separates:
 5. immutable base battlefield scoring plan with closed typed VP sources and exactly-once scoring receipt;
 6. normative phase-wide `post_all_battlefield_scoring` barrier after every supported battlefield base scoring receipt and before ordinary personal result/win/loss trigger settlement;
 7. typed Resource settlement for personal VP/mana/seals after the base receipt;
-8. scoring-derived `after_controller_gains_victory` producer/trigger handoff;
+8. scoring-derived `after_controller_gains_victory` producer joined to the same phase-wide Trigger Gateway ordering set as result/win/loss/first-loss events;
 9. exactly-once phase-terminal `after_battle_ended` event and cleanup handoff.
 
 The 13 result consumers may later consume the accepted result-event envelope. The remaining 26 rows stay with their real external owner and are not made runtime-ready by this spec.
@@ -54,6 +54,9 @@ The 13 result consumers may later consume the accepted result-event envelope. Th
 - cross-axis `after_controller_gains_victory` producer dependency: PASS, covered without denominator change.
 - win eligibility vs loser outcome vs loss-effect suppression: orthogonalized; true nonparticipants are neither winner nor loser.
 - all-battlefields-score-before-post-battle invariant: explicit via phase-wide `post_all_battlefield_scoring`; no battlefield post-battle trigger can settle before every supported battlefield base scoring receipt exists.
+- event identity compatibility: per-battlefield trigger payloads carry explicit `battleId/resultId`; phase-terminal payload carries ordered `battleIds/resultIds`.
+- event ordering: gains-victory is not hard-coded after win/loss families; all post-battle families use the same TO-03 ordering set, with unresolved collisions blocked.
+- first-loss: requires authoritative reviewed loss ordinal/history; same-phase ambiguity is not guessed.
 - `after_battle_ended`: phase-terminal and exactly once per `battlePhaseResolutionId`, never per battlefield.
 - Recon reward: separate phase-level exactly-once plan/receipt.
 - base VP source union: one combined event+competition `base_pool_share` plus reviewed-location variant; no generic `reviewed_rule` or ambiguous `battle_vp` source.
