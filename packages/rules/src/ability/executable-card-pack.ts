@@ -296,7 +296,7 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
 function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
-    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability)) continue;
+    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability)) continue;
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
     try {
       validateResolutionDataFlowNodes(effects, path);
@@ -348,6 +348,44 @@ function isPlayActionRouteCandidate(ability: AuthoringAbility): boolean {
     hasSingleControllerHandAttackTarget(ability.targets, str(play.target));
 }
 
+function isPlaySourceCardWithCostResponseStructuralCandidate(ability: AuthoringAbility): boolean {
+  if (ability.kind !== 'response' || str(ability.activation.trigger) !== 'controller_combat_action_window') return false;
+  if (str(ability.responseWindow.opens) !== 'controller_combat_action_window') return false;
+  if (ability.targets.length || ability.creates.length || ability.effects.length !== 1) return false;
+  return hasFixedManaCost(ability.cost, 2) && str(ability.effects[0]?.type) === 'play_source_card';
+}
+
+function isActivateCardByIdTrigger(ability: AuthoringAbility): boolean {
+  if (ability.kind !== 'forced_trigger' || str(ability.activation.trigger) !== 'after_controller_first_loses_battle') return false;
+  if (ability.conditions.length || ability.targets.length || ability.cost.length || ability.creates.length || ability.effects.length !== 1) return false;
+  const [effect] = ability.effects;
+  return str(effect?.type) === 'activate_card_by_id' && typeof effect?.definitionId === 'string' && effect.definitionId.length > 0;
+}
+
+function isCloseSourceCardOnPlayedTrigger(ability: AuthoringAbility): boolean {
+  if (ability.kind !== 'residual' || str(ability.activation.trigger) !== 'on_card_played' || str(ability.activation.opens) !== 'immediate') return false;
+  if (ability.conditions.length !== 2 || ability.targets.length || ability.cost.length || ability.creates.length || ability.effects.length !== 1) return false;
+  if (str(ability.effects[0]?.type) !== 'close_source_card') return false;
+  const sourceZone = ability.conditions.some((condition) => str(condition.type) === 'source_card_in_zone' && str(condition.zone) === 'field');
+  const noblePlay = ability.conditions.some((condition) => str(condition.type) === 'event_played_card_has_attribute' && str(condition.attribute) === '宝具');
+  return sourceZone && noblePlay;
+}
+
+function isAddToAttackRouteCandidate(ability: AuthoringAbility): boolean {
+  return isAddToAttackStructuralCandidate(ability) &&
+    ability.conditions.some((condition) => str(condition.type) === 'not' && str(node(condition.condition).type) === 'controller_at_battlefield');
+}
+
+function isAddToAttackStructuralCandidate(ability: AuthoringAbility): boolean {
+  if (ability.kind !== 'phase_action' || str(ability.activation.phase) !== 'advance' || str(ability.activation.opens) !== 'controller_action_window') return false;
+  if (ability.targets.length !== 1 || ability.cost.length !== 1 || ability.creates.length || ability.effects.length !== 1) return false;
+  const [effect] = ability.effects;
+  return str(effect?.type) === 'attach_card_to_player_attack' &&
+    typeof effect?.cardId === 'string' &&
+    typeof effect?.target === 'string' &&
+    hasFixedManaCost(ability.cost, 2) &&
+    hasSingleNonControllerPlayerTarget(ability.targets, str(effect.target));
+}
 
 function isMoveAllRemainingManaBindingSemantic(ability: AuthoringAbility): boolean {
   if (ability.kind !== 'phase_action' || str(ability.activation.phase) !== 'advance' || str(ability.activation.opens) !== 'controller_action_window') return false;
@@ -374,7 +412,21 @@ function hasSingleControllerHandAttackTarget(targets: RuleNode[], targetId: stri
     nodes(target.constraints).some((constraint) => str(constraint.type) === 'is_attack');
 }
 
+function hasFixedManaCost(costs: RuleNode[], amount: number): boolean {
+  if (costs.length !== 1 || str(costs[0]?.type) !== 'pay_mana') return false;
+  const amountNode = node(costs[0]?.amount);
+  return Number(costs[0]?.amount) === amount ||
+    ((str(amountNode.expr) === 'literal' || str(amountNode.op) === 'literal' || str(amountNode.op) === 'const') && Number(amountNode.value) === amount);
+}
 
+function hasSingleNonControllerPlayerTarget(targets: RuleNode[], targetId: string): boolean {
+  const target = targets.find((candidate) => str(candidate.id) === targetId);
+  if (!target || str(target.type) !== 'player') return false;
+  const count = node(target.count);
+  return Number(count.min ?? 1) === 1 &&
+    Number(count.max ?? 1) === 1 &&
+    nodes(target.constraints).some((constraint) => str(constraint.type) === 'not_controller');
+}
 function referencesMovedCountBinding(value: unknown, binding: string): boolean {
   const current = node(value);
   return str(current.var) === binding ||
@@ -396,7 +448,7 @@ function deferredCardIds(cards: Record<string, ExecutableCardDefinition>): Set<s
     if (!value || typeof value !== 'object') return;
     const current = value as Record<string, unknown>;
     if (['create_card', 'attach_card_to_player_attack'].includes(str(current.type)) && typeof current.cardId === 'string') deferred.add(current.cardId);
-    if (['create_independent_deck', 'replace_card_in_deck', 'activate_card_by_id'].includes(str(current.type)) && typeof current.definitionId === 'string') deferred.add(current.definitionId);
+    if (['create_independent_deck', 'replace_card_in_deck'].includes(str(current.type)) && typeof current.definitionId === 'string') deferred.add(current.definitionId);
     Object.values(current).forEach(visit);
   };
   Object.values(cards).forEach((card) => card.abilities.forEach(visit));

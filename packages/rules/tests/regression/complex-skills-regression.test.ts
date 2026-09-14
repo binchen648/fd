@@ -1421,18 +1421,35 @@ describe('complex master and session regressions', () => {
       abilityId: 'astronomical-science.has-chaldeas',
     }));
 
-    rules.processAbilityEvent(state, { id: 'olga-first-loss', type: 'after_controller_first_loses_battle', playerId: 'p1' });
-    expect(state.cards.find((card) => card.instanceId === trismegistus)).toMatchObject({
-      zone: 'field',
-      visibility: { scope: 'public' },
+    rules.processAbilityEvent(state, {
+      id: 'olga-first-loss',
+      type: 'after_controller_first_loses_battle',
+      playerId: 'p1',
+      battlefieldId: 'miyama_town',
+      lossOrdinal: 1,
     });
-    expectDirective(state, 'activate_card_by_id', {
+    expect(state.cards.find((card) => card.instanceId === trismegistus)).toMatchObject({
+      zone: 'skill',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'p1' },
+    });
+    expect(state.abilityRuntime!.pendingDelayedActivations).toContainEqual(expect.objectContaining({
       controllerId: 'p1',
       sourceCardId: astronomy,
       abilityId: 'astronomical-science.first-loss',
       definitionId: 'master.olga-marie.skill.trismegistus-grief',
-      activated: 1,
+    }));
+
+    rules.advanceAbilityPhase(state, 'round_end', state.round.roundNumber);
+    expect(state.cards.find((card) => card.instanceId === trismegistus)).toMatchObject({
+      zone: 'field',
+      visibility: { scope: 'public' },
     });
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({
+      type: 'card_activated',
+      sourceCardId: astronomy,
+      abilityId: 'astronomical-science.first-loss',
+    }));
+    state.round.activePhase = 'action';
 
     rules.processAbilityEvent(state, { id: 'olga-passives', type: 'while_active' });
     expect((state as unknown as { modeState?: { lookedMatchDeckBottoms?: Record<string, unknown> } }).modeState?.lookedMatchDeckBottoms).toMatchObject({
