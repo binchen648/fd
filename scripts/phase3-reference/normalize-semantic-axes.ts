@@ -338,6 +338,21 @@ export function normalizeStructuredAbility(ability: StructuredAbility): Semantic
   const axes = emptyAxes();
   const activation = isRecord(ability.activation) ? ability.activation : {};
 
+  const addConditionAxes = (condition: Record<string, unknown>): void => {
+    const type = stringValue(condition.type);
+    if (!type) return;
+    if (type === 'event_type_is') {
+      const eventType = stringValue(condition.eventType);
+      if (eventType) {
+        axes.trigger.push(eventType);
+        if (eventType.startsWith('combat.')) axes.battle.push('COMBAT_EVENT');
+      }
+      return;
+    }
+    axes.condition.push(token(type));
+    if (/combat|battle/i.test(type)) axes.battle.push('COMBAT_CONDITION');
+  };
+
   const phase = stringValue(activation.phase);
   if (phase) axes.timing.push(token(phase));
   if (Array.isArray(activation.phases)) {
@@ -349,24 +364,17 @@ export function normalizeStructuredAbility(ability: StructuredAbility): Semantic
 
   const conditionRecords = collectConditionRecords(ability.conditions ?? []);
   for (const condition of conditionRecords) {
-    const type = stringValue(condition.type);
-    if (!type) continue;
-    if (type === 'event_type_is') {
-      const eventType = stringValue(condition.eventType);
-      if (eventType) {
-        axes.trigger.push(eventType);
-        if (eventType.startsWith('combat.')) axes.battle.push('COMBAT_EVENT');
-      }
-      continue;
-    }
-    axes.condition.push(token(type));
-    if (/combat|battle/i.test(type)) axes.battle.push('COMBAT_CONDITION');
+    addConditionAxes(condition);
   }
 
   const effects = collectEffectRecords(ability.effects ?? []);
   for (const effect of effects) {
     const type = stringValue(effect.type);
     if (!type) continue;
+
+    for (const condition of collectConditionRecords([effect.conditions, effect.condition])) {
+      addConditionAxes(condition);
+    }
 
     const shape = selectionShape(effect);
     if (shape) {

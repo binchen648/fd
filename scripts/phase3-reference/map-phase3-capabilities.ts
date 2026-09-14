@@ -528,10 +528,10 @@ export function mapStructuredCapabilityNeeds(
   }
 
   const hasPlay = effectTypes.includes('play_selected_cards') || effectTypes.includes('play_source_card');
-  const modifiesPlayMode = ruleModifiers.some(
-    (modifier) => modifier.rule === 'card_play_mode',
+  const modifiesPlaySemantics = ruleModifiers.some(
+    (modifier) => modifier.rule === 'card_play_mode' || modifier.rule === 'card_play_permission',
   );
-  if (hasPlay || modifiesPlayMode) addCapability(result, 'CARD_ACTION_PLAY', 'CARD_ACTION_SEMANTICS');
+  if (hasPlay || modifiesPlaySemantics) addCapability(result, 'CARD_ACTION_PLAY', 'CARD_ACTION_SEMANTICS');
 
   const addsToAttack = effects.some((effect) => {
     const type = typeof effect.type === 'string' ? effect.type : '';

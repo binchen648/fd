@@ -578,6 +578,7 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
         "master.hinako.skill.s2",
+        "master.hinako.skill.s4",
         "master.sion.skill.s13",
         "master.wodime.skill.s2",
         "servant.caligula.skill.sc-caligula-1",
@@ -719,6 +720,81 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[56].skills[2].text#line=3",
           "sha256": "845e906f5df22fa7489166994dc696b77c4930e38f999195566ed31884ea6e82"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.hinako/芥雏子"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hinako.skills[s4]#line=343"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.hinako/s4"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[56].skills[4].text#line=1",
+          "sha256": "be1ed9962793c44eb3781d0009be9b38d2b169160959efa8e6f15df665e428c4"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[56].skills[4].text#line=10",
+          "sha256": "c58e23c739cb88bc0efe3c752f8ac560dca41f3b3dfd641ba005b57909349258"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[56].skills[4].text#line=2",
+          "sha256": "70e273ab94ac9c09b5c3ea2753bc924fd0bba6a1d7fc124cda043c06d5ec220b"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[56].skills[4].text#line=3",
+          "sha256": "500821fbb811c0811b1721917fd53884dac9767e6b8002cbf64566bea490e355"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[56].skills[4].text#line=4",
+          "sha256": "55d26a53739175113fe56ad6e8fd0cf381b8de2d0f756f11cca7f353761799b1"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[56].skills[4].text#line=5",
+          "sha256": "accb8eaec9be4f7b6009c61b54cf1cd373938db8910066812cd1ce34a5c46b75"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[56].skills[4].text#line=6",
+          "sha256": "85bc21dd2a51c9101ef91754edb20d5977c9a575c634e7ec8c51efcdd8ff24aa"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[56].skills[4].text#line=7",
+          "sha256": "43e32bc497697ca8d873aabac2874cff7076a048b22843fbc162b4447abd8f69"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[56].skills[4].text#line=8",
+          "sha256": "14ef82c3a18d128e59c0db48c7bef611a0b81b7cfc4d0b31b65bc947be47c7f5"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[56].skills[4].text#line=9",
+          "sha256": "00348bc72491f5dd1b17c8795903541c14f36c86e84a5cf6117b56475b34255e"
         },
         {
           "abilityId": "master.sion.skill.s13",
@@ -932,7 +1008,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 10,
+          "shared_handler": 11,
           "specific_handler": 2
         },
         "handlerCount": 6,
@@ -997,6 +1073,7 @@
         "servant.astolfo.skill.sc-astolfo-1",
         "servant.darius.skill.sc-darius-1",
         "servant.diarmuid.skill.sc-diarmuid-1",
+        "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-3",
         "servant.gorgon.skill.sc-gorgon-2",
         "servant.ibaraki.skill.sc-ibaraki-1",
@@ -2349,6 +2426,27 @@
           "sha256": "37fdf0a0cfb88b19565890779e408dcc631813aec8854cd8b226449f6ea97042"
         },
         {
+          "abilityId": "servant.drake.skill.sc-drake-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
+        },
+        {
+          "abilityId": "servant.drake.skill.sc-drake-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.drake/弗朗西斯·德雷克"
+        },
+        {
+          "abilityId": "servant.drake.skill.sc-drake-2",
+          "document": "src/content/authoring/cards.json",
+          "locator": "skillCards[47]"
+        },
+        {
+          "abilityId": "servant.drake.skill.sc-drake-2",
+          "document": "src/content/authoring/cards.json",
+          "locator": "skillCards[47].abilities[0].printedClause",
+          "sha256": "7249a21a955a81afc518ae8c364415d2abbe3ea44a5eb1fc27a1e7a810f5edf9"
+        },
+        {
           "abilityId": "servant.edison.skill.sc-edison-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/魔术师/英文版/托马斯·爱迪生.htm"
@@ -2878,7 +2976,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 55,
+          "shared_handler": 56,
           "specific_handler": 14
         },
         "handlerCount": 21,
@@ -7997,7 +8095,6 @@
         "master.fiore.skill.s6",
         "master.hinako.skill.ascension",
         "master.hinako.skill.s2",
-        "master.hinako.skill.s3",
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
         "master.ophelia.skill.s2",
@@ -8429,33 +8526,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[56].skills[2].text#line=3",
           "sha256": "845e906f5df22fa7489166994dc696b77c4930e38f999195566ed31884ea6e82"
-        },
-        {
-          "abilityId": "master.hinako.skill.s3",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.hinako/芥雏子"
-        },
-        {
-          "abilityId": "master.hinako.skill.s3",
-          "document": "Fate_Domination-开发版/data_masters.js",
-          "locator": "m_hinako.skills[s3]#line=342"
-        },
-        {
-          "abilityId": "master.hinako.skill.s3",
-          "document": "legacy-content.json",
-          "locator": "master/master.hinako/s3"
-        },
-        {
-          "abilityId": "master.hinako.skill.s3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[3].text#line=1",
-          "sha256": "93a3ee8712a1414f2f82a1cfb02b241e9ccb651ce4c6624684aa951806822ce0"
-        },
-        {
-          "abilityId": "master.hinako.skill.s3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[3].text#line=2",
-          "sha256": "402a9a864f181f9fb0be8061d95bdd8ce5564f9e57c0df48ca272dba8f376b2e"
         },
         {
           "abilityId": "master.kayneth.skill.s3",
@@ -9353,7 +9423,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 45,
+          "shared_handler": 44,
           "specific_handler": 6
         },
         "handlerCount": 11,

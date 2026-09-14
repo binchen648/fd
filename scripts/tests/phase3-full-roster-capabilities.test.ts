@@ -147,7 +147,7 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(mapped.requiredCapabilities).toContain('GENERIC_TRIGGER_GATEWAY');
   });
 
-  it('maps structural card-play-mode modifiers to Card Action Play without an identity branch', () => {
+  it('maps structural card-play-mode and play-permission modifiers to Card Action Play without an identity branch', () => {
     const axes = emptyAxes();
     axes.modifier = ['rule:card_play_mode:allow_additional_play'];
     const mapped = mapStructuredCapabilityNeeds(
@@ -160,6 +160,19 @@ describe('Phase 3 full-roster capability mapping', () => {
     );
     expect(mapped.requiredCapabilities).toContain('CARD_ACTION_PLAY');
     expect(mapped.requiredCapabilities).toContain('GENERIC_MODIFIER');
+
+    const permissionAxes = emptyAxes();
+    permissionAxes.modifier = ['rule:card_play_permission:prohibit'];
+    const permissionMapped = mapStructuredCapabilityNeeds(
+      {
+        id: 'play-permission-fixture',
+        printedClause: 'fixture',
+        ruleModifiers: [{ rule: 'card_play_permission', operation: 'prohibit' }],
+      },
+      permissionAxes,
+    );
+    expect(permissionMapped.requiredCapabilities).toContain('CARD_ACTION_PLAY');
+    expect(permissionMapped.requiredCapabilities).toContain('GENERIC_MODIFIER');
   });
 
   it('maps structural source-card movement to the generic Card Zone dependency', () => {
@@ -419,6 +432,48 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(96);
     expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(46);
+  });
+
+  it('maps the thirteen-ID Kadoc and Hinako slice with explicit ordinary dependencies and zero inherited contracts', () => {
+    const inventory = JSON.parse(
+      readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8'),
+    ) as any;
+    const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
+    const slice = entries.filter((entry: any) =>
+      entry.canonicalAbilityId.startsWith('master.kadoc.skill.') ||
+      entry.canonicalAbilityId.startsWith('master.hinako.skill.'),
+    );
+    const byId = new Map(slice.map((entry: any) => [entry.canonicalAbilityId, entry]));
+
+    expect(slice).toHaveLength(13);
+    for (const entry of slice) expect(entry.phase3.inheritedAcceptanceContracts).toEqual([]);
+
+    for (const id of [
+      'master.kadoc.skill.s1a',
+      'master.hinako.skill.s1a',
+      'master.hinako.skill.s2',
+    ]) {
+      expect(byId.get(id).phase3.classificationRoute).toBe('READY_GENERIC_EXTENSION');
+      expect(byId.get(id).phase3.blockedBy).toEqual([]);
+    }
+
+    expect(byId.get('master.kadoc.skill.ascension').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining(['GENERIC_PENDING_INTERACTION', 'GENERIC_RESULT_BINDING', 'GENERIC_TARGET_SELECTION', 'REVIEWED_SPECIAL_HANDLER']),
+    );
+    expect(byId.get('master.hinako.skill.s2').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining(['CARD_ACTION_PLAY', 'GENERIC_BATTLE_INTEGRATION', 'GENERIC_LIFECYCLE_POLICY', 'GENERIC_MODIFIER', 'GENERIC_POWER']),
+    );
+    expect(byId.get('master.hinako.skill.s3').phase3.requiredCapabilities).not.toContain('GENERIC_LIFECYCLE_POLICY');
+    expect(byId.get('master.hinako.skill.s4').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining(['CARD_ACTION_PLAY', 'GENERIC_BATTLE_INTEGRATION', 'GENERIC_CONDITION_EVALUATION', 'GENERIC_EVENT_DECK', 'GENERIC_MODIFIER', 'GENERIC_POWER', 'GENERIC_TRIGGER_GATEWAY', 'REVIEWED_SPECIAL_HANDLER']),
+    );
+    expect(byId.get('master.hinako.skill.s4').semanticNormalization.axes.condition).toEqual(
+      expect.arrayContaining([
+        'PLAYER_FACE_UP_ATTACKS_PLAYED_THIS_ROUND_EQUALS',
+        'PLAYER_USED_DECLARATION_REVEAL_THIS_ROUND',
+        'PLAYER_ALL_ATTACKS_PRINTED_POWER_EVEN',
+      ]),
+    );
   });
 
   it('bridges current semantic card IDs to stable canonical IDs only by exact ID or unique owner/name identity', () => {
