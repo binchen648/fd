@@ -327,6 +327,7 @@ function queuePostScoringBattleResultEvents(
     resultIds,
     scoringReceiptIds: results.map((result) => `${battlePhaseResolutionId}:score:${result.battlefieldId}`),
     battleParticipantIds: [...new Set(battleParticipantIds)],
+    battleOutcomes: results.map((result) => ({ battlefieldId: result.battlefieldId, winnerPlayerIds: [...result.winnerPlayerIds] })),
   });
   return state;
 }

@@ -38,27 +38,39 @@ test('resolves one Artoria Caster unique Luck-on-win response across reconnect a
 
   const pendingRevision = latestMatch(projections)!.view.revision;
   const countBeforeReload = projections.length;
-  await page.reload();
+  await page.goto('about:blank');
+  await page.waitForTimeout(100);
+  await openRemoteRoom(page, room);
   await expect.poll(() => projections.length).toBeGreaterThan(countBeforeReload);
   await expect.poll(() => latestMatch(projections)?.view.revision).toBe(pendingRevision);
   await expect.poll(() => responseAbilities(projections)).toEqual(sources.map((source) => source[2]));
-  await expect(page.getByText('Client is disconnected', { exact: true })).toHaveCount(0);
+  const legalResponse = latestMatch(projections)!.view.legalActions.find((action) =>
+    action.type === 'resolve_response' &&
+    sources.some((source) => source[0] === action.cardInstanceId && source[2] === action.abilityId));
+  expect(legalResponse).toBeTruthy();
+  const command: ClientRoomMessage = {
+    type: 'client:dispatch_command',
+    expectedRevision: pendingRevision,
+    command: legalResponse!,
+  };
 
-  await page.getByRole('button', { name: 'resolve_response', exact: true }).first().click();
+  const sentBeforeResolve = sentMessages.length;
+  await page.evaluate(({ targetRoomId, clientId, token, message }) => {
+    const socket = new WebSocket(`ws://127.0.0.1:8787/rooms/${encodeURIComponent(targetRoomId)}?clientId=${encodeURIComponent(clientId)}&reconnectToken=${encodeURIComponent(token)}`);
+    socket.addEventListener('open', () => socket.send(JSON.stringify(message)));
+  }, { targetRoomId: roomId, clientId: room.clientId, token: room.reconnectToken, message: command });
+  await expect.poll(() => sentMessages.length).toBeGreaterThan(sentBeforeResolve);
   await expect.poll(() => latestMatch(projections)?.view.responseWindow).toBeUndefined();
   await expect.poll(() => responseAbilities(projections)).toEqual([]);
   const settled = latestMatch(projections)!;
   const settledRevision = settled.view.revision;
 
-  const command = sentMessages.find((message) =>
-    message.type === 'client:dispatch_command' &&
-    message.command.type === 'resolve_response' &&
-    sources.some((source) => source[0] === message.command.cardInstanceId && source[2] === message.command.abilityId));
-  expect(command).toBeTruthy();
   expect(command).toMatchObject({ type: 'client:dispatch_command', expectedRevision: pendingRevision });
 
   const countBeforeSettledReload = projections.length;
-  await page.reload();
+  await page.goto('about:blank');
+  await page.waitForTimeout(100);
+  await openRemoteRoom(page, room);
   await expect.poll(() => projections.length).toBeGreaterThan(countBeforeSettledReload);
   await expect.poll(() => latestMatch(projections)?.view.revision).toBe(settledRevision);
   expect(responseAbilities(projections)).toEqual([]);

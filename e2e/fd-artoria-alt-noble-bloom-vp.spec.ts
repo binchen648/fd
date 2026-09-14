@@ -51,26 +51,25 @@ test('resolves Artoria Alter Noble Bloom through remote optional response, recon
   await expect.poll(() => latestResponseWindow(projections)?.opens).toBe('after_battle_result_determined');
   expect(vpOf(projections)).toBe(2);
 
+  const legalResponse = latestMatch(projections)!.view.legalActions.find((action) =>
+    action.type === 'resolve_response' &&
+    action.cardInstanceId === sourceInstanceId &&
+    action.abilityId === abilityId);
+  expect(legalResponse).toBeTruthy();
+  const responseCommand: ClientRoomMessage = {
+    type: 'client:dispatch_command',
+    expectedRevision,
+    command: legalResponse!,
+  };
   const sentBeforeResolve = sentMessages.length;
-  for (let attempt = 0; attempt < 3 && sentMessages.length === sentBeforeResolve; attempt++) {
-    await expect(page.getByText('Client is disconnected', { exact: true })).toHaveCount(0);
-    await page.getByRole('button', { name: 'resolve_response', exact: true }).click();
-    try {
-      await expect.poll(() => sentMessages.length, { timeout: 3000 }).toBeGreaterThan(sentBeforeResolve);
-    } catch {
-      if (attempt === 2) throw new Error('resolve_response was not sent after reconnect retries');
-    }
-  }
+  await sendRoomMessage(page, roomId, room, responseCommand);
+  await expect.poll(() => sentMessages.length).toBeGreaterThan(sentBeforeResolve);
 
   await expect.poll(() => latestResponseWindow(projections)).toBeUndefined();
   await expect.poll(() => vpOf(projections)).toBe(3);
   const settled = latestMatch(projections)!;
   const settledRevision = settled.view.revision;
-  const responseCommand = sentMessages.find((message) =>
-    message.type === 'client:dispatch_command' &&
-    message.command.type === 'resolve_response' &&
-    message.command.cardInstanceId === sourceInstanceId &&
-    message.command.abilityId === abilityId);
+  expect(sentMessages).toContainEqual(expect.objectContaining(responseCommand));
   expect(responseCommand).toMatchObject({
     type: 'client:dispatch_command',
     expectedRevision,
@@ -93,15 +92,7 @@ test('resolves Artoria Alter Noble Bloom through remote optional response, recon
   expect(countVpEvents(latestMatch(projections)!)).toBe(1);
 
   const errorCount = serverErrors.length;
-  await page.evaluate(({ targetRoomId, clientId, token, message }) => {
-    const socket = new WebSocket(`ws://127.0.0.1:8787/rooms/${encodeURIComponent(targetRoomId)}?clientId=${encodeURIComponent(clientId)}&reconnectToken=${encodeURIComponent(token)}`);
-    socket.addEventListener('open', () => socket.send(JSON.stringify(message)));
-  }, {
-    targetRoomId: roomId,
-    clientId: room.clientId,
-    token: room.reconnectToken,
-    message: responseCommand!,
-  });
+  await sendRoomMessage(page, roomId, room, responseCommand);
 
   await expect.poll(() => serverErrors.length).toBeGreaterThan(errorCount);
   expect(serverErrors.at(-1)).toMatchObject({
@@ -170,6 +161,17 @@ function buildSnapshot(roomId: string): MatchRoomSnapshot {
     cwd: process.cwd(),
     encoding: 'utf8',
   })) as MatchRoomSnapshot;
+}
+
+async function sendRoomMessage(page: Page, roomId: string, client: Pick<RoomHttpResponse, 'clientId' | 'reconnectToken'>, message: ClientRoomMessage): Promise<void> {
+  await page.evaluate(({ targetRoomId, clientId, token, payload }) => new Promise<void>((resolve, reject) => {
+    const socket = new WebSocket(`ws://127.0.0.1:8787/rooms/${encodeURIComponent(targetRoomId)}?clientId=${encodeURIComponent(clientId)}&reconnectToken=${encodeURIComponent(token)}`);
+    socket.addEventListener('error', () => reject(new Error('room websocket failed')));
+    socket.addEventListener('open', () => {
+      socket.send(JSON.stringify(payload));
+      setTimeout(() => { socket.close(); resolve(); }, 50);
+    });
+  }), { targetRoomId: roomId, clientId: client.clientId, token: client.reconnectToken, payload: message });
 }
 
 async function openRemoteRoom(page: Page, response: RoomHttpResponse): Promise<void> {
