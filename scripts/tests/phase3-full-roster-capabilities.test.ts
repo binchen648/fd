@@ -113,6 +113,26 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(mapped.requiredCapabilities).not.toContain('core.play-and-battle-everything');
   });
 
+  it('maps matching-card zone mutation and explicit trigger suppression as dependencies', () => {
+    const axes = emptyAxes();
+    axes.effect = ['GAIN_MANA', 'MOVE_MATCHING_CARDS'];
+    const mapped = mapStructuredCapabilityNeeds(
+      {
+        id: 'chaos-devourer-fixture',
+        printedClause: 'fixture',
+        effects: [
+          { type: 'move_matching_cards', sourceZone: 'beast_hand', destination: 'beast_discard' },
+          { type: 'gain_mana', amount: 2, suppressTrigger: 'fixture.trigger' },
+        ],
+      },
+      axes,
+    );
+
+    expect(mapped.requiredCapabilities).toContain('GENERIC_CARD_ZONE');
+    expect(mapped.requiredCapabilities).toContain('GENERIC_RESOURCE_NUMERIC');
+    expect(mapped.requiredCapabilities).toContain('GENERIC_TRIGGER_GATEWAY');
+  });
+
   it('inherits only named contracts carried by exact current routed subabilities', () => {
     expect(acceptanceContractsForCurrentAbilities(['time-alter.action'])).toEqual([
       'CARD_ACTION_SEMANTICS_MINIMAL_PLAY',
@@ -166,7 +186,9 @@ describe('Phase 3 full-roster capability mapping', () => {
     const byId = new Map(entries.map((entry: any) => [entry.canonicalAbilityId, entry]));
 
     expect(byId.get('master.chaos.skill.s1').phase3.classificationRoute).toBe('READY_GENERIC_EXTENSION');
+    expect(byId.get('master.chaos.skill.s3').phase3.requiredCapabilities).toContain('GENERIC_TRIGGER_GATEWAY');
     expect(byId.get('master.chaos.skill.s11').phase3.requiredCapabilities).toContain('CARD_ACTION_CLOSE');
+    expect(byId.get('master.chaos.skill.s16').phase3.requiredCapabilities).toContain('GENERIC_CARD_ZONE');
     expect(byId.get('master.chaos.skill.s8').phase3.classificationRoute).toBe('SPECIAL_HANDLER_CANDIDATE');
     expect(byId.get('master.chaos.skill.s8').phase3.blockedBy).toContain('SPECIAL_EFFECT:defeat_player');
     expect(byId.get('master.chaos.skill.s17').phase3.classificationRoute).toBe('SOURCE_EVIDENCE_REQUIRED');

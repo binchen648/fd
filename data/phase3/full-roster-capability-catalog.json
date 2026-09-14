@@ -1203,6 +1203,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.chaos.skill.s16",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.chaos.skill.s3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1392,6 +1396,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.chaos.skill.s16",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.chaos.skill.s3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1495,6 +1503,7 @@
         "master.chaos.skill.ascension",
         "master.chaos.skill.s1",
         "master.chaos.skill.s13",
+        "master.chaos.skill.s16",
         "master.chaos.skill.s3",
         "master.chaos.skill.s4",
         "master.chaos.skill.s6",
@@ -2400,6 +2409,7 @@
         "master.chaos.skill.s1",
         "master.chaos.skill.s11",
         "master.chaos.skill.s16",
+        "master.chaos.skill.s3",
         "master.chaos.skill.s4",
         "master.chaos.skill.s5",
         "master.chaos.skill.s6",

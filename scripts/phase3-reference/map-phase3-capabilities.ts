@@ -148,6 +148,7 @@ const RESOURCE_EFFECTS = new Set([
 
 const CARD_ZONE_EFFECTS = new Set([
   'DRAW_CARDS',
+  'MOVE_MATCHING_CARDS',
   'MOVE_SELECTED_CARDS',
   'MOVE_MATCHING_EVENTS',
   'MOVE_SELECTED_EVENTS',
@@ -453,6 +454,14 @@ export function mapStructuredCapabilityNeeds(
   if (axes.visibility.length > 0) addCapability(result, 'GENERIC_VISIBILITY', 'HIDDEN_INFORMATION');
   if (axes.battle.length > 0) addCapability(result, 'GENERIC_BATTLE_INTEGRATION', 'BATTLE_RESULT');
   if (axes.condition.length > 0) addCapability(result, 'GENERIC_CONDITION_EVALUATION', 'CONDITION');
+
+  if (
+    effects.some(
+      (effect) => typeof effect.suppressTrigger === 'string' && effect.suppressTrigger.length > 0,
+    )
+  ) {
+    addCapability(result, 'GENERIC_TRIGGER_GATEWAY', 'TRIGGER');
+  }
 
   if ([...effectTokens].some((effect) => RESOURCE_EFFECTS.has(effect))) {
     addCapability(result, 'GENERIC_RESOURCE_NUMERIC', 'RESOURCE_NUMERIC');
