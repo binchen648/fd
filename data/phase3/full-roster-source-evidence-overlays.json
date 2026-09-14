@@ -4953,6 +4953,127 @@
           ]
         }
       ]
+    },
+    {
+      "id": "master.araya.skill.s1",
+      "printedText": "你部署于一处地利位置时不获得原本的地利，改为令你位于此地点时获得+1地利直至游戏结束（至多为5）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_araya.skills[s1]#line=424",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你部署于一处地利位置时不获得原本的地利，改为令你位于此地点时获得+1地利直至游戏结束（至多为5）。",
+        "sourceTextSha256": "9b0fc39e5746cc00c33fc717973a1bf1fc73a4565ef8e75f34135f2d726bea12"
+      },
+      "referencePrintedTextSha256": "9b0fc39e5746cc00c33fc717973a1bf1fc73a4565ef8e75f34135f2d726bea12",
+      "abilities": [
+        {
+          "id": "araya.death-complex.terrain-replacement",
+          "printedClause": "你部署于一处地利位置时不获得原本的地利，改为令你位于此地点时获得+1地利直至游戏结束（至多为5）。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.deployed"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "deployment_location_would_grant_controller_terrain"
+            }
+          ],
+          "effects": [
+            {
+              "type": "terrain_position_adjustment",
+              "operation": "replace_normal_deployment_terrain_with_location_bound_bonus",
+              "subject": "controller",
+              "battlefield": "event_location",
+              "amount": 1,
+              "maxAmount": 5,
+              "appliesWhen": "controller_at_battlefield",
+              "sourceAbilityId": "master.araya.skill.s1"
+            }
+          ],
+          "lifecycle": {
+            "duration": "rest_of_game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.araya.skill.ascension",
+      "printedText": "当你部署于一处因三重结界拥有5点或更多的地利的位置时，将你所在的地点同时视为魔术工房。\n当你位于魔术工房时，你的对手无法离开你所在的地点且其于常规出牌时必须打出一张暗置攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_araya.ascensionSkill#line=426",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你部署于一处因三重结界拥有5点或更多的地利的位置时，将你所在的地点同时视为魔术工房。\n当你位于魔术工房时，你的对手无法离开你所在的地点且其于常规出牌时必须打出一张暗置攻击。",
+        "sourceTextSha256": "4be70ac975ea72732984065571de2f9eb47ac143f98c9d8e7594ce864958223e"
+      },
+      "referencePrintedTextSha256": "4be70ac975ea72732984065571de2f9eb47ac143f98c9d8e7594ce864958223e",
+      "abilities": [
+        {
+          "id": "araya.paradox-spiral.personal-workshop",
+          "printedClause": "当你部署于一处因三重结界拥有5点或更多的地利的位置时，将你所在的地点同时视为魔术工房。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_at_location_with_source_terrain_at_least",
+              "sourceAbilityId": "master.araya.skill.s1",
+              "amount": 5
+            }
+          ],
+          "effects": [
+            {
+              "type": "location_token_rule",
+              "operation": "treat_controller_location_as_magic_workshop",
+              "subject": "controller",
+              "location": "controller_location",
+              "classificationScope": "controller_only"
+            }
+          ]
+        },
+        {
+          "id": "araya.paradox-spiral.opponent-lock",
+          "printedClause": "当你位于魔术工房时，你的对手无法离开你所在的地点。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_at_magic_workshop"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "movement_permission",
+              "operation": "prohibit_leave_controller_location",
+              "subject": "opponents_at_controller_location"
+            }
+          ]
+        },
+        {
+          "id": "araya.paradox-spiral.face-down-attack-requirement",
+          "printedClause": "当你位于魔术工房时，你的对手于常规出牌时必须打出一张暗置攻击。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_at_magic_workshop"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_play_requirement",
+              "operation": "require_face_down_attack",
+              "subject": "opponents",
+              "context": "regular_play",
+              "destination": "attack_pair",
+              "face": "down",
+              "minCount": 1
+            }
+          ]
+        }
+      ]
     }
   ]
 }

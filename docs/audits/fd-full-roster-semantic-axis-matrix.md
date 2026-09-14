@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=154
-blockedCount=790
+sourceGroundedCount=156
+blockedCount=788
 unclassifiedCount=0
-structuredAbilityCount=288
+structuredAbilityCount=292
 
 ## Axis Value Counts
 
@@ -29,9 +29,9 @@ structuredAbilityCount=288
 | trigger | `round.ended` | 4 |
 | trigger | `round.started` | 4 |
 | trigger | `cycle_state.entered` | 3 |
+| trigger | `player.deployed` | 3 |
 | trigger | `player.moved` | 3 |
 | trigger | `player.defeated` | 2 |
-| trigger | `player.deployed` | 2 |
 | trigger | `player.mana.changed` | 2 |
 | trigger | `action.ending` | 1 |
 | trigger | `card.exiled` | 1 |
@@ -48,7 +48,7 @@ structuredAbilityCount=288
 | condition | `SOURCE_ACTIVE` | 37 |
 | condition | `SOURCE_OWNED` | 31 |
 | condition | `EVENT_PLAYER_WON_COMBAT` | 21 |
-| condition | `EVENT_PLAYER_IS_CONTROLLER` | 15 |
+| condition | `EVENT_PLAYER_IS_CONTROLLER` | 16 |
 | condition | `AT_BATTLEFIELD` | 11 |
 | condition | `EVENT_LOCATION_EQUALS_CONTROLLER` | 11 |
 | condition | `EVENT_PLAYER_LOST_COMBAT` | 9 |
@@ -83,12 +83,15 @@ structuredAbilityCount=288
 | condition | `ATTACK_PLAYED_FROM_HAND_THIS_ROUND` | 1 |
 | condition | `COMBAT_HAS_OTHER_PLAYER_WITH_LOWER_VICTORY_POINTS` | 1 |
 | condition | `COMBAT_NOT_AT_SOURCE_EVENT_BATTLEFIELD` | 1 |
+| condition | `CONTROLLER_AT_LOCATION_WITH_SOURCE_TERRAIN_AT_LEAST` | 1 |
 | condition | `CONTROLLER_AT_LOSTBELT_EVENT_BATTLEFIELD` | 1 |
+| condition | `CONTROLLER_AT_MAGIC_WORKSHOP` | 1 |
 | condition | `CONTROLLER_AT_UNDEPLOYED_BATTLEFIELD` | 1 |
 | condition | `CONTROLLER_DEPLOYED_AT_SOURCE_EVENT_BATTLEFIELD` | 1 |
 | condition | `CONTROLLER_DID_NOT_EXPAND_THIS_ROUND` | 1 |
 | condition | `CYCLE_TRANSITION_PENDING` | 1 |
 | condition | `DECK_HAS_POSITION_FOR_SELECTED_CARD_COST_PLUS_ONE` | 1 |
+| condition | `DEPLOYMENT_LOCATION_WOULD_GRANT_CONTROLLER_TERRAIN` | 1 |
 | condition | `DOES_NOT_CONTROL_CARD_DEFINITION` | 1 |
 | condition | `ENGAGED_OPPONENT_VICTORY_POINTS_GREATER_THAN_CONTROLLER` | 1 |
 | condition | `EVENT_CARD_CONTROLLER_IS_CONTROLLER` | 1 |
@@ -179,13 +182,14 @@ structuredAbilityCount=288
 | effect | `MOVE_MATCHING_EVENTS` | 3 |
 | effect | `MOVE_SELECTED_EVENTS` | 3 |
 | effect | `SCHEDULE_EFFECT` | 3 |
+| effect | `TERRAIN_POSITION_ADJUSTMENT` | 3 |
 | effect | `INSTALL_ABILITY_RULE_MODIFIER` | 2 |
+| effect | `LOCATION_TOKEN_RULE` | 2 |
 | effect | `MOVE_CARD` | 2 |
 | effect | `MOVE_MATCHING_CARDS` | 2 |
 | effect | `NPC_RULE` | 2 |
 | effect | `REMOVE_STATUS` | 2 |
 | effect | `SECRET_ROUND_BINDING` | 2 |
-| effect | `TERRAIN_POSITION_ADJUSTMENT` | 2 |
 | effect | `TRANSFER_VICTORY_POINTS` | 2 |
 | effect | `ADD_LINKED_STATUS` | 1 |
 | effect | `ADD_PLAYER_FLAG_NUMBER` | 1 |
@@ -197,7 +201,6 @@ structuredAbilityCount=288
 | effect | `ENSURE_EVENT_DECK_COUNT` | 1 |
 | effect | `FINISH_GAME` | 1 |
 | effect | `INFO_NOTE` | 1 |
-| effect | `LOCATION_TOKEN_RULE` | 1 |
 | effect | `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS` | 1 |
 | effect | `PLAY_SOURCE_CARD` | 1 |
 | effect | `REMOVE_CARDS_IN_ZONE` | 1 |
@@ -240,6 +243,7 @@ structuredAbilityCount=288
 | lifecycle | `cleanup:clear_bound_target` | 1 |
 | lifecycle | `cleanup:remove_from_game` | 1 |
 | lifecycle | `cleanup:restore_base_pairs` | 1 |
+| lifecycle | `duration:rest_of_game` | 1 |
 | lifecycle | `duration:until_next_preparation` | 1 |
 | lifecycle | `duration:until_triggered` | 1 |
 | lifecycle | `expires:round_end` | 1 |
@@ -282,6 +286,7 @@ structuredAbilityCount=288
 | modifier | `rule:card_play_mode:allow_additional_play` | 1 |
 | modifier | `rule:card_play_permission:allow` | 1 |
 | modifier | `rule:card_play_permission:prohibit` | 1 |
+| modifier | `rule:card_play_requirement:require_face_down_attack` | 1 |
 | modifier | `rule:card_play_with_others:forbid` | 1 |
 | modifier | `rule:charge_eligibility:allow_source_card` | 1 |
 | modifier | `rule:combat_attack_power_increase_from_other_cards:prohibit` | 1 |
@@ -302,6 +307,7 @@ structuredAbilityCount=288
 | modifier | `rule:face_up_cards_per_round:set` | 1 |
 | modifier | `rule:mana_spending:forbid` | 1 |
 | modifier | `rule:movement_cost:subtract` | 1 |
+| modifier | `rule:movement_permission:prohibit_leave_controller_location` | 1 |
 | modifier | `rule:non_effect_victory_point_gain:forbid` | 1 |
 | modifier | `rule:npc_total_power:set` | 1 |
 | modifier | `rule:round_mana_gain_cap:set_by_round_kind` | 1 |
@@ -375,8 +381,8 @@ structuredAbilityCount=288
 | `master.amakusa.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_CARD` | `INSTALL_ABILITY_RULE_MODIFIER`, `REMOVE_STATUS` | `CHOOSE_ONE_CARD` | `cleanup:remove_from_game`, `duration:this_round` | `rule:skill_use:forbid` | `FACE_UP` | `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |
 | `master.amakusa.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `round.started` | `COMMAND_SEALS_AT_LEAST`, `FORMULA`, `HAS_STATUS`, `METRIC`, `SCHEDULED_PAYLOAD_PRESENT`, `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_PLAYER` | `ADD_STATUS` | `CHOOSE_ONE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `master.amakusa.skill.s3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.amakusa-vassal` |
-| `master.araya.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.araya-paradox-spiral` |
-| `master.araya.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.araya-triple-boundary` |
+| `master.araya.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `CONTROLLER_AT_LOCATION_WITH_SOURCE_TERRAIN_AT_LEAST`, `CONTROLLER_AT_MAGIC_WORKSHOP` | `NONE` | `NONE` | `LOCATION_TOKEN_RULE` | `NONE` | `NONE` | `rule:card_play_requirement:require_face_down_attack`, `rule:movement_permission:prohibit_leave_controller_location` | `NONE` | `NONE` | `NONE` | `core.araya-paradox-spiral` |
+| `master.araya.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `player.deployed` | `DEPLOYMENT_LOCATION_WOULD_GRANT_CONTROLLER_TERRAIN`, `EVENT_PLAYER_IS_CONTROLLER` | `NONE` | `NONE` | `TERRAIN_POSITION_ADJUSTMENT` | `NONE` | `duration:rest_of_game` | `NONE` | `NONE` | `NONE` | `NONE` | `core.araya-triple-boundary` |
 | `master.araya.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.ending` | `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_CARD` | `GAIN_MANA`, `MOVE_SELECTED_CARDS` | `CHOOSE_ONE_CARD` | `NONE` | `NONE` | `NONE` | `payload:selectedInstanceIds` | `COMBAT_EVENT` | `core.structured-skill` |
 | `master.arcueid.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `master.arcueid.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `game.started`, `skill.used` | `EVENT_SKILL_ID_IS` | `NONE` | `NONE` | `RESET_SKILL_USAGE`, `RETURN_CARD_BY_DEFINITION` | `NONE` | `NONE` | `NONE` | `FACE_UP` | `NONE` | `NONE` | `core.structured-skill` |

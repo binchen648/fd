@@ -531,7 +531,10 @@ export function mapStructuredCapabilityNeeds(
 
   const hasPlay = effectTypes.includes('play_selected_cards') || effectTypes.includes('play_source_card');
   const modifiesPlaySemantics = ruleModifiers.some(
-    (modifier) => modifier.rule === 'card_play_mode' || modifier.rule === 'card_play_permission',
+    (modifier) =>
+      modifier.rule === 'card_play_mode' ||
+      modifier.rule === 'card_play_permission' ||
+      modifier.rule === 'card_play_requirement',
   );
   if (hasPlay || modifiesPlaySemantics) addCapability(result, 'CARD_ACTION_PLAY', 'CARD_ACTION_SEMANTICS');
 
