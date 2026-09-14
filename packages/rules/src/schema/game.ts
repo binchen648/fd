@@ -127,6 +127,8 @@ export interface BattleResultState {
   winnerPlayerIds: string[];
   tied: boolean;
   excludedPlayerIds?: string[];
+  /** Participants who lost but whose battle-loss effects are suppressed for this result. */
+  lossEffectSuppressedPlayerIds?: string[];
   winnerPlayerId: string | null;
   margin: number;
   vpReward: number;

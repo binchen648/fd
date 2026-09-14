@@ -251,13 +251,29 @@ describe('Artoria Caster authoring vertical slice', () => {
     expect(report.some(r => r.path === 'cardFace.cost')).toBe(true);
     expect(report.some(r => r.path === 'cardFace.basePower')).toBe(true);
   });
-  it('battle resolver triggers victory shuffle and the optional hand window on authority only', () => {
+  it('settles battle-result triggers only after base scoring on authority', () => {
     const s = setup(); const star = add(s, 2); play(s, star); add(s, 3); add(s, 'card.luck', 'discard');
     s.players[0]!.locationId = 'miyama_town'; s.players[1]!.locationId = 'miyama_town';
     rules.advanceAbilityPhase(s, 'battle');
-    const result = rules.resolveBattlefield(s, { battlefieldId: 'miyama_town' }).nextState;
-    expect(actions(result).some(a => a.type === 'resolve_response')).toBe(true);
-    expect(result.cards.filter(c => c.zone === 'discard')).toHaveLength(0);
+    const resolved = rules.resolveBattlefield(s, { battlefieldId: 'miyama_town' }).nextState;
+    expect(actions(resolved).some(a => a.type === 'resolve_response')).toBe(false);
+    const battle = resolved.battleResults.at(-1)!;
+    const scored = rules.applyBattleScoring(resolved).nextState;
+    const loserIds = battle.participantBreakdowns
+      .map((participant) => participant.playerId)
+      .filter((playerId) => !battle.winnerPlayerIds.includes(playerId));
+    rules.processAbilityEvent(scored, {
+      id: 'battle-phase:1:battle:miyama_town:1:result',
+      type: 'after_battle_result_determined',
+      battlePhaseResolutionId: 'battle-phase:1',
+      battleId: 'battle-phase:1:battle:miyama_town:1',
+      resultId: 'battle-phase:1:battle:miyama_town:1:result',
+      battleParticipantIds: battle.participantBreakdowns.map((participant) => participant.playerId),
+      battlefieldId: 'miyama_town',
+      battleResult: { winners: [...battle.winnerPlayerIds], loserIds },
+    });
+    expect(actions(scored).some(a => a.type === 'resolve_response')).toBe(true);
+    expect(scored.cards.filter(c => c.zone === 'discard')).toHaveLength(0);
     expect(s.cards.filter(c => c.zone === 'discard')).toHaveLength(1);
   });
   it('legacy game-loop pauses at a pending response and resumes without replaying the battle', () => {
@@ -265,10 +281,14 @@ describe('Artoria Caster authoring vertical slice', () => {
     const attack = add(s, 5); play(s, attack); rules.advanceAbilityPhase(s, 'battle');
     const stopped = rules.stepGameLoop(s).nextState;
     expect(stopped.round.activePhase).toBe('battle');
+    expect(stopped.battleResults).toHaveLength(0);
+    expect(stopped.log.filter((entry) => entry.type === 'battle_scored')).toHaveLength(1);
     const decline = actions(stopped).find(a => a.type === 'decline_this_window')!;
     rules.dispatchAbilityCommand(stopped, 'p1', decline);
     const resumed = rules.stepGameLoop(stopped).nextState;
-    expect(resumed.round.activePhase).toBe('cleanup'); expect(resumed.battleResults).toHaveLength(1);
+    expect(resumed.round.activePhase).toBe('cleanup');
+    expect(resumed.battleResults).toHaveLength(0);
+    expect(resumed.log.filter((entry) => entry.type === 'battle_scored')).toHaveLength(1);
   });
   it('reports malformed targets/effects, unsupported windows and unfinished verification', () => {
     const broken = structuredClone(raw);

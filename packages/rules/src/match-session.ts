@@ -8,6 +8,7 @@ import {
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import type {
   AbilityCommand,
+  AbilityEvent,
   AbilityPlayerView,
   DispatchResult,
   ExecutableCardDefinition,
@@ -1213,21 +1214,113 @@ export class MatchSession {
     this.checkpoint(`round ${round} start`, targetState);
   }
 
-  private emitAuthoritativeFirstLossEvents(battle: GameState['battleResults'][number]): void {
-    const losers = battle.militaryAdjustments
-      .filter((adjustment) => adjustment.delta < 0)
+  private battleLoserIds(battle: GameState['battleResults'][number]): string[] {
+    const suppressed = new Set(battle.lossEffectSuppressedPlayerIds ?? []);
+    if ((battle.participantBreakdowns?.length ?? 0) > 0) {
+      return battle.participantBreakdowns!
+        .map((participant) => participant.playerId)
+        .filter((playerId) => !battle.winnerPlayerIds.includes(playerId) && !suppressed.has(playerId));
+    }
+    // Compatibility for older/synthetic battle fixtures without participant breakdowns.
+    return battle.militaryAdjustments
+      .filter((adjustment) => adjustment.delta < 0 && !suppressed.has(adjustment.playerId))
       .map((adjustment) => adjustment.playerId);
-    for (const playerId of losers) {
-      const priorLosses = this.battleHistory.filter((priorBattle) =>
-        priorBattle.militaryAdjustments.some((adjustment) => adjustment.playerId === playerId && adjustment.delta < 0)).length;
-      if (priorLosses !== 0) continue;
-      processAbilityEvent(this.state, {
-        id: `battle:${this.state.round.roundNumber}:${battle.battlefieldId}:${this.battleHistory.length + 1}:first-loss:${playerId}`,
-        type: 'after_controller_first_loses_battle',
-        playerId,
+  }
+
+  private queuePostScoringBattleEvents(
+    battles: GameState['battleResults'],
+    freshScoringLogs: GameState['log'],
+  ): void {
+    const runtime = this.state.abilityRuntime;
+    if (!runtime || battles.length === 0) return;
+    const round = this.state.round.roundNumber;
+    const battlePhaseResolutionId = `battle-phase:${round}`;
+    const scoredBattlefieldIds = freshScoringLogs
+      .filter((entry) => entry.type === 'battle_scored')
+      .map((entry) => String(entry.payload?.battlefieldId ?? ''))
+      .filter(Boolean);
+    const expectedBattlefieldIds = battles.map((battle) => battle.battlefieldId);
+    if (expectedBattlefieldIds.some((battlefieldId) => !scoredBattlefieldIds.includes(battlefieldId))) {
+      throw new Error('Post-scoring battle barrier requires every resolved battlefield scoring receipt');
+    }
+
+    const historyBeforePhase = structuredClone(this.battleHistory);
+    const pending = runtime.pendingPostBattleEvents ??= [];
+    const resultIds: string[] = [];
+    for (const [index, battle] of battles.entries()) {
+      const battleOrdinal = historyBeforePhase.length + index + 1;
+      const battleId = `${battlePhaseResolutionId}:battle:${battle.battlefieldId}:${battleOrdinal}`;
+      const resultId = `${battleId}:result`;
+      resultIds.push(resultId);
+      const loserIds = this.battleLoserIds(battle);
+      const battleParticipantIds = [...new Set([...battle.winnerPlayerIds, ...loserIds])];
+      const resultEvent: AbilityEvent = {
+        id: resultId,
+        type: 'after_battle_result_determined',
+        battlePhaseResolutionId,
+        battleId,
+        resultId,
+        battleParticipantIds,
         battlefieldId: battle.battlefieldId,
-        lossOrdinal: 1,
-      });
+        battleResult: { winners: [...battle.winnerPlayerIds], loserIds },
+      };
+      if (!runtime.processedEvents.includes(resultId) && !pending.some((event) => event.id === resultId)) {
+        pending.push(resultEvent);
+      }
+
+      for (const playerId of loserIds) {
+        const priorLosses = historyBeforePhase
+          .concat(battles.slice(0, index))
+          .filter((priorBattle) => this.battleLoserIds(priorBattle).includes(playerId)).length;
+        if (priorLosses !== 0) continue;
+        const firstLossEvent: AbilityEvent = {
+          id: `${resultId}:first-loss:${playerId}`,
+          type: 'after_controller_first_loses_battle',
+          battlePhaseResolutionId,
+          battleId,
+          resultId,
+          battleParticipantIds,
+          playerId,
+          battlefieldId: battle.battlefieldId,
+          lossOrdinal: 1,
+        };
+        if (!runtime.processedEvents.includes(firstLossEvent.id) && !pending.some((event) => event.id === firstLossEvent.id)) {
+          pending.push(firstLossEvent);
+        }
+      }
+      this.battleHistory.push(structuredClone(battle));
+    }
+
+    this.record('battle_post_scoring_barrier_open', battlePhaseResolutionId, {
+      battlePhaseResolutionId,
+      scoredBattlefieldIds,
+      resultIds,
+    });
+  }
+
+  private flushPostScoringBattleEvents(): void {
+    if (!this.state.abilityRuntime) return;
+    this.state.abilityRuntime.pendingPostBattleEvents ??= [];
+    while ((this.state.abilityRuntime?.pendingPostBattleEvents?.length ?? 0) > 0) {
+      const runtime = this.state.abilityRuntime!;
+      if (runtime.pendingDecision || runtime.responseWindows.length || runtime.hostRequests.length) return;
+      const event = structuredClone(runtime.pendingPostBattleEvents![0]!);
+      processAbilityEvent(this.state, event);
+      this.state.abilityRuntime!.pendingPostBattleEvents!.shift();
+      this.record(
+        event.type === 'after_controller_first_loses_battle'
+          ? 'battle_first_loss_event_dispatched'
+          : 'battle_result_event_dispatched',
+        event.id,
+        {
+          battlePhaseResolutionId: event.battlePhaseResolutionId,
+          battleId: event.battleId,
+          resultId: event.resultId,
+          battlefieldId: event.battlefieldId,
+          ...(event.playerId ? { playerId: event.playerId } : {}),
+        },
+      );
+      this.autoResolveNonInteractiveWindows();
     }
   }
 
@@ -1235,6 +1328,11 @@ export class MatchSession {
     if (this.state.round.activePhase !== 'battle') {
       advanceAbilityPhase(this.state, 'battle', this.state.round.roundNumber);
     }
+    this.flushPostScoringBattleEvents();
+    if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length ||
+      this.state.abilityRuntime?.hostRequests.length || this.state.abilityRuntime?.pendingPostBattleEvents?.length) return;
+
+    const resolvedBattles: GameState['battleResults'] = [];
     const battlefields = getEnabledLocations(this.state.map, this.state.locationConfig)
       .filter((location) => !((modeStateOf(this.state).closedLocations as string[] | undefined) ?? []).includes(location.id))
       .filter((location) => location.tags.includes('battlefield') || location.rewardHooks.includes('battle_rewards'));
@@ -1244,14 +1342,19 @@ export class MatchSession {
       Object.assign(this.state, resolveBattlefield(this.state, { battlefieldId: battlefield.id, revealHiddenEvents: true }).nextState);
       if (this.state.battleResults.length > before) {
         const battle = this.state.battleResults[this.state.battleResults.length - 1]!;
-        this.emitAuthoritativeFirstLossEvents(battle);
-        this.battleHistory.push(structuredClone(battle));
+        resolvedBattles.push(structuredClone(battle));
         this.record('battle_resolved', battlefield.id, battle as unknown as Record<string, unknown>);
       }
       this.autoResolveNonInteractiveWindows();
     }
     if (!this.state.abilityRuntime?.pendingDecision && !this.state.abilityRuntime?.responseWindows.length) {
+      const scoringLogStart = this.state.log.length;
       Object.assign(this.state, applyBattleScoring(this.state).nextState);
+      const freshScoringLogs = this.state.log.slice(scoringLogStart);
+      this.queuePostScoringBattleEvents(resolvedBattles, freshScoringLogs);
+      this.flushPostScoringBattleEvents();
+      if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length ||
+        this.state.abilityRuntime?.hostRequests.length || this.state.abilityRuntime?.pendingPostBattleEvents?.length) return;
       advanceAbilityPhase(this.state, 'cleanup', this.state.round.roundNumber);
       this.discardRoundSituationAndEvents();
       advanceAbilityPhase(this.state, 'round_end', this.state.round.roundNumber);

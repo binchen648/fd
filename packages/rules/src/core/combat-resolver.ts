@@ -12,7 +12,7 @@ import type { LocationDefinition } from "../schema/location";
 import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
-import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
+import { calculateCardPower } from '../ability/interpreter';
 
 export interface CombatParticipantInput {
   playerId: string;
@@ -502,12 +502,17 @@ function buildBattleResult(
         label: "basic.preparation.win_bonus",
       }));
   const vpAdjustments = [...(defaultVpAdjustments ?? []), ...remoteOperationVpAdjustment];
+  const lossEffectSuppressedPlayerIds = ranked
+    .filter((participant) => !winnerPlayerIds.includes(participant.playerId))
+    .filter((participant) => ignoresBattleLossEffects(state, participant.playerId, input.battlefieldId))
+    .map((participant) => participant.playerId);
 
   return {
     battlefieldId: input.battlefieldId,
     winnerPlayerIds,
     tied,
     ...(excludedPlayerIds.length ? { excludedPlayerIds } : {}),
+    ...(lossEffectSuppressedPlayerIds.length ? { lossEffectSuppressedPlayerIds } : {}),
     winnerPlayerId: winnerPlayerIds.length === 1 ? winnerPlayerIds[0]! : null,
     margin,
     vpReward,
@@ -610,9 +615,8 @@ export function resolveBattlefield(
       if (source) source.zone = "removed_from_game";
       if (nextState.abilityRuntime?.cardState[sourceCardId]) nextState.abilityRuntime.cardState[sourceCardId]!.active = false;
     }
-    if (nextState.abilityRuntime) {
-      processAbilityEvent(nextState, { id: abilityEventId, type: 'after_battle_result_determined',
-        battleResult: { winners: [returnSilenceController], loserIds } });
+    if (nextState.abilityRuntime && !nextState.abilityRuntime.processedEvents.includes(abilityEventId)) {
+      nextState.abilityRuntime.processedEvents.push(abilityEventId);
     }
     return { nextState, appliedLogEntries: [`return_silence:${input.battlefieldId}`] };
   }
@@ -664,8 +668,10 @@ export function resolveBattlefield(
         payload: { playerId, battlefieldId: input.battlefieldId, sourceCardDefinitionId: "basic.luck" },
       });
     }
-    processAbilityEvent(nextState, { id: abilityEventId, type: 'after_battle_result_determined',
-      battleResult: { winners, loserIds: participants.map(p => p.playerId).filter(id => !winners.includes(id) && !immuneLosers.includes(id)) } });
+    const runtime = nextState.abilityRuntime;
+    if (runtime && !runtime.processedEvents.includes(abilityEventId)) {
+      runtime.processedEvents.push(abilityEventId);
+    }
   }
   return {
     nextState,

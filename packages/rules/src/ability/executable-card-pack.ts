@@ -296,7 +296,7 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
 function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
-    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability)) continue;
+    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isBattleLossResourceTriggerRouteCandidate(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability)) continue;
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
     try {
       validateResolutionDataFlowNodes(effects, path);
@@ -319,6 +319,15 @@ function isResourceNumericDirectActionSemantic(ability: AuthoringAbility): boole
     ability.creates.length === 0 &&
     ability.effects.length > 0 &&
     ability.effects.every((effect) => directResourcePrimitiveTypes.has(str(effect.type)));
+}
+
+function isBattleLossResourceTriggerRouteCandidate(ability: AuthoringAbility): boolean {
+  if (ability.kind !== 'forced_trigger' || str(ability.activation.trigger) !== 'after_controller_loses_battle') return false;
+  if (ability.conditions.length || ability.targets.length || ability.cost.length || ability.creates.length || ability.ruleModifiers.length) return false;
+  if (Object.keys(ability.lifecycle).length || str(ability.responseWindow.opens) || Object.keys(ability.limit).length) return false;
+  if (ability.effects.length !== 1) return false;
+  const effect = ability.effects[0]!;
+  return str(effect.type) === 'adjust_command_seals' && (effect.player === undefined || effect.player === 'controller');
 }
 
 function isCardZoneCoreDirectActionSemantic(ability: AuthoringAbility): boolean {

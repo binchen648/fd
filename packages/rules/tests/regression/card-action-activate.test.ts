@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 
 import { createMatchSession } from '../../src/match-session';
 import {
@@ -184,34 +184,43 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE recovery', () => {
     expect(session.state).toEqual(before);
   });
 
-  it('derives first-loss staging once from authoritative MatchSession battle history', () => {
+  it('queues authoritative first-loss once from MatchSession battle history behind the post-scoring barrier', () => {
     const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
     const { playerId } = prepareOlga(session);
     const firstBattle = {
       battlefieldId: 'miyama_town',
+      winnerPlayerIds: ['p1'],
       militaryAdjustments: [{ playerId, delta: -3 }],
     } as (typeof session.state.battleResults)[number];
     const secondBattle = {
       battlefieldId: 'shinto',
+      winnerPlayerIds: ['p2'],
       militaryAdjustments: [{ playerId, delta: -2 }],
     } as (typeof session.state.battleResults)[number];
     const bridge = session as unknown as {
-      emitAuthoritativeFirstLossEvents(battle: (typeof session.state.battleResults)[number]): void;
-      battleHistory: typeof session.battleHistory;
+      queuePostScoringBattleEvents(
+        battles: typeof session.state.battleResults,
+        freshScoringLogs: typeof session.state.log,
+      ): void;
     };
 
-    bridge.emitAuthoritativeFirstLossEvents(firstBattle);
-    expect(session.state.abilityRuntime!.pendingDelayedActivations).toHaveLength(1);
-    expect(session.state.abilityRuntime!.pendingDelayedActivations![0]).toMatchObject({
-      controllerId: playerId,
-      triggerEventId: expect.stringContaining(`first-loss:${playerId}`),
-    });
+    bridge.queuePostScoringBattleEvents([firstBattle], [{
+      type: 'battle_scored',
+      message: 'scored:miyama_town',
+      payload: { battlefieldId: 'miyama_town' },
+    }]);
+    expect(session.state.abilityRuntime!.pendingDelayedActivations).toHaveLength(0);
+    expect(session.state.abilityRuntime!.pendingPostBattleEvents?.filter((event) =>
+      event.type === 'after_controller_first_loses_battle' && event.playerId === playerId)).toHaveLength(1);
 
-    bridge.battleHistory.push(structuredClone(firstBattle));
-    bridge.emitAuthoritativeFirstLossEvents(secondBattle);
-    expect(session.state.abilityRuntime!.pendingDelayedActivations).toHaveLength(1);
+    bridge.queuePostScoringBattleEvents([secondBattle], [{
+      type: 'battle_scored',
+      message: 'scored:shinto',
+      payload: { battlefieldId: 'shinto' },
+    }]);
+    expect(session.state.abilityRuntime!.pendingPostBattleEvents?.filter((event) =>
+      event.type === 'after_controller_first_loses_battle' && event.playerId === playerId)).toHaveLength(1);
   });
-
   it('classifies the exact activation semantic shape without card or ability ids', () => {
     const activation: AuthoringAbility = {
       id: 'renamed-delayed-activation',

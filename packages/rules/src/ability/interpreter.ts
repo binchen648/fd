@@ -177,7 +177,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
+    cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
@@ -573,6 +573,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (activationPhase && activationPhase !== phase(s)) return false;
   if (definition(s, sourceId)?.cardType === 'command_spell' &&
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
+  if (isBattleLossResourceTriggerSemantic(a) &&
+    Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
   if (!isCommandSpellCard(s, sourceId) && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
   if (abilityLimitReached(s, sourceId, a)) return false;
   if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a)) &&
@@ -676,10 +678,17 @@ export function triggerEventScopeMatches(a: AuthoringAbility, event: AbilityEven
   if (eventLocationId && event.locationId !== eventLocationId) return false;
   return true;
 }
+function battleEventControllerEligibleAfterScoring(s: GameState, event: AbilityEvent, controllerId: string): boolean {
+  if (player(s, controllerId).status === 'active') return true;
+  const battleScoped = !!event.battlePhaseResolutionId && !!event.battleId && !!event.resultId &&
+    ['after_battle_result_determined', 'after_controller_wins_battle', 'after_controller_loses_battle', 'after_controller_first_loses_battle', 'after_controller_gains_victory'].includes(event.type);
+  return battleScoped && event.battleParticipantIds?.includes(controllerId) === true;
+}
+
 export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): TriggeredAbility[] {
   const found: TriggeredAbility[] = [];
   for (const c of s.cards) {
-    if (player(s, c.controllerPlayerId).status !== 'active') continue;
+    if (!battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId)) continue;
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
       const matches = a.activation.trigger === event.type || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
       if (!matches || !canActivate(s, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
@@ -1100,6 +1109,24 @@ export function isResourceNumericTriggerSemantic(a: AuthoringAbility): boolean {
     Number.isSafeInteger(effect.amount);
 }
 
+function isBattleLossResourceTriggerCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'forced_trigger' &&
+    str(a.activation.trigger) === 'after_controller_loses_battle' &&
+    a.effects.length === 1 &&
+    str(a.effects[0]?.type) === 'adjust_command_seals';
+}
+
+export function isBattleLossResourceTriggerSemantic(a: AuthoringAbility): boolean {
+  if (!isBattleLossResourceTriggerCandidate(a)) return false;
+  if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
+  if (a.effects.length !== 1) return false;
+  const effect = a.effects[0]!;
+  return effect.type === 'adjust_command_seals' &&
+    (effect.player === undefined || effect.player === 'controller') &&
+    Number.isSafeInteger(effect.amount);
+}
+
 export function isResourceNumericDirectActionSemantic(a: AuthoringAbility): boolean {
   return a.kind === 'phase_action' &&
     str(a.activation.phase) === 'action' &&
@@ -1377,13 +1404,14 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
-  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a)) {
+  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isBattleLossResourceTriggerSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
     cleanupOngoing(s);
     return;
   }
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
+  if (isBattleLossResourceTriggerCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss resource semantic shape');
   if (isPrivateOptionalHandPlayInteractionCandidate(a)) {
     if (!isPrivateOptionalHandPlayInteractionSemantic(a)) reject('resolution_failed', 'Unsupported private optional hand-play interaction semantic shape');
     const interactionTargetId = str(a.targets[0]?.id);

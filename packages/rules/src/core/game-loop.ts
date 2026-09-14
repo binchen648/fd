@@ -18,7 +18,7 @@ import { assignInitialPlayerLocations, movePlayer } from "./movement";
 import { resolveBattlefield } from "./combat-resolver";
 import { resolveEffectsForWindow } from "./effect-resolver";
 import { getEnabledLocations } from "./map-engine";
-import { advanceAbilityPhase, processAbilitySystemEvent } from '../ability/interpreter';
+import { advanceAbilityPhase, processAbilityEvent, processAbilitySystemEvent } from '../ability/interpreter';
 
 function hasPendingAbilityResolution(state: GameState): boolean {
   return !!state.abilityRuntime && (!!state.abilityRuntime.pendingDecision || state.abilityRuntime.responseWindows.length > 0 || state.abilityRuntime.hostRequests.length > 0);
@@ -268,17 +268,91 @@ function runRoundStartSystems(
   return nextState;
 }
 
+function battleResultLoserIds(result: GameState['battleResults'][number]): string[] {
+  const suppressed = new Set(result.lossEffectSuppressedPlayerIds ?? []);
+  return result.participantBreakdowns
+    .map((participant) => participant.playerId)
+    .filter((playerId) => !result.winnerPlayerIds.includes(playerId) && !suppressed.has(playerId));
+}
+
+function queuePostScoringBattleResultEvents(
+  state: GameState,
+  results: GameState['battleResults'],
+): GameState {
+  const runtime = state.abilityRuntime;
+  if (!runtime || results.length === 0) return state;
+  const battlePhaseResolutionId = `battle-phase:${state.round.roundNumber}`;
+  const pending = runtime.pendingPostBattleEvents ??= [];
+  const resultIds: string[] = [];
+
+  for (const [index, result] of results.entries()) {
+    const battleId = `${battlePhaseResolutionId}:battle:${result.battlefieldId}:${index + 1}`;
+    const resultId = `${battleId}:result`;
+    resultIds.push(resultId);
+    const loserIds = battleResultLoserIds(result);
+    const battleParticipantIds = result.participantBreakdowns.map((participant) => participant.playerId);
+    if (!runtime.processedEvents.includes(resultId) && !pending.some((event) => event.id === resultId)) {
+      pending.push({
+        id: resultId,
+        type: 'after_battle_result_determined',
+        battlePhaseResolutionId,
+        battleId,
+        resultId,
+        battleParticipantIds,
+        battlefieldId: result.battlefieldId,
+        battleResult: { winners: [...result.winnerPlayerIds], loserIds },
+      });
+    }
+  }
+
+  state.log.push({
+    type: 'battle_post_scoring_barrier_open',
+    message: battlePhaseResolutionId,
+    payload: {
+      battlePhaseResolutionId,
+      scoredBattlefieldIds: results.map((result) => result.battlefieldId),
+      resultIds,
+    },
+  });
+  return state;
+}
+
+function flushPostScoringBattleResultEvents(state: GameState): GameState {
+  if (!state.abilityRuntime) return state;
+  state.abilityRuntime.pendingPostBattleEvents ??= [];
+  while ((state.abilityRuntime.pendingPostBattleEvents?.length ?? 0) > 0) {
+    if (hasPendingAbilityResolution(state)) break;
+    const event = structuredClone(state.abilityRuntime.pendingPostBattleEvents![0]!);
+    processAbilityEvent(state, event);
+    state.abilityRuntime!.pendingPostBattleEvents!.shift();
+    state.log.push({
+      type: 'battle_result_event_dispatched',
+      message: event.id,
+      payload: {
+        battlePhaseResolutionId: event.battlePhaseResolutionId,
+        battleId: event.battleId,
+        resultId: event.resultId,
+        battlefieldId: event.battlefieldId,
+      },
+    });
+  }
+  return state;
+}
+
 function runBattlePhase(state: GameState): GameState {
-  const enabledLocations = getEnabledLocations(state.map, state.locationConfig);
+  const flushed = flushPostScoringBattleResultEvents(state);
+  if (hasPendingAbilityResolution(flushed) || (flushed.abilityRuntime?.pendingPostBattleEvents?.length ?? 0) > 0) return flushed;
+
+  const enabledLocations = getEnabledLocations(flushed.map, flushed.locationConfig);
   const contestedBattlefields = enabledLocations.filter((location) => {
     const supportsBattle =
       location.rewardHooks.includes("battle_rewards") || location.tags.includes("battlefield");
 
-    if (!supportsBattle || !shouldResolveBattlefield(location.id, state.battleDeclarations)) {
+    if (!supportsBattle || !shouldResolveBattlefield(location.id, flushed.battleDeclarations)) {
       return false;
     }
 
-    const activeOccupants = state.players.filter(
+    const activeOccupants = flushed.players.filter(
       (player) => player.status === "active" && player.locationId === location.id,
     );
 
@@ -308,17 +382,24 @@ function runBattlePhase(state: GameState): GameState {
       battlefieldId: location.id,
       revealHiddenEvents: true,
     }).nextState;
-  }, state);
+  }, flushed);
 
-  return {
+  const cleanedState: GameState = {
     ...resolvedState,
     battleDeclarations: hasPendingAbilityResolution(resolvedState) ? resolvedState.battleDeclarations ?? [] : [],
     effectStack: resolvedState.effectStack.filter((item) => item.effect.timing !== "battle"),
   };
+  if (hasPendingAbilityResolution(cleanedState)) return cleanedState;
+
+  const resolvedBattles = structuredClone(cleanedState.battleResults);
+  if (resolvedBattles.length === 0) return cleanedState;
+  const scoredState = applyBattleScoring(cleanedState).nextState;
+  queuePostScoringBattleResultEvents(scoredState, resolvedBattles);
+  return flushPostScoringBattleResultEvents(scoredState);
 }
 
 function runCleanupPhase(state: GameState): GameState {
-  const scoredState = applyBattleScoring(state).nextState;
+  const scoredState = state.battleResults.length > 0 ? applyBattleScoring(state).nextState : state;
   return {
     ...scoredState,
     battleSkillEffects: [],

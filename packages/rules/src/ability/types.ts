@@ -1,4 +1,4 @@
-import type { PhaseName } from '../schema/game';
+﻿import type { PhaseName } from '../schema/game';
 
 export type PlayerId = string;
 /** Raw JSON nodes are inspected by the loader, never evaluated as executable text. */
@@ -73,6 +73,10 @@ export interface BattleResult extends BattleResultData { didWin(playerId: Player
 export interface AbilityEvent {
   id: string; type: string; playerId?: PlayerId; sourceCardId?: string; battleResult?: BattleResultData;
   /** Server-owned battle identity facts for battle-derived trigger events. */
+  battlePhaseResolutionId?: string;
+  battleId?: string;
+  resultId?: string;
+  battleParticipantIds?: PlayerId[];
   battlefieldId?: string;
   lossOrdinal?: number;
   /** Trusted backend snapshot of the simultaneous play batch, never a client-supplied condition. */
@@ -158,6 +162,8 @@ export interface AbilityRuntime {
   cardState: Record<string, { active: boolean; faceDown: boolean; playedRound: number }>;
   ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
   pendingDelayedActivations?: PendingDelayedActivation[];
+  /** Server-owned post-scoring battle events waiting for Trigger Gateway settlement. */
+  pendingPostBattleEvents?: AbilityEvent[];
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];
