@@ -142,6 +142,8 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
       return { id: `produce-${binding}`, type: 'activate_card_by_id', definitionId: 'fixture.skill.delayed', bind: binding };
     case 'close_source_card':
       return { id: `produce-${binding}`, type: 'close_source_card', bind: binding };
+    case 'create_card':
+      return { id: `produce-${binding}`, type: 'create_card', cardId: 'fixture.created', to: 'skill', owner: 'controller', bind: binding };
     case 'adjust_victory_points':
       return { id: `produce-${binding}`, type: 'adjust_victory_points', player: 'controller', amount: 1, bind: binding };
     case 'adjust_mana':
@@ -194,6 +196,7 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
       'pay_mana',
       'adjust_command_seals',
       'adjust_victory_points',
+      'create_card',
       'noop',
       'fail_invariant',
     ]));
@@ -358,8 +361,16 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
         ];
 
         expect(() => validateResolutionDataFlow(effects)).not.toThrow();
+        const state = baseState();
+        if (effectType === 'create_card') {
+          (state as GameState & { abilityRuntime?: unknown }).abilityRuntime = {
+            sequence: 0,
+            revision: 0,
+            pack: { cards: { 'fixture.created': { id: 'fixture.created' } } },
+          };
+        }
         expect(() => executeResolution({
-          state: baseState(),
+          state,
           controllerId: 'P1',
           sourceCardId: 'synthetic-source',
           abilityId: 'synthetic-ability',

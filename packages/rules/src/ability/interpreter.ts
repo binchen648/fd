@@ -991,6 +991,17 @@ export function isCloseSourceCardOnPlayedTrigger(a: AuthoringAbility): boolean {
   return sourceZone && noblePlay;
 }
 
+export function isSetupCreateToSkillTrigger(a: AuthoringAbility): boolean {
+  if (a.kind !== 'forced_trigger' || str(a.activation.trigger) !== 'game_start') return false;
+  if (a.conditions.length || a.targets.length || a.cost.length || a.creates.length || a.effects.length !== 1) return false;
+  const [effect] = a.effects;
+  const destination = node(effect?.to);
+  return str(effect?.type) === 'create_card' &&
+    typeof effect?.cardId === 'string' && effect.cardId.length > 0 &&
+    str(destination.zone) === 'skill' &&
+    (!destination.owner || str(destination.owner) === 'controller');
+}
+
 function closeSourceStateError(s: GameState, sourceCardId: string, controllerId: string): string | undefined {
   const source = s.cards.find((candidate) => candidate.instanceId === sourceCardId);
   if (!source) return 'Close source card is missing.';
@@ -1170,6 +1181,12 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isSetupCreateToSkillTrigger(a)) {
+    executeResolutionEffects(s, ctx, effects);
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
   if (isAddToAttackRouteCandidate(a)) {
     const pending = findPendingTarget(s, ctx, a, effects);
     if (pending) { runtime(s).pendingDecision = pending; return; }
@@ -1199,7 +1216,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
-  if (isCardZoneCoreDirectActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a)) {
+  if (isCardZoneCoreDirectActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a) || isSetupCreateToSkillTrigger(a)) {
     try {
       normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     } catch (error) {

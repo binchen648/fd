@@ -12,6 +12,7 @@ export type EffectResultType =
   | 'attach_card_to_player_attack'
   | 'activate_card_by_id'
   | 'close_source_card'
+  | 'create_card'
   | 'adjust_mana'
   | 'pay_mana'
   | 'adjust_command_seals'
@@ -115,6 +116,13 @@ export interface CloseSourceCardResult {
   closedCount: number;
 }
 
+export interface CreateCardResult {
+  definitionId: string;
+  cardInstanceId: string;
+  destinationZone: 'skill';
+  createdCount: number;
+}
+
 export interface NoopResult {
   reason: string;
 }
@@ -131,6 +139,7 @@ export type KnownEffectResult =
   | EffectResultEnvelope<'attach_card_to_player_attack', AttachCardToPlayerAttackResult>
   | EffectResultEnvelope<'activate_card_by_id', ActivateCardByIdResult>
   | EffectResultEnvelope<'close_source_card', CloseSourceCardResult>
+  | EffectResultEnvelope<'create_card', CreateCardResult>
   | EffectResultEnvelope<'adjust_mana', AdjustManaResult>
   | EffectResultEnvelope<'pay_mana', PayManaResult>
   | EffectResultEnvelope<'adjust_command_seals', AdjustCommandSealsResult>
@@ -170,6 +179,10 @@ export const resultSchemas: Record<EffectResultType, BindingFieldSchema> = {
   },
   close_source_card: {
     closedCount: 'number',
+    status: 'status',
+  },
+  create_card: {
+    createdCount: 'number',
     status: 'status',
   },
   adjust_victory_points: {
@@ -267,6 +280,7 @@ export type ResolutionEffectNode =
   | { id: string; type: 'attach_card_to_player_attack'; cardId: string; target: string; returnAtRoundEnd: boolean; controllerCannotWinStatus: string; bind?: string }
   | { id: string; type: 'activate_card_by_id'; definitionId: string; bind?: string }
   | { id: string; type: 'close_source_card'; bind?: string }
+  | { id: string; type: 'create_card'; cardId: string; to: 'skill'; owner: 'controller'; bind?: string }
   | { id: string; type: 'adjust_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'pay_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'adjust_command_seals'; player: 'controller'; amount: ValueExpression; directive?: string; bind?: string }
@@ -376,6 +390,11 @@ const primitiveDefinitions: ResolutionPrimitive[] = [
     type: 'close_source_card',
     resultSchema: resultSchemas.close_source_card,
     execute: closeSourceCardPrimitive,
+  },
+  {
+    type: 'create_card',
+    resultSchema: resultSchemas.create_card,
+    execute: createCardPrimitive,
   },
   {
     type: 'adjust_victory_points',
@@ -619,6 +638,15 @@ function validateEffectReferences(
       break;
     case 'close_source_card':
       break;
+    case 'create_card':
+      if (!effect.cardId || effect.to !== 'skill' || effect.owner !== 'controller') {
+        issues.push({
+          code: 'invalid_resolution_node',
+          path,
+          message: 'Only controller-owned create_card to skill is supported.',
+        });
+      }
+      break;
     case 'adjust_victory_points':
       validateValueExpression(effect.amount, available, unsafeBranchBindings, issues, `${path}.amount`);
       break;
@@ -796,6 +824,14 @@ function closeSourceCardPrimitive(
 ): KnownEffectResult {
   if (effect.type !== 'close_source_card') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
   return closeSourceCard(transaction, effect);
+}
+
+function createCardPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'create_card') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return createCard(transaction, effect);
 }
 
 function adjustVictoryPointsPrimitive(
@@ -1165,6 +1201,75 @@ function closeSourceCard(
   };
 }
 
+function createCard(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'create_card' }>,
+): KnownEffectResult {
+  if (effect.to !== 'skill' || effect.owner !== 'controller') {
+    throw new ResolutionRuntimeError('unsupported_create_card_shape', 'Only controller-owned create_card to skill is supported.');
+  }
+  const runtime = transaction.workingState.abilityRuntime;
+  if (!runtime?.pack.cards[effect.cardId]) {
+    throw new ResolutionRuntimeError('missing_created_definition', `Created card definition '${effect.cardId}' is not compiled.`);
+  }
+  const existingCards = transaction.workingState.cards.filter((candidate) =>
+    candidate.ownerPlayerId === transaction.context.controllerId && candidate.definitionId === effect.cardId);
+  if (existingCards.length > 0) {
+    if (existingCards.some((candidate) => candidate.generatedBy !== transaction.context.sourceCardId)) {
+      throw new ResolutionRuntimeError('duplicate_created_card', `Existing card '${effect.cardId}' has incompatible creation provenance.`);
+    }
+    const existing = existingCards[0]!;
+    return {
+      effectId: effect.id,
+      effectType: 'create_card',
+      status: 'no_op',
+      affectedEntities: [],
+      payload: {
+        definitionId: effect.cardId,
+        cardInstanceId: existing.instanceId,
+        destinationZone: 'skill',
+        createdCount: 0,
+      },
+      emittedEventIds: [],
+    };
+  }
+  let cardInstanceId = `created-${++runtime.sequence}`;
+  while (transaction.workingState.cards.some((candidate) => candidate.instanceId === cardInstanceId)) {
+    cardInstanceId = `created-${++runtime.sequence}`;
+  }
+  transaction.workingState.cards.push({
+    instanceId: cardInstanceId,
+    definitionId: effect.cardId,
+    ownerPlayerId: transaction.context.controllerId,
+    controllerPlayerId: transaction.context.controllerId,
+    zone: 'skill',
+    visibility: { scope: 'owner_only', ownerPlayerId: transaction.context.controllerId },
+    generatedBy: transaction.context.sourceCardId,
+  });
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.card_created`;
+  transaction.emittedEvents.push({
+    type: 'card_created',
+    playerId: transaction.context.controllerId,
+    sourceCardId: transaction.context.sourceCardId,
+    abilityId: transaction.context.abilityId,
+    resultId: eventId,
+    revision: runtime.revision,
+  });
+  return {
+    effectId: effect.id,
+    effectType: 'create_card',
+    status: 'applied',
+    affectedEntities: [{ kind: 'player', id: transaction.context.controllerId }],
+    payload: {
+      definitionId: effect.cardId,
+      cardInstanceId,
+      destinationZone: 'skill',
+      createdCount: 1,
+    },
+    emittedEventIds: [eventId],
+  };
+}
+
 function adjustVictoryPoints(
   transaction: AbilityResolutionTransaction,
   effect: Extract<ResolutionEffectNode, { type: 'adjust_victory_points' }>,
@@ -1302,6 +1407,7 @@ function evaluateValue(transaction: AbilityResolutionTransaction, expression: Va
   if (result.effectType === 'attach_card_to_player_attack' && expression.field === 'attachedCount') return result.payload.attachedCount;
   if (result.effectType === 'activate_card_by_id' && expression.field === 'activatedCount') return result.payload.activatedCount;
   if (result.effectType === 'close_source_card' && expression.field === 'closedCount') return result.payload.closedCount;
+  if (result.effectType === 'create_card' && expression.field === 'createdCount') return result.payload.createdCount;
   if (result.effectType === 'adjust_victory_points') {
     if (expression.field === 'amount') return result.payload.amount;
     if (expression.field === 'before') return result.payload.before;
@@ -1473,6 +1579,20 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
       };
     case 'close_source_card':
       return { id, type, ...coerceBind(current.bind) };
+    case 'create_card': {
+      const destination = current.to && typeof current.to === 'object' && !Array.isArray(current.to)
+        ? current.to as Record<string, unknown>
+        : {};
+      const destinationZone = zoneField(current.to, `${path}.to`, issues);
+      return {
+        id,
+        type,
+        cardId: stringField(current, 'cardId', `${path}.cardId`, issues),
+        to: destinationZone === 'skill' ? 'skill' : reportSkillDestination(path, issues),
+        owner: destination.owner === undefined || destination.owner === 'controller' ? 'controller' : reportControllerOwner(path, issues),
+        ...coerceBind(current.bind),
+      };
+    }
     case 'adjust_victory_points':
       return {
         id,
@@ -1650,6 +1770,11 @@ function reportControllerPlayer(path: string, issues: DataFlowIssue[]): 'control
 function reportControllerOwner(path: string, issues: DataFlowIssue[]): 'controller' {
   invalidNode(`${path}.owner`, 'Only controller-owned card-zone effects are supported.', issues);
   return 'controller';
+}
+
+function reportSkillDestination(path: string, issues: DataFlowIssue[]): 'skill' {
+  invalidNode(`${path}.to.zone`, 'Only setup create-to-skill is supported.', issues);
+  return 'skill';
 }
 
 function reportFace(path: string, issues: DataFlowIssue[]): 'face_down' {
