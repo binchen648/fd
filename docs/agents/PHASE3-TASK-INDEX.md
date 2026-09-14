@@ -1518,6 +1518,120 @@ Completion status allowed:
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `REJECTED`
 
+## TASK P3-B16
+
+Owner: Codex B
+Status: READY
+Branch: `codex/b-p3-b16-battle-loss-reveal-r1`
+Base: exact P3-B16 handoff commit
+
+Goal:
+
+Migrate exactly one additional TO14 direct consumer, Achilles `sc-achilles-1.achilles-heel`, from legacy `reveal_information` to a reusable typed Visibility primitive while preserving the accepted B13/B14/B15 battle ordering.
+
+Exact supported semantic:
+
+- `forced_trigger`;
+- trigger `after_controller_loses_battle`;
+- no optional response, conditions, targets, cost, creates, modifiers, lifecycle or limit;
+- exactly one `reveal_information(scope=servant_package, subject=controller.servant)` effect;
+- structural classification only, never representative-ID routing.
+
+Required runtime contract:
+
+- reuse authoritative `abilityRuntime.revealedServants` as the single reveal truth source;
+- normalize the exact supported effect to a generic typed Visibility primitive;
+- first reveal mutates revealed-servant state and emits typed `servant_package_revealed` evidence with stable resolution provenance;
+- repeated reveal is idempotent and emits no duplicate reveal event;
+- invalid controller/scope/subject or malformed same-family shape fails closed atomically;
+- exact supported semantics execute through typed resolution-dataflow before legacy fallback;
+- consume the existing stable post-scoring `after_controller_loses_battle` event without altering battle ordering;
+- frozen battle participant eligibility remains authoritative for a loser eliminated by base scoring.
+
+May touch:
+
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/types.ts` only if typed reveal evidence requires a narrow shared type update
+- focused B16 regression/unit tests
+- one scoped remote-room/browser Gate C spec/fixture
+- B16 implementation report
+
+Must not touch:
+
+- battle/scoring pipeline ordering except a concrete regression fix proven necessary by B16;
+- Gatou directive semantics;
+- Tomoe unpreventable defeat penalty;
+- Olga transform/Special subsystem;
+- Artoria Alter/Caster optional battle-result or Luck triggers;
+- declaration-reveal `on_use_declared` abilities;
+- broad Hidden/Visibility/private-look runtime;
+- TO15 Modifier/Power runtime;
+- TO16 Special runtime;
+- coverage KPI/classifier/taxonomy;
+- representative identity routing.
+
+Required evidence:
+
+- red/green identity-free semantic classifier tests;
+- typed reveal success plus `servant_package_revealed` evidence;
+- already-revealed idempotence;
+- invalid controller/scope/subject and near-miss fail-closed atomicity;
+- real production loss path and no-loss negative;
+- stable event replay dedupe;
+- loser-eliminated-by-scoring frozen-participant case;
+- B13/B14/B15 compatibility;
+- Chromium remote-room proof with public projection, reconnect, stale revision and no duplicate reveal;
+- full root baseline comparison and production identity/legacy-bypass audit.
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+
+## TASK P3-R10
+
+Owner: Codex R
+Status: READY_AFTER_P3_B16
+Branch: reviewer-selected fresh worktree/branch from exact B16 candidate SHA
+
+Goal:
+
+Independently review P3-B16 battle-loss servant-package reveal without implementing fixes or inheriting acceptance from B13/B14/B15.
+
+Required independent checks:
+
+- fresh typecheck and focused/compatibility tests;
+- independently prove exact-shape classification is identity-free and malformed near-misses fail closed;
+- verify typed reveal uses the existing revealed-servant truth source and duplicate reveal is idempotent;
+- verify loss-trigger settlement occurs after base scoring and before phase-terminal B15 work;
+- verify frozen-participant eligibility for a loser eliminated by same-battle scoring;
+- verify no-loss and stable-event replay negatives;
+- verify exact supported semantic uses typed resolution-dataflow with no identity branch or legacy bypass;
+- run fresh Chromium Gate C for public projection, reconnect, stale revision and exactly-once reveal evidence;
+- run full root baseline and block only on new deterministic failures.
+
+Must not:
+
+- implement fixes while reviewing;
+- promote Gatou, Tomoe, Olga, optional result/win triggers, broad Hidden/Visibility, TO15 or TO16;
+- modify A-owned coverage KPI/taxonomy.
+
+Required output:
+
+- findings ordered by severity;
+- typed Visibility/fail-closed/idempotence judgment;
+- battle ordering/frozen-participant judgment;
+- projection/reconnect/stale judgment;
+- Gate A/B/C judgment;
+- explicit A03 synchronization input if accepted.
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
 ## Prompt Templates
 
 Codex A startup prompt:
