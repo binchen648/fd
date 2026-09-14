@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-13T14:04:17.973Z",
+  "generatedAt": "2026-09-14T01:52:01.756Z",
   "sourceFingerprint": "4efa585d747b2f765d8248601c77daa12d247e6bfaa775a9d033afcd6b881854",
   "counts": {
     "totalArchives": 14,
@@ -5019,9 +5019,9 @@
   "compiledDefinitions": {
     "packId": "fd-playtest-v1",
     "version": 1,
-    "definitionHash": "2c6b15a98d25e80770da2517d7413fe24fdc695cd238f1247b3c24d8d691f3ed",
+    "definitionHash": "5aa5a186bb201ce1f491cb6f38907a6267a4f30775113d9dd95651d58ba735d2",
     "compiledCards": 70,
     "compiledCharacters": 14,
-    "blockingIssues": 10
+    "blockingIssues": 0
   }
 }

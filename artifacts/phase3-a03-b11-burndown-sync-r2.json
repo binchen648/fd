@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "fd-phase3-burndown-sync-v1",
+  "date": "2026-09-14",
+  "task": "P3-A03",
+  "revision": "r2",
+  "status": "COVERAGE_SYNC_CANDIDATE",
+  "scope": "P3-B11 replacement RESULT_BINDING_PRODUCTION_BRIDGE after fresh P3-R06 acceptance",
+  "resync": {
+    "branch": "codex/a-p3-a03-b11-sync-r2",
+    "baseCommit": "2262c609100d8a2a6c236628c1e31dedee14a593",
+    "supersedesAcceptedGitIdentity": {
+      "runtime": "29ecaf9621af43b554c060958b6824c9e815e41c",
+      "review": "6e13752"
+    },
+    "numericalDeltaChanged": false
+  },
+  "automationBaseline": {
+    "implementationCommit": "1dcf31152f88ed25ea80a34c5abd1c9f643dc46d",
+    "coverageCommand": "npm run phase3:coverage",
+    "freshRerun": true,
+    "rawCounts": {
+      "newRuntimeSemanticRouted": 12,
+      "legacyExecuteAbility": 3,
+      "legacyResolveEffect": 49,
+      "dualRuntime": 0,
+      "notClassifiable": 28,
+      "pilotAllowlist": 0
+    },
+    "authoring": {
+      "archives": 14,
+      "cards": 46,
+      "abilities": 92
+    },
+    "compiledDefinitions": {
+      "packId": "fd-playtest-v1",
+      "version": 1,
+      "definitionHash": "5aa5a186bb201ce1f491cb6f38907a6267a4f30775113d9dd95651d58ba735d2",
+      "compiledCards": 70,
+      "compiledCharacters": 14,
+      "blockingIssues": 0
+    }
+  },
+  "acceptedRuntime": {
+    "task": "P3-B11",
+    "candidateCommit": "f567c427bf1a716c2c685e7c89566d5d255b9a70",
+    "reviewTask": "P3-R06",
+    "reviewEvidenceCommit": "cf5b3a970d7473e63b67a3f4979730d2ab5ee913",
+    "reviewStatus": "GATE_A_B_CANDIDATE_ACCEPTED",
+    "scopedBeforeAfter": {
+      "legacyResolveEffect": { "before": 1, "after": 0, "delta": -1 },
+      "newRuntimeSemanticRouted": { "before": 1, "after": 2, "delta": 1 },
+      "dualRuntime": { "before": 0, "after": 0, "delta": 0 },
+      "eligible": { "before": 2, "after": 2, "delta": 0 },
+      "migrated": { "before": 1, "after": 2, "delta": 1 },
+      "skipped": { "before": 1, "after": 0, "delta": -1 }
+    }
+  },
+  "acceptedBurnDown": {
+    "method": "fresh A-owned raw coverage rerun plus independently accepted replacement P3-B11 scoped delta; classifier rules remain unchanged",
+    "newRuntimeSemanticRouted": 13,
+    "legacyExecuteAbility": 3,
+    "legacyResolveEffect": 48,
+    "dualRuntime": 0
+  },
+  "resultBinding": {
+    "authoringResultVarCount": 2,
+    "eligible": 2,
+    "migrated": 2,
+    "skipped": 0,
+    "acceptedRepresentatives": [
+      "master.irisviel.skill.conversion-magic#conversion-magic.preparation",
+      "servant.kintoki.skill.sc-kintoki-3#sc-kintoki-3.golden-eater"
+    ]
+  },
+  "verification": {
+    "b11Focused": "91/91 PASS",
+    "gateC": "3/3 PASS",
+    "rulesBaseline": "368 PASS / 19 inherited FAIL",
+    "ciBaseline": "503 PASS / 5 inherited FAIL",
+    "independentFirstStageRollbackProbe": "PASS"
+  },
+  "judgments": {
+    "accepted": [
+      "P3-B11@f567c427bf1a716c2c685e7c89566d5d255b9a70 by P3-R06@cf5b3a970d7473e63b67a3f4979730d2ab5ee913"
+    ],
+    "rejected": [],
+    "pending": [
+      "Native A-owned classifier recognition of the accepted B11 staged result-binding route remains a separate automation alignment task; P3-A03 records the accepted burn-down without changing classifier rules.",
+      "Phase 3 and release readiness remain open; this synchronization does not authorize full-roster FB2/FM migration."
+    ]
+  },
+  "nextDependencies": {
+    "satisfied": [
+      "P3-B11 replacement implementation",
+      "fresh P3-R06 independent review",
+      "P3-A03 replacement burn-down synchronization for B11"
+    ],
+    "planningReady": [
+      "P3-TO-03 Trigger Gateway contract planning",
+      "P3-TO-04 Lifecycle Gateway contract planning",
+      "P3-TO-05 Interaction Template contract planning"
+    ],
+    "dispatchGap": [
+      "P3-TO-03, P3-TO-04, and P3-TO-05 remain planning rows in this checkout without detailed executable task blocks; do not start their runtime dependents from this synchronization alone."
+    ],
+    "stillBlocked": [
+      "P3-TO-11/12/13 runtime slices until corresponding gateway contracts are accepted",
+      "full-roster FB2/FM migration until explicitly authorized",
+      "Phase 3 completion and release readiness"
+    ]
+  }
+}

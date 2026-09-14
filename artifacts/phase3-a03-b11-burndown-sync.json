@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "fd-phase3-burndown-sync-v1",
+  "date": "2026-09-14",
+  "task": "P3-A03",
+  "status": "COVERAGE_SYNC_CANDIDATE",
+  "scope": "P3-B11 RESULT_BINDING_PRODUCTION_BRIDGE after P3-R06 acceptance",
+  "automationBaseline": {
+    "branch": "codex/a-p3-a03-burndown-sync",
+    "commit": "1dcf31152f88ed25ea80a34c5abd1c9f643dc46d",
+    "coverageCommand": "npm run phase3:coverage",
+    "rawCounts": {
+      "newRuntimeSemanticRouted": 12,
+      "legacyExecuteAbility": 3,
+      "legacyResolveEffect": 49,
+      "dualRuntime": 0,
+      "notClassifiable": 28,
+      "pilotAllowlist": 0
+    },
+    "compiledDefinitions": {
+      "packId": "fd-playtest-v1",
+      "version": 1,
+      "definitionHash": "5aa5a186bb201ce1f491cb6f38907a6267a4f30775113d9dd95651d58ba735d2",
+      "compiledCards": 70,
+      "compiledCharacters": 14,
+      "blockingIssues": 0
+    }
+  },
+  "acceptedRuntime": {
+    "task": "P3-B11",
+    "candidateCommit": "29ecaf9621af43b554c060958b6824c9e815e41c",
+    "reviewTask": "P3-R06",
+    "reviewEvidenceCommit": "6e13752",
+    "reviewStatus": "GATE_A_B_CANDIDATE_ACCEPTED",
+    "scopedBeforeAfter": {
+      "legacyResolveEffect": { "before": 1, "after": 0, "delta": -1 },
+      "newRuntimeSemanticRouted": { "before": 1, "after": 2, "delta": 1 },
+      "dualRuntime": { "before": 0, "after": 0, "delta": 0 },
+      "eligible": { "before": 2, "after": 2, "delta": 0 },
+      "migrated": { "before": 1, "after": 2, "delta": 1 },
+      "skipped": { "before": 1, "after": 0, "delta": -1 }
+    }
+  },
+  "acceptedBurnDown": {
+    "method": "A-owned raw coverage baseline plus independently accepted P3-B11 scoped delta; classifier rules are not changed by P3-A03",
+    "newRuntimeSemanticRouted": 13,
+    "legacyExecuteAbility": 3,
+    "legacyResolveEffect": 48,
+    "dualRuntime": 0
+  },
+  "resultBinding": {
+    "authoringResultVarCount": 2,
+    "eligible": 2,
+    "migrated": 2,
+    "skipped": 0,
+    "acceptedRepresentatives": [
+      "master.irisviel.skill.conversion-magic#conversion-magic.preparation",
+      "servant.kintoki.skill.sc-kintoki-3#sc-kintoki-3.golden-eater"
+    ]
+  },
+  "judgments": {
+    "accepted": [
+      "P3-B11@29ecaf9621af43b554c060958b6824c9e815e41c by P3-R06@6e13752"
+    ],
+    "rejected": [],
+    "pending": [
+      "Native A-owned classifier recognition of the accepted B11 staged result-binding route remains a separate automation alignment task; P3-A03 records the accepted burn-down without changing classifier rules.",
+      "Phase 3 and release readiness remain open; this sync does not authorize full-roster FB2/FM migration."
+    ]
+  },
+  "nextDependencies": {
+    "satisfied": [
+      "P3-B11 implementation",
+      "P3-R06 independent review",
+      "P3-A03 post-review burn-down synchronization for B11"
+    ],
+    "unblocked": [
+      "P3-TO-03 Trigger Gateway contract planning dependency",
+      "P3-TO-04 Lifecycle Gateway contract planning dependency",
+      "P3-TO-05 Interaction Template contract planning dependency",
+      "future A-owned B11 classifier/KPI alignment when formally dispatched"
+    ],
+    "dispatchGap": [
+      "P3-TO-03, P3-TO-04, and P3-TO-05 are READY_NEXT planning rows but have no detailed TASK block in PHASE3-TASK-INDEX.md; they must not be executed as agent tasks until the coordinator installs/authorizes such a block."
+    ],
+    "stillBlocked": [
+      "P3-TO-11/12/13 runtime slices until their corresponding gateway contracts are accepted",
+      "full-roster FB2/FM migration until a task is explicitly marked READY",
+      "Phase 3 completion and release readiness"
+    ]
+  }
+}
