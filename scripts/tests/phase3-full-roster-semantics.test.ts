@@ -209,28 +209,68 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
   it('accepts only the allowed Fate/Domination Wiki overlay and keeps Chaos Scrambled Seals unresolved', () => {
     const overlays = loadSourceEvidenceOverlayCards();
-    const ids = overlays.map((card) => card.id);
-    expect(overlays).toHaveLength(17);
+    const chaos = overlays.filter((card) => card.id.startsWith('master.chaos.skill.'));
+    const ids = chaos.map((card) => card.id);
+    expect(chaos).toHaveLength(17);
     expect(ids).toContain('master.chaos.skill.s1');
     expect(ids).toContain('master.chaos.skill.s16');
     expect(ids).toContain('master.chaos.skill.ascension');
     expect(ids).not.toContain('master.chaos.skill.s17');
     expect(
-      overlays.every((card) => card.source?.url.startsWith('https://fatedomination.fandom.com/wiki/')),
+      chaos.every((card) => card.source?.url.startsWith('https://fatedomination.fandom.com/wiki/')),
     ).toBe(true);
 
-    const breaker = overlays.find((card) => card.id === 'master.chaos.skill.s12');
+    const breaker = chaos.find((card) => card.id === 'master.chaos.skill.s12');
     const chooseX = breaker?.abilities[0].effects?.find(
       (effect: any) => effect?.type === 'choose_number',
     ) as any;
     expect(chooseX).toMatchObject({ min: 1, max: 3, payloadKey: 'x' });
 
-    const the666 = overlays.find((card) => card.id === 'master.chaos.skill.s1');
+    const the666 = chaos.find((card) => card.id === 'master.chaos.skill.s1');
     const manaGain = the666?.abilities.find((ability) => ability.id === 'chaos.the-666.mana-gain-draw');
     expect(manaGain?.conditions).toContainEqual({ type: 'event_type_is', eventType: 'player.mana.changed' });
     expect(manaGain?.effects).toContainEqual(
       expect.objectContaining({ type: 'draw_cards', countFormula: 'floor(event.delta / 2)', aggregation: 'per_gain_event' }),
     );
+  });
+
+  it('grounds the ten-ID Bazett day-cycle slice without inventing Day 2 cost removal', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const bazett = overlays.filter((card) => card.id.startsWith('master.bazett.skill.'));
+    expect(bazett).toHaveLength(10);
+    expect(bazett.map((card) => card.id).sort()).toEqual([
+      'master.bazett.skill.ascension',
+      'master.bazett.skill.s1',
+      'master.bazett.skill.s1a',
+      'master.bazett.skill.s1b',
+      'master.bazett.skill.s1c',
+      'master.bazett.skill.s1d',
+      'master.bazett.skill.s2',
+      'master.bazett.skill.s3',
+      'master.bazett.skill.s4',
+      'master.bazett.skill.s5',
+    ]);
+    expect(
+      bazett.every((card) => card.source?.url === 'https://fatedomination.fandom.com/wiki/Bazett_Fraga_McRemitz'),
+    ).toBe(true);
+
+    const day2 = bazett.find((card) => card.id === 'master.bazett.skill.s1c');
+    const day2Modifiers = day2?.abilities[0].ruleModifiers ?? [];
+    expect(day2Modifiers).toContainEqual(
+      expect.objectContaining({ rule: 'card_play_mana_requirement', operation: 'ignore', threshold: 8 }),
+    );
+    expect(day2Modifiers).toContainEqual(
+      expect.objectContaining({ rule: 'card_play_limit', operation: 'ignore_once_per_game' }),
+    );
+    expect(day2Modifiers).not.toContainEqual(expect.objectContaining({ rule: 'card_play_cost' }));
+
+    const awake = bazett.find((card) => card.id === 'master.bazett.skill.s4');
+    expect(awake?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({ type: 'adjust_command_seals', operation: 'restore_all', scope: 'controller' }),
+    );
+
+    const ascension = bazett.find((card) => card.id === 'master.bazett.skill.ascension');
+    expect(ascension?.abilities).toHaveLength(1);
   });
 
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
@@ -286,10 +326,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 89,
-      blockedCount: 855,
+      sourceGroundedCount: 99,
+      blockedCount: 845,
       unclassifiedCount: 0,
-      structuredAbilityCount: 138,
+      structuredAbilityCount: 154,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

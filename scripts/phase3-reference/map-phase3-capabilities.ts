@@ -144,6 +144,17 @@ const RESOURCE_EFFECTS = new Set([
   'GAIN_VICTORY_POINTS',
   'LOSE_VICTORY_POINTS',
   'TRANSFER_VICTORY_POINTS',
+  'ADJUST_COMMAND_SEALS',
+]);
+
+const DIRECT_RESOURCE_CONTRACT_EFFECTS = new Set([
+  'GAIN_MANA',
+  'LOSE_MANA',
+  'SET_MANA',
+  'TRANSFER_MANA',
+  'GAIN_VICTORY_POINTS',
+  'LOSE_VICTORY_POINTS',
+  'TRANSFER_VICTORY_POINTS',
 ]);
 
 const CARD_ZONE_EFFECTS = new Set([
@@ -423,8 +434,8 @@ export function contractIsEligible(contractId: string, axes: SemanticAxes): bool
   if (!invalidating) return false;
   if (invalidating.some((axis) => axes[axis].length > 0)) return false;
   if (contractId === 'RESOURCE_NUMERIC_CORE_DIRECT_ACTION') {
-    if (axes.effect.length === 0 || !axes.effect.some((effect) => RESOURCE_EFFECTS.has(effect))) return false;
-    if (axes.effect.some((effect) => !RESOURCE_EFFECTS.has(effect))) return false;
+    if (axes.effect.length === 0 || !axes.effect.some((effect) => DIRECT_RESOURCE_CONTRACT_EFFECTS.has(effect))) return false;
+    if (axes.effect.some((effect) => !DIRECT_RESOURCE_CONTRACT_EFFECTS.has(effect))) return false;
   }
   return true;
 }

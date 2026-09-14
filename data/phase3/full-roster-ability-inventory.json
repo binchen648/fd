@@ -3837,11 +3837,14 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/Flawless Defense"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
@@ -3851,32 +3854,61 @@
           "effect": [],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:card_activation_persistence:remain_active_until",
+            "rule:card_play_limit:remove_once_per_game"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "bazett.flawless-defense.fragarach-persistence",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Flawless Defense#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:card_activation_persistence:remain_active_until",
+                "rule:card_play_limit:remove_once_per_game"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.bazett-flawless-defense"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "MODIFIER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_MODIFIER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -3927,11 +3959,14 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/God's Holder"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
@@ -3946,27 +3981,50 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "bazett.gods-holder.add-fragarach",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/God's Holder#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.game-start-add-skill"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_CREATE"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -4017,46 +4075,186 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/Lost in Time"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.resolved",
+            "game.started",
+            "round.ended"
+          ],
+          "condition": [
+            "EVENT_PLAYER_LOST_COMBAT",
+            "ROUND_IS_CLIMAX",
+            "STATUS_ABSENT"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "ADD_PLAYER_FLAG_NUMBER",
+            "ADD_STATUS",
+            "LOSE_VICTORY_POINTS",
+            "SET_PLAYER_FLAG"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "bazett.lost-in-time.start-day-one",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Lost in Time#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "game.started"
+              ],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "SET_PLAYER_FLAG"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "bazett.lost-in-time.advance-day",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Lost in Time#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "round.ended"
+              ],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "ADD_PLAYER_FLAG_NUMBER"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "bazett.lost-in-time.loss-reset",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Lost in Time#ability-3"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "EVENT_PLAYER_LOST_COMBAT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "ADD_STATUS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "bazett.lost-in-time.climax-penalty",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Lost in Time#ability-4"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "round.ended"
+              ],
+              "condition": [
+                "ROUND_IS_CLIMAX",
+                "STATUS_ABSENT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "LOSE_VICTORY_POINTS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.bazett-time-loop"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "LIFECYCLE",
+          "RESOURCE_NUMERIC",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_STATUS_STATE",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -4107,11 +4305,14 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/Day 1"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
@@ -4120,33 +4321,66 @@
           "target": [],
           "effect": [],
           "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
+          "lifecycle": [
+            "duration:while_active"
+          ],
+          "modifier": [
+            "rule:total_power:add"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "bazett.day1.dazed",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Day 1#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:while_active"
+              ],
+              "modifier": [
+                "rule:total_power:add"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.game-start-rule-flags"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "LIFECYCLE",
+          "MODIFIER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -4197,46 +4431,132 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/Day 2"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.resolved"
+          ],
+          "condition": [
+            "EVENT_PLAYER_WON_COMBAT"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "GAIN_VICTORY_POINTS"
+          ],
           "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
+          "lifecycle": [
+            "duration:while_active"
+          ],
+          "modifier": [
+            "rule:card_play_limit:ignore_once_per_game",
+            "rule:card_play_mana_requirement:ignore"
+          ],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "bazett.day2.fragarach-window",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Day 2#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:while_active"
+              ],
+              "modifier": [
+                "rule:card_play_limit:ignore_once_per_game",
+                "rule:card_play_mana_requirement:ignore"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "bazett.day2.win-vp",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Day 2#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "EVENT_PLAYER_WON_COMBAT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "GAIN_VICTORY_POINTS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.bazett-time-loop"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "LIFECYCLE",
+          "MODIFIER",
+          "RESOURCE_NUMERIC",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -4287,46 +4607,126 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/Day 4"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.resolved",
+            "round.ended"
+          ],
+          "condition": [
+            "EVENT_PLAYER_WON_COMBAT",
+            "STATUS_ABSENT"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "ADD_STATUS"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "bazett.day4.win-awake",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Day 4#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "EVENT_PLAYER_WON_COMBAT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "ADD_STATUS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "bazett.day4.failed-awake-reset",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Day 4#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "round.ended"
+              ],
+              "condition": [
+                "STATUS_ABSENT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "ADD_STATUS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.bazett-time-loop"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "LIFECYCLE",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_STATUS_STATE",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -4387,45 +4787,103 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/Fragarach"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "card.played"
+          ],
+          "condition": [
+            "EVENT_CARD_HAS_ATTRIBUTE",
+            "EVENT_LOCATION_EQUALS_CONTROLLER",
+            "EVENT_PLAYER_IS_OPPONENT",
+            "SOURCE_ACTIVE"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "DEFEAT_PLAYER"
+          ],
           "interaction": [],
-          "lifecycle": [],
+          "lifecycle": [
+            "duration:until_triggered",
+            "limit:once_per_game"
+          ],
           "modifier": [],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "bazett.fragarach.ultimate-counter",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Fragarach#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "card.played"
+              ],
+              "condition": [
+                "EVENT_CARD_HAS_ATTRIBUTE",
+                "EVENT_LOCATION_EQUALS_CONTROLLER",
+                "EVENT_PLAYER_IS_OPPONENT",
+                "SOURCE_ACTIVE"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "DEFEAT_PLAYER"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:until_triggered",
+                "limit:once_per_game"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.bazett-fragarach"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CONDITION",
+          "LIFECYCLE",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:defeat_player"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -4477,18 +4935,29 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/Reset"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "round.started"
+          ],
+          "condition": [
+            "STATUS_PRESENT"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "GAIN_VICTORY_POINTS",
+            "REMOVE_STATUS",
+            "SET_PLAYER_FLAG"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -4496,27 +4965,64 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "bazett.reset.next-round-day-one",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Reset#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "round.started"
+              ],
+              "condition": [
+                "STATUS_PRESENT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "GAIN_VICTORY_POINTS",
+                "REMOVE_STATUS",
+                "SET_PLAYER_FLAG"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.bazett-time-loop"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CONDITION",
+          "LIFECYCLE",
+          "RESOURCE_NUMERIC",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_STATUS_STATE",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -4567,18 +5073,25 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/Awake"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "ADJUST_COMMAND_SEALS",
+            "MOVE_MATCHING_CARDS",
+            "RETURN_CARD_BY_DEFINITION"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -4586,27 +5099,56 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "bazett.awake.break-loop",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Awake#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "ADJUST_COMMAND_SEALS",
+                "MOVE_MATCHING_CARDS",
+                "RETURN_CARD_BY_DEFINITION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.bazett-time-loop"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "RESOURCE_NUMERIC"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
+          "GENERIC_RESOURCE_NUMERIC"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -4677,46 +5219,127 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/Day 3"
+        },
         "axes": {
-          "timing": [],
-          "trigger": [],
-          "condition": [],
+          "timing": [
+            "ACTION"
+          ],
+          "trigger": [
+            "combat.resolved"
+          ],
+          "condition": [
+            "EVENT_PLAYER_WON_COMBAT"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "GAIN_VICTORY_POINTS",
+            "MOVE_CARD"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "bazett.day3.add-to-attack",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Day 3#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "MOVE_CARD"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "bazett.day3.win-vp",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Day 3#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "EVENT_PLAYER_WON_COMBAT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "GAIN_VICTORY_POINTS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.bazett-third-day"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CARD_ACTION_SEMANTICS",
+          "CONDITION",
+          "RESOURCE_NUMERIC",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "CARD_ACTION_ADD_TO_ATTACK",
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -101948,15 +102571,15 @@
   ],
   "semanticSummary": {
     "totalIdentityCount": 944,
-    "sourceGroundedCount": 89,
-    "blockedCount": 855,
+    "sourceGroundedCount": 99,
+    "blockedCount": 845,
     "unclassifiedCount": 0,
-    "structuredAbilityCount": 138
+    "structuredAbilityCount": 154
   },
   "capabilitySummary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 89,
-    "explicitBlockCount": 855,
+    "contractMappedCount": 99,
+    "explicitBlockCount": 845,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -101971,10 +102594,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
-      "READY_GENERIC_EXTENSION": 82,
-      "SPECIAL_HANDLER_CANDIDATE": 7,
+      "READY_GENERIC_EXTENSION": 91,
+      "SPECIAL_HANDLER_CANDIDATE": 8,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 855,
+      "SOURCE_EVIDENCE_REQUIRED": 845,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },

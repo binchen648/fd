@@ -698,6 +698,471 @@
         }
       ],
       "referencePrintedTextSha256": "b8f2b35d179bca3156948f2b086f949f4dee29fc20a598ab9ad3784fbc669040"
+    },
+    {
+      "id": "master.bazett.skill.ascension",
+      "printedText": "Source-evidence record for Flawless Defense.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Bazett Fraga McRemitz#Cards/Flawless Defense",
+        "url": "https://fatedomination.fandom.com/wiki/Bazett_Fraga_McRemitz"
+      },
+      "abilities": [
+        {
+          "id": "bazett.flawless-defense.fragarach-persistence",
+          "printedClause": "Source-grounded semantic record: bazett.flawless-defense.fragarach-persistence.",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_play_limit",
+              "operation": "remove_once_per_game",
+              "definitionId": "master.bazett.skill.s2"
+            },
+            {
+              "rule": "card_activation_persistence",
+              "operation": "remain_active_until",
+              "definitionId": "master.bazett.skill.s2",
+              "until": [
+                "ultimate_counter_triggered",
+                "bazett_reset"
+              ]
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8e81477802e87c6068fff2736ea67f031069dafec5b405db45471dbac1e1d8d0"
+    },
+    {
+      "id": "master.bazett.skill.s1",
+      "printedText": "Source-evidence record for God's Holder.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Bazett Fraga McRemitz#Cards/God's Holder",
+        "url": "https://fatedomination.fandom.com/wiki/Bazett_Fraga_McRemitz"
+      },
+      "abilities": [
+        {
+          "id": "bazett.gods-holder.add-fragarach",
+          "printedClause": "Source-grounded semantic record: bazett.gods-holder.add-fragarach.",
+          "kind": "passive",
+          "creates": [
+            {
+              "type": "card",
+              "definitionId": "master.bazett.skill.s2",
+              "destination": "skill",
+              "active": false
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "9e340e6b8393bb059a4550c7275b7f61f05adde31ea6d88bfab810d541b78d22"
+    },
+    {
+      "id": "master.bazett.skill.s1a",
+      "printedText": "Source-evidence record for Lost in Time.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Bazett Fraga McRemitz#Cards/Lost in Time",
+        "url": "https://fatedomination.fandom.com/wiki/Bazett_Fraga_McRemitz"
+      },
+      "abilities": [
+        {
+          "id": "bazett.lost-in-time.start-day-one",
+          "printedClause": "Source-grounded semantic record: bazett.lost-in-time.start-day-one.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_player_flag",
+              "flag": "bazett_day",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "bazett.lost-in-time.advance-day",
+          "printedClause": "Source-grounded semantic record: bazett.lost-in-time.advance-day.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            }
+          ],
+          "effects": [
+            {
+              "type": "add_player_flag_number",
+              "flag": "bazett_day",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "bazett.lost-in-time.loss-reset",
+          "printedClause": "Source-grounded semantic record: bazett.lost-in-time.loss-reset.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "add_status",
+              "statusId": "bazett_reset_pending"
+            }
+          ]
+        },
+        {
+          "id": "bazett.lost-in-time.climax-penalty",
+          "printedClause": "Source-grounded semantic record: bazett.lost-in-time.climax-penalty.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            },
+            {
+              "type": "round_is_climax"
+            },
+            {
+              "type": "status_absent",
+              "statusId": "bazett_awake"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "amount": 5
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ce23bd11a4ccfb9d37feb9afb6afbf73f6c726583caf66f39d170e3757f76bc7"
+    },
+    {
+      "id": "master.bazett.skill.s1b",
+      "printedText": "Source-evidence record for Day 1.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Bazett Fraga McRemitz#Cards/Day 1",
+        "url": "https://fatedomination.fandom.com/wiki/Bazett_Fraga_McRemitz"
+      },
+      "abilities": [
+        {
+          "id": "bazett.day1.dazed",
+          "printedClause": "Source-grounded semantic record: bazett.day1.dazed.",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "total_power",
+              "operation": "add",
+              "amount": -2,
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_active"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "9847f0953309d542a783f1553153ccbf2bf08a3c008674caadd067ef2b9e7071"
+    },
+    {
+      "id": "master.bazett.skill.s1c",
+      "printedText": "Source-evidence record for Day 2.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Bazett Fraga McRemitz#Cards/Day 2",
+        "url": "https://fatedomination.fandom.com/wiki/Bazett_Fraga_McRemitz"
+      },
+      "abilities": [
+        {
+          "id": "bazett.day2.fragarach-window",
+          "printedClause": "Source-grounded semantic record: bazett.day2.fragarach-window.",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mana_requirement",
+              "operation": "ignore",
+              "definitionId": "master.bazett.skill.s2",
+              "threshold": 8
+            },
+            {
+              "rule": "card_play_limit",
+              "operation": "ignore_once_per_game",
+              "definitionId": "master.bazett.skill.s2"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_active"
+          }
+        },
+        {
+          "id": "bazett.day2.win-vp",
+          "printedClause": "Source-grounded semantic record: bazett.day2.win-vp.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f924e89e0e10831c5c15b835941c72c0f8fcd6cec9f1aab363a419eb232a4941"
+    },
+    {
+      "id": "master.bazett.skill.s1d",
+      "printedText": "Source-evidence record for Day 4.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Bazett Fraga McRemitz#Cards/Day 4",
+        "url": "https://fatedomination.fandom.com/wiki/Bazett_Fraga_McRemitz"
+      },
+      "abilities": [
+        {
+          "id": "bazett.day4.win-awake",
+          "printedClause": "Source-grounded semantic record: bazett.day4.win-awake.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "add_status",
+              "statusId": "bazett_awake"
+            }
+          ]
+        },
+        {
+          "id": "bazett.day4.failed-awake-reset",
+          "printedClause": "Source-grounded semantic record: bazett.day4.failed-awake-reset.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            },
+            {
+              "type": "status_absent",
+              "statusId": "bazett_awake"
+            }
+          ],
+          "effects": [
+            {
+              "type": "add_status",
+              "statusId": "bazett_reset_pending"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "e8580ee642567c08d9d9232a67dcb3c6cfe8ad7e8e91eb35b0cfc4327888a3d4"
+    },
+    {
+      "id": "master.bazett.skill.s2",
+      "printedText": "Source-evidence record for Fragarach.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Bazett Fraga McRemitz#Cards/Fragarach",
+        "url": "https://fatedomination.fandom.com/wiki/Bazett_Fraga_McRemitz"
+      },
+      "abilities": [
+        {
+          "id": "bazett.fragarach.ultimate-counter",
+          "printedClause": "Source-grounded semantic record: bazett.fragarach.ultimate-counter.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "card.played"
+            },
+            {
+              "type": "event_player_is_opponent"
+            },
+            {
+              "type": "event_location_equals_controller"
+            },
+            {
+              "type": "event_card_has_attribute",
+              "attribute": "Noble Phantasm"
+            },
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "defeat_player",
+              "subject": "event_player"
+            }
+          ],
+          "lifecycle": {
+            "duration": "until_triggered"
+          },
+          "limit": "once_per_game"
+        }
+      ],
+      "referencePrintedTextSha256": "79b32f73a7b5c7f0fed8ecd97298baa1a398dec36b8a85eb99fe33c66e363e66"
+    },
+    {
+      "id": "master.bazett.skill.s3",
+      "printedText": "Source-evidence record for Reset.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Bazett Fraga McRemitz#Cards/Reset",
+        "url": "https://fatedomination.fandom.com/wiki/Bazett_Fraga_McRemitz"
+      },
+      "abilities": [
+        {
+          "id": "bazett.reset.next-round-day-one",
+          "printedClause": "Source-grounded semantic record: bazett.reset.next-round-day-one.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.started"
+            },
+            {
+              "type": "status_present",
+              "statusId": "bazett_reset_pending"
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_player_flag",
+              "flag": "bazett_day",
+              "value": 1
+            },
+            {
+              "type": "remove_status",
+              "statusId": "bazett_reset_pending"
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ad6fd236b489f468aca2bf85acad07cafebc145e7ea80ea61ceef9f9851f7b6a"
+    },
+    {
+      "id": "master.bazett.skill.s4",
+      "printedText": "Source-evidence record for Awake.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Bazett Fraga McRemitz#Cards/Awake",
+        "url": "https://fatedomination.fandom.com/wiki/Bazett_Fraga_McRemitz"
+      },
+      "abilities": [
+        {
+          "id": "bazett.awake.break-loop",
+          "printedClause": "Source-grounded semantic record: bazett.awake.break-loop.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "sourceZone": "skill",
+              "destination": "removed_from_game",
+              "definitionId": "master.bazett.skill.s1a"
+            },
+            {
+              "type": "adjust_command_seals",
+              "operation": "restore_all",
+              "scope": "controller"
+            },
+            {
+              "type": "return_card_by_definition",
+              "definitionId": "master.bazett.skill.s2",
+              "destination": "skill"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "588027286bf420d1a95f439684e3125dd6411babcb4599b5977bb54126bfbc10"
+    },
+    {
+      "id": "master.bazett.skill.s5",
+      "printedText": "Source-evidence record for Day 3.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Bazett Fraga McRemitz#Cards/Day 3",
+        "url": "https://fatedomination.fandom.com/wiki/Bazett_Fraga_McRemitz"
+      },
+      "abilities": [
+        {
+          "id": "bazett.day3.add-to-attack",
+          "printedClause": "Source-grounded semantic record: bazett.day3.add-to-attack.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "move_card",
+              "source": "self",
+              "sourceZone": "skill",
+              "destination": "attack"
+            }
+          ]
+        },
+        {
+          "id": "bazett.day3.win-vp",
+          "printedClause": "Source-grounded semantic record: bazett.day3.win-vp.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "303c6085fdb29b8b82637e27dda442783a5314bd560cf6d9853b4b29a8791957"
     }
   ]
 }
