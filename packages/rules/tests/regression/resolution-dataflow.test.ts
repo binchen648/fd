@@ -101,6 +101,12 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
   switch (effectType) {
     case 'remove_advantage_position':
       return { id: `produce-${binding}`, type: 'remove_advantage_position', target: { expr: 'same_battlefield_opponents' }, bind: binding };
+    case 'move_all_remaining':
+      return { id: `produce-${binding}`, type: 'move_all_remaining', owner: 'controller', from: 'hand', to: 'discard', bind: binding };
+    case 'draw_cards':
+      return { id: `produce-${binding}`, type: 'draw_cards', player: 'controller', count: 0, bind: binding };
+    case 'play_selected_cards':
+      return { id: `produce-${binding}`, type: 'play_selected_cards', target: 'selected_cards', face: 'face_down', bind: binding };
     case 'adjust_victory_points':
       return { id: `produce-${binding}`, type: 'adjust_victory_points', player: 'controller', amount: 1, bind: binding };
     case 'adjust_mana':
@@ -246,6 +252,58 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
     expect(state.players[0]!.commandSpells).toBe(0);
   });
 
+  it('draws from recycled discard when the controller deck is empty', () => {
+    const state = baseState();
+    state.abilityRuntime = {
+      pack: { cards: {} },
+      revision: 0,
+      sequence: 0,
+      randomState: 20260909,
+      cardState: {},
+      ongoingEffects: [],
+      responseWindows: [],
+      usedAbilities: {},
+      processedEvents: [],
+      revealedServants: [],
+      events: [],
+      calculations: [],
+      preventEffects: false,
+      manaCaps: {},
+      manaGainBlocked: [],
+      hostRequests: [],
+      roomMode: 'standard',
+      abilityUsage: {},
+      noblePhantasmCostsThisRound: {},
+      consecutivePlayRounds: {},
+      movementDistanceThisRound: {},
+      battlefieldsPassedOrStayedThisRound: {},
+      playRulesVersion: 'explicit-v1',
+      playCounters: { round: 1, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} },
+    };
+    state.cards = [{
+      instanceId: 'discarded-card',
+      definitionId: 'basic.strength.1',
+      ownerPlayerId: 'P1',
+      controllerPlayerId: 'P1',
+      zone: 'discard',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'P1' },
+    }];
+
+    const result = executeResolution({
+      state,
+      controllerId: 'P1',
+      sourceCardId: 'synthetic-source',
+      abilityId: 'draw-core',
+      effects: [{ id: 'draw-one', type: 'draw_cards', player: 'controller', count: 1 }],
+    });
+
+    expect(result.nextState.cards[0]).toMatchObject({ instanceId: 'discarded-card', zone: 'hand' });
+    expect(result.results[0]).toMatchObject({
+      effectType: 'draw_cards',
+      payload: { requestedCount: 1, actualCount: 1, movedCardIds: ['discarded-card'] },
+    });
+  });
+
   it('fails closed for unsupported payments and invalid resource amounts', () => {
     expectRawDataFlowIssue([
       { id: 'fractional-mana', type: 'adjust_mana', player: 'controller', amount: 1.5 },
@@ -271,6 +329,8 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
           sourceCardId: 'synthetic-source',
           abilityId: 'synthetic-ability',
           effects,
+          selections: { selected_cards: [] },
+          hooks: { playSelectedCards: ({ cardInstanceIds }) => ({ playedCount: cardInstanceIds.length }) },
         })).not.toThrow();
       }
     }

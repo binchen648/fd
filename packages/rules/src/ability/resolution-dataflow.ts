@@ -6,6 +6,9 @@ export type EffectExecutionStatus = 'applied' | 'no_op';
 export type BindingFieldType = 'number' | 'player_ids' | 'boolean' | 'status';
 export type EffectResultType =
   | 'remove_advantage_position'
+  | 'move_all_remaining'
+  | 'draw_cards'
+  | 'play_selected_cards'
   | 'adjust_mana'
   | 'pay_mana'
   | 'adjust_command_seals'
@@ -64,6 +67,29 @@ export interface AdjustCommandSealsResult {
   directive?: string;
 }
 
+export interface MoveAllRemainingResult {
+  ownerPlayerId: PlayerId;
+  from: string;
+  to: string;
+  movedCount: number;
+  movedCardIds: string[];
+}
+
+export interface DrawCardsResult {
+  playerId: PlayerId;
+  requestedCount: number;
+  actualCount: number;
+  movedCardIds: string[];
+}
+
+export interface PlaySelectedCardsResult {
+  playerId: PlayerId;
+  requestedCount: number;
+  playedCount: number;
+  cardInstanceIds: string[];
+  faceDown: boolean;
+}
+
 export interface NoopResult {
   reason: string;
 }
@@ -74,6 +100,9 @@ export interface FailInvariantResult {
 
 export type KnownEffectResult =
   | EffectResultEnvelope<'remove_advantage_position', RemoveAdvantagePositionResult>
+  | EffectResultEnvelope<'move_all_remaining', MoveAllRemainingResult>
+  | EffectResultEnvelope<'draw_cards', DrawCardsResult>
+  | EffectResultEnvelope<'play_selected_cards', PlaySelectedCardsResult>
   | EffectResultEnvelope<'adjust_mana', AdjustManaResult>
   | EffectResultEnvelope<'pay_mana', PayManaResult>
   | EffectResultEnvelope<'adjust_command_seals', AdjustCommandSealsResult>
@@ -87,6 +116,20 @@ export const resultSchemas: Record<EffectResultType, BindingFieldSchema> = {
   remove_advantage_position: {
     affectedPlayerIds: 'player_ids',
     removedCount: 'number',
+    status: 'status',
+  },
+  move_all_remaining: {
+    movedCount: 'number',
+    status: 'status',
+  },
+  draw_cards: {
+    requestedCount: 'number',
+    actualCount: 'number',
+    status: 'status',
+  },
+  play_selected_cards: {
+    requestedCount: 'number',
+    playedCount: 'number',
     status: 'status',
   },
   adjust_victory_points: {
@@ -155,6 +198,11 @@ export interface AbilityResolutionContext {
   variables: Record<string, number>;
   selections: Record<string, string[]>;
   bindings: ResolutionBindingStore;
+  hooks: AbilityResolutionHooks;
+}
+
+export interface AbilityResolutionHooks {
+  playSelectedCards?: (input: { state: GameState; playerId: PlayerId; cardInstanceIds: string[]; faceDown: boolean }) => { playedCount: number };
 }
 
 export type ValueExpression =
@@ -173,6 +221,9 @@ export type ConditionExpression =
 
 export type ResolutionEffectNode =
   | { id: string; type: 'remove_advantage_position'; target: TargetExpression; bind?: string }
+  | { id: string; type: 'move_all_remaining'; owner: 'controller'; from: string; to: string; bind?: string }
+  | { id: string; type: 'draw_cards'; player: 'controller'; count: ValueExpression; bind?: string }
+  | { id: string; type: 'play_selected_cards'; target: string; face: 'face_down' | 'face_up'; bind?: string }
   | { id: string; type: 'adjust_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'pay_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'adjust_command_seals'; player: 'controller'; amount: ValueExpression; directive?: string; bind?: string }
@@ -226,6 +277,8 @@ export interface ExecuteResolutionInput {
   sourceCardId: string;
   abilityId: string;
   effects: ResolutionEffectNode[];
+  selections?: Record<string, string[]>;
+  hooks?: AbilityResolutionHooks;
   resolutionId?: string;
   causationId?: string;
 }
@@ -250,6 +303,21 @@ const primitiveDefinitions: ResolutionPrimitive[] = [
     type: 'remove_advantage_position',
     resultSchema: resultSchemas.remove_advantage_position,
     execute: removeAdvantagePositionPrimitive,
+  },
+  {
+    type: 'move_all_remaining',
+    resultSchema: resultSchemas.move_all_remaining,
+    execute: moveAllRemainingPrimitive,
+  },
+  {
+    type: 'draw_cards',
+    resultSchema: resultSchemas.draw_cards,
+    execute: drawCardsPrimitive,
+  },
+  {
+    type: 'play_selected_cards',
+    resultSchema: resultSchemas.play_selected_cards,
+    execute: playSelectedCardsPrimitive,
   },
   {
     type: 'adjust_victory_points',
@@ -336,8 +404,9 @@ export function executeResolution(input: ExecuteResolutionInput): ExecuteResolut
       sourceCardId: input.sourceCardId,
       abilityId: input.abilityId,
       variables: {},
-      selections: {},
+      selections: structuredClone(input.selections ?? {}),
       bindings: new MapResolutionBindingStore(),
+      hooks: input.hooks ?? {},
     },
     emittedEvents: [],
     results: [],
@@ -450,6 +519,20 @@ function validateEffectReferences(
   switch (effect.type) {
     case 'remove_advantage_position':
       validateTargetExpression(effect.target, available, unsafeBranchBindings, issues, `${path}.target`);
+      break;
+    case 'draw_cards':
+      validateValueExpression(effect.count, available, unsafeBranchBindings, issues, `${path}.count`);
+      break;
+    case 'move_all_remaining':
+      if (effect.owner !== 'controller' || effect.from !== 'hand' || effect.to !== 'discard') {
+        issues.push({
+          code: 'invalid_resolution_node',
+          path,
+          message: 'Only controller hand to discard move_all_remaining is supported.',
+        });
+      }
+      break;
+    case 'play_selected_cards':
       break;
     case 'adjust_victory_points':
       validateValueExpression(effect.amount, available, unsafeBranchBindings, issues, `${path}.amount`);
@@ -582,6 +665,30 @@ function removeAdvantagePositionPrimitive(
   return removeAdvantagePosition(transaction, effect);
 }
 
+function moveAllRemainingPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'move_all_remaining') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return moveAllRemaining(transaction, effect);
+}
+
+function drawCardsPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'draw_cards') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return drawCards(transaction, effect);
+}
+
+function playSelectedCardsPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'play_selected_cards') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return playSelectedCards(transaction, effect);
+}
+
 function adjustVictoryPointsPrimitive(
   transaction: AbilityResolutionTransaction,
   effect: ResolutionPrimitiveNode,
@@ -660,6 +767,119 @@ function removeAdvantagePosition(
       removedCount: affectedPlayerIds.length,
     },
     emittedEventIds: affectedPlayerIds.length > 0 ? [eventId] : [],
+  };
+}
+
+function moveAllRemaining(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'move_all_remaining' }>,
+): KnownEffectResult {
+  if (effect.from !== 'hand' || effect.to !== 'discard') {
+    throw new ResolutionRuntimeError('unsupported_zone_move', 'Only controller hand to discard move_all_remaining is supported.');
+  }
+  const movedCardIds: string[] = [];
+  for (const candidate of transaction.workingState.cards) {
+    if (candidate.ownerPlayerId !== transaction.context.controllerId || candidate.zone !== effect.from) continue;
+    movedCardIds.push(candidate.instanceId);
+    moveCardInstance(transaction, candidate.instanceId, effect.to);
+  }
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.cards_moved`;
+  if (movedCardIds.length > 0) {
+    transaction.emittedEvents.push({
+      type: 'cards_moved',
+      playerId: transaction.context.controllerId,
+      sourceCardId: transaction.context.sourceCardId,
+      abilityId: transaction.context.abilityId,
+      resultId: eventId,
+      revision: transaction.workingState.abilityRuntime?.revision ?? 0,
+    });
+  }
+  return {
+    effectId: effect.id,
+    effectType: 'move_all_remaining',
+    status: movedCardIds.length === 0 ? 'no_op' : 'applied',
+    affectedEntities: movedCardIds.length === 0 ? [] : [{ kind: 'player', id: transaction.context.controllerId }],
+    payload: {
+      ownerPlayerId: transaction.context.controllerId,
+      from: effect.from,
+      to: effect.to,
+      movedCount: movedCardIds.length,
+      movedCardIds,
+    },
+    emittedEventIds: movedCardIds.length === 0 ? [] : [eventId],
+  };
+}
+
+function drawCards(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'draw_cards' }>,
+): KnownEffectResult {
+  const count = evaluateIntegerAmount(transaction, effect.count, 'draw_cards');
+  if (count < 0) throw new ResolutionRuntimeError('invalid_count', 'Draw count must be nonnegative.');
+  const movedCardIds: string[] = [];
+  for (let index = 0; index < count; index += 1) {
+    if (!transaction.workingState.cards.some((candidate) =>
+      candidate.ownerPlayerId === transaction.context.controllerId && candidate.zone === 'deck')) {
+      for (const discarded of transaction.workingState.cards.filter((candidate) =>
+        candidate.ownerPlayerId === transaction.context.controllerId && candidate.zone === 'discard')) {
+        moveCardInstance(transaction, discarded.instanceId, 'deck');
+      }
+      shuffleControllerDeck(transaction, transaction.context.controllerId);
+    }
+    const top = transaction.workingState.cards.find((candidate) =>
+      candidate.ownerPlayerId === transaction.context.controllerId && candidate.zone === 'deck');
+    if (!top) break;
+    movedCardIds.push(top.instanceId);
+    moveCardInstance(transaction, top.instanceId, 'hand');
+  }
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.cards_drawn`;
+  if (movedCardIds.length > 0) {
+    transaction.emittedEvents.push({
+      type: 'cards_drawn',
+      playerId: transaction.context.controllerId,
+      sourceCardId: transaction.context.sourceCardId,
+      abilityId: transaction.context.abilityId,
+      resultId: eventId,
+      revision: transaction.workingState.abilityRuntime?.revision ?? 0,
+    });
+  }
+  return {
+    effectId: effect.id,
+    effectType: 'draw_cards',
+    status: movedCardIds.length === 0 ? 'no_op' : 'applied',
+    affectedEntities: movedCardIds.length === 0 ? [] : [{ kind: 'player', id: transaction.context.controllerId }],
+    payload: {
+      playerId: transaction.context.controllerId,
+      requestedCount: count,
+      actualCount: movedCardIds.length,
+      movedCardIds,
+    },
+    emittedEventIds: movedCardIds.length === 0 ? [] : [eventId],
+  };
+}
+
+function playSelectedCards(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'play_selected_cards' }>,
+): KnownEffectResult {
+  const cardInstanceIds = transaction.context.selections[effect.target] ?? [];
+  const hook = transaction.context.hooks.playSelectedCards;
+  if (!hook) throw new ResolutionRuntimeError('missing_runtime_hook', 'play_selected_cards requires a trusted play batch hook.');
+  const faceDown = effect.face === 'face_down';
+  const result = hook({ state: transaction.workingState, playerId: transaction.context.controllerId, cardInstanceIds, faceDown });
+  return {
+    effectId: effect.id,
+    effectType: 'play_selected_cards',
+    status: result.playedCount === 0 ? 'no_op' : 'applied',
+    affectedEntities: result.playedCount === 0 ? [] : [{ kind: 'player', id: transaction.context.controllerId }],
+    payload: {
+      playerId: transaction.context.controllerId,
+      requestedCount: cardInstanceIds.length,
+      playedCount: result.playedCount,
+      cardInstanceIds,
+      faceDown,
+    },
+    emittedEventIds: [],
   };
 }
 
@@ -788,6 +1008,15 @@ function evaluateValue(transaction: AbilityResolutionTransaction, expression: Va
   const result = transaction.context.bindings.get(expression.binding);
   if (!result) throw new ResolutionRuntimeError('missing_binding', `Missing binding '${expression.binding}'`);
   if (result.effectType === 'remove_advantage_position' && expression.field === 'removedCount') return result.payload.removedCount;
+  if (result.effectType === 'move_all_remaining' && expression.field === 'movedCount') return result.payload.movedCount;
+  if (result.effectType === 'draw_cards') {
+    if (expression.field === 'requestedCount') return result.payload.requestedCount;
+    if (expression.field === 'actualCount') return result.payload.actualCount;
+  }
+  if (result.effectType === 'play_selected_cards') {
+    if (expression.field === 'requestedCount') return result.payload.requestedCount;
+    if (expression.field === 'playedCount') return result.payload.playedCount;
+  }
   if (result.effectType === 'adjust_victory_points') {
     if (expression.field === 'amount') return result.payload.amount;
     if (expression.field === 'before') return result.payload.before;
@@ -864,6 +1093,41 @@ function findPlayer(state: GameState, playerId: PlayerId): PlayerState {
   return found;
 }
 
+function moveCardInstance(transaction: AbilityResolutionTransaction, cardInstanceId: string, zone: string): void {
+  if (!['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game', 'looked_cards'].includes(zone)) {
+    throw new ResolutionRuntimeError('unsupported_zone', `Unsupported destination zone '${zone}'.`);
+  }
+  const found = transaction.workingState.cards.find((candidate) => candidate.instanceId === cardInstanceId);
+  if (!found) throw new ResolutionRuntimeError('missing_card', `Missing card '${cardInstanceId}'.`);
+  found.zone = zone;
+  found.visibility = zone === 'field' || zone === 'attack_area' || zone === 'removed_from_game'
+    ? { scope: 'public' }
+    : { scope: 'owner_only', ownerPlayerId: found.ownerPlayerId };
+  if (!['field', 'attack_area'].includes(zone) && transaction.workingState.abilityRuntime?.cardState[cardInstanceId]) {
+    transaction.workingState.abilityRuntime.cardState[cardInstanceId]!.active = false;
+  }
+}
+
+function shuffleControllerDeck(transaction: AbilityResolutionTransaction, ownerPlayerId: PlayerId): void {
+  const indexes = transaction.workingState.cards
+    .map((candidate, index) => candidate.ownerPlayerId === ownerPlayerId && candidate.zone === 'deck' ? index : -1)
+    .filter((index) => index >= 0);
+  const deck = indexes.map((index) => transaction.workingState.cards[index]!);
+  for (let index = deck.length - 1; index > 0; index -= 1) {
+    const runtime = transaction.workingState.abilityRuntime;
+    let randomState = runtime?.randomState ?? 1;
+    randomState ^= randomState << 13;
+    randomState ^= randomState >>> 17;
+    randomState ^= randomState << 5;
+    if (runtime) runtime.randomState = randomState >>> 0;
+    const swapIndex = Math.floor(((randomState >>> 0) / 0x100000000) * (index + 1));
+    [deck[index], deck[swapIndex]] = [deck[swapIndex]!, deck[index]!];
+  }
+  indexes.forEach((cardIndex, deckIndex) => {
+    transaction.workingState.cards[cardIndex] = deck[deckIndex]!;
+  });
+}
+
 function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFlowIssue[]): ResolutionEffectNode {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     invalidNode(path, 'Resolution effect must be an object.', issues);
@@ -878,6 +1142,31 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
         id,
         type,
         target: coerceTargetExpression(current.target, `${path}.target`, issues),
+        ...coerceBind(current.bind),
+      };
+    case 'move_all_remaining':
+      return {
+        id,
+        type,
+        owner: current.owner === undefined || current.owner === 'controller' ? 'controller' : reportControllerOwner(path, issues),
+        from: stringField(current, 'from', `${path}.from`, issues),
+        to: zoneField(current.to, `${path}.to`, issues),
+        ...coerceLegacyBind(current.bind ?? current.resultVar),
+      };
+    case 'draw_cards':
+      return {
+        id,
+        type,
+        player: current.player === undefined || current.player === 'controller' ? 'controller' : reportControllerPlayer(path, issues),
+        count: coerceValueExpression(current.count, `${path}.count`, issues),
+        ...coerceBind(current.bind),
+      };
+    case 'play_selected_cards':
+      return {
+        id,
+        type,
+        target: stringField(current, 'target', `${path}.target`, issues),
+        face: current.face === 'face_down' || current.face === 'face_up' ? current.face : reportFace(path, issues),
         ...coerceBind(current.bind),
       };
     case 'adjust_victory_points':
@@ -962,6 +1251,14 @@ function coerceValueExpression(value: unknown, path: string, issues: DataFlowIss
       valueType: expression.valueType === 'number' ? 'number' : reportValueType(path, 'number', issues),
     };
   }
+  if (typeof expression?.var === 'string' && expression.var) {
+    return {
+      expr: 'binding_field',
+      binding: expression.var,
+      field: 'movedCount',
+      valueType: 'number',
+    };
+  }
   invalidNode(path, 'Expected a numeric literal or number binding-field expression.', issues);
   return 0;
 }
@@ -1021,6 +1318,20 @@ function coerceBind(value: unknown): { bind?: string } {
   return typeof value === 'string' && value ? { bind: value } : {};
 }
 
+function coerceLegacyBind(value: unknown): { bind?: string } {
+  return coerceBind(value);
+}
+
+function zoneField(value: unknown, path: string, issues: DataFlowIssue[]): string {
+  if (typeof value === 'string' && value) return value;
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    const zone = (value as Record<string, unknown>).zone;
+    if (typeof zone === 'string' && zone) return zone;
+  }
+  invalidNode(`${path}.zone`, 'Expected destination zone.', issues);
+  return '';
+}
+
 function stringField(value: Record<string, unknown>, field: string, path: string, issues: DataFlowIssue[]): string {
   if (typeof value[field] === 'string' && value[field]) return value[field];
   invalidNode(path, `Expected string field '${field}'.`, issues);
@@ -1030,6 +1341,16 @@ function stringField(value: Record<string, unknown>, field: string, path: string
 function reportControllerPlayer(path: string, issues: DataFlowIssue[]): 'controller' {
   invalidNode(`${path}.player`, 'Only controller result adjustment is supported.', issues);
   return 'controller';
+}
+
+function reportControllerOwner(path: string, issues: DataFlowIssue[]): 'controller' {
+  invalidNode(`${path}.owner`, 'Only controller-owned card-zone effects are supported.', issues);
+  return 'controller';
+}
+
+function reportFace(path: string, issues: DataFlowIssue[]): 'face_down' {
+  invalidNode(`${path}.face`, 'Expected face_down or face_up.', issues);
+  return 'face_down';
 }
 
 function reportBranches(path: string, issues: DataFlowIssue[]): ResolutionBranch[] {
