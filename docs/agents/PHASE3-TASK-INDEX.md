@@ -1632,6 +1632,99 @@ Completion status allowed:
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `REJECTED`
 
+## TASK P3-B17
+
+Owner: Codex B
+Status: READY
+Branch: `codex/b-p3-b17-olga-first-loss-recert-r1`
+Base: exact P3-B17 A-owned handoff commit
+
+Goal:
+
+Recertify the already semantic-routed Olga-Marie `astronomical-science.first-loss` ACTIVATE composition as one TO14 direct result-event consumer on the current B13-B16 battle lineage. This task is evidence-first and must not create production runtime churn unless fresh testing proves a concrete blocker.
+
+Exact composition:
+
+- `forced_trigger` + `after_controller_first_loses_battle`;
+- authoritative post-scoring first-loss event with stable battle/result identity and `lossOrdinal=1`;
+- exactly one staged delayed activation;
+- no immediate activation during battle-result settlement;
+- formal `round_end` consumption only;
+- typed `activate_card_by_id(master.olga-marie.skill.trismegistus-grief)`;
+- structural routing only, never representative identity routing.
+
+May touch by default:
+
+- focused B17 regression tests/assertions;
+- `e2e/fd-olga-activate-card-action.spec.ts` only to strengthen TO14 ordering/exactly-once assertions if needed;
+- B17 implementation/recertification report.
+
+Production runtime files may be touched only after a fresh failing test demonstrates a concrete blocker. Any such repair must be narrow and documented before modification.
+
+Must not promote:
+
+- `trismegistus.loss-transform`, soul-drag, or return-silence;
+- broad delayed scheduling;
+- Gatou/Tomoe/Artoria optional battle consumers;
+- broad Card Action, TO15 Modifier/Power, or TO16 Special runtime;
+- A-owned coverage KPI/classifier/taxonomy.
+
+Required evidence:
+
+- typecheck;
+- identity-free ACTIVATE classifier and near-miss negatives;
+- real MatchSession scoring -> barrier -> first-loss dispatch ordering;
+- stable first-loss provenance and exactly-once staging;
+- scoring-eliminated Olga same-battle eligibility;
+- formal round-end activation exactly once and typed evidence;
+- atomic invalid-target negatives;
+- B13/B16 compatibility;
+- Chromium projection/reconnect/stale/no-duplicate proof;
+- full root baseline comparison.
+
+Completion status allowed:
+
+- `RECERTIFICATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R11
+
+Owner: Codex R
+Status: READY_AFTER_P3_B17
+Branch: reviewer-selected fresh worktree/branch from exact B17 candidate SHA
+
+Goal:
+
+Independently determine whether the already accepted ACTIVATE route, composed with the current post-scoring first-loss producer, satisfies the TO14 direct-consumer contract end to end.
+
+Required independent checks:
+
+- fresh typecheck/focused compatibility;
+- verify first-loss is server-derived after base scoring with stable provenance and ordinal;
+- verify duplicate/re-entry/history paths cannot stage a second activation;
+- verify no immediate activation before formal `round_end`;
+- verify round-end typed ACTIVATE exactly once and invalid targets fail atomically;
+- verify scoring-eliminated controller frozen-participant eligibility;
+- verify production routing remains identity-free and no new legacy bypass is introduced;
+- fresh remote-room Chromium projection/reconnect/stale proof;
+- full root baseline with no new deterministic failures.
+
+Must not implement fixes while reviewing or promote sibling TO14/TO15/TO16 scope.
+
+Required output:
+
+- findings ordered by severity;
+- TO14 ordering/exactly-once judgment;
+- typed ACTIVATE/fail-closed judgment;
+- Gate A/B/C judgment;
+- explicit A03 synchronization input if accepted.
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
 ## Prompt Templates
 
 Codex A startup prompt:
