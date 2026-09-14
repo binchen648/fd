@@ -3839,6 +3839,979 @@
           }
         }
       ]
+    },
+    {
+      "id": "master.goredolf.skill.s1",
+      "printedText": "游戏开始时，将你牌库中威力最高的2张基础攻击替换为【戈夫铁拳】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_goredolf.skills[s1]#line=284",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，将你牌库中威力最高的2张基础攻击替换为【戈夫铁拳】。",
+        "sourceTextSha256": "0a501ac1e67055e3efed5ed9e8902df837a93a11c4c22fd02ec5aa232b786124"
+      },
+      "referencePrintedTextSha256": "0a501ac1e67055e3efed5ed9e8902df837a93a11c4c22fd02ec5aa232b786124",
+      "abilities": [
+        {
+          "id": "goredolf.iron-gentleman.replace-highest-basics",
+          "printedClause": "游戏开始时，将你牌库中威力最高的2张基础攻击替换为【戈夫铁拳】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "transforms": [
+            {
+              "sourceZone": "deck",
+              "selection": {
+                "filter": "controller_basic_attacks",
+                "orderBy": "printed_power_desc",
+                "count": 2
+              },
+              "intoDefinitionId": "card.card-gof-fist"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.goredolf.skill.s1a",
+      "printedText": "前哨阶段：+2合计威力。你本回合必须部署于一处战场且你不能于你的回合移动，若你本回合战败，失去2点战果。\n【戈夫铁拳】为牌库替换牌，抽到手牌后于战斗时打出。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_goredolf.skills[s1a]#line=285",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "前哨阶段：+2合计威力。你本回合必须部署于一处战场且你不能于你的回合移动，若你本回合战败，失去2点战果。\n【戈夫铁拳】为牌库替换牌，抽到手牌后于战斗时打出。",
+        "sourceTextSha256": "e024ea926606a446a4748685cea16f775a563c4d5c265a1391b7d85772c97175"
+      },
+      "referencePrintedTextSha256": "e024ea926606a446a4748685cea16f775a563c4d5c265a1391b7d85772c97175",
+      "abilities": [
+        {
+          "id": "goredolf.fools-resolve.outpost",
+          "printedClause": "前哨阶段：+2合计威力。你本回合必须部署于一处战场且你不能于你的回合移动，若你本回合战败，失去2点战果。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "scope": "controller_total",
+              "amount": 2
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "deployment_requirement",
+              "operation": "require_battlefield",
+              "subject": "controller"
+            },
+            {
+              "rule": "movement_permission",
+              "operation": "prohibit",
+              "subject": "controller",
+              "during": "controller_turn"
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          }
+        },
+        {
+          "id": "goredolf.fools-resolve.loss-penalty",
+          "printedClause": "若你本回合战败，失去2点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "ability_used_this_round",
+              "abilityId": "goredolf.fools-resolve.outpost"
+            },
+            {
+              "type": "event_player_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "amount": 2,
+              "subject": "controller"
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "round",
+            "maxUses": 1
+          }
+        },
+        {
+          "id": "goredolf.goff-fist.deck-replacement-play",
+          "printedClause": "【戈夫铁拳】为牌库替换牌，抽到手牌后于战斗时打出。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_play_permission",
+              "operation": "allow",
+              "definitionId": "card.card-gof-fist",
+              "sourceZone": "hand",
+              "phase": "combat"
+            },
+            {
+              "rule": "deck_replacement_identity",
+              "operation": "mark",
+              "definitionId": "card.card-gof-fist"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.goredolf.skill.ascension",
+      "printedText": "【戈夫铁拳】获得+6威力。\n当你使用了愚者的决意并赢得了战斗，此战斗的所有败者失去2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_goredolf.ascensionSkill#line=286",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【戈夫铁拳】获得+6威力。\n当你使用了愚者的决意并赢得了战斗，此战斗的所有败者失去2点战果。",
+        "sourceTextSha256": "39b3d390edcbe7a0dd0bb58f7d012f5cc578673effffd5370e7f14021c9f62f6"
+      },
+      "referencePrintedTextSha256": "39b3d390edcbe7a0dd0bb58f7d012f5cc578673effffd5370e7f14021c9f62f6",
+      "abilities": [
+        {
+          "id": "goredolf.dont-fall-behind.iron-fist-power",
+          "printedClause": "【戈夫铁拳】获得+6威力。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "definitionId": "card.card-gof-fist",
+              "value": 6
+            }
+          ],
+          "lifecycle": {
+            "duration": "permanent"
+          }
+        },
+        {
+          "id": "goredolf.dont-fall-behind.loser-penalty",
+          "printedClause": "当你使用了愚者的决意并赢得了战斗，此战斗的所有败者失去2点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "ability_used_this_round",
+              "abilityId": "goredolf.fools-resolve.outpost"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "amount": 2,
+              "subject": "event_combat_losers"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.peperoncino.skill.s1",
+      "printedText": "你负责【印度异闻带】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_peperoncino.skills[s1]#line=348",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你负责【印度异闻带】。",
+        "sourceTextSha256": "6d5d8ae3a0cc25f78fd4f11b26c3d59353573de7036a5d60f15829331e5affec"
+      },
+      "referencePrintedTextSha256": "6d5d8ae3a0cc25f78fd4f11b26c3d59353573de7036a5d60f15829331e5affec",
+      "abilities": [
+        {
+          "id": "peperoncino.cryptic-owner.india",
+          "printedClause": "你负责【印度异闻带】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "register_owner",
+              "lostbelts": [
+                "india"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.peperoncino.skill.s1a",
+      "printedText": "你可查看对手的弃牌堆。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_peperoncino.skills[s1a]#line=349",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你可查看对手的弃牌堆。",
+        "sourceTextSha256": "24da87d334a23689f9ef2d6607cd74ec0e9bfde162a49835f7e453afcd282cb2"
+      },
+      "referencePrintedTextSha256": "24da87d334a23689f9ef2d6607cd74ec0e9bfde162a49835f7e453afcd282cb2",
+      "abilities": [
+        {
+          "id": "peperoncino.mental-theory.inspect-discard",
+          "printedClause": "你可查看对手的弃牌堆。",
+          "kind": "passive",
+          "visibility": {
+            "inspectZones": [
+              "opponent_discard"
+            ],
+            "access": "read_only"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.peperoncino.skill.s1b",
+      "printedText": "行动阶段：花费2点魔力，合计威力+3，若可能则沿着箭头移动一步。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_peperoncino.skills[s1b]#line=350",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "行动阶段：花费2点魔力，合计威力+3，若可能则沿着箭头移动一步。",
+        "sourceTextSha256": "0e9dcb6268094a3bdb40cf21888c45b151f1bc1180373c0b12baaddc54bd0907"
+      },
+      "referencePrintedTextSha256": "0e9dcb6268094a3bdb40cf21888c45b151f1bc1180373c0b12baaddc54bd0907",
+      "abilities": [
+        {
+          "id": "peperoncino.body-theory.action",
+          "printedClause": "行动阶段：花费2点魔力，合计威力+3，若可能则沿着箭头移动一步。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "pay_mana",
+              "amount": 2
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "controller_total",
+              "amount": 3
+            },
+            {
+              "type": "move_player",
+              "subject": "controller",
+              "direction": "along_arrows",
+              "maxSteps": 1,
+              "requiredIfPossible": true
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.peperoncino.skill.s2",
+      "printedText": "扩张-从【时代轮回】中随机选择一张事件牌加入你所在的战场。战斗结束后，若你未获得该事件的胜利将该事件牌移除游戏。当你本回合进行扩张的事件牌进入弃牌堆时，此异闻带的【尺寸】永久+1。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_peperoncino.skills[s2]#line=351",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "扩张-从【时代轮回】中随机选择一张事件牌加入你所在的战场。战斗结束后，若你未获得该事件的胜利将该事件牌移除游戏。当你本回合进行扩张的事件牌进入弃牌堆时，此异闻带的【尺寸】永久+1。",
+        "sourceTextSha256": "ca6f50dc130f01275872fccb551ebc03b19760891f3de87a7dad8d99a8003205"
+      },
+      "referencePrintedTextSha256": "ca6f50dc130f01275872fccb551ebc03b19760891f3de87a7dad8d99a8003205",
+      "abilities": [
+        {
+          "id": "peperoncino.india.expand-from-yuga",
+          "printedClause": "扩张-从【时代轮回】中随机选择一张事件牌加入你所在的战场。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "random_yuga_event_to_controller_battlefield",
+              "lostbelt": "india",
+              "source": "yuga_cycle",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.india.post-combat-objective",
+          "printedClause": "战斗结束后，若你未获得该事件的胜利将该事件牌移除游戏。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.ending"
+            },
+            {
+              "type": "source_event_was_india_expansion_this_round"
+            }
+          ],
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "remove_expanded_india_event_if_controller_did_not_gain_victory",
+              "destination": "removed_from_game"
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.india.size-on-expanded-discard",
+          "printedClause": "当你本回合进行扩张的事件牌进入弃牌堆时，此异闻带的【尺寸】永久+1。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "event.entered-discard"
+            },
+            {
+              "type": "event_card_was_controller_expansion_this_round"
+            },
+            {
+              "type": "event_has_lostbelt_tag",
+              "lostbelt": "india"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "increase_size",
+              "lostbelt": "india",
+              "amount": 1,
+              "permanent": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.peperoncino.skill.s3",
+      "printedText": "你的准备阶段将【时代】改为适合当前回合的。\n神明裁判-每回合第一次，佩佩隆奇诺进入任一战场时，他进行【扩张】。回合结束时，若你未进行扩张，移除除此牌上的一张的事件牌。\n【圆满时代】回合1-4：印度事件牌的X为4。若可能将莲池、猎场、实地考察、神之空岩各一张放于时代轮回上。\n【三分时代】回合5-7：印度事件牌的X为3。若可能将莲池、猎场、实地考察各一张放于时代轮回上。\n【二分时代】回合8-9：印度事件牌的X为2。若可能将凋零的平原和衰落的城镇放于时代轮回上。\n【争斗时代】回合10：印度事件牌的X为1。若可能将乳海放于时代轮回上。\n【审判时代】回合11：印度事件牌的X为印度的【尺寸】。异闻带尺寸0-1：佩佩隆奇诺合计威力-10。异闻带尺寸3+：佩佩隆奇诺从剩余的事件牌库中选择一张放置于深山町。异闻带尺寸5+：佩佩隆奇诺合计威力+5。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_peperoncino.skills[s3]#line=352",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你的准备阶段将【时代】改为适合当前回合的。\n神明裁判-每回合第一次，佩佩隆奇诺进入任一战场时，他进行【扩张】。回合结束时，若你未进行扩张，移除除此牌上的一张的事件牌。\n【圆满时代】回合1-4：印度事件牌的X为4。若可能将莲池、猎场、实地考察、神之空岩各一张放于时代轮回上。\n【三分时代】回合5-7：印度事件牌的X为3。若可能将莲池、猎场、实地考察各一张放于时代轮回上。\n【二分时代】回合8-9：印度事件牌的X为2。若可能将凋零的平原和衰落的城镇放于时代轮回上。\n【争斗时代】回合10：印度事件牌的X为1。若可能将乳海放于时代轮回上。\n【审判时代】回合11：印度事件牌的X为印度的【尺寸】。异闻带尺寸0-1：佩佩隆奇诺合计威力-10。异闻带尺寸3+：佩佩隆奇诺从剩余的事件牌库中选择一张放置于深山町。异闻带尺寸5+：佩佩隆奇诺合计威力+5。",
+        "sourceTextSha256": "436ad41ba5c556cf47aec29cde7cbba087745e711f48a6dc363c6ef57b2ff747"
+      },
+      "referencePrintedTextSha256": "436ad41ba5c556cf47aec29cde7cbba087745e711f48a6dc363c6ef57b2ff747",
+      "abilities": [
+        {
+          "id": "peperoncino.yuga.set-era",
+          "printedClause": "你的准备阶段将【时代】改为适合当前回合的。",
+          "kind": "triggered",
+          "activation": {
+            "phase": "preparation"
+          },
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "set_yuga_for_round",
+              "lostbelt": "india"
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.yuga.divine-judgment-expand",
+          "printedClause": "神明裁判-每回合第一次，佩佩隆奇诺进入任一战场时，他进行【扩张】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.entered-location"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_location_is_battlefield"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "expand",
+              "lostbelt": "india"
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "round",
+            "maxUses": 1
+          }
+        },
+        {
+          "id": "peperoncino.yuga.no-expand-cleanup",
+          "printedClause": "回合结束时，若你未进行扩张，移除除此牌上的一张的事件牌。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ending"
+            },
+            {
+              "type": "controller_did_not_expand_this_round",
+              "lostbelt": "india"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_events",
+              "minCount": 1,
+              "maxCount": 1,
+              "scope": "events_on_yuga_cycle_excluding_source",
+              "payloadKey": "selectedEventIds"
+            },
+            {
+              "type": "event_card_rule",
+              "operation": "remove_selected_yuga_event",
+              "payloadKey": "selectedEventIds",
+              "destination": "removed_from_game"
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.yuga.era-definitions",
+          "printedClause": "【圆满时代】回合1-4：印度事件牌的X为4。若可能将莲池、猎场、实地考察、神之空岩各一张放于时代轮回上。\n【三分时代】回合5-7：印度事件牌的X为3。若可能将莲池、猎场、实地考察各一张放于时代轮回上。\n【二分时代】回合8-9：印度事件牌的X为2。若可能将凋零的平原和衰落的城镇放于时代轮回上。\n【争斗时代】回合10：印度事件牌的X为1。若可能将乳海放于时代轮回上。\n【审判时代】回合11：印度事件牌的X为印度的【尺寸】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "define_yuga_cycle",
+              "lostbelt": "india",
+              "eras": [
+                {
+                  "rounds": [
+                    1,
+                    4
+                  ],
+                  "x": 4,
+                  "events": [
+                    "lotus_pond",
+                    "hunting_ground",
+                    "field_research",
+                    "divine_sky_boulder"
+                  ]
+                },
+                {
+                  "rounds": [
+                    5,
+                    7
+                  ],
+                  "x": 3,
+                  "events": [
+                    "lotus_pond",
+                    "hunting_ground",
+                    "field_research"
+                  ]
+                },
+                {
+                  "rounds": [
+                    8,
+                    9
+                  ],
+                  "x": 2,
+                  "events": [
+                    "withering_plain",
+                    "fading_town"
+                  ]
+                },
+                {
+                  "rounds": [
+                    10,
+                    10
+                  ],
+                  "x": 1,
+                  "events": [
+                    "ocean_of_milk"
+                  ]
+                },
+                {
+                  "rounds": [
+                    11,
+                    11
+                  ],
+                  "xFormula": "india_lostbelt_size"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.yuga.judgment-low-size",
+          "printedClause": "异闻带尺寸0-1：佩佩隆奇诺合计威力-10。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "round_number_equals",
+              "value": 11
+            },
+            {
+              "type": "lostbelt_size_at_most",
+              "lostbelt": "india",
+              "value": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "scope": "controller_total",
+              "amount": -10
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.yuga.judgment-place-event",
+          "printedClause": "异闻带尺寸3+：佩佩隆奇诺从剩余的事件牌库中选择一张放置于深山町。",
+          "kind": "triggered",
+          "activation": {
+            "phase": "preparation"
+          },
+          "conditions": [
+            {
+              "type": "round_number_equals",
+              "value": 11
+            },
+            {
+              "type": "lostbelt_size_at_least",
+              "lostbelt": "india",
+              "value": 3
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_events",
+              "minCount": 1,
+              "maxCount": 1,
+              "scope": "remaining_event_deck",
+              "payloadKey": "selectedEventIds"
+            },
+            {
+              "type": "event_card_rule",
+              "operation": "place_selected_event_at_location",
+              "location": "miyama_town",
+              "payloadKey": "selectedEventIds"
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.yuga.judgment-high-size",
+          "printedClause": "异闻带尺寸5+：佩佩隆奇诺合计威力+5。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "round_number_equals",
+              "value": 11
+            },
+            {
+              "type": "lostbelt_size_at_least",
+              "lostbelt": "india",
+              "value": 5
+            }
+          ],
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "scope": "controller_total",
+              "amount": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.peperoncino.skill.s4",
+      "printedText": "【莲池】战果1，数量2：若此事件牌未因扩张出场，抽取另一张事件牌放置于此战场。本回合从手牌打出的力量攻击于此战场获得威力+X（效果打出的无效）。\n【猎场】战果1，数量2：若此事件牌未因扩张出场，抽取另一张事件牌放置于此战场。本回合从手牌打出的迅捷攻击于此战场获得威力+X（效果打出的无效）。\n【实地考察】战果1，数量2：若此事件牌未因扩张出场，抽取另一张事件牌放置于此战场。本回合从手牌打出的魔术攻击于此战场获得威力+X（效果打出的无效）。\n【神之空岩】战果0，数量1：当此牌因扩张出场时，改为将此牌与你所在地点的一张事件牌一起移除游戏。在任何【时代】更改前，你可以令因【神之空岩】被移除的事件牌战果翻倍并替换【时代轮回】中的一张事件牌。\n【衰败的城镇】战果X，数量1：若佩佩隆奇诺部署于此，其获得地利+X。他不能从此地点离开。\n【凋零的平原】战果X，数量1：若佩佩隆奇诺赢得另一处战场的胜利或回合结束时位于侦查，此牌进入弃牌堆，而不会被移除游戏。\n【乳海】战果2，数量1：行动阶段结束时，此战场所有未使用宝具的玩家【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_peperoncino.skills[s4]#line=353",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【莲池】战果1，数量2：若此事件牌未因扩张出场，抽取另一张事件牌放置于此战场。本回合从手牌打出的力量攻击于此战场获得威力+X（效果打出的无效）。\n【猎场】战果1，数量2：若此事件牌未因扩张出场，抽取另一张事件牌放置于此战场。本回合从手牌打出的迅捷攻击于此战场获得威力+X（效果打出的无效）。\n【实地考察】战果1，数量2：若此事件牌未因扩张出场，抽取另一张事件牌放置于此战场。本回合从手牌打出的魔术攻击于此战场获得威力+X（效果打出的无效）。\n【神之空岩】战果0，数量1：当此牌因扩张出场时，改为将此牌与你所在地点的一张事件牌一起移除游戏。在任何【时代】更改前，你可以令因【神之空岩】被移除的事件牌战果翻倍并替换【时代轮回】中的一张事件牌。\n【衰败的城镇】战果X，数量1：若佩佩隆奇诺部署于此，其获得地利+X。他不能从此地点离开。\n【凋零的平原】战果X，数量1：若佩佩隆奇诺赢得另一处战场的胜利或回合结束时位于侦查，此牌进入弃牌堆，而不会被移除游戏。\n【乳海】战果2，数量1：行动阶段结束时，此战场所有未使用宝具的玩家【败北】。",
+        "sourceTextSha256": "918289b1ccf544cd98b47a842df901f1434f56ea626e4164f70965b57d6b1e28"
+      },
+      "referencePrintedTextSha256": "918289b1ccf544cd98b47a842df901f1434f56ea626e4164f70965b57d6b1e28",
+      "abilities": [
+        {
+          "id": "peperoncino.india.objective-basic-three",
+          "printedClause": "【莲池】战果1，数量2：若此事件牌未因扩张出场，抽取另一张事件牌放置于此战场。本回合从手牌打出的力量攻击于此战场获得威力+X（效果打出的无效）。\n【猎场】战果1，数量2：若此事件牌未因扩张出场，抽取另一张事件牌放置于此战场。本回合从手牌打出的迅捷攻击于此战场获得威力+X（效果打出的无效）。\n【实地考察】战果1，数量2：若此事件牌未因扩张出场，抽取另一张事件牌放置于此战场。本回合从手牌打出的魔术攻击于此战场获得威力+X（效果打出的无效）。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_india_matching_attack_objectives",
+              "lostbelt": "india",
+              "events": [
+                {
+                  "id": "lotus_pond",
+                  "victoryPoints": 1,
+                  "copyCount": 2,
+                  "attribute": "strength"
+                },
+                {
+                  "id": "hunting_ground",
+                  "victoryPoints": 1,
+                  "copyCount": 2,
+                  "attribute": "agility"
+                },
+                {
+                  "id": "field_research",
+                  "victoryPoints": 1,
+                  "copyCount": 2,
+                  "attribute": "magic"
+                }
+              ]
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "attacks_at_source_event_battlefield_matching_conditions",
+              "amountFormula": "current_india_x",
+              "lifecycle": {
+                "duration": "this_round"
+              },
+              "conditions": [
+                {
+                  "type": "attack_played_from_hand_this_round"
+                },
+                {
+                  "type": "attack_attribute_matches_source_event"
+                },
+                {
+                  "type": "attack_not_played_by_effect"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.india.objective-basic-three.non-expansion-entry",
+          "printedClause": "若此事件牌未因扩张出场，抽取另一张事件牌放置于此战场。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "event.entered-battlefield"
+            },
+            {
+              "type": "source_event_not_entered_by_expansion"
+            }
+          ],
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "draw_one_event_to_source_battlefield"
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.india.divine-sky-boulder",
+          "printedClause": "【神之空岩】战果0，数量1：当此牌因扩张出场时，改为将此牌与你所在地点的一张事件牌一起移除游戏。在任何【时代】更改前，你可以令因【神之空岩】被移除的事件牌战果翻倍并替换【时代轮回】中的一张事件牌。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_divine_sky_boulder",
+              "lostbelt": "india",
+              "victoryPoints": 0,
+              "copyCount": 1
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.india.divine-sky-boulder.expansion-entry",
+          "printedClause": "当此牌因扩张出场时，改为将此牌与你所在地点的一张事件牌一起移除游戏。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "event.entered-battlefield"
+            },
+            {
+              "type": "source_event_entered_by_expansion"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_events",
+              "minCount": 1,
+              "maxCount": 1,
+              "scope": "other_events_at_source_event_battlefield",
+              "payloadKey": "selectedEventIds"
+            },
+            {
+              "type": "event_card_rule",
+              "operation": "remove_source_and_selected_local_event",
+              "payloadKey": "selectedEventIds",
+              "destination": "removed_from_game"
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.india.divine-sky-boulder.before-yuga-change",
+          "printedClause": "在任何【时代】更改前，你可以令因【神之空岩】被移除的事件牌战果翻倍并替换【时代轮回】中的一张事件牌。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "yuga_cycle.changing"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_events",
+              "minCount": 0,
+              "maxCount": 1,
+              "scope": "events_on_yuga_cycle",
+              "payloadKey": "selectedYugaEventIds"
+            },
+            {
+              "type": "event_card_rule",
+              "operation": "optionally_restore_boulder_removed_event_as_doubled_vp_replacement",
+              "payloadKey": "selectedYugaEventIds"
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.india.fading-town",
+          "printedClause": "【衰败的城镇】战果X，数量1：若佩佩隆奇诺部署于此，其获得地利+X。他不能从此地点离开。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "india",
+              "eventId": "fading_town",
+              "victoryPointsFormula": "current_india_x",
+              "copyCount": 1
+            },
+            {
+              "type": "terrain_position_adjustment",
+              "operation": "add",
+              "subject": "controller",
+              "amountFormula": "current_india_x",
+              "conditions": [
+                {
+                  "type": "controller_deployed_at_source_event_battlefield"
+                }
+              ]
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "movement_permission",
+              "operation": "prohibit_leave_source_event_battlefield",
+              "subject": "controller"
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.india.withering-plain",
+          "printedClause": "【凋零的平原】战果X，数量1：若佩佩隆奇诺赢得另一处战场的胜利或回合结束时位于侦查，此牌进入弃牌堆，而不会被移除游戏。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_withering_plain",
+              "lostbelt": "india",
+              "victoryPointsFormula": "current_india_x",
+              "copyCount": 1
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.india.withering-plain.other-battle-win",
+          "printedClause": "若佩佩隆奇诺赢得另一处战场的胜利，此牌进入弃牌堆，而不会被移除游戏。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_won_combat"
+            },
+            {
+              "type": "combat_not_at_source_event_battlefield"
+            }
+          ],
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "move_source_event_to_discard_instead_of_exile",
+              "destination": "discard"
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.india.withering-plain.recon-round-end",
+          "printedClause": "回合结束时位于侦查，此牌进入弃牌堆，而不会被移除游戏。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ending"
+            },
+            {
+              "type": "controller_location_is",
+              "location": "recon"
+            }
+          ],
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "move_source_event_to_discard_instead_of_exile",
+              "destination": "discard"
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.india.ocean-of-milk",
+          "printedClause": "【乳海】战果2，数量1。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "india",
+              "eventId": "ocean_of_milk",
+              "victoryPoints": 2,
+              "copyCount": 1
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.india.ocean-of-milk.defeat",
+          "printedClause": "行动阶段结束时，此战场所有未使用宝具的玩家【败北】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "action.ending"
+            },
+            {
+              "type": "player_at_source_event_battlefield"
+            },
+            {
+              "type": "player_did_not_use_noble_phantasm_this_round"
+            }
+          ],
+          "effects": [
+            {
+              "type": "defeat_player",
+              "subject": "players_at_source_event_battlefield_matching_conditions"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.peperoncino.skill.ascension",
+      "printedText": "你的对手不会受到印度事件牌的影响。\n虚空论-前哨阶段：移除【时代轮回】的一张事件牌，获得2点魔力且合计威力+3。\n强制扩张-行动阶段：花费7点魔力，使印度异闻带的【尺寸】永久+1。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_peperoncino.ascensionSkill#line=354",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你的对手不会受到印度事件牌的影响。\n虚空论-前哨阶段：移除【时代轮回】的一张事件牌，获得2点魔力且合计威力+3。\n强制扩张-行动阶段：花费7点魔力，使印度异闻带的【尺寸】永久+1。",
+        "sourceTextSha256": "7b4084949a85c24d3f27fc723b26a1ee41d8a61e819bbfd0228feaf859396547"
+      },
+      "referencePrintedTextSha256": "7b4084949a85c24d3f27fc723b26a1ee41d8a61e819bbfd0228feaf859396547",
+      "abilities": [
+        {
+          "id": "peperoncino.nirvana.opponent-immunity",
+          "printedClause": "你的对手不会受到印度事件牌的影响。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "ignore_effects_on_controller_opponents",
+              "lostbelt": "india"
+            }
+          ]
+        },
+        {
+          "id": "peperoncino.nirvana.shunyata",
+          "printedClause": "虚空论-前哨阶段：移除【时代轮回】的一张事件牌，获得2点魔力且合计威力+3。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "choose_events",
+              "minCount": 1,
+              "maxCount": 1,
+              "scope": "events_on_yuga_cycle",
+              "payloadKey": "selectedEventIds"
+            },
+            {
+              "type": "event_card_rule",
+              "operation": "remove_selected_yuga_event",
+              "payloadKey": "selectedEventIds",
+              "destination": "removed_from_game"
+            },
+            {
+              "type": "gain_mana",
+              "amount": 2
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "controller_total",
+              "amount": 3
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          }
+        },
+        {
+          "id": "peperoncino.nirvana.forced-expansion",
+          "printedClause": "强制扩张-行动阶段：花费7点魔力，使印度异闻带的【尺寸】永久+1。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "pay_mana",
+              "amount": 7
+            },
+            {
+              "type": "lostbelt_expansion",
+              "operation": "increase_size",
+              "lostbelt": "india",
+              "amount": 1,
+              "permanent": true
+            }
+          ]
+        }
+      ]
     }
   ]
 }

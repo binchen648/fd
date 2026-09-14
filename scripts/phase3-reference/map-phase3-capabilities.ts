@@ -504,7 +504,7 @@ export function mapStructuredCapabilityNeeds(
   if (effectTokens.has('MOVE_PLAYER')) addCapability(result, 'GENERIC_MOVEMENT', 'MOVEMENT');
   if (
     ruleModifiers.some((modifier) =>
-      typeof modifier.rule === 'string' && /movement/i.test(modifier.rule)
+      typeof modifier.rule === 'string' && /movement|deployment/i.test(modifier.rule)
     )
   ) {
     addCapability(result, 'GENERIC_MOVEMENT', 'MOVEMENT');
@@ -551,6 +551,14 @@ export function mapStructuredCapabilityNeeds(
   }
 
   if (Array.isArray(ability.transforms) && ability.transforms.length > 0) {
+    addCapability(result, 'GENERIC_CARD_ZONE', 'CARD_ZONE');
+    if (ability.transforms.some((transform) => {
+      if (!isRecord(transform) || !isRecord(transform.selection)) return false;
+      const orderBy = typeof transform.selection.orderBy === 'string' ? transform.selection.orderBy : '';
+      return /power/i.test(orderBy);
+    })) {
+      addCapability(result, 'GENERIC_POWER', 'POWER');
+    }
     addCapability(result, 'REVIEWED_SPECIAL_TRANSFORM', 'SPECIAL_SUBSYSTEM');
     result.specialReasons.push('STRUCTURED_TRANSFORM_REQUIRES_REVIEW');
   }

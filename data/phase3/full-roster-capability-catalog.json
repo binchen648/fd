@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 142,
-    "explicitBlockCount": 802,
+    "contractMappedCount": 152,
+    "explicitBlockCount": 792,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
-      "READY_GENERIC_EXTENSION": 96,
-      "SPECIAL_HANDLER_CANDIDATE": 46,
+      "READY_GENERIC_EXTENSION": 100,
+      "SPECIAL_HANDLER_CANDIDATE": 52,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 802,
+      "SOURCE_EVIDENCE_REQUIRED": 792,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -80,6 +80,10 @@
         },
         {
           "abilityId": "master.fiore.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -216,6 +220,10 @@
         },
         {
           "abilityId": "master.fiore.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -361,6 +369,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.goredolf.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.hinako.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -453,6 +465,10 @@
         },
         {
           "abilityId": "master.fiore.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -569,6 +585,7 @@
         "master.chaos.skill.s1",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.s2",
         "master.hinako.skill.s4",
         "master.sion.skill.s13",
@@ -689,6 +706,10 @@
         },
         {
           "abilityId": "master.fiore.skill.s7",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -838,6 +859,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.goredolf.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.hinako.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -978,6 +1003,10 @@
         },
         {
           "abilityId": "master.fiore.skill.s7",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1125,6 +1154,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.goredolf.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.hinako.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1267,6 +1300,10 @@
         },
         {
           "abilityId": "master.fiore.skill.s7",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1461,6 +1498,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.goredolf.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.hinako.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1490,6 +1531,10 @@
         },
         {
           "abilityId": "servant.amakusa.skill.sc-amakusa-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.andersen.skill.sc-andersen-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1581,6 +1626,8 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fiore.skill.s7",
+        "master.goredolf.skill.ascension",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.s1a",
         "master.hinako.skill.s2",
         "master.hinako.skill.s3",
@@ -1599,6 +1646,11 @@
         "master.ophelia.skill.s5",
         "master.ophelia.skill.s6",
         "master.ophelia.skill.s7",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s1b",
+        "master.peperoncino.skill.s2",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.twice.skill.ascension",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s2",
@@ -1723,6 +1775,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.goredolf.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.hinako.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1744,6 +1800,10 @@
         },
         {
           "abilityId": "servant.amakusa.skill.sc-amakusa-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.andersen.skill.sc-andersen-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -1830,6 +1890,7 @@
         "master.ciel.skill.s1b",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.goredolf.skill.s1",
         "master.hinako.skill.ascension",
         "master.hinako.skill.s1a",
         "master.kadoc.skill.ascension",
@@ -1837,6 +1898,7 @@
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
         "servant.amakusa.skill.sc-amakusa-1",
+        "servant.andersen.skill.sc-andersen-2",
         "servant.clytie.skill.sc-clytie-3",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
@@ -1924,6 +1986,8 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fiore.skill.s7",
+        "master.goredolf.skill.ascension",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.s1a",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
@@ -1938,6 +2002,9 @@
         "master.ophelia.skill.ascension",
         "master.ophelia.skill.s1",
         "master.ophelia.skill.s1b",
+        "master.peperoncino.skill.s2",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.sion.skill.s13",
         "master.twice.skill.ascension",
         "master.twice.skill.s1",
@@ -2036,6 +2103,8 @@
         "master.fiore.skill.s7",
         "master.hinako.skill.ascension",
         "master.ophelia.skill.s2",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s1b",
         "master.sion.skill.s13",
         "servant.roberts.skill.sc-roberts-1",
         "servant.roberts.skill.sc-roberts-2"
@@ -2085,6 +2154,11 @@
         "master.ophelia.skill.s5",
         "master.ophelia.skill.s6",
         "master.ophelia.skill.s7",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s1",
+        "master.peperoncino.skill.s2",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.twice.skill.s1",
         "master.wodime.skill.s1",
         "master.wodime.skill.s4",
@@ -2147,6 +2221,10 @@
         },
         {
           "abilityId": "master.fiore.skill.s6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -2234,11 +2312,17 @@
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
         "master.fiore.skill.s6",
+        "master.goredolf.skill.ascension",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.ascension",
         "master.hinako.skill.s2",
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
         "master.ophelia.skill.s2",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s1b",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "servant.andersen.skill.sc-andersen-2",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.atalanta.skill.sc-atalanta-1",
@@ -2337,6 +2421,8 @@
         "master.fiore.skill.s4",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.goredolf.skill.ascension",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.s2",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
@@ -2351,6 +2437,10 @@
         "master.ophelia.skill.s5",
         "master.ophelia.skill.s6",
         "master.ophelia.skill.s7",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s1b",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.twice.skill.ascension",
         "master.wodime.skill.s2",
         "master.wodime.skill.s3",
@@ -2408,12 +2498,18 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.chaos.skill.s10",
         "master.chaos.skill.s12",
         "master.fiore.skill.s2",
         "master.fiore.skill.s5",
+        "master.goredolf.skill.s1a",
         "master.kadoc.skill.s4",
+        "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
+        "master.peperoncino.skill.s1b",
+        "master.peperoncino.skill.s4",
         "servant.drake.skill.sc-drake-2",
+        "servant.edison.skill.sc-edison-3",
         "servant.gorgon.skill.sc-gorgon-3",
         "servant.mozart.skill.sc-mozart-1"
       ],
@@ -2461,6 +2557,9 @@
         "master.fiore.skill.s6",
         "master.hinako.skill.ascension",
         "master.kadoc.skill.ascension",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
@@ -2526,6 +2625,9 @@
         "master.ciel.skill.s3",
         "master.fiore.skill.s4",
         "master.fiore.skill.s7",
+        "master.goredolf.skill.ascension",
+        "master.goredolf.skill.s1",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.s2",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
@@ -2536,6 +2638,10 @@
         "master.ophelia.skill.s5",
         "master.ophelia.skill.s6",
         "master.ophelia.skill.s7",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s1b",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.twice.skill.ascension",
         "master.wodime.skill.s2",
         "master.wodime.skill.s3",
@@ -2596,12 +2702,15 @@
         "master.fiore.skill.s1a",
         "master.fiore.skill.s3",
         "master.fiore.skill.s6",
+        "master.goredolf.skill.ascension",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.s3",
         "master.kadoc.skill.ascension",
         "master.kadoc.skill.s1a",
         "master.kadoc.skill.s3",
         "master.kadoc.skill.s4",
         "master.kadoc.skill.s5",
+        "master.peperoncino.skill.ascension",
         "master.wodime.skill.s3",
         "servant.albion.skill.sc-albion-1",
         "servant.drake.skill.sc-drake-3",
@@ -2664,6 +2773,9 @@
         "master.hinako.skill.ascension",
         "master.kadoc.skill.ascension",
         "master.ophelia.skill.ascension",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.astolfo.skill.sc-astolfo-1",
@@ -2766,6 +2878,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.goredolf.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.hinako.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -2783,6 +2903,22 @@
         },
         {
           "abilityId": "master.ophelia.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -2932,6 +3068,9 @@
         "master.fiore.skill.s6",
         "master.hinako.skill.ascension",
         "master.kadoc.skill.ascension",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
@@ -3014,6 +3153,9 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fiore.skill.s7",
+        "master.goredolf.skill.ascension",
+        "master.goredolf.skill.s1",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.s1a",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
@@ -3026,6 +3168,9 @@
         "master.ophelia.skill.ascension",
         "master.ophelia.skill.s1",
         "master.ophelia.skill.s4",
+        "master.peperoncino.skill.s2",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s1",
         "master.wodime.skill.s4",
@@ -3089,6 +3234,7 @@
         "master.amakusa.skill.s1a",
         "master.arcueid.skill.s1",
         "master.ciel.skill.s1b",
+        "master.peperoncino.skill.s1a",
         "servant.albion.skill.sc-albion-1",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.arjuna.skill.sc-arjuna-1",
@@ -3233,6 +3379,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.goredolf.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.hinako.skill.s3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -3254,6 +3408,10 @@
         },
         {
           "abilityId": "master.kadoc.skill.s5",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3426,6 +3584,18 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.sion.skill.s13",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -3557,6 +3727,11 @@
         "master.ophelia.skill.s5",
         "master.ophelia.skill.s6",
         "master.ophelia.skill.s7",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s1",
+        "master.peperoncino.skill.s2",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s1",
         "master.wodime.skill.s1a",
@@ -3578,6 +3753,10 @@
       "skippedAbilities": [
         {
           "abilityId": "master.chaos.skill.s13",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -3635,6 +3814,7 @@
       "representatives": [],
       "acceptanceVehicle": "B/R reviewed-special exception with explicit deletion/reuse criteria",
       "eligibleAbilities": [
+        "master.goredolf.skill.s1",
         "master.hinako.skill.ascension",
         "servant.andersen.skill.sc-andersen-2"
       ],
@@ -3754,6 +3934,26 @@
         },
         {
           "abilityId": "master.ophelia.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -3897,6 +4097,9 @@
       "master.fiore.skill.s5",
       "master.fiore.skill.s6",
       "master.fiore.skill.s7",
+      "master.goredolf.skill.ascension",
+      "master.goredolf.skill.s1",
+      "master.goredolf.skill.s1a",
       "master.hinako.skill.ascension",
       "master.hinako.skill.s1",
       "master.hinako.skill.s1a",
@@ -3922,6 +4125,13 @@
       "master.ophelia.skill.s5",
       "master.ophelia.skill.s6",
       "master.ophelia.skill.s7",
+      "master.peperoncino.skill.ascension",
+      "master.peperoncino.skill.s1",
+      "master.peperoncino.skill.s1a",
+      "master.peperoncino.skill.s1b",
+      "master.peperoncino.skill.s2",
+      "master.peperoncino.skill.s3",
+      "master.peperoncino.skill.s4",
       "master.sion.skill.s13",
       "master.twice.skill.ascension",
       "master.twice.skill.s1",
@@ -4415,27 +4625,6 @@
       },
       {
         "abilityId": "master.goetia.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.goredolf.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.goredolf.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.goredolf.skill.s1a",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -4954,55 +5143,6 @@
       },
       {
         "abilityId": "master.miyu.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.peperoncino.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.peperoncino.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.peperoncino.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.peperoncino.skill.s1b",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.peperoncino.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.peperoncino.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.peperoncino.skill.s4",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -9622,6 +9762,7 @@
       "master.fiore.skill.s1a",
       "master.fiore.skill.s5",
       "master.fiore.skill.s6",
+      "master.goredolf.skill.s1",
       "master.hinako.skill.ascension",
       "master.hinako.skill.s1",
       "master.hinako.skill.s3",
@@ -9639,6 +9780,11 @@
       "master.ophelia.skill.s5",
       "master.ophelia.skill.s6",
       "master.ophelia.skill.s7",
+      "master.peperoncino.skill.ascension",
+      "master.peperoncino.skill.s1",
+      "master.peperoncino.skill.s2",
+      "master.peperoncino.skill.s3",
+      "master.peperoncino.skill.s4",
       "master.wodime.skill.ascension",
       "master.wodime.skill.s1",
       "master.wodime.skill.s1a",
