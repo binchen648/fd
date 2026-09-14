@@ -1466,7 +1466,8 @@ describe('complex master and session regressions', () => {
       abilityId: 'trismegistus.soul-drag',
       controllerId: 'p1',
     }));
-    expect((state as unknown as { modeState?: { returnSilencePlayers?: string[] } }).modeState?.returnSilencePlayers).toContain('p1');
+    expect(state.abilityRuntime!.transformedReturnSilenceSourceCardIds ?? []).not.toContain(trismegistus);
+    expect(state.ruleOverrides?.mustDeployToBattlefieldPlayerIds ?? []).not.toContain('p1');
 
     state.currentSituationCardId = 'situation.current';
     state.situationDeck = ['situation.top', 'situation.bottom'];

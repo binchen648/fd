@@ -692,12 +692,20 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
     if (!battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId)) continue;
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
       const matches = a.activation.trigger === event.type || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
+      if (event.type === 'while_active') {
+        const transformed = runtime(s).transformedReturnSilenceSourceCardIds?.includes(c.instanceId) === true;
+        const isSoulDragState = a.effects.some((effect) => effect.type === 'soul_drag_power_bonus');
+        const isReturnSilenceState = a.effects.some((effect) => effect.type === 'return_silence_battle_start');
+        if ((transformed && isSoulDragState) || (!transformed && isReturnSilenceState)) continue;
+      }
       if (event.type === 'after_battle_result_determined' &&
         (isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a)) &&
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
       if (event.type === 'after_battle_ended' && isBattleEndSourceReturnCandidate(a) && !battleEndSourceReturnTriggerEligible(s, c.instanceId)) continue;
       if (event.type === 'after_battle_ended' && isBattleEndMobilePlayersRewardSemantic(a) &&
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
+      if (event.type === 'after_controller_loses_battle' && isBattleLossStateTransformCandidate(a) &&
+        !battleLossStateTransformTriggerEligible(s, c.instanceId)) continue;
       if (!matches || !canActivate(s, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
       if (['on_card_played', 'on_use_declared'].includes(event.type) && event.sourceCardId !== c.instanceId &&
         !a.conditions.some((condition) => condition.type === 'event_played_card_has_attribute')) continue;
@@ -713,7 +721,10 @@ function moveCard(s: GameState, id: string, zone: string): number {
   if (!['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game', 'looked_cards'].includes(zone)) reject('unsupported', 'Unmapped destination zone');
   const c = card(s, id); const moved = c.zone === zone ? 0 : 1; c.zone = zone;
   c.visibility = zone === 'field' || zone === 'attack_area' || zone === 'removed_from_game' ? { scope: 'public' } : { scope: 'owner_only', ownerPlayerId: c.ownerPlayerId };
-  if (!['field', 'attack_area'].includes(zone) && runtime(s).cardState[id]) runtime(s).cardState[id]!.active = false;
+  if (!['field', 'attack_area'].includes(zone)) {
+    if (runtime(s).cardState[id]) runtime(s).cardState[id]!.active = false;
+    clearReturnSilenceTransformForSource(s, id);
+  }
   return moved;
 }
 function implicitCardTargets(s: GameState, ctx: EffectContext, target: unknown): string[] {
@@ -1392,6 +1403,94 @@ function settleBattleEndMobilePlayersReward(s: GameState, ctx: EffectContext): v
   });
 }
 
+function isBattleLossStateTransformCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'forced_trigger' &&
+    str(a.activation.trigger) === 'after_controller_loses_battle' &&
+    a.effects.length === 1 &&
+    str(a.effects[0]?.type) === 'transform_to_return_silence_on_loss';
+}
+
+export function isBattleLossStateTransformSemantic(a: AuthoringAbility): boolean {
+  if (!isBattleLossStateTransformCandidate(a)) return false;
+  if (Object.keys(a.activation).some((key) => key !== 'trigger')) return false;
+  if (a.conditions.length || a.targets.length || a.cost.length || a.creates.length || a.ruleModifiers.length) return false;
+  if (Object.keys(a.lifecycle).length || str(a.responseWindow.opens) || Object.keys(a.limit).length) return false;
+  const responseKeys = Object.keys(a.responseWindow);
+  if (responseKeys.some((key) => !['order', 'passBehavior'].includes(key)) ||
+    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window')) return false;
+  const effect = a.effects[0]!;
+  return effect.type === 'transform_to_return_silence_on_loss' &&
+    Object.keys(effect).every((key) => ['type', 'id', 'printedClause'].includes(key));
+}
+
+function transformedReturnSilenceSourceIds(s: GameState): string[] {
+  const r = runtime(s);
+  r.transformedReturnSilenceSourceCardIds ??= [];
+  return r.transformedReturnSilenceSourceCardIds;
+}
+
+function battleLossStateTransformTriggerEligible(s: GameState, sourceId: string): boolean {
+  return active(s, sourceId) && !(runtime(s).transformedReturnSilenceSourceCardIds ?? []).includes(sourceId);
+}
+
+function clearReturnSilenceTransformForSource(s: GameState, sourceId: string): void {
+  const r = runtime(s);
+  if (!r.transformedReturnSilenceSourceCardIds?.includes(sourceId)) return;
+  const source = card(s, sourceId);
+  r.transformedReturnSilenceSourceCardIds = r.transformedReturnSilenceSourceCardIds.filter((id) => id !== sourceId);
+  const controllerId = source.controllerPlayerId;
+  const hasOtherLiveSource = r.transformedReturnSilenceSourceCardIds.some((id) => {
+    const candidate = s.cards.find((entry) => entry.instanceId === id);
+    const state = r.cardState[id];
+    return candidate?.controllerPlayerId === controllerId &&
+      ['field', 'attack_area'].includes(candidate.zone) && state?.active === true && state.faceDown !== true;
+  });
+  if (!hasOtherLiveSource && s.ruleOverrides?.mustDeployToBattlefieldPlayerIds) {
+    s.ruleOverrides.mustDeployToBattlefieldPlayerIds = s.ruleOverrides.mustDeployToBattlefieldPlayerIds.filter((id) => id !== controllerId);
+  }
+}
+
+function settleBattleLossStateTransform(s: GameState, ctx: EffectContext): void {
+  const event = ctx.event;
+  if (!event || event.type !== 'after_controller_loses_battle' || event.playerId !== ctx.controllerId ||
+    !event.battlePhaseResolutionId || !event.battleId || !event.resultId || !event.battlefieldId ||
+    !event.battleParticipantIds?.includes(ctx.controllerId) || !event.battleResult?.loserIds.includes(ctx.controllerId)) {
+    reject('resolution_failed', 'Battle-loss state transform requires authoritative losing-participant provenance');
+  }
+  if (!active(s, ctx.sourceCardId)) {
+    reject('resolution_failed', 'Battle-loss state transform source must be face-up and active');
+  }
+  const transformed = transformedReturnSilenceSourceIds(s);
+  if (transformed.includes(ctx.sourceCardId)) return;
+
+  const r = runtime(s);
+  r.ongoingEffects = r.ongoingEffects.filter((ongoing) => !(
+    ongoing.sourceCardId === ctx.sourceCardId &&
+    ongoing.controllerId === ctx.controllerId &&
+    ongoing.ruleModifiers.some((modifier) => str(modifier.definition.id) === 'soul_drag_power_bonus')
+  ));
+  transformed.push(ctx.sourceCardId);
+  s.ruleOverrides ??= {};
+  s.ruleOverrides.mustDeployToBattlefieldPlayerIds = [...new Set([
+    ...(s.ruleOverrides.mustDeployToBattlefieldPlayerIds ?? []),
+    ctx.controllerId,
+  ])];
+  r.events.push({
+    type: 'battle_loss_state_transformed',
+    playerId: ctx.controllerId,
+    sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId,
+    triggerEventId: event.id,
+    battlePhaseResolutionId: event.battlePhaseResolutionId,
+    battleId: event.battleId,
+    resultId: event.resultId,
+    battlefieldId: event.battlefieldId,
+    fromState: 'soul_drag',
+    toState: 'return_silence',
+  });
+}
+
 function isBattleEndSourceReturnCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'forced_trigger' &&
     str(a.activation.trigger) === 'after_battle_ended' &&
@@ -1800,6 +1899,11 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
+  if (isBattleLossStateTransformCandidate(a)) {
+    if (!isBattleLossStateTransformSemantic(a)) reject('resolution_failed', 'Unsupported battle-loss state-transform semantic shape');
+    settleBattleLossStateTransform(s, ctx);
+    return;
+  }
   if (isUniqueWinCreateCardTriggerCandidate(a)) {
     if (!isUniqueWinCreateCardTriggerSemantic(a)) reject('resolution_failed', 'Unsupported unique win create-card semantic shape');
     const source = card(s, ctx.sourceCardId);

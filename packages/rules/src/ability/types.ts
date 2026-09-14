@@ -162,9 +162,13 @@ export interface SafeEvent {
   requestedDelta?: number;
   qualifyingPlayerIds?: PlayerId[];
   battlePhaseResolutionId?: string;
+  battleId?: string;
   battlefieldId?: string;
   rewardBranch?: 'mana' | 'victory_points';
   resultId?: string;
+  triggerEventId?: string;
+  fromState?: string;
+  toState?: string;
   revision?: number;
   cardInstanceId?: string;
   fromZone?: string;
@@ -180,6 +184,8 @@ export interface AbilityRuntime {
   pendingPostBattleEvents?: AbilityEvent[];
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */
   pendingBattleTerminalEvent?: AbilityEvent;
+  /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */
+  transformedReturnSilenceSourceCardIds?: string[];
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];
