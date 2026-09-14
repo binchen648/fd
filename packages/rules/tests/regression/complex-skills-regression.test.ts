@@ -1421,7 +1421,13 @@ describe('complex master and session regressions', () => {
       abilityId: 'astronomical-science.has-chaldeas',
     }));
 
-    rules.processAbilityEvent(state, { id: 'olga-first-loss', type: 'after_controller_first_loses_battle', playerId: 'p1' });
+    rules.processAbilityEvent(state, {
+      id: 'olga-first-loss',
+      type: 'after_controller_first_loses_battle',
+      playerId: 'p1',
+      battlefieldId: 'miyama_town',
+      lossOrdinal: 1,
+    });
     expect(state.cards.find((card) => card.instanceId === trismegistus)).toMatchObject({
       zone: 'skill',
       visibility: { scope: 'owner_only', ownerPlayerId: 'p1' },

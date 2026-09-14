@@ -409,7 +409,7 @@ function deferredCardIds(cards: Record<string, ExecutableCardDefinition>): Set<s
     if (!value || typeof value !== 'object') return;
     const current = value as Record<string, unknown>;
     if (['create_card', 'attach_card_to_player_attack'].includes(str(current.type)) && typeof current.cardId === 'string') deferred.add(current.cardId);
-    if (['create_independent_deck', 'replace_card_in_deck', 'activate_card_by_id'].includes(str(current.type)) && typeof current.definitionId === 'string') deferred.add(current.definitionId);
+    if (['create_independent_deck', 'replace_card_in_deck'].includes(str(current.type)) && typeof current.definitionId === 'string') deferred.add(current.definitionId);
     Object.values(current).forEach(visit);
   };
   Object.values(cards).forEach((card) => card.abilities.forEach(visit));

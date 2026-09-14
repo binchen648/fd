@@ -1045,9 +1045,14 @@ function activateCardById(
   transaction: AbilityResolutionTransaction,
   effect: Extract<ResolutionEffectNode, { type: 'activate_card_by_id' }>,
 ): KnownEffectResult {
-  const target = transaction.workingState.cards.find((candidate) =>
+  const targets = transaction.workingState.cards.filter((candidate) =>
     candidate.ownerPlayerId === transaction.context.controllerId && candidate.definitionId === effect.definitionId);
-  if (!target) throw new ResolutionRuntimeError('missing_activation_target', `Missing owned activation target '${effect.definitionId}'.`);
+  if (targets.length === 0) throw new ResolutionRuntimeError('missing_activation_target', `Missing owned activation target '${effect.definitionId}'.`);
+  if (targets.length !== 1) throw new ResolutionRuntimeError('ambiguous_activation_target', `Activation target '${effect.definitionId}' is ambiguous.`);
+  const target = targets[0]!;
+  if (target.controllerPlayerId !== transaction.context.controllerId) {
+    throw new ResolutionRuntimeError('invalid_activation_controller', `Activation target '${effect.definitionId}' is controlled by another player.`);
+  }
   if (target.zone !== 'skill') throw new ResolutionRuntimeError('invalid_activation_zone', `Activation target '${effect.definitionId}' must be in skill.`);
   const runtime = transaction.workingState.abilityRuntime;
   if (runtime?.cardState[target.instanceId]?.active) {

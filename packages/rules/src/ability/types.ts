@@ -72,6 +72,9 @@ export interface BattleResultData { winners: PlayerId[]; loserIds: PlayerId[] }
 export interface BattleResult extends BattleResultData { didWin(playerId: PlayerId): boolean; isSoleWinner(playerId: PlayerId): boolean }
 export interface AbilityEvent {
   id: string; type: string; playerId?: PlayerId; sourceCardId?: string; battleResult?: BattleResultData;
+  /** Server-owned battle identity facts for battle-derived trigger events. */
+  battlefieldId?: string;
+  lossOrdinal?: number;
   /** Trusted backend snapshot of the simultaneous play batch, never a client-supplied condition. */
   playedCards?: { instanceId: string; controllerId: string; cardType: string; faceDown: boolean }[];
   revealedKind?: 'situation' | 'event';
