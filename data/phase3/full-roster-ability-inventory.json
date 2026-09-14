@@ -7908,6 +7908,7 @@
       },
       "phase3": {
         "mechanicFamilies": [
+          "CARD_ZONE",
           "CONDITION",
           "MODIFIER",
           "POWER",
@@ -7915,6 +7916,7 @@
           "TRIGGER"
         ],
         "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_MODIFIER",
           "GENERIC_POWER",
@@ -8356,14 +8358,16 @@
           "INTERACTION",
           "RESOURCE_NUMERIC",
           "RESULT_BINDING",
-          "TARGET_SELECTION"
+          "TARGET_SELECTION",
+          "TRIGGER"
         ],
         "requiredCapabilities": [
           "GENERIC_CARD_ZONE",
           "GENERIC_PENDING_INTERACTION",
           "GENERIC_RESOURCE_NUMERIC",
           "GENERIC_RESULT_BINDING",
-          "GENERIC_TARGET_SELECTION"
+          "GENERIC_TARGET_SELECTION",
+          "GENERIC_TRIGGER_GATEWAY"
         ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
