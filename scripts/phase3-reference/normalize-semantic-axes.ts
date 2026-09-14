@@ -407,6 +407,9 @@ export function normalizeStructuredAbility(ability: StructuredAbility): Semantic
     const operation = stringValue(candidate.operation) ?? 'modify';
     if (rule) axes.modifier.push(`rule:${rule}:${operation}`);
     if (rule && /combat|battle|defeat/i.test(rule)) axes.battle.push('COMBAT_RULE_MODIFIER');
+    const face = stringValue(candidate.face);
+    if (face === 'down') axes.visibility.push('FACE_DOWN');
+    if (face === 'up') axes.visibility.push('FACE_UP');
   }
 
   const powerModifiers = collectNamedObjects(ability, 'powerModifiers');

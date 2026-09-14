@@ -321,7 +321,7 @@ structuredAbilityCount=292
 | visibility | `revealScope:servant_package` | 28 |
 | visibility | `revealTiming:on_use_declared` | 28 |
 | visibility | `FACE_UP` | 9 |
-| visibility | `FACE_DOWN` | 2 |
+| visibility | `FACE_DOWN` | 3 |
 | visibility | `inspectZone:opponent_discard` | 1 |
 | binding | `payload:selectedInstanceIds` | 13 |
 | binding | `payload:selectedEventIds` | 7 |
@@ -381,7 +381,7 @@ structuredAbilityCount=292
 | `master.amakusa.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_CARD` | `INSTALL_ABILITY_RULE_MODIFIER`, `REMOVE_STATUS` | `CHOOSE_ONE_CARD` | `cleanup:remove_from_game`, `duration:this_round` | `rule:skill_use:forbid` | `FACE_UP` | `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |
 | `master.amakusa.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `round.started` | `COMMAND_SEALS_AT_LEAST`, `FORMULA`, `HAS_STATUS`, `METRIC`, `SCHEDULED_PAYLOAD_PRESENT`, `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_PLAYER` | `ADD_STATUS` | `CHOOSE_ONE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `master.amakusa.skill.s3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.amakusa-vassal` |
-| `master.araya.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `CONTROLLER_AT_LOCATION_WITH_SOURCE_TERRAIN_AT_LEAST`, `CONTROLLER_AT_MAGIC_WORKSHOP` | `NONE` | `NONE` | `LOCATION_TOKEN_RULE` | `NONE` | `NONE` | `rule:card_play_requirement:require_face_down_attack`, `rule:movement_permission:prohibit_leave_controller_location` | `NONE` | `NONE` | `NONE` | `core.araya-paradox-spiral` |
+| `master.araya.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `CONTROLLER_AT_LOCATION_WITH_SOURCE_TERRAIN_AT_LEAST`, `CONTROLLER_AT_MAGIC_WORKSHOP` | `NONE` | `NONE` | `LOCATION_TOKEN_RULE` | `NONE` | `NONE` | `rule:card_play_requirement:require_face_down_attack`, `rule:movement_permission:prohibit_leave_controller_location` | `FACE_DOWN` | `NONE` | `NONE` | `core.araya-paradox-spiral` |
 | `master.araya.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `player.deployed` | `DEPLOYMENT_LOCATION_WOULD_GRANT_CONTROLLER_TERRAIN`, `EVENT_PLAYER_IS_CONTROLLER` | `NONE` | `NONE` | `TERRAIN_POSITION_ADJUSTMENT` | `NONE` | `duration:rest_of_game` | `NONE` | `NONE` | `NONE` | `NONE` | `core.araya-triple-boundary` |
 | `master.araya.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.ending` | `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_CARD` | `GAIN_MANA`, `MOVE_SELECTED_CARDS` | `CHOOSE_ONE_CARD` | `NONE` | `NONE` | `NONE` | `payload:selectedInstanceIds` | `COMBAT_EVENT` | `core.structured-skill` |
 | `master.arcueid.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |

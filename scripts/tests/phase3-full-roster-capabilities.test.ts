@@ -715,6 +715,7 @@ describe('Phase 3 full-roster capability mapping', () => {
         'GENERIC_CONDITION_EVALUATION',
         'GENERIC_MODIFIER',
         'GENERIC_MOVEMENT',
+        'GENERIC_VISIBILITY',
         'REVIEWED_SPECIAL_HANDLER',
       ]),
     );

@@ -22208,6 +22208,7 @@
       "mechanicFamily": "HIDDEN_INFORMATION",
       "affectedAbilityIds": [
         "master.amakusa.skill.s1a",
+        "master.araya.skill.ascension",
         "master.arcueid.skill.s1",
         "master.artoira.skill.s1",
         "master.ciel.skill.s1b",
@@ -22265,6 +22266,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[51].abilities[0].printedClause",
           "sha256": "e7bd371c3bcf2d0f86f2995ac118643c9a929b17d698fa66528889ccb03f503c"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.araya/荒耶宗莲"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_araya.ascensionSkill#line=426"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.araya/ascension"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[2].text#line=1",
+          "sha256": "f194af15191615a0c8cf1583bb45e89ac30ab564904042d6a15b98c6ef8cb16f"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[2].text#line=2",
+          "sha256": "3bd0f613d5b0b9adc4365692446ffd6431f4480beda632f15020d916e38b1808"
         },
         {
           "abilityId": "master.arcueid.skill.s1",
@@ -23130,9 +23158,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 35,
-          "specific_handler": 1
+          "specific_handler": 2
         },
-        "handlerCount": 3,
+        "handlerCount": 4,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
