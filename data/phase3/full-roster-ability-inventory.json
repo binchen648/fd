@@ -2701,12 +2701,14 @@
         "mechanicFamilies": [
           "CONDITION",
           "LIFECYCLE",
+          "MOVEMENT",
           "SPECIAL_SUBSYSTEM",
           "TRIGGER"
         ],
         "requiredCapabilities": [
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MOVEMENT",
           "GENERIC_TRIGGER_GATEWAY",
           "REVIEWED_SPECIAL_HANDLER"
         ],
@@ -20751,6 +20753,7 @@
         "mechanicFamilies": [
           "BATTLE_RESULT",
           "CONDITION",
+          "MOVEMENT",
           "RESOURCE_NUMERIC",
           "SPECIAL_SUBSYSTEM",
           "TRIGGER"
@@ -20759,6 +20762,7 @@
           "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_EVENT_DECK",
+          "GENERIC_MOVEMENT",
           "GENERIC_RESOURCE_NUMERIC",
           "GENERIC_TRIGGER_GATEWAY",
           "REVIEWED_SPECIAL_HANDLER"
@@ -41786,6 +41790,7 @@
         "mechanicFamilies": [
           "BATTLE_RESULT",
           "CONDITION",
+          "MOVEMENT",
           "SPECIAL_SUBSYSTEM",
           "TRIGGER"
         ],
@@ -41793,6 +41798,7 @@
           "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_EVENT_DECK",
+          "GENERIC_MOVEMENT",
           "GENERIC_TRIGGER_GATEWAY",
           "REVIEWED_SPECIAL_HANDLER"
         ],
@@ -62308,6 +62314,7 @@
           "CARD_ACTION_SEMANTICS",
           "CONDITION",
           "LIFECYCLE",
+          "MOVEMENT",
           "RESOURCE_NUMERIC",
           "TRIGGER"
         ],
@@ -62315,6 +62322,7 @@
           "CARD_ACTION_CLOSE",
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MOVEMENT",
           "GENERIC_RESOURCE_NUMERIC",
           "GENERIC_TRIGGER_GATEWAY"
         ],

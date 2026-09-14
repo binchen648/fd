@@ -471,6 +471,9 @@ export function mapStructuredCapabilityNeeds(
   const ruleModifiers = Array.isArray(ability.ruleModifiers)
     ? ability.ruleModifiers.filter(isRecord)
     : [];
+  const hasDeploymentSemantics =
+    axes.trigger.some((value) => /deploy/i.test(value)) ||
+    axes.condition.some((value) => /deploy/i.test(value));
 
   if (axes.cost.length > 0) addCapability(result, 'GENERIC_COST_PAYMENT', 'COST_PAYMENT');
   if (axes.target.length > 0) addCapability(result, 'GENERIC_TARGET_SELECTION', 'TARGET_SELECTION');
@@ -503,7 +506,9 @@ export function mapStructuredCapabilityNeeds(
   if ([...effectTokens].some((effect) => /POWER/.test(effect))) {
     addCapability(result, 'GENERIC_POWER', 'POWER');
   }
-  if (effectTokens.has('MOVE_PLAYER')) addCapability(result, 'GENERIC_MOVEMENT', 'MOVEMENT');
+  if (effectTokens.has('MOVE_PLAYER') || hasDeploymentSemantics) {
+    addCapability(result, 'GENERIC_MOVEMENT', 'MOVEMENT');
+  }
   if (
     ruleModifiers.some((modifier) =>
       typeof modifier.rule === 'string' && /movement|deployment/i.test(modifier.rule)

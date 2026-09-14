@@ -190,6 +190,26 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(mapped.requiredCapabilities).toContain('GENERIC_MODIFIER');
   });
 
+  it('maps structural deployment triggers and conditions to Movement without an identity branch', () => {
+    const axes = emptyAxes();
+    axes.trigger = ['player.deployed'];
+    axes.condition = ['DEPLOYMENT_LOCATION_WOULD_GRANT_CONTROLLER_TERRAIN'];
+    const mapped = mapStructuredCapabilityNeeds(
+      {
+        id: 'deployment-trigger-fixture',
+        printedClause: 'fixture',
+        conditions: [
+          { type: 'event_type_is', eventType: 'player.deployed' },
+          { type: 'deployment_location_would_grant_controller_terrain' },
+        ],
+      },
+      axes,
+    );
+    expect(mapped.requiredCapabilities).toContain('GENERIC_MOVEMENT');
+    expect(mapped.requiredCapabilities).toContain('GENERIC_TRIGGER_GATEWAY');
+    expect(mapped.requiredCapabilities).toContain('GENERIC_CONDITION_EVALUATION');
+  });
+
   it('maps structural source-card movement to the generic Card Zone dependency', () => {
     const axes = emptyAxes();
     axes.effect = ['MOVE_SOURCE_CARD'];
@@ -704,6 +724,7 @@ describe('Phase 3 full-roster capability mapping', () => {
       expect.arrayContaining([
         'GENERIC_CONDITION_EVALUATION',
         'GENERIC_LIFECYCLE_POLICY',
+        'GENERIC_MOVEMENT',
         'GENERIC_TRIGGER_GATEWAY',
         'REVIEWED_SPECIAL_HANDLER',
       ]),

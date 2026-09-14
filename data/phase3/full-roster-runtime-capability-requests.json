@@ -12824,17 +12824,21 @@
       "mechanicFamily": "MOVEMENT",
       "affectedAbilityIds": [
         "master.araya.skill.ascension",
+        "master.araya.skill.s1",
         "master.chaos.skill.s10",
         "master.chaos.skill.s12",
         "master.fiore.skill.s2",
         "master.fiore.skill.s5",
         "master.goredolf.skill.s1a",
+        "master.kadoc.skill.s3",
         "master.kadoc.skill.s4",
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
         "master.peperoncino.skill.s1b",
         "master.peperoncino.skill.s4",
+        "master.wodime.skill.s9",
         "servant.drake.skill.sc-drake-2",
+        "servant.edison.skill.sc-edison-2",
         "servant.edison.skill.sc-edison-3",
         "servant.gorgon.skill.sc-gorgon-3",
         "servant.mozart.skill.sc-mozart-1"
@@ -12866,6 +12870,27 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[66].skills[2].text#line=2",
           "sha256": "3bd0f613d5b0b9adc4365692446ffd6431f4480beda632f15020d916e38b1808"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.araya/荒耶宗莲"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_araya.skills[s1]#line=424"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.araya/s1"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[0].text#line=1",
+          "sha256": "9b0fc39e5746cc00c33fc717973a1bf1fc73a4565ef8e75f34135f2d726bea12"
         },
         {
           "abilityId": "master.chaos.skill.s10",
@@ -13007,6 +13032,33 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[51].skills[1].text#line=2",
           "sha256": "094285f1f05bab71f779c204d16c390b656bcf1f3dd72835a541fa8f1ddb41b1"
+        },
+        {
+          "abilityId": "master.kadoc.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.kadoc/卡多克·泽姆露普斯"
+        },
+        {
+          "abilityId": "master.kadoc.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_kadoc.skills[s3]#line=319"
+        },
+        {
+          "abilityId": "master.kadoc.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.kadoc/s3"
+        },
+        {
+          "abilityId": "master.kadoc.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[54].skills[3].text#line=1",
+          "sha256": "79b43e85325b94864cb8006cc67f7635a9bb4313ef3d3d8ac740fd6ba897c3a5"
+        },
+        {
+          "abilityId": "master.kadoc.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[54].skills[3].text#line=2",
+          "sha256": "d8cd9a53abcbde4a35dd65a15be52b21f172a8dbb1d85aa9c206c75a9bf56fde"
         },
         {
           "abilityId": "master.kadoc.skill.s4",
@@ -13162,6 +13214,33 @@
           "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
+          "abilityId": "master.wodime.skill.s9",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.wodime/基尔什塔利亚·沃戴姆"
+        },
+        {
+          "abilityId": "master.wodime.skill.s9",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_wodime.skills[s9]#line=367"
+        },
+        {
+          "abilityId": "master.wodime.skill.s9",
+          "document": "legacy-content.json",
+          "locator": "master/master.wodime/s9"
+        },
+        {
+          "abilityId": "master.wodime.skill.s9",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[58].skills[9].text#line=1",
+          "sha256": "07bf10a8e45c4d42e1c970e0029a6c7d6e777425adbd74a30ca486b9fc88900f"
+        },
+        {
+          "abilityId": "master.wodime.skill.s9",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[58].skills[9].text#line=2",
+          "sha256": "031162f6cb7f6ee1b383aec7910fdb47f63ddf2f2333868def79ec8431ffa31b"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
@@ -13181,6 +13260,39 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[47].abilities[0].printedClause",
           "sha256": "7249a21a955a81afc518ae8c364415d2abbe3ea44a5eb1fc27a1e7a810f5edf9"
+        },
+        {
+          "abilityId": "servant.edison.skill.sc-edison-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/托马斯·爱迪生.htm"
+        },
+        {
+          "abilityId": "servant.edison.skill.sc-edison-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.edison/托马斯·爱迪生"
+        },
+        {
+          "abilityId": "servant.edison.skill.sc-edison-2",
+          "document": "src/content/authoring/cards.json",
+          "locator": "skillCards[53]"
+        },
+        {
+          "abilityId": "servant.edison.skill.sc-edison-2",
+          "document": "src/content/authoring/cards.json",
+          "locator": "skillCards[53].abilities[0].printedClause",
+          "sha256": "dd3e704dcc5e93424c0773825826c8b35fc2ea92b0b3a66b3033f4b84e9b71a4"
+        },
+        {
+          "abilityId": "servant.edison.skill.sc-edison-2",
+          "document": "src/content/authoring/cards.json",
+          "locator": "skillCards[53].abilities[1].printedClause",
+          "sha256": "dd3e704dcc5e93424c0773825826c8b35fc2ea92b0b3a66b3033f4b84e9b71a4"
+        },
+        {
+          "abilityId": "servant.edison.skill.sc-edison-2",
+          "document": "src/content/authoring/cards.json",
+          "locator": "skillCards[53].abilities[2].printedClause",
+          "sha256": "9ce3c9b19f9b277448bbcfcbedde59763b38f93967b0a82648d5a7df8faed1c1"
         },
         {
           "abilityId": "servant.edison.skill.sc-edison-3",
@@ -13295,10 +13407,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 11,
-          "specific_handler": 4
+          "shared_handler": 14,
+          "specific_handler": 5
         },
-        "handlerCount": 9,
+        "handlerCount": 11,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
