@@ -2182,6 +2182,7 @@ Required behavior/evidence:
 May touch:
 
 - `packages/rules/src/ability/interpreter.ts`;
+- `packages/rules/src/ability/battle-terminal.ts` only for the narrow frozen battlefield/winner snapshot required by this exact terminal consumer;
 - `packages/rules/src/ability/types.ts` only if typed event metadata requires a narrow additive field;
 - `packages/rules/src/match-session.ts` and `packages/rules/src/core/game-loop.ts` only if a fresh failing proof shows the terminal event lacks authoritative battle winner/location provenance required by this exact consumer;
 - one focused regression test, one scoped browser fixture/spec, and one B22 result report.

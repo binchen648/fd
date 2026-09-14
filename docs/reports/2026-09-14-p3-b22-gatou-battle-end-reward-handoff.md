@@ -21,6 +21,7 @@ The implementation must consume existing authoritative state rather than parse t
 ## Provenance contract
 
 - Use the accepted B15 terminal event only after prior post-scoring work is terminal.
+- Fresh implementation proof may add only a narrow frozen `battleOutcomes[{battlefieldId,winnerPlayerIds}]` snapshot to the B15 terminal event if current state no longer retains scored battle results; this provenance addition belongs in `ability/battle-terminal.ts` and must not broaden terminal semantics.
 - Current-round successful `movement` log entries are the authoritative proof that another player entered a location by movement. Initial deployment/placement is not a movement log and never qualifies.
 - At settlement, a qualifying player must still be at the controller's current location and have moved into that same location during the current round. Count player IDs, not movement records.
 - Winning is determined from the authoritative battle result for the controller's current location in this battle phase. Membership in `winnerPlayerIds` is sufficient, including shared/tied winners.
