@@ -92,6 +92,20 @@ describe('Phase 3 full-roster capability mapping', () => {
     triggeredResource.trigger = ['combat.resolved'];
     triggeredResource.battle = ['COMBAT_EVENT'];
     expect(contractIsEligible('RESOURCE_NUMERIC_CORE_DIRECT_ACTION', triggeredResource)).toBe(false);
+
+    const commandSealResource = emptyAxes();
+    commandSealResource.effect = ['ADJUST_COMMAND_SEALS'];
+    expect(contractIsEligible('RESOURCE_NUMERIC_CORE_DIRECT_ACTION', commandSealResource)).toBe(false);
+
+    const mappedCommandSeals = mapStructuredCapabilityNeeds(
+      {
+        id: 'restore-command-seals-fixture',
+        printedClause: 'fixture',
+        effects: [{ type: 'adjust_command_seals', operation: 'restore_all', scope: 'controller' }],
+      },
+      commandSealResource,
+    );
+    expect(mappedCommandSeals.requiredCapabilities).toContain('GENERIC_RESOURCE_NUMERIC');
   });
 
   it('classifies current routes only as legacy, new, dual, or none', () => {
@@ -157,11 +171,11 @@ describe('Phase 3 full-roster capability mapping', () => {
     const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
 
     expect(inventory.capabilitySummary.totalIdentityCount).toBe(944);
-    expect(inventory.capabilitySummary.contractMappedCount).toBe(89);
-    expect(inventory.capabilitySummary.explicitBlockCount).toBe(855);
+    expect(inventory.capabilitySummary.contractMappedCount).toBe(99);
+    expect(inventory.capabilitySummary.explicitBlockCount).toBe(845);
     expect(inventory.capabilitySummary.zeroSilentFallback).toBe(true);
-    expect(catalog.coverage.mappedAbilities).toHaveLength(89);
-    expect(catalog.coverage.blockedAbilities).toHaveLength(855);
+    expect(catalog.coverage.mappedAbilities).toHaveLength(99);
+    expect(catalog.coverage.blockedAbilities).toHaveLength(845);
     expect(catalog.coverage.mappedAbilities.length + catalog.coverage.blockedAbilities.length).toBe(944);
 
     const allowedCurrentRoutes = new Set(['legacy', 'new', 'dual', 'none']);
@@ -173,8 +187,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     }
 
     expect(markdown).toContain('totalIdentityCount=944');
-    expect(markdown).toContain('contractMappedCount=89');
-    expect(markdown).toContain('explicitBlockCount=855');
+    expect(markdown).toContain('contractMappedCount=99');
+    expect(markdown).toContain('explicitBlockCount=845');
     expect(markdown).toContain('zeroSilentFallback=true');
   });
 
@@ -193,6 +207,22 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(byId.get('master.chaos.skill.s8').phase3.blockedBy).toContain('SPECIAL_EFFECT:defeat_player');
     expect(byId.get('master.chaos.skill.s17').phase3.classificationRoute).toBe('SOURCE_EVIDENCE_REQUIRED');
     expect(byId.get('master.chaos.skill.ascension').phase3.classificationRoute).toBe('READY_GENERIC_EXTENSION');
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
+  });
+
+  it('maps the Bazett evidence slice while keeping Fragarach special and command seals generic', () => {
+    const inventory = JSON.parse(
+      readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8'),
+    ) as any;
+    const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
+    const byId = new Map(entries.map((entry: any) => [entry.canonicalAbilityId, entry]));
+
+    expect(byId.get('master.bazett.skill.s2').phase3.classificationRoute).toBe('SPECIAL_HANDLER_CANDIDATE');
+    expect(byId.get('master.bazett.skill.s2').phase3.blockedBy).toContain('SPECIAL_EFFECT:defeat_player');
+    expect(byId.get('master.bazett.skill.s5').phase3.requiredCapabilities).toContain('CARD_ACTION_ADD_TO_ATTACK');
+    expect(byId.get('master.bazett.skill.s4').phase3.requiredCapabilities).toContain('GENERIC_RESOURCE_NUMERIC');
+    expect(byId.get('master.bazett.skill.s4').phase3.inheritedAcceptanceContracts).not.toContain('RESOURCE_NUMERIC_CORE_DIRECT_ACTION');
+    expect(byId.get('master.bazett.skill.ascension').phase3.classificationRoute).toBe('READY_GENERIC_EXTENSION');
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
   });
 

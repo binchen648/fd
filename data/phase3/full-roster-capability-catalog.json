@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 89,
-    "explicitBlockCount": 855,
+    "contractMappedCount": 99,
+    "explicitBlockCount": 845,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
-      "READY_GENERIC_EXTENSION": 82,
-      "SPECIAL_HANDLER_CANDIDATE": 7,
+      "READY_GENERIC_EXTENSION": 91,
+      "SPECIAL_HANDLER_CANDIDATE": 8,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 855,
+      "SOURCE_EVIDENCE_REQUIRED": 845,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -62,6 +62,10 @@
       "eligibleAbilities": [],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.bazett.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
         {
           "abilityId": "master.chaos.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
@@ -173,6 +177,7 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.bazett.skill.s5",
         "servant.kagekiyo.skill.sc-kagekiyo-2"
       ],
       "partialAbilities": [],
@@ -300,6 +305,10 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.bazett.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.chaos.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -366,6 +375,10 @@
       ],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.bazett.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
         {
           "abilityId": "master.chaos.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
@@ -485,6 +498,10 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.bazett.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.chaos.skill.s11",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -569,6 +586,10 @@
       "eligibleAbilities": [],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.bazett.skill.s5",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
         {
           "abilityId": "master.chaos.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
@@ -692,6 +713,10 @@
       ],
       "skippedAbilities": [
         {
+          "abilityId": "master.bazett.skill.s5",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.chaos.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -810,6 +835,10 @@
         "servant.artoria-alt.skill.sc-artoria-alt-2"
       ],
       "skippedAbilities": [
+        {
+          "abilityId": "master.bazett.skill.s5",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
         {
           "abilityId": "master.chaos.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
@@ -931,6 +960,10 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.bazett.skill.s5",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.chaos.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1051,6 +1084,10 @@
       "eligibleAbilities": [],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.bazett.skill.s5",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
         {
           "abilityId": "master.chaos.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
@@ -1191,6 +1228,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.bazett.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.bazett.skill.s4",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.chaos.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1307,6 +1352,10 @@
       "eligibleAbilities": [
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1a",
+        "master.bazett.skill.s1a",
+        "master.bazett.skill.s1c",
+        "master.bazett.skill.s1d",
+        "master.bazett.skill.s5",
         "master.chaos.skill.s2",
         "master.chaos.skill.s6",
         "master.chaos.skill.s7",
@@ -1371,7 +1420,8 @@
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
         "master.akasha.skill.s1",
-        "master.arcueid.skill.s1a"
+        "master.arcueid.skill.s1a",
+        "master.bazett.skill.s1"
       ],
       "partialAbilities": [],
       "skippedAbilities": [
@@ -1381,6 +1431,10 @@
         },
         {
           "abilityId": "master.arcueid.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -1500,6 +1554,7 @@
       "eligibleAbilities": [
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1",
+        "master.bazett.skill.s4",
         "master.chaos.skill.ascension",
         "master.chaos.skill.s1",
         "master.chaos.skill.s13",
@@ -1531,6 +1586,10 @@
         },
         {
           "abilityId": "master.arcueid.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
       ]
@@ -1567,6 +1626,12 @@
         "master.arcueid.skill.s1",
         "master.arcueid.skill.s1a",
         "master.arcueid.skill.s3",
+        "master.bazett.skill.s1a",
+        "master.bazett.skill.s1c",
+        "master.bazett.skill.s1d",
+        "master.bazett.skill.s2",
+        "master.bazett.skill.s3",
+        "master.bazett.skill.s5",
         "master.chaos.skill.s1",
         "master.chaos.skill.s11",
         "master.chaos.skill.s16",
@@ -1711,6 +1776,10 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.bazett.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.chaos.skill.s8",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1768,6 +1837,9 @@
         "master.akasha.skill.s1",
         "master.amakusa.skill.s1a",
         "master.arcueid.skill.s1a",
+        "master.bazett.skill.s1b",
+        "master.bazett.skill.s1c",
+        "master.bazett.skill.s2",
         "master.chaos.skill.s1",
         "master.chaos.skill.s11",
         "master.chaos.skill.s4",
@@ -1818,6 +1890,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.bazett.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1d",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.albion.skill.sc-albion-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1854,6 +1938,9 @@
       "eligibleAbilities": [
         "master.amakusa.skill.s1a",
         "master.arcueid.skill.s3",
+        "master.bazett.skill.ascension",
+        "master.bazett.skill.s1b",
+        "master.bazett.skill.s1c",
         "master.chaos.skill.ascension",
         "master.chaos.skill.s10",
         "master.chaos.skill.s11",
@@ -2057,6 +2144,11 @@
       "eligibleAbilities": [
         "master.araya.skill.s1a",
         "master.arcueid.skill.s3",
+        "master.bazett.skill.s1a",
+        "master.bazett.skill.s1c",
+        "master.bazett.skill.s3",
+        "master.bazett.skill.s4",
+        "master.bazett.skill.s5",
         "master.chaos.skill.s3",
         "master.chaos.skill.s7",
         "master.ciel.skill.s2",
@@ -2168,6 +2260,9 @@
         "master.amakusa.skill.s1a",
         "master.amakusa.skill.s2",
         "master.arcueid.skill.s1a",
+        "master.bazett.skill.s1a",
+        "master.bazett.skill.s1d",
+        "master.bazett.skill.s3",
         "master.chaos.skill.s1",
         "master.ciel.skill.s3",
         "servant.albion.skill.sc-albion-2",
@@ -2182,6 +2277,18 @@
       "skippedAbilities": [
         {
           "abilityId": "master.akasha.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1b",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1c",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -2406,6 +2513,12 @@
         "master.arcueid.skill.s1",
         "master.arcueid.skill.s1a",
         "master.arcueid.skill.s3",
+        "master.bazett.skill.s1a",
+        "master.bazett.skill.s1c",
+        "master.bazett.skill.s1d",
+        "master.bazett.skill.s2",
+        "master.bazett.skill.s3",
+        "master.bazett.skill.s5",
         "master.chaos.skill.s1",
         "master.chaos.skill.s11",
         "master.chaos.skill.s16",
@@ -2560,6 +2673,26 @@
         },
         {
           "abilityId": "master.arcueid.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1c",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.bazett.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.bazett.skill.s4",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.bazett.skill.s5",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2822,6 +2955,7 @@
       "representatives": [],
       "acceptanceVehicle": "B/R reviewed-special exception with explicit deletion/reuse criteria",
       "eligibleAbilities": [
+        "master.bazett.skill.s2",
         "master.chaos.skill.s8",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.gorgon.skill.sc-gorgon-3",
@@ -2895,6 +3029,10 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.bazett.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.chaos.skill.s13",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -2959,6 +3097,16 @@
       "master.arcueid.skill.s1",
       "master.arcueid.skill.s1a",
       "master.arcueid.skill.s3",
+      "master.bazett.skill.ascension",
+      "master.bazett.skill.s1",
+      "master.bazett.skill.s1a",
+      "master.bazett.skill.s1b",
+      "master.bazett.skill.s1c",
+      "master.bazett.skill.s1d",
+      "master.bazett.skill.s2",
+      "master.bazett.skill.s3",
+      "master.bazett.skill.s4",
+      "master.bazett.skill.s5",
       "master.chaos.skill.ascension",
       "master.chaos.skill.s1",
       "master.chaos.skill.s10",
@@ -3198,76 +3346,6 @@
       },
       {
         "abilityId": "master.artoira.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.bazett.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.bazett.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.bazett.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.bazett.skill.s1b",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.bazett.skill.s1c",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.bazett.skill.s1d",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.bazett.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.bazett.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.bazett.skill.s4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.bazett.skill.s5",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -9030,6 +9108,7 @@
       }
     ],
     "specialCandidates": [
+      "master.bazett.skill.s2",
       "master.chaos.skill.s8",
       "servant.andersen.skill.sc-andersen-2",
       "servant.diarmuid.skill.sc-diarmuid-1",

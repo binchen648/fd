@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 855,
-    "coveredBlockedIdentityCount": 855,
+    "blockedIdentityCount": 845,
+    "coveredBlockedIdentityCount": 845,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 2,
@@ -42,16 +42,6 @@
         "master.arcueid.skill.s2",
         "master.artoira.skill.ascension",
         "master.artoira.skill.s1",
-        "master.bazett.skill.ascension",
-        "master.bazett.skill.s1",
-        "master.bazett.skill.s1a",
-        "master.bazett.skill.s1b",
-        "master.bazett.skill.s1c",
-        "master.bazett.skill.s1d",
-        "master.bazett.skill.s2",
-        "master.bazett.skill.s3",
-        "master.bazett.skill.s4",
-        "master.bazett.skill.s5",
         "master.caren.skill.ascension",
         "master.caren.skill.s1",
         "master.caren.skill.s1a",
@@ -1386,184 +1376,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[17].skills[0].text#line=2",
           "sha256": "91347a0daa6e27edc5dcc887c623867f7084801f23f4f374767ebd3d7f35afbe"
-        },
-        {
-          "abilityId": "master.bazett.skill.ascension",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
-        },
-        {
-          "abilityId": "master.bazett.skill.ascension",
-          "document": "legacy-content.json",
-          "locator": "master/master.bazett/ascension"
-        },
-        {
-          "abilityId": "master.bazett.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[9].text#line=1",
-          "sha256": "8e81477802e87c6068fff2736ea67f031069dafec5b405db45471dbac1e1d8d0"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1",
-          "document": "legacy-content.json",
-          "locator": "master/master.bazett/s1"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[0].text#line=1",
-          "sha256": "9e340e6b8393bb059a4550c7275b7f61f05adde31ea6d88bfab810d541b78d22"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1a",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1a",
-          "document": "legacy-content.json",
-          "locator": "master/master.bazett/s1a"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1a",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[1].text#line=1",
-          "sha256": "ce23bd11a4ccfb9d37feb9afb6afbf73f6c726583caf66f39d170e3757f76bc7"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1b",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1b",
-          "document": "legacy-content.json",
-          "locator": "master/master.bazett/s1b"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1b",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[2].text#line=1",
-          "sha256": "9847f0953309d542a783f1553153ccbf2bf08a3c008674caadd067ef2b9e7071"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1c",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1c",
-          "document": "legacy-content.json",
-          "locator": "master/master.bazett/s1c"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1c",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[3].text#line=1",
-          "sha256": "f924e89e0e10831c5c15b835941c72c0f8fcd6cec9f1aab363a419eb232a4941"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1d",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1d",
-          "document": "legacy-content.json",
-          "locator": "master/master.bazett/s1d"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1d",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[4].text#line=1",
-          "sha256": "e8580ee642567c08d9d9232a67dcb3c6cfe8ad7e8e91eb35b0cfc4327888a3d4"
-        },
-        {
-          "abilityId": "master.bazett.skill.s2",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
-        },
-        {
-          "abilityId": "master.bazett.skill.s2",
-          "document": "legacy-content.json",
-          "locator": "master/master.bazett/s2"
-        },
-        {
-          "abilityId": "master.bazett.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[5].text#line=1",
-          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
-        },
-        {
-          "abilityId": "master.bazett.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[5].text#line=2",
-          "sha256": "26b12518d29f74ca44fcb1a948dd7614cb8babecf11609745eee2d532cdf1d3a"
-        },
-        {
-          "abilityId": "master.bazett.skill.s3",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
-        },
-        {
-          "abilityId": "master.bazett.skill.s3",
-          "document": "legacy-content.json",
-          "locator": "master/master.bazett/s3"
-        },
-        {
-          "abilityId": "master.bazett.skill.s3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[6].text#line=1",
-          "sha256": "ad6fd236b489f468aca2bf85acad07cafebc145e7ea80ea61ceef9f9851f7b6a"
-        },
-        {
-          "abilityId": "master.bazett.skill.s4",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
-        },
-        {
-          "abilityId": "master.bazett.skill.s4",
-          "document": "legacy-content.json",
-          "locator": "master/master.bazett/s4"
-        },
-        {
-          "abilityId": "master.bazett.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[7].text#line=1",
-          "sha256": "588027286bf420d1a95f439684e3125dd6411babcb4599b5977bb54126bfbc10"
-        },
-        {
-          "abilityId": "master.bazett.skill.s5",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
-        },
-        {
-          "abilityId": "master.bazett.skill.s5",
-          "document": "legacy-content.json",
-          "locator": "master/master.bazett/s5"
-        },
-        {
-          "abilityId": "master.bazett.skill.s5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[8].text#line=1",
-          "sha256": "0454b5987d403edda0da7e2cdfb953423953c8f7e20af5f2e49d19a4a145ee98"
-        },
-        {
-          "abilityId": "master.bazett.skill.s5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[8].text#line=2",
-          "sha256": "de4cdc20f2a137ab11c739183e68842d24cd961a6405511ef7a842ec2c1f5614"
-        },
-        {
-          "abilityId": "master.bazett.skill.s5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[8].text#line=3",
-          "sha256": "43800e55eb677bb6252d1095c7a45bae443a0e0ec7a004bd8c8bff21a6d5f532"
         },
         {
           "abilityId": "master.caren.skill.ascension",
@@ -19252,10 +19064,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 2,
-          "shared_handler": 410,
-          "specific_handler": 442
+          "shared_handler": 403,
+          "specific_handler": 439
         },
-        "handlerCount": 515,
+        "handlerCount": 511,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."
