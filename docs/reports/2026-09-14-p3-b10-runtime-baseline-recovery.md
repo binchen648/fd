@@ -1,20 +1,22 @@
-# P3-B10 Runtime Baseline Recovery
+# P3-B10 Runtime Baseline Recovery r2
 
 - Document Role: RUNTIME_RECOVERY_IMPLEMENTATION
 - Owner: Codex B recovery lane
 - Task: `P3-B10`
-- Branch: `codex/b-p3-b10-recovery-r1`
-- BaseCommit: `76dbbd92a17ed1a9c89236a4d3db0cb7aea02cbf`
+- Branch: `codex/b-p3-b10-recovery-r2`
+- BaseCommit: `5d34befa085fe6426e1d550ad0c5d0a0ca824db6`
+- Accepted B08 replacement review: `55c890d`
+- RepackedFrom: `cbfef6659ec9e5fd3c0d5c3f57bd544e4fdd52b3` + `bcb7ed1`
 - RecoveryCandidateV1: `cbfef6659ec9e5fd3c0d5c3f57bd544e4fdd52b3`
 - R05V1Review: `d765d62` -> `IMPLEMENTATION_NEEDS_REVISION`
 - Historical accepted B10 object: `9fba6d9` (unavailable in the current local/remote Git object graph)
 - MechanicFamily: `SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL`
-- Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- Status: `IMPLEMENTATION_COMPLETE_CANDIDATE_R2`
 - GateClaim: `NONE`
 
 ## Recovery Boundary
 
-This commit reconstructs the surviving P3-B10 runtime contract after the historically accepted Git object became unavailable. It does **not** claim to recreate the original `9fba6d9` object or inherit its review status. A fresh independent Codex R review is required before this replacement candidate may be used as the downstream runtime baseline for P3-B11.
+This r2 repacks the previously repaired P3-B10 runtime delta onto the freshly accepted replacement B08 base `5d34bef`. It does **not** claim to recreate the original `9fba6d9` object or inherit historical review status. A fresh independent Codex R review of the exact r2 candidate is required before this replacement stack may be promoted.
 
 The recovery is restricted to the B10 setup create-to-skill contract. It does not modify coverage KPI/taxonomy rules, reviewer classification, unrelated card-action contracts, Trigger/Lifecycle gateways, broad special-subsystem behavior, or roster-wide migration state. Coverage synchronization remains Codex A-owned after independent runtime acceptance.
 
@@ -109,7 +111,7 @@ npx vitest run \
   packages/rules/tests/regression/card-action-add-to-attack.test.ts \
   packages/rules/tests/regression/complex-skills-regression.test.ts \
   packages/rules/tests/regression/card-zone-core-direct-action.test.ts
-PASS: 7 files / 85 tests
+PASS: 7 files / 89 tests
 
 git diff --check
 PASS
@@ -124,17 +126,17 @@ Recovery stack:
 ```text
 npx vitest run packages/rules/tests
 42 passed files / 9 failed files
-353 passed tests / 19 failed tests
+357 passed tests / 19 failed tests
 ```
 
 B08 recovery base immediately before this slice:
 
 ```text
 41 passed files / 9 failed files
-341 passed tests / 19 failed tests
+345 passed tests / 19 failed tests
 ```
 
-The failure set is unchanged. Eighteen failures depend on unavailable historical CHM/image evidence paths (`D:\fd\chm-extract` or local `chm-extract`), and one is the existing versioned generated-content definition-hash mismatch in `golden-card-content-pipeline.test.ts`. B10 recovery plus r1 adds twelve passing dedicated tests and introduces no additional full-suite failure.
+The failure set is unchanged from the accepted B08 replacement base. Eighteen failures depend on unavailable historical CHM/image evidence paths (`D:\fd\chm-extract` or local `chm-extract`), and one is the existing versioned generated-content definition-hash mismatch in `golden-card-content-pipeline.test.ts`. B10 r2 adds twelve passing dedicated setup-creation tests and introduces no additional full-suite failure.
 
 ## Local Before / After
 
@@ -150,4 +152,4 @@ These are local B10 contract counts only. They are not a global Phase 3 coverage
 
 ## Review Boundary
 
-This commit is a replacement candidate for the lost B10 runtime object. It must not be described as the historical `9fba6d9` commit and cannot inherit that commit's R05 acceptance. The next step is a fresh independent review of this exact recovery commit. P3-B11 may start only from the newly accepted recovery baseline produced by that review, not from an inferred or fabricated historical SHA.
+This r2 stack is a replacement candidate for the lost B10 runtime object. It must not be described as the historical `9fba6d9` commit and cannot inherit an earlier review merely because the semantic delta was previously accepted. The next step is a fresh independent review of the exact r2 candidate on top of accepted B08 replacement `5d34bef`.
