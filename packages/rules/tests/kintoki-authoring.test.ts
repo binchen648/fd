@@ -96,7 +96,7 @@ describe('Kintoki evidence-backed archive', () => {
     let decision = rules.projectAbilityState(s, 'p1').pendingDecision!;
     expect(decision.candidates).toEqual(expect.arrayContaining([firstImpact, secondImpact]));
     expect(rules.dispatchAbilityCommand(s, 'p1', { type: 'choose_target', decisionId: decision.id, selectedIds: [firstImpact] }).ok).toBe(true);
-    expect(s.cards.find(c => c.instanceId === firstImpact)!.zone).toBe('removed_from_game');
+    expect(s.cards.find(c => c.instanceId === firstImpact)!.zone).toBe('skill');
 
     decision = rules.projectAbilityState(s, 'p1').pendingDecision!;
     expect(decision.min).toBe(0);

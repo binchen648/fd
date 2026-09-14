@@ -296,7 +296,10 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
 function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
-    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability) && !isSetupCreateToSkillTrigger(ability)) continue;
+    if (isResultBindingProductionBridgeStructuralCandidate(ability) && !isResultBindingProductionBridgeSemantic(ability)) {
+      throw new Error(`Resolution data-flow validation failed at cards.${card.id}.abilities.${ability.id}.effects:\nunsupported staged result-binding semantic shape`);
+    }
+    if (!hasResolutionDataFlowSyntax(effects) && !isResultBindingProductionBridgeSemantic(ability) && !isResourceNumericDirectActionSemantic(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability) && !isSetupCreateToSkillTrigger(ability)) continue;
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
     try {
       validateResolutionDataFlowNodes(effects, path);
@@ -323,6 +326,53 @@ function isResourceNumericDirectActionSemantic(ability: AuthoringAbility): boole
 
 function isCardZoneCoreDirectActionSemantic(ability: AuthoringAbility): boolean {
   return isMoveAllRemainingManaBindingSemantic(ability);
+}
+
+function isResultBindingCardTarget(target: RuleNode, min: number, max: number, manaGate?: number): boolean {
+  const scope = node(target.scope);
+  const count = node(target.count);
+  if (str(target.type) !== 'card_instance' || str(scope.zone) !== 'removed_from_game' || str(scope.owner) !== 'controller') return false;
+  if (Number(count.min) !== min || Number(count.max) !== max || str(target.visibility) !== 'private_to_controller') return false;
+  const conditions = nodes(target.conditions);
+  if (manaGate === undefined) return conditions.length === 0;
+  return conditions.length === 1 && str(conditions[0]?.type) === 'controller_mana_at_least' && Number(conditions[0]?.value) === manaGate;
+}
+
+function isResultBindingProductionBridgeStructuralCandidate(ability: AuthoringAbility): boolean {
+  return ability.kind === 'phase_action' &&
+    str(ability.activation.phase) === 'combat' &&
+    str(ability.activation.opens) === 'controller_combat_action_window' &&
+    ability.targets.length === 2 &&
+    ability.cost.length === 0 &&
+    ability.creates.length === 0 &&
+    ability.effects.length === 3 &&
+    str(ability.effects[0]?.type) === 'move_card' &&
+    str(ability.effects[1]?.type) === 'move_card' &&
+    str(ability.effects[2]?.type) === 'branch';
+}
+
+function isResultBindingProductionBridgeSemantic(ability: AuthoringAbility): boolean {
+  if (!isResultBindingProductionBridgeStructuralCandidate(ability)) return false;
+  if (ability.conditions.length !== 0 || str(ability.activation.requiresSourceState) !== 'active') return false;
+  const [firstTarget, secondTarget] = ability.targets;
+  if (!isResultBindingCardTarget(firstTarget!, 1, 1) || !isResultBindingCardTarget(secondTarget!, 0, 1, 7)) return false;
+  const [firstMove, secondMove, branch] = ability.effects;
+  const firstBinding = str(firstMove?.resultVar ?? firstMove?.bind);
+  const secondBinding = str(secondMove?.resultVar ?? secondMove?.bind);
+  if (!firstBinding || firstBinding !== secondBinding) return false;
+  if (str(firstMove?.target) !== str(firstTarget?.id) || str(node(firstMove?.to).zone) !== 'skill' || firstMove?.optionalCost !== undefined) return false;
+  const optionalCost = node(secondMove?.optionalCost);
+  if (str(secondMove?.target) !== str(secondTarget?.id) || str(node(secondMove?.to).zone) !== 'skill' ||
+    str(optionalCost.type) !== 'pay_mana' || Number(optionalCost.amount) !== 7) return false;
+  const branches = nodes(branch?.branches);
+  if (branches.length !== 1 || str(node(branches[0]?.if).type) !== 'controller_at_battlefield') return false;
+  const then = nodes(branches[0]?.then);
+  if (then.length !== 1 || str(then[0]?.type) !== 'adjust_victory_points' || str(then[0]?.player || 'controller') !== 'controller') return false;
+  const amount = node(then[0]?.amount);
+  const args = nodes(amount.args);
+  if (str(amount.op) !== 'multiply' || args.length !== 2) return false;
+  return args.some((arg) => str(arg.var) === firstBinding) &&
+    args.some((arg) => str(arg.op) === 'const' && Number(arg.value) === 2);
 }
 
 function isCardZoneCoreDirectActionRouteCandidate(ability: AuthoringAbility): boolean {
