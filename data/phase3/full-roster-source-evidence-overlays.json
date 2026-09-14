@@ -3191,9 +3191,11 @@
           "effects": [
             {
               "type": "choose_events",
-              "minCount": 0,
+              "minCount": 1,
               "maxCount": 1,
               "scope": "outside_game_russia_events",
+              "requiredWhenEligible": true,
+              "fallbackWhenNoEligible": true,
               "payloadKey": "selectedEventIds"
             },
             {
@@ -3460,12 +3462,7 @@
               "amount": 2,
               "subject": "npc:qin_shi_huang"
             }
-          ],
-          "limit": {
-            "scope": "npc:qin_shi_huang",
-            "period": "round",
-            "maxUses": 1
-          }
+          ]
         }
       ]
     },

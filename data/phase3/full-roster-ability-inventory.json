@@ -16373,11 +16373,7 @@
             "NPC_RULE"
           ],
           "interaction": [],
-          "lifecycle": [
-            "limit.maxUses:1",
-            "limit.period:round",
-            "limit.scope:npc:qin_shi_huang"
-          ],
+          "lifecycle": [],
           "modifier": [
             "rule:npc_total_power:set"
           ],
@@ -16494,11 +16490,7 @@
                 "GAIN_VICTORY_POINTS"
               ],
               "interaction": [],
-              "lifecycle": [
-                "limit.maxUses:1",
-                "limit.period:round",
-                "limit.scope:npc:qin_shi_huang"
-              ],
+              "lifecycle": [],
               "modifier": [],
               "visibility": [],
               "binding": [],
@@ -16518,7 +16510,6 @@
         "mechanicFamilies": [
           "BATTLE_RESULT",
           "CONDITION",
-          "LIFECYCLE",
           "MODIFIER",
           "POWER",
           "RESOURCE_NUMERIC",
@@ -16529,7 +16520,6 @@
           "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_EVENT_DECK",
-          "GENERIC_LIFECYCLE_POLICY",
           "GENERIC_MODIFIER",
           "GENERIC_POWER",
           "GENERIC_RESOURCE_NUMERIC",
@@ -16700,7 +16690,10 @@
             "combat.ending"
           ],
           "condition": [
-            "COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD"
+            "COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD",
+            "PLAYER_ALL_ATTACKS_PRINTED_POWER_EVEN",
+            "PLAYER_FACE_UP_ATTACKS_PLAYED_THIS_ROUND_EQUALS",
+            "PLAYER_USED_DECLARATION_REVEAL_THIS_ROUND"
           ],
           "cost": [],
           "target": [],
@@ -16883,7 +16876,9 @@
             "axes": {
               "timing": [],
               "trigger": [],
-              "condition": [],
+              "condition": [
+                "PLAYER_FACE_UP_ATTACKS_PLAYED_THIS_ROUND_EQUALS"
+              ],
               "cost": [],
               "target": [],
               "effect": [
@@ -16912,7 +16907,9 @@
             "axes": {
               "timing": [],
               "trigger": [],
-              "condition": [],
+              "condition": [
+                "PLAYER_USED_DECLARATION_REVEAL_THIS_ROUND"
+              ],
               "cost": [],
               "target": [],
               "effect": [
@@ -16941,7 +16938,9 @@
             "axes": {
               "timing": [],
               "trigger": [],
-              "condition": [],
+              "condition": [
+                "PLAYER_ALL_ATTACKS_PRINTED_POWER_EVEN"
+              ],
               "cost": [],
               "target": [],
               "effect": [
@@ -17060,6 +17059,7 @@
       "phase3": {
         "mechanicFamilies": [
           "BATTLE_RESULT",
+          "CARD_ACTION_SEMANTICS",
           "CONDITION",
           "MODIFIER",
           "POWER",
@@ -17067,6 +17067,7 @@
           "TRIGGER"
         ],
         "requiredCapabilities": [
+          "CARD_ACTION_PLAY",
           "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_EVENT_DECK",
@@ -23645,7 +23646,9 @@
             "combat.ending"
           ],
           "condition": [
+            "LOCATION_IS",
             "ROUND_VICTORY_POINTS_GAINED_EQUALS",
+            "SAME_LOCATION_PLAYER_COUNT_EQUALS",
             "SOURCE_OWNED"
           ],
           "cost": [],
@@ -23710,7 +23713,9 @@
                 "combat.ending"
               ],
               "condition": [
+                "LOCATION_IS",
                 "ROUND_VICTORY_POINTS_GAINED_EQUALS",
+                "SAME_LOCATION_PLAYER_COUNT_EQUALS",
                 "SOURCE_OWNED"
               ],
               "cost": [],
@@ -53348,6 +53353,9 @@
           ],
           "trigger": [],
           "condition": [
+            "CONSTANT",
+            "METRIC",
+            "METRIC_COMPARE",
             "SOURCE_ACTIVE"
           ],
           "cost": [],
@@ -53421,6 +53429,9 @@
               ],
               "trigger": [],
               "condition": [
+                "CONSTANT",
+                "METRIC",
+                "METRIC_COMPARE",
                 "SOURCE_ACTIVE"
               ],
               "cost": [],
@@ -59974,6 +59985,9 @@
           ],
           "trigger": [],
           "condition": [
+            "AT_BATTLEFIELD",
+            "LOCATION_IS",
+            "SAME_LOCATION_PLAYER_COUNT_EQUALS",
             "SOURCE_OWNED"
           ],
           "cost": [],
@@ -59997,7 +60011,9 @@
           "binding": [
             "payload:targetLocationId"
           ],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION"
+          ]
         },
         "abilities": [
           {
@@ -60013,6 +60029,9 @@
               ],
               "trigger": [],
               "condition": [
+                "AT_BATTLEFIELD",
+                "LOCATION_IS",
+                "SAME_LOCATION_PLAYER_COUNT_EQUALS",
                 "SOURCE_OWNED"
               ],
               "cost": [],
@@ -60036,7 +60055,9 @@
               "binding": [
                 "payload:targetLocationId"
               ],
-              "battle": []
+              "battle": [
+                "COMBAT_CONDITION"
+              ]
             }
           }
         ],
@@ -60048,6 +60069,7 @@
       },
       "phase3": {
         "mechanicFamilies": [
+          "BATTLE_RESULT",
           "CONDITION",
           "HIDDEN_INFORMATION",
           "INTERACTION",
@@ -60056,6 +60078,7 @@
           "TARGET_SELECTION"
         ],
         "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_MOVEMENT",
           "GENERIC_PENDING_INTERACTION",
@@ -79594,6 +79617,7 @@
             "EVENT_LOCATION_EQUALS_CONTROLLER",
             "EVENT_PLAYER_IS_CONTROLLER",
             "EVENT_PLAYER_WON_COMBAT",
+            "PLAYER_FLAG_NUMBER_AT_LEAST",
             "SOURCE_ACTIVE"
           ],
           "cost": [],
@@ -79672,6 +79696,7 @@
               "condition": [
                 "EVENT_LOCATION_EQUALS_CONTROLLER",
                 "EVENT_PLAYER_WON_COMBAT",
+                "PLAYER_FLAG_NUMBER_AT_LEAST",
                 "SOURCE_ACTIVE"
               ],
               "cost": [],
@@ -93193,7 +93218,10 @@
           ],
           "trigger": [],
           "condition": [
+            "METRIC",
+            "METRIC_COMPARE",
             "PLAYER_FLAG_NUMBER_CURRENT_ROUND",
+            "SELECTED_CARDS_ALL_HAVE_ATTRIBUTE",
             "SOURCE_ACTIVE"
           ],
           "cost": [],
@@ -93233,6 +93261,9 @@
               ],
               "trigger": [],
               "condition": [
+                "METRIC",
+                "METRIC_COMPARE",
+                "SELECTED_CARDS_ALL_HAVE_ATTRIBUTE",
                 "SOURCE_ACTIVE"
               ],
               "cost": [],

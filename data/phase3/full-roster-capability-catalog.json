@@ -87,6 +87,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.hinako.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.sion.skill.s13",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -216,6 +220,10 @@
         },
         {
           "abilityId": "master.hinako.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -357,6 +365,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.hinako.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.sion.skill.s13",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -445,6 +457,10 @@
         },
         {
           "abilityId": "master.hinako.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -554,6 +570,7 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
         "master.hinako.skill.s2",
+        "master.hinako.skill.s4",
         "master.sion.skill.s13",
         "master.wodime.skill.s2",
         "servant.caligula.skill.sc-caligula-1",
@@ -676,6 +693,10 @@
         },
         {
           "abilityId": "master.hinako.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -821,6 +842,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.hinako.skill.s4",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.sion.skill.s13",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -957,6 +982,10 @@
         },
         {
           "abilityId": "master.hinako.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1100,6 +1129,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.hinako.skill.s4",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.sion.skill.s13",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1238,6 +1271,10 @@
         },
         {
           "abilityId": "master.hinako.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.hinako.skill.s4",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1575,6 +1612,7 @@
         "servant.astolfo.skill.sc-astolfo-1",
         "servant.darius.skill.sc-darius-1",
         "servant.diarmuid.skill.sc-diarmuid-1",
+        "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-3",
         "servant.gorgon.skill.sc-gorgon-2",
         "servant.ibaraki.skill.sc-ibaraki-1",
@@ -2198,7 +2236,6 @@
         "master.fiore.skill.s6",
         "master.hinako.skill.ascension",
         "master.hinako.skill.s2",
-        "master.hinako.skill.s3",
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
         "master.ophelia.skill.s2",
@@ -2734,10 +2771,6 @@
         },
         {
           "abilityId": "master.hinako.skill.s2",
-          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
-        },
-        {
-          "abilityId": "master.hinako.skill.s3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {

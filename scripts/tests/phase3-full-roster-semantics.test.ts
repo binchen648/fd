@@ -170,6 +170,30 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(semantic.target).toEqual([]);
   });
 
+  it('surfaces structural conditions nested inside effects without an identity branch', () => {
+    const semantic = normalizeStructuredAbility({
+      id: 'nested-condition-fixture',
+      printedClause: 'fixture',
+      kind: 'passive',
+      effects: [{
+        type: 'combat_power_bonus',
+        amount: 5,
+        conditions: [
+          { type: 'player_face_up_attacks_played_this_round_equals', value: 1 },
+          { type: 'player_used_declaration_reveal_this_round' },
+        ],
+      }],
+    });
+
+    expect(semantic.condition).toEqual(
+      expect.arrayContaining([
+        'PLAYER_FACE_UP_ATTACKS_PLAYED_THIS_ROUND_EQUALS',
+        'PLAYER_USED_DECLARATION_REVEAL_THIS_ROUND',
+      ]),
+    );
+    expect(semantic.battle).toContain('COMBAT_EFFECT');
+  });
+
   it('classifies source-aligned structured authoring and explicitly blocks every identity without semantic source', () => {
     const normalized = normalizeFullRosterSemantics(makeInventory(), [structuredCard]);
     const grounded = normalized.staticSkills[0].semanticNormalization;
@@ -635,6 +659,25 @@ describe('Phase 3 full-roster semantic normalization', () => {
       expect.objectContaining({ rule: 'combat_card_power', operation: 'add', amount: -2 }),
     );
 
+    const qin = crypters.find((card) => card.id === 'master.hinako.skill.s3');
+    const offBoardVp = qin?.abilities.find((ability) => ability.id === 'hinako.qin.off-board-vp');
+    expect(offBoardVp).toBeDefined();
+    expect(offBoardVp).not.toHaveProperty('limit');
+
+    const rapidExpansion = crypters.find((card) => card.id === 'master.kadoc.skill.ascension');
+    const rapidExpansionAction = rapidExpansion?.abilities.find(
+      (ability) => ability.id === 'kadoc.rapid-expansion.action',
+    );
+    expect(rapidExpansionAction?.effects).toContainEqual(
+      expect.objectContaining({
+        type: 'choose_events',
+        minCount: 1,
+        maxCount: 1,
+        requiredWhenEligible: true,
+        fallbackWhenNoEligible: true,
+      }),
+    );
+
     const china = crypters.find((card) => card.id === 'master.hinako.skill.s4');
     const chinaMetadata = china?.abilities.flatMap((ability) => ability.effects ?? []).filter(
       (effect) => effect.type === 'event_card_rule' && effect.operation === 'define_event_card',
@@ -648,6 +691,20 @@ describe('Phase 3 full-roster semantic normalization', () => {
           expect.objectContaining({ type: 'event_type_is', eventType: 'combat.ending' }),
         ]),
       }),
+    );
+
+    const generatedInventory = JSON.parse(
+      readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8'),
+    ) as FullRosterAbilityInventory;
+    const chinaEntry = generatedInventory.staticSkills.find(
+      (entry) => entry.canonicalAbilityId === 'master.hinako.skill.s4',
+    );
+    expect(chinaEntry?.semanticNormalization.axes.condition).toEqual(
+      expect.arrayContaining([
+        'PLAYER_FACE_UP_ATTACKS_PLAYED_THIS_ROUND_EQUALS',
+        'PLAYER_USED_DECLARATION_REVEAL_THIS_ROUND',
+        'PLAYER_ALL_ATTACKS_PRINTED_POWER_EVEN',
+      ]),
     );
 
     const trueAncestor = crypters.find((card) => card.id === 'master.hinako.skill.ascension');
