@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 845,
-    "coveredBlockedIdentityCount": 845,
+    "blockedIdentityCount": 834,
+    "coveredBlockedIdentityCount": 834,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 2,
@@ -305,17 +305,6 @@
         "master.waver.skill.s1",
         "master.waver.skill.s2",
         "master.waver.skill.s3",
-        "master.wodime.skill.ascension",
-        "master.wodime.skill.s1",
-        "master.wodime.skill.s1a",
-        "master.wodime.skill.s2",
-        "master.wodime.skill.s3",
-        "master.wodime.skill.s4",
-        "master.wodime.skill.s5",
-        "master.wodime.skill.s6",
-        "master.wodime.skill.s7",
-        "master.wodime.skill.s8",
-        "master.wodime.skill.s9",
         "master.zouken.skill.ascension",
         "master.zouken.skill.s1",
         "master.zouken.skill.s2",
@@ -6796,230 +6785,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[9].skills[2].text#line=1",
           "sha256": "9863f1c6785fc3be2d26cd4314f8c31c8117115e75711a658f4af57acad23e04"
-        },
-        {
-          "abilityId": "master.wodime.skill.ascension",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.wodime/基尔什塔利亚·沃戴姆"
-        },
-        {
-          "abilityId": "master.wodime.skill.ascension",
-          "document": "legacy-content.json",
-          "locator": "master/master.wodime/ascension"
-        },
-        {
-          "abilityId": "master.wodime.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[10].text#line=1",
-          "sha256": "7eed4c5388c197a6951f8f9bfc38cefdb564c1f9f0e5290f2cd0c62db437d8f2"
-        },
-        {
-          "abilityId": "master.wodime.skill.s1",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.wodime/基尔什塔利亚·沃戴姆"
-        },
-        {
-          "abilityId": "master.wodime.skill.s1",
-          "document": "legacy-content.json",
-          "locator": "master/master.wodime/s1"
-        },
-        {
-          "abilityId": "master.wodime.skill.s1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[0].text#line=1",
-          "sha256": "b5c6e8308ca3b8a7c7c3f78e06608b1d5652f04086c845b27e57e52eeca63518"
-        },
-        {
-          "abilityId": "master.wodime.skill.s1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[0].text#line=2",
-          "sha256": "26a291f264ce9b3638bc321a5e043529d95369a386d15528439a82830d6f2333"
-        },
-        {
-          "abilityId": "master.wodime.skill.s1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[0].text#line=3",
-          "sha256": "723a735830b24ed9622bb2ae8be4db918653d8d83bd528b49ce7d25698292f7b"
-        },
-        {
-          "abilityId": "master.wodime.skill.s1a",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.wodime/基尔什塔利亚·沃戴姆"
-        },
-        {
-          "abilityId": "master.wodime.skill.s1a",
-          "document": "legacy-content.json",
-          "locator": "master/master.wodime/s1a"
-        },
-        {
-          "abilityId": "master.wodime.skill.s1a",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[1].text#line=1",
-          "sha256": "0675349686d1cb5c71217506c597a561123a96f676e49255867be75f4569b090"
-        },
-        {
-          "abilityId": "master.wodime.skill.s2",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.wodime/基尔什塔利亚·沃戴姆"
-        },
-        {
-          "abilityId": "master.wodime.skill.s2",
-          "document": "legacy-content.json",
-          "locator": "master/master.wodime/s2"
-        },
-        {
-          "abilityId": "master.wodime.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[2].text#line=1",
-          "sha256": "1c5a231f3336797f83a686443e8af271eaa24740fbf65fa35bd0d0b85f73234d"
-        },
-        {
-          "abilityId": "master.wodime.skill.s3",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.wodime/基尔什塔利亚·沃戴姆"
-        },
-        {
-          "abilityId": "master.wodime.skill.s3",
-          "document": "legacy-content.json",
-          "locator": "master/master.wodime/s3"
-        },
-        {
-          "abilityId": "master.wodime.skill.s3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[3].text#line=1",
-          "sha256": "7c75866466b82d32d901081f5f2acebde05f9b744d9b603718957047a8c21df1"
-        },
-        {
-          "abilityId": "master.wodime.skill.s3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[3].text#line=2",
-          "sha256": "440ad71b177a660f95a41d2a5cec44dda0f726c00aac8e88f8a90fcaf30b0514"
-        },
-        {
-          "abilityId": "master.wodime.skill.s4",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.wodime/基尔什塔利亚·沃戴姆"
-        },
-        {
-          "abilityId": "master.wodime.skill.s4",
-          "document": "legacy-content.json",
-          "locator": "master/master.wodime/s4"
-        },
-        {
-          "abilityId": "master.wodime.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[4].text#line=1",
-          "sha256": "92bf38c59df481500d3087f9b05882e447bb29c0069cfaeef1e7810647d2b47c"
-        },
-        {
-          "abilityId": "master.wodime.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[4].text#line=2",
-          "sha256": "d6861bf27d432248c43714d8d8c3f6417ef17d7041480eae1121fc9e5f125b99"
-        },
-        {
-          "abilityId": "master.wodime.skill.s5",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.wodime/基尔什塔利亚·沃戴姆"
-        },
-        {
-          "abilityId": "master.wodime.skill.s5",
-          "document": "legacy-content.json",
-          "locator": "master/master.wodime/s5"
-        },
-        {
-          "abilityId": "master.wodime.skill.s5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[5].text#line=1",
-          "sha256": "c62623b7386a6795be75f1b926904020ae5c5dc196a81f1a0ff907bc606ef2f9"
-        },
-        {
-          "abilityId": "master.wodime.skill.s6",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.wodime/基尔什塔利亚·沃戴姆"
-        },
-        {
-          "abilityId": "master.wodime.skill.s6",
-          "document": "legacy-content.json",
-          "locator": "master/master.wodime/s6"
-        },
-        {
-          "abilityId": "master.wodime.skill.s6",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[6].text#line=1",
-          "sha256": "46b3f543232235d4947912c12b077cbf0feed2047b196009b1f803b509909e21"
-        },
-        {
-          "abilityId": "master.wodime.skill.s6",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[6].text#line=2",
-          "sha256": "45986e33163790a0884516d83278dfdaf24293831a4d2608dad5e3b8c4ec221a"
-        },
-        {
-          "abilityId": "master.wodime.skill.s7",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.wodime/基尔什塔利亚·沃戴姆"
-        },
-        {
-          "abilityId": "master.wodime.skill.s7",
-          "document": "legacy-content.json",
-          "locator": "master/master.wodime/s7"
-        },
-        {
-          "abilityId": "master.wodime.skill.s7",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[7].text#line=1",
-          "sha256": "91cffb6f478164cc0c88bd061db2780487080a78cef82688f80eaa339c27c1ab"
-        },
-        {
-          "abilityId": "master.wodime.skill.s7",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[7].text#line=2",
-          "sha256": "12c685570bcf5443bd6be00d3ba95aacb88e6a9b4f071473360b1532a4020736"
-        },
-        {
-          "abilityId": "master.wodime.skill.s8",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.wodime/基尔什塔利亚·沃戴姆"
-        },
-        {
-          "abilityId": "master.wodime.skill.s8",
-          "document": "legacy-content.json",
-          "locator": "master/master.wodime/s8"
-        },
-        {
-          "abilityId": "master.wodime.skill.s8",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[8].text#line=1",
-          "sha256": "d7526043b3faceb05e33cfe44ae2cba2ef0ddd947c29aa9a672a775c35e9a484"
-        },
-        {
-          "abilityId": "master.wodime.skill.s8",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[8].text#line=2",
-          "sha256": "7d2828cba0e51b78a4d1bf41f73f15f2ce0318a7685f57a69aec6c6886588b4a"
-        },
-        {
-          "abilityId": "master.wodime.skill.s9",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.wodime/基尔什塔利亚·沃戴姆"
-        },
-        {
-          "abilityId": "master.wodime.skill.s9",
-          "document": "legacy-content.json",
-          "locator": "master/master.wodime/s9"
-        },
-        {
-          "abilityId": "master.wodime.skill.s9",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[9].text#line=1",
-          "sha256": "07bf10a8e45c4d42e1c970e0029a6c7d6e777425adbd74a30ca486b9fc88900f"
-        },
-        {
-          "abilityId": "master.wodime.skill.s9",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[58].skills[9].text#line=2",
-          "sha256": "031162f6cb7f6ee1b383aec7910fdb47f63ddf2f2333868def79ec8431ffa31b"
         },
         {
           "abilityId": "master.zouken.skill.ascension",
@@ -19064,10 +18829,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 2,
-          "shared_handler": 403,
+          "shared_handler": 392,
           "specific_handler": 439
         },
-        "handlerCount": 511,
+        "handlerCount": 510,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."

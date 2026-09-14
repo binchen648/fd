@@ -6,24 +6,24 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=99
-blockedCount=845
+sourceGroundedCount=110
+blockedCount=834
 unclassifiedCount=0
-structuredAbilityCount=155
+structuredAbilityCount=171
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 33 |
-| timing | `COMBAT` | 16 |
+| timing | `ACTION` | 35 |
+| timing | `COMBAT` | 17 |
 | timing | `OUTPOST` | 3 |
 | timing | `PREPARATION` | 2 |
-| trigger | `combat.resolved` | 22 |
+| trigger | `combat.resolved` | 23 |
 | trigger | `card.played` | 7 |
+| trigger | `game.started` | 5 |
 | trigger | `player.entered-location` | 5 |
 | trigger | `combat.ending` | 4 |
-| trigger | `game.started` | 4 |
 | trigger | `round.started` | 4 |
 | trigger | `player.moved` | 3 |
 | trigger | `round.ended` | 3 |
@@ -33,6 +33,7 @@ structuredAbilityCount=155
 | trigger | `card.exiled` | 1 |
 | trigger | `card_or_ability.used` | 1 |
 | trigger | `command-seal.spent` | 1 |
+| trigger | `event.revealed` | 1 |
 | trigger | `player.deployed` | 1 |
 | trigger | `player.victory-points.changed` | 1 |
 | trigger | `servant.true-name-revealed` | 1 |
@@ -40,7 +41,7 @@ structuredAbilityCount=155
 | condition | `SOURCE_ACTIVE` | 37 |
 | condition | `SOURCE_OWNED` | 30 |
 | condition | `EVENT_PLAYER_IS_CONTROLLER` | 14 |
-| condition | `EVENT_PLAYER_WON_COMBAT` | 13 |
+| condition | `EVENT_PLAYER_WON_COMBAT` | 14 |
 | condition | `EVENT_LOCATION_EQUALS_CONTROLLER` | 11 |
 | condition | `AT_BATTLEFIELD` | 10 |
 | condition | `EVENT_DEFINITION_IS_SELF` | 8 |
@@ -66,6 +67,7 @@ structuredAbilityCount=155
 | condition | `EVENT_CARD_HAS_ATTRIBUTE` | 1 |
 | condition | `EVENT_COMBAT_HAS_ATTRIBUTE` | 1 |
 | condition | `EVENT_COMBAT_OPPONENT_COUNT_EQUALS` | 1 |
+| condition | `EVENT_HAS_LOSTBELT_TAG` | 1 |
 | condition | `EVENT_LOCATION_NOT` | 1 |
 | condition | `EVENT_LOCATION_NOT_CONTROLLER` | 1 |
 | condition | `EVENT_ROUND_VICTORY_POINTS_GAIN_CROSSES` | 1 |
@@ -81,6 +83,7 @@ structuredAbilityCount=155
 | condition | `ROUND_IS_CLIMAX` | 1 |
 | condition | `ROUND_VICTORY_POINTS_GAINED_EQUALS` | 1 |
 | condition | `SCHEDULED_PAYLOAD_PRESENT` | 1 |
+| condition | `SECRET_ROUND_MATCHES_CURRENT` | 1 |
 | condition | `SITUATION_FORBIDS_ATTRIBUTE` | 1 |
 | condition | `TARGET_COUNT_EQUALS` | 1 |
 | condition | `TRUE_NAME_REVEALED` | 1 |
@@ -101,38 +104,44 @@ structuredAbilityCount=155
 | target | `CHOOSE_N_EVENTS` | 1 |
 | effect | `GAIN_VICTORY_POINTS` | 16 |
 | effect | `CLOSE_SOURCE_CARD` | 11 |
+| effect | `GAIN_MANA` | 8 |
 | effect | `PLAY_SELECTED_CARDS` | 8 |
 | effect | `DRAW_CARDS` | 7 |
-| effect | `GAIN_MANA` | 7 |
 | effect | `IF_CONDITION` | 7 |
 | effect | `LOSE_VICTORY_POINTS` | 7 |
 | effect | `SET_PLAYER_FLAG` | 7 |
+| effect | `EVENT_CARD_RULE` | 6 |
 | effect | `SOURCE_CARD_POWER_BONUS` | 6 |
+| effect | `COMBAT_POWER_BONUS` | 5 |
 | effect | `CYCLE_STATE_TRANSITION` | 5 |
 | effect | `DEFEAT_PLAYER` | 5 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 5 |
 | effect | `ADD_STATUS` | 4 |
-| effect | `COMBAT_POWER_BONUS` | 4 |
 | effect | `LOSE_MANA` | 4 |
 | effect | `MOVE_SELECTED_CARDS` | 4 |
 | effect | `CLEAR_PLAYER_FLAG` | 3 |
 | effect | `EXILE_SOURCE_CARD` | 3 |
+| effect | `LOSTBELT_EXPANSION` | 3 |
 | effect | `MOVE_MATCHING_EVENTS` | 3 |
 | effect | `MOVE_SELECTED_EVENTS` | 3 |
 | effect | `SCHEDULE_EFFECT` | 3 |
 | effect | `INSTALL_ABILITY_RULE_MODIFIER` | 2 |
 | effect | `MOVE_PLAYER` | 2 |
 | effect | `REMOVE_STATUS` | 2 |
+| effect | `SECRET_ROUND_BINDING` | 2 |
 | effect | `TRANSFER_VICTORY_POINTS` | 2 |
 | effect | `ADD_LINKED_STATUS` | 1 |
 | effect | `ADD_PLAYER_FLAG_NUMBER` | 1 |
 | effect | `ADJUST_COMMAND_SEALS` | 1 |
+| effect | `ASTRONOMICAL_SPHERE_RULE` | 1 |
 | effect | `CLOSE_SELECTED_CARD` | 1 |
 | effect | `ENSURE_EVENT_DECK_COUNT` | 1 |
 | effect | `INFO_NOTE` | 1 |
+| effect | `LOCATION_TOKEN_RULE` | 1 |
 | effect | `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS` | 1 |
 | effect | `MOVE_CARD` | 1 |
 | effect | `MOVE_MATCHING_CARDS` | 1 |
+| effect | `PLAY_SOURCE_CARD` | 1 |
 | effect | `REMOVE_CARDS_IN_ZONE` | 1 |
 | effect | `REMOVE_LINKED_STATUS` | 1 |
 | effect | `REMOVE_OWNED_CARDS_BY_LINKED_SKILL` | 1 |
@@ -172,8 +181,8 @@ structuredAbilityCount=155
 | lifecycle | `expiresOn:master.akasha.reincarnation` | 1 |
 | lifecycle | `limit:once_per_game` | 1 |
 | modifier | `effect:source_card_power_bonus` | 6 |
+| modifier | `effect:combat_power_bonus` | 5 |
 | modifier | `rule:skill_use:forbid` | 5 |
-| modifier | `effect:combat_power_bonus` | 4 |
 | modifier | `rule:card_power:add` | 4 |
 | modifier | `rule:defeat:ignore` | 3 |
 | modifier | `rule:total_power:add` | 3 |
@@ -230,10 +239,10 @@ structuredAbilityCount=155
 | binding | `payload:targetSkillInstanceIds` | 1 |
 | binding | `payload:twiceReplaceEventIds` | 1 |
 | binding | `payload:twiceSwapEventIds` | 1 |
-| battle | `COMBAT_CONDITION` | 28 |
-| battle | `COMBAT_EVENT` | 26 |
+| battle | `COMBAT_CONDITION` | 29 |
+| battle | `COMBAT_EVENT` | 27 |
 | battle | `COMBAT_RULE_MODIFIER` | 6 |
-| battle | `COMBAT_EFFECT` | 4 |
+| battle | `COMBAT_EFFECT` | 5 |
 
 ## Identity-Level Matrix
 
@@ -569,17 +578,17 @@ structuredAbilityCount=155
 | `master.waver.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-rule-flags` |
 | `master.waver.skill.s2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.pay-mana-draw` |
 | `master.waver.skill.s3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `master.wodime.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
-| `master.wodime.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
-| `master.wodime.skill.s1a` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
-| `master.wodime.skill.s2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
-| `master.wodime.skill.s3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
-| `master.wodime.skill.s4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
-| `master.wodime.skill.s5` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
-| `master.wodime.skill.s6` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
-| `master.wodime.skill.s7` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
-| `master.wodime.skill.s8` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
-| `master.wodime.skill.s9` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved` | `EVENT_PLAYER_WON_COMBAT` | `NONE` | `NONE` | `SECRET_ROUND_BINDING` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `game.started` | `NONE` | `NONE` | `NONE` | `LOSTBELT_EXPANSION` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SECRET_ROUND_BINDING` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `SECRET_ROUND_MATCHES_CURRENT` | `NONE` | `NONE` | `ASTRONOMICAL_SPHERE_RULE`, `PLAY_SOURCE_CARD` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_POWER_BONUS`, `GAIN_MANA`, `LOCATION_TOKEN_RULE` | `NONE` | `NONE` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.s4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `event.revealed` | `EVENT_HAS_LOSTBELT_TAG` | `NONE` | `NONE` | `EVENT_CARD_RULE`, `LOSTBELT_EXPANSION` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.s5` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE`, `LOSTBELT_EXPANSION` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.s6` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.s7` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.s8` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.s9` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
 | `master.zouken.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.zouken-illusive-mastermind` |
 | `master.zouken.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-player-config` |
 | `master.zouken.skill.s2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-add-skill` |
