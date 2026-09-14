@@ -1199,6 +1199,493 @@
         }
       ],
       "referencePrintedTextSha256": "303c6085fdb29b8b82637e27dda442783a5314bd560cf6d9853b4b29a8791957"
+    },
+    {
+      "id": "master.wodime.skill.ascension",
+      "printedText": "你每赢得一场战斗即可额外秘密写入一个回合数以触发【人理保障天球】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wodime.ascensionSkill#line=368",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你每赢得一场战斗即可额外秘密写入一个回合数以触发【人理保障天球】。",
+        "sourceTextSha256": "7eed4c5388c197a6951f8f9bfc38cefdb564c1f9f0e5290f2cd0c62db437d8f2"
+      },
+      "abilities": [
+        {
+          "id": "wodime.grand-order.extra-secret-round",
+          "printedClause": "你每赢得一场战斗即可额外秘密写入一个回合数以触发【人理保障天球】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "secret_round_binding",
+              "operation": "record_additional_secret_round",
+              "count": 1,
+              "purpose": "trigger_astronomical_sphere",
+              "optional": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7eed4c5388c197a6951f8f9bfc38cefdb564c1f9f0e5290f2cd0c62db437d8f2"
+    },
+    {
+      "id": "master.wodime.skill.s1",
+      "printedText": "你负责【亚特兰蒂斯】和【奥林匹斯】异闻带。\n游戏开始时，扩张【亚特兰蒂斯】。\n行动阶段：支付5个【神之遗产】，扩张【奥林匹斯】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wodime.skills[s1]#line=358",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你负责【亚特兰蒂斯】和【奥林匹斯】异闻带。\n游戏开始时，扩张【亚特兰蒂斯】。\n行动阶段：支付5个【神之遗产】，扩张【奥林匹斯】。",
+        "sourceTextSha256": "2d0dd1a33018ec201a5fc9ab8b6ba1ba2e70fc8625aab5e5efe218605d6fb590"
+      },
+      "abilities": [
+        {
+          "id": "wodime.cryptic-leader.owns-lostbelts",
+          "printedClause": "你负责【亚特兰蒂斯】和【奥林匹斯】异闻带。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "register_owner",
+              "lostbelts": [
+                "atlantis",
+                "olympus"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "wodime.cryptic-leader.atlantis-start",
+          "printedClause": "游戏开始时，扩张【亚特兰蒂斯】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "expand",
+              "lostbelt": "atlantis"
+            }
+          ]
+        },
+        {
+          "id": "wodime.cryptic-leader.olympus-action",
+          "printedClause": "行动阶段：支付5个【神之遗产】，扩张【奥林匹斯】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "expand",
+              "lostbelt": "olympus",
+              "cost": {
+                "resource": "gods_legacy",
+                "amount": 5
+              }
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "2d0dd1a33018ec201a5fc9ab8b6ba1ba2e70fc8625aab5e5efe218605d6fb590"
+    },
+    {
+      "id": "master.wodime.skill.s1a",
+      "printedText": "秘密记录两个回合数并将【人理保障天球】加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wodime.skills[s1a]#line=359",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "秘密记录两个回合数并将【人理保障天球】加入你的技能区。",
+        "sourceTextSha256": "0675349686d1cb5c71217506c597a561123a96f676e49255867be75f4569b090"
+      },
+      "abilities": [
+        {
+          "id": "wodime.astronomical-science.record-rounds",
+          "printedClause": "秘密记录两个回合数并将【人理保障天球】加入你的技能区。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "secret_round_binding",
+              "operation": "record_secret_rounds",
+              "count": 2,
+              "purpose": "trigger_astronomical_sphere"
+            }
+          ],
+          "creates": [
+            {
+              "type": "card",
+              "definitionId": "master.wodime.skill.s2",
+              "destination": "skill",
+              "active": false
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0675349686d1cb5c71217506c597a561123a96f676e49255867be75f4569b090"
+    },
+    {
+      "id": "master.wodime.skill.s2",
+      "printedText": "星体回路-被动/战斗阶段：若你以天体学记录了本回合，打出此牌（你拥有的魔力少于8点也可打出），战力结算时，忽略你其他攻击的威力。此牌不能通过其他任何方式入场。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wodime.skills[s2]#line=360",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "星体回路-被动/战斗阶段：若你以天体学记录了本回合，打出此牌（你拥有的魔力少于8点也可打出），战力结算时，忽略你其他攻击的威力。此牌不能通过其他任何方式入场。",
+        "sourceTextSha256": "1c5a231f3336797f83a686443e8af271eaa24740fbf65fa35bd0d0b85f73234d"
+      },
+      "abilities": [
+        {
+          "id": "wodime.astronomical-sphere.recorded-round-play",
+          "printedClause": "星体回路-被动/战斗阶段：若你以天体学记录了本回合，打出此牌（你拥有的魔力少于8点也可打出），战力结算时，忽略你其他攻击的威力。此牌不能通过其他任何方式入场。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "secret_round_matches_current"
+            }
+          ],
+          "effects": [
+            {
+              "type": "play_source_card",
+              "sourceZone": "skill",
+              "destination": "attack"
+            },
+            {
+              "type": "astronomical_sphere_rule",
+              "operation": "recorded_round_only",
+              "ignoreManaRequirementBelow": 8,
+              "ignoreOtherAttackPowerDuringResolution": true,
+              "prohibitOtherEntryMethods": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "1c5a231f3336797f83a686443e8af271eaa24740fbf65fa35bd0d0b85f73234d"
+    },
+    {
+      "id": "master.wodime.skill.s3",
+      "printedText": "【神之遗产】在【沃戴姆】被淘汰后将持续存在。当一名玩家从有【神之遗产】的地点移动时，他将带走等同于其地利位置数的【神之遗产】。当玩家在有【神之遗产】的地点是唯一的获胜者时，他将获得所有余下的【神之遗产】。\n拥有【神之遗产】的玩家获得：行动阶段：支付3X个【神之遗产】，获得X点合计威力（X最大为3）。行动阶段：支付4X个【神之遗产】，获得X点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wodime.skills[s3]#line=361",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【神之遗产】在【沃戴姆】被淘汰后将持续存在。当一名玩家从有【神之遗产】的地点移动时，他将带走等同于其地利位置数的【神之遗产】。当玩家在有【神之遗产】的地点是唯一的获胜者时，他将获得所有余下的【神之遗产】。\n拥有【神之遗产】的玩家获得：行动阶段：支付3X个【神之遗产】，获得X点合计威力（X最大为3）。行动阶段：支付4X个【神之遗产】，获得X点魔力。",
+        "sourceTextSha256": "fe4a9f6ef0dc01d9ac446e15255ef90c3b5f4c84a91c8b663edabc03a2134e62"
+      },
+      "abilities": [
+        {
+          "id": "wodime.gods-legacy.persistence-transfer-collect",
+          "printedClause": "【神之遗产】在【沃戴姆】被淘汰后将持续存在。当一名玩家从有【神之遗产】的地点移动时，他将带走等同于其地利位置数的【神之遗产】。当玩家在有【神之遗产】的地点是唯一的获胜者时，他将获得所有余下的【神之遗产】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "location_token_rule",
+              "resource": "gods_legacy",
+              "operation": "persist_transfer_collect",
+              "survivesOwnerElimination": true,
+              "movementCarryFormula": "terrain_position_count",
+              "uniqueWinnerCollectAllRemaining": true
+            }
+          ]
+        },
+        {
+          "id": "wodime.gods-legacy.spend-for-power",
+          "printedClause": "行动阶段：支付3X个【神之遗产】，获得X点合计威力（X最大为3）。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "location_token_rule",
+              "resource": "gods_legacy",
+              "operation": "spend",
+              "ratePerX": 3,
+              "xMax": 3,
+              "resultBinding": "X"
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "controller_total",
+              "amountBinding": "X"
+            }
+          ]
+        },
+        {
+          "id": "wodime.gods-legacy.spend-for-mana",
+          "printedClause": "行动阶段：支付4X个【神之遗产】，获得X点魔力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "location_token_rule",
+              "resource": "gods_legacy",
+              "operation": "spend",
+              "ratePerX": 4,
+              "resultBinding": "X"
+            },
+            {
+              "type": "gain_mana",
+              "amountBinding": "X"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "fe4a9f6ef0dc01d9ac446e15255ef90c3b5f4c84a91c8b663edabc03a2134e62"
+    },
+    {
+      "id": "master.wodime.skill.s4",
+      "printedText": "当【亚特兰蒂斯】事件牌被揭示时，如果在战场上，则结算其效果并将之移出游戏，否则将其洗回牌库。无论以上哪种情况，抽取一张新的事件牌置于它所在的位置。\n扩张-将所有【亚特兰蒂斯】事件牌洗入牌库。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wodime.skills[s4]#line=362",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当【亚特兰蒂斯】事件牌被揭示时，如果在战场上，则结算其效果并将之移出游戏，否则将其洗回牌库。无论以上哪种情况，抽取一张新的事件牌置于它所在的位置。\n扩张-将所有【亚特兰蒂斯】事件牌洗入牌库。",
+        "sourceTextSha256": "914cd1ad4c00f2383cf40eab3f6b178ecb7916efb2822e2d6a80dbd45baff86d"
+      },
+      "abilities": [
+        {
+          "id": "wodime.atlantis.reveal-rule",
+          "printedClause": "当【亚特兰蒂斯】事件牌被揭示时，如果在战场上，则结算其效果并将之移出游戏，否则将其洗回牌库。无论以上哪种情况，抽取一张新的事件牌置于它所在的位置。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "event.revealed"
+            },
+            {
+              "type": "event_has_lostbelt_tag",
+              "lostbelt": "atlantis"
+            }
+          ],
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "resolve_atlantis_reveal",
+              "battlefieldAction": "resolve_then_remove_from_game",
+              "nonBattlefieldAction": "shuffle_back",
+              "replacement": "draw_new_event_same_position"
+            }
+          ]
+        },
+        {
+          "id": "wodime.atlantis.expand",
+          "printedClause": "扩张-将所有【亚特兰蒂斯】事件牌洗入牌库。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "shuffle_tagged_events_into_deck",
+              "lostbelt": "atlantis"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "914cd1ad4c00f2383cf40eab3f6b178ecb7916efb2822e2d6a80dbd45baff86d"
+    },
+    {
+      "id": "master.wodime.skill.s5",
+      "printedText": "扩张-抽取并展示2张事件牌。你可以将其中一张替换为游戏外的【奥林匹斯】事件牌（替换时为正面），然后将它们洗回事件牌堆。同时满足扩张条件的玩家需要同步执行扩张。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wodime.skills[s5]#line=363",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "扩张-抽取并展示2张事件牌。你可以将其中一张替换为游戏外的【奥林匹斯】事件牌（替换时为正面），然后将它们洗回事件牌堆。同时满足扩张条件的玩家需要同步执行扩张。",
+        "sourceTextSha256": "c62623b7386a6795be75f1b926904020ae5c5dc196a81f1a0ff907bc606ef2f9"
+      },
+      "abilities": [
+        {
+          "id": "wodime.olympus.expand",
+          "printedClause": "扩张-抽取并展示2张事件牌。你可以将其中一张替换为游戏外的【奥林匹斯】事件牌（替换时为正面），然后将它们洗回事件牌堆。同时满足扩张条件的玩家需要同步执行扩张。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "draw_optional_replace_shuffle",
+              "lostbelt": "olympus",
+              "drawCount": 2,
+              "replacementSource": "outside_game",
+              "replacementCountMax": 1,
+              "replacementFace": "up",
+              "synchronizeOtherEligibleExpansions": true
+            },
+            {
+              "type": "event_card_rule",
+              "operation": "replace_revealed_event_from_outside_game",
+              "lostbelt": "olympus"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c62623b7386a6795be75f1b926904020ae5c5dc196a81f1a0ff907bc606ef2f9"
+    },
+    {
+      "id": "master.wodime.skill.s6",
+      "printedText": "【亚特兰蒂斯事件牌】战果0，数量6。\n将3个【神之遗产】放置于此地点。所有玩家获得1个【神之遗产】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wodime.skills[s6]#line=364",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【亚特兰蒂斯事件牌】战果0，数量6。\n将3个【神之遗产】放置于此地点。所有玩家获得1个【神之遗产】。",
+        "sourceTextSha256": "764a53000260746be802da5cd9f22ac8944e0cdf3219c266a57f53341749330a"
+      },
+      "abilities": [
+        {
+          "id": "wodime.hephaestus-terminal.event-rule",
+          "printedClause": "【亚特兰蒂斯事件牌】战果0，数量6。\n将3个【神之遗产】放置于此地点。所有玩家获得1个【神之遗产】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_and_resolve",
+              "lostbelt": "atlantis",
+              "victoryPoints": 0,
+              "copyCount": 6,
+              "placeLocationResource": {
+                "resource": "gods_legacy",
+                "amount": 3
+              },
+              "grantEachPlayerResource": {
+                "resource": "gods_legacy",
+                "amount": 1
+              }
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "764a53000260746be802da5cd9f22ac8944e0cdf3219c266a57f53341749330a"
+    },
+    {
+      "id": "master.wodime.skill.s7",
+      "printedText": "【奥林匹斯事件牌】战果5，数量2。\n【沃戴姆】的对手位于此战场时不能无视【败北】效果。计算战力后，使此处战力未达到21的所有人【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wodime.skills[s7]#line=365",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【奥林匹斯事件牌】战果5，数量2。\n【沃戴姆】的对手位于此战场时不能无视【败北】效果。计算战力后，使此处战力未达到21的所有人【败北】。",
+        "sourceTextSha256": "eeb1d8e62cb4205f1d607b8b56957a4e7990deefadf22be1e7fe22f09e1ab68f"
+      },
+      "abilities": [
+        {
+          "id": "wodime.zeus-thunder.event-rule",
+          "printedClause": "【奥林匹斯事件牌】战果5，数量2。\n【沃戴姆】的对手位于此战场时不能无视【败北】效果。计算战力后，使此处战力未达到21的所有人【败北】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_conditional_defeat",
+              "lostbelt": "olympus",
+              "victoryPoints": 5,
+              "copyCount": 2,
+              "defeatImmunityOverride": {
+                "subject": "wodime_opponents_at_battlefield",
+                "canIgnoreDefeat": false
+              },
+              "timing": "after_power_calculation",
+              "defeatFilter": {
+                "powerBelow": 21
+              }
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "eeb1d8e62cb4205f1d607b8b56957a4e7990deefadf22be1e7fe22f09e1ab68f"
+    },
+    {
+      "id": "master.wodime.skill.s8",
+      "printedText": "【奥林匹斯事件牌】战果4，数量2。\n战力计算后，此处本回合所有未使用令咒的沃戴姆的对手【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wodime.skills[s8]#line=366",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【奥林匹斯事件牌】战果4，数量2。\n战力计算后，此处本回合所有未使用令咒的沃戴姆的对手【败北】。",
+        "sourceTextSha256": "ca494dd2078488a686a15e71a4772bdb8f744def6125dd6da3916f0b132668e9"
+      },
+      "abilities": [
+        {
+          "id": "wodime.aphrodite-thoughts.event-rule",
+          "printedClause": "【奥林匹斯事件牌】战果4，数量2。\n战力计算后，此处本回合所有未使用令咒的沃戴姆的对手【败北】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_conditional_defeat",
+              "lostbelt": "olympus",
+              "victoryPoints": 4,
+              "copyCount": 2,
+              "timing": "after_power_calculation",
+              "defeatFilter": {
+                "subject": "wodime_opponents_at_battlefield",
+                "commandSealsSpentThisRound": 0
+              }
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ca494dd2078488a686a15e71a4772bdb8f744def6125dd6da3916f0b132668e9"
+    },
+    {
+      "id": "master.wodime.skill.s9",
+      "printedText": "【奥林匹斯事件牌】战果3，数量2。\n战力计算后，于前哨阶段部署于此处的沃戴姆的对手【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wodime.skills[s9]#line=367",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【奥林匹斯事件牌】战果3，数量2。\n战力计算后，于前哨阶段部署于此处的沃戴姆的对手【败北】。",
+        "sourceTextSha256": "b6ed27a0213097e6bc775c9e09df4a9817dffa549f7e99d12b5cb0932ff3d2fc"
+      },
+      "abilities": [
+        {
+          "id": "wodime.demeter-bounty.event-rule",
+          "printedClause": "【奥林匹斯事件牌】战果3，数量2。\n战力计算后，于前哨阶段部署于此处的沃戴姆的对手【败北】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_conditional_defeat",
+              "lostbelt": "olympus",
+              "victoryPoints": 3,
+              "copyCount": 2,
+              "timing": "after_power_calculation",
+              "defeatFilter": {
+                "subject": "wodime_opponents_at_battlefield",
+                "deployedHereDuring": "outpost"
+              }
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b6ed27a0213097e6bc775c9e09df4a9817dffa549f7e99d12b5cb0932ff3d2fc"
     }
   ]
 }

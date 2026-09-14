@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 99,
-    "explicitBlockCount": 845,
+    "contractMappedCount": 110,
+    "explicitBlockCount": 834,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -25,9 +25,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
       "READY_GENERIC_EXTENSION": 86,
-      "SPECIAL_HANDLER_CANDIDATE": 13,
+      "SPECIAL_HANDLER_CANDIDATE": 24,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 845,
+      "SOURCE_EVIDENCE_REQUIRED": 834,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -76,6 +76,10 @@
         },
         {
           "abilityId": "master.sion.skill.s13",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -192,6 +196,10 @@
         },
         {
           "abilityId": "master.sion.skill.s13",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -317,6 +325,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.wodime.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -389,6 +401,10 @@
         },
         {
           "abilityId": "master.sion.skill.s13",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -488,6 +504,7 @@
       "eligibleAbilities": [
         "master.chaos.skill.s1",
         "master.sion.skill.s13",
+        "master.wodime.skill.s2",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
         "servant.helena.skill.sc-helena-1",
@@ -600,6 +617,10 @@
         },
         {
           "abilityId": "master.sion.skill.s13",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.wodime.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -729,6 +750,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.wodime.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -849,6 +874,10 @@
         },
         {
           "abilityId": "master.sion.skill.s13",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.wodime.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -976,6 +1005,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.wodime.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1098,6 +1131,10 @@
         },
         {
           "abilityId": "master.sion.skill.s13",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.wodime.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1272,6 +1309,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.wodime.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.albion.skill.sc-albion-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1364,6 +1405,8 @@
         "master.darnic.skill.s1a",
         "master.kuzuki.skill.s2",
         "master.twice.skill.ascension",
+        "master.wodime.skill.ascension",
+        "master.wodime.skill.s3",
         "servant.albion.skill.sc-albion-1",
         "servant.andersen.skill.sc-andersen-2",
         "servant.arjuna.skill.sc-arjuna-1",
@@ -1421,7 +1464,8 @@
       "eligibleAbilities": [
         "master.akasha.skill.s1",
         "master.arcueid.skill.s1a",
-        "master.bazett.skill.s1"
+        "master.bazett.skill.s1",
+        "master.wodime.skill.s1a"
       ],
       "partialAbilities": [],
       "skippedAbilities": [
@@ -1591,6 +1635,10 @@
         {
           "abilityId": "master.bazett.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
       ]
     },
@@ -1648,6 +1696,9 @@
         "master.sion.skill.s13",
         "master.twice.skill.ascension",
         "master.twice.skill.s1",
+        "master.wodime.skill.ascension",
+        "master.wodime.skill.s2",
+        "master.wodime.skill.s4",
         "servant.albion.skill.sc-albion-1",
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
@@ -1801,6 +1852,50 @@
         },
         {
           "abilityId": "master.chaos.skill.s8",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s8",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s9",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -1963,6 +2058,7 @@
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
         "master.twice.skill.ascension",
+        "master.wodime.skill.s3",
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.andersen.skill.sc-andersen-2",
@@ -2114,6 +2210,7 @@
         "master.chaos.skill.s12",
         "master.chaos.skill.s16",
         "master.chaos.skill.s2",
+        "master.wodime.skill.s3",
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.arjuna.skill.sc-arjuna-1",
@@ -2161,6 +2258,7 @@
         "master.chaos.skill.s7",
         "master.ciel.skill.s2",
         "master.darnic.skill.s1a",
+        "master.wodime.skill.s3",
         "servant.albion.skill.sc-albion-1",
         "servant.drake.skill.sc-drake-3",
         "servant.edison.skill.sc-edison-2",
@@ -2536,6 +2634,9 @@
         "master.ciel.skill.s2",
         "master.darnic.skill.s1a",
         "master.kuzuki.skill.s2",
+        "master.wodime.skill.ascension",
+        "master.wodime.skill.s1",
+        "master.wodime.skill.s4",
         "servant.albion.skill.sc-albion-1",
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
@@ -2714,6 +2815,10 @@
         },
         {
           "abilityId": "master.darnic.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.wodime.skill.s3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2967,6 +3072,17 @@
         "master.bazett.skill.s4",
         "master.bazett.skill.s5",
         "master.chaos.skill.s8",
+        "master.wodime.skill.ascension",
+        "master.wodime.skill.s1",
+        "master.wodime.skill.s1a",
+        "master.wodime.skill.s2",
+        "master.wodime.skill.s3",
+        "master.wodime.skill.s4",
+        "master.wodime.skill.s5",
+        "master.wodime.skill.s6",
+        "master.wodime.skill.s7",
+        "master.wodime.skill.s8",
+        "master.wodime.skill.s9",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.gorgon.skill.sc-gorgon-3",
         "servant.medusa.skill.sc-medusa-2",
@@ -3075,6 +3191,50 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.wodime.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s8",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wodime.skill.s9",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.amakusa.skill.sc-amakusa-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3163,6 +3323,17 @@
       "master.sion.skill.s13",
       "master.twice.skill.ascension",
       "master.twice.skill.s1",
+      "master.wodime.skill.ascension",
+      "master.wodime.skill.s1",
+      "master.wodime.skill.s1a",
+      "master.wodime.skill.s2",
+      "master.wodime.skill.s3",
+      "master.wodime.skill.s4",
+      "master.wodime.skill.s5",
+      "master.wodime.skill.s6",
+      "master.wodime.skill.s7",
+      "master.wodime.skill.s8",
+      "master.wodime.skill.s9",
       "servant.albion.skill.sc-albion-1",
       "servant.albion.skill.sc-albion-2",
       "servant.amakusa.skill.sc-amakusa-1",
@@ -5225,83 +5396,6 @@
       },
       {
         "abilityId": "master.waver.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wodime.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wodime.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wodime.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wodime.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wodime.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wodime.skill.s4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wodime.skill.s5",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wodime.skill.s6",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wodime.skill.s7",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wodime.skill.s8",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wodime.skill.s9",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -9145,6 +9239,17 @@
       "master.bazett.skill.s4",
       "master.bazett.skill.s5",
       "master.chaos.skill.s8",
+      "master.wodime.skill.ascension",
+      "master.wodime.skill.s1",
+      "master.wodime.skill.s1a",
+      "master.wodime.skill.s2",
+      "master.wodime.skill.s3",
+      "master.wodime.skill.s4",
+      "master.wodime.skill.s5",
+      "master.wodime.skill.s6",
+      "master.wodime.skill.s7",
+      "master.wodime.skill.s8",
+      "master.wodime.skill.s9",
       "servant.andersen.skill.sc-andersen-2",
       "servant.diarmuid.skill.sc-diarmuid-1",
       "servant.gorgon.skill.sc-gorgon-3",

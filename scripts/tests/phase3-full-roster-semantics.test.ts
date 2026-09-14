@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
@@ -305,6 +306,105 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(ascension?.abilities).toHaveLength(1);
   });
 
+  it('accepts only locked development-text snapshots from the allowlisted source files', () => {
+    const root = mkdtempSync(join(tmpdir(), 'fd-phase3-dev-evidence-'));
+    const overlayPath = join(root, 'overlay.json');
+    const sourceText = '行动阶段：执行来源文本中的规则。';
+    const card = {
+      id: 'master.fixture.skill.s1',
+      printedText: sourceText,
+      source: {
+        authority: 'DEVELOPMENT_TEXT',
+        document: 'Fate_Domination-开发版/data_masters.js',
+        locator: 'm_fixture.skills[s1]#line=1',
+        sourceFileSha256: 'a'.repeat(64),
+        sourceText,
+        sourceTextSha256: createHash('sha256').update(sourceText, 'utf8').digest('hex'),
+      },
+      abilities: [{
+        id: 'fixture.development-source',
+        printedClause: sourceText,
+        kind: 'phase_action',
+        activation: { phase: 'action' },
+        effects: [{ type: 'gain_mana', amount: 1 }],
+      }],
+      referencePrintedTextSha256: 'b'.repeat(64),
+    };
+
+    try {
+      writeFileSync(overlayPath, JSON.stringify({
+        schemaVersion: 1,
+        kind: 'phase3-full-roster-source-evidence-overlays',
+        cards: [card],
+      }), 'utf8');
+      expect(loadSourceEvidenceOverlayCards(root, 'overlay.json')).toHaveLength(1);
+
+      const badHash = structuredClone(card);
+      badHash.source.sourceTextSha256 = '0'.repeat(64);
+      writeFileSync(overlayPath, JSON.stringify({
+        schemaVersion: 1,
+        kind: 'phase3-full-roster-source-evidence-overlays',
+        cards: [badHash],
+      }), 'utf8');
+      expect(() => loadSourceEvidenceOverlayCards(root, 'overlay.json')).toThrow(/locked development-text snapshot/);
+
+      const badDocument = structuredClone(card) as any;
+      badDocument.source.document = 'Fate_Domination-开发版/index.html';
+      writeFileSync(overlayPath, JSON.stringify({
+        schemaVersion: 1,
+        kind: 'phase3-full-roster-source-evidence-overlays',
+        cards: [badDocument],
+      }), 'utf8');
+      expect(() => loadSourceEvidenceOverlayCards(root, 'overlay.json')).toThrow(/locked development-text snapshot/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it('grounds the eleven-ID Wodime slice from the locked development-text snapshot', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const wodime = overlays.filter((card) => card.id.startsWith('master.wodime.skill.'));
+    expect(wodime).toHaveLength(11);
+    expect(wodime.map((card) => card.id).sort()).toEqual([
+      'master.wodime.skill.ascension',
+      'master.wodime.skill.s1',
+      'master.wodime.skill.s1a',
+      'master.wodime.skill.s2',
+      'master.wodime.skill.s3',
+      'master.wodime.skill.s4',
+      'master.wodime.skill.s5',
+      'master.wodime.skill.s6',
+      'master.wodime.skill.s7',
+      'master.wodime.skill.s8',
+      'master.wodime.skill.s9',
+    ]);
+    expect(
+      wodime.every((card) =>
+        card.source?.authority === 'DEVELOPMENT_TEXT' &&
+        card.source.document === 'Fate_Domination-开发版/data_masters.js' &&
+        card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+        createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256
+      ),
+    ).toBe(true);
+
+    const leader = wodime.find((card) => card.id === 'master.wodime.skill.s1');
+    expect(leader?.abilities).toContainEqual(
+      expect.objectContaining({ id: 'wodime.cryptic-leader.atlantis-start' }),
+    );
+    const sphere = wodime.find((card) => card.id === 'master.wodime.skill.s2');
+    expect(sphere?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({ type: 'astronomical_sphere_rule', prohibitOtherEntryMethods: true }),
+    );
+    const legacy = wodime.find((card) => card.id === 'master.wodime.skill.s3');
+    expect(legacy?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({ type: 'location_token_rule', survivesOwnerElimination: true }),
+    );
+    const grandOrder = wodime.find((card) => card.id === 'master.wodime.skill.ascension');
+    expect(grandOrder?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({ type: 'secret_round_binding', operation: 'record_additional_secret_round', optional: true }),
+    );
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -358,10 +458,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 99,
-      blockedCount: 845,
+      sourceGroundedCount: 110,
+      blockedCount: 834,
       unclassifiedCount: 0,
-      structuredAbilityCount: 155,
+      structuredAbilityCount: 171,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

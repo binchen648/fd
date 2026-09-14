@@ -19,12 +19,23 @@ const DEFAULT_INVENTORY_PATH = 'data/phase3/full-roster-ability-inventory.json';
 const DEFAULT_MARKDOWN_PATH = 'docs/audits/fd-full-roster-semantic-axis-matrix.md';
 const DEFAULT_SOURCE_EVIDENCE_OVERLAY_PATH = 'data/phase3/full-roster-source-evidence-overlays.json';
 
-export interface StructuredSourceEvidence {
-  authority: 'FATE_DOMINATION_WIKI';
-  document: 'Fate/Domination Wiki';
-  locator: string;
-  url: string;
-}
+export type StructuredSourceEvidence =
+  | {
+      authority: 'FATE_DOMINATION_WIKI';
+      document: 'Fate/Domination Wiki';
+      locator: string;
+      url: string;
+    }
+  | {
+      authority: 'DEVELOPMENT_TEXT';
+      document:
+        | 'Fate_Domination-开发版/data_masters.js'
+        | 'Fate_Domination-开发版/data_servants.js';
+      locator: string;
+      sourceFileSha256: string;
+      sourceText: string;
+      sourceTextSha256: string;
+    };
 
 export interface StructuredAbility {
   id: string;
@@ -464,7 +475,7 @@ function normalizeStaticEntry(
     };
   }
 
-  const externalEvidence = card.source?.authority === 'FATE_DOMINATION_WIKI';
+  const externalEvidence = card.source !== undefined;
   if (externalEvidence) {
     const expectedReferenceHash = createHash('sha256').update(entry.printedText, 'utf8').digest('hex');
     if (card.referencePrintedTextSha256 !== expectedReferenceHash) {
@@ -547,24 +558,45 @@ export function loadSourceEvidenceOverlayCards(
       throw new Error(`Source-evidence overlay must preserve printed text and structured abilities: ${card.id}`);
     }
     const source = card.source;
-    let parsedUrl: URL | undefined;
-    try {
-      parsedUrl = new URL(source?.url ?? '');
-    } catch {
-      parsedUrl = undefined;
+    if (typeof source?.locator !== 'string' || source.locator.length === 0) {
+      throw new Error(`Source-evidence overlay has no stable locator: ${card.id}`);
     }
-    if (
-      source?.authority !== 'FATE_DOMINATION_WIKI' ||
-      source.document !== 'Fate/Domination Wiki' ||
-      typeof source.locator !== 'string' ||
-      source.locator.length === 0 ||
-      parsedUrl?.protocol !== 'https:' ||
-      parsedUrl.hostname !== 'fatedomination.fandom.com' ||
-      !parsedUrl.pathname.startsWith('/wiki/') ||
-      typeof card.referencePrintedTextSha256 !== 'string' ||
-      !/^[a-f0-9]{64}$/.test(card.referencePrintedTextSha256)
-    ) {
-      throw new Error(`Source-evidence overlay is not from the allowed Fate/Domination Wiki: ${card.id}`);
+    if (typeof card.referencePrintedTextSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(card.referencePrintedTextSha256)) {
+      throw new Error(`Source-evidence overlay is not bound to locked Reference text: ${card.id}`);
+    }
+
+    if (source.authority === 'FATE_DOMINATION_WIKI') {
+      let parsedUrl: URL | undefined;
+      try {
+        parsedUrl = new URL(source.url);
+      } catch {
+        parsedUrl = undefined;
+      }
+      if (
+        source.document !== 'Fate/Domination Wiki' ||
+        parsedUrl?.protocol !== 'https:' ||
+        parsedUrl.hostname !== 'fatedomination.fandom.com' ||
+        !parsedUrl.pathname.startsWith('/wiki/')
+      ) {
+        throw new Error(`Source-evidence overlay is not from the allowed Fate/Domination Wiki: ${card.id}`);
+      }
+    } else if (source.authority === 'DEVELOPMENT_TEXT') {
+      const allowedDevelopmentDocuments = new Set([
+        'Fate_Domination-开发版/data_masters.js',
+        'Fate_Domination-开发版/data_servants.js',
+      ]);
+      if (
+        !allowedDevelopmentDocuments.has(source.document) ||
+        !/^[a-f0-9]{64}$/.test(source.sourceFileSha256) ||
+        typeof source.sourceText !== 'string' ||
+        source.sourceText.length === 0 ||
+        !/^[a-f0-9]{64}$/.test(source.sourceTextSha256) ||
+        createHash('sha256').update(source.sourceText, 'utf8').digest('hex') !== source.sourceTextSha256
+      ) {
+        throw new Error(`Source-evidence overlay is not a valid locked development-text snapshot: ${card.id}`);
+      }
+    } else {
+      throw new Error(`Unsupported source-evidence authority: ${card.id}`);
     }
     for (const ability of card.abilities) {
       if (typeof ability.id !== 'string' || ability.id.length === 0 || typeof ability.printedClause !== 'string' || ability.printedClause.length === 0) {

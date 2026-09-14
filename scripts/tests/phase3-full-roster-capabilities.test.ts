@@ -171,11 +171,11 @@ describe('Phase 3 full-roster capability mapping', () => {
     const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
 
     expect(inventory.capabilitySummary.totalIdentityCount).toBe(944);
-    expect(inventory.capabilitySummary.contractMappedCount).toBe(99);
-    expect(inventory.capabilitySummary.explicitBlockCount).toBe(845);
+    expect(inventory.capabilitySummary.contractMappedCount).toBe(110);
+    expect(inventory.capabilitySummary.explicitBlockCount).toBe(834);
     expect(inventory.capabilitySummary.zeroSilentFallback).toBe(true);
-    expect(catalog.coverage.mappedAbilities).toHaveLength(99);
-    expect(catalog.coverage.blockedAbilities).toHaveLength(845);
+    expect(catalog.coverage.mappedAbilities).toHaveLength(110);
+    expect(catalog.coverage.blockedAbilities).toHaveLength(834);
     expect(catalog.coverage.mappedAbilities.length + catalog.coverage.blockedAbilities.length).toBe(944);
 
     const allowedCurrentRoutes = new Set(['legacy', 'new', 'dual', 'none']);
@@ -187,8 +187,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     }
 
     expect(markdown).toContain('totalIdentityCount=944');
-    expect(markdown).toContain('contractMappedCount=99');
-    expect(markdown).toContain('explicitBlockCount=845');
+    expect(markdown).toContain('contractMappedCount=110');
+    expect(markdown).toContain('explicitBlockCount=834');
     expect(markdown).toContain('zeroSilentFallback=true');
   });
 
@@ -234,6 +234,32 @@ describe('Phase 3 full-roster capability mapping', () => {
     }
     expect(byId.get('master.bazett.skill.ascension').phase3.classificationRoute).toBe('READY_GENERIC_EXTENSION');
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
+  });
+
+  it('routes all eleven Wodime identities to reviewed-special without inheriting runtime acceptance', () => {
+    const inventory = JSON.parse(
+      readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8'),
+    ) as any;
+    const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
+    const wodime = entries.filter((entry: any) => entry.canonicalAbilityId.startsWith('master.wodime.skill.'));
+
+    expect(wodime).toHaveLength(11);
+    for (const entry of wodime) {
+      expect(entry.phase3.classificationRoute).toBe('SPECIAL_HANDLER_CANDIDATE');
+      expect(entry.phase3.requiredCapabilities).toContain('REVIEWED_SPECIAL_HANDLER');
+      expect(entry.phase3.inheritedAcceptanceContracts).toEqual([]);
+    }
+
+    const byId = new Map(wodime.map((entry: any) => [entry.canonicalAbilityId, entry]));
+    expect(byId.get('master.wodime.skill.s1').phase3.blockedBy).toContain('SPECIAL_EFFECT:lostbelt_expansion');
+    expect(byId.get('master.wodime.skill.s1a').phase3.blockedBy).toContain('SPECIAL_EFFECT:secret_round_binding');
+    expect(byId.get('master.wodime.skill.s2').phase3.requiredCapabilities).toContain('CARD_ACTION_PLAY');
+    expect(byId.get('master.wodime.skill.s3').phase3.requiredCapabilities).toContain('GENERIC_RESOURCE_NUMERIC');
+    expect(byId.get('master.wodime.skill.s4').phase3.blockedBy).toContain('SPECIAL_EFFECT:event_card_rule');
+    expect(byId.get('master.wodime.skill.ascension').phase3.blockedBy).toContain('SPECIAL_EFFECT:secret_round_binding');
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(86);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(24);
   });
 
   it('bridges current semantic card IDs to stable canonical IDs only by exact ID or unique owner/name identity', () => {
