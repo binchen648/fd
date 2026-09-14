@@ -1387,6 +1387,137 @@ Completion status allowed:
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `REJECTED`
 
+## TASK P3-B15
+
+Owner: Codex B
+Status: READY
+Branch: `codex/b-p3-b15-terminal-card-zone-r1`
+
+Goal:
+
+Implement the next narrow TO14 runtime slice for Ereshkigal `sc-ereshkigal-2.return-to-skill-zone`: add the generic phase-terminal `after_battle_ended` producer and an identity-free typed source-card-to-zone primitive sufficient to return the active source card to the controller skill zone.
+
+Depends on:
+
+- reviewer-accepted P3-B14 runtime `6ef5fa69cab1d51d1681e525410a93172ee7a714`;
+- P3-R08 acceptance `32be96d5d31107c72913881be12ea4b8513c7360`;
+- A03 B14 synchronization `b500052ec39cf904c7d60f23e809d77a898dfcc0`;
+- accepted TO14 phase-wide post-scoring barrier and phase-terminal ordering contract;
+- accepted Trigger Gateway and Card Zone ownership boundaries.
+
+Representative:
+
+`servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.return-to-skill-zone`
+
+Required semantic form:
+
+- `forced_trigger`;
+- `activation.phase = combat`;
+- `activation.trigger = after_battle_ended`;
+- no conditions/targets/cost/creates/ruleModifiers/lifecycle/response/limit;
+- exactly one source-card move to controller `skill`;
+- classification and runtime routing are structural, never representative-ID based.
+
+Required phase-terminal contract:
+
+- emit exactly one server-owned `after_battle_ended` event per authoritative `battlePhaseResolutionId`;
+- never emit once per battlefield;
+- emit only after all queued ordinary post-battle result/win/loss/first-loss consumers are terminal;
+- emit before cleanup can discard/close battle cards;
+- preserve stable phase identity plus ordered battle/result/scoring-receipt references required by TO14;
+- reconnect, stale command, replay, or battle-phase re-entry must not emit/settle it twice;
+- MatchSession and core game-loop paths must agree.
+
+Required Card Zone primitive contract:
+
+- generic typed source-card move, not an Ereshkigal-specific handler;
+- validate source exists, belongs/is controlled by the ability controller, and is in a supported active-board source zone for this semantic;
+- moving to `skill` sets controller ownership, owner-only visibility, and inactive source state;
+- malformed controller/source/zone/destination fails closed atomically;
+- exact supported B15 semantic must use typed resolution-dataflow and must not fall through to legacy `resolveEffect`.
+
+May touch:
+
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/types.ts` if stable terminal-event payload/runtime state requires it
+- `packages/rules/src/match-session.ts`
+- `packages/rules/src/core/game-loop.ts`
+- narrowly shared battle-terminal helper if needed
+- focused B15 regression/unit tests
+- one scoped browser/server Gate C fixture/spec
+- B15 implementation report
+
+Must not touch:
+
+- Gatou `seeker.battle-end-reward` directive semantics
+- Tomoe unpreventable defeat penalty
+- optional battle-result/win triggers
+- Olga transform/Special subsystem
+- TO15 Modifier/Power runtime
+- coverage KPI/classifier/taxonomy
+- unrelated Hidden Information, Movement, Interaction, or broad Lifecycle work
+- representative card/ability identity routing
+
+Required evidence:
+
+- red/green semantic classifier and typed primitive tests;
+- terminal event exactly-once and no-per-battlefield-duplicate proof;
+- proof terminal event waits until prior post-battle queue is terminal;
+- proof source returns to skill before cleanup would discard it;
+- wrong controller/source zone/destination fail-closed atomicity;
+- MatchSession and core game-loop consistency;
+- B13/B14 and Trigger/Card Zone/Lifecycle compatibility;
+- real remote-room Chromium evidence with reconnect + stale revision + no duplicate terminal move;
+- full root baseline comparison and production identity/legacy-bypass audit.
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+
+## TASK P3-R09
+
+Owner: Codex R
+Status: READY_AFTER_P3_B15
+Branch: reviewer-selected fresh worktree/branch from exact B15 candidate SHA
+
+Goal:
+
+Independently review P3-B15 terminal Battle -> Trigger -> typed Card Zone runtime without implementing fixes or inheriting acceptance from B13/B14/TO14 specification.
+
+Required independent checks:
+
+- fresh typecheck and focused/compatibility tests;
+- independently verify `after_battle_ended` is produced exactly once per battle phase, never per battlefield, only after prior post-battle consumers are terminal, and before cleanup;
+- independently verify stable terminal identity/re-entry/reconnect/stale behavior;
+- adversarially verify source-card move controller/zone/destination checks and atomic fail-closed behavior;
+- verify exact supported semantic uses typed resolution-dataflow with no identity branch or legacy bypass;
+- verify MatchSession and core game-loop parity;
+- run fresh Chromium Gate C;
+- run full root baseline and block only on new deterministic failures.
+
+Must not:
+
+- implement fixes while reviewing;
+- promote Gatou, Tomoe, optional result triggers, Special, TO15 or any sibling TO14 row;
+- modify A-owned coverage KPI/taxonomy.
+
+Required output:
+
+- findings ordered by severity;
+- phase-terminal ordering/exactly-once judgment;
+- typed Card Zone / fail-closed judgment;
+- MatchSession/core parity judgment;
+- Gate A/B/C judgment;
+- explicit A03 synchronization input if accepted.
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
 ## Prompt Templates
 
 Codex A startup prompt:
