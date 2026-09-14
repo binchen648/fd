@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 120,
-    "explicitBlockCount": 824,
+    "contractMappedCount": 129,
+    "explicitBlockCount": 815,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
-      "READY_GENERIC_EXTENSION": 89,
-      "SPECIAL_HANDLER_CANDIDATE": 31,
+      "READY_GENERIC_EXTENSION": 93,
+      "SPECIAL_HANDLER_CANDIDATE": 36,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 824,
+      "SOURCE_EVIDENCE_REQUIRED": 815,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -1305,6 +1305,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fiore.skill.s5",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fiore.skill.s7",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.ophelia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1407,6 +1415,12 @@
         "master.ciel.skill.s2",
         "master.ciel.skill.s3",
         "master.darnic.skill.s1a",
+        "master.fiore.skill.ascension",
+        "master.fiore.skill.s1a",
+        "master.fiore.skill.s4",
+        "master.fiore.skill.s5",
+        "master.fiore.skill.s6",
+        "master.fiore.skill.s7",
         "master.kuzuki.skill.s2",
         "master.ophelia.skill.ascension",
         "master.ophelia.skill.s1",
@@ -1530,6 +1544,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fiore.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fiore.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.ophelia.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1627,6 +1649,8 @@
         "master.chaos.skill.s4",
         "master.chaos.skill.s6",
         "master.ciel.skill.s1b",
+        "master.fiore.skill.s5",
+        "master.fiore.skill.s7",
         "master.ophelia.skill.ascension",
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
@@ -1712,6 +1736,12 @@
         "master.ciel.skill.s2",
         "master.ciel.skill.s3",
         "master.darnic.skill.s1a",
+        "master.fiore.skill.ascension",
+        "master.fiore.skill.s1a",
+        "master.fiore.skill.s4",
+        "master.fiore.skill.s5",
+        "master.fiore.skill.s6",
+        "master.fiore.skill.s7",
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
         "master.ophelia.skill.ascension",
@@ -1811,6 +1841,8 @@
       "eligibleAbilities": [
         "master.chaos.skill.ascension",
         "master.chaos.skill.s1",
+        "master.fiore.skill.s5",
+        "master.fiore.skill.s7",
         "master.ophelia.skill.s2",
         "master.sion.skill.s13",
         "servant.roberts.skill.sc-roberts-1",
@@ -1897,6 +1929,26 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fiore.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fiore.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fiore.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fiore.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fiore.skill.s6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.wodime.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1974,6 +2026,9 @@
         "master.chaos.skill.s4",
         "master.chaos.skill.s5",
         "master.ciel.skill.s3",
+        "master.fiore.skill.ascension",
+        "master.fiore.skill.s1a",
+        "master.fiore.skill.s6",
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
         "master.ophelia.skill.s2",
@@ -2070,6 +2125,11 @@
         "master.chaos.skill.s5",
         "master.chaos.skill.s9",
         "master.ciel.skill.s3",
+        "master.fiore.skill.s2",
+        "master.fiore.skill.s3",
+        "master.fiore.skill.s4",
+        "master.fiore.skill.s5",
+        "master.fiore.skill.s7",
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
         "master.ophelia.skill.ascension",
@@ -2137,7 +2197,12 @@
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
         "master.chaos.skill.s12",
-        "servant.drake.skill.sc-drake-2"
+        "master.fiore.skill.s2",
+        "master.fiore.skill.s5",
+        "master.kuzuki.skill.s2",
+        "servant.drake.skill.sc-drake-2",
+        "servant.gorgon.skill.sc-gorgon-3",
+        "servant.mozart.skill.sc-mozart-1"
       ],
       "partialAbilities": [],
       "skippedAbilities": []
@@ -2178,6 +2243,8 @@
         "master.chaos.skill.s4",
         "master.chaos.skill.s8",
         "master.darnic.skill.s1a",
+        "master.fiore.skill.ascension",
+        "master.fiore.skill.s1a",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
@@ -2231,22 +2298,38 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.arcueid.skill.s3",
+        "master.bazett.skill.s1b",
         "master.chaos.skill.s12",
+        "master.chaos.skill.s14",
+        "master.chaos.skill.s15",
         "master.chaos.skill.s16",
         "master.chaos.skill.s2",
+        "master.chaos.skill.s5",
+        "master.chaos.skill.s9",
+        "master.ciel.skill.s3",
+        "master.fiore.skill.s4",
+        "master.fiore.skill.s7",
         "master.ophelia.skill.ascension",
         "master.ophelia.skill.s1b",
         "master.ophelia.skill.s2",
         "master.ophelia.skill.s5",
         "master.ophelia.skill.s6",
         "master.ophelia.skill.s7",
+        "master.twice.skill.ascension",
+        "master.wodime.skill.s2",
         "master.wodime.skill.s3",
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.arjuna.skill.sc-arjuna-1",
+        "servant.atalanta.skill.sc-atalanta-1",
+        "servant.darius.skill.sc-darius-2",
+        "servant.edison.skill.sc-edison-3",
+        "servant.ibaraki.skill.sc-ibaraki-1",
         "servant.kama.skill.sc-kama-1",
         "servant.mechaeli.skill.sc-mechaeli-2",
         "servant.mephisto.skill.sc-mephisto-2",
+        "servant.mozart.skill.sc-mozart-1",
         "servant.ozymandias.skill.sc-ozymandias-2"
       ],
       "partialAbilities": [],
@@ -2287,7 +2370,12 @@
         "master.chaos.skill.s3",
         "master.chaos.skill.s7",
         "master.ciel.skill.s2",
+        "master.ciel.skill.s3",
         "master.darnic.skill.s1a",
+        "master.fiore.skill.ascension",
+        "master.fiore.skill.s1a",
+        "master.fiore.skill.s3",
+        "master.fiore.skill.s6",
         "master.wodime.skill.s3",
         "servant.albion.skill.sc-albion-1",
         "servant.drake.skill.sc-drake-3",
@@ -2344,6 +2432,9 @@
         "master.chaos.skill.s3",
         "master.chaos.skill.s4",
         "master.chaos.skill.s8",
+        "master.fiore.skill.ascension",
+        "master.fiore.skill.s1a",
+        "master.fiore.skill.s6",
         "master.ophelia.skill.ascension",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
@@ -2399,6 +2490,7 @@
         "master.arcueid.skill.s1a",
         "master.chaos.skill.s1",
         "master.ciel.skill.s3",
+        "master.fiore.skill.ascension",
         "servant.albion.skill.sc-albion-2",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.diarmuid.skill.sc-diarmuid-1",
@@ -2435,6 +2527,14 @@
         },
         {
           "abilityId": "master.chaos.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fiore.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fiore.skill.s6",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -2591,6 +2691,8 @@
         "master.chaos.skill.s4",
         "master.chaos.skill.s8",
         "master.darnic.skill.s1a",
+        "master.fiore.skill.ascension",
+        "master.fiore.skill.s1a",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
@@ -2668,6 +2770,11 @@
         "master.ciel.skill.s1b",
         "master.ciel.skill.s2",
         "master.darnic.skill.s1a",
+        "master.fiore.skill.ascension",
+        "master.fiore.skill.s1a",
+        "master.fiore.skill.s5",
+        "master.fiore.skill.s6",
+        "master.fiore.skill.s7",
         "master.kuzuki.skill.s2",
         "master.ophelia.skill.ascension",
         "master.ophelia.skill.s1",
@@ -2855,7 +2962,27 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.ciel.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.darnic.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fiore.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fiore.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fiore.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fiore.skill.s6",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3004,6 +3131,18 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fiore.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fiore.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fiore.skill.s6",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.ophelia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -3117,6 +3256,11 @@
         "master.bazett.skill.s4",
         "master.bazett.skill.s5",
         "master.chaos.skill.s8",
+        "master.fiore.skill.ascension",
+        "master.fiore.skill.s1",
+        "master.fiore.skill.s1a",
+        "master.fiore.skill.s5",
+        "master.fiore.skill.s6",
         "master.ophelia.skill.ascension",
         "master.ophelia.skill.s1",
         "master.ophelia.skill.s3",
@@ -3236,6 +3380,26 @@
         },
         {
           "abilityId": "master.chaos.skill.s8",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fiore.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fiore.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fiore.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fiore.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fiore.skill.s6",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -3398,6 +3562,15 @@
       "master.ciel.skill.s2",
       "master.ciel.skill.s3",
       "master.darnic.skill.s1a",
+      "master.fiore.skill.ascension",
+      "master.fiore.skill.s1",
+      "master.fiore.skill.s1a",
+      "master.fiore.skill.s2",
+      "master.fiore.skill.s3",
+      "master.fiore.skill.s4",
+      "master.fiore.skill.s5",
+      "master.fiore.skill.s6",
+      "master.fiore.skill.s7",
       "master.kayneth.skill.s3",
       "master.kuzuki.skill.s2",
       "master.ophelia.skill.ascension",
@@ -3826,69 +3999,6 @@
       },
       {
         "abilityId": "master.darnic.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fiore.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fiore.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fiore.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fiore.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fiore.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fiore.skill.s4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fiore.skill.s5",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fiore.skill.s6",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fiore.skill.s7",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -9259,6 +9369,11 @@
       "master.bazett.skill.s4",
       "master.bazett.skill.s5",
       "master.chaos.skill.s8",
+      "master.fiore.skill.ascension",
+      "master.fiore.skill.s1",
+      "master.fiore.skill.s1a",
+      "master.fiore.skill.s5",
+      "master.fiore.skill.s6",
       "master.ophelia.skill.ascension",
       "master.ophelia.skill.s1",
       "master.ophelia.skill.s3",

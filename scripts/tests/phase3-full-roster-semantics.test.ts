@@ -506,6 +506,92 @@ describe('Phase 3 full-roster semantic normalization', () => {
     );
   });
 
+  it('grounds the nine-ID Fiore transcend slice from the locked development-text snapshot', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const fiore = overlays.filter((card) => card.id.startsWith('master.fiore.skill.'));
+    expect(fiore).toHaveLength(9);
+    expect(fiore.map((card) => card.id).sort()).toEqual([
+      'master.fiore.skill.ascension',
+      'master.fiore.skill.s1',
+      'master.fiore.skill.s1a',
+      'master.fiore.skill.s2',
+      'master.fiore.skill.s3',
+      'master.fiore.skill.s4',
+      'master.fiore.skill.s5',
+      'master.fiore.skill.s6',
+      'master.fiore.skill.s7',
+    ]);
+    expect(
+      fiore.every((card) =>
+        card.source?.authority === 'DEVELOPMENT_TEXT' &&
+        card.source.document === 'Fate_Domination-开发版/data_masters.js' &&
+        card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+        createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256
+      ),
+    ).toBe(true);
+
+    const owner = fiore.find((card) => card.id === 'master.fiore.skill.s1');
+    expect(owner?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({ type: 'cycle_state_transition', operation: 'initialize_pairs' }),
+    );
+
+    const transcend = fiore.find((card) => card.id === 'master.fiore.skill.s1a');
+    expect(transcend?.abilities).toHaveLength(3);
+    expect(transcend?.abilities[2].conditions).toContainEqual(
+      expect.objectContaining({ type: 'event_type_is', eventType: 'combat.ending' }),
+    );
+    expect(transcend?.abilities[2].effects).toContainEqual(
+      expect.objectContaining({ type: 'lose_mana', amount: 4 }),
+    );
+
+    const paralysis = fiore.find((card) => card.id === 'master.fiore.skill.s2');
+    expect(paralysis?.abilities[0].ruleModifiers).toContainEqual(
+      expect.objectContaining({ rule: 'movement_permission', operation: 'prohibit' }),
+    );
+
+    const circuits = fiore.find((card) => card.id === 'master.fiore.skill.s3');
+    expect(circuits?.abilities[0].ruleModifiers).toContainEqual(
+      expect.objectContaining({ rule: 'round_mana_gain_cap', normalRoundCap: 2, climaxRoundCap: 4 }),
+    );
+
+    const docility = fiore.find((card) => card.id === 'master.fiore.skill.s4');
+    expect(docility?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({ type: 'combat_power_bonus', amount: -2 }),
+    );
+    expect(docility?.abilities[1].ruleModifiers).toContainEqual(
+      expect.objectContaining({ rule: 'controller_master_skill_power', operation: 'set_and_lock', value: 0 }),
+    );
+
+    const neuromechanics = fiore.find((card) => card.id === 'master.fiore.skill.s5');
+    expect(neuromechanics?.abilities[0].conditions).toContainEqual(
+      expect.objectContaining({ type: 'event_type_is', eventType: 'cycle_state.entered' }),
+    );
+    expect(neuromechanics?.abilities[3].effects).toContainEqual(
+      expect.objectContaining({ type: 'terrain_position_adjustment', operation: 'gain', amount: 2 }),
+    );
+
+    const determination = fiore.find((card) => card.id === 'master.fiore.skill.s6');
+    expect(determination?.abilities[1].conditions).toContainEqual(
+      expect.objectContaining({ type: 'event_type_is', eventType: 'combat.resolved' }),
+    );
+    expect(determination?.abilities[1].effects).toContainEqual(
+      expect.objectContaining({ type: 'gain_victory_points', amount: 2 }),
+    );
+
+    const cleverMind = fiore.find((card) => card.id === 'master.fiore.skill.s7');
+    expect(cleverMind?.abilities[2].ruleModifiers).toContainEqual(
+      expect.objectContaining({ rule: 'combat_skill_card_power', operation: 'increase', amount: 1 }),
+    );
+
+    const ascension = fiore.find((card) => card.id === 'master.fiore.skill.ascension');
+    expect(ascension?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({ type: 'cycle_state_transition' }),
+    );
+    expect(ascension?.abilities[1].effects).toContainEqual(
+      expect.objectContaining({ type: 'lose_victory_points', amount: 2 }),
+    );
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -559,10 +645,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 120,
-      blockedCount: 824,
+      sourceGroundedCount: 129,
+      blockedCount: 815,
       unclassifiedCount: 0,
-      structuredAbilityCount: 191,
+      structuredAbilityCount: 210,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 824,
-    "coveredBlockedIdentityCount": 824,
+    "blockedIdentityCount": 815,
+    "coveredBlockedIdentityCount": 815,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 2,
@@ -69,15 +69,6 @@
         "master.dan.skill.s1a",
         "master.darnic.skill.ascension",
         "master.darnic.skill.s1",
-        "master.fiore.skill.ascension",
-        "master.fiore.skill.s1",
-        "master.fiore.skill.s1a",
-        "master.fiore.skill.s2",
-        "master.fiore.skill.s3",
-        "master.fiore.skill.s4",
-        "master.fiore.skill.s5",
-        "master.fiore.skill.s6",
-        "master.fiore.skill.s7",
         "master.fou.skill.ascension",
         "master.fou.skill.s1",
         "master.fujino.skill.ascension",
@@ -1907,192 +1898,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[40].skills[0].text#line=1",
           "sha256": "e6220bdcb4489b7bfb650f27461557ed3bfb1afd8bff3bc93072c94c7a23e9d6"
-        },
-        {
-          "abilityId": "master.fiore.skill.ascension",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.fiore/菲奥蕾·弗尔维吉"
-        },
-        {
-          "abilityId": "master.fiore.skill.ascension",
-          "document": "legacy-content.json",
-          "locator": "master/master.fiore/ascension"
-        },
-        {
-          "abilityId": "master.fiore.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[8].text#line=1",
-          "sha256": "908300b35760858ecff4666f9dcca06c837bfbb59b4c701b51b280471f7cde4e"
-        },
-        {
-          "abilityId": "master.fiore.skill.s1",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.fiore/菲奥蕾·弗尔维吉"
-        },
-        {
-          "abilityId": "master.fiore.skill.s1",
-          "document": "legacy-content.json",
-          "locator": "master/master.fiore/s1"
-        },
-        {
-          "abilityId": "master.fiore.skill.s1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[0].text#line=1",
-          "sha256": "5494e640beb54680546b5e9e4597a200ac46bffeb253d65ce5f324b6b5277016"
-        },
-        {
-          "abilityId": "master.fiore.skill.s1a",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.fiore/菲奥蕾·弗尔维吉"
-        },
-        {
-          "abilityId": "master.fiore.skill.s1a",
-          "document": "legacy-content.json",
-          "locator": "master/master.fiore/s1a"
-        },
-        {
-          "abilityId": "master.fiore.skill.s1a",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[1].text#line=1",
-          "sha256": "f42b5ab1e6b1d455c3bb8df880d8862d9c119411f6bfbaa836822187bdebd3bc"
-        },
-        {
-          "abilityId": "master.fiore.skill.s1a",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[1].text#line=2",
-          "sha256": "f9f0f36b9d58256d1ae9b9837ee7ab09157f2128fe824170f1d59d16ea1fb94c"
-        },
-        {
-          "abilityId": "master.fiore.skill.s2",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.fiore/菲奥蕾·弗尔维吉"
-        },
-        {
-          "abilityId": "master.fiore.skill.s2",
-          "document": "legacy-content.json",
-          "locator": "master/master.fiore/s2"
-        },
-        {
-          "abilityId": "master.fiore.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[2].text#line=1",
-          "sha256": "e9646624a773a5a21ca08c3d63e072da56126dad075d4842d44faac9a95ec6e9"
-        },
-        {
-          "abilityId": "master.fiore.skill.s3",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.fiore/菲奥蕾·弗尔维吉"
-        },
-        {
-          "abilityId": "master.fiore.skill.s3",
-          "document": "legacy-content.json",
-          "locator": "master/master.fiore/s3"
-        },
-        {
-          "abilityId": "master.fiore.skill.s3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[3].text#line=1",
-          "sha256": "01a78c3d1650a32f187bf1b292e15807727370e11928021d7b91e7125ce3c2ac"
-        },
-        {
-          "abilityId": "master.fiore.skill.s4",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.fiore/菲奥蕾·弗尔维吉"
-        },
-        {
-          "abilityId": "master.fiore.skill.s4",
-          "document": "legacy-content.json",
-          "locator": "master/master.fiore/s4"
-        },
-        {
-          "abilityId": "master.fiore.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[4].text#line=1",
-          "sha256": "2e3a64482c0111a766b5d3e991365342e414b1d5a38318681db77b9b99e4e3e3"
-        },
-        {
-          "abilityId": "master.fiore.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[4].text#line=2",
-          "sha256": "ea4f5f28895a5793f359446e87a564397f12c2f0cf2073f095f200135afb6a4d"
-        },
-        {
-          "abilityId": "master.fiore.skill.s5",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.fiore/菲奥蕾·弗尔维吉"
-        },
-        {
-          "abilityId": "master.fiore.skill.s5",
-          "document": "legacy-content.json",
-          "locator": "master/master.fiore/s5"
-        },
-        {
-          "abilityId": "master.fiore.skill.s5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[5].text#line=1",
-          "sha256": "cbe0b3b99420a530eddd9b1c6b11c5d4713d879fa74bf99c59d57d9856cca4f5"
-        },
-        {
-          "abilityId": "master.fiore.skill.s5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[5].text#line=2",
-          "sha256": "b8948b29606c56ee673f234c17afe98448ae3986ee1a6155b5b827e23096a239"
-        },
-        {
-          "abilityId": "master.fiore.skill.s5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[5].text#line=3",
-          "sha256": "ac2ff098bf706758d3b901a65928d8053a21a0208560edde10a1f4829cd7b7b6"
-        },
-        {
-          "abilityId": "master.fiore.skill.s5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[5].text#line=4",
-          "sha256": "22b389d29d9f2fa1ee0da48bf4406532bf75ce33dc8e3a6f4eeda06deb327ce6"
-        },
-        {
-          "abilityId": "master.fiore.skill.s6",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.fiore/菲奥蕾·弗尔维吉"
-        },
-        {
-          "abilityId": "master.fiore.skill.s6",
-          "document": "legacy-content.json",
-          "locator": "master/master.fiore/s6"
-        },
-        {
-          "abilityId": "master.fiore.skill.s6",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[6].text#line=1",
-          "sha256": "e880efb6b838c57a6ba1b24e2f8a16415e5d9556f6ebf6b5822c42cafbb6ddce"
-        },
-        {
-          "abilityId": "master.fiore.skill.s7",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.fiore/菲奥蕾·弗尔维吉"
-        },
-        {
-          "abilityId": "master.fiore.skill.s7",
-          "document": "legacy-content.json",
-          "locator": "master/master.fiore/s7"
-        },
-        {
-          "abilityId": "master.fiore.skill.s7",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[7].text#line=1",
-          "sha256": "cbe0b3b99420a530eddd9b1c6b11c5d4713d879fa74bf99c59d57d9856cca4f5"
-        },
-        {
-          "abilityId": "master.fiore.skill.s7",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[7].text#line=2",
-          "sha256": "b8948b29606c56ee673f234c17afe98448ae3986ee1a6155b5b827e23096a239"
-        },
-        {
-          "abilityId": "master.fiore.skill.s7",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[42].skills[7].text#line=3",
-          "sha256": "0ee60f412a4fad9ed8ab577b5fee3bcdb97049af10b79c53bdfd29cd70a784ce"
         },
         {
           "abilityId": "master.fou.skill.ascension",
@@ -18623,10 +18428,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 2,
-          "shared_handler": 386,
-          "specific_handler": 435
+          "shared_handler": 382,
+          "specific_handler": 430
         },
-        "handlerCount": 506,
+        "handlerCount": 501,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."
