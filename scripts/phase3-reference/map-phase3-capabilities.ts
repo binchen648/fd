@@ -193,6 +193,7 @@ const SPECIAL_EFFECTS = new Set([
   'LOSTBELT_EXPANSION',
   'SECRET_ROUND_BINDING',
   'ASTRONOMICAL_SPHERE_RULE',
+  'TERRAIN_POSITION_ADJUSTMENT',
   'RETRIGGER_CARD_PLAY_EFFECTS',
   'SEQUESTER_RANDOM_INACTIVE_SERVANT_SKILL',
 ]);
@@ -463,6 +464,9 @@ export function mapStructuredCapabilityNeeds(
   const effects = effectRecords(ability.effects ?? []);
   const effectTypes = effects.map((effect) => (typeof effect.type === 'string' ? effect.type : '')).filter(Boolean);
   const effectTokens = new Set(axes.effect);
+  const ruleModifiers = Array.isArray(ability.ruleModifiers)
+    ? ability.ruleModifiers.filter(isRecord)
+    : [];
 
   if (axes.cost.length > 0) addCapability(result, 'GENERIC_COST_PAYMENT', 'COST_PAYMENT');
   if (axes.target.length > 0) addCapability(result, 'GENERIC_TARGET_SELECTION', 'TARGET_SELECTION');
@@ -496,6 +500,27 @@ export function mapStructuredCapabilityNeeds(
     addCapability(result, 'GENERIC_POWER', 'POWER');
   }
   if (effectTokens.has('MOVE_PLAYER')) addCapability(result, 'GENERIC_MOVEMENT', 'MOVEMENT');
+  if (
+    ruleModifiers.some((modifier) =>
+      typeof modifier.rule === 'string' && /movement/i.test(modifier.rule)
+    )
+  ) {
+    addCapability(result, 'GENERIC_MOVEMENT', 'MOVEMENT');
+  }
+  if (
+    ruleModifiers.some((modifier) =>
+      typeof modifier.rule === 'string' && /mana_gain/i.test(modifier.rule)
+    )
+  ) {
+    addCapability(result, 'GENERIC_RESOURCE_NUMERIC', 'RESOURCE_NUMERIC');
+  }
+  if (
+    ruleModifiers.some((modifier) =>
+      typeof modifier.rule === 'string' && /power/i.test(modifier.rule)
+    )
+  ) {
+    addCapability(result, 'GENERIC_POWER', 'POWER');
+  }
   if (effectTypes.some((type) => EVENT_DECK_EFFECTS.has(type.toUpperCase()))) {
     addCapability(result, 'GENERIC_EVENT_DECK', 'SPECIAL_SUBSYSTEM');
   }

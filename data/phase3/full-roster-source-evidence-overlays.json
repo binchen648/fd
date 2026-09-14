@@ -2218,6 +2218,568 @@
         }
       ],
       "referencePrintedTextSha256": "f05f36520ed31716b70691f1da9a63097d101b608b248eeb475884a8165295ad"
+    },
+    {
+      "id": "master.fiore.skill.s1",
+      "printedText": "菲奥蕾拥有【瘫痪】，【温顺】与【回路不良】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fiore.skills[s1]#line=218",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "菲奥蕾拥有【瘫痪】，【温顺】与【回路不良】。",
+        "sourceTextSha256": "5494e640beb54680546b5e9e4597a200ac46bffeb253d65ce5f324b6b5277016"
+      },
+      "referencePrintedTextSha256": "5494e640beb54680546b5e9e4597a200ac46bffeb253d65ce5f324b6b5277016",
+      "abilities": [
+        {
+          "id": "fiore.transcend.initial-state",
+          "printedClause": "菲奥蕾拥有【瘫痪】，【温顺】与【回路不良】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "cycle_state_transition",
+              "cycleId": "fiore_transcend_pairs",
+              "operation": "initialize_pairs",
+              "pairs": [
+                [
+                  "master.fiore.skill.s2",
+                  "master.fiore.skill.s5"
+                ],
+                [
+                  "master.fiore.skill.s4",
+                  "master.fiore.skill.s6"
+                ],
+                [
+                  "master.fiore.skill.s3",
+                  "master.fiore.skill.s7"
+                ]
+              ],
+              "initialSide": "base"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.fiore.skill.s1a",
+      "printedText": "前哨阶段：切换下列一项，其效果持续至回合结束。1.【瘫痪】→【神经机械学】 2.【温顺】→【决意】 3.【回路不良】→【聪慧头脑】\n行动阶段：再切换一项，战斗阶段结束后，失去4点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fiore.skills[s1a]#line=219",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "前哨阶段：切换下列一项，其效果持续至回合结束。1.【瘫痪】→【神经机械学】 2.【温顺】→【决意】 3.【回路不良】→【聪慧头脑】\n行动阶段：再切换一项，战斗阶段结束后，失去4点魔力。",
+        "sourceTextSha256": "5cdaa38c6d9e25c185ea8b15c4f66df428503900c6d05fdd238c9b59f6adb0da"
+      },
+      "referencePrintedTextSha256": "5cdaa38c6d9e25c185ea8b15c4f66df428503900c6d05fdd238c9b59f6adb0da",
+      "abilities": [
+        {
+          "id": "fiore.transcend.outpost-switch",
+          "printedClause": "前哨阶段：切换下列一项，其效果持续至回合结束。1.【瘫痪】→【神经机械学】 2.【温顺】→【决意】 3.【回路不良】→【聪慧头脑】",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "choose_number",
+              "min": 1,
+              "max": 3,
+              "payloadKey": "pairIndex"
+            },
+            {
+              "type": "cycle_state_transition",
+              "cycleId": "fiore_transcend_pairs",
+              "operation": "switch_pair_until_round_end",
+              "pairIndexBinding": "pairIndex"
+            }
+          ],
+          "lifecycle": {
+            "duration": "until_round_end",
+            "cleanup": "restore_base_pairs"
+          }
+        },
+        {
+          "id": "fiore.transcend.action-second-switch",
+          "printedClause": "行动阶段：再切换一项，战斗阶段结束后，失去4点魔力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "conditions": [
+            {
+              "type": "transcend_outpost_switch_used_this_round"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_number",
+              "min": 1,
+              "max": 3,
+              "payloadKey": "pairIndex"
+            },
+            {
+              "type": "cycle_state_transition",
+              "cycleId": "fiore_transcend_pairs",
+              "operation": "switch_additional_pair_until_round_end",
+              "pairIndexBinding": "pairIndex",
+              "markSecondSwitchUsed": true
+            }
+          ],
+          "lifecycle": {
+            "duration": "until_round_end",
+            "cleanup": "restore_base_pairs"
+          }
+        },
+        {
+          "id": "fiore.transcend.action-second-switch-cost",
+          "printedClause": "战斗阶段结束后，失去4点魔力。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.ending"
+            },
+            {
+              "type": "transcend_second_switch_used_this_round"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_mana",
+              "amount": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.fiore.skill.s2",
+      "printedText": "你无法在自己的行动阶段和战斗阶段移动。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fiore.skills[s2]#line=220",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你无法在自己的行动阶段和战斗阶段移动。",
+        "sourceTextSha256": "e9646624a773a5a21ca08c3d63e072da56126dad075d4842d44faac9a95ec6e9"
+      },
+      "referencePrintedTextSha256": "e9646624a773a5a21ca08c3d63e072da56126dad075d4842d44faac9a95ec6e9",
+      "abilities": [
+        {
+          "id": "fiore.paralysis.movement-lock",
+          "printedClause": "你无法在自己的行动阶段和战斗阶段移动。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "movement_permission",
+              "operation": "prohibit",
+              "subject": "controller",
+              "phases": [
+                "action",
+                "combat"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.fiore.skill.s3",
+      "printedText": "你于非高潮回合时每回合合计获得的魔力不能超过2点；你于高潮回合时每回合合计获得的魔力不能超过4点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fiore.skills[s3]#line=221",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你于非高潮回合时每回合合计获得的魔力不能超过2点；你于高潮回合时每回合合计获得的魔力不能超过4点。",
+        "sourceTextSha256": "01a78c3d1650a32f187bf1b292e15807727370e11928021d7b91e7125ce3c2ac"
+      },
+      "referencePrintedTextSha256": "01a78c3d1650a32f187bf1b292e15807727370e11928021d7b91e7125ce3c2ac",
+      "abilities": [
+        {
+          "id": "fiore.bad-circuits.mana-gain-cap",
+          "printedClause": "你于非高潮回合时每回合合计获得的魔力不能超过2点；你于高潮回合时每回合合计获得的魔力不能超过4点。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "round_mana_gain_cap",
+              "operation": "set_by_round_kind",
+              "subject": "controller",
+              "normalRoundCap": 2,
+              "climaxRoundCap": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.fiore.skill.s4",
+      "printedText": "若你的战斗中有战果低于你的其他玩家，你-2合计威力。\n若激活的局势牌包含禁止宝具使用的，菲奥蕾的技能威力为0且无法增加。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fiore.skills[s4]#line=222",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "若你的战斗中有战果低于你的其他玩家，你-2合计威力。\n若激活的局势牌包含禁止宝具使用的，菲奥蕾的技能威力为0且无法增加。",
+        "sourceTextSha256": "b750f78e112432917ec6c612124040ca6f3c9f9a538943c2daeaea78e536364c"
+      },
+      "referencePrintedTextSha256": "b750f78e112432917ec6c612124040ca6f3c9f9a538943c2daeaea78e536364c",
+      "abilities": [
+        {
+          "id": "fiore.docility.lower-vp-opponent-penalty",
+          "printedClause": "若你的战斗中有战果低于你的其他玩家，你-2合计威力。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "combat_has_other_player_with_lower_victory_points"
+            }
+          ],
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "scope": "controller_total",
+              "amount": -2
+            }
+          ]
+        },
+        {
+          "id": "fiore.docility.noble-phantasm-ban-skill-power",
+          "printedClause": "若激活的局势牌包含禁止宝具使用的，菲奥蕾的技能威力为0且无法增加。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "active_situation_prohibits_noble_phantasm_use"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "controller_master_skill_power",
+              "operation": "set_and_lock",
+              "value": 0,
+              "prohibitIncrease": true,
+              "subject": "controller_master_skill_cards"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.fiore.skill.s5",
+      "printedText": "（超越后，将此牌加入你的技能区。）\n此牌需追加打出。\n行动阶段：花费1点魔力，沿箭头移动一步。\n行动阶段：若你位于你未部署的战场，获得2点地利。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fiore.skills[s5]#line=223",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（超越后，将此牌加入你的技能区。）\n此牌需追加打出。\n行动阶段：花费1点魔力，沿箭头移动一步。\n行动阶段：若你位于你未部署的战场，获得2点地利。",
+        "sourceTextSha256": "0e29718a724c3934b2af92872515993c3c281aa3818855ad027670583078e297"
+      },
+      "referencePrintedTextSha256": "0e29718a724c3934b2af92872515993c3c281aa3818855ad027670583078e297",
+      "abilities": [
+        {
+          "id": "fiore.neuro-mechanics.transcend-setup",
+          "printedClause": "（超越后，将此牌加入你的技能区。）",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "cycle_state.entered"
+            },
+            {
+              "type": "event_definition_is",
+              "definitionId": "master.fiore.skill.s5"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "reason": "transcend_setup"
+            }
+          ]
+        },
+        {
+          "id": "fiore.neuro-mechanics.additional-play",
+          "printedClause": "此牌需追加打出。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mode",
+              "operation": "require_additional_play",
+              "definitionId": "master.fiore.skill.s5"
+            }
+          ]
+        },
+        {
+          "id": "fiore.neuro-mechanics.arrow-move",
+          "printedClause": "行动阶段：花费1点魔力，沿箭头移动一步。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "pay_mana",
+              "amount": 1
+            },
+            {
+              "type": "move_player",
+              "subject": "controller",
+              "direction": "arrow",
+              "steps": 1
+            }
+          ]
+        },
+        {
+          "id": "fiore.neuro-mechanics.terrain-gain",
+          "printedClause": "行动阶段：若你位于你未部署的战场，获得2点地利。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "conditions": [
+            {
+              "type": "controller_at_undeployed_battlefield"
+            }
+          ],
+          "effects": [
+            {
+              "type": "terrain_position_adjustment",
+              "operation": "gain",
+              "subject": "controller",
+              "amount": 2,
+              "battlefield": "controller_location"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.fiore.skill.s6",
+      "printedText": "此牌超越时，选择一名战果高于你的对手。若你于本回合战胜了他，获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fiore.skills[s6]#line=224",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌超越时，选择一名战果高于你的对手。若你于本回合战胜了他，获得2点战果。",
+        "sourceTextSha256": "e880efb6b838c57a6ba1b24e2f8a16415e5d9556f6ebf6b5822c42cafbb6ddce"
+      },
+      "referencePrintedTextSha256": "e880efb6b838c57a6ba1b24e2f8a16415e5d9556f6ebf6b5822c42cafbb6ddce",
+      "abilities": [
+        {
+          "id": "fiore.determination.bind-target-on-transcend",
+          "printedClause": "此牌超越时，选择一名战果高于你的对手。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "choose_player",
+              "relation": "opponent",
+              "condition": "victory_points_greater_than_controller",
+              "payloadKey": "targetPlayerId"
+            },
+            {
+              "type": "cycle_state_transition",
+              "cycleId": "fiore_transcend_pairs",
+              "operation": "bind_target_on_enter",
+              "targetBinding": "targetPlayerId",
+              "duration": "round"
+            }
+          ],
+          "lifecycle": {
+            "duration": "until_round_end",
+            "cleanup": "clear_bound_target"
+          }
+        },
+        {
+          "id": "fiore.determination.win-reward",
+          "printedClause": "若你于本回合战胜了他，获得2点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_won_combat"
+            },
+            {
+              "type": "event_opponent_matches_bound_target",
+              "binding": "targetPlayerId"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 2
+            }
+          ],
+          "lifecycle": {
+            "duration": "until_round_end"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.fiore.skill.s7",
+      "printedText": "（超越后，将此牌加入你的技能区。）\n此牌需追加打出。\n连接强化型魔术礼装-行动阶段：花费1点魔力，你的技能牌威力+1。（包括从者技能，【聪慧头脑】与【神经机械学】）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fiore.skills[s7]#line=225",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（超越后，将此牌加入你的技能区。）\n此牌需追加打出。\n连接强化型魔术礼装-行动阶段：花费1点魔力，你的技能牌威力+1。（包括从者技能，【聪慧头脑】与【神经机械学】）",
+        "sourceTextSha256": "c8fef108064dde2467dd53fa6ba19fe8669052d8ae6d7635766bd133e1409248"
+      },
+      "referencePrintedTextSha256": "c8fef108064dde2467dd53fa6ba19fe8669052d8ae6d7635766bd133e1409248",
+      "abilities": [
+        {
+          "id": "fiore.bright-mind.transcend-setup",
+          "printedClause": "（超越后，将此牌加入你的技能区。）",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "cycle_state.entered"
+            },
+            {
+              "type": "event_definition_is",
+              "definitionId": "master.fiore.skill.s7"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "reason": "transcend_setup"
+            }
+          ]
+        },
+        {
+          "id": "fiore.bright-mind.additional-play",
+          "printedClause": "此牌需追加打出。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mode",
+              "operation": "require_additional_play",
+              "definitionId": "master.fiore.skill.s7"
+            }
+          ]
+        },
+        {
+          "id": "fiore.bright-mind.skill-card-power",
+          "printedClause": "连接强化型魔术礼装-行动阶段：花费1点魔力，你的技能牌威力+1。（包括从者技能，【聪慧头脑】与【神经机械学】）",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "pay_mana",
+              "amount": 1
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "combat_skill_card_power",
+              "operation": "increase",
+              "amount": 1,
+              "scope": "controller_all_skill_cards_including_servant_and_fiore"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.fiore.skill.ascension",
+      "printedText": "行动阶段：进行一次【超越】。如果你本回合战败，失去2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fiore.ascensionSkill#line=226",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "行动阶段：进行一次【超越】。如果你本回合战败，失去2点战果。",
+        "sourceTextSha256": "908300b35760858ecff4666f9dcca06c837bfbb59b4c701b51b280471f7cde4e"
+      },
+      "referencePrintedTextSha256": "908300b35760858ecff4666f9dcca06c837bfbb59b4c701b51b280471f7cde4e",
+      "abilities": [
+        {
+          "id": "fiore.full-recovery.transcend",
+          "printedClause": "行动阶段：进行一次【超越】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_one",
+              "payloadKey": "fullRecoveryTranscendChoice",
+              "resultVar": "fullRecoveryTranscendChoice",
+              "options": [
+                {
+                  "fromDefinitionId": "master.fiore.skill.s2",
+                  "toDefinitionId": "master.fiore.skill.s5"
+                },
+                {
+                  "fromDefinitionId": "master.fiore.skill.s4",
+                  "toDefinitionId": "master.fiore.skill.s6"
+                },
+                {
+                  "fromDefinitionId": "master.fiore.skill.s3",
+                  "toDefinitionId": "master.fiore.skill.s7"
+                }
+              ]
+            },
+            {
+              "type": "cycle_state_transition",
+              "operation": "replace_chosen_pair_until_round_end",
+              "bindingField": "fullRecoveryTranscendChoice"
+            },
+            {
+              "type": "set_player_flag",
+              "key": "fiore.full-recovery-used-this-round",
+              "value": true,
+              "expires": "round_end"
+            }
+          ],
+          "lifecycle": {
+            "expires": "round_end"
+          }
+        },
+        {
+          "id": "fiore.full-recovery.defeat-penalty",
+          "printedClause": "如果你本回合战败，失去2点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_lost_combat"
+            },
+            {
+              "type": "player_flag_is",
+              "key": "fiore.full-recovery-used-this-round",
+              "value": true
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "amount": 2
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "round",
+            "maxUses": 1
+          }
+        }
+      ]
     }
   ]
 }

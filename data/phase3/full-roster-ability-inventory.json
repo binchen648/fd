@@ -3561,12 +3561,14 @@
         "mechanicFamilies": [
           "CONDITION",
           "MODIFIER",
+          "POWER",
           "RESOURCE_NUMERIC",
           "TRIGGER"
         ],
         "requiredCapabilities": [
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_MODIFIER",
+          "GENERIC_POWER",
           "GENERIC_RESOURCE_NUMERIC",
           "GENERIC_TRIGGER_GATEWAY"
         ],
@@ -4368,11 +4370,13 @@
       "phase3": {
         "mechanicFamilies": [
           "LIFECYCLE",
-          "MODIFIER"
+          "MODIFIER",
+          "POWER"
         ],
         "requiredCapabilities": [
           "GENERIC_LIFECYCLE_POLICY",
-          "GENERIC_MODIFIER"
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER"
         ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
@@ -8280,10 +8284,12 @@
       },
       "phase3": {
         "mechanicFamilies": [
-          "MODIFIER"
+          "MODIFIER",
+          "POWER"
         ],
         "requiredCapabilities": [
-          "GENERIC_MODIFIER"
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER"
         ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
@@ -8414,10 +8420,12 @@
       },
       "phase3": {
         "mechanicFamilies": [
-          "MODIFIER"
+          "MODIFIER",
+          "POWER"
         ],
         "requiredCapabilities": [
-          "GENERIC_MODIFIER"
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER"
         ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
@@ -9341,12 +9349,14 @@
           "CONDITION",
           "LIFECYCLE",
           "MODIFIER",
+          "POWER",
           "TRIGGER"
         ],
         "requiredCapabilities": [
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_LIFECYCLE_POLICY",
           "GENERIC_MODIFIER",
+          "GENERIC_POWER",
           "GENERIC_TRIGGER_GATEWAY"
         ],
         "currentRoute": "none",
@@ -9934,10 +9944,12 @@
       },
       "phase3": {
         "mechanicFamilies": [
-          "MODIFIER"
+          "MODIFIER",
+          "POWER"
         ],
         "requiredCapabilities": [
-          "GENERIC_MODIFIER"
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER"
         ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
@@ -10683,13 +10695,17 @@
           "BATTLE_RESULT",
           "CONDITION",
           "LIFECYCLE",
-          "MODIFIER"
+          "MODIFIER",
+          "POWER",
+          "RESOURCE_NUMERIC"
         ],
         "requiredCapabilities": [
           "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_LIFECYCLE_POLICY",
           "GENERIC_MODIFIER",
+          "GENERIC_POWER",
+          "GENERIC_RESOURCE_NUMERIC",
           "GENERIC_STATUS_STATE"
         ],
         "currentRoute": "none",
@@ -11421,45 +11437,168 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fiore.ascensionSkill#line=226"
+        },
         "axes": {
-          "timing": [],
-          "trigger": [],
-          "condition": [],
+          "timing": [
+            "ACTION"
+          ],
+          "trigger": [
+            "combat.resolved"
+          ],
+          "condition": [
+            "EVENT_PLAYER_LOST_COMBAT",
+            "PLAYER_FLAG_IS"
+          ],
           "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
-          "lifecycle": [],
+          "target": [
+            "BRANCH_CHOICE"
+          ],
+          "effect": [
+            "CYCLE_STATE_TRANSITION",
+            "LOSE_VICTORY_POINTS",
+            "SET_PLAYER_FLAG"
+          ],
+          "interaction": [
+            "BRANCH_CHOICE"
+          ],
+          "lifecycle": [
+            "expires:round_end",
+            "limit.maxUses:1",
+            "limit.period:round",
+            "limit.scope:controller"
+          ],
           "modifier": [],
           "visibility": [],
-          "binding": [],
-          "battle": []
+          "binding": [
+            "binding:fullRecoveryTranscendChoice",
+            "payload:fullRecoveryTranscendChoice",
+            "result:fullRecoveryTranscendChoice"
+          ],
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fiore.full-recovery.transcend",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.ascensionSkill#line=226#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [
+                "BRANCH_CHOICE"
+              ],
+              "effect": [
+                "CYCLE_STATE_TRANSITION",
+                "SET_PLAYER_FLAG"
+              ],
+              "interaction": [
+                "BRANCH_CHOICE"
+              ],
+              "lifecycle": [
+                "expires:round_end"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "binding:fullRecoveryTranscendChoice",
+                "payload:fullRecoveryTranscendChoice",
+                "result:fullRecoveryTranscendChoice"
+              ],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "fiore.full-recovery.defeat-penalty",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.ascensionSkill#line=226#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "EVENT_PLAYER_LOST_COMBAT",
+                "PLAYER_FLAG_IS"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "LOSE_VICTORY_POINTS"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "limit.maxUses:1",
+                "limit.period:round",
+                "limit.scope:controller"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.fiore-full-recovery"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "INTERACTION",
+          "LIFECYCLE",
+          "RESOURCE_NUMERIC",
+          "RESULT_BINDING",
+          "SPECIAL_SUBSYSTEM",
+          "TARGET_SELECTION",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_STATUS_STATE",
+          "GENERIC_TARGET_SELECTION",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:cycle_state_transition"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -11511,18 +11650,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fiore.skills[s1]#line=218"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CYCLE_STATE_TRANSITION"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -11530,26 +11674,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fiore.transcend.initial-state",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s1]#line=218#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CYCLE_STATE_TRANSITION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.game-start-add-skill"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:cycle_state_transition"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -11611,45 +11782,191 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fiore.skills[s1a]#line=219"
+        },
         "axes": {
-          "timing": [],
-          "trigger": [],
-          "condition": [],
+          "timing": [
+            "ACTION",
+            "OUTPOST"
+          ],
+          "trigger": [
+            "combat.ending"
+          ],
+          "condition": [
+            "TRANSCEND_OUTPOST_SWITCH_USED_THIS_ROUND",
+            "TRANSCEND_SECOND_SWITCH_USED_THIS_ROUND"
+          ],
           "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
-          "lifecycle": [],
+          "target": [
+            "CHOOSE_NUMBER"
+          ],
+          "effect": [
+            "CYCLE_STATE_TRANSITION",
+            "LOSE_MANA"
+          ],
+          "interaction": [
+            "CHOOSE_NUMBER"
+          ],
+          "lifecycle": [
+            "cleanup:restore_base_pairs",
+            "duration:until_round_end"
+          ],
           "modifier": [],
           "visibility": [],
-          "binding": [],
-          "battle": []
+          "binding": [
+            "payload:pairIndex"
+          ],
+          "battle": [
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fiore.transcend.outpost-switch",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s1a]#line=219#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "OUTPOST"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [
+                "CHOOSE_NUMBER"
+              ],
+              "effect": [
+                "CYCLE_STATE_TRANSITION"
+              ],
+              "interaction": [
+                "CHOOSE_NUMBER"
+              ],
+              "lifecycle": [
+                "cleanup:restore_base_pairs",
+                "duration:until_round_end"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:pairIndex"
+              ],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "fiore.transcend.action-second-switch",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s1a]#line=219#ability-2"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [
+                "TRANSCEND_OUTPOST_SWITCH_USED_THIS_ROUND"
+              ],
+              "cost": [],
+              "target": [
+                "CHOOSE_NUMBER"
+              ],
+              "effect": [
+                "CYCLE_STATE_TRANSITION"
+              ],
+              "interaction": [
+                "CHOOSE_NUMBER"
+              ],
+              "lifecycle": [
+                "cleanup:restore_base_pairs",
+                "duration:until_round_end"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:pairIndex"
+              ],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "fiore.transcend.action-second-switch-cost",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s1a]#line=219#ability-3"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.ending"
+              ],
+              "condition": [
+                "TRANSCEND_SECOND_SWITCH_USED_THIS_ROUND"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "LOSE_MANA"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_EVENT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.fiore-transcend"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "INTERACTION",
+          "LIFECYCLE",
+          "RESOURCE_NUMERIC",
+          "RESULT_BINDING",
+          "SPECIAL_SUBSYSTEM",
+          "TARGET_SELECTION",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TARGET_SELECTION",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:cycle_state_transition"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -11701,11 +12018,14 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fiore.skills[s2]#line=220"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
@@ -11715,32 +12035,61 @@
           "effect": [],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:movement_permission:prohibit"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fiore.paralysis.movement-lock",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s2]#line=220#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:movement_permission:prohibit"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.game-start-rule-flags"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "MODIFIER",
+          "MOVEMENT"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_MODIFIER",
+          "GENERIC_MOVEMENT"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -11791,11 +12140,14 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fiore.skills[s3]#line=221"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
@@ -11805,32 +12157,61 @@
           "effect": [],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:round_mana_gain_cap:set_by_round_kind"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fiore.bad-circuits.mana-gain-cap",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s3]#line=221#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:round_mana_gain_cap:set_by_round_kind"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.game-start-rule-flags"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "MODIFIER",
+          "RESOURCE_NUMERIC"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_MODIFIER",
+          "GENERIC_RESOURCE_NUMERIC"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -11891,46 +12272,124 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fiore.skills[s4]#line=222"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
-          "condition": [],
+          "condition": [
+            "ACTIVE_SITUATION_PROHIBITS_NOBLE_PHANTASM_USE",
+            "COMBAT_HAS_OTHER_PLAYER_WITH_LOWER_VICTORY_POINTS"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "COMBAT_POWER_BONUS"
+          ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "effect:combat_power_bonus",
+            "rule:controller_master_skill_power:set_and_lock"
+          ],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EFFECT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fiore.docility.lower-vp-opponent-penalty",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s4]#line=222#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [
+                "COMBAT_HAS_OTHER_PLAYER_WITH_LOWER_VICTORY_POINTS"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "COMBAT_POWER_BONUS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "effect:combat_power_bonus"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EFFECT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "fiore.docility.noble-phantasm-ban-skill-power",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s4]#line=222#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [
+                "ACTIVE_SITUATION_PROHIBITS_NOBLE_PHANTASM_USE"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:controller_master_skill_power:set_and_lock"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.game-start-rule-flags"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "MODIFIER",
+          "POWER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -12011,45 +12470,192 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fiore.skills[s5]#line=223"
+        },
         "axes": {
-          "timing": [],
-          "trigger": [],
-          "condition": [],
-          "cost": [],
+          "timing": [
+            "ACTION"
+          ],
+          "trigger": [
+            "cycle_state.entered"
+          ],
+          "condition": [
+            "CONTROLLER_AT_UNDEPLOYED_BATTLEFIELD",
+            "EVENT_DEFINITION_IS"
+          ],
+          "cost": [
+            "MANA"
+          ],
           "target": [],
-          "effect": [],
+          "effect": [
+            "MOVE_PLAYER",
+            "MOVE_SOURCE_CARD",
+            "TERRAIN_POSITION_ADJUSTMENT"
+          ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:card_play_mode:require_additional_play"
+          ],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fiore.neuro-mechanics.transcend-setup",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s5]#line=223#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "cycle_state.entered"
+              ],
+              "condition": [
+                "EVENT_DEFINITION_IS"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "MOVE_SOURCE_CARD"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "fiore.neuro-mechanics.additional-play",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s5]#line=223#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:card_play_mode:require_additional_play"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "fiore.neuro-mechanics.arrow-move",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s5]#line=223#ability-3"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [
+                "MANA"
+              ],
+              "target": [],
+              "effect": [
+                "MOVE_PLAYER"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "fiore.neuro-mechanics.terrain-gain",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s5]#line=223#ability-4"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [
+                "CONTROLLER_AT_UNDEPLOYED_BATTLEFIELD"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "TERRAIN_POSITION_ADJUSTMENT"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.fiore-neuromechanics"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CARD_ZONE",
+          "CONDITION",
+          "COST_PAYMENT",
+          "MODIFIER",
+          "MOVEMENT",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CARD_ZONE",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_COST_PAYMENT",
+          "GENERIC_MODIFIER",
+          "GENERIC_MOVEMENT",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:terrain_position_adjustment"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -12101,45 +12707,142 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fiore.skills[s6]#line=224"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.resolved"
+          ],
+          "condition": [
+            "EVENT_OPPONENT_MATCHES_BOUND_TARGET",
+            "EVENT_PLAYER_WON_COMBAT"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CYCLE_STATE_TRANSITION",
+            "GAIN_VICTORY_POINTS"
+          ],
           "interaction": [],
-          "lifecycle": [],
+          "lifecycle": [
+            "cleanup:clear_bound_target",
+            "duration:until_round_end"
+          ],
           "modifier": [],
           "visibility": [],
-          "binding": [],
-          "battle": []
+          "binding": [
+            "payload:targetPlayerId"
+          ],
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fiore.determination.bind-target-on-transcend",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s6]#line=224#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CYCLE_STATE_TRANSITION"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "cleanup:clear_bound_target",
+                "duration:until_round_end"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:targetPlayerId"
+              ],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "fiore.determination.win-reward",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s6]#line=224#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "EVENT_OPPONENT_MATCHES_BOUND_TARGET",
+                "EVENT_PLAYER_WON_COMBAT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "GAIN_VICTORY_POINTS"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:until_round_end"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.fiore-determination"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "LIFECYCLE",
+          "RESOURCE_NUMERIC",
+          "RESULT_BINDING",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:cycle_state_transition"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -12211,46 +12914,159 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fiore.skills[s7]#line=225"
+        },
         "axes": {
-          "timing": [],
-          "trigger": [],
-          "condition": [],
-          "cost": [],
+          "timing": [
+            "ACTION"
+          ],
+          "trigger": [
+            "cycle_state.entered"
+          ],
+          "condition": [
+            "EVENT_DEFINITION_IS"
+          ],
+          "cost": [
+            "MANA"
+          ],
           "target": [],
-          "effect": [],
+          "effect": [
+            "MOVE_SOURCE_CARD"
+          ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:card_play_mode:require_additional_play",
+            "rule:combat_skill_card_power:increase"
+          ],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_RULE_MODIFIER"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fiore.bright-mind.transcend-setup",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s7]#line=225#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "cycle_state.entered"
+              ],
+              "condition": [
+                "EVENT_DEFINITION_IS"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "MOVE_SOURCE_CARD"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "fiore.bright-mind.additional-play",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s7]#line=225#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:card_play_mode:require_additional_play"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "fiore.bright-mind.skill-card-power",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fiore.skills[s7]#line=225#ability-3"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [
+                "MANA"
+              ],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:combat_skill_card_power:increase"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_RULE_MODIFIER"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.fiore-clever-mind"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CARD_ZONE",
+          "CONDITION",
+          "COST_PAYMENT",
+          "MODIFIER",
+          "POWER",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CARD_ZONE",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_COST_PAYMENT",
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -21425,6 +22241,7 @@
           "CONDITION",
           "LIFECYCLE",
           "MODIFIER",
+          "MOVEMENT",
           "TRIGGER"
         ],
         "requiredCapabilities": [
@@ -21432,6 +22249,7 @@
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_LIFECYCLE_POLICY",
           "GENERIC_MODIFIER",
+          "GENERIC_MOVEMENT",
           "GENERIC_TRIGGER_GATEWAY"
         ],
         "currentRoute": "none",
@@ -34533,12 +35351,14 @@
         "mechanicFamilies": [
           "BATTLE_RESULT",
           "CONDITION",
-          "MODIFIER"
+          "MODIFIER",
+          "POWER"
         ],
         "requiredCapabilities": [
           "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CONDITION_EVALUATION",
-          "GENERIC_MODIFIER"
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER"
         ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
@@ -36559,6 +37379,7 @@
           "CARD_ACTION_SEMANTICS",
           "CONDITION",
           "MODIFIER",
+          "POWER",
           "SPECIAL_SUBSYSTEM"
         ],
         "requiredCapabilities": [
@@ -36566,6 +37387,7 @@
           "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_MODIFIER",
+          "GENERIC_POWER",
           "REVIEWED_SPECIAL_HANDLER"
         ],
         "currentRoute": "none",
@@ -45243,12 +46065,14 @@
           "CONDITION",
           "HIDDEN_INFORMATION",
           "LIFECYCLE",
-          "MODIFIER"
+          "MODIFIER",
+          "POWER"
         ],
         "requiredCapabilities": [
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_LIFECYCLE_POLICY",
           "GENERIC_MODIFIER",
+          "GENERIC_POWER",
           "GENERIC_VISIBILITY"
         ],
         "currentRoute": "none",
@@ -53941,12 +54765,14 @@
           "CONDITION",
           "HIDDEN_INFORMATION",
           "LIFECYCLE",
-          "MODIFIER"
+          "MODIFIER",
+          "POWER"
         ],
         "requiredCapabilities": [
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_LIFECYCLE_POLICY",
           "GENERIC_MODIFIER",
+          "GENERIC_POWER",
           "GENERIC_VISIBILITY"
         ],
         "currentRoute": "none",
@@ -58476,6 +59302,7 @@
           "HIDDEN_INFORMATION",
           "LIFECYCLE",
           "MODIFIER",
+          "POWER",
           "TRIGGER"
         ],
         "requiredCapabilities": [
@@ -58484,6 +59311,7 @@
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_LIFECYCLE_POLICY",
           "GENERIC_MODIFIER",
+          "GENERIC_POWER",
           "GENERIC_TRIGGER_GATEWAY",
           "GENERIC_VISIBILITY"
         ],
@@ -62860,12 +63688,14 @@
           "HIDDEN_INFORMATION",
           "LIFECYCLE",
           "MODIFIER",
+          "MOVEMENT",
           "SPECIAL_SUBSYSTEM"
         ],
         "requiredCapabilities": [
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_LIFECYCLE_POLICY",
           "GENERIC_MODIFIER",
+          "GENERIC_MOVEMENT",
           "GENERIC_VISIBILITY",
           "REVIEWED_SPECIAL_HANDLER"
         ],
@@ -66044,13 +66874,15 @@
           "BATTLE_RESULT",
           "CONDITION",
           "LIFECYCLE",
-          "MODIFIER"
+          "MODIFIER",
+          "POWER"
         ],
         "requiredCapabilities": [
           "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_LIFECYCLE_POLICY",
-          "GENERIC_MODIFIER"
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER"
         ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
@@ -84453,12 +85285,16 @@
           "HIDDEN_INFORMATION",
           "LIFECYCLE",
           "MODIFIER",
+          "MOVEMENT",
+          "POWER",
           "TRIGGER"
         ],
         "requiredCapabilities": [
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_LIFECYCLE_POLICY",
           "GENERIC_MODIFIER",
+          "GENERIC_MOVEMENT",
+          "GENERIC_POWER",
           "GENERIC_TRIGGER_GATEWAY",
           "GENERIC_VISIBILITY"
         ],
@@ -104007,15 +104843,15 @@
   ],
   "semanticSummary": {
     "totalIdentityCount": 944,
-    "sourceGroundedCount": 120,
-    "blockedCount": 824,
+    "sourceGroundedCount": 129,
+    "blockedCount": 815,
     "unclassifiedCount": 0,
-    "structuredAbilityCount": 191
+    "structuredAbilityCount": 210
   },
   "capabilitySummary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 120,
-    "explicitBlockCount": 824,
+    "contractMappedCount": 129,
+    "explicitBlockCount": 815,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -104030,10 +104866,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
-      "READY_GENERIC_EXTENSION": 89,
-      "SPECIAL_HANDLER_CANDIDATE": 31,
+      "READY_GENERIC_EXTENSION": 93,
+      "SPECIAL_HANDLER_CANDIDATE": 36,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 824,
+      "SOURCE_EVIDENCE_REQUIRED": 815,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
