@@ -401,3 +401,16 @@ Permitted final status:
 - Production-diff audit found no representative card/ability identity routing branch. Executable pack hash was independently recomputed and matched both stored identity fields.
 - TO08 Resource, TO09 Card Zone, TO11 Trigger, TO12 Lifecycle, and TO13 Interaction accepted boundaries remain green under TO10 compatibility testing.
 - The low-risk TO08/09/10 review chain is now synchronized. TO14 Battle/Resource and TO15 Modifier/Power remain accepted specification/design lanes only; runtime work from those lanes requires a fresh narrow B-owned task with explicit representative and exclusive runtime hot-file ownership. TO16 remains planning/special-isolation scope.
+
+## P3-A03 B13 Synchronization — 2026-09-14
+
+- P3-B13 Battle Loss Resource Trigger: `REVIEW_ACCEPTED` at exact runtime `37189b32d4de0da3a8eabdca8edbf674c8852d97`, independent P3-R07 evidence `f1fa9c12ac43ab96050468f52070fc7ea53fd09d`.
+- Accepted scope is exactly one TO14 direct consumer: Shinji `clown.lose-command-seal`, routed by the identity-free semantic form `forced_trigger + after_controller_loses_battle + one controller adjust_command_seals integer effect` through typed resolution-dataflow.
+- The accepted runtime also closes the scoped phase-wide ordering gap: all resolved battlefield base scoring is committed before ordinary result/win/loss/first-loss continuation settlement on the claimed production paths.
+- TO14 scoped direct-consumer overlay is now `1 accepted / 13 direct consumers`, leaving `12` direct post-result/phase-terminal consumers without inherited migration or Gate status. The broader Battle-integration denominator remains `39 abilities / 28 cards`.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0`; B13 acceptance does not create a synthetic global delta because the current reporter does not separately classify this accepted Battle -> Trigger -> Resource bridge.
+- Fresh compiled evidence remains definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, `70` cards, `14` characters, and `0` blocking issues. Regenerated coverage differed only by timestamp/source-line metadata, so the artifact drift is not committed.
+- Fresh independent evidence: typecheck PASS; B13/Olga/core `65/65 PASS`; current-lineage compatibility `16 files / 145/145 PASS`; independent two-battlefield barrier/exactly-once adversarial probe PASS; fresh Chromium Shinji + Olga `2/2 PASS`; full root baseline `644 PASS / 20 inherited FAIL` across `664` tests.
+- The 20 root failures remain the existing CHM/original-image evidence absence class. Compared with accepted TO10 baseline `636 PASS / 20 inherited FAIL`, B13 contributes `+8 PASS / +0 new deterministic failures`.
+- Production-diff review found no representative identity routing and confirmed exact supported B13 semantics use typed `executeResolutionEffects()` with malformed near-miss shapes fail-closed.
+- The B13 runtime hot-file lane is released. The next Battle/Resource implementation requires a fresh A-owned narrow handoff selecting an explicit representative from the remaining 12 direct TO14 consumers; neither broad TO14 migration nor TO15 runtime is automatically authorized.
