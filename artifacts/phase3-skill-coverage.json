@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-13T23:00:28.246Z",
+  "generatedAt": "2026-09-14T03:03:11.059Z",
   "sourceFingerprint": "2350e4949a4757fb6417080f63b8698c0c45492c2e03f36bdc8f4672f1276c6f",
   "counts": {
     "totalArchives": 14,
@@ -4037,157 +4037,157 @@
     "cardSpecificRuntimeHandlers": [
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 64,
+        "line": 65,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 64,
+        "line": 65,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 64,
+        "line": 65,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 71,
+        "line": 72,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 71,
+        "line": 72,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 71,
+        "line": 72,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 85,
+        "line": 86,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 85,
+        "line": 86,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 85,
+        "line": 86,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 85,
+        "line": 86,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 528,
+        "line": 529,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 582,
+        "line": 602,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 857,
+        "line": 882,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 864,
+        "line": 889,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 914,
+        "line": 939,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1265,
+        "line": 1627,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 165,
+        "line": 170,
         "id": "master",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 166,
+        "line": 171,
         "id": "servant",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 269,
+        "line": 274,
         "id": "master",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1235,
+        "line": 1270,
         "id": "master_main",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1236,
+        "line": 1271,
         "id": "servant_identity",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1238,
+        "line": 1273,
         "id": "servant_deck",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1239,
+        "line": 1274,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1239,
+        "line": 1274,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1240,
+        "line": 1275,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1240,
+        "line": 1275,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
@@ -5025,7 +5025,7 @@
   "compiledDefinitions": {
     "packId": "fd-playtest-v1",
     "version": 1,
-    "definitionHash": "26167661823b52de598c77a59df4d05440a6bfced7d68cd3e04d11353d72dbaa",
+    "definitionHash": "37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333",
     "compiledCards": 70,
     "compiledCharacters": 14,
     "blockingIssues": 0

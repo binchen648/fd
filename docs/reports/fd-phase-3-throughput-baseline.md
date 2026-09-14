@@ -386,3 +386,18 @@ Permitted final status:
 - The `6` skipped Card Zone rows inherit no Gate status. Hidden/private, trigger-owned, cost/payment, lifecycle, modifier, power, and broader Card Zone semantics remain outside this acceptance.
 - Time Alter's paired PLAY path is accepted here only as TO09 representative evidence; it does not pre-accept P3-TO-10 Card Action.
 - Next low-risk dependency is P3-TO-10 Card Action current-lineage independent review for PLAY, PLAY_SOURCE, ADD_TO_ATTACK, ACTIVATE, and CLOSE; no broad Card Action rewrite is authorized unless R finds a concrete blocker.
+
+## P3-A03 TO-10 Synchronization — 2026-09-14
+
+- P3-TO-10 Card Action scoped current-lineage batch: `REVIEW_ACCEPTED` at repaired runtime `2a3710fa5d2c91f601378e9b7d5979353f4b1951`, independent review evidence `9ad0d4e44028cf50c047b60390af992d94e543a0`.
+- The rejecting predecessor review `62c428ac7caf039e60404ad73c39285a71c99019` is not promoted; it correctly found PLAY_SOURCE, ADD_TO_ATTACK, ACTIVATE, and CLOSE absent from exact baseline `a8682306bce4829db2436e4f8b80734834af6de4`. Only the repaired current-lineage candidate is synchronized.
+- Exactly five independent contracts are accepted: PLAY / PLAY_SOURCE_CARD_WITH_COST_RESPONSE / ADD_TO_ATTACK / ACTIVATE / CLOSE. No contract inherits another contract's Gate status.
+- Fresh scoped inventories remain one exact eligible representative for PLAY, ADD_TO_ATTACK, ACTIVATE, and CLOSE, with `legacy 1 -> 0`, `new 0 -> 1`, `dual 1 -> 0` for each inventory. PLAY_SOURCE remains its separate exact Volumen response-play contract.
+- The `6` skipped Card Action rows inherit no migration or Gate acceptance.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0`; TO10 reviewer acceptance does not create a synthetic second raw delta because the exact representatives were already structurally visible to the reporter.
+- Fresh compiled evidence is now definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, `70` cards, `14` characters, and `0` blocking issues. The regenerated coverage artifact is committed because this compiled definition hash change is meaningful, not timestamp-only drift.
+- Fresh independent Gate evidence is typecheck PASS, focused Card Action/compiler/data-flow `117/117`, current-lineage compatibility `35/35`, successful Chromium Card Action group `5/5`, and full root baseline `636 PASS / 20 inherited FAIL` across `656` tests.
+- The reviewer recorded one initial non-reproducing Time Alter 10-second pending-decision wait timeout; Time Alter then passed two isolated retries and the subsequent full five-spec group passed `5/5`. No deterministic runtime/projection/reconnect failure was reproduced.
+- Production-diff audit found no representative card/ability identity routing branch. Executable pack hash was independently recomputed and matched both stored identity fields.
+- TO08 Resource, TO09 Card Zone, TO11 Trigger, TO12 Lifecycle, and TO13 Interaction accepted boundaries remain green under TO10 compatibility testing.
+- The low-risk TO08/09/10 review chain is now synchronized. TO14 Battle/Resource and TO15 Modifier/Power remain accepted specification/design lanes only; runtime work from those lanes requires a fresh narrow B-owned task with explicit representative and exclusive runtime hot-file ownership. TO16 remains planning/special-isolation scope.
