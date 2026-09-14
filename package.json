@@ -22,6 +22,7 @@
     "replay:compare": "tsx scripts/compare-replays.ts",
     "content:compile": "tsx scripts/compile-playtest-content-pack.ts --pack data/packs/fd-playtest-v1/pack.json",
     "content:validate": "tsx scripts/compile-playtest-content-pack.ts --pack data/packs/fd-playtest-v1/pack.json --validate-only",
+    "test:source-assets": "tsx scripts/compile-playtest-content-pack.ts --pack data/packs/fd-playtest-v1/pack.json --validate-only --source-assets required",
     "test:complex-skills": "vitest run packages/rules/tests/regression/complex-skills-regression.test.ts",
     "test:client": "npm test --workspace @fd/client -- --run",
     "verify:playtest-v1": "tsx scripts/verify-fd-playtest-v1.ts",
