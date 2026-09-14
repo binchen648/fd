@@ -1961,6 +1961,102 @@ Completion status allowed:
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `REJECTED`
 
+## TASK P3-B20
+
+Owner: Codex B
+Status: READY
+Branch: `codex/b-p3-b20-artoriac-luck-on-win-r1`
+Base: exact P3-B20 A-owned handoff commit
+
+Goal:
+
+Migrate the three structurally identical Artoria Caster `unique-passive-luck-on-win` TO14 direct result consumers as one narrow family, without promoting unrelated optional triggers.
+
+Exact supported semantic family:
+
+- `optional_trigger`;
+- trigger `after_controller_wins_battle`;
+- response window `post_battle_optional_trigger_window`, controller only;
+- source card must be in controller hand;
+- unique limit group `artoriac-pilgrim-unique-on-win`, conflict policy `only_one_effect_may_activate_per_window`;
+- cost moves source card from controller hand to `removed_from_game`;
+- create exactly one `card.luck` into controller deck, then shuffle that deck;
+- no direct numeric effect.
+
+The accepted family contains exactly these three current consumers:
+
+- `sc-artoriac-4.unique-passive-luck-on-win`;
+- `sc-artoriac-5.unique-passive-luck-on-win`;
+- `sc-artoriac-6.unique-passive-luck-on-win`.
+
+Required behavior/evidence:
+
+- structural classification only; renamed IDs must still classify;
+- winner/participant/result provenance must prevent unrelated battle wins from opening the response;
+- response is controller-only and remains optional;
+- unique group permits at most one of the three sibling effects in the same trigger window;
+- decline changes nothing;
+- accept atomically removes exactly the chosen source card, creates exactly one Luck in the controller deck, and shuffles only that deck;
+- stable replay/reconnect/stale-command paths cannot consume a second source or create another Luck;
+- malformed same-family near misses fail closed before legacy fallback;
+- B13-B19 ordering/runtime compatibility remains green;
+- fresh Chromium remote-room proof and full-root baseline.
+
+Must not:
+
+- route by Artoria Caster/card/ability identity;
+- promote `sc-artoriac-6.gain-vp-if-not-sole-winner`;
+- promote Gatou, Tomoe, Olga transform, broad TO14, TO15, or TO16;
+- modify A-owned coverage KPI/taxonomy.
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R14
+
+Owner: Codex R
+Status: READY_AFTER_P3_B20
+Branch: reviewer-selected fresh worktree/branch from exact B20 candidate SHA
+
+Goal:
+
+Independently review the P3-B20 three-card Luck-on-win family without implementing fixes or inheriting acceptance from earlier Artoria Caster behavior.
+
+Required independent checks:
+
+- fresh typecheck and focused/current-lineage compatibility;
+- verify classifier is identity-free and exactly scoped to the three structurally identical current consumers;
+- verify unrelated battle wins do not expose the response;
+- verify unique-group arbitration offers at most one sibling settlement per trigger window;
+- verify accept removes exactly one chosen source and creates/shuffles exactly one Luck in the controller deck;
+- verify decline, false source-zone condition, malformed near misses, replay, reconnect, and stale revision;
+- verify B13-B19 compatibility, fresh Chromium Gate C, and full-root baseline;
+- block only on new deterministic failures.
+
+Must not:
+
+- implement fixes while reviewing;
+- promote Artoria Caster non-sole-winner VP, Gatou, Tomoe, Olga transform, broad TO14, TO15, or TO16;
+- modify A-owned coverage KPI/taxonomy.
+
+Required output:
+
+- findings ordered by severity;
+- family-scope / unique-group judgment;
+- participant/provenance judgment;
+- atomic remove-create-shuffle / fail-closed / exactly-once judgment;
+- projection/reconnect/stale judgment;
+- Gate A/B/C judgment;
+- explicit A03 synchronization input if accepted.
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
 ## Prompt Templates
 
 Codex A startup prompt:
