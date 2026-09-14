@@ -9,7 +9,7 @@
     "runtimeRequestCount": 23,
     "genericCapabilityRequestCount": 21,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 110
+    "affectedIdentityCount": 120
   },
   "requests": [
     {
@@ -852,6 +852,14 @@
         "master.ciel.skill.s3",
         "master.darnic.skill.s1a",
         "master.kuzuki.skill.s2",
+        "master.ophelia.skill.ascension",
+        "master.ophelia.skill.s1",
+        "master.ophelia.skill.s1b",
+        "master.ophelia.skill.s2",
+        "master.ophelia.skill.s4",
+        "master.ophelia.skill.s5",
+        "master.ophelia.skill.s6",
+        "master.ophelia.skill.s7",
         "master.twice.skill.ascension",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s2",
@@ -1219,6 +1227,210 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[18].abilities[1].printedClause",
           "sha256": "9791b82ccb714d58496185f8c15ce2b66ddcd11d37ae22403293d2c7edb84a6c"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.ascensionSkill#line=335"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/ascension"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=2",
+          "sha256": "0b36c27da8e8e4204cd27b87970303af4fa64c020ac7870418f38c89943ec84c"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s1]#line=326"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s1"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[0].text#line=1",
+          "sha256": "385df2585b17cce18792982d97738f446997b9ad069fcc57750a000a041e7469"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s1b]#line=328"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s1b"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[2].text#line=1",
+          "sha256": "5d9923e1f4bb8b4d6ae38eac6a74f0825a64ea86b69e99287dea0847489bee9b"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s2]#line=329"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[3].text#line=1",
+          "sha256": "c2046392a127b4055e446b47da0ec8ce4ef373cf7a79725aad8a51901969ec53"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[3].text#line=2",
+          "sha256": "6e7284c8c857acbbb75e39dc744443ec75ff0dc241f8be0a545f04574ed6ae4f"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s4]#line=331"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s4"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[5].text#line=1",
+          "sha256": "fccae7929debc6f44bd8a1f9e2e6cc382ad7094d5306c4dfd98cc2ec52445073"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[5].text#line=2",
+          "sha256": "0cca030c8010062783bd3349497040e1f9d706c14bb2dcea5be0bb8f3f46267a"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s5]#line=332"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s5"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[6].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[6].text#line=2",
+          "sha256": "e7f59257ade03c3ed3f68c1496641747d3f09d8bb61adb9328332ec9f3d2e8d2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s6]#line=333"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s6"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[7].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[7].text#line=2",
+          "sha256": "4bf3d381fcba33b51a514e391d8181866821932309cb582e8de3b85f6aaf30d6"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s7]#line=334"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s7"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[8].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[8].text#line=2",
+          "sha256": "5d7d47df8b72504df2b48c6e9de637165ab2272cf9f983957f3101a756759678"
         },
         {
           "abilityId": "master.twice.skill.ascension",
@@ -2083,10 +2295,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 43,
-          "specific_handler": 3
+          "shared_handler": 47,
+          "specific_handler": 7
         },
-        "handlerCount": 7,
+        "handlerCount": 12,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -2253,6 +2465,7 @@
         "master.chaos.skill.s4",
         "master.chaos.skill.s6",
         "master.ciel.skill.s1b",
+        "master.ophelia.skill.ascension",
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
         "servant.amakusa.skill.sc-amakusa-1",
@@ -2547,6 +2760,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[15].abilities[0].printedClause",
           "sha256": "98a4becbbedd9d11ae2b93ea1b192b781a6943fb0ff62e1dbff4bb9697bbb6fc"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.ascensionSkill#line=335"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/ascension"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=2",
+          "sha256": "0b36c27da8e8e4204cd27b87970303af4fa64c020ac7870418f38c89943ec84c"
         },
         {
           "abilityId": "master.twice.skill.s1",
@@ -2898,9 +3138,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 25
+          "shared_handler": 25,
+          "specific_handler": 1
         },
-        "handlerCount": 3,
+        "handlerCount": 4,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -2939,6 +3180,9 @@
         "master.darnic.skill.s1a",
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
+        "master.ophelia.skill.ascension",
+        "master.ophelia.skill.s1",
+        "master.ophelia.skill.s1b",
         "master.sion.skill.s13",
         "master.twice.skill.ascension",
         "master.twice.skill.s1",
@@ -3663,6 +3907,75 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[18].abilities[1].printedClause",
           "sha256": "9791b82ccb714d58496185f8c15ce2b66ddcd11d37ae22403293d2c7edb84a6c"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.ascensionSkill#line=335"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/ascension"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=2",
+          "sha256": "0b36c27da8e8e4204cd27b87970303af4fa64c020ac7870418f38c89943ec84c"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s1]#line=326"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s1"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[0].text#line=1",
+          "sha256": "385df2585b17cce18792982d97738f446997b9ad069fcc57750a000a041e7469"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s1b]#line=328"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s1b"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[2].text#line=1",
+          "sha256": "5d9923e1f4bb8b4d6ae38eac6a74f0825a64ea86b69e99287dea0847489bee9b"
         },
         {
           "abilityId": "master.sion.skill.s13",
@@ -5254,9 +5567,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 85,
-          "specific_handler": 4
+          "specific_handler": 7
         },
-        "handlerCount": 8,
+        "handlerCount": 11,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -5271,6 +5584,7 @@
       "affectedAbilityIds": [
         "master.chaos.skill.ascension",
         "master.chaos.skill.s1",
+        "master.ophelia.skill.s2",
         "master.sion.skill.s13",
         "servant.roberts.skill.sc-roberts-1",
         "servant.roberts.skill.sc-roberts-2"
@@ -5329,6 +5643,33 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[25].skills[0].text#line=2",
           "sha256": "46eaee97dde7fb4ed80123ad78f1fdc889c3974ea425a1fd916d0819ae4b68ab"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s2]#line=329"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[3].text#line=1",
+          "sha256": "c2046392a127b4055e446b47da0ec8ce4ef373cf7a79725aad8a51901969ec53"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[3].text#line=2",
+          "sha256": "6e7284c8c857acbbb75e39dc744443ec75ff0dc241f8be0a545f04574ed6ae4f"
         },
         {
           "abilityId": "master.sion.skill.s13",
@@ -5425,9 +5766,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 5
+          "shared_handler": 5,
+          "specific_handler": 1
         },
-        "handlerCount": 2,
+        "handlerCount": 3,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -5441,6 +5783,13 @@
       "mechanicFamily": "SPECIAL_SUBSYSTEM",
       "affectedAbilityIds": [
         "master.chaos.skill.s13",
+        "master.ophelia.skill.ascension",
+        "master.ophelia.skill.s1",
+        "master.ophelia.skill.s3",
+        "master.ophelia.skill.s4",
+        "master.ophelia.skill.s5",
+        "master.ophelia.skill.s6",
+        "master.ophelia.skill.s7",
         "master.twice.skill.s1",
         "master.wodime.skill.s1",
         "master.wodime.skill.s4",
@@ -5482,6 +5831,183 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[25].skills[12].text#line=2",
           "sha256": "f8af32bb324aea6a44e78283cac7ebc33f4077201dcfb356189e50b1a928112f"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.ascensionSkill#line=335"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/ascension"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=2",
+          "sha256": "0b36c27da8e8e4204cd27b87970303af4fa64c020ac7870418f38c89943ec84c"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s1]#line=326"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s1"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[0].text#line=1",
+          "sha256": "385df2585b17cce18792982d97738f446997b9ad069fcc57750a000a041e7469"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s3]#line=330"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s3"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[4].text#line=1",
+          "sha256": "ac74b744508aacefec59ada2ef5bf4137eff8f79106f8c4446def510c89348fa"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s4]#line=331"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s4"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[5].text#line=1",
+          "sha256": "fccae7929debc6f44bd8a1f9e2e6cc382ad7094d5306c4dfd98cc2ec52445073"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[5].text#line=2",
+          "sha256": "0cca030c8010062783bd3349497040e1f9d706c14bb2dcea5be0bb8f3f46267a"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s5]#line=332"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s5"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[6].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[6].text#line=2",
+          "sha256": "e7f59257ade03c3ed3f68c1496641747d3f09d8bb61adb9328332ec9f3d2e8d2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s6]#line=333"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s6"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[7].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[7].text#line=2",
+          "sha256": "4bf3d381fcba33b51a514e391d8181866821932309cb582e8de3b85f6aaf30d6"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s7]#line=334"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s7"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[8].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[8].text#line=2",
+          "sha256": "5d7d47df8b72504df2b48c6e9de637165ab2272cf9f983957f3101a756759678"
         },
         {
           "abilityId": "master.twice.skill.s1",
@@ -5836,9 +6362,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 14
+          "shared_handler": 19,
+          "specific_handler": 2
         },
-        "handlerCount": 2,
+        "handlerCount": 6,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -5864,6 +6391,7 @@
         "master.ciel.skill.s3",
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
+        "master.ophelia.skill.s2",
         "servant.andersen.skill.sc-andersen-2",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.atalanta.skill.sc-atalanta-1",
@@ -6217,6 +6745,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[18].abilities[1].printedClause",
           "sha256": "9791b82ccb714d58496185f8c15ce2b66ddcd11d37ae22403293d2c7edb84a6c"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s2]#line=329"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[3].text#line=1",
+          "sha256": "c2046392a127b4055e446b47da0ec8ce4ef373cf7a79725aad8a51901969ec53"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[3].text#line=2",
+          "sha256": "6e7284c8c857acbbb75e39dc744443ec75ff0dc241f8be0a545f04574ed6ae4f"
         },
         {
           "abilityId": "servant.andersen.skill.sc-andersen-2",
@@ -7040,9 +7595,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 42,
-          "specific_handler": 2
+          "specific_handler": 3
         },
-        "handlerCount": 6,
+        "handlerCount": 7,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -7073,6 +7628,13 @@
         "master.ciel.skill.s3",
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
+        "master.ophelia.skill.ascension",
+        "master.ophelia.skill.s1a",
+        "master.ophelia.skill.s1b",
+        "master.ophelia.skill.s2",
+        "master.ophelia.skill.s5",
+        "master.ophelia.skill.s6",
+        "master.ophelia.skill.s7",
         "master.twice.skill.ascension",
         "master.wodime.skill.s2",
         "master.wodime.skill.s3",
@@ -7558,6 +8120,183 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[18].abilities[1].printedClause",
           "sha256": "9791b82ccb714d58496185f8c15ce2b66ddcd11d37ae22403293d2c7edb84a6c"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.ascensionSkill#line=335"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/ascension"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=2",
+          "sha256": "0b36c27da8e8e4204cd27b87970303af4fa64c020ac7870418f38c89943ec84c"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1a",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1a",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s1a]#line=327"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1a",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s1a"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[1].text#line=1",
+          "sha256": "a081a6a28f80ffc2ec94d19730f858fdf25ed9d25a9fc3c988f9cf2d5971860d"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s1b]#line=328"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s1b"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[2].text#line=1",
+          "sha256": "5d9923e1f4bb8b4d6ae38eac6a74f0825a64ea86b69e99287dea0847489bee9b"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s2]#line=329"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[3].text#line=1",
+          "sha256": "c2046392a127b4055e446b47da0ec8ce4ef373cf7a79725aad8a51901969ec53"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[3].text#line=2",
+          "sha256": "6e7284c8c857acbbb75e39dc744443ec75ff0dc241f8be0a545f04574ed6ae4f"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s5]#line=332"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s5"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[6].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[6].text#line=2",
+          "sha256": "e7f59257ade03c3ed3f68c1496641747d3f09d8bb61adb9328332ec9f3d2e8d2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s6]#line=333"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s6"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[7].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[7].text#line=2",
+          "sha256": "4bf3d381fcba33b51a514e391d8181866821932309cb582e8de3b85f6aaf30d6"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s7]#line=334"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s7"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[8].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[8].text#line=2",
+          "sha256": "5d7d47df8b72504df2b48c6e9de637165ab2272cf9f983957f3101a756759678"
         },
         {
           "abilityId": "master.twice.skill.ascension",
@@ -8323,10 +9062,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 41,
-          "specific_handler": 5
+          "shared_handler": 45,
+          "specific_handler": 8
         },
-        "handlerCount": 12,
+        "handlerCount": 16,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -9351,6 +10090,12 @@
         "master.chaos.skill.s12",
         "master.chaos.skill.s16",
         "master.chaos.skill.s2",
+        "master.ophelia.skill.ascension",
+        "master.ophelia.skill.s1b",
+        "master.ophelia.skill.s2",
+        "master.ophelia.skill.s5",
+        "master.ophelia.skill.s6",
+        "master.ophelia.skill.s7",
         "master.wodime.skill.s3",
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
@@ -9441,6 +10186,162 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[25].skills[1].text#line=2",
           "sha256": "1b6fe144d216ec2223834a7feca19e242d817a35224415baf0d814aa00a5bcc2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.ascensionSkill#line=335"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/ascension"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=2",
+          "sha256": "0b36c27da8e8e4204cd27b87970303af4fa64c020ac7870418f38c89943ec84c"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s1b]#line=328"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s1b"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1b",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[2].text#line=1",
+          "sha256": "5d9923e1f4bb8b4d6ae38eac6a74f0825a64ea86b69e99287dea0847489bee9b"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s2]#line=329"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[3].text#line=1",
+          "sha256": "c2046392a127b4055e446b47da0ec8ce4ef373cf7a79725aad8a51901969ec53"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[3].text#line=2",
+          "sha256": "6e7284c8c857acbbb75e39dc744443ec75ff0dc241f8be0a545f04574ed6ae4f"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s5]#line=332"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s5"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[6].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[6].text#line=2",
+          "sha256": "e7f59257ade03c3ed3f68c1496641747d3f09d8bb61adb9328332ec9f3d2e8d2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s6]#line=333"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s6"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[7].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[7].text#line=2",
+          "sha256": "4bf3d381fcba33b51a514e391d8181866821932309cb582e8de3b85f6aaf30d6"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s7]#line=334"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s7"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[8].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[8].text#line=2",
+          "sha256": "5d7d47df8b72504df2b48c6e9de637165ab2272cf9f983957f3101a756759678"
         },
         {
           "abilityId": "master.wodime.skill.s3",
@@ -9702,10 +10603,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 10,
-          "specific_handler": 1
+          "shared_handler": 13,
+          "specific_handler": 4
         },
-        "handlerCount": 4,
+        "handlerCount": 8,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -10571,6 +11472,7 @@
         "master.chaos.skill.s3",
         "master.chaos.skill.s4",
         "master.chaos.skill.s8",
+        "master.ophelia.skill.ascension",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.astolfo.skill.sc-astolfo-1",
@@ -10822,6 +11724,33 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[25].skills[7].text#line=2",
           "sha256": "f87c1d74ebce52352603c02c4d12104abbf1b58ac61e266620205d31d9fda2bf"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.ascensionSkill#line=335"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/ascension"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=2",
+          "sha256": "0b36c27da8e8e4204cd27b87970303af4fa64c020ac7870418f38c89943ec84c"
         },
         {
           "abilityId": "master.sion.skill.s13",
@@ -11273,9 +12202,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 27,
-          "specific_handler": 1
+          "specific_handler": 2
         },
-        "handlerCount": 3,
+        "handlerCount": 4,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -12624,6 +13553,9 @@
         "master.ciel.skill.s2",
         "master.darnic.skill.s1a",
         "master.kuzuki.skill.s2",
+        "master.ophelia.skill.ascension",
+        "master.ophelia.skill.s1",
+        "master.ophelia.skill.s4",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s1",
         "master.wodime.skill.s4",
@@ -13301,6 +14233,81 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[18].abilities[1].printedClause",
           "sha256": "9791b82ccb714d58496185f8c15ce2b66ddcd11d37ae22403293d2c7edb84a6c"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.ascensionSkill#line=335"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/ascension"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=2",
+          "sha256": "0b36c27da8e8e4204cd27b87970303af4fa64c020ac7870418f38c89943ec84c"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s1]#line=326"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s1"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[0].text#line=1",
+          "sha256": "385df2585b17cce18792982d97738f446997b9ad069fcc57750a000a041e7469"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s4]#line=331"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s4"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[5].text#line=1",
+          "sha256": "fccae7929debc6f44bd8a1f9e2e6cc382ad7094d5306c4dfd98cc2ec52445073"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[5].text#line=2",
+          "sha256": "0cca030c8010062783bd3349497040e1f9d706c14bb2dcea5be0bb8f3f46267a"
         },
         {
           "abilityId": "master.wodime.skill.ascension",
@@ -14177,10 +15184,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 52,
-          "specific_handler": 4
+          "shared_handler": 53,
+          "specific_handler": 6
         },
-        "handlerCount": 8,
+        "handlerCount": 11,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -15087,6 +16094,13 @@
         "master.bazett.skill.s4",
         "master.bazett.skill.s5",
         "master.chaos.skill.s8",
+        "master.ophelia.skill.ascension",
+        "master.ophelia.skill.s1",
+        "master.ophelia.skill.s3",
+        "master.ophelia.skill.s4",
+        "master.ophelia.skill.s5",
+        "master.ophelia.skill.s6",
+        "master.ophelia.skill.s7",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s1",
         "master.wodime.skill.s1a",
@@ -15275,6 +16289,183 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[25].skills[7].text#line=2",
           "sha256": "f87c1d74ebce52352603c02c4d12104abbf1b58ac61e266620205d31d9fda2bf"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.ascensionSkill#line=335"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/ascension"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.ophelia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[9].text#line=2",
+          "sha256": "0b36c27da8e8e4204cd27b87970303af4fa64c020ac7870418f38c89943ec84c"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s1]#line=326"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s1"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[0].text#line=1",
+          "sha256": "385df2585b17cce18792982d97738f446997b9ad069fcc57750a000a041e7469"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s3]#line=330"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s3"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[4].text#line=1",
+          "sha256": "ac74b744508aacefec59ada2ef5bf4137eff8f79106f8c4446def510c89348fa"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s4]#line=331"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s4"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[5].text#line=1",
+          "sha256": "fccae7929debc6f44bd8a1f9e2e6cc382ad7094d5306c4dfd98cc2ec52445073"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[5].text#line=2",
+          "sha256": "0cca030c8010062783bd3349497040e1f9d706c14bb2dcea5be0bb8f3f46267a"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s5]#line=332"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s5"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[6].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[6].text#line=2",
+          "sha256": "e7f59257ade03c3ed3f68c1496641747d3f09d8bb61adb9328332ec9f3d2e8d2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s6]#line=333"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s6"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[7].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[7].text#line=2",
+          "sha256": "4bf3d381fcba33b51a514e391d8181866821932309cb582e8de3b85f6aaf30d6"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.ophelia/奥菲莉娅·法姆索罗涅"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_ophelia.skills[s7]#line=334"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "legacy-content.json",
+          "locator": "master/master.ophelia/s7"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[8].text#line=1",
+          "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2"
+        },
+        {
+          "abilityId": "master.ophelia.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[55].skills[8].text#line=2",
+          "sha256": "5d7d47df8b72504df2b48c6e9de637165ab2272cf9f983957f3101a756759678"
         },
         {
           "abilityId": "master.wodime.skill.ascension",
@@ -15704,10 +16895,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 20,
-          "specific_handler": 3
+          "shared_handler": 25,
+          "specific_handler": 5
         },
-        "handlerCount": 6,
+        "handlerCount": 10,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
