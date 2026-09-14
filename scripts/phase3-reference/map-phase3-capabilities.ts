@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { assertOutputOutsideReference } from './build-full-roster-inventory';
 import { assertFullRosterInventory } from './inventory-schema';
 import {
+  loadSourceEvidenceOverlayCards,
   type SemanticAxes,
   type SemanticNormalizedInventory,
   type StructuredAbility,
@@ -945,8 +946,9 @@ async function main(): Promise<void> {
   }
 
   const referenceCards = loadReferenceAuthoringCards(referenceRoot);
+  const overlayCards = loadSourceEvidenceOverlayCards(projectRoot);
   const currentCards = loadCurrentAuthoringCards(projectRoot);
-  const result = mapFullRosterCapabilities(inventory, referenceCards, currentCards);
+  const result = mapFullRosterCapabilities(inventory, [...referenceCards, ...overlayCards], currentCards);
 
   mkdirSync(dirname(outputPath), { recursive: true });
   mkdirSync(dirname(catalogPath), { recursive: true });
