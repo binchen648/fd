@@ -138,7 +138,7 @@ Existing per-batch skip counts:
 
 | Inventory | Total In Scope | Eligible | Skipped |
 |---|---:|---:|---:|
-| Resource numeric direct action | 18 | 3 | 15 |
+| Resource numeric direct action | 17 | 3 | 14 |
 | Card zone direct action | 8 | 2 | 6 |
 | Card action PLAY | 7 | 1 | 6 |
 | Card action ADD_TO_ATTACK | 7 | 1 | 6 |
@@ -359,3 +359,17 @@ Permitted final status:
 - TO13 releases the exclusive runtime hot-file lane.
 - Exact P3-B04 PLAY candidate `628238a696d9adfdbfb3a3c404871a8405a6ff8d` remains reachable and already has an A02 reviewer packet; the next dependency is P3-R04 independent review rather than duplicate B04 implementation.
 - P3-B05 remains gated on P3-R04 acceptance/clearance. TO14/TO15 spec acceptance does not by itself authorize Battle/Modifier runtime implementation.
+
+## P3-A03 TO-08 Synchronization — 2026-09-14
+
+- P3-TO-08 Resource Numeric Core Direct Action: `REVIEW_ACCEPTED` at current-lineage runtime `81dfe1b2d7651adc10e4bc03a13c6df15ccee3ef`, independent R2 evidence `5d8497ff255b83123525b5425cf7ec37d391f3bf`.
+- The rejected current-lineage predecessor at `b63376ca0ebc3fc005405a385e6f1b438b6295c1` is not promoted for Resource Gate C; its missing-revision P1 is independently closed by the accepted r1 candidate.
+- Fresh Resource direct-action inventory is `17` in-scope abilities: `3` eligible, `3` migrated, `14` skipped; scoped dual runtime remains `0`. Only Gatou command-spell gain-mana, Olga-Marie command-spell gain-mana, and Tomoe Independent Action are accepted in this slice.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0`; the three Resource direct consumers were already present in the raw semantic-routing count before independent promotion, so reviewer acceptance does not create a second raw delta.
+- Fresh compiled evidence remains definition hash `26167661823b52de598c77a59df4d05440a6bfced7d68cd3e04d11353d72dbaa`, `70` cards, `14` characters, and `0` blocking issues.
+- Gate A/B/C are accepted for the exact three-consumer Resource slice. Gate C is represented by the command-spell production browser/WS path with reconnect, missing-revision rejection, stale-revision rejection, and no duplicate resource mutation.
+- Historical detached hardening `b1a1dc8eb7c90616d4bf4ecd7d02fae04a78c43e` is not used as inherited acceptance; the current accepted judgment is based on `81dfe1b2...` only.
+- TO13 interaction compatibility remains green after the authoritative room dispatch-CAS repair; no Interaction row is reopened or newly promoted by TO08.
+- The generated coverage artifact changed only timestamp/source-line metadata and is intentionally not committed; classifier/taxonomy logic remains untouched.
+- The `14` skipped Resource rows inherit no Gate status. Trigger/Battle/Interaction/Movement/Result-Binding/Lifecycle/Modifier/Special ownership remains unchanged.
+- Next low-risk dependency is P3-TO-09 Card Zone current-lineage independent review; no new Card Zone runtime edit is authorized unless that reviewer finds a concrete blocker.
