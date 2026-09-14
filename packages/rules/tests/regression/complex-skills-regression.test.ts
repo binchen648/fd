@@ -1336,12 +1336,16 @@ describe('complex master and session regressions', () => {
       sourceCardId: seeker,
       abilityId: 'seeker.meditation',
     });
-    rules.processAbilityEvent(state, { id: 'gatou-battle-ended', type: 'after_battle_ended', playerId: 'p1' });
-    expectDirective(state, 'gatou_battle_end_mobile_players_reward', {
-      controllerId: 'p1',
-      sourceCardId: seeker,
-      abilityId: 'seeker.battle-end-reward',
+    const gatouManaBeforeTerminal = state.players[0]!.mana;
+    rules.processAbilityEvent(state, {
+      id: 'gatou-battle-ended', type: 'after_battle_ended', battlePhaseResolutionId: 'battle-phase:1',
+      battleParticipantIds: ['p1', 'p2'], battleOutcomes: [{ battlefieldId: state.players[0]!.locationId!, winnerPlayerIds: ['p2'] }],
     });
+    expect(state.players[0]!.mana).toBe(gatouManaBeforeTerminal);
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({
+      type: 'battle_end_mobile_players_reward_settled', sourceCardId: seeker, abilityId: 'seeker.battle-end-reward',
+      requestedDelta: 0, delta: 0, qualifyingPlayerIds: [],
+    }));
 
     expect(activate(state, commandSpell, 'command-spell.gain-mana').ok).toBe(true);
     expect(state.players[0]!.mana).toBe(8);

@@ -8,6 +8,7 @@ export interface BattleTerminalSeed {
   resultIds: string[];
   scoringReceiptIds: string[];
   battleParticipantIds: PlayerId[];
+  battleOutcomes: Array<{ battlefieldId: string; winnerPlayerIds: PlayerId[] }>;
 }
 
 function stableUnique<T>(values: T[]): T[] {
@@ -23,6 +24,7 @@ export function buildBattleTerminalEvent(seed: BattleTerminalSeed): AbilityEvent
     resultIds: [...seed.resultIds],
     scoringReceiptIds: [...seed.scoringReceiptIds],
     battleParticipantIds: stableUnique(seed.battleParticipantIds),
+    battleOutcomes: seed.battleOutcomes.map((outcome) => ({ battlefieldId: outcome.battlefieldId, winnerPlayerIds: stableUnique(outcome.winnerPlayerIds) })),
   };
 }
 

@@ -80,6 +80,8 @@ export interface AbilityEvent {
   resultIds?: string[];
   scoringReceiptIds?: string[];
   battleParticipantIds?: PlayerId[];
+  /** Frozen phase-terminal battle outcome facts used by exact terminal consumers. */
+  battleOutcomes?: Array<{ battlefieldId: string; winnerPlayerIds: PlayerId[] }>;
   battlefieldId?: string;
   lossOrdinal?: number;
   /** Trusted backend snapshot of the simultaneous play batch, never a client-supplied condition. */
@@ -157,6 +159,11 @@ export interface SafeEvent {
   delta?: number;
   before?: number;
   after?: number;
+  requestedDelta?: number;
+  qualifyingPlayerIds?: PlayerId[];
+  battlePhaseResolutionId?: string;
+  battlefieldId?: string;
+  rewardBranch?: 'mana' | 'victory_points';
   resultId?: string;
   revision?: number;
   cardInstanceId?: string;

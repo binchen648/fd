@@ -696,6 +696,8 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
         (isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a)) &&
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
       if (event.type === 'after_battle_ended' && isBattleEndSourceReturnCandidate(a) && !battleEndSourceReturnTriggerEligible(s, c.instanceId)) continue;
+      if (event.type === 'after_battle_ended' && isBattleEndMobilePlayersRewardSemantic(a) &&
+        Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
       if (!matches || !canActivate(s, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
       if (['on_card_played', 'on_use_declared'].includes(event.type) && event.sourceCardId !== c.instanceId &&
         !a.conditions.some((condition) => condition.type === 'event_played_card_has_attribute')) continue;
@@ -802,6 +804,7 @@ function recordMovementForAbilityRuntime(s: GameState, playerId: string, from: s
   r.movementDistanceThisRound[playerId] = (r.movementDistanceThisRound[playerId] ?? 0) + distance;
   const battlefields = path.slice(1).filter(locationId => isBattlefield(s, locationId)).length;
   r.battlefieldsPassedOrStayedThisRound[playerId] = (r.battlefieldsPassedOrStayedThisRound[playerId] ?? 0) + battlefields;
+  s.log.push({ type: 'movement', message: `player:${playerId}:effect_move:${from}->${to}`, payload: { playerId, from, to, movementKind: 'effect', manaSpent: 0, roundNumber: s.round.roundNumber } });
 }
 function lifecycleTransitions(s: GameState) {
   const r = runtime(s);
@@ -1288,6 +1291,107 @@ export function isUniqueWinCreateCardTriggerSemantic(a: AuthoringAbility): boole
 /** Backward-compatible B20 test/export alias; routing is the generic structural family above. */
 export const isUniqueLuckOnBattleWinSemantic = isUniqueWinCreateCardTriggerSemantic;
 
+function isBattleEndMobilePlayersRewardCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'forced_trigger' &&
+    str(a.activation.trigger) === 'after_battle_ended' &&
+    a.effects.length === 1 &&
+    str(a.effects[0]?.type) === 'record_master_directive';
+}
+
+export function isBattleEndMobilePlayersRewardSemantic(a: AuthoringAbility): boolean {
+  if (!isBattleEndMobilePlayersRewardCandidate(a)) return false;
+  if (str(a.activation.phase) || str(a.activation.opens) || str(a.activation.requiresSourceState)) return false;
+  if (a.conditions.length || a.targets.length || a.cost.length || a.creates.length || a.ruleModifiers.length) return false;
+  if (Object.keys(a.lifecycle).length || str(a.responseWindow.opens) || Object.keys(a.limit).length) return false;
+  const effect = a.effects[0]!;
+  if (effect.type !== 'record_master_directive' || str(effect.directive) !== 'gatou_battle_end_mobile_players_reward') return false;
+  return Object.keys(effect).every((key) => ['type', 'directive', 'id', 'printedClause'].includes(key));
+}
+
+function currentRoundMovementLogs(s: GameState): Array<{ playerId: string; to: string }> {
+  let boundary = 0;
+  for (let index = s.log.length - 1; index >= 0; index -= 1) {
+    const entry = s.log[index]!;
+    if (entry.type === 'phase_transition' && entry.message.endsWith('-> round_start')) {
+      boundary = index + 1;
+      break;
+    }
+  }
+  const results: Array<{ playerId: string; to: string }> = [];
+  for (const entry of s.log.slice(boundary)) {
+    if (entry.type !== 'movement') continue;
+    const payload = entry.payload ?? {};
+    const payloadRound = typeof payload.roundNumber === 'number' ? payload.roundNumber : undefined;
+    if (payloadRound !== undefined && payloadRound !== s.round.roundNumber) continue;
+    const playerId = typeof payload.playerId === 'string' ? payload.playerId : '';
+    const to = typeof payload.to === 'string' ? payload.to : '';
+    if (playerId && to) results.push({ playerId, to });
+  }
+  return results;
+}
+
+function settleBattleEndMobilePlayersReward(s: GameState, ctx: EffectContext): void {
+  const event = ctx.event;
+  if (!event || event.type !== 'after_battle_ended' || !event.battlePhaseResolutionId || !Array.isArray(event.battleOutcomes)) {
+    reject('resolution_failed', 'Battle-end mobile-player reward requires frozen terminal battle provenance');
+  }
+  if (!event.battleParticipantIds?.includes(ctx.controllerId)) {
+    reject('resolution_failed', 'Battle-end mobile-player reward controller must be a frozen battle participant');
+  }
+  const controller = player(s, ctx.controllerId);
+  const locationId = controller.locationId;
+  if (!locationId) reject('resolution_failed', 'Battle-end mobile-player reward controller has no current location');
+
+  const movedIntoLocation = new Set(currentRoundMovementLogs(s)
+    .filter((movement) => movement.playerId !== ctx.controllerId && movement.to === locationId)
+    .map((movement) => movement.playerId));
+  const qualifyingPlayerIds = s.players
+    .filter((candidate) => candidate.id !== ctx.controllerId && candidate.locationId === locationId && movedIntoLocation.has(candidate.id))
+    .map((candidate) => candidate.id);
+  const outcome = event.battleOutcomes.find((candidate) => candidate.battlefieldId === locationId);
+  const won = outcome?.winnerPlayerIds.includes(ctx.controllerId) === true;
+  const rewardBranch = won ? 'victory_points' as const : 'mana' as const;
+  const requestedDelta = qualifyingPlayerIds.length;
+  const before = won ? controller.vp : controller.mana;
+
+  if (requestedDelta > 0) {
+    const synthetic: RuleNode = won
+      ? { id: 'battle-end-mobile-player-vp', type: 'adjust_victory_points', player: 'controller', amount: requestedDelta }
+      : { id: 'battle-end-mobile-player-mana', type: 'adjust_mana', player: 'controller', amount: requestedDelta };
+    const normalized = normalizeResolutionDataFlowNodes([synthetic], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.terminalReward`);
+    const result = executeResolution({
+      state: s,
+      controllerId: ctx.controllerId,
+      sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId,
+      effects: normalized,
+      selections: {},
+      resolutionId: `${event.id}:${ctx.sourceCardId}:${ctx.abilityId}`,
+      causationId: event.id,
+    });
+    Object.assign(s, result.nextState);
+    runtime(s).events.push(...result.emittedEvents);
+  }
+
+  const afterController = player(s, ctx.controllerId);
+  const after = won ? afterController.vp : afterController.mana;
+  runtime(s).events.push({
+    type: 'battle_end_mobile_players_reward_settled',
+    playerId: ctx.controllerId,
+    sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId,
+    resource: rewardBranch,
+    requestedDelta,
+    delta: after - before,
+    before,
+    after,
+    qualifyingPlayerIds,
+    battlePhaseResolutionId: event.battlePhaseResolutionId,
+    battlefieldId: locationId,
+    rewardBranch,
+  });
+}
+
 function isBattleEndSourceReturnCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'forced_trigger' &&
     str(a.activation.trigger) === 'after_battle_ended' &&
@@ -1591,6 +1695,12 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (isBattleEndMobilePlayersRewardSemantic(a)) {
+    settleBattleEndMobilePlayersReward(s, ctx);
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
   if (isBattleLossUnpreventableVpTriggerSemantic(a)) {
     const beforeEvents = runtime(s).events.length;
     executeResolutionEffects(s, ctx, effects);
@@ -1615,6 +1725,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isSharedVictoryVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported shared-victory VP semantic shape');
   if (isOptionalBattleResultVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported optional battle-result VP semantic shape');
   if (isBattleEndSourceReturnCandidate(a)) reject('resolution_failed', 'Unsupported battle-end source-return semantic shape');
+  if (isBattleEndMobilePlayersRewardCandidate(a)) reject('resolution_failed', 'Unsupported battle-end mobile-player reward semantic shape');
   if (isPrivateOptionalHandPlayInteractionCandidate(a)) {
     if (!isPrivateOptionalHandPlayInteractionSemantic(a)) reject('resolution_failed', 'Unsupported private optional hand-play interaction semantic shape');
     const interactionTargetId = str(a.targets[0]?.id);
