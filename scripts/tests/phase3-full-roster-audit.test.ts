@@ -318,6 +318,166 @@ describe('Phase 3 independent full-roster automation audit', () => {
     expect(audit.gaps.some((gap) => gap.code === 'CAPABILITY_MEMBERSHIP_MISMATCH')).toBe(true);
   });
 
+  it('accepts allowlisted Wiki evidence but rejects unknown or non-Fandom overlay authority', () => {
+    const f = fixture();
+    const groundedId = f.staticId;
+    f.snapshot.authoringCardIds = [];
+    f.snapshot.authoringAbilityCount = 0;
+    f.snapshot.staticSkills[0].authoringAbilityIds = [];
+    f.inventory.staticSkills[0].semanticNormalization.source = {
+      document: 'Fate/Domination Wiki',
+      locator: 'Fixture#Cards/Test',
+    };
+    f.inventory.staticSkills[0].semanticNormalization.abilities = [
+      {
+        sourceAbilityId: 'fixture.external',
+        kind: 'PASSIVE',
+        source: { document: 'Fate/Domination Wiki', locator: 'Fixture#Cards/Test#ability-1' },
+        axes: f.inventory.staticSkills[0].semanticNormalization.axes,
+      },
+    ];
+
+    const overlay = [{
+      id: groundedId,
+      referencePrintedTextSha256: sha256(f.snapshot.staticSkills[0].printedText),
+      source: {
+        authority: 'FATE_DOMINATION_WIKI',
+        document: 'Fate/Domination Wiki',
+        locator: 'Fixture#Cards/Test',
+        url: 'https://fatedomination.fandom.com/wiki/Fixture',
+      },
+      abilities: [{ id: 'fixture.external' }],
+    }];
+    const accepted = auditFullRosterArtifacts(
+      f.snapshot,
+      f.inventory as any,
+      f.catalog as any,
+      f.decisions as any,
+      f.runtime as any,
+      overlay,
+    );
+    expect(accepted.gaps.some((gap) => gap.code.startsWith('SOURCE_EVIDENCE_OVERLAY_'))).toBe(false);
+
+    const badAuthority = structuredClone(overlay);
+    badAuthority[0].source.url = 'https://example.com/not-allowed';
+    const rejected = auditFullRosterArtifacts(
+      f.snapshot,
+      f.inventory as any,
+      f.catalog as any,
+      f.decisions as any,
+      f.runtime as any,
+      badAuthority,
+    );
+    expect(rejected.gaps.some((gap) => gap.code === 'SOURCE_EVIDENCE_OVERLAY_AUTHORITY_MISMATCH')).toBe(true);
+
+    const badReferenceBinding = structuredClone(overlay);
+    badReferenceBinding[0].referencePrintedTextSha256 = '0'.repeat(64);
+    const badReferenceAudit = auditFullRosterArtifacts(
+      f.snapshot,
+      f.inventory as any,
+      f.catalog as any,
+      f.decisions as any,
+      f.runtime as any,
+      badReferenceBinding,
+    );
+    expect(
+      badReferenceAudit.gaps.some(
+        (gap) => gap.code === 'SOURCE_EVIDENCE_OVERLAY_REFERENCE_BINDING_MISMATCH',
+      ),
+    ).toBe(true);
+
+    const unknown = structuredClone(overlay);
+    unknown[0].id = 'master.unknown.skill.s1';
+    const unknownAudit = auditFullRosterArtifacts(
+      f.snapshot,
+      f.inventory as any,
+      f.catalog as any,
+      f.decisions as any,
+      f.runtime as any,
+      unknown,
+    );
+    expect(unknownAudit.gaps.some((gap) => gap.code === 'SOURCE_EVIDENCE_OVERLAY_UNKNOWN_ID')).toBe(true);
+  });
+
+  it('accepts hash-locked development-text snapshots and rejects mutated or non-allowlisted snapshots', () => {
+    const f = fixture();
+    const groundedId = f.staticId;
+    const sourceText = '开发版原始技能文本';
+    f.snapshot.authoringCardIds = [];
+    f.snapshot.authoringAbilityCount = 0;
+    f.snapshot.staticSkills[0].authoringAbilityIds = [];
+    f.inventory.staticSkills[0].semanticNormalization.source = {
+      document: 'Fate_Domination-开发版/data_masters.js',
+      locator: 'm_fixture.skills[s1]#line=1',
+    };
+    f.inventory.staticSkills[0].semanticNormalization.abilities = [
+      {
+        sourceAbilityId: 'fixture.development',
+        kind: 'PASSIVE',
+        source: {
+          document: 'Fate_Domination-开发版/data_masters.js',
+          locator: 'm_fixture.skills[s1]#line=1#ability-1',
+        },
+        axes: f.inventory.staticSkills[0].semanticNormalization.axes,
+      },
+    ];
+
+    const overlay = [{
+      id: groundedId,
+      referencePrintedTextSha256: sha256(f.snapshot.staticSkills[0].printedText),
+      source: {
+        authority: 'DEVELOPMENT_TEXT',
+        document: 'Fate_Domination-开发版/data_masters.js',
+        locator: 'm_fixture.skills[s1]#line=1',
+        sourceFileSha256: 'a'.repeat(64),
+        sourceText,
+        sourceTextSha256: sha256(sourceText),
+      },
+      abilities: [{ id: 'fixture.development' }],
+    }];
+    const accepted = auditFullRosterArtifacts(
+      f.snapshot,
+      f.inventory as any,
+      f.catalog as any,
+      f.decisions as any,
+      f.runtime as any,
+      overlay,
+    );
+    expect(accepted.gaps.some((gap) => gap.code.startsWith('SOURCE_EVIDENCE_OVERLAY_'))).toBe(false);
+
+    const badHash = structuredClone(overlay);
+    badHash[0].source.sourceTextSha256 = '0'.repeat(64);
+    const badHashAudit = auditFullRosterArtifacts(
+      f.snapshot,
+      f.inventory as any,
+      f.catalog as any,
+      f.decisions as any,
+      f.runtime as any,
+      badHash,
+    );
+    expect(
+      badHashAudit.gaps.some(
+        (gap) => gap.code === 'SOURCE_EVIDENCE_OVERLAY_DEVELOPMENT_SNAPSHOT_MISMATCH',
+      ),
+    ).toBe(true);
+
+    const badDocument = structuredClone(overlay);
+    badDocument[0].source.document = 'Fate_Domination-开发版/index.html';
+    const badDocumentAudit = auditFullRosterArtifacts(
+      f.snapshot,
+      f.inventory as any,
+      f.catalog as any,
+      f.decisions as any,
+      f.runtime as any,
+      badDocument,
+    );
+    expect(
+      badDocumentAudit.gaps.some(
+        (gap) => gap.code === 'SOURCE_EVIDENCE_OVERLAY_DEVELOPMENT_SNAPSHOT_MISMATCH',
+      ),
+    ).toBe(true);
+  });
+
   it('renders the audit judgment and independent counts without changing classifications', () => {
     const f = fixture();
     const audit = auditFullRosterArtifacts(f.snapshot, f.inventory as any, f.catalog as any, f.decisions as any, f.runtime as any);
@@ -330,7 +490,7 @@ describe('Phase 3 independent full-roster automation audit', () => {
 
   it('keeps the checked-in real automation audit exact and independently recomputed', () => {
     const report = readFileSync(
-      resolve('docs/reports/2026-09-14-phase3-full-roster-automation-audit.md'),
+      resolve('docs/reports/2026-09-15-phase3-full-roster-automation-audit.md'),
       'utf8',
     );
 
@@ -340,6 +500,10 @@ describe('Phase 3 independent full-roster automation audit', () => {
     expect(report).toContain('totalIdentityCount=944');
     expect(report).toContain('authoringCardCount=72');
     expect(report).toContain('authoringAbilityCount=117');
+    expect(report).toContain('sourceEvidenceOverlayCount=38');
+    expect(report).toContain('sourceEvidenceOverlayAbilityCount=54');
+    expect(report).toContain('sourceGroundedCount=110');
+    expect(report).toContain('semanticBlockedCount=834');
     expect(report).toContain('gapCount=0');
   });
 });
