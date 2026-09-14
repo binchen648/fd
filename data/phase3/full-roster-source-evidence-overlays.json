@@ -1356,7 +1356,7 @@
         {
           "id": "wodime.astronomical-sphere.recorded-round-play",
           "printedClause": "星体回路-被动/战斗阶段：若你以天体学记录了本回合，打出此牌（你拥有的魔力少于8点也可打出），战力结算时，忽略你其他攻击的威力。此牌不能通过其他任何方式入场。",
-          "kind": "phase_action",
+          "kind": "passive",
           "activation": {
             "phase": "combat"
           },
@@ -1373,10 +1373,26 @@
             },
             {
               "type": "astronomical_sphere_rule",
-              "operation": "recorded_round_only",
-              "ignoreManaRequirementBelow": 8,
-              "ignoreOtherAttackPowerDuringResolution": true,
-              "prohibitOtherEntryMethods": true
+              "operation": "recorded_round_gate"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mana_requirement",
+              "operation": "ignore_below_threshold",
+              "definitionId": "master.wodime.skill.s2",
+              "threshold": 8,
+              "when": "secret_round_matches_current"
+            },
+            {
+              "rule": "combat_power_resolution",
+              "operation": "ignore_other_controller_attacks",
+              "definitionId": "master.wodime.skill.s2"
+            },
+            {
+              "rule": "card_entry_method",
+              "operation": "restrict_to_this_ability",
+              "definitionId": "master.wodime.skill.s2"
             }
           ]
         }
@@ -1533,7 +1549,8 @@
               "replacementSource": "outside_game",
               "replacementCountMax": 1,
               "replacementFace": "up",
-              "synchronizeOtherEligibleExpansions": true
+              "synchronizeOtherEligibleExpansions": true,
+              "revealDrawnEvents": true
             },
             {
               "type": "event_card_rule",
@@ -1595,24 +1612,52 @@
       },
       "abilities": [
         {
-          "id": "wodime.zeus-thunder.event-rule",
-          "printedClause": "【奥林匹斯事件牌】战果5，数量2。\n【沃戴姆】的对手位于此战场时不能无视【败北】效果。计算战力后，使此处战力未达到21的所有人【败北】。",
+          "id": "wodime.zeus-thunder.metadata",
+          "printedClause": "【奥林匹斯事件牌】战果5，数量2。",
           "kind": "passive",
           "effects": [
             {
               "type": "event_card_rule",
-              "operation": "define_conditional_defeat",
+              "operation": "define_event_card",
               "lostbelt": "olympus",
               "victoryPoints": 5,
-              "copyCount": 2,
-              "defeatImmunityOverride": {
-                "subject": "wodime_opponents_at_battlefield",
-                "canIgnoreDefeat": false
-              },
-              "timing": "after_power_calculation",
-              "defeatFilter": {
-                "powerBelow": 21
-              }
+              "copyCount": 2
+            }
+          ]
+        },
+        {
+          "id": "wodime.zeus-thunder.defeat-immunity-lock",
+          "printedClause": "【沃戴姆】的对手位于此战场时不能无视【败北】效果。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "defeat_immunity",
+              "operation": "disable",
+              "subject": "wodime_opponents_at_source_event_battlefield"
+            }
+          ]
+        },
+        {
+          "id": "wodime.zeus-thunder.post-power-defeat",
+          "printedClause": "计算战力后，使此处战力未达到21的所有人【败北】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.power-calculated"
+            },
+            {
+              "type": "combat_occurs_at_source_event_battlefield"
+            },
+            {
+              "type": "player_power_below",
+              "value": 21
+            }
+          ],
+          "effects": [
+            {
+              "type": "defeat_player",
+              "scope": "players_at_source_event_battlefield_matching_conditions"
             }
           ]
         }
@@ -1632,21 +1677,43 @@
       },
       "abilities": [
         {
-          "id": "wodime.aphrodite-thoughts.event-rule",
-          "printedClause": "【奥林匹斯事件牌】战果4，数量2。\n战力计算后，此处本回合所有未使用令咒的沃戴姆的对手【败北】。",
+          "id": "wodime.aphrodite-thoughts.metadata",
+          "printedClause": "【奥林匹斯事件牌】战果4，数量2。",
           "kind": "passive",
           "effects": [
             {
               "type": "event_card_rule",
-              "operation": "define_conditional_defeat",
+              "operation": "define_event_card",
               "lostbelt": "olympus",
               "victoryPoints": 4,
-              "copyCount": 2,
-              "timing": "after_power_calculation",
-              "defeatFilter": {
-                "subject": "wodime_opponents_at_battlefield",
-                "commandSealsSpentThisRound": 0
-              }
+              "copyCount": 2
+            }
+          ]
+        },
+        {
+          "id": "wodime.aphrodite-thoughts.post-power-defeat",
+          "printedClause": "战力计算后，此处本回合所有未使用令咒的沃戴姆的对手【败北】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.power-calculated"
+            },
+            {
+              "type": "combat_occurs_at_source_event_battlefield"
+            },
+            {
+              "type": "player_is_wodime_opponent"
+            },
+            {
+              "type": "player_command_seals_spent_this_round_equals",
+              "value": 0
+            }
+          ],
+          "effects": [
+            {
+              "type": "defeat_player",
+              "scope": "wodime_opponents_at_source_event_battlefield_matching_conditions"
             }
           ]
         }
@@ -1666,21 +1733,43 @@
       },
       "abilities": [
         {
-          "id": "wodime.demeter-bounty.event-rule",
-          "printedClause": "【奥林匹斯事件牌】战果3，数量2。\n战力计算后，于前哨阶段部署于此处的沃戴姆的对手【败北】。",
+          "id": "wodime.demeter-bounty.metadata",
+          "printedClause": "【奥林匹斯事件牌】战果3，数量2。",
           "kind": "passive",
           "effects": [
             {
               "type": "event_card_rule",
-              "operation": "define_conditional_defeat",
+              "operation": "define_event_card",
               "lostbelt": "olympus",
               "victoryPoints": 3,
-              "copyCount": 2,
-              "timing": "after_power_calculation",
-              "defeatFilter": {
-                "subject": "wodime_opponents_at_battlefield",
-                "deployedHereDuring": "outpost"
-              }
+              "copyCount": 2
+            }
+          ]
+        },
+        {
+          "id": "wodime.demeter-bounty.post-power-defeat",
+          "printedClause": "战力计算后，于前哨阶段部署于此处的沃戴姆的对手【败北】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.power-calculated"
+            },
+            {
+              "type": "combat_occurs_at_source_event_battlefield"
+            },
+            {
+              "type": "player_is_wodime_opponent"
+            },
+            {
+              "type": "player_deployed_to_source_event_battlefield_during",
+              "phase": "outpost"
+            }
+          ],
+          "effects": [
+            {
+              "type": "defeat_player",
+              "scope": "wodime_opponents_at_source_event_battlefield_matching_conditions"
             }
           ]
         }
