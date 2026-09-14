@@ -373,3 +373,16 @@ Permitted final status:
 - The generated coverage artifact changed only timestamp/source-line metadata and is intentionally not committed; classifier/taxonomy logic remains untouched.
 - The `14` skipped Resource rows inherit no Gate status. Trigger/Battle/Interaction/Movement/Result-Binding/Lifecycle/Modifier/Special ownership remains unchanged.
 - Next low-risk dependency is P3-TO-09 Card Zone current-lineage independent review; no new Card Zone runtime edit is authorized unless that reviewer finds a concrete blocker.
+
+## P3-A03 TO-09 Synchronization — 2026-09-14
+
+- P3-TO-09 Card Zone Core Direct Action: `REVIEW_ACCEPTED` at current-lineage runtime `9718064d54876985b46fdefc99de4477a8b75368`, independent R2 evidence `def13dd86711ffe9dc9df2b213e621b159479bb8`.
+- The rejected current-lineage predecessor `5c557cb9d0177a99c0e017768dee42cccdc6a9ff` is not promoted for Card Zone; rejecting review evidence `cb135814e120d840460262307aa31a93d28df917` identified missing typed runtime/current-lineage Gate evidence and is closed only by the repaired candidate.
+- Fresh Card Zone inventory is `8` abilities: `2` eligible, `2` migrated, `6` skipped; scoped dual runtime is `0`. Only Conversion Magic and Time Alter are accepted in this slice.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0`; the two Card Zone representatives were already structurally counted by the raw reporter before independent promotion, so reviewer acceptance does not create a synthetic second raw delta.
+- Fresh compiled evidence remains definition hash `26167661823b52de598c77a59df4d05440a6bfced7d68cd3e04d11353d72dbaa`, `70` cards, `14` characters, and `0` blocking issues.
+- Gate A/B/C are accepted for the exact two-consumer TO09 slice. Fresh reviewer evidence is typecheck PASS, focused `88/88`, current-lineage compatibility `31/31`, Chromium Gate C `2/2`, and root baseline `603 PASS / 20 inherited FAIL` across `623` tests.
+- The generated coverage artifact changed only timestamp/source-line metadata and is intentionally not committed; classifier/taxonomy logic remains untouched.
+- The `6` skipped Card Zone rows inherit no Gate status. Hidden/private, trigger-owned, cost/payment, lifecycle, modifier, power, and broader Card Zone semantics remain outside this acceptance.
+- Time Alter's paired PLAY path is accepted here only as TO09 representative evidence; it does not pre-accept P3-TO-10 Card Action.
+- Next low-risk dependency is P3-TO-10 Card Action current-lineage independent review for PLAY, PLAY_SOURCE, ADD_TO_ATTACK, ACTIVATE, and CLOSE; no broad Card Action rewrite is authorized unless R finds a concrete blocker.
