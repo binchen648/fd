@@ -160,6 +160,7 @@ const DIRECT_RESOURCE_CONTRACT_EFFECTS = new Set([
 const CARD_ZONE_EFFECTS = new Set([
   'CHARGE_SELECTED_SKILL_ATTACK',
   'DRAW_CARDS',
+  'PLAY_CARD_BY_DEFINITION_FROM_OUTSIDE_GAME',
   'MOVE_MATCHING_CARDS',
   'MOVE_SOURCE_CARD',
   'MOVE_SELECTED_CARDS',
@@ -192,6 +193,7 @@ const SPECIAL_EFFECTS = new Set([
   'EVENT_CARD_RULE',
   'FINISH_GAME',
   'LOCATION_TOKEN_RULE',
+  'MASTER_IDENTITY_RULE',
   'LOSTBELT_EXPANSION',
   'NPC_RULE',
   'SECRET_ROUND_BINDING',
@@ -529,7 +531,10 @@ export function mapStructuredCapabilityNeeds(
     addCapability(result, 'GENERIC_EVENT_DECK', 'SPECIAL_SUBSYSTEM');
   }
 
-  const hasPlay = effectTypes.includes('play_selected_cards') || effectTypes.includes('play_source_card');
+  const hasPlay =
+    effectTypes.includes('play_selected_cards') ||
+    effectTypes.includes('play_source_card') ||
+    effectTypes.includes('play_card_by_definition_from_outside_game');
   const modifiesPlaySemantics = ruleModifiers.some(
     (modifier) =>
       modifier.rule === 'card_play_mode' ||
