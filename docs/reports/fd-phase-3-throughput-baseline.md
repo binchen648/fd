@@ -486,3 +486,17 @@ Permitted final status:
 - Independent review confirmed identity-free exact-shape classification, malformed same-family fail-closed behavior, controller-only optional response ownership, decline `+0`, typed accept `+1` exactly once, stable result replay/reconnect/stale-revision dedupe, and no promotion of `noble-bloom-extra-vp`.
 - B18 does not promote Artoria Caster Luck triggers, Gatou battle-end reward, Tomoe defeat penalty, Olga loss-transform, broad TO14, TO15 Modifier/Power, or TO16 Special behavior.
 - The B18 runtime/review lane is released. The next TO14 implementation requires a fresh A-owned handoff selecting one explicit representative from the remaining 7 direct consumers and a new independent reviewer.
+
+## P3-A03 B19 Synchronization — 2026-09-14
+
+- P3-B19 Noble Bloom extra-VP optional result consumer: `REVIEW_ACCEPTED` at exact candidate `24c1ef9dba7436204ac3a334edc2483804d00cc3`, independent P3-R13 evidence `397315694eda2b106bcdfeabc6ff28d0d57d67f9`.
+- Accepted scope is exactly one additional TO14 direct consumer: Artoria Alter `sc-artoria-alt-3.noble-bloom-extra-vp`, structurally routed as `optional_trigger + combat + after_battle_result_determined + highest-cost Noble Phantasm + threshold >=4 + controller adjust_victory_points(+1)` through the accepted optional Interaction window and typed Resource path.
+- B19 preserves B18 and B19 as two independent optional +1 settlements. At threshold, accepting both yields +2 total; the runtime does not collapse them into one synthetic +2 effect.
+- TO14 scoped direct-consumer overlay is now `7 accepted / 13 direct consumers`, leaving `6` direct post-result/phase-terminal consumers without inherited migration or Gate status. The broader Battle-integration denominator remains `39 abilities / 28 cards`.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0`; B19 acceptance does not create a synthetic raw counter delta. Fresh compiled evidence remains definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, `70` cards, `14` characters, and `0` blocking issues.
+- The regenerated coverage artifact changed only `generatedAt` plus static-evidence source line numbers shifted by the interpreter insertion. Source fingerprint, counters, compiled identity, classifications, and evidence identities were unchanged, so this non-semantic generated drift is intentionally not committed.
+- Fresh independent evidence: typecheck PASS; focused/current-lineage compatibility `9 files / 93/93 PASS`; Chromium B19 + B13-B18 `7/7 PASS`; full root baseline `677 PASS / 20 inherited FAIL` across `697` tests.
+- Compared with accepted B18 baseline `672 PASS / 20 inherited FAIL / 692 total`, B19 contributes `+5 PASS / +0 new deterministic failures`.
+- Independent review confirmed identity-free exact two-condition threshold classification, participant filtering, malformed same-family fail-closed behavior, cost<4 preserving B18 without exposing B19, independent accept/decline semantics, and replay/reconnect/stale-revision exactly-once behavior.
+- B19 does not promote Artoria Caster Luck triggers, Gatou battle-end reward, Tomoe defeat penalty, Olga loss-transform, broad TO14, TO15 Modifier/Power, or TO16 Special behavior.
+- The B19 runtime/review lane is released. The next TO14 implementation requires a fresh A-owned narrow handoff selecting one explicit representative or one structurally identical family from the remaining 6 direct consumers and a new independent reviewer.
