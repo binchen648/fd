@@ -156,6 +156,18 @@ Dependency state after this sync:
 
 Machine-readable synchronization: `artifacts/phase3-a03-b11-burndown-sync.json`.
 
+### 2026-09-14 Replacement-chain resync (A03 r2)
+
+The B07/B08/B10/B11 replacement runtime chain was rebuilt on fresh accepted bases and B11 was independently re-reviewed. P3-A03 therefore reran `phase3:coverage` and resynchronized the accepted evidence identity without applying a second burn-down delta.
+
+Fresh raw coverage is unchanged at `newRuntimeSemanticRouted=12`, `legacyExecuteAbility=3`, `legacyResolveEffect=49`, and `dualRuntime=0`; the authoring pool remains 14 archives / 46 cards / 92 abilities, and compiled definitions remain 70 cards / 14 characters with `blockingIssues=0`.
+
+Fresh accepted B11 evidence is runtime target `f567c427bf1a716c2c685e7c89566d5d255b9a70` with P3-R06 evidence `cf5b3a970d7473e63b67a3f4979730d2ab5ee913`. Because this is the same scoped Result Binding migration on a reconstructed Git base, the accepted synchronized counts remain **13 / 3 / 48 / 0** for new semantic runtime / legacy `executeAbility` / legacy `resolveEffect` / dual runtime. The prior `+1 / -1` B11 delta is not counted twice.
+
+Machine-readable replacement synchronization: `artifacts/phase3-a03-b11-burndown-sync-r2.json`.
+
+`P3-TO-03`, `P3-TO-04`, and `P3-TO-05` remain planning-ready rows only in this checkout; no detailed executable task block is present here. Their runtime dependents `P3-TO-11/12/13` therefore remain `WAIT_GATEWAY`.
+
 ## Card-Specific / Special Handlers
 
 Special subsystem strict matrix count: 18 abilities / 13 cards.
