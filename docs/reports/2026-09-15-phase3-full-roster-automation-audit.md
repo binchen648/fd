@@ -18,16 +18,16 @@ totalIdentityCount=944
 programCount=943
 authoringCardCount=72
 authoringAbilityCount=117
-sourceEvidenceOverlayCount=17
-sourceEvidenceOverlayAbilityCount=21
+sourceEvidenceOverlayCount=38
+sourceEvidenceOverlayAbilityCount=54
 clauseCount=1789
 sourceRefCount=1887
-sourceGroundedCount=89
-semanticBlockedCount=855
-contractMappedCount=89
-explicitBlockCount=855
+sourceGroundedCount=110
+semanticBlockedCount=834
+contractMappedCount=110
+explicitBlockCount=834
 capabilityCount=32
-blockedPacketCoverageCount=855
+blockedPacketCoverageCount=834
 runtimeRequestCount=23
 
 ## Recomputed Categories
@@ -50,11 +50,11 @@ runtimeRequestCount=23
 
 - `PHASE_DEPENDENCY_BLOCKED`: 0
 - `READY_EXISTING_CONTRACT`: 0
-- `READY_GENERIC_EXTENSION`: 82
+- `READY_GENERIC_EXTENSION`: 86
 - `REFERENCE_RUNTIME_CONFLICT`: 0
 - `RULE_DECISION_REQUIRED`: 0
-- `SOURCE_EVIDENCE_REQUIRED`: 855
-- `SPECIAL_HANDLER_CANDIDATE`: 7
+- `SOURCE_EVIDENCE_REQUIRED`: 834
+- `SPECIAL_HANDLER_CANDIDATE`: 24
 
 ## Classification Gaps
 

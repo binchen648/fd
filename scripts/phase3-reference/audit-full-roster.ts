@@ -169,18 +169,41 @@ function compareRaw(snapshot: ReferenceAuditSnapshot, inventory: any, gaps: Auto
     if (!expectedStaticSet.has(id)) pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_UNKNOWN_ID', [id], 'Source-evidence overlay does not match a locked Reference canonical identity.');
     if (authoringSet.has(id)) pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_SHADOWS_REFERENCE', [id], 'Source-evidence overlay must not override an existing locked Reference authoring card.');
     const source = card?.source ?? {};
-    let parsedUrl: URL | undefined;
-    try { parsedUrl = new URL(String(source.url ?? '')); }
-    catch { parsedUrl = undefined; }
-    if (
-      source.authority !== 'FATE_DOMINATION_WIKI' ||
-      source.document !== 'Fate/Domination Wiki' ||
-      typeof source.locator !== 'string' ||
-      parsedUrl?.protocol !== 'https:' ||
-      parsedUrl.hostname !== 'fatedomination.fandom.com' ||
-      !parsedUrl.pathname.startsWith('/wiki/')
-    ) {
-      pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_AUTHORITY_MISMATCH', [id], 'External semantic evidence must come from the allowed Fate/Domination Wiki.');
+    if (typeof source.locator !== 'string' || source.locator.length === 0) {
+      pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_PROVENANCE_MISMATCH', [id], 'External semantic evidence must carry a stable locator.');
+    }
+    if (source.authority === 'FATE_DOMINATION_WIKI') {
+      let parsedUrl: URL | undefined;
+      try { parsedUrl = new URL(String(source.url ?? '')); }
+      catch { parsedUrl = undefined; }
+      if (
+        source.document !== 'Fate/Domination Wiki' ||
+        parsedUrl?.protocol !== 'https:' ||
+        parsedUrl.hostname !== 'fatedomination.fandom.com' ||
+        !parsedUrl.pathname.startsWith('/wiki/')
+      ) {
+        pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_AUTHORITY_MISMATCH', [id], 'Wiki evidence must come from the allowlisted Fate/Domination Wiki.');
+      }
+    } else if (source.authority === 'DEVELOPMENT_TEXT') {
+      const allowedDevelopmentDocuments = new Set([
+        'Fate_Domination-开发版/data_masters.js',
+        'Fate_Domination-开发版/data_servants.js',
+      ]);
+      const sourceText = typeof source.sourceText === 'string' ? source.sourceText : '';
+      const sourceTextHash = sourceText
+        ? createHash('sha256').update(sourceText, 'utf8').digest('hex')
+        : '';
+      if (
+        !allowedDevelopmentDocuments.has(String(source.document ?? '')) ||
+        !/^[a-f0-9]{64}$/.test(String(source.sourceFileSha256 ?? '')) ||
+        sourceText.length === 0 ||
+        !/^[a-f0-9]{64}$/.test(String(source.sourceTextSha256 ?? '')) ||
+        sourceTextHash !== source.sourceTextSha256
+      ) {
+        pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_DEVELOPMENT_SNAPSHOT_MISMATCH', [id], 'Development-text evidence must be an allowlisted, hash-locked source snapshot.');
+      }
+    } else {
+      pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_AUTHORITY_MISMATCH', [id], 'External semantic evidence uses an unsupported authority.');
     }
     if (!Array.isArray(card?.abilities) || card.abilities.length === 0) {
       pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_EMPTY', [id], 'External semantic evidence must contain at least one structured ability.');
