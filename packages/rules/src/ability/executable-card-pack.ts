@@ -296,7 +296,7 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
 function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
-    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability)) continue;
+    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability)) continue;
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
     try {
       validateResolutionDataFlowNodes(effects, path);
@@ -341,6 +341,15 @@ function isActivateCardByIdTrigger(ability: AuthoringAbility): boolean {
   if (ability.conditions.length || ability.targets.length || ability.cost.length || ability.creates.length || ability.effects.length !== 1) return false;
   const [effect] = ability.effects;
   return str(effect?.type) === 'activate_card_by_id' && typeof effect?.definitionId === 'string' && effect.definitionId.length > 0;
+}
+
+function isCloseSourceCardOnPlayedTrigger(ability: AuthoringAbility): boolean {
+  if (ability.kind !== 'residual' || str(ability.activation.trigger) !== 'on_card_played' || str(ability.activation.opens) !== 'immediate') return false;
+  if (ability.conditions.length !== 2 || ability.targets.length || ability.cost.length || ability.creates.length || ability.effects.length !== 1) return false;
+  if (str(ability.effects[0]?.type) !== 'close_source_card') return false;
+  const sourceZone = ability.conditions.some((condition) => str(condition.type) === 'source_card_in_zone' && str(condition.zone) === 'field');
+  const noblePlay = ability.conditions.some((condition) => str(condition.type) === 'event_played_card_has_attribute' && str(condition.attribute) === '宝具');
+  return sourceZone && noblePlay;
 }
 
 function isAddToAttackRouteCandidate(ability: AuthoringAbility): boolean {
