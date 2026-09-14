@@ -762,7 +762,7 @@
       },
       "source": {
         "htmPath": "chm-extract/坂田金时.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112043_708.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -1887,7 +1887,7 @@
       },
       "source": {
         "htmPath": "chm-extract/肯尼斯·阿其波卢德.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163051_633.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163104_009.png",
         "imageIndex": 4,
         "reviewedAgainstImage": true
       }
@@ -1923,7 +1923,7 @@
       },
       "source": {
         "htmPath": "chm-extract/肯尼斯·阿其波卢德.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163045_049.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163051_633.png",
         "imageIndex": 2,
         "reviewedAgainstImage": true
       }
@@ -1965,7 +1965,7 @@
       },
       "source": {
         "htmPath": "chm-extract/肯尼斯·阿其波卢德.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163045_049.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163058_193.png",
         "imageIndex": 3,
         "reviewedAgainstImage": true
       }
@@ -2616,7 +2616,7 @@
       },
       "source": {
         "htmPath": "chm-extract/阿尔托莉雅·卡斯特.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_194025_123.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_194020_420.png",
         "imageIndex": 4,
         "reviewedAgainstImage": true
       }
@@ -2641,7 +2641,7 @@
       },
       "source": {
         "htmPath": "chm-extract/阿尔托莉雅·卡斯特.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_194020_420.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_194025_123.png",
         "imageIndex": 5,
         "reviewedAgainstImage": true
       }
@@ -2794,7 +2794,7 @@
       },
       "source": {
         "htmPath": "chm-extract/埃列什基伽勒.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_111916_240.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_192743_490.png",
         "imageIndex": 1,
         "reviewedAgainstImage": true
       }
@@ -2819,7 +2819,7 @@
       },
       "source": {
         "htmPath": "chm-extract/埃列什基伽勒.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_192743_490.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_111916_240.png",
         "imageIndex": 2,
         "reviewedAgainstImage": true
       }
@@ -2859,7 +2859,7 @@
       },
       "source": {
         "htmPath": "chm-extract/坂田金时.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112043_708.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -3000,7 +3000,7 @@
       },
       "source": {
         "htmPath": "chm-extract/巴御前.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_192733_130.png",
         "imageIndex": 2,
         "reviewedAgainstImage": true
       }
@@ -3026,7 +3026,7 @@
       },
       "source": {
         "htmPath": "chm-extract/巴御前.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160032_219.png",
         "imageIndex": 3,
         "reviewedAgainstImage": true
       }
@@ -10449,11 +10449,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "f140e032bf241825577c0b78c6c3fa08f7a7f49bd7046feaa5deadabb13f5baa",
+    "definitionHash": "5aa5a186bb201ce1f491cb6f38907a6267a4f30775113d9dd95651d58ba735d2",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "f140e032bf241825577c0b78c6c3fa08f7a7f49bd7046feaa5deadabb13f5baa"
+      "definitionHash": "5aa5a186bb201ce1f491cb6f38907a6267a4f30775113d9dd95651d58ba735d2"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
