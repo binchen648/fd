@@ -59,9 +59,7 @@ export class MatchRoomHub {
 
   dispatchCommand(roomId: string, clientId: string, command: AbilityCommand, expectedRevision?: number): { result: DispatchResult; projection: MatchRoomProjection } {
     const room = this.getRoom(roomId);
-    const requiresInteractionRevision = command.type === 'choose_target' &&
-      room.session?.state.abilityRuntime?.pendingDecision?.interaction !== undefined;
-    this.assertExpectedRevision(room, clientId, expectedRevision, requiresInteractionRevision);
+    this.assertExpectedRevision(room, clientId, expectedRevision, true);
     const result = room.dispatchClientCommand(clientId, command);
     if (result.ok) this.bump(roomId, 'command_dispatched');
     return { result, projection: room.getProjection(clientId) };

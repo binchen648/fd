@@ -94,6 +94,25 @@ test('routes command spell gain mana through browser, WS revision, server projec
   await expect.poll(() => latestSelfPlayer(receivedProjections)?.mana).toBe(12);
   await expect.poll(() => latestSelfPlayer(receivedProjections)?.commandSpells).toBe(2);
 
+  const missingRevisionErrorCount = serverErrors.length;
+  await page.evaluate(({ roomId: targetRoomId, clientId, token, message }) => {
+    const socket = new WebSocket(`ws://127.0.0.1:8787/rooms/${encodeURIComponent(targetRoomId)}?clientId=${encodeURIComponent(clientId)}&reconnectToken=${encodeURIComponent(token)}`);
+    socket.addEventListener('open', () => socket.send(JSON.stringify(message)));
+  }, {
+    roomId,
+    clientId: room.clientId,
+    token: room.reconnectToken,
+    message: { type: 'client:dispatch_command', command: command!.command },
+  });
+  await expect.poll(() => serverErrors.length).toBeGreaterThan(missingRevisionErrorCount);
+  expect(serverErrors.at(-1)).toMatchObject({
+    type: 'server:error',
+    code: 'command_failed',
+    message: expect.stringContaining('missing_expected_revision'),
+  });
+  await expect.poll(() => latestSelfPlayer(receivedProjections)?.mana).toBe(12);
+  await expect.poll(() => latestSelfPlayer(receivedProjections)?.commandSpells).toBe(2);
+
   const staleErrorCount = serverErrors.length;
   await page.evaluate(({ roomId: targetRoomId, clientId, token, message }) => {
     const socket = new WebSocket(`ws://127.0.0.1:8787/rooms/${encodeURIComponent(targetRoomId)}?clientId=${encodeURIComponent(clientId)}&reconnectToken=${encodeURIComponent(token)}`);
