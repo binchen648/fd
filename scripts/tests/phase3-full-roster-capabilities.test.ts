@@ -147,6 +147,21 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(mapped.requiredCapabilities).toContain('GENERIC_TRIGGER_GATEWAY');
   });
 
+  it('maps structural card-play-mode modifiers to Card Action Play without an identity branch', () => {
+    const axes = emptyAxes();
+    axes.modifier = ['rule:card_play_mode:allow_additional_play'];
+    const mapped = mapStructuredCapabilityNeeds(
+      {
+        id: 'additional-play-fixture',
+        printedClause: 'fixture',
+        ruleModifiers: [{ rule: 'card_play_mode', operation: 'allow_additional_play' }],
+      },
+      axes,
+    );
+    expect(mapped.requiredCapabilities).toContain('CARD_ACTION_PLAY');
+    expect(mapped.requiredCapabilities).toContain('GENERIC_MODIFIER');
+  });
+
   it('maps structural source-card movement to the generic Card Zone dependency', () => {
     const axes = emptyAxes();
     axes.effect = ['MOVE_SOURCE_CARD'];
@@ -206,11 +221,11 @@ describe('Phase 3 full-roster capability mapping', () => {
     const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
 
     expect(inventory.capabilitySummary.totalIdentityCount).toBe(944);
-    expect(inventory.capabilitySummary.contractMappedCount).toBe(129);
-    expect(inventory.capabilitySummary.explicitBlockCount).toBe(815);
+    expect(inventory.capabilitySummary.contractMappedCount).toBe(142);
+    expect(inventory.capabilitySummary.explicitBlockCount).toBe(802);
     expect(inventory.capabilitySummary.zeroSilentFallback).toBe(true);
-    expect(catalog.coverage.mappedAbilities).toHaveLength(129);
-    expect(catalog.coverage.blockedAbilities).toHaveLength(815);
+    expect(catalog.coverage.mappedAbilities).toHaveLength(142);
+    expect(catalog.coverage.blockedAbilities).toHaveLength(802);
     expect(catalog.coverage.mappedAbilities.length + catalog.coverage.blockedAbilities.length).toBe(944);
 
     const allowedCurrentRoutes = new Set(['legacy', 'new', 'dual', 'none']);
@@ -222,8 +237,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     }
 
     expect(markdown).toContain('totalIdentityCount=944');
-    expect(markdown).toContain('contractMappedCount=129');
-    expect(markdown).toContain('explicitBlockCount=815');
+    expect(markdown).toContain('contractMappedCount=142');
+    expect(markdown).toContain('explicitBlockCount=802');
     expect(markdown).toContain('zeroSilentFallback=true');
   });
 
@@ -348,8 +363,8 @@ describe('Phase 3 full-roster capability mapping', () => {
       expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION', 'GENERIC_CARD_ZONE', 'GENERIC_EVENT_DECK', 'GENERIC_MODIFIER', 'GENERIC_POWER', 'GENERIC_RESULT_BINDING', 'GENERIC_TRIGGER_GATEWAY', 'REVIEWED_SPECIAL_HANDLER']),
     );
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(93);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(36);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(96);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(46);
   });
 
   it('maps the nine-ID Fiore slice with four generic extensions and five reviewed-special transcend rules', () => {
@@ -402,8 +417,8 @@ describe('Phase 3 full-roster capability mapping', () => {
       expect.arrayContaining(['GENERIC_CARD_ZONE', 'GENERIC_COST_PAYMENT', 'GENERIC_MODIFIER', 'GENERIC_POWER', 'GENERIC_TRIGGER_GATEWAY']),
     );
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(93);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(36);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(96);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(46);
   });
 
   it('bridges current semantic card IDs to stable canonical IDs only by exact ID or unique owner/name identity', () => {

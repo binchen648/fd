@@ -12630,6 +12630,7 @@
       "phase3": {
         "mechanicFamilies": [
           "BATTLE_RESULT",
+          "CARD_ACTION_SEMANTICS",
           "CARD_ZONE",
           "CONDITION",
           "COST_PAYMENT",
@@ -12639,6 +12640,7 @@
           "TRIGGER"
         ],
         "requiredCapabilities": [
+          "CARD_ACTION_PLAY",
           "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CARD_ZONE",
           "GENERIC_CONDITION_EVALUATION",
@@ -13062,6 +13064,7 @@
       "phase3": {
         "mechanicFamilies": [
           "BATTLE_RESULT",
+          "CARD_ACTION_SEMANTICS",
           "CARD_ZONE",
           "CONDITION",
           "COST_PAYMENT",
@@ -13070,6 +13073,7 @@
           "TRIGGER"
         ],
         "requiredCapabilities": [
+          "CARD_ACTION_PLAY",
           "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CARD_ZONE",
           "GENERIC_CONDITION_EVALUATION",
@@ -15635,45 +15639,149 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hinako.ascensionSkill#line=344"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "ACTION"
+          ],
           "trigger": [],
           "condition": [],
-          "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
-          "lifecycle": [],
+          "cost": [
+            "MANA"
+          ],
+          "target": [
+            "CHOOSE_NUMBER",
+            "CHOOSE_N_CARDS"
+          ],
+          "effect": [
+            "MOVE_MATCHING_CARDS",
+            "RETURN_CARD_BY_DEFINITION",
+            "SERVANT_OWNERSHIP_RULE"
+          ],
+          "interaction": [
+            "CHOOSE_NUMBER",
+            "CHOOSE_N_CARDS"
+          ],
+          "lifecycle": [
+            "duration:until_combat_end"
+          ],
           "modifier": [],
           "visibility": [],
-          "binding": [],
+          "binding": [
+            "binding:x",
+            "payload:selectedBasicCardIds",
+            "payload:x"
+          ],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "hinako.true-ancestor.remove-shakespeare-package",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.ascensionSkill#line=344#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "MOVE_MATCHING_CARDS",
+                "RETURN_CARD_BY_DEFINITION",
+                "SERVANT_OWNERSHIP_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.true-ancestor.blood-curse-copy-action",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.ascensionSkill#line=344#ability-2"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [
+                "MANA"
+              ],
+              "target": [
+                "CHOOSE_NUMBER",
+                "CHOOSE_N_CARDS"
+              ],
+              "effect": [],
+              "interaction": [
+                "CHOOSE_NUMBER",
+                "CHOOSE_N_CARDS"
+              ],
+              "lifecycle": [
+                "duration:until_combat_end"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "binding:x",
+                "payload:selectedBasicCardIds",
+                "payload:x"
+              ],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.hinako-package"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "COST_PAYMENT",
+          "INTERACTION",
+          "LIFECYCLE",
+          "RESULT_BINDING",
+          "SPECIAL_SUBSYSTEM",
+          "TARGET_SELECTION"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
+          "GENERIC_COST_PAYMENT",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TARGET_SELECTION",
+          "REVIEWED_SPECIAL_HANDLER",
+          "REVIEWED_SPECIAL_TRANSFORM"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:servant_ownership_rule",
+          "STRUCTURED_TRANSFORM_REQUIRES_REVIEW"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -15725,18 +15833,24 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hinako.skills[s1]#line=339"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "LOSTBELT_EXPANSION",
+            "NPC_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -15744,26 +15858,56 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "hinako.cryptic-owner.add-qin-npc",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s1]#line=339#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "LOSTBELT_EXPANSION",
+                "NPC_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.hinako-package"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_EVENT_DECK",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:lostbelt_expansion",
+          "SPECIAL_EFFECT:npc_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -15815,46 +15959,119 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hinako.skills[s1a]#line=340"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.resolved"
+          ],
+          "condition": [
+            "EVENT_PLAYER_LOST_COMBAT"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "RETURN_CARD_BY_DEFINITION"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "hinako.death-wish.initial-card",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s1a]#line=340#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.death-wish.return-on-loss",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s1a]#line=340#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "EVENT_PLAYER_LOST_COMBAT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "RETURN_CARD_BY_DEFINITION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.hinako-package"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CARD_ZONE",
+          "CONDITION",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CARD_CREATE",
+          "GENERIC_CARD_ZONE",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -15925,46 +16142,150 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hinako.skills[s2]#line=341"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "COMBAT"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
           "effect": [],
           "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
+          "lifecycle": [
+            "duration:until_combat_end",
+            "limit.scope:this_card",
+            "limit.type:per_game",
+            "limit.uses:1"
+          ],
+          "modifier": [
+            "rule:card_play_mode:allow_additional_play",
+            "rule:combat_card_power:add"
+          ],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_RULE_MODIFIER"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "hinako.blood-curse.once-per-game",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s2]#line=341#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "limit.scope:this_card",
+                "limit.type:per_game",
+                "limit.uses:1"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.blood-curse.additional-play",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s2]#line=341#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:card_play_mode:allow_additional_play"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.blood-curse.combat-attack-reduction",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s2]#line=341#ability-3"
+            },
+            "axes": {
+              "timing": [
+                "COMBAT"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:until_combat_end"
+              ],
+              "modifier": [
+                "rule:combat_card_power:add"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_RULE_MODIFIER"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.hinako-package"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CARD_ACTION_SEMANTICS",
+          "LIFECYCLE",
+          "MODIFIER",
+          "POWER"
+        ],
+        "requiredCapabilities": [
+          "CARD_ACTION_PLAY",
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -16025,45 +16346,205 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hinako.skills[s3]#line=342"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.power-calculated",
+            "combat.resolved",
+            "game.started"
+          ],
+          "condition": [
+            "EVENT_NPC_WON_COMBAT",
+            "NPC_NOT_AT_ANY_LOCATION"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "GAIN_VICTORY_POINTS",
+            "LOSTBELT_EXPANSION",
+            "NPC_RULE"
+          ],
           "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
+          "lifecycle": [
+            "limit.maxUses:1",
+            "limit.period:round",
+            "limit.scope:npc:qin_shi_huang"
+          ],
+          "modifier": [
+            "rule:npc_total_power:set"
+          ],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "hinako.qin.start-expansion",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s3]#line=342#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "game.started"
+              ],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "LOSTBELT_EXPANSION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.qin.win-expand-reward",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s3]#line=342#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "EVENT_NPC_WON_COMBAT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "GAIN_VICTORY_POINTS",
+                "LOSTBELT_EXPANSION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.qin.power-and-presence",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s3]#line=342#ability-3"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "NPC_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:npc_total_power:set"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.qin.off-board-vp",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s3]#line=342#ability-4"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.power-calculated"
+              ],
+              "condition": [
+                "NPC_NOT_AT_ANY_LOCATION"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "GAIN_VICTORY_POINTS"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "limit.maxUses:1",
+                "limit.period:round",
+                "limit.scope:npc:qin_shi_huang"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_EVENT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.hinako-package"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "LIFECYCLE",
+          "MODIFIER",
+          "POWER",
+          "RESOURCE_NUMERIC",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_EVENT_DECK",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:lostbelt_expansion",
+          "SPECIAL_EFFECT:npc_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -16205,45 +16686,404 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hinako.skills[s4]#line=343"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.ending"
+          ],
+          "condition": [
+            "COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "COMBAT_POWER_BONUS",
+            "EVENT_CARD_RULE",
+            "LOSTBELT_EXPANSION"
+          ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "effect:combat_power_bonus",
+            "rule:attack_power_bonus_from_situation_or_event:multiply",
+            "rule:card_play_permission:prohibit",
+            "rule:defeat_effect:ignore"
+          ],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EFFECT",
+            "COMBAT_EVENT",
+            "COMBAT_RULE_MODIFIER"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "hinako.china-lostbelt.expand",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s4]#line=343#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "EVENT_CARD_RULE",
+                "LOSTBELT_EXPANSION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.china.storm-capital",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s4]#line=343#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "COMBAT_POWER_BONUS",
+                "EVENT_CARD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "effect:combat_power_bonus"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_EFFECT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.china.storm-capital.cleanup",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s4]#line=343#ability-3"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.ending"
+              ],
+              "condition": [
+                "COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "EVENT_CARD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.china.perfect-pursuit",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s4]#line=343#ability-4"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "COMBAT_POWER_BONUS",
+                "EVENT_CARD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "effect:combat_power_bonus",
+                "rule:attack_power_bonus_from_situation_or_event:multiply"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_EFFECT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.china.immortality-pursuit",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s4]#line=343#ability-5"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "COMBAT_POWER_BONUS",
+                "EVENT_CARD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "effect:combat_power_bonus",
+                "rule:defeat_effect:ignore"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_EFFECT",
+                "COMBAT_RULE_MODIFIER"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.china.cloud-walk",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s4]#line=343#ability-6"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "COMBAT_POWER_BONUS",
+                "EVENT_CARD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "effect:combat_power_bonus"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_EFFECT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.china.sun-walk",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s4]#line=343#ability-7"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "COMBAT_POWER_BONUS",
+                "EVENT_CARD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "effect:combat_power_bonus"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_EFFECT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.china.water-walk",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s4]#line=343#ability-8"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "COMBAT_POWER_BONUS",
+                "EVENT_CARD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "effect:combat_power_bonus"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_EFFECT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.china.tranquility",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s4]#line=343#ability-9"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "COMBAT_POWER_BONUS",
+                "EVENT_CARD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "effect:combat_power_bonus",
+                "rule:card_play_permission:prohibit"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_EFFECT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.china.deep-dive",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s4]#line=343#ability-10"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "COMBAT_POWER_BONUS",
+                "EVENT_CARD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "effect:combat_power_bonus",
+                "rule:card_play_permission:prohibit"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_EFFECT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "hinako.china.erudition",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_hinako.skills[s4]#line=343#ability-11"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "COMBAT_POWER_BONUS",
+                "EVENT_CARD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "effect:combat_power_bonus",
+                "rule:card_play_permission:prohibit"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_EFFECT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.hinako-package"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "MODIFIER",
+          "POWER",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_EVENT_DECK",
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:event_card_rule",
+          "SPECIAL_EFFECT:lostbelt_expansion"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -18423,45 +19263,178 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
-        "axes": {
-          "timing": [],
-          "trigger": [],
-          "condition": [],
-          "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
-          "visibility": [],
-          "binding": [],
-          "battle": []
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_kadoc.ascensionSkill#line=322"
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "axes": {
+          "timing": [
+            "ACTION"
+          ],
+          "trigger": [],
+          "condition": [
+            "CONTROLLER_AT_LOSTBELT_EVENT_BATTLEFIELD"
+          ],
+          "cost": [],
+          "target": [
+            "CHOOSE_ONE_EVENT"
+          ],
+          "effect": [
+            "COMBAT_POWER_BONUS",
+            "EVENT_CARD_RULE",
+            "GAIN_VICTORY_POINTS",
+            "MOVE_SOURCE_CARD"
+          ],
+          "interaction": [
+            "CHOOSE_ONE_EVENT"
+          ],
+          "lifecycle": [],
+          "modifier": [
+            "effect:combat_power_bonus"
+          ],
+          "visibility": [],
+          "binding": [
+            "payload:selectedEventIds"
+          ],
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EFFECT"
+          ]
+        },
+        "abilities": [
+          {
+            "sourceAbilityId": "kadoc.rapid-expansion.setup",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.ascensionSkill#line=322#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "MOVE_SOURCE_CARD"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "kadoc.rapid-expansion.russia-power",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.ascensionSkill#line=322#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [
+                "CONTROLLER_AT_LOSTBELT_EVENT_BATTLEFIELD"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "COMBAT_POWER_BONUS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "effect:combat_power_bonus"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EFFECT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "kadoc.rapid-expansion.action",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.ascensionSkill#line=322#ability-3"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [
+                "CHOOSE_ONE_EVENT"
+              ],
+              "effect": [
+                "EVENT_CARD_RULE",
+                "GAIN_VICTORY_POINTS"
+              ],
+              "interaction": [
+                "CHOOSE_ONE_EVENT"
+              ],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:selectedEventIds"
+              ],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.kadoc-fast-expansion"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CARD_ZONE",
+          "CONDITION",
+          "INTERACTION",
+          "MODIFIER",
+          "POWER",
+          "RESOURCE_NUMERIC",
+          "RESULT_BINDING",
+          "SPECIAL_SUBSYSTEM",
+          "TARGET_SELECTION"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CARD_ZONE",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_EVENT_DECK",
+          "GENERIC_MODIFIER",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_POWER",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TARGET_SELECTION",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:event_card_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -18513,45 +19486,175 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_kadoc.skills[s1]#line=316"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.resolved",
+            "game.started"
+          ],
+          "condition": [
+            "EVENT_PLAYER_WON_COMBAT"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "EVENT_CARD_RULE",
+            "LOSTBELT_EXPANSION"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "kadoc.cryptic-owner.russia",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.skills[s1]#line=316#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "LOSTBELT_EXPANSION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "kadoc.cryptic-owner.expand-on-win",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.skills[s1]#line=316#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "EVENT_PLAYER_WON_COMBAT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "LOSTBELT_EXPANSION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "kadoc.cryptic-owner.double-expand-at-start",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.skills[s1]#line=316#ability-3"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "game.started"
+              ],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "LOSTBELT_EXPANSION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "kadoc.cryptic-owner.russia-event-immunity",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.skills[s1]#line=316#ability-4"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "EVENT_CARD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.kadoc-crypter"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_EVENT_DECK",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:event_card_rule",
+          "SPECIAL_EFFECT:lostbelt_expansion"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -18603,18 +19706,27 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_kadoc.skills[s1a]#line=317"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "round.ended"
+          ],
+          "condition": [
+            "CONTROLLER_LOCATION_IS"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "LOSE_VICTORY_POINTS"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -18622,27 +19734,60 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "kadoc.lack-confidence.workshop-penalty",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.skills[s1a]#line=317#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "round.ended"
+              ],
+              "condition": [
+                "CONTROLLER_LOCATION_IS"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "LOSE_VICTORY_POINTS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.round-end-victory-point-loss"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CONDITION",
+          "RESOURCE_NUMERIC",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -18693,18 +19838,24 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_kadoc.skills[s2]#line=318"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "EVENT_CARD_RULE",
+            "LOSTBELT_EXPANSION"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -18712,26 +19863,56 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "kadoc.russia-lostbelt.expand",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.skills[s2]#line=318#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "EVENT_CARD_RULE",
+                "LOSTBELT_EXPANSION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.lostbelt-expansion"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_EVENT_DECK",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:event_card_rule",
+          "SPECIAL_EFFECT:lostbelt_expansion"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -18793,45 +19974,154 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_kadoc.skills[s3]#line=319"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "player.deployed",
+            "player.entered-location"
+          ],
+          "condition": [
+            "EVENT_LOCATION_IS_SOURCE_EVENT_BATTLEFIELD"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "EVENT_CARD_RULE",
+            "LOSE_MANA"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "kadoc.frozen-soil.metadata",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.skills[s3]#line=319#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "EVENT_CARD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "kadoc.frozen-soil.deploy-mana-loss",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.skills[s3]#line=319#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "player.deployed"
+              ],
+              "condition": [
+                "EVENT_LOCATION_IS_SOURCE_EVENT_BATTLEFIELD"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "LOSE_MANA"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "kadoc.frozen-soil.enter-mana-loss",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.skills[s3]#line=319#ability-3"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "player.entered-location"
+              ],
+              "condition": [
+                "EVENT_LOCATION_IS_SOURCE_EVENT_BATTLEFIELD"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "LOSE_MANA"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.lostbelt-objective"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "RESOURCE_NUMERIC",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_EVENT_DECK",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:event_card_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -18893,45 +20183,157 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_kadoc.skills[s4]#line=320"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.resolved"
+          ],
+          "condition": [
+            "COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD",
+            "EVENT_PLAYER_LOST_COMBAT"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "EVENT_CARD_RULE",
+            "LOSE_VICTORY_POINTS"
+          ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:movement_permission:prohibit_leave_source_event_battlefield"
+          ],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "kadoc.survival-fittest.metadata",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.skills[s4]#line=320#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "EVENT_CARD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "kadoc.survival-fittest.no-leave",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.skills[s4]#line=320#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:movement_permission:prohibit_leave_source_event_battlefield"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "kadoc.survival-fittest.loser-vp-penalty",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.skills[s4]#line=320#ability-3"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD",
+                "EVENT_PLAYER_LOST_COMBAT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "LOSE_VICTORY_POINTS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.lostbelt-objective"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "MODIFIER",
+          "MOVEMENT",
+          "RESOURCE_NUMERIC",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_EVENT_DECK",
+          "GENERIC_MODIFIER",
+          "GENERIC_MOVEMENT",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:event_card_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -18993,45 +20395,125 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_kadoc.skills[s5]#line=321"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.resolved"
+          ],
+          "condition": [
+            "COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "EVENT_CARD_RULE",
+            "LOSE_VICTORY_POINTS"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "kadoc.emperor-edict.metadata",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.skills[s5]#line=321#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "EVENT_CARD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "kadoc.emperor-edict.post-combat-global-penalty",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_kadoc.skills[s5]#line=321#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "LOSE_VICTORY_POINTS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.lostbelt-objective"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "RESOURCE_NUMERIC",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_EVENT_DECK",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:event_card_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -104861,15 +106343,15 @@
   ],
   "semanticSummary": {
     "totalIdentityCount": 944,
-    "sourceGroundedCount": 129,
-    "blockedCount": 815,
+    "sourceGroundedCount": 142,
+    "blockedCount": 802,
     "unclassifiedCount": 0,
-    "structuredAbilityCount": 210
+    "structuredAbilityCount": 250
   },
   "capabilitySummary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 129,
-    "explicitBlockCount": 815,
+    "contractMappedCount": 142,
+    "explicitBlockCount": 802,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -104884,10 +106366,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
-      "READY_GENERIC_EXTENSION": 93,
-      "SPECIAL_HANDLER_CANDIDATE": 36,
+      "READY_GENERIC_EXTENSION": 96,
+      "SPECIAL_HANDLER_CANDIDATE": 46,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 815,
+      "SOURCE_EVIDENCE_REQUIRED": 802,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
