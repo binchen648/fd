@@ -2244,6 +2244,103 @@ Completion status allowed:
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `REJECTED`
 
+## TASK P3-B23
+
+Owner: Codex B
+Status: READY
+Branch: `codex/b-p3-b23-olga-loss-transform-r1`
+Base: exact P3-B23 A-owned handoff commit
+
+Goal:
+
+Migrate exactly Olga `trismegistus.loss-transform` as the final TO14 direct battle-event consumer, replacing the legacy player-flag-only transform with a narrow source-bound Soul Drag -> Return Silence transition while preserving the accepted B13-B22 battle lineage and B17 delayed activation contract.
+
+Exact supported semantic family:
+
+- `forced_trigger`;
+- trigger `after_controller_loses_battle`;
+- exactly one effect `transform_to_return_silence_on_loss`;
+- no conditions, targets, cost, creates, rule modifiers, lifecycle, response window, or limit;
+- effect type is the semantic operation key; no Olga/card/ability identity routing.
+
+Required behavior/evidence:
+
+- source must be face-up active in an active card zone; an inactive/skill-zone source does not transform on loss;
+- authoritative loss provenance uses the accepted controller-loss participant/result lineage after scoring;
+- first valid transform removes only live Soul Drag ongoing effects from that same source/controller and records source-bound Return Silence state;
+- transformed state establishes the existing battlefield-only deployment constraint for that controller;
+- pre-transform `return_silence_battle_start` cannot arm Return Silence from a synthetic/manual `while_active` event;
+- transformed source removal invalidates/cleans any Return Silence authorization so no ghost player flag can alter later battles;
+- stable event replay and later unrelated losses cannot duplicate transform evidence/state;
+- typed transition evidence records controller/source/ability, triggering battle provenance when available, and `soul_drag -> return_silence` state identity;
+- malformed same-family candidates fail closed before legacy extended-effect fallback and atomically preserve state;
+- B13-B22 focused/current-lineage compatibility, fresh Chromium Gate C, and full-root baseline remain acceptable.
+
+May touch:
+
+- `packages/rules/src/ability/interpreter.ts`;
+- `packages/rules/src/ability/extended-effects.ts` only for transformed-source gating of the existing Return Silence path;
+- `packages/rules/src/core/combat-resolver.ts` only for source-bound Return Silence validation/cleanup;
+- `packages/rules/src/ability/types.ts` only for narrow additive typed state/evidence;
+- one focused B23 regression, one scoped browser fixture/spec, one B23 result report, and narrow correction of the stale premature-Return-Silence Olga regression expectation.
+
+Must not:
+
+- route by Olga/card/ability/master identity;
+- rewrite authoring to make the representative fit;
+- promote `trismegistus.soul-drag` as a broad Modifier/Power migration or fully certify `trismegistus.return-silence` as a TO16 Special row;
+- generalize state transforms, passive lifecycle, battle-start hooks, or TO16 Special;
+- change accepted B13-B22 event ordering or B17 delayed activation semantics;
+- modify A-owned coverage KPI/taxonomy.
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R17
+
+Owner: Codex R
+Status: READY_AFTER_P3_B23
+Branch: reviewer-selected fresh worktree/branch from exact B23 candidate SHA
+
+Goal:
+
+Independently review P3-B23 Olga loss-transform without implementing fixes or inheriting acceptance from the legacy Special player flag.
+
+Required independent checks:
+
+- fresh typecheck and focused/current-lineage compatibility;
+- exact identity-free classifier limited to `forced after_controller_loses_battle -> transform_to_return_silence_on_loss`;
+- inactive-source/pre-activation loss cannot transform and B17 first-loss delayed activation remains intact;
+- active authoritative loss removes only same-source Soul Drag ongoing state and creates exactly one source-bound Return Silence transition;
+- pre-transform Return Silence cannot arm; source removal prevents ghost Return Silence behavior;
+- deployment restriction, transition evidence, stable replay exactly-once, reconnect/stale behavior, and malformed-shape atomic rejection are correct;
+- no broad TO15 Modifier/Power, TO16 Special, passive-lifecycle, or sibling Olga promotion;
+- B13-B22 compatibility, fresh Chromium Gate C, and full-root baseline; block only on new deterministic failures.
+
+Must not:
+
+- implement fixes while reviewing;
+- promote broad TO14/TO15/TO16 behavior or independently certify `trismegistus.return-silence`;
+- modify A-owned coverage KPI/taxonomy.
+
+Required output:
+
+- findings ordered by severity;
+- semantic-family / active-source judgment;
+- state-transition / Soul-Drag-removal judgment;
+- Return-Silence gating/cleanup judgment;
+- exactly-once / reconnect / stale judgment;
+- Gate A/B/C judgment;
+- explicit A03 synchronization input if accepted.
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
 ## Prompt Templates
 
 Codex A startup prompt:
