@@ -126,6 +126,8 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
       return { id: `produce-${binding}`, type: 'move_all_remaining', owner: 'controller', from: 'hand', to: 'discard', bind: binding };
     case 'move_source_card':
       return { id: `produce-${binding}`, type: 'move_source_card', to: 'skill', bind: binding };
+    case 'reveal_servant_package':
+      return { id: `produce-${binding}`, type: 'reveal_servant_package', bind: binding };
     case 'draw_cards':
       return { id: `produce-${binding}`, type: 'draw_cards', player: 'controller', count: 0, bind: binding };
     case 'play_selected_cards':
@@ -369,7 +371,7 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
           source.zone = effectType === 'move_source_card' ? 'attack_area' : 'field';
           source.visibility = { scope: 'public' };
         }
-        if (effectType === 'move_source_card') {
+        if (effectType === 'move_source_card' || effectType === 'reveal_servant_package') {
           state.abilityRuntime = {
             pack: { cards: {} }, revision: 0, sequence: 0, randomState: 20260909,
             cardState: { 'synthetic-source': { active: true, faceDown: false, playedRound: 1 } },

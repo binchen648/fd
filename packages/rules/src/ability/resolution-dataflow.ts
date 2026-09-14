@@ -8,6 +8,7 @@ export type EffectResultType =
   | 'remove_advantage_position'
   | 'move_all_remaining'
   | 'move_source_card'
+  | 'reveal_servant_package'
   | 'draw_cards'
   | 'play_selected_cards'
   | 'play_source_card'
@@ -87,6 +88,11 @@ export interface MoveSourceCardResult {
   movedCount: number;
 }
 
+export interface RevealServantPackageResult {
+  playerId: PlayerId;
+  revealedCount: number;
+}
+
 export interface DrawCardsResult {
   playerId: PlayerId;
   requestedCount: number;
@@ -144,6 +150,7 @@ export type KnownEffectResult =
   | EffectResultEnvelope<'remove_advantage_position', RemoveAdvantagePositionResult>
   | EffectResultEnvelope<'move_all_remaining', MoveAllRemainingResult>
   | EffectResultEnvelope<'move_source_card', MoveSourceCardResult>
+  | EffectResultEnvelope<'reveal_servant_package', RevealServantPackageResult>
   | EffectResultEnvelope<'draw_cards', DrawCardsResult>
   | EffectResultEnvelope<'play_selected_cards', PlaySelectedCardsResult>
   | EffectResultEnvelope<'play_source_card', PlaySourceCardResult>
@@ -171,6 +178,10 @@ export const resultSchemas: Record<EffectResultType, BindingFieldSchema> = {
   },
   move_source_card: {
     movedCount: 'number',
+    status: 'status',
+  },
+  reveal_servant_package: {
+    revealedCount: 'number',
     status: 'status',
   },
   draw_cards: {
@@ -291,6 +302,7 @@ export type ResolutionEffectNode =
   | { id: string; type: 'remove_advantage_position'; target: TargetExpression; bind?: string }
   | { id: string; type: 'move_all_remaining'; owner: 'controller'; from: string; to: string; bind?: string }
   | { id: string; type: 'move_source_card'; to: 'skill'; bind?: string }
+  | { id: string; type: 'reveal_servant_package'; bind?: string }
   | { id: string; type: 'draw_cards'; player: 'controller'; count: ValueExpression; bind?: string }
   | { id: string; type: 'play_selected_cards'; target: string; face: 'face_down' | 'face_up'; bind?: string }
   | { id: string; type: 'play_source_card'; face: 'face_down' | 'face_up'; bind?: string }
@@ -386,6 +398,11 @@ const primitiveDefinitions: ResolutionPrimitive[] = [
     type: 'move_source_card',
     resultSchema: resultSchemas.move_source_card,
     execute: moveSourceCardPrimitive,
+  },
+  {
+    type: 'reveal_servant_package',
+    resultSchema: resultSchemas.reveal_servant_package,
+    execute: revealServantPackagePrimitive,
   },
   {
     type: 'draw_cards',
@@ -639,6 +656,8 @@ function validateEffectReferences(
         });
       }
       break;
+    case 'reveal_servant_package':
+      break;
     case 'play_selected_cards':
       break;
     case 'play_source_card':
@@ -822,6 +841,14 @@ function moveSourceCardPrimitive(
 ): KnownEffectResult {
   if (effect.type !== 'move_source_card') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
   return moveSourceCard(transaction, effect);
+}
+
+function revealServantPackagePrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'reveal_servant_package') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return revealServantPackage(transaction, effect);
 }
 
 function drawCardsPrimitive(
@@ -1038,6 +1065,48 @@ function moveSourceCard(
     status: 'applied',
     affectedEntities: [{ kind: 'player', id: transaction.context.controllerId }],
     payload: { cardInstanceId: source.instanceId, fromZone, toZone: effect.to, movedCount: 1 },
+    emittedEventIds: [eventId],
+  };
+}
+
+function revealServantPackage(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'reveal_servant_package' }>,
+): KnownEffectResult {
+  findPlayer(transaction.workingState, transaction.context.controllerId);
+  const source = transaction.workingState.cards.find((candidate) => candidate.instanceId === transaction.context.sourceCardId);
+  if (!source) throw new ResolutionRuntimeError('missing_source_card', 'Source card is missing.');
+  if (source.ownerPlayerId !== transaction.context.controllerId || source.controllerPlayerId !== transaction.context.controllerId) {
+    throw new ResolutionRuntimeError('invalid_source_controller', 'Reveal source card is not owned and controlled by the ability controller.');
+  }
+  const abilityRuntime = transaction.workingState.abilityRuntime;
+  if (!abilityRuntime) throw new ResolutionRuntimeError('missing_ability_runtime', 'Ability runtime is missing.');
+  if (abilityRuntime.revealedServants.includes(transaction.context.controllerId)) {
+    return {
+      effectId: effect.id,
+      effectType: 'reveal_servant_package',
+      status: 'no_op',
+      affectedEntities: [],
+      payload: { playerId: transaction.context.controllerId, revealedCount: 0 },
+      emittedEventIds: [],
+    };
+  }
+  abilityRuntime.revealedServants.push(transaction.context.controllerId);
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.servant_package_revealed`;
+  transaction.emittedEvents.push({
+    type: 'servant_package_revealed',
+    playerId: transaction.context.controllerId,
+    sourceCardId: transaction.context.sourceCardId,
+    abilityId: transaction.context.abilityId,
+    resultId: eventId,
+    revision: abilityRuntime.revision,
+  });
+  return {
+    effectId: effect.id,
+    effectType: 'reveal_servant_package',
+    status: 'applied',
+    affectedEntities: [{ kind: 'player', id: transaction.context.controllerId }],
+    payload: { playerId: transaction.context.controllerId, revealedCount: 1 },
     emittedEventIds: [eventId],
   };
 }
@@ -1460,6 +1529,7 @@ function evaluateValue(transaction: AbilityResolutionTransaction, expression: Va
   if (result.effectType === 'remove_advantage_position' && expression.field === 'removedCount') return result.payload.removedCount;
   if (result.effectType === 'move_all_remaining' && expression.field === 'movedCount') return result.payload.movedCount;
   if (result.effectType === 'move_source_card' && expression.field === 'movedCount') return result.payload.movedCount;
+  if (result.effectType === 'reveal_servant_package' && expression.field === 'revealedCount') return result.payload.revealedCount;
   if (result.effectType === 'draw_cards') {
     if (expression.field === 'requestedCount') return result.payload.requestedCount;
     if (expression.field === 'actualCount') return result.payload.actualCount;
@@ -1617,6 +1687,18 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
         to: zoneField(current.to, `${path}.to`, issues) === 'skill' ? 'skill' : reportSourceSkillDestination(path, issues),
         ...coerceBind(current.bind),
       };
+    case 'reveal_information':
+      if (current.scope !== 'servant_package') {
+        invalidNode(`${path}.scope`, 'Typed reveal requires scope=servant_package.', issues);
+        return { id, type: 'noop', reason: 'invalid reveal scope' };
+      }
+      if (current.subject !== 'controller.servant') {
+        invalidNode(`${path}.subject`, 'Typed reveal requires subject=controller.servant.', issues);
+        return { id, type: 'noop', reason: 'invalid reveal subject' };
+      }
+      return { id, type: 'reveal_servant_package', ...coerceBind(current.bind) };
+    case 'reveal_servant_package':
+      return { id, type, ...coerceBind(current.bind) };
     case 'move_all_remaining':
       return {
         id,

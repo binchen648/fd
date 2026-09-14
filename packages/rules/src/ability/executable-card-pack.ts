@@ -296,7 +296,7 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
 function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
-    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isBattleLossResourceTriggerRouteCandidate(ability) && !isSharedVictoryVpTriggerRouteCandidate(ability) && !isBattleEndSourceReturnRouteCandidate(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability)) continue;
+    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isBattleLossResourceTriggerRouteCandidate(ability) && !isBattleLossServantRevealRouteCandidate(ability) && !isSharedVictoryVpTriggerRouteCandidate(ability) && !isBattleEndSourceReturnRouteCandidate(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability)) continue;
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
     try {
       validateResolutionDataFlowNodes(effects, path);
@@ -328,6 +328,13 @@ function isBattleLossResourceTriggerRouteCandidate(ability: AuthoringAbility): b
   if (ability.effects.length !== 1) return false;
   const effect = ability.effects[0]!;
   return str(effect.type) === 'adjust_command_seals' && (effect.player === undefined || effect.player === 'controller');
+}
+
+function isBattleLossServantRevealRouteCandidate(ability: AuthoringAbility): boolean {
+  return ability.kind === 'forced_trigger' &&
+    str(ability.activation.trigger) === 'after_controller_loses_battle' &&
+    ability.effects.length === 1 &&
+    str(ability.effects[0]?.type) === 'reveal_information';
 }
 
 function isSharedVictoryVpTriggerRouteCandidate(ability: AuthoringAbility): boolean {
