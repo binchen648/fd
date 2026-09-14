@@ -6,20 +6,20 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=152
-blockedCount=792
+sourceGroundedCount=154
+blockedCount=790
 unclassifiedCount=0
-structuredAbilityCount=283
+structuredAbilityCount=288
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
 | timing | `ACTION` | 44 |
-| timing | `COMBAT` | 18 |
-| timing | `OUTPOST` | 6 |
+| timing | `COMBAT` | 19 |
+| timing | `OUTPOST` | 7 |
 | timing | `PREPARATION` | 3 |
-| trigger | `combat.resolved` | 34 |
+| trigger | `combat.resolved` | 35 |
 | trigger | `combat.ending` | 9 |
 | trigger | `game.started` | 8 |
 | trigger | `card.played` | 7 |
@@ -35,6 +35,7 @@ structuredAbilityCount=283
 | trigger | `player.mana.changed` | 2 |
 | trigger | `action.ending` | 1 |
 | trigger | `card.exiled` | 1 |
+| trigger | `card.left-deck` | 1 |
 | trigger | `card_or_ability.used` | 1 |
 | trigger | `command-seal.spent` | 1 |
 | trigger | `event.entered-battlefield` | 1 |
@@ -46,7 +47,7 @@ structuredAbilityCount=283
 | trigger | `yuga_cycle.changing` | 1 |
 | condition | `SOURCE_ACTIVE` | 37 |
 | condition | `SOURCE_OWNED` | 31 |
-| condition | `EVENT_PLAYER_WON_COMBAT` | 20 |
+| condition | `EVENT_PLAYER_WON_COMBAT` | 21 |
 | condition | `EVENT_PLAYER_IS_CONTROLLER` | 15 |
 | condition | `AT_BATTLEFIELD` | 11 |
 | condition | `EVENT_LOCATION_EQUALS_CONTROLLER` | 11 |
@@ -87,9 +88,12 @@ structuredAbilityCount=283
 | condition | `CONTROLLER_DEPLOYED_AT_SOURCE_EVENT_BATTLEFIELD` | 1 |
 | condition | `CONTROLLER_DID_NOT_EXPAND_THIS_ROUND` | 1 |
 | condition | `CYCLE_TRANSITION_PENDING` | 1 |
+| condition | `DECK_HAS_POSITION_FOR_SELECTED_CARD_COST_PLUS_ONE` | 1 |
 | condition | `DOES_NOT_CONTROL_CARD_DEFINITION` | 1 |
 | condition | `ENGAGED_OPPONENT_VICTORY_POINTS_GREATER_THAN_CONTROLLER` | 1 |
+| condition | `EVENT_CARD_CONTROLLER_IS_CONTROLLER` | 1 |
 | condition | `EVENT_CARD_HAS_ATTRIBUTE` | 1 |
+| condition | `EVENT_CARD_HAS_LINKAGE` | 1 |
 | condition | `EVENT_CARD_WAS_CONTROLLER_EXPANSION_THIS_ROUND` | 1 |
 | condition | `EVENT_COMBAT_HAS_ATTRIBUTE` | 1 |
 | condition | `EVENT_COMBAT_OPPONENT_COUNT_EQUALS` | 1 |
@@ -127,6 +131,7 @@ structuredAbilityCount=283
 | condition | `SECRET_ROUND_MATCHES_CURRENT` | 1 |
 | condition | `SELECTED_CARDS_ALL_HAVE_ATTRIBUTE` | 1 |
 | condition | `SITUATION_FORBIDS_ATTRIBUTE` | 1 |
+| condition | `SOURCE_CARD_ENTERED_ATTACK_FROM_DECK_THIS_ROUND` | 1 |
 | condition | `SOURCE_EVENT_ENTERED_BY_EXPANSION` | 1 |
 | condition | `SOURCE_EVENT_NOT_ENTERED_BY_EXPANSION` | 1 |
 | condition | `SOURCE_EVENT_WAS_INDIA_EXPANSION_THIS_ROUND` | 1 |
@@ -139,7 +144,7 @@ structuredAbilityCount=283
 | cost | `MANA` | 9 |
 | cost | `DISCARD_CARDS` | 1 |
 | cost | `VICTORY_POINTS` | 1 |
-| target | `CHOOSE_ONE_CARD` | 12 |
+| target | `CHOOSE_ONE_CARD` | 13 |
 | target | `CHOOSE_ONE_EVENT` | 9 |
 | target | `CHOOSE_N_CARDS` | 7 |
 | target | `CHOOSE_ONE_PLAYER` | 7 |
@@ -165,16 +170,17 @@ structuredAbilityCount=283
 | effect | `RETURN_CARD_BY_DEFINITION` | 7 |
 | effect | `SOURCE_CARD_POWER_BONUS` | 7 |
 | effect | `LOSE_MANA` | 6 |
+| effect | `MOVE_SOURCE_CARD` | 5 |
 | effect | `ADD_STATUS` | 4 |
 | effect | `MOVE_PLAYER` | 4 |
 | effect | `MOVE_SELECTED_CARDS` | 4 |
-| effect | `MOVE_SOURCE_CARD` | 4 |
 | effect | `CLEAR_PLAYER_FLAG` | 3 |
 | effect | `EXILE_SOURCE_CARD` | 3 |
 | effect | `MOVE_MATCHING_EVENTS` | 3 |
 | effect | `MOVE_SELECTED_EVENTS` | 3 |
 | effect | `SCHEDULE_EFFECT` | 3 |
 | effect | `INSTALL_ABILITY_RULE_MODIFIER` | 2 |
+| effect | `MOVE_CARD` | 2 |
 | effect | `MOVE_MATCHING_CARDS` | 2 |
 | effect | `NPC_RULE` | 2 |
 | effect | `REMOVE_STATUS` | 2 |
@@ -185,13 +191,14 @@ structuredAbilityCount=283
 | effect | `ADD_PLAYER_FLAG_NUMBER` | 1 |
 | effect | `ADJUST_COMMAND_SEALS` | 1 |
 | effect | `ASTRONOMICAL_SPHERE_RULE` | 1 |
+| effect | `CHARGE_SELECTED_SKILL_ATTACK` | 1 |
 | effect | `CLOSE_SELECTED_CARD` | 1 |
 | effect | `COMBAT_POWER_LOCK` | 1 |
 | effect | `ENSURE_EVENT_DECK_COUNT` | 1 |
+| effect | `FINISH_GAME` | 1 |
 | effect | `INFO_NOTE` | 1 |
 | effect | `LOCATION_TOKEN_RULE` | 1 |
 | effect | `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS` | 1 |
-| effect | `MOVE_CARD` | 1 |
 | effect | `PLAY_SOURCE_CARD` | 1 |
 | effect | `REMOVE_CARDS_IN_ZONE` | 1 |
 | effect | `REMOVE_LINKED_STATUS` | 1 |
@@ -208,7 +215,7 @@ structuredAbilityCount=283
 | effect | `TRANSFER_MANA` | 1 |
 | effect | `TRANSFER_MATCHING_CARDS` | 1 |
 | effect | `TRANSFER_SELECTED_CARDS` | 1 |
-| interaction | `CHOOSE_ONE_CARD` | 12 |
+| interaction | `CHOOSE_ONE_CARD` | 13 |
 | interaction | `CHOOSE_ONE_EVENT` | 9 |
 | interaction | `CHOOSE_N_CARDS` | 7 |
 | interaction | `CHOOSE_ONE_PLAYER` | 7 |
@@ -276,6 +283,7 @@ structuredAbilityCount=283
 | modifier | `rule:card_play_permission:allow` | 1 |
 | modifier | `rule:card_play_permission:prohibit` | 1 |
 | modifier | `rule:card_play_with_others:forbid` | 1 |
+| modifier | `rule:charge_eligibility:allow_source_card` | 1 |
 | modifier | `rule:combat_attack_power_increase_from_other_cards:prohibit` | 1 |
 | modifier | `rule:combat_card_power:add` | 1 |
 | modifier | `rule:combat_power_resolution:ignore_other_controller_attacks` | 1 |
@@ -306,7 +314,7 @@ structuredAbilityCount=283
 | visibility | `REVEALS_TRUE_NAME` | 28 |
 | visibility | `revealScope:servant_package` | 28 |
 | visibility | `revealTiming:on_use_declared` | 28 |
-| visibility | `FACE_UP` | 8 |
+| visibility | `FACE_UP` | 9 |
 | visibility | `FACE_DOWN` | 2 |
 | visibility | `inspectZone:opponent_discard` | 1 |
 | binding | `payload:selectedInstanceIds` | 13 |
@@ -329,6 +337,7 @@ structuredAbilityCount=283
 | binding | `payload:replacementEventIds` | 1 |
 | binding | `payload:selectedBasicCardIds` | 1 |
 | binding | `payload:selectedPlayerIds` | 1 |
+| binding | `payload:selectedSkillAttackIds` | 1 |
 | binding | `payload:selectedYugaEventIds` | 1 |
 | binding | `payload:targetPlayerId` | 1 |
 | binding | `payload:targetSkillInstanceIds` | 1 |
@@ -336,8 +345,8 @@ structuredAbilityCount=283
 | binding | `payload:twiceSwapEventIds` | 1 |
 | binding | `result:fullRecoveryTranscendChoice` | 1 |
 | binding | `result:removedEventCount` | 1 |
-| battle | `COMBAT_CONDITION` | 51 |
-| battle | `COMBAT_EVENT` | 46 |
+| battle | `COMBAT_CONDITION` | 52 |
+| battle | `COMBAT_EVENT` | 47 |
 | battle | `COMBAT_EFFECT` | 18 |
 | battle | `COMBAT_RULE_MODIFIER` | 12 |
 
@@ -374,8 +383,8 @@ structuredAbilityCount=283
 | `master.arcueid.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `OUTPOST` | `combat.resolved` | `EVENT_PLAYER_WON_COMBAT`, `PLAYER_FLAG_EQUALS`, `SOURCE_OWNED`, `TARGET_COUNT_AT_LEAST` | `NONE` | `CHOOSE_ONE_PLAYER` | `CLEAR_PLAYER_FLAG`, `REMOVE_OWNED_CARDS_BY_LINKED_SKILL`, `SET_PLAYER_FLAG` | `CHOOSE_ONE_PLAYER` | `cleanup:remain_active`, `duration:until_condition_met`, `expiresOn:combat.win` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.structured-skill` |
 | `master.arcueid.skill.s2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.arcueid-materialization` |
 | `master.arcueid.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `round.ending` | `SOURCE_OWNED` | `NONE` | `NONE` | `LOSE_VICTORY_POINTS` | `NONE` | `NONE` | `rule:card_cost:add`, `rule:card_power:add`, `rule:skill_use:forbid` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `master.artoira.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.artoira-wooden-sword` |
-| `master.artoira.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.artoira-charge` |
+| `master.artoira.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `combat.resolved` | `EVENT_PLAYER_WON_COMBAT`, `SOURCE_CARD_ENTERED_ATTACK_FROM_DECK_THIS_ROUND` | `NONE` | `NONE` | `FINISH_GAME`, `MOVE_SOURCE_CARD` | `NONE` | `NONE` | `rule:charge_eligibility:allow_source_card` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.artoira-wooden-sword` |
+| `master.artoira.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `OUTPOST` | `card.left-deck` | `DECK_HAS_POSITION_FOR_SELECTED_CARD_COST_PLUS_ONE`, `EVENT_CARD_CONTROLLER_IS_CONTROLLER`, `EVENT_CARD_HAS_LINKAGE` | `NONE` | `CHOOSE_ONE_CARD` | `CHARGE_SELECTED_SKILL_ATTACK`, `MOVE_CARD` | `CHOOSE_ONE_CARD` | `NONE` | `NONE` | `FACE_UP` | `payload:selectedSkillAttackIds` | `NONE` | `core.artoira-charge` |
 | `master.bazett.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `rule:card_activation_persistence:remain_active_until`, `rule:card_play_limit:remove_once_per_game` | `NONE` | `NONE` | `NONE` | `core.bazett-flawless-defense` |
 | `master.bazett.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-add-skill` |
 | `master.bazett.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved`, `game.started`, `round.ended` | `CYCLE_STATE_IS_NOT`, `EVENT_PLAYER_LOST_COMBAT`, `ROUND_IS_CLIMAX` | `NONE` | `NONE` | `CYCLE_STATE_TRANSITION`, `LOSE_VICTORY_POINTS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.bazett-time-loop` |

@@ -3649,45 +3649,158 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_artoira.ascensionSkill#line=38"
+        },
         "axes": {
-          "timing": [],
-          "trigger": [],
-          "condition": [],
+          "timing": [
+            "COMBAT"
+          ],
+          "trigger": [
+            "combat.resolved"
+          ],
+          "condition": [
+            "EVENT_PLAYER_WON_COMBAT",
+            "SOURCE_CARD_ENTERED_ATTACK_FROM_DECK_THIS_ROUND"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "FINISH_GAME",
+            "MOVE_SOURCE_CARD"
+          ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:charge_eligibility:allow_source_card"
+          ],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "artoira.wooden-sword.ascension-setup",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_artoira.ascensionSkill#line=38#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "MOVE_SOURCE_CARD"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "artoira.wooden-sword.charge-eligibility",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_artoira.ascensionSkill#line=38#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:charge_eligibility:allow_source_card"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "artoira.wooden-sword.instant-victory",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_artoira.ascensionSkill#line=38#ability-3"
+            },
+            "axes": {
+              "timing": [
+                "COMBAT"
+              ],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "EVENT_PLAYER_WON_COMBAT",
+                "SOURCE_CARD_ENTERED_ATTACK_FROM_DECK_THIS_ROUND"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "FINISH_GAME"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.artoira-wooden-sword"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CARD_ZONE",
+          "CONDITION",
+          "MODIFIER",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CARD_ZONE",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_MODIFIER",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:finish_game"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -3749,45 +3862,151 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_artoira.skills[s1]#line=37"
+        },
         "axes": {
-          "timing": [],
-          "trigger": [],
-          "condition": [],
+          "timing": [
+            "OUTPOST"
+          ],
+          "trigger": [
+            "card.left-deck"
+          ],
+          "condition": [
+            "DECK_HAS_POSITION_FOR_SELECTED_CARD_COST_PLUS_ONE",
+            "EVENT_CARD_CONTROLLER_IS_CONTROLLER",
+            "EVENT_CARD_HAS_LINKAGE"
+          ],
           "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
+          "target": [
+            "CHOOSE_ONE_CARD"
+          ],
+          "effect": [
+            "CHARGE_SELECTED_SKILL_ATTACK",
+            "MOVE_CARD"
+          ],
+          "interaction": [
+            "CHOOSE_ONE_CARD"
+          ],
           "lifecycle": [],
           "modifier": [],
-          "visibility": [],
-          "binding": [],
+          "visibility": [
+            "FACE_UP"
+          ],
+          "binding": [
+            "payload:selectedSkillAttackIds"
+          ],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "artoira.white-steel.charge",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_artoira.skills[s1]#line=37#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "OUTPOST"
+              ],
+              "trigger": [],
+              "condition": [
+                "DECK_HAS_POSITION_FOR_SELECTED_CARD_COST_PLUS_ONE"
+              ],
+              "cost": [],
+              "target": [
+                "CHOOSE_ONE_CARD"
+              ],
+              "effect": [
+                "CHARGE_SELECTED_SKILL_ATTACK"
+              ],
+              "interaction": [
+                "CHOOSE_ONE_CARD"
+              ],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [
+                "FACE_UP"
+              ],
+              "binding": [
+                "payload:selectedSkillAttackIds"
+              ],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "artoira.white-steel.leave-deck-add-to-attack",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_artoira.skills[s1]#line=37#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "card.left-deck"
+              ],
+              "condition": [
+                "EVENT_CARD_CONTROLLER_IS_CONTROLLER",
+                "EVENT_CARD_HAS_LINKAGE"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "MOVE_CARD"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.artoira-charge"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ACTION_SEMANTICS",
+          "CARD_ZONE",
+          "CONDITION",
+          "HIDDEN_INFORMATION",
+          "INTERACTION",
+          "RESULT_BINDING",
+          "SPECIAL_SUBSYSTEM",
+          "TARGET_SELECTION",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "CARD_ACTION_ADD_TO_ATTACK",
+          "GENERIC_CARD_ZONE",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TARGET_SELECTION",
+          "GENERIC_TRIGGER_GATEWAY",
+          "GENERIC_VISIBILITY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:charge_selected_skill_attack"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -107689,15 +107908,15 @@
   ],
   "semanticSummary": {
     "totalIdentityCount": 944,
-    "sourceGroundedCount": 152,
-    "blockedCount": 792,
+    "sourceGroundedCount": 154,
+    "blockedCount": 790,
     "unclassifiedCount": 0,
-    "structuredAbilityCount": 283
+    "structuredAbilityCount": 288
   },
   "capabilitySummary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 152,
-    "explicitBlockCount": 792,
+    "contractMappedCount": 154,
+    "explicitBlockCount": 790,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -107713,9 +107932,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
       "READY_GENERIC_EXTENSION": 100,
-      "SPECIAL_HANDLER_CANDIDATE": 52,
+      "SPECIAL_HANDLER_CANDIDATE": 54,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 792,
+      "SOURCE_EVIDENCE_REQUIRED": 790,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },

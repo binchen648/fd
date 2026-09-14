@@ -224,6 +224,28 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(mapped.specialReasons).toContain('STRUCTURED_TRANSFORM_REQUIRES_REVIEW');
   });
 
+  it('maps structural charged-card insertion to Card Zone while keeping the lifecycle reviewed-special', () => {
+    const axes = emptyAxes();
+    axes.effect = ['CHARGE_SELECTED_SKILL_ATTACK'];
+    const mapped = mapStructuredCapabilityNeeds(
+      {
+        id: 'charge-selected-skill-attack-fixture',
+        printedClause: 'fixture',
+        effects: [{
+          type: 'charge_selected_skill_attack',
+          sourceZone: 'servant_skills',
+          destination: 'deck',
+          deckPositionFormula: 'selected_card_printed_mana_cost + 1',
+        }],
+      },
+      axes,
+    );
+    expect(mapped.requiredCapabilities).toEqual(
+      expect.arrayContaining(['GENERIC_CARD_ZONE', 'REVIEWED_SPECIAL_HANDLER']),
+    );
+    expect(mapped.specialReasons).toContain('SPECIAL_EFFECT:charge_selected_skill_attack');
+  });
+
   it('maps Lostbelt and event-card special semantics to the Event Deck dependency without granting acceptance', () => {
     const axes = emptyAxes();
     axes.effect = ['EVENT_CARD_RULE', 'LOSTBELT_EXPANSION'];
@@ -269,11 +291,11 @@ describe('Phase 3 full-roster capability mapping', () => {
     const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
 
     expect(inventory.capabilitySummary.totalIdentityCount).toBe(944);
-    expect(inventory.capabilitySummary.contractMappedCount).toBe(152);
-    expect(inventory.capabilitySummary.explicitBlockCount).toBe(792);
+    expect(inventory.capabilitySummary.contractMappedCount).toBe(154);
+    expect(inventory.capabilitySummary.explicitBlockCount).toBe(790);
     expect(inventory.capabilitySummary.zeroSilentFallback).toBe(true);
-    expect(catalog.coverage.mappedAbilities).toHaveLength(152);
-    expect(catalog.coverage.blockedAbilities).toHaveLength(792);
+    expect(catalog.coverage.mappedAbilities).toHaveLength(154);
+    expect(catalog.coverage.blockedAbilities).toHaveLength(790);
     expect(catalog.coverage.mappedAbilities.length + catalog.coverage.blockedAbilities.length).toBe(944);
 
     const allowedCurrentRoutes = new Set(['legacy', 'new', 'dual', 'none']);
@@ -285,8 +307,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     }
 
     expect(markdown).toContain('totalIdentityCount=944');
-    expect(markdown).toContain('contractMappedCount=152');
-    expect(markdown).toContain('explicitBlockCount=792');
+    expect(markdown).toContain('contractMappedCount=154');
+    expect(markdown).toContain('explicitBlockCount=790');
     expect(markdown).toContain('zeroSilentFallback=true');
   });
 
@@ -412,7 +434,7 @@ describe('Phase 3 full-roster capability mapping', () => {
     );
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(100);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(52);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(54);
   });
 
   it('maps the nine-ID Fiore slice with four generic extensions and five reviewed-special transcend rules', () => {
@@ -466,7 +488,7 @@ describe('Phase 3 full-roster capability mapping', () => {
     );
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(100);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(52);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(54);
   });
 
   it('maps the thirteen-ID Kadoc and Hinako slice with explicit ordinary dependencies and zero inherited contracts', () => {
@@ -600,6 +622,48 @@ describe('Phase 3 full-roster capability mapping', () => {
         'REVIEWED_SPECIAL_HANDLER',
       ]),
     );
+  });
+
+  it('maps the two-ID Artoira charge slice as reviewed-special with explicit ordinary dependencies', () => {
+    const inventory = JSON.parse(
+      readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8'),
+    ) as any;
+    const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
+    const slice = entries.filter((entry: any) => entry.canonicalAbilityId.startsWith('master.artoira.skill.'));
+    const byId = new Map(slice.map((entry: any) => [entry.canonicalAbilityId, entry]));
+
+    expect(slice).toHaveLength(2);
+    for (const entry of slice) {
+      expect(entry.phase3.classificationRoute).toBe('SPECIAL_HANDLER_CANDIDATE');
+      expect(entry.phase3.inheritedAcceptanceContracts).toEqual([]);
+    }
+    expect(byId.get('master.artoira.skill.s1').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining([
+        'CARD_ACTION_ADD_TO_ATTACK',
+        'GENERIC_CARD_ZONE',
+        'GENERIC_CONDITION_EVALUATION',
+        'GENERIC_PENDING_INTERACTION',
+        'GENERIC_RESULT_BINDING',
+        'GENERIC_TARGET_SELECTION',
+        'GENERIC_TRIGGER_GATEWAY',
+        'GENERIC_VISIBILITY',
+        'REVIEWED_SPECIAL_HANDLER',
+      ]),
+    );
+    expect(byId.get('master.artoira.skill.s1').phase3.blockedBy).toContain(
+      'SPECIAL_EFFECT:charge_selected_skill_attack',
+    );
+    expect(byId.get('master.artoira.skill.ascension').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining([
+        'GENERIC_BATTLE_INTEGRATION',
+        'GENERIC_CARD_ZONE',
+        'GENERIC_CONDITION_EVALUATION',
+        'GENERIC_MODIFIER',
+        'GENERIC_TRIGGER_GATEWAY',
+        'REVIEWED_SPECIAL_HANDLER',
+      ]),
+    );
+    expect(byId.get('master.artoira.skill.ascension').phase3.blockedBy).toContain('SPECIAL_EFFECT:finish_game');
   });
 
   it('bridges current semantic card IDs to stable canonical IDs only by exact ID or unique owner/name identity', () => {
