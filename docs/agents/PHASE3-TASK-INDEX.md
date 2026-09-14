@@ -1725,6 +1725,123 @@ Completion status allowed:
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `REJECTED`
 
+## TASK P3-B18
+
+Owner: Codex B
+Status: READY
+Branch: `codex/b-p3-b18-noble-bloom-r1`
+Base: exact P3-B18 A-owned handoff commit
+
+Goal:
+
+Migrate exactly one additional TO14 direct result consumer, Artoria Alter `sc-artoria-alt-3.noble-bloom`, through the accepted post-scoring result envelope, accepted optional Interaction response window, and typed Resource resolution path without promoting its sibling `noble-bloom-extra-vp`.
+
+Exact supported semantic:
+
+- `optional_trigger`;
+- activation phase `combat`;
+- trigger `after_battle_result_determined`;
+- response window `after_battle_result_determined`;
+- exactly one condition `controller_played_highest_cost_noble_phantasm_in_battle_this_round`;
+- no targets, cost, creates, modifiers, lifecycle, or limit;
+- exactly one `adjust_victory_points(player=controller, amount=1)` effect;
+- structural classification only, never representative-ID routing.
+
+Required runtime contract:
+
+- consume the accepted B13 post-all-battlefield-scoring result event; the optional window must not open before every required base-scoring receipt exists;
+- Trigger Gateway owns discovery/idempotence and TO05 Interaction owns the optional response window;
+- declining/pass leaves VP unchanged and terminally closes only that window;
+- accepting resolves exactly one typed Resource `adjust_victory_points(+1)` result linked to the source/event causation;
+- duplicate/replayed result identity must not open or settle a second copy;
+- condition revalidation must fail closed if the qualifying highest-cost Noble Phantasm fact is absent;
+- malformed same-family optional shapes must not fall through to legacy execution;
+- exact supported semantics must execute through typed resolution-dataflow;
+- no card/character/ability identity branch.
+
+May touch:
+
+- `packages/rules/src/ability/interpreter.ts`
+- focused B18 regression/unit tests
+- one scoped remote-room/browser Gate C spec/fixture if needed
+- B18 implementation report
+
+`packages/rules/src/ability/resolution-dataflow.ts` may be touched only if a fresh failing test proves the existing typed VP primitive cannot satisfy the exact contract. Any such change must remain generic and narrow.
+
+Must not touch/promote:
+
+- `sc-artoria-alt-3.noble-bloom-extra-vp`;
+- Artoria Caster Luck-on-win optional triggers;
+- Gatou `seeker.battle-end-reward`;
+- Tomoe `penalty-on-defeat` / unpreventable semantics;
+- Olga `trismegistus.loss-transform` or Special behavior;
+- broad optional-trigger ordering or a second trigger queue;
+- TO15 Modifier/Power runtime;
+- TO16 Special runtime;
+- A-owned coverage KPI/classifier/taxonomy;
+- representative identity routing.
+
+Required evidence:
+
+- red/green identity-free semantic classifier positive plus near-miss negatives;
+- real MatchSession result path proving base-scoring barrier before optional window exposure;
+- accept path gives exactly +1 VP through typed result evidence;
+- decline/pass path gives +0 VP;
+- duplicate/replay result identity does not reopen/settle twice;
+- non-qualifying highest-cost Noble Phantasm condition produces no legal response;
+- malformed condition/effect/window shapes fail closed before legacy fallback;
+- B13/B14/B15/B16/B17 compatibility;
+- fresh Chromium remote-room proof for projection, response ownership, reconnect, stale revision, and exactly-once VP mutation;
+- full root baseline comparison and production identity/legacy-bypass audit.
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R12
+
+Owner: Codex R
+Status: READY_AFTER_P3_B18
+Branch: reviewer-selected fresh worktree/branch from exact B18 candidate SHA
+
+Goal:
+
+Independently review P3-B18 Artoria Alter optional post-result VP consumer without implementing fixes or inheriting acceptance from sibling optional triggers.
+
+Required independent checks:
+
+- fresh typecheck and focused/current-lineage compatibility;
+- independently verify exact-shape classification is identity-free and malformed near-misses fail closed before legacy fallback;
+- verify the optional response window appears only after the authoritative post-scoring barrier and only for the controller when the qualifying Noble Phantasm condition holds;
+- verify accept resolves typed VP +1 exactly once and decline resolves no VP change;
+- verify stable result identity/replay/reconnect cannot open or settle a duplicate response;
+- verify source/event causation and typed effect evidence;
+- verify B13-B17 ordering compatibility remains intact;
+- run fresh Chromium Gate C for response ownership, reconnect, stale revision and no duplicate award;
+- run full root baseline and block only on new deterministic failures.
+
+Must not:
+
+- implement fixes while reviewing;
+- promote `noble-bloom-extra-vp`, Artoria Caster Luck triggers, Gatou, Tomoe, Olga transform, broad TO14, TO15, or TO16;
+- modify A-owned coverage KPI/taxonomy.
+
+Required output:
+
+- findings ordered by severity;
+- post-scoring optional-window ordering judgment;
+- typed Resource / fail-closed / exactly-once judgment;
+- projection/reconnect/stale judgment;
+- Gate A/B/C judgment;
+- explicit A03 synchronization input if accepted.
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
 ## Prompt Templates
 
 Codex A startup prompt:
