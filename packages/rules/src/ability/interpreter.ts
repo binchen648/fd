@@ -1132,6 +1132,33 @@ export function isBattleLossResourceTriggerSemantic(a: AuthoringAbility): boolea
     Number.isSafeInteger(effect.amount);
 }
 
+function isBattleLossUnpreventableVpTriggerCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'forced_trigger' &&
+    str(a.activation.trigger) === 'after_controller_loses_battle' &&
+    a.effects.length === 1 &&
+    str(a.effects[0]?.type) === 'adjust_victory_points';
+}
+
+export function isBattleLossUnpreventableVpTriggerSemantic(a: AuthoringAbility): boolean {
+  if (!isBattleLossUnpreventableVpTriggerCandidate(a)) return false;
+  if (str(a.activation.phase) || str(a.activation.opens) || str(a.activation.requiresSourceState)) return false;
+  if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
+
+  const effect = a.effects[0]!;
+  const effectKeys = Object.keys(effect);
+  if (effect.type !== 'adjust_victory_points' || effect.player !== 'controller' || effect.amount !== -5 ||
+    effectKeys.some((key) => !['type', 'player', 'amount'].includes(key))) return false;
+
+  if (a.ruleModifiers.length !== 1) return false;
+  const modifier = a.ruleModifiers[0]!;
+  const scope = node(modifier.scope); const priority = node(modifier.priority);
+  if (modifier.operation !== 'ignore' || modifier.rule !== 'effect_prevention' ||
+    scope.object !== 'this_effect' || Object.keys(scope).length !== 1 ||
+    priority.tier !== 'explicit_exception' || Object.keys(priority).length !== 1) return false;
+  return Object.keys(modifier).every((key) => ['id', 'printedClause', 'operation', 'rule', 'scope', 'priority'].includes(key));
+}
+
 function isBattleLossServantRevealCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'forced_trigger' &&
     str(a.activation.trigger) === 'after_controller_loses_battle' &&
@@ -1564,6 +1591,17 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (isBattleLossUnpreventableVpTriggerSemantic(a)) {
+    const beforeEvents = runtime(s).events.length;
+    executeResolutionEffects(s, ctx, effects);
+    for (const event of runtime(s).events.slice(beforeEvents)) {
+      if (event.sourceCardId === ctx.sourceCardId && event.abilityId === ctx.abilityId &&
+        (event.type === 'victory_points_adjusted' || event.type === 'effect_resolved')) event.unpreventable = true;
+    }
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
   if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
@@ -1572,6 +1610,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   }
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
   if (isBattleLossResourceTriggerCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss resource semantic shape');
+  if (isBattleLossUnpreventableVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported unpreventable battle-loss VP semantic shape');
   if (isBattleLossServantRevealCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss servant reveal semantic shape');
   if (isSharedVictoryVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported shared-victory VP semantic shape');
   if (isOptionalBattleResultVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported optional battle-result VP semantic shape');

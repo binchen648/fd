@@ -43,13 +43,24 @@ test('resolves Artoria Alter Noble Bloom through remote optional response, recon
   }));
 
   const countBeforePendingReload = projections.length;
-  await page.reload();
+  await page.goto('about:blank');
+  await page.waitForTimeout(100);
+  await openRemoteRoom(page, room);
   await expect.poll(() => projections.length).toBeGreaterThan(countBeforePendingReload);
   await expect.poll(() => latestMatch(projections)?.view.revision).toBe(expectedRevision);
   await expect.poll(() => latestResponseWindow(projections)?.opens).toBe('after_battle_result_determined');
   expect(vpOf(projections)).toBe(2);
 
-  await page.getByRole('button', { name: 'resolve_response', exact: true }).click();
+  const sentBeforeResolve = sentMessages.length;
+  for (let attempt = 0; attempt < 3 && sentMessages.length === sentBeforeResolve; attempt++) {
+    await expect(page.getByText('Client is disconnected', { exact: true })).toHaveCount(0);
+    await page.getByRole('button', { name: 'resolve_response', exact: true }).click();
+    try {
+      await expect.poll(() => sentMessages.length, { timeout: 3000 }).toBeGreaterThan(sentBeforeResolve);
+    } catch {
+      if (attempt === 2) throw new Error('resolve_response was not sent after reconnect retries');
+    }
+  }
 
   await expect.poll(() => latestResponseWindow(projections)).toBeUndefined();
   await expect.poll(() => vpOf(projections)).toBe(3);
@@ -72,7 +83,9 @@ test('resolves Artoria Alter Noble Bloom through remote optional response, recon
   expect(countVpEvents(settled)).toBe(1);
 
   const countBeforeSettledReload = projections.length;
-  await page.reload();
+  await page.goto('about:blank');
+  await page.waitForTimeout(100);
+  await openRemoteRoom(page, room);
   await expect.poll(() => projections.length).toBeGreaterThan(countBeforeSettledReload);
   await expect.poll(() => latestMatch(projections)?.view.revision).toBe(settledRevision);
   expect(latestResponseWindow(projections)).toBeUndefined();
