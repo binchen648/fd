@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 156,
-    "explicitBlockCount": 788,
+    "contractMappedCount": 157,
+    "explicitBlockCount": 787,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -25,9 +25,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
       "READY_GENERIC_EXTENSION": 100,
-      "SPECIAL_HANDLER_CANDIDATE": 56,
+      "SPECIAL_HANDLER_CANDIDATE": 57,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 788,
+      "SOURCE_EVIDENCE_REQUIRED": 787,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -1697,6 +1697,7 @@
         "master.bazett.skill.s1c",
         "master.bazett.skill.s1d",
         "master.bazett.skill.s5",
+        "master.chaos.skill.s17",
         "master.chaos.skill.s2",
         "master.chaos.skill.s6",
         "master.chaos.skill.s7",
@@ -2069,6 +2070,7 @@
         "master.chaos.skill.s1",
         "master.chaos.skill.s11",
         "master.chaos.skill.s16",
+        "master.chaos.skill.s17",
         "master.chaos.skill.s4",
         "master.chaos.skill.s5",
         "master.chaos.skill.s6",
@@ -2313,6 +2315,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.chaos.skill.s17",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.chaos.skill.s8",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -2420,6 +2426,7 @@
         "master.bazett.skill.s2",
         "master.chaos.skill.s1",
         "master.chaos.skill.s11",
+        "master.chaos.skill.s17",
         "master.chaos.skill.s4",
         "master.chaos.skill.s5",
         "master.ciel.skill.s3",
@@ -2528,6 +2535,7 @@
         "master.chaos.skill.s14",
         "master.chaos.skill.s15",
         "master.chaos.skill.s16",
+        "master.chaos.skill.s17",
         "master.chaos.skill.s2",
         "master.chaos.skill.s5",
         "master.chaos.skill.s9",
@@ -2617,6 +2625,7 @@
         "master.araya.skill.ascension",
         "master.chaos.skill.s10",
         "master.chaos.skill.s12",
+        "master.chaos.skill.s17",
         "master.fiore.skill.s2",
         "master.fiore.skill.s5",
         "master.goredolf.skill.s1a",
@@ -2666,6 +2675,7 @@
         "master.chaos.skill.s1",
         "master.chaos.skill.s12",
         "master.chaos.skill.s13",
+        "master.chaos.skill.s17",
         "master.chaos.skill.s3",
         "master.chaos.skill.s4",
         "master.chaos.skill.s8",
@@ -2811,6 +2821,7 @@
         "master.bazett.skill.s3",
         "master.bazett.skill.s4",
         "master.bazett.skill.s5",
+        "master.chaos.skill.s17",
         "master.chaos.skill.s3",
         "master.chaos.skill.s7",
         "master.ciel.skill.s2",
@@ -2883,6 +2894,7 @@
         "master.chaos.skill.s12",
         "master.chaos.skill.s13",
         "master.chaos.skill.s16",
+        "master.chaos.skill.s17",
         "master.chaos.skill.s3",
         "master.chaos.skill.s4",
         "master.chaos.skill.s8",
@@ -2948,6 +2960,7 @@
         "master.amakusa.skill.s2",
         "master.arcueid.skill.s1a",
         "master.chaos.skill.s1",
+        "master.chaos.skill.s17",
         "master.ciel.skill.s3",
         "master.fiore.skill.ascension",
         "servant.albion.skill.sc-albion-2",
@@ -3183,6 +3196,7 @@
         "master.chaos.skill.s1",
         "master.chaos.skill.s12",
         "master.chaos.skill.s13",
+        "master.chaos.skill.s17",
         "master.chaos.skill.s3",
         "master.chaos.skill.s4",
         "master.chaos.skill.s8",
@@ -3267,6 +3281,7 @@
         "master.chaos.skill.s1",
         "master.chaos.skill.s11",
         "master.chaos.skill.s16",
+        "master.chaos.skill.s17",
         "master.chaos.skill.s3",
         "master.chaos.skill.s4",
         "master.chaos.skill.s5",
@@ -3469,6 +3484,10 @@
         },
         {
           "abilityId": "master.bazett.skill.s5",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.chaos.skill.s17",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3681,6 +3700,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.chaos.skill.s17",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.chaos.skill.s3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -3841,6 +3864,7 @@
         "master.bazett.skill.s3",
         "master.bazett.skill.s4",
         "master.bazett.skill.s5",
+        "master.chaos.skill.s17",
         "master.chaos.skill.s8",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1",
@@ -3999,6 +4023,10 @@
         },
         {
           "abilityId": "master.chaos.skill.s13",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.chaos.skill.s17",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -4233,6 +4261,7 @@
       "master.chaos.skill.s14",
       "master.chaos.skill.s15",
       "master.chaos.skill.s16",
+      "master.chaos.skill.s17",
       "master.chaos.skill.s2",
       "master.chaos.skill.s3",
       "master.chaos.skill.s4",
@@ -4614,13 +4643,6 @@
       },
       {
         "abilityId": "master.celenike.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.chaos.skill.s17",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -9889,6 +9911,7 @@
       "master.bazett.skill.s3",
       "master.bazett.skill.s4",
       "master.bazett.skill.s5",
+      "master.chaos.skill.s17",
       "master.chaos.skill.s8",
       "master.fiore.skill.ascension",
       "master.fiore.skill.s1",

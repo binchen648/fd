@@ -261,18 +261,63 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(markdown).toContain('unclassifiedCount=0');
   });
 
-  it('accepts only the allowed Fate/Domination Wiki overlay and keeps Chaos Scrambled Seals unresolved', () => {
+  it('grounds the complete Chaos slice while preserving the single four-option Scrambled Seals envelope', () => {
     const overlays = loadSourceEvidenceOverlayCards();
     const chaos = overlays.filter((card) => card.id.startsWith('master.chaos.skill.'));
     const ids = chaos.map((card) => card.id);
-    expect(chaos).toHaveLength(17);
+    expect(chaos).toHaveLength(18);
     expect(ids).toContain('master.chaos.skill.s1');
     expect(ids).toContain('master.chaos.skill.s16');
+    expect(ids).toContain('master.chaos.skill.s17');
     expect(ids).toContain('master.chaos.skill.ascension');
-    expect(ids).not.toContain('master.chaos.skill.s17');
     expect(
-      chaos.every((card) => card.source?.url.startsWith('https://fatedomination.fandom.com/wiki/')),
+      chaos.filter((card) => card.id !== 'master.chaos.skill.s17').every(
+        (card) => card.source?.url.startsWith('https://fatedomination.fandom.com/wiki/'),
+      ),
     ).toBe(true);
+
+    const scrambled = chaos.find((card) => card.id === 'master.chaos.skill.s17') as any;
+    expect(scrambled.source).toMatchObject({
+      authority: 'DEVELOPMENT_TEXT',
+      document: 'Fate_Domination-开发版/data_masters.js',
+      locator: 'm_chaos.skills[s17]#line=96',
+      sourceFileSha256: 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825',
+    });
+    expect(createHash('sha256').update(scrambled.source.sourceText, 'utf8').digest('hex')).toBe(
+      scrambled.source.sourceTextSha256,
+    );
+    expect(scrambled.abilities).toHaveLength(2);
+    const choice = scrambled.abilities.find((ability: any) => ability.id === 'chaos.scrambled-seals.action-choice');
+    expect(choice?.limit).toMatchObject({ type: 'per_game', uses: 1, scope: 'this_card' });
+    const chooseOne = choice?.effects?.find((effect: any) => effect.type === 'choose_one');
+    expect(chooseOne?.options).toHaveLength(4);
+    const reuse = chooseOne.options.find((option: any) => option.id === 'repeat-the-666-outpost');
+    expect(reuse.effects).toContainEqual(expect.objectContaining({
+      type: 'ability_reuse_rule',
+      definitionId: 'master.chaos.skill.s1',
+      abilityId: 'chaos.the-666.outpost-play-beast',
+      sourcePhase: 'outpost',
+      executionPhase: 'action',
+      uses: 1,
+    }));
+    const mana = chooseOne.options.find((option: any) => option.id === 'gain-two-mana');
+    expect(mana.effects).toContainEqual(expect.objectContaining({
+      type: 'gain_mana',
+      amount: 2,
+      preserveTriggeredEffects: true,
+    }));
+    expect(mana.effects.some((effect: any) => effect.type === 'draw_cards')).toBe(false);
+    const victory = chooseOne.options.find((option: any) => option.id === 'win-two-vp');
+    expect(JSON.stringify(victory)).toContain('gain_victory_points');
+    expect(JSON.stringify(victory)).toContain('event_player_won_combat');
+    expect(JSON.stringify(victory)).toContain('"duration":"this_round"');
+    const movement = chooseOne.options.find((option: any) => option.id === 'move-adjacent');
+    expect(movement.effects).toContainEqual(expect.objectContaining({ type: 'move_player', direction: 'adjacent', maxSteps: 1 }));
+    const costReminder = scrambled.abilities.find((ability: any) => ability.id === 'chaos.scrambled-seals.beast-cost-reminder');
+    expect(costReminder?.ruleModifiers).toContainEqual(expect.objectContaining({
+      rule: 'beast_cost_payment',
+      operation: 'printed_cost_is_beast_discard_count_no_mana',
+    }));
 
     const breaker = chaos.find((card) => card.id === 'master.chaos.skill.s12');
     const chooseX = breaker?.abilities[0].effects?.find(
@@ -1038,10 +1083,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 156,
-      blockedCount: 788,
+      sourceGroundedCount: 157,
+      blockedCount: 787,
       unclassifiedCount: 0,
-      structuredAbilityCount: 292,
+      structuredAbilityCount: 294,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

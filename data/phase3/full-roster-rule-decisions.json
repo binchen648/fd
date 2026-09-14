@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 788,
-    "coveredBlockedIdentityCount": 788,
+    "blockedIdentityCount": 787,
+    "coveredBlockedIdentityCount": 787,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 2,
@@ -56,7 +56,6 @@
         "master.celenike.skill.ascension",
         "master.celenike.skill.s1",
         "master.celenike.skill.s1a",
-        "master.chaos.skill.s17",
         "master.ciel.skill.ascension",
         "master.ciel.skill.s1",
         "master.ciel.skill.s1a",
@@ -1597,52 +1596,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[45].skills[1].text#line=1",
           "sha256": "49b4a664828e47cc0a4d16253154c540d77e819bcc9f79959a3b479ec294c94e"
-        },
-        {
-          "abilityId": "master.chaos.skill.s17",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.chaos/尼禄·卡欧斯"
-        },
-        {
-          "abilityId": "master.chaos.skill.s17",
-          "document": "legacy-content.json",
-          "locator": "master/master.chaos/s17"
-        },
-        {
-          "abilityId": "master.chaos.skill.s17",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[25].skills[16].text#line=1",
-          "sha256": "6b1cc2a9e76d8a617d6e4e13f286e46ad79825c9b8ae3d2d55a501bcb4881c35"
-        },
-        {
-          "abilityId": "master.chaos.skill.s17",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[25].skills[16].text#line=2",
-          "sha256": "d80e49cd2b2c5a4a1175d2a11b55857951ba01e806db8be08f9093a988f4de12"
-        },
-        {
-          "abilityId": "master.chaos.skill.s17",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[25].skills[16].text#line=3",
-          "sha256": "80da9200aca605e6d5119a7d464f52c558bd8d72bcf527fe1634457792ef157f"
-        },
-        {
-          "abilityId": "master.chaos.skill.s17",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[25].skills[16].text#line=4",
-          "sha256": "4eb1ad0c04c3f9fcc9fe589b092d73bf63d5ed15e8aa9a81b22e5a23e32568ee"
-        },
-        {
-          "abilityId": "master.chaos.skill.s17",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[25].skills[16].text#line=5",
-          "sha256": "a7fbe5fb565ebd23f2ef4e702f34699f3df193974771180c97234a26ef913310"
-        },
-        {
-          "abilityId": "master.chaos.skill.s17",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[25].skills[16].text#line=6",
-          "sha256": "53f36d03e67976df12b7f4f1f19b099709e1d7cd8ab74820bd574e094d0be882"
         },
         {
           "abilityId": "master.ciel.skill.ascension",
@@ -17747,10 +17700,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 2,
-          "shared_handler": 369,
+          "shared_handler": 368,
           "specific_handler": 416
         },
-        "handlerCount": 484,
+        "handlerCount": 483,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."
