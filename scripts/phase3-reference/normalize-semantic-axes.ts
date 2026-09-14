@@ -428,6 +428,12 @@ export function normalizeStructuredAbility(ability: StructuredAbility): Semantic
     const revealScope = stringValue(ability.visibility.revealScope);
     if (revealTiming) axes.visibility.push(`revealTiming:${revealTiming}`);
     if (revealScope) axes.visibility.push(`revealScope:${revealScope}`);
+    if (Array.isArray(ability.visibility.inspectZones)) {
+      for (const value of ability.visibility.inspectZones) {
+        const zone = stringValue(value);
+        if (zone) axes.visibility.push(`inspectZone:${zone}`);
+      }
+    }
   }
 
   collectBindings(ability, axes.binding);

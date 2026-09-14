@@ -194,6 +194,17 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(semantic.battle).toContain('COMBAT_EFFECT');
   });
 
+  it('surfaces structural inspect-zone visibility without an identity branch', () => {
+    const semantic = normalizeStructuredAbility({
+      id: 'inspect-zone-fixture',
+      printedClause: 'fixture',
+      kind: 'passive',
+      visibility: { inspectZones: ['opponent_discard'] },
+    });
+
+    expect(semantic.visibility).toContain('inspectZone:opponent_discard');
+  });
+
   it('classifies source-aligned structured authoring and explicitly blocks every identity without semantic source', () => {
     const normalized = normalizeFullRosterSemantics(makeInventory(), [structuredCard]);
     const grounded = normalized.staticSkills[0].semanticNormalization;
@@ -714,6 +725,92 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(trueAncestor?.abilities[1].transforms).toHaveLength(1);
   });
 
+  it('grounds the ten-ID Goredolf and Peperoncino slice with explicit timing, visibility, movement, and Lostbelt semantics', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const slice = overlays.filter((card) =>
+      card.id.startsWith('master.goredolf.skill.') || card.id.startsWith('master.peperoncino.skill.'),
+    );
+    expect(slice).toHaveLength(10);
+    expect(
+      slice.every((card) =>
+        card.source?.authority === 'DEVELOPMENT_TEXT' &&
+        card.source.document === 'Fate_Domination-开发版/data_masters.js' &&
+        card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+        createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256
+      ),
+    ).toBe(true);
+
+    const ironGentleman = slice.find((card) => card.id === 'master.goredolf.skill.s1');
+    expect(ironGentleman?.abilities[0].transforms).toContainEqual(
+      expect.objectContaining({ intoDefinitionId: 'card.card-gof-fist' }),
+    );
+
+    const foolsResolve = slice.find((card) => card.id === 'master.goredolf.skill.s1a');
+    expect(foolsResolve?.abilities[0].ruleModifiers).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ rule: 'deployment_requirement', operation: 'require_battlefield' }),
+        expect.objectContaining({ rule: 'movement_permission', operation: 'prohibit' }),
+      ]),
+    );
+    expect(foolsResolve?.abilities[2].ruleModifiers).toContainEqual(
+      expect.objectContaining({ rule: 'card_play_permission', definitionId: 'card.card-gof-fist', phase: 'combat' }),
+    );
+    expect(foolsResolve?.abilities[1].limit).toMatchObject({
+      scope: 'controller',
+      period: 'round',
+      maxUses: 1,
+    });
+
+    const mentalTheory = slice.find((card) => card.id === 'master.peperoncino.skill.s1a');
+    expect(mentalTheory?.abilities[0].visibility).toMatchObject({ inspectZones: ['opponent_discard'] });
+
+    const bodyTheory = slice.find((card) => card.id === 'master.peperoncino.skill.s1b');
+    expect(bodyTheory?.abilities[0].effects).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ type: 'pay_mana', amount: 2 }),
+        expect.objectContaining({ type: 'combat_power_bonus', amount: 3 }),
+        expect.objectContaining({ type: 'move_player', maxSteps: 1, requiredIfPossible: true }),
+      ]),
+    );
+
+    const yuga = slice.find((card) => card.id === 'master.peperoncino.skill.s3');
+    const setEra = yuga?.abilities.find((ability) => ability.id === 'peperoncino.yuga.set-era');
+    expect(setEra?.activation).toMatchObject({
+      phase: 'preparation',
+    });
+    expect(setEra?.conditions ?? []).not.toContainEqual(
+      expect.objectContaining({ type: 'event_type_is', eventType: 'round.started' }),
+    );
+    expect(yuga?.abilities.find((ability) => ability.id === 'peperoncino.yuga.divine-judgment-expand')?.limit).toMatchObject({
+      period: 'round',
+      maxUses: 1,
+    });
+    expect(yuga?.abilities.find((ability) => ability.id === 'peperoncino.yuga.judgment-place-event')?.effects).toContainEqual(
+      expect.objectContaining({ type: 'choose_events', minCount: 1, maxCount: 1 }),
+    );
+
+    const indiaObjectives = slice.find((card) => card.id === 'master.peperoncino.skill.s4');
+    const matchingBonus = indiaObjectives?.abilities[0].effects?.find((effect) => effect.type === 'combat_power_bonus');
+    expect(matchingBonus?.conditions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ type: 'attack_played_from_hand_this_round' }),
+        expect.objectContaining({ type: 'attack_attribute_matches_source_event' }),
+        expect.objectContaining({ type: 'attack_not_played_by_effect' }),
+      ]),
+    );
+    expect(matchingBonus?.lifecycle).toMatchObject({ duration: 'this_round' });
+    expect(indiaObjectives?.abilities).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: 'peperoncino.india.objective-basic-three.non-expansion-entry' }),
+        expect.objectContaining({ id: 'peperoncino.india.divine-sky-boulder.expansion-entry' }),
+        expect.objectContaining({ id: 'peperoncino.india.divine-sky-boulder.before-yuga-change' }),
+        expect.objectContaining({ id: 'peperoncino.india.withering-plain.other-battle-win' }),
+        expect.objectContaining({ id: 'peperoncino.india.withering-plain.recon-round-end' }),
+        expect.objectContaining({ id: 'peperoncino.india.ocean-of-milk.defeat' }),
+      ]),
+    );
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -767,10 +864,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 142,
-      blockedCount: 802,
+      sourceGroundedCount: 152,
+      blockedCount: 792,
       unclassifiedCount: 0,
-      structuredAbilityCount: 250,
+      structuredAbilityCount: 283,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

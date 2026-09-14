@@ -9,7 +9,7 @@
     "runtimeRequestCount": 23,
     "genericCapabilityRequestCount": 21,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 142
+    "affectedIdentityCount": 152
   },
   "requests": [
     {
@@ -577,6 +577,7 @@
         "master.chaos.skill.s1",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.s2",
         "master.hinako.skill.s4",
         "master.sion.skill.s13",
@@ -687,6 +688,33 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[42].skills[7].text#line=3",
           "sha256": "0ee60f412a4fad9ed8ab577b5fee3bcdb97049af10b79c53bdfd29cd70a784ce"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.skills[s1a]#line=285"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/s1a"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=1",
+          "sha256": "257f9884c14c6908034e4b82df125a353c2a53bddcf9e5f2763e152eec0b41b0"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=2",
+          "sha256": "094285f1f05bab71f779c204d16c390b656bcf1f3dd72835a541fa8f1ddb41b1"
         },
         {
           "abilityId": "master.hinako.skill.s2",
@@ -1009,9 +1037,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 11,
-          "specific_handler": 2
+          "specific_handler": 3
         },
-        "handlerCount": 6,
+        "handlerCount": 7,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -1042,6 +1070,8 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fiore.skill.s7",
+        "master.goredolf.skill.ascension",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.s1a",
         "master.hinako.skill.s2",
         "master.hinako.skill.s3",
@@ -1060,6 +1090,11 @@
         "master.ophelia.skill.s5",
         "master.ophelia.skill.s6",
         "master.ophelia.skill.s7",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s1b",
+        "master.peperoncino.skill.s2",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.twice.skill.ascension",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s2",
@@ -1569,6 +1604,60 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[42].skills[7].text#line=3",
           "sha256": "0ee60f412a4fad9ed8ab577b5fee3bcdb97049af10b79c53bdfd29cd70a784ce"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.ascensionSkill#line=286"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/ascension"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[2].text#line=1",
+          "sha256": "e9c1a90931142a18ff1f939348eaf272d0a087ada677c4cab251632f5319702e"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[2].text#line=2",
+          "sha256": "b75edfd83ee5fa7e28da70d7659c5e9d380b353e030f34fe31f059f8717e4fc1"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.skills[s1a]#line=285"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/s1a"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=1",
+          "sha256": "257f9884c14c6908034e4b82df125a353c2a53bddcf9e5f2763e152eec0b41b0"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=2",
+          "sha256": "094285f1f05bab71f779c204d16c390b656bcf1f3dd72835a541fa8f1ddb41b1"
         },
         {
           "abilityId": "master.hinako.skill.s1a",
@@ -2091,6 +2180,195 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[55].skills[8].text#line=2",
           "sha256": "5d7d47df8b72504df2b48c6e9de637165ab2272cf9f983957f3101a756759678"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.ascensionSkill#line=354"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/ascension"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=1",
+          "sha256": "b7920e22ef2375668c9ecdecb8652f419caaf8db3c37af1303df2dfb243c5422"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=2",
+          "sha256": "bb4f8d440b3fc1b72ebbb31fbfce0caf2671f2aec337e8d9022e2137fb555153"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=3",
+          "sha256": "3169c4807a37eca0621ade6110f81d0cc6dc9ff43383ac883853f207e67a5abd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s1b]#line=350"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s1b"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[2].text#line=1",
+          "sha256": "0e9dcb6268094a3bdb40cf21888c45b151f1bc1180373c0b12baaddc54bd0907"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s2]#line=351"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s2"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[3].text#line=1",
+          "sha256": "ca6f50dc130f01275872fccb551ebc03b19760891f3de87a7dad8d99a8003205"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s3]#line=352"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=1",
+          "sha256": "f2a7a77c276bcccbe0bf9d535031f7d4fd6bc17457297c50cf950c0502b304cc"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=2",
+          "sha256": "40698601087c72c4a87af6b3c5506ffd35a8e9fcae00e1c7cc1364542eb77699"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=3",
+          "sha256": "d43d16f1bcd1fb69b45a589d6dc5c1e23abb2ab29df6fab8058b81511c553295"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=4",
+          "sha256": "213ca690879e2158901ca8a45a947d4fef6b6bbe886713a4a13cb51d89d2d546"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=5",
+          "sha256": "274f98393e9fc2e838c28bd23fa49192c02cc9ed0f4bb41cbb00cbad665deb27"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=6",
+          "sha256": "4236b6ff9c22798102599f4a686ef9acc80c2e182f3225361b8710261bbbe9e3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=7",
+          "sha256": "5c8ed36b361040667bb95daaeed79ee303bf8b2f9ae00245a406514b3f580ffb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s4]#line=353"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s4"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=1",
+          "sha256": "1cee9264403f613358dfefa7895761f9d017a32c72191e7492ec74c5f022a605"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=2",
+          "sha256": "f955ad26aa5a2059d6feb30aedd5703e103a3ab1321d778e228b9bee86bfa4cb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=3",
+          "sha256": "c908287b3ec66ec3e4985093d9b93336e3b2d9337d5d36e6b3ba0fda7cfa78fd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=4",
+          "sha256": "6944dc4c4eb442e6b919ee218bf2a8adf9a4e5f41868e3a5fd9206a31136fb9a"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=5",
+          "sha256": "b5f7bce87a5f09b840c0398ae2fb101214a1401f0053ccee48f99538038d4a84"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=6",
+          "sha256": "9cd7edf6928235f07389c0a3766a7e6d346035f5ed0d085d34b171cf9c42dd98"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=7",
+          "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
           "abilityId": "master.twice.skill.ascension",
@@ -2976,10 +3254,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 56,
-          "specific_handler": 14
+          "shared_handler": 57,
+          "specific_handler": 20
         },
-        "handlerCount": 21,
+        "handlerCount": 28,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -3170,6 +3448,7 @@
         "master.ciel.skill.s1b",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.goredolf.skill.s1",
         "master.hinako.skill.ascension",
         "master.hinako.skill.s1a",
         "master.kadoc.skill.ascension",
@@ -3177,6 +3456,7 @@
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
         "servant.amakusa.skill.sc-amakusa-1",
+        "servant.andersen.skill.sc-andersen-2",
         "servant.clytie.skill.sc-clytie-3",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
@@ -3542,6 +3822,27 @@
           "sha256": "0ee60f412a4fad9ed8ab577b5fee3bcdb97049af10b79c53bdfd29cd70a784ce"
         },
         {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.skills[s1]#line=284"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/s1"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[0].text#line=1",
+          "sha256": "0a501ac1e67055e3efed5ed9e8902df837a93a11c4c22fd02ec5aa232b786124"
+        },
+        {
           "abilityId": "master.hinako.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.hinako/芥雏子"
@@ -3711,6 +4012,27 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[45].abilities[0].printedClause",
           "sha256": "40ca176f770bc55f453580c51729752eebcab51af6377ac7ca893764bb7027af"
+        },
+        {
+          "abilityId": "servant.andersen.skill.sc-andersen-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/汉斯·克里斯蒂安·安徒生.htm"
+        },
+        {
+          "abilityId": "servant.andersen.skill.sc-andersen-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.andersen/汉斯·克里斯蒂安·安徒生"
+        },
+        {
+          "abilityId": "servant.andersen.skill.sc-andersen-2",
+          "document": "src/content/authoring/cards.json",
+          "locator": "skillCards[68]"
+        },
+        {
+          "abilityId": "servant.andersen.skill.sc-andersen-2",
+          "document": "src/content/authoring/cards.json",
+          "locator": "skillCards[68].abilities[0].printedClause",
+          "sha256": "8ca9c8143d72538f449be401909f1f0dc39879d446c0b817283d353e47b0eca4"
         },
         {
           "abilityId": "servant.clytie.skill.sc-clytie-3",
@@ -3993,10 +4315,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 27,
-          "specific_handler": 4
+          "shared_handler": 28,
+          "specific_handler": 5
         },
-        "handlerCount": 8,
+        "handlerCount": 9,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -4039,6 +4361,8 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fiore.skill.s7",
+        "master.goredolf.skill.ascension",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.s1a",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
@@ -4053,6 +4377,9 @@
         "master.ophelia.skill.ascension",
         "master.ophelia.skill.s1",
         "master.ophelia.skill.s1b",
+        "master.peperoncino.skill.s2",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.sion.skill.s13",
         "master.twice.skill.ascension",
         "master.twice.skill.s1",
@@ -4899,6 +5226,60 @@
           "sha256": "0ee60f412a4fad9ed8ab577b5fee3bcdb97049af10b79c53bdfd29cd70a784ce"
         },
         {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.ascensionSkill#line=286"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/ascension"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[2].text#line=1",
+          "sha256": "e9c1a90931142a18ff1f939348eaf272d0a087ada677c4cab251632f5319702e"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[2].text#line=2",
+          "sha256": "b75edfd83ee5fa7e28da70d7659c5e9d380b353e030f34fe31f059f8717e4fc1"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.skills[s1a]#line=285"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/s1a"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=1",
+          "sha256": "257f9884c14c6908034e4b82df125a353c2a53bddcf9e5f2763e152eec0b41b0"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=2",
+          "sha256": "094285f1f05bab71f779c204d16c390b656bcf1f3dd72835a541fa8f1ddb41b1"
+        },
+        {
           "abilityId": "master.hinako.skill.s1a",
           "document": "Fate_Domination-开发版",
           "locator": "master.hinako/芥雏子"
@@ -5293,6 +5674,141 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[55].skills[2].text#line=1",
           "sha256": "5d9923e1f4bb8b4d6ae38eac6a74f0825a64ea86b69e99287dea0847489bee9b"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s2]#line=351"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s2"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[3].text#line=1",
+          "sha256": "ca6f50dc130f01275872fccb551ebc03b19760891f3de87a7dad8d99a8003205"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s3]#line=352"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=1",
+          "sha256": "f2a7a77c276bcccbe0bf9d535031f7d4fd6bc17457297c50cf950c0502b304cc"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=2",
+          "sha256": "40698601087c72c4a87af6b3c5506ffd35a8e9fcae00e1c7cc1364542eb77699"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=3",
+          "sha256": "d43d16f1bcd1fb69b45a589d6dc5c1e23abb2ab29df6fab8058b81511c553295"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=4",
+          "sha256": "213ca690879e2158901ca8a45a947d4fef6b6bbe886713a4a13cb51d89d2d546"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=5",
+          "sha256": "274f98393e9fc2e838c28bd23fa49192c02cc9ed0f4bb41cbb00cbad665deb27"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=6",
+          "sha256": "4236b6ff9c22798102599f4a686ef9acc80c2e182f3225361b8710261bbbe9e3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=7",
+          "sha256": "5c8ed36b361040667bb95daaeed79ee303bf8b2f9ae00245a406514b3f580ffb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s4]#line=353"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s4"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=1",
+          "sha256": "1cee9264403f613358dfefa7895761f9d017a32c72191e7492ec74c5f022a605"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=2",
+          "sha256": "f955ad26aa5a2059d6feb30aedd5703e103a3ab1321d778e228b9bee86bfa4cb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=3",
+          "sha256": "c908287b3ec66ec3e4985093d9b93336e3b2d9337d5d36e6b3ba0fda7cfa78fd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=4",
+          "sha256": "6944dc4c4eb442e6b919ee218bf2a8adf9a4e5f41868e3a5fd9206a31136fb9a"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=5",
+          "sha256": "b5f7bce87a5f09b840c0398ae2fb101214a1401f0053ccee48f99538038d4a84"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=6",
+          "sha256": "9cd7edf6928235f07389c0a3766a7e6d346035f5ed0d085d34b171cf9c42dd98"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=7",
+          "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
           "abilityId": "master.sion.skill.s13",
@@ -6884,9 +7400,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 92,
-          "specific_handler": 15
+          "specific_handler": 20
         },
-        "handlerCount": 22,
+        "handlerCount": 27,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -6905,6 +7421,8 @@
         "master.fiore.skill.s7",
         "master.hinako.skill.ascension",
         "master.ophelia.skill.s2",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s1b",
         "master.sion.skill.s13",
         "servant.roberts.skill.sc-roberts-1",
         "servant.roberts.skill.sc-roberts-2"
@@ -7085,6 +7603,60 @@
           "sha256": "6e7284c8c857acbbb75e39dc744443ec75ff0dc241f8be0a545f04574ed6ae4f"
         },
         {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.ascensionSkill#line=354"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/ascension"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=1",
+          "sha256": "b7920e22ef2375668c9ecdecb8652f419caaf8db3c37af1303df2dfb243c5422"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=2",
+          "sha256": "bb4f8d440b3fc1b72ebbb31fbfce0caf2671f2aec337e8d9022e2137fb555153"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=3",
+          "sha256": "3169c4807a37eca0621ade6110f81d0cc6dc9ff43383ac883853f207e67a5abd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s1b]#line=350"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s1b"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[2].text#line=1",
+          "sha256": "0e9dcb6268094a3bdb40cf21888c45b151f1bc1180373c0b12baaddc54bd0907"
+        },
+        {
           "abilityId": "master.sion.skill.s13",
           "document": "Fate_Domination-开发版",
           "locator": "master.sion/紫苑·艾尔特纳姆"
@@ -7179,10 +7751,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 6,
-          "specific_handler": 3
+          "shared_handler": 7,
+          "specific_handler": 4
         },
-        "handlerCount": 6,
+        "handlerCount": 8,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -7212,6 +7784,11 @@
         "master.ophelia.skill.s5",
         "master.ophelia.skill.s6",
         "master.ophelia.skill.s7",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s1",
+        "master.peperoncino.skill.s2",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.twice.skill.s1",
         "master.wodime.skill.s1",
         "master.wodime.skill.s4",
@@ -7711,6 +8288,195 @@
           "sha256": "5d7d47df8b72504df2b48c6e9de637165ab2272cf9f983957f3101a756759678"
         },
         {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.ascensionSkill#line=354"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/ascension"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=1",
+          "sha256": "b7920e22ef2375668c9ecdecb8652f419caaf8db3c37af1303df2dfb243c5422"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=2",
+          "sha256": "bb4f8d440b3fc1b72ebbb31fbfce0caf2671f2aec337e8d9022e2137fb555153"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=3",
+          "sha256": "3169c4807a37eca0621ade6110f81d0cc6dc9ff43383ac883853f207e67a5abd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s1]#line=348"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s1"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[0].text#line=1",
+          "sha256": "6d5d8ae3a0cc25f78fd4f11b26c3d59353573de7036a5d60f15829331e5affec"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s2]#line=351"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s2"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[3].text#line=1",
+          "sha256": "ca6f50dc130f01275872fccb551ebc03b19760891f3de87a7dad8d99a8003205"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s3]#line=352"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=1",
+          "sha256": "f2a7a77c276bcccbe0bf9d535031f7d4fd6bc17457297c50cf950c0502b304cc"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=2",
+          "sha256": "40698601087c72c4a87af6b3c5506ffd35a8e9fcae00e1c7cc1364542eb77699"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=3",
+          "sha256": "d43d16f1bcd1fb69b45a589d6dc5c1e23abb2ab29df6fab8058b81511c553295"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=4",
+          "sha256": "213ca690879e2158901ca8a45a947d4fef6b6bbe886713a4a13cb51d89d2d546"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=5",
+          "sha256": "274f98393e9fc2e838c28bd23fa49192c02cc9ed0f4bb41cbb00cbad665deb27"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=6",
+          "sha256": "4236b6ff9c22798102599f4a686ef9acc80c2e182f3225361b8710261bbbe9e3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=7",
+          "sha256": "5c8ed36b361040667bb95daaeed79ee303bf8b2f9ae00245a406514b3f580ffb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s4]#line=353"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s4"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=1",
+          "sha256": "1cee9264403f613358dfefa7895761f9d017a32c72191e7492ec74c5f022a605"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=2",
+          "sha256": "f955ad26aa5a2059d6feb30aedd5703e103a3ab1321d778e228b9bee86bfa4cb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=3",
+          "sha256": "c908287b3ec66ec3e4985093d9b93336e3b2d9337d5d36e6b3ba0fda7cfa78fd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=4",
+          "sha256": "6944dc4c4eb442e6b919ee218bf2a8adf9a4e5f41868e3a5fd9206a31136fb9a"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=5",
+          "sha256": "b5f7bce87a5f09b840c0398ae2fb101214a1401f0053ccee48f99538038d4a84"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=6",
+          "sha256": "9cd7edf6928235f07389c0a3766a7e6d346035f5ed0d085d34b171cf9c42dd98"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=7",
+          "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
+        },
+        {
           "abilityId": "master.twice.skill.s1",
           "document": "Fate_Domination-开发版",
           "locator": "master.twice/特维斯·I·皮斯曼"
@@ -8063,10 +8829,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 26,
-          "specific_handler": 4
+          "shared_handler": 27,
+          "specific_handler": 8
         },
-        "handlerCount": 9,
+        "handlerCount": 14,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -8093,11 +8859,17 @@
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
         "master.fiore.skill.s6",
+        "master.goredolf.skill.ascension",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.ascension",
         "master.hinako.skill.s2",
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
         "master.ophelia.skill.s2",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s1b",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "servant.andersen.skill.sc-andersen-2",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.atalanta.skill.sc-atalanta-1",
@@ -8474,6 +9246,60 @@
           "sha256": "e880efb6b838c57a6ba1b24e2f8a16415e5d9556f6ebf6b5822c42cafbb6ddce"
         },
         {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.ascensionSkill#line=286"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/ascension"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[2].text#line=1",
+          "sha256": "e9c1a90931142a18ff1f939348eaf272d0a087ada677c4cab251632f5319702e"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[2].text#line=2",
+          "sha256": "b75edfd83ee5fa7e28da70d7659c5e9d380b353e030f34fe31f059f8717e4fc1"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.skills[s1a]#line=285"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/s1a"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=1",
+          "sha256": "257f9884c14c6908034e4b82df125a353c2a53bddcf9e5f2763e152eec0b41b0"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=2",
+          "sha256": "094285f1f05bab71f779c204d16c390b656bcf1f3dd72835a541fa8f1ddb41b1"
+        },
+        {
           "abilityId": "master.hinako.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.hinako/芥雏子"
@@ -8601,6 +9427,174 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[55].skills[3].text#line=2",
           "sha256": "6e7284c8c857acbbb75e39dc744443ec75ff0dc241f8be0a545f04574ed6ae4f"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.ascensionSkill#line=354"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/ascension"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=1",
+          "sha256": "b7920e22ef2375668c9ecdecb8652f419caaf8db3c37af1303df2dfb243c5422"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=2",
+          "sha256": "bb4f8d440b3fc1b72ebbb31fbfce0caf2671f2aec337e8d9022e2137fb555153"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=3",
+          "sha256": "3169c4807a37eca0621ade6110f81d0cc6dc9ff43383ac883853f207e67a5abd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s1b]#line=350"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s1b"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[2].text#line=1",
+          "sha256": "0e9dcb6268094a3bdb40cf21888c45b151f1bc1180373c0b12baaddc54bd0907"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s3]#line=352"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=1",
+          "sha256": "f2a7a77c276bcccbe0bf9d535031f7d4fd6bc17457297c50cf950c0502b304cc"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=2",
+          "sha256": "40698601087c72c4a87af6b3c5506ffd35a8e9fcae00e1c7cc1364542eb77699"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=3",
+          "sha256": "d43d16f1bcd1fb69b45a589d6dc5c1e23abb2ab29df6fab8058b81511c553295"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=4",
+          "sha256": "213ca690879e2158901ca8a45a947d4fef6b6bbe886713a4a13cb51d89d2d546"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=5",
+          "sha256": "274f98393e9fc2e838c28bd23fa49192c02cc9ed0f4bb41cbb00cbad665deb27"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=6",
+          "sha256": "4236b6ff9c22798102599f4a686ef9acc80c2e182f3225361b8710261bbbe9e3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=7",
+          "sha256": "5c8ed36b361040667bb95daaeed79ee303bf8b2f9ae00245a406514b3f580ffb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s4]#line=353"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s4"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=1",
+          "sha256": "1cee9264403f613358dfefa7895761f9d017a32c72191e7492ec74c5f022a605"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=2",
+          "sha256": "f955ad26aa5a2059d6feb30aedd5703e103a3ab1321d778e228b9bee86bfa4cb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=3",
+          "sha256": "c908287b3ec66ec3e4985093d9b93336e3b2d9337d5d36e6b3ba0fda7cfa78fd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=4",
+          "sha256": "6944dc4c4eb442e6b919ee218bf2a8adf9a4e5f41868e3a5fd9206a31136fb9a"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=5",
+          "sha256": "b5f7bce87a5f09b840c0398ae2fb101214a1401f0053ccee48f99538038d4a84"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=6",
+          "sha256": "9cd7edf6928235f07389c0a3766a7e6d346035f5ed0d085d34b171cf9c42dd98"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=7",
+          "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
           "abilityId": "servant.andersen.skill.sc-andersen-2",
@@ -9423,10 +10417,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 44,
-          "specific_handler": 6
+          "shared_handler": 45,
+          "specific_handler": 11
         },
-        "handlerCount": 11,
+        "handlerCount": 17,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -9460,6 +10454,8 @@
         "master.fiore.skill.s4",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.goredolf.skill.ascension",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.s2",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
@@ -9474,6 +10470,10 @@
         "master.ophelia.skill.s5",
         "master.ophelia.skill.s6",
         "master.ophelia.skill.s7",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s1b",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.twice.skill.ascension",
         "master.wodime.skill.s2",
         "master.wodime.skill.s3",
@@ -10054,6 +11054,60 @@
           "sha256": "0ee60f412a4fad9ed8ab577b5fee3bcdb97049af10b79c53bdfd29cd70a784ce"
         },
         {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.ascensionSkill#line=286"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/ascension"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[2].text#line=1",
+          "sha256": "e9c1a90931142a18ff1f939348eaf272d0a087ada677c4cab251632f5319702e"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[2].text#line=2",
+          "sha256": "b75edfd83ee5fa7e28da70d7659c5e9d380b353e030f34fe31f059f8717e4fc1"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.skills[s1a]#line=285"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/s1a"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=1",
+          "sha256": "257f9884c14c6908034e4b82df125a353c2a53bddcf9e5f2763e152eec0b41b0"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=2",
+          "sha256": "094285f1f05bab71f779c204d16c390b656bcf1f3dd72835a541fa8f1ddb41b1"
+        },
+        {
           "abilityId": "master.hinako.skill.s2",
           "document": "Fate_Domination-开发版",
           "locator": "master.hinako/芥雏子"
@@ -10472,6 +11526,174 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[55].skills[8].text#line=2",
           "sha256": "5d7d47df8b72504df2b48c6e9de637165ab2272cf9f983957f3101a756759678"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.ascensionSkill#line=354"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/ascension"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=1",
+          "sha256": "b7920e22ef2375668c9ecdecb8652f419caaf8db3c37af1303df2dfb243c5422"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=2",
+          "sha256": "bb4f8d440b3fc1b72ebbb31fbfce0caf2671f2aec337e8d9022e2137fb555153"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=3",
+          "sha256": "3169c4807a37eca0621ade6110f81d0cc6dc9ff43383ac883853f207e67a5abd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s1b]#line=350"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s1b"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[2].text#line=1",
+          "sha256": "0e9dcb6268094a3bdb40cf21888c45b151f1bc1180373c0b12baaddc54bd0907"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s3]#line=352"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=1",
+          "sha256": "f2a7a77c276bcccbe0bf9d535031f7d4fd6bc17457297c50cf950c0502b304cc"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=2",
+          "sha256": "40698601087c72c4a87af6b3c5506ffd35a8e9fcae00e1c7cc1364542eb77699"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=3",
+          "sha256": "d43d16f1bcd1fb69b45a589d6dc5c1e23abb2ab29df6fab8058b81511c553295"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=4",
+          "sha256": "213ca690879e2158901ca8a45a947d4fef6b6bbe886713a4a13cb51d89d2d546"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=5",
+          "sha256": "274f98393e9fc2e838c28bd23fa49192c02cc9ed0f4bb41cbb00cbad665deb27"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=6",
+          "sha256": "4236b6ff9c22798102599f4a686ef9acc80c2e182f3225361b8710261bbbe9e3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=7",
+          "sha256": "5c8ed36b361040667bb95daaeed79ee303bf8b2f9ae00245a406514b3f580ffb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s4]#line=353"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s4"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=1",
+          "sha256": "1cee9264403f613358dfefa7895761f9d017a32c72191e7492ec74c5f022a605"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=2",
+          "sha256": "f955ad26aa5a2059d6feb30aedd5703e103a3ab1321d778e228b9bee86bfa4cb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=3",
+          "sha256": "c908287b3ec66ec3e4985093d9b93336e3b2d9337d5d36e6b3ba0fda7cfa78fd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=4",
+          "sha256": "6944dc4c4eb442e6b919ee218bf2a8adf9a4e5f41868e3a5fd9206a31136fb9a"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=5",
+          "sha256": "b5f7bce87a5f09b840c0398ae2fb101214a1401f0053ccee48f99538038d4a84"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=6",
+          "sha256": "9cd7edf6928235f07389c0a3766a7e6d346035f5ed0d085d34b171cf9c42dd98"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=7",
+          "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
           "abilityId": "master.twice.skill.ascension",
@@ -11237,10 +12459,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 52,
-          "specific_handler": 11
+          "shared_handler": 53,
+          "specific_handler": 16
         },
-        "handlerCount": 20,
+        "handlerCount": 26,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -11253,16 +12475,49 @@
       "capabilityId": "GENERIC_MOVEMENT",
       "mechanicFamily": "MOVEMENT",
       "affectedAbilityIds": [
+        "master.chaos.skill.s10",
         "master.chaos.skill.s12",
         "master.fiore.skill.s2",
         "master.fiore.skill.s5",
+        "master.goredolf.skill.s1a",
         "master.kadoc.skill.s4",
+        "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
+        "master.peperoncino.skill.s1b",
+        "master.peperoncino.skill.s4",
         "servant.drake.skill.sc-drake-2",
+        "servant.edison.skill.sc-edison-3",
         "servant.gorgon.skill.sc-gorgon-3",
         "servant.mozart.skill.sc-mozart-1"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.chaos.skill.s10",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Sentinels"
+        },
+        {
+          "abilityId": "master.chaos.skill.s10",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s10",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s10"
+        },
+        {
+          "abilityId": "master.chaos.skill.s10",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[9].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s10",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[9].text#line=2",
+          "sha256": "b88f8685fb6c41585a36040a12a1d822a7e83c5f6e5443a5d29874bf8e32901d"
+        },
         {
           "abilityId": "master.chaos.skill.s12",
           "document": "Fate/Domination Wiki",
@@ -11351,6 +12606,33 @@
           "sha256": "22b389d29d9f2fa1ee0da48bf4406532bf75ce33dc8e3a6f4eeda06deb327ce6"
         },
         {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.skills[s1a]#line=285"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/s1a"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=1",
+          "sha256": "257f9884c14c6908034e4b82df125a353c2a53bddcf9e5f2763e152eec0b41b0"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=2",
+          "sha256": "094285f1f05bab71f779c204d16c390b656bcf1f3dd72835a541fa8f1ddb41b1"
+        },
+        {
           "abilityId": "master.kadoc.skill.s4",
           "document": "Fate_Domination-开发版",
           "locator": "master.kadoc/卡多克·泽姆露普斯"
@@ -11376,6 +12658,27 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[54].skills[4].text#line=2",
           "sha256": "a4081eaad773755f43a1cddf8f2e46e72a3c6e6e18f3fc95c64130fc70cb0e50"
+        },
+        {
+          "abilityId": "master.kayneth.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.kayneth/肯尼斯"
+        },
+        {
+          "abilityId": "master.kayneth.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.kayneth/s3"
+        },
+        {
+          "abilityId": "master.kayneth.skill.s3",
+          "document": "src/content/authoring/cards.json",
+          "locator": "skillCards[37]"
+        },
+        {
+          "abilityId": "master.kayneth.skill.s3",
+          "document": "src/content/authoring/cards.json",
+          "locator": "skillCards[37].abilities[0].printedClause",
+          "sha256": "c3e30045f8b00e75f66735aace73f68594ac59d77c0782de75093dbaee31a294"
         },
         {
           "abilityId": "master.kuzuki.skill.s2",
@@ -11405,6 +12708,84 @@
           "sha256": "9791b82ccb714d58496185f8c15ce2b66ddcd11d37ae22403293d2c7edb84a6c"
         },
         {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s1b]#line=350"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s1b"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[2].text#line=1",
+          "sha256": "0e9dcb6268094a3bdb40cf21888c45b151f1bc1180373c0b12baaddc54bd0907"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s4]#line=353"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s4"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=1",
+          "sha256": "1cee9264403f613358dfefa7895761f9d017a32c72191e7492ec74c5f022a605"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=2",
+          "sha256": "f955ad26aa5a2059d6feb30aedd5703e103a3ab1321d778e228b9bee86bfa4cb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=3",
+          "sha256": "c908287b3ec66ec3e4985093d9b93336e3b2d9337d5d36e6b3ba0fda7cfa78fd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=4",
+          "sha256": "6944dc4c4eb442e6b919ee218bf2a8adf9a4e5f41868e3a5fd9206a31136fb9a"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=5",
+          "sha256": "b5f7bce87a5f09b840c0398ae2fb101214a1401f0053ccee48f99538038d4a84"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=6",
+          "sha256": "9cd7edf6928235f07389c0a3766a7e6d346035f5ed0d085d34b171cf9c42dd98"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=7",
+          "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
@@ -11424,6 +12805,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[47].abilities[0].printedClause",
           "sha256": "7249a21a955a81afc518ae8c364415d2abbe3ea44a5eb1fc27a1e7a810f5edf9"
+        },
+        {
+          "abilityId": "servant.edison.skill.sc-edison-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/托马斯·爱迪生.htm"
+        },
+        {
+          "abilityId": "servant.edison.skill.sc-edison-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.edison/托马斯·爱迪生"
+        },
+        {
+          "abilityId": "servant.edison.skill.sc-edison-3",
+          "document": "src/content/authoring/cards.json",
+          "locator": "skillCards[64]"
+        },
+        {
+          "abilityId": "servant.edison.skill.sc-edison-3",
+          "document": "src/content/authoring/cards.json",
+          "locator": "skillCards[64].abilities[0].printedClause",
+          "sha256": "2ba3407799b1498314e85709cd69ea2f0dc309fd88c7ac61efce4cb0011fb734"
+        },
+        {
+          "abilityId": "servant.edison.skill.sc-edison-3",
+          "document": "src/content/authoring/cards.json",
+          "locator": "skillCards[64].abilities[1].printedClause",
+          "sha256": "6e988f3620874deab1c4835aa1bcde3f06392296cead84123f401eb4d296df55"
         },
         {
           "abilityId": "servant.gorgon.skill.sc-gorgon-3",
@@ -11511,10 +12919,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 7,
-          "specific_handler": 1
+          "shared_handler": 11,
+          "specific_handler": 3
         },
-        "handlerCount": 4,
+        "handlerCount": 8,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -11543,6 +12951,9 @@
         "master.fiore.skill.s6",
         "master.hinako.skill.ascension",
         "master.kadoc.skill.ascension",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
@@ -11982,6 +13393,153 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[54].skills[6].text#line=3",
           "sha256": "b9389954966307a7466aca8cd46481dde2f30d5feb3669bacba343da6b13e8de"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.ascensionSkill#line=354"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/ascension"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=1",
+          "sha256": "b7920e22ef2375668c9ecdecb8652f419caaf8db3c37af1303df2dfb243c5422"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=2",
+          "sha256": "bb4f8d440b3fc1b72ebbb31fbfce0caf2671f2aec337e8d9022e2137fb555153"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=3",
+          "sha256": "3169c4807a37eca0621ade6110f81d0cc6dc9ff43383ac883853f207e67a5abd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s3]#line=352"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=1",
+          "sha256": "f2a7a77c276bcccbe0bf9d535031f7d4fd6bc17457297c50cf950c0502b304cc"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=2",
+          "sha256": "40698601087c72c4a87af6b3c5506ffd35a8e9fcae00e1c7cc1364542eb77699"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=3",
+          "sha256": "d43d16f1bcd1fb69b45a589d6dc5c1e23abb2ab29df6fab8058b81511c553295"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=4",
+          "sha256": "213ca690879e2158901ca8a45a947d4fef6b6bbe886713a4a13cb51d89d2d546"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=5",
+          "sha256": "274f98393e9fc2e838c28bd23fa49192c02cc9ed0f4bb41cbb00cbad665deb27"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=6",
+          "sha256": "4236b6ff9c22798102599f4a686ef9acc80c2e182f3225361b8710261bbbe9e3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=7",
+          "sha256": "5c8ed36b361040667bb95daaeed79ee303bf8b2f9ae00245a406514b3f580ffb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s4]#line=353"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s4"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=1",
+          "sha256": "1cee9264403f613358dfefa7895761f9d017a32c72191e7492ec74c5f022a605"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=2",
+          "sha256": "f955ad26aa5a2059d6feb30aedd5703e103a3ab1321d778e228b9bee86bfa4cb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=3",
+          "sha256": "c908287b3ec66ec3e4985093d9b93336e3b2d9337d5d36e6b3ba0fda7cfa78fd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=4",
+          "sha256": "6944dc4c4eb442e6b919ee218bf2a8adf9a4e5f41868e3a5fd9206a31136fb9a"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=5",
+          "sha256": "b5f7bce87a5f09b840c0398ae2fb101214a1401f0053ccee48f99538038d4a84"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=6",
+          "sha256": "9cd7edf6928235f07389c0a3766a7e6d346035f5ed0d085d34b171cf9c42dd98"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=7",
+          "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
           "abilityId": "master.sion.skill.s13",
@@ -12556,9 +14114,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 35,
-          "specific_handler": 5
+          "specific_handler": 8
         },
-        "handlerCount": 8,
+        "handlerCount": 11,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -12583,6 +14141,9 @@
         "master.ciel.skill.s3",
         "master.fiore.skill.s4",
         "master.fiore.skill.s7",
+        "master.goredolf.skill.ascension",
+        "master.goredolf.skill.s1",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.s2",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
@@ -12593,6 +14154,10 @@
         "master.ophelia.skill.s5",
         "master.ophelia.skill.s6",
         "master.ophelia.skill.s7",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s1b",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.twice.skill.ascension",
         "master.wodime.skill.s2",
         "master.wodime.skill.s3",
@@ -12935,6 +14500,81 @@
           "sha256": "0ee60f412a4fad9ed8ab577b5fee3bcdb97049af10b79c53bdfd29cd70a784ce"
         },
         {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.ascensionSkill#line=286"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/ascension"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[2].text#line=1",
+          "sha256": "e9c1a90931142a18ff1f939348eaf272d0a087ada677c4cab251632f5319702e"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[2].text#line=2",
+          "sha256": "b75edfd83ee5fa7e28da70d7659c5e9d380b353e030f34fe31f059f8717e4fc1"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.skills[s1]#line=284"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/s1"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[0].text#line=1",
+          "sha256": "0a501ac1e67055e3efed5ed9e8902df837a93a11c4c22fd02ec5aa232b786124"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.skills[s1a]#line=285"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/s1a"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=1",
+          "sha256": "257f9884c14c6908034e4b82df125a353c2a53bddcf9e5f2763e152eec0b41b0"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=2",
+          "sha256": "094285f1f05bab71f779c204d16c390b656bcf1f3dd72835a541fa8f1ddb41b1"
+        },
+        {
           "abilityId": "master.hinako.skill.s2",
           "document": "Fate_Domination-开发版",
           "locator": "master.hinako/芥雏子"
@@ -13257,6 +14897,174 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[55].skills[8].text#line=2",
           "sha256": "5d7d47df8b72504df2b48c6e9de637165ab2272cf9f983957f3101a756759678"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.ascensionSkill#line=354"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/ascension"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=1",
+          "sha256": "b7920e22ef2375668c9ecdecb8652f419caaf8db3c37af1303df2dfb243c5422"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=2",
+          "sha256": "bb4f8d440b3fc1b72ebbb31fbfce0caf2671f2aec337e8d9022e2137fb555153"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=3",
+          "sha256": "3169c4807a37eca0621ade6110f81d0cc6dc9ff43383ac883853f207e67a5abd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s1b]#line=350"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s1b"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1b",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[2].text#line=1",
+          "sha256": "0e9dcb6268094a3bdb40cf21888c45b151f1bc1180373c0b12baaddc54bd0907"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s3]#line=352"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=1",
+          "sha256": "f2a7a77c276bcccbe0bf9d535031f7d4fd6bc17457297c50cf950c0502b304cc"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=2",
+          "sha256": "40698601087c72c4a87af6b3c5506ffd35a8e9fcae00e1c7cc1364542eb77699"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=3",
+          "sha256": "d43d16f1bcd1fb69b45a589d6dc5c1e23abb2ab29df6fab8058b81511c553295"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=4",
+          "sha256": "213ca690879e2158901ca8a45a947d4fef6b6bbe886713a4a13cb51d89d2d546"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=5",
+          "sha256": "274f98393e9fc2e838c28bd23fa49192c02cc9ed0f4bb41cbb00cbad665deb27"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=6",
+          "sha256": "4236b6ff9c22798102599f4a686ef9acc80c2e182f3225361b8710261bbbe9e3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=7",
+          "sha256": "5c8ed36b361040667bb95daaeed79ee303bf8b2f9ae00245a406514b3f580ffb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s4]#line=353"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s4"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=1",
+          "sha256": "1cee9264403f613358dfefa7895761f9d017a32c72191e7492ec74c5f022a605"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=2",
+          "sha256": "f955ad26aa5a2059d6feb30aedd5703e103a3ab1321d778e228b9bee86bfa4cb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=3",
+          "sha256": "c908287b3ec66ec3e4985093d9b93336e3b2d9337d5d36e6b3ba0fda7cfa78fd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=4",
+          "sha256": "6944dc4c4eb442e6b919ee218bf2a8adf9a4e5f41868e3a5fd9206a31136fb9a"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=5",
+          "sha256": "b5f7bce87a5f09b840c0398ae2fb101214a1401f0053ccee48f99538038d4a84"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=6",
+          "sha256": "9cd7edf6928235f07389c0a3766a7e6d346035f5ed0d085d34b171cf9c42dd98"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=7",
+          "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
           "abilityId": "master.twice.skill.ascension",
@@ -13689,10 +15497,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 28,
-          "specific_handler": 9
+          "shared_handler": 29,
+          "specific_handler": 15
         },
-        "handlerCount": 16,
+        "handlerCount": 23,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -13721,12 +15529,15 @@
         "master.fiore.skill.s1a",
         "master.fiore.skill.s3",
         "master.fiore.skill.s6",
+        "master.goredolf.skill.ascension",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.s3",
         "master.kadoc.skill.ascension",
         "master.kadoc.skill.s1a",
         "master.kadoc.skill.s3",
         "master.kadoc.skill.s4",
         "master.kadoc.skill.s5",
+        "master.peperoncino.skill.ascension",
         "master.wodime.skill.s3",
         "servant.albion.skill.sc-albion-1",
         "servant.drake.skill.sc-drake-3",
@@ -14138,6 +15949,60 @@
           "sha256": "e880efb6b838c57a6ba1b24e2f8a16415e5d9556f6ebf6b5822c42cafbb6ddce"
         },
         {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.ascensionSkill#line=286"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/ascension"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[2].text#line=1",
+          "sha256": "e9c1a90931142a18ff1f939348eaf272d0a087ada677c4cab251632f5319702e"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[2].text#line=2",
+          "sha256": "b75edfd83ee5fa7e28da70d7659c5e9d380b353e030f34fe31f059f8717e4fc1"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.skills[s1a]#line=285"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/s1a"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=1",
+          "sha256": "257f9884c14c6908034e4b82df125a353c2a53bddcf9e5f2763e152eec0b41b0"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=2",
+          "sha256": "094285f1f05bab71f779c204d16c390b656bcf1f3dd72835a541fa8f1ddb41b1"
+        },
+        {
           "abilityId": "master.hinako.skill.s3",
           "document": "Fate_Domination-开发版",
           "locator": "master.hinako/芥雏子"
@@ -14298,6 +16163,39 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[54].skills[5].text#line=2",
           "sha256": "1f21da1740bfe6ac8e30f1ab8d8e88392294436ee1458acf405f628e22840d0c"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.ascensionSkill#line=354"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/ascension"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=1",
+          "sha256": "b7920e22ef2375668c9ecdecb8652f419caaf8db3c37af1303df2dfb243c5422"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=2",
+          "sha256": "bb4f8d440b3fc1b72ebbb31fbfce0caf2671f2aec337e8d9022e2137fb555153"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=3",
+          "sha256": "3169c4807a37eca0621ade6110f81d0cc6dc9ff43383ac883853f207e67a5abd"
         },
         {
           "abilityId": "master.wodime.skill.s3",
@@ -14818,9 +16716,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 33,
-          "specific_handler": 7
+          "specific_handler": 10
         },
-        "handlerCount": 14,
+        "handlerCount": 17,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -14848,6 +16746,9 @@
         "master.hinako.skill.ascension",
         "master.kadoc.skill.ascension",
         "master.ophelia.skill.ascension",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.astolfo.skill.sc-astolfo-1",
@@ -15249,6 +17150,153 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[55].skills[9].text#line=2",
           "sha256": "0b36c27da8e8e4204cd27b87970303af4fa64c020ac7870418f38c89943ec84c"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.ascensionSkill#line=354"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/ascension"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=1",
+          "sha256": "b7920e22ef2375668c9ecdecb8652f419caaf8db3c37af1303df2dfb243c5422"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=2",
+          "sha256": "bb4f8d440b3fc1b72ebbb31fbfce0caf2671f2aec337e8d9022e2137fb555153"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=3",
+          "sha256": "3169c4807a37eca0621ade6110f81d0cc6dc9ff43383ac883853f207e67a5abd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s3]#line=352"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=1",
+          "sha256": "f2a7a77c276bcccbe0bf9d535031f7d4fd6bc17457297c50cf950c0502b304cc"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=2",
+          "sha256": "40698601087c72c4a87af6b3c5506ffd35a8e9fcae00e1c7cc1364542eb77699"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=3",
+          "sha256": "d43d16f1bcd1fb69b45a589d6dc5c1e23abb2ab29df6fab8058b81511c553295"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=4",
+          "sha256": "213ca690879e2158901ca8a45a947d4fef6b6bbe886713a4a13cb51d89d2d546"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=5",
+          "sha256": "274f98393e9fc2e838c28bd23fa49192c02cc9ed0f4bb41cbb00cbad665deb27"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=6",
+          "sha256": "4236b6ff9c22798102599f4a686ef9acc80c2e182f3225361b8710261bbbe9e3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=7",
+          "sha256": "5c8ed36b361040667bb95daaeed79ee303bf8b2f9ae00245a406514b3f580ffb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s4]#line=353"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s4"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=1",
+          "sha256": "1cee9264403f613358dfefa7895761f9d017a32c72191e7492ec74c5f022a605"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=2",
+          "sha256": "f955ad26aa5a2059d6feb30aedd5703e103a3ab1321d778e228b9bee86bfa4cb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=3",
+          "sha256": "c908287b3ec66ec3e4985093d9b93336e3b2d9337d5d36e6b3ba0fda7cfa78fd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=4",
+          "sha256": "6944dc4c4eb442e6b919ee218bf2a8adf9a4e5f41868e3a5fd9206a31136fb9a"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=5",
+          "sha256": "b5f7bce87a5f09b840c0398ae2fb101214a1401f0053ccee48f99538038d4a84"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=6",
+          "sha256": "9cd7edf6928235f07389c0a3766a7e6d346035f5ed0d085d34b171cf9c42dd98"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=7",
+          "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
           "abilityId": "master.sion.skill.s13",
@@ -15700,9 +17748,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 28,
-          "specific_handler": 6
+          "specific_handler": 9
         },
-        "handlerCount": 9,
+        "handlerCount": 12,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -16149,6 +18197,9 @@
         "master.fiore.skill.s6",
         "master.hinako.skill.ascension",
         "master.kadoc.skill.ascension",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
@@ -16588,6 +18639,153 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[54].skills[6].text#line=3",
           "sha256": "b9389954966307a7466aca8cd46481dde2f30d5feb3669bacba343da6b13e8de"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.ascensionSkill#line=354"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/ascension"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=1",
+          "sha256": "b7920e22ef2375668c9ecdecb8652f419caaf8db3c37af1303df2dfb243c5422"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=2",
+          "sha256": "bb4f8d440b3fc1b72ebbb31fbfce0caf2671f2aec337e8d9022e2137fb555153"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=3",
+          "sha256": "3169c4807a37eca0621ade6110f81d0cc6dc9ff43383ac883853f207e67a5abd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s3]#line=352"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=1",
+          "sha256": "f2a7a77c276bcccbe0bf9d535031f7d4fd6bc17457297c50cf950c0502b304cc"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=2",
+          "sha256": "40698601087c72c4a87af6b3c5506ffd35a8e9fcae00e1c7cc1364542eb77699"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=3",
+          "sha256": "d43d16f1bcd1fb69b45a589d6dc5c1e23abb2ab29df6fab8058b81511c553295"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=4",
+          "sha256": "213ca690879e2158901ca8a45a947d4fef6b6bbe886713a4a13cb51d89d2d546"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=5",
+          "sha256": "274f98393e9fc2e838c28bd23fa49192c02cc9ed0f4bb41cbb00cbad665deb27"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=6",
+          "sha256": "4236b6ff9c22798102599f4a686ef9acc80c2e182f3225361b8710261bbbe9e3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=7",
+          "sha256": "5c8ed36b361040667bb95daaeed79ee303bf8b2f9ae00245a406514b3f580ffb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s4]#line=353"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s4"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=1",
+          "sha256": "1cee9264403f613358dfefa7895761f9d017a32c72191e7492ec74c5f022a605"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=2",
+          "sha256": "f955ad26aa5a2059d6feb30aedd5703e103a3ab1321d778e228b9bee86bfa4cb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=3",
+          "sha256": "c908287b3ec66ec3e4985093d9b93336e3b2d9337d5d36e6b3ba0fda7cfa78fd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=4",
+          "sha256": "6944dc4c4eb442e6b919ee218bf2a8adf9a4e5f41868e3a5fd9206a31136fb9a"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=5",
+          "sha256": "b5f7bce87a5f09b840c0398ae2fb101214a1401f0053ccee48f99538038d4a84"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=6",
+          "sha256": "9cd7edf6928235f07389c0a3766a7e6d346035f5ed0d085d34b171cf9c42dd98"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=7",
+          "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
           "abilityId": "master.sion.skill.s13",
@@ -17162,9 +19360,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 35,
-          "specific_handler": 5
+          "specific_handler": 8
         },
-        "handlerCount": 8,
+        "handlerCount": 11,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -17206,6 +19404,9 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fiore.skill.s7",
+        "master.goredolf.skill.ascension",
+        "master.goredolf.skill.s1",
+        "master.goredolf.skill.s1a",
         "master.hinako.skill.s1a",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
@@ -17218,6 +19419,9 @@
         "master.ophelia.skill.ascension",
         "master.ophelia.skill.s1",
         "master.ophelia.skill.s4",
+        "master.peperoncino.skill.s2",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s1",
         "master.wodime.skill.s4",
@@ -18011,6 +20215,81 @@
           "sha256": "0ee60f412a4fad9ed8ab577b5fee3bcdb97049af10b79c53bdfd29cd70a784ce"
         },
         {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.ascensionSkill#line=286"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/ascension"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[2].text#line=1",
+          "sha256": "e9c1a90931142a18ff1f939348eaf272d0a087ada677c4cab251632f5319702e"
+        },
+        {
+          "abilityId": "master.goredolf.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[2].text#line=2",
+          "sha256": "b75edfd83ee5fa7e28da70d7659c5e9d380b353e030f34fe31f059f8717e4fc1"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.skills[s1]#line=284"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/s1"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[0].text#line=1",
+          "sha256": "0a501ac1e67055e3efed5ed9e8902df837a93a11c4c22fd02ec5aa232b786124"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.skills[s1a]#line=285"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/s1a"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=1",
+          "sha256": "257f9884c14c6908034e4b82df125a353c2a53bddcf9e5f2763e152eec0b41b0"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[1].text#line=2",
+          "sha256": "094285f1f05bab71f779c204d16c390b656bcf1f3dd72835a541fa8f1ddb41b1"
+        },
+        {
           "abilityId": "master.hinako.skill.s1a",
           "document": "Fate_Domination-开发版",
           "locator": "master.hinako/芥雏子"
@@ -18357,6 +20636,141 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[55].skills[5].text#line=2",
           "sha256": "0cca030c8010062783bd3349497040e1f9d706c14bb2dcea5be0bb8f3f46267a"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s2]#line=351"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s2"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[3].text#line=1",
+          "sha256": "ca6f50dc130f01275872fccb551ebc03b19760891f3de87a7dad8d99a8003205"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s3]#line=352"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=1",
+          "sha256": "f2a7a77c276bcccbe0bf9d535031f7d4fd6bc17457297c50cf950c0502b304cc"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=2",
+          "sha256": "40698601087c72c4a87af6b3c5506ffd35a8e9fcae00e1c7cc1364542eb77699"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=3",
+          "sha256": "d43d16f1bcd1fb69b45a589d6dc5c1e23abb2ab29df6fab8058b81511c553295"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=4",
+          "sha256": "213ca690879e2158901ca8a45a947d4fef6b6bbe886713a4a13cb51d89d2d546"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=5",
+          "sha256": "274f98393e9fc2e838c28bd23fa49192c02cc9ed0f4bb41cbb00cbad665deb27"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=6",
+          "sha256": "4236b6ff9c22798102599f4a686ef9acc80c2e182f3225361b8710261bbbe9e3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=7",
+          "sha256": "5c8ed36b361040667bb95daaeed79ee303bf8b2f9ae00245a406514b3f580ffb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s4]#line=353"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s4"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=1",
+          "sha256": "1cee9264403f613358dfefa7895761f9d017a32c72191e7492ec74c5f022a605"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=2",
+          "sha256": "f955ad26aa5a2059d6feb30aedd5703e103a3ab1321d778e228b9bee86bfa4cb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=3",
+          "sha256": "c908287b3ec66ec3e4985093d9b93336e3b2d9337d5d36e6b3ba0fda7cfa78fd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=4",
+          "sha256": "6944dc4c4eb442e6b919ee218bf2a8adf9a4e5f41868e3a5fd9206a31136fb9a"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=5",
+          "sha256": "b5f7bce87a5f09b840c0398ae2fb101214a1401f0053ccee48f99538038d4a84"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=6",
+          "sha256": "9cd7edf6928235f07389c0a3766a7e6d346035f5ed0d085d34b171cf9c42dd98"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=7",
+          "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
           "abilityId": "master.wodime.skill.ascension",
@@ -19234,9 +21648,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 59,
-          "specific_handler": 13
+          "specific_handler": 19
         },
-        "handlerCount": 19,
+        "handlerCount": 25,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -19252,6 +21666,7 @@
         "master.amakusa.skill.s1a",
         "master.arcueid.skill.s1",
         "master.ciel.skill.s1b",
+        "master.peperoncino.skill.s1a",
         "servant.albion.skill.sc-albion-1",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.arjuna.skill.sc-arjuna-1",
@@ -19353,6 +21768,27 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[15].abilities[0].printedClause",
           "sha256": "98a4becbbedd9d11ae2b93ea1b192b781a6943fb0ff62e1dbff4bb9697bbb6fc"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1a",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1a",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s1a]#line=349"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1a",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s1a"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[1].text#line=1",
+          "sha256": "24da87d334a23689f9ef2d6607cd74ec0e9bfde162a49835f7e453afcd282cb2"
         },
         {
           "abilityId": "servant.albion.skill.sc-albion-1",
@@ -20121,9 +22557,9 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 34
+          "shared_handler": 35
         },
-        "handlerCount": 1,
+        "handlerCount": 2,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -20165,6 +22601,11 @@
         "master.ophelia.skill.s5",
         "master.ophelia.skill.s6",
         "master.ophelia.skill.s7",
+        "master.peperoncino.skill.ascension",
+        "master.peperoncino.skill.s1",
+        "master.peperoncino.skill.s2",
+        "master.peperoncino.skill.s3",
+        "master.peperoncino.skill.s4",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s1",
         "master.wodime.skill.s1a",
@@ -20961,6 +23402,195 @@
           "sha256": "5d7d47df8b72504df2b48c6e9de637165ab2272cf9f983957f3101a756759678"
         },
         {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.ascensionSkill#line=354"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/ascension"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=1",
+          "sha256": "b7920e22ef2375668c9ecdecb8652f419caaf8db3c37af1303df2dfb243c5422"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=2",
+          "sha256": "bb4f8d440b3fc1b72ebbb31fbfce0caf2671f2aec337e8d9022e2137fb555153"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[6].text#line=3",
+          "sha256": "3169c4807a37eca0621ade6110f81d0cc6dc9ff43383ac883853f207e67a5abd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s1]#line=348"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s1"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[0].text#line=1",
+          "sha256": "6d5d8ae3a0cc25f78fd4f11b26c3d59353573de7036a5d60f15829331e5affec"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s2]#line=351"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s2"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[3].text#line=1",
+          "sha256": "ca6f50dc130f01275872fccb551ebc03b19760891f3de87a7dad8d99a8003205"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s3]#line=352"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=1",
+          "sha256": "f2a7a77c276bcccbe0bf9d535031f7d4fd6bc17457297c50cf950c0502b304cc"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=2",
+          "sha256": "40698601087c72c4a87af6b3c5506ffd35a8e9fcae00e1c7cc1364542eb77699"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=3",
+          "sha256": "d43d16f1bcd1fb69b45a589d6dc5c1e23abb2ab29df6fab8058b81511c553295"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=4",
+          "sha256": "213ca690879e2158901ca8a45a947d4fef6b6bbe886713a4a13cb51d89d2d546"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=5",
+          "sha256": "274f98393e9fc2e838c28bd23fa49192c02cc9ed0f4bb41cbb00cbad665deb27"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=6",
+          "sha256": "4236b6ff9c22798102599f4a686ef9acc80c2e182f3225361b8710261bbbe9e3"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[4].text#line=7",
+          "sha256": "5c8ed36b361040667bb95daaeed79ee303bf8b2f9ae00245a406514b3f580ffb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_peperoncino.skills[s4]#line=353"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.peperoncino/s4"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=1",
+          "sha256": "1cee9264403f613358dfefa7895761f9d017a32c72191e7492ec74c5f022a605"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=2",
+          "sha256": "f955ad26aa5a2059d6feb30aedd5703e103a3ab1321d778e228b9bee86bfa4cb"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=3",
+          "sha256": "c908287b3ec66ec3e4985093d9b93336e3b2d9337d5d36e6b3ba0fda7cfa78fd"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=4",
+          "sha256": "6944dc4c4eb442e6b919ee218bf2a8adf9a4e5f41868e3a5fd9206a31136fb9a"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=5",
+          "sha256": "b5f7bce87a5f09b840c0398ae2fb101214a1401f0053ccee48f99538038d4a84"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=6",
+          "sha256": "9cd7edf6928235f07389c0a3766a7e6d346035f5ed0d085d34b171cf9c42dd98"
+        },
+        {
+          "abilityId": "master.peperoncino.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[57].skills[5].text#line=7",
+          "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
+        },
+        {
           "abilityId": "master.wodime.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.wodime/基尔什塔利亚·沃戴姆"
@@ -21388,10 +24018,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 34,
-          "specific_handler": 11
+          "shared_handler": 35,
+          "specific_handler": 15
         },
-        "handlerCount": 18,
+        "handlerCount": 23,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -21404,10 +24034,32 @@
       "capabilityId": "REVIEWED_SPECIAL_TRANSFORM",
       "mechanicFamily": "SPECIAL_SUBSYSTEM",
       "affectedAbilityIds": [
+        "master.goredolf.skill.s1",
         "master.hinako.skill.ascension",
         "servant.andersen.skill.sc-andersen-2"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goredolf.skills[s1]#line=284"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.goredolf/s1"
+        },
+        {
+          "abilityId": "master.goredolf.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[51].skills[0].text#line=1",
+          "sha256": "0a501ac1e67055e3efed5ed9e8902df837a93a11c4c22fd02ec5aa232b786124"
+        },
         {
           "abilityId": "master.hinako.skill.ascension",
           "document": "Fate_Domination-开发版",
@@ -21476,9 +24128,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 2
+          "shared_handler": 2,
+          "specific_handler": 1
         },
-        "handlerCount": 2,
+        "handlerCount": 3,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

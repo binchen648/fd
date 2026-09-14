@@ -175,6 +175,21 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(permissionMapped.requiredCapabilities).toContain('GENERIC_MODIFIER');
   });
 
+  it('maps structural deployment requirements to Movement without an identity branch', () => {
+    const axes = emptyAxes();
+    axes.modifier = ['rule:deployment_requirement:require_battlefield'];
+    const mapped = mapStructuredCapabilityNeeds(
+      {
+        id: 'deployment-requirement-fixture',
+        printedClause: 'fixture',
+        ruleModifiers: [{ rule: 'deployment_requirement', operation: 'require_battlefield' }],
+      },
+      axes,
+    );
+    expect(mapped.requiredCapabilities).toContain('GENERIC_MOVEMENT');
+    expect(mapped.requiredCapabilities).toContain('GENERIC_MODIFIER');
+  });
+
   it('maps structural source-card movement to the generic Card Zone dependency', () => {
     const axes = emptyAxes();
     axes.effect = ['MOVE_SOURCE_CARD'];
@@ -187,6 +202,26 @@ describe('Phase 3 full-roster capability mapping', () => {
       axes,
     );
     expect(mapped.requiredCapabilities).toContain('GENERIC_CARD_ZONE');
+  });
+
+  it('keeps structured transforms reviewed-special while exposing their card-zone and power dependencies', () => {
+    const axes = emptyAxes();
+    const mapped = mapStructuredCapabilityNeeds(
+      {
+        id: 'ordered-transform-fixture',
+        printedClause: 'fixture',
+        transforms: [{
+          sourceZone: 'deck',
+          selection: { filter: 'basic_attacks', orderBy: 'printed_power_desc', count: 2 },
+          intoDefinitionId: 'card.fixture',
+        }],
+      },
+      axes,
+    );
+    expect(mapped.requiredCapabilities).toEqual(
+      expect.arrayContaining(['GENERIC_CARD_ZONE', 'GENERIC_POWER', 'REVIEWED_SPECIAL_TRANSFORM']),
+    );
+    expect(mapped.specialReasons).toContain('STRUCTURED_TRANSFORM_REQUIRES_REVIEW');
   });
 
   it('maps Lostbelt and event-card special semantics to the Event Deck dependency without granting acceptance', () => {
@@ -234,11 +269,11 @@ describe('Phase 3 full-roster capability mapping', () => {
     const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
 
     expect(inventory.capabilitySummary.totalIdentityCount).toBe(944);
-    expect(inventory.capabilitySummary.contractMappedCount).toBe(142);
-    expect(inventory.capabilitySummary.explicitBlockCount).toBe(802);
+    expect(inventory.capabilitySummary.contractMappedCount).toBe(152);
+    expect(inventory.capabilitySummary.explicitBlockCount).toBe(792);
     expect(inventory.capabilitySummary.zeroSilentFallback).toBe(true);
-    expect(catalog.coverage.mappedAbilities).toHaveLength(142);
-    expect(catalog.coverage.blockedAbilities).toHaveLength(802);
+    expect(catalog.coverage.mappedAbilities).toHaveLength(152);
+    expect(catalog.coverage.blockedAbilities).toHaveLength(792);
     expect(catalog.coverage.mappedAbilities.length + catalog.coverage.blockedAbilities.length).toBe(944);
 
     const allowedCurrentRoutes = new Set(['legacy', 'new', 'dual', 'none']);
@@ -250,8 +285,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     }
 
     expect(markdown).toContain('totalIdentityCount=944');
-    expect(markdown).toContain('contractMappedCount=142');
-    expect(markdown).toContain('explicitBlockCount=802');
+    expect(markdown).toContain('contractMappedCount=152');
+    expect(markdown).toContain('explicitBlockCount=792');
     expect(markdown).toContain('zeroSilentFallback=true');
   });
 
@@ -376,8 +411,8 @@ describe('Phase 3 full-roster capability mapping', () => {
       expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION', 'GENERIC_CARD_ZONE', 'GENERIC_EVENT_DECK', 'GENERIC_MODIFIER', 'GENERIC_POWER', 'GENERIC_RESULT_BINDING', 'GENERIC_TRIGGER_GATEWAY', 'REVIEWED_SPECIAL_HANDLER']),
     );
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(96);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(46);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(100);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(52);
   });
 
   it('maps the nine-ID Fiore slice with four generic extensions and five reviewed-special transcend rules', () => {
@@ -430,8 +465,8 @@ describe('Phase 3 full-roster capability mapping', () => {
       expect.arrayContaining(['GENERIC_CARD_ZONE', 'GENERIC_COST_PAYMENT', 'GENERIC_MODIFIER', 'GENERIC_POWER', 'GENERIC_TRIGGER_GATEWAY']),
     );
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(96);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(46);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(100);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(52);
   });
 
   it('maps the thirteen-ID Kadoc and Hinako slice with explicit ordinary dependencies and zero inherited contracts', () => {
@@ -472,6 +507,97 @@ describe('Phase 3 full-roster capability mapping', () => {
         'PLAYER_FACE_UP_ATTACKS_PLAYED_THIS_ROUND_EQUALS',
         'PLAYER_USED_DECLARATION_REVEAL_THIS_ROUND',
         'PLAYER_ALL_ATTACKS_PRINTED_POWER_EVEN',
+      ]),
+    );
+  });
+
+  it('maps the ten-ID Goredolf and Peperoncino slice with four generic extensions and six reviewed-special rules', () => {
+    const inventory = JSON.parse(
+      readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8'),
+    ) as any;
+    const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
+    const slice = entries.filter((entry: any) =>
+      entry.canonicalAbilityId.startsWith('master.goredolf.skill.') ||
+      entry.canonicalAbilityId.startsWith('master.peperoncino.skill.'),
+    );
+    const byId = new Map(slice.map((entry: any) => [entry.canonicalAbilityId, entry]));
+
+    expect(slice).toHaveLength(10);
+    for (const entry of slice) expect(entry.phase3.inheritedAcceptanceContracts).toEqual([]);
+
+    for (const id of [
+      'master.goredolf.skill.s1a',
+      'master.goredolf.skill.ascension',
+      'master.peperoncino.skill.s1a',
+      'master.peperoncino.skill.s1b',
+    ]) {
+      expect(byId.get(id).phase3.classificationRoute).toBe('READY_GENERIC_EXTENSION');
+      expect(byId.get(id).phase3.blockedBy).toEqual([]);
+    }
+    for (const id of [
+      'master.goredolf.skill.s1',
+      'master.peperoncino.skill.s1',
+      'master.peperoncino.skill.s2',
+      'master.peperoncino.skill.s3',
+      'master.peperoncino.skill.s4',
+      'master.peperoncino.skill.ascension',
+    ]) {
+      expect(byId.get(id).phase3.classificationRoute).toBe('SPECIAL_HANDLER_CANDIDATE');
+    }
+
+    expect(byId.get('master.goredolf.skill.s1').phase3.requiredCapabilities).toContain('REVIEWED_SPECIAL_TRANSFORM');
+    expect(byId.get('master.goredolf.skill.s1a').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining([
+        'CARD_ACTION_PLAY',
+        'GENERIC_BATTLE_INTEGRATION',
+        'GENERIC_CONDITION_EVALUATION',
+        'GENERIC_LIFECYCLE_POLICY',
+        'GENERIC_MODIFIER',
+        'GENERIC_MOVEMENT',
+        'GENERIC_POWER',
+        'GENERIC_RESOURCE_NUMERIC',
+        'GENERIC_TRIGGER_GATEWAY',
+      ]),
+    );
+    expect(byId.get('master.peperoncino.skill.s1a').phase3.requiredCapabilities).toContain('GENERIC_VISIBILITY');
+    expect(byId.get('master.peperoncino.skill.s1b').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining([
+        'GENERIC_BATTLE_INTEGRATION',
+        'GENERIC_COST_PAYMENT',
+        'GENERIC_LIFECYCLE_POLICY',
+        'GENERIC_MODIFIER',
+        'GENERIC_MOVEMENT',
+        'GENERIC_POWER',
+      ]),
+    );
+    expect(byId.get('master.peperoncino.skill.s3').semanticNormalization.axes.timing).toContain('PREPARATION');
+    expect(byId.get('master.peperoncino.skill.s3').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining([
+        'GENERIC_CONDITION_EVALUATION',
+        'GENERIC_EVENT_DECK',
+        'GENERIC_LIFECYCLE_POLICY',
+        'GENERIC_PENDING_INTERACTION',
+        'GENERIC_POWER',
+        'GENERIC_RESULT_BINDING',
+        'GENERIC_TARGET_SELECTION',
+        'GENERIC_TRIGGER_GATEWAY',
+        'REVIEWED_SPECIAL_HANDLER',
+      ]),
+    );
+    expect(byId.get('master.peperoncino.skill.s4').semanticNormalization.axes.condition).toEqual(
+      expect.arrayContaining([
+        'ATTACK_PLAYED_FROM_HAND_THIS_ROUND',
+        'ATTACK_ATTRIBUTE_MATCHES_SOURCE_EVENT',
+        'ATTACK_NOT_PLAYED_BY_EFFECT',
+      ]),
+    );
+    expect(byId.get('master.peperoncino.skill.s4').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining([
+        'GENERIC_PENDING_INTERACTION',
+        'GENERIC_RESULT_BINDING',
+        'GENERIC_TARGET_SELECTION',
+        'GENERIC_TRIGGER_GATEWAY',
+        'REVIEWED_SPECIAL_HANDLER',
       ]),
     );
   });
