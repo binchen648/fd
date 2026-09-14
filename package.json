@@ -27,7 +27,9 @@
     "test:client": "npm test --workspace @fd/client -- --run",
     "verify:playtest-v1": "tsx scripts/verify-fd-playtest-v1.ts",
     "verify:generated-content": "tsx scripts/verify-generated-content-determinism.ts",
-    "verify:stabilization": "tsx scripts/verify-card-engine-stabilization.ts"
+    "verify:stabilization": "tsx scripts/verify-card-engine-stabilization.ts",
+    "phase3:reference:verify": "tsx scripts/phase3-reference/verify-reference.ts",
+    "phase3:reference:intake": "tsx scripts/phase3-reference/build-full-roster-inventory.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",
