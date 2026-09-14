@@ -1842,6 +1842,125 @@ Completion status allowed:
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `REJECTED`
 
+## TASK P3-B19
+
+Owner: Codex B
+Status: READY
+Branch: `codex/b-p3-b19-noble-bloom-extra-vp-r1`
+Base: exact P3-B19 A-owned handoff commit
+
+Goal:
+
+Migrate exactly one additional TO14 direct result consumer, Artoria Alter `sc-artoria-alt-3.noble-bloom-extra-vp`, through the accepted B18 post-scoring optional-response envelope and typed Resource path without merging it into base `noble-bloom` or promoting other optional triggers.
+
+Exact supported semantic:
+
+- `optional_trigger`;
+- activation phase `combat`;
+- trigger `after_battle_result_determined`;
+- response window `after_battle_result_determined`;
+- exactly two conditions: `controller_played_highest_cost_noble_phantasm_in_battle_this_round` plus `highest_cost_noble_phantasm_cost_at_least(value=4)`;
+- no targets, cost, creates, modifiers, lifecycle, or limit;
+- exactly one `adjust_victory_points(player=controller, amount=1)` effect;
+- structural classification only, never representative-ID routing.
+
+Required runtime contract:
+
+- preserve two independent optional responses on the same result event when the highest-cost Noble Phantasm cost is at least 4: base B18 `noble-bloom` +1 and B19 extra +1;
+- never collapse the two abilities into one +2 effect or make one acceptance imply acceptance of the other;
+- the extra response must not exist when the tracked highest Noble Phantasm cost is below 4 or absent;
+- consume the accepted B13/B18 post-all-battlefield-scoring result envelope; no B19 response before required base-scoring receipts exist;
+- honor authoritative `battleParticipantIds` when present so another battlefield result cannot offer the response to a non-participant controller;
+- TO05 Interaction owns the optional response window; decline/pass leaves VP unchanged for that window;
+- accept resolves exactly one typed Resource `adjust_victory_points(+1)` result linked to source/event causation;
+- stable result identity/replay/reconnect must not reopen or settle a duplicate B19 response;
+- malformed same-family threshold/condition/effect/window shapes must fail closed before legacy fallback;
+- no card/character/ability identity branch.
+
+May touch:
+
+- `packages/rules/src/ability/interpreter.ts`
+- focused B19 regression/unit tests
+- one scoped remote-room/browser Gate C spec/fixture if needed
+- B19 implementation report
+
+`packages/rules/src/ability/resolution-dataflow.ts` may be touched only if a fresh failing test proves the existing typed VP primitive cannot satisfy the exact contract. Any such change must remain generic and narrow.
+
+Must not touch/promote:
+
+- base `sc-artoria-alt-3.noble-bloom` beyond compatibility;
+- Artoria Caster Luck-on-win optional triggers;
+- Gatou `seeker.battle-end-reward`;
+- Tomoe `penalty-on-defeat` / unpreventable semantics;
+- Olga `trismegistus.loss-transform` or Special behavior;
+- broad optional-trigger ordering or a second trigger queue;
+- TO15 Modifier/Power runtime;
+- TO16 Special runtime;
+- A-owned coverage KPI/classifier/taxonomy;
+- representative identity routing.
+
+Required evidence:
+
+- red/green identity-free classifier positive plus threshold/condition/effect/window near-miss negatives;
+- cost 4+ event exposes both independent base and extra optional responses; resolving each yields exactly +1 for total +2;
+- declining either response affects only that response and does not synthesize/erase the other response's VP semantics;
+- cost <4 and no qualifying NP expose no extra response;
+- unrelated battlefield result does not expose B19 for a non-participant controller;
+- stable event replay/reconnect/stale revision does not duplicate the extra award;
+- malformed same-family extra-VP shapes fail closed before legacy fallback;
+- B13-B18 compatibility;
+- fresh Chromium remote-room proof for projection, response ownership, reconnect, stale revision, independent optional resolution, and exactly-once extra VP;
+- full root baseline comparison and production identity/legacy-bypass audit.
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R13
+
+Owner: Codex R
+Status: READY_AFTER_P3_B19
+Branch: reviewer-selected fresh worktree/branch from exact B19 candidate SHA
+
+Goal:
+
+Independently review P3-B19 Artoria Alter extra-VP optional result consumer without implementing fixes or inheriting acceptance from B18.
+
+Required independent checks:
+
+- fresh typecheck and focused/current-lineage compatibility;
+- verify exact two-condition threshold shape is identity-free and malformed near-misses fail closed before legacy fallback;
+- verify cost 4+ produces two independent optional responses, each exactly +1, rather than one merged +2 settlement;
+- verify cost <4/absent fact produces no B19 response while preserving valid B18 behavior;
+- verify authoritative post-scoring barrier and participant scoping;
+- verify accept/decline/replay/reconnect/stale revision independently for the extra response;
+- verify typed Resource evidence and source/event causation;
+- verify B13-B18 ordering/runtime compatibility remains intact;
+- run fresh Chromium Gate C and full root baseline; block only on new deterministic failures.
+
+Must not:
+
+- implement fixes while reviewing;
+- promote Artoria Caster Luck triggers, Gatou, Tomoe, Olga transform, broad TO14, TO15, or TO16;
+- modify A-owned coverage KPI/taxonomy.
+
+Required output:
+
+- findings ordered by severity;
+- independent-two-window judgment;
+- post-scoring/participant judgment;
+- typed Resource / fail-closed / exactly-once judgment;
+- projection/reconnect/stale judgment;
+- Gate A/B/C judgment;
+- explicit A03 synchronization input if accepted.
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
 ## Prompt Templates
 
 Codex A startup prompt:
