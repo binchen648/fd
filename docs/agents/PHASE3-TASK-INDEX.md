@@ -2143,6 +2143,106 @@ Completion status allowed:
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `REJECTED`
 
+## TASK P3-B22
+
+Owner: Codex B
+Status: READY
+Branch: `codex/b-p3-b22-gatou-battle-end-reward-r1`
+Base: exact P3-B22 A-owned handoff commit
+
+Goal:
+
+Migrate exactly Gatou `seeker.battle-end-reward` as the next TO14 direct consumer, replacing its legacy Special directive placeholder with a narrow authoritative phase-terminal settlement while preserving the existing B15 `after_battle_ended` ordering.
+
+Exact supported semantic family:
+
+- `forced_trigger`;
+- trigger `after_battle_ended`;
+- exactly one effect `record_master_directive(directive=gatou_battle_end_mobile_players_reward)`;
+- no conditions, targets, cost, creates, rule modifiers, lifecycle, response window, or limit;
+- the directive literal is the semantic operation key, not a character/card/ability identity key.
+
+Required behavior/evidence:
+
+- structural routing must not inspect Gatou/card/ability identity; renamed card/ability IDs with the exact directive semantic must still classify;
+- settle only from the accepted stable phase-terminal event after all battle-result/scoring work is terminal;
+- the controller must be a frozen participant of the phase-terminal battle set, including same-battle eligibility after scoring elimination;
+- derive qualifying other players from authoritative current-round movement logs: current location equals controller current location, player is not controller, and that player has a successful `movement` log in the current round whose destination is that same current location; deployment/initial placement is not movement and must not qualify;
+- count each qualifying player once even if multiple movement records target the same final location;
+- if the controller appears in `winnerPlayerIds` for the battle resolved at the controller's current location, award +1 VP per qualifying player; otherwise award +1 mana per qualifying player;
+- tied/shared winners count as winning because the authoritative winner set includes the controller;
+- zero qualifying players is a deterministic no-op and must not fabricate resource gain;
+- typed resource evidence records controller, resource kind, requested/actual delta, before/after, qualifying player IDs, terminal event identity, and whether the VP branch was selected;
+- mana cap and VP floor/cap rules remain authoritative through the existing typed resource helpers; report actual delta, not only requested delta;
+- stable terminal replay cannot reward twice;
+- malformed same-family candidates fail closed before generic legacy directive fallback and preserve state atomically;
+- B13-B21 ordering/runtime compatibility remains green;
+- fresh Chromium remote-room proof and full-root baseline are required.
+
+May touch:
+
+- `packages/rules/src/ability/interpreter.ts`;
+- `packages/rules/src/ability/types.ts` only if typed event metadata requires a narrow additive field;
+- `packages/rules/src/match-session.ts` and `packages/rules/src/core/game-loop.ts` only if a fresh failing proof shows the terminal event lacks authoritative battle winner/location provenance required by this exact consumer;
+- one focused regression test, one scoped browser fixture/spec, and one B22 result report.
+
+Must not:
+
+- route by Gatou/card/ability identity;
+- promote `seeker.meditation`, Gatou command-spell directives, or generic `record_master_directive` semantics;
+- generalize TO16 Special/directive protocol;
+- promote Olga `trismegistus.loss-transform`, broad TO14, TO15 Modifier/Power, or unrelated Movement/Lifecycle behavior;
+- rewrite authoring to make the representative fit;
+- modify A-owned coverage KPI/taxonomy.
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R16
+
+Owner: Codex R
+Status: READY_AFTER_P3_B22
+Branch: reviewer-selected fresh worktree/branch from exact B22 candidate SHA
+
+Goal:
+
+Independently review P3-B22 Gatou phase-terminal mobile-player reward without implementing fixes or inheriting acceptance from the generic legacy directive path.
+
+Required independent checks:
+
+- fresh typecheck and focused/current-lineage compatibility;
+- verify exact semantic classifier is identity-free and limited to the one `after_battle_ended` Special directive operation;
+- verify movement provenance is current-round, destination-matching, excludes controller/deployment, and dedupes qualifying players;
+- verify winner branch is derived from the authoritative battle at the controller's current location and treats shared winners consistently with the winner set;
+- verify phase-terminal ordering, frozen participant eligibility, zero-qualifier no-op, typed Resource actual delta/cap behavior, stable replay exactly-once, and atomic malformed-shape fail-closed behavior;
+- verify no broad Special/directive protocol, Movement, Olga transform, TO15, or sibling TO14 promotion;
+- verify B13-B21 compatibility, fresh Chromium Gate C, and full-root baseline;
+- block only on new deterministic failures.
+
+Must not:
+
+- implement fixes while reviewing;
+- promote Olga transform, broad TO14, broad TO15 Modifier/Power, or TO16;
+- modify A-owned coverage KPI/taxonomy.
+
+Required output:
+
+- findings ordered by severity;
+- semantic-family / directive-boundary judgment;
+- movement/winner provenance judgment;
+- phase-terminal / typed Resource / fail-closed / exactly-once judgment;
+- projection/reconnect/stale judgment;
+- Gate A/B/C judgment;
+- explicit A03 synchronization input if accepted.
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
 ## Prompt Templates
 
 Codex A startup prompt:
