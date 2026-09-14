@@ -9,7 +9,7 @@ totalIdentityCount=944
 sourceGroundedCount=99
 blockedCount=845
 unclassifiedCount=0
-structuredAbilityCount=154
+structuredAbilityCount=155
 
 ## Axis Value Counts
 
@@ -20,7 +20,7 @@ structuredAbilityCount=154
 | timing | `OUTPOST` | 3 |
 | timing | `PREPARATION` | 2 |
 | trigger | `combat.resolved` | 22 |
-| trigger | `card.played` | 8 |
+| trigger | `card.played` | 7 |
 | trigger | `player.entered-location` | 5 |
 | trigger | `combat.ending` | 4 |
 | trigger | `game.started` | 4 |
@@ -31,6 +31,7 @@ structuredAbilityCount=154
 | trigger | `player.defeated` | 2 |
 | trigger | `player.mana.changed` | 2 |
 | trigger | `card.exiled` | 1 |
+| trigger | `card_or_ability.used` | 1 |
 | trigger | `command-seal.spent` | 1 |
 | trigger | `player.deployed` | 1 |
 | trigger | `player.victory-points.changed` | 1 |
@@ -55,10 +56,11 @@ structuredAbilityCount=154
 | condition | `CARD_COUNT_AT_LEAST` | 2 |
 | condition | `COMMAND_SEALS_AT_LEAST` | 2 |
 | condition | `CONSTANT` | 2 |
+| condition | `CYCLE_STATE_IS_NOT` | 2 |
 | condition | `EVENT_LOCATION_IS` | 2 |
 | condition | `EVENT_NUMBER_COMPARE` | 2 |
-| condition | `STATUS_ABSENT` | 2 |
 | condition | `ANY_OF` | 1 |
+| condition | `CYCLE_TRANSITION_PENDING` | 1 |
 | condition | `DOES_NOT_CONTROL_CARD_DEFINITION` | 1 |
 | condition | `ENGAGED_OPPONENT_VICTORY_POINTS_GREATER_THAN_CONTROLLER` | 1 |
 | condition | `EVENT_CARD_HAS_ATTRIBUTE` | 1 |
@@ -80,7 +82,6 @@ structuredAbilityCount=154
 | condition | `ROUND_VICTORY_POINTS_GAINED_EQUALS` | 1 |
 | condition | `SCHEDULED_PAYLOAD_PRESENT` | 1 |
 | condition | `SITUATION_FORBIDS_ATTRIBUTE` | 1 |
-| condition | `STATUS_PRESENT` | 1 |
 | condition | `TARGET_COUNT_EQUALS` | 1 |
 | condition | `TRUE_NAME_REVEALED` | 1 |
 | condition | `VICTORY_POINTS_IS_FIRST` | 1 |
@@ -100,16 +101,17 @@ structuredAbilityCount=154
 | target | `CHOOSE_N_EVENTS` | 1 |
 | effect | `GAIN_VICTORY_POINTS` | 16 |
 | effect | `CLOSE_SOURCE_CARD` | 11 |
-| effect | `SET_PLAYER_FLAG` | 9 |
 | effect | `PLAY_SELECTED_CARDS` | 8 |
 | effect | `DRAW_CARDS` | 7 |
 | effect | `GAIN_MANA` | 7 |
 | effect | `IF_CONDITION` | 7 |
 | effect | `LOSE_VICTORY_POINTS` | 7 |
-| effect | `ADD_STATUS` | 6 |
+| effect | `SET_PLAYER_FLAG` | 7 |
 | effect | `SOURCE_CARD_POWER_BONUS` | 6 |
+| effect | `CYCLE_STATE_TRANSITION` | 5 |
 | effect | `DEFEAT_PLAYER` | 5 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 5 |
+| effect | `ADD_STATUS` | 4 |
 | effect | `COMBAT_POWER_BONUS` | 4 |
 | effect | `LOSE_MANA` | 4 |
 | effect | `MOVE_SELECTED_CARDS` | 4 |
@@ -117,20 +119,20 @@ structuredAbilityCount=154
 | effect | `EXILE_SOURCE_CARD` | 3 |
 | effect | `MOVE_MATCHING_EVENTS` | 3 |
 | effect | `MOVE_SELECTED_EVENTS` | 3 |
-| effect | `REMOVE_STATUS` | 3 |
 | effect | `SCHEDULE_EFFECT` | 3 |
-| effect | `ADD_PLAYER_FLAG_NUMBER` | 2 |
 | effect | `INSTALL_ABILITY_RULE_MODIFIER` | 2 |
-| effect | `MOVE_MATCHING_CARDS` | 2 |
 | effect | `MOVE_PLAYER` | 2 |
+| effect | `REMOVE_STATUS` | 2 |
 | effect | `TRANSFER_VICTORY_POINTS` | 2 |
 | effect | `ADD_LINKED_STATUS` | 1 |
+| effect | `ADD_PLAYER_FLAG_NUMBER` | 1 |
 | effect | `ADJUST_COMMAND_SEALS` | 1 |
 | effect | `CLOSE_SELECTED_CARD` | 1 |
 | effect | `ENSURE_EVENT_DECK_COUNT` | 1 |
 | effect | `INFO_NOTE` | 1 |
 | effect | `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS` | 1 |
 | effect | `MOVE_CARD` | 1 |
+| effect | `MOVE_MATCHING_CARDS` | 1 |
 | effect | `REMOVE_CARDS_IN_ZONE` | 1 |
 | effect | `REMOVE_LINKED_STATUS` | 1 |
 | effect | `REMOVE_OWNED_CARDS_BY_LINKED_SKILL` | 1 |
@@ -270,14 +272,14 @@ structuredAbilityCount=154
 | `master.artoira.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.artoira-charge` |
 | `master.bazett.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `rule:card_activation_persistence:remain_active_until`, `rule:card_play_limit:remove_once_per_game` | `NONE` | `NONE` | `NONE` | `core.bazett-flawless-defense` |
 | `master.bazett.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-add-skill` |
-| `master.bazett.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved`, `game.started`, `round.ended` | `EVENT_PLAYER_LOST_COMBAT`, `ROUND_IS_CLIMAX`, `STATUS_ABSENT` | `NONE` | `NONE` | `ADD_PLAYER_FLAG_NUMBER`, `ADD_STATUS`, `LOSE_VICTORY_POINTS`, `SET_PLAYER_FLAG` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.bazett-time-loop` |
+| `master.bazett.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved`, `game.started`, `round.ended` | `CYCLE_STATE_IS_NOT`, `EVENT_PLAYER_LOST_COMBAT`, `ROUND_IS_CLIMAX` | `NONE` | `NONE` | `CYCLE_STATE_TRANSITION`, `LOSE_VICTORY_POINTS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.bazett-time-loop` |
 | `master.bazett.skill.s1b` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:while_active` | `rule:total_power:add` | `NONE` | `NONE` | `NONE` | `core.game-start-rule-flags` |
 | `master.bazett.skill.s1c` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved` | `EVENT_PLAYER_WON_COMBAT` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS` | `NONE` | `duration:while_active` | `rule:card_play_limit:ignore_once_per_game`, `rule:card_play_mana_requirement:ignore` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.bazett-time-loop` |
-| `master.bazett.skill.s1d` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved`, `round.ended` | `EVENT_PLAYER_WON_COMBAT`, `STATUS_ABSENT` | `NONE` | `NONE` | `ADD_STATUS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.bazett-time-loop` |
-| `master.bazett.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `card.played` | `EVENT_CARD_HAS_ATTRIBUTE`, `EVENT_LOCATION_EQUALS_CONTROLLER`, `EVENT_PLAYER_IS_OPPONENT`, `SOURCE_ACTIVE` | `NONE` | `NONE` | `DEFEAT_PLAYER` | `NONE` | `duration:until_triggered`, `limit:once_per_game` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bazett-fragarach` |
-| `master.bazett.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `round.started` | `STATUS_PRESENT` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `REMOVE_STATUS`, `SET_PLAYER_FLAG` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bazett-time-loop` |
-| `master.bazett.skill.s4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ADJUST_COMMAND_SEALS`, `MOVE_MATCHING_CARDS`, `RETURN_CARD_BY_DEFINITION` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bazett-time-loop` |
-| `master.bazett.skill.s5` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `combat.resolved` | `EVENT_PLAYER_WON_COMBAT` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `MOVE_CARD` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.bazett-third-day` |
+| `master.bazett.skill.s1d` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved`, `round.ended` | `CYCLE_STATE_IS_NOT`, `EVENT_PLAYER_WON_COMBAT` | `NONE` | `NONE` | `CYCLE_STATE_TRANSITION` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.bazett-time-loop` |
+| `master.bazett.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `card_or_ability.used` | `EVENT_CARD_HAS_ATTRIBUTE`, `EVENT_LOCATION_EQUALS_CONTROLLER`, `EVENT_PLAYER_IS_OPPONENT`, `SOURCE_ACTIVE` | `NONE` | `NONE` | `DEFEAT_PLAYER` | `NONE` | `duration:until_triggered`, `limit:once_per_game` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bazett-fragarach` |
+| `master.bazett.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `round.started` | `CYCLE_TRANSITION_PENDING` | `NONE` | `NONE` | `CYCLE_STATE_TRANSITION`, `GAIN_VICTORY_POINTS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bazett-time-loop` |
+| `master.bazett.skill.s4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ADJUST_COMMAND_SEALS`, `CYCLE_STATE_TRANSITION`, `RETURN_CARD_BY_DEFINITION` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bazett-time-loop` |
+| `master.bazett.skill.s5` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `combat.resolved` | `EVENT_PLAYER_WON_COMBAT` | `NONE` | `NONE` | `CYCLE_STATE_TRANSITION`, `GAIN_VICTORY_POINTS`, `MOVE_CARD` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.bazett-third-day` |
 | `master.caren.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caren-valentinus` |
 | `master.caren.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caren-spirit-medium` |
 | `master.caren.skill.s1a` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caren-gain-shroud` |

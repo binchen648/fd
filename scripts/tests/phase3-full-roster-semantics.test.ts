@@ -269,6 +269,38 @@ describe('Phase 3 full-roster semantic normalization', () => {
       expect.objectContaining({ type: 'adjust_command_seals', operation: 'restore_all', scope: 'controller' }),
     );
 
+    const lostInTime = bazett.find((card) => card.id === 'master.bazett.skill.s1a');
+    expect(lostInTime?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({
+        type: 'cycle_state_transition',
+        operation: 'initialize',
+        activeDefinitionId: 'master.bazett.skill.s1b',
+      }),
+    );
+
+    const day4 = bazett.find((card) => card.id === 'master.bazett.skill.s1d');
+    expect(day4?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({
+        type: 'cycle_state_transition',
+        operation: 'awaken',
+        resolveDefinitionId: 'master.bazett.skill.s4',
+      }),
+    );
+
+    const day3 = bazett.find((card) => card.id === 'master.bazett.skill.s5');
+    expect(day3?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({
+        type: 'cycle_state_transition',
+        operation: 'enter_stage',
+        destination: 'skill',
+      }),
+    );
+
+    const fragarach = bazett.find((card) => card.id === 'master.bazett.skill.s2');
+    expect(fragarach?.abilities[0].conditions).toContainEqual(
+      expect.objectContaining({ type: 'event_type_is', eventType: 'card_or_ability.used' }),
+    );
+
     const ascension = bazett.find((card) => card.id === 'master.bazett.skill.ascension');
     expect(ascension?.abilities).toHaveLength(1);
   });
@@ -329,7 +361,7 @@ describe('Phase 3 full-roster semantic normalization', () => {
       sourceGroundedCount: 99,
       blockedCount: 845,
       unclassifiedCount: 0,
-      structuredAbilityCount: 154,
+      structuredAbilityCount: 155,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

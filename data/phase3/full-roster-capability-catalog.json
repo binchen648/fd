@@ -24,8 +24,8 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
-      "READY_GENERIC_EXTENSION": 91,
-      "SPECIAL_HANDLER_CANDIDATE": 8,
+      "READY_GENERIC_EXTENSION": 86,
+      "SPECIAL_HANDLER_CANDIDATE": 13,
       "RULE_DECISION_REQUIRED": 0,
       "SOURCE_EVIDENCE_REQUIRED": 845,
       "PHASE_DEPENDENCY_BLOCKED": 0,
@@ -1776,7 +1776,27 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.bazett.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1d",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.bazett.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s5",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -1887,18 +1907,6 @@
         },
         {
           "abilityId": "master.amakusa.skill.s2",
-          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1a",
-          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1d",
-          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
-        },
-        {
-          "abilityId": "master.bazett.skill.s3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -2260,9 +2268,6 @@
         "master.amakusa.skill.s1a",
         "master.amakusa.skill.s2",
         "master.arcueid.skill.s1a",
-        "master.bazett.skill.s1a",
-        "master.bazett.skill.s1d",
-        "master.bazett.skill.s3",
         "master.chaos.skill.s1",
         "master.ciel.skill.s3",
         "servant.albion.skill.sc-albion-2",
@@ -2955,7 +2960,12 @@
       "representatives": [],
       "acceptanceVehicle": "B/R reviewed-special exception with explicit deletion/reuse criteria",
       "eligibleAbilities": [
+        "master.bazett.skill.s1a",
+        "master.bazett.skill.s1d",
         "master.bazett.skill.s2",
+        "master.bazett.skill.s3",
+        "master.bazett.skill.s4",
+        "master.bazett.skill.s5",
         "master.chaos.skill.s8",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.gorgon.skill.sc-gorgon-3",
@@ -3029,7 +3039,27 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.bazett.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1d",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.bazett.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.bazett.skill.s5",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -9108,7 +9138,12 @@
       }
     ],
     "specialCandidates": [
+      "master.bazett.skill.s1a",
+      "master.bazett.skill.s1d",
       "master.bazett.skill.s2",
+      "master.bazett.skill.s3",
+      "master.bazett.skill.s4",
+      "master.bazett.skill.s5",
       "master.chaos.skill.s8",
       "servant.andersen.skill.sc-andersen-2",
       "servant.diarmuid.skill.sc-diarmuid-1",
