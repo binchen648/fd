@@ -9,6 +9,10 @@ export type EffectResultType =
   | 'move_all_remaining'
   | 'draw_cards'
   | 'play_selected_cards'
+  | 'play_source_card'
+  | 'attach_card_to_player_attack'
+  | 'activate_card_by_id'
+  | 'close_source_card'
   | 'adjust_mana'
   | 'pay_mana'
   | 'adjust_command_seals'
@@ -90,6 +94,36 @@ export interface PlaySelectedCardsResult {
   faceDown: boolean;
 }
 
+export interface PlaySourceCardResult {
+  playerId: PlayerId;
+  cardInstanceId: string;
+  destinationZone: string;
+  playedCount: number;
+  faceDown: boolean;
+}
+
+export interface AttachCardToPlayerAttackResult {
+  sourceOwnerId: PlayerId;
+  targetPlayerId: PlayerId;
+  cardInstanceId: string;
+  attachedCount: number;
+  returnAtRoundEnd: boolean;
+  controllerCannotWinStatus: string;
+}
+
+export interface ActivateCardByIdResult {
+  definitionId: string;
+  cardInstanceId: string;
+  activatedCount: number;
+}
+
+export interface CloseSourceCardResult {
+  cardInstanceId: string;
+  fromZone: string;
+  toZone: 'skill';
+  closedCount: number;
+}
+
 export interface NoopResult {
   reason: string;
 }
@@ -103,6 +137,10 @@ export type KnownEffectResult =
   | EffectResultEnvelope<'move_all_remaining', MoveAllRemainingResult>
   | EffectResultEnvelope<'draw_cards', DrawCardsResult>
   | EffectResultEnvelope<'play_selected_cards', PlaySelectedCardsResult>
+  | EffectResultEnvelope<'play_source_card', PlaySourceCardResult>
+  | EffectResultEnvelope<'attach_card_to_player_attack', AttachCardToPlayerAttackResult>
+  | EffectResultEnvelope<'activate_card_by_id', ActivateCardByIdResult>
+  | EffectResultEnvelope<'close_source_card', CloseSourceCardResult>
   | EffectResultEnvelope<'adjust_mana', AdjustManaResult>
   | EffectResultEnvelope<'pay_mana', PayManaResult>
   | EffectResultEnvelope<'adjust_command_seals', AdjustCommandSealsResult>
@@ -130,6 +168,22 @@ export const resultSchemas: Record<EffectResultType, BindingFieldSchema> = {
   play_selected_cards: {
     requestedCount: 'number',
     playedCount: 'number',
+    status: 'status',
+  },
+  play_source_card: {
+    playedCount: 'number',
+    status: 'status',
+  },
+  attach_card_to_player_attack: {
+    attachedCount: 'number',
+    status: 'status',
+  },
+  activate_card_by_id: {
+    activatedCount: 'number',
+    status: 'status',
+  },
+  close_source_card: {
+    closedCount: 'number',
     status: 'status',
   },
   adjust_victory_points: {
@@ -203,6 +257,7 @@ export interface AbilityResolutionContext {
 
 export interface AbilityResolutionHooks {
   playSelectedCards?: (input: { state: GameState; playerId: PlayerId; cardInstanceIds: string[]; faceDown: boolean }) => { playedCount: number };
+  playSourceCard?: (input: { state: GameState; playerId: PlayerId; sourceCardId: string; faceDown: boolean }) => { playedCount: number; destinationZone: string };
 }
 
 export type ValueExpression =
@@ -224,6 +279,10 @@ export type ResolutionEffectNode =
   | { id: string; type: 'move_all_remaining'; owner: 'controller'; from: string; to: string; bind?: string }
   | { id: string; type: 'draw_cards'; player: 'controller'; count: ValueExpression; bind?: string }
   | { id: string; type: 'play_selected_cards'; target: string; face: 'face_down' | 'face_up'; bind?: string }
+  | { id: string; type: 'play_source_card'; face: 'face_down' | 'face_up'; bind?: string }
+  | { id: string; type: 'attach_card_to_player_attack'; cardId: string; target: string; returnAtRoundEnd: boolean; controllerCannotWinStatus: string; bind?: string }
+  | { id: string; type: 'activate_card_by_id'; definitionId: string; bind?: string }
+  | { id: string; type: 'close_source_card'; bind?: string }
   | { id: string; type: 'adjust_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'pay_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'adjust_command_seals'; player: 'controller'; amount: ValueExpression; directive?: string; bind?: string }
@@ -318,6 +377,26 @@ const primitiveDefinitions: ResolutionPrimitive[] = [
     type: 'play_selected_cards',
     resultSchema: resultSchemas.play_selected_cards,
     execute: playSelectedCardsPrimitive,
+  },
+  {
+    type: 'play_source_card',
+    resultSchema: resultSchemas.play_source_card,
+    execute: playSourceCardPrimitive,
+  },
+  {
+    type: 'attach_card_to_player_attack',
+    resultSchema: resultSchemas.attach_card_to_player_attack,
+    execute: attachCardToPlayerAttackPrimitive,
+  },
+  {
+    type: 'activate_card_by_id',
+    resultSchema: resultSchemas.activate_card_by_id,
+    execute: activateCardByIdPrimitive,
+  },
+  {
+    type: 'close_source_card',
+    resultSchema: resultSchemas.close_source_card,
+    execute: closeSourceCardPrimitive,
   },
   {
     type: 'adjust_victory_points',
@@ -534,6 +613,42 @@ function validateEffectReferences(
       break;
     case 'play_selected_cards':
       break;
+    case 'play_source_card':
+      if (effect.face !== 'face_up') {
+        issues.push({
+          code: 'invalid_resolution_node',
+          path,
+          message: 'Only face-up source-card response play is supported.',
+        });
+      }
+      break;
+    case 'attach_card_to_player_attack':
+      if (!effect.cardId || !effect.target) {
+        issues.push({
+          code: 'invalid_resolution_node',
+          path,
+          message: 'attach_card_to_player_attack requires cardId and target.',
+        });
+      }
+      if (effect.returnAtRoundEnd !== true || effect.controllerCannotWinStatus !== 'maiya_cannot_win_battle_this_round') {
+        issues.push({
+          code: 'invalid_resolution_node',
+          path,
+          message: 'Only return-at-round-end Maiya cannot-win support attachments are supported.',
+        });
+      }
+      break;
+    case 'activate_card_by_id':
+      if (!effect.definitionId) {
+        issues.push({
+          code: 'invalid_resolution_node',
+          path,
+          message: 'activate_card_by_id requires definitionId.',
+        });
+      }
+      break;
+    case 'close_source_card':
+      break;
     case 'adjust_victory_points':
       validateValueExpression(effect.amount, available, unsafeBranchBindings, issues, `${path}.amount`);
       break;
@@ -687,6 +802,38 @@ function playSelectedCardsPrimitive(
 ): KnownEffectResult {
   if (effect.type !== 'play_selected_cards') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
   return playSelectedCards(transaction, effect);
+}
+
+function playSourceCardPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'play_source_card') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return playSourceCard(transaction, effect);
+}
+
+function attachCardToPlayerAttackPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'attach_card_to_player_attack') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return attachCardToPlayerAttack(transaction, effect);
+}
+
+function activateCardByIdPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'activate_card_by_id') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return activateCardById(transaction, effect);
+}
+
+function closeSourceCardPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'close_source_card') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return closeSourceCard(transaction, effect);
 }
 
 function adjustVictoryPointsPrimitive(
@@ -883,6 +1030,224 @@ function playSelectedCards(
   };
 }
 
+function playSourceCard(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'play_source_card' }>,
+): KnownEffectResult {
+  const source = transaction.workingState.cards.find((candidate) => candidate.instanceId === transaction.context.sourceCardId);
+  if (!source) throw new ResolutionRuntimeError('missing_source_card', 'Source card is not available.');
+  if (source.controllerPlayerId !== transaction.context.controllerId || source.zone !== 'hand') {
+    throw new ResolutionRuntimeError('source_not_playable', 'Source card must still be in the controller hand.');
+  }
+  const hook = transaction.context.hooks.playSourceCard;
+  if (!hook) throw new ResolutionRuntimeError('missing_runtime_hook', 'play_source_card requires a trusted source-card play hook.');
+  const faceDown = effect.face === 'face_down';
+  const result = hook({
+    state: transaction.workingState,
+    playerId: transaction.context.controllerId,
+    sourceCardId: transaction.context.sourceCardId,
+    faceDown,
+  });
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.source_card_played`;
+  if (result.playedCount > 0) {
+    transaction.emittedEvents.push({
+      type: 'source_card_played',
+      playerId: transaction.context.controllerId,
+      sourceCardId: transaction.context.sourceCardId,
+      abilityId: transaction.context.abilityId,
+      resultId: eventId,
+      revision: transaction.workingState.abilityRuntime?.revision ?? 0,
+    });
+  }
+  return {
+    effectId: effect.id,
+    effectType: 'play_source_card',
+    status: result.playedCount === 0 ? 'no_op' : 'applied',
+    affectedEntities: result.playedCount === 0 ? [] : [{ kind: 'player', id: transaction.context.controllerId }],
+    payload: {
+      playerId: transaction.context.controllerId,
+      cardInstanceId: transaction.context.sourceCardId,
+      destinationZone: result.destinationZone,
+      playedCount: result.playedCount,
+      faceDown,
+    },
+    emittedEventIds: result.playedCount === 0 ? [] : [eventId],
+  };
+}
+
+function attachCardToPlayerAttack(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'attach_card_to_player_attack' }>,
+): KnownEffectResult {
+  if (effect.returnAtRoundEnd !== true || effect.controllerCannotWinStatus !== 'maiya_cannot_win_battle_this_round') {
+    throw new ResolutionRuntimeError('unsupported_add_to_attack_shape', 'Only return-at-round-end Maiya cannot-win support attachments are supported.');
+  }
+  const targetPlayerId = transaction.context.selections[effect.target]?.[0];
+  if (!targetPlayerId || targetPlayerId === transaction.context.controllerId) {
+    throw new ResolutionRuntimeError('invalid_target', 'Support attachment requires one non-controller target player.');
+  }
+  const target = transaction.workingState.players.find((player) => player.id === targetPlayerId && player.status === 'active');
+  if (!target) throw new ResolutionRuntimeError('invalid_target', `Missing active target player '${targetPlayerId}'.`);
+  const support = transaction.workingState.cards.find((candidate) =>
+    candidate.ownerPlayerId === transaction.context.controllerId &&
+    candidate.definitionId === effect.cardId &&
+    candidate.zone === 'skill');
+  if (!support) throw new ResolutionRuntimeError('missing_support_card', `Missing support card '${effect.cardId}'.`);
+  support.zone = 'attack_area';
+  support.controllerPlayerId = targetPlayerId;
+  support.visibility = { scope: 'public' };
+  if (transaction.workingState.abilityRuntime) {
+    transaction.workingState.abilityRuntime.cardState[support.instanceId] = {
+      active: true,
+      faceDown: false,
+      playedRound: transaction.workingState.round.roundNumber,
+    };
+  }
+  const stateWithMode = transaction.workingState as GameState & {
+    modeState?: { supportShotAttachments?: Array<Record<string, unknown>> };
+    activeStatuses?: Array<Record<string, unknown>>;
+  };
+  stateWithMode.modeState ??= {};
+  stateWithMode.modeState.supportShotAttachments = [
+    ...(stateWithMode.modeState.supportShotAttachments ?? []),
+    {
+      sourceOwnerId: transaction.context.controllerId,
+      targetPlayerId,
+      cardInstanceId: support.instanceId,
+      sourceCardId: transaction.context.sourceCardId,
+      abilityId: transaction.context.abilityId,
+      returnAtRoundEnd: true,
+    },
+  ];
+  stateWithMode.activeStatuses = [
+    ...(stateWithMode.activeStatuses ?? []),
+    {
+      id: effect.controllerCannotWinStatus,
+      sourceControllerId: transaction.context.controllerId,
+      duration: 'this_round',
+    },
+  ];
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.attack_added`;
+  transaction.emittedEvents.push({
+    type: 'attack_added',
+    playerId: targetPlayerId,
+    sourceCardId: transaction.context.sourceCardId,
+    abilityId: transaction.context.abilityId,
+    resultId: eventId,
+    revision: transaction.workingState.abilityRuntime?.revision ?? 0,
+  });
+  return {
+    effectId: effect.id,
+    effectType: 'attach_card_to_player_attack',
+    status: 'applied',
+    affectedEntities: [{ kind: 'player', id: targetPlayerId }],
+    payload: {
+      sourceOwnerId: transaction.context.controllerId,
+      targetPlayerId,
+      cardInstanceId: support.instanceId,
+      attachedCount: 1,
+      returnAtRoundEnd: true,
+      controllerCannotWinStatus: effect.controllerCannotWinStatus,
+    },
+    emittedEventIds: [eventId],
+  };
+}
+
+function activateCardById(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'activate_card_by_id' }>,
+): KnownEffectResult {
+  const targets = transaction.workingState.cards.filter((candidate) =>
+    candidate.ownerPlayerId === transaction.context.controllerId && candidate.definitionId === effect.definitionId);
+  if (targets.length === 0) throw new ResolutionRuntimeError('missing_activation_target', `Missing owned activation target '${effect.definitionId}'.`);
+  if (targets.length !== 1) throw new ResolutionRuntimeError('ambiguous_activation_target', `Activation target '${effect.definitionId}' is ambiguous.`);
+  const target = targets[0]!;
+  if (target.controllerPlayerId !== transaction.context.controllerId) {
+    throw new ResolutionRuntimeError('invalid_activation_controller', `Activation target '${effect.definitionId}' is controlled by another player.`);
+  }
+  if (target.zone !== 'skill') throw new ResolutionRuntimeError('invalid_activation_zone', `Activation target '${effect.definitionId}' must be in skill.`);
+  const runtime = transaction.workingState.abilityRuntime;
+  if (runtime?.cardState[target.instanceId]?.active) {
+    throw new ResolutionRuntimeError('already_active', `Activation target '${effect.definitionId}' is already active.`);
+  }
+  target.zone = 'field';
+  target.controllerPlayerId = transaction.context.controllerId;
+  target.visibility = { scope: 'public' };
+  if (runtime) {
+    runtime.cardState[target.instanceId] = {
+      active: true,
+      faceDown: false,
+      playedRound: transaction.workingState.round.roundNumber,
+    };
+  }
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.card_activated`;
+  transaction.emittedEvents.push({
+    type: 'card_activated',
+    playerId: transaction.context.controllerId,
+    sourceCardId: transaction.context.sourceCardId,
+    abilityId: transaction.context.abilityId,
+    resultId: eventId,
+    revision: runtime?.revision ?? 0,
+  });
+  return {
+    effectId: effect.id,
+    effectType: 'activate_card_by_id',
+    status: 'applied',
+    affectedEntities: [{ kind: 'player', id: transaction.context.controllerId }],
+    payload: {
+      definitionId: effect.definitionId,
+      cardInstanceId: target.instanceId,
+      activatedCount: 1,
+    },
+    emittedEventIds: [eventId],
+  };
+}
+
+function closeSourceCard(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'close_source_card' }>,
+): KnownEffectResult {
+  const source = transaction.workingState.cards.find((candidate) => candidate.instanceId === transaction.context.sourceCardId);
+  if (!source) throw new ResolutionRuntimeError('missing_close_source', 'Close source card is missing.');
+  if (source.controllerPlayerId !== transaction.context.controllerId) {
+    throw new ResolutionRuntimeError('invalid_close_controller', 'Close source card is not controlled by the ability controller.');
+  }
+  if (!['field', 'attack_area'].includes(source.zone)) {
+    throw new ResolutionRuntimeError('invalid_close_zone', 'Close source card must be active on the board.');
+  }
+  const runtime = transaction.workingState.abilityRuntime;
+  if (runtime) {
+    const state = runtime.cardState[source.instanceId];
+    if (!runtime.pack.cards[source.definitionId]) {
+      throw new ResolutionRuntimeError('missing_close_definition', 'Close source card has no compiled definition.');
+    }
+    if (!state?.active) throw new ResolutionRuntimeError('inactive_close_source', 'Close source card is not active.');
+    if (state.faceDown) throw new ResolutionRuntimeError('face_down_close_source', 'Close source card must be face up.');
+    state.active = false;
+    state.faceDown = false;
+  }
+  const fromZone = source.zone;
+  source.zone = 'skill';
+  source.visibility = { scope: 'owner_only', ownerPlayerId: source.ownerPlayerId };
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.source_card_closed`;
+  transaction.emittedEvents.push({
+    type: 'source_card_closed',
+    playerId: transaction.context.controllerId,
+    sourceCardId: source.instanceId,
+    abilityId: transaction.context.abilityId,
+    resultId: eventId,
+    revision: runtime?.revision ?? 0,
+  });
+  return {
+    effectId: effect.id,
+    effectType: 'close_source_card',
+    status: 'applied',
+    affectedEntities: [{ kind: 'player', id: transaction.context.controllerId }],
+    payload: { cardInstanceId: source.instanceId, fromZone, toZone: 'skill', closedCount: 1 },
+    emittedEventIds: [eventId],
+  };
+}
+
 function adjustVictoryPoints(
   transaction: AbilityResolutionTransaction,
   effect: Extract<ResolutionEffectNode, { type: 'adjust_victory_points' }>,
@@ -1017,6 +1382,10 @@ function evaluateValue(transaction: AbilityResolutionTransaction, expression: Va
     if (expression.field === 'requestedCount') return result.payload.requestedCount;
     if (expression.field === 'playedCount') return result.payload.playedCount;
   }
+  if (result.effectType === 'play_source_card' && expression.field === 'playedCount') return result.payload.playedCount;
+  if (result.effectType === 'attach_card_to_player_attack' && expression.field === 'attachedCount') return result.payload.attachedCount;
+  if (result.effectType === 'activate_card_by_id' && expression.field === 'activatedCount') return result.payload.activatedCount;
+  if (result.effectType === 'close_source_card' && expression.field === 'closedCount') return result.payload.closedCount;
   if (result.effectType === 'adjust_victory_points') {
     if (expression.field === 'amount') return result.payload.amount;
     if (expression.field === 'before') return result.payload.before;
@@ -1169,6 +1538,32 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
         face: current.face === 'face_down' || current.face === 'face_up' ? current.face : reportFace(path, issues),
         ...coerceBind(current.bind),
       };
+    case 'play_source_card':
+      return {
+        id,
+        type,
+        face: current.face === 'face_down' || current.face === 'face_up' ? current.face : reportFace(path, issues),
+        ...coerceBind(current.bind),
+      };
+    case 'attach_card_to_player_attack':
+      return {
+        id,
+        type,
+        cardId: stringField(current, 'cardId', `${path}.cardId`, issues),
+        target: stringField(current, 'target', `${path}.target`, issues),
+        returnAtRoundEnd: current.returnAtRoundEnd === true,
+        controllerCannotWinStatus: stringField(current, 'controllerCannotWinStatus', `${path}.controllerCannotWinStatus`, issues),
+        ...coerceBind(current.bind),
+      };
+    case 'activate_card_by_id':
+      return {
+        id,
+        type,
+        definitionId: stringField(current, 'definitionId', `${path}.definitionId`, issues),
+        ...coerceBind(current.bind),
+      };
+    case 'close_source_card':
+      return { id, type, ...coerceBind(current.bind) };
     case 'adjust_victory_points':
       return {
         id,

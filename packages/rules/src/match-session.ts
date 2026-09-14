@@ -1213,6 +1213,24 @@ export class MatchSession {
     this.checkpoint(`round ${round} start`, targetState);
   }
 
+  private emitAuthoritativeFirstLossEvents(battle: GameState['battleResults'][number]): void {
+    const losers = battle.militaryAdjustments
+      .filter((adjustment) => adjustment.delta < 0)
+      .map((adjustment) => adjustment.playerId);
+    for (const playerId of losers) {
+      const priorLosses = this.battleHistory.filter((priorBattle) =>
+        priorBattle.militaryAdjustments.some((adjustment) => adjustment.playerId === playerId && adjustment.delta < 0)).length;
+      if (priorLosses !== 0) continue;
+      processAbilityEvent(this.state, {
+        id: `battle:${this.state.round.roundNumber}:${battle.battlefieldId}:${this.battleHistory.length + 1}:first-loss:${playerId}`,
+        type: 'after_controller_first_loses_battle',
+        playerId,
+        battlefieldId: battle.battlefieldId,
+        lossOrdinal: 1,
+      });
+    }
+  }
+
   private resolveBattlePhase(): void {
     if (this.state.round.activePhase !== 'battle') {
       advanceAbilityPhase(this.state, 'battle', this.state.round.roundNumber);
@@ -1226,6 +1244,7 @@ export class MatchSession {
       Object.assign(this.state, resolveBattlefield(this.state, { battlefieldId: battlefield.id, revealHiddenEvents: true }).nextState);
       if (this.state.battleResults.length > before) {
         const battle = this.state.battleResults[this.state.battleResults.length - 1]!;
+        this.emitAuthoritativeFirstLossEvents(battle);
         this.battleHistory.push(structuredClone(battle));
         this.record('battle_resolved', battlefield.id, battle as unknown as Record<string, unknown>);
       }

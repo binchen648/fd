@@ -38,7 +38,28 @@ function baseState(): TerrainState {
       movementLinks: [],
     },
     locationConfig: { disabledLocationIds: [] },
-    cards: [],
+    cards: [{
+      instanceId: 'synthetic-source',
+      definitionId: 'synthetic-source-card',
+      ownerPlayerId: 'P1',
+      controllerPlayerId: 'P1',
+      zone: 'hand',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'P1' },
+    }, {
+      instanceId: 'support-shot',
+      definitionId: 'master.maiya.deck.support-shot',
+      ownerPlayerId: 'P1',
+      controllerPlayerId: 'P1',
+      zone: 'skill',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'P1' },
+    }, {
+      instanceId: 'activation-target',
+      definitionId: 'fixture.skill.delayed',
+      ownerPlayerId: 'P1',
+      controllerPlayerId: 'P1',
+      zone: 'skill',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'P1' },
+    }],
     eventPlacements: [],
     battleResults: [],
     effectStack: [],
@@ -107,6 +128,22 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
       return { id: `produce-${binding}`, type: 'draw_cards', player: 'controller', count: 0, bind: binding };
     case 'play_selected_cards':
       return { id: `produce-${binding}`, type: 'play_selected_cards', target: 'selected_cards', face: 'face_down', bind: binding };
+    case 'play_source_card':
+      return { id: `produce-${binding}`, type: 'play_source_card', face: 'face_up', bind: binding };
+    case 'attach_card_to_player_attack':
+      return {
+        id: `produce-${binding}`,
+        type: 'attach_card_to_player_attack',
+        cardId: 'master.maiya.deck.support-shot',
+        target: 'supported_player',
+        returnAtRoundEnd: true,
+        controllerCannotWinStatus: 'maiya_cannot_win_battle_this_round',
+        bind: binding,
+      };
+    case 'activate_card_by_id':
+      return { id: `produce-${binding}`, type: 'activate_card_by_id', definitionId: 'fixture.skill.delayed', bind: binding };
+    case 'close_source_card':
+      return { id: `produce-${binding}`, type: 'close_source_card', bind: binding };
     case 'adjust_victory_points':
       return { id: `produce-${binding}`, type: 'adjust_victory_points', player: 'controller', amount: 1, bind: binding };
     case 'adjust_mana':
@@ -323,14 +360,29 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
         ];
 
         expect(() => validateResolutionDataFlow(effects)).not.toThrow();
+        const state = baseState();
+        if (effectType === 'close_source_card') {
+          const source = state.cards.find((card) => card.instanceId === 'synthetic-source')!;
+          source.definitionId = 'fixture.skill.source';
+          source.zone = 'field';
+          source.visibility = { scope: 'public' };
+        }
         expect(() => executeResolution({
-          state: baseState(),
+          state,
           controllerId: 'P1',
           sourceCardId: 'synthetic-source',
           abilityId: 'synthetic-ability',
           effects,
-          selections: { selected_cards: [] },
-          hooks: { playSelectedCards: ({ cardInstanceIds }) => ({ playedCount: cardInstanceIds.length }) },
+          selections: { selected_cards: [], supported_player: ['P2'] },
+          hooks: {
+            playSelectedCards: ({ cardInstanceIds }) => ({ playedCount: cardInstanceIds.length }),
+            playSourceCard: ({ state, sourceCardId }) => {
+              const source = state.cards.find((card) => card.instanceId === sourceCardId)!;
+              source.zone = 'attack_area';
+              source.visibility = { scope: 'public' };
+              return { playedCount: 1, destinationZone: 'attack_area' };
+            },
+          },
         })).not.toThrow();
       }
     }
@@ -384,6 +436,26 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
         type: 'adjust_victory_points',
         player: 'controller',
         amount: { expr: 'binding_field', binding: 'removedAdvantages', field: 'targetCount', valueType: 'number' },
+      },
+    ], 'invalid_result_field');
+  });
+
+  it('fails closed for invalid add-to-attack result fields', () => {
+    expectDataFlowIssue([
+      {
+        id: 'effect-a',
+        type: 'attach_card_to_player_attack',
+        cardId: 'master.maiya.deck.support-shot',
+        target: 'supported_player',
+        returnAtRoundEnd: true,
+        controllerCannotWinStatus: 'maiya_cannot_win_battle_this_round',
+        bind: 'supportAttachment',
+      },
+      {
+        id: 'effect-b',
+        type: 'adjust_victory_points',
+        player: 'controller',
+        amount: { expr: 'binding_field', binding: 'supportAttachment', field: 'attachedTotal', valueType: 'number' },
       },
     ], 'invalid_result_field');
   });
