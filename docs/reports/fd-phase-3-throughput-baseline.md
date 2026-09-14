@@ -514,3 +514,18 @@ Permitted final status:
 - Independent review confirmed unique-group arbitration, controller-only ownership, decline/no-mutation, later distinct win re-offer, unrelated-battle exclusion, stable replay/reconnect/stale-revision exactly-once behavior, typed remove/create/shuffle evidence, and atomic malformed-shape rejection.
 - B20 does not promote Gatou reward, Tomoe defeat penalty, Olga loss-transform, broad TO14, TO15 Modifier/Power, TO16 Special, or A-owned taxonomy/classifier changes.
 - The B20 runtime/review lane is released. The next TO14 implementation requires a fresh A-owned narrow handoff selecting one of the remaining three direct consumers and a new independent reviewer.
+
+## P3-A03 B21 Synchronization — 2026-09-14
+
+- P3-B21 Tomoe unpreventable defeat penalty: `REVIEW_ACCEPTED` at exact candidate `a160913798d943bf74e6151494384ba946fdfce9`, independent P3-R15 evidence `6e585bdc42223f9915501849a15a69d63f85ac39`.
+- Accepted scope is exactly one additional TO14 direct consumer: Tomoe `sc-tomoe-1.penalty-on-defeat`, routed by the identity-free exact family `forced after_controller_loses_battle + controller adjust_victory_points(-5) + explicit this_effect effect-prevention exception`.
+- Production classification contains no Tomoe/card/ability/modifier identity. The prevention bypass is limited to the exact supported exception shape; malformed same-family shapes fail closed before legacy fallback and do not broaden TO15 Modifier/Power runtime.
+- TO14 scoped direct-consumer overlay is now `11 accepted / 13 direct consumers`, leaving exactly `2`: Gatou `seeker.battle-end-reward` and Olga `trismegistus.loss-transform`. The broader Battle-integration denominator remains `39 abilities / 28 cards`.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; B21 acceptance does not create a synthetic raw counter delta. Fresh compiled evidence remains definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, `70` cards, `14` characters, and `0` blocking issues.
+- The regenerated coverage artifact changed only `generatedAt` and generic static-evidence source line numbers shifted by interpreter insertions. Source fingerprint, counters, compiled identity, classifications, and evidence identities were unchanged, so this non-semantic generated drift is intentionally not committed.
+- Fresh independent evidence: typecheck PASS; focused/current-lineage compatibility `12 files / 109/109 PASS`; Chromium B13-B21 final rerun `9/9 PASS`; full root baseline `693 PASS / 20 inherited FAIL` across `713` tests.
+- Compared with accepted B20 baseline `687 PASS / 20 inherited FAIL / 707 total`, B21 contributes `+6 PASS / +0 new deterministic failures`.
+- Independent review confirmed loser/participant provenance, phase-wide post-scoring ordering, ordinary-prevention bypass only for the explicit this-effect exception, typed unpreventable VP evidence, authoritative VP floor, malformed-shape atomic rejection, and stable replay/reconnect/stale exactly-once behavior.
+- One transient inherited B15 browser command-send failure appeared on the first reviewer suite run; B15 passed immediately in isolation and the complete fresh rerun passed `9/9`, so R15 identified no new deterministic blocker.
+- B21 does not promote Gatou reward, Olga loss-transform, broad TO14, broad TO15 Modifier/Power, TO16 Special, or A-owned taxonomy/classifier changes.
+- The B21 runtime/reviewer lane is released. The next TO14 implementation requires a fresh A-owned narrow handoff selecting one of the remaining two direct consumers and a new independent reviewer.
