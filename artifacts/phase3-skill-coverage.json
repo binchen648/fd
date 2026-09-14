@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-14T03:03:11.059Z",
+  "generatedAt": "2026-09-14T11:06:36.606Z",
   "sourceFingerprint": "2350e4949a4757fb6417080f63b8698c0c45492c2e03f36bdc8f4672f1276c6f",
   "counts": {
     "totalArchives": 14,
@@ -4103,91 +4103,109 @@
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 602,
+        "line": 604,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 882,
+        "line": 893,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 889,
+        "line": 900,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 939,
+        "line": 950,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1627,
+        "line": 1145,
+        "id": "servant_package",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 1728,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
+        "file": "packages/rules/src/ability/resolution-dataflow.ts",
+        "line": 1097,
+        "id": "servant_package_revealed",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/resolution-dataflow.ts",
+        "line": 1691,
+        "id": "servant_package",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
         "file": "packages/rules/src/match-session.ts",
-        "line": 170,
+        "line": 172,
         "id": "master",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 171,
+        "line": 173,
         "id": "servant",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 274,
+        "line": 276,
         "id": "master",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1270,
+        "line": 1399,
         "id": "master_main",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1271,
+        "line": 1400,
         "id": "servant_identity",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1273,
+        "line": 1402,
         "id": "servant_deck",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1274,
+        "line": 1403,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1274,
+        "line": 1403,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1275,
+        "line": 1404,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1275,
+        "line": 1404,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
