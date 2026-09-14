@@ -2572,10 +2572,22 @@
         {
           "id": "fiore.determination.bind-target-on-transcend",
           "printedClause": "此牌超越时，选择一名战果高于你的对手。",
-          "kind": "passive",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "cycle_state.entered"
+            },
+            {
+              "type": "event_definition_is",
+              "definitionId": "master.fiore.skill.s6"
+            }
+          ],
           "effects": [
             {
-              "type": "choose_player",
+              "type": "choose_players",
+              "minCount": 1,
+              "maxCount": 1,
               "relation": "opponent",
               "condition": "victory_points_greater_than_controller",
               "payloadKey": "targetPlayerId"

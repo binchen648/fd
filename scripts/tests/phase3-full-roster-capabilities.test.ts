@@ -396,7 +396,7 @@ describe('Phase 3 full-roster capability mapping', () => {
       expect.arrayContaining(['GENERIC_CARD_ZONE', 'GENERIC_COST_PAYMENT', 'GENERIC_MOVEMENT', 'GENERIC_TRIGGER_GATEWAY', 'REVIEWED_SPECIAL_HANDLER']),
     );
     expect(byId.get('master.fiore.skill.s6').phase3.requiredCapabilities).toEqual(
-      expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION', 'GENERIC_LIFECYCLE_POLICY', 'GENERIC_RESULT_BINDING', 'GENERIC_TRIGGER_GATEWAY', 'REVIEWED_SPECIAL_HANDLER']),
+      expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION', 'GENERIC_CONDITION_EVALUATION', 'GENERIC_LIFECYCLE_POLICY', 'GENERIC_PENDING_INTERACTION', 'GENERIC_RESULT_BINDING', 'GENERIC_TARGET_SELECTION', 'GENERIC_TRIGGER_GATEWAY', 'REVIEWED_SPECIAL_HANDLER']),
     );
     expect(byId.get('master.fiore.skill.s7').phase3.requiredCapabilities).toEqual(
       expect.arrayContaining(['GENERIC_CARD_ZONE', 'GENERIC_COST_PAYMENT', 'GENERIC_MODIFIER', 'GENERIC_POWER', 'GENERIC_TRIGGER_GATEWAY']),

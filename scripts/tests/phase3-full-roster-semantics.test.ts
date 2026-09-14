@@ -571,6 +571,16 @@ describe('Phase 3 full-roster semantic normalization', () => {
     );
 
     const determination = fiore.find((card) => card.id === 'master.fiore.skill.s6');
+    expect(determination?.abilities[0].kind).toBe('triggered');
+    expect(determination?.abilities[0].conditions).toContainEqual(
+      expect.objectContaining({ type: 'event_type_is', eventType: 'cycle_state.entered' }),
+    );
+    expect(determination?.abilities[0].conditions).toContainEqual(
+      expect.objectContaining({ type: 'event_definition_is', definitionId: 'master.fiore.skill.s6' }),
+    );
+    expect(determination?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({ type: 'choose_players', minCount: 1, maxCount: 1, payloadKey: 'targetPlayerId' }),
+    );
     expect(determination?.abilities[1].conditions).toContainEqual(
       expect.objectContaining({ type: 'event_type_is', eventType: 'combat.resolved' }),
     );
