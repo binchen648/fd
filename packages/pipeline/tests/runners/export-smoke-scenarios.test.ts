@@ -11,6 +11,7 @@ import {
   buildSmokeScenario,
   buildSmokeScenarioExports,
   buildGeneratedScenarioMatrixEntries,
+  DEFAULT_OUTPUT_ROOT_DIR,
   DEFAULT_SCENARIO_TEMPLATE_PATHS,
   normalizeStructuredResponseForSmokeExport,
   selectTemplateScenarioPath,
@@ -347,7 +348,7 @@ describe("export smoke scenarios bridge", () => {
         smokeTest,
         templatePath: DEFAULT_SCENARIO_TEMPLATE_PATHS.default,
         templateScenario: defaultTemplate,
-        outputPath: String.raw`D:\fd\data\staged\generated-scenarios\master_skill\mana-burst--capability_approve_gain_mana_card_effects_0_type.json`,
+        outputPath: join(DEFAULT_OUTPUT_ROOT_DIR, "master_skill", "mana-burst--capability_approve_gain_mana_card_effects_0_type.json"),
         familyLabel: "master-skill",
         scenario,
       },
@@ -355,7 +356,7 @@ describe("export smoke scenarios bridge", () => {
       {
         label: "generated-master-skill-mana-burst-capability-approve-gain-mana-card-effects-0-type-candidate",
         baselinePath: DEFAULT_SCENARIO_TEMPLATE_PATHS.default,
-        candidatePath: String.raw`D:\fd\data\staged\generated-scenarios\master_skill\mana-burst--capability_approve_gain_mana_card_effects_0_type.json`,
+        candidatePath: join(DEFAULT_OUTPUT_ROOT_DIR, "master_skill", "mana-burst--capability_approve_gain_mana_card_effects_0_type.json"),
         expectedIdentical: false,
       },
     ]);
@@ -442,7 +443,7 @@ describe("export smoke scenarios bridge", () => {
         fileStem: "sample-card",
         structuredCard: card,
         smokeTests,
-        outputRootDir: "D:\\fd\\data\\staged\\generated-scenarios",
+        outputRootDir: DEFAULT_OUTPUT_ROOT_DIR,
       },
       {
         [DEFAULT_SCENARIO_TEMPLATE_PATHS.default]: defaultTemplate,
@@ -455,7 +456,7 @@ describe("export smoke scenarios bridge", () => {
     expect(exports).toHaveLength(2);
     expect(exports[0]).toMatchObject({
       templatePath: DEFAULT_SCENARIO_TEMPLATE_PATHS.default,
-      outputPath: "D:\\fd\\data\\staged\\generated-scenarios\\master_skill\\sample-card--base-smoke.json",
+      outputPath: join(DEFAULT_OUTPUT_ROOT_DIR, "master_skill", "sample-card--base-smoke.json"),
       smokeTest: smokeTests[0],
     });
     expect(exports[1]?.scenario.id).toBe(
@@ -474,7 +475,7 @@ describe("export smoke scenarios bridge", () => {
         },
         templatePath: DEFAULT_SCENARIO_TEMPLATE_PATHS.default,
         templateScenario: defaultTemplate,
-        outputPath: "D:\\fd\\data\\staged\\generated-scenarios\\event\\sample-card--base-smoke.json",
+        outputPath: join(DEFAULT_OUTPUT_ROOT_DIR, "event", "sample-card--base-smoke.json"),
         scenario: defaultTemplate,
       },
     ]);
@@ -483,10 +484,40 @@ describe("export smoke scenarios bridge", () => {
       {
         label: "generated-event-sample-card-base-smoke-candidate",
         baselinePath: DEFAULT_SCENARIO_TEMPLATE_PATHS.default,
-        candidatePath: "D:\\fd\\data\\staged\\generated-scenarios\\event\\sample-card--base-smoke.json",
+        candidatePath: join(DEFAULT_OUTPUT_ROOT_DIR, "event", "sample-card--base-smoke.json"),
         expectedIdentical: true,
       },
     ]);
+  });
+
+  it("builds identical matrix labels for equivalent Windows and POSIX paths", () => {
+    const smokeTest: SmokeTestSuggestion = {
+      name: "base_smoke",
+      setup: "Run baseline smoke scenario.",
+      expect: "Replay remains runnable.",
+      source: "model",
+    };
+    const windowsEntries = buildGeneratedScenarioMatrixEntries([
+      {
+        smokeTest,
+        templatePath: DEFAULT_SCENARIO_TEMPLATE_PATHS.default,
+        templateScenario: defaultTemplate,
+        outputPath: String.raw`D:\fd\data\staged\generated-scenarios\event\sample-card--base-smoke.json`,
+        scenario: defaultTemplate,
+      },
+    ]);
+    const posixEntries = buildGeneratedScenarioMatrixEntries([
+      {
+        smokeTest,
+        templatePath: DEFAULT_SCENARIO_TEMPLATE_PATHS.default,
+        templateScenario: defaultTemplate,
+        outputPath: "/home/runner/work/fd/fd/data/staged/generated-scenarios/event/sample-card--base-smoke.json",
+        scenario: defaultTemplate,
+      },
+    ]);
+
+    expect(windowsEntries[0]?.label).toBe("generated-event-sample-card-base-smoke-candidate");
+    expect(posixEntries[0]?.label).toBe(windowsEntries[0]?.label);
   });
 
   it("normalizes legacy servant card families for generated matrix labels", () => {
@@ -516,7 +547,7 @@ describe("export smoke scenarios bridge", () => {
             source: "model",
           },
         ],
-        outputRootDir: "D:\\fd\\data\\staged\\generated-scenarios",
+        outputRootDir: DEFAULT_OUTPUT_ROOT_DIR,
       },
       {
         [DEFAULT_SCENARIO_TEMPLATE_PATHS.default]: defaultTemplate,
@@ -530,7 +561,7 @@ describe("export smoke scenarios bridge", () => {
       {
         label: "generated-servant-skill-sample-card-base-smoke-candidate",
         baselinePath: DEFAULT_SCENARIO_TEMPLATE_PATHS.default,
-        candidatePath: "D:\\fd\\data\\staged\\generated-scenarios\\servant\\sample-card--base-smoke.json",
+        candidatePath: join(DEFAULT_OUTPUT_ROOT_DIR, "servant", "sample-card--base-smoke.json"),
         expectedIdentical: true,
       },
     ]);
@@ -572,7 +603,7 @@ describe("export smoke scenarios bridge", () => {
         fileStem: "identity-swap-sample",
         structuredCard: card,
         smokeTests,
-        outputRootDir: "D:\\fd\\data\\staged\\generated-scenarios",
+        outputRootDir: DEFAULT_OUTPUT_ROOT_DIR,
       },
       {
         [DEFAULT_SCENARIO_TEMPLATE_PATHS.default]: defaultTemplate,

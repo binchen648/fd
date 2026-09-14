@@ -1,4 +1,6 @@
-import { resolve } from 'node:path';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
@@ -16,6 +18,81 @@ import ereshkigalArchive from '../../../../data/authoring/servants/servant.eresh
 const workspaceRoot = resolve('.');
 const packPath = resolve('data/packs/fd-playtest-v1/pack.json');
 
+function writeJson(path: string, value: unknown): void {
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+}
+
+function createMinimalWorkspace(
+  includeSourceAsset: boolean,
+  options: { declareSourceImage?: boolean; includeHtmSource?: boolean } = {},
+): { root: string; packPath: string } {
+  const declareSourceImage = options.declareSourceImage ?? true;
+  const includeHtmSource = options.includeHtmSource ?? true;
+  const root = mkdtempSync(join(tmpdir(), `fd-pack-${includeSourceAsset ? 'assets' : 'clean'}-`));
+  const packPath = join(root, 'data/packs/minimal/pack.json');
+  writeJson(join(root, 'data/packs/minimal/dictionaries/basic-attacks.json'), {});
+  writeJson(packPath, {
+    id: 'minimal-pack',
+    name: 'Minimal Pack',
+    version: 1,
+    dictionaries: { basicAttacks: 'data/packs/minimal/dictionaries/basic-attacks.json' },
+    servantFiles: [],
+    servantCardFiles: [],
+    masterFiles: [],
+    masterCardFiles: [],
+    authoringServantFiles: [],
+    authoringMasterFiles: ['data/authoring/masters/master.test.json'],
+    eventSetFiles: [],
+    eventCardFiles: [],
+  });
+  writeJson(join(root, 'data/authoring/masters/master.test.json'), {
+    schemaVersion: 'fd-card-authoring-v1',
+    id: 'master.test',
+    name: 'Test Master',
+    sources: [
+      ...(includeHtmSource ? [{ type: 'chm_html', path: 'D:/fd/chm-extract/Test Master.htm' }] : []),
+      ...(declareSourceImage ? [{ type: 'original_card_image', path: 'D:/fd/chm-extract/图包/declared.png' }] : []),
+    ],
+    ...(declareSourceImage ? { publicInformation: {
+      sourceImage: 'D:/fd/chm-extract/图包/declared.png',
+    } } : {}),
+    cards: [
+      {
+        id: 'master.test.skill.one',
+        name: 'One',
+        cardType: 'master_skill',
+        printedText: '行动阶段：获得1点魔力。',
+        cardFace: { cost: 0, basePower: 0 },
+        playTiming: { phase: 'action' },
+        abilities: [],
+        evidence: declareSourceImage ? [
+          {
+            type: 'original_card_image',
+            path: 'D:/fd/chm-extract/图包/declared.png',
+            imageIndex: 0,
+            htmPath: 'D:/fd/chm-extract/Test Master.htm',
+          },
+        ] : [
+          {
+            type: 'chm_html',
+            path: 'D:/fd/chm-extract/Test Master.htm',
+          },
+        ],
+      },
+    ],
+  });
+  const htmPath = join(root, 'chm-extract/Test Master.htm');
+  mkdirSync(dirname(htmPath), { recursive: true });
+  writeFileSync(htmPath, '<img src="图包/ScreenShot_should_not_be_inferred.png">', 'utf8');
+  if (includeSourceAsset) {
+    const imagePath = join(root, 'chm-extract/图包/declared.png');
+    mkdirSync(dirname(imagePath), { recursive: true });
+    writeFileSync(imagePath, 'not-a-real-image-but-present-for-validation', 'utf8');
+  }
+  return { root, packPath };
+}
+
 describe('playtest pack loader', () => {
   it('loads the complete approved roster with no blocking issues', () => {
     const loaded = loadPlaytestContentPack(packPath, { workspaceRoot });
@@ -29,6 +106,10 @@ describe('playtest pack loader', () => {
     expect(loaded.eventSets[0]!.cardIds).toHaveLength(20);
     expect(loaded.eventCards).toHaveLength(18);
     expect(issues.filter((issue) => issue.blocking)).toEqual([]);
+    expect(issues).toContainEqual(expect.objectContaining({
+      code: 'SOURCE_ASSET_UNVERIFIED',
+      blocking: false,
+    }));
   });
 
   it('produces deterministic compiled output', () => {
@@ -37,6 +118,56 @@ describe('playtest pack loader', () => {
     expect(compileLoadedPlaytestPack(loaded)).toEqual(
       compileLoadedPlaytestPack(loaded),
     );
+  });
+
+  it('compiles identical source metadata and definition hash with source assets present or absent', () => {
+    const withAssets = createMinimalWorkspace(true);
+    const withoutAssets = createMinimalWorkspace(false);
+    try {
+      const loadedWithAssets = loadPlaytestContentPack(withAssets.packPath, { workspaceRoot: withAssets.root });
+      const loadedWithoutAssets = loadPlaytestContentPack(withoutAssets.packPath, { workspaceRoot: withoutAssets.root });
+      const compiledWithAssets = compileLoadedPlaytestPack(loadedWithAssets).library;
+      const compiledWithoutAssets = compileLoadedPlaytestPack(loadedWithoutAssets).library;
+
+      expect(compiledWithAssets.masters[0]!.source).toEqual({
+        htmPath: 'chm-extract/Test Master.htm',
+        imagePath: 'chm-extract/图包/declared.png',
+        imageIndex: 0,
+        reviewedAgainstImage: true,
+      });
+      expect(compiledWithoutAssets.masters[0]!.source).toEqual(compiledWithAssets.masters[0]!.source);
+      expect(compiledWithoutAssets.cards).toEqual(compiledWithAssets.cards);
+      expect(compiledWithoutAssets.rules.definitionHash).toBe(compiledWithAssets.rules.definitionHash);
+    } finally {
+      rmSync(withAssets.root, { recursive: true, force: true });
+      rmSync(withoutAssets.root, { recursive: true, force: true });
+    }
+  });
+
+  it('requires explicit source image declarations instead of inferring from local HTM', () => {
+    const workspace = createMinimalWorkspace(false, { declareSourceImage: false });
+    try {
+      const loaded = loadPlaytestContentPack(workspace.packPath, { workspaceRoot: workspace.root });
+      const compiled = compileLoadedPlaytestPack(loaded).library;
+
+      expect(compiled.masters[0]!.source).toEqual({
+        htmPath: 'chm-extract/Test Master.htm',
+        imagePath: '',
+        imageIndex: 0,
+        reviewedAgainstImage: false,
+      });
+      expect(JSON.stringify(compiled)).not.toContain('ScreenShot_should_not_be_inferred.png');
+      expect(validateLoadedPlaytestPack(loaded, { workspaceRoot: workspace.root })).toContainEqual(
+        expect.objectContaining({
+          code: 'SOURCE_EVIDENCE_REQUIRED',
+          entityId: 'master.test',
+          field: 'source.imagePath',
+          blocking: true,
+        }),
+      );
+    } finally {
+      rmSync(workspace.root, { recursive: true, force: true });
+    }
   });
 
   it('preserves executable rule fields for the three Phase 2 golden cards', () => {
@@ -74,13 +205,39 @@ describe('playtest pack loader', () => {
     const loaded = loadPlaytestContentPack(packPath, { workspaceRoot });
     loaded.servants[0]!.source.imagePath = 'chm-extract/图包/does-not-exist.png';
 
-    expect(validateLoadedPlaytestPack(loaded, { workspaceRoot })).toContainEqual(
+    expect(validateLoadedPlaytestPack(loaded, { workspaceRoot, sourceAssetValidation: 'required' })).toContainEqual(
       expect.objectContaining({
         code: 'MISSING_IMAGE',
         entityId: loaded.servants[0]!.id,
         blocking: true,
       }),
     );
+  });
+
+  it('keeps clean-checkout source asset validation nonblocking in metadata-only mode', () => {
+    const workspace = createMinimalWorkspace(false);
+    try {
+      const loaded = loadPlaytestContentPack(workspace.packPath, { workspaceRoot: workspace.root });
+      expect(validateLoadedPlaytestPack(loaded, { workspaceRoot: workspace.root })).toContainEqual(
+        expect.objectContaining({
+          code: 'SOURCE_ASSET_UNVERIFIED',
+          entityId: 'master.test',
+          blocking: false,
+        }),
+      );
+      expect(validateLoadedPlaytestPack(loaded, {
+        workspaceRoot: workspace.root,
+        sourceAssetValidation: 'required',
+      })).toContainEqual(
+        expect.objectContaining({
+          code: 'MISSING_IMAGE',
+          entityId: 'master.test',
+          blocking: true,
+        }),
+      );
+    } finally {
+      rmSync(workspace.root, { recursive: true, force: true });
+    }
   });
 
   it('reports duplicate IDs across entity kinds', () => {
