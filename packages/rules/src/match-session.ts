@@ -6,6 +6,7 @@ import {
   projectAbilityState,
 } from './ability/interpreter';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
+import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
 import type {
   AbilityCommand,
   AbilityEvent,
@@ -1232,7 +1233,7 @@ export class MatchSession {
     freshScoringLogs: GameState['log'],
   ): void {
     const runtime = this.state.abilityRuntime;
-    if (!runtime || battles.length === 0) return;
+    if (!runtime) return;
     const round = this.state.round.roundNumber;
     const battlePhaseResolutionId = `battle-phase:${round}`;
     const scoredBattlefieldIds = freshScoringLogs
@@ -1247,20 +1248,25 @@ export class MatchSession {
     const historyBeforePhase = structuredClone(this.battleHistory);
     const pending = runtime.pendingPostBattleEvents ??= [];
     const resultIds: string[] = [];
+    const battleIds: string[] = [];
+    const battleParticipantIds: string[] = [];
     for (const [index, battle] of battles.entries()) {
       const battleOrdinal = historyBeforePhase.length + index + 1;
       const battleId = `${battlePhaseResolutionId}:battle:${battle.battlefieldId}:${battleOrdinal}`;
       const resultId = `${battleId}:result`;
+      battleIds.push(battleId);
       resultIds.push(resultId);
       const loserIds = this.battleLoserIds(battle);
-      const battleParticipantIds = [...new Set([...battle.winnerPlayerIds, ...loserIds])];
+      const participants = [...new Set([...battle.winnerPlayerIds, ...loserIds])];
+      const terminalParticipants = battle.participantBreakdowns?.map((participant) => participant.playerId) ?? participants;
+      battleParticipantIds.push(...terminalParticipants);
       const resultEvent: AbilityEvent = {
         id: resultId,
         type: 'after_battle_result_determined',
         battlePhaseResolutionId,
         battleId,
         resultId,
-        battleParticipantIds,
+        battleParticipantIds: participants,
         battlefieldId: battle.battlefieldId,
         battleResult: { winners: [...battle.winnerPlayerIds], loserIds },
       };
@@ -1279,7 +1285,7 @@ export class MatchSession {
           battlePhaseResolutionId,
           battleId,
           resultId,
-          battleParticipantIds,
+          battleParticipantIds: participants,
           playerId,
           battlefieldId: battle.battlefieldId,
           lossOrdinal: 1,
@@ -1291,10 +1297,19 @@ export class MatchSession {
       this.battleHistory.push(structuredClone(battle));
     }
 
-    this.record('battle_post_scoring_barrier_open', battlePhaseResolutionId, {
+    if (battles.length > 0) {
+      this.record('battle_post_scoring_barrier_open', battlePhaseResolutionId, {
+        battlePhaseResolutionId,
+        scoredBattlefieldIds,
+        resultIds,
+      });
+    }
+    stageBattleTerminalEvent(this.state, {
       battlePhaseResolutionId,
-      scoredBattlefieldIds,
+      battleIds,
       resultIds,
+      scoringReceiptIds: battles.map((battle) => `${battlePhaseResolutionId}:score:${battle.battlefieldId}`),
+      battleParticipantIds: [...new Set(battleParticipantIds)],
     });
   }
 
@@ -1320,6 +1335,17 @@ export class MatchSession {
           ...(event.playerId ? { playerId: event.playerId } : {}),
         },
       );
+      this.autoResolveNonInteractiveWindows();
+    }
+    const terminal = flushBattleTerminalEvent(this.state);
+    if (terminal) {
+      this.record('battle_terminal_event_dispatched', terminal.id, {
+        battlePhaseResolutionId: terminal.battlePhaseResolutionId,
+        battleIds: terminal.battleIds,
+        resultIds: terminal.resultIds,
+        scoringReceiptIds: terminal.scoringReceiptIds,
+        battleParticipantIds: terminal.battleParticipantIds,
+      });
       this.autoResolveNonInteractiveWindows();
     }
   }

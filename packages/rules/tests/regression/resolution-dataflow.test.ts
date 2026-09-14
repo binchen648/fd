@@ -124,6 +124,8 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
       return { id: `produce-${binding}`, type: 'remove_advantage_position', target: { expr: 'same_battlefield_opponents' }, bind: binding };
     case 'move_all_remaining':
       return { id: `produce-${binding}`, type: 'move_all_remaining', owner: 'controller', from: 'hand', to: 'discard', bind: binding };
+    case 'move_source_card':
+      return { id: `produce-${binding}`, type: 'move_source_card', to: 'skill', bind: binding };
     case 'draw_cards':
       return { id: `produce-${binding}`, type: 'draw_cards', player: 'controller', count: 0, bind: binding };
     case 'play_selected_cards':
@@ -361,11 +363,22 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
 
         expect(() => validateResolutionDataFlow(effects)).not.toThrow();
         const state = baseState();
-        if (effectType === 'close_source_card') {
+        if (effectType === 'close_source_card' || effectType === 'move_source_card') {
           const source = state.cards.find((card) => card.instanceId === 'synthetic-source')!;
           source.definitionId = 'fixture.skill.source';
-          source.zone = 'field';
+          source.zone = effectType === 'move_source_card' ? 'attack_area' : 'field';
           source.visibility = { scope: 'public' };
+        }
+        if (effectType === 'move_source_card') {
+          state.abilityRuntime = {
+            pack: { cards: {} }, revision: 0, sequence: 0, randomState: 20260909,
+            cardState: { 'synthetic-source': { active: true, faceDown: false, playedRound: 1 } },
+            ongoingEffects: [], responseWindows: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
+            events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [],
+            roomMode: 'standard', abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
+            movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {}, playRulesVersion: 'explicit-v1',
+            playCounters: { round: 1, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} },
+          };
         }
         expect(() => executeResolution({
           state,

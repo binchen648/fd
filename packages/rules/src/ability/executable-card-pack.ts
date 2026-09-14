@@ -296,7 +296,7 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
 function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
-    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isBattleLossResourceTriggerRouteCandidate(ability) && !isSharedVictoryVpTriggerRouteCandidate(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability)) continue;
+    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isBattleLossResourceTriggerRouteCandidate(ability) && !isSharedVictoryVpTriggerRouteCandidate(ability) && !isBattleEndSourceReturnRouteCandidate(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability)) continue;
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
     try {
       validateResolutionDataFlowNodes(effects, path);
@@ -335,6 +335,14 @@ function isSharedVictoryVpTriggerRouteCandidate(ability: AuthoringAbility): bool
     str(ability.activation.trigger) === 'after_battle_result_determined' &&
     ability.effects.length === 1 &&
     str(ability.effects[0]?.type) === 'adjust_victory_points';
+}
+
+function isBattleEndSourceReturnRouteCandidate(ability: AuthoringAbility): boolean {
+  return ability.kind === 'forced_trigger' &&
+    str(ability.activation.trigger) === 'after_battle_ended' &&
+    ability.effects.length === 1 &&
+    str(ability.effects[0]?.type) === 'move_card' &&
+    str(ability.effects[0]?.target) === 'this_card';
 }
 
 function isCardZoneCoreDirectActionSemantic(ability: AuthoringAbility): boolean {

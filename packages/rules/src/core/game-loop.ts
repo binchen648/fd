@@ -19,6 +19,7 @@ import { resolveBattlefield } from "./combat-resolver";
 import { resolveEffectsForWindow } from "./effect-resolver";
 import { getEnabledLocations } from "./map-engine";
 import { advanceAbilityPhase, processAbilityEvent, processAbilitySystemEvent } from '../ability/interpreter';
+import { flushBattleTerminalEvent, stageBattleTerminalEvent } from '../ability/battle-terminal';
 
 function hasPendingAbilityResolution(state: GameState): boolean {
   return !!state.abilityRuntime && (!!state.abilityRuntime.pendingDecision || state.abilityRuntime.responseWindows.length > 0 || state.abilityRuntime.hostRequests.length > 0);
@@ -280,17 +281,21 @@ function queuePostScoringBattleResultEvents(
   results: GameState['battleResults'],
 ): GameState {
   const runtime = state.abilityRuntime;
-  if (!runtime || results.length === 0) return state;
+  if (!runtime) return state;
   const battlePhaseResolutionId = `battle-phase:${state.round.roundNumber}`;
   const pending = runtime.pendingPostBattleEvents ??= [];
   const resultIds: string[] = [];
+  const battleIds: string[] = [];
+  const battleParticipantIds: string[] = [];
 
   for (const [index, result] of results.entries()) {
     const battleId = `${battlePhaseResolutionId}:battle:${result.battlefieldId}:${index + 1}`;
     const resultId = `${battleId}:result`;
+    battleIds.push(battleId);
     resultIds.push(resultId);
     const loserIds = battleResultLoserIds(result);
-    const battleParticipantIds = result.participantBreakdowns.map((participant) => participant.playerId);
+    const participants = result.participantBreakdowns.map((participant) => participant.playerId);
+    battleParticipantIds.push(...participants);
     if (!runtime.processedEvents.includes(resultId) && !pending.some((event) => event.id === resultId)) {
       pending.push({
         id: resultId,
@@ -298,21 +303,30 @@ function queuePostScoringBattleResultEvents(
         battlePhaseResolutionId,
         battleId,
         resultId,
-        battleParticipantIds,
+        battleParticipantIds: participants,
         battlefieldId: result.battlefieldId,
         battleResult: { winners: [...result.winnerPlayerIds], loserIds },
       });
     }
   }
 
-  state.log.push({
-    type: 'battle_post_scoring_barrier_open',
-    message: battlePhaseResolutionId,
-    payload: {
-      battlePhaseResolutionId,
-      scoredBattlefieldIds: results.map((result) => result.battlefieldId),
-      resultIds,
-    },
+  if (results.length > 0) {
+    state.log.push({
+      type: 'battle_post_scoring_barrier_open',
+      message: battlePhaseResolutionId,
+      payload: {
+        battlePhaseResolutionId,
+        scoredBattlefieldIds: results.map((result) => result.battlefieldId),
+        resultIds,
+      },
+    });
+  }
+  stageBattleTerminalEvent(state, {
+    battlePhaseResolutionId,
+    battleIds,
+    resultIds,
+    scoringReceiptIds: results.map((result) => `${battlePhaseResolutionId}:score:${result.battlefieldId}`),
+    battleParticipantIds: [...new Set(battleParticipantIds)],
   });
   return state;
 }
@@ -333,6 +347,20 @@ function flushPostScoringBattleResultEvents(state: GameState): GameState {
         battleId: event.battleId,
         resultId: event.resultId,
         battlefieldId: event.battlefieldId,
+      },
+    });
+  }
+  const terminal = flushBattleTerminalEvent(state);
+  if (terminal) {
+    state.log.push({
+      type: 'battle_terminal_event_dispatched',
+      message: terminal.id,
+      payload: {
+        battlePhaseResolutionId: terminal.battlePhaseResolutionId,
+        battleIds: terminal.battleIds,
+        resultIds: terminal.resultIds,
+        scoringReceiptIds: terminal.scoringReceiptIds,
+        battleParticipantIds: terminal.battleParticipantIds,
       },
     });
   }
@@ -392,7 +420,10 @@ function runBattlePhase(state: GameState): GameState {
   if (hasPendingAbilityResolution(cleanedState)) return cleanedState;
 
   const resolvedBattles = structuredClone(cleanedState.battleResults);
-  if (resolvedBattles.length === 0) return cleanedState;
+  if (resolvedBattles.length === 0) {
+    queuePostScoringBattleResultEvents(cleanedState, resolvedBattles);
+    return flushPostScoringBattleResultEvents(cleanedState);
+  }
   const scoredState = applyBattleScoring(cleanedState).nextState;
   queuePostScoringBattleResultEvents(scoredState, resolvedBattles);
   return flushPostScoringBattleResultEvents(scoredState);

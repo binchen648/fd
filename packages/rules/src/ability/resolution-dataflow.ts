@@ -7,6 +7,7 @@ export type BindingFieldType = 'number' | 'player_ids' | 'boolean' | 'status';
 export type EffectResultType =
   | 'remove_advantage_position'
   | 'move_all_remaining'
+  | 'move_source_card'
   | 'draw_cards'
   | 'play_selected_cards'
   | 'play_source_card'
@@ -79,6 +80,13 @@ export interface MoveAllRemainingResult {
   movedCardIds: string[];
 }
 
+export interface MoveSourceCardResult {
+  cardInstanceId: string;
+  fromZone: string;
+  toZone: 'skill';
+  movedCount: number;
+}
+
 export interface DrawCardsResult {
   playerId: PlayerId;
   requestedCount: number;
@@ -135,6 +143,7 @@ export interface FailInvariantResult {
 export type KnownEffectResult =
   | EffectResultEnvelope<'remove_advantage_position', RemoveAdvantagePositionResult>
   | EffectResultEnvelope<'move_all_remaining', MoveAllRemainingResult>
+  | EffectResultEnvelope<'move_source_card', MoveSourceCardResult>
   | EffectResultEnvelope<'draw_cards', DrawCardsResult>
   | EffectResultEnvelope<'play_selected_cards', PlaySelectedCardsResult>
   | EffectResultEnvelope<'play_source_card', PlaySourceCardResult>
@@ -157,6 +166,10 @@ export const resultSchemas: Record<EffectResultType, BindingFieldSchema> = {
     status: 'status',
   },
   move_all_remaining: {
+    movedCount: 'number',
+    status: 'status',
+  },
+  move_source_card: {
     movedCount: 'number',
     status: 'status',
   },
@@ -277,6 +290,7 @@ export type ConditionExpression =
 export type ResolutionEffectNode =
   | { id: string; type: 'remove_advantage_position'; target: TargetExpression; bind?: string }
   | { id: string; type: 'move_all_remaining'; owner: 'controller'; from: string; to: string; bind?: string }
+  | { id: string; type: 'move_source_card'; to: 'skill'; bind?: string }
   | { id: string; type: 'draw_cards'; player: 'controller'; count: ValueExpression; bind?: string }
   | { id: string; type: 'play_selected_cards'; target: string; face: 'face_down' | 'face_up'; bind?: string }
   | { id: string; type: 'play_source_card'; face: 'face_down' | 'face_up'; bind?: string }
@@ -367,6 +381,11 @@ const primitiveDefinitions: ResolutionPrimitive[] = [
     type: 'move_all_remaining',
     resultSchema: resultSchemas.move_all_remaining,
     execute: moveAllRemainingPrimitive,
+  },
+  {
+    type: 'move_source_card',
+    resultSchema: resultSchemas.move_source_card,
+    execute: moveSourceCardPrimitive,
   },
   {
     type: 'draw_cards',
@@ -611,6 +630,15 @@ function validateEffectReferences(
         });
       }
       break;
+    case 'move_source_card':
+      if (effect.to !== 'skill') {
+        issues.push({
+          code: 'invalid_resolution_node',
+          path,
+          message: 'Only source-card return to controller skill is supported.',
+        });
+      }
+      break;
     case 'play_selected_cards':
       break;
     case 'play_source_card':
@@ -788,6 +816,14 @@ function moveAllRemainingPrimitive(
   return moveAllRemaining(transaction, effect);
 }
 
+function moveSourceCardPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'move_source_card') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return moveSourceCard(transaction, effect);
+}
+
 function drawCardsPrimitive(
   transaction: AbilityResolutionTransaction,
   effect: ResolutionPrimitiveNode,
@@ -954,6 +990,55 @@ function moveAllRemaining(
       movedCardIds,
     },
     emittedEventIds: movedCardIds.length === 0 ? [] : [eventId],
+  };
+}
+
+function moveSourceCard(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'move_source_card' }>,
+): KnownEffectResult {
+  if (effect.to !== 'skill') {
+    throw new ResolutionRuntimeError('unsupported_source_destination', 'Only source-card return to controller skill is supported.');
+  }
+  const source = transaction.workingState.cards.find((candidate) => candidate.instanceId === transaction.context.sourceCardId);
+  if (!source) throw new ResolutionRuntimeError('missing_source_card', 'Source card is missing.');
+  if (source.ownerPlayerId !== transaction.context.controllerId || source.controllerPlayerId !== transaction.context.controllerId) {
+    throw new ResolutionRuntimeError('invalid_source_controller', 'Source card is not owned and controlled by the ability controller.');
+  }
+  if (!['field', 'attack_area'].includes(source.zone)) {
+    throw new ResolutionRuntimeError('invalid_source_zone', 'Source card must be active on the board.');
+  }
+  const sourceState = transaction.workingState.abilityRuntime?.cardState[source.instanceId];
+  if (!sourceState?.active || sourceState.faceDown) {
+    throw new ResolutionRuntimeError('inactive_source', 'Source card must be active and face up.');
+  }
+  const fromZone = source.zone;
+  moveCardInstance(transaction, source.instanceId, effect.to);
+  source.controllerPlayerId = transaction.context.controllerId;
+  source.visibility = { scope: 'owner_only', ownerPlayerId: source.ownerPlayerId };
+  if (transaction.workingState.abilityRuntime?.cardState[source.instanceId]) {
+    transaction.workingState.abilityRuntime.cardState[source.instanceId]!.active = false;
+  }
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.source_card_moved`;
+  transaction.emittedEvents.push({
+    type: 'source_card_moved',
+    playerId: transaction.context.controllerId,
+    sourceCardId: source.instanceId,
+    abilityId: transaction.context.abilityId,
+    cardInstanceId: source.instanceId,
+    fromZone,
+    toZone: effect.to,
+    movedCount: 1,
+    resultId: eventId,
+    revision: transaction.workingState.abilityRuntime?.revision ?? 0,
+  });
+  return {
+    effectId: effect.id,
+    effectType: 'move_source_card',
+    status: 'applied',
+    affectedEntities: [{ kind: 'player', id: transaction.context.controllerId }],
+    payload: { cardInstanceId: source.instanceId, fromZone, toZone: effect.to, movedCount: 1 },
+    emittedEventIds: [eventId],
   };
 }
 
@@ -1374,6 +1459,7 @@ function evaluateValue(transaction: AbilityResolutionTransaction, expression: Va
   if (!result) throw new ResolutionRuntimeError('missing_binding', `Missing binding '${expression.binding}'`);
   if (result.effectType === 'remove_advantage_position' && expression.field === 'removedCount') return result.payload.removedCount;
   if (result.effectType === 'move_all_remaining' && expression.field === 'movedCount') return result.payload.movedCount;
+  if (result.effectType === 'move_source_card' && expression.field === 'movedCount') return result.payload.movedCount;
   if (result.effectType === 'draw_cards') {
     if (expression.field === 'requestedCount') return result.payload.requestedCount;
     if (expression.field === 'actualCount') return result.payload.actualCount;
@@ -1511,6 +1597,24 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
         id,
         type,
         target: coerceTargetExpression(current.target, `${path}.target`, issues),
+        ...coerceBind(current.bind),
+      };
+    case 'move_card':
+      if (current.target !== 'this_card') {
+        invalidNode(`${path}.target`, 'Typed source-card movement requires target=this_card.', issues);
+        return { id, type: 'noop', reason: 'invalid source-card target' };
+      }
+      return {
+        id,
+        type: 'move_source_card',
+        to: zoneField(current.to, `${path}.to`, issues) === 'skill' ? 'skill' : reportSourceSkillDestination(path, issues),
+        ...coerceBind(current.bind),
+      };
+    case 'move_source_card':
+      return {
+        id,
+        type,
+        to: zoneField(current.to, `${path}.to`, issues) === 'skill' ? 'skill' : reportSourceSkillDestination(path, issues),
         ...coerceBind(current.bind),
       };
     case 'move_all_remaining':
@@ -1741,6 +1845,11 @@ function reportControllerPlayer(path: string, issues: DataFlowIssue[]): 'control
 function reportControllerOwner(path: string, issues: DataFlowIssue[]): 'controller' {
   invalidNode(`${path}.owner`, 'Only controller-owned card-zone effects are supported.', issues);
   return 'controller';
+}
+
+function reportSourceSkillDestination(path: string, issues: DataFlowIssue[]): 'skill' {
+  invalidNode(`${path}.to`, 'Only source-card return to controller skill is supported.', issues);
+  return 'skill';
 }
 
 function reportFace(path: string, issues: DataFlowIssue[]): 'face_down' {

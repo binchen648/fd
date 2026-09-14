@@ -680,9 +680,10 @@ export function triggerEventScopeMatches(a: AuthoringAbility, event: AbilityEven
 }
 function battleEventControllerEligibleAfterScoring(s: GameState, event: AbilityEvent, controllerId: string): boolean {
   if (player(s, controllerId).status === 'active') return true;
-  const battleScoped = !!event.battlePhaseResolutionId && !!event.battleId && !!event.resultId &&
+  const perBattleScoped = !!event.battlePhaseResolutionId && !!event.battleId && !!event.resultId &&
     ['after_battle_result_determined', 'after_controller_wins_battle', 'after_controller_loses_battle', 'after_controller_first_loses_battle', 'after_controller_gains_victory'].includes(event.type);
-  return battleScoped && event.battleParticipantIds?.includes(controllerId) === true;
+  const phaseTerminalScoped = !!event.battlePhaseResolutionId && event.type === 'after_battle_ended';
+  return (perBattleScoped || phaseTerminalScoped) && event.battleParticipantIds?.includes(controllerId) === true;
 }
 
 export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): TriggeredAbility[] {
@@ -691,6 +692,7 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
     if (!battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId)) continue;
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
       const matches = a.activation.trigger === event.type || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
+      if (event.type === 'after_battle_ended' && isBattleEndSourceReturnCandidate(a) && !battleEndSourceReturnTriggerEligible(s, c.instanceId)) continue;
       if (!matches || !canActivate(s, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
       if (['on_card_played', 'on_use_declared'].includes(event.type) && event.sourceCardId !== c.instanceId &&
         !a.conditions.some((condition) => condition.type === 'event_played_card_has_attribute')) continue;
@@ -1153,6 +1155,32 @@ export function isSharedVictoryVpTriggerSemantic(a: AuthoringAbility): boolean {
     effect.amount === 2 && Number.isSafeInteger(effect.amount);
 }
 
+function isBattleEndSourceReturnCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'forced_trigger' &&
+    str(a.activation.trigger) === 'after_battle_ended' &&
+    a.effects.length === 1 &&
+    str(a.effects[0]?.type) === 'move_card';
+}
+
+function battleEndSourceReturnTriggerEligible(s: GameState, sourceId: string): boolean {
+  const source = card(s, sourceId);
+  const sourceState = runtime(s).cardState[sourceId];
+  return ['field', 'attack_area'].includes(source.zone) && !!sourceState?.active && !sourceState.faceDown;
+}
+
+export function isBattleEndSourceReturnSemantic(a: AuthoringAbility): boolean {
+  if (!isBattleEndSourceReturnCandidate(a)) return false;
+  if (str(a.activation.phase) !== 'combat' || str(a.activation.opens) || str(a.activation.requiresSourceState)) return false;
+  if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
+  const effect = a.effects[0]!;
+  const destination = node(effect.to);
+  return effect.type === 'move_card' &&
+    str(effect.target) === 'this_card' &&
+    str(destination.zone) === 'skill' &&
+    (destination.owner === undefined || destination.owner === 'controller');
+}
+
 export function isResourceNumericDirectActionSemantic(a: AuthoringAbility): boolean {
   return a.kind === 'phase_action' &&
     str(a.activation.phase) === 'action' &&
@@ -1430,7 +1458,7 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
-  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isSharedVictoryVpTriggerSemantic(a)) {
+  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
     cleanupOngoing(s);
@@ -1439,6 +1467,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
   if (isBattleLossResourceTriggerCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss resource semantic shape');
   if (isSharedVictoryVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported shared-victory VP semantic shape');
+  if (isBattleEndSourceReturnCandidate(a)) reject('resolution_failed', 'Unsupported battle-end source-return semantic shape');
   if (isPrivateOptionalHandPlayInteractionCandidate(a)) {
     if (!isPrivateOptionalHandPlayInteractionSemantic(a)) reject('resolution_failed', 'Unsupported private optional hand-play interaction semantic shape');
     const interactionTargetId = str(a.targets[0]?.id);

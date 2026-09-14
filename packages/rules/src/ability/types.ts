@@ -76,6 +76,9 @@ export interface AbilityEvent {
   battlePhaseResolutionId?: string;
   battleId?: string;
   resultId?: string;
+  battleIds?: string[];
+  resultIds?: string[];
+  scoringReceiptIds?: string[];
   battleParticipantIds?: PlayerId[];
   battlefieldId?: string;
   lossOrdinal?: number;
@@ -156,6 +159,10 @@ export interface SafeEvent {
   after?: number;
   resultId?: string;
   revision?: number;
+  cardInstanceId?: string;
+  fromZone?: string;
+  toZone?: string;
+  movedCount?: number;
 }
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
@@ -164,6 +171,8 @@ export interface AbilityRuntime {
   pendingDelayedActivations?: PendingDelayedActivation[];
   /** Server-owned post-scoring battle events waiting for Trigger Gateway settlement. */
   pendingPostBattleEvents?: AbilityEvent[];
+  /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */
+  pendingBattleTerminalEvent?: AbilityEvent;
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];
