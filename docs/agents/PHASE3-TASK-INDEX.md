@@ -2057,6 +2057,92 @@ Completion status allowed:
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `REJECTED`
 
+## TASK P3-B21
+
+Owner: Codex B
+Status: READY
+Branch: `codex/b-p3-b21-tomoe-defeat-penalty-r1`
+Base: exact P3-B21 A-owned handoff commit
+
+Goal:
+
+Migrate exactly Tomoe `sc-tomoe-1.penalty-on-defeat` as the next TO14 direct consumer, preserving its explicit unpreventable VP-loss exception without promoting broad Modifier/Power semantics.
+
+Exact supported semantic family:
+
+- `forced_trigger`;
+- trigger `after_controller_loses_battle`;
+- exactly one effect `adjust_victory_points(player=controller, amount=-5)`;
+- exactly one effect-prevention exception modifier with `operation=ignore`, `rule=effect_prevention`, `scope.object=this_effect`, `priority.tier=explicit_exception`;
+- no optional response window, target, cost, create, lifecycle, or delayed activation.
+
+Required behavior/evidence:
+
+- structural classification only; renamed card/ability/modifier IDs must still classify;
+- authoritative battle-result provenance must require the controller to be the losing participant; unrelated losses must not trigger;
+- trigger settles only after the accepted post-scoring barrier through the ordinary loss-event lineage;
+- with ordinary prevention enabled, the exact supported effect still applies because the authoring explicitly marks this effect unpreventable;
+- typed `victory_points_adjusted` evidence records controller/resource/delta/before/after and marks the settlement unpreventable;
+- VP floor behavior remains authoritative when the controller has fewer than 5 VP;
+- stable result replay cannot deduct VP twice;
+- malformed same-family near misses (wrong amount/player/trigger or weakened/extra prevention modifier shape) fail closed before legacy fallback and atomically preserve state;
+- B13-B20 ordering/runtime compatibility remains green;
+- fresh Chromium remote-room proof and full-root baseline.
+
+Must not:
+
+- route by Tomoe/card/ability/modifier identity;
+- generalize all rule modifiers or TO15 Modifier/Power runtime;
+- promote Gatou battle-end reward, Olga loss-transform, broad TO14, or TO16;
+- modify A-owned coverage KPI/taxonomy.
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R15
+
+Owner: Codex R
+Status: READY_AFTER_P3_B21
+Branch: reviewer-selected fresh worktree/branch from exact B21 candidate SHA
+
+Goal:
+
+Independently review P3-B21 Tomoe defeat penalty without implementing fixes or inheriting acceptance from generic legacy prevention behavior.
+
+Required independent checks:
+
+- fresh typecheck and focused/current-lineage compatibility;
+- verify classifier is identity-free and exact to the forced loss -> controller VP -5 + explicit this-effect prevention exception shape;
+- verify authoritative loser/participant provenance and post-scoring ordering;
+- verify prevention enabled still cannot block the accepted effect, while no broad prevention bypass is introduced;
+- verify typed VP evidence including unpreventable provenance, VP floor, stable replay exactly-once, and atomic malformed-shape rejection;
+- verify B13-B20 compatibility, fresh Chromium Gate C, and full-root baseline;
+- block only on new deterministic failures.
+
+Must not:
+
+- implement fixes while reviewing;
+- promote Gatou, Olga transform, broad TO14, broad TO15 Modifier/Power, or TO16;
+- modify A-owned coverage KPI/taxonomy.
+
+Required output:
+
+- findings ordered by severity;
+- semantic-family / prevention-exception judgment;
+- participant/post-scoring judgment;
+- typed Resource / floor / fail-closed / exactly-once judgment;
+- projection/reconnect/stale judgment;
+- Gate A/B/C judgment;
+- explicit A03 synchronization input if accepted.
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
 ## Prompt Templates
 
 Codex A startup prompt:
