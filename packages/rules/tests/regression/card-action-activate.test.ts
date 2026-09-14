@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { createMatchSession } from '../../src/match-session';
 import {
   advanceAbilityPhase,
+  getLegalActions,
   isActivateCardByIdTrigger,
   processAbilityEvent,
 } from '../../src/ability/interpreter';
@@ -48,6 +49,8 @@ function firstLoss(session: ReturnType<typeof createMatchSession>, playerId: str
     id: `fixture-first-loss-${playerId}`,
     type: 'after_controller_first_loses_battle',
     playerId,
+    battlefieldId: 'miyama_town',
+    lossOrdinal: 1,
   });
 }
 
@@ -55,6 +58,11 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE recovery', () => {
   it('stages Olga first-loss and activates Trismegistus only on formal round_end', () => {
     const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
     const { playerId, astronomy, trismegistus } = prepareOlga(session);
+
+    expect(getLegalActions(session.state, playerId)).not.toContainEqual(expect.objectContaining({
+      type: 'play_card',
+      cardInstanceId: trismegistus.instanceId,
+    }));
 
     firstLoss(session, playerId);
 
@@ -128,7 +136,79 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE recovery', () => {
       id: `fixture-second-first-loss-${playerId}`,
       type: 'after_controller_first_loses_battle',
       playerId,
+      battlefieldId: 'miyama_town',
+      lossOrdinal: 1,
     });
+    expect(session.state.abilityRuntime!.pendingDelayedActivations).toHaveLength(1);
+  });
+
+  it('rejects malformed first-loss events without staging delayed activation', () => {
+    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const { playerId } = prepareOlga(session);
+    const before = structuredClone(session.state);
+
+    expect(() => processAbilityEvent(session.state, {
+      id: `fixture-malformed-first-loss-${playerId}`,
+      type: 'after_controller_first_loses_battle',
+      playerId,
+    })).toThrow(/authoritative battle identity and first-loss ordinal/);
+
+    expect(session.state).toEqual(before);
+  });
+
+  it('fails closed when activation target definition is ambiguous', () => {
+    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const { playerId, trismegistus } = prepareOlga(session);
+    firstLoss(session, playerId);
+    session.state.cards.push({
+      ...structuredClone(trismegistus),
+      instanceId: `${trismegistus.instanceId}-duplicate`,
+    });
+    const before = structuredClone(session.state);
+
+    expect(() => advanceAbilityPhase(session.state, 'round_end', session.state.round.roundNumber)).toThrow(/ambiguous/);
+
+    expect(session.state).toEqual(before);
+  });
+
+  it('fails closed when the owned activation target is controlled by another player', () => {
+    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const { playerId, trismegistus } = prepareOlga(session);
+    firstLoss(session, playerId);
+    const authoritativeTarget = session.state.cards.find((card) => card.instanceId === trismegistus.instanceId)!;
+    authoritativeTarget.controllerPlayerId = session.state.players.find((candidate) => candidate.id !== playerId)!.id;
+    const before = structuredClone(session.state);
+
+    expect(() => advanceAbilityPhase(session.state, 'round_end', session.state.round.roundNumber)).toThrow(/controlled by another player/);
+
+    expect(session.state).toEqual(before);
+  });
+
+  it('derives first-loss staging once from authoritative MatchSession battle history', () => {
+    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const { playerId } = prepareOlga(session);
+    const firstBattle = {
+      battlefieldId: 'miyama_town',
+      militaryAdjustments: [{ playerId, delta: -3 }],
+    } as (typeof session.state.battleResults)[number];
+    const secondBattle = {
+      battlefieldId: 'shinto',
+      militaryAdjustments: [{ playerId, delta: -2 }],
+    } as (typeof session.state.battleResults)[number];
+    const bridge = session as unknown as {
+      emitAuthoritativeFirstLossEvents(battle: (typeof session.state.battleResults)[number]): void;
+      battleHistory: typeof session.battleHistory;
+    };
+
+    bridge.emitAuthoritativeFirstLossEvents(firstBattle);
+    expect(session.state.abilityRuntime!.pendingDelayedActivations).toHaveLength(1);
+    expect(session.state.abilityRuntime!.pendingDelayedActivations![0]).toMatchObject({
+      controllerId: playerId,
+      triggerEventId: expect.stringContaining(`first-loss:${playerId}`),
+    });
+
+    bridge.battleHistory.push(structuredClone(firstBattle));
+    bridge.emitAuthoritativeFirstLossEvents(secondBattle);
     expect(session.state.abilityRuntime!.pendingDelayedActivations).toHaveLength(1);
   });
 

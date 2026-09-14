@@ -4838,7 +4838,8 @@
         "mode": "automatic",
         "ownerId": "master.olga-marie",
         "playKind": "support",
-        "destinationZone": "field"
+        "destinationZone": "field",
+        "initialZone": "skill"
       },
       "master.olga-marie.command-spell": {
         "id": "master.olga-marie.command-spell",
@@ -10449,11 +10450,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "2c6b15a98d25e80770da2517d7413fe24fdc695cd238f1247b3c24d8d691f3ed",
+    "definitionHash": "f4aeaddb88f3018efed31ca74a8a0c91a614c9a61752237952285b017de4d192",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "2c6b15a98d25e80770da2517d7413fe24fdc695cd238f1247b3c24d8d691f3ed"
+      "definitionHash": "f4aeaddb88f3018efed31ca74a8a0c91a614c9a61752237952285b017de4d192"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

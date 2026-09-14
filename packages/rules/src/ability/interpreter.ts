@@ -555,10 +555,17 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (abilityLimitReached(s, sourceId, a)) return false;
   return a.conditions.every(c => condition(s, context(s, sourceId, a.id, event), c));
 }
+function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean {
+  return Object.values(runtime(s).pack.cards).some((source) =>
+    source.abilities.some((ability) =>
+      isActivateCardByIdTrigger(ability) &&
+      ability.effects.some((effect) => effect.type === 'activate_card_by_id' && effect.definitionId === definitionId)));
+}
 function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false): string | undefined {
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (d.mode !== 'automatic') return d.mode;
   if (c.controllerPlayerId !== p || !['hand', 'skill'].includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
+  if (c.zone === 'skill' && isActivationOnlyDefinition(s, c.definitionId)) return 'activation_only';
   if (d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'))) return 'append_only';
   if (phase(s) !== d.playTiming.phase || s.round.prioritySeat !== player(s, p).seat) return 'illegal_timing';
   if (faceDown && (!isAttack(d) || d.cardType === 'servant_skill')) return 'illegal_face_down';
@@ -1208,6 +1215,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
 }
 
 function stageDelayedActivation(s: GameState, trigger: TriggeredAbility, ability: AuthoringAbility, event: AbilityEvent): void {
+  if (event.playerId !== trigger.controllerId || event.lossOrdinal !== 1 || !event.battlefieldId) {
+    reject('invalid_event', 'First-loss activation requires authoritative battle identity and first-loss ordinal');
+  }
   const effect = ability.effects[0]!;
   const pending = runtime(s).pendingDelayedActivations ??= [];
   if (pending.some((entry) =>
