@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 790,
-    "coveredBlockedIdentityCount": 790,
+    "blockedIdentityCount": 788,
+    "coveredBlockedIdentityCount": 788,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 2,
@@ -36,8 +36,6 @@
         "master.alice.skill.s2",
         "master.amakusa.skill.ascension",
         "master.amakusa.skill.s3",
-        "master.araya.skill.ascension",
-        "master.araya.skill.s1",
         "master.arcueid.skill.ascension",
         "master.arcueid.skill.s2",
         "master.caren.skill.ascension",
@@ -1183,44 +1181,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[47].skills[3].text#line=1",
           "sha256": "ba05904d946c26976bab8947143a407054d20c1a84eae5c6ab7dd08a91b6a1f3"
-        },
-        {
-          "abilityId": "master.araya.skill.ascension",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.araya/荒耶宗莲"
-        },
-        {
-          "abilityId": "master.araya.skill.ascension",
-          "document": "legacy-content.json",
-          "locator": "master/master.araya/ascension"
-        },
-        {
-          "abilityId": "master.araya.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[66].skills[2].text#line=1",
-          "sha256": "f194af15191615a0c8cf1583bb45e89ac30ab564904042d6a15b98c6ef8cb16f"
-        },
-        {
-          "abilityId": "master.araya.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[66].skills[2].text#line=2",
-          "sha256": "3bd0f613d5b0b9adc4365692446ffd6431f4480beda632f15020d916e38b1808"
-        },
-        {
-          "abilityId": "master.araya.skill.s1",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.araya/荒耶宗莲"
-        },
-        {
-          "abilityId": "master.araya.skill.s1",
-          "document": "legacy-content.json",
-          "locator": "master/master.araya/s1"
-        },
-        {
-          "abilityId": "master.araya.skill.s1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[66].skills[0].text#line=1",
-          "sha256": "9b0fc39e5746cc00c33fc717973a1bf1fc73a4565ef8e75f34135f2d726bea12"
         },
         {
           "abilityId": "master.arcueid.skill.ascension",
@@ -17788,9 +17748,9 @@
         "routeCounts": {
           "deterministic": 2,
           "shared_handler": 369,
-          "specific_handler": 418
+          "specific_handler": 416
         },
-        "handlerCount": 486,
+        "handlerCount": 484,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."

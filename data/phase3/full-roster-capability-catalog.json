@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 154,
-    "explicitBlockCount": 790,
+    "contractMappedCount": 156,
+    "explicitBlockCount": 788,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -25,9 +25,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
       "READY_GENERIC_EXTENSION": 100,
-      "SPECIAL_HANDLER_CANDIDATE": 54,
+      "SPECIAL_HANDLER_CANDIDATE": 56,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 790,
+      "SOURCE_EVIDENCE_REQUIRED": 788,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -62,6 +62,10 @@
       "eligibleAbilities": [],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
         {
           "abilityId": "master.artoira.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
@@ -212,6 +216,10 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.araya.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.chaos.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -358,6 +366,10 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.araya.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.artoira.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -456,6 +468,10 @@
       ],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
         {
           "abilityId": "master.artoira.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
@@ -595,6 +611,7 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.araya.skill.ascension",
         "master.chaos.skill.s1",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
@@ -705,6 +722,10 @@
       "eligibleAbilities": [],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
         {
           "abilityId": "master.artoira.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
@@ -860,6 +881,10 @@
       ],
       "skippedAbilities": [
         {
+          "abilityId": "master.araya.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.artoira.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1010,6 +1035,10 @@
         "servant.artoria-alt.skill.sc-artoria-alt-2"
       ],
       "skippedAbilities": [
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
         {
           "abilityId": "master.artoira.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
@@ -1163,6 +1192,10 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.araya.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.artoira.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1315,6 +1348,10 @@
       "eligibleAbilities": [],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
         {
           "abilityId": "master.artoira.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
@@ -2015,6 +2052,8 @@
         "master.amakusa.skill.s1",
         "master.amakusa.skill.s1a",
         "master.amakusa.skill.s2",
+        "master.araya.skill.ascension",
+        "master.araya.skill.s1",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1",
         "master.arcueid.skill.s1a",
@@ -2234,6 +2273,14 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.araya.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.artoira.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -2366,6 +2413,7 @@
       "eligibleAbilities": [
         "master.akasha.skill.s1",
         "master.amakusa.skill.s1a",
+        "master.araya.skill.s1",
         "master.arcueid.skill.s1a",
         "master.bazett.skill.s1b",
         "master.bazett.skill.s1c",
@@ -2467,6 +2515,7 @@
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
         "master.amakusa.skill.s1a",
+        "master.araya.skill.ascension",
         "master.arcueid.skill.s3",
         "master.artoira.skill.ascension",
         "master.bazett.skill.ascension",
@@ -2565,6 +2614,7 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.araya.skill.ascension",
         "master.chaos.skill.s10",
         "master.chaos.skill.s12",
         "master.fiore.skill.s2",
@@ -2915,6 +2965,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.araya.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.bazett.skill.s1b",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3197,6 +3251,7 @@
         "master.akasha.skill.s1",
         "master.amakusa.skill.s1",
         "master.amakusa.skill.s2",
+        "master.araya.skill.s1",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1",
         "master.arcueid.skill.s1a",
@@ -3775,6 +3830,8 @@
       "representatives": [],
       "acceptanceVehicle": "B/R reviewed-special exception with explicit deletion/reuse criteria",
       "eligibleAbilities": [
+        "master.araya.skill.ascension",
+        "master.araya.skill.s1",
         "master.artoira.skill.ascension",
         "master.artoira.skill.s1",
         "master.bazett.skill.s1a",
@@ -3899,6 +3956,14 @@
       ],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
         {
           "abilityId": "master.artoira.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
@@ -4140,6 +4205,8 @@
       "master.amakusa.skill.s1",
       "master.amakusa.skill.s1a",
       "master.amakusa.skill.s2",
+      "master.araya.skill.ascension",
+      "master.araya.skill.s1",
       "master.araya.skill.s1a",
       "master.arcueid.skill.s1",
       "master.arcueid.skill.s1a",
@@ -4406,20 +4473,6 @@
       },
       {
         "abilityId": "master.amakusa.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.araya.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.araya.skill.s1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -9825,6 +9878,8 @@
       }
     ],
     "specialCandidates": [
+      "master.araya.skill.ascension",
+      "master.araya.skill.s1",
       "master.artoira.skill.ascension",
       "master.artoira.skill.s1",
       "master.bazett.skill.s1a",

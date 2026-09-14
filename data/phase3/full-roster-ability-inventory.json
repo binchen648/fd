@@ -2431,45 +2431,145 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_araya.ascensionSkill#line=426"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
-          "condition": [],
+          "condition": [
+            "CONTROLLER_AT_LOCATION_WITH_SOURCE_TERRAIN_AT_LEAST",
+            "CONTROLLER_AT_MAGIC_WORKSHOP"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "LOCATION_TOKEN_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:card_play_requirement:require_face_down_attack",
+            "rule:movement_permission:prohibit_leave_controller_location"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "araya.paradox-spiral.personal-workshop",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_araya.ascensionSkill#line=426#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [
+                "CONTROLLER_AT_LOCATION_WITH_SOURCE_TERRAIN_AT_LEAST"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "LOCATION_TOKEN_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "araya.paradox-spiral.opponent-lock",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_araya.ascensionSkill#line=426#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [
+                "CONTROLLER_AT_MAGIC_WORKSHOP"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:movement_permission:prohibit_leave_controller_location"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "araya.paradox-spiral.face-down-attack-requirement",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_araya.ascensionSkill#line=426#ability-3"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [
+                "CONTROLLER_AT_MAGIC_WORKSHOP"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:card_play_requirement:require_face_down_attack"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.araya-paradox-spiral"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ACTION_SEMANTICS",
+          "CONDITION",
+          "MODIFIER",
+          "MOVEMENT",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "CARD_ACTION_PLAY",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_MODIFIER",
+          "GENERIC_MOVEMENT",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:location_token_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -2521,45 +2621,97 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_araya.skills[s1]#line=424"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "player.deployed"
+          ],
+          "condition": [
+            "DEPLOYMENT_LOCATION_WOULD_GRANT_CONTROLLER_TERRAIN",
+            "EVENT_PLAYER_IS_CONTROLLER"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "TERRAIN_POSITION_ADJUSTMENT"
+          ],
           "interaction": [],
-          "lifecycle": [],
+          "lifecycle": [
+            "duration:rest_of_game"
+          ],
           "modifier": [],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "araya.death-complex.terrain-replacement",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_araya.skills[s1]#line=424#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "player.deployed"
+              ],
+              "condition": [
+                "DEPLOYMENT_LOCATION_WOULD_GRANT_CONTROLLER_TERRAIN",
+                "EVENT_PLAYER_IS_CONTROLLER"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "TERRAIN_POSITION_ADJUSTMENT"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:rest_of_game"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.araya-triple-boundary"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CONDITION",
+          "LIFECYCLE",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:terrain_position_adjustment"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -107908,15 +108060,15 @@
   ],
   "semanticSummary": {
     "totalIdentityCount": 944,
-    "sourceGroundedCount": 154,
-    "blockedCount": 790,
+    "sourceGroundedCount": 156,
+    "blockedCount": 788,
     "unclassifiedCount": 0,
-    "structuredAbilityCount": 288
+    "structuredAbilityCount": 292
   },
   "capabilitySummary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 154,
-    "explicitBlockCount": 790,
+    "contractMappedCount": 156,
+    "explicitBlockCount": 788,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -107932,9 +108084,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
       "READY_GENERIC_EXTENSION": 100,
-      "SPECIAL_HANDLER_CANDIDATE": 54,
+      "SPECIAL_HANDLER_CANDIDATE": 56,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 790,
+      "SOURCE_EVIDENCE_REQUIRED": 788,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },

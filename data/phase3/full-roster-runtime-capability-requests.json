@@ -9,7 +9,7 @@
     "runtimeRequestCount": 23,
     "genericCapabilityRequestCount": 21,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 154
+    "affectedIdentityCount": 156
   },
   "requests": [
     {
@@ -602,6 +602,7 @@
       "capabilityId": "CARD_ACTION_PLAY",
       "mechanicFamily": "CARD_ACTION_SEMANTICS",
       "affectedAbilityIds": [
+        "master.araya.skill.ascension",
         "master.chaos.skill.s1",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
@@ -618,6 +619,33 @@
         "servant.parvati.skill.sc-parvati-3"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.araya/荒耶宗莲"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_araya.ascensionSkill#line=426"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.araya/ascension"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[2].text#line=1",
+          "sha256": "f194af15191615a0c8cf1583bb45e89ac30ab564904042d6a15b98c6ef8cb16f"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[2].text#line=2",
+          "sha256": "3bd0f613d5b0b9adc4365692446ffd6431f4480beda632f15020d916e38b1808"
+        },
         {
           "abilityId": "master.chaos.skill.s1",
           "document": "Fate/Domination Wiki",
@@ -1065,9 +1093,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 11,
-          "specific_handler": 3
+          "specific_handler": 4
         },
-        "handlerCount": 7,
+        "handlerCount": 8,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -4458,6 +4486,8 @@
         "master.amakusa.skill.s1",
         "master.amakusa.skill.s1a",
         "master.amakusa.skill.s2",
+        "master.araya.skill.ascension",
+        "master.araya.skill.s1",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1",
         "master.arcueid.skill.s1a",
@@ -4639,6 +4669,54 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[50].abilities[1].printedClause",
           "sha256": "8ffc8c511cb60a8fdcbe48639033c36c4b8dcfc123474571e82337cbbf1c920c"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.araya/荒耶宗莲"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_araya.ascensionSkill#line=426"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.araya/ascension"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[2].text#line=1",
+          "sha256": "f194af15191615a0c8cf1583bb45e89ac30ab564904042d6a15b98c6ef8cb16f"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[2].text#line=2",
+          "sha256": "3bd0f613d5b0b9adc4365692446ffd6431f4480beda632f15020d916e38b1808"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.araya/荒耶宗莲"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_araya.skills[s1]#line=424"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.araya/s1"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[0].text#line=1",
+          "sha256": "9b0fc39e5746cc00c33fc717973a1bf1fc73a4565ef8e75f34135f2d726bea12"
         },
         {
           "abilityId": "master.araya.skill.s1a",
@@ -7586,9 +7664,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 92,
-          "specific_handler": 22
+          "specific_handler": 24
         },
-        "handlerCount": 29,
+        "handlerCount": 31,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -9033,6 +9111,7 @@
       "affectedAbilityIds": [
         "master.akasha.skill.s1",
         "master.amakusa.skill.s1a",
+        "master.araya.skill.s1",
         "master.arcueid.skill.s1a",
         "master.bazett.skill.s1b",
         "master.bazett.skill.s1c",
@@ -9130,6 +9209,27 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[51].abilities[0].printedClause",
           "sha256": "e7bd371c3bcf2d0f86f2995ac118643c9a929b17d698fa66528889ccb03f503c"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.araya/荒耶宗莲"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_araya.skills[s1]#line=424"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.araya/s1"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[0].text#line=1",
+          "sha256": "9b0fc39e5746cc00c33fc717973a1bf1fc73a4565ef8e75f34135f2d726bea12"
         },
         {
           "abilityId": "master.arcueid.skill.s1a",
@@ -10604,9 +10704,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 45,
-          "specific_handler": 11
+          "specific_handler": 12
         },
-        "handlerCount": 17,
+        "handlerCount": 18,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -10620,6 +10720,7 @@
       "mechanicFamily": "MODIFIER",
       "affectedAbilityIds": [
         "master.amakusa.skill.s1a",
+        "master.araya.skill.ascension",
         "master.arcueid.skill.s3",
         "master.artoira.skill.ascension",
         "master.bazett.skill.ascension",
@@ -10711,6 +10812,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[51].abilities[0].printedClause",
           "sha256": "e7bd371c3bcf2d0f86f2995ac118643c9a929b17d698fa66528889ccb03f503c"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.araya/荒耶宗莲"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_araya.ascensionSkill#line=426"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.araya/ascension"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[2].text#line=1",
+          "sha256": "f194af15191615a0c8cf1583bb45e89ac30ab564904042d6a15b98c6ef8cb16f"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[2].text#line=2",
+          "sha256": "3bd0f613d5b0b9adc4365692446ffd6431f4480beda632f15020d916e38b1808"
         },
         {
           "abilityId": "master.arcueid.skill.s3",
@@ -12680,9 +12808,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 53,
-          "specific_handler": 17
+          "specific_handler": 18
         },
-        "handlerCount": 27,
+        "handlerCount": 28,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -12695,6 +12823,7 @@
       "capabilityId": "GENERIC_MOVEMENT",
       "mechanicFamily": "MOVEMENT",
       "affectedAbilityIds": [
+        "master.araya.skill.ascension",
         "master.chaos.skill.s10",
         "master.chaos.skill.s12",
         "master.fiore.skill.s2",
@@ -12711,6 +12840,33 @@
         "servant.mozart.skill.sc-mozart-1"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.araya/荒耶宗莲"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_araya.ascensionSkill#line=426"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.araya/ascension"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[2].text#line=1",
+          "sha256": "f194af15191615a0c8cf1583bb45e89ac30ab564904042d6a15b98c6ef8cb16f"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[2].text#line=2",
+          "sha256": "3bd0f613d5b0b9adc4365692446ffd6431f4480beda632f15020d916e38b1808"
+        },
         {
           "abilityId": "master.chaos.skill.s10",
           "document": "Fate/Domination Wiki",
@@ -13140,9 +13296,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 11,
-          "specific_handler": 3
+          "specific_handler": 4
         },
-        "handlerCount": 8,
+        "handlerCount": 9,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -19682,6 +19838,7 @@
         "master.akasha.skill.s1",
         "master.amakusa.skill.s1",
         "master.amakusa.skill.s2",
+        "master.araya.skill.s1",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1",
         "master.arcueid.skill.s1a",
@@ -19829,6 +19986,27 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[50].abilities[1].printedClause",
           "sha256": "8ffc8c511cb60a8fdcbe48639033c36c4b8dcfc123474571e82337cbbf1c920c"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.araya/荒耶宗莲"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_araya.skills[s1]#line=424"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.araya/s1"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[0].text#line=1",
+          "sha256": "9b0fc39e5746cc00c33fc717973a1bf1fc73a4565ef8e75f34135f2d726bea12"
         },
         {
           "abilityId": "master.araya.skill.s1a",
@@ -22014,9 +22192,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 59,
-          "specific_handler": 21
+          "specific_handler": 22
         },
-        "handlerCount": 27,
+        "handlerCount": 28,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -22967,6 +23145,8 @@
       "capabilityId": "REVIEWED_SPECIAL_HANDLER",
       "mechanicFamily": "SPECIAL_SUBSYSTEM",
       "affectedAbilityIds": [
+        "master.araya.skill.ascension",
+        "master.araya.skill.s1",
         "master.artoira.skill.ascension",
         "master.artoira.skill.s1",
         "master.bazett.skill.s1a",
@@ -23021,6 +23201,54 @@
         "servant.valkyrie.skill.sc-valkyrie-3"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.araya/荒耶宗莲"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_araya.ascensionSkill#line=426"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.araya/ascension"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[2].text#line=1",
+          "sha256": "f194af15191615a0c8cf1583bb45e89ac30ab564904042d6a15b98c6ef8cb16f"
+        },
+        {
+          "abilityId": "master.araya.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[2].text#line=2",
+          "sha256": "3bd0f613d5b0b9adc4365692446ffd6431f4480beda632f15020d916e38b1808"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.araya/荒耶宗莲"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_araya.skills[s1]#line=424"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.araya/s1"
+        },
+        {
+          "abilityId": "master.araya.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[66].skills[0].text#line=1",
+          "sha256": "9b0fc39e5746cc00c33fc717973a1bf1fc73a4565ef8e75f34135f2d726bea12"
+        },
         {
           "abilityId": "master.artoira.skill.ascension",
           "document": "Fate_Domination-开发版",
@@ -24476,9 +24704,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 35,
-          "specific_handler": 17
+          "specific_handler": 19
         },
-        "handlerCount": 25,
+        "handlerCount": 27,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

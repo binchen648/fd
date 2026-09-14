@@ -887,6 +887,86 @@ describe('Phase 3 full-roster semantic normalization', () => {
     );
   });
 
+  it('grounds the two blocked Araya identities while keeping Death Complex location-bound and Paradox Spiral controller-scoped', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const slice = overlays.filter((card) => card.id.startsWith('master.araya.skill.'));
+    expect(slice).toHaveLength(2);
+    expect(
+      slice.every((card) =>
+        card.source?.authority === 'DEVELOPMENT_TEXT' &&
+        card.source.document === 'Fate_Domination-开发版/data_masters.js' &&
+        card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+        createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256
+      ),
+    ).toBe(true);
+
+    const deathComplex = slice.find((card) => card.id === 'master.araya.skill.s1');
+    expect(deathComplex?.abilities).toHaveLength(1);
+    expect(deathComplex?.abilities[0].conditions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ type: 'event_type_is', eventType: 'player.deployed' }),
+        expect.objectContaining({ type: 'event_player_is_controller' }),
+        expect.objectContaining({ type: 'deployment_location_would_grant_controller_terrain' }),
+      ]),
+    );
+    expect(deathComplex?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({
+        type: 'terrain_position_adjustment',
+        operation: 'replace_normal_deployment_terrain_with_location_bound_bonus',
+        battlefield: 'event_location',
+        amount: 1,
+        maxAmount: 5,
+        appliesWhen: 'controller_at_battlefield',
+      }),
+    );
+    expect(deathComplex?.abilities[0].lifecycle).toMatchObject({ duration: 'rest_of_game' });
+
+    const spiral = slice.find((card) => card.id === 'master.araya.skill.ascension');
+    const workshop = spiral?.abilities.find((ability) => ability.id === 'araya.paradox-spiral.personal-workshop');
+    expect(workshop?.conditions).toContainEqual(
+      expect.objectContaining({
+        type: 'controller_at_location_with_source_terrain_at_least',
+        sourceAbilityId: 'master.araya.skill.s1',
+        amount: 5,
+      }),
+    );
+    expect(workshop?.effects).toContainEqual(
+      expect.objectContaining({
+        type: 'location_token_rule',
+        operation: 'treat_controller_location_as_magic_workshop',
+        classificationScope: 'controller_only',
+      }),
+    );
+
+    expect(spiral?.abilities).toContainEqual(
+      expect.objectContaining({
+        id: 'araya.paradox-spiral.opponent-lock',
+        ruleModifiers: [
+          expect.objectContaining({
+            rule: 'movement_permission',
+            operation: 'prohibit_leave_controller_location',
+            subject: 'opponents_at_controller_location',
+          }),
+        ],
+      }),
+    );
+    expect(spiral?.abilities).toContainEqual(
+      expect.objectContaining({
+        id: 'araya.paradox-spiral.face-down-attack-requirement',
+        ruleModifiers: [
+          expect.objectContaining({
+            rule: 'card_play_requirement',
+            operation: 'require_face_down_attack',
+            subject: 'opponents',
+            context: 'regular_play',
+            face: 'down',
+            minCount: 1,
+          }),
+        ],
+      }),
+    );
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -940,10 +1020,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 154,
-      blockedCount: 790,
+      sourceGroundedCount: 156,
+      blockedCount: 788,
       unclassifiedCount: 0,
-      structuredAbilityCount: 288,
+      structuredAbilityCount: 292,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
