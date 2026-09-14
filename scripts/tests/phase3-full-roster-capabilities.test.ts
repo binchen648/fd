@@ -147,6 +147,27 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(mapped.requiredCapabilities).toContain('GENERIC_TRIGGER_GATEWAY');
   });
 
+  it('maps Lostbelt and event-card special semantics to the Event Deck dependency without granting acceptance', () => {
+    const axes = emptyAxes();
+    axes.effect = ['EVENT_CARD_RULE', 'LOSTBELT_EXPANSION'];
+    const mapped = mapStructuredCapabilityNeeds(
+      {
+        id: 'lostbelt-event-fixture',
+        printedClause: 'fixture',
+        effects: [
+          { type: 'event_card_rule', operation: 'define_event_card' },
+          { type: 'lostbelt_expansion', operation: 'expand' },
+        ],
+      },
+      axes,
+    );
+
+    expect(mapped.requiredCapabilities).toContain('GENERIC_EVENT_DECK');
+    expect(mapped.requiredCapabilities).toContain('REVIEWED_SPECIAL_HANDLER');
+    expect(mapped.specialReasons).toContain('SPECIAL_EFFECT:event_card_rule');
+    expect(mapped.specialReasons).toContain('SPECIAL_EFFECT:lostbelt_expansion');
+  });
+
   it('inherits only named contracts carried by exact current routed subabilities', () => {
     expect(acceptanceContractsForCurrentAbilities(['time-alter.action'])).toEqual([
       'CARD_ACTION_SEMANTICS_MINIMAL_PLAY',
@@ -253,9 +274,19 @@ describe('Phase 3 full-roster capability mapping', () => {
     const byId = new Map(wodime.map((entry: any) => [entry.canonicalAbilityId, entry]));
     expect(byId.get('master.wodime.skill.s1').phase3.blockedBy).toContain('SPECIAL_EFFECT:lostbelt_expansion');
     expect(byId.get('master.wodime.skill.s1a').phase3.blockedBy).toContain('SPECIAL_EFFECT:secret_round_binding');
-    expect(byId.get('master.wodime.skill.s2').phase3.requiredCapabilities).toContain('CARD_ACTION_PLAY');
+    expect(byId.get('master.wodime.skill.s2').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining(['CARD_ACTION_PLAY', 'GENERIC_BATTLE_INTEGRATION', 'GENERIC_CONDITION_EVALUATION', 'GENERIC_MODIFIER', 'REVIEWED_SPECIAL_HANDLER']),
+    );
     expect(byId.get('master.wodime.skill.s3').phase3.requiredCapabilities).toContain('GENERIC_RESOURCE_NUMERIC');
-    expect(byId.get('master.wodime.skill.s4').phase3.blockedBy).toContain('SPECIAL_EFFECT:event_card_rule');
+    expect(byId.get('master.wodime.skill.s4').phase3.requiredCapabilities).toContain('GENERIC_EVENT_DECK');
+    expect(byId.get('master.wodime.skill.s5').phase3.requiredCapabilities).toContain('GENERIC_EVENT_DECK');
+    for (const id of ['master.wodime.skill.s7', 'master.wodime.skill.s8', 'master.wodime.skill.s9']) {
+      expect(byId.get(id).phase3.requiredCapabilities).toEqual(
+        expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION', 'GENERIC_CONDITION_EVALUATION', 'GENERIC_EVENT_DECK', 'GENERIC_TRIGGER_GATEWAY', 'REVIEWED_SPECIAL_HANDLER']),
+      );
+      expect(byId.get(id).phase3.blockedBy).toContain('SPECIAL_EFFECT:defeat_player');
+    }
+    expect(byId.get('master.wodime.skill.s7').phase3.requiredCapabilities).toContain('GENERIC_MODIFIER');
     expect(byId.get('master.wodime.skill.ascension').phase3.blockedBy).toContain('SPECIAL_EFFECT:secret_round_binding');
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(86);

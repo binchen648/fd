@@ -35650,6 +35650,7 @@
           "TRIGGER"
         ],
         "requiredCapabilities": [
+          "GENERIC_EVENT_DECK",
           "GENERIC_TRIGGER_GATEWAY",
           "REVIEWED_SPECIAL_HANDLER"
         ],
@@ -35860,15 +35861,21 @@
           ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:card_entry_method:restrict_to_this_ability",
+            "rule:card_play_mana_requirement:ignore_below_threshold",
+            "rule:combat_power_resolution:ignore_other_controller_attacks"
+          ],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_RULE_MODIFIER"
+          ]
         },
         "abilities": [
           {
             "sourceAbilityId": "wodime.astronomical-sphere.recorded-round-play",
-            "kind": "PHASE_ACTION",
+            "kind": "PASSIVE",
             "source": {
               "document": "Fate_Domination-开发版/data_masters.js",
               "locator": "m_wodime.skills[s2]#line=360#ability-1"
@@ -35889,10 +35896,16 @@
               ],
               "interaction": [],
               "lifecycle": [],
-              "modifier": [],
+              "modifier": [
+                "rule:card_entry_method:restrict_to_this_ability",
+                "rule:card_play_mana_requirement:ignore_below_threshold",
+                "rule:combat_power_resolution:ignore_other_controller_attacks"
+              ],
               "visibility": [],
               "binding": [],
-              "battle": []
+              "battle": [
+                "COMBAT_RULE_MODIFIER"
+              ]
             }
           }
         ],
@@ -35904,13 +35917,17 @@
       },
       "phase3": {
         "mechanicFamilies": [
+          "BATTLE_RESULT",
           "CARD_ACTION_SEMANTICS",
           "CONDITION",
+          "MODIFIER",
           "SPECIAL_SUBSYSTEM"
         ],
         "requiredCapabilities": [
           "CARD_ACTION_PLAY",
+          "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_MODIFIER",
           "REVIEWED_SPECIAL_HANDLER"
         ],
         "currentRoute": "none",
@@ -36285,6 +36302,7 @@
         ],
         "requiredCapabilities": [
           "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_EVENT_DECK",
           "GENERIC_TRIGGER_GATEWAY",
           "REVIEWED_SPECIAL_HANDLER"
         ],
@@ -36411,6 +36429,7 @@
           "SPECIAL_SUBSYSTEM"
         ],
         "requiredCapabilities": [
+          "GENERIC_EVENT_DECK",
           "REVIEWED_SPECIAL_HANDLER"
         ],
         "currentRoute": "none",
@@ -36544,6 +36563,7 @@
           "SPECIAL_SUBSYSTEM"
         ],
         "requiredCapabilities": [
+          "GENERIC_EVENT_DECK",
           "REVIEWED_SPECIAL_HANDLER"
         ],
         "currentRoute": "none",
@@ -36625,23 +36645,35 @@
         },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.power-calculated"
+          ],
+          "condition": [
+            "COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD",
+            "PLAYER_POWER_BELOW"
+          ],
           "cost": [],
           "target": [],
           "effect": [
+            "DEFEAT_PLAYER",
             "EVENT_CARD_RULE"
           ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:defeat_immunity:disable"
+          ],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT",
+            "COMBAT_RULE_MODIFIER"
+          ]
         },
         "abilities": [
           {
-            "sourceAbilityId": "wodime.zeus-thunder.event-rule",
+            "sourceAbilityId": "wodime.zeus-thunder.metadata",
             "kind": "PASSIVE",
             "source": {
               "document": "Fate_Domination-开发版/data_masters.js",
@@ -36663,6 +36695,64 @@
               "binding": [],
               "battle": []
             }
+          },
+          {
+            "sourceAbilityId": "wodime.zeus-thunder.defeat-immunity-lock",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_wodime.skills[s7]#line=365#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:defeat_immunity:disable"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_RULE_MODIFIER"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "wodime.zeus-thunder.post-power-defeat",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_wodime.skills[s7]#line=365#ability-3"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.power-calculated"
+              ],
+              "condition": [
+                "COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD",
+                "PLAYER_POWER_BELOW"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "DEFEAT_PLAYER"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
           }
         ],
         "blocks": [],
@@ -36673,9 +36763,18 @@
       },
       "phase3": {
         "mechanicFamilies": [
-          "SPECIAL_SUBSYSTEM"
+          "BATTLE_RESULT",
+          "CONDITION",
+          "MODIFIER",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
         ],
         "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_EVENT_DECK",
+          "GENERIC_MODIFIER",
+          "GENERIC_TRIGGER_GATEWAY",
           "REVIEWED_SPECIAL_HANDLER"
         ],
         "currentRoute": "none",
@@ -36685,6 +36784,7 @@
         "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
         "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
+          "SPECIAL_EFFECT:defeat_player",
           "SPECIAL_EFFECT:event_card_rule"
         ],
         "routeEvidence": {
@@ -36757,11 +36857,18 @@
         },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.power-calculated"
+          ],
+          "condition": [
+            "COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD",
+            "PLAYER_COMMAND_SEALS_SPENT_THIS_ROUND_EQUALS",
+            "PLAYER_IS_WODIME_OPPONENT"
+          ],
           "cost": [],
           "target": [],
           "effect": [
+            "DEFEAT_PLAYER",
             "EVENT_CARD_RULE"
           ],
           "interaction": [],
@@ -36769,11 +36876,14 @@
           "modifier": [],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
         "abilities": [
           {
-            "sourceAbilityId": "wodime.aphrodite-thoughts.event-rule",
+            "sourceAbilityId": "wodime.aphrodite-thoughts.metadata",
             "kind": "PASSIVE",
             "source": {
               "document": "Fate_Domination-开发版/data_masters.js",
@@ -36795,6 +36905,39 @@
               "binding": [],
               "battle": []
             }
+          },
+          {
+            "sourceAbilityId": "wodime.aphrodite-thoughts.post-power-defeat",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_wodime.skills[s8]#line=366#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.power-calculated"
+              ],
+              "condition": [
+                "COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD",
+                "PLAYER_COMMAND_SEALS_SPENT_THIS_ROUND_EQUALS",
+                "PLAYER_IS_WODIME_OPPONENT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "DEFEAT_PLAYER"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
           }
         ],
         "blocks": [],
@@ -36805,9 +36948,16 @@
       },
       "phase3": {
         "mechanicFamilies": [
-          "SPECIAL_SUBSYSTEM"
+          "BATTLE_RESULT",
+          "CONDITION",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
         ],
         "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_EVENT_DECK",
+          "GENERIC_TRIGGER_GATEWAY",
           "REVIEWED_SPECIAL_HANDLER"
         ],
         "currentRoute": "none",
@@ -36817,6 +36967,7 @@
         "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
         "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
+          "SPECIAL_EFFECT:defeat_player",
           "SPECIAL_EFFECT:event_card_rule"
         ],
         "routeEvidence": {
@@ -36889,11 +37040,18 @@
         },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.power-calculated"
+          ],
+          "condition": [
+            "COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD",
+            "PLAYER_DEPLOYED_TO_SOURCE_EVENT_BATTLEFIELD_DURING",
+            "PLAYER_IS_WODIME_OPPONENT"
+          ],
           "cost": [],
           "target": [],
           "effect": [
+            "DEFEAT_PLAYER",
             "EVENT_CARD_RULE"
           ],
           "interaction": [],
@@ -36901,11 +37059,14 @@
           "modifier": [],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
         "abilities": [
           {
-            "sourceAbilityId": "wodime.demeter-bounty.event-rule",
+            "sourceAbilityId": "wodime.demeter-bounty.metadata",
             "kind": "PASSIVE",
             "source": {
               "document": "Fate_Domination-开发版/data_masters.js",
@@ -36927,6 +37088,39 @@
               "binding": [],
               "battle": []
             }
+          },
+          {
+            "sourceAbilityId": "wodime.demeter-bounty.post-power-defeat",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_wodime.skills[s9]#line=367#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.power-calculated"
+              ],
+              "condition": [
+                "COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD",
+                "PLAYER_DEPLOYED_TO_SOURCE_EVENT_BATTLEFIELD_DURING",
+                "PLAYER_IS_WODIME_OPPONENT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "DEFEAT_PLAYER"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
           }
         ],
         "blocks": [],
@@ -36937,9 +37131,16 @@
       },
       "phase3": {
         "mechanicFamilies": [
-          "SPECIAL_SUBSYSTEM"
+          "BATTLE_RESULT",
+          "CONDITION",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
         ],
         "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_EVENT_DECK",
+          "GENERIC_TRIGGER_GATEWAY",
           "REVIEWED_SPECIAL_HANDLER"
         ],
         "currentRoute": "none",
@@ -36949,6 +37150,7 @@
         "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
         "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
+          "SPECIAL_EFFECT:defeat_player",
           "SPECIAL_EFFECT:event_card_rule"
         ],
         "routeEvidence": {
@@ -103170,7 +103372,7 @@
     "sourceGroundedCount": 110,
     "blockedCount": 834,
     "unclassifiedCount": 0,
-    "structuredAbilityCount": 171
+    "structuredAbilityCount": 175
   },
   "capabilitySummary": {
     "totalIdentityCount": 944,

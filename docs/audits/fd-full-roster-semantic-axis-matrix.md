@@ -9,7 +9,7 @@ totalIdentityCount=944
 sourceGroundedCount=110
 blockedCount=834
 unclassifiedCount=0
-structuredAbilityCount=171
+structuredAbilityCount=175
 
 ## Axis Value Counts
 
@@ -25,6 +25,7 @@ structuredAbilityCount=171
 | trigger | `player.entered-location` | 5 |
 | trigger | `combat.ending` | 4 |
 | trigger | `round.started` | 4 |
+| trigger | `combat.power-calculated` | 3 |
 | trigger | `player.moved` | 3 |
 | trigger | `round.ended` | 3 |
 | trigger | `round.ending` | 3 |
@@ -53,6 +54,7 @@ structuredAbilityCount=171
 | condition | `TARGET_COUNT_AT_LEAST` | 5 |
 | condition | `EVENT_FACE_IS` | 4 |
 | condition | `PLAYER_FLAG_NUMBER_CURRENT_ROUND` | 4 |
+| condition | `COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD` | 3 |
 | condition | `PLAYER_FLAG_NUMBER_NOT_CURRENT_ROUND` | 3 |
 | condition | `CARD_COUNT_AT_LEAST` | 2 |
 | condition | `COMMAND_SEALS_AT_LEAST` | 2 |
@@ -60,6 +62,7 @@ structuredAbilityCount=171
 | condition | `CYCLE_STATE_IS_NOT` | 2 |
 | condition | `EVENT_LOCATION_IS` | 2 |
 | condition | `EVENT_NUMBER_COMPARE` | 2 |
+| condition | `PLAYER_IS_WODIME_OPPONENT` | 2 |
 | condition | `ANY_OF` | 1 |
 | condition | `CYCLE_TRANSITION_PENDING` | 1 |
 | condition | `DOES_NOT_CONTROL_CARD_DEFINITION` | 1 |
@@ -78,8 +81,11 @@ structuredAbilityCount=171
 | condition | `IMPLIES` | 1 |
 | condition | `LOCATION_IS` | 1 |
 | condition | `PHASE_IS` | 1 |
+| condition | `PLAYER_COMMAND_SEALS_SPENT_THIS_ROUND_EQUALS` | 1 |
+| condition | `PLAYER_DEPLOYED_TO_SOURCE_EVENT_BATTLEFIELD_DURING` | 1 |
 | condition | `PLAYER_FLAG_EQUALS` | 1 |
 | condition | `PLAYER_FLAG_NUMBER_EQUALS_EVENT_FIELD` | 1 |
+| condition | `PLAYER_POWER_BELOW` | 1 |
 | condition | `ROUND_IS_CLIMAX` | 1 |
 | condition | `ROUND_VICTORY_POINTS_GAINED_EQUALS` | 1 |
 | condition | `SCHEDULED_PAYLOAD_PRESENT` | 1 |
@@ -104,6 +110,7 @@ structuredAbilityCount=171
 | target | `CHOOSE_N_EVENTS` | 1 |
 | effect | `GAIN_VICTORY_POINTS` | 16 |
 | effect | `CLOSE_SOURCE_CARD` | 11 |
+| effect | `DEFEAT_PLAYER` | 8 |
 | effect | `GAIN_MANA` | 8 |
 | effect | `PLAY_SELECTED_CARDS` | 8 |
 | effect | `DRAW_CARDS` | 7 |
@@ -114,7 +121,6 @@ structuredAbilityCount=171
 | effect | `SOURCE_CARD_POWER_BONUS` | 6 |
 | effect | `COMBAT_POWER_BONUS` | 5 |
 | effect | `CYCLE_STATE_TRANSITION` | 5 |
-| effect | `DEFEAT_PLAYER` | 5 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 5 |
 | effect | `ADD_STATUS` | 4 |
 | effect | `LOSE_MANA` | 4 |
@@ -196,12 +202,16 @@ structuredAbilityCount=171
 | modifier | `rule:card_base_power:add` | 1 |
 | modifier | `rule:card_close:forbid` | 1 |
 | modifier | `rule:card_draw:forbid` | 1 |
+| modifier | `rule:card_entry_method:restrict_to_this_ability` | 1 |
 | modifier | `rule:card_play:forbid` | 1 |
 | modifier | `rule:card_play_limit:ignore_once_per_game` | 1 |
 | modifier | `rule:card_play_limit:remove_once_per_game` | 1 |
 | modifier | `rule:card_play_mana_requirement:ignore` | 1 |
+| modifier | `rule:card_play_mana_requirement:ignore_below_threshold` | 1 |
 | modifier | `rule:card_play_with_others:forbid` | 1 |
+| modifier | `rule:combat_power_resolution:ignore_other_controller_attacks` | 1 |
 | modifier | `rule:combat_winner_inclusion:allow` | 1 |
+| modifier | `rule:defeat_immunity:disable` | 1 |
 | modifier | `rule:deployment_advantage:add` | 1 |
 | modifier | `rule:deployment_advantage:multiply` | 1 |
 | modifier | `rule:deployment_destinations:replace` | 1 |
@@ -239,9 +249,9 @@ structuredAbilityCount=171
 | binding | `payload:targetSkillInstanceIds` | 1 |
 | binding | `payload:twiceReplaceEventIds` | 1 |
 | binding | `payload:twiceSwapEventIds` | 1 |
-| battle | `COMBAT_CONDITION` | 29 |
-| battle | `COMBAT_EVENT` | 27 |
-| battle | `COMBAT_RULE_MODIFIER` | 6 |
+| battle | `COMBAT_CONDITION` | 32 |
+| battle | `COMBAT_EVENT` | 30 |
+| battle | `COMBAT_RULE_MODIFIER` | 8 |
 | battle | `COMBAT_EFFECT` | 5 |
 
 ## Identity-Level Matrix
@@ -581,14 +591,14 @@ structuredAbilityCount=171
 | `master.wodime.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved` | `EVENT_PLAYER_WON_COMBAT` | `NONE` | `NONE` | `SECRET_ROUND_BINDING` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.wodime-lostbelt-system` |
 | `master.wodime.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `game.started` | `NONE` | `NONE` | `NONE` | `LOSTBELT_EXPANSION` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
 | `master.wodime.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SECRET_ROUND_BINDING` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
-| `master.wodime.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `SECRET_ROUND_MATCHES_CURRENT` | `NONE` | `NONE` | `ASTRONOMICAL_SPHERE_RULE`, `PLAY_SOURCE_CARD` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `SECRET_ROUND_MATCHES_CURRENT` | `NONE` | `NONE` | `ASTRONOMICAL_SPHERE_RULE`, `PLAY_SOURCE_CARD` | `NONE` | `NONE` | `rule:card_entry_method:restrict_to_this_ability`, `rule:card_play_mana_requirement:ignore_below_threshold`, `rule:combat_power_resolution:ignore_other_controller_attacks` | `NONE` | `NONE` | `COMBAT_RULE_MODIFIER` | `core.wodime-lostbelt-system` |
 | `master.wodime.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_POWER_BONUS`, `GAIN_MANA`, `LOCATION_TOKEN_RULE` | `NONE` | `NONE` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.wodime-lostbelt-system` |
 | `master.wodime.skill.s4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `event.revealed` | `EVENT_HAS_LOSTBELT_TAG` | `NONE` | `NONE` | `EVENT_CARD_RULE`, `LOSTBELT_EXPANSION` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
 | `master.wodime.skill.s5` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE`, `LOSTBELT_EXPANSION` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
 | `master.wodime.skill.s6` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
-| `master.wodime.skill.s7` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
-| `master.wodime.skill.s8` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
-| `master.wodime.skill.s9` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.s7` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.power-calculated` | `COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD`, `PLAYER_POWER_BELOW` | `NONE` | `NONE` | `DEFEAT_PLAYER`, `EVENT_CARD_RULE` | `NONE` | `NONE` | `rule:defeat_immunity:disable` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT`, `COMBAT_RULE_MODIFIER` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.s8` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.power-calculated` | `COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD`, `PLAYER_COMMAND_SEALS_SPENT_THIS_ROUND_EQUALS`, `PLAYER_IS_WODIME_OPPONENT` | `NONE` | `NONE` | `DEFEAT_PLAYER`, `EVENT_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.wodime-lostbelt-system` |
+| `master.wodime.skill.s9` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.power-calculated` | `COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD`, `PLAYER_DEPLOYED_TO_SOURCE_EVENT_BATTLEFIELD_DURING`, `PLAYER_IS_WODIME_OPPONENT` | `NONE` | `NONE` | `DEFEAT_PLAYER`, `EVENT_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.wodime-lostbelt-system` |
 | `master.zouken.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.zouken-illusive-mastermind` |
 | `master.zouken.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-player-config` |
 | `master.zouken.skill.s2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-add-skill` |

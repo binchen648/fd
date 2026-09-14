@@ -392,8 +392,15 @@ describe('Phase 3 full-roster semantic normalization', () => {
       expect.objectContaining({ id: 'wodime.cryptic-leader.atlantis-start' }),
     );
     const sphere = wodime.find((card) => card.id === 'master.wodime.skill.s2');
-    expect(sphere?.abilities[0].effects).toContainEqual(
-      expect.objectContaining({ type: 'astronomical_sphere_rule', prohibitOtherEntryMethods: true }),
+    expect(sphere?.abilities[0].kind).toBe('passive');
+    expect(sphere?.abilities[0].ruleModifiers).toContainEqual(
+      expect.objectContaining({ rule: 'card_play_mana_requirement', threshold: 8 }),
+    );
+    expect(sphere?.abilities[0].ruleModifiers).toContainEqual(
+      expect.objectContaining({ rule: 'combat_power_resolution', operation: 'ignore_other_controller_attacks' }),
+    );
+    expect(sphere?.abilities[0].ruleModifiers).toContainEqual(
+      expect.objectContaining({ rule: 'card_entry_method', operation: 'restrict_to_this_ability' }),
     );
     const legacy = wodime.find((card) => card.id === 'master.wodime.skill.s3');
     expect(legacy?.abilities[0].effects).toContainEqual(
@@ -403,6 +410,33 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(grandOrder?.abilities[0].effects).toContainEqual(
       expect.objectContaining({ type: 'secret_round_binding', operation: 'record_additional_secret_round', optional: true }),
     );
+
+    const olympus = wodime.find((card) => card.id === 'master.wodime.skill.s5');
+    expect(olympus?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({ type: 'lostbelt_expansion', drawCount: 2, revealDrawnEvents: true }),
+    );
+
+    const zeus = wodime.find((card) => card.id === 'master.wodime.skill.s7');
+    expect(zeus?.abilities).toHaveLength(3);
+    expect(zeus?.abilities[1].ruleModifiers).toContainEqual(
+      expect.objectContaining({ rule: 'defeat_immunity', operation: 'disable' }),
+    );
+    expect(zeus?.abilities[2].conditions).toContainEqual(
+      expect.objectContaining({ type: 'event_type_is', eventType: 'combat.power-calculated' }),
+    );
+    expect(zeus?.abilities[2].effects).toContainEqual(
+      expect.objectContaining({ type: 'defeat_player' }),
+    );
+
+    for (const id of ['master.wodime.skill.s8', 'master.wodime.skill.s9']) {
+      const eventCard = wodime.find((card) => card.id === id);
+      expect(eventCard?.abilities[1].conditions).toContainEqual(
+        expect.objectContaining({ type: 'event_type_is', eventType: 'combat.power-calculated' }),
+      );
+      expect(eventCard?.abilities[1].effects).toContainEqual(
+        expect.objectContaining({ type: 'defeat_player' }),
+      );
+    }
   });
 
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
@@ -461,7 +495,7 @@ describe('Phase 3 full-roster semantic normalization', () => {
       sourceGroundedCount: 110,
       blockedCount: 834,
       unclassifiedCount: 0,
-      structuredAbilityCount: 171,
+      structuredAbilityCount: 175,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
