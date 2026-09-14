@@ -10051,6 +10051,7 @@
         "master.darnic.skill.s1a",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
+        "master.fiore.skill.s6",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
@@ -10415,6 +10416,27 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[42].skills[1].text#line=2",
           "sha256": "f9f0f36b9d58256d1ae9b9837ee7ab09157f2128fe824170f1d59d16ea1fb94c"
+        },
+        {
+          "abilityId": "master.fiore.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fiore/菲奥蕾·弗尔维吉"
+        },
+        {
+          "abilityId": "master.fiore.skill.s6",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fiore.skills[s6]#line=224"
+        },
+        {
+          "abilityId": "master.fiore.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.fiore/s6"
+        },
+        {
+          "abilityId": "master.fiore.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[42].skills[6].text#line=1",
+          "sha256": "e880efb6b838c57a6ba1b24e2f8a16415e5d9556f6ebf6b5822c42cafbb6ddce"
         },
         {
           "abilityId": "master.sion.skill.s13",
@@ -10989,9 +11011,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 34,
-          "specific_handler": 3
+          "specific_handler": 4
         },
-        "handlerCount": 5,
+        "handlerCount": 6,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -14183,6 +14205,7 @@
         "master.darnic.skill.s1a",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
+        "master.fiore.skill.s6",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
@@ -14547,6 +14570,27 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[42].skills[1].text#line=2",
           "sha256": "f9f0f36b9d58256d1ae9b9837ee7ab09157f2128fe824170f1d59d16ea1fb94c"
+        },
+        {
+          "abilityId": "master.fiore.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fiore/菲奥蕾·弗尔维吉"
+        },
+        {
+          "abilityId": "master.fiore.skill.s6",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fiore.skills[s6]#line=224"
+        },
+        {
+          "abilityId": "master.fiore.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.fiore/s6"
+        },
+        {
+          "abilityId": "master.fiore.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[42].skills[6].text#line=1",
+          "sha256": "e880efb6b838c57a6ba1b24e2f8a16415e5d9556f6ebf6b5822c42cafbb6ddce"
         },
         {
           "abilityId": "master.sion.skill.s13",
@@ -15121,9 +15165,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 34,
-          "specific_handler": 3
+          "specific_handler": 4
         },
-        "handlerCount": 5,
+        "handlerCount": 6,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
