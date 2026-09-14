@@ -692,6 +692,8 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
     if (!battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId)) continue;
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
       const matches = a.activation.trigger === event.type || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
+      if (event.type === 'after_battle_result_determined' && isOptionalBattleResultVpTriggerSemantic(a) &&
+        Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
       if (event.type === 'after_battle_ended' && isBattleEndSourceReturnCandidate(a) && !battleEndSourceReturnTriggerEligible(s, c.instanceId)) continue;
       if (!matches || !canActivate(s, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
       if (['on_card_played', 'on_use_declared'].includes(event.type) && event.sourceCardId !== c.instanceId &&
@@ -1171,6 +1173,49 @@ export function isSharedVictoryVpTriggerSemantic(a: AuthoringAbility): boolean {
     effect.amount === 2 && Number.isSafeInteger(effect.amount);
 }
 
+function isOptionalBattleResultVpTriggerCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'optional_trigger' &&
+    str(a.activation.phase) === 'combat' &&
+    str(a.activation.trigger) === 'after_battle_result_determined' &&
+    a.conditions.some((condition) => str(condition.type) === 'controller_played_highest_cost_noble_phantasm_in_battle_this_round') &&
+    a.effects.some((effect) => str(effect.type) === 'adjust_victory_points');
+}
+
+function hasExactOptionalBattleResultVpActivation(a: AuthoringAbility): boolean {
+  const responseKeys = Object.keys(a.responseWindow);
+  return !str(a.activation.opens) &&
+    !str(a.activation.requiresSourceState) &&
+    str(a.responseWindow.opens) === 'after_battle_result_determined' &&
+    (!str(a.responseWindow.order) || str(a.responseWindow.order) === 'turn_order') &&
+    (!str(a.responseWindow.passBehavior) || str(a.responseWindow.passBehavior) === 'decline_this_window') &&
+    responseKeys.every((key) => ['opens', 'order', 'passBehavior'].includes(key));
+}
+
+function isOptionalBattleResultExtraVpSiblingSemantic(a: AuthoringAbility): boolean {
+  if (!isOptionalBattleResultVpTriggerCandidate(a) || !hasExactOptionalBattleResultVpActivation(a)) return false;
+  if (a.conditions.length !== 2 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || a.effects.length !== 1) return false;
+  const hasHighest = a.conditions.some((condition) => str(condition.type) === 'controller_played_highest_cost_noble_phantasm_in_battle_this_round');
+  const hasThreshold = a.conditions.some((condition) =>
+    str(condition.type) === 'highest_cost_noble_phantasm_cost_at_least' && Number(condition.value) === 4);
+  const effect = a.effects[0]!;
+  return hasHighest && hasThreshold &&
+    effect.type === 'adjust_victory_points' &&
+    (effect.player === undefined || effect.player === 'controller') &&
+    effect.amount === 1 && Number.isSafeInteger(effect.amount);
+}
+
+export function isOptionalBattleResultVpTriggerSemantic(a: AuthoringAbility): boolean {
+  if (!isOptionalBattleResultVpTriggerCandidate(a) || !hasExactOptionalBattleResultVpActivation(a)) return false;
+  if (a.conditions.length !== 1 || str(a.conditions[0]?.type) !== 'controller_played_highest_cost_noble_phantasm_in_battle_this_round') return false;
+  if (a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || a.effects.length !== 1) return false;
+  const effect = a.effects[0]!;
+  return effect.type === 'adjust_victory_points' &&
+    (effect.player === undefined || effect.player === 'controller') &&
+    effect.amount === 1 && Number.isSafeInteger(effect.amount);
+}
+
 function isBattleEndSourceReturnCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'forced_trigger' &&
     str(a.activation.trigger) === 'after_battle_ended' &&
@@ -1474,7 +1519,7 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
-  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a)) {
+  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isOptionalBattleResultVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
     cleanupOngoing(s);
@@ -1484,6 +1529,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isBattleLossResourceTriggerCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss resource semantic shape');
   if (isBattleLossServantRevealCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss servant reveal semantic shape');
   if (isSharedVictoryVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported shared-victory VP semantic shape');
+  if (isOptionalBattleResultVpTriggerCandidate(a) && !isOptionalBattleResultExtraVpSiblingSemantic(a)) reject('resolution_failed', 'Unsupported optional battle-result VP semantic shape');
   if (isBattleEndSourceReturnCandidate(a)) reject('resolution_failed', 'Unsupported battle-end source-return semantic shape');
   if (isPrivateOptionalHandPlayInteractionCandidate(a)) {
     if (!isPrivateOptionalHandPlayInteractionSemantic(a)) reject('resolution_failed', 'Unsupported private optional hand-play interaction semantic shape');
