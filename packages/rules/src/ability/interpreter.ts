@@ -1217,6 +1217,50 @@ export function isOptionalBattleResultVpTriggerSemantic(a: AuthoringAbility): bo
     effect.amount === 1 && Number.isSafeInteger(effect.amount);
 }
 
+function isUniqueWinCreateCardTriggerCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'optional_trigger' &&
+    a.activation.trigger === 'after_controller_wins_battle' &&
+    a.conditions.some((condition) => str(condition.type) === 'source_card_in_zone') &&
+    a.cost.some((cost) => str(cost.type) === 'move_source_card') &&
+    a.creates.some((create) => str(create.type) === 'create_card');
+}
+
+export function isUniqueWinCreateCardTriggerSemantic(a: AuthoringAbility): boolean {
+  if (!isUniqueWinCreateCardTriggerCandidate(a)) return false;
+  if (str(a.activation.opens) !== 'post_battle_optional_trigger_window') return false;
+  const response = node(a.responseWindow);
+  const eligible = Array.isArray(response.eligiblePlayers) ? response.eligiblePlayers : [];
+  if (str(response.opens) !== 'post_battle_optional_trigger_window' ||
+    eligible.length !== 1 || eligible[0] !== 'controller' ||
+    (response.order !== undefined && response.order !== 'turn_order') ||
+    (response.passBehavior !== undefined && response.passBehavior !== 'decline_this_window') ||
+    (response.passDefault !== undefined && response.passDefault !== 'decline_this_window')) return false;
+
+  const limit = node(a.limit);
+  if (limit.type !== 'unique' || limit.scope !== 'unique_keyword_group' ||
+    !str(limit.groupId) || limit.window !== 'trigger_window' ||
+    limit.conflictPolicy !== 'only_one_effect_may_activate_per_window') return false;
+
+  if (nodes(a.conditions).length !== 1 || nodes(a.targets).length !== 0 || nodes(a.effects).length !== 0 ||
+    nodes(a.cost).length !== 1 || nodes(a.creates).length !== 1 || nodes(a.ruleModifiers).length !== 0 || Object.keys(node(a.lifecycle)).length !== 0) return false;
+  const conditionNode = a.conditions[0]!;
+  if (conditionNode.type !== 'source_card_in_zone' || conditionNode.zone !== 'hand' || conditionNode.owner !== 'controller') return false;
+
+  const cost = a.cost[0]!;
+  const from = node(cost.from); const to = node(cost.to);
+  if (cost.type !== 'move_source_card' || from.zone !== 'hand' || from.owner !== 'controller' ||
+    to.zone !== 'removed_from_game' || to.owner !== 'controller') return false;
+
+  const create = a.creates[0]!;
+  const destination = node(create.to); const then = nodes(create.then);
+  return create.type === 'create_card' && !!str(create.cardId) &&
+    destination.zone === 'deck' && destination.owner === 'controller' &&
+    then.length === 1 && then[0]?.type === 'shuffle_deck' && then[0]?.owner === 'controller';
+}
+
+/** Backward-compatible B20 test/export alias; routing is the generic structural family above. */
+export const isUniqueLuckOnBattleWinSemantic = isUniqueWinCreateCardTriggerSemantic;
+
 function isBattleEndSourceReturnCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'forced_trigger' &&
     str(a.activation.trigger) === 'after_battle_ended' &&
@@ -1606,6 +1650,34 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
+  if (isUniqueWinCreateCardTriggerCandidate(a)) {
+    if (!isUniqueWinCreateCardTriggerSemantic(a)) reject('resolution_failed', 'Unsupported unique win create-card semantic shape');
+    const source = card(s, ctx.sourceCardId);
+    if (source.zone !== 'hand' || source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId) {
+      reject('invalid_cost', 'Unique win create-card source must remain in the controller hand');
+    }
+    const fromZone = source.zone;
+    moveCard(s, ctx.sourceCardId, 'removed_from_game');
+    runtime(s).events.push({
+      type: 'source_card_removed_from_game', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId, cardInstanceId: ctx.sourceCardId, fromZone, toZone: 'removed_from_game', movedCount: 1,
+    });
+    const create = a.creates[0]!;
+    const createdCardId = nextId(s, 'created');
+    s.cards.push({
+      instanceId: createdCardId, definitionId: str(create.cardId), ownerPlayerId: ctx.controllerId, controllerPlayerId: ctx.controllerId,
+      zone: 'deck', visibility: { scope: 'owner_only', ownerPlayerId: ctx.controllerId }, generatedBy: ctx.sourceCardId,
+    });
+    runtime(s).events.push({
+      type: 'card_created', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+      cardInstanceId: createdCardId, toZone: 'deck', movedCount: 1,
+    });
+    shuffle(s, ctx.controllerId);
+    runtime(s).events.push({
+      type: 'deck_shuffled', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+    });
+    return;
+  }
   if (isCardZoneCoreDirectActionRouteCandidate(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a)) {
     try {
       normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
