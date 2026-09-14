@@ -2792,6 +2792,1056 @@
           }
         }
       ]
+    },
+    {
+      "id": "master.kadoc.skill.s1",
+      "printedText": "你负责【俄罗斯异闻带】。当你赢得一场战斗时，进行【扩张】。在游戏开始时，【扩张】两次。你不会受到【俄罗斯】事件牌的影响。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kadoc.skills[s1]#line=316",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你负责【俄罗斯异闻带】。当你赢得一场战斗时，进行【扩张】。在游戏开始时，【扩张】两次。你不会受到【俄罗斯】事件牌的影响。",
+        "sourceTextSha256": "9801507f397ab509146fbd309e10a683f8cd96cd6985016f3ccb63e93f9636c9"
+      },
+      "referencePrintedTextSha256": "9801507f397ab509146fbd309e10a683f8cd96cd6985016f3ccb63e93f9636c9",
+      "abilities": [
+        {
+          "id": "kadoc.cryptic-owner.russia",
+          "printedClause": "你负责【俄罗斯异闻带】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "register_owner",
+              "lostbelts": [
+                "russia"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "kadoc.cryptic-owner.expand-on-win",
+          "printedClause": "当你赢得一场战斗时，进行【扩张】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "expand",
+              "lostbelt": "russia"
+            }
+          ]
+        },
+        {
+          "id": "kadoc.cryptic-owner.double-expand-at-start",
+          "printedClause": "在游戏开始时，【扩张】两次。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "expand_multiple",
+              "lostbelt": "russia",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "id": "kadoc.cryptic-owner.russia-event-immunity",
+          "printedClause": "你不会受到【俄罗斯】事件牌的影响。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "ignore_effects_on_controller",
+              "lostbelt": "russia"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kadoc.skill.s1a",
+      "printedText": "回合结束时若你位于魔术工房，则失去1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kadoc.skills[s1a]#line=317",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "回合结束时若你位于魔术工房，则失去1点战果。",
+        "sourceTextSha256": "a5a36bc2cfa18747f2ed0a8cf79a9bb4f4e1b44cc384925c67819b66f66291c9"
+      },
+      "referencePrintedTextSha256": "a5a36bc2cfa18747f2ed0a8cf79a9bb4f4e1b44cc384925c67819b66f66291c9",
+      "abilities": [
+        {
+          "id": "kadoc.lack-confidence.workshop-penalty",
+          "printedClause": "回合结束时若你位于魔术工房，则失去1点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            },
+            {
+              "type": "controller_location_is",
+              "location": "magic_workshop"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kadoc.skill.s2",
+      "printedText": "扩张-抽2张事件牌并展示。你可以将游戏外的【俄罗斯】事件牌替换其中一张，然后将它们洗回事件牌堆。同时满足【扩张】条件的玩家需要同步执行【扩张】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kadoc.skills[s2]#line=318",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "扩张-抽2张事件牌并展示。你可以将游戏外的【俄罗斯】事件牌替换其中一张，然后将它们洗回事件牌堆。同时满足【扩张】条件的玩家需要同步执行【扩张】。",
+        "sourceTextSha256": "a4109bdad12d33c53b9e2d9db7894e1e55a12b1a43646716e48bb98efceff17c"
+      },
+      "referencePrintedTextSha256": "a4109bdad12d33c53b9e2d9db7894e1e55a12b1a43646716e48bb98efceff17c",
+      "abilities": [
+        {
+          "id": "kadoc.russia-lostbelt.expand",
+          "printedClause": "扩张-抽2张事件牌并展示。你可以将游戏外的【俄罗斯】事件牌替换其中一张，然后将它们洗回事件牌堆。同时满足【扩张】条件的玩家需要同步执行【扩张】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "draw_optional_replace_shuffle",
+              "lostbelt": "russia",
+              "drawCount": 2,
+              "revealDrawnEvents": true,
+              "replacementSource": "outside_game",
+              "replacementCountMax": 1,
+              "synchronizeOtherEligibleExpansions": true
+            },
+            {
+              "type": "event_card_rule",
+              "operation": "replace_revealed_event_from_outside_game",
+              "lostbelt": "russia"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kadoc.skill.s3",
+      "printedText": "【俄罗斯事件牌】战果1，数量5。\n部署于此战场的玩家立即失去2点魔力。进入此战场的玩家失去2点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kadoc.skills[s3]#line=319",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【俄罗斯事件牌】战果1，数量5。\n部署于此战场的玩家立即失去2点魔力。进入此战场的玩家失去2点魔力。",
+        "sourceTextSha256": "7f4096a58df09a1825d0c53beb69855d7ab8a1ebb6107ea5829cb63f5d7259c8"
+      },
+      "referencePrintedTextSha256": "7f4096a58df09a1825d0c53beb69855d7ab8a1ebb6107ea5829cb63f5d7259c8",
+      "abilities": [
+        {
+          "id": "kadoc.frozen-soil.metadata",
+          "printedClause": "【俄罗斯事件牌】战果1，数量5。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "russia",
+              "victoryPoints": 1,
+              "copyCount": 5
+            }
+          ]
+        },
+        {
+          "id": "kadoc.frozen-soil.deploy-mana-loss",
+          "printedClause": "部署于此战场的玩家立即失去2点魔力。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.deployed"
+            },
+            {
+              "type": "event_location_is_source_event_battlefield"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_mana",
+              "amount": 2,
+              "subject": "event_player"
+            }
+          ]
+        },
+        {
+          "id": "kadoc.frozen-soil.enter-mana-loss",
+          "printedClause": "进入此战场的玩家失去2点魔力。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.entered-location"
+            },
+            {
+              "type": "event_location_is_source_event_battlefield"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_mana",
+              "amount": 2,
+              "subject": "event_player"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kadoc.skill.s4",
+      "printedText": "【俄罗斯事件牌】战果3，数量2。\n玩家无法从此战场离开。此战场的战败者失去3点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kadoc.skills[s4]#line=320",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【俄罗斯事件牌】战果3，数量2。\n玩家无法从此战场离开。此战场的战败者失去3点战果。",
+        "sourceTextSha256": "da0d4e8096949f4b295f3aded42923db6da6e510d5018f7c3f7fd63e6797d9b5"
+      },
+      "referencePrintedTextSha256": "da0d4e8096949f4b295f3aded42923db6da6e510d5018f7c3f7fd63e6797d9b5",
+      "abilities": [
+        {
+          "id": "kadoc.survival-fittest.metadata",
+          "printedClause": "【俄罗斯事件牌】战果3，数量2。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "russia",
+              "victoryPoints": 3,
+              "copyCount": 2
+            }
+          ]
+        },
+        {
+          "id": "kadoc.survival-fittest.no-leave",
+          "printedClause": "玩家无法从此战场离开。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "movement_permission",
+              "operation": "prohibit_leave_source_event_battlefield",
+              "subject": "players_at_source_event_battlefield"
+            }
+          ]
+        },
+        {
+          "id": "kadoc.survival-fittest.loser-vp-penalty",
+          "printedClause": "此战场的战败者失去3点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "combat_occurs_at_source_event_battlefield"
+            },
+            {
+              "type": "event_player_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "amount": 3,
+              "subject": "losers_at_source_event_battlefield"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kadoc.skill.s5",
+      "printedText": "【俄罗斯事件牌】战果5，数量2。\n在此战场发生战斗后，不位于此战场的玩家失去2点战果。不位于任何战场的玩家失去所有本回合获得的战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kadoc.skills[s5]#line=321",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【俄罗斯事件牌】战果5，数量2。\n在此战场发生战斗后，不位于此战场的玩家失去2点战果。不位于任何战场的玩家失去所有本回合获得的战果。",
+        "sourceTextSha256": "9707ae2ded957d2bc613251e3139b1580c3bac26539a77a26a7ce5e8c7cf4d94"
+      },
+      "referencePrintedTextSha256": "9707ae2ded957d2bc613251e3139b1580c3bac26539a77a26a7ce5e8c7cf4d94",
+      "abilities": [
+        {
+          "id": "kadoc.emperor-edict.metadata",
+          "printedClause": "【俄罗斯事件牌】战果5，数量2。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "russia",
+              "victoryPoints": 5,
+              "copyCount": 2
+            }
+          ]
+        },
+        {
+          "id": "kadoc.emperor-edict.post-combat-global-penalty",
+          "printedClause": "在此战场发生战斗后，不位于此战场的玩家失去2点战果。不位于任何战场的玩家失去所有本回合获得的战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "combat_occurs_at_source_event_battlefield"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "amount": 2,
+              "scope": "players_not_at_source_event_battlefield"
+            },
+            {
+              "type": "lose_victory_points",
+              "amountFormula": "victory_points_gained_this_round",
+              "scope": "players_not_at_any_battlefield"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kadoc.skill.ascension",
+      "printedText": "（将此牌加入你的技能区）\n被动：你位于【俄罗斯】战场时合计威力+5。\n行动阶段：将一张【俄罗斯】事件牌从游戏外放入你所在的战场（视为一次扩张）。若你无法做到，改为获得5点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kadoc.ascensionSkill#line=322",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（将此牌加入你的技能区）\n被动：你位于【俄罗斯】战场时合计威力+5。\n行动阶段：将一张【俄罗斯】事件牌从游戏外放入你所在的战场（视为一次扩张）。若你无法做到，改为获得5点战果。",
+        "sourceTextSha256": "b8025f94b9ac17d4b03d5f212952e85f73c753b181c8f8ac8b6b0f42f0559b4e"
+      },
+      "referencePrintedTextSha256": "b8025f94b9ac17d4b03d5f212952e85f73c753b181c8f8ac8b6b0f42f0559b4e",
+      "abilities": [
+        {
+          "id": "kadoc.rapid-expansion.setup",
+          "printedClause": "（将此牌加入你的技能区）",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "reason": "ascension_setup"
+            }
+          ]
+        },
+        {
+          "id": "kadoc.rapid-expansion.russia-power",
+          "printedClause": "被动：你位于【俄罗斯】战场时合计威力+5。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_at_lostbelt_event_battlefield",
+              "lostbelt": "russia"
+            }
+          ],
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "scope": "controller_total",
+              "amount": 5
+            }
+          ]
+        },
+        {
+          "id": "kadoc.rapid-expansion.action",
+          "printedClause": "行动阶段：将一张【俄罗斯】事件牌从游戏外放入你所在的战场（视为一次扩张）。若你无法做到，改为获得5点战果。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_events",
+              "minCount": 0,
+              "maxCount": 1,
+              "scope": "outside_game_russia_events",
+              "payloadKey": "selectedEventIds"
+            },
+            {
+              "type": "event_card_rule",
+              "operation": "place_selected_outside_game_event_at_controller_battlefield_as_expansion",
+              "lostbelt": "russia",
+              "payloadKey": "selectedEventIds",
+              "fallbackEffects": [
+                {
+                  "type": "gain_victory_points",
+                  "amount": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.hinako.skill.s1",
+      "printedText": "将NPC【始皇帝】加入游戏。他负责【中国异闻带】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hinako.skills[s1]#line=339",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "将NPC【始皇帝】加入游戏。他负责【中国异闻带】。",
+        "sourceTextSha256": "989f892dbc6d2e055ebb576144614cecf47a728cddb1e9cb812c39fdeb23f400"
+      },
+      "referencePrintedTextSha256": "989f892dbc6d2e055ebb576144614cecf47a728cddb1e9cb812c39fdeb23f400",
+      "abilities": [
+        {
+          "id": "hinako.cryptic-owner.add-qin-npc",
+          "printedClause": "将NPC【始皇帝】加入游戏。他负责【中国异闻带】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "npc_rule",
+              "operation": "add_npc",
+              "npcId": "qin_shi_huang",
+              "controller": "system"
+            },
+            {
+              "type": "lostbelt_expansion",
+              "operation": "register_owner",
+              "lostbelts": [
+                "china"
+              ],
+              "owner": "npc:qin_shi_huang"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.hinako.skill.s1a",
+      "printedText": "将【咒血尸解叹歌】加入你的技能区。当你战败时，将游戏外的【咒血尸解叹歌】加入技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hinako.skills[s1a]#line=340",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "将【咒血尸解叹歌】加入你的技能区。当你战败时，将游戏外的【咒血尸解叹歌】加入技能区。",
+        "sourceTextSha256": "19c062e8c6c2f09ca43670465d8dd1286dd52a0ad7235f2c3603270e0233c8dd"
+      },
+      "referencePrintedTextSha256": "19c062e8c6c2f09ca43670465d8dd1286dd52a0ad7235f2c3603270e0233c8dd",
+      "abilities": [
+        {
+          "id": "hinako.death-wish.initial-card",
+          "printedClause": "将【咒血尸解叹歌】加入你的技能区。",
+          "kind": "passive",
+          "creates": [
+            {
+              "type": "card",
+              "definitionId": "master.hinako.skill.s2",
+              "destination": "skill",
+              "active": false
+            }
+          ]
+        },
+        {
+          "id": "hinako.death-wish.return-on-loss",
+          "printedClause": "当你战败时，将游戏外的【咒血尸解叹歌】加入技能区。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "definitionId": "master.hinako.skill.s2",
+              "sourceZone": "outside_game",
+              "destination": "skill"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.hinako.skill.s2",
+      "printedText": "<每局游戏限一次>\n此牌可以追加打出。\n战斗阶段：与你交战的对手的每张攻击威力-2。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hinako.skills[s2]#line=341",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "<每局游戏限一次>\n此牌可以追加打出。\n战斗阶段：与你交战的对手的每张攻击威力-2。",
+        "sourceTextSha256": "e5f23704f0163c38740538edf69152b2bb2e14bfed537298655a06b6e640cc6a"
+      },
+      "referencePrintedTextSha256": "e5f23704f0163c38740538edf69152b2bb2e14bfed537298655a06b6e640cc6a",
+      "abilities": [
+        {
+          "id": "hinako.blood-curse.once-per-game",
+          "printedClause": "<每局游戏限一次>",
+          "kind": "passive",
+          "activation": {
+            "trigger": "when_play_requirements_checked"
+          },
+          "limit": {
+            "type": "per_game",
+            "uses": 1,
+            "scope": "this_card"
+          }
+        },
+        {
+          "id": "hinako.blood-curse.additional-play",
+          "printedClause": "此牌可以追加打出。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mode",
+              "operation": "allow_additional_play",
+              "definitionId": "master.hinako.skill.s2"
+            }
+          ]
+        },
+        {
+          "id": "hinako.blood-curse.combat-attack-reduction",
+          "printedClause": "战斗阶段：与你交战的对手的每张攻击威力-2。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "combat_card_power",
+              "operation": "add",
+              "amount": -2,
+              "filter": "opponent_attacks_in_same_combat"
+            }
+          ],
+          "lifecycle": {
+            "duration": "until_combat_end"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.hinako.skill.s3",
+      "printedText": "游戏开始时，你进行4次扩张。当你获胜时，你进行扩张且芥雏子获得3点战果。\n你的合计威力为14（可以被修正）。你出现在所有具有【中国】事件牌的地点。战力结算时，若你不位于任何地点，获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hinako.skills[s3]#line=342",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，你进行4次扩张。当你获胜时，你进行扩张且芥雏子获得3点战果。\n你的合计威力为14（可以被修正）。你出现在所有具有【中国】事件牌的地点。战力结算时，若你不位于任何地点，获得2点战果。",
+        "sourceTextSha256": "b66263b46b3ca343f7a3f6cef4c0f1581e869591ebbd8aaaf1dcb808201dba46"
+      },
+      "referencePrintedTextSha256": "b66263b46b3ca343f7a3f6cef4c0f1581e869591ebbd8aaaf1dcb808201dba46",
+      "abilities": [
+        {
+          "id": "hinako.qin.start-expansion",
+          "printedClause": "游戏开始时，你进行4次扩张。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "expand_multiple",
+              "lostbelt": "china",
+              "count": 4,
+              "actor": "npc:qin_shi_huang"
+            }
+          ]
+        },
+        {
+          "id": "hinako.qin.win-expand-reward",
+          "printedClause": "当你获胜时，你进行扩张且芥雏子获得3点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_npc_won_combat",
+              "npcId": "qin_shi_huang"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "expand",
+              "lostbelt": "china",
+              "actor": "npc:qin_shi_huang"
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 3,
+              "subject": "controller"
+            }
+          ]
+        },
+        {
+          "id": "hinako.qin.power-and-presence",
+          "printedClause": "你的合计威力为14（可以被修正）。你出现在所有具有【中国】事件牌的地点。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "npc_rule",
+              "operation": "presence_at_all_tagged_event_locations",
+              "npcId": "qin_shi_huang",
+              "lostbelt": "china"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "npc_total_power",
+              "operation": "set",
+              "value": 14,
+              "subject": "npc:qin_shi_huang",
+              "modifiable": true
+            }
+          ]
+        },
+        {
+          "id": "hinako.qin.off-board-vp",
+          "printedClause": "战力结算时，若你不位于任何地点，获得2点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.power-calculated"
+            },
+            {
+              "type": "npc_not_at_any_location",
+              "npcId": "qin_shi_huang"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 2,
+              "subject": "npc:qin_shi_huang"
+            }
+          ],
+          "limit": {
+            "scope": "npc:qin_shi_huang",
+            "period": "round",
+            "maxUses": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.hinako.skill.s4",
+      "printedText": "扩张-从游戏外的【中国】事件牌中随机抽取一张，展示并将其洗入事件牌堆。同时满足【扩张】条件的玩家需要同步执行【扩张】。\n【风暴帝都】战果7：始皇帝于此战斗威力+7。战斗结束后将此牌移除游戏，此牌不会因【扩张】再次回到游戏。\n【完美的追求】战果3：始皇帝于此战斗威力+2。此战场上，攻击因局势牌和事件牌提升的威力翻倍。\n【长生的追求】战果3：始皇帝于此战斗威力+2。任何人于此战斗皆无视【战败】效果。\n【云中行】战果2：始皇帝于此战斗威力+3。若此战场的玩家本回合只打出了一张正面攻击牌，则他的合计威力+5。\n【日下行】战果2：始皇帝于此战斗威力+3。若此战场的玩家于本回合进行了【真名解放】，则他的合计威力+5。\n【水上行】战果2：始皇帝于此战斗威力+3。若此战场的玩家控制的所有攻击印刷威力均为偶数，则他的合计威力+5。\n【宁静】战果1：始皇帝于此战斗威力-3。力量攻击于此战场禁止打出。\n【深潜】战果1：始皇帝于此战斗威力-3。迅捷攻击于此战场禁止打出。\n【博学】战果1：始皇帝于此战斗威力-3。魔术攻击于此战场禁止打出。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hinako.skills[s4]#line=343",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "扩张-从游戏外的【中国】事件牌中随机抽取一张，展示并将其洗入事件牌堆。同时满足【扩张】条件的玩家需要同步执行【扩张】。\n【风暴帝都】战果7：始皇帝于此战斗威力+7。战斗结束后将此牌移除游戏，此牌不会因【扩张】再次回到游戏。\n【完美的追求】战果3：始皇帝于此战斗威力+2。此战场上，攻击因局势牌和事件牌提升的威力翻倍。\n【长生的追求】战果3：始皇帝于此战斗威力+2。任何人于此战斗皆无视【战败】效果。\n【云中行】战果2：始皇帝于此战斗威力+3。若此战场的玩家本回合只打出了一张正面攻击牌，则他的合计威力+5。\n【日下行】战果2：始皇帝于此战斗威力+3。若此战场的玩家于本回合进行了【真名解放】，则他的合计威力+5。\n【水上行】战果2：始皇帝于此战斗威力+3。若此战场的玩家控制的所有攻击印刷威力均为偶数，则他的合计威力+5。\n【宁静】战果1：始皇帝于此战斗威力-3。力量攻击于此战场禁止打出。\n【深潜】战果1：始皇帝于此战斗威力-3。迅捷攻击于此战场禁止打出。\n【博学】战果1：始皇帝于此战斗威力-3。魔术攻击于此战场禁止打出。",
+        "sourceTextSha256": "249df25c08c6493962d39972cf008f8c67e981c3402eba8852c96e985102570b"
+      },
+      "referencePrintedTextSha256": "249df25c08c6493962d39972cf008f8c67e981c3402eba8852c96e985102570b",
+      "abilities": [
+        {
+          "id": "hinako.china-lostbelt.expand",
+          "printedClause": "扩张-从游戏外的【中国】事件牌中随机抽取一张，展示并将其洗入事件牌堆。同时满足【扩张】条件的玩家需要同步执行【扩张】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "random_outside_game_event_reveal_shuffle",
+              "lostbelt": "china",
+              "drawCount": 1,
+              "revealDrawnEvents": true,
+              "synchronizeOtherEligibleExpansions": true
+            },
+            {
+              "type": "event_card_rule",
+              "operation": "add_random_outside_game_event_to_deck",
+              "lostbelt": "china"
+            }
+          ]
+        },
+        {
+          "id": "hinako.china.storm-capital",
+          "printedClause": "【风暴帝都】战果7：始皇帝于此战斗威力+7。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "china",
+              "victoryPoints": 7
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "npc_at_source_event_battlefield",
+              "npcId": "qin_shi_huang",
+              "amount": 7
+            }
+          ]
+        },
+        {
+          "id": "hinako.china.storm-capital.cleanup",
+          "printedClause": "战斗结束后将此牌移除游戏，此牌不会因【扩张】再次回到游戏。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.ending"
+            },
+            {
+              "type": "combat_occurs_at_source_event_battlefield"
+            }
+          ],
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "remove_source_event_after_combat",
+              "destination": "removed_from_game",
+              "excludeFromExpansion": true
+            }
+          ]
+        },
+        {
+          "id": "hinako.china.perfect-pursuit",
+          "printedClause": "【完美的追求】战果3：始皇帝于此战斗威力+2。此战场上，攻击因局势牌和事件牌提升的威力翻倍。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "china",
+              "victoryPoints": 3
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "npc_at_source_event_battlefield",
+              "npcId": "qin_shi_huang",
+              "amount": 2
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "attack_power_bonus_from_situation_or_event",
+              "operation": "multiply",
+              "factor": 2,
+              "scope": "source_event_battlefield"
+            }
+          ]
+        },
+        {
+          "id": "hinako.china.immortality-pursuit",
+          "printedClause": "【长生的追求】战果3：始皇帝于此战斗威力+2。任何人于此战斗皆无视【战败】效果。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "china",
+              "victoryPoints": 3
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "npc_at_source_event_battlefield",
+              "npcId": "qin_shi_huang",
+              "amount": 2
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "defeat_effect",
+              "operation": "ignore",
+              "subject": "players_at_source_event_battlefield"
+            }
+          ]
+        },
+        {
+          "id": "hinako.china.cloud-walk",
+          "printedClause": "【云中行】战果2：始皇帝于此战斗威力+3。若此战场的玩家本回合只打出了一张正面攻击牌，则他的合计威力+5。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "china",
+              "victoryPoints": 2
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "npc_at_source_event_battlefield",
+              "npcId": "qin_shi_huang",
+              "amount": 3
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "players_at_source_event_battlefield_matching_conditions",
+              "amount": 5,
+              "conditions": [
+                {
+                  "type": "player_face_up_attacks_played_this_round_equals",
+                  "value": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hinako.china.sun-walk",
+          "printedClause": "【日下行】战果2：始皇帝于此战斗威力+3。若此战场的玩家于本回合进行了【真名解放】，则他的合计威力+5。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "china",
+              "victoryPoints": 2
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "npc_at_source_event_battlefield",
+              "npcId": "qin_shi_huang",
+              "amount": 3
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "players_at_source_event_battlefield_matching_conditions",
+              "amount": 5,
+              "conditions": [
+                {
+                  "type": "player_used_declaration_reveal_this_round"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hinako.china.water-walk",
+          "printedClause": "【水上行】战果2：始皇帝于此战斗威力+3。若此战场的玩家控制的所有攻击印刷威力均为偶数，则他的合计威力+5。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "china",
+              "victoryPoints": 2
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "npc_at_source_event_battlefield",
+              "npcId": "qin_shi_huang",
+              "amount": 3
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "players_at_source_event_battlefield_matching_conditions",
+              "amount": 5,
+              "conditions": [
+                {
+                  "type": "player_all_attacks_printed_power_even"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hinako.china.tranquility",
+          "printedClause": "【宁静】战果1：始皇帝于此战斗威力-3。力量攻击于此战场禁止打出。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "china",
+              "victoryPoints": 1
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "npc_at_source_event_battlefield",
+              "npcId": "qin_shi_huang",
+              "amount": -3
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_play_permission",
+              "operation": "prohibit",
+              "attribute": "strength",
+              "scope": "source_event_battlefield"
+            }
+          ]
+        },
+        {
+          "id": "hinako.china.deep-dive",
+          "printedClause": "【深潜】战果1：始皇帝于此战斗威力-3。迅捷攻击于此战场禁止打出。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "china",
+              "victoryPoints": 1
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "npc_at_source_event_battlefield",
+              "npcId": "qin_shi_huang",
+              "amount": -3
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_play_permission",
+              "operation": "prohibit",
+              "attribute": "agility",
+              "scope": "source_event_battlefield"
+            }
+          ]
+        },
+        {
+          "id": "hinako.china.erudition",
+          "printedClause": "【博学】战果1：始皇帝于此战斗威力-3。魔术攻击于此战场禁止打出。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "china",
+              "victoryPoints": 1
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "npc_at_source_event_battlefield",
+              "npcId": "qin_shi_huang",
+              "amount": -3
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_play_permission",
+              "operation": "prohibit",
+              "attribute": "magic",
+              "scope": "source_event_battlefield"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.hinako.skill.ascension",
+      "printedText": "将莎士比亚的所有技能牌移除游戏，不再拥有从者牌。再次获得【咒血尸解叹歌】，该牌获得：\"行动阶段：花费4X点魔力，你的X张基础牌变为【咒血尸解叹歌】的复制，直至战斗阶段结束并且失去<每局游戏限一次>。\"",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hinako.ascensionSkill#line=344",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "将莎士比亚的所有技能牌移除游戏，不再拥有从者牌。再次获得【咒血尸解叹歌】，该牌获得：\"行动阶段：花费4X点魔力，你的X张基础牌变为【咒血尸解叹歌】的复制，直至战斗阶段结束并且失去<每局游戏限一次>。\"",
+        "sourceTextSha256": "262a9bd8f6905a77cfebde9c72dc5972d60b8e6e0b1c18c3ba8e804ede95b43d"
+      },
+      "referencePrintedTextSha256": "262a9bd8f6905a77cfebde9c72dc5972d60b8e6e0b1c18c3ba8e804ede95b43d",
+      "abilities": [
+        {
+          "id": "hinako.true-ancestor.remove-shakespeare-package",
+          "printedClause": "将莎士比亚的所有技能牌移除游戏，不再拥有从者牌。再次获得【咒血尸解叹歌】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "sourceZone": "servant_skill_cards",
+              "destination": "removed_from_game",
+              "servant": "shakespeare"
+            },
+            {
+              "type": "return_card_by_definition",
+              "definitionId": "master.hinako.skill.s2",
+              "destination": "skill"
+            },
+            {
+              "type": "servant_ownership_rule",
+              "operation": "remove_controller_servant_ownership",
+              "subject": "controller"
+            }
+          ]
+        },
+        {
+          "id": "hinako.true-ancestor.blood-curse-copy-action",
+          "printedClause": "行动阶段：花费4X点魔力，你的X张基础牌变为【咒血尸解叹歌】的复制，直至战斗阶段结束并且失去<每局游戏限一次>。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_number",
+              "min": 0,
+              "payloadKey": "x"
+            },
+            {
+              "type": "pay_mana",
+              "amountFormula": "4 * x",
+              "bindingField": "x"
+            },
+            {
+              "type": "choose_cards",
+              "pool": "controller_basic_cards",
+              "minCountBinding": "x",
+              "maxCountBinding": "x",
+              "payloadKey": "selectedBasicCardIds"
+            }
+          ],
+          "transforms": [
+            {
+              "sourceCardIdsBinding": "selectedBasicCardIds",
+              "intoDefinitionId": "master.hinako.skill.s2",
+              "duration": "until_combat_end",
+              "removeUseLimit": "once_per_game"
+            }
+          ],
+          "lifecycle": {
+            "duration": "until_combat_end"
+          }
+        }
+      ]
     }
   ]
 }

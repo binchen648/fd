@@ -602,6 +602,61 @@ describe('Phase 3 full-roster semantic normalization', () => {
     );
   });
 
+  it('grounds the thirteen-ID Kadoc and Hinako Crypter slice without inventing China event counts or hiding card limits', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const crypters = overlays.filter((card) =>
+      card.id.startsWith('master.kadoc.skill.') || card.id.startsWith('master.hinako.skill.'),
+    );
+    expect(crypters).toHaveLength(13);
+    expect(
+      crypters.every((card) =>
+        card.source?.authority === 'DEVELOPMENT_TEXT' &&
+        card.source.document === 'Fate_Domination-开发版/data_masters.js' &&
+        card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+        createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256
+      ),
+    ).toBe(true);
+
+    const frozenSoil = crypters.find((card) => card.id === 'master.kadoc.skill.s3');
+    expect(frozenSoil?.abilities).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: 'kadoc.frozen-soil.deploy-mana-loss' }),
+        expect.objectContaining({ id: 'kadoc.frozen-soil.enter-mana-loss' }),
+      ]),
+    );
+
+    const bloodCurse = crypters.find((card) => card.id === 'master.hinako.skill.s2');
+    expect(bloodCurse?.abilities[0]).toMatchObject({
+      id: 'hinako.blood-curse.once-per-game',
+      activation: { trigger: 'when_play_requirements_checked' },
+      limit: { type: 'per_game', uses: 1, scope: 'this_card' },
+    });
+    expect(bloodCurse?.abilities[2].ruleModifiers).toContainEqual(
+      expect.objectContaining({ rule: 'combat_card_power', operation: 'add', amount: -2 }),
+    );
+
+    const china = crypters.find((card) => card.id === 'master.hinako.skill.s4');
+    const chinaMetadata = china?.abilities.flatMap((ability) => ability.effects ?? []).filter(
+      (effect) => effect.type === 'event_card_rule' && effect.operation === 'define_event_card',
+    ) ?? [];
+    expect(chinaMetadata.length).toBeGreaterThan(0);
+    expect(chinaMetadata.every((effect) => !('copyCount' in effect))).toBe(true);
+    expect(china?.abilities).toContainEqual(
+      expect.objectContaining({
+        id: 'hinako.china.storm-capital.cleanup',
+        conditions: expect.arrayContaining([
+          expect.objectContaining({ type: 'event_type_is', eventType: 'combat.ending' }),
+        ]),
+      }),
+    );
+
+    const trueAncestor = crypters.find((card) => card.id === 'master.hinako.skill.ascension');
+    expect(trueAncestor?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({ type: 'servant_ownership_rule', operation: 'remove_controller_servant_ownership' }),
+    );
+    expect(trueAncestor?.abilities[1].transforms).toHaveLength(1);
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -655,10 +710,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 129,
-      blockedCount: 815,
+      sourceGroundedCount: 142,
+      blockedCount: 802,
       unclassifiedCount: 0,
-      structuredAbilityCount: 210,
+      structuredAbilityCount: 250,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

@@ -191,7 +191,9 @@ const SPECIAL_EFFECTS = new Set([
   'FINISH_GAME',
   'LOCATION_TOKEN_RULE',
   'LOSTBELT_EXPANSION',
+  'NPC_RULE',
   'SECRET_ROUND_BINDING',
+  'SERVANT_OWNERSHIP_RULE',
   'ASTRONOMICAL_SPHERE_RULE',
   'TERRAIN_POSITION_ADJUSTMENT',
   'RETRIGGER_CARD_PLAY_EFFECTS',
@@ -526,7 +528,10 @@ export function mapStructuredCapabilityNeeds(
   }
 
   const hasPlay = effectTypes.includes('play_selected_cards') || effectTypes.includes('play_source_card');
-  if (hasPlay) addCapability(result, 'CARD_ACTION_PLAY', 'CARD_ACTION_SEMANTICS');
+  const modifiesPlayMode = ruleModifiers.some(
+    (modifier) => modifier.rule === 'card_play_mode',
+  );
+  if (hasPlay || modifiesPlayMode) addCapability(result, 'CARD_ACTION_PLAY', 'CARD_ACTION_SEMANTICS');
 
   const addsToAttack = effects.some((effect) => {
     const type = typeof effect.type === 'string' ? effect.type : '';

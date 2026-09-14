@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 815,
-    "coveredBlockedIdentityCount": 815,
+    "blockedIdentityCount": 802,
+    "coveredBlockedIdentityCount": 802,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 2,
@@ -93,12 +93,6 @@
         "master.hakuno-m.skill.s1",
         "master.hakuno-m.skill.s2",
         "master.hakuno-m.skill.s3",
-        "master.hinako.skill.ascension",
-        "master.hinako.skill.s1",
-        "master.hinako.skill.s1a",
-        "master.hinako.skill.s2",
-        "master.hinako.skill.s3",
-        "master.hinako.skill.s4",
         "master.hisui-detective.skill.ascension",
         "master.hisui-detective.skill.s1",
         "master.hisui-detective.skill.s1a",
@@ -121,13 +115,6 @@
         "master.julius.skill.ascension",
         "master.julius.skill.s1",
         "master.julius.skill.s1a",
-        "master.kadoc.skill.ascension",
-        "master.kadoc.skill.s1",
-        "master.kadoc.skill.s1a",
-        "master.kadoc.skill.s2",
-        "master.kadoc.skill.s3",
-        "master.kadoc.skill.s4",
-        "master.kadoc.skill.s5",
         "master.kariya.skill.ascension",
         "master.kariya.skill.s1",
         "master.kariya.skill.s2",
@@ -2488,174 +2475,6 @@
           "sha256": "833bf97c378aa92074205af02861ca7e6d622a290a9ddc26334431535c98ecc4"
         },
         {
-          "abilityId": "master.hinako.skill.ascension",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.hinako/芥雏子"
-        },
-        {
-          "abilityId": "master.hinako.skill.ascension",
-          "document": "legacy-content.json",
-          "locator": "master/master.hinako/ascension"
-        },
-        {
-          "abilityId": "master.hinako.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[5].text#line=1",
-          "sha256": "262a9bd8f6905a77cfebde9c72dc5972d60b8e6e0b1c18c3ba8e804ede95b43d"
-        },
-        {
-          "abilityId": "master.hinako.skill.s1",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.hinako/芥雏子"
-        },
-        {
-          "abilityId": "master.hinako.skill.s1",
-          "document": "legacy-content.json",
-          "locator": "master/master.hinako/s1"
-        },
-        {
-          "abilityId": "master.hinako.skill.s1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[0].text#line=1",
-          "sha256": "989f892dbc6d2e055ebb576144614cecf47a728cddb1e9cb812c39fdeb23f400"
-        },
-        {
-          "abilityId": "master.hinako.skill.s1a",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.hinako/芥雏子"
-        },
-        {
-          "abilityId": "master.hinako.skill.s1a",
-          "document": "legacy-content.json",
-          "locator": "master/master.hinako/s1a"
-        },
-        {
-          "abilityId": "master.hinako.skill.s1a",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[1].text#line=1",
-          "sha256": "19c062e8c6c2f09ca43670465d8dd1286dd52a0ad7235f2c3603270e0233c8dd"
-        },
-        {
-          "abilityId": "master.hinako.skill.s2",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.hinako/芥雏子"
-        },
-        {
-          "abilityId": "master.hinako.skill.s2",
-          "document": "legacy-content.json",
-          "locator": "master/master.hinako/s2"
-        },
-        {
-          "abilityId": "master.hinako.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[2].text#line=1",
-          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
-        },
-        {
-          "abilityId": "master.hinako.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[2].text#line=2",
-          "sha256": "e94b959356a77857dfb0becf8d0bc2b99bda86e7b36dfd4831a67e43437d5bc6"
-        },
-        {
-          "abilityId": "master.hinako.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[2].text#line=3",
-          "sha256": "845e906f5df22fa7489166994dc696b77c4930e38f999195566ed31884ea6e82"
-        },
-        {
-          "abilityId": "master.hinako.skill.s3",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.hinako/芥雏子"
-        },
-        {
-          "abilityId": "master.hinako.skill.s3",
-          "document": "legacy-content.json",
-          "locator": "master/master.hinako/s3"
-        },
-        {
-          "abilityId": "master.hinako.skill.s3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[3].text#line=1",
-          "sha256": "93a3ee8712a1414f2f82a1cfb02b241e9ccb651ce4c6624684aa951806822ce0"
-        },
-        {
-          "abilityId": "master.hinako.skill.s3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[3].text#line=2",
-          "sha256": "402a9a864f181f9fb0be8061d95bdd8ce5564f9e57c0df48ca272dba8f376b2e"
-        },
-        {
-          "abilityId": "master.hinako.skill.s4",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.hinako/芥雏子"
-        },
-        {
-          "abilityId": "master.hinako.skill.s4",
-          "document": "legacy-content.json",
-          "locator": "master/master.hinako/s4"
-        },
-        {
-          "abilityId": "master.hinako.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[4].text#line=1",
-          "sha256": "be1ed9962793c44eb3781d0009be9b38d2b169160959efa8e6f15df665e428c4"
-        },
-        {
-          "abilityId": "master.hinako.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[4].text#line=10",
-          "sha256": "c58e23c739cb88bc0efe3c752f8ac560dca41f3b3dfd641ba005b57909349258"
-        },
-        {
-          "abilityId": "master.hinako.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[4].text#line=2",
-          "sha256": "70e273ab94ac9c09b5c3ea2753bc924fd0bba6a1d7fc124cda043c06d5ec220b"
-        },
-        {
-          "abilityId": "master.hinako.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[4].text#line=3",
-          "sha256": "500821fbb811c0811b1721917fd53884dac9767e6b8002cbf64566bea490e355"
-        },
-        {
-          "abilityId": "master.hinako.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[4].text#line=4",
-          "sha256": "55d26a53739175113fe56ad6e8fd0cf381b8de2d0f756f11cca7f353761799b1"
-        },
-        {
-          "abilityId": "master.hinako.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[4].text#line=5",
-          "sha256": "accb8eaec9be4f7b6009c61b54cf1cd373938db8910066812cd1ce34a5c46b75"
-        },
-        {
-          "abilityId": "master.hinako.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[4].text#line=6",
-          "sha256": "85bc21dd2a51c9101ef91754edb20d5977c9a575c634e7ec8c51efcdd8ff24aa"
-        },
-        {
-          "abilityId": "master.hinako.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[4].text#line=7",
-          "sha256": "43e32bc497697ca8d873aabac2874cff7076a048b22843fbc162b4447abd8f69"
-        },
-        {
-          "abilityId": "master.hinako.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[4].text#line=8",
-          "sha256": "14ef82c3a18d128e59c0db48c7bef611a0b81b7cfc4d0b31b65bc947be47c7f5"
-        },
-        {
-          "abilityId": "master.hinako.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[56].skills[4].text#line=9",
-          "sha256": "00348bc72491f5dd1b17c8795903541c14f36c86e84a5cf6117b56475b34255e"
-        },
-        {
           "abilityId": "master.hisui-detective.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.hisui-detective/洗脑侦探·翡翠"
@@ -3078,148 +2897,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[37].skills[1].text#line=1",
           "sha256": "58df0e9303c120dc11606102e7ffdcc107622f195cbd2f01e5693386d8c00dc0"
-        },
-        {
-          "abilityId": "master.kadoc.skill.ascension",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.kadoc/卡多克·泽姆露普斯"
-        },
-        {
-          "abilityId": "master.kadoc.skill.ascension",
-          "document": "legacy-content.json",
-          "locator": "master/master.kadoc/ascension"
-        },
-        {
-          "abilityId": "master.kadoc.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[54].skills[6].text#line=1",
-          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
-        },
-        {
-          "abilityId": "master.kadoc.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[54].skills[6].text#line=2",
-          "sha256": "c504352f9328ec24dced4f09ea919f440fabf73d167b137774902f18dcbc50fd"
-        },
-        {
-          "abilityId": "master.kadoc.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[54].skills[6].text#line=3",
-          "sha256": "b9389954966307a7466aca8cd46481dde2f30d5feb3669bacba343da6b13e8de"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s1",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.kadoc/卡多克·泽姆露普斯"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s1",
-          "document": "legacy-content.json",
-          "locator": "master/master.kadoc/s1"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[54].skills[0].text#line=1",
-          "sha256": "9801507f397ab509146fbd309e10a683f8cd96cd6985016f3ccb63e93f9636c9"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s1a",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.kadoc/卡多克·泽姆露普斯"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s1a",
-          "document": "legacy-content.json",
-          "locator": "master/master.kadoc/s1a"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s1a",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[54].skills[1].text#line=1",
-          "sha256": "a5a36bc2cfa18747f2ed0a8cf79a9bb4f4e1b44cc384925c67819b66f66291c9"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s2",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.kadoc/卡多克·泽姆露普斯"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s2",
-          "document": "legacy-content.json",
-          "locator": "master/master.kadoc/s2"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[54].skills[2].text#line=1",
-          "sha256": "a4109bdad12d33c53b9e2d9db7894e1e55a12b1a43646716e48bb98efceff17c"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s3",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.kadoc/卡多克·泽姆露普斯"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s3",
-          "document": "legacy-content.json",
-          "locator": "master/master.kadoc/s3"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[54].skills[3].text#line=1",
-          "sha256": "79b43e85325b94864cb8006cc67f7635a9bb4313ef3d3d8ac740fd6ba897c3a5"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[54].skills[3].text#line=2",
-          "sha256": "d8cd9a53abcbde4a35dd65a15be52b21f172a8dbb1d85aa9c206c75a9bf56fde"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s4",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.kadoc/卡多克·泽姆露普斯"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s4",
-          "document": "legacy-content.json",
-          "locator": "master/master.kadoc/s4"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[54].skills[4].text#line=1",
-          "sha256": "4c9975aa9393ed9bc713b9b4c18d3dfd0f3b680bbdab75e93dc159c7c16e4925"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[54].skills[4].text#line=2",
-          "sha256": "a4081eaad773755f43a1cddf8f2e46e72a3c6e6e18f3fc95c64130fc70cb0e50"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s5",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.kadoc/卡多克·泽姆露普斯"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s5",
-          "document": "legacy-content.json",
-          "locator": "master/master.kadoc/s5"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[54].skills[5].text#line=1",
-          "sha256": "54f290cd60896e4bda2297d6cf4dbc11534a1a82c50f1bbbb2239b676d31683c"
-        },
-        {
-          "abilityId": "master.kadoc.skill.s5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[54].skills[5].text#line=2",
-          "sha256": "1f21da1740bfe6ac8e30f1ab8d8e88392294436ee1458acf405f628e22840d0c"
         },
         {
           "abilityId": "master.kariya.skill.ascension",
@@ -18428,10 +18105,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 2,
-          "shared_handler": 382,
-          "specific_handler": 430
+          "shared_handler": 372,
+          "specific_handler": 427
         },
-        "handlerCount": 501,
+        "handlerCount": 495,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."
