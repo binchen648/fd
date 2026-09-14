@@ -1244,6 +1244,149 @@ Completion status allowed:
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `REJECTED`
 
+## TASK P3-B14
+
+Owner: Codex B
+Status: READY
+Branch: `codex/b-p3-b14-shared-victory-vp-r1`
+
+Goal:
+
+Implement the second narrow runtime slice from the accepted P3-TO-14 Battle Result / Scoring / Resource envelope: migrate exactly Artoria Caster `sc-artoriac-6.gain-vp-if-not-sole-winner` through the post-scoring result event and typed Victory Point Resource runtime, without legacy fallback or identity routing.
+
+Depends on:
+
+- reviewer-accepted P3-B13 runtime `37189b32d4de0da3a8eabdca8edbf674c8852d97`;
+- P3-R07 acceptance `f1fa9c12ac43ab96050468f52070fc7ea53fd09d`;
+- A03 B13 synchronization `60560bc7c085dff3a7ff67e7a6b2d119150b13ad`;
+- P3-TO-14 Battle Result / Scoring / Resource specification accepted as design;
+- accepted Trigger Gateway, typed Resource Numeric primitives, and SOURCE_ACTIVE lifecycle policy;
+- exclusive ownership of the B14 runtime hot files while this task is active.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- TASK P3-B14 only
+- `docs/reports/2026-09-14-p3-b14-shared-victory-vp-handoff.md`
+- `docs/plans/2026-09-14-p3-to-14-battle-resource-envelope.md` only for result-event/scoring ordering and winner facts
+- `docs/audits/2026-09-14-p3-to-14-battle-integration-map.md` only for direct-consumer denominator and this representative row
+- canonical `servant.artoriac.skill.sc-artoriac-6#sc-artoriac-6.gain-vp-if-not-sole-winner` authoring definition
+- B13 post-scoring barrier tests and existing Artoria Caster battle-result/resource tests required by the handoff
+
+May touch:
+
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts` only if the existing typed VP primitive needs a narrow generic correction
+- `packages/rules/src/match-session.ts` only if the accepted result payload is missing a generic winner fact required by this exact shape
+- focused B14 unit/regression tests
+- scoped B14 browser/server E2E and dedicated fixture/support code
+- scoped B14 implementation report
+
+Must not touch:
+
+- coverage KPI, taxonomy, classifier, or evidence-promotion rules
+- authoring text/card identities to make the representative fit
+- Tomoe `penalty-on-defeat` or its unpreventable-loss semantics
+- optional Noble Bloom / pilgrim win triggers
+- other remaining TO14 direct-consumer migrations
+- TO15 Modifier/Power runtime
+- Hidden Information, Movement, Special subsystem, or broad Lifecycle work
+- card- or ability-ID routing/fallback
+- Gate A/B/C promotion
+
+Hot files:
+
+- `packages/rules/src/ability/executable-card-pack.ts`
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts` only if required
+- `packages/rules/src/match-session.ts` only if required by generic result facts
+
+Required implementation contract:
+
+- classify by semantic form, not representative identity;
+- exact shape is `forced_trigger + after_battle_result_determined + combat/immediate + SOURCE_ACTIVE + controller_won_battle + not(controller_sole_winner) + one controller adjust_victory_points(+2)`;
+- exact supported shape must route through typed resolution-dataflow and must not call legacy `resolveEffect` after classification;
+- reward must settle only from B13's authoritative post-scoring result event;
+- reward applies when the controller is one of multiple winners, and must not apply for sole win, loss, inactive source, malformed conditions, malformed amount, or unrelated result events;
+- base battle scoring must be committed before the +2 VP trigger reward;
+- reconnect, stale revision, result-event replay, or battle-phase re-entry must not award the +2 VP twice;
+- no sibling TO14 consumer inherits migration or Gate status from this slice.
+
+Required output:
+
+- focused red/green tests for exact semantic classifier and near-miss shapes;
+- shared-winner positive, sole-winner negative, loss negative, inactive-source negative;
+- production proof that base scoring precedes the +2 trigger reward;
+- exactly-once/re-entry proof;
+- B13 Shinji and TO10/Trigger/Lifecycle compatibility evidence;
+- fresh browser/server Gate C proving shared winner reward, reconnect, stale rejection, and no duplicate VP award;
+- B14 implementation report with exact candidate scope, tests, residual risks, and A-owned coverage boundary.
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+
+## TASK P3-R08
+
+Owner: Codex R
+Status: READY_AFTER_P3_B14
+Branch: reviewer-selected fresh worktree/branch from exact B14 candidate SHA
+
+Goal:
+
+Independently review P3-B14 Shared Victory VP runtime without implementing fixes or inheriting acceptance from B13, TO14 specification, direct Resource tests, or historical Artoria Caster interpreter behavior.
+
+Depends on:
+
+- frozen P3-B14 candidate SHA, implementation report, and clean diff;
+- fresh Gate A/B/C evidence from B14;
+- A-owned B14 handoff and accepted TO14 spec as scope authority.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- TASK P3-R08 only
+- TASK P3-B14
+- `docs/reports/2026-09-14-p3-b14-shared-victory-vp-handoff.md`
+- B14 implementation report and exact candidate diff
+- canonical Artoria Caster SC6 authoring row
+
+Must not:
+
+- implement fixes while reviewing
+- broaden review into Tomoe, optional Battle result triggers, or the remaining TO14 rows
+- infer post-scoring correctness from B13 without fresh B14 evidence
+- accept legacy fallback or representative-ID routing
+- change coverage KPI/classifier or synchronize A03
+
+Required independent checks:
+
+- reproduce typecheck and focused semantic/fail-closed tests;
+- verify exact supported shape uses typed `adjust_victory_points` with no legacy bypass;
+- adversarially verify shared winner positive versus sole winner/loss/source-inactive negatives;
+- verify base scoring is committed before trigger VP reward;
+- verify stable battle identities, exactly-once, reconnect and stale rejection;
+- verify B13 Shinji and accepted Trigger/Lifecycle/Card Action boundaries remain green;
+- run fresh B14 Gate C;
+- compare full root baseline and report only new deterministic failures as blockers.
+
+Required output:
+
+- findings ordered by severity;
+- semantic-routing/no-legacy-bypass judgment;
+- shared-winner/sole-winner/result ordering judgment;
+- exactly-once/reconnect/stale judgment;
+- compatibility judgment;
+- Gate A/B/C judgment;
+- explicit A03 synchronization input if accepted.
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
 ## Prompt Templates
 
 Codex A startup prompt:
