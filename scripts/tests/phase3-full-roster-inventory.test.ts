@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
@@ -114,6 +115,26 @@ function makeSyntheticSourceData(): FullRosterSourceData {
     };
   });
 
+  const authoringCards = [
+    {
+      id: skills[0].id,
+      printedText: [
+        '选择一项：获得1点魔力。',
+        '当战斗结束后，抽一张牌。',
+        '残留：持续至回合结束。',
+        '生成一张衍生牌并将其加入技能区。',
+      ].join('\n'),
+      abilities: [
+        { id: 'fixture.choice', printedClause: '选择一项：获得1点魔力。' },
+        { id: 'fixture.trigger', printedClause: '当战斗结束后，抽一张牌。' },
+        { id: 'fixture.lifecycle', printedClause: '残留：持续至回合结束。' },
+        { id: 'fixture.derived-card', printedClause: '生成一张衍生牌并将其加入技能区。' },
+      ],
+    },
+  ];
+  skills[0].text = authoringCards[0].printedText;
+  skills[1].text = '第一行原文。\n第二行原文。';
+
   return {
     verifiedReference: {
       repository: 'https://github.com/example/reference.git',
@@ -150,6 +171,7 @@ function makeSyntheticSourceData(): FullRosterSourceData {
           : [{ kind: 'handler', handlerId: `core.fixture-${index % 7}` }],
     })),
     authoringSkillIds: skills.slice(0, 72).map((skill) => skill.id),
+    authoringCards,
     confirmedOverrideSkillIds: skills.map((skill) => skill.id),
     dynamicSkillIds: ['master.fixture.card.dynamic'],
   };
@@ -241,5 +263,54 @@ describe('Phase 3 full-roster identity inventory', () => {
     const duplicated = makeSyntheticSourceData();
     duplicated.owners[0].skills.push({ ...duplicated.owners[0].skills[0] });
     expect(() => buildFullRosterInventoryFromSourceData(duplicated)).toThrow(/duplicate/i);
+  });
+
+  it('preserves every static printed text as provenance-bearing clauses or an explicit source-evidence block', () => {
+    const inventory = JSON.parse(readFileSync(committedInventoryPath, 'utf8'));
+
+    assertFullRosterInventory(inventory);
+    for (const entry of inventory.staticSkills) {
+      const hasClauses = Array.isArray(entry.clauses) && entry.clauses.length > 0;
+      expect(hasClauses || entry.blockedBy.includes('SOURCE_EVIDENCE_REQUIRED')).toBe(true);
+
+      for (const clause of entry.clauses ?? []) {
+        expect(clause.text.length).toBeGreaterThan(0);
+        expect(clause.source.document.length).toBeGreaterThan(0);
+        expect(clause.source.locator.length).toBeGreaterThan(0);
+        expect(clause.source.sha256).toBe(createHash('sha256').update(clause.text).digest('hex'));
+      }
+    }
+  });
+
+  it('prefers V2 printedClause records and keeps choice, trigger, lifecycle, and derived-card text source-grounded', () => {
+    const inventory = buildFullRosterInventoryFromSourceData(makeSyntheticSourceData());
+    const entry = inventory.staticSkills.find((candidate) => candidate.reference.skillId === 'master.fixture.skill.s001');
+
+    expect(entry?.clauses).toHaveLength(4);
+    expect(entry?.clauses.map((clause) => clause.text)).toEqual([
+      '选择一项：获得1点魔力。',
+      '当战斗结束后，抽一张牌。',
+      '残留：持续至回合结束。',
+      '生成一张衍生牌并将其加入技能区。',
+    ]);
+    expect(entry?.clauses.every((clause) => clause.classification === 'SOURCE_GROUNDED')).toBe(true);
+    expect(entry?.clauses.every((clause) => clause.derivation === 'v2_printed_clause')).toBe(true);
+    expect(entry?.clauses[0].source.locator).toContain('abilities[0].printedClause');
+  });
+
+  it('uses only explicit line boundaries for mechanical clause discovery instead of guessing semantics from punctuation', () => {
+    const inventory = buildFullRosterInventoryFromSourceData(makeSyntheticSourceData());
+    const entry = inventory.staticSkills.find((candidate) => candidate.reference.skillId === 'master.fixture.skill.s002');
+
+    expect(entry?.clauses.map((clause) => clause.text)).toEqual(['第一行原文。', '第二行原文。']);
+    expect(entry?.clauses.every((clause) => clause.classification === 'DISCOVERED')).toBe(true);
+    expect(entry?.clauses.every((clause) => clause.derivation === 'mechanical_line_split')).toBe(true);
+  });
+
+  it('marks the known dynamic identity as source-evidence blocked when no printed text exists', () => {
+    const inventory = buildFullRosterInventoryFromSourceData(makeSyntheticSourceData());
+
+    expect(inventory.dynamicSkills[0].clauses).toEqual([]);
+    expect(inventory.dynamicSkills[0].blockedBy).toContain('SOURCE_EVIDENCE_REQUIRED');
   });
 });
