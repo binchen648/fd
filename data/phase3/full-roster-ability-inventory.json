@@ -2457,7 +2457,9 @@
             "rule:card_play_requirement:require_face_down_attack",
             "rule:movement_permission:prohibit_leave_controller_location"
           ],
-          "visibility": [],
+          "visibility": [
+            "FACE_DOWN"
+          ],
           "binding": [],
           "battle": []
         },
@@ -2535,7 +2537,9 @@
               "modifier": [
                 "rule:card_play_requirement:require_face_down_attack"
               ],
-              "visibility": [],
+              "visibility": [
+                "FACE_DOWN"
+              ],
               "binding": [],
               "battle": []
             }
@@ -2551,6 +2555,7 @@
         "mechanicFamilies": [
           "CARD_ACTION_SEMANTICS",
           "CONDITION",
+          "HIDDEN_INFORMATION",
           "MODIFIER",
           "MOVEMENT",
           "SPECIAL_SUBSYSTEM"
@@ -2560,6 +2565,7 @@
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_MODIFIER",
           "GENERIC_MOVEMENT",
+          "GENERIC_VISIBILITY",
           "REVIEWED_SPECIAL_HANDLER"
         ],
         "currentRoute": "none",

@@ -205,6 +205,24 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(semantic.visibility).toContain('inspectZone:opponent_discard');
   });
 
+  it('surfaces face-state requirements from rule modifiers without an identity branch', () => {
+    const down = normalizeStructuredAbility({
+      id: 'face-down-requirement-fixture',
+      printedClause: 'fixture',
+      kind: 'passive',
+      ruleModifiers: [{ rule: 'card_play_requirement', operation: 'require', face: 'down' }],
+    });
+    const up = normalizeStructuredAbility({
+      id: 'face-up-requirement-fixture',
+      printedClause: 'fixture',
+      kind: 'passive',
+      ruleModifiers: [{ rule: 'card_play_requirement', operation: 'require', face: 'up' }],
+    });
+
+    expect(down.visibility).toContain('FACE_DOWN');
+    expect(up.visibility).toContain('FACE_UP');
+  });
+
   it('classifies source-aligned structured authoring and explicitly blocks every identity without semantic source', () => {
     const normalized = normalizeFullRosterSemantics(makeInventory(), [structuredCard]);
     const grounded = normalized.staticSkills[0].semanticNormalization;

@@ -3359,6 +3359,7 @@
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
         "master.amakusa.skill.s1a",
+        "master.araya.skill.ascension",
         "master.arcueid.skill.s1",
         "master.artoira.skill.s1",
         "master.ciel.skill.s1b",
