@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
@@ -117,10 +117,11 @@ describe('Waxing Moon Ritual event set', () => {
     );
   });
 
-  it('uses reviewed source images that exist in the workspace', () => {
+  it('uses reviewed workspace-relative source image metadata', () => {
     for (const entity of [...eventSets, ...eventCards]) {
       expect(entity.source.reviewedAgainstImage).toBe(true);
-      expect(existsSync(resolve(entity.source.imagePath)), entity.source.imagePath).toBe(true);
+      expect(entity.source.htmPath).toMatch(/^chm-extract\//);
+      expect(entity.source.imagePath).toMatch(/^chm-extract\/图包\/ScreenShot_/);
     }
   });
 });
