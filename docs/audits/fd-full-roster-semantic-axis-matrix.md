@@ -6,24 +6,24 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=110
-blockedCount=834
+sourceGroundedCount=120
+blockedCount=824
 unclassifiedCount=0
-structuredAbilityCount=175
+structuredAbilityCount=191
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 35 |
+| timing | `ACTION` | 36 |
 | timing | `COMBAT` | 17 |
 | timing | `OUTPOST` | 3 |
 | timing | `PREPARATION` | 2 |
-| trigger | `combat.resolved` | 23 |
+| trigger | `combat.resolved` | 24 |
 | trigger | `card.played` | 7 |
+| trigger | `combat.ending` | 6 |
 | trigger | `game.started` | 5 |
 | trigger | `player.entered-location` | 5 |
-| trigger | `combat.ending` | 4 |
 | trigger | `round.started` | 4 |
 | trigger | `combat.power-calculated` | 3 |
 | trigger | `player.moved` | 3 |
@@ -41,8 +41,8 @@ structuredAbilityCount=175
 | trigger | `skill.used` | 1 |
 | condition | `SOURCE_ACTIVE` | 37 |
 | condition | `SOURCE_OWNED` | 30 |
+| condition | `EVENT_PLAYER_WON_COMBAT` | 16 |
 | condition | `EVENT_PLAYER_IS_CONTROLLER` | 14 |
-| condition | `EVENT_PLAYER_WON_COMBAT` | 14 |
 | condition | `EVENT_LOCATION_EQUALS_CONTROLLER` | 11 |
 | condition | `AT_BATTLEFIELD` | 10 |
 | condition | `EVENT_DEFINITION_IS_SELF` | 8 |
@@ -87,6 +87,7 @@ structuredAbilityCount=175
 | condition | `PLAYER_FLAG_NUMBER_EQUALS_EVENT_FIELD` | 1 |
 | condition | `PLAYER_POWER_BELOW` | 1 |
 | condition | `ROUND_IS_CLIMAX` | 1 |
+| condition | `ROUND_NUMBER_EQUALS` | 1 |
 | condition | `ROUND_VICTORY_POINTS_GAINED_EQUALS` | 1 |
 | condition | `SCHEDULED_PAYLOAD_PRESENT` | 1 |
 | condition | `SECRET_ROUND_MATCHES_CURRENT` | 1 |
@@ -95,7 +96,7 @@ structuredAbilityCount=175
 | condition | `TRUE_NAME_REVEALED` | 1 |
 | condition | `VICTORY_POINTS_IS_FIRST` | 1 |
 | condition | `VICTORY_POINTS_IS_LOWEST` | 1 |
-| cost | `MANA` | 3 |
+| cost | `MANA` | 4 |
 | cost | `DISCARD_CARDS` | 1 |
 | cost | `VICTORY_POINTS` | 1 |
 | target | `CHOOSE_ONE_CARD` | 12 |
@@ -109,7 +110,9 @@ structuredAbilityCount=175
 | target | `CHOOSE_EACH_PLAYER_CARDS` | 1 |
 | target | `CHOOSE_N_EVENTS` | 1 |
 | effect | `GAIN_VICTORY_POINTS` | 16 |
+| effect | `EVENT_CARD_RULE` | 12 |
 | effect | `CLOSE_SOURCE_CARD` | 11 |
+| effect | `COMBAT_POWER_BONUS` | 9 |
 | effect | `DEFEAT_PLAYER` | 8 |
 | effect | `GAIN_MANA` | 8 |
 | effect | `PLAY_SELECTED_CARDS` | 8 |
@@ -117,17 +120,15 @@ structuredAbilityCount=175
 | effect | `IF_CONDITION` | 7 |
 | effect | `LOSE_VICTORY_POINTS` | 7 |
 | effect | `SET_PLAYER_FLAG` | 7 |
-| effect | `EVENT_CARD_RULE` | 6 |
-| effect | `SOURCE_CARD_POWER_BONUS` | 6 |
-| effect | `COMBAT_POWER_BONUS` | 5 |
+| effect | `SOURCE_CARD_POWER_BONUS` | 7 |
 | effect | `CYCLE_STATE_TRANSITION` | 5 |
+| effect | `LOSTBELT_EXPANSION` | 5 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 5 |
 | effect | `ADD_STATUS` | 4 |
 | effect | `LOSE_MANA` | 4 |
 | effect | `MOVE_SELECTED_CARDS` | 4 |
 | effect | `CLEAR_PLAYER_FLAG` | 3 |
 | effect | `EXILE_SOURCE_CARD` | 3 |
-| effect | `LOSTBELT_EXPANSION` | 3 |
 | effect | `MOVE_MATCHING_EVENTS` | 3 |
 | effect | `MOVE_SELECTED_EVENTS` | 3 |
 | effect | `SCHEDULE_EFFECT` | 3 |
@@ -141,12 +142,14 @@ structuredAbilityCount=175
 | effect | `ADJUST_COMMAND_SEALS` | 1 |
 | effect | `ASTRONOMICAL_SPHERE_RULE` | 1 |
 | effect | `CLOSE_SELECTED_CARD` | 1 |
+| effect | `COMBAT_POWER_LOCK` | 1 |
 | effect | `ENSURE_EVENT_DECK_COUNT` | 1 |
 | effect | `INFO_NOTE` | 1 |
 | effect | `LOCATION_TOKEN_RULE` | 1 |
 | effect | `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS` | 1 |
 | effect | `MOVE_CARD` | 1 |
 | effect | `MOVE_MATCHING_CARDS` | 1 |
+| effect | `MOVE_SOURCE_CARD` | 1 |
 | effect | `PLAY_SOURCE_CARD` | 1 |
 | effect | `REMOVE_CARDS_IN_ZONE` | 1 |
 | effect | `REMOVE_LINKED_STATUS` | 1 |
@@ -185,9 +188,12 @@ structuredAbilityCount=175
 | lifecycle | `expiresOn:card.exiled` | 1 |
 | lifecycle | `expiresOn:combat.win` | 1 |
 | lifecycle | `expiresOn:master.akasha.reincarnation` | 1 |
+| lifecycle | `limit.maxUses:2` | 1 |
+| lifecycle | `limit.period:game` | 1 |
+| lifecycle | `limit.scope:controller` | 1 |
 | lifecycle | `limit:once_per_game` | 1 |
-| modifier | `effect:source_card_power_bonus` | 6 |
-| modifier | `effect:combat_power_bonus` | 5 |
+| modifier | `effect:combat_power_bonus` | 9 |
+| modifier | `effect:source_card_power_bonus` | 7 |
 | modifier | `rule:skill_use:forbid` | 5 |
 | modifier | `rule:card_power:add` | 4 |
 | modifier | `rule:defeat:ignore` | 3 |
@@ -197,6 +203,7 @@ structuredAbilityCount=175
 | modifier | `rule:combat_power:add` | 2 |
 | modifier | `rule:combat_reward_distribution:replace` | 2 |
 | modifier | `rule:movement_destinations:forbid` | 2 |
+| modifier | `rule:ability_use_limit:set` | 1 |
 | modifier | `rule:card_ability_move_direction:allow` | 1 |
 | modifier | `rule:card_activation_persistence:remain_active_until` | 1 |
 | modifier | `rule:card_base_power:add` | 1 |
@@ -209,6 +216,7 @@ structuredAbilityCount=175
 | modifier | `rule:card_play_mana_requirement:ignore` | 1 |
 | modifier | `rule:card_play_mana_requirement:ignore_below_threshold` | 1 |
 | modifier | `rule:card_play_with_others:forbid` | 1 |
+| modifier | `rule:combat_attack_power_increase_from_other_cards:prohibit` | 1 |
 | modifier | `rule:combat_power_resolution:ignore_other_controller_attacks` | 1 |
 | modifier | `rule:combat_winner_inclusion:allow` | 1 |
 | modifier | `rule:defeat_immunity:disable` | 1 |
@@ -239,6 +247,7 @@ structuredAbilityCount=175
 | binding | `payload:x` | 2 |
 | binding | `result:discardedCount` | 2 |
 | binding | `binding:discardedCount` | 1 |
+| binding | `binding:removedEventCount` | 1 |
 | binding | `payload:attackInstanceIds` | 1 |
 | binding | `payload:closedAttackIds` | 1 |
 | binding | `payload:discardBeastIds` | 1 |
@@ -249,10 +258,11 @@ structuredAbilityCount=175
 | binding | `payload:targetSkillInstanceIds` | 1 |
 | binding | `payload:twiceReplaceEventIds` | 1 |
 | binding | `payload:twiceSwapEventIds` | 1 |
-| battle | `COMBAT_CONDITION` | 32 |
-| battle | `COMBAT_EVENT` | 30 |
-| battle | `COMBAT_RULE_MODIFIER` | 8 |
-| battle | `COMBAT_EFFECT` | 5 |
+| binding | `result:removedEventCount` | 1 |
+| battle | `COMBAT_CONDITION` | 34 |
+| battle | `COMBAT_EVENT` | 33 |
+| battle | `COMBAT_EFFECT` | 10 |
+| battle | `COMBAT_RULE_MODIFIER` | 9 |
 
 ## Identity-Level Matrix
 
@@ -459,16 +469,16 @@ structuredAbilityCount=175
 | `master.miyu.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.miyu-sapphire` |
 | `master.miyu.skill.s2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.miyu-sapphire` |
 | `master.miyu.skill.s3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.miyu-sapphire` |
-| `master.ophelia.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ophelia-world-eater` |
-| `master.ophelia.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ophelia-crypter` |
-| `master.ophelia.skill.s1a` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-rule-flags` |
-| `master.ophelia.skill.s1b` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.round-start-power-bonus` |
-| `master.ophelia.skill.s2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ophelia-prolongation` |
-| `master.ophelia.skill.s3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lostbelt-expansion` |
-| `master.ophelia.skill.s4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lostbelt-objective` |
-| `master.ophelia.skill.s5` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lostbelt-objective` |
-| `master.ophelia.skill.s6` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lostbelt-objective` |
-| `master.ophelia.skill.s7` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lostbelt-objective` |
+| `master.ophelia.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.ending` | `EVENT_PLAYER_WON_COMBAT` | `NONE` | `NONE` | `EVENT_CARD_RULE`, `MOVE_SOURCE_CARD`, `SOURCE_CARD_POWER_BONUS` | `NONE` | `NONE` | `effect:source_card_power_bonus` | `NONE` | `binding:removedEventCount`, `result:removedEventCount` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.ophelia-world-eater` |
+| `master.ophelia.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved` | `EVENT_PLAYER_WON_COMBAT` | `NONE` | `NONE` | `LOSTBELT_EXPANSION` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.ophelia-crypter` |
+| `master.ophelia.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `rule:ability_use_limit:set` | `NONE` | `NONE` | `NONE` | `core.game-start-rule-flags` |
+| `master.ophelia.skill.s1b` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `ROUND_NUMBER_EQUALS` | `NONE` | `NONE` | `COMBAT_POWER_BONUS` | `NONE` | `NONE` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.round-start-power-bonus` |
+| `master.ophelia.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `MANA` | `NONE` | `COMBAT_POWER_LOCK` | `NONE` | `limit.maxUses:2`, `limit.period:game`, `limit.scope:controller` | `rule:combat_attack_power_increase_from_other_cards:prohibit` | `NONE` | `NONE` | `COMBAT_EFFECT`, `COMBAT_RULE_MODIFIER` | `core.ophelia-prolongation` |
+| `master.ophelia.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE`, `LOSTBELT_EXPANSION` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lostbelt-expansion` |
+| `master.ophelia.skill.s4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.ending` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_EVENT` | `core.lostbelt-objective` |
+| `master.ophelia.skill.s5` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_POWER_BONUS`, `EVENT_CARD_RULE` | `NONE` | `NONE` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.lostbelt-objective` |
+| `master.ophelia.skill.s6` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_POWER_BONUS`, `EVENT_CARD_RULE` | `NONE` | `NONE` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.lostbelt-objective` |
+| `master.ophelia.skill.s7` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_POWER_BONUS`, `EVENT_CARD_RULE` | `NONE` | `NONE` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.lostbelt-objective` |
 | `master.peperoncino.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.india-nirvana` |
 | `master.peperoncino.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-rule-flags` |
 | `master.peperoncino.skill.s1a` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-rule-flags` |

@@ -439,6 +439,73 @@ describe('Phase 3 full-roster semantic normalization', () => {
     }
   });
 
+  it('grounds the ten-ID Ophelia Nordic Lostbelt slice without hiding battle and power rules', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ophelia = overlays.filter((card) => card.id.startsWith('master.ophelia.skill.'));
+    expect(ophelia).toHaveLength(10);
+    expect(ophelia.map((card) => card.id).sort()).toEqual([
+      'master.ophelia.skill.ascension',
+      'master.ophelia.skill.s1',
+      'master.ophelia.skill.s1a',
+      'master.ophelia.skill.s1b',
+      'master.ophelia.skill.s2',
+      'master.ophelia.skill.s3',
+      'master.ophelia.skill.s4',
+      'master.ophelia.skill.s5',
+      'master.ophelia.skill.s6',
+      'master.ophelia.skill.s7',
+    ]);
+    expect(
+      ophelia.every((card) =>
+        card.source?.authority === 'DEVELOPMENT_TEXT' &&
+        card.source.document === 'Fate_Domination-开发版/data_masters.js' &&
+        card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+        createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256
+      ),
+    ).toBe(true);
+
+    const mysticEye = ophelia.find((card) => card.id === 'master.ophelia.skill.s2');
+    expect(mysticEye?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({ type: 'pay_mana', amount: 2 }),
+    );
+    expect(mysticEye?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({ type: 'combat_power_lock', operation: 'prohibit_increase_from_other_cards' }),
+    );
+    expect(mysticEye?.abilities[0].limit).toMatchObject({ period: 'game', maxUses: 2 });
+
+    const lostbelt = ophelia.find((card) => card.id === 'master.ophelia.skill.s3');
+    expect(lostbelt?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({ type: 'lostbelt_expansion', drawCount: 2, revealDrawnEvents: true }),
+    );
+
+    const peaceDay = ophelia.find((card) => card.id === 'master.ophelia.skill.s4');
+    expect(peaceDay?.abilities[1].conditions).toContainEqual(
+      expect.objectContaining({ type: 'event_type_is', eventType: 'combat.ending' }),
+    );
+    expect(peaceDay?.abilities[1].effects).toContainEqual(
+      expect.objectContaining({ type: 'event_card_rule', excludeFromExpansion: true }),
+    );
+
+    for (const id of ['master.ophelia.skill.s5', 'master.ophelia.skill.s6', 'master.ophelia.skill.s7']) {
+      const eventCard = ophelia.find((card) => card.id === id);
+      expect(eventCard?.abilities[1].effects).toHaveLength(2);
+      expect(eventCard?.abilities[1].effects).toEqual(
+        expect.arrayContaining([expect.objectContaining({ type: 'combat_power_bonus', scope: 'attacks_at_source_event_battlefield' })]),
+      );
+    }
+
+    const ragnarok = ophelia.find((card) => card.id === 'master.ophelia.skill.ascension');
+    expect(ragnarok?.abilities[0].effects).toContainEqual(
+      expect.objectContaining({ type: 'move_source_card', destination: 'skill' }),
+    );
+    expect(ragnarok?.abilities[1].effects).toContainEqual(
+      expect.objectContaining({ type: 'event_card_rule', resultVar: 'removedEventCount', excludeFromExpansion: true }),
+    );
+    expect(ragnarok?.abilities[1].effects).toContainEqual(
+      expect.objectContaining({ type: 'source_card_power_bonus', bindingField: 'removedEventCount', permanence: 'permanent' }),
+    );
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -492,10 +559,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 110,
-      blockedCount: 834,
+      sourceGroundedCount: 120,
+      blockedCount: 824,
       unclassifiedCount: 0,
-      structuredAbilityCount: 175,
+      structuredAbilityCount: 191,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

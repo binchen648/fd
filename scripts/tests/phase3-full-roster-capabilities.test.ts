@@ -147,6 +147,20 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(mapped.requiredCapabilities).toContain('GENERIC_TRIGGER_GATEWAY');
   });
 
+  it('maps structural source-card movement to the generic Card Zone dependency', () => {
+    const axes = emptyAxes();
+    axes.effect = ['MOVE_SOURCE_CARD'];
+    const mapped = mapStructuredCapabilityNeeds(
+      {
+        id: 'source-card-zone-fixture',
+        printedClause: 'fixture',
+        effects: [{ type: 'move_source_card', destination: 'skill' }],
+      },
+      axes,
+    );
+    expect(mapped.requiredCapabilities).toContain('GENERIC_CARD_ZONE');
+  });
+
   it('maps Lostbelt and event-card special semantics to the Event Deck dependency without granting acceptance', () => {
     const axes = emptyAxes();
     axes.effect = ['EVENT_CARD_RULE', 'LOSTBELT_EXPANSION'];
@@ -192,11 +206,11 @@ describe('Phase 3 full-roster capability mapping', () => {
     const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
 
     expect(inventory.capabilitySummary.totalIdentityCount).toBe(944);
-    expect(inventory.capabilitySummary.contractMappedCount).toBe(110);
-    expect(inventory.capabilitySummary.explicitBlockCount).toBe(834);
+    expect(inventory.capabilitySummary.contractMappedCount).toBe(120);
+    expect(inventory.capabilitySummary.explicitBlockCount).toBe(824);
     expect(inventory.capabilitySummary.zeroSilentFallback).toBe(true);
-    expect(catalog.coverage.mappedAbilities).toHaveLength(110);
-    expect(catalog.coverage.blockedAbilities).toHaveLength(834);
+    expect(catalog.coverage.mappedAbilities).toHaveLength(120);
+    expect(catalog.coverage.blockedAbilities).toHaveLength(824);
     expect(catalog.coverage.mappedAbilities.length + catalog.coverage.blockedAbilities.length).toBe(944);
 
     const allowedCurrentRoutes = new Set(['legacy', 'new', 'dual', 'none']);
@@ -208,8 +222,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     }
 
     expect(markdown).toContain('totalIdentityCount=944');
-    expect(markdown).toContain('contractMappedCount=110');
-    expect(markdown).toContain('explicitBlockCount=834');
+    expect(markdown).toContain('contractMappedCount=120');
+    expect(markdown).toContain('explicitBlockCount=824');
     expect(markdown).toContain('zeroSilentFallback=true');
   });
 
@@ -289,8 +303,53 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(byId.get('master.wodime.skill.s7').phase3.requiredCapabilities).toContain('GENERIC_MODIFIER');
     expect(byId.get('master.wodime.skill.ascension').phase3.blockedBy).toContain('SPECIAL_EFFECT:secret_round_binding');
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(86);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(24);
+  });
+
+  it('maps the ten-ID Ophelia slice with three generic extensions and seven reviewed-special event rules', () => {
+    const inventory = JSON.parse(
+      readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8'),
+    ) as any;
+    const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
+    const ophelia = entries.filter((entry: any) => entry.canonicalAbilityId.startsWith('master.ophelia.skill.'));
+    const byId = new Map(ophelia.map((entry: any) => [entry.canonicalAbilityId, entry]));
+
+    expect(ophelia).toHaveLength(10);
+    for (const entry of ophelia) expect(entry.phase3.inheritedAcceptanceContracts).toEqual([]);
+
+    for (const id of ['master.ophelia.skill.s1a', 'master.ophelia.skill.s1b', 'master.ophelia.skill.s2']) {
+      expect(byId.get(id).phase3.classificationRoute).toBe('READY_GENERIC_EXTENSION');
+    }
+    for (const id of [
+      'master.ophelia.skill.s1',
+      'master.ophelia.skill.s3',
+      'master.ophelia.skill.s4',
+      'master.ophelia.skill.s5',
+      'master.ophelia.skill.s6',
+      'master.ophelia.skill.s7',
+      'master.ophelia.skill.ascension',
+    ]) {
+      expect(byId.get(id).phase3.classificationRoute).toBe('SPECIAL_HANDLER_CANDIDATE');
+      expect(byId.get(id).phase3.requiredCapabilities).toContain('REVIEWED_SPECIAL_HANDLER');
+    }
+
+    expect(byId.get('master.ophelia.skill.s2').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION', 'GENERIC_COST_PAYMENT', 'GENERIC_LIFECYCLE_POLICY', 'GENERIC_MODIFIER', 'GENERIC_POWER']),
+    );
+    expect(byId.get('master.ophelia.skill.s3').phase3.requiredCapabilities).toContain('GENERIC_EVENT_DECK');
+    expect(byId.get('master.ophelia.skill.s4').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION', 'GENERIC_EVENT_DECK', 'GENERIC_TRIGGER_GATEWAY', 'REVIEWED_SPECIAL_HANDLER']),
+    );
+    for (const id of ['master.ophelia.skill.s5', 'master.ophelia.skill.s6', 'master.ophelia.skill.s7']) {
+      expect(byId.get(id).phase3.requiredCapabilities).toEqual(
+        expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION', 'GENERIC_EVENT_DECK', 'GENERIC_MODIFIER', 'GENERIC_POWER', 'REVIEWED_SPECIAL_HANDLER']),
+      );
+    }
+    expect(byId.get('master.ophelia.skill.ascension').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION', 'GENERIC_CARD_ZONE', 'GENERIC_EVENT_DECK', 'GENERIC_MODIFIER', 'GENERIC_POWER', 'GENERIC_RESULT_BINDING', 'GENERIC_TRIGGER_GATEWAY', 'REVIEWED_SPECIAL_HANDLER']),
+    );
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(89);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(31);
   });
 
   it('bridges current semantic card IDs to stable canonical IDs only by exact ID or unique owner/name identity', () => {

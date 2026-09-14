@@ -1775,6 +1775,449 @@
         }
       ],
       "referencePrintedTextSha256": "b6ed27a0213097e6bc775c9e09df4a9817dffa549f7e99d12b5cb0932ff3d2fc"
+    },
+    {
+      "id": "master.ophelia.skill.s1",
+      "printedText": "你负责【北欧异闻带】。当你赢得一场战斗时，进行【扩张】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ophelia.skills[s1]#line=326",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你负责【北欧异闻带】。当你赢得一场战斗时，进行【扩张】。",
+        "sourceTextSha256": "385df2585b17cce18792982d97738f446997b9ad069fcc57750a000a041e7469"
+      },
+      "abilities": [
+        {
+          "id": "ophelia.cryptic-owner.nordic",
+          "printedClause": "你负责【北欧异闻带】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "register_owner",
+              "lostbelts": [
+                "nordic"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ophelia.cryptic-owner.expand-on-win",
+          "printedClause": "当你赢得一场战斗时，进行【扩张】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "expand",
+              "lostbelt": "nordic"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "385df2585b17cce18792982d97738f446997b9ad069fcc57750a000a041e7469"
+    },
+    {
+      "id": "master.ophelia.skill.s1a",
+      "printedText": "你总共可以使用两次【迁延之魔眼】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ophelia.skills[s1a]#line=327",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你总共可以使用两次【迁延之魔眼】。",
+        "sourceTextSha256": "a081a6a28f80ffc2ec94d19730f858fdf25ed9d25a9fc3c988f9cf2d5971860d"
+      },
+      "abilities": [
+        {
+          "id": "ophelia.mystic-eye.shared-use-limit",
+          "printedClause": "你总共可以使用两次【迁延之魔眼】。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "ability_use_limit",
+              "operation": "set",
+              "definitionId": "master.ophelia.skill.s2",
+              "maxUses": 2,
+              "period": "game"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "a081a6a28f80ffc2ec94d19730f858fdf25ed9d25a9fc3c988f9cf2d5971860d"
+    },
+    {
+      "id": "master.ophelia.skill.s1b",
+      "printedText": "第七回合时合计威力-10。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ophelia.skills[s1b]#line=328",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "第七回合时合计威力-10。",
+        "sourceTextSha256": "5d9923e1f4bb8b4d6ae38eac6a74f0825a64ea86b69e99287dea0847489bee9b"
+      },
+      "abilities": [
+        {
+          "id": "ophelia.childhood-trauma.round-seven",
+          "printedClause": "第七回合时合计威力-10。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "round_number_equals",
+              "value": 7
+            }
+          ],
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "scope": "controller_total",
+              "amount": -10
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "5d9923e1f4bb8b4d6ae38eac6a74f0825a64ea86b69e99287dea0847489bee9b"
+    },
+    {
+      "id": "master.ophelia.skill.s2",
+      "printedText": "<每局游戏限两次>\n无光于前-行动阶段：花费2点魔力，与你位于同一战场的对手的攻击威力无法被其他牌增加。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ophelia.skills[s2]#line=329",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "<每局游戏限两次>\n无光于前-行动阶段：花费2点魔力，与你位于同一战场的对手的攻击威力无法被其他牌增加。",
+        "sourceTextSha256": "e2ec587b8f6f692a8980483655da037062e111edac7b2841cb5198cff6374c85"
+      },
+      "abilities": [
+        {
+          "id": "ophelia.delaying-mystic-eye.no-light-ahead",
+          "printedClause": "<每局游戏限两次>\n无光于前-行动阶段：花费2点魔力，与你位于同一战场的对手的攻击威力无法被其他牌增加。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "limit": {
+            "scope": "controller",
+            "period": "game",
+            "maxUses": 2
+          },
+          "effects": [
+            {
+              "type": "pay_mana",
+              "amount": 2
+            },
+            {
+              "type": "combat_power_lock",
+              "operation": "prohibit_increase_from_other_cards",
+              "subject": "opponent_attacks_at_controller_battlefield"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "combat_attack_power_increase_from_other_cards",
+              "operation": "prohibit",
+              "subject": "opponents_at_controller_battlefield"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "e2ec587b8f6f692a8980483655da037062e111edac7b2841cb5198cff6374c85"
+    },
+    {
+      "id": "master.ophelia.skill.s3",
+      "printedText": "扩张-抽2张事件牌并展示。你可以将游戏外的【北欧】事件牌替换其中一张，然后将它们洗回事件牌堆。同时满足【扩张】条件的玩家需要同步执行【扩张】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ophelia.skills[s3]#line=330",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "扩张-抽2张事件牌并展示。你可以将游戏外的【北欧】事件牌替换其中一张，然后将它们洗回事件牌堆。同时满足【扩张】条件的玩家需要同步执行【扩张】。",
+        "sourceTextSha256": "ac74b744508aacefec59ada2ef5bf4137eff8f79106f8c4446def510c89348fa"
+      },
+      "abilities": [
+        {
+          "id": "ophelia.nordic-lostbelt.expand",
+          "printedClause": "扩张-抽2张事件牌并展示。你可以将游戏外的【北欧】事件牌替换其中一张，然后将它们洗回事件牌堆。同时满足【扩张】条件的玩家需要同步执行【扩张】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "lostbelt_expansion",
+              "operation": "draw_optional_replace_shuffle",
+              "lostbelt": "nordic",
+              "drawCount": 2,
+              "revealDrawnEvents": true,
+              "replacementSource": "outside_game",
+              "replacementCountMax": 1,
+              "synchronizeOtherEligibleExpansions": true
+            },
+            {
+              "type": "event_card_rule",
+              "operation": "replace_revealed_event_from_outside_game",
+              "lostbelt": "nordic"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ac74b744508aacefec59ada2ef5bf4137eff8f79106f8c4446def510c89348fa"
+    },
+    {
+      "id": "master.ophelia.skill.s4",
+      "printedText": "【北欧事件牌】战果0，数量3。\n战斗阶段结束将此牌移除游戏。此牌不会因【扩张】再次加入游戏。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ophelia.skills[s4]#line=331",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【北欧事件牌】战果0，数量3。\n战斗阶段结束将此牌移除游戏。此牌不会因【扩张】再次加入游戏。",
+        "sourceTextSha256": "07ccdceb6f269db41935c6f7d6f134b1ab1db90b9a108c694d5d6176e6e566e7"
+      },
+      "abilities": [
+        {
+          "id": "ophelia.peace-day.metadata",
+          "printedClause": "【北欧事件牌】战果0，数量3。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "nordic",
+              "victoryPoints": 0,
+              "copyCount": 3
+            }
+          ]
+        },
+        {
+          "id": "ophelia.peace-day.remove-at-combat-end",
+          "printedClause": "战斗阶段结束将此牌移除游戏。此牌不会因【扩张】再次加入游戏。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.ending"
+            }
+          ],
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "remove_source_event_from_game",
+              "destination": "removed_from_game",
+              "excludeFromExpansion": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "07ccdceb6f269db41935c6f7d6f134b1ab1db90b9a108c694d5d6176e6e566e7"
+    },
+    {
+      "id": "master.ophelia.skill.s5",
+      "printedText": "【北欧事件牌】战果4，数量2。\n力量属性于此战场威力+4。迅捷属性于此战场威力-2。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ophelia.skills[s5]#line=332",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【北欧事件牌】战果4，数量2。\n力量属性于此战场威力+4。迅捷属性于此战场威力-2。",
+        "sourceTextSha256": "72132a0e0a1700a58297838ad872a5c4eeb6f62f21855d0432cc427be5fa2343"
+      },
+      "abilities": [
+        {
+          "id": "ophelia.surtr-domain.metadata",
+          "printedClause": "【北欧事件牌】战果4，数量2。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "nordic",
+              "victoryPoints": 4,
+              "copyCount": 2
+            }
+          ]
+        },
+        {
+          "id": "ophelia.surtr-domain.attribute-power",
+          "printedClause": "力量属性于此战场威力+4。迅捷属性于此战场威力-2。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "scope": "attacks_at_source_event_battlefield",
+              "attribute": "strength",
+              "amount": 4
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "attacks_at_source_event_battlefield",
+              "attribute": "agility",
+              "amount": -2
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "72132a0e0a1700a58297838ad872a5c4eeb6f62f21855d0432cc427be5fa2343"
+    },
+    {
+      "id": "master.ophelia.skill.s6",
+      "printedText": "【北欧事件牌】战果4，数量2。\n迅捷属性于此战场威力+4。魔术属性于此战场威力-2。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ophelia.skills[s6]#line=333",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【北欧事件牌】战果4，数量2。\n迅捷属性于此战场威力+4。魔术属性于此战场威力-2。",
+        "sourceTextSha256": "321b2706f9b0fd3761bb1086ff16699d199901738418e0292cccfefdba8dbbb2"
+      },
+      "abilities": [
+        {
+          "id": "ophelia.valkyrie-domain.metadata",
+          "printedClause": "【北欧事件牌】战果4，数量2。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "nordic",
+              "victoryPoints": 4,
+              "copyCount": 2
+            }
+          ]
+        },
+        {
+          "id": "ophelia.valkyrie-domain.attribute-power",
+          "printedClause": "迅捷属性于此战场威力+4。魔术属性于此战场威力-2。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "scope": "attacks_at_source_event_battlefield",
+              "attribute": "agility",
+              "amount": 4
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "attacks_at_source_event_battlefield",
+              "attribute": "magic",
+              "amount": -2
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "321b2706f9b0fd3761bb1086ff16699d199901738418e0292cccfefdba8dbbb2"
+    },
+    {
+      "id": "master.ophelia.skill.s7",
+      "printedText": "【北欧事件牌】战果4，数量2。\n魔术属性于此战场威力+4。力量属性于此战场威力-2。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ophelia.skills[s7]#line=334",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【北欧事件牌】战果4，数量2。\n魔术属性于此战场威力+4。力量属性于此战场威力-2。",
+        "sourceTextSha256": "f1356fe8da0d2d55f4d97b21781f488e96b91eb42f97203c9985e6838e56ea4b"
+      },
+      "abilities": [
+        {
+          "id": "ophelia.skadi-domain.metadata",
+          "printedClause": "【北欧事件牌】战果4，数量2。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "define_event_card",
+              "lostbelt": "nordic",
+              "victoryPoints": 4,
+              "copyCount": 2
+            }
+          ]
+        },
+        {
+          "id": "ophelia.skadi-domain.attribute-power",
+          "printedClause": "魔术属性于此战场威力+4。力量属性于此战场威力-2。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "scope": "attacks_at_source_event_battlefield",
+              "attribute": "magic",
+              "amount": 4
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "attacks_at_source_event_battlefield",
+              "attribute": "strength",
+              "amount": -2
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f1356fe8da0d2d55f4d97b21781f488e96b91eb42f97203c9985e6838e56ea4b"
+    },
+    {
+      "id": "master.ophelia.skill.ascension",
+      "printedText": "（将此牌加入你的技能区）\n毁灭的开始-若你赢得胜利，于战斗阶段结束时将该战场的事件牌移除游戏，它们不会因【扩张】再次加入游戏，每有1张因此效果而移除的事件牌，此牌获得威力+3。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ophelia.ascensionSkill#line=335",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（将此牌加入你的技能区）\n毁灭的开始-若你赢得胜利，于战斗阶段结束时将该战场的事件牌移除游戏，它们不会因【扩张】再次加入游戏，每有1张因此效果而移除的事件牌，此牌获得威力+3。",
+        "sourceTextSha256": "f05f36520ed31716b70691f1da9a63097d101b608b248eeb475884a8165295ad"
+      },
+      "abilities": [
+        {
+          "id": "ophelia.ragnarok.setup",
+          "printedClause": "（将此牌加入你的技能区）",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "reason": "ascension_setup"
+            }
+          ]
+        },
+        {
+          "id": "ophelia.ragnarok.beginning-of-destruction",
+          "printedClause": "毁灭的开始-若你赢得胜利，于战斗阶段结束时将该战场的事件牌移除游戏，它们不会因【扩张】再次加入游戏，每有1张因此效果而移除的事件牌，此牌获得威力+3。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.ending"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "remove_events_at_controller_battlefield",
+              "destination": "removed_from_game",
+              "excludeFromExpansion": true,
+              "resultVar": "removedEventCount"
+            },
+            {
+              "type": "source_card_power_bonus",
+              "amountFormula": "3 * removedEventCount",
+              "bindingField": "removedEventCount",
+              "permanence": "permanent"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f05f36520ed31716b70691f1da9a63097d101b608b248eeb475884a8165295ad"
     }
   ]
 }
