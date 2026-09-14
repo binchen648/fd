@@ -1089,6 +1089,161 @@ Completion status allowed:
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `REJECTED`
 
+## TASK P3-B13
+
+Owner: Codex B
+Status: READY
+Branch: `codex/b-p3-b13-battle-loss-resource-r1`
+
+Goal:
+
+Implement the first runtime slice from the accepted P3-TO-14 Battle Result / Scoring / Resource envelope: defer ordinary battle-result trigger settlement until the phase-wide base-scoring barrier is satisfied, and migrate the exact Shinji `clown.lose-command-seal` forced loss trigger through the typed Resource runtime without legacy fallback.
+
+Depends on:
+
+- current-lineage A03 TO10 sync baseline `64dbd16927fc9df4a03b235d2e882534fb8b659e`;
+- P3-TO-14 Battle Result / Scoring / Resource specification accepted as design only;
+- P3-TO-03 Trigger Gateway accepted;
+- P3-TO-08 Resource Numeric current-lineage slice accepted;
+- P3-TO-10/B07 authoritative first-loss runtime accepted and must remain compatible;
+- exclusive ownership of the B13 runtime hot files while this task is active.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- TASK P3-B13 only
+- `docs/reports/2026-09-14-p3-b13-battle-loss-resource-handoff.md`
+- `docs/plans/2026-09-14-p3-to-14-battle-resource-envelope.md` sections 3, 6, 7, 8, 9, 10, 13, and 14 only
+- `docs/audits/2026-09-14-p3-to-14-battle-integration-map.md` only for the Shinji row and direct-consumer denominator
+- canonical `master.shinji.skill.clown#clown.lose-command-seal` authoring definition
+- existing Shinji, battle, scoring, Trigger, Resource, and Olga first-loss tests required by the handoff
+
+May touch:
+
+- `packages/rules/src/match-session.ts`
+- `packages/rules/src/core/combat-resolver.ts`
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/types.ts`
+- `packages/rules/src/ability/executable-card-pack.ts` only if compiler fail-closed support requires it
+- `packages/rules/src/ability/resolution-dataflow.ts` only if narrow shared typed Resource integration requires it
+- focused B13 unit/regression tests
+- scoped B13 browser/server E2E and its dedicated fixture/support code
+- scoped B13 implementation report
+
+Must not touch:
+
+- coverage KPI, taxonomy, classifier, or evidence-promotion rules
+- authoring text or card identities to make the representative fit
+- other 12 direct TO14 result/phase-terminal consumer migrations
+- broad Battle/Modifier/Power/Hidden/Interaction/Movement/Lifecycle/Special migration
+- no-eligible-winner game policy
+- unrelated client/server behavior
+- Gate A/B/C promotion
+- card- or ability-ID routing/fallback
+
+Hot files:
+
+- `packages/rules/src/match-session.ts`
+- `packages/rules/src/core/combat-resolver.ts`
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/types.ts`
+- compiler/data-flow files only if actually required by the narrow semantic route
+
+Concurrent conflicts:
+
+- any runtime task writing the same hot files
+- any A/R attempt to edit runtime while B13 is active
+
+Required implementation contract:
+
+- remove the production ordering gap where per-battlefield `after_battle_result_determined` currently settles ordinary result/win/loss continuations before all battlefield base scoring completes;
+- keep a phase-wide post-scoring barrier for the claimed production path and prove it with at least two resolved battlefields;
+- provide stable server-authored `battlePhaseResolutionId`, `battleId`, `resultId`, and `battlefieldId` facts for battle-derived events used by this slice;
+- preserve authoritative TO10/B07 first-loss history/ordinal semantics while moving production settlement behind the scoring barrier;
+- route the exact semantic form `forced_trigger + after_controller_loses_battle + one controller adjust_command_seals integer effect` through typed resolution-dataflow;
+- classifier eligibility must be semantic and identity-free; a synthetic same-shape ability must route, malformed near-miss shapes must fail closed or remain out of scope;
+- no supported B13 path may call legacy `resolveEffect` after classification;
+- reconnect, projection, stale commands, or settlement re-entry must not duplicate the command-seal loss or first-loss staging;
+- do not infer migration or Gate acceptance for sibling Battle consumers.
+
+Required output:
+
+- focused failing tests before/with implementation for early-settlement ordering and typed Shinji routing;
+- single-battle and two-battlefield production `MatchSession` proof;
+- exactly-once/re-entry proof;
+- no-loss negative proof;
+- TO10/B07 Olga first-loss compatibility proof;
+- fresh browser/server Gate C with authoritative loss, reconnect, stale rejection, and no duplicate command-seal mutation;
+- accepted-current-lineage compatibility regressions listed by the handoff;
+- B13 implementation report with exact candidate scope, legacy/new/dual local facts, test output, residual risks, and explicit A-owned global coverage boundary.
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+
+## TASK P3-R07
+
+Owner: Codex R
+Status: READY_AFTER_P3_B13
+Branch: reviewer-selected fresh worktree/branch from exact B13 candidate SHA
+
+Goal:
+
+Independently review P3-B13 Battle Loss Resource Trigger runtime without implementing fixes or inheriting acceptance from TO14 specification, TO08 Resource, TO10/B07 first-loss, or historical battle tests.
+
+Depends on:
+
+- frozen P3-B13 candidate SHA, implementation report, and clean diff;
+- fresh Gate A/B/C evidence from B13;
+- A-owned handoff and accepted TO14 spec as scope authority.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- TASK P3-R07 only
+- TASK P3-B13
+- `docs/reports/2026-09-14-p3-b13-battle-loss-resource-handoff.md`
+- B13 implementation report and exact candidate diff
+- P3-TO-14 sections explicitly listed by B13
+- canonical Shinji Clown authoring row
+
+Must not:
+
+- implement fixes while reviewing
+- broaden review into the other 38 Battle-integration abilities
+- infer phase-wide barrier correctness from single-battle evidence
+- accept legacy fallback or representative-ID routing
+- infer Gate C from historical B07/Golden Flow evidence
+- change coverage KPI/classifier or synchronize A03
+
+Required independent checks:
+
+- reproduce typecheck and focused B13 semantic/fail-closed tests;
+- verify Shinji supported path is typed and has no legacy `resolveEffect` bypass;
+- adversarially verify two-battlefield ordering: all base scoring is committed before loss-trigger resource settlement;
+- verify stable server-owned battle identities and exactly-once behavior;
+- verify reconnect/stale revision does not duplicate command-seal loss;
+- verify Olga first-loss still uses authoritative history/ordinal and remains round-end delayed;
+- run relevant TO08/TO09/TO10/TO11/TO12/TO13 compatibility evidence;
+- run fresh B13 Gate C, not historical inherited proof;
+- compare full root baseline and report only new deterministic failures as B13 blockers.
+
+Required output:
+
+- findings ordered by severity;
+- phase-wide barrier judgment;
+- semantic-routing/no-legacy-bypass judgment;
+- exactly-once/reconnect/stale judgment;
+- TO10/B07 compatibility judgment;
+- Gate A/B/C judgment;
+- explicit A03 synchronization input if accepted.
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
 ## Prompt Templates
 
 Codex A startup prompt:
