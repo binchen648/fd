@@ -781,9 +781,16 @@
           ],
           "effects": [
             {
-              "type": "set_player_flag",
-              "flag": "bazett_day",
-              "value": 1
+              "type": "cycle_state_transition",
+              "cycleId": "bazett_day_cycle",
+              "operation": "initialize",
+              "stageDefinitionIds": [
+                "master.bazett.skill.s1b",
+                "master.bazett.skill.s1c",
+                "master.bazett.skill.s5",
+                "master.bazett.skill.s1d"
+              ],
+              "activeDefinitionId": "master.bazett.skill.s1b"
             }
           ]
         },
@@ -799,9 +806,15 @@
           ],
           "effects": [
             {
-              "type": "add_player_flag_number",
-              "flag": "bazett_day",
-              "amount": 1
+              "type": "cycle_state_transition",
+              "cycleId": "bazett_day_cycle",
+              "operation": "advance",
+              "stageDefinitionIds": [
+                "master.bazett.skill.s1b",
+                "master.bazett.skill.s1c",
+                "master.bazett.skill.s5",
+                "master.bazett.skill.s1d"
+              ]
             }
           ]
         },
@@ -820,8 +833,11 @@
           ],
           "effects": [
             {
-              "type": "add_status",
-              "statusId": "bazett_reset_pending"
+              "type": "cycle_state_transition",
+              "cycleId": "bazett_day_cycle",
+              "operation": "schedule_reset",
+              "targetDefinitionId": "master.bazett.skill.s1b",
+              "timing": "next_round_start"
             }
           ]
         },
@@ -838,8 +854,9 @@
               "type": "round_is_climax"
             },
             {
-              "type": "status_absent",
-              "statusId": "bazett_awake"
+              "type": "cycle_state_is_not",
+              "cycleId": "bazett_day_cycle",
+              "state": "awake"
             }
           ],
           "effects": [
@@ -960,8 +977,10 @@
           ],
           "effects": [
             {
-              "type": "add_status",
-              "statusId": "bazett_awake"
+              "type": "cycle_state_transition",
+              "cycleId": "bazett_day_cycle",
+              "operation": "awaken",
+              "resolveDefinitionId": "master.bazett.skill.s4"
             }
           ]
         },
@@ -975,14 +994,18 @@
               "eventType": "round.ended"
             },
             {
-              "type": "status_absent",
-              "statusId": "bazett_awake"
+              "type": "cycle_state_is_not",
+              "cycleId": "bazett_day_cycle",
+              "state": "awake"
             }
           ],
           "effects": [
             {
-              "type": "add_status",
-              "statusId": "bazett_reset_pending"
+              "type": "cycle_state_transition",
+              "cycleId": "bazett_day_cycle",
+              "operation": "schedule_reset",
+              "targetDefinitionId": "master.bazett.skill.s1b",
+              "timing": "next_round_start"
             }
           ]
         }
@@ -1006,7 +1029,7 @@
           "conditions": [
             {
               "type": "event_type_is",
-              "eventType": "card.played"
+              "eventType": "card_or_ability.used"
             },
             {
               "type": "event_player_is_opponent"
@@ -1056,19 +1079,17 @@
               "eventType": "round.started"
             },
             {
-              "type": "status_present",
-              "statusId": "bazett_reset_pending"
+              "type": "cycle_transition_pending",
+              "cycleId": "bazett_day_cycle",
+              "operation": "reset_to_start"
             }
           ],
           "effects": [
             {
-              "type": "set_player_flag",
-              "flag": "bazett_day",
-              "value": 1
-            },
-            {
-              "type": "remove_status",
-              "statusId": "bazett_reset_pending"
+              "type": "cycle_state_transition",
+              "cycleId": "bazett_day_cycle",
+              "operation": "reset_to_start",
+              "targetDefinitionId": "master.bazett.skill.s1b"
             },
             {
               "type": "gain_victory_points",
@@ -1095,10 +1116,11 @@
           "kind": "passive",
           "effects": [
             {
-              "type": "move_matching_cards",
-              "sourceZone": "skill",
-              "destination": "removed_from_game",
-              "definitionId": "master.bazett.skill.s1a"
+              "type": "cycle_state_transition",
+              "cycleId": "bazett_day_cycle",
+              "operation": "stop",
+              "disabledDefinitionId": "master.bazett.skill.s1a",
+              "state": "awake"
             },
             {
               "type": "adjust_command_seals",
@@ -1125,6 +1147,20 @@
         "url": "https://fatedomination.fandom.com/wiki/Bazett_Fraga_McRemitz"
       },
       "abilities": [
+        {
+          "id": "bazett.day3.enter-skill-zone",
+          "printedClause": "Source-grounded semantic record: bazett.day3.enter-skill-zone.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "cycle_state_transition",
+              "cycleId": "bazett_day_cycle",
+              "operation": "enter_stage",
+              "definitionId": "master.bazett.skill.s5",
+              "destination": "skill"
+            }
+          ]
+        },
         {
           "id": "bazett.day3.add-to-attack",
           "printedClause": "Source-grounded semantic record: bazett.day3.add-to-attack.",

@@ -4091,17 +4091,15 @@
             "round.ended"
           ],
           "condition": [
+            "CYCLE_STATE_IS_NOT",
             "EVENT_PLAYER_LOST_COMBAT",
-            "ROUND_IS_CLIMAX",
-            "STATUS_ABSENT"
+            "ROUND_IS_CLIMAX"
           ],
           "cost": [],
           "target": [],
           "effect": [
-            "ADD_PLAYER_FLAG_NUMBER",
-            "ADD_STATUS",
-            "LOSE_VICTORY_POINTS",
-            "SET_PLAYER_FLAG"
+            "CYCLE_STATE_TRANSITION",
+            "LOSE_VICTORY_POINTS"
           ],
           "interaction": [],
           "lifecycle": [],
@@ -4130,7 +4128,7 @@
               "cost": [],
               "target": [],
               "effect": [
-                "SET_PLAYER_FLAG"
+                "CYCLE_STATE_TRANSITION"
               ],
               "interaction": [],
               "lifecycle": [],
@@ -4156,7 +4154,7 @@
               "cost": [],
               "target": [],
               "effect": [
-                "ADD_PLAYER_FLAG_NUMBER"
+                "CYCLE_STATE_TRANSITION"
               ],
               "interaction": [],
               "lifecycle": [],
@@ -4184,7 +4182,7 @@
               "cost": [],
               "target": [],
               "effect": [
-                "ADD_STATUS"
+                "CYCLE_STATE_TRANSITION"
               ],
               "interaction": [],
               "lifecycle": [],
@@ -4210,8 +4208,8 @@
                 "round.ended"
               ],
               "condition": [
-                "ROUND_IS_CLIMAX",
-                "STATUS_ABSENT"
+                "CYCLE_STATE_IS_NOT",
+                "ROUND_IS_CLIMAX"
               ],
               "cost": [],
               "target": [],
@@ -4237,24 +4235,26 @@
         "mechanicFamilies": [
           "BATTLE_RESULT",
           "CONDITION",
-          "LIFECYCLE",
           "RESOURCE_NUMERIC",
+          "SPECIAL_SUBSYSTEM",
           "TRIGGER"
         ],
         "requiredCapabilities": [
           "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_RESOURCE_NUMERIC",
-          "GENERIC_STATUS_STATE",
-          "GENERIC_TRIGGER_GATEWAY"
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
         ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
         "mappingStatus": "CONTRACT_MAPPED",
-        "blockedBy": [],
+        "blockedBy": [
+          "SPECIAL_EFFECT:cycle_state_transition"
+        ],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -4622,13 +4622,13 @@
             "round.ended"
           ],
           "condition": [
-            "EVENT_PLAYER_WON_COMBAT",
-            "STATUS_ABSENT"
+            "CYCLE_STATE_IS_NOT",
+            "EVENT_PLAYER_WON_COMBAT"
           ],
           "cost": [],
           "target": [],
           "effect": [
-            "ADD_STATUS"
+            "CYCLE_STATE_TRANSITION"
           ],
           "interaction": [],
           "lifecycle": [],
@@ -4659,7 +4659,7 @@
               "cost": [],
               "target": [],
               "effect": [
-                "ADD_STATUS"
+                "CYCLE_STATE_TRANSITION"
               ],
               "interaction": [],
               "lifecycle": [],
@@ -4685,12 +4685,12 @@
                 "round.ended"
               ],
               "condition": [
-                "STATUS_ABSENT"
+                "CYCLE_STATE_IS_NOT"
               ],
               "cost": [],
               "target": [],
               "effect": [
-                "ADD_STATUS"
+                "CYCLE_STATE_TRANSITION"
               ],
               "interaction": [],
               "lifecycle": [],
@@ -4711,22 +4711,24 @@
         "mechanicFamilies": [
           "BATTLE_RESULT",
           "CONDITION",
-          "LIFECYCLE",
+          "SPECIAL_SUBSYSTEM",
           "TRIGGER"
         ],
         "requiredCapabilities": [
           "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CONDITION_EVALUATION",
-          "GENERIC_STATUS_STATE",
-          "GENERIC_TRIGGER_GATEWAY"
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
         ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
         "mappingStatus": "CONTRACT_MAPPED",
-        "blockedBy": [],
+        "blockedBy": [
+          "SPECIAL_EFFECT:cycle_state_transition"
+        ],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -4798,7 +4800,7 @@
         "axes": {
           "timing": [],
           "trigger": [
-            "card.played"
+            "card_or_ability.used"
           ],
           "condition": [
             "EVENT_CARD_HAS_ATTRIBUTE",
@@ -4832,7 +4834,7 @@
             "axes": {
               "timing": [],
               "trigger": [
-                "card.played"
+                "card_or_ability.used"
               ],
               "condition": [
                 "EVENT_CARD_HAS_ATTRIBUTE",
@@ -4949,14 +4951,13 @@
             "round.started"
           ],
           "condition": [
-            "STATUS_PRESENT"
+            "CYCLE_TRANSITION_PENDING"
           ],
           "cost": [],
           "target": [],
           "effect": [
-            "GAIN_VICTORY_POINTS",
-            "REMOVE_STATUS",
-            "SET_PLAYER_FLAG"
+            "CYCLE_STATE_TRANSITION",
+            "GAIN_VICTORY_POINTS"
           ],
           "interaction": [],
           "lifecycle": [],
@@ -4979,14 +4980,13 @@
                 "round.started"
               ],
               "condition": [
-                "STATUS_PRESENT"
+                "CYCLE_TRANSITION_PENDING"
               ],
               "cost": [],
               "target": [],
               "effect": [
-                "GAIN_VICTORY_POINTS",
-                "REMOVE_STATUS",
-                "SET_PLAYER_FLAG"
+                "CYCLE_STATE_TRANSITION",
+                "GAIN_VICTORY_POINTS"
               ],
               "interaction": [],
               "lifecycle": [],
@@ -5006,23 +5006,25 @@
       "phase3": {
         "mechanicFamilies": [
           "CONDITION",
-          "LIFECYCLE",
           "RESOURCE_NUMERIC",
+          "SPECIAL_SUBSYSTEM",
           "TRIGGER"
         ],
         "requiredCapabilities": [
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_RESOURCE_NUMERIC",
-          "GENERIC_STATUS_STATE",
-          "GENERIC_TRIGGER_GATEWAY"
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
         ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
         "mappingStatus": "CONTRACT_MAPPED",
-        "blockedBy": [],
+        "blockedBy": [
+          "SPECIAL_EFFECT:cycle_state_transition"
+        ],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -5089,7 +5091,7 @@
           "target": [],
           "effect": [
             "ADJUST_COMMAND_SEALS",
-            "MOVE_MATCHING_CARDS",
+            "CYCLE_STATE_TRANSITION",
             "RETURN_CARD_BY_DEFINITION"
           ],
           "interaction": [],
@@ -5115,7 +5117,7 @@
               "target": [],
               "effect": [
                 "ADJUST_COMMAND_SEALS",
-                "MOVE_MATCHING_CARDS",
+                "CYCLE_STATE_TRANSITION",
                 "RETURN_CARD_BY_DEFINITION"
               ],
               "interaction": [],
@@ -5136,19 +5138,23 @@
       "phase3": {
         "mechanicFamilies": [
           "CARD_ZONE",
-          "RESOURCE_NUMERIC"
+          "RESOURCE_NUMERIC",
+          "SPECIAL_SUBSYSTEM"
         ],
         "requiredCapabilities": [
           "GENERIC_CARD_ZONE",
-          "GENERIC_RESOURCE_NUMERIC"
+          "GENERIC_RESOURCE_NUMERIC",
+          "REVIEWED_SPECIAL_HANDLER"
         ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
         "mappingStatus": "CONTRACT_MAPPED",
-        "blockedBy": [],
+        "blockedBy": [
+          "SPECIAL_EFFECT:cycle_state_transition"
+        ],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -5240,6 +5246,7 @@
           "cost": [],
           "target": [],
           "effect": [
+            "CYCLE_STATE_TRANSITION",
             "GAIN_VICTORY_POINTS",
             "MOVE_CARD"
           ],
@@ -5255,11 +5262,35 @@
         },
         "abilities": [
           {
+            "sourceAbilityId": "bazett.day3.enter-skill-zone",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Bazett Fraga McRemitz#Cards/Day 3#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CYCLE_STATE_TRANSITION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
             "sourceAbilityId": "bazett.day3.add-to-attack",
             "kind": "PHASE_ACTION",
             "source": {
               "document": "Fate/Domination Wiki",
-              "locator": "Bazett Fraga McRemitz#Cards/Day 3#ability-1"
+              "locator": "Bazett Fraga McRemitz#Cards/Day 3#ability-2"
             },
             "axes": {
               "timing": [
@@ -5285,7 +5316,7 @@
             "kind": "TRIGGERED",
             "source": {
               "document": "Fate/Domination Wiki",
-              "locator": "Bazett Fraga McRemitz#Cards/Day 3#ability-2"
+              "locator": "Bazett Fraga McRemitz#Cards/Day 3#ability-3"
             },
             "axes": {
               "timing": [],
@@ -5324,6 +5355,7 @@
           "CARD_ACTION_SEMANTICS",
           "CONDITION",
           "RESOURCE_NUMERIC",
+          "SPECIAL_SUBSYSTEM",
           "TRIGGER"
         ],
         "requiredCapabilities": [
@@ -5331,15 +5363,18 @@
           "GENERIC_BATTLE_INTEGRATION",
           "GENERIC_CONDITION_EVALUATION",
           "GENERIC_RESOURCE_NUMERIC",
-          "GENERIC_TRIGGER_GATEWAY"
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
         ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
         "mappingStatus": "CONTRACT_MAPPED",
-        "blockedBy": [],
+        "blockedBy": [
+          "SPECIAL_EFFECT:cycle_state_transition"
+        ],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -102574,7 +102609,7 @@
     "sourceGroundedCount": 99,
     "blockedCount": 845,
     "unclassifiedCount": 0,
-    "structuredAbilityCount": 154
+    "structuredAbilityCount": 155
   },
   "capabilitySummary": {
     "totalIdentityCount": 944,
@@ -102594,8 +102629,8 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
-      "READY_GENERIC_EXTENSION": 91,
-      "SPECIAL_HANDLER_CANDIDATE": 8,
+      "READY_GENERIC_EXTENSION": 86,
+      "SPECIAL_HANDLER_CANDIDATE": 13,
       "RULE_DECISION_REQUIRED": 0,
       "SOURCE_EVIDENCE_REQUIRED": 845,
       "PHASE_DEPENDENCY_BLOCKED": 0,

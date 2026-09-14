@@ -10606,9 +10606,6 @@
         "master.amakusa.skill.s1a",
         "master.amakusa.skill.s2",
         "master.arcueid.skill.s1a",
-        "master.bazett.skill.s1a",
-        "master.bazett.skill.s1d",
-        "master.bazett.skill.s3",
         "master.chaos.skill.s1",
         "master.ciel.skill.s3",
         "servant.albion.skill.sc-albion-2",
@@ -10721,69 +10718,6 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[40].abilities[2].printedClause",
           "sha256": "e8712a4847cf27c66704c85af0403eaf8673e96f4810769a3feced081b216581"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1a",
-          "document": "Fate/Domination Wiki",
-          "locator": "Bazett Fraga McRemitz#Cards/Lost in Time"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1a",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1a",
-          "document": "legacy-content.json",
-          "locator": "master/master.bazett/s1a"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1a",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[1].text#line=1",
-          "sha256": "ce23bd11a4ccfb9d37feb9afb6afbf73f6c726583caf66f39d170e3757f76bc7"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1d",
-          "document": "Fate/Domination Wiki",
-          "locator": "Bazett Fraga McRemitz#Cards/Day 4"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1d",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1d",
-          "document": "legacy-content.json",
-          "locator": "master/master.bazett/s1d"
-        },
-        {
-          "abilityId": "master.bazett.skill.s1d",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[4].text#line=1",
-          "sha256": "e8580ee642567c08d9d9232a67dcb3c6cfe8ad7e8e91eb35b0cfc4327888a3d4"
-        },
-        {
-          "abilityId": "master.bazett.skill.s3",
-          "document": "Fate/Domination Wiki",
-          "locator": "Bazett Fraga McRemitz#Cards/Reset"
-        },
-        {
-          "abilityId": "master.bazett.skill.s3",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
-        },
-        {
-          "abilityId": "master.bazett.skill.s3",
-          "document": "legacy-content.json",
-          "locator": "master/master.bazett/s3"
-        },
-        {
-          "abilityId": "master.bazett.skill.s3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[16].skills[6].text#line=1",
-          "sha256": "ad6fd236b489f468aca2bf85acad07cafebc145e7ea80ea61ceef9f9851f7b6a"
         },
         {
           "abilityId": "master.chaos.skill.s1",
@@ -11048,9 +10982,9 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 16
+          "shared_handler": 13
         },
-        "handlerCount": 3,
+        "handlerCount": 2,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -14292,7 +14226,12 @@
       "capabilityId": "REVIEWED_SPECIAL_HANDLER",
       "mechanicFamily": "SPECIAL_SUBSYSTEM",
       "affectedAbilityIds": [
+        "master.bazett.skill.s1a",
+        "master.bazett.skill.s1d",
         "master.bazett.skill.s2",
+        "master.bazett.skill.s3",
+        "master.bazett.skill.s4",
+        "master.bazett.skill.s5",
         "master.chaos.skill.s8",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.gorgon.skill.sc-gorgon-3",
@@ -14301,6 +14240,48 @@
         "servant.valkyrie.skill.sc-valkyrie-3"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.bazett.skill.s1a",
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/Lost in Time"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1a",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1a",
+          "document": "legacy-content.json",
+          "locator": "master/master.bazett/s1a"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[16].skills[1].text#line=1",
+          "sha256": "ce23bd11a4ccfb9d37feb9afb6afbf73f6c726583caf66f39d170e3757f76bc7"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1d",
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/Day 4"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1d",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1d",
+          "document": "legacy-content.json",
+          "locator": "master/master.bazett/s1d"
+        },
+        {
+          "abilityId": "master.bazett.skill.s1d",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[16].skills[4].text#line=1",
+          "sha256": "e8580ee642567c08d9d9232a67dcb3c6cfe8ad7e8e91eb35b0cfc4327888a3d4"
+        },
         {
           "abilityId": "master.bazett.skill.s2",
           "document": "Fate/Domination Wiki",
@@ -14327,6 +14308,81 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[16].skills[5].text#line=2",
           "sha256": "26b12518d29f74ca44fcb1a948dd7614cb8babecf11609745eee2d532cdf1d3a"
+        },
+        {
+          "abilityId": "master.bazett.skill.s3",
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/Reset"
+        },
+        {
+          "abilityId": "master.bazett.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
+        },
+        {
+          "abilityId": "master.bazett.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.bazett/s3"
+        },
+        {
+          "abilityId": "master.bazett.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[16].skills[6].text#line=1",
+          "sha256": "ad6fd236b489f468aca2bf85acad07cafebc145e7ea80ea61ceef9f9851f7b6a"
+        },
+        {
+          "abilityId": "master.bazett.skill.s4",
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/Awake"
+        },
+        {
+          "abilityId": "master.bazett.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
+        },
+        {
+          "abilityId": "master.bazett.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.bazett/s4"
+        },
+        {
+          "abilityId": "master.bazett.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[16].skills[7].text#line=1",
+          "sha256": "588027286bf420d1a95f439684e3125dd6411babcb4599b5977bb54126bfbc10"
+        },
+        {
+          "abilityId": "master.bazett.skill.s5",
+          "document": "Fate/Domination Wiki",
+          "locator": "Bazett Fraga McRemitz#Cards/Day 3"
+        },
+        {
+          "abilityId": "master.bazett.skill.s5",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
+        },
+        {
+          "abilityId": "master.bazett.skill.s5",
+          "document": "legacy-content.json",
+          "locator": "master/master.bazett/s5"
+        },
+        {
+          "abilityId": "master.bazett.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[16].skills[8].text#line=1",
+          "sha256": "0454b5987d403edda0da7e2cdfb953423953c8f7e20af5f2e49d19a4a145ee98"
+        },
+        {
+          "abilityId": "master.bazett.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[16].skills[8].text#line=2",
+          "sha256": "de4cdc20f2a137ab11c739183e68842d24cd961a6405511ef7a842ec2c1f5614"
+        },
+        {
+          "abilityId": "master.bazett.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[16].skills[8].text#line=3",
+          "sha256": "43800e55eb677bb6252d1095c7a45bae443a0e0ec7a004bd8c8bff21a6d5f532"
         },
         {
           "abilityId": "master.chaos.skill.s8",
@@ -14504,10 +14560,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 5,
-          "specific_handler": 2
+          "shared_handler": 9,
+          "specific_handler": 3
         },
-        "handlerCount": 3,
+        "handlerCount": 5,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
