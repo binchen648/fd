@@ -1127,6 +1127,32 @@ export function isBattleLossResourceTriggerSemantic(a: AuthoringAbility): boolea
     Number.isSafeInteger(effect.amount);
 }
 
+function isSharedVictoryVpTriggerCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'forced_trigger' &&
+    str(a.activation.trigger) === 'after_battle_result_determined' &&
+    a.effects.length === 1 &&
+    str(a.effects[0]?.type) === 'adjust_victory_points';
+}
+
+function hasSharedVictoryConditions(a: AuthoringAbility): boolean {
+  if (a.conditions.length !== 2) return false;
+  const hasWon = a.conditions.some((condition) => str(condition.type) === 'controller_won_battle');
+  const hasNotSole = a.conditions.some((condition) =>
+    str(condition.type) === 'not' && str(node(condition.condition).type) === 'controller_sole_winner');
+  return hasWon && hasNotSole;
+}
+
+export function isSharedVictoryVpTriggerSemantic(a: AuthoringAbility): boolean {
+  if (!isSharedVictoryVpTriggerCandidate(a)) return false;
+  if (str(a.activation.phase) !== 'combat' || str(a.activation.opens) !== 'immediate' || str(a.activation.requiresSourceState) !== 'active') return false;
+  if (!hasSharedVictoryConditions(a) || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
+  const effect = a.effects[0]!;
+  return effect.type === 'adjust_victory_points' &&
+    (effect.player === undefined || effect.player === 'controller') &&
+    effect.amount === 2 && Number.isSafeInteger(effect.amount);
+}
+
 export function isResourceNumericDirectActionSemantic(a: AuthoringAbility): boolean {
   return a.kind === 'phase_action' &&
     str(a.activation.phase) === 'action' &&
@@ -1404,7 +1430,7 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
-  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isBattleLossResourceTriggerSemantic(a)) {
+  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isSharedVictoryVpTriggerSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
     cleanupOngoing(s);
@@ -1412,6 +1438,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   }
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
   if (isBattleLossResourceTriggerCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss resource semantic shape');
+  if (isSharedVictoryVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported shared-victory VP semantic shape');
   if (isPrivateOptionalHandPlayInteractionCandidate(a)) {
     if (!isPrivateOptionalHandPlayInteractionSemantic(a)) reject('resolution_failed', 'Unsupported private optional hand-play interaction semantic shape');
     const interactionTargetId = str(a.targets[0]?.id);
