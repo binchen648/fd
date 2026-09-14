@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 792,
-    "coveredBlockedIdentityCount": 792,
+    "blockedIdentityCount": 790,
+    "coveredBlockedIdentityCount": 790,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 2,
@@ -40,8 +40,6 @@
         "master.araya.skill.s1",
         "master.arcueid.skill.ascension",
         "master.arcueid.skill.s2",
-        "master.artoira.skill.ascension",
-        "master.artoira.skill.s1",
         "master.caren.skill.ascension",
         "master.caren.skill.s1",
         "master.caren.skill.s1a",
@@ -1273,56 +1271,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[23].skills[2].text#line=2",
           "sha256": "7371bcf4ffed9cac0f6081fb0f1de40f3d0de91a8adef38ea98df607372c1149"
-        },
-        {
-          "abilityId": "master.artoira.skill.ascension",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.artoira/阿尔托莉雅·潘德拉贡(蓄势)"
-        },
-        {
-          "abilityId": "master.artoira.skill.ascension",
-          "document": "legacy-content.json",
-          "locator": "master/master.artoira/ascension"
-        },
-        {
-          "abilityId": "master.artoira.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[17].skills[1].text#line=1",
-          "sha256": "bd3d910f9617196fd9afeb22e7cd69d846e4e582617caea4a727dbcd20f21354"
-        },
-        {
-          "abilityId": "master.artoira.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[17].skills[1].text#line=2",
-          "sha256": "d3e41a8f93185231fbc2629a9334ed40ba0e4eb681481dccedcd772db94c96af"
-        },
-        {
-          "abilityId": "master.artoira.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[17].skills[1].text#line=3",
-          "sha256": "9a5b2de557f8bcd6c7cee34b8591909a180475eeea5b554338894ebc94edca19"
-        },
-        {
-          "abilityId": "master.artoira.skill.s1",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.artoira/阿尔托莉雅·潘德拉贡(蓄势)"
-        },
-        {
-          "abilityId": "master.artoira.skill.s1",
-          "document": "legacy-content.json",
-          "locator": "master/master.artoira/s1"
-        },
-        {
-          "abilityId": "master.artoira.skill.s1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[17].skills[0].text#line=1",
-          "sha256": "0906b3d6b7af0c08cbde70fe0e3dfdac0ca4b8a1f7e8f31ee901f691ca212bb9"
-        },
-        {
-          "abilityId": "master.artoira.skill.s1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[17].skills[0].text#line=2",
-          "sha256": "91347a0daa6e27edc5dcc887c623867f7084801f23f4f374767ebd3d7f35afbe"
         },
         {
           "abilityId": "master.caren.skill.ascension",
@@ -17840,9 +17788,9 @@
         "routeCounts": {
           "deterministic": 2,
           "shared_handler": 369,
-          "specific_handler": 420
+          "specific_handler": 418
         },
-        "handlerCount": 488,
+        "handlerCount": 486,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."

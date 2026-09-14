@@ -4812,6 +4812,147 @@
           ]
         }
       ]
+    },
+    {
+      "id": "master.artoira.skill.s1",
+      "printedText": "前哨阶段：选择你技能区一张明置的，属于你从者的技能攻击进行蓄势。\n（蓄势：将该攻击放置于你牌库顶的第X张[牌库不足则无法放置]，X为其魔力消耗+1，当其因任何原因从你的牌库离开时[被抽取,弃置,移除等]，将其免费加入你的攻击。）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_artoira.skills[s1]#line=37",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "前哨阶段：选择你技能区一张明置的，属于你从者的技能攻击进行蓄势。\n（蓄势：将该攻击放置于你牌库顶的第X张[牌库不足则无法放置]，X为其魔力消耗+1，当其因任何原因从你的牌库离开时[被抽取,弃置,移除等]，将其免费加入你的攻击。）",
+        "sourceTextSha256": "35203bf89804b5afbb74772fad4243de5ee34b45ffae706856f418c85bcbf2d0"
+      },
+      "referencePrintedTextSha256": "35203bf89804b5afbb74772fad4243de5ee34b45ffae706856f418c85bcbf2d0",
+      "abilities": [
+        {
+          "id": "artoira.white-steel.charge",
+          "printedClause": "前哨阶段：选择你技能区一张明置的，属于你从者的技能攻击进行蓄势。\n（蓄势：将该攻击放置于你牌库顶的第X张[牌库不足则无法放置]，X为其魔力消耗+1。)",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "conditions": [
+            {
+              "type": "deck_has_position_for_selected_card_cost_plus_one"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "servant_skills",
+              "face": "up",
+              "owner": "controller_servant",
+              "requireAttackAttributes": true,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedSkillAttackIds"
+            },
+            {
+              "type": "charge_selected_skill_attack",
+              "payloadKey": "selectedSkillAttackIds",
+              "sourceZone": "servant_skills",
+              "destination": "deck",
+              "deckPositionFormula": "selected_card_printed_mana_cost + 1",
+              "requireDeckCapacity": true,
+              "linkage": "charged_by_controller"
+            }
+          ]
+        },
+        {
+          "id": "artoira.white-steel.leave-deck-add-to-attack",
+          "printedClause": "当其因任何原因从你的牌库离开时[被抽取,弃置,移除等]，将其免费加入你的攻击。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "card.left-deck"
+            },
+            {
+              "type": "event_card_has_linkage",
+              "linkage": "charged_by_controller"
+            },
+            {
+              "type": "event_card_controller_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_card",
+              "source": "event_card",
+              "destination": "attack",
+              "costOverride": 0,
+              "playMode": "free_add_to_attack"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.artoira.skill.ascension",
+      "printedText": "（此牌解锁时，将其加入你的技能区）\n被动：你可以蓄势此牌。\n剑岂是如此不便之物-战斗阶段：若你获胜且此牌本回合是从你的牌库入场，你立即获得游戏胜利。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_artoira.ascensionSkill#line=38",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（此牌解锁时，将其加入你的技能区）\n被动：你可以蓄势此牌。\n剑岂是如此不便之物-战斗阶段：若你获胜且此牌本回合是从你的牌库入场，你立即获得游戏胜利。",
+        "sourceTextSha256": "4c90c5296f07d21bf8a09ed1c7fac26f056cb85e326a7fbfe69235b8cdfef67b"
+      },
+      "referencePrintedTextSha256": "4c90c5296f07d21bf8a09ed1c7fac26f056cb85e326a7fbfe69235b8cdfef67b",
+      "abilities": [
+        {
+          "id": "artoira.wooden-sword.ascension-setup",
+          "printedClause": "（此牌解锁时，将其加入你的技能区）",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "reason": "ascension_setup"
+            }
+          ]
+        },
+        {
+          "id": "artoira.wooden-sword.charge-eligibility",
+          "printedClause": "被动：你可以蓄势此牌。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "charge_eligibility",
+              "operation": "allow_source_card"
+            }
+          ]
+        },
+        {
+          "id": "artoira.wooden-sword.instant-victory",
+          "printedClause": "剑岂是如此不便之物-战斗阶段：若你获胜且此牌本回合是从你的牌库入场，你立即获得游戏胜利。",
+          "kind": "triggered",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_won_combat"
+            },
+            {
+              "type": "source_card_entered_attack_from_deck_this_round"
+            }
+          ],
+          "effects": [
+            {
+              "type": "finish_game",
+              "winner": "controller",
+              "timing": "immediate"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

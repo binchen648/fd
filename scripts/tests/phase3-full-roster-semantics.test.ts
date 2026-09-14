@@ -811,6 +811,82 @@ describe('Phase 3 full-roster semantic normalization', () => {
     );
   });
 
+  it('grounds the two-ID Artoira charge slice without importing handler-only target state', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const slice = overlays.filter((card) => card.id.startsWith('master.artoira.skill.'));
+    expect(slice).toHaveLength(2);
+    expect(
+      slice.every((card) =>
+        card.source?.authority === 'DEVELOPMENT_TEXT' &&
+        card.source.document === 'Fate_Domination-开发版/data_masters.js' &&
+        card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+        createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256
+      ),
+    ).toBe(true);
+
+    const whiteSteel = slice.find((card) => card.id === 'master.artoira.skill.s1');
+    const charge = whiteSteel?.abilities.find((ability) => ability.id === 'artoira.white-steel.charge');
+    expect(charge?.activation).toMatchObject({ phase: 'outpost' });
+    expect(charge?.effects).toContainEqual(
+      expect.objectContaining({
+        type: 'choose_cards',
+        zone: 'servant_skills',
+        face: 'up',
+        owner: 'controller_servant',
+        minCount: 1,
+        maxCount: 1,
+        payloadKey: 'selectedSkillAttackIds',
+      }),
+    );
+    expect(charge?.effects.find((effect) => effect.type === 'choose_cards')).not.toHaveProperty('active');
+    expect(charge?.effects).toContainEqual(
+      expect.objectContaining({
+        type: 'charge_selected_skill_attack',
+        destination: 'deck',
+        deckPositionFormula: 'selected_card_printed_mana_cost + 1',
+        requireDeckCapacity: true,
+      }),
+    );
+    expect(whiteSteel?.abilities).toContainEqual(
+      expect.objectContaining({
+        id: 'artoira.white-steel.leave-deck-add-to-attack',
+        conditions: expect.arrayContaining([
+          expect.objectContaining({ type: 'event_type_is', eventType: 'card.left-deck' }),
+          expect.objectContaining({ type: 'event_card_has_linkage', linkage: 'charged_by_controller' }),
+        ]),
+        effects: expect.arrayContaining([
+          expect.objectContaining({ type: 'move_card', destination: 'attack', costOverride: 0 }),
+        ]),
+      }),
+    );
+
+    const woodenSword = slice.find((card) => card.id === 'master.artoira.skill.ascension');
+    expect(woodenSword?.abilities).toContainEqual(
+      expect.objectContaining({
+        id: 'artoira.wooden-sword.ascension-setup',
+        effects: [expect.objectContaining({ type: 'move_source_card', destination: 'skill' })],
+      }),
+    );
+    expect(woodenSword?.abilities).toContainEqual(
+      expect.objectContaining({
+        id: 'artoira.wooden-sword.charge-eligibility',
+        ruleModifiers: [expect.objectContaining({ rule: 'charge_eligibility', operation: 'allow_source_card' })],
+      }),
+    );
+    expect(woodenSword?.abilities).toContainEqual(
+      expect.objectContaining({
+        id: 'artoira.wooden-sword.instant-victory',
+        activation: { phase: 'combat' },
+        conditions: expect.arrayContaining([
+          expect.objectContaining({ type: 'event_type_is', eventType: 'combat.resolved' }),
+          expect.objectContaining({ type: 'event_player_won_combat' }),
+          expect.objectContaining({ type: 'source_card_entered_attack_from_deck_this_round' }),
+        ]),
+        effects: [expect.objectContaining({ type: 'finish_game', winner: 'controller', timing: 'immediate' })],
+      }),
+    );
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -864,10 +940,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 152,
-      blockedCount: 792,
+      sourceGroundedCount: 154,
+      blockedCount: 790,
       unclassifiedCount: 0,
-      structuredAbilityCount: 283,
+      structuredAbilityCount: 288,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

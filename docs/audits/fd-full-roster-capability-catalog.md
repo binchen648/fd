@@ -7,8 +7,8 @@
 - Fallback Policy: zero silent fallback; every canonical identity is mapped or explicitly blocked.
 
 totalIdentityCount=944
-contractMappedCount=152
-explicitBlockCount=792
+contractMappedCount=154
+explicitBlockCount=790
 capabilityCount=32
 zeroSilentFallback=true
 
@@ -16,38 +16,38 @@ zeroSilentFallback=true
 
 | Capability | Category | Family | Eligible | Partial | Skipped | Acceptance Vehicle |
 |---|---|---|---:|---:|---:|---|
-| `CARD_ACTION_ACTIVATE` | `generic_request` | `CARD_ACTION_SEMANTICS` | 0 | 0 | 28 | new Phase 3 capability request + Gate A/B/C representative |
-| `CARD_ACTION_ADD_TO_ATTACK` | `generic_request` | `CARD_ACTION_SEMANTICS` | 2 | 0 | 26 | new Phase 3 capability request + Gate A/B/C representative |
-| `CARD_ACTION_CLOSE` | `generic_request` | `CARD_ACTION_SEMANTICS` | 12 | 0 | 16 | new Phase 3 capability request + Gate A/B/C representative |
-| `CARD_ACTION_CREATE_AND_ACTIVATE` | `generic_request` | `CARD_ACTION_SEMANTICS` | 1 | 0 | 27 | new Phase 3 capability request + Gate A/B/C representative |
-| `CARD_ACTION_PLAY` | `generic_request` | `CARD_ACTION_SEMANTICS` | 14 | 0 | 14 | new Phase 3 capability request + Gate A/B/C representative |
-| `CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 0 | 28 | Olga first-loss Gate A/B/C candidate |
-| `CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 1 | 28 | Maiya Gate A/B/C candidate |
-| `CARD_ACTION_SEMANTICS_MINIMAL_CLOSE` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 1 | 28 | Artoria Alter Gate A/B/C candidate |
-| `CARD_ACTION_SEMANTICS_MINIMAL_PLAY` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 0 | 28 | Time Alter Gate A/B/C candidate |
-| `CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 0 | 28 | Volumen Gate A/B/C candidate |
-| `CARD_ZONE_CORE_DIRECT_ACTION` | `existing_contract` | `CARD_ZONE` | 0 | 0 | 37 | Mechanic Batch Gate A/B/C representative evidence |
-| `GENERIC_BATTLE_INTEGRATION` | `generic_request` | `BATTLE_RESULT` | 77 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_CARD_CREATE` | `generic_request` | `CARD_ZONE` | 5 | 0 | 32 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_CARD_ZONE` | `generic_request` | `CARD_ZONE` | 33 | 0 | 4 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_CONDITION_EVALUATION` | `generic_request` | `CONDITION` | 112 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
+| `CARD_ACTION_ACTIVATE` | `generic_request` | `CARD_ACTION_SEMANTICS` | 0 | 0 | 29 | new Phase 3 capability request + Gate A/B/C representative |
+| `CARD_ACTION_ADD_TO_ATTACK` | `generic_request` | `CARD_ACTION_SEMANTICS` | 3 | 0 | 26 | new Phase 3 capability request + Gate A/B/C representative |
+| `CARD_ACTION_CLOSE` | `generic_request` | `CARD_ACTION_SEMANTICS` | 12 | 0 | 17 | new Phase 3 capability request + Gate A/B/C representative |
+| `CARD_ACTION_CREATE_AND_ACTIVATE` | `generic_request` | `CARD_ACTION_SEMANTICS` | 1 | 0 | 28 | new Phase 3 capability request + Gate A/B/C representative |
+| `CARD_ACTION_PLAY` | `generic_request` | `CARD_ACTION_SEMANTICS` | 14 | 0 | 15 | new Phase 3 capability request + Gate A/B/C representative |
+| `CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 0 | 29 | Olga first-loss Gate A/B/C candidate |
+| `CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 1 | 29 | Maiya Gate A/B/C candidate |
+| `CARD_ACTION_SEMANTICS_MINIMAL_CLOSE` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 1 | 29 | Artoria Alter Gate A/B/C candidate |
+| `CARD_ACTION_SEMANTICS_MINIMAL_PLAY` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 0 | 29 | Time Alter Gate A/B/C candidate |
+| `CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 0 | 29 | Volumen Gate A/B/C candidate |
+| `CARD_ZONE_CORE_DIRECT_ACTION` | `existing_contract` | `CARD_ZONE` | 0 | 0 | 39 | Mechanic Batch Gate A/B/C representative evidence |
+| `GENERIC_BATTLE_INTEGRATION` | `generic_request` | `BATTLE_RESULT` | 78 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_CARD_CREATE` | `generic_request` | `CARD_ZONE` | 5 | 0 | 34 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_CARD_ZONE` | `generic_request` | `CARD_ZONE` | 35 | 0 | 4 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_CONDITION_EVALUATION` | `generic_request` | `CONDITION` | 114 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_COST_PAYMENT` | `generic_request` | `COST_PAYMENT` | 11 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_EVENT_DECK` | `generic_request` | `SPECIAL_SUBSYSTEM` | 35 | 0 | 24 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_EVENT_DECK` | `generic_request` | `SPECIAL_SUBSYSTEM` | 35 | 0 | 26 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_LIFECYCLE_POLICY` | `generic_request` | `LIFECYCLE` | 56 | 0 | 4 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_MODIFIER` | `generic_request` | `MODIFIER` | 69 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_MODIFIER` | `generic_request` | `MODIFIER` | 70 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_MOVEMENT` | `generic_request` | `MOVEMENT` | 14 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_PENDING_INTERACTION` | `generic_request` | `INTERACTION` | 43 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_PENDING_INTERACTION` | `generic_request` | `INTERACTION` | 44 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_POWER` | `generic_request` | `POWER` | 44 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_RESOURCE_NUMERIC` | `generic_request` | `RESOURCE_NUMERIC` | 43 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_RESULT_BINDING` | `generic_request` | `RESULT_BINDING` | 37 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_RESULT_BINDING` | `generic_request` | `RESULT_BINDING` | 38 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_STATUS_STATE` | `generic_request` | `LIFECYCLE` | 14 | 0 | 46 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_TARGET_SELECTION` | `generic_request` | `TARGET_SELECTION` | 43 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_TRIGGER_GATEWAY` | `generic_request` | `TRIGGER` | 78 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_VISIBILITY` | `generic_request` | `HIDDEN_INFORMATION` | 35 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_TARGET_SELECTION` | `generic_request` | `TARGET_SELECTION` | 44 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_TRIGGER_GATEWAY` | `generic_request` | `TRIGGER` | 80 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_VISIBILITY` | `generic_request` | `HIDDEN_INFORMATION` | 36 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `RESOURCE_NUMERIC_CORE_DIRECT_ACTION` | `existing_contract` | `RESOURCE_NUMERIC` | 0 | 1 | 43 | Mechanic Batch Gate A/B/C representative evidence |
-| `RESULT_BINDING_PHASE3A` | `existing_contract` | `RESULT_BINDING` | 0 | 1 | 37 | Golden Eater Gate A/B/C candidate |
-| `REVIEWED_SPECIAL_HANDLER` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 50 | 0 | 9 | B/R reviewed-special exception with explicit deletion/reuse criteria |
-| `REVIEWED_SPECIAL_TRANSFORM` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 3 | 0 | 56 | B/R reviewed-special exception with explicit deletion/reuse criteria |
+| `RESULT_BINDING_PHASE3A` | `existing_contract` | `RESULT_BINDING` | 0 | 1 | 38 | Golden Eater Gate A/B/C candidate |
+| `REVIEWED_SPECIAL_HANDLER` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 52 | 0 | 9 | B/R reviewed-special exception with explicit deletion/reuse criteria |
+| `REVIEWED_SPECIAL_TRANSFORM` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 3 | 0 | 58 | B/R reviewed-special exception with explicit deletion/reuse criteria |
 
 ## Identity Mapping
 
@@ -82,8 +82,8 @@ zeroSilentFallback=true
 | `master.arcueid.skill.s1a` | `READY_GENERIC_EXTENSION` | `none` | `shared_handler` | `BATTLE_RESULT`, `CARD_ZONE`, `CONDITION`, `INTERACTION`, `LIFECYCLE`, `TARGET_SELECTION`, `TRIGGER` | `GENERIC_BATTLE_INTEGRATION`, `GENERIC_CARD_CREATE`, `GENERIC_CONDITION_EVALUATION`, `GENERIC_LIFECYCLE_POLICY`, `GENERIC_PENDING_INTERACTION`, `GENERIC_STATUS_STATE`, `GENERIC_TARGET_SELECTION`, `GENERIC_TRIGGER_GATEWAY` | `NONE` | `NONE` | `NONE` |
 | `master.arcueid.skill.s2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `master.arcueid.skill.s3` | `READY_GENERIC_EXTENSION` | `none` | `shared_handler` | `CONDITION`, `MODIFIER`, `POWER`, `RESOURCE_NUMERIC`, `TRIGGER` | `GENERIC_CONDITION_EVALUATION`, `GENERIC_MODIFIER`, `GENERIC_POWER`, `GENERIC_RESOURCE_NUMERIC`, `GENERIC_TRIGGER_GATEWAY` | `NONE` | `NONE` | `NONE` |
-| `master.artoira.skill.ascension` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `master.artoira.skill.s1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
+| `master.artoira.skill.ascension` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `BATTLE_RESULT`, `CARD_ZONE`, `CONDITION`, `MODIFIER`, `SPECIAL_SUBSYSTEM`, `TRIGGER` | `GENERIC_BATTLE_INTEGRATION`, `GENERIC_CARD_ZONE`, `GENERIC_CONDITION_EVALUATION`, `GENERIC_MODIFIER`, `GENERIC_TRIGGER_GATEWAY`, `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:finish_game` |
+| `master.artoira.skill.s1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `CARD_ACTION_SEMANTICS`, `CARD_ZONE`, `CONDITION`, `HIDDEN_INFORMATION`, `INTERACTION`, `RESULT_BINDING`, `SPECIAL_SUBSYSTEM`, `TARGET_SELECTION`, `TRIGGER` | `CARD_ACTION_ADD_TO_ATTACK`, `GENERIC_CARD_ZONE`, `GENERIC_CONDITION_EVALUATION`, `GENERIC_PENDING_INTERACTION`, `GENERIC_RESULT_BINDING`, `GENERIC_TARGET_SELECTION`, `GENERIC_TRIGGER_GATEWAY`, `GENERIC_VISIBILITY`, `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:charge_selected_skill_attack` |
 | `master.bazett.skill.ascension` | `READY_GENERIC_EXTENSION` | `none` | `specific_handler` | `MODIFIER` | `GENERIC_MODIFIER` | `NONE` | `NONE` | `NONE` |
 | `master.bazett.skill.s1` | `READY_GENERIC_EXTENSION` | `none` | `shared_handler` | `CARD_ZONE` | `GENERIC_CARD_CREATE` | `NONE` | `NONE` | `NONE` |
 | `master.bazett.skill.s1a` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `BATTLE_RESULT`, `CONDITION`, `RESOURCE_NUMERIC`, `SPECIAL_SUBSYSTEM`, `TRIGGER` | `GENERIC_BATTLE_INTEGRATION`, `GENERIC_CONDITION_EVALUATION`, `GENERIC_RESOURCE_NUMERIC`, `GENERIC_TRIGGER_GATEWAY`, `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:cycle_state_transition` |
