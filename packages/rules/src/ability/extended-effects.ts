@@ -494,13 +494,20 @@ export function resolveExtendedEffect(
       break;
     }
     case 'transform_to_return_silence_on_loss': {
-      const store = modeState(state);
-      store.returnSilencePlayers = [...new Set([...(store.returnSilencePlayers ?? []), controllerId])];
+      const runtime = state.abilityRuntime;
+      const sourceId = sourceCardId(context);
+      const source = state.cards.find((card) => card.instanceId === sourceId);
+      const sourceState = runtime?.cardState[sourceId];
+      if (!runtime || !source || !['field', 'attack_area'].includes(source.zone) || sourceState?.active !== true || sourceState.faceDown) break;
+      runtime.transformedReturnSilenceSourceCardIds = [...new Set([
+        ...(runtime.transformedReturnSilenceSourceCardIds ?? []),
+        sourceId,
+      ])];
       break;
     }
     case 'return_silence_battle_start': {
-      const store = modeState(state);
-      store.returnSilencePlayers = [...new Set([...(store.returnSilencePlayers ?? []), controllerId])];
+      const sourceId = sourceCardId(context);
+      if (!state.abilityRuntime?.transformedReturnSilenceSourceCardIds?.includes(sourceId)) break;
       state.ruleOverrides = state.ruleOverrides || {};
       state.ruleOverrides.mustDeployToBattlefieldPlayerIds = [...new Set([
         ...(state.ruleOverrides.mustDeployToBattlefieldPlayerIds ?? []),

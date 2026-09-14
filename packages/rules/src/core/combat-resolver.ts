@@ -215,18 +215,17 @@ function hasRemoteOperationBonus(state: GameState, playerId: string, battlefield
   return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, "basic.preparation");
 }
 
-function returnSilencePlayerIds(state: GameState): string[] {
-  const players = modeState(state).returnSilencePlayers;
-  return Array.isArray(players) ? players.filter((id): id is string => typeof id === "string") : [];
-}
-
-function findReturnSilenceSourceCard(state: GameState, playerId: string): string | undefined {
-  return state.cards.find((card) =>
-    card.controllerPlayerId === playerId &&
-    ["field", "attack_area"].includes(card.zone) &&
-    state.abilityRuntime?.pack.cards[card.definitionId]?.abilities.some((ability) =>
-      ability.effects.some((effect) => effect.type === "return_silence_battle_start")) &&
-    state.abilityRuntime.cardState[card.instanceId]?.active)?.instanceId;
+function returnSilenceSources(state: GameState): Array<{ sourceCardId: string; playerId: string }> {
+  const runtime = state.abilityRuntime;
+  if (!runtime) return [];
+  return (runtime.transformedReturnSilenceSourceCardIds ?? []).flatMap((sourceCardId) => {
+    const card = state.cards.find((candidate) => candidate.instanceId === sourceCardId);
+    const sourceState = runtime.cardState[sourceCardId];
+    if (!card || !["field", "attack_area"].includes(card.zone) || sourceState?.active !== true || sourceState.faceDown) return [];
+    const hasReturnSilenceSemantic = runtime.pack.cards[card.definitionId]?.abilities.some((ability) =>
+      ability.effects.some((effect) => effect.type === "return_silence_battle_start"));
+    return hasReturnSilenceSemantic ? [{ sourceCardId, playerId: card.controllerPlayerId }] : [];
+  });
 }
 
 function isLegacyCombatCard(state: GameState, card: GameState["cards"][number]): boolean {
@@ -579,10 +578,10 @@ export function resolveBattlefield(
   });
 
   const participants = input.participants ?? deriveBattleParticipantsFromState(state, input.battlefieldId);
-  const returnSilenceController = returnSilencePlayerIds(state).find((playerId) =>
+  const returnSilenceSource = returnSilenceSources(state).find(({ playerId }) =>
     state.players.some((player) => player.id === playerId && player.status === "active" && player.locationId === input.battlefieldId));
-  if (returnSilenceController && participants.length > 1) {
-    const sourceCardId = findReturnSilenceSourceCard(state, returnSilenceController);
+  if (returnSilenceSource && participants.length > 1) {
+    const { playerId: returnSilenceController, sourceCardId } = returnSilenceSource;
     const ranked = [...participants]
       .map((participant) => buildParticipantBreakdown(state, input.battlefieldId, participant))
       .sort((left, right) => right.effectivePower - left.effectivePower);
@@ -610,10 +609,18 @@ export function resolveBattlefield(
         payload: { winnerPlayerIds: [returnSilenceController], tied: false, winnerPlayerId: returnSilenceController, loserIds, sourceCardId },
       }),
     };
-    if (sourceCardId) {
-      const source = nextState.cards.find((card) => card.instanceId === sourceCardId);
-      if (source) source.zone = "removed_from_game";
-      if (nextState.abilityRuntime?.cardState[sourceCardId]) nextState.abilityRuntime.cardState[sourceCardId]!.active = false;
+    const source = nextState.cards.find((card) => card.instanceId === sourceCardId);
+    if (source) source.zone = "removed_from_game";
+    if (nextState.abilityRuntime?.cardState[sourceCardId]) nextState.abilityRuntime.cardState[sourceCardId]!.active = false;
+    if (nextState.abilityRuntime?.transformedReturnSilenceSourceCardIds) {
+      nextState.abilityRuntime.transformedReturnSilenceSourceCardIds = nextState.abilityRuntime.transformedReturnSilenceSourceCardIds
+        .filter((id) => id !== sourceCardId);
+    }
+    const hasOtherLiveTransformedSource = returnSilenceSources(nextState)
+      .some((candidate) => candidate.playerId === returnSilenceController);
+    if (!hasOtherLiveTransformedSource && nextState.ruleOverrides?.mustDeployToBattlefieldPlayerIds) {
+      nextState.ruleOverrides.mustDeployToBattlefieldPlayerIds = nextState.ruleOverrides.mustDeployToBattlefieldPlayerIds
+        .filter((id) => id !== returnSilenceController);
     }
     if (nextState.abilityRuntime && !nextState.abilityRuntime.processedEvents.includes(abilityEventId)) {
       nextState.abilityRuntime.processedEvents.push(abilityEventId);
