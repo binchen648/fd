@@ -291,11 +291,11 @@ describe('Phase 3 full-roster capability mapping', () => {
     const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
 
     expect(inventory.capabilitySummary.totalIdentityCount).toBe(944);
-    expect(inventory.capabilitySummary.contractMappedCount).toBe(162);
-    expect(inventory.capabilitySummary.explicitBlockCount).toBe(782);
+    expect(inventory.capabilitySummary.contractMappedCount).toBe(171);
+    expect(inventory.capabilitySummary.explicitBlockCount).toBe(773);
     expect(inventory.capabilitySummary.zeroSilentFallback).toBe(true);
-    expect(catalog.coverage.mappedAbilities).toHaveLength(162);
-    expect(catalog.coverage.blockedAbilities).toHaveLength(782);
+    expect(catalog.coverage.mappedAbilities).toHaveLength(171);
+    expect(catalog.coverage.blockedAbilities).toHaveLength(773);
     expect(catalog.coverage.mappedAbilities.length + catalog.coverage.blockedAbilities.length).toBe(944);
 
     const allowedCurrentRoutes = new Set(['legacy', 'new', 'dual', 'none']);
@@ -307,8 +307,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     }
 
     expect(markdown).toContain('totalIdentityCount=944');
-    expect(markdown).toContain('contractMappedCount=162');
-    expect(markdown).toContain('explicitBlockCount=782');
+    expect(markdown).toContain('contractMappedCount=171');
+    expect(markdown).toContain('explicitBlockCount=773');
     expect(markdown).toContain('zeroSilentFallback=true');
   });
 
@@ -433,8 +433,8 @@ describe('Phase 3 full-roster capability mapping', () => {
       expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION', 'GENERIC_CARD_ZONE', 'GENERIC_EVENT_DECK', 'GENERIC_MODIFIER', 'GENERIC_POWER', 'GENERIC_RESULT_BINDING', 'GENERIC_TRIGGER_GATEWAY', 'REVIEWED_SPECIAL_HANDLER']),
     );
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(103);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(59);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(110);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(61);
   });
 
   it('maps the nine-ID Fiore slice with four generic extensions and five reviewed-special transcend rules', () => {
@@ -487,8 +487,8 @@ describe('Phase 3 full-roster capability mapping', () => {
       expect.arrayContaining(['GENERIC_CARD_ZONE', 'GENERIC_COST_PAYMENT', 'GENERIC_MODIFIER', 'GENERIC_POWER', 'GENERIC_TRIGGER_GATEWAY']),
     );
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(103);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(59);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(110);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(61);
   });
 
   it('maps the thirteen-ID Kadoc and Hinako slice with explicit ordinary dependencies and zero inherited contracts', () => {
@@ -710,8 +710,44 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(byId.get('master.fou.skill.ascension').phase3.blockedBy).toEqual(expect.arrayContaining(['SPECIAL_EFFECT:prevent_elimination', 'SPECIAL_EFFECT:shared_victory_link', 'SPECIAL_EFFECT:swap_victory_points']));
 
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(103);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(59);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(110);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(61);
+  });
+
+  it('maps the nine-ID Ciel/Celenike/Dan batch as seven generic extensions and two reviewed-special identities', () => {
+    const inventory = JSON.parse(readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8')) as any;
+    const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
+    const ids = [
+      'master.ciel.skill.ascension', 'master.ciel.skill.s1', 'master.ciel.skill.s1a',
+      'master.celenike.skill.ascension', 'master.celenike.skill.s1', 'master.celenike.skill.s1a',
+      'master.dan.skill.ascension', 'master.dan.skill.s1', 'master.dan.skill.s1a',
+    ];
+    const slice = entries.filter((entry: any) => ids.includes(entry.canonicalAbilityId));
+    const byId = new Map(slice.map((entry: any) => [entry.canonicalAbilityId, entry]));
+    expect(slice).toHaveLength(9);
+    expect(slice.every((entry: any) => entry.phase3.inheritedAcceptanceContracts.length === 0)).toBe(true);
+
+    for (const id of ['master.ciel.skill.s1','master.ciel.skill.s1a','master.celenike.skill.ascension','master.celenike.skill.s1','master.celenike.skill.s1a','master.dan.skill.s1','master.dan.skill.s1a']) {
+      expect(byId.get(id).phase3.classificationRoute).toBe('READY_GENERIC_EXTENSION');
+      expect(byId.get(id).phase3.blockedBy).toEqual([]);
+    }
+    for (const id of ['master.ciel.skill.ascension','master.dan.skill.ascension']) {
+      expect(byId.get(id).phase3.classificationRoute).toBe('SPECIAL_HANDLER_CANDIDATE');
+      expect(byId.get(id).phase3.requiredCapabilities).toContain('REVIEWED_SPECIAL_HANDLER');
+    }
+
+    expect(byId.get('master.ciel.skill.ascension').phase3.requiredCapabilities).toEqual(expect.arrayContaining(['CARD_ACTION_PLAY','GENERIC_CONDITION_EVALUATION','GENERIC_LIFECYCLE_POLICY','GENERIC_MODIFIER','GENERIC_POWER','REVIEWED_SPECIAL_HANDLER']));
+    expect(byId.get('master.ciel.skill.ascension').phase3.blockedBy).toContain('SPECIAL_EFFECT:grant_linked_ability_to_attribute_attacks');
+    expect(byId.get('master.celenike.skill.ascension').phase3.requiredCapabilities).toEqual(expect.arrayContaining(['GENERIC_CARD_ZONE','GENERIC_COST_PAYMENT','GENERIC_PENDING_INTERACTION','GENERIC_RESULT_BINDING','GENERIC_TARGET_SELECTION']));
+    expect(byId.get('master.celenike.skill.s1').phase3.requiredCapabilities).toEqual(expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION','GENERIC_RESOURCE_NUMERIC','GENERIC_STATUS_STATE','GENERIC_TRIGGER_GATEWAY']));
+    expect(byId.get('master.dan.skill.ascension').phase3.requiredCapabilities).toEqual(expect.arrayContaining(['CARD_ACTION_ADD_TO_ATTACK','GENERIC_CARD_ZONE','GENERIC_COST_PAYMENT','GENERIC_RESULT_BINDING','GENERIC_TARGET_SELECTION','REVIEWED_SPECIAL_HANDLER']));
+    expect(byId.get('master.dan.skill.ascension').phase3.blockedBy).toContain('SPECIAL_EFFECT:seed_attached_supply');
+    expect(byId.get('master.dan.skill.s1').phase3.requiredCapabilities).toEqual(expect.arrayContaining(['GENERIC_MOVEMENT','GENERIC_MODIFIER','GENERIC_TRIGGER_GATEWAY']));
+    expect(byId.get('master.dan.skill.s1a').phase3.requiredCapabilities).toEqual(expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION','GENERIC_MODIFIER','GENERIC_STATUS_STATE','GENERIC_TRIGGER_GATEWAY']));
+
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(110);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(61);
   });
 
   it('bridges current semantic card IDs to stable canonical IDs only by exact ID or unique owner/name identity', () => {

@@ -5559,6 +5559,607 @@
           }
         }
       ]
+    },
+    {
+      "id": "master.ciel.skill.ascension",
+      "printedText": "你的力量攻击获得+4威力和粉碎灵魂。（战斗阶段：你的交战对手若未控制【幸运】，其下回合无法从局势牌获得魔力和威力加成。）若你拥有8点及以上的魔力，你可以令【火葬式典】+2魔力消耗将其追加打出。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ciel.ascensionSkill#line=72",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你的力量攻击获得+4威力和粉碎灵魂。（战斗阶段：你的交战对手若未控制【幸运】，其下回合无法从局势牌获得魔力和威力加成。）若你拥有8点及以上的魔力，你可以令【火葬式典】+2魔力消耗将其追加打出。",
+        "sourceTextSha256": "5cd72e6fa8088a17273036fc57e9e5012d9e04a40787e66e80bbb60793a38d06"
+      },
+      "referencePrintedTextSha256": "5cd72e6fa8088a17273036fc57e9e5012d9e04a40787e66e80bbb60793a38d06",
+      "abilities": [
+        {
+          "id": "ciel.seventh-scripture-form.strength-power",
+          "printedClause": "你的力量攻击获得+4威力。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "value": 4,
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "attribute": "strength"
+                }
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "id": "ciel.seventh-scripture-form.grant-soul-crush",
+          "printedClause": "你的力量攻击获得粉碎灵魂。（战斗阶段：你的交战对手若未控制【幸运】，其下回合无法从局势牌获得魔力和威力加成。）",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "grant_linked_ability_to_attribute_attacks",
+              "attribute": "strength",
+              "linkedDefinitionId": "master.ciel.skill.s3",
+              "linkedAbilityId": "seventh-scripture-soul-crush"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "id": "ciel.seventh-scripture-form.append-cremation",
+          "printedClause": "若你拥有8点及以上的魔力，你可以令【火葬式典】+2魔力消耗将其追加打出。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_mana_at_least",
+              "value": 8
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_play_permission",
+              "operation": "allow_append",
+              "definitionId": "master.ciel.skill.s2"
+            },
+            {
+              "rule": "card_cost",
+              "operation": "add",
+              "definitionId": "master.ciel.skill.s2",
+              "value": 2,
+              "when": {
+                "playMode": "append"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.ciel.skill.s1",
+      "printedText": "你进行常规移动时无视交战状态，其他玩家进行常规移动时无视与你的交战状态。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ciel.skills[s1]#line=72",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你进行常规移动时无视交战状态，其他玩家进行常规移动时无视与你的交战状态。",
+        "sourceTextSha256": "666593d2bbea2c37f47c567e5a4db35b3ecf4a8cb8d1b93a4ed35f19a2ad963d"
+      },
+      "referencePrintedTextSha256": "666593d2bbea2c37f47c567e5a4db35b3ecf4a8cb8d1b93a4ed35f19a2ad963d",
+      "abilities": [
+        {
+          "id": "ciel.mediator.controller-ignore-engagement",
+          "printedClause": "你进行常规移动时无视交战状态。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "movement_engagement_restriction",
+              "operation": "ignore",
+              "subject": "controller",
+              "movementMode": "normal"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "ciel.mediator.others-ignore-ciel-engagement",
+          "printedClause": "其他玩家进行常规移动时无视与你的交战状态。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "movement_engagement_restriction",
+              "operation": "ignore_against_source_controller",
+              "subject": "other_players",
+              "movementMode": "normal"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.ciel.skill.s1a",
+      "printedText": "将【火葬式典】加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ciel.skills[s1a]#line=72",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "将【火葬式典】加入你的技能区。",
+        "sourceTextSha256": "2cdf7e6bcc7876757898867a73658374247440ab0d78a6a21d2b8f34cf19d486"
+      },
+      "referencePrintedTextSha256": "2cdf7e6bcc7876757898867a73658374247440ab0d78a6a21d2b8f34cf19d486",
+      "abilities": [
+        {
+          "id": "ciel.burial-agency.add-cremation",
+          "printedClause": "将【火葬式典】加入你的技能区。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.ciel.skill.s2",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.celenike.skill.ascension",
+      "printedText": "（将此牌加入你的技能区）\n痛苦钉刺-行动阶段：令【枯萎】的玩家选择花费2点魔力或弃置所有手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_celenike.ascensionSkill#line=243",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（将此牌加入你的技能区）\n痛苦钉刺-行动阶段：令【枯萎】的玩家选择花费2点魔力或弃置所有手牌。",
+        "sourceTextSha256": "3d4d29f6646db14536ec73aa4b826ce6d3f72aa752fce8afe2818379e9a94b0d"
+      },
+      "referencePrintedTextSha256": "3d4d29f6646db14536ec73aa4b826ce6d3f72aa752fce8afe2818379e9a94b0d",
+      "abilities": [
+        {
+          "id": "celenike.iron-stake.ascension-setup",
+          "printedClause": "（将此牌加入你的技能区）",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "reason": "ascension_setup"
+            }
+          ]
+        },
+        {
+          "id": "celenike.iron-stake.pain-stake",
+          "printedClause": "痛苦钉刺-行动阶段：令【枯萎】的玩家选择花费2点魔力或弃置所有手牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_one",
+              "target": {
+                "scope": "all_players",
+                "where": [
+                  {
+                    "type": "has_linked_status",
+                    "statusId": "withered"
+                  }
+                ]
+              },
+              "chooser": "each_target",
+              "iteration": "turn_order",
+              "minCount": 1,
+              "maxCount": 1,
+              "allowCancel": false,
+              "options": [
+                {
+                  "id": "pay-mana",
+                  "availability": {
+                    "type": "target_mana_at_least",
+                    "value": 2
+                  },
+                  "effects": [
+                    {
+                      "type": "pay_mana",
+                      "amount": 2,
+                      "subject": "decision_target"
+                    }
+                  ]
+                },
+                {
+                  "id": "discard-all",
+                  "effects": [
+                    {
+                      "type": "move_matching_cards",
+                      "subject": "decision_target",
+                      "source": "hand",
+                      "destination": "discard",
+                      "match": "all",
+                      "face": "up"
+                    }
+                  ]
+                }
+              ],
+              "payloadKey": "painStakeChoice"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.celenike.skill.s1",
+      "printedText": "当你战败时，令此战斗的所有胜者【枯萎】直至你于一回合内获得了4点及以上的战果。当你获胜时，偷取该战斗中所有【枯萎】的玩家各2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_celenike.skills[s1]#line=243",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你战败时，令此战斗的所有胜者【枯萎】直至你于一回合内获得了4点及以上的战果。当你获胜时，偷取该战斗中所有【枯萎】的玩家各2点战果。",
+        "sourceTextSha256": "3e9a338e58b3e495581e5e5e1707fcbbad089754646023a6359a2df962f37ae8"
+      },
+      "referencePrintedTextSha256": "3e9a338e58b3e495581e5e5e1707fcbbad089754646023a6359a2df962f37ae8",
+      "abilities": [
+        {
+          "id": "celenike.curse.apply-wither",
+          "printedClause": "当你战败时，令此战斗的所有胜者【枯萎】直至你于一回合内获得了4点及以上的战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "add_linked_status",
+              "target": "event_winners",
+              "statusId": "withered",
+              "source": "controller",
+              "linkage": "celenike_wither_source"
+            }
+          ]
+        },
+        {
+          "id": "celenike.curse.clear-wither",
+          "printedClause": "【枯萎】直至你于一回合内获得了4点及以上的战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.victory-points.changed"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_round_victory_points_gain_at_least",
+              "value": 4
+            }
+          ],
+          "effects": [
+            {
+              "type": "remove_linked_status",
+              "target": "all_players",
+              "statusId": "withered",
+              "source": "controller",
+              "linkage": "celenike_wither_source"
+            }
+          ]
+        },
+        {
+          "id": "celenike.curse.steal-on-win",
+          "printedClause": "当你获胜时，偷取该战斗中所有【枯萎】的玩家各2点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "transfer_victory_points",
+              "from": {
+                "scope": "combat_opponents",
+                "where": [
+                  {
+                    "type": "has_linked_status",
+                    "statusId": "withered"
+                  }
+                ]
+              },
+              "to": "controller",
+              "amount": 2,
+              "perTarget": true,
+              "clampToAvailable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.celenike.skill.s1a",
+      "printedText": "战斗阶段结束后，若你位于魔术工房，获得2点魔力并失去1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_celenike.skills[s1a]#line=243",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "战斗阶段结束后，若你位于魔术工房，获得2点魔力并失去1点战果。",
+        "sourceTextSha256": "49b4a664828e47cc0a4d16253154c540d77e819bcc9f79959a3b479ec294c94e"
+      },
+      "referencePrintedTextSha256": "49b4a664828e47cc0a4d16253154c540d77e819bcc9f79959a3b479ec294c94e",
+      "abilities": [
+        {
+          "id": "celenike.indulgence.combat-end-workshop",
+          "printedClause": "战斗阶段结束后，若你位于魔术工房，获得2点魔力并失去1点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "phase.transitioned"
+            },
+            {
+              "type": "event_previous_phase_is",
+              "phase": "combat"
+            },
+            {
+              "type": "location_is",
+              "locationId": "workshop"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_mana",
+              "target": "controller",
+              "amount": 2
+            },
+            {
+              "type": "lose_victory_points",
+              "target": "controller",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.dan.skill.ascension",
+      "printedText": "从游戏外将3张远隔操作和2张急行放置于此牌上。每回合你至多可将其中的一张牌追加打出（回合结束时该牌进入你的弃牌堆）。若如此，抽1张牌并将该牌移除。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_dan.ascensionSkill#line=171",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "从游戏外将3张远隔操作和2张急行放置于此牌上。每回合你至多可将其中的一张牌追加打出（回合结束时该牌进入你的弃牌堆）。若如此，抽1张牌并将该牌移除。",
+        "sourceTextSha256": "87036aaa390aac7ff7197635c8d45ed49a6a0fcf7808c1abb3629c944de2c40e"
+      },
+      "referencePrintedTextSha256": "87036aaa390aac7ff7197635c8d45ed49a6a0fcf7808c1abb3629c944de2c40e",
+      "abilities": [
+        {
+          "id": "dan.may-knight.seed-supply",
+          "printedClause": "从游戏外将3张远隔操作和2张急行放置于此牌上。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "seed_attached_supply",
+              "host": "source_card",
+              "source": "outside_game",
+              "cards": [
+                {
+                  "definitionId": "card.cardpreparation",
+                  "name": "远隔操作",
+                  "count": 3
+                },
+                {
+                  "definitionId": "card.cardsurveil",
+                  "name": "急行",
+                  "count": 2
+                }
+              ],
+              "face": "up"
+            }
+          ]
+        },
+        {
+          "id": "dan.may-knight.append-supply",
+          "printedClause": "每回合你至多可将其中的一张牌追加打出（回合结束时该牌进入你的弃牌堆）。若如此，抽1张牌并将该牌移除。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "attached_to_source",
+              "owner": "controller",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedSupplyIds"
+            },
+            {
+              "type": "pay_mana",
+              "subject": "controller",
+              "amountFormula": "selected_card_printed_mana_cost",
+              "payloadKey": "selectedSupplyIds"
+            },
+            {
+              "type": "move_selected_cards",
+              "payloadKey": "selectedSupplyIds",
+              "source": "attached",
+              "destination": "attack",
+              "playMode": "append",
+              "costMode": "printed",
+              "endRoundDestination": "discard"
+            },
+            {
+              "type": "draw_cards",
+              "target": "controller",
+              "count": 1,
+              "resultVar": "drawnCardIds"
+            },
+            {
+              "type": "remove_selected_cards",
+              "sourceBinding": "drawnCardIds",
+              "destination": "removed"
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "round",
+            "maxUses": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.dan.skill.s1",
+      "printedText": "当你部署于魔术工房，本回合你于深山町获得3点地利且于新都获得5点地利。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_dan.skills[s1]#line=171",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你部署于魔术工房，本回合你于深山町获得3点地利且于新都获得5点地利。",
+        "sourceTextSha256": "a4fbd860c220c88d72dd1e054f3ae9198f6a9a1d4d4e0d2ce227e1c8c64c2af9"
+      },
+      "referencePrintedTextSha256": "a4fbd860c220c88d72dd1e054f3ae9198f6a9a1d4d4e0d2ce227e1c8c64c2af9",
+      "abilities": [
+        {
+          "id": "dan.sniper.workshop-deployment",
+          "printedClause": "当你部署于魔术工房，本回合你于深山町获得3点地利且于新都获得5点地利。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.deployed"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_location_is",
+              "locationId": "workshop"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "deployment_advantage",
+              "operation": "set",
+              "value": 3,
+              "locationId": "mountain",
+              "subject": "controller",
+              "duration": "this_round"
+            },
+            {
+              "rule": "deployment_advantage",
+              "operation": "set",
+              "value": 5,
+              "locationId": "city",
+              "subject": "controller",
+              "duration": "this_round"
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.dan.skill.s1a",
+      "printedText": "若你移动至一处移动时恰好有两名对手的战场并于此处获胜时，你无法获得该战场的竞争战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_dan.skills[s1a]#line=171",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "若你移动至一处移动时恰好有两名对手的战场并于此处获胜时，你无法获得该战场的竞争战果。",
+        "sourceTextSha256": "31a638145700b9ea852dbf3cc52bbc4b7e7a5e34bd5577678d95f4f956736c3f"
+      },
+      "referencePrintedTextSha256": "31a638145700b9ea852dbf3cc52bbc4b7e7a5e34bd5577678d95f4f956736c3f",
+      "abilities": [
+        {
+          "id": "dan.honor.mark-two-opponent-move",
+          "printedClause": "若你移动至一处移动时恰好有两名对手的战场",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.moved"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_destination_opponent_count_equals",
+              "value": 2
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_player_flag",
+              "target": "controller",
+              "key": "danHonorEligibleBattlefield",
+              "value": "event.locationId"
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          }
+        },
+        {
+          "id": "dan.honor.no-competition-reward",
+          "printedClause": "并于此处获胜时，你无法获得该战场的竞争战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_won_combat"
+            },
+            {
+              "type": "event_location_matches_player_flag",
+              "key": "danHonorEligibleBattlefield"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "battlefield_competition_victory_points",
+              "operation": "forbid",
+              "subject": "controller",
+              "location": "event_location",
+              "duration": "this_resolution"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

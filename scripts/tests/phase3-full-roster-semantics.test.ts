@@ -956,6 +956,67 @@ describe('Phase 3 full-roster semantic normalization', () => {
     );
   });
 
+  it('grounds the nine-ID Ciel/Celenike/Dan batch with exact development text and source-first semantics', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.ciel.skill.ascension',
+      'master.ciel.skill.s1',
+      'master.ciel.skill.s1a',
+      'master.celenike.skill.ascension',
+      'master.celenike.skill.s1',
+      'master.celenike.skill.s1a',
+      'master.dan.skill.ascension',
+      'master.dan.skill.s1',
+      'master.dan.skill.s1a',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(9);
+    expect(slice.every((card) =>
+      card.source?.authority === 'DEVELOPMENT_TEXT' &&
+      card.source.document === 'Fate_Domination-开发版/data_masters.js' &&
+      card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+      createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256 &&
+      card.source.sourceTextSha256 === card.referencePrintedTextSha256
+    )).toBe(true);
+
+    const cielAsc = slice.find((card) => card.id === 'master.ciel.skill.ascension');
+    expect(cielAsc?.abilities).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: 'ciel.seventh-scripture-form.strength-power' }),
+      expect.objectContaining({ id: 'ciel.seventh-scripture-form.grant-soul-crush', effects: [expect.objectContaining({ type: 'grant_linked_ability_to_attribute_attacks', attribute: 'strength', linkedDefinitionId: 'master.ciel.skill.s3' })] }),
+      expect.objectContaining({ id: 'ciel.seventh-scripture-form.append-cremation', conditions: [expect.objectContaining({ type: 'controller_mana_at_least', value: 8 })] }),
+    ]));
+
+    const celenike = slice.find((card) => card.id === 'master.celenike.skill.s1');
+    expect(celenike?.abilities).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: 'celenike.curse.apply-wither', effects: [expect.objectContaining({ type: 'add_linked_status', statusId: 'withered' })] }),
+      expect.objectContaining({ id: 'celenike.curse.clear-wither', effects: [expect.objectContaining({ type: 'remove_linked_status', statusId: 'withered' })] }),
+      expect.objectContaining({ id: 'celenike.curse.steal-on-win', effects: [expect.objectContaining({ type: 'transfer_victory_points', amount: 2, perTarget: true })] }),
+    ]));
+
+    const stake = slice.find((card) => card.id === 'master.celenike.skill.ascension');
+    const pain = stake?.abilities.find((ability) => ability.id === 'celenike.iron-stake.pain-stake');
+    expect(pain?.effects).toContainEqual(expect.objectContaining({ type: 'choose_one', chooser: 'each_target', iteration: 'turn_order' }));
+    const choice = pain?.effects.find((effect) => effect.type === 'choose_one') as any;
+    expect(choice?.options).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: 'pay-mana', effects: [expect.objectContaining({ type: 'pay_mana', amount: 2 })] }),
+      expect.objectContaining({ id: 'discard-all', effects: [expect.objectContaining({ type: 'move_matching_cards', source: 'hand', destination: 'discard' })] }),
+    ]));
+
+    const danAsc = slice.find((card) => card.id === 'master.dan.skill.ascension');
+    expect(danAsc?.abilities).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: 'dan.may-knight.seed-supply', effects: [expect.objectContaining({ type: 'seed_attached_supply' })] }),
+      expect.objectContaining({
+        id: 'dan.may-knight.append-supply',
+        effects: expect.arrayContaining([
+          expect.objectContaining({ type: 'pay_mana', amountFormula: 'selected_card_printed_mana_cost' }),
+          expect.objectContaining({ type: 'move_selected_cards', source: 'attached', destination: 'attack', endRoundDestination: 'discard' }),
+          expect.objectContaining({ type: 'draw_cards', count: 1, resultVar: 'drawnCardIds' }),
+          expect.objectContaining({ type: 'remove_selected_cards', sourceBinding: 'drawnCardIds', destination: 'removed' }),
+        ]),
+      }),
+    ]));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1009,10 +1070,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 162,
-      blockedCount: 782,
+      sourceGroundedCount: 171,
+      blockedCount: 773,
       unclassifiedCount: 0,
-      structuredAbilityCount: 306,
+      structuredAbilityCount: 323,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
