@@ -3623,7 +3623,10 @@ Permitted final status:
 ## TASK P3-A-FB2-11-SYNC
 
 Owner: Codex A
-Status: READY
+Status: SYNCHRONIZED
+Branch: `codex/a-p3-fb2-11-round-number-formula-sync`
+Base: R33 `0121d500b3abda1e9ef4de45c9a266620aa20f45`
+Read: `docs/reports/2026-09-16-p3-a-fb2-11-round-number-formula-synchronization.md`
 Branch: `codex/a-p3-fb2-11-round-number-formula-sync`
 
 Goal: synchronize exact R33 facts, run fresh coverage/recertification, and if and only if R33 accepts the metric plus ten-member family reconciliation, dispatch P3-FM05 at exact batch size 10. A must not migrate authoring.
@@ -3631,7 +3634,7 @@ Goal: synchronize exact R33 facts, run fresh coverage/recertification, and if an
 ## TASK P3-FM05
 
 Owner: Codex S
-Status: BLOCKED_ON_P3_R33_AND_A_SYNC
+Status: READY
 Branch: `codex/s-p3-fm05-territory-creation`
 
 Prospective exact batch: the ten identical-text Territory Creation cards frozen in the FB2-11 handoff. Migration may start only after R33 accepts and A synchronizes the complete FB2-02 + FB2-11 dependency coverage.
@@ -3653,6 +3656,13 @@ Prospective exact batch: the ten identical-text Territory Creation cards frozen 
 - Exact prospective Territory Creation family is 10/10 text/source/handler/static-metadata identical and currently 0/10 canonical. Frozen F1 split is 5 block-free Resource + 5 scaling-blocked rows, independently judged classification drift only.
 - Accepted FB2-02 covers the deployment reward; accepted FB2-11 covers the only missing round-number formula dependency. The complete ten-card family is dependency-complete pending fresh A synchronization.
 - P3-A-FB2-11-SYNC is READY. P3-FM05 remains blocked until that synchronization dispatches it.
+
+## Full-Roster Dispatch State After P3-A-FB2-11-SYNC
+
+- R33 exact FB2-11 acceptance is synchronized; coverage KPI remains FM04-stable at `59/91/180`, raw `22/3/117/0/38/124`, compiled identity unchanged. Regenerated artifact drift is only timestamp plus seven static source-line +1 shifts and is intentionally uncommitted.
+- Frozen canonical-authoring overlap remains `69/944`; exact Territory Creation family remains `0/10` canonical and is dependency-complete under FB2-11 + FB2-02.
+- P3-FM05 is READY at exact batch size 10. S must not include Medea/Gilles or any other Reference family member outside the frozen identical-text group.
+- Actual Territory Power is frozen F1 `X=16-(round*2)` expressed by controlled AST; Reference static Power 2 is evidence metadata only. Final skill-zone rule is 8 mana.
 
 ## Prompt Templates
 
