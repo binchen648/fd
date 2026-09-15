@@ -3290,7 +3290,7 @@ Permitted final status: `MIGRATION_ACCEPTED` or `REVIEW_BLOCKED`.
 ## TASK P3-FB2-10
 
 Owner: Codex B2
-Status: READY
+Status: REVIEW_ACCEPTED
 Branch: `codex/b2-p3-fb2-10-saber-magic-resistance-r1`
 Base: exact P3-FB2-10 A-owned handoff commit
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
@@ -3364,7 +3364,7 @@ Completion status allowed:
 ## TASK P3-R29
 
 Owner: Codex R
-Status: READY_AFTER_P3_FB2_10
+Status: REVIEW_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact FB2-10 candidate SHA
 
 Goal: independently review the exact FB2-10 Magic Resistance Power sub-contract without implementing fixes or promoting broad TO15.
