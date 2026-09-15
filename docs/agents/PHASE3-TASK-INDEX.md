@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.8
+- Version: P3-TI-1.9
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2476,7 +2476,7 @@ Completion status allowed:
 ## TASK P3-FB2-02
 
 Owner: Codex B2
-Status: READY
+Status: REVIEW_ACCEPTED
 Branch: `codex/b2-p3-fb2-02-deployment-resource-r1`
 Base: exact P3-FB2-02 A-owned handoff commit
 Runtime baseline before handoff: `0d4426d8565157121a3e86f4cc6e10396c9366be`
@@ -2561,7 +2561,7 @@ Completion status allowed:
 ## TASK P3-R19
 
 Owner: Codex R
-Status: READY_AFTER_P3_FB2_02
+Status: REVIEW_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact FB2-02 candidate SHA
 
 Goal:
@@ -2592,6 +2592,13 @@ Completion status allowed:
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `REJECTED`
 
+## Full-Roster Dispatch State After FB2-02
+
+- P3-FB2-02 candidate `a37831a43d9949c6e9bb6eddbe9ac645e7754f44` is independently accepted by P3-R19 at `8f50df5f7acb74fc5c483a144796ca327c5aeb69`.
+- Six exact F1 identities now have complete membership against this narrow accepted deployment Resource Numeric contract: Anastasia SC1, Andersen SC1, Avicebron SC3, Da Vinci SC4, Semiramis SC2, Shakespeare SC1.
+- No roster authoring migration has occurred; A raw coverage remains unchanged.
+- P3-FM01 remains undispatched because its implementation plan requires `10-40` exact eligible IDs under one selected accepted capability; FB2-02 currently provides `6/10` of that minimum.
+- Next B2 dispatch must be selected by fresh capability membership analysis and remain in dependency order.
 ## Prompt Templates
 
 Codex A startup prompt:
