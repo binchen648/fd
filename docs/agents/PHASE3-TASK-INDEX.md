@@ -3481,7 +3481,7 @@ Permitted final status:
 ## TASK P3-A-FM04-IA-RECONCILIATION
 
 Owner: Codex A
-Status: RECONCILIATION_CANDIDATE
+Status: RECONCILIATION_ACCEPTED
 Branch: `codex/a-p3-fm04-planning`
 Base: R30 `27a112888058a3fe4dd5882bc95054e7346de4a5`
 Read: `docs/reports/2026-09-16-p3-a-fm04-independent-action-reconciliation.md`
@@ -3497,7 +3497,7 @@ Completion status allowed:
 ## TASK P3-R31
 
 Owner: Codex R
-Status: READY
+Status: SPECIAL_FAMILY_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact P3-A-FM04-IA-RECONCILIATION commit
 
 Goal: independently judge whether the frozen `SPECIAL_EFFECT:independent_action_rule` / Gil `gil_independent_action_rule` blockers are fully discharged for the exact eleven-member family by canonical Tomoe plus independently accepted TO08 and B21/R15 runtime contracts. Do not implement fixes.
