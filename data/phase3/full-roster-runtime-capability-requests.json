@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 721
+    "affectedIdentityCount": 736
   },
   "requests": [
     {
@@ -26587,6 +26587,7 @@
         "servant.ereshkigal.skill.sc-ereshkigal-1",
         "servant.gorgon.skill.sc-gorgon-3",
         "servant.illya.skill.sc-illya-7",
+        "servant.jaguarman.skill.sc-jaguarman-1",
         "servant.kagetora.skill.sc-kagetora-3",
         "servant.mozart.skill.sc-mozart-1"
       ],
@@ -27798,6 +27799,27 @@
           "sha256": "59b818d0589379d262623d674367f1757dab8942867461b3eda59203c2bee373"
         },
         {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/豹人.htm"
+        },
+        {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.jaguarman/豹人"
+        },
+        {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_jaguarman_1"
+        },
+        {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[69].skills[0].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
           "abilityId": "servant.kagetora.skill.sc-kagetora-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/枪兵/英文版/长尾景虎.htm"
@@ -27877,7 +27899,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 31,
+          "shared_handler": 32,
           "specific_handler": 15
         },
         "handlerCount": 28,
@@ -48630,12 +48652,26 @@
         "servant.jack.skill.sc-jack-1",
         "servant.jack.skill.sc-jack-2",
         "servant.jack.skill.sc-jack-3",
+        "servant.jaguarman.skill.sc-jaguarman-2",
+        "servant.jaguarman.skill.sc-jaguarman-3",
         "servant.jason.skill.sc-jason-1",
         "servant.jason.skill.sc-jason-2",
         "servant.jason.skill.sc-jason-3",
+        "servant.jeanne-alter.skill.sc-jeanne-alter-1",
+        "servant.jeanne-alter.skill.sc-jeanne-alter-2",
+        "servant.jeanne-alter.skill.sc-jeanne-alter-3",
+        "servant.jeanne.skill.sc-jeanne-1",
+        "servant.jeanne.skill.sc-jeanne-2",
+        "servant.jeanne.skill.sc-jeanne-3",
+        "servant.jekyll.skill.sc-jekyll-1",
+        "servant.jekyll.skill.sc-jekyll-2",
+        "servant.jekyll.skill.sc-jekyll-3",
+        "servant.kagekiyo.skill.sc-kagekiyo-1",
+        "servant.kagekiyo.skill.sc-kagekiyo-3",
         "servant.kagetora.skill.sc-kagetora-1",
         "servant.kagetora.skill.sc-kagetora-2",
         "servant.kagetora.skill.sc-kagetora-4",
+        "servant.kama.skill.sc-kama-3",
         "servant.koyanskaya.skill.sc-koyanskaya-1",
         "servant.koyanskaya.skill.sc-koyanskaya-2",
         "servant.koyanskaya.skill.sc-koyanskaya-3",
@@ -59986,6 +60022,60 @@
           "sha256": "a5754840a3b642e112e80fae994e53f54d5110b51dd91f83a0020f495913e2a5"
         },
         {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/豹人.htm"
+        },
+        {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.jaguarman/豹人"
+        },
+        {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_jaguarman_2"
+        },
+        {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[69].skills[1].text#line=1",
+          "sha256": "190786f85b8044c150c2b911b0722cf8016e91e8662cc9d6fab99718d4402812"
+        },
+        {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[69].skills[1].text#line=2",
+          "sha256": "69989d962953d40387326e7ae71f65c0e4ecaafc740e2c1daa666d153cfacc39"
+        },
+        {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/豹人.htm"
+        },
+        {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.jaguarman/豹人"
+        },
+        {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_jaguarman_3"
+        },
+        {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[69].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[69].skills[2].text#line=2",
+          "sha256": "98c4ac2445c0fd993970a56360cf4936d3613b9175273315213a777cc7d0f4f3"
+        },
+        {
           "abilityId": "servant.jason.skill.sc-jason-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/剑士/英文版/伊阿宋.htm"
@@ -60071,6 +60161,285 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[29].skills[2].text#line=2",
           "sha256": "bb6ddff158926100e076ed009e2c54d4b23e815642605041cf3728a567a32599"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/贞德〔Alter_].htm"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.jeanne-alter/贞德[Alter]"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_jeanne_alter_1"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[164].skills[0].text#line=1",
+          "sha256": "00f84320ec2bc884acea4dbda9a4f230f48a30a901c4f4f872ef5977012e897b"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/贞德〔Alter_].htm"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.jeanne-alter/贞德[Alter]"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-2",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_jeanne_alter_2"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[164].skills[1].text#line=1",
+          "sha256": "686f2159e42649803daab3ff2985bce0a58f8fd125cc00897cbaf360cf6b9b83"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/贞德〔Alter_].htm"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.jeanne-alter/贞德[Alter]"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_jeanne_alter_3"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[164].skills[2].text#line=1",
+          "sha256": "8df60938fa1c4f70dac36ca33a4722e1ab5a5589b3dc9f1670bbbc82bd91de87"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/裁定者/英文版/贞德.htm"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.jeanne/贞德"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_jeanne_1"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[168].skills[0].text#line=1",
+          "sha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/裁定者/英文版/贞德.htm"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.jeanne/贞德"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-2",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_jeanne_2"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[168].skills[1].text#line=1",
+          "sha256": "d89231637253d5afaf4689fdd7020e208190261febeac841ae094037acccbd67"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/裁定者/英文版/贞德.htm"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.jeanne/贞德"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_jeanne_3"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[168].skills[2].text#line=1",
+          "sha256": "b9d813c72db86621151140e7c11d28579013420c023d2b2f0d61bebd70b76af9"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[168].skills[2].text#line=2",
+          "sha256": "23b3ab5703249e2f3445f85b3a482bd76e965bbf5d386dcbd6f8e5369951b9fb"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/亨利·杰基尔博士.htm"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.jekyll/Dr. Henry Jekyll"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_jekyll_1"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[129].skills[0].text#line=1",
+          "sha256": "9f9d827632ff5f39414dd4085797dcd4360fa951a52b77adee87c048fff83554"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[129].skills[0].text#line=2",
+          "sha256": "e47e0f79d37ec6dd93fba421c82961bdca9307dd9ca48b3552ed86d85ff06eac"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[129].skills[0].text#line=3",
+          "sha256": "2d5f6a165a083ede7dab2219f922ff948257bd7ff09ab25fb9231c3126cde351"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/亨利·杰基尔博士.htm"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.jekyll/Dr. Henry Jekyll"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_jekyll_2"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[129].skills[1].text#line=1",
+          "sha256": "0fdd8a5d05a7226af1c4399076397274a6663e8031312866dba8c2133e901f35"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[129].skills[1].text#line=2",
+          "sha256": "5a3f6b873a6099a8f61467fb8a7e82f1d905a54c09c1890dd6f427edbbdccaa2"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/亨利·杰基尔博士.htm"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.jekyll/Dr. Henry Jekyll"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_jekyll_3"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[129].skills[2].text#line=1",
+          "sha256": "ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[129].skills[2].text#line=2",
+          "sha256": "1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[129].skills[2].text#line=3",
+          "sha256": "0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[129].skills[2].text#line=4",
+          "sha256": "1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871"
+        },
+        {
+          "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/平景清.htm"
+        },
+        {
+          "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.kagekiyo/平景清"
+        },
+        {
+          "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_kagekiyo_1"
+        },
+        {
+          "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[166].skills[0].text#line=1",
+          "sha256": "43fa705ff0345d75db412102ba67dbe4a5172aa092fdf70b0ff77b8642f8cd74"
+        },
+        {
+          "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[166].skills[0].text#line=2",
+          "sha256": "beb4ee56a04d18e84536f3e43c12169868193e30b70618eab31351b7d9d38a56"
+        },
+        {
+          "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/平景清.htm"
+        },
+        {
+          "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.kagekiyo/平景清"
+        },
+        {
+          "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_kagekiyo_3"
+        },
+        {
+          "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[166].skills[2].text#line=1",
+          "sha256": "d1cba177bbadb7bae4afa0b53184d609a32ba0465ca7600eb4e34282320f8dec"
         },
         {
           "abilityId": "servant.kagetora.skill.sc-kagetora-1",
@@ -60170,6 +60539,45 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[75].skills[3].text#line=4",
           "sha256": "d159e931a4573863ddfe89af916aa90e5389326f0b86465b14d46b43063d3a52"
+        },
+        {
+          "abilityId": "servant.kama.skill.sc-kama-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/伽摩.htm"
+        },
+        {
+          "abilityId": "servant.kama.skill.sc-kama-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.kama/伽摩"
+        },
+        {
+          "abilityId": "servant.kama.skill.sc-kama-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_kama_3"
+        },
+        {
+          "abilityId": "servant.kama.skill.sc-kama-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[133].skills[2].text#line=1",
+          "sha256": "ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb"
+        },
+        {
+          "abilityId": "servant.kama.skill.sc-kama-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[133].skills[2].text#line=2",
+          "sha256": "1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25"
+        },
+        {
+          "abilityId": "servant.kama.skill.sc-kama-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[133].skills[2].text#line=3",
+          "sha256": "0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217"
+        },
+        {
+          "abilityId": "servant.kama.skill.sc-kama-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[133].skills[2].text#line=4",
+          "sha256": "1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871"
         },
         {
           "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-1",
@@ -61731,10 +62139,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 238,
-          "specific_handler": 239
+          "shared_handler": 242,
+          "specific_handler": 249
         },
-        "handlerCount": 298,
+        "handlerCount": 308,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

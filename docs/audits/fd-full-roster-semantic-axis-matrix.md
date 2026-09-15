@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=721
-blockedCount=223
+sourceGroundedCount=736
+blockedCount=208
 unclassifiedCount=0
-structuredAbilityCount=999
+structuredAbilityCount=1014
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 124 |
+| timing | `ACTION` | 125 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -266,15 +266,15 @@ structuredAbilityCount=999
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
 | effect | `EVENT_CARD_RULE` | 27 |
-| effect | `MOVE_PLAYER` | 25 |
+| effect | `MOVE_PLAYER` | 26 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
 | effect | `PLAY_SELECTED_CARDS` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
 | effect | `MOVE_SELECTED_CARDS` | 17 |
 | effect | `CLOSE_SOURCE_CARD` | 14 |
+| effect | `DEFEAT_PLAYER` | 14 |
 | effect | `LOSTBELT_EXPANSION` | 14 |
-| effect | `DEFEAT_PLAYER` | 13 |
 | effect | `FOREIGN_LIFE_RULE` | 13 |
 | effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 12 |
 | effect | `SET_PLAYER_FLAG` | 12 |
@@ -286,12 +286,12 @@ structuredAbilityCount=999
 | effect | `REVERSE_EFFECT_RULE` | 9 |
 | effect | `RULER_SEAL_RULE` | 9 |
 | effect | `SOURCE_CARD_POWER_BONUS` | 9 |
+| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 8 |
 | effect | `SCHEDULE_PHASE_EFFECT` | 8 |
 | effect | `DEDUCTION_RULE` | 7 |
 | effect | `IF_CONDITION` | 7 |
 | effect | `INDEPENDENT_ACTION_RULE` | 7 |
 | effect | `MOON_HOLY_GRAIL_RULE` | 6 |
-| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 6 |
 | effect | `SET_MANA` | 6 |
 | effect | `TERRAIN_POSITION_ADJUSTMENT` | 6 |
 | effect | `TRANSFER_VICTORY_POINTS` | 6 |
@@ -498,7 +498,18 @@ structuredAbilityCount=999
 | effect | `INFO_NOTE` | 1 |
 | effect | `INNOCENT_MONSTER_WAGER_RULE` | 1 |
 | effect | `ITEM_RULE` | 1 |
+| effect | `JAGUARMAN_AMBUSH_FOREST_RULE` | 1 |
+| effect | `JAGUARMAN_DEATH_CLAW_RULE` | 1 |
+| effect | `JEANNE_ALTER_ATTACK_COUNT_DEFEAT_RULE` | 1 |
+| effect | `JEANNE_ALTER_AVENGER_MOVEMENT_RULE` | 1 |
+| effect | `JEANNE_ALTER_LUCK_AVENGER_RULE` | 1 |
+| effect | `JEANNE_LUCK_BANNER_RULE` | 1 |
+| effect | `JEANNE_RULER_COMMAND_SPELL_RULE` | 1 |
+| effect | `JEKYLL_HYDE_ALTERNATION_RULE` | 1 |
+| effect | `JEKYLL_HYDE_NOBLE_PHANTASM_RULE` | 1 |
 | effect | `JUDGMENT_LUCK_DEFEAT_RULE` | 1 |
+| effect | `KAGEKIYO_HIDDEN_ATTACK_RULE` | 1 |
+| effect | `KAGEKIYO_VENGEANCE_RULE` | 1 |
 | effect | `LINKED_PLAYER_MANA_CONTRIBUTION` | 1 |
 | effect | `LOCATION_MERGE_RULE` | 1 |
 | effect | `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS` | 1 |
@@ -1523,31 +1534,31 @@ structuredAbilityCount=999
 | `servant.jack.skill.sc-jack-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MOTHER_DESIGNATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jack-dissociation` |
 | `servant.jack.skill.sc-jack-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DARK_FOG_EVENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jack-mist` |
 | `servant.jack.skill.sc-jack-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MARIA_THE_RIPPER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jack-maria` |
-| `servant.jaguarman.skill.sc-jaguarman-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
-| `servant.jaguarman.skill.sc-jaguarman-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jaguarman-dark-forest` |
-| `servant.jaguarman.skill.sc-jaguarman-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jaguarman-death-claw` |
+| `servant.jaguarman.skill.sc-jaguarman-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
+| `servant.jaguarman.skill.sc-jaguarman-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `JAGUARMAN_AMBUSH_FOREST_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jaguarman-dark-forest` |
+| `servant.jaguarman.skill.sc-jaguarman-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `JAGUARMAN_DEATH_CLAW_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jaguarman-death-claw` |
 | `servant.jason.skill.sc-jason-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DISPATCH_QUEST_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jason-argonaut-quest` |
 | `servant.jason.skill.sc-jason-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DISPATCH_QUEST_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jason-argonaut-quest` |
 | `servant.jason.skill.sc-jason-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DISPATCH_QUEST_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jason-argonaut-quest` |
-| `servant.jeanne-alter.skill.sc-jeanne-alter-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.defeat-engaged-if-more-attacks` |
-| `servant.jeanne-alter.skill.sc-jeanne-alter-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jeanne-alter-dragon-witch` |
-| `servant.jeanne-alter.skill.sc-jeanne-alter-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jeanne-alter-oblivion-correction` |
-| `servant.jeanne.skill.sc-jeanne-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
-| `servant.jeanne.skill.sc-jeanne-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.jeanne.skill.sc-jeanne-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.defeat-combat-participants` |
-| `servant.jekyll.skill.sc-jekyll-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jekyll-dangerous-game` |
-| `servant.jekyll.skill.sc-jekyll-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jekyll-lycanthropy` |
-| `servant.jekyll.skill.sc-jekyll-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
-| `servant.kagekiyo.skill.sc-kagekiyo-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagekiyo-azamaru` |
+| `servant.jeanne-alter.skill.sc-jeanne-alter-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `JEANNE_ALTER_ATTACK_COUNT_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.defeat-engaged-if-more-attacks` |
+| `servant.jeanne-alter.skill.sc-jeanne-alter-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `JEANNE_ALTER_AVENGER_MOVEMENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jeanne-alter-dragon-witch` |
+| `servant.jeanne-alter.skill.sc-jeanne-alter-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `JEANNE_ALTER_LUCK_AVENGER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jeanne-alter-oblivion-correction` |
+| `servant.jeanne.skill.sc-jeanne-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `JEANNE_RULER_COMMAND_SPELL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
+| `servant.jeanne.skill.sc-jeanne-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `JEANNE_LUCK_BANNER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.jeanne.skill.sc-jeanne-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DEFEAT_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.defeat-combat-participants` |
+| `servant.jekyll.skill.sc-jekyll-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `JEKYLL_HYDE_ALTERNATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jekyll-dangerous-game` |
+| `servant.jekyll.skill.sc-jekyll-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `JEKYLL_HYDE_NOBLE_PHANTASM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jekyll-lycanthropy` |
+| `servant.jekyll.skill.sc-jekyll-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
+| `servant.kagekiyo.skill.sc-kagekiyo-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KAGEKIYO_HIDDEN_ATTACK_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagekiyo-azamaru` |
 | `servant.kagekiyo.skill.sc-kagekiyo-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved` | `EVENT_LOCATION_EQUALS_CONTROLLER`, `EVENT_PLAYER_LOST_COMBAT`, `SOURCE_OWNED` | `NONE` | `BRANCH_CHOICE`, `CHOOSE_ONE_CARD` | `DRAW_CARDS`, `TRANSFER_SELECTED_CARDS` | `BRANCH_CHOICE`, `CHOOSE_ONE_CARD` | `NONE` | `NONE` | `FACE_DOWN`, `FACE_UP` | `payload:selectedInstanceIds` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.structured-skill` |
-| `servant.kagekiyo.skill.sc-kagekiyo-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagekiyo-never-dies` |
+| `servant.kagekiyo.skill.sc-kagekiyo-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KAGEKIYO_VENGEANCE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagekiyo-never-dies` |
 | `servant.kagetora.skill.sc-kagetora-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagetora-god-of-war` |
 | `servant.kagetora.skill.sc-kagetora-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OPPONENT_MANA_BORROW_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagetora-eight-phase` |
 | `servant.kagetora.skill.sc-kagetora-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
 | `servant.kagetora.skill.sc-kagetora-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagetora-ruler-seal` |
 | `servant.kama.skill.sc-kama-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `BRANCH_CHOICE`, `CHOOSE_ONE_LOCATION` | `CLOSE_SOURCE_CARD`, `COMBAT_POWER_BONUS`, `LOSE_MANA` | `BRANCH_CHOICE`, `CHOOSE_ONE_LOCATION` | `cleanup:remain_active`, `duration:while_active` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.structured-skill` |
 | `servant.kama.skill.sc-kama-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `player.entered-location`, `round.ended` | `AT_BATTLEFIELD`, `EVENT_LOCATION_NOT`, `EVENT_LOCATION_NOT_CONTROLLER`, `EVENT_PLAYER_IS_OPPONENT`, `PLAYER_FLAG_NUMBER_EQUALS_EVENT_FIELD`, `SOURCE_ACTIVE` | `NONE` | `NONE` | `CLEAR_PLAYER_FLAG`, `CLOSE_SOURCE_CARD`, `SET_PLAYER_FLAG`, `TRANSFER_VICTORY_POINTS` | `NONE` | `duration:while_active` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION` | `core.structured-skill` |
-| `servant.kama.skill.sc-kama-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
+| `servant.kama.skill.sc-kama-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
 | `servant.karna.skill.sc-karna-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.karna-victory-for-power` |
 | `servant.karna.skill.sc-karna-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.karna-sun-armor` |
 | `servant.karna.skill.sc-karna-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.karna-next-round-defeat` |
