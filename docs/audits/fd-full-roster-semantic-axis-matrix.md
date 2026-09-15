@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=813
-blockedCount=131
+sourceGroundedCount=829
+blockedCount=115
 unclassifiedCount=0
-structuredAbilityCount=1091
+structuredAbilityCount=1107
 
 ## Axis Value Counts
 
@@ -287,14 +287,14 @@ structuredAbilityCount=1091
 | effect | `DREAM_SUMMON_RULE` | 9 |
 | effect | `RULER_SEAL_RULE` | 9 |
 | effect | `SOURCE_CARD_POWER_BONUS` | 9 |
+| effect | `INDEPENDENT_ACTION_RULE` | 8 |
 | effect | `SCHEDULE_PHASE_EFFECT` | 8 |
 | effect | `DEDUCTION_RULE` | 7 |
 | effect | `IF_CONDITION` | 7 |
-| effect | `INDEPENDENT_ACTION_RULE` | 7 |
+| effect | `TERRITORY_CONSTRUCTION_SCALING_RULE` | 7 |
 | effect | `MOON_HOLY_GRAIL_RULE` | 6 |
 | effect | `SET_MANA` | 6 |
 | effect | `TERRAIN_POSITION_ADJUSTMENT` | 6 |
-| effect | `TERRITORY_CONSTRUCTION_SCALING_RULE` | 6 |
 | effect | `TRANSFER_VICTORY_POINTS` | 6 |
 | effect | `ADD_STATUS` | 5 |
 | effect | `DUAL_SERVANT_RULE` | 5 |
@@ -587,12 +587,26 @@ structuredAbilityCount=1091
 | effect | `MOON_HOLY_GRAIL_RESET_RULE` | 1 |
 | effect | `MORGAN_BERSERKER_SHIFT_RULE` | 1 |
 | effect | `MORGAN_IDEAL_VICTORY_RULE` | 1 |
+| effect | `MORIARTY_AUGMENTATION_RULE` | 1 |
+| effect | `MORIARTY_SETTLEMENT_RULE` | 1 |
+| effect | `MORIARTY_ULTIMATE_CRIME_RULE` | 1 |
 | effect | `MORPH_STACK_RULE` | 1 |
 | effect | `MOTHER_DESIGNATION_RULE` | 1 |
 | effect | `MURDER_IMPULSE_THRESHOLD_RULE` | 1 |
 | effect | `MYSTIC_CODE_RULE` | 1 |
 | effect | `MYSTIC_CODE_UPGRADE_RULE` | 1 |
+| effect | `NEMO_NAUTILUS_RULE` | 1 |
+| effect | `NEMO_SEA_ROUTE_RULE` | 1 |
+| effect | `NEMO_SPLIT_THOUGHT_RULE` | 1 |
+| effect | `NIGHTINGALE_CRIMEAN_ANGEL_RULE` | 1 |
+| effect | `NIGHTINGALE_POISON_PURGE_RULE` | 1 |
+| effect | `NIGHTINGALE_STEEL_NURSING_RULE` | 1 |
+| effect | `NITOCRIS_BURIAL_RULE` | 1 |
+| effect | `NITOCRIS_NECROMIRROR_RULE` | 1 |
+| effect | `NITOCRIS_SACRED_RITE_RULE` | 1 |
 | effect | `NOBLE_WEAPON_POWER_TRANSFORM_RULE` | 1 |
+| effect | `NOBUNAGA_HELLFIRE_RULE` | 1 |
+| effect | `NOBUNAGA_THREE_LINE_RULE` | 1 |
 | effect | `NOOP` | 1 |
 | effect | `NO_BATTLE_VP_LOSS_RESIDUAL_EXTENSION_RULE` | 1 |
 | effect | `OFFBOARD_BATTLE_TAKEOVER_RULE` | 1 |
@@ -1729,12 +1743,12 @@ structuredAbilityCount=1091
 | `servant.morgan.skill.sc-morgan-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MORGAN_IDEAL_VICTORY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.morgan-end-of-world` |
 | `servant.morgan.skill.sc-morgan-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MORGAN_BERSERKER_SHIFT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.morgan-infinity-mirror` |
 | `servant.morgan.skill.sc-morgan-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_COMMAND_SPELL_BINDING_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
-| `servant.moriarty.skill.sc-moriarty-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.moriarty-wicked-charisma` |
-| `servant.moriarty.skill.sc-moriarty-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.moriarty-spider-web` |
-| `servant.moriarty.skill.sc-moriarty-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.moriarty-dynamics` |
+| `servant.moriarty.skill.sc-moriarty-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MORIARTY_AUGMENTATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.moriarty-wicked-charisma` |
+| `servant.moriarty.skill.sc-moriarty-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MORIARTY_SETTLEMENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.moriarty-spider-web` |
+| `servant.moriarty.skill.sc-moriarty-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MORIARTY_ULTIMATE_CRIME_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.moriarty-dynamics` |
 | `servant.mozart.skill.sc-mozart-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION`, `OUTPOST` | `round.started` | `SOURCE_ACTIVE` | `NONE` | `NONE` | `SCHEDULE_EFFECT` | `NONE` | `duration:this_round` | `rule:card_power:add`, `rule:movement_destinations:forbid` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.mozart.skill.sc-mozart-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `card.played`, `combat.resolved` | `EVENT_DEFINITION_IS_SELF`, `EVENT_FACE_IS`, `EVENT_PLAYER_IS_CONTROLLER`, `PLAYER_FLAG_NUMBER_CURRENT_ROUND` | `NONE` | `NONE` | `LOSE_VICTORY_POINTS`, `SET_PLAYER_FLAG` | `NONE` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `COMBAT_EVENT` | `core.structured-skill` |
-| `servant.mozart.skill.sc-mozart-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
+| `servant.mozart.skill.sc-mozart-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TERRITORY_CONSTRUCTION_SCALING_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
 | `servant.muramasa.skill.sc-muramasa-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REMOVED_CARD_MEMORY_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.muramasa.skill.sc-muramasa-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REMOVED_CARD_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.muramasa-imperfect-edge` |
 | `servant.muramasa.skill.sc-muramasa-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ATTRIBUTE_CHAIN_RULE`, `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
@@ -1743,21 +1757,21 @@ structuredAbilityCount=1091
 | `servant.musashi.skill.sc-musashi-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `SET_OPPONENT_ATTRIBUTE_POWER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
 | `servant.napoleon.skill.sc-napoleon-1` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `AT_BATTLEFIELD`, `CARD_COUNT_AT_LEAST`, `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_CARD` | `NONE` | `CHOOSE_ONE_CARD` | `cleanup:remain_active`, `duration:this_round` | `rule:combat_reward_distribution:replace`, `rule:combat_winner_inclusion:allow`, `rule:defeat:ignore` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:selectedInstanceIds` | `COMBAT_CONDITION`, `COMBAT_RULE_MODIFIER` | `core.structured-skill` |
 | `servant.napoleon.skill.sc-napoleon-2` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `ENGAGED_OPPONENT_VICTORY_POINTS_GREATER_THAN_CONTROLLER`, `SOURCE_ACTIVE` | `NONE` | `CHOOSE_ONE_CARD` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `CHOOSE_ONE_CARD` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |
-| `servant.napoleon.skill.sc-napoleon-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
-| `servant.nemo.skill.sc-nemo-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nemo-sea-god-blessing` |
-| `servant.nemo.skill.sc-nemo-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nemo-split-thinking` |
-| `servant.nemo.skill.sc-nemo-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nemo-nautilus` |
+| `servant.napoleon.skill.sc-napoleon-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
+| `servant.nemo.skill.sc-nemo-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NEMO_SEA_ROUTE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nemo-sea-god-blessing` |
+| `servant.nemo.skill.sc-nemo-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NEMO_SPLIT_THOUGHT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nemo-split-thinking` |
+| `servant.nemo.skill.sc-nemo-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NEMO_NAUTILUS_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nemo-nautilus` |
 | `servant.nero.skill.sc-nero-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved`, `round.ending` | `EVENT_PLAYER_WON_COMBAT`, `PLAYER_FLAG_NUMBER_NOT_CURRENT_ROUND`, `SOURCE_ACTIVE` | `NONE` | `NONE` | `CLOSE_SOURCE_CARD`, `GAIN_VICTORY_POINTS` | `NONE` | `cleanup:remain_active`, `duration:while_active`, `starts:immediate` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.structured-skill` |
 | `servant.nero.skill.sc-nero-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `CHOOSE_N_CARDS` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS`, `REMOVE_CARDS_IN_ZONE` | `CHOOSE_N_CARDS` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |
 | `servant.nero.skill.sc-nero-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TURN_ORDER_REPOSITION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nero-emperor-privilege` |
-| `servant.nightingale.skill.sc-nightingale-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nightingale-pledge` |
-| `servant.nightingale.skill.sc-nightingale-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nightingale-iron-nurse` |
-| `servant.nightingale.skill.sc-nightingale-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nightingale-angel` |
-| `servant.nitocris.skill.sc-nitocris-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nitocris-entomb` |
-| `servant.nitocris.skill.sc-nitocris-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nitocris-entomb` |
-| `servant.nitocris.skill.sc-nitocris-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nitocris-entomb` |
-| `servant.nobunaga.skill.sc-nobunaga-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nobunaga-papiyas` |
-| `servant.nobunaga.skill.sc-nobunaga-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nobunaga-three-line-formation` |
+| `servant.nightingale.skill.sc-nightingale-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NIGHTINGALE_POISON_PURGE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nightingale-pledge` |
+| `servant.nightingale.skill.sc-nightingale-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NIGHTINGALE_STEEL_NURSING_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nightingale-iron-nurse` |
+| `servant.nightingale.skill.sc-nightingale-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NIGHTINGALE_CRIMEAN_ANGEL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nightingale-angel` |
+| `servant.nitocris.skill.sc-nitocris-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NITOCRIS_BURIAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nitocris-entomb` |
+| `servant.nitocris.skill.sc-nitocris-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NITOCRIS_NECROMIRROR_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nitocris-entomb` |
+| `servant.nitocris.skill.sc-nitocris-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NITOCRIS_SACRED_RITE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nitocris-entomb` |
+| `servant.nobunaga.skill.sc-nobunaga-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NOBUNAGA_HELLFIRE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nobunaga-papiyas` |
+| `servant.nobunaga.skill.sc-nobunaga-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NOBUNAGA_THREE_LINE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nobunaga-three-line-formation` |
 | `servant.nobunaga.skill.sc-nobunaga-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved`, `player.defeated` | `EVENT_PLAYER_IS_CONTROLLER`, `EVENT_PLAYER_LOST_COMBAT` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `LOSE_VICTORY_POINTS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.structured-skill` |
 | `servant.nursery.skill.sc-nursery-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nursery-package` |
 | `servant.nursery.skill.sc-nursery-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:while_active` | `rule:skill_use:forbid` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |

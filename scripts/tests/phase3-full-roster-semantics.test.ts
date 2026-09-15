@@ -1641,6 +1641,15 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.morgan.skill.sc-morgan-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'ruler_command_spell_binding_rule'})])}));
   });
 
+  it('grounds the sixteen-ID Moriarty/Mozart/Napoleon/Nemo/Nightingale/Nitocris/Nobunaga slice with shared class-rule reuse', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.moriarty.skill.sc-moriarty-1","servant.moriarty.skill.sc-moriarty-2","servant.moriarty.skill.sc-moriarty-3","servant.mozart.skill.sc-mozart-3","servant.napoleon.skill.sc-napoleon-3","servant.nemo.skill.sc-nemo-1","servant.nemo.skill.sc-nemo-2","servant.nemo.skill.sc-nemo-3","servant.nightingale.skill.sc-nightingale-1","servant.nightingale.skill.sc-nightingale-2","servant.nightingale.skill.sc-nightingale-3","servant.nitocris.skill.sc-nitocris-1","servant.nitocris.skill.sc-nitocris-2","servant.nitocris.skill.sc-nitocris-3","servant.nobunaga.skill.sc-nobunaga-1","servant.nobunaga.skill.sc-nobunaga-2"]); const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(16); expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256 && c.source.sourceFileSha256.length===64)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.mozart.skill.sc-mozart-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'territory_construction_scaling_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.napoleon.skill.sc-napoleon-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'independent_action_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.moriarty.skill.sc-moriarty-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'moriarty_augmentation_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.nitocris.skill.sc-nitocris-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'nitocris_necromirror_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1694,10 +1703,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 813,
-      blockedCount: 131,
+      sourceGroundedCount: 829,
+      blockedCount: 115,
       unclassifiedCount: 0,
-      structuredAbilityCount: 1091,
+      structuredAbilityCount: 1107,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
