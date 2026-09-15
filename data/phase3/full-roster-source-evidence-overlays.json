@@ -26914,6 +26914,400 @@
         }
       ],
       "referencePrintedTextSha256": "d0ba9965338bcd719d3631256f57144ff71363113069c44dfb4225af5296d0bd"
+    },
+    {
+      "id": "servant.jaguarman.skill.sc-jaguarman-1",
+      "printedText": "行动阶段：移动至除魔术工房外的任意地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_jaguarman_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "行动阶段：移动至除魔术工房外的任意地点。",
+        "sourceTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+      },
+      "abilities": [
+        {
+          "id": "jaguarman.sc-jaguarman-1.semantic",
+          "printedClause": "行动阶段：移动至除魔术工房外的任意地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "move_player",
+              "scope": "controller",
+              "destinationRule": "any_location_except_workshop"
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+    },
+    {
+      "id": "servant.jaguarman.skill.sc-jaguarman-2",
+      "printedText": "被动：当你进入侦察时，可以将此牌加入攻击。\n残留：与对手战斗后，关闭此牌。若你本回合进行了移动或重新部署，此牌威力翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_jaguarman_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "被动：当你进入侦察时，可以将此牌加入攻击。\n残留：与对手战斗后，关闭此牌。若你本回合进行了移动或重新部署，此牌威力翻倍。",
+        "sourceTextSha256": "c22699a8f28cc6d97c3785b1f067de86446d56ad563eadf26be5b20d39ff7535"
+      },
+      "abilities": [
+        {
+          "id": "jaguarman.sc-jaguarman-2.semantic",
+          "printedClause": "被动：当你进入侦察时，可以将此牌加入攻击。\n残留：与对手战斗后，关闭此牌。若你本回合进行了移动或重新部署，此牌威力翻倍。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "jaguarman_ambush_forest_rule",
+              "operation": "passive_on_enter_scout_may_add_source_to_attack_residual_after_battle_with_opponent_close_source_if_moved_or_redeployed_this_round_double_source_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c22699a8f28cc6d97c3785b1f067de86446d56ad563eadf26be5b20d39ff7535"
+    },
+    {
+      "id": "servant.jaguarman.skill.sc-jaguarman-3",
+      "printedText": "【真名解放】\n行动阶段：你可将一名相邻地点未处于交战状态的对手移动至你的战场。你的战斗中，战力小于12的对手于战斗阶段结束后失去2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_jaguarman_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n行动阶段：你可将一名相邻地点未处于交战状态的对手移动至你的战场。你的战斗中，战力小于12的对手于战斗阶段结束后失去2点战果。",
+        "sourceTextSha256": "9da88534a23a56748305ecaecee184b0a168c076f63da58dfea507915df21d1c"
+      },
+      "abilities": [
+        {
+          "id": "jaguarman.sc-jaguarman-3.semantic",
+          "printedClause": "【真名解放】\n行动阶段：你可将一名相邻地点未处于交战状态的对手移动至你的战场。你的战斗中，战力小于12的对手于战斗阶段结束后失去2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "jaguarman_death_claw_rule",
+              "operation": "true_name_reveal_action_may_pull_adjacent_unengaged_opponent_to_controller_battlefield_after_combat_phase_opponents_in_controller_combat_with_power_below_12_lose_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "9da88534a23a56748305ecaecee184b0a168c076f63da58dfea507915df21d1c"
+    },
+    {
+      "id": "servant.jeanne.skill.sc-jeanne-1",
+      "printedText": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_jeanne_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+        "sourceTextSha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
+      },
+      "abilities": [
+        {
+          "id": "jeanne.sc-jeanne-1.semantic",
+          "printedClause": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ruler_command_spell_binding_rule",
+              "operation": "source_and_effects_cannot_be_copied_or_stolen_three_times_per_game_action_give_two_other_least_bound_players_ruler_command_seals_and_only_binding_ruler_may_use_them_on_bound_players_during_own_action"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
+    },
+    {
+      "id": "servant.jeanne.skill.sc-jeanne-2",
+      "printedText": "【真名解放】被动/战斗阶段：场上每有一张正面表示的【幸运】牌，便获得合计威力+2。行动阶段：所有玩家抽一张牌。所有【幸运】牌获得：“被动/战斗阶段：打出此牌。”",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_jeanne_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】被动/战斗阶段：场上每有一张正面表示的【幸运】牌，便获得合计威力+2。行动阶段：所有玩家抽一张牌。所有【幸运】牌获得：“被动/战斗阶段：打出此牌。”",
+        "sourceTextSha256": "d89231637253d5afaf4689fdd7020e208190261febeac841ae094037acccbd67"
+      },
+      "abilities": [
+        {
+          "id": "jeanne.sc-jeanne-2.semantic",
+          "printedClause": "【真名解放】被动/战斗阶段：场上每有一张正面表示的【幸运】牌，便获得合计威力+2。行动阶段：所有玩家抽一张牌。所有【幸运】牌获得：“被动/战斗阶段：打出此牌。”",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "jeanne_luck_banner_rule",
+              "operation": "true_name_reveal_passive_combat_gain_2_total_power_per_face_up_luck_action_all_players_draw_1_and_all_luck_gain_passive_combat_play_this_card"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d89231637253d5afaf4689fdd7020e208190261febeac841ae094037acccbd67"
+    },
+    {
+      "id": "servant.jeanne.skill.sc-jeanne-3",
+      "printedText": "【真名解放】<每局游戏限一次>\n战斗阶段：使所有参与这场战斗的玩家【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_jeanne_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】<每局游戏限一次>\n战斗阶段：使所有参与这场战斗的玩家【败北】。",
+        "sourceTextSha256": "a9b8bdf15065634e1e185a8bfc161d373260ccdcc6b9b5dfc81adf7e82ee915a"
+      },
+      "abilities": [
+        {
+          "id": "jeanne.sc-jeanne-3.semantic",
+          "printedClause": "【真名解放】<每局游戏限一次>\n战斗阶段：使所有参与这场战斗的玩家【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "jeanne_sacrificial_defeat_rule",
+              "operation": "true_name_reveal_once_per_game_combat_defeat_all_participants_in_this_combat"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "a9b8bdf15065634e1e185a8bfc161d373260ccdcc6b9b5dfc81adf7e82ee915a"
+    },
+    {
+      "id": "servant.jeanne-alter.skill.sc-jeanne-alter-1",
+      "printedText": "【真名解放】战斗阶段：若你激活的攻击数量多于与你交战的所有玩家的攻击数量之和，使他们【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_jeanne_alter_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】战斗阶段：若你激活的攻击数量多于与你交战的所有玩家的攻击数量之和，使他们【败北】。",
+        "sourceTextSha256": "00f84320ec2bc884acea4dbda9a4f230f48a30a901c4f4f872ef5977012e897b"
+      },
+      "abilities": [
+        {
+          "id": "jeanne-alter.sc-jeanne-alter-1.semantic",
+          "printedClause": "【真名解放】战斗阶段：若你激活的攻击数量多于与你交战的所有玩家的攻击数量之和，使他们【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "attack_count_mass_defeat_rule",
+              "operation": "true_name_reveal_combat_if_controller_activated_attack_count_exceeds_sum_of_all_engaged_players_attack_counts_defeat_them"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "00f84320ec2bc884acea4dbda9a4f230f48a30a901c4f4f872ef5977012e897b"
+    },
+    {
+      "id": "servant.jeanne-alter.skill.sc-jeanne-alter-2",
+      "printedText": "残留：当你战败时关闭此牌。你的【复仇者】牌获得力量属性。行动阶段：关闭一张自己的【复仇者】，沿着箭头移动1或2个地点，与你位于同一战场的对手失去2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_jeanne_alter_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "残留：当你战败时关闭此牌。你的【复仇者】牌获得力量属性。行动阶段：关闭一张自己的【复仇者】，沿着箭头移动1或2个地点，与你位于同一战场的对手失去2点战果。",
+        "sourceTextSha256": "686f2159e42649803daab3ff2985bce0a58f8fd125cc00897cbaf360cf6b9b83"
+      },
+      "abilities": [
+        {
+          "id": "jeanne-alter.sc-jeanne-alter-2.semantic",
+          "printedClause": "残留：当你战败时关闭此牌。你的【复仇者】牌获得力量属性。行动阶段：关闭一张自己的【复仇者】，沿着箭头移动1或2个地点，与你位于同一战场的对手失去2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "avenger_movement_vp_rule",
+              "operation": "residual_close_source_when_controller_loses_battle_avenger_cards_gain_strength_action_close_own_avenger_move_1_or_2_along_arrows_and_same_battlefield_opponents_lose_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "686f2159e42649803daab3ff2985bce0a58f8fd125cc00897cbaf360cf6b9b83"
+    },
+    {
+      "id": "servant.jeanne-alter.skill.sc-jeanne-alter-3",
+      "printedText": "被动：每当一张或更多【幸运】放置入场时，弃置你的手牌然后抽3张牌。将因此弃置的【复仇者】加入攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_jeanne_alter_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动：每当一张或更多【幸运】放置入场时，弃置你的手牌然后抽3张牌。将因此弃置的【复仇者】加入攻击。",
+        "sourceTextSha256": "8df60938fa1c4f70dac36ca33a4722e1ab5a5589b3dc9f1670bbbc82bd91de87"
+      },
+      "abilities": [
+        {
+          "id": "jeanne-alter.sc-jeanne-alter-3.semantic",
+          "printedClause": "被动：每当一张或更多【幸运】放置入场时，弃置你的手牌然后抽3张牌。将因此弃置的【复仇者】加入攻击。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "luck_entry_discard_avenger_rule",
+              "operation": "passive_when_one_or_more_luck_enter_play_discard_controller_hand_draw_3_and_add_discarded_avenger_cards_to_attack"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8df60938fa1c4f70dac36ca33a4722e1ab5a5589b3dc9f1670bbbc82bd91de87"
+    },
+    {
+      "id": "servant.jekyll.skill.sc-jekyll-1",
+      "printedText": "被动：奇数回合中，杰基尔变为海德。此牌的效果无法失去。\n被动：杰基尔禁止使用【狂战士】。杰基尔移动时每个地点可以少花费1点魔力。\n被动：海德禁止使用【气息遮断】",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_jekyll_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "被动：奇数回合中，杰基尔变为海德。此牌的效果无法失去。\n被动：杰基尔禁止使用【狂战士】。杰基尔移动时每个地点可以少花费1点魔力。\n被动：海德禁止使用【气息遮断】",
+        "sourceTextSha256": "347c99d75e341d72e84e095ae9587bad8aeea98f5fa4d6e17740da0045bd54fa"
+      },
+      "abilities": [
+        {
+          "id": "jekyll.sc-jekyll-1.semantic",
+          "printedClause": "被动：奇数回合中，杰基尔变为海德。此牌的效果无法失去。\n被动：杰基尔禁止使用【狂战士】。杰基尔移动时每个地点可以少花费1点魔力。\n被动：海德禁止使用【气息遮断】",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "jekyll_hyde_identity_rule",
+              "operation": "passive_on_odd_rounds_jekyll_becomes_hyde_source_effect_cannot_be_lost_jekyll_cannot_use_berserker_and_movement_cost_per_location_minus_1_hyde_cannot_use_presence_concealment"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "347c99d75e341d72e84e095ae9587bad8aeea98f5fa4d6e17740da0045bd54fa"
+    },
+    {
+      "id": "servant.jekyll.skill.sc-jekyll-2",
+      "printedText": "你可以免费打出此牌，若如此做，你【真名解放】且下个回合你的威力为0。\n兽化症-战斗阶段：杰基尔和海德的非基础攻击+3威力。若杰基尔获得战斗胜利，其获得1点战果。海德无视【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_jekyll_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "你可以免费打出此牌，若如此做，你【真名解放】且下个回合你的威力为0。\n兽化症-战斗阶段：杰基尔和海德的非基础攻击+3威力。若杰基尔获得战斗胜利，其获得1点战果。海德无视【败北】。",
+        "sourceTextSha256": "87d447ccd35c448c2e72de186c83e794b1f193b06b4be4f66ef634c3730fb772"
+      },
+      "abilities": [
+        {
+          "id": "jekyll.sc-jekyll-2.semantic",
+          "printedClause": "你可以免费打出此牌，若如此做，你【真名解放】且下个回合你的威力为0。\n兽化症-战斗阶段：杰基尔和海德的非基础攻击+3威力。若杰基尔获得战斗胜利，其获得1点战果。海德无视【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "jekyll_hyde_beast_rule",
+              "operation": "may_play_free_if_so_true_name_reveal_and_next_round_controller_power_zero_combat_nonbasic_attacks_of_jekyll_and_hyde_plus_3_jekyll_battle_win_gain_1_vp_hyde_ignores_defeat"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "87d447ccd35c448c2e72de186c83e794b1f193b06b4be4f66ef634c3730fb772"
+    },
+    {
+      "id": "servant.jekyll.skill.sc-jekyll-3",
+      "printedText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_jekyll_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+        "sourceTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+      },
+      "abilities": [
+        {
+          "id": "jekyll.sc-jekyll-3.semantic",
+          "printedClause": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "presence_concealment_assassination_rule",
+              "operation": "combat_after_power_resolution_if_controller_below_all_top_power_opponents_no_other_opponent_above_controller_and_at_least_3_participants_defeat_all_top_power_engaged_opponents"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+    },
+    {
+      "id": "servant.kagekiyo.skill.sc-kagekiyo-1",
+      "printedText": "【真名解放】X=你控制的攻击数量的两倍（包括暗置攻击）。若X小于等于4，你拥有的魔力少于8点也可以打出此牌。\n万物必逝-战斗阶段：花费魔力消耗激活你的所有暗置攻击。你可以使用它们的行动阶段能力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_kagekiyo_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】X=你控制的攻击数量的两倍（包括暗置攻击）。若X小于等于4，你拥有的魔力少于8点也可以打出此牌。\n万物必逝-战斗阶段：花费魔力消耗激活你的所有暗置攻击。你可以使用它们的行动阶段能力。",
+        "sourceTextSha256": "8743793e86786beb3cb27e8dbea791f9d646aedd92fd5f1c4c978eecd33ab086"
+      },
+      "abilities": [
+        {
+          "id": "kagekiyo.sc-kagekiyo-1.semantic",
+          "printedClause": "【真名解放】X=你控制的攻击数量的两倍（包括暗置攻击）。若X小于等于4，你拥有的魔力少于8点也可以打出此牌。\n万物必逝-战斗阶段：花费魔力消耗激活你的所有暗置攻击。你可以使用它们的行动阶段能力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "kagekiyo_hidden_attack_noble_phantasm_rule",
+              "operation": "true_name_reveal_x_equals_twice_controller_attack_count_including_hidden_if_x_lte_4_may_play_with_mana_below_8_combat_pay_each_hidden_attack_mana_cost_to_activate_all_and_may_use_their_action_abilities"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8743793e86786beb3cb27e8dbea791f9d646aedd92fd5f1c4c978eecd33ab086"
+    },
+    {
+      "id": "servant.kagekiyo.skill.sc-kagekiyo-3",
+      "printedText": "复仇之怨念-被动：你的暗置攻击视为印刷威力为0并拥有“残留：你可以于回合结束时关闭此牌。”（其威力可以因效果被增加或减少）被动/前哨阶段：若你未控制暗置攻击，花费3点魔力，抽2张牌并将其暗置打出。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_kagekiyo_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "复仇之怨念-被动：你的暗置攻击视为印刷威力为0并拥有“残留：你可以于回合结束时关闭此牌。”（其威力可以因效果被增加或减少）被动/前哨阶段：若你未控制暗置攻击，花费3点魔力，抽2张牌并将其暗置打出。",
+        "sourceTextSha256": "d1cba177bbadb7bae4afa0b53184d609a32ba0465ca7600eb4e34282320f8dec"
+      },
+      "abilities": [
+        {
+          "id": "kagekiyo.sc-kagekiyo-3.semantic",
+          "printedClause": "复仇之怨念-被动：你的暗置攻击视为印刷威力为0并拥有“残留：你可以于回合结束时关闭此牌。”（其威力可以因效果被增加或减少）被动/前哨阶段：若你未控制暗置攻击，花费3点魔力，抽2张牌并将其暗置打出。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "kagekiyo_hidden_attack_vengeance_rule",
+              "operation": "passive_hidden_attacks_treated_as_printed_power_0_and_gain_residual_may_close_at_round_end_power_still_modifiable_outpost_if_no_hidden_attacks_pay_3_mana_draw_2_and_play_them_hidden"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d1cba177bbadb7bae4afa0b53184d609a32ba0465ca7600eb4e34282320f8dec"
+    },
+    {
+      "id": "servant.kama.skill.sc-kama-3",
+      "printedText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_kama_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+        "sourceTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+      },
+      "abilities": [
+        {
+          "id": "kama.sc-kama-3.semantic",
+          "printedClause": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "presence_concealment_assassination_rule",
+              "operation": "combat_after_power_resolution_if_controller_below_all_top_power_opponents_no_other_opponent_above_controller_and_at_least_3_participants_defeat_all_top_power_engaged_opponents"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
     }
   ]
 }
