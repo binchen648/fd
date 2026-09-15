@@ -572,3 +572,15 @@ Permitted final status:
 - For this exact sub-capability, F2 alignment and F3 runtime acceptance are satisfied. Full-roster F4 is not satisfied until an S migration batch selects exact F1 identities that also have an independently accepted parent runtime route, receives independent review, and A synchronizes burn-down.
 - This acceptance does not promote broad `GENERIC_COST_PAYMENT`, variable/X/optional/third-party/upkeep/replacement payment, command-seal/VP/discard/source-move costs, ordinary printed card costs, generic Resource Numeric, Interaction, or Card Action behavior.
 - The FB2-01 runtime/reviewer lane is released. The next legal step is an exact F1 membership scan against both the accepted fixed-cost component and already accepted parent semantic routes; cost-shape-only matches remain blocked.
+
+## P3-A FB2-02 Synchronization — 2026-09-16
+
+- P3-FB2-02 deployment Resource Numeric reward: `REVIEW_ACCEPTED` at exact candidate `a37831a43d9949c6e9bb6eddbe9ac645e7754f44`, independent P3-R19 evidence `8f50df5f7acb74fc5c483a144796ca327c5aeb69`.
+- Accepted scope is exactly a trusted `after_player_deployed_to_battlefield` event at a data-driven location, scoped to the deployed controller for this contract, with one or two fixed positive controller mana/VP adjustments settled through typed Resolution Data-flow.
+- The controller-scope rule is candidate-specific and preserves Ereshkigal's existing any-player deployment trigger.
+- Exact F1 membership newly aligned to this accepted runtime contract is 6 identities: Anastasia SC1, Andersen SC1, Avicebron SC3, Da Vinci SC4, Semiramis SC2, Shakespeare SC1. No authoring migration has occurred yet.
+- P3-FM01 remains undispatched because the first migration plan requires 10-40 exact IDs under one accepted capability; current FB2-02 same-contract readiness is `6/10` minimum.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled evidence remains definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, `70` cards, `14` characters, `0` blocking issues.
+- Regenerated coverage changed only `generatedAt` and static-evidence source line numbers; source fingerprint, counters, compiled identity, classifications, and evidence identities are unchanged, so the artifact drift is intentionally not committed.
+- Independent R19 evidence: typecheck PASS; focused compatibility `58/58`; rules regression `247/247`; deterministic generated-content PASS; full root CI `660/660`; identity/hot-file audit clean.
+- No broad Resource Numeric, Trigger, Movement, Card Zone, Interaction, Battle, Cost, or special-handler family is promoted by implication.
