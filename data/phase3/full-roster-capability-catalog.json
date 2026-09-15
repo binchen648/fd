@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 348,
-    "explicitBlockCount": 596,
+    "contractMappedCount": 365,
+    "explicitBlockCount": 579,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 192,
-      "SPECIAL_HANDLER_CANDIDATE": 154,
+      "READY_GENERIC_EXTENSION": 198,
+      "SPECIAL_HANDLER_CANDIDATE": 165,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 596,
+      "SOURCE_EVIDENCE_REQUIRED": 579,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -171,6 +171,18 @@
         },
         {
           "abilityId": "master.ryuunosuke.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -413,6 +425,18 @@
         },
         {
           "abilityId": "master.sakura.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -669,6 +693,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.shinji.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -888,6 +924,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.shinji.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1025,6 +1073,9 @@
         "master.kiritsugu.skill.s2",
         "master.maiya.skill.s2",
         "master.reines.skill.s2",
+        "master.shiki-ryougi.skill.s2",
+        "master.shiki-ryougi.skill.s3",
+        "master.shiki-tohno.skill.s2",
         "master.shishigou.skill.s2",
         "master.sieg.skill.s1",
         "master.sion.skill.s13",
@@ -1338,6 +1389,18 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.shinji.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1605,6 +1668,18 @@
         },
         {
           "abilityId": "master.sakura.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1879,6 +1954,18 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.shinji.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2146,6 +2233,18 @@
         },
         {
           "abilityId": "master.sakura.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2419,6 +2518,18 @@
         },
         {
           "abilityId": "master.sakura.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2851,6 +2962,30 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.shiki-nanaya.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-nanaya.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.shirou-emiya.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -3064,6 +3199,9 @@
         "master.roche.skill.s1a",
         "master.ryuunosuke.skill.ascension",
         "master.ryuunosuke.skill.s1",
+        "master.shiki-nanaya.skill.ascension",
+        "master.shiki-nanaya.skill.s1a",
+        "master.shiki-tohno.skill.ascension",
         "master.shinji.skill.s3",
         "master.taiga.skill.s1a",
         "master.tiamat.skill.s1a",
@@ -3139,6 +3277,10 @@
         "master.fujino.skill.s1",
         "master.hinako.skill.s1a",
         "master.kuzuki.skill.s1",
+        "master.shiki-nanaya.skill.s1",
+        "master.shiki-ryougi.skill.s1",
+        "master.shiki-ryougi.skill.s1a",
+        "master.shiki-tohno.skill.s1",
         "master.tokiomi.skill.s1",
         "master.wodime.skill.s1a"
       ],
@@ -3409,6 +3551,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.shiki-nanaya.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.shirou-emiya.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3602,6 +3752,8 @@
         "master.roche.skill.s2",
         "master.ryuunosuke.skill.ascension",
         "master.sakura.skill.ascension",
+        "master.shiki-nanaya.skill.ascension",
+        "master.shiki-ryougi.skill.s3",
         "master.shirou-emiya.skill.ascension",
         "master.shirou-emiya.skill.s2",
         "master.shirou-meal.skill.ascension",
@@ -3652,6 +3804,22 @@
         },
         {
           "abilityId": "master.kuzuki.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-nanaya.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -3823,6 +3991,10 @@
         "master.sakura.skill.s1",
         "master.sakura.skill.s2",
         "master.sakura.skill.s3",
+        "master.shiki-nanaya.skill.ascension",
+        "master.shiki-nanaya.skill.s1a",
+        "master.shiki-nanaya.skill.s2",
+        "master.shiki-tohno.skill.s4",
         "master.shinji.skill.ascension",
         "master.shinji.skill.s1",
         "master.shinji.skill.s2",
@@ -3949,6 +4121,7 @@
         "master.ophelia.skill.s2",
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s1b",
+        "master.shiki-tohno.skill.s2",
         "master.sion.skill.s13",
         "master.zouken.skill.ascension",
         "master.zouken.skill.s3",
@@ -4406,6 +4579,50 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.shiki-nanaya.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-nanaya.skill.s1b",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-nanaya.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s1b",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.shinji.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -4655,6 +4872,7 @@
         "master.ryuunosuke.skill.s1",
         "master.sakura.skill.ascension",
         "master.sakura.skill.s4",
+        "master.shiki-tohno.skill.ascension",
         "master.shinji.skill.ascension",
         "master.shirou-emiya.skill.ascension",
         "master.shirou-emiya.skill.s1",
@@ -4870,6 +5088,12 @@
         "master.ryuunosuke.skill.s1",
         "master.sakura.skill.ascension",
         "master.sakura.skill.s4",
+        "master.shiki-nanaya.skill.s1a",
+        "master.shiki-nanaya.skill.s2",
+        "master.shiki-ryougi.skill.s2",
+        "master.shiki-ryougi.skill.s3",
+        "master.shiki-tohno.skill.ascension",
+        "master.shiki-tohno.skill.s2",
         "master.shirou-emiya.skill.ascension",
         "master.shirou-emiya.skill.s1",
         "master.shishigou.skill.ascension",
@@ -5168,6 +5392,8 @@
         "master.reines.skill.s2",
         "master.rin.skill.ascension",
         "master.roche.skill.s1a",
+        "master.shiki-nanaya.skill.s1a",
+        "master.shiki-tohno.skill.ascension",
         "master.shirou-emiya.skill.ascension",
         "master.shishigou.skill.s3",
         "master.sieg.skill.ascension",
@@ -5282,6 +5508,9 @@
         "master.ryuunosuke.skill.s1",
         "master.ryuunosuke.skill.s2",
         "master.sakura.skill.s3",
+        "master.shiki-nanaya.skill.s2",
+        "master.shiki-tohno.skill.ascension",
+        "master.shiki-tohno.skill.s4",
         "master.shinji.skill.s1",
         "master.shinji.skill.s3",
         "master.shinji.skill.s4",
@@ -5396,6 +5625,7 @@
         "master.rin.skill.s3",
         "master.ryuunosuke.skill.ascension",
         "master.ryuunosuke.skill.s2",
+        "master.shiki-ryougi.skill.s3",
         "master.shishigou.skill.s1",
         "master.shishigou.skill.s2",
         "master.shishigou.skill.s3",
@@ -5885,6 +6115,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.shiki-tohno.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.shinji.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -6333,6 +6567,7 @@
         "master.sakura.skill.ascension",
         "master.sakura.skill.s1",
         "master.sakura.skill.s2",
+        "master.shiki-nanaya.skill.s2",
         "master.shinji.skill.s1",
         "master.shinji.skill.s2",
         "master.shinji.skill.s3",
@@ -6775,6 +7010,18 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.shiki-nanaya.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s4",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.shinji.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -7152,6 +7399,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.shishigou.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -7391,6 +7642,17 @@
         "master.roche.skill.s2",
         "master.ryuunosuke.skill.ascension",
         "master.sakura.skill.s4",
+        "master.shiki-nanaya.skill.ascension",
+        "master.shiki-nanaya.skill.s1b",
+        "master.shiki-nanaya.skill.s2",
+        "master.shiki-ryougi.skill.ascension",
+        "master.shiki-ryougi.skill.s1b",
+        "master.shiki-ryougi.skill.s2",
+        "master.shiki-tohno.skill.ascension",
+        "master.shiki-tohno.skill.s1a",
+        "master.shiki-tohno.skill.s2",
+        "master.shiki-tohno.skill.s3",
+        "master.shiki-tohno.skill.s4",
         "master.shinji.skill.ascension",
         "master.shinji.skill.s4",
         "master.shirou-emiya.skill.s3",
@@ -7971,6 +8233,50 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.shiki-nanaya.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-nanaya.skill.s1b",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-nanaya.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s1b",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.shinji.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -8374,6 +8680,23 @@
       "master.sakura.skill.s2",
       "master.sakura.skill.s3",
       "master.sakura.skill.s4",
+      "master.shiki-nanaya.skill.ascension",
+      "master.shiki-nanaya.skill.s1",
+      "master.shiki-nanaya.skill.s1a",
+      "master.shiki-nanaya.skill.s1b",
+      "master.shiki-nanaya.skill.s2",
+      "master.shiki-ryougi.skill.ascension",
+      "master.shiki-ryougi.skill.s1",
+      "master.shiki-ryougi.skill.s1a",
+      "master.shiki-ryougi.skill.s1b",
+      "master.shiki-ryougi.skill.s2",
+      "master.shiki-ryougi.skill.s3",
+      "master.shiki-tohno.skill.ascension",
+      "master.shiki-tohno.skill.s1",
+      "master.shiki-tohno.skill.s1a",
+      "master.shiki-tohno.skill.s2",
+      "master.shiki-tohno.skill.s3",
+      "master.shiki-tohno.skill.s4",
       "master.shinji.skill.ascension",
       "master.shinji.skill.s1",
       "master.shinji.skill.s2",
@@ -8564,125 +8887,6 @@
       },
       {
         "abilityId": "master.hisui-detective.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-nanaya.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-nanaya.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-nanaya.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-nanaya.skill.s1b",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-nanaya.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-ryougi.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-ryougi.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-ryougi.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-ryougi.skill.s1b",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-ryougi.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-ryougi.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-tohno.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-tohno.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-tohno.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-tohno.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-tohno.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-tohno.skill.s4",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -12778,6 +12982,17 @@
       "master.roche.skill.s2",
       "master.ryuunosuke.skill.ascension",
       "master.sakura.skill.s4",
+      "master.shiki-nanaya.skill.ascension",
+      "master.shiki-nanaya.skill.s1b",
+      "master.shiki-nanaya.skill.s2",
+      "master.shiki-ryougi.skill.ascension",
+      "master.shiki-ryougi.skill.s1b",
+      "master.shiki-ryougi.skill.s2",
+      "master.shiki-tohno.skill.ascension",
+      "master.shiki-tohno.skill.s1a",
+      "master.shiki-tohno.skill.s2",
+      "master.shiki-tohno.skill.s3",
+      "master.shiki-tohno.skill.s4",
       "master.shinji.skill.ascension",
       "master.shinji.skill.s4",
       "master.shirou-emiya.skill.s3",

@@ -1283,6 +1283,23 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find((c) => c.id === 'master.fujino.skill.s4')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'trauma_state_rule' })]) }));
   });
 
+  it('grounds the seventeen-ID Shiki trio slice with exact development snapshots and explicit deck/form boundaries', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.shiki-nanaya.skill.s1','master.shiki-nanaya.skill.s1a','master.shiki-nanaya.skill.s1b','master.shiki-nanaya.skill.s2','master.shiki-nanaya.skill.ascension',
+      'master.shiki-ryougi.skill.s1','master.shiki-ryougi.skill.s1a','master.shiki-ryougi.skill.s1b','master.shiki-ryougi.skill.s2','master.shiki-ryougi.skill.s3','master.shiki-ryougi.skill.ascension',
+      'master.shiki-tohno.skill.s1','master.shiki-tohno.skill.s1a','master.shiki-tohno.skill.s2','master.shiki-tohno.skill.s3','master.shiki-tohno.skill.s4','master.shiki-tohno.skill.ascension',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(17);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.document === 'Fate_Domination-开发版/data_masters.js' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find((c) => c.id === 'master.shiki-nanaya.skill.s2')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'deck_top_manipulation_rule' })]) }));
+    expect(slice.find((c) => c.id === 'master.shiki-ryougi.skill.s2')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'deck_bottom_match_rule' })]) }));
+    expect(slice.find((c) => c.id === 'master.shiki-ryougi.skill.s3')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'move_selected_cards' })]) }));
+    expect(slice.find((c) => c.id === 'master.shiki-tohno.skill.s1a')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'control_resource_transform_rule' })]) }));
+    expect(slice.find((c) => c.id === 'master.shiki-tohno.skill.ascension')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'schedule_phase_effect' })]) }));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1336,10 +1353,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 348,
-      blockedCount: 596,
+      sourceGroundedCount: 365,
+      blockedCount: 579,
       unclassifiedCount: 0,
-      structuredAbilityCount: 623,
+      structuredAbilityCount: 643,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

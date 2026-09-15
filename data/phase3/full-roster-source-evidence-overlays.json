@@ -16195,6 +16195,660 @@
         }
       ],
       "referencePrintedTextSha256": "b8a4dcaa3cc7b6e569966a51f5bec5f39dded7df0cb4cf466fa26708c3fb1bfe"
+    },
+    {
+      "id": "master.shiki-nanaya.skill.s1",
+      "printedText": "你拥有【直死之魔眼】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_nanaya.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你拥有【直死之魔眼】。",
+        "sourceTextSha256": "b80e3620292b5d67e0bff3f7f13959cf7843e804a8e61172a786faf94a12a685"
+      },
+      "abilities": [
+        {
+          "id": "nanaya.half-body.mystic-eyes",
+          "printedClause": "Controller has Mystic Eyes of Death Perception.",
+          "kind": "passive",
+          "creates": [
+            {
+              "type": "card",
+              "definitionId": "master.shiki-nanaya.skill.s2",
+              "destination": "skill_zone"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b80e3620292b5d67e0bff3f7f13959cf7843e804a8e61172a786faf94a12a685"
+    },
+    {
+      "id": "master.shiki-nanaya.skill.s1a",
+      "printedText": "若你上回合进行了争夺战，你-2合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_nanaya.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "若你上回合进行了争夺战，你-2合计威力。",
+        "sourceTextSha256": "104e9ec9041f3766e8e2b5731ab79158bec082f3cb6a1bea3c5fa33178d0b048"
+      },
+      "abilities": [
+        {
+          "id": "nanaya.anemia.power-penalty",
+          "printedClause": "If controller participated in a contested battle last round, total power -2.",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "previous_round_contested_battle"
+            }
+          ],
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "scope": "controller_total",
+              "amount": -2
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "104e9ec9041f3766e8e2b5731ab79158bec082f3cb6a1bea3c5fa33178d0b048"
+    },
+    {
+      "id": "master.shiki-nanaya.skill.s1b",
+      "printedText": "游戏开始时，将你牌库的至多4张牌替换为【闪走】和/或【闪鞘】。（【闪走】和【闪鞘】分别各有3张）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_nanaya.s1b",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，将你牌库的至多4张牌替换为【闪走】和/或【闪鞘】。（【闪走】和【闪鞘】分别各有3张）",
+        "sourceTextSha256": "c51a83fb7c4f4784708df8b479dede38fa70bf7fbb6050ea1bfb896987e0f242"
+      },
+      "abilities": [
+        {
+          "id": "nanaya.exorcist.deck-replacement",
+          "printedClause": "At setup replace up to four deck cards with Flash Step and/or Flash Scabbard, with three copies of each available.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "deck_entry_replacement",
+              "operation": "replace_at_game_start",
+              "maxCount": 4,
+              "replacementDefinitions": [
+                "flash-step",
+                "flash-scabbard"
+              ],
+              "availableCopiesPerDefinition": 3
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c51a83fb7c4f4784708df8b479dede38fa70bf7fbb6050ea1bfb896987e0f242"
+    },
+    {
+      "id": "master.shiki-nanaya.skill.s2",
+      "printedText": "直面死亡-第9和第11回合开始时，你失去等同于你【损伤】数的战果。\n捕捉-前哨阶段：受到1点【损伤】，然后选择一名本局游戏未被捕捉过的玩家查看其牌库顶的3张牌。你可以将其中任意张弃置，然后将剩余的牌以任意顺序放回其牌堆顶。\n【闪鞘】与【闪走】为牌库替换牌（见【退魔者】），抽到手牌后于战斗时打出。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_nanaya.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "直面死亡-第9和第11回合开始时，你失去等同于你【损伤】数的战果。\n捕捉-前哨阶段：受到1点【损伤】，然后选择一名本局游戏未被捕捉过的玩家查看其牌库顶的3张牌。你可以将其中任意张弃置，然后将剩余的牌以任意顺序放回其牌堆顶。\n【闪鞘】与【闪走】为牌库替换牌（见【退魔者】），抽到手牌后于战斗时打出。",
+        "sourceTextSha256": "b8473d2e6599e3d31c48b7d22b6c41f9f1dde220e9540a0b31543a8c08979e8a"
+      },
+      "abilities": [
+        {
+          "id": "nanaya.mystic-eyes.face-death",
+          "printedClause": "At the start of rounds 9 and 11 lose VP equal to Damage count.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "round_number_in",
+              "values": [
+                9,
+                11
+              ]
+            },
+            {
+              "type": "event_type_is",
+              "eventType": "round.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "amountFormula": "controller.damage_count"
+            }
+          ]
+        },
+        {
+          "id": "nanaya.mystic-eyes.capture",
+          "printedClause": "Outpost: take one Damage, choose a player not captured before, inspect their top three deck cards, discard any, reorder the rest.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "damage_resource_rule",
+              "operation": "gain",
+              "amount": 1
+            },
+            {
+              "type": "deck_top_manipulation_rule",
+              "operation": "capture_player_top_three",
+              "targetFilter": "not_captured_this_game",
+              "inspectCount": 3,
+              "mayDiscardAny": true,
+              "reorderRemaining": true,
+              "markTargetCaptured": true
+            }
+          ]
+        },
+        {
+          "id": "nanaya.mystic-eyes.replacement-card-rule",
+          "printedClause": "Flash Step and Flash Scabbard are deck replacements played from hand during combat.",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "replacement_card_play_timing",
+              "operation": "allow",
+              "cardDefinitions": [
+                "flash-step",
+                "flash-scabbard"
+              ],
+              "phase": "combat"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b8473d2e6599e3d31c48b7d22b6c41f9f1dde220e9540a0b31543a8c08979e8a"
+    },
+    {
+      "id": "master.shiki-nanaya.skill.ascension",
+      "printedText": "解锁此牌时，立即将你剩余的【闪走】和/或【闪鞘】洗入牌库。\n在你的战斗阶段，若你与被捕捉的对手战斗，抽一张牌并将其打出。若此牌不是基础攻击，你受到1点【损伤】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_nanaya.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "解锁此牌时，立即将你剩余的【闪走】和/或【闪鞘】洗入牌库。\n在你的战斗阶段，若你与被捕捉的对手战斗，抽一张牌并将其打出。若此牌不是基础攻击，你受到1点【损伤】。",
+        "sourceTextSha256": "9ebc58ab086da8e307eb4a9bade6a9bf38f34760bb6e82e75194fce355df4f9d"
+      },
+      "abilities": [
+        {
+          "id": "nanaya.kagetsu-tohya.unlock",
+          "printedClause": "On unlock shuffle remaining Flash Step/Flash Scabbard into the deck.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "sourceZone": "outside_game",
+              "destination": "deck",
+              "filter": {
+                "definitionIds": [
+                  "flash-step",
+                  "flash-scabbard"
+                ],
+                "remaining": true
+              },
+              "shuffleDestination": true
+            }
+          ]
+        },
+        {
+          "id": "nanaya.kagetsu-tohya.captured-combat",
+          "printedClause": "During combat against a captured opponent, draw and play one card; if not a base attack take one Damage.",
+          "kind": "triggered",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "controller_battles_captured_opponent"
+            }
+          ],
+          "effects": [
+            {
+              "type": "captured_opponent_rule",
+              "operation": "draw_and_play_one_then_damage_if_non_base",
+              "drawCount": 1,
+              "damageAmount": 1
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "9ebc58ab086da8e307eb4a9bade6a9bf38f34760bb6e82e75194fce355df4f9d"
+    },
+    {
+      "id": "master.shiki-ryougi.skill.s1",
+      "printedText": "游戏开始时，将【生・切断】加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_ryougi.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，将【生・切断】加入你的技能区。",
+        "sourceTextSha256": "15e33e1b9482d12051e5b028e9bf5b81bbe9e9204afcd6723190573ae1867d69"
+      },
+      "abilities": [
+        {
+          "id": "ryougi.death-line.add-life-cut",
+          "printedClause": "At game start add Life Cut to the skill zone.",
+          "kind": "passive",
+          "creates": [
+            {
+              "type": "card",
+              "definitionId": "master.shiki-ryougi.skill.s2",
+              "destination": "skill_zone"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "15e33e1b9482d12051e5b028e9bf5b81bbe9e9204afcd6723190573ae1867d69"
+    },
+    {
+      "id": "master.shiki-ryougi.skill.s1a",
+      "printedText": "游戏开始时，将【死・紧握】加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_ryougi.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，将【死・紧握】加入你的技能区。",
+        "sourceTextSha256": "d1e84428f5798f573fd01ed7f061e937925424f2fbab89c4a43ad6af7782d98f"
+      },
+      "abilities": [
+        {
+          "id": "ryougi.deficiency.add-death-grasp",
+          "printedClause": "At game start add Death Grasp to the skill zone.",
+          "kind": "passive",
+          "creates": [
+            {
+              "type": "card",
+              "definitionId": "master.shiki-ryougi.skill.s3",
+              "destination": "skill_zone"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d1e84428f5798f573fd01ed7f061e937925424f2fbab89c4a43ad6af7782d98f"
+    },
+    {
+      "id": "master.shiki-ryougi.skill.s1b",
+      "printedText": "你可以查看所有玩家牌库底部的牌。战力结算时，你所在的战斗中所有牌库没有牌的玩家【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_ryougi.s1b",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你可以查看所有玩家牌库底部的牌。战力结算时，你所在的战斗中所有牌库没有牌的玩家【败北】。",
+        "sourceTextSha256": "3bf048d50b2543b3447c284f3b503205cf74af3aa53c03d1d4fb2e8871196470"
+      },
+      "abilities": [
+        {
+          "id": "ryougi.void.deck-bottom",
+          "printedClause": "May inspect every player deck bottom; at power resolution, players in your battle with empty decks are defeated.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "deck_bottom_rule",
+              "operation": "inspect_all_players_bottom_and_defeat_empty_decks_in_controller_battle"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "3bf048d50b2543b3447c284f3b503205cf74af3aa53c03d1d4fb2e8871196470"
+    },
+    {
+      "id": "master.shiki-ryougi.skill.s2",
+      "printedText": "此牌需追加打出。若此牌与【死・紧握】一同打出，其+2魔力消耗。\n战斗阶段：选择一张你战斗中的非技能攻击，若其印刷威力与其所有者牌库底部的牌相同，弃置这两张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_ryougi.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌需追加打出。若此牌与【死・紧握】一同打出，其+2魔力消耗。\n战斗阶段：选择一张你战斗中的非技能攻击，若其印刷威力与其所有者牌库底部的牌相同，弃置这两张牌。",
+        "sourceTextSha256": "f2ec99d579535b504321bd59d02ff5518e13a0ad88032d9b06cf21cfdf00a5ce"
+      },
+      "abilities": [
+        {
+          "id": "ryougi.life-cut.bottom-match",
+          "printedClause": "Additional play; costs +2 mana with Death Grasp. In combat choose a non-skill attack; if printed power matches its owner deck-bottom card, discard both.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mode",
+              "operation": "require_additional"
+            },
+            {
+              "rule": "source_card_mana_cost",
+              "operation": "add",
+              "amount": 2,
+              "condition": "played_with_master.shiki-ryougi.skill.s3"
+            }
+          ],
+          "effects": [
+            {
+              "type": "deck_bottom_match_rule",
+              "operation": "discard_attack_and_owner_bottom_on_printed_power_match",
+              "target": "non_skill_attack_in_controller_battle"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f2ec99d579535b504321bd59d02ff5518e13a0ad88032d9b06cf21cfdf00a5ce"
+    },
+    {
+      "id": "master.shiki-ryougi.skill.s3",
+      "printedText": "此牌需追加打出。\n行动阶段：查看一名与你位于同一战场的玩家的手牌，你可将其中一张牌洗回其所有者的牌库。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_ryougi.s3",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌需追加打出。\n行动阶段：查看一名与你位于同一战场的玩家的手牌，你可将其中一张牌洗回其所有者的牌库。",
+        "sourceTextSha256": "49bfaa05b153321ecdc5a317f257a228d8f9f16c5afcf337b69ea526bad90110"
+      },
+      "abilities": [
+        {
+          "id": "ryougi.death-grasp.hand-return",
+          "printedClause": "Additional play. Action: inspect a co-located player hand and optionally shuffle one card back into its owner deck.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mode",
+              "operation": "require_additional"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_player",
+              "scope": "same_battlefield",
+              "minCount": 1,
+              "maxCount": 1,
+              "resultVar": "targetPlayer"
+            },
+            {
+              "type": "choose_card",
+              "sourceZone": "targetPlayer.hand",
+              "minCount": 0,
+              "maxCount": 1,
+              "resultVar": "chosenCard"
+            },
+            {
+              "type": "move_selected_cards",
+              "selectionVar": "chosenCard",
+              "destination": "owner_deck",
+              "shuffleDestination": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "49bfaa05b153321ecdc5a317f257a228d8f9f16c5afcf337b69ea526bad90110"
+    },
+    {
+      "id": "master.shiki-ryougi.skill.ascension",
+      "printedText": "你的敏捷攻击获得威力+2和\"战斗阶段：弃置一张你战斗中的一名玩家牌堆底的牌。\"",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_ryougi.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你的敏捷攻击获得威力+2和\"战斗阶段：弃置一张你战斗中的一名玩家牌堆底的牌。\"",
+        "sourceTextSha256": "17babbf0b288ccaabb893285b979e569241c414e42575702403e642ccb426226"
+      },
+      "abilities": [
+        {
+          "id": "ryougi.boundary-of-emptiness.agility-grant",
+          "printedClause": "Agility attacks gain +2 power and a combat ability to discard a bottom card from a player in your battle.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "grant_linked_ability_to_attribute_attacks",
+              "attribute": "agility",
+              "powerDelta": 2,
+              "grantedAbility": {
+                "timing": "combat",
+                "effect": {
+                  "type": "move_card",
+                  "sourceZone": "chosen_battle_player_deck_bottom",
+                  "destination": "discard"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "17babbf0b288ccaabb893285b979e569241c414e42575702403e642ccb426226"
+    },
+    {
+      "id": "master.shiki-tohno.skill.s1",
+      "printedText": "将【侵蚀】加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_tohno.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "将【侵蚀】加入你的技能区。",
+        "sourceTextSha256": "273cf9ef232863882acbc556785d1d2741a3a7752041987287f13df90989c97e"
+      },
+      "abilities": [
+        {
+          "id": "tohno.blood-art.add-erosion",
+          "printedClause": "Add Erosion to the skill zone.",
+          "kind": "passive",
+          "creates": [
+            {
+              "type": "card",
+              "definitionId": "master.shiki-tohno.skill.s2",
+              "destination": "skill_zone"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "273cf9ef232863882acbc556785d1d2741a3a7752041987287f13df90989c97e"
+    },
+    {
+      "id": "master.shiki-tohno.skill.s1a",
+      "printedText": "当你因能力外的方式获得战果时，获得等量的【控制权】。当你的战果数第一次达到或超过13点时，若你拥有13点及以上的【控制权】，你转变为【魔】。否则，你转变为【蛇】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_tohno.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你因能力外的方式获得战果时，获得等量的【控制权】。当你的战果数第一次达到或超过13点时，若你拥有13点及以上的【控制权】，你转变为【魔】。否则，你转变为【蛇】。",
+        "sourceTextSha256": "2a56e2e743844d85cfcfdebe472161a0852cb345dfc84d7aeefe37a3b57b3edf"
+      },
+      "abilities": [
+        {
+          "id": "tohno.ascend-devour.control-transform",
+          "printedClause": "Non-ability VP gains grant equal Control; the first time VP reaches at least 13, transform to Demon if Control is at least 13, otherwise Snake.",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "control_resource_transform_rule",
+              "operation": "mirror_non_ability_vp_gain_and_first_13_threshold_transform",
+              "controlThreshold": 13,
+              "victoryPointThreshold": 13,
+              "highForm": "demon",
+              "lowForm": "snake"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "2a56e2e743844d85cfcfdebe472161a0852cb345dfc84d7aeefe37a3b57b3edf"
+    },
+    {
+      "id": "master.shiki-tohno.skill.s2",
+      "printedText": "此牌需追加打出。\n血滴-你需花费1点战果来打出此牌。\n共融-战斗阶段：随机展示一名你交战对手弃牌堆的至多3张牌，你可以选择其中的一张基础牌与你控制或手牌的一张基础牌交换。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_tohno.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌需追加打出。\n血滴-你需花费1点战果来打出此牌。\n共融-战斗阶段：随机展示一名你交战对手弃牌堆的至多3张牌，你可以选择其中的一张基础牌与你控制或手牌的一张基础牌交换。",
+        "sourceTextSha256": "5662e774989664eee169aa908a5cd480149a2a3dd589860ebf225ff17f997769"
+      },
+      "abilities": [
+        {
+          "id": "tohno.erosion.fusion",
+          "printedClause": "Additional play costing 1 VP. In combat reveal up to three random cards from an opponent discard pile and optionally exchange one base card with a base card you control or hold.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "effects": [
+            {
+              "type": "pay_victory_points",
+              "amount": 1
+            },
+            {
+              "type": "base_card_exchange_rule",
+              "operation": "reveal_random_opponent_discard_and_optional_exchange",
+              "revealMax": 3,
+              "exchangeFilter": "base_card",
+              "controllerSources": [
+                "controlled_attack",
+                "hand"
+              ]
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mode",
+              "operation": "require_additional"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "5662e774989664eee169aa908a5cd480149a2a3dd589860ebf225ff17f997769"
+    },
+    {
+      "id": "master.shiki-tohno.skill.s3",
+      "printedText": "你无法再获得【控制权】或使用共融。\n阿卡夏之蛇-【侵蚀】获得魔术属性且你拥有的魔力少于8点也可以打出此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_tohno.s3",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你无法再获得【控制权】或使用共融。\n阿卡夏之蛇-【侵蚀】获得魔术属性且你拥有的魔力少于8点也可以打出此牌。",
+        "sourceTextSha256": "fa07c3d9b2fefae4c8de99b2dd2507474d048a67c98d8e59653fc3ab3960d237"
+      },
+      "abilities": [
+        {
+          "id": "tohno.snake.form",
+          "printedClause": "Snake prevents Control gain and Fusion; Erosion gains magic and can be played below eight mana.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "form_state_rule",
+              "form": "snake",
+              "rules": [
+                "cannot_gain_control",
+                "cannot_use_fusion",
+                "erosion_add_magic_attribute",
+                "erosion_playable_below_8_mana"
+              ]
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "fa07c3d9b2fefae4c8de99b2dd2507474d048a67c98d8e59653fc3ab3960d237"
+    },
+    {
+      "id": "master.shiki-tohno.skill.s4",
+      "printedText": "复仇之灵-血滴不再需要花费战果，当你与一名战果点数多于你的对手共融时，偷取其2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_tohno.s4",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "复仇之灵-血滴不再需要花费战果，当你与一名战果点数多于你的对手共融时，偷取其2点战果。",
+        "sourceTextSha256": "89b6057410b2cbf816c0a881d022dbd934b778c0ce1bb0b5fc2f60389c1fa02d"
+      },
+      "abilities": [
+        {
+          "id": "tohno.demon.form",
+          "printedClause": "Demon removes Blood Drop VP cost; when fusing with an opponent who has more VP, steal 2 VP.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "form_state_rule",
+              "form": "demon",
+              "rules": [
+                "blood_drop_no_vp_cost"
+              ]
+            },
+            {
+              "type": "transfer_victory_points",
+              "amount": 2,
+              "from": "fusion_opponent",
+              "to": "controller",
+              "condition": {
+                "type": "fusion_opponent_has_more_vp"
+              }
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "89b6057410b2cbf816c0a881d022dbd934b778c0ce1bb0b5fc2f60389c1fa02d"
+    },
+    {
+      "id": "master.shiki-tohno.skill.ascension",
+      "printedText": "得不偿失-解锁此牌的下个回合开始时，获得等同于你【控制权】数量的战果。然后，你的合计威力视为0且无法被增加直至游戏结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_tohno.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "得不偿失-解锁此牌的下个回合开始时，获得等同于你【控制权】数量的战果。然后，你的合计威力视为0且无法被增加直至游戏结束。",
+        "sourceTextSha256": "8934a63d45029e2c6cdb8847bccd2500cb85eaa3d7ebfec32f63a8c9fb00359e"
+      },
+      "abilities": [
+        {
+          "id": "tohno.repentance.deferred-lock",
+          "printedClause": "At the start of the next round after unlock, gain VP equal to Control, then total power is 0 and cannot increase for the rest of the game.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "schedule_phase_effect",
+              "timing": "next_round_start_after_unlock",
+              "effects": [
+                {
+                  "type": "gain_victory_points",
+                  "amountFormula": "controller.control_count"
+                },
+                {
+                  "type": "set_combat_power",
+                  "scope": "controller_total",
+                  "amount": 0
+                }
+              ]
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "total_power_increase",
+              "operation": "deny",
+              "timing": "after_scheduled_resolution",
+              "duration": "game"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game_after_scheduled_resolution"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "8934a63d45029e2c6cdb8847bccd2500cb85eaa3d7ebfec32f63a8c9fb00359e"
     }
   ]
 }
