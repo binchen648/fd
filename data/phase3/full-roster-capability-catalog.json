@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 721,
-    "explicitBlockCount": 223,
+    "contractMappedCount": 736,
+    "explicitBlockCount": 208,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 238,
-      "SPECIAL_HANDLER_CANDIDATE": 481,
+      "READY_GENERIC_EXTENSION": 239,
+      "SPECIAL_HANDLER_CANDIDATE": 495,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 223,
+      "SOURCE_EVIDENCE_REQUIRED": 208,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -6302,6 +6302,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.jason.skill.sc-jason-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -6314,6 +6322,50 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.kagetora.skill.sc-kagetora-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -6323,6 +6375,10 @@
         },
         {
           "abilityId": "servant.kagetora.skill.sc-kagetora-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kama.skill.sc-kama-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -7041,6 +7097,7 @@
         "servant.ereshkigal.skill.sc-ereshkigal-1",
         "servant.gorgon.skill.sc-gorgon-3",
         "servant.illya.skill.sc-illya-7",
+        "servant.jaguarman.skill.sc-jaguarman-1",
         "servant.kagetora.skill.sc-kagetora-3",
         "servant.mozart.skill.sc-mozart-1"
       ],
@@ -9954,12 +10011,26 @@
         "servant.jack.skill.sc-jack-1",
         "servant.jack.skill.sc-jack-2",
         "servant.jack.skill.sc-jack-3",
+        "servant.jaguarman.skill.sc-jaguarman-2",
+        "servant.jaguarman.skill.sc-jaguarman-3",
         "servant.jason.skill.sc-jason-1",
         "servant.jason.skill.sc-jason-2",
         "servant.jason.skill.sc-jason-3",
+        "servant.jeanne-alter.skill.sc-jeanne-alter-1",
+        "servant.jeanne-alter.skill.sc-jeanne-alter-2",
+        "servant.jeanne-alter.skill.sc-jeanne-alter-3",
+        "servant.jeanne.skill.sc-jeanne-1",
+        "servant.jeanne.skill.sc-jeanne-2",
+        "servant.jeanne.skill.sc-jeanne-3",
+        "servant.jekyll.skill.sc-jekyll-1",
+        "servant.jekyll.skill.sc-jekyll-2",
+        "servant.jekyll.skill.sc-jekyll-3",
+        "servant.kagekiyo.skill.sc-kagekiyo-1",
+        "servant.kagekiyo.skill.sc-kagekiyo-3",
         "servant.kagetora.skill.sc-kagetora-1",
         "servant.kagetora.skill.sc-kagetora-2",
         "servant.kagetora.skill.sc-kagetora-4",
+        "servant.kama.skill.sc-kama-3",
         "servant.koyanskaya.skill.sc-koyanskaya-1",
         "servant.koyanskaya.skill.sc-koyanskaya-2",
         "servant.koyanskaya.skill.sc-koyanskaya-3",
@@ -11763,6 +11834,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jaguarman.skill.sc-jaguarman-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.jason.skill.sc-jason-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -11775,6 +11854,50 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jeanne.skill.sc-jeanne-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jekyll.skill.sc-jekyll-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.kagetora.skill.sc-kagetora-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -11784,6 +11907,10 @@
         },
         {
           "abilityId": "servant.kagetora.skill.sc-kagetora-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kama.skill.sc-kama-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -12661,16 +12788,31 @@
       "servant.jack.skill.sc-jack-1",
       "servant.jack.skill.sc-jack-2",
       "servant.jack.skill.sc-jack-3",
+      "servant.jaguarman.skill.sc-jaguarman-1",
+      "servant.jaguarman.skill.sc-jaguarman-2",
+      "servant.jaguarman.skill.sc-jaguarman-3",
       "servant.jason.skill.sc-jason-1",
       "servant.jason.skill.sc-jason-2",
       "servant.jason.skill.sc-jason-3",
+      "servant.jeanne-alter.skill.sc-jeanne-alter-1",
+      "servant.jeanne-alter.skill.sc-jeanne-alter-2",
+      "servant.jeanne-alter.skill.sc-jeanne-alter-3",
+      "servant.jeanne.skill.sc-jeanne-1",
+      "servant.jeanne.skill.sc-jeanne-2",
+      "servant.jeanne.skill.sc-jeanne-3",
+      "servant.jekyll.skill.sc-jekyll-1",
+      "servant.jekyll.skill.sc-jekyll-2",
+      "servant.jekyll.skill.sc-jekyll-3",
+      "servant.kagekiyo.skill.sc-kagekiyo-1",
       "servant.kagekiyo.skill.sc-kagekiyo-2",
+      "servant.kagekiyo.skill.sc-kagekiyo-3",
       "servant.kagetora.skill.sc-kagetora-1",
       "servant.kagetora.skill.sc-kagetora-2",
       "servant.kagetora.skill.sc-kagetora-3",
       "servant.kagetora.skill.sc-kagetora-4",
       "servant.kama.skill.sc-kama-1",
       "servant.kama.skill.sc-kama-2",
+      "servant.kama.skill.sc-kama-3",
       "servant.kiritsugu.skill.sc-kiritsugu-2",
       "servant.kiritsugu.skill.sc-kiritsugu-3",
       "servant.koyanskaya.skill.sc-koyanskaya-1",
@@ -12758,111 +12900,6 @@
       "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "servant.jaguarman.skill.sc-jaguarman-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jaguarman.skill.sc-jaguarman-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jaguarman.skill.sc-jaguarman-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jeanne.skill.sc-jeanne-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jeanne.skill.sc-jeanne-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jeanne.skill.sc-jeanne-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jekyll.skill.sc-jekyll-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jekyll.skill.sc-jekyll-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jekyll.skill.sc-jekyll-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.kama.skill.sc-kama-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.karna.skill.sc-karna-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -14739,12 +14776,26 @@
       "servant.jack.skill.sc-jack-1",
       "servant.jack.skill.sc-jack-2",
       "servant.jack.skill.sc-jack-3",
+      "servant.jaguarman.skill.sc-jaguarman-2",
+      "servant.jaguarman.skill.sc-jaguarman-3",
       "servant.jason.skill.sc-jason-1",
       "servant.jason.skill.sc-jason-2",
       "servant.jason.skill.sc-jason-3",
+      "servant.jeanne-alter.skill.sc-jeanne-alter-1",
+      "servant.jeanne-alter.skill.sc-jeanne-alter-2",
+      "servant.jeanne-alter.skill.sc-jeanne-alter-3",
+      "servant.jeanne.skill.sc-jeanne-1",
+      "servant.jeanne.skill.sc-jeanne-2",
+      "servant.jeanne.skill.sc-jeanne-3",
+      "servant.jekyll.skill.sc-jekyll-1",
+      "servant.jekyll.skill.sc-jekyll-2",
+      "servant.jekyll.skill.sc-jekyll-3",
+      "servant.kagekiyo.skill.sc-kagekiyo-1",
+      "servant.kagekiyo.skill.sc-kagekiyo-3",
       "servant.kagetora.skill.sc-kagetora-1",
       "servant.kagetora.skill.sc-kagetora-2",
       "servant.kagetora.skill.sc-kagetora-4",
+      "servant.kama.skill.sc-kama-3",
       "servant.koyanskaya.skill.sc-koyanskaya-1",
       "servant.koyanskaya.skill.sc-koyanskaya-2",
       "servant.koyanskaya.skill.sc-koyanskaya-3",

@@ -1583,6 +1583,16 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.jack.skill.sc-jack-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'maria_the_ripper_rule'})])}));
   });
 
+  it('grounds the fifteen-ID Jaguarman/Jeanne/JeanneAlter/Jekyll/Kagekiyo/Kama slice from locked development snapshots', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.jaguarman.skill.sc-jaguarman-1","servant.jaguarman.skill.sc-jaguarman-2","servant.jaguarman.skill.sc-jaguarman-3","servant.jeanne.skill.sc-jeanne-1","servant.jeanne.skill.sc-jeanne-2","servant.jeanne.skill.sc-jeanne-3","servant.jeanne-alter.skill.sc-jeanne-alter-1","servant.jeanne-alter.skill.sc-jeanne-alter-2","servant.jeanne-alter.skill.sc-jeanne-alter-3","servant.jekyll.skill.sc-jekyll-1","servant.jekyll.skill.sc-jekyll-2","servant.jekyll.skill.sc-jekyll-3","servant.kagekiyo.skill.sc-kagekiyo-1","servant.kagekiyo.skill.sc-kagekiyo-3","servant.kama.skill.sc-kama-3"]); const slice=overlays.filter(c=>ids.has(c.id)); expect(slice).toHaveLength(15);
+    expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256 && c.source.sourceFileSha256.length===64)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.jaguarman.skill.sc-jaguarman-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'move_player',destinationRule:'any_location_except_workshop'})])}));
+    for(const id of ['servant.jekyll.skill.sc-jekyll-3','servant.kama.skill.sc-kama-3']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'presence_concealment_assassination_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.jeanne.skill.sc-jeanne-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'ruler_command_spell_binding_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.jeanne-alter.skill.sc-jeanne-alter-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'avenger_movement_vp_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.kagekiyo.skill.sc-kagekiyo-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'kagekiyo_hidden_attack_noble_phantasm_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1636,10 +1646,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 721,
-      blockedCount: 223,
+      sourceGroundedCount: 736,
+      blockedCount: 208,
       unclassifiedCount: 0,
-      structuredAbilityCount: 999,
+      structuredAbilityCount: 1014,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
