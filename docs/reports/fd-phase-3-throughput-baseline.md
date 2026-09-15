@@ -656,3 +656,11 @@ Permitted final status:
 - Independent R26 evidence: source hashes 14/14; focused 30/30; rules 280/280; full CI 693/693; content validation 0 blocking; deterministic generated-content unchanged; runtime hot-file changes=0.
 - Fresh reviewer coverage reproduces the A artifact except `generatedAt`; 26 newly visible abilities have zero structural-signature mismatches against the already accepted Drake representatives.
 - Raw reporter `legacyResolveEffect=75` is retained without KPI/classifier redefinition because Drake's accepted representative abilities are already labeled the same way. No broader runtime or taxonomy acceptance is implied.
+
+## P3-R27 / FB2-09 Movement Acceptance — 2026-09-16
+
+- FB2-09 narrow any-location-except-workshop controller Movement contract: `REVIEW_ACCEPTED` at candidate `8c3667fc725520f3aed024a15afdd39cfbda2a0a`.
+- Independent R27 evidence: focused 22/22; rules 287/287; full CI 700/700; deterministic generated content unchanged; frozen-identity runtime hits=0; authoring diff=0.
+- The accepted route is identity-free, typed through Resolution Data-flow, revalidates the authoritative legal destination set, and preserves movement counters/log/enter-location event provenance.
+- Broad Movement, forced/third-party/arrow movement, movement costs/conditions/modifiers, generic Target Selection, and FM02 migration are not promoted by implication.
+- A must freshly reconcile the exact frozen 12-member F1 family before FM02.
