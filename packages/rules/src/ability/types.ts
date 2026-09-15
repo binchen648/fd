@@ -80,6 +80,8 @@ export interface AbilityEvent {
   resultIds?: string[];
   scoringReceiptIds?: string[];
   battleParticipantIds?: PlayerId[];
+  /** Trusted frozen effective-Power snapshot for the exact pre-scoring battle response gateway. */
+  battleParticipantPowers?: Record<PlayerId, number>;
   /** Frozen phase-terminal battle outcome facts used by exact terminal consumers. */
   battleOutcomes?: Array<{ battlefieldId: string; winnerPlayerIds: PlayerId[] }>;
   battlefieldId?: string;
@@ -122,6 +124,10 @@ export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
   interaction?: PendingInteractionMetadata;
+}
+export interface PendingPresenceConcealmentDefeat {
+  controllerId: PlayerId; sourceCardId: string; abilityId: string; triggerEventId: string;
+  resultId: string; battlefieldId: string; participantIds: PlayerId[]; participantPowers: Record<PlayerId, number>; targetPlayerIds: PlayerId[];
 }
 export interface PendingDelayedActivation {
   controllerId: PlayerId;
@@ -180,6 +186,8 @@ export interface AbilityRuntime {
   cardState: Record<string, { active: boolean; faceDown: boolean; playedRound: number }>;
   ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
   pendingDelayedActivations?: PendingDelayedActivation[];
+  /** Server-owned pre-scoring battle-local defeat requests staged by the exact Presence Concealment response. */
+  pendingPresenceConcealmentDefeats?: PendingPresenceConcealmentDefeat[];
   /** Server-owned post-scoring battle events waiting for Trigger Gateway settlement. */
   pendingPostBattleEvents?: AbilityEvent[];
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */

@@ -177,7 +177,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
+    cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
@@ -439,6 +439,32 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
     c.zone === zone &&
     nodes(target.constraints).every(x => constraint(s, ctx, c, x))).map(c => c.instanceId);
 }
+function trustedBattlePowerSnapshot(event: AbilityEvent | undefined): { participantIds: string[]; powers: Record<string, number> } | undefined {
+  const participantIds = event?.battleParticipantIds;
+  const powers = event?.battleParticipantPowers;
+  if (!Array.isArray(participantIds) || !powers || new Set(participantIds).size !== participantIds.length) return undefined;
+  if (Object.keys(powers).length !== participantIds.length || participantIds.some((playerId) => !Number.isFinite(powers[playerId]))) return undefined;
+  return { participantIds: [...participantIds], powers: { ...powers } };
+}
+
+function controllerIsStrictSecondBattlePower(event: AbilityEvent | undefined, controllerId: string): boolean {
+  const snapshot = trustedBattlePowerSnapshot(event);
+  if (!snapshot || snapshot.participantIds.length < 3 || !snapshot.participantIds.includes(controllerId)) return false;
+  const opponents = snapshot.participantIds.filter((playerId) => playerId !== controllerId);
+  const ownPower = snapshot.powers[controllerId]!;
+  const highest = Math.max(...opponents.map((playerId) => snapshot.powers[playerId]!));
+  if (!Number.isFinite(ownPower) || !Number.isFinite(highest) || ownPower >= highest) return false;
+  return !opponents.some((playerId) => snapshot.powers[playerId] !== highest && snapshot.powers[playerId]! > ownPower);
+}
+
+function highestPowerOpponents(event: AbilityEvent, controllerId: string): string[] {
+  const snapshot = trustedBattlePowerSnapshot(event);
+  if (!snapshot || !controllerIsStrictSecondBattlePower(event, controllerId)) reject('invalid_event', 'Presence Concealment requires a trusted strict-second battle Power snapshot');
+  const opponents = snapshot.participantIds.filter((playerId) => playerId !== controllerId);
+  const highest = Math.max(...opponents.map((playerId) => snapshot.powers[playerId]!));
+  return opponents.filter((playerId) => snapshot.powers[playerId] === highest);
+}
+
 function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (!c || typeof c !== 'object') reject('unsupported', 'Unsupported condition');
   if (c.negated === true) return !condition(s, ctx, { ...c, negated: undefined });
@@ -468,6 +494,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? p.locationId === 'recon' : false;
     case 'controller_servant_revealed': return runtime(s).revealedServants.includes(ctx.controllerId);
     case 'can_adjust_mana': return !runtime(s).manaGainBlocked.includes(p.id) && p.mana < (runtime(s).manaCaps[p.id] ?? 12);
+    case 'controller_strict_second_battle_power': return controllerIsStrictSecondBattlePower(ctx.event, p.id);
     case 'controller_won_battle': return ctx.event?.battleResult?.winners.includes(p.id) ?? false;
     case 'controller_loses_battle': return !(ctx.event?.battleResult?.winners.includes(p.id) ?? true);
     case 'controller_sole_winner': return ctx.event?.battleResult?.winners.length === 1 && ctx.event.battleResult.winners[0] === p.id;
@@ -571,6 +598,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) return false;
   if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) return false;
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) return false;
+  if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
@@ -704,6 +732,8 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
         const isReturnSilenceState = a.effects.some((effect) => effect.type === 'return_silence_battle_start');
         if ((transformed && isSoulDragState) || (!transformed && isReturnSilenceState)) continue;
       }
+      if (event.type === 'after_battle_power_calculated' &&
+        (!Array.isArray(event.battleParticipantIds) || !event.battleParticipantIds.includes(c.controllerPlayerId))) continue;
       if (event.type === 'after_battle_result_determined' &&
         (isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a)) &&
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
@@ -938,6 +968,23 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case 'defeat_highest_power_opponents': {
+      if (!isPresenceConcealmentAssassinationSemantic(a)) reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
+      const event = ctx.event;
+      const snapshot = trustedBattlePowerSnapshot(event);
+      if (!event || event.type !== 'after_battle_power_calculated' || !event.resultId || !event.battlefieldId || !snapshot) {
+        reject('invalid_event', 'Presence Concealment requires trusted pre-scoring battle identity and Power facts');
+      }
+      const targetPlayerIds = highestPowerOpponents(event, ctx.controllerId);
+      const pending = r.pendingPresenceConcealmentDefeats ??= [];
+      if (!pending.some((entry) => entry.triggerEventId === event.id && entry.sourceCardId === ctx.sourceCardId && entry.abilityId === ctx.abilityId)) {
+        pending.push({
+          controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, triggerEventId: event.id,
+          resultId: event.resultId, battlefieldId: event.battlefieldId, participantIds: snapshot.participantIds, participantPowers: snapshot.powers, targetPlayerIds,
+        });
+      }
+      break;
+    }
     case 'claim_and_discard_location_events': {
       const placements = s.eventPlacements.filter(e => e.locationId === p.locationId);
       if (placements.some(e => !Number.isSafeInteger(e.victoryPoints))) reject('missing_event_vp', 'Content layer must supply every event printed VP');
@@ -1345,6 +1392,35 @@ export function isSharedVictoryVpTriggerSemantic(a: AuthoringAbility): boolean {
   return effect.type === 'adjust_victory_points' &&
     (effect.player === undefined || effect.player === 'controller') &&
     effect.amount === 2 && Number.isSafeInteger(effect.amount);
+}
+
+function isPresenceConcealmentAssassinationCandidate(a: AuthoringAbility): boolean {
+  return (a.kind === 'optional_trigger' && str(a.activation.trigger) === 'after_battle_power_calculated') ||
+    a.effects.some((effect) => str(effect.type) === 'defeat_highest_power_opponents');
+}
+
+export function isPresenceConcealmentAssassinationSemantic(a: AuthoringAbility): boolean {
+  if (!isPresenceConcealmentAssassinationCandidate(a)) return false;
+  const activationKeys = Object.keys(a.activation);
+  const responseKeys = Object.keys(a.responseWindow);
+  const limitKeys = Object.keys(a.limit);
+  return a.kind === 'optional_trigger' &&
+    str(a.activation.phase) === 'combat' &&
+    str(a.activation.trigger) === 'after_battle_power_calculated' &&
+    str(a.activation.requiresSourceState) === 'active' &&
+    activationKeys.every((key) => ['phase', 'trigger', 'requiresSourceState'].includes(key)) &&
+    a.conditions.length === 1 && str(a.conditions[0]!.type) === 'controller_strict_second_battle_power' &&
+    Object.keys(a.conditions[0]!).every((key) => key === 'type') &&
+    a.targets.length === 0 && a.cost.length === 0 && a.creates.length === 0 && a.ruleModifiers.length === 0 &&
+    Object.keys(a.lifecycle).length === 0 && Object.keys(a.visibility).length === 0 &&
+    a.effects.length === 1 && str(a.effects[0]!.type) === 'defeat_highest_power_opponents' &&
+    Object.keys(a.effects[0]!).every((key) => key === 'type') &&
+    str(a.responseWindow.opens) === 'post_power_response' &&
+    str(a.responseWindow.order) === 'turn_order' &&
+    str(a.responseWindow.passBehavior) === 'decline_this_window' &&
+    responseKeys.every((key) => ['opens', 'order', 'passBehavior'].includes(key)) &&
+    str(a.limit.type) === 'per_round' && Number(a.limit.uses) === 1 && str(a.limit.scope) === 'this_card' &&
+    limitKeys.every((key) => ['type', 'uses', 'scope'].includes(key));
 }
 
 function isOptionalBattleResultVpTriggerCandidate(a: AuthoringAbility): boolean {
@@ -2055,6 +2131,9 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isPresenceConcealmentAssassinationCandidate(a)) {
+    if (!isPresenceConcealmentAssassinationSemantic(a)) reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
+  }
   if (isAnyLocationExceptWorkshopMovementCandidate(a)) reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
   if (isMagicResistancePowerModifierCandidate(a)) reject('resolution_failed', 'Unsupported magic-resistance power modifier semantic shape');
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
@@ -2157,6 +2236,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) {
     reject('resolution_failed', 'Unsupported magic-resistance power modifier semantic shape');
+  }
+  if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) {
+    reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
   }
   if (isBattleLossStateTransformCandidate(a)) {
     if (!isBattleLossStateTransformSemantic(a)) reject('resolution_failed', 'Unsupported battle-loss state-transform semantic shape');
