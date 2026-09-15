@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 586
+    "affectedIdentityCount": 599
   },
   "requests": [
     {
@@ -2342,6 +2342,7 @@
         "master.zouken.skill.s4",
         "servant.albion.skill.sc-albion-1",
         "servant.andersen.skill.sc-andersen-2",
+        "servant.angra.skill.sc-angra-3",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.astolfo.skill.sc-astolfo-1",
         "servant.darius.skill.sc-darius-1",
@@ -5006,6 +5007,33 @@
           "sha256": "8ca9c8143d72538f449be401909f1f0dc39879d446c0b817283d353e47b0eca4"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/安格拉·曼纽.htm"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.angra/安格拉·曼纽"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_angra_3"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=1",
+          "sha256": "52f7bce2381d558397ba5f1f2d534b776804e646aac6aec44ed949ae1105efd5"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=2",
+          "sha256": "ef0ea316016263296ab296c49933a3076f512352284b5f97598e986abdb4c161"
+        },
+        {
           "abilityId": "servant.arjuna.skill.sc-arjuna-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/狂战士/英文版/阿周那(Alter).htm"
@@ -5801,9 +5829,9 @@
         "routeCounts": {
           "deterministic": 1,
           "shared_handler": 79,
-          "specific_handler": 47
+          "specific_handler": 48
         },
-        "handlerCount": 70,
+        "handlerCount": 71,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -29607,7 +29635,10 @@
         "servant.artoria-alt.skill.sc-artoria-alt-1",
         "servant.artoria-alt.skill.sc-artoria-alt-3",
         "servant.artoriac.skill.sc-artoriac-1",
+        "servant.astraea.skill.sc-astraea-1",
+        "servant.astraea.skill.sc-astraea-2",
         "servant.atalanta.skill.sc-atalanta-1",
+        "servant.barghest.skill.sc-barghest-2",
         "servant.bedivere.skill.sc-bedivere-1",
         "servant.bedivere.skill.sc-bedivere-3",
         "servant.charlemagne.skill.sc-charlemagne-3",
@@ -31992,6 +32023,54 @@
           "sha256": "5de55f13f521c13158ba35743c1c4fff2cfe639f8132ab601d39532b1741a6ea"
         },
         {
+          "abilityId": "servant.astraea.skill.sc-astraea-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/裁定者/英文版/阿斯特蕾亚.htm"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.astraea/阿斯特蕾亚"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_astraea_1"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[171].skills[0].text#line=1",
+          "sha256": "bea73c60695f7f75d05826ac2e52b772897e447823fe1f4665ea320a02e05363"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/裁定者/英文版/阿斯特蕾亚.htm"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.astraea/阿斯特蕾亚"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-2",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_astraea_2"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[171].skills[1].text#line=1",
+          "sha256": "43e89f38a115e26b89783ebcdb8c209624f5127b00edce739b959e565739bf92"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[171].skills[1].text#line=2",
+          "sha256": "804105399e5e8838c75dae8afcdd555924fe616377921e58850f11a075b33f0a"
+        },
+        {
           "abilityId": "servant.atalanta.skill.sc-atalanta-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/弓兵/英文版/阿塔兰忒.htm"
@@ -32011,6 +32090,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[12].abilities[0].printedClause",
           "sha256": "e77c9716c9f94dbe7af2522a7b3f4ca3bd5d7fed7685ebf5e055f97ce8096355"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/巴格斯特.htm"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.barghest/巴格斯特"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-2",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_barghest_2"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[30].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[30].skills[1].text#line=2",
+          "sha256": "9097a645c1f7d4a8ee52424328fc40bd9fa592cba83129d0466bc76d8ec61676"
         },
         {
           "abilityId": "servant.bedivere.skill.sc-bedivere-1",
@@ -32900,10 +33006,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 1,
-          "shared_handler": 68,
-          "specific_handler": 41
+          "shared_handler": 69,
+          "specific_handler": 43
         },
-        "handlerCount": 66,
+        "handlerCount": 68,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -47674,6 +47780,9 @@
         "servant.anastasia.skill.sc-anastasia-2",
         "servant.anastasia.skill.sc-anastasia-3",
         "servant.andersen.skill.sc-andersen-3",
+        "servant.angra.skill.sc-angra-1",
+        "servant.angra.skill.sc-angra-2",
+        "servant.angra.skill.sc-angra-3",
         "servant.arash.skill.sc-arash-1",
         "servant.arash.skill.sc-arash-2",
         "servant.arash.skill.sc-arash-3",
@@ -47699,10 +47808,20 @@
         "servant.ashva.skill.sc-ashva-3",
         "servant.astolfo.skill.sc-astolfo-2",
         "servant.astolfo.skill.sc-astolfo-3",
+        "servant.astraea.skill.sc-astraea-1",
+        "servant.astraea.skill.sc-astraea-2",
+        "servant.astraea.skill.sc-astraea-3",
+        "servant.atalanta.skill.sc-atalanta-3",
         "servant.avicebron.skill.sc-avicebron-1",
         "servant.avicebron.skill.sc-avicebron-2",
         "servant.avicebron.skill.sc-avicebron-4",
         "servant.avicebron.skill.sc-avicebron-5",
+        "servant.baobhan.skill.sc-baobhan-1",
+        "servant.baobhan.skill.sc-baobhan-2",
+        "servant.baobhan.skill.sc-baobhan-3",
+        "servant.barghest.skill.sc-barghest-1",
+        "servant.barghest.skill.sc-barghest-2",
+        "servant.barghest.skill.sc-barghest-3",
         "servant.bb.skill.sc-bb-1",
         "servant.bb.skill.sc-bb-2",
         "servant.bb.skill.sc-bb-3",
@@ -53498,6 +53617,81 @@
           "sha256": "e98d13e080dbb695a951f7c1043e0b612df1745d3dae2419c1d76d83a5557af1"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/安格拉·曼纽.htm"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.angra/安格拉·曼纽"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_angra_1"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[0].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[0].text#line=2",
+          "sha256": "4461650bee1c29908a801188455fc31e891fe0a38d132f4f97ecc5d09bc5a15d"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/安格拉·曼纽.htm"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.angra/安格拉·曼纽"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_angra_2"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[1].text#line=1",
+          "sha256": "e2f06650b95fa1d7dd6dd5c415a9324f66a36431cb88e5d26b8f6432166ea51f"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/安格拉·曼纽.htm"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.angra/安格拉·曼纽"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_angra_3"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=1",
+          "sha256": "52f7bce2381d558397ba5f1f2d534b776804e646aac6aec44ed949ae1105efd5"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=2",
+          "sha256": "ef0ea316016263296ab296c49933a3076f512352284b5f97598e986abdb4c161"
+        },
+        {
           "abilityId": "servant.arash.skill.sc-arash-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/弓兵/英文版/阿拉什.htm"
@@ -54137,6 +54331,114 @@
           "sha256": "6b720376440ed92903374f7d486f1e779fe827c8be563e099f7f321b3f0ea5c6"
         },
         {
+          "abilityId": "servant.astraea.skill.sc-astraea-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/裁定者/英文版/阿斯特蕾亚.htm"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.astraea/阿斯特蕾亚"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_astraea_1"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[171].skills[0].text#line=1",
+          "sha256": "bea73c60695f7f75d05826ac2e52b772897e447823fe1f4665ea320a02e05363"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/裁定者/英文版/阿斯特蕾亚.htm"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.astraea/阿斯特蕾亚"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-2",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_astraea_2"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[171].skills[1].text#line=1",
+          "sha256": "43e89f38a115e26b89783ebcdb8c209624f5127b00edce739b959e565739bf92"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[171].skills[1].text#line=2",
+          "sha256": "804105399e5e8838c75dae8afcdd555924fe616377921e58850f11a075b33f0a"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/裁定者/英文版/阿斯特蕾亚.htm"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.astraea/阿斯特蕾亚"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_astraea_3"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[171].skills[2].text#line=1",
+          "sha256": "427b8944a2157796e751117ed7dc06ef80aa4acff08ec4c854060da3afe364bf"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[171].skills[2].text#line=2",
+          "sha256": "dde3ef10e4a125775a9876412aa5a4c08a4b8e17554fa3587822623a2d896dde"
+        },
+        {
+          "abilityId": "servant.atalanta.skill.sc-atalanta-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/阿塔兰忒.htm"
+        },
+        {
+          "abilityId": "servant.atalanta.skill.sc-atalanta-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.atalanta/阿塔兰忒"
+        },
+        {
+          "abilityId": "servant.atalanta.skill.sc-atalanta-3",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_atalanta_3"
+        },
+        {
+          "abilityId": "servant.atalanta.skill.sc-atalanta-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[37].skills[2].text#line=1",
+          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
+        },
+        {
+          "abilityId": "servant.atalanta.skill.sc-atalanta-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[37].skills[2].text#line=2",
+          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
+        },
+        {
+          "abilityId": "servant.atalanta.skill.sc-atalanta-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[37].skills[2].text#line=3",
+          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
+        },
+        {
           "abilityId": "servant.avicebron.skill.sc-avicebron-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/魔术师/英文版/阿维斯布隆.htm"
@@ -54243,6 +54545,162 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[102].skills[4].text#line=2",
           "sha256": "63686c9ddca7d47b51e6b3748f93d334d7ab6083eb67c2b7dae2a2aaa0f3a634"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/芭万·希.htm"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.baobhan/芭万·希"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-1",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_baobhan_1"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[51].skills[0].text#line=1",
+          "sha256": "6c50a6ea57b93dd012a47459a8669603db7c813df06d7471e903b61954e07b91"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/芭万·希.htm"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.baobhan/芭万·希"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-2",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_baobhan_2"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[51].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[51].skills[1].text#line=2",
+          "sha256": "a9baed37766ca9339d4eb26058df7e265f934ee3fe32856dbfffa33d0c9cc6d8"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/芭万·希.htm"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.baobhan/芭万·希"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-3",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_baobhan_3"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[51].skills[2].text#line=1",
+          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[51].skills[2].text#line=2",
+          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[51].skills[2].text#line=3",
+          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/巴格斯特.htm"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.barghest/巴格斯特"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-1",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_barghest_1"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[30].skills[0].text#line=1",
+          "sha256": "781b0f7abfee012c7bb704bd3efb0a490fb7ee1f529773e3552c3e671d5d8265"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[30].skills[0].text#line=2",
+          "sha256": "7a3522a11048ae1643abc6137f82f9c5083a7df3c362ebf1ee314d60836f033c"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/巴格斯特.htm"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.barghest/巴格斯特"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-2",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_barghest_2"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[30].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[30].skills[1].text#line=2",
+          "sha256": "9097a645c1f7d4a8ee52424328fc40bd9fa592cba83129d0466bc76d8ec61676"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/巴格斯特.htm"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.barghest/巴格斯特"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-3",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_barghest_3"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[30].skills[2].text#line=1",
+          "sha256": "6b11fe445b9f7bf9f8eab0a119052f8ae3c5a7014b970cbc4ccf6d8aada07c89"
         },
         {
           "abilityId": "servant.bb.skill.sc-bb-1",
@@ -57469,10 +57927,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 204,
-          "specific_handler": 153
+          "shared_handler": 207,
+          "specific_handler": 163
         },
-        "handlerCount": 207,
+        "handlerCount": 217,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

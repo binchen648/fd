@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=586
-blockedCount=358
+sourceGroundedCount=599
+blockedCount=345
 unclassifiedCount=0
-structuredAbilityCount=864
+structuredAbilityCount=877
 
 ## Axis Value Counts
 
@@ -287,6 +287,7 @@ structuredAbilityCount=864
 | effect | `SOURCE_CARD_POWER_BONUS` | 9 |
 | effect | `DEDUCTION_RULE` | 7 |
 | effect | `IF_CONDITION` | 7 |
+| effect | `INDEPENDENT_ACTION_RULE` | 7 |
 | effect | `SCHEDULE_PHASE_EFFECT` | 7 |
 | effect | `MOON_HOLY_GRAIL_RULE` | 6 |
 | effect | `REVERSE_EFFECT_RULE` | 6 |
@@ -294,7 +295,6 @@ structuredAbilityCount=864
 | effect | `TERRAIN_POSITION_ADJUSTMENT` | 6 |
 | effect | `TRANSFER_VICTORY_POINTS` | 6 |
 | effect | `ADD_STATUS` | 5 |
-| effect | `INDEPENDENT_ACTION_RULE` | 5 |
 | effect | `MOVE_CARD` | 5 |
 | effect | `SECRET_GARDEN_RULE` | 5 |
 | effect | `TATARI_DETERIORATION_RULE` | 5 |
@@ -378,6 +378,9 @@ structuredAbilityCount=864
 | effect | `ASTRONOMICAL_SPHERE_RULE` | 1 |
 | effect | `ATTACK_PLAY_COUNT_RULE` | 1 |
 | effect | `ATTRIBUTE_ATTACK_CLOSE_CHOICE_RULE` | 1 |
+| effect | `AVENGER_DISCARD_RECOVERY_RULE` | 1 |
+| effect | `AVENGER_DISCARD_VP_STEAL_RULE` | 1 |
+| effect | `BATTLEFIELD_PRESENCE_RESOURCE_RULE` | 1 |
 | effect | `BEAST_RESOURCE_RULE` | 1 |
 | effect | `BETRAYAL_ASCENSION_RULE` | 1 |
 | effect | `BETRAYAL_THRESHOLD_RULE` | 1 |
@@ -394,8 +397,10 @@ structuredAbilityCount=864
 | effect | `COLOR_MARKER_RULE` | 1 |
 | effect | `COMMAND_SEAL_REPLACEMENT_RULE` | 1 |
 | effect | `CONCEALED_MODE_RULE` | 1 |
+| effect | `CONDEMNATION_RELEASE_POWER_RULE` | 1 |
 | effect | `CONDITIONAL_MANA_FORFEIT_RULE` | 1 |
 | effect | `CONDITIONAL_PLAY_SURCHARGE_CLOSE_RULE` | 1 |
+| effect | `CONSTRAINED_ATTRIBUTE_POWER_RULE` | 1 |
 | effect | `CONTROL_RESOURCE_TRANSFORM_RULE` | 1 |
 | effect | `COOPERATIVE_SKILL_CLOSE_RULE` | 1 |
 | effect | `COSMOS_CHOICE_RULE` | 1 |
@@ -414,7 +419,10 @@ structuredAbilityCount=864
 | effect | `DISCARD_ATTRIBUTE_RECYCLE_DEFEAT_RULE` | 1 |
 | effect | `DISCARD_COST_ATTRIBUTE_GAIN_RULE` | 1 |
 | effect | `DISCARD_LUCK_STATE_RULE` | 1 |
+| effect | `DOPPELGANGER_CREATION_RULE` | 1 |
+| effect | `DOPPELGANGER_DEFEAT_RULE` | 1 |
 | effect | `DRAGON_HEART_PENALTY_RULE` | 1 |
+| effect | `DRAWN_CARDS_PLAY_LOCK_RULE` | 1 |
 | effect | `ENSURE_EVENT_DECK_COUNT` | 1 |
 | effect | `EVENT_ATTRIBUTE_INFUSION_RULE` | 1 |
 | effect | `EVENT_BATTLEFIELD_PENALTY` | 1 |
@@ -471,9 +479,12 @@ structuredAbilityCount=864
 | effect | `REPEAT_SKILL_EFFECT_RULE` | 1 |
 | effect | `REPLACE_SELECTED_EVENT_FROM_DECK` | 1 |
 | effect | `RESET_SKILL_USAGE` | 1 |
+| effect | `RESTRAINT_CONDEMNATION_RULE` | 1 |
+| effect | `REVEALED_HAND_POWER_SUM_RULE` | 1 |
 | effect | `REVEALED_LUCK_PLAY_RULE` | 1 |
 | effect | `ROSTER_REPLACEMENT_RULE` | 1 |
 | effect | `ROUND_COST_TERRAIN_EVENT_MULTIPLIER_RULE` | 1 |
+| effect | `ROUTE_RESTRICTION_USED_ABILITY_SUPPRESSION_RULE` | 1 |
 | effect | `RULER_SEAL_DUAL_USE_RULE` | 1 |
 | effect | `RULER_SEAL_TRANSFER_THRESHOLD_RULE` | 1 |
 | effect | `SCHEDULED_DECK_REBUILD_RULE` | 1 |
@@ -802,7 +813,7 @@ structuredAbilityCount=864
 | binding | `result:targetPlayer` | 1 |
 | battle | `COMBAT_CONDITION` | 80 |
 | battle | `COMBAT_EVENT` | 65 |
-| battle | `COMBAT_EFFECT` | 36 |
+| battle | `COMBAT_EFFECT` | 37 |
 | battle | `COMBAT_RULE_MODIFIER` | 17 |
 
 ## Identity-Level Matrix
@@ -1181,9 +1192,9 @@ structuredAbilityCount=864
 | `servant.andersen.skill.sc-andersen-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_MANA`, `GAIN_VICTORY_POINTS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
 | `servant.andersen.skill.sc-andersen-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `NONE` | `NONE` | `NONE` | `cleanup:remain_active`, `duration:this_round`, `duration:while_active` | `rule:defeat:ignore`, `rule:non_effect_victory_point_gain:forbid` | `NONE` | `NONE` | `COMBAT_RULE_MODIFIER` | `core.structured-skill` |
 | `servant.andersen.skill.sc-andersen-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INNOCENT_MONSTER_WAGER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.andersen-innocent-monster` |
-| `servant.angra.skill.sc-angra-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.angra-all-evils` |
-| `servant.angra.skill.sc-angra-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.angra-eternal-binding` |
-| `servant.angra.skill.sc-angra-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.angra-bites` |
+| `servant.angra.skill.sc-angra-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `AVENGER_DISCARD_VP_STEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.angra-all-evils` |
+| `servant.angra.skill.sc-angra-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `AVENGER_DISCARD_RECOVERY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.angra-eternal-binding` |
+| `servant.angra.skill.sc-angra-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `BATTLEFIELD_PRESENCE_RESOURCE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.angra-bites` |
 | `servant.arash.skill.sc-arash-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PREPARATION_LEADER_VP_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.arash-preparation` |
 | `servant.arash.skill.sc-arash-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CLAIRVOYANCE_TERRAIN_REVEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.arash-clairvoyance` |
 | `servant.arash.skill.sc-arash-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `STELLA_SERVANT_DEATH_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.arash-stella` |
@@ -1214,23 +1225,23 @@ structuredAbilityCount=864
 | `servant.astolfo.skill.sc-astolfo-1` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `AT_BATTLEFIELD`, `SOURCE_OWNED` | `NONE` | `CHOOSE_EACH_PLAYER_CARDS` | `NONE` | `CHOOSE_EACH_PLAYER_CARDS` | `NONE` | `NONE` | `FACE_UP`, `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:keptInstanceIds` | `COMBAT_CONDITION` | `core.structured-skill` |
 | `servant.astolfo.skill.sc-astolfo-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ATTRIBUTE_ATTACK_CLOSE_CHOICE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.astolfo-trap-of-argalia` |
 | `servant.astolfo.skill.sc-astolfo-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COOPERATIVE_SKILL_CLOSE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.astolfo-casseur-de-logistille` |
-| `servant.astraea.skill.sc-astraea-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.astraea.skill.sc-astraea-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.astraea-return-order` |
-| `servant.astraea.skill.sc-astraea-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.astraea-scale-protection` |
+| `servant.astraea.skill.sc-astraea-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CONDEMNATION_RELEASE_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.astraea.skill.sc-astraea-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CONSTRAINED_ATTRIBUTE_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.astraea-return-order` |
+| `servant.astraea.skill.sc-astraea-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RESTRAINT_CONDEMNATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.astraea-scale-protection` |
 | `servant.atalanta.skill.sc-atalanta-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `NONE` | `NONE` | `NONE` | `cleanup:remain_active`, `duration:while_active`, `starts:immediate` | `rule:card_base_power:add`, `rule:card_cost:add`, `rule:skill_use:forbid` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.atalanta.skill.sc-atalanta-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `METRIC`, `METRIC_COMPARE`, `SOURCE_ACTIVE` | `NONE` | `CHOOSE_ONE_CARD` | `NONE` | `CHOOSE_ONE_CARD` | `duration:this_round` | `NONE` | `NONE` | `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |
-| `servant.atalanta.skill.sc-atalanta-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
+| `servant.atalanta.skill.sc-atalanta-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
 | `servant.avicebron.skill.sc-avicebron-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CHOOSE_N_CARDS` | `GAIN_MANA`, `GOLEM_RULE`, `MOVE_SELECTED_CARDS` | `CHOOSE_N_CARDS` | `NONE` | `NONE` | `NONE` | `payload:selectedCardIds` | `NONE` | `core.avicebron-golems` |
 | `servant.avicebron.skill.sc-avicebron-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GOLEM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.avicebron-golems` |
 | `servant.avicebron.skill.sc-avicebron-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_MANA`, `GAIN_VICTORY_POINTS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
 | `servant.avicebron.skill.sc-avicebron-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GOLEM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.avicebron-golems` |
 | `servant.avicebron.skill.sc-avicebron-5` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GOLEM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.avicebron-golems` |
-| `servant.baobhan.skill.sc-baobhan-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.baobhan-part-collector` |
-| `servant.baobhan.skill.sc-baobhan-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.baobhan-fetch-failnaught` |
-| `servant.baobhan.skill.sc-baobhan-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
-| `servant.barghest.skill.sc-barghest-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.barghest-demon-chains` |
-| `servant.barghest.skill.sc-barghest-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.barghest-black-dog-galatine` |
-| `servant.barghest.skill.sc-barghest-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.barghest-sun-devourer` |
+| `servant.baobhan.skill.sc-baobhan-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DOPPELGANGER_CREATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.baobhan-part-collector` |
+| `servant.baobhan.skill.sc-baobhan-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DOPPELGANGER_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.baobhan-fetch-failnaught` |
+| `servant.baobhan.skill.sc-baobhan-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
+| `servant.barghest.skill.sc-barghest-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ROUTE_RESTRICTION_USED_ABILITY_SUPPRESSION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.barghest-demon-chains` |
+| `servant.barghest.skill.sc-barghest-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVEALED_HAND_POWER_SUM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.barghest-black-dog-galatine` |
+| `servant.barghest.skill.sc-barghest-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAWN_CARDS_PLAY_LOCK_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.barghest-sun-devourer` |
 | `servant.bb.skill.sc-bb-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MOON_HOLY_GRAIL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bb-moon-cell` |
 | `servant.bb.skill.sc-bb-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SLOT_MACHINE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bb-moon-cell` |
 | `servant.bb.skill.sc-bb-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LOCATION_MERGE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bb-moon-cell` |
