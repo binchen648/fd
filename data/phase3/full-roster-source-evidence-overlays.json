@@ -20142,6 +20142,318 @@
         }
       ],
       "referencePrintedTextSha256": "e0c05d4411c50ccc67a2354a8d856c79014a6a6e63d41f32b59d364b471326f3"
+    },
+    {
+      "id": "servant.mash.skill.sc-mash-1",
+      "printedText": "【真名解放】行动阶段：选择一名玩家，其获得你所在战场的+2地利。随后将他的地利翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_mash_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】行动阶段：选择一名玩家，其获得你所在战场的+2地利。随后将他的地利翻倍。",
+        "sourceTextSha256": "7324c8baca52c8b12f8c9716844216c5ab303ae4f06174453fe3b6dc743b838e"
+      },
+      "abilities": [
+        {
+          "id": "mash.sc_mash_1.semantic",
+          "printedClause": "【真名解放】行动阶段：选择一名玩家，其获得你所在战场的+2地利。随后将他的地利翻倍。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "terrain_effect_multiplier_rule",
+              "operation": "choose_player_grant_controller_battlefield_plus_2_terrain_then_double_that_players_terrain"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7324c8baca52c8b12f8c9716844216c5ab303ae4f06174453fe3b6dc743b838e"
+    },
+    {
+      "id": "servant.mash.skill.sc-mash-2",
+      "printedText": "战斗阶段：将与你战斗的除了你给予【守护】的对手，每张攻击威力-3。如果你已经【真名解放】则改为-4。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_mash_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "战斗阶段：将与你战斗的除了你给予【守护】的对手，每张攻击威力-3。如果你已经【真名解放】则改为-4。",
+        "sourceTextSha256": "263a0392db8ca229f737ed19ae375e02cb5c6d2ea86ecb4adae1dcaa30e38207"
+      },
+      "abilities": [
+        {
+          "id": "mash.sc_mash_2.semantic",
+          "printedClause": "战斗阶段：将与你战斗的除了你给予【守护】的对手，每张攻击威力-3。如果你已经【真名解放】则改为-4。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "guard_rule",
+              "operation": "combat_reduce_each_engaged_opponent_attack_power_except_guard_recipient_by_3_or_4_after_true_name_reveal"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "263a0392db8ca229f737ed19ae375e02cb5c6d2ea86ecb4adae1dcaa30e38207"
+    },
+    {
+      "id": "servant.mash.skill.sc-mash-3",
+      "printedText": "被动：当你没有令咒时，你的从者真名隐藏。你不能再使用【已然遥远的理想之城】或出借【守护】。【守护】的基本威力翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_mash_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动：当你没有令咒时，你的从者真名隐藏。你不能再使用【已然遥远的理想之城】或出借【守护】。【守护】的基本威力翻倍。",
+        "sourceTextSha256": "7a0f05b6f086d157c1a72a068376184be90f90c56a7b966760eb46b9c0d91bc8"
+      },
+      "abilities": [
+        {
+          "id": "mash.sc_mash_3.semantic",
+          "printedClause": "被动：当你没有令咒时，你的从者真名隐藏。你不能再使用【已然遥远的理想之城】或出借【守护】。【守护】的基本威力翻倍。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "guard_rule",
+              "operation": "when_no_command_seals_hide_servant_true_name_disable_castle_and_guard_loan_double_guard_base_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7a0f05b6f086d157c1a72a068376184be90f90c56a7b966760eb46b9c0d91bc8"
+    },
+    {
+      "id": "servant.mash.skill.sc-mash-4",
+      "printedText": "若玛修战败，将【守护】返还于玛修的手牌。若玛修未参与此战斗，则将此牌【关闭】。你和玛修无视【败北】效果，你们二人各自的合计威力变为你和玛修中合计威力最高的数值。\n行动阶段：玛修将【守护】借给一位对手直到战斗阶段结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_mash_4",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "若玛修战败，将【守护】返还于玛修的手牌。若玛修未参与此战斗，则将此牌【关闭】。你和玛修无视【败北】效果，你们二人各自的合计威力变为你和玛修中合计威力最高的数值。\n行动阶段：玛修将【守护】借给一位对手直到战斗阶段结束。",
+        "sourceTextSha256": "f451cf81f47b801e51367103936c1d0527ae7af909a1f24d526ed4cf5ab55e77"
+      },
+      "abilities": [
+        {
+          "id": "mash.sc_mash_4.semantic",
+          "printedClause": "若玛修战败，将【守护】返还于玛修的手牌。若玛修未参与此战斗，则将此牌【关闭】。你和玛修无视【败北】效果，你们二人各自的合计威力变为你和玛修中合计威力最高的数值。\n行动阶段：玛修将【守护】借给一位对手直到战斗阶段结束。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "guard_rule",
+              "operation": "on_mash_loss_return_guard_to_mash_hand_if_mash_absent_close_guard_guard_holder_and_mash_ignore_defeat_equalize_total_power_to_higher_action_loan_guard_to_opponent_until_combat_end"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f451cf81f47b801e51367103936c1d0527ae7af909a1f24d526ed4cf5ab55e77"
+    },
+    {
+      "id": "servant.oberon.skill.sc-oberon-1",
+      "printedText": "【真名解放】对人理-被动：你无法通过【裁决者令咒】获得战果。当你真名解放后，所有【裁决者令咒】的第一项效果更改为：“行动阶段：将一张游戏外的【复仇者】加入攻击。”",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_oberon_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】对人理-被动：你无法通过【裁决者令咒】获得战果。当你真名解放后，所有【裁决者令咒】的第一项效果更改为：“行动阶段：将一张游戏外的【复仇者】加入攻击。”",
+        "sourceTextSha256": "d52acb32fed767684f40a82049777d2408e0fc7cad7b21843914b6c2827d5d4f"
+      },
+      "abilities": [
+        {
+          "id": "oberon.sc_oberon_1.semantic",
+          "printedClause": "【真名解放】对人理-被动：你无法通过【裁决者令咒】获得战果。当你真名解放后，所有【裁决者令咒】的第一项效果更改为：“行动阶段：将一张游戏外的【复仇者】加入攻击。”",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ruler_seal_rule",
+              "operation": "after_true_name_reveal_cannot_gain_vp_from_ruler_seal_replace_first_ruler_seal_option_with_add_outside_game_avenger_to_attack"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d52acb32fed767684f40a82049777d2408e0fc7cad7b21843914b6c2827d5d4f"
+    },
+    {
+      "id": "servant.oberon.skill.sc-oberon-2",
+      "printedText": "被动：当你的从者真名公开时，将此牌加入攻击并获得X点战果。\n骗局-当此牌首次激活时，X将永久设置为你以伪装者作为从者时的回合数。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_oberon_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动：当你的从者真名公开时，将此牌加入攻击并获得X点战果。\n骗局-当此牌首次激活时，X将永久设置为你以伪装者作为从者时的回合数。",
+        "sourceTextSha256": "b7641294351d59a79936a2b5b5ce7eaa50c8ad591235638b93c2c8ce5d657cf7"
+      },
+      "abilities": [
+        {
+          "id": "oberon.sc_oberon_2.semantic",
+          "printedClause": "被动：当你的从者真名公开时，将此牌加入攻击并获得X点战果。\n骗局-当此牌首次激活时，X将永久设置为你以伪装者作为从者时的回合数。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "impostor_state_rule",
+              "operation": "when_servant_true_name_revealed_add_source_to_attack_and_gain_x_vp_first_activation_permanently_sets_x_to_round_number_when_impostor_was_servant"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b7641294351d59a79936a2b5b5ce7eaa50c8ad591235638b93c2c8ce5d657cf7"
+    },
+    {
+      "id": "servant.oberon.skill.sc-oberon-3",
+      "printedText": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_oberon_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+        "sourceTextSha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
+      },
+      "abilities": [
+        {
+          "id": "oberon.sc_oberon_3.semantic",
+          "printedClause": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ruler_seal_rule",
+              "operation": "uncopyable_unstealable_three_per_game_action_choose_two_other_least_bound_count_players_grant_ruler_seal_binding_only_binding_ruler_may_use_on_bound_player"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
+    },
+    {
+      "id": "servant.oberon.skill.sc-oberon-4",
+      "printedText": "行动阶段：令被束缚者（限一项）：<每局游戏限一次>\n1.移动至【深山町】或【新都】。\n2.无法移动至本回合结束。\n3.免费打出一张手牌。无论其是否打出，若他获胜，你获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_oberon_4",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "行动阶段：令被束缚者（限一项）：<每局游戏限一次>\n1.移动至【深山町】或【新都】。\n2.无法移动至本回合结束。\n3.免费打出一张手牌。无论其是否打出，若他获胜，你获得2点战果。",
+        "sourceTextSha256": "125082e75869375ea276d98ddfe24549144efbc1525a5e7a54acac179e1beb3c"
+      },
+      "abilities": [
+        {
+          "id": "oberon.sc_oberon_4.semantic",
+          "printedClause": "行动阶段：令被束缚者（限一项）：<每局游戏限一次>\n1.移动至【深山町】或【新都】。\n2.无法移动至本回合结束。\n3.免费打出一张手牌。无论其是否打出，若他获胜，你获得2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ruler_seal_rule",
+              "operation": "once_per_game_on_bound_player_choose_move_to_mountain_or_city_prevent_move_this_round_or_free_play_one_hand_card_and_if_win_grant_2_vp_to_binder"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "125082e75869375ea276d98ddfe24549144efbc1525a5e7a54acac179e1beb3c"
+    },
+    {
+      "id": "servant.voyager.skill.sc-voyager-1",
+      "printedText": "群星低吟-被动：当一名玩家进入侦查，将两张游戏外的【降临者】加入其手牌。\n行动阶段：所有玩家可以展示他们手牌中的【降临者】。若如此做，其获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_voyager_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "群星低吟-被动：当一名玩家进入侦查，将两张游戏外的【降临者】加入其手牌。\n行动阶段：所有玩家可以展示他们手牌中的【降临者】。若如此做，其获得2点战果。",
+        "sourceTextSha256": "205b88949bc9f955386c52ea2ac94a6502cbdad8c96f06af6ba5dbfc842455db"
+      },
+      "abilities": [
+        {
+          "id": "voyager.sc_voyager_1.semantic",
+          "printedClause": "群星低吟-被动：当一名玩家进入侦查，将两张游戏外的【降临者】加入其手牌。\n行动阶段：所有玩家可以展示他们手牌中的【降临者】。若如此做，其获得2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "visitor_card_rule",
+              "operation": "when_player_enters_scouting_add_two_outside_game_visitors_to_hand_action_all_players_may_reveal_visitor_in_hand_to_gain_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "205b88949bc9f955386c52ea2ac94a6502cbdad8c96f06af6ba5dbfc842455db"
+    },
+    {
+      "id": "servant.voyager.skill.sc-voyager-2",
+      "printedText": "深空奏鸣-行动阶段：从手牌中打出至多2张【降临者】和至多2张暗置牌。\n战斗阶段：展示所有玩家的手牌。将因此效果展示了【降临者】的玩家的攻击威力降低至0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_voyager_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "深空奏鸣-行动阶段：从手牌中打出至多2张【降临者】和至多2张暗置牌。\n战斗阶段：展示所有玩家的手牌。将因此效果展示了【降临者】的玩家的攻击威力降低至0。",
+        "sourceTextSha256": "0ace95b43780151a8d4cc738813163953efd1d1d3d41e090b5ad7a1e6f596f15"
+      },
+      "abilities": [
+        {
+          "id": "voyager.sc_voyager_2.semantic",
+          "printedClause": "深空奏鸣-行动阶段：从手牌中打出至多2张【降临者】和至多2张暗置牌。\n战斗阶段：展示所有玩家的手牌。将因此效果展示了【降临者】的玩家的攻击威力降低至0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "visitor_card_rule",
+              "operation": "action_play_up_to_two_visitors_and_two_face_down_cards_from_hand_combat_reveal_all_hands_set_attacks_of_players_revealing_visitor_to_zero_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0ace95b43780151a8d4cc738813163953efd1d1d3d41e090b5ad7a1e6f596f15"
+    },
+    {
+      "id": "servant.voyager.skill.sc-voyager-3",
+      "printedText": "【真名解放】未知的世界，温暖的风-行动阶段：选择一名对手展示其弃牌堆，你可以免费打出所有因此效果展示的【降临者】。若你因此打出了至少一张【降临者】，偷取该对手2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_voyager_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】未知的世界，温暖的风-行动阶段：选择一名对手展示其弃牌堆，你可以免费打出所有因此效果展示的【降临者】。若你因此打出了至少一张【降临者】，偷取该对手2点战果。",
+        "sourceTextSha256": "90c3a4fbb89f193d866820b3796277fba27b8bf4f89985eae54cce4cc15ad33b"
+      },
+      "abilities": [
+        {
+          "id": "voyager.sc_voyager_3.semantic",
+          "printedClause": "【真名解放】未知的世界，温暖的风-行动阶段：选择一名对手展示其弃牌堆，你可以免费打出所有因此效果展示的【降临者】。若你因此打出了至少一张【降临者】，偷取该对手2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "visitor_card_rule",
+              "operation": "true_name_reveal_action_choose_opponent_reveal_discard_free_play_all_revealed_visitors_if_at_least_one_played_steal_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "90c3a4fbb89f193d866820b3796277fba27b8bf4f89985eae54cce4cc15ad33b"
+    },
+    {
+      "id": "servant.voyager.skill.sc-voyager-4",
+      "printedText": "【真名解放】\n你和旅行者各获得+6合计威力（若你是旅行者，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入旅行者的弃牌堆。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_voyager_4",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】\n你和旅行者各获得+6合计威力（若你是旅行者，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入旅行者的弃牌堆。",
+        "sourceTextSha256": "d0ba9965338bcd719d3631256f57144ff71363113069c44dfb4225af5296d0bd"
+      },
+      "abilities": [
+        {
+          "id": "voyager.sc_voyager_4.semantic",
+          "printedClause": "【真名解放】\n你和旅行者各获得+6合计威力（若你是旅行者，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入旅行者的弃牌堆。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "foreign_life_rule",
+              "operation": "true_name_reveal_controller_and_named_servant_each_gain_6_total_power_no_double_if_same_player_after_combat_move_to_named_servant_discard"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d0ba9965338bcd719d3631256f57144ff71363113069c44dfb4225af5296d0bd"
     }
   ]
 }

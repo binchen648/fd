@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 470,
-    "explicitBlockCount": 474,
+    "contractMappedCount": 482,
+    "explicitBlockCount": 462,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -25,9 +25,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
       "READY_GENERIC_EXTENSION": 209,
-      "SPECIAL_HANDLER_CANDIDATE": 259,
+      "SPECIAL_HANDLER_CANDIDATE": 271,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 474,
+      "SOURCE_EVIDENCE_REQUIRED": 462,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -5255,11 +5255,43 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.mash.skill.sc-mash-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.mash.skill.sc-mash-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.mash.skill.sc-mash-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.mash.skill.sc-mash-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.medusa.skill.sc-medusa-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
           "abilityId": "servant.mephisto.skill.sc-mephisto-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.oberon.skill.sc-oberon-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.oberon.skill.sc-oberon-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.oberon.skill.sc-oberon-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.oberon.skill.sc-oberon-4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -5292,6 +5324,22 @@
         },
         {
           "abilityId": "servant.valkyrie.skill.sc-valkyrie-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.voyager.skill.sc-voyager-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.voyager.skill.sc-voyager-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.voyager.skill.sc-voyager-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.voyager.skill.sc-voyager-4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -8438,8 +8486,16 @@
         "servant.koyanskaya.skill.sc-koyanskaya-4",
         "servant.koyanskaya.skill.sc-koyanskaya-5",
         "servant.koyanskaya.skill.sc-koyanskaya-6",
+        "servant.mash.skill.sc-mash-1",
+        "servant.mash.skill.sc-mash-2",
+        "servant.mash.skill.sc-mash-3",
+        "servant.mash.skill.sc-mash-4",
         "servant.medusa.skill.sc-medusa-2",
         "servant.mephisto.skill.sc-mephisto-2",
+        "servant.oberon.skill.sc-oberon-1",
+        "servant.oberon.skill.sc-oberon-2",
+        "servant.oberon.skill.sc-oberon-3",
+        "servant.oberon.skill.sc-oberon-4",
         "servant.sherlock.skill.sc-sherlock-1",
         "servant.sherlock.skill.sc-sherlock-2",
         "servant.sherlock.skill.sc-sherlock-3",
@@ -8447,7 +8503,11 @@
         "servant.sherlock.skill.sc-sherlock-5",
         "servant.sherlock.skill.sc-sherlock-6",
         "servant.sherlock.skill.sc-sherlock-7",
-        "servant.valkyrie.skill.sc-valkyrie-3"
+        "servant.valkyrie.skill.sc-valkyrie-3",
+        "servant.voyager.skill.sc-voyager-1",
+        "servant.voyager.skill.sc-voyager-2",
+        "servant.voyager.skill.sc-voyager-3",
+        "servant.voyager.skill.sc-voyager-4"
       ],
       "partialAbilities": [],
       "skippedAbilities": [
@@ -9526,6 +9586,22 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.mash.skill.sc-mash-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.mash.skill.sc-mash-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.mash.skill.sc-mash-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.mash.skill.sc-mash-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.medusa.skill.sc-medusa-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -9535,6 +9611,22 @@
         },
         {
           "abilityId": "servant.merlin.skill.sc-merlin-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.oberon.skill.sc-oberon-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.oberon.skill.sc-oberon-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.oberon.skill.sc-oberon-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.oberon.skill.sc-oberon-4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -9567,6 +9659,22 @@
         },
         {
           "abilityId": "servant.valkyrie.skill.sc-valkyrie-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.voyager.skill.sc-voyager-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.voyager.skill.sc-voyager-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.voyager.skill.sc-voyager-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.voyager.skill.sc-voyager-4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -10019,6 +10127,10 @@
       "servant.koyanskaya.skill.sc-koyanskaya-6",
       "servant.leonidas.skill.sc-leonidas-1",
       "servant.lionking.skill.sc-lionking-3",
+      "servant.mash.skill.sc-mash-1",
+      "servant.mash.skill.sc-mash-2",
+      "servant.mash.skill.sc-mash-3",
+      "servant.mash.skill.sc-mash-4",
       "servant.mechaeli.skill.sc-mechaeli-2",
       "servant.medusa.skill.sc-medusa-2",
       "servant.medusa.skill.sc-medusa-np",
@@ -10033,6 +10145,10 @@
       "servant.nero.skill.sc-nero-2",
       "servant.nobunaga.skill.sc-nobunaga-3",
       "servant.nursery.skill.sc-nursery-2",
+      "servant.oberon.skill.sc-oberon-1",
+      "servant.oberon.skill.sc-oberon-2",
+      "servant.oberon.skill.sc-oberon-3",
+      "servant.oberon.skill.sc-oberon-4",
       "servant.ozymandias.skill.sc-ozymandias-2",
       "servant.parvati.skill.sc-parvati-3",
       "servant.roberts.skill.sc-roberts-1",
@@ -10047,7 +10163,11 @@
       "servant.siegfried.skill.sc-siegfried-2",
       "servant.spartacus.skill.sc-spartacus-2",
       "servant.stheno.skill.sc-stheno-2",
-      "servant.valkyrie.skill.sc-valkyrie-3"
+      "servant.valkyrie.skill.sc-valkyrie-3",
+      "servant.voyager.skill.sc-voyager-1",
+      "servant.voyager.skill.sc-voyager-2",
+      "servant.voyager.skill.sc-voyager-3",
+      "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
       {
@@ -11997,34 +12117,6 @@
         ]
       },
       {
-        "abilityId": "servant.mash.skill.sc-mash-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.mash.skill.sc-mash-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.mash.skill.sc-mash-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.mash.skill.sc-mash-4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "servant.maxwell.skill.sc-maxwell-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -12432,34 +12524,6 @@
       },
       {
         "abilityId": "servant.nursery.skill.sc-nursery-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.oberon.skill.sc-oberon-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.oberon.skill.sc-oberon-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.oberon.skill.sc-oberon-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.oberon.skill.sc-oberon-4",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -13320,34 +13384,6 @@
         ]
       },
       {
-        "abilityId": "servant.voyager.skill.sc-voyager-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.voyager.skill.sc-voyager-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.voyager.skill.sc-voyager-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.voyager.skill.sc-voyager-4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "servant.xiangyu.skill.sc-xiangyu-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -13619,8 +13655,16 @@
       "servant.koyanskaya.skill.sc-koyanskaya-4",
       "servant.koyanskaya.skill.sc-koyanskaya-5",
       "servant.koyanskaya.skill.sc-koyanskaya-6",
+      "servant.mash.skill.sc-mash-1",
+      "servant.mash.skill.sc-mash-2",
+      "servant.mash.skill.sc-mash-3",
+      "servant.mash.skill.sc-mash-4",
       "servant.medusa.skill.sc-medusa-2",
       "servant.mephisto.skill.sc-mephisto-2",
+      "servant.oberon.skill.sc-oberon-1",
+      "servant.oberon.skill.sc-oberon-2",
+      "servant.oberon.skill.sc-oberon-3",
+      "servant.oberon.skill.sc-oberon-4",
       "servant.sherlock.skill.sc-sherlock-1",
       "servant.sherlock.skill.sc-sherlock-2",
       "servant.sherlock.skill.sc-sherlock-3",
@@ -13628,7 +13672,11 @@
       "servant.sherlock.skill.sc-sherlock-5",
       "servant.sherlock.skill.sc-sherlock-6",
       "servant.sherlock.skill.sc-sherlock-7",
-      "servant.valkyrie.skill.sc-valkyrie-3"
+      "servant.valkyrie.skill.sc-valkyrie-3",
+      "servant.voyager.skill.sc-voyager-1",
+      "servant.voyager.skill.sc-voyager-2",
+      "servant.voyager.skill.sc-voyager-3",
+      "servant.voyager.skill.sc-voyager-4"
     ]
   }
 }
