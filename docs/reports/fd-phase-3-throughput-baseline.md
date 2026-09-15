@@ -592,3 +592,12 @@ Permitted final status:
 - Generated coverage drift is only timestamp/static source line numbers and is intentionally not committed.
 - Independent R20 evidence: typecheck PASS; focused `26/26`; rules `252/252`; deterministic PASS; full CI `665/665`; identity/forbidden-file audits clean.
 - Broad Resource Numeric and all later-wave parent gateways remain unpromoted.
+## P3-A FB2-04 Synchronization — 2026-09-16
+
+- P3-FB2-04 fixed controller command-seal adjustment component: `REVIEW_ACCEPTED` at candidate `5e6500a72f2d82c2cb12644a163ed6b9d96f0fc7`, independent R21 `92c55fc53164ce52ad9489ef5d5067cb516ea4e3`.
+- Exact F1 component alignment is `6 identities / 7 effects`; all-opponent, same-battlefield-opponent, restore-all, payment, variable, and third-party siblings remain outside the contract.
+- Parent routes remain independently gated. No authoring migration occurred, and this six-identity slice cannot alone satisfy FM01's 10-ID minimum.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled identity remains definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 cards, 14 characters, 0 blocking issues.
+- Generated coverage drift remains timestamp/static source line numbers only and is intentionally not committed.
+- Independent R21 evidence: typecheck PASS; focused `33/33`; rules `256/256`; deterministic PASS; full CI `669/669`; identity/forbidden-file audits clean.
+- Broad Resource Numeric, Cost Payment, Target Selection, Trigger Gateway, and later-wave semantics remain unpromoted.
