@@ -1483,6 +1483,13 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.astraea.skill.sc-astraea-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'restraint_condemnation_rule'})])})); expect(slice.find(c=>c.id==='servant.barghest.skill.sc-barghest-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'drawn_cards_play_lock_rule'})])}));
   });
 
+  it('grounds the fifteen-ID Benkei/Billy/Boudica/Bradamante/Brynhildr slice from locked development snapshots', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.benkei.skill.sc-benkei-1","servant.benkei.skill.sc-benkei-2","servant.benkei.skill.sc-benkei-3","servant.billy.skill.sc-billy-1","servant.billy.skill.sc-billy-2","servant.billy.skill.sc-billy-3","servant.boudica.skill.sc-boudica-1","servant.boudica.skill.sc-boudica-2","servant.boudica.skill.sc-boudica-3","servant.bradamante.skill.sc-bradamante-1","servant.bradamante.skill.sc-bradamante-2","servant.bradamante.skill.sc-bradamante-3","servant.brynhildr.skill.sc-brynhildr-1","servant.brynhildr.skill.sc-brynhildr-2","servant.brynhildr.skill.sc-brynhildr-3"]); const slice=overlays.filter(c=>ids.has(c.id)); expect(slice).toHaveLength(15); expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256)).toBe(true);
+    for(const id of ['servant.benkei.skill.sc-benkei-1','servant.bradamante.skill.sc-bradamante-1','servant.brynhildr.skill.sc-brynhildr-1']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'move_player',destinationRule:'any_location_except_workshop'})])}));
+    expect(slice.find(c=>c.id==='servant.boudica.skill.sc-boudica-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'draw_cards'}),expect.objectContaining({type:'play_selected_cards'})])}));
+    expect(slice.find(c=>c.id==='servant.benkei.skill.sc-benkei-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'skill_copy_lifecycle_rule'})])})); expect(slice.find(c=>c.id==='servant.brynhildr.skill.sc-brynhildr-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'love_bond_vp_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1536,10 +1543,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 599,
-      blockedCount: 345,
+      sourceGroundedCount: 614,
+      blockedCount: 330,
       unclassifiedCount: 0,
-      structuredAbilityCount: 877,
+      structuredAbilityCount: 892,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

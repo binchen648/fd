@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=599
-blockedCount=345
+sourceGroundedCount=614
+blockedCount=330
 unclassifiedCount=0
-structuredAbilityCount=877
+structuredAbilityCount=892
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 110 |
+| timing | `ACTION` | 114 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -265,15 +265,15 @@ structuredAbilityCount=877
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
 | effect | `EVENT_CARD_RULE` | 27 |
-| effect | `DRAW_CARDS` | 24 |
+| effect | `DRAW_CARDS` | 25 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
+| effect | `MOVE_PLAYER` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
-| effect | `MOVE_PLAYER` | 17 |
 | effect | `MOVE_SELECTED_CARDS` | 17 |
+| effect | `PLAY_SELECTED_CARDS` | 15 |
 | effect | `CLOSE_SOURCE_CARD` | 14 |
 | effect | `LOSTBELT_EXPANSION` | 14 |
-| effect | `PLAY_SELECTED_CARDS` | 14 |
 | effect | `DEFEAT_PLAYER` | 13 |
 | effect | `SET_PLAYER_FLAG` | 12 |
 | effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 11 |
@@ -363,6 +363,7 @@ structuredAbilityCount=877
 | effect | `SERVANT_OWNERSHIP_RULE` | 2 |
 | effect | `SET_SELECTED_CARDS_FACE` | 2 |
 | effect | `SHOP_AUCTION_RULE` | 2 |
+| effect | `SKILL_COPY_LIFECYCLE_RULE` | 2 |
 | effect | `SOURCE_CARD_POWER_FORMULA` | 2 |
 | effect | `TATARI_RULE` | 2 |
 | effect | `TERRAIN_EFFECT_MULTIPLIER_RULE` | 2 |
@@ -388,6 +389,7 @@ structuredAbilityCount=877
 | effect | `BOUND_OPPONENT_RULE` | 1 |
 | effect | `CAPTURED_OPPONENT_RULE` | 1 |
 | effect | `CARD_CASE_ATTACHMENT_RULE` | 1 |
+| effect | `CARD_CLOSE_IMMUNITY_MOVE_POWER_RULE` | 1 |
 | effect | `CHARGE_SELECTED_SKILL_ATTACK` | 1 |
 | effect | `CHEAT_CODE_TRANSFORM_RULE` | 1 |
 | effect | `CLAIRVOYANCE_TERRAIN_REVEAL_RULE` | 1 |
@@ -437,6 +439,8 @@ structuredAbilityCount=877
 | effect | `HERO_DUEL_FIELD_RULE` | 1 |
 | effect | `HIDDEN_DOUBLE_ATTACK_RULE` | 1 |
 | effect | `HIDDEN_DRAW_REMOVAL_RULE` | 1 |
+| effect | `HIDDEN_LUCK_ACTIVATION_DOUBLE_RULE` | 1 |
+| effect | `HIDDEN_QUICK_ATTACK_ACTIVATION_RULE` | 1 |
 | effect | `IMPERFECTION_DIRECT_DEFEAT_RULE` | 1 |
 | effect | `IMPOSTOR_STATE_RULE` | 1 |
 | effect | `INDEPENDENT_DECK_RULE` | 1 |
@@ -448,12 +452,16 @@ structuredAbilityCount=877
 | effect | `LINKED_PLAYER_MANA_CONTRIBUTION` | 1 |
 | effect | `LOCATION_MERGE_RULE` | 1 |
 | effect | `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS` | 1 |
+| effect | `LOSS_LUCK_TURN_ORDER_VP_RULE` | 1 |
+| effect | `LOVE_ATTRIBUTE_COST_POWER_TRANSFORM_RULE` | 1 |
+| effect | `LOVE_BOND_VP_RULE` | 1 |
 | effect | `LUCK_IDENTITY_REPLAY_RULE` | 1 |
 | effect | `LUCK_REVEAL_DEFEAT_RULE` | 1 |
 | effect | `MAGIC_IMMUNITY_RULE` | 1 |
 | effect | `MANA_BURST_REFUND_RULE` | 1 |
 | effect | `MAP_ARROW_REWRITE_RULE` | 1 |
 | effect | `MARBLE_PHANTASM_DEFEAT_RULE` | 1 |
+| effect | `MATCHING_ATTRIBUTE_EVENT_SITUATION_PROTECTION_RULE` | 1 |
 | effect | `MILLENNIUM_CASTLE_OFFBOARD_LOCK_RULE` | 1 |
 | effect | `MODIFY_OTHER_ATTACKS` | 1 |
 | effect | `MOON_HOLY_GRAIL_RESET_RULE` | 1 |
@@ -462,6 +470,7 @@ structuredAbilityCount=877
 | effect | `MYSTIC_CODE_UPGRADE_RULE` | 1 |
 | effect | `NOBLE_PHANTASM_SUPPRESSION_RULE` | 1 |
 | effect | `OFFBOARD_BATTLE_TAKEOVER_RULE` | 1 |
+| effect | `OPPONENT_OPTION_LOCK_RULE` | 1 |
 | effect | `ORIGIN_BULLET_RULE` | 1 |
 | effect | `OTHER_ATTACK_POWER_BONUS` | 1 |
 | effect | `PAIN_CONVERSION_REWARD_RULE` | 1 |
@@ -475,6 +484,7 @@ structuredAbilityCount=877
 | effect | `REMOVED_CARD_MEMORY_POWER_RULE` | 1 |
 | effect | `REMOVED_CARD_POWER_RULE` | 1 |
 | effect | `REMOVE_OWNED_CARDS_BY_LINKED_SKILL` | 1 |
+| effect | `REPEAT_HIDDEN_PLAY_DRAW_RULE` | 1 |
 | effect | `REPEAT_REPLACEMENT_WINDOW` | 1 |
 | effect | `REPEAT_SKILL_EFFECT_RULE` | 1 |
 | effect | `REPLACE_SELECTED_EVENT_FROM_DECK` | 1 |
@@ -498,8 +508,8 @@ structuredAbilityCount=877
 | effect | `SHUFFLE_EVENT_DECK` | 1 |
 | effect | `SIREN_ACTION_OVERRIDE_RULE` | 1 |
 | effect | `SITUATION_RAGE_RULE` | 1 |
-| effect | `SKILL_COPY_LIFECYCLE_RULE` | 1 |
 | effect | `SKILL_SACRIFICE_SCALING_RULE` | 1 |
+| effect | `SKILL_TAX_IMMUNITY_MAGIC_CLOSE_RULE` | 1 |
 | effect | `SKIP_DEPLOYMENT_RECOVERY_RULE` | 1 |
 | effect | `SLOT_MACHINE_RULE` | 1 |
 | effect | `STELLA_SERVANT_DEATH_RULE` | 1 |
@@ -1249,25 +1259,25 @@ structuredAbilityCount=877
 | `servant.bedivere.skill.sc-bedivere-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `SET_OPPONENT_ATTRIBUTE_POWER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
 | `servant.bedivere.skill.sc-bedivere-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ZONE_IMMUNITY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bedivere-oath-of-protection` |
 | `servant.bedivere.skill.sc-bedivere-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DECK_RECYCLE_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bedivere-silver-arm` |
-| `servant.benkei.skill.sc-benkei-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
-| `servant.benkei.skill.sc-benkei-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.benkei-bulwark` |
-| `servant.benkei.skill.sc-benkei-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.benkei-evenly-matched` |
+| `servant.benkei.skill.sc-benkei-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
+| `servant.benkei.skill.sc-benkei-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OPPONENT_OPTION_LOCK_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.benkei-bulwark` |
+| `servant.benkei.skill.sc-benkei-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SKILL_COPY_LIFECYCLE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.benkei-evenly-matched` |
 | `servant.bikuni.skill.sc-bikuni-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MOON_HOLY_GRAIL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bikuni-moon-cell` |
 | `servant.bikuni.skill.sc-bikuni-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MOON_HOLY_GRAIL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bikuni-moon-cell` |
 | `servant.bikuni.skill.sc-bikuni-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MOON_HOLY_GRAIL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bikuni-moon-cell` |
 | `servant.bikuni.skill.sc-bikuni-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MOON_HOLY_GRAIL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.moon-cancer` |
-| `servant.billy.skill.sc-billy-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.billy-thunderer-hidden-attacks` |
-| `servant.billy.skill.sc-billy-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.billy-luck-double` |
-| `servant.billy.skill.sc-billy-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.billy-quick-draw` |
-| `servant.boudica.skill.sc-boudica-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.boudica.skill.sc-boudica-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.boudica.skill.sc-boudica-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
-| `servant.bradamante.skill.sc-bradamante-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
-| `servant.bradamante.skill.sc-bradamante-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bradamante-angelica-cathay` |
-| `servant.bradamante.skill.sc-bradamante-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bradamante-bouclier-atlante` |
-| `servant.brynhildr.skill.sc-brynhildr-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
-| `servant.brynhildr.skill.sc-brynhildr-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.brynhildr-hero-bridesmaid` |
-| `servant.brynhildr.skill.sc-brynhildr-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
+| `servant.billy.skill.sc-billy-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HIDDEN_QUICK_ATTACK_ACTIVATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.billy-thunderer-hidden-attacks` |
+| `servant.billy.skill.sc-billy-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HIDDEN_LUCK_ACTIVATION_DOUBLE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.billy-luck-double` |
+| `servant.billy.skill.sc-billy-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REPEAT_HIDDEN_PLAY_DRAW_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.billy-quick-draw` |
+| `servant.boudica.skill.sc-boudica-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CARD_CLOSE_IMMUNITY_MOVE_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.boudica.skill.sc-boudica-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LOSS_LUCK_TURN_ORDER_VP_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.boudica.skill.sc-boudica-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `servant.bradamante.skill.sc-bradamante-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
+| `servant.bradamante.skill.sc-bradamante-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SKILL_TAX_IMMUNITY_MAGIC_CLOSE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bradamante-angelica-cathay` |
+| `servant.bradamante.skill.sc-bradamante-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MATCHING_ATTRIBUTE_EVENT_SITUATION_PROTECTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bradamante-bouclier-atlante` |
+| `servant.brynhildr.skill.sc-brynhildr-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
+| `servant.brynhildr.skill.sc-brynhildr-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LOVE_BOND_VP_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.brynhildr-hero-bridesmaid` |
+| `servant.brynhildr.skill.sc-brynhildr-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LOVE_ATTRIBUTE_COST_POWER_TRANSFORM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
 | `servant.caenis.skill.sc-caenis-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caenis-poseidon-favor` |
 | `servant.caenis.skill.sc-caenis-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caenis-golden-wings` |
 | `servant.caenis.skill.sc-caenis-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caenis-maelstrom` |

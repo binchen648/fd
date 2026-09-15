@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 599,
-    "explicitBlockCount": 345,
+    "contractMappedCount": 614,
+    "explicitBlockCount": 330,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 223,
-      "SPECIAL_HANDLER_CANDIDATE": 374,
+      "READY_GENERIC_EXTENSION": 227,
+      "SPECIAL_HANDLER_CANDIDATE": 385,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 345,
+      "SOURCE_EVIDENCE_REQUIRED": 330,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -203,6 +203,10 @@
         },
         {
           "abilityId": "master.wodime.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -477,6 +481,10 @@
         },
         {
           "abilityId": "master.wodime.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -761,6 +769,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1009,6 +1021,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1143,6 +1159,7 @@
         "master.tiamat.card.life-sea",
         "master.tiamat.skill.ascension",
         "master.wodime.skill.s2",
+        "servant.boudica.skill.sc-boudica-3",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
         "servant.helena.skill.sc-helena-1",
@@ -1493,6 +1510,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1788,6 +1809,10 @@
         },
         {
           "abilityId": "master.wodime.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2090,6 +2115,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2385,6 +2414,10 @@
         },
         {
           "abilityId": "master.wodime.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2686,6 +2719,10 @@
         },
         {
           "abilityId": "master.wodime.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3211,6 +3248,10 @@
         },
         {
           "abilityId": "servant.avicebron.skill.sc-avicebron-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3842,6 +3883,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.clytie.skill.sc-clytie-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -4039,6 +4084,7 @@
         "servant.andersen.skill.sc-andersen-2",
         "servant.artoriac.skill.sc-artoriac-1",
         "servant.avicebron.skill.sc-avicebron-1",
+        "servant.boudica.skill.sc-boudica-3",
         "servant.clytie.skill.sc-clytie-3",
         "servant.davinci.skill.sc-davinci-10",
         "servant.davinci.skill.sc-davinci-11",
@@ -5402,6 +5448,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.benkei.skill.sc-benkei-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.bikuni.skill.sc-bikuni-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5415,6 +5469,42 @@
         },
         {
           "abilityId": "servant.bikuni.skill.sc-bikuni-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -6324,6 +6414,9 @@
         "master.zouken.skill.ascension",
         "master.zouken.skill.s4",
         "servant.artoriac.skill.sc-artoriac-4",
+        "servant.benkei.skill.sc-benkei-1",
+        "servant.bradamante.skill.sc-bradamante-1",
+        "servant.brynhildr.skill.sc-brynhildr-1",
         "servant.davinci.skill.sc-davinci-11",
         "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-3",
@@ -6553,6 +6646,8 @@
         "servant.barghest.skill.sc-barghest-2",
         "servant.bedivere.skill.sc-bedivere-1",
         "servant.bedivere.skill.sc-bedivere-3",
+        "servant.boudica.skill.sc-boudica-1",
+        "servant.brynhildr.skill.sc-brynhildr-3",
         "servant.charlemagne.skill.sc-charlemagne-3",
         "servant.darius.skill.sc-darius-2",
         "servant.davinci.skill.sc-davinci-10",
@@ -9081,10 +9176,21 @@
         "servant.bb.skill.sc-bb-4",
         "servant.bedivere.skill.sc-bedivere-2",
         "servant.bedivere.skill.sc-bedivere-3",
+        "servant.benkei.skill.sc-benkei-2",
+        "servant.benkei.skill.sc-benkei-3",
         "servant.bikuni.skill.sc-bikuni-1",
         "servant.bikuni.skill.sc-bikuni-2",
         "servant.bikuni.skill.sc-bikuni-3",
         "servant.bikuni.skill.sc-bikuni-4",
+        "servant.billy.skill.sc-billy-1",
+        "servant.billy.skill.sc-billy-2",
+        "servant.billy.skill.sc-billy-3",
+        "servant.boudica.skill.sc-boudica-1",
+        "servant.boudica.skill.sc-boudica-2",
+        "servant.bradamante.skill.sc-bradamante-2",
+        "servant.bradamante.skill.sc-bradamante-3",
+        "servant.brynhildr.skill.sc-brynhildr-2",
+        "servant.brynhildr.skill.sc-brynhildr-3",
         "servant.charlemagne.skill.sc-charlemagne-1",
         "servant.charlemagne.skill.sc-charlemagne-2",
         "servant.chiron.skill.sc-chiron-1",
@@ -10311,6 +10417,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.benkei.skill.sc-benkei-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.bikuni.skill.sc-bikuni-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -10324,6 +10438,42 @@
         },
         {
           "abilityId": "servant.bikuni.skill.sc-bikuni-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -11213,10 +11363,25 @@
       "servant.bedivere.skill.sc-bedivere-1",
       "servant.bedivere.skill.sc-bedivere-2",
       "servant.bedivere.skill.sc-bedivere-3",
+      "servant.benkei.skill.sc-benkei-1",
+      "servant.benkei.skill.sc-benkei-2",
+      "servant.benkei.skill.sc-benkei-3",
       "servant.bikuni.skill.sc-bikuni-1",
       "servant.bikuni.skill.sc-bikuni-2",
       "servant.bikuni.skill.sc-bikuni-3",
       "servant.bikuni.skill.sc-bikuni-4",
+      "servant.billy.skill.sc-billy-1",
+      "servant.billy.skill.sc-billy-2",
+      "servant.billy.skill.sc-billy-3",
+      "servant.boudica.skill.sc-boudica-1",
+      "servant.boudica.skill.sc-boudica-2",
+      "servant.boudica.skill.sc-boudica-3",
+      "servant.bradamante.skill.sc-bradamante-1",
+      "servant.bradamante.skill.sc-bradamante-2",
+      "servant.bradamante.skill.sc-bradamante-3",
+      "servant.brynhildr.skill.sc-brynhildr-1",
+      "servant.brynhildr.skill.sc-brynhildr-2",
+      "servant.brynhildr.skill.sc-brynhildr-3",
       "servant.caligula.skill.sc-caligula-1",
       "servant.charlemagne.skill.sc-charlemagne-1",
       "servant.charlemagne.skill.sc-charlemagne-2",
@@ -11384,111 +11549,6 @@
       "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "servant.benkei.skill.sc-benkei-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.benkei.skill.sc-benkei-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.benkei.skill.sc-benkei-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.billy.skill.sc-billy-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.billy.skill.sc-billy-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.billy.skill.sc-billy-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.boudica.skill.sc-boudica-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.boudica.skill.sc-boudica-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.boudica.skill.sc-boudica-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.bradamante.skill.sc-bradamante-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.bradamante.skill.sc-bradamante-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.bradamante.skill.sc-bradamante-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.brynhildr.skill.sc-brynhildr-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.brynhildr.skill.sc-brynhildr-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.brynhildr.skill.sc-brynhildr-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.caenis.skill.sc-caenis-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -14063,10 +14123,21 @@
       "servant.bb.skill.sc-bb-4",
       "servant.bedivere.skill.sc-bedivere-2",
       "servant.bedivere.skill.sc-bedivere-3",
+      "servant.benkei.skill.sc-benkei-2",
+      "servant.benkei.skill.sc-benkei-3",
       "servant.bikuni.skill.sc-bikuni-1",
       "servant.bikuni.skill.sc-bikuni-2",
       "servant.bikuni.skill.sc-bikuni-3",
       "servant.bikuni.skill.sc-bikuni-4",
+      "servant.billy.skill.sc-billy-1",
+      "servant.billy.skill.sc-billy-2",
+      "servant.billy.skill.sc-billy-3",
+      "servant.boudica.skill.sc-boudica-1",
+      "servant.boudica.skill.sc-boudica-2",
+      "servant.bradamante.skill.sc-bradamante-2",
+      "servant.bradamante.skill.sc-bradamante-3",
+      "servant.brynhildr.skill.sc-brynhildr-2",
+      "servant.brynhildr.skill.sc-brynhildr-3",
       "servant.charlemagne.skill.sc-charlemagne-1",
       "servant.charlemagne.skill.sc-charlemagne-2",
       "servant.chiron.skill.sc-chiron-1",
