@@ -1690,6 +1690,15 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.sitonai.skill.sc-sitonai-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'reverse_effect_rule'})])}));
     expect(slice.find(c=>c.id==='servant.skadi.skill.sc-skadi-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'skadi_runes_rule'})])}));
   });
+  it('grounds the sixteen-ID Spartacus/Stheno/Suzuka/Taisui/Tamamo/Teach slice with Rider and shared special-rule reuse', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.spartacus.skill.sc-spartacus-1","servant.spartacus.skill.sc-spartacus-3","servant.stheno.skill.sc-stheno-1","servant.stheno.skill.sc-stheno-3","servant.suzuka.skill.sc-suzuka-1","servant.suzuka.skill.sc-suzuka-2","servant.suzuka.skill.sc-suzuka-3","servant.taisui.skill.sc-taisui-1","servant.taisui.skill.sc-taisui-2","servant.taisui.skill.sc-taisui-3","servant.tamamo.skill.sc-tamamo-1","servant.tamamo.skill.sc-tamamo-2","servant.tamamo.skill.sc-tamamo-3","servant.teach.skill.sc-teach-1","servant.teach.skill.sc-teach-2","servant.teach.skill.sc-teach-3"]); const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(16); expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256 && c.source.sourceFileSha256.length===64)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.stheno.skill.sc-stheno-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'presence_concealment_assassination_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.taisui.skill.sc-taisui-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'reverse_effect_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.teach.skill.sc-teach-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'draw_cards',count:1,when:'source_played_with_one_base_attack'}),expect.objectContaining({type:'play_selected_cards',sourceZone:'hand',maxCount:3})])}));
+    expect(slice.find(c=>c.id==='servant.spartacus.skill.sc-spartacus-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'spartacus_rebellion_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.tamamo.skill.sc-tamamo-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'tamamo_transcendence_rule'})])}));
+  });
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1743,10 +1752,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 905,
-      blockedCount: 39,
+      sourceGroundedCount: 921,
+      blockedCount: 23,
       unclassifiedCount: 0,
-      structuredAbilityCount: 1183,
+      structuredAbilityCount: 1199,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

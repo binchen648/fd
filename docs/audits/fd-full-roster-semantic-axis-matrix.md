@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=905
-blockedCount=39
+sourceGroundedCount=921
+blockedCount=23
 unclassifiedCount=0
-structuredAbilityCount=1183
+structuredAbilityCount=1199
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 132 |
+| timing | `ACTION` | 133 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -262,24 +262,24 @@ structuredAbilityCount=1183
 | target | `CHOOSE_N_EVENTS` | 1 |
 | effect | `GAIN_VICTORY_POINTS` | 53 |
 | effect | `GAIN_MANA` | 38 |
-| effect | `DRAW_CARDS` | 35 |
+| effect | `DRAW_CARDS` | 36 |
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
 | effect | `MOVE_PLAYER` | 28 |
 | effect | `EVENT_CARD_RULE` | 27 |
-| effect | `PLAY_SELECTED_CARDS` | 25 |
+| effect | `PLAY_SELECTED_CARDS` | 26 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
 | effect | `MOVE_SELECTED_CARDS` | 17 |
 | effect | `CLOSE_SOURCE_CARD` | 14 |
 | effect | `LOSTBELT_EXPANSION` | 14 |
+| effect | `REVERSE_EFFECT_RULE` | 14 |
 | effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 14 |
 | effect | `DEFEAT_PLAYER` | 13 |
 | effect | `FOREIGN_LIFE_RULE` | 13 |
-| effect | `REVERSE_EFFECT_RULE` | 13 |
+| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 12 |
 | effect | `SET_PLAYER_FLAG` | 12 |
-| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 11 |
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
 | effect | `LOSE_MANA` | 10 |
 | effect | `ADJUST_COMMAND_SEALS` | 9 |
@@ -726,11 +726,24 @@ structuredAbilityCount=1183
 | effect | `SKILL_TAX_IMMUNITY_MAGIC_CLOSE_RULE` | 1 |
 | effect | `SKIP_DEPLOYMENT_RECOVERY_RULE` | 1 |
 | effect | `SLOT_MACHINE_RULE` | 1 |
+| effect | `SPARTACUS_FREE_SPIRIT_RULE` | 1 |
+| effect | `SPARTACUS_REBELLION_RULE` | 1 |
 | effect | `SPECIAL_NOBLE_PHANTASM_DEFEAT_RULE` | 1 |
 | effect | `STELLA_SERVANT_DEATH_RULE` | 1 |
+| effect | `STHENO_DIVINE_CORE_RULE` | 1 |
 | effect | `STOLEN_MANA_ATTRIBUTION_RULE` | 1 |
+| effect | `SUZUKA_TENKI_RAIN_RULE` | 1 |
+| effect | `SUZUKA_THREE_THOUSAND_WORLDS_RULE` | 1 |
+| effect | `SUZUKA_WISDOM_RULE` | 1 |
 | effect | `SWAP_SELECTED_EVENT_LOCATIONS` | 1 |
 | effect | `SWAP_VICTORY_POINTS` | 1 |
+| effect | `TAISUI_AWAKEN_RULE` | 1 |
+| effect | `TAISUI_CALAMITY_RULE` | 1 |
+| effect | `TAMAMO_CASCADE_RULE` | 1 |
+| effect | `TAMAMO_TRANSCENDENCE_RULE` | 1 |
+| effect | `TAMAMO_WITCHCRAFT_RULE` | 1 |
+| effect | `TEACH_GENTLEMAN_LOVE_RULE` | 1 |
+| effect | `TEACH_QUEEN_ANNE_RULE` | 1 |
 | effect | `TEMPORARY_COMMAND_SEAL_RULE` | 1 |
 | effect | `TEMPORARY_OPPONENT_CARD_RULE` | 1 |
 | effect | `TERRAIN_COST_SITUATION_BURN_RULE` | 1 |
@@ -1943,24 +1956,24 @@ structuredAbilityCount=1183
 | `servant.skadi.skill.sc-skadi-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SKADI_WISDOM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.skadi-wisdom` |
 | `servant.skadi.skill.sc-skadi-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SKADI_RUNES_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.skadi-runes` |
 | `servant.skadi.skill.sc-skadi-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SKADI_CASTLE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.skadi-castle` |
-| `servant.spartacus.skill.sc-spartacus-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.combat-power-from-command-seal-users` |
+| `servant.spartacus.skill.sc-spartacus-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SPARTACUS_REBELLION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.combat-power-from-command-seal-users` |
 | `servant.spartacus.skill.sc-spartacus-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved` | `EVENT_LOCATION_EQUALS_CONTROLLER`, `SOURCE_ACTIVE` | `NONE` | `CHOOSE_ONE_PLAYER` | `GAIN_VICTORY_POINTS` | `CHOOSE_ONE_PLAYER` | `duration:while_active` | `NONE` | `NONE` | `NONE` | `COMBAT_EVENT` | `core.structured-skill` |
-| `servant.spartacus.skill.sc-spartacus-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.spartacus-free-spirit` |
-| `servant.stheno.skill.sc-stheno-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
+| `servant.spartacus.skill.sc-spartacus-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SPARTACUS_FREE_SPIRIT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.spartacus-free-spirit` |
+| `servant.stheno.skill.sc-stheno-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
 | `servant.stheno.skill.sc-stheno-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved` | `EVENT_PLAYER_WON_COMBAT` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS` | `NONE` | `NONE` | `rule:combat_reward_distribution:replace` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT`, `COMBAT_RULE_MODIFIER` | `core.structured-skill` |
-| `servant.stheno.skill.sc-stheno-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.stheno-divine-core` |
-| `servant.suzuka.skill.sc-suzuka-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.suzuka-package` |
-| `servant.suzuka.skill.sc-suzuka-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.suzuka-package` |
-| `servant.suzuka.skill.sc-suzuka-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.suzuka-package` |
-| `servant.taisui.skill.sc-taisui-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
-| `servant.taisui.skill.sc-taisui-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.taisui-calamity` |
-| `servant.taisui.skill.sc-taisui-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.taisui-awaken` |
-| `servant.tamamo.skill.sc-tamamo-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tamamo-cascade` |
-| `servant.tamamo.skill.sc-tamamo-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tamamo-witchcraft` |
-| `servant.tamamo.skill.sc-tamamo-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tamamo-transcendence` |
-| `servant.teach.skill.sc-teach-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.teach-gentleman-love` |
-| `servant.teach.skill.sc-teach-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.teach-queen-anne` |
-| `servant.teach.skill.sc-teach-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `servant.stheno.skill.sc-stheno-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `STHENO_DIVINE_CORE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.stheno-divine-core` |
+| `servant.suzuka.skill.sc-suzuka-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SUZUKA_WISDOM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.suzuka-package` |
+| `servant.suzuka.skill.sc-suzuka-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SUZUKA_TENKI_RAIN_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.suzuka-package` |
+| `servant.suzuka.skill.sc-suzuka-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SUZUKA_THREE_THOUSAND_WORLDS_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.suzuka-package` |
+| `servant.taisui.skill.sc-taisui-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
+| `servant.taisui.skill.sc-taisui-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TAISUI_CALAMITY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.taisui-calamity` |
+| `servant.taisui.skill.sc-taisui-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TAISUI_AWAKEN_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.taisui-awaken` |
+| `servant.tamamo.skill.sc-tamamo-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TAMAMO_CASCADE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tamamo-cascade` |
+| `servant.tamamo.skill.sc-tamamo-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TAMAMO_WITCHCRAFT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tamamo-witchcraft` |
+| `servant.tamamo.skill.sc-tamamo-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TAMAMO_TRANSCENDENCE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tamamo-transcendence` |
+| `servant.teach.skill.sc-teach-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TEACH_GENTLEMAN_LOVE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.teach-gentleman-love` |
+| `servant.teach.skill.sc-teach-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TEACH_QUEEN_ANNE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.teach-queen-anne` |
+| `servant.teach.skill.sc-teach-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
 | `servant.tesla.skill.sc-tesla-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tesla-lightning-hand` |
 | `servant.tesla.skill.sc-tesla-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tesla-lightning-descent` |
 | `servant.tesla.skill.sc-tesla-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
