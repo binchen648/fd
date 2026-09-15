@@ -1165,6 +1165,23 @@ describe('Phase 3 full-roster semantic normalization', () => {
       effects: expect.arrayContaining([expect.objectContaining({ type: 'defeat_player', subject: 'selected_player' })]),
     }));
   });
+  it('grounds the twenty-ID Kariya/Kiritsugu/Shirou/Maiya/Ryuunosuke Fuyuki slice with explicit bespoke boundaries', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.kariya.skill.s1','master.kariya.skill.s2','master.kariya.skill.s3','master.kariya.skill.s4','master.kariya.skill.ascension',
+      'master.kiritsugu.skill.s1','master.kiritsugu.skill.s2','master.kiritsugu.skill.s3','master.kiritsugu.skill.s4','master.kiritsugu.skill.ascension',
+      'master.shirou-emiya.skill.s1','master.shirou-emiya.skill.s2','master.shirou-emiya.skill.s3','master.shirou-emiya.skill.ascension',
+      'master.maiya.skill.s1','master.maiya.skill.s2','master.maiya.skill.ascension',
+      'master.ryuunosuke.skill.s1','master.ryuunosuke.skill.s2','master.ryuunosuke.skill.ascension',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(20);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find((c) => c.id === 'master.kariya.skill.s2')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'nemesis_rule',operation:'assign_player_to_right'})])}));
+    expect(slice.find((c) => c.id === 'master.kiritsugu.skill.s2')?.abilities).toContainEqual(expect.objectContaining({id:'time-alter.action'}));
+    expect(slice.find((c) => c.id === 'master.maiya.skill.s1')?.abilities).toContainEqual(expect.objectContaining({id:'military.attach-support-shot'}));
+    expect(slice.find((c) => c.id === 'master.ryuunosuke.skill.ascension')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'event_battlefield_penalty'})])}));
+  });
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1218,10 +1235,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 232,
-      blockedCount: 712,
+      sourceGroundedCount: 252,
+      blockedCount: 692,
       unclassifiedCount: 0,
-      structuredAbilityCount: 426,
+      structuredAbilityCount: 461,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

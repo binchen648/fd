@@ -9724,6 +9724,1192 @@
           }
         }
       ]
+    },
+    {
+      "id": "master.kariya.skill.s1",
+      "printedText": "部署于魔术工房额外+2魔。常规移动每步额外耗1魔。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kariya.skills[s1]#line=18",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "部署于魔术工房额外+2魔。常规移动每步额外耗1魔。",
+        "sourceTextSha256": "eab1164923d6799ca6710c7fe591bb4ad66c153f144f94914e6aae6e2ddb8756"
+      },
+      "referencePrintedTextSha256": "eab1164923d6799ca6710c7fe591bb4ad66c153f144f94914e6aae6e2ddb8756",
+      "abilities": [
+        {
+          "printedClause": "部署于魔术工房额外+2魔。常规移动每步额外耗1魔。",
+          "id": "kariya.insects.workshop-mana",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "deployment_mana_gain",
+              "operation": "add",
+              "subject": "controller",
+              "location": "workshop",
+              "value": 2
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "printedClause": "部署于魔术工房额外+2魔。常规移动每步额外耗1魔。",
+          "id": "kariya.insects.movement-cost",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "regular_movement_mana_cost_per_step",
+              "operation": "add",
+              "subject": "controller",
+              "value": 1
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.kariya.skill.s2",
+      "printedText": "在游戏开始时，你右边的玩家将成为你的【宿敌】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kariya.skills[s2]#line=18",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "在游戏开始时，你右边的玩家将成为你的【宿敌】。",
+        "sourceTextSha256": "ceada8a47324177f7c34ebd5ef22d4b286eb6a2430cf218fe0aeb5cf65625486"
+      },
+      "referencePrintedTextSha256": "ceada8a47324177f7c34ebd5ef22d4b286eb6a2430cf218fe0aeb5cf65625486",
+      "abilities": [
+        {
+          "printedClause": "在游戏开始时，你右边的玩家将成为你的【宿敌】。",
+          "id": "kariya.nemesis.assign",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "nemesis_rule",
+              "operation": "assign_player_to_right",
+              "subject": "controller",
+              "bindingField": "nemesisPlayerId"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.kariya.skill.s3",
+      "printedText": "你不能于自己回合从间桐雁夜所在的战场上离开。间桐雁夜与你战斗时将威力-2。当间桐雁夜战胜你时，其获得3点战果。当你在游戏中被淘汰时，间桐雁夜获得4点战果并【崩坏】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kariya.skills[s3]#line=18",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你不能于自己回合从间桐雁夜所在的战场上离开。间桐雁夜与你战斗时将威力-2。当间桐雁夜战胜你时，其获得3点战果。当你在游戏中被淘汰时，间桐雁夜获得4点战果并【崩坏】。",
+        "sourceTextSha256": "5f8e12732d54470a99e894c03f77623513f92c0eae91cb1c2916771ea93daf5d"
+      },
+      "referencePrintedTextSha256": "5f8e12732d54470a99e894c03f77623513f92c0eae91cb1c2916771ea93daf5d",
+      "abilities": [
+        {
+          "printedClause": "你不能于自己回合从间桐雁夜所在的战场上离开。间桐雁夜与你战斗时将威力-2。当间桐雁夜战胜你时，其获得3点战果。当你在游戏中被淘汰时，间桐雁夜获得4点战果并【崩坏】。",
+          "id": "kariya.nemesis.restrictions",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "nemesis_binding_exists",
+              "bindingField": "nemesisPlayerId"
+            }
+          ],
+          "effects": [
+            {
+              "type": "nemesis_rule",
+              "operation": "apply_movement_and_combat_rules",
+              "bindingField": "nemesisPlayerId",
+              "nemesisCannotLeaveKariyaBattlefieldOnOwnTurn": true,
+              "nemesisPowerWhenBattlingKariya": -2
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "printedClause": "你不能于自己回合从间桐雁夜所在的战场上离开。间桐雁夜与你战斗时将威力-2。当间桐雁夜战胜你时，其获得3点战果。当你在游戏中被淘汰时，间桐雁夜获得4点战果并【崩坏】。",
+          "id": "kariya.nemesis.win-reward",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "controller_won_combat"
+            },
+            {
+              "type": "combat_includes_bound_player",
+              "bindingField": "nemesisPlayerId"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "subject": "controller",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "printedClause": "你不能于自己回合从间桐雁夜所在的战场上离开。间桐雁夜与你战斗时将威力-2。当间桐雁夜战胜你时，其获得3点战果。当你在游戏中被淘汰时，间桐雁夜获得4点战果并【崩坏】。",
+          "id": "kariya.nemesis.elimination-reward",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "elimination.resolved"
+            },
+            {
+              "type": "event_player_matches_binding",
+              "bindingField": "nemesisPlayerId"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "subject": "controller",
+              "amount": 4
+            },
+            {
+              "type": "activate_card_by_id",
+              "definitionId": "master.kariya.skill.s4",
+              "subject": "controller"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kariya.skill.s4",
+      "printedText": "准备阶段：将你技能区的牌与手牌混洗之后，随机抽取一张牌并展示。若该牌是攻击牌，则你本回合必须在常规出牌时将其打出（可以暗置）且该牌获得“此牌获得+3威力”。该效果具有强制性。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kariya.skills[s4]#line=18",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "准备阶段：将你技能区的牌与手牌混洗之后，随机抽取一张牌并展示。若该牌是攻击牌，则你本回合必须在常规出牌时将其打出（可以暗置）且该牌获得“此牌获得+3威力”。该效果具有强制性。",
+        "sourceTextSha256": "3b9148db1680b9b8b656b323e4c7e6a8ee4f7df57b2b04edbf09df57374e5094"
+      },
+      "referencePrintedTextSha256": "3b9148db1680b9b8b656b323e4c7e6a8ee4f7df57b2b04edbf09df57374e5094",
+      "abilities": [
+        {
+          "printedClause": "准备阶段：将你技能区的牌与手牌混洗之后，随机抽取一张牌并展示。若该牌是攻击牌，则你本回合必须在常规出牌时将其打出（可以暗置）且该牌获得“此牌获得+3威力”。该效果具有强制性。",
+          "id": "kariya.collapse.random-mandatory-attack",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "preparation"
+          },
+          "effects": [
+            {
+              "type": "collapse_random_play_rule",
+              "operation": "shuffle_skill_and_hand_reveal_one",
+              "subject": "controller",
+              "ifAttack": {
+                "mustPlayAsRegularThisRound": true,
+                "mayPlayFaceDown": true,
+                "powerBonus": 3
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.kariya.skill.ascension",
+      "printedText": "你的基础牌的魔力消耗+3且威力+4。\n行动阶段：如果你已【崩坏】，你可花费4点魔力将牌堆顶的那张牌加入攻击。\n战斗阶段：如果你在【魔术工房】，你可以移动至宿敌所在的战场。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kariya.ascensionSkill#line=18",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你的基础牌的魔力消耗+3且威力+4。\n行动阶段：如果你已【崩坏】，你可花费4点魔力将牌堆顶的那张牌加入攻击。\n战斗阶段：如果你在【魔术工房】，你可以移动至宿敌所在的战场。",
+        "sourceTextSha256": "254b272c5c32674e30cfdcf386d1fc7993cdf0be46d2b25eefb3c5b3337fa77e"
+      },
+      "referencePrintedTextSha256": "254b272c5c32674e30cfdcf386d1fc7993cdf0be46d2b25eefb3c5b3337fa77e",
+      "abilities": [
+        {
+          "printedClause": "你的基础牌的魔力消耗+3且威力+4。\n行动阶段：如果你已【崩坏】，你可花费4点魔力将牌堆顶的那张牌加入攻击。\n战斗阶段：如果你在【魔术工房】，你可以移动至宿敌所在的战场。",
+          "id": "kariya.human-battery.basic-card-modifiers",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_mana_cost",
+              "operation": "add",
+              "value": 3,
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "kind": "basic_attack"
+                }
+              }
+            },
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "value": 4,
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "kind": "basic_attack"
+                }
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "printedClause": "你的基础牌的魔力消耗+3且威力+4。\n行动阶段：如果你已【崩坏】，你可花费4点魔力将牌堆顶的那张牌加入攻击。\n战斗阶段：如果你在【魔术工房】，你可以移动至宿敌所在的战场。",
+          "id": "kariya.human-battery.collapse-top-deck",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "cost": {
+            "type": "mana",
+            "amount": 4
+          },
+          "conditions": [
+            {
+              "type": "definition_is_active_for_controller",
+              "definitionId": "master.kariya.skill.s4"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_card",
+              "source": "controller_deck_top",
+              "destination": "attack",
+              "controller": "controller",
+              "playMode": "add_to_attack"
+            }
+          ]
+        },
+        {
+          "printedClause": "你的基础牌的魔力消耗+3且威力+4。\n行动阶段：如果你已【崩坏】，你可花费4点魔力将牌堆顶的那张牌加入攻击。\n战斗阶段：如果你在【魔术工房】，你可以移动至宿敌所在的战场。",
+          "id": "kariya.human-battery.move-to-nemesis",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "controller_location_is",
+              "location": "workshop"
+            },
+            {
+              "type": "nemesis_binding_exists",
+              "bindingField": "nemesisPlayerId"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_player",
+              "subject": "controller",
+              "destinationBinding": "nemesisPlayerId:battlefield"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kiritsugu.skill.s1",
+      "printedText": "游戏开始时，将你牌库的一张牌替换为【起源弹】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kiritsugu.skills[s1]#line=5",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，将你牌库的一张牌替换为【起源弹】。",
+        "sourceTextSha256": "e6a0dcfefd0ad7fe543e18676905badd0043acfa6d635e91525c0f13b496a33a"
+      },
+      "referencePrintedTextSha256": "e6a0dcfefd0ad7fe543e18676905badd0043acfa6d635e91525c0f13b496a33a",
+      "abilities": [
+        {
+          "printedClause": "游戏开始时，将你牌库的一张牌替换为【起源弹】。",
+          "id": "kiritsugu.maguskiller.replace-one",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "transforms": [
+            {
+              "sourceZone": "deck",
+              "selection": {
+                "owner": "controller",
+                "count": 1
+              },
+              "intoDefinitionId": "card.card-origin"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kiritsugu.skill.s2",
+      "printedText": "暗置打出一张牌，然后抽一张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kiritsugu.skills[s2]#line=5",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "暗置打出一张牌，然后抽一张牌。",
+        "sourceTextSha256": "37250362ba119e621015b05c59c6694b319f15900647522fb8c5400ea8290df0"
+      },
+      "referencePrintedTextSha256": "37250362ba119e621015b05c59c6694b319f15900647522fb8c5400ea8290df0",
+      "abilities": [
+        {
+          "printedClause": "暗置打出一张牌，然后抽一张牌。",
+          "id": "time-alter.action",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "hand",
+              "owner": "controller",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedCardIds"
+            },
+            {
+              "type": "play_selected_cards",
+              "payloadKey": "selectedCardIds",
+              "face": "down"
+            },
+            {
+              "type": "draw_cards",
+              "target": "controller",
+              "count": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kiritsugu.skill.s3",
+      "printedText": "关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kiritsugu.skills[s3]#line=5",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
+        "sourceTextSha256": "f2ce7d4ead6a7cc61555aa758d70c9bde30ef087a74fc2ac3de2469accaf6227"
+      },
+      "referencePrintedTextSha256": "f2ce7d4ead6a7cc61555aa758d70c9bde30ef087a74fc2ac3de2469accaf6227",
+      "abilities": [
+        {
+          "printedClause": "关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
+          "id": "kiritsugu.fourfold-speed.switch-origin",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "current_combat_attack",
+              "owner": "controller",
+              "face": "up",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "closeAttackIds"
+            },
+            {
+              "type": "close_selected_cards",
+              "payloadKey": "closeAttackIds"
+            },
+            {
+              "type": "choose_cards",
+              "zone": "current_combat_attack",
+              "owner": "controller",
+              "face": "down",
+              "definitionId": "card.card-origin",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "originIds"
+            },
+            {
+              "type": "activate_selected_cards",
+              "payloadKey": "originIds"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kiritsugu.skill.s4",
+      "printedText": "迅捷0耗2威。[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kiritsugu.skills[s4]#line=5",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "迅捷0耗2威。[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
+        "sourceTextSha256": "24ea8ab1f9efa638fbd38ed9f66ed54cc9b0b1707d25153bc08ac8e4f5b3d234"
+      },
+      "referencePrintedTextSha256": "24ea8ab1f9efa638fbd38ed9f66ed54cc9b0b1707d25153bc08ac8e4f5b3d234",
+      "abilities": [
+        {
+          "printedClause": "迅捷0耗2威。[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
+          "id": "kiritsugu.origin-bullet.sever-bind",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "target": {
+            "type": "player",
+            "relation": "engaged_opponent",
+            "minCount": 1,
+            "maxCount": 1
+          },
+          "effects": [
+            {
+              "type": "origin_bullet_rule",
+              "operation": "lose_ceil_one_third_mana_and_gain_twice_lost_power",
+              "target": "selected_player",
+              "sourceCard": "self",
+              "lostManaBinding": "originBulletLostMana"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kiritsugu.skill.ascension",
+      "printedText": "解锁此技能后立刻移除你弃牌堆中的2张牌并将2张游戏外的起源弹加入手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kiritsugu.ascensionSkill#line=5",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "解锁此技能后立刻移除你弃牌堆中的2张牌并将2张游戏外的起源弹加入手牌。",
+        "sourceTextSha256": "2a44769864c6bd4bf4176c903282455add272e839f74841808ea1dad5c848aae"
+      },
+      "referencePrintedTextSha256": "2a44769864c6bd4bf4176c903282455add272e839f74841808ea1dad5c848aae",
+      "abilities": [
+        {
+          "printedClause": "解锁此技能后立刻移除你弃牌堆中的2张牌并将2张游戏外的起源弹加入手牌。",
+          "id": "kiritsugu.cold-blooded.unlock-origin-bullets",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "discard",
+              "owner": "controller",
+              "minCount": 2,
+              "maxCount": 2,
+              "payloadKey": "removedDiscardInstanceIds"
+            },
+            {
+              "type": "remove_selected_cards",
+              "zone": "discard",
+              "payloadKey": "removedDiscardInstanceIds",
+              "count": 2
+            },
+            {
+              "type": "move_matching_cards",
+              "sourceZone": "outside_game",
+              "destination": "hand",
+              "definitionId": "card.card-origin",
+              "owner": "controller",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shirou-emiya.skill.s1",
+      "printedText": "你的魔力初始值为2。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shirou_emiya.skills[s1]#line=7",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你的魔力初始值为2。",
+        "sourceTextSha256": "d7cb4d9d111de19fb5cbd8c3832f8ebb648674e45751214d5d4126261a4b300e"
+      },
+      "referencePrintedTextSha256": "d7cb4d9d111de19fb5cbd8c3832f8ebb648674e45751214d5d4126261a4b300e",
+      "abilities": [
+        {
+          "printedClause": "你的魔力初始值为2。",
+          "id": "shirou.inexperienced.initial-mana",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "initial_mana",
+              "operation": "set",
+              "subject": "controller",
+              "value": 2
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.shirou-emiya.skill.s2",
+      "printedText": "将【干将·莫邪】加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shirou_emiya.skills[s2]#line=7",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "将【干将·莫邪】加入你的技能区。",
+        "sourceTextSha256": "a0ea1f45cedb3ac69c9d4050cfdadcf318cf32f62b749013a8454245535ca575"
+      },
+      "referencePrintedTextSha256": "a0ea1f45cedb3ac69c9d4050cfdadcf318cf32f62b749013a8454245535ca575",
+      "abilities": [
+        {
+          "printedClause": "将【干将·莫邪】加入你的技能区。",
+          "id": "shirou.projection.kanshou-bakuya",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "sourceZone": "outside_game",
+              "destination": "skill",
+              "owner": "controller",
+              "name": "干将·莫邪",
+              "count": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shirou-emiya.skill.s3",
+      "printedText": "当你首次被淘汰时你将失去所有的魔力来继续游戏。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shirou_emiya.skills[s3]#line=7",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你首次被淘汰时你将失去所有的魔力来继续游戏。",
+        "sourceTextSha256": "47abdb633ced28dc400bdfbe81089b8b1f10da2345ebbb309e4f352d55dfdd0e"
+      },
+      "referencePrintedTextSha256": "47abdb633ced28dc400bdfbe81089b8b1f10da2345ebbb309e4f352d55dfdd0e",
+      "abilities": [
+        {
+          "printedClause": "当你首次被淘汰时你将失去所有的魔力来继续游戏。",
+          "id": "shirou.ideal-land.first-elimination",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "elimination.pending"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_mana",
+              "subject": "controller",
+              "amount": 0
+            },
+            {
+              "type": "prevent_elimination",
+              "subject": "controller"
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "game",
+            "maxUses": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.shirou-emiya.skill.ascension",
+      "printedText": "（升华技，将此牌加入你的技能区）\n被动：你的力量和迅捷属性的基本牌威力+2。\n战斗阶段：此攻击在高潮回合威力+4。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shirou_emiya.ascensionSkill#line=7",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（升华技，将此牌加入你的技能区）\n被动：你的力量和迅捷属性的基本牌威力+2。\n战斗阶段：此攻击在高潮回合威力+4。",
+        "sourceTextSha256": "0de4251d104d95ca5a4b47f19389d223052a861e0bca3b6aa062c76c6233610c"
+      },
+      "referencePrintedTextSha256": "0de4251d104d95ca5a4b47f19389d223052a861e0bca3b6aa062c76c6233610c",
+      "abilities": [
+        {
+          "printedClause": "（升华技，将此牌加入你的技能区）\n被动：你的力量和迅捷属性的基本牌威力+2。\n战斗阶段：此攻击在高潮回合威力+4。",
+          "id": "shirou.caliburn.unlock-setup",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_definition_is_self"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "face": "up"
+            }
+          ]
+        },
+        {
+          "printedClause": "（升华技，将此牌加入你的技能区）\n被动：你的力量和迅捷属性的基本牌威力+2。\n战斗阶段：此攻击在高潮回合威力+4。",
+          "id": "shirou.caliburn.basic-power",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "value": 2,
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "kind": "basic_attack",
+                  "attributes": [
+                    "strength",
+                    "agility"
+                  ]
+                }
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "printedClause": "（升华技，将此牌加入你的技能区）\n被动：你的力量和迅捷属性的基本牌威力+2。\n战斗阶段：此攻击在高潮回合威力+4。",
+          "id": "shirou.caliburn.climax-power",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "round_is_climax"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "source_card_power",
+              "operation": "add",
+              "value": 4
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_condition_true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.maiya.skill.s1",
+      "printedText": "你拥有【援护射击】。前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_maiya.skills[s1]#line=16",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你拥有【援护射击】。前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
+        "sourceTextSha256": "77888ae06935bfb944e87df2010bbee9217505ba5c60f38d795b0ab06d04b8c6"
+      },
+      "referencePrintedTextSha256": "77888ae06935bfb944e87df2010bbee9217505ba5c60f38d795b0ab06d04b8c6",
+      "abilities": [
+        {
+          "printedClause": "你拥有【援护射击】。前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
+          "id": "military.has-support-shot",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "activate_card_by_id",
+              "definitionId": "master.maiya.skill.s2",
+              "subject": "controller"
+            }
+          ]
+        },
+        {
+          "printedClause": "你拥有【援护射击】。前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
+          "id": "military.attach-support-shot",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "cost": {
+            "type": "mana",
+            "amount": 2
+          },
+          "conditions": [
+            {
+              "type": "controller_not_on_battlefield"
+            }
+          ],
+          "target": {
+            "type": "player",
+            "relation": "other",
+            "minCount": 1,
+            "maxCount": 1
+          },
+          "effects": [
+            {
+              "type": "move_card",
+              "sourceDefinitionId": "master.maiya.skill.s2",
+              "source": "controller_skill",
+              "destination": "attack",
+              "controller": "selected_player",
+              "playMode": "add_to_attack"
+            }
+          ]
+        },
+        {
+          "printedClause": "你拥有【援护射击】。前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
+          "id": "military.return-support-shot",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            },
+            {
+              "type": "ability_used_this_round",
+              "abilityId": "military.attach-support-shot"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "definitionId": "master.maiya.skill.s2",
+              "destination": "skill",
+              "owner": "controller"
+            }
+          ]
+        },
+        {
+          "printedClause": "你拥有【援护射击】。前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
+          "id": "military.no-win",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "ability_used_this_round",
+              "abilityId": "military.attach-support-shot"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "combat_winner_eligibility",
+              "operation": "deny",
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.maiya.skill.s2",
+      "printedText": "迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_maiya.skills[s2]#line=16",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
+        "sourceTextSha256": "f15b1ffd62526b08391b162fadf7af70e9961db21c0f11ab3f3464624683af4f"
+      },
+      "referencePrintedTextSha256": "f15b1ffd62526b08391b162fadf7af70e9961db21c0f11ab3f3464624683af4f",
+      "abilities": [
+        {
+          "printedClause": "迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
+          "id": "support-shot.append-only",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mode",
+              "operation": "set",
+              "definitionId": "master.maiya.skill.s2",
+              "mode": "append_only"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "printedClause": "迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
+          "id": "support-shot.suppress",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "conditions": [
+            {
+              "type": "source_controller_is_not_definition_owner"
+            }
+          ],
+          "cost": {
+            "type": "victory_points_transfer",
+            "amount": 2,
+            "recipient": "definition_owner"
+          },
+          "effects": [
+            {
+              "type": "adjust_terrain",
+              "subject": "source_controller",
+              "operation": "add_base",
+              "amount": 1
+            },
+            {
+              "type": "adjust_terrain",
+              "subject": "source_controller",
+              "operation": "multiply_total",
+              "factor": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.maiya.skill.ascension",
+      "printedText": "解锁此技能后，立即从手牌、牌库和弃牌堆移除所有魔术牌，每以此法移除一张魔术牌，你获得2点魔力。然后将游戏外的一张【射击】加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_maiya.ascensionSkill#line=16",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "解锁此技能后，立即从手牌、牌库和弃牌堆移除所有魔术牌，每以此法移除一张魔术牌，你获得2点魔力。然后将游戏外的一张【射击】加入你的技能区。",
+        "sourceTextSha256": "4b041cee3090959ab30cc6d4545520c70b3267f3fe0a422ea5fc6f2f5d447100"
+      },
+      "referencePrintedTextSha256": "4b041cee3090959ab30cc6d4545520c70b3267f3fe0a422ea5fc6f2f5d447100",
+      "abilities": [
+        {
+          "printedClause": "解锁此技能后，立即从手牌、牌库和弃牌堆移除所有魔术牌，每以此法移除一张魔术牌，你获得2点魔力。然后将游戏外的一张【射击】加入你的技能区。",
+          "id": "maiya.sweets.unlock",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_definition_is_self"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "sourceZones": [
+                "hand",
+                "deck",
+                "discard"
+              ],
+              "destination": "removed",
+              "owner": "controller",
+              "filter": {
+                "attribute": "magic"
+              },
+              "resultVar": "removedMagicCardIds"
+            },
+            {
+              "type": "gain_mana",
+              "subject": "controller",
+              "amountBinding": "removedMagicCardIds:length*2"
+            },
+            {
+              "type": "move_matching_cards",
+              "sourceZone": "outside_game",
+              "destination": "skill",
+              "definitionId": "card.derived.master.maiya.shooting",
+              "owner": "controller",
+              "count": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.ryuunosuke.skill.s1",
+      "printedText": "游戏开始时你得到【死之艺术】。你不能从魔术工房获得魔力。每当你部署在魔术工房或战斗胜利时，激活【死之艺术】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ryuunosuke.skills[s1]#line=6",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时你得到【死之艺术】。你不能从魔术工房获得魔力。每当你部署在魔术工房或战斗胜利时，激活【死之艺术】。",
+        "sourceTextSha256": "0497e792b347460ecfe5e510f45f19b21b722096e154ba8cb2f963ac41176c1f"
+      },
+      "referencePrintedTextSha256": "0497e792b347460ecfe5e510f45f19b21b722096e154ba8cb2f963ac41176c1f",
+      "abilities": [
+        {
+          "printedClause": "游戏开始时你得到【死之艺术】。你不能从魔术工房获得魔力。每当你部署在魔术工房或战斗胜利时，激活【死之艺术】。",
+          "id": "ryuunosuke.chain-killer.obtain-death-art",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "activate_card_by_id",
+              "definitionId": "master.ryuunosuke.skill.s2",
+              "subject": "controller"
+            }
+          ]
+        },
+        {
+          "printedClause": "游戏开始时你得到【死之艺术】。你不能从魔术工房获得魔力。每当你部署在魔术工房或战斗胜利时，激活【死之艺术】。",
+          "id": "ryuunosuke.chain-killer.no-workshop-mana",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "deployment_mana_gain",
+              "operation": "set",
+              "subject": "controller",
+              "location": "workshop",
+              "value": 0
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "printedClause": "游戏开始时你得到【死之艺术】。你不能从魔术工房获得魔力。每当你部署在魔术工房或战斗胜利时，激活【死之艺术】。",
+          "id": "ryuunosuke.chain-killer.reactivate-on-deploy",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.deployed"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_location_is",
+              "location": "workshop"
+            }
+          ],
+          "effects": [
+            {
+              "type": "activate_card_by_id",
+              "definitionId": "master.ryuunosuke.skill.s2",
+              "subject": "controller"
+            }
+          ]
+        },
+        {
+          "printedClause": "游戏开始时你得到【死之艺术】。你不能从魔术工房获得魔力。每当你部署在魔术工房或战斗胜利时，激活【死之艺术】。",
+          "id": "ryuunosuke.chain-killer.reactivate-on-win",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "controller_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "activate_card_by_id",
+              "definitionId": "master.ryuunosuke.skill.s2",
+              "subject": "controller"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.ryuunosuke.skill.s2",
+      "printedText": "放弃你的地利位置，获得2点战果或等于该地利位置数+2的魔力，然后关闭【死之艺术】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ryuunosuke.skills[s2]#line=6",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "放弃你的地利位置，获得2点战果或等于该地利位置数+2的魔力，然后关闭【死之艺术】。",
+        "sourceTextSha256": "794290d8678ccd27ced654caa5cba1a9ec75a1c8a98325ba2a5215e40023a540"
+      },
+      "referencePrintedTextSha256": "794290d8678ccd27ced654caa5cba1a9ec75a1c8a98325ba2a5215e40023a540",
+      "abilities": [
+        {
+          "printedClause": "放弃你的地利位置，获得2点战果或等于该地利位置数+2的魔力，然后关闭【死之艺术】。",
+          "id": "ryuunosuke.death-art.action",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "clear_terrain_position",
+              "subject": "controller",
+              "resultVar": "abandonedTerrainPosition"
+            },
+            {
+              "type": "choose_effect",
+              "choices": [
+                {
+                  "id": "vp",
+                  "effects": [
+                    {
+                      "type": "gain_victory_points",
+                      "subject": "controller",
+                      "amount": 2
+                    }
+                  ]
+                },
+                {
+                  "id": "mana",
+                  "effects": [
+                    {
+                      "type": "gain_mana",
+                      "subject": "controller",
+                      "amountBinding": "abandonedTerrainPosition+2"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "close_source_card"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.ryuunosuke.skill.ascension",
+      "printedText": "（升华技，解锁后将此牌加入你的技能区）\n行动阶段：花费2X点魔力。弃置一张你所在战场战果为X的事件牌。之后在该战场的对手于战斗阶段失去地利和X点战果且合计威力-2X。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ryuunosuke.ascensionSkill#line=6",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（升华技，解锁后将此牌加入你的技能区）\n行动阶段：花费2X点魔力。弃置一张你所在战场战果为X的事件牌。之后在该战场的对手于战斗阶段失去地利和X点战果且合计威力-2X。",
+        "sourceTextSha256": "39c284658d7161e8f00db0fe7456255545373113b302a0b6e95a6dce4f06d507"
+      },
+      "referencePrintedTextSha256": "39c284658d7161e8f00db0fe7456255545373113b302a0b6e95a6dce4f06d507",
+      "abilities": [
+        {
+          "printedClause": "（升华技，解锁后将此牌加入你的技能区）\n行动阶段：花费2X点魔力。弃置一张你所在战场战果为X的事件牌。之后在该战场的对手于战斗阶段失去地利和X点战果且合计威力-2X。",
+          "id": "ryuunosuke.blasphemer.unlock-setup",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_definition_is_self"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "face": "up"
+            }
+          ]
+        },
+        {
+          "printedClause": "（升华技，解锁后将此牌加入你的技能区）\n行动阶段：花费2X点魔力。弃置一张你所在战场战果为X的事件牌。之后在该战场的对手于战斗阶段失去地利和X点战果且合计威力-2X。",
+          "id": "ryuunosuke.blasphemer.action",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "target": {
+            "type": "event_card",
+            "location": "controller_battlefield",
+            "minCount": 1,
+            "maxCount": 1,
+            "payloadKey": "selectedEventId"
+          },
+          "cost": {
+            "type": "mana_formula",
+            "formula": "2 * selected_event_victory_points",
+            "bindingField": "X"
+          },
+          "effects": [
+            {
+              "type": "move_selected_events",
+              "payloadKey": "selectedEventId",
+              "destination": "discard"
+            },
+            {
+              "type": "event_battlefield_penalty",
+              "operation": "apply_to_opponents_at_controller_battlefield",
+              "terrain": "lose",
+              "victoryPointLossBinding": "X",
+              "combatTotalPowerDeltaFormula": "-2 * X",
+              "duration": "combat_phase"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
