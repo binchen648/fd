@@ -30194,6 +30194,408 @@
         }
       ],
       "referencePrintedTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+    },
+    {
+      "id": "servant.parvati.skill.sc-parvati-1",
+      "printedText": "双生-被动：当你【真名解放】时，抽3张牌。若帕尔瓦蒂已【真名解放】，你+1手牌上限。\n被动/行动阶段：你仅可在你下次淘汰结算会被淘汰时使用此效果（如7人游戏时你的战果数不为前四位，以此类推）。帕尔瓦蒂的攻击获得+1威力，若你获胜，获得1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_parvati_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "双生-被动：当你【真名解放】时，抽3张牌。若帕尔瓦蒂已【真名解放】，你+1手牌上限。\n被动/行动阶段：你仅可在你下次淘汰结算会被淘汰时使用此效果（如7人游戏时你的战果数不为前四位，以此类推）。帕尔瓦蒂的攻击获得+1威力，若你获胜，获得1点战果。",
+        "sourceTextSha256": "24bf4c3745ffd63a1db6f2342db649eca198d891991ecdf5f6875cc930c40e49"
+      },
+      "abilities": [
+        {
+          "id": "parvati.sc-parvati-1.semantic",
+          "printedClause": "双生-被动：当你【真名解放】时，抽3张牌。若帕尔瓦蒂已【真名解放】，你+1手牌上限。\n被动/行动阶段：你仅可在你下次淘汰结算会被淘汰时使用此效果（如7人游戏时你的战果数不为前四位，以此类推）。帕尔瓦蒂的攻击获得+1威力，若你获胜，获得1点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "parvati_twin_elimination_rule",
+              "operation": "passive_on_true_name_reveal_draw_3_if_parvati_already_true_name_revealed_hand_limit_plus_1_passive_action_usable_only_if_controller_would_be_eliminated_at_next_elimination_check_parvati_attacks_plus_1_power_and_if_controller_wins_gain_1_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "24bf4c3745ffd63a1db6f2342db649eca198d891991ecdf5f6875cc930c40e49"
+    },
+    {
+      "id": "servant.parvati.skill.sc-parvati-2",
+      "printedText": "你拥有的魔力少于8点也可使用此牌。\n打出时：抽一张牌，你可以弃置该牌。\n行动阶段：将3张你弃牌堆的基础攻击洗回牌库，若它们的属性均不同，你+4合计威力。若它们的属性均相同，你移动至一处地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_parvati_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "你拥有的魔力少于8点也可使用此牌。\n打出时：抽一张牌，你可以弃置该牌。\n行动阶段：将3张你弃牌堆的基础攻击洗回牌库，若它们的属性均不同，你+4合计威力。若它们的属性均相同，你移动至一处地点。",
+        "sourceTextSha256": "1e286d7f9b13bbe8dfbae9b0ca130ae9d417de936725804a0b4a49b43450f8b5"
+      },
+      "abilities": [
+        {
+          "id": "parvati.sc-parvati-2.semantic",
+          "printedClause": "你拥有的魔力少于8点也可使用此牌。\n打出时：抽一张牌，你可以弃置该牌。\n行动阶段：将3张你弃牌堆的基础攻击洗回牌库，若它们的属性均不同，你+4合计威力。若它们的属性均相同，你移动至一处地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "parvati_imaginary_ring_rule",
+              "operation": "playable_below_8_mana_on_play_draw_1_may_discard_drawn_card_action_shuffle_3_base_attacks_from_discard_into_deck_if_all_attributes_distinct_gain_4_total_power_if_all_same_move_to_one_location"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "1e286d7f9b13bbe8dfbae9b0ca130ae9d417de936725804a0b4a49b43450f8b5"
+    },
+    {
+      "id": "servant.passionlip.skill.sc-passionlip-1",
+      "printedText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_passionlip_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+        "sourceTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+      },
+      "abilities": [
+        {
+          "id": "passionlip.sc-passionlip-1.semantic",
+          "printedClause": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "reverse_effect_rule",
+              "operation": "persistent_when_controller_places_card_into_play_may_close_source_to_grant_reverse_effect_or_if_none_after_play_toggle_strength_quick_magic_attributes_to_any_combination"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+    },
+    {
+      "id": "servant.passionlip.skill.sc-passionlip-2",
+      "printedText": "战斗阶段：你的战斗中每有一张由对手控制的，威力高于你最高威力攻击的攻击，你获得1点战果。反转：并令你于下回合+3合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_passionlip_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "战斗阶段：你的战斗中每有一张由对手控制的，威力高于你最高威力攻击的攻击，你获得1点战果。反转：并令你于下回合+3合计威力。",
+        "sourceTextSha256": "92cd9679426ab0d43d0b5f04a7f713c61d1534d4ad3ec72e771a3d15f5d659b6"
+      },
+      "abilities": [
+        {
+          "id": "passionlip.sc-passionlip-2.semantic",
+          "printedClause": "战斗阶段：你的战斗中每有一张由对手控制的，威力高于你最高威力攻击的攻击，你获得1点战果。反转：并令你于下回合+3合计威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "passionlip_masochistic_rule",
+              "operation": "combat_gain_1_vp_for_each_opponent_controlled_attack_in_battle_whose_power_exceeds_controller_highest_power_attack_reverse_also_controller_gains_3_total_power_next_round"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "92cd9679426ab0d43d0b5f04a7f713c61d1534d4ad3ec72e771a3d15f5d659b6"
+    },
+    {
+      "id": "servant.passionlip.skill.sc-passionlip-3",
+      "printedText": "战斗阶段：将你所在战斗中的所有攻击威力减少至9。反转/战斗阶段：【真名解放】每名玩家选择一张他的攻击牌，将你的战斗中的所有未被选择的攻击威力减少至0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_passionlip_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "战斗阶段：将你所在战斗中的所有攻击威力减少至9。反转/战斗阶段：【真名解放】每名玩家选择一张他的攻击牌，将你的战斗中的所有未被选择的攻击威力减少至0。",
+        "sourceTextSha256": "efdb907cbdb577515459f817139972818380adde435ab3559ea5418e28f7ed6d"
+      },
+      "abilities": [
+        {
+          "id": "passionlip.sc-passionlip-3.semantic",
+          "printedClause": "战斗阶段：将你所在战斗中的所有攻击威力减少至9。反转/战斗阶段：【真名解放】每名玩家选择一张他的攻击牌，将你的战斗中的所有未被选择的攻击威力减少至0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "passionlip_durga_armor_rule",
+              "operation": "combat_reduce_all_attacks_in_controller_battle_to_power_9_reverse_combat_true_name_reveal_each_player_chooses_one_of_their_attacks_reduce_all_unselected_attacks_in_battle_to_power_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "efdb907cbdb577515459f817139972818380adde435ab3559ea5418e28f7ed6d"
+    },
+    {
+      "id": "servant.penthesilea.skill.sc-penthesilea-1",
+      "printedText": "【真名解放】被动/前哨阶段：将此牌加入你的攻击，你的基础攻击威力减少为0。战斗阶段：战力结算时，令所有威力低于你的交战对手【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_penthesilea_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】被动/前哨阶段：将此牌加入你的攻击，你的基础攻击威力减少为0。战斗阶段：战力结算时，令所有威力低于你的交战对手【败北】。",
+        "sourceTextSha256": "340fe23e2d94c0e0ac9d4a1d285e4218eb44115f9ea91907d32c21bbbdab391c"
+      },
+      "abilities": [
+        {
+          "id": "penthesilea.sc-penthesilea-1.semantic",
+          "printedClause": "【真名解放】被动/前哨阶段：将此牌加入你的攻击，你的基础攻击威力减少为0。战斗阶段：战力结算时，令所有威力低于你的交战对手【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "penthesilea_war_cry_rule",
+              "operation": "true_name_reveal_passive_outpost_add_source_to_attack_reduce_controller_base_attack_power_to_0_combat_at_power_resolution_defeat_all_engaged_opponents_with_lower_power_than_controller"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "340fe23e2d94c0e0ac9d4a1d285e4218eb44115f9ea91907d32c21bbbdab391c"
+    },
+    {
+      "id": "servant.penthesilea.skill.sc-penthesilea-2",
+      "printedText": "【真名解放】<每局游戏限一次>永烙之辱-战斗阶段：令与你位于同一战场的所有男性从者-15合计威力，然后将彭忒西勒亚手牌、牌库、弃牌堆和控制的基础攻击移除游戏。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_penthesilea_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】<每局游戏限一次>永烙之辱-战斗阶段：令与你位于同一战场的所有男性从者-15合计威力，然后将彭忒西勒亚手牌、牌库、弃牌堆和控制的基础攻击移除游戏。",
+        "sourceTextSha256": "cc0c1b997845f6ff56ecf131cf078a170dd9c22a501d24bc9a0be136577f7606"
+      },
+      "abilities": [
+        {
+          "id": "penthesilea.sc-penthesilea-2.semantic",
+          "printedClause": "【真名解放】<每局游戏限一次>永烙之辱-战斗阶段：令与你位于同一战场的所有男性从者-15合计威力，然后将彭忒西勒亚手牌、牌库、弃牌堆和控制的基础攻击移除游戏。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "penthesilea_beauty_shame_rule",
+              "operation": "true_name_reveal_once_per_game_combat_all_male_servants_at_same_battlefield_minus_15_total_power_then_remove_penthesilea_hand_deck_discard_and_controlled_base_attacks_from_game"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "cc0c1b997845f6ff56ecf131cf078a170dd9c22a501d24bc9a0be136577f7606"
+    },
+    {
+      "id": "servant.penthesilea.skill.sc-penthesilea-3",
+      "printedText": "被动/战斗阶段：花费其魔力消耗并弃置一张手牌，然后令所有交战对手失去弃置牌于你的战斗中受到力量修正后的威力三分之一的战果。（力量修正不受军神咆哮影响，失去的战果向上取整）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_penthesilea_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动/战斗阶段：花费其魔力消耗并弃置一张手牌，然后令所有交战对手失去弃置牌于你的战斗中受到力量修正后的威力三分之一的战果。（力量修正不受军神咆哮影响，失去的战果向上取整）",
+        "sourceTextSha256": "6fd052d6571a0779411fad371e2aae399e1389e42a87838f2b0eef8bfe9d4c92"
+      },
+      "abilities": [
+        {
+          "id": "penthesilea.sc-penthesilea-3.semantic",
+          "printedClause": "被动/战斗阶段：花费其魔力消耗并弃置一张手牌，然后令所有交战对手失去弃置牌于你的战斗中受到力量修正后的威力三分之一的战果。（力量修正不受军神咆哮影响，失去的战果向上取整）",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "penthesilea_wrath_rule",
+              "operation": "passive_combat_pay_source_mana_cost_and_discard_one_hand_card_each_engaged_opponent_loses_vp_equal_to_one_third_ceiling_of_discarded_card_power_after_strength_modifier_in_controller_battle_strength_modifier_ignores_war_cry"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "6fd052d6571a0779411fad371e2aae399e1389e42a87838f2b0eef8bfe9d4c92"
+    },
+    {
+      "id": "servant.quetzalcoatl.skill.sc-quetzalcoatl-1",
+      "printedText": "行动阶段：若你激活的攻击中没有💥力量基础攻击，抽一张牌并打出。若此效果打出的牌是🟢迅捷属性，你可以再次执行该效果；如果此效果打出的牌是💥力量属性，本回合每张因此效果打出的攻击令该张被打出的攻击获得+1威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_quetzalcoatl_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "行动阶段：若你激活的攻击中没有💥力量基础攻击，抽一张牌并打出。若此效果打出的牌是🟢迅捷属性，你可以再次执行该效果；如果此效果打出的牌是💥力量属性，本回合每张因此效果打出的攻击令该张被打出的攻击获得+1威力。",
+        "sourceTextSha256": "ab54b9ed8d2d3109d1393749c055b9f2f3dd9bb6ff0fd4040f8f34a5a8b5efa6"
+      },
+      "abilities": [
+        {
+          "id": "quetzalcoatl.sc-quetzalcoatl-1.semantic",
+          "printedClause": "行动阶段：若你激活的攻击中没有💥力量基础攻击，抽一张牌并打出。若此效果打出的牌是🟢迅捷属性，你可以再次执行该效果；如果此效果打出的牌是💥力量属性，本回合每张因此效果打出的攻击令该张被打出的攻击获得+1威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "quetzalcoatl_flame_chain_rule",
+              "operation": "action_if_no_active_strength_base_attack_draw_1_and_play_it_if_played_card_quick_may_repeat_if_strength_each_attack_played_by_this_effect_this_round_gains_plus_1_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ab54b9ed8d2d3109d1393749c055b9f2f3dd9bb6ff0fd4040f8f34a5a8b5efa6"
+    },
+    {
+      "id": "servant.quetzalcoatl.skill.sc-quetzalcoatl-2",
+      "printedText": "【真名解放】 <每局游戏限一次>\n残留。\n前哨阶段：关闭此牌，若本回合魁札尔·科亚特尔获胜，获得4点战果。\n预言之行动阶段：抽至多2张牌，然后将2张手牌以任意顺序放置于你的牌库底。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_quetzalcoatl_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】 <每局游戏限一次>\n残留。\n前哨阶段：关闭此牌，若本回合魁札尔·科亚特尔获胜，获得4点战果。\n预言之行动阶段：抽至多2张牌，然后将2张手牌以任意顺序放置于你的牌库底。",
+        "sourceTextSha256": "b0ebc4d122c9d52325e6a0401bd8fafe9d04acb0bb59220c3b792ac7b1da12e9"
+      },
+      "abilities": [
+        {
+          "id": "quetzalcoatl.sc-quetzalcoatl-2.semantic",
+          "printedClause": "【真名解放】 <每局游戏限一次>\n残留。\n前哨阶段：关闭此牌，若本回合魁札尔·科亚特尔获胜，获得4点战果。\n预言之行动阶段：抽至多2张牌，然后将2张手牌以任意顺序放置于你的牌库底。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "quetzalcoatl_sun_stone_rule",
+              "operation": "true_name_reveal_once_per_game_residual_outpost_close_source_if_quetzalcoatl_wins_this_round_gain_4_vp_prophecy_action_draw_up_to_2_then_place_2_hand_cards_on_deck_bottom_in_any_order"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b0ebc4d122c9d52325e6a0401bd8fafe9d04acb0bb59220c3b792ac7b1da12e9"
+    },
+    {
+      "id": "servant.quetzalcoatl.skill.sc-quetzalcoatl-3",
+      "printedText": "【真名解放】\n行动阶段：（如可能）沿着路径移动两个位置。如果无法执行，则获得3点合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_quetzalcoatl_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n行动阶段：（如可能）沿着路径移动两个位置。如果无法执行，则获得3点合计威力。",
+        "sourceTextSha256": "0e664ef3024fd1133fcfe190d7d1f15f848bd8ccf6cd970de7ca3c0b70fd8fbb"
+      },
+      "abilities": [
+        {
+          "id": "quetzalcoatl.sc-quetzalcoatl-3.semantic",
+          "printedClause": "【真名解放】\n行动阶段：（如可能）沿着路径移动两个位置。如果无法执行，则获得3点合计威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "quetzalcoatl_winged_move_rule",
+              "operation": "true_name_reveal_action_if_possible_move_two_locations_along_path_if_impossible_gain_3_total_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0e664ef3024fd1133fcfe190d7d1f15f848bd8ccf6cd970de7ca3c0b70fd8fbb"
+    },
+    {
+      "id": "servant.raikou.skill.sc-raikou-1",
+      "printedText": "【真名解放】<每局游戏限两次>被动/前哨阶段：本回合你可追加打出至多2张攻击。你可不用支付其中一张牌的魔力消耗。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_raikou_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】<每局游戏限两次>被动/前哨阶段：本回合你可追加打出至多2张攻击。你可不用支付其中一张牌的魔力消耗。",
+        "sourceTextSha256": "dab85685706e3f0f39742cf4f647a89d4d3d52cc1114e2448ba3171daf48a2e5"
+      },
+      "abilities": [
+        {
+          "id": "raikou.sc-raikou-1.semantic",
+          "printedClause": "【真名解放】<每局游戏限两次>被动/前哨阶段：本回合你可追加打出至多2张攻击。你可不用支付其中一张牌的魔力消耗。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "raikou_extra_attack_rule",
+              "operation": "true_name_reveal_twice_per_game_passive_outpost_this_round_may_play_up_to_2_additional_attacks_and_one_of_those_attacks_may_be_played_without_paying_mana_cost"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "dab85685706e3f0f39742cf4f647a89d4d3d52cc1114e2448ba3171daf48a2e5"
+    },
+    {
+      "id": "servant.raikou.skill.sc-raikou-2",
+      "printedText": "其他玩家不受局势牌影响。被动：若当前局势牌禁止使用宝具，则此牌的魔力消耗-6。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_raikou_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "其他玩家不受局势牌影响。被动：若当前局势牌禁止使用宝具，则此牌的魔力消耗-6。",
+        "sourceTextSha256": "5ef7887ab96a9e1f781e9c4d90001ddad6fdbdc6b9f5cd45fc1847e0eb23cbcd"
+      },
+      "abilities": [
+        {
+          "id": "raikou.sc-raikou-2.semantic",
+          "printedClause": "其他玩家不受局势牌影响。被动：若当前局势牌禁止使用宝具，则此牌的魔力消耗-6。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "raikou_situation_immunity_rule",
+              "operation": "other_players_are_unaffected_by_situation_card_passive_if_current_situation_forbids_noble_phantasms_source_mana_cost_minus_6"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "5ef7887ab96a9e1f781e9c4d90001ddad6fdbdc6b9f5cd45fc1847e0eb23cbcd"
+    },
+    {
+      "id": "servant.raikou.skill.sc-raikou-3",
+      "printedText": "战斗阶段：若你赢得战斗，因此战败的战果最高的玩家于战斗阶段结束时失去3点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_raikou_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "战斗阶段：若你赢得战斗，因此战败的战果最高的玩家于战斗阶段结束时失去3点战果。",
+        "sourceTextSha256": "4b157861892f7112e91d38daca7dbc921352cf875376c56365986c6cebb4c56d"
+      },
+      "abilities": [
+        {
+          "id": "raikou.sc-raikou-3.semantic",
+          "printedClause": "战斗阶段：若你赢得战斗，因此战败的战果最高的玩家于战斗阶段结束时失去3点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "raikou_mystery_slayer_rule",
+              "operation": "combat_if_controller_wins_highest_vp_player_among_those_defeated_by_that_battle_loses_3_vp_at_combat_phase_end"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4b157861892f7112e91d38daca7dbc921352cf875376c56365986c6cebb4c56d"
+    },
+    {
+      "id": "servant.roberts.skill.sc-roberts-3",
+      "printedText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_roberts_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+        "sourceTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+      },
+      "abilities": [
+        {
+          "id": "roberts.sc_roberts_3.semantic",
+          "printedClause": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "draw_cards",
+              "count": 1,
+              "when": "source_played_with_one_base_attack"
+            },
+            {
+              "type": "play_selected_cards",
+              "sourceZone": "hand",
+              "maxCount": 3,
+              "filter": {
+                "basePowerMax": 3
+              }
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
     }
   ]
 }

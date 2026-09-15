@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=845
-blockedCount=99
+sourceGroundedCount=860
+blockedCount=84
 unclassifiedCount=0
-structuredAbilityCount=1123
+structuredAbilityCount=1138
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 130 |
+| timing | `ACTION` | 131 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -262,12 +262,12 @@ structuredAbilityCount=1123
 | target | `CHOOSE_N_EVENTS` | 1 |
 | effect | `GAIN_VICTORY_POINTS` | 49 |
 | effect | `GAIN_MANA` | 36 |
-| effect | `DRAW_CARDS` | 34 |
+| effect | `DRAW_CARDS` | 35 |
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
 | effect | `EVENT_CARD_RULE` | 27 |
 | effect | `MOVE_PLAYER` | 27 |
-| effect | `PLAY_SELECTED_CARDS` | 24 |
+| effect | `PLAY_SELECTED_CARDS` | 25 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
@@ -276,9 +276,9 @@ structuredAbilityCount=1123
 | effect | `LOSTBELT_EXPANSION` | 14 |
 | effect | `DEFEAT_PLAYER` | 13 |
 | effect | `FOREIGN_LIFE_RULE` | 13 |
+| effect | `REVERSE_EFFECT_RULE` | 12 |
 | effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 12 |
 | effect | `SET_PLAYER_FLAG` | 12 |
-| effect | `REVERSE_EFFECT_RULE` | 11 |
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
 | effect | `LOSE_MANA` | 10 |
 | effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 10 |
@@ -630,6 +630,13 @@ structuredAbilityCount=1123
 | effect | `OZYMANDIAS_DENDERA_RULE` | 1 |
 | effect | `OZYMANDIAS_TEMPLE_RULE` | 1 |
 | effect | `PAIN_CONVERSION_REWARD_RULE` | 1 |
+| effect | `PARVATI_IMAGINARY_RING_RULE` | 1 |
+| effect | `PARVATI_TWIN_ELIMINATION_RULE` | 1 |
+| effect | `PASSIONLIP_DURGA_ARMOR_RULE` | 1 |
+| effect | `PASSIONLIP_MASOCHISTIC_RULE` | 1 |
+| effect | `PENTHESILEA_BEAUTY_SHAME_RULE` | 1 |
+| effect | `PENTHESILEA_WAR_CRY_RULE` | 1 |
+| effect | `PENTHESILEA_WRATH_RULE` | 1 |
 | effect | `PLACED_NOBLE_PHANTASM_FIELD_RULE` | 1 |
 | effect | `PLAYED_ATTACK_COST_SUM_POWER_RULE` | 1 |
 | effect | `PLAY_SOURCE_CARD` | 1 |
@@ -638,6 +645,12 @@ structuredAbilityCount=1123
 | effect | `PREPARATION_LEADER_VP_RULE` | 1 |
 | effect | `PRETENDER_IDENTITY_X_RULE` | 1 |
 | effect | `PROPHECY_HAND_SUM_DEFEAT_RULE` | 1 |
+| effect | `QUETZALCOATL_FLAME_CHAIN_RULE` | 1 |
+| effect | `QUETZALCOATL_SUN_STONE_RULE` | 1 |
+| effect | `QUETZALCOATL_WINGED_MOVE_RULE` | 1 |
+| effect | `RAIKOU_EXTRA_ATTACK_RULE` | 1 |
+| effect | `RAIKOU_MYSTERY_SLAYER_RULE` | 1 |
+| effect | `RAIKOU_SITUATION_IMMUNITY_RULE` | 1 |
 | effect | `REACTIVE_CARD_ACTION_RULE` | 1 |
 | effect | `REACTIVE_PURSUIT_PLAY_RULE` | 1 |
 | effect | `REACTIVE_RESOURCE_RULE` | 1 |
@@ -1813,24 +1826,24 @@ structuredAbilityCount=1123
 | `servant.ozymandias.skill.sc-ozymandias-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OZYMANDIAS_TEMPLE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ozymandias-ramesseum` |
 | `servant.ozymandias.skill.sc-ozymandias-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `card.played`, `player.defeated`, `player.entered-location` | `EVENT_DEFINITION_IS_SELF`, `EVENT_FACE_IS`, `EVENT_LOCATION_EQUALS_CONTROLLER`, `EVENT_PLAYER_IS_CONTROLLER`, `EVENT_PLAYER_IS_OPPONENT`, `SOURCE_ACTIVE` | `NONE` | `NONE` | `CLOSE_SOURCE_CARD`, `GAIN_MANA`, `LOSE_MANA`, `SOURCE_CARD_POWER_BONUS` | `NONE` | `cleanup:remain_active`, `duration:while_active`, `starts:immediate` | `effect:source_card_power_bonus` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.ozymandias.skill.sc-ozymandias-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OZYMANDIAS_DENDERA_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ozymandias-dendera` |
-| `servant.parvati.skill.sc-parvati-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.parvati-ashes-of-kama` |
-| `servant.parvati.skill.sc-parvati-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.parvati-imaginary-around` |
+| `servant.parvati.skill.sc-parvati-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PARVATI_TWIN_ELIMINATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.parvati-ashes-of-kama` |
+| `servant.parvati.skill.sc-parvati-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PARVATI_IMAGINARY_RING_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.parvati-imaginary-around` |
 | `servant.parvati.skill.sc-parvati-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION`, `COMBAT` | `NONE` | `METRIC`, `METRIC_COMPARE`, `PLAYER_FLAG_NUMBER_CURRENT_ROUND`, `SELECTED_CARDS_ALL_HAVE_ATTRIBUTE`, `SOURCE_ACTIVE` | `NONE` | `CHOOSE_N_CARDS`, `CHOOSE_ONE_PLAYER` | `IF_CONDITION`, `PLAY_SELECTED_CARDS` | `CHOOSE_N_CARDS`, `CHOOSE_ONE_PLAYER` | `duration:this_round` | `NONE` | `NONE` | `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |
-| `servant.passionlip.skill.sc-passionlip-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
-| `servant.passionlip.skill.sc-passionlip-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.passionlip-masochism` |
-| `servant.passionlip.skill.sc-passionlip-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.passionlip-durga-armor` |
-| `servant.penthesilea.skill.sc-penthesilea-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.penthesilea-war-god-roar` |
-| `servant.penthesilea.skill.sc-penthesilea-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.penthesilea-divine-beauty` |
-| `servant.penthesilea.skill.sc-penthesilea-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.penthesilea-evicerate` |
-| `servant.quetzalcoatl.skill.sc-quetzalcoatl-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.quetzal-flame` |
-| `servant.quetzalcoatl.skill.sc-quetzalcoatl-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.quetzal-sunstone` |
-| `servant.quetzalcoatl.skill.sc-quetzalcoatl-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.power-bonus-and-forward-move` |
-| `servant.raikou.skill.sc-raikou-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.raikou-ox-king` |
-| `servant.raikou.skill.sc-raikou-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
-| `servant.raikou.skill.sc-raikou-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.raikou-mystery-killer` |
+| `servant.passionlip.skill.sc-passionlip-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
+| `servant.passionlip.skill.sc-passionlip-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PASSIONLIP_MASOCHISTIC_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.passionlip-masochism` |
+| `servant.passionlip.skill.sc-passionlip-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PASSIONLIP_DURGA_ARMOR_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.passionlip-durga-armor` |
+| `servant.penthesilea.skill.sc-penthesilea-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PENTHESILEA_WAR_CRY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.penthesilea-war-god-roar` |
+| `servant.penthesilea.skill.sc-penthesilea-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PENTHESILEA_BEAUTY_SHAME_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.penthesilea-divine-beauty` |
+| `servant.penthesilea.skill.sc-penthesilea-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PENTHESILEA_WRATH_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.penthesilea-evicerate` |
+| `servant.quetzalcoatl.skill.sc-quetzalcoatl-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `QUETZALCOATL_FLAME_CHAIN_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.quetzal-flame` |
+| `servant.quetzalcoatl.skill.sc-quetzalcoatl-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `QUETZALCOATL_SUN_STONE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.quetzal-sunstone` |
+| `servant.quetzalcoatl.skill.sc-quetzalcoatl-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `QUETZALCOATL_WINGED_MOVE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.power-bonus-and-forward-move` |
+| `servant.raikou.skill.sc-raikou-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RAIKOU_EXTRA_ATTACK_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.raikou-ox-king` |
+| `servant.raikou.skill.sc-raikou-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RAIKOU_SITUATION_IMMUNITY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
+| `servant.raikou.skill.sc-raikou-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RAIKOU_MYSTERY_SLAYER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.raikou-mystery-killer` |
 | `servant.roberts.skill.sc-roberts-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `AT_BATTLEFIELD`, `EVENT_COUNT_AT_LEAST`, `SOURCE_OWNED`, `TARGET_COUNT_AT_LEAST` | `MANA` | `CHOOSE_EACH_PLAYER_OPTION`, `CHOOSE_ONE_EVENT` | `ADD_STATUS`, `IF_CONDITION`, `REMOVE_STATUS`, `SET_PLAYER_FLAG` | `CHOOSE_EACH_PLAYER_OPTION`, `CHOOSE_ONE_EVENT` | `duration:this_round` | `NONE` | `NONE` | `payload:selectedEventIds` | `COMBAT_CONDITION` | `core.structured-skill` |
 | `servant.roberts.skill.sc-roberts-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `PLAYER_FLAG_NUMBER_CURRENT_ROUND`, `SOURCE_ACTIVE`, `SOURCE_OWNED` | `MANA` | `CHOOSE_ONE_LOCATION` | `RETURN_CARD_BY_DEFINITION` | `CHOOSE_ONE_LOCATION` | `NONE` | `NONE` | `FACE_UP`, `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.roberts.skill.sc-roberts-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `servant.roberts.skill.sc-roberts-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
 | `servant.robin.skill.sc-robin-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
 | `servant.robin.skill.sc-robin-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CONCEALED_MODE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.robin.skill.sc-robin-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `POISON_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.robin-prayer-bow` |

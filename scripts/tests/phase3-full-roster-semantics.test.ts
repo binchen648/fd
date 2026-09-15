@@ -1658,6 +1658,14 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.nursery.skill.sc-nursery-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'nursery_round_reset_rule'})])}));
     expect(slice.find(c=>c.id==='servant.ozymandias.skill.sc-ozymandias-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'ozymandias_temple_rule'})])}));
   });
+  it('grounds the fifteen-ID Parvati/Passionlip/Penthesilea/Quetzalcoatl/Raikou/Roberts slice with Rider and Alter Ego reuse', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.parvati.skill.sc-parvati-1","servant.parvati.skill.sc-parvati-2","servant.passionlip.skill.sc-passionlip-1","servant.passionlip.skill.sc-passionlip-2","servant.passionlip.skill.sc-passionlip-3","servant.penthesilea.skill.sc-penthesilea-1","servant.penthesilea.skill.sc-penthesilea-2","servant.penthesilea.skill.sc-penthesilea-3","servant.quetzalcoatl.skill.sc-quetzalcoatl-1","servant.quetzalcoatl.skill.sc-quetzalcoatl-2","servant.quetzalcoatl.skill.sc-quetzalcoatl-3","servant.raikou.skill.sc-raikou-1","servant.raikou.skill.sc-raikou-2","servant.raikou.skill.sc-raikou-3","servant.roberts.skill.sc-roberts-3"]); const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(15); expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256 && c.source.sourceFileSha256.length===64)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.roberts.skill.sc-roberts-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'draw_cards',count:1,when:'source_played_with_one_base_attack'}),expect.objectContaining({type:'play_selected_cards',sourceZone:'hand',maxCount:3})])}));
+    expect(slice.find(c=>c.id==='servant.passionlip.skill.sc-passionlip-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'reverse_effect_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.parvati.skill.sc-parvati-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'parvati_twin_elimination_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.raikou.skill.sc-raikou-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'raikou_extra_attack_rule'})])}));
+  });
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1711,10 +1719,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 845,
-      blockedCount: 99,
+      sourceGroundedCount: 860,
+      blockedCount: 84,
       unclassifiedCount: 0,
-      structuredAbilityCount: 1123,
+      structuredAbilityCount: 1138,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
