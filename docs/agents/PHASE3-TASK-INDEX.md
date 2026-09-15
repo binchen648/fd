@@ -3477,6 +3477,48 @@ Permitted final status:
 - A recertification passes typecheck, focused FM03 + FB2-10 + B18/B19 `21/21`, content validation, deterministic generated-content verification, and diff check. S evidence supplies rules `292/292`; standard parallel CI has only the known eleven-round 5s wall-clock timeout (`704/705`), with isolated match-session `26/26` and equivalent single-worker CI `705/705`.
 - P3-R30 is READY on the exact A-synchronized lineage; FM03 is not accepted until R30 independently reviews it.
 
+
+## TASK P3-A-FM04-IA-RECONCILIATION
+
+Owner: Codex A
+Status: RECONCILIATION_CANDIDATE
+Branch: `codex/a-p3-fm04-planning`
+Base: R30 `27a112888058a3fe4dd5882bc95054e7346de4a5`
+Read: `docs/reports/2026-09-16-p3-a-fm04-independent-action-reconciliation.md`
+
+Goal: reconcile only the exact eleven-member Archer Independent Action family against already accepted TO08 Resource direct-action and B21/R15 unpreventable battle-loss semantics. Do not modify runtime or frozen F1.
+
+Exact prospective family: Atalanta SC3, Baobhan Sith SC3, Chiron SC1, EMIYA Alter SC1, Euryale SC1, Gilgamesh SC1, Ishtar SC3, Napoleon SC3, Robin Hood SC1, Tomoe SC1, Tristan SC3. Tomoe is the sole pre-existing canonical representative; the other ten are prospective migration additions.
+
+Completion status allowed:
+- `RECONCILIATION_CANDIDATE`
+- `RECONCILIATION_NEEDS_REVISION`
+
+## TASK P3-R31
+
+Owner: Codex R
+Status: READY
+Branch: reviewer-selected fresh worktree/branch from exact P3-A-FM04-IA-RECONCILIATION commit
+
+Goal: independently judge whether the frozen `SPECIAL_EFFECT:independent_action_rule` / Gil `gil_independent_action_rule` blockers are fully discharged for the exact eleven-member family by canonical Tomoe plus independently accepted TO08 and B21/R15 runtime contracts. Do not implement fixes.
+
+Required checks:
+- exact 11-ID F1/Reference family membership and identical printed/source hash;
+- Gil has no identity-specific extra Reference mechanic despite blocker-label spelling;
+- uniform locked static metadata;
+- Tomoe is the only currently canonical family member;
+- Tomoe's two authored abilities exhaust the frozen printed text;
+- TO08 accepts the first-half conditioned +3 VP action structurally;
+- B21/R15 accepts the exact unpreventable post-loss -5 VP sibling structurally;
+- current focused tests pass independently;
+- no runtime/F1/authoring mutation in the reconciliation candidate;
+- no broad Special Handler promotion.
+
+Permitted final status:
+- `SPECIAL_FAMILY_ACCEPTED`
+- `RECONCILIATION_BLOCKED`
+
+If and only if R31 returns `SPECIAL_FAMILY_ACCEPTED`, A may freshly reconcile the exact lineage and dispatch P3-FM04 at exact batch size 11 (Tomoe pre-existing + ten new siblings).
 ## Prompt Templates
 
 Codex A startup prompt:
