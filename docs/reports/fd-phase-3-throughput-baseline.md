@@ -601,3 +601,11 @@ Permitted final status:
 - Generated coverage drift remains timestamp/static source line numbers only and is intentionally not committed.
 - Independent R21 evidence: typecheck PASS; focused `33/33`; rules `256/256`; deterministic PASS; full CI `669/669`; identity/forbidden-file audits clean.
 - Broad Resource Numeric, Cost Payment, Target Selection, Trigger Gateway, and later-wave semantics remain unpromoted.
+## P3-A FB2-05 Synchronization — 2026-09-16
+
+- P3-FB2-05 fixed-controller exact `set_mana`: `REVIEW_ACCEPTED` at candidate `1a611635061f83f7b3aad5c5b2e3da2a33b201bf`, independent R22 `af6503692e23fb118b8956e00baa2b0f84cb2181`.
+- Exact F1 component alignment is 5 identities; complete migration readiness added by this primitive alone is 0 because parent Trigger/Lifecycle/Condition/Special routes remain independently gated.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled definition hash remains `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 cards, 14 characters, 0 blocking issues.
+- Generated coverage drift is timestamp/static-line-only and is intentionally not committed.
+- Independent R22 evidence: typecheck PASS; focused `35/35`; rules `262/262`; deterministic generated-content PASS; full CI `675/675`; identity/forbidden-file audits clean.
+- Broad Resource Numeric, Trigger Gateway, variable/expression payment, Result Binding, Target Selection, and F4 migration are not promoted by implication.
