@@ -1422,6 +1422,23 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.artoria-alt.skill.sc-artoria-alt-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'noble_phantasm_suppression_rule'})])}));
   });
 
+  it('grounds the twelve newly blocked Nero/Mordred/Sigurd/Siegfried/Muramasa identities from the locked saber/archer snapshot', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = [
+      'servant.mordred.skill.sc-mordred-1','servant.mordred.skill.sc-mordred-2','servant.mordred.skill.sc-mordred-3',
+      'servant.muramasa.skill.sc-muramasa-1','servant.muramasa.skill.sc-muramasa-2','servant.muramasa.skill.sc-muramasa-3',
+      'servant.nero.skill.sc-nero-3','servant.siegfried.skill.sc-siegfried-1','servant.siegfried.skill.sc-siegfried-3',
+      'servant.sigurd.skill.sc-sigurd-1','servant.sigurd.skill.sc-sigurd-2','servant.sigurd.skill.sc-sigurd-3'
+    ];
+    const slice = overlays.filter((card) => ids.includes(card.id));
+    expect(slice).toHaveLength(12);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.document === 'Fate_Domination-开发版/batch_saber_archer.js' && card.source.sourceFileSha256 === 'b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.mordred.skill.sc-mordred-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'mana_burst_refund_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.muramasa.skill.sc-muramasa-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'reverse_effect_rule'}),expect.objectContaining({type:'attribute_chain_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.nero.skill.sc-nero-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'turn_order_reposition_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.sigurd.skill.sc-sigurd-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'curse_basic_card_modifier_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1475,10 +1492,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 517,
-      blockedCount: 427,
+      sourceGroundedCount: 529,
+      blockedCount: 415,
       unclassifiedCount: 0,
-      structuredAbilityCount: 795,
+      structuredAbilityCount: 807,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 427,
-    "coveredBlockedIdentityCount": 427,
+    "blockedIdentityCount": 415,
+    "coveredBlockedIdentityCount": 415,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 1,
@@ -294,9 +294,6 @@
         "servant.mhx.skill.sc-mhx-1",
         "servant.mhx.skill.sc-mhx-2",
         "servant.mhx.skill.sc-mhx-3",
-        "servant.mordred.skill.sc-mordred-1",
-        "servant.mordred.skill.sc-mordred-2",
-        "servant.mordred.skill.sc-mordred-3",
         "servant.morgan.skill.sc-morgan-1",
         "servant.morgan.skill.sc-morgan-2",
         "servant.morgan.skill.sc-morgan-3",
@@ -304,9 +301,6 @@
         "servant.moriarty.skill.sc-moriarty-2",
         "servant.moriarty.skill.sc-moriarty-3",
         "servant.mozart.skill.sc-mozart-3",
-        "servant.muramasa.skill.sc-muramasa-1",
-        "servant.muramasa.skill.sc-muramasa-2",
-        "servant.muramasa.skill.sc-muramasa-3",
         "servant.musashi.skill.sc-musashi-1",
         "servant.musashi.skill.sc-musashi-2",
         "servant.musashi.skill.sc-musashi-3",
@@ -314,7 +308,6 @@
         "servant.nemo.skill.sc-nemo-1",
         "servant.nemo.skill.sc-nemo-2",
         "servant.nemo.skill.sc-nemo-3",
-        "servant.nero.skill.sc-nero-3",
         "servant.nightingale.skill.sc-nightingale-1",
         "servant.nightingale.skill.sc-nightingale-2",
         "servant.nightingale.skill.sc-nightingale-3",
@@ -396,11 +389,6 @@
         "servant.shuten.skill.sc-shuten-1",
         "servant.shuten.skill.sc-shuten-2",
         "servant.shuten.skill.sc-shuten-3",
-        "servant.siegfried.skill.sc-siegfried-1",
-        "servant.siegfried.skill.sc-siegfried-3",
-        "servant.sigurd.skill.sc-sigurd-1",
-        "servant.sigurd.skill.sc-sigurd-2",
-        "servant.sigurd.skill.sc-sigurd-3",
         "servant.sitonai.skill.sc-sitonai-1",
         "servant.sitonai.skill.sc-sitonai-2",
         "servant.sitonai.skill.sc-sitonai-3",
@@ -6493,78 +6481,6 @@
           "sha256": "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
         },
         {
-          "abilityId": "servant.mordred.skill.sc-mordred-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/莫德雷德.htm"
-        },
-        {
-          "abilityId": "servant.mordred.skill.sc-mordred-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.mordred/莫德雷德"
-        },
-        {
-          "abilityId": "servant.mordred.skill.sc-mordred-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[15].skills[0].text#line=1",
-          "sha256": "865c5e613318f5ab78f63e71f2542f7df89f914a9a813274981c9f4ef9737d99"
-        },
-        {
-          "abilityId": "servant.mordred.skill.sc-mordred-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[15].skills[0].text#line=2",
-          "sha256": "a6d718b013ab77d5378c08de8fcfd2343a4ef47f0448ddb2758b9399477d40e9"
-        },
-        {
-          "abilityId": "servant.mordred.skill.sc-mordred-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/莫德雷德.htm"
-        },
-        {
-          "abilityId": "servant.mordred.skill.sc-mordred-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.mordred/莫德雷德"
-        },
-        {
-          "abilityId": "servant.mordred.skill.sc-mordred-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[15].skills[1].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.mordred.skill.sc-mordred-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[15].skills[1].text#line=2",
-          "sha256": "0b08d6e6528f94d2f46373c46a00da55f878013b682b494f9f715324b4799b01"
-        },
-        {
-          "abilityId": "servant.mordred.skill.sc-mordred-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/莫德雷德.htm"
-        },
-        {
-          "abilityId": "servant.mordred.skill.sc-mordred-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.mordred/莫德雷德"
-        },
-        {
-          "abilityId": "servant.mordred.skill.sc-mordred-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[15].skills[2].text#line=1",
-          "sha256": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2"
-        },
-        {
-          "abilityId": "servant.mordred.skill.sc-mordred-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[15].skills[2].text#line=2",
-          "sha256": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85"
-        },
-        {
-          "abilityId": "servant.mordred.skill.sc-mordred-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[15].skills[2].text#line=3",
-          "sha256": "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
-        },
-        {
           "abilityId": "servant.morgan.skill.sc-morgan-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/裁定者/英文版/摩根.htm"
@@ -6699,78 +6615,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[105].skills[2].text#line=2",
           "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
-        },
-        {
-          "abilityId": "servant.muramasa.skill.sc-muramasa-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/他人格/英文版/千子村正.htm"
-        },
-        {
-          "abilityId": "servant.muramasa.skill.sc-muramasa-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.muramasa/千子村正"
-        },
-        {
-          "abilityId": "servant.muramasa.skill.sc-muramasa-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[23].skills[0].text#line=1",
-          "sha256": "1aa9d9b7b2f87932c2fc7a2f884cd211434215006a66ab244e578d6790142aa8"
-        },
-        {
-          "abilityId": "servant.muramasa.skill.sc-muramasa-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[23].skills[0].text#line=2",
-          "sha256": "812f304199d58fad9af98785df13c96d0aeb783036efe16f2222913af10fcb00"
-        },
-        {
-          "abilityId": "servant.muramasa.skill.sc-muramasa-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[23].skills[0].text#line=3",
-          "sha256": "2f97d1907a4976d04712e54636288f723643d2495b7bfced7ce1ef6548b3a536"
-        },
-        {
-          "abilityId": "servant.muramasa.skill.sc-muramasa-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/他人格/英文版/千子村正.htm"
-        },
-        {
-          "abilityId": "servant.muramasa.skill.sc-muramasa-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.muramasa/千子村正"
-        },
-        {
-          "abilityId": "servant.muramasa.skill.sc-muramasa-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[23].skills[1].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.muramasa.skill.sc-muramasa-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[23].skills[1].text#line=2",
-          "sha256": "5f5e9904a5e8bbcce60e8dfd1eeb94427901323b2c2877933c3146d8e9b5455f"
-        },
-        {
-          "abilityId": "servant.muramasa.skill.sc-muramasa-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[23].skills[1].text#line=3",
-          "sha256": "44dfef9d022c691cc11d48b27218ed41cde2acdead75bc07d5a620ef4038c6cd"
-        },
-        {
-          "abilityId": "servant.muramasa.skill.sc-muramasa-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/他人格/英文版/千子村正.htm"
-        },
-        {
-          "abilityId": "servant.muramasa.skill.sc-muramasa-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.muramasa/千子村正"
-        },
-        {
-          "abilityId": "servant.muramasa.skill.sc-muramasa-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[23].skills[2].text#line=1",
-          "sha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
         },
         {
           "abilityId": "servant.musashi.skill.sc-musashi-1",
@@ -6949,22 +6793,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[97].skills[2].text#line=2",
           "sha256": "8e4f247900f7de0040c7cc7db7ab5187d19119ef3122a652e3d5f36306d23518"
-        },
-        {
-          "abilityId": "servant.nero.skill.sc-nero-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/尼禄·克劳狄乌斯.htm"
-        },
-        {
-          "abilityId": "servant.nero.skill.sc-nero-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.nero/尼禄·克劳狄乌斯"
-        },
-        {
-          "abilityId": "servant.nero.skill.sc-nero-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[14].skills[2].text#line=1",
-          "sha256": "9d355a8c1aa35de9a9e6f929461f43ea5afc4c1e10f03dba9d5c812eda6b1ae9"
         },
         {
           "abilityId": "servant.nightingale.skill.sc-nightingale-1",
@@ -8755,128 +8583,6 @@
           "sha256": "b5ddc0341ed2243ea8895f690c44ba69377ec3c64acec1aca4379b2fe3355598"
         },
         {
-          "abilityId": "servant.siegfried.skill.sc-siegfried-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/齐格飞.htm"
-        },
-        {
-          "abilityId": "servant.siegfried.skill.sc-siegfried-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.siegfried/齐格飞"
-        },
-        {
-          "abilityId": "servant.siegfried.skill.sc-siegfried-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[21].skills[0].text#line=1",
-          "sha256": "e3f43839a4e3f9024b253b633df0ea1970ac12949c740b4b2d23282e6cc8ab27"
-        },
-        {
-          "abilityId": "servant.siegfried.skill.sc-siegfried-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[21].skills[0].text#line=2",
-          "sha256": "45649d7115bb035c61cce5a2754c50a9b0b2fb8dfebee2f5b4c08cf8afdd4aca"
-        },
-        {
-          "abilityId": "servant.siegfried.skill.sc-siegfried-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/齐格飞.htm"
-        },
-        {
-          "abilityId": "servant.siegfried.skill.sc-siegfried-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.siegfried/齐格飞"
-        },
-        {
-          "abilityId": "servant.siegfried.skill.sc-siegfried-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[21].skills[2].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.siegfried.skill.sc-siegfried-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[21].skills[2].text#line=2",
-          "sha256": "f8fa90c7d986b684b339b7e15445ae280d5a56d839c213ef781710887215be8b"
-        },
-        {
-          "abilityId": "servant.sigurd.skill.sc-sigurd-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/Sigurd.htm"
-        },
-        {
-          "abilityId": "servant.sigurd.skill.sc-sigurd-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.sigurd/齐格鲁德"
-        },
-        {
-          "abilityId": "servant.sigurd.skill.sc-sigurd-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[20].skills[0].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.sigurd.skill.sc-sigurd-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[20].skills[0].text#line=2",
-          "sha256": "520a756a1e834f2f10a9fce064c0583fc36c7ebc71b81ef33239e4ddc3f40f8d"
-        },
-        {
-          "abilityId": "servant.sigurd.skill.sc-sigurd-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[20].skills[0].text#line=3",
-          "sha256": "070a808c8690122fd260c9be6cf4812ef64093ef967c74118b44d522216ee6a4"
-        },
-        {
-          "abilityId": "servant.sigurd.skill.sc-sigurd-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/Sigurd.htm"
-        },
-        {
-          "abilityId": "servant.sigurd.skill.sc-sigurd-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.sigurd/齐格鲁德"
-        },
-        {
-          "abilityId": "servant.sigurd.skill.sc-sigurd-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[20].skills[1].text#line=1",
-          "sha256": "520a756a1e834f2f10a9fce064c0583fc36c7ebc71b81ef33239e4ddc3f40f8d"
-        },
-        {
-          "abilityId": "servant.sigurd.skill.sc-sigurd-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[20].skills[1].text#line=2",
-          "sha256": "43b9a9e763bd8f5f2b68c3b0df99824129ee4e5846813c3fcced0f14d2e81c36"
-        },
-        {
-          "abilityId": "servant.sigurd.skill.sc-sigurd-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/Sigurd.htm"
-        },
-        {
-          "abilityId": "servant.sigurd.skill.sc-sigurd-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.sigurd/齐格鲁德"
-        },
-        {
-          "abilityId": "servant.sigurd.skill.sc-sigurd-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[20].skills[2].text#line=1",
-          "sha256": "b8948b29606c56ee673f234c17afe98448ae3986ee1a6155b5b827e23096a239"
-        },
-        {
-          "abilityId": "servant.sigurd.skill.sc-sigurd-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[20].skills[2].text#line=2",
-          "sha256": "2127e3a119d982bc25b5435f3c8007f8a6f480d65512e034e09cf5bea418d3f0"
-        },
-        {
-          "abilityId": "servant.sigurd.skill.sc-sigurd-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[20].skills[2].text#line=3",
-          "sha256": "40036227cacecbe6d5405a17c8cccc9b1b30e85b81817f63493021e9386c0566"
-        },
-        {
           "abilityId": "servant.sitonai.skill.sc-sitonai-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/他人格/英文版/志度内.htm"
@@ -9928,10 +9634,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 154,
-          "specific_handler": 273
+          "shared_handler": 150,
+          "specific_handler": 265
         },
-        "handlerCount": 304,
+        "handlerCount": 296,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."
