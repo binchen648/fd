@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 673,
-    "explicitBlockCount": 271,
+    "contractMappedCount": 689,
+    "explicitBlockCount": 255,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -25,9 +25,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
       "READY_GENERIC_EXTENSION": 235,
-      "SPECIAL_HANDLER_CANDIDATE": 436,
+      "SPECIAL_HANDLER_CANDIDATE": 452,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 271,
+      "SOURCE_EVIDENCE_REQUIRED": 255,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -5908,6 +5908,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.gareth.skill.sc-gareth-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.gawain.skill.sc-gawain-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5916,7 +5928,59 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.georgios.skill.sc-georgios-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-np",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-np",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gorgon.skill.sc-gorgon-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-np",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -9571,9 +9635,25 @@
         "servant.frank.skill.sc-frank-1",
         "servant.frank.skill.sc-frank-2",
         "servant.frank.skill.sc-frank-3",
+        "servant.gareth.skill.sc-gareth-1",
+        "servant.gareth.skill.sc-gareth-2",
+        "servant.gareth.skill.sc-gareth-3",
         "servant.gawain.skill.sc-gawain-1",
         "servant.gawain.skill.sc-gawain-2",
+        "servant.georgios.skill.sc-georgios-1",
+        "servant.georgios.skill.sc-georgios-2",
+        "servant.georgios.skill.sc-georgios-3",
+        "servant.gil.skill.sc-gil-1",
+        "servant.gil.skill.sc-gil-2",
+        "servant.gil.skill.sc-gil-np",
+        "servant.gilles.skill.sc-gilles-1",
+        "servant.gilles.skill.sc-gilles-2",
+        "servant.gilles.skill.sc-gilles-np",
+        "servant.gorgon.skill.sc-gorgon-1",
         "servant.gorgon.skill.sc-gorgon-3",
+        "servant.hassan.skill.sc-hassan-1",
+        "servant.hassan.skill.sc-hassan-2",
+        "servant.hassan.skill.sc-hassan-np",
         "servant.hokusai.skill.sc-hokusai-1",
         "servant.hokusai.skill.sc-hokusai-2",
         "servant.hokusai.skill.sc-hokusai-3",
@@ -11139,6 +11219,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.gareth.skill.sc-gareth-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.gawain.skill.sc-gawain-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -11147,7 +11239,59 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.georgios.skill.sc-georgios-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-np",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-np",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gorgon.skill.sc-gorgon-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-np",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -12043,11 +12187,27 @@
       "servant.frank.skill.sc-frank-1",
       "servant.frank.skill.sc-frank-2",
       "servant.frank.skill.sc-frank-3",
+      "servant.gareth.skill.sc-gareth-1",
+      "servant.gareth.skill.sc-gareth-2",
+      "servant.gareth.skill.sc-gareth-3",
       "servant.gawain.skill.sc-gawain-1",
       "servant.gawain.skill.sc-gawain-2",
       "servant.gawain.skill.sc-gawain-3",
+      "servant.georgios.skill.sc-georgios-1",
+      "servant.georgios.skill.sc-georgios-2",
+      "servant.georgios.skill.sc-georgios-3",
+      "servant.gil.skill.sc-gil-1",
+      "servant.gil.skill.sc-gil-2",
+      "servant.gil.skill.sc-gil-np",
+      "servant.gilles.skill.sc-gilles-1",
+      "servant.gilles.skill.sc-gilles-2",
+      "servant.gilles.skill.sc-gilles-np",
+      "servant.gorgon.skill.sc-gorgon-1",
       "servant.gorgon.skill.sc-gorgon-2",
       "servant.gorgon.skill.sc-gorgon-3",
+      "servant.hassan.skill.sc-hassan-1",
+      "servant.hassan.skill.sc-hassan-2",
+      "servant.hassan.skill.sc-hassan-np",
       "servant.helena.skill.sc-helena-1",
       "servant.helena.skill.sc-helena-3",
       "servant.hokusai.skill.sc-hokusai-1",
@@ -12166,118 +12326,6 @@
       "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "servant.gareth.skill.sc-gareth-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.gareth.skill.sc-gareth-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.gareth.skill.sc-gareth-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.georgios.skill.sc-georgios-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.georgios.skill.sc-georgios-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.georgios.skill.sc-georgios-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.gil.skill.sc-gil-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.gil.skill.sc-gil-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.gil.skill.sc-gil-np",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.gilles.skill.sc-gilles-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.gilles.skill.sc-gilles-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.gilles.skill.sc-gilles-np",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.gorgon.skill.sc-gorgon-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.hassan.skill.sc-hassan-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.hassan.skill.sc-hassan-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.hassan.skill.sc-hassan-np",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.hassanhf.skill.sc-hassanhf-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -14419,9 +14467,25 @@
       "servant.frank.skill.sc-frank-1",
       "servant.frank.skill.sc-frank-2",
       "servant.frank.skill.sc-frank-3",
+      "servant.gareth.skill.sc-gareth-1",
+      "servant.gareth.skill.sc-gareth-2",
+      "servant.gareth.skill.sc-gareth-3",
       "servant.gawain.skill.sc-gawain-1",
       "servant.gawain.skill.sc-gawain-2",
+      "servant.georgios.skill.sc-georgios-1",
+      "servant.georgios.skill.sc-georgios-2",
+      "servant.georgios.skill.sc-georgios-3",
+      "servant.gil.skill.sc-gil-1",
+      "servant.gil.skill.sc-gil-2",
+      "servant.gil.skill.sc-gil-np",
+      "servant.gilles.skill.sc-gilles-1",
+      "servant.gilles.skill.sc-gilles-2",
+      "servant.gilles.skill.sc-gilles-np",
+      "servant.gorgon.skill.sc-gorgon-1",
       "servant.gorgon.skill.sc-gorgon-3",
+      "servant.hassan.skill.sc-hassan-1",
+      "servant.hassan.skill.sc-hassan-2",
+      "servant.hassan.skill.sc-hassan-np",
       "servant.hokusai.skill.sc-hokusai-1",
       "servant.hokusai.skill.sc-hokusai-2",
       "servant.hokusai.skill.sc-hokusai-3",

@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 673
+    "affectedIdentityCount": 689
   },
   "requests": [
     {
@@ -48376,9 +48376,25 @@
         "servant.frank.skill.sc-frank-1",
         "servant.frank.skill.sc-frank-2",
         "servant.frank.skill.sc-frank-3",
+        "servant.gareth.skill.sc-gareth-1",
+        "servant.gareth.skill.sc-gareth-2",
+        "servant.gareth.skill.sc-gareth-3",
         "servant.gawain.skill.sc-gawain-1",
         "servant.gawain.skill.sc-gawain-2",
+        "servant.georgios.skill.sc-georgios-1",
+        "servant.georgios.skill.sc-georgios-2",
+        "servant.georgios.skill.sc-georgios-3",
+        "servant.gil.skill.sc-gil-1",
+        "servant.gil.skill.sc-gil-2",
+        "servant.gil.skill.sc-gil-np",
+        "servant.gilles.skill.sc-gilles-1",
+        "servant.gilles.skill.sc-gilles-2",
+        "servant.gilles.skill.sc-gilles-np",
+        "servant.gorgon.skill.sc-gorgon-1",
         "servant.gorgon.skill.sc-gorgon-3",
+        "servant.hassan.skill.sc-hassan-1",
+        "servant.hassan.skill.sc-hassan-2",
+        "servant.hassan.skill.sc-hassan-np",
         "servant.hokusai.skill.sc-hokusai-1",
         "servant.hokusai.skill.sc-hokusai-2",
         "servant.hokusai.skill.sc-hokusai-3",
@@ -57921,6 +57937,87 @@
           "sha256": "fdd8d86872c3492fd768591afd1ad7c5a37e9f2554d3c859626f9a754f6b0e1c"
         },
         {
+          "abilityId": "servant.gareth.skill.sc-gareth-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/加雷斯.htm"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gareth/加雷斯"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_gareth_1"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[74].skills[0].text#line=1",
+          "sha256": "179fda4cab16a6735519e80d487160a3d0ebb649945876b036792c934caf443b"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[74].skills[0].text#line=2",
+          "sha256": "6516a0bd395667bc615888d6dcb3be6a0b93cb3069e3c7bc5569188664e0f502"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[74].skills[0].text#line=3",
+          "sha256": "b43406d6f8a91e3ab35bdc6eb6a1352c238800f3cc087e5f4e0befffa4b86782"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/加雷斯.htm"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gareth/加雷斯"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_gareth_2"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[74].skills[1].text#line=1",
+          "sha256": "14de6831ba85ff109d4909d553fb804a2affa899894f16f9f0f11b7b7fee4a7f"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/加雷斯.htm"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gareth/加雷斯"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_gareth_3"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[74].skills[2].text#line=1",
+          "sha256": "3d61ddcfd87177c442c43990b3216d2c252dba91f295a2382c497699a881cf98"
+        },
+        {
+          "abilityId": "servant.gareth.skill.sc-gareth-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[74].skills[2].text#line=2",
+          "sha256": "ea22c4b9b2ce571c376cbad6ea47f12972e57818e08b7886b598913e9ca956ac"
+        },
+        {
           "abilityId": "servant.gawain.skill.sc-gawain-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/剑士/英文版/高文.htm"
@@ -57975,6 +58072,300 @@
           "sha256": "9a8c036b577ddcee9c0a8a6866bfe1215dbd8cf75fca86730c0b6d245d0de66f"
         },
         {
+          "abilityId": "servant.georgios.skill.sc-georgios-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/乔尔乔斯.htm"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.georgios/乔尔乔斯"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_georgios_1"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[96].skills[0].text#line=1",
+          "sha256": "e97bf60f013e2e3aa44cf0ff71a13fde36521c622adb21139a56c56b6f02a813"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[96].skills[0].text#line=2",
+          "sha256": "518813ec091433025dfe5c8b593489dad7e116270d42896da13d1be121ab9f23"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/乔尔乔斯.htm"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.georgios/乔尔乔斯"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_georgios_2"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[96].skills[1].text#line=1",
+          "sha256": "1bb8281d37cb0e6d5aeadede5282fb67561bf92cec07794a57f3d1d7f1b19053"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[96].skills[1].text#line=2",
+          "sha256": "62e53d26a7e6665e707cb716bd7805e27a4766aabc092dfb3531055cece91e00"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/乔尔乔斯.htm"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.georgios/乔尔乔斯"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_georgios_3"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[96].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[96].skills[2].text#line=2",
+          "sha256": "37f8d28d7d4bbce615001b54456d1c6f3acc00948ddc2b88116b6a044ce4787f"
+        },
+        {
+          "abilityId": "servant.georgios.skill.sc-georgios-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[96].skills[2].text#line=3",
+          "sha256": "35f6bfcf47c6409281272e316224ffaacd847601eaaae90bdfa4223bf51be444"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/吉尔伽美什.htm"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gil/吉尔伽美什"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_gil_1"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=1",
+          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=2",
+          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=3",
+          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/吉尔伽美什.htm"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gil/吉尔伽美什"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_gil_2"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[1].text#line=2",
+          "sha256": "29263c8f124ffb3d4da4cbdc5621a060b9ea8d790d4f2293979d93561d47febe"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[1].text#line=3",
+          "sha256": "49607a11e96c098076eb170f314b2ee1062bf2749caf8b2ed326d950d28130b6"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-np",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/吉尔伽美什.htm"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-np",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gil/吉尔伽美什"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-np",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_gil_np"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-np",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-np",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[2].text#line=2",
+          "sha256": "84ddaf827849aa3174e394b89116c54c9b8ee180ffa6bbfac40ad01e1df5a805"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/吉尔·德·雷.htm"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gilles/吉尔·德·雷"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_gilles_1"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[0].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[0].text#line=2",
+          "sha256": "74cf8a3ca678b3f3c6b52165568116f2d6ca8a5903a66716ee86d6e2dccbc796"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[0].text#line=3",
+          "sha256": "26c74e24157d7898e9d8254aaf299ba669c004bbb93b30df4ff9a79a3c3c7be4"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/吉尔·德·雷.htm"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gilles/吉尔·德·雷"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_gilles_2"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[1].text#line=1",
+          "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[1].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-np",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/吉尔·德·雷.htm"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-np",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gilles/吉尔·德·雷"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-np",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_gilles_np"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-np",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-np",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[2].text#line=2",
+          "sha256": "9f808917bd3a0df6ca718443a7ec4fe0c24d308a18c8286ec6cc958f93cd6633"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-np",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[2].text#line=3",
+          "sha256": "0234e3e38f7ead25ed5859cd30e7710e0fa08ff463d8a12f9924e28ad0f5634c"
+        },
+        {
+          "abilityId": "servant.gorgon.skill.sc-gorgon-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/戈耳工.htm"
+        },
+        {
+          "abilityId": "servant.gorgon.skill.sc-gorgon-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gorgon/戈耳工"
+        },
+        {
+          "abilityId": "servant.gorgon.skill.sc-gorgon-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_gorgon_1"
+        },
+        {
+          "abilityId": "servant.gorgon.skill.sc-gorgon-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[167].skills[0].text#line=1",
+          "sha256": "64c3d2e2325e604e33d6c8a60cb1802d5a46d64d58d3b95ecb4281d91f3ae03b"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/复仇者/英文版/戈耳工.htm"
@@ -58000,6 +58391,105 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[63].abilities[1].printedClause",
           "sha256": "fd3573298bf64ddf55ce4e1519e18a3f315723c069ea0124f6bce6c68a535656"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/哈桑·萨巴赫(咒腕).htm"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hassan/哈桑·萨巴赫(咒腕)"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_hassan_1"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=1",
+          "sha256": "ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=2",
+          "sha256": "1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=3",
+          "sha256": "0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=4",
+          "sha256": "1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/哈桑·萨巴赫(咒腕).htm"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hassan/哈桑·萨巴赫(咒腕)"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_hassan_2"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[1].text#line=1",
+          "sha256": "32d1fa7f43ca5af6632415ff934728b917ed2ce93481c797442576b91f84643f"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[1].text#line=2",
+          "sha256": "68b6f290e27af204adf6e79d633ae9a9aafda4c39dd1ae2e2e6561d1a6595442"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-np",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/哈桑·萨巴赫(咒腕).htm"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-np",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hassan/哈桑·萨巴赫(咒腕)"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-np",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_hassan_np"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-np",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-np",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[2].text#line=2",
+          "sha256": "78a6aaa388cdd60f2b030be60b25bd8f617d265a55c7499b1511d9fb9282cbf4"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-np",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[2].text#line=3",
+          "sha256": "f441ea3b866ab8159a173327d0af04e25c19f856467f3f724d6795221a1e4982"
         },
         {
           "abilityId": "servant.hokusai.skill.sc-hokusai-1",
@@ -60191,10 +60681,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 220,
-          "specific_handler": 212
+          "shared_handler": 226,
+          "specific_handler": 222
         },
-        "handlerCount": 267,
+        "handlerCount": 279,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

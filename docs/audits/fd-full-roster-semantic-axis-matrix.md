@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=673
-blockedCount=271
+sourceGroundedCount=689
+blockedCount=255
 unclassifiedCount=0
-structuredAbilityCount=951
+structuredAbilityCount=967
 
 ## Axis Value Counts
 
@@ -329,6 +329,7 @@ structuredAbilityCount=951
 | effect | `OVERLOAD_CARD_RULE` | 3 |
 | effect | `PHANTOM_PLAYER_RULE` | 3 |
 | effect | `PILGRIMAGE_LUCK_RULE` | 3 |
+| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 3 |
 | effect | `REINCARNATION_RULE` | 3 |
 | effect | `TERRAIN_EFFECT_MULTIPLIER_RULE` | 3 |
 | effect | `TRAINING_EXPERIENCE_RULE` | 3 |
@@ -359,7 +360,6 @@ structuredAbilityCount=951
 | effect | `NPC_RULE` | 2 |
 | effect | `OPPONENT_MANA_BORROW_RULE` | 2 |
 | effect | `PERSISTENT_POWER_AURA_RULE` | 2 |
-| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 2 |
 | effect | `REMOVE_LINKED_STATUS` | 2 |
 | effect | `REMOVE_STATUS` | 2 |
 | effect | `RETRIGGER_CARD_PLAY_EFFECTS` | 2 |
@@ -414,6 +414,7 @@ structuredAbilityCount=951
 | effect | `COLOR_MARKER_RULE` | 1 |
 | effect | `COMMAND_SEAL_REPLACEMENT_RULE` | 1 |
 | effect | `CONCEALED_MODE_RULE` | 1 |
+| effect | `CONCEALMENT_ELIMINATION_GROWTH_RULE` | 1 |
 | effect | `CONDEMNATION_RELEASE_POWER_RULE` | 1 |
 | effect | `CONDITIONAL_MANA_FORFEIT_RULE` | 1 |
 | effect | `CONDITIONAL_PLAY_SURCHARGE_CLOSE_RULE` | 1 |
@@ -450,6 +451,7 @@ structuredAbilityCount=951
 | effect | `DISCARD_LUCK_STATE_RULE` | 1 |
 | effect | `DOPPELGANGER_CREATION_RULE` | 1 |
 | effect | `DOPPELGANGER_DEFEAT_RULE` | 1 |
+| effect | `DRAGON_DESIGNATION_RULE` | 1 |
 | effect | `DRAGON_HEART_PENALTY_RULE` | 1 |
 | effect | `DRAWN_CARDS_PLAY_LOCK_RULE` | 1 |
 | effect | `EDISON_GALVANIC_BATTERY_RULE` | 1 |
@@ -460,8 +462,16 @@ structuredAbilityCount=951
 | effect | `EVENT_POWER_COST_PROTECTION_RULE` | 1 |
 | effect | `EVENT_PRINTED_VP_ADJUSTMENT_RULE` | 1 |
 | effect | `EVENT_SUPPRESSION_RULE` | 1 |
+| effect | `FIRST_OPPONENT_NOBLE_PHANTASM_MANA_RULE` | 1 |
 | effect | `FREE_PLAY_PERMISSION_RULE` | 1 |
+| effect | `GARETH_DISGUISE_KNIGHT_RULE` | 1 |
+| effect | `GARETH_MANA_OVERLOAD_RULE` | 1 |
+| effect | `GARETH_WOLF_NEVER_SLEEPS_RULE` | 1 |
+| effect | `GATE_OF_BABYLON_RULE` | 1 |
 | effect | `GENDER_IDENTITY_HAND_DISCARD_RULE` | 1 |
+| effect | `GEORGIOS_GUARDIAN_RIDER_RULE` | 1 |
+| effect | `GEORGIOS_MARTYR_SOUL_RULE` | 1 |
+| effect | `GIL_INDEPENDENT_ACTION_RULE` | 1 |
 | effect | `GRANT_LINKED_ABILITY_TO_DEFINITION` | 1 |
 | effect | `GRANT_OPPONENT_ACTION_RULE` | 1 |
 | effect | `HAND_DISCARD_SUM_DEFEAT_RULE` | 1 |
@@ -471,6 +481,7 @@ structuredAbilityCount=951
 | effect | `HIDDEN_DRAW_REMOVAL_RULE` | 1 |
 | effect | `HIDDEN_LUCK_ACTIVATION_DOUBLE_RULE` | 1 |
 | effect | `HIDDEN_QUICK_ATTACK_ACTIVATION_RULE` | 1 |
+| effect | `HIDDEN_TRUE_NAME_VP_DOUBLE_DEFEAT_RULE` | 1 |
 | effect | `IMPERFECTION_DIRECT_DEFEAT_RULE` | 1 |
 | effect | `IMPOSTOR_STATE_RULE` | 1 |
 | effect | `INDEPENDENT_DECK_RULE` | 1 |
@@ -487,6 +498,7 @@ structuredAbilityCount=951
 | effect | `LOVE_BOND_VP_RULE` | 1 |
 | effect | `LUCK_IDENTITY_REPLAY_RULE` | 1 |
 | effect | `LUCK_REVEAL_DEFEAT_RULE` | 1 |
+| effect | `MAGIC_ATTACK_ATTRIBUTE_CONVERSION_RULE` | 1 |
 | effect | `MAGIC_ATTACK_CLOSE_REWARD_RULE` | 1 |
 | effect | `MAGIC_IMMUNITY_RULE` | 1 |
 | effect | `MANA_BURST_REFUND_RULE` | 1 |
@@ -505,6 +517,7 @@ structuredAbilityCount=951
 | effect | `ORIGIN_BULLET_RULE` | 1 |
 | effect | `OTHER_ATTACK_POWER_BONUS` | 1 |
 | effect | `PAIN_CONVERSION_REWARD_RULE` | 1 |
+| effect | `PLACED_NOBLE_PHANTASM_FIELD_RULE` | 1 |
 | effect | `PLAYED_ATTACK_COST_SUM_POWER_RULE` | 1 |
 | effect | `PLAY_SOURCE_CARD` | 1 |
 | effect | `POISON_DEFEAT_RULE` | 1 |
@@ -544,6 +557,7 @@ structuredAbilityCount=951
 | effect | `SKILL_TAX_IMMUNITY_MAGIC_CLOSE_RULE` | 1 |
 | effect | `SKIP_DEPLOYMENT_RECOVERY_RULE` | 1 |
 | effect | `SLOT_MACHINE_RULE` | 1 |
+| effect | `SPECIAL_NOBLE_PHANTASM_DEFEAT_RULE` | 1 |
 | effect | `STELLA_SERVANT_DEATH_RULE` | 1 |
 | effect | `STOLEN_MANA_ATTRIBUTION_RULE` | 1 |
 | effect | `SWAP_SELECTED_EVENT_LOCATIONS` | 1 |
@@ -554,6 +568,7 @@ structuredAbilityCount=951
 | effect | `TEMPORARY_OPPONENT_CARD_RULE` | 1 |
 | effect | `TERRAIN_COST_SITUATION_BURN_RULE` | 1 |
 | effect | `TERRITORY_ATTRIBUTE_STRIP_RULE` | 1 |
+| effect | `TERRITORY_CONSTRUCTION_SCALING_RULE` | 1 |
 | effect | `TRANSFER_SELECTED_CARDS` | 1 |
 | effect | `TRAUMA_DECK_RULE` | 1 |
 | effect | `TRAUMA_STATE_RULE` | 1 |
@@ -1413,27 +1428,27 @@ structuredAbilityCount=951
 | `servant.frank.skill.sc-frank-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MAGIC_ATTACK_CLOSE_REWARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.frank.skill.sc-frank-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PLAYED_ATTACK_COST_SUM_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.combat-power-from-battlefield-played-costs` |
 | `servant.frank.skill.sc-frank-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PREVENT_ELIMINATION`, `SCHEDULE_PHASE_EFFECT` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.gareth.skill.sc-gareth-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.gareth.skill.sc-gareth-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gareth-ira-lupus` |
-| `servant.gareth.skill.sc-gareth-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gareth-gun-lance` |
+| `servant.gareth.skill.sc-gareth-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GARETH_DISGUISE_KNIGHT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.gareth.skill.sc-gareth-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GARETH_WOLF_NEVER_SLEEPS_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gareth-ira-lupus` |
+| `servant.gareth.skill.sc-gareth-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GARETH_MANA_OVERLOAD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gareth-gun-lance` |
 | `servant.gawain.skill.sc-gawain-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CONDITIONAL_MANA_FORFEIT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gawain-galatine` |
 | `servant.gawain.skill.sc-gawain-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CHALLENGE_ATTACK_MULTIPLIER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gawain-saint-number` |
 | `servant.gawain.skill.sc-gawain-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `SET_OPPONENT_ATTRIBUTE_POWER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
-| `servant.georgios.skill.sc-georgios-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.georgios-martyr-soul` |
-| `servant.georgios.skill.sc-georgios-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.georgios-bayard` |
-| `servant.georgios.skill.sc-georgios-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.georgios-ascalon` |
-| `servant.gil.skill.sc-gil-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
-| `servant.gil.skill.sc-gil-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.double-deployment-bonus` |
-| `servant.gil.skill.sc-gil-np` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gilgamesh-enuma-elish` |
-| `servant.gilles.skill.sc-gilles-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gilles-mass-summoning` |
-| `servant.gilles.skill.sc-gilles-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
-| `servant.gilles.skill.sc-gilles-np` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gilles-call-ancients` |
-| `servant.gorgon.skill.sc-gorgon-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gorgon-noble-phantasm-watch` |
+| `servant.georgios.skill.sc-georgios-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GEORGIOS_MARTYR_SOUL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.georgios-martyr-soul` |
+| `servant.georgios.skill.sc-georgios-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GEORGIOS_GUARDIAN_RIDER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.georgios-bayard` |
+| `servant.georgios.skill.sc-georgios-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAGON_DESIGNATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.georgios-ascalon` |
+| `servant.gil.skill.sc-gil-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GIL_INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
+| `servant.gil.skill.sc-gil-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GATE_OF_BABYLON_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.double-deployment-bonus` |
+| `servant.gil.skill.sc-gil-np` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SPECIAL_NOBLE_PHANTASM_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gilgamesh-enuma-elish` |
+| `servant.gilles.skill.sc-gilles-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MAGIC_ATTACK_ATTRIBUTE_CONVERSION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gilles-mass-summoning` |
+| `servant.gilles.skill.sc-gilles-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TERRITORY_CONSTRUCTION_SCALING_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
+| `servant.gilles.skill.sc-gilles-np` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PLACED_NOBLE_PHANTASM_FIELD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gilles-call-ancients` |
+| `servant.gorgon.skill.sc-gorgon-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FIRST_OPPONENT_NOBLE_PHANTASM_MANA_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gorgon-noble-phantasm-watch` |
 | `servant.gorgon.skill.sc-gorgon-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved` | `EVENT_LOCATION_EQUALS_CONTROLLER`, `SOURCE_ACTIVE`, `TARGET_COUNT_AT_LEAST` | `NONE` | `NONE` | `CLOSE_SOURCE_CARD` | `NONE` | `cleanup:remain_active`, `duration:while_active`, `starts:immediate` | `rule:card_play_with_others:forbid`, `rule:defeat:ignore` | `NONE` | `NONE` | `COMBAT_EVENT`, `COMBAT_RULE_MODIFIER` | `core.structured-skill` |
 | `servant.gorgon.skill.sc-gorgon-3` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `NONE` | `DEFEAT_PLAYER` | `NONE` | `cleanup:remain_active`, `duration:while_active` | `rule:card_play:forbid`, `rule:movement_destinations:forbid` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.hassan.skill.sc-hassan-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
-| `servant.hassan.skill.sc-hassan-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.hassan.skill.sc-hassan-np` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hassan-np` |
+| `servant.hassan.skill.sc-hassan-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
+| `servant.hassan.skill.sc-hassan-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CONCEALMENT_ELIMINATION_GROWTH_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.hassan.skill.sc-hassan-np` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HIDDEN_TRUE_NAME_VP_DOUBLE_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hassan-np` |
 | `servant.hassanhf.skill.sc-hassanhf-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hundred-faced-hassan-tracking` |
 | `servant.hassanhf.skill.sc-hassanhf-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hundred-faced-hassan-illusion` |
 | `servant.hassanhf.skill.sc-hassanhf-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
