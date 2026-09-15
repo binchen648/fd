@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 845,
-    "explicitBlockCount": 99,
+    "contractMappedCount": 860,
+    "explicitBlockCount": 84,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 245,
-      "SPECIAL_HANDLER_CANDIDATE": 598,
+      "READY_GENERIC_EXTENSION": 246,
+      "SPECIAL_HANDLER_CANDIDATE": 612,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 99,
+      "SOURCE_EVIDENCE_REQUIRED": 84,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -327,6 +327,10 @@
         },
         {
           "abilityId": "servant.parvati.skill.sc-parvati-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.roberts.skill.sc-roberts-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -640,6 +644,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.roberts.skill.sc-roberts-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.siegfried.skill.sc-siegfried-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -922,6 +930,10 @@
         },
         {
           "abilityId": "servant.parvati.skill.sc-parvati-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.roberts.skill.sc-roberts-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
       ]
@@ -1245,6 +1257,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.roberts.skill.sc-roberts-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.siegfried.skill.sc-siegfried-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1321,7 +1337,8 @@
         "servant.nero.skill.sc-nero-2",
         "servant.odysseus.skill.sc-odysseus-3",
         "servant.okita.skill.sc-okita-1",
-        "servant.parvati.skill.sc-parvati-3"
+        "servant.parvati.skill.sc-parvati-3",
+        "servant.roberts.skill.sc-roberts-3"
       ],
       "partialAbilities": [],
       "skippedAbilities": [
@@ -1787,6 +1804,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.roberts.skill.sc-roberts-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.siegfried.skill.sc-siegfried-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2122,6 +2143,10 @@
         },
         {
           "abilityId": "servant.parvati.skill.sc-parvati-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.roberts.skill.sc-roberts-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2464,6 +2489,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.roberts.skill.sc-roberts-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.siegfried.skill.sc-siegfried-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2799,6 +2828,10 @@
         },
         {
           "abilityId": "servant.parvati.skill.sc-parvati-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.roberts.skill.sc-roberts-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3140,6 +3173,10 @@
         },
         {
           "abilityId": "servant.parvati.skill.sc-parvati-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.roberts.skill.sc-roberts-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3705,6 +3742,10 @@
         },
         {
           "abilityId": "servant.roberts.skill.sc-roberts-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.roberts.skill.sc-roberts-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         }
       ]
@@ -4375,6 +4416,10 @@
         {
           "abilityId": "servant.roberts.skill.sc-roberts-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.roberts.skill.sc-roberts-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
       ]
     },
@@ -4520,7 +4565,8 @@
         "servant.nero.skill.sc-nero-2",
         "servant.odysseus.skill.sc-odysseus-3",
         "servant.okita.skill.sc-okita-1",
-        "servant.roberts.skill.sc-roberts-2"
+        "servant.roberts.skill.sc-roberts-2",
+        "servant.roberts.skill.sc-roberts-3"
       ],
       "partialAbilities": [],
       "skippedAbilities": [
@@ -7121,6 +7167,62 @@
         },
         {
           "abilityId": "servant.ozymandias.skill.sc-ozymandias-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.parvati.skill.sc-parvati-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.parvati.skill.sc-parvati-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.passionlip.skill.sc-passionlip-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.passionlip.skill.sc-passionlip-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.passionlip.skill.sc-passionlip-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.penthesilea.skill.sc-penthesilea-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.penthesilea.skill.sc-penthesilea-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.penthesilea.skill.sc-penthesilea-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.quetzalcoatl.skill.sc-quetzalcoatl-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.quetzalcoatl.skill.sc-quetzalcoatl-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.quetzalcoatl.skill.sc-quetzalcoatl-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.raikou.skill.sc-raikou-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.raikou.skill.sc-raikou-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.raikou.skill.sc-raikou-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -10775,6 +10877,20 @@
         "servant.osakabe.skill.sc-osakabe-3",
         "servant.ozymandias.skill.sc-ozymandias-1",
         "servant.ozymandias.skill.sc-ozymandias-3",
+        "servant.parvati.skill.sc-parvati-1",
+        "servant.parvati.skill.sc-parvati-2",
+        "servant.passionlip.skill.sc-passionlip-1",
+        "servant.passionlip.skill.sc-passionlip-2",
+        "servant.passionlip.skill.sc-passionlip-3",
+        "servant.penthesilea.skill.sc-penthesilea-1",
+        "servant.penthesilea.skill.sc-penthesilea-2",
+        "servant.penthesilea.skill.sc-penthesilea-3",
+        "servant.quetzalcoatl.skill.sc-quetzalcoatl-1",
+        "servant.quetzalcoatl.skill.sc-quetzalcoatl-2",
+        "servant.quetzalcoatl.skill.sc-quetzalcoatl-3",
+        "servant.raikou.skill.sc-raikou-1",
+        "servant.raikou.skill.sc-raikou-2",
+        "servant.raikou.skill.sc-raikou-3",
         "servant.robin.skill.sc-robin-1",
         "servant.robin.skill.sc-robin-2",
         "servant.robin.skill.sc-robin-3",
@@ -13193,6 +13309,62 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.parvati.skill.sc-parvati-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.parvati.skill.sc-parvati-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.passionlip.skill.sc-passionlip-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.passionlip.skill.sc-passionlip-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.passionlip.skill.sc-passionlip-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.penthesilea.skill.sc-penthesilea-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.penthesilea.skill.sc-penthesilea-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.penthesilea.skill.sc-penthesilea-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.quetzalcoatl.skill.sc-quetzalcoatl-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.quetzalcoatl.skill.sc-quetzalcoatl-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.quetzalcoatl.skill.sc-quetzalcoatl-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.raikou.skill.sc-raikou-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.raikou.skill.sc-raikou-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.raikou.skill.sc-raikou-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.robin.skill.sc-robin-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -14100,9 +14272,24 @@
       "servant.ozymandias.skill.sc-ozymandias-1",
       "servant.ozymandias.skill.sc-ozymandias-2",
       "servant.ozymandias.skill.sc-ozymandias-3",
+      "servant.parvati.skill.sc-parvati-1",
+      "servant.parvati.skill.sc-parvati-2",
       "servant.parvati.skill.sc-parvati-3",
+      "servant.passionlip.skill.sc-passionlip-1",
+      "servant.passionlip.skill.sc-passionlip-2",
+      "servant.passionlip.skill.sc-passionlip-3",
+      "servant.penthesilea.skill.sc-penthesilea-1",
+      "servant.penthesilea.skill.sc-penthesilea-2",
+      "servant.penthesilea.skill.sc-penthesilea-3",
+      "servant.quetzalcoatl.skill.sc-quetzalcoatl-1",
+      "servant.quetzalcoatl.skill.sc-quetzalcoatl-2",
+      "servant.quetzalcoatl.skill.sc-quetzalcoatl-3",
+      "servant.raikou.skill.sc-raikou-1",
+      "servant.raikou.skill.sc-raikou-2",
+      "servant.raikou.skill.sc-raikou-3",
       "servant.roberts.skill.sc-roberts-1",
       "servant.roberts.skill.sc-roberts-2",
+      "servant.roberts.skill.sc-roberts-3",
       "servant.robin.skill.sc-robin-1",
       "servant.robin.skill.sc-robin-2",
       "servant.robin.skill.sc-robin-3",
@@ -14128,111 +14315,6 @@
       "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "servant.parvati.skill.sc-parvati-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.parvati.skill.sc-parvati-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.passionlip.skill.sc-passionlip-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.passionlip.skill.sc-passionlip-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.passionlip.skill.sc-passionlip-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.penthesilea.skill.sc-penthesilea-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.penthesilea.skill.sc-penthesilea-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.penthesilea.skill.sc-penthesilea-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.quetzalcoatl.skill.sc-quetzalcoatl-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.quetzalcoatl.skill.sc-quetzalcoatl-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.quetzalcoatl.skill.sc-quetzalcoatl-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.raikou.skill.sc-raikou-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.raikou.skill.sc-raikou-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.raikou.skill.sc-raikou-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.roberts.skill.sc-roberts-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.romulus.skill.sc-romulus-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -15401,6 +15483,20 @@
       "servant.osakabe.skill.sc-osakabe-3",
       "servant.ozymandias.skill.sc-ozymandias-1",
       "servant.ozymandias.skill.sc-ozymandias-3",
+      "servant.parvati.skill.sc-parvati-1",
+      "servant.parvati.skill.sc-parvati-2",
+      "servant.passionlip.skill.sc-passionlip-1",
+      "servant.passionlip.skill.sc-passionlip-2",
+      "servant.passionlip.skill.sc-passionlip-3",
+      "servant.penthesilea.skill.sc-penthesilea-1",
+      "servant.penthesilea.skill.sc-penthesilea-2",
+      "servant.penthesilea.skill.sc-penthesilea-3",
+      "servant.quetzalcoatl.skill.sc-quetzalcoatl-1",
+      "servant.quetzalcoatl.skill.sc-quetzalcoatl-2",
+      "servant.quetzalcoatl.skill.sc-quetzalcoatl-3",
+      "servant.raikou.skill.sc-raikou-1",
+      "servant.raikou.skill.sc-raikou-2",
+      "servant.raikou.skill.sc-raikou-3",
       "servant.robin.skill.sc-robin-1",
       "servant.robin.skill.sc-robin-2",
       "servant.robin.skill.sc-robin-3",
