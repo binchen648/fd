@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=752
-blockedCount=192
+sourceGroundedCount=767
+blockedCount=177
 unclassifiedCount=0
-structuredAbilityCount=1030
+structuredAbilityCount=1045
 
 ## Axis Value Counts
 
@@ -280,10 +280,10 @@ structuredAbilityCount=1030
 | effect | `SET_PLAYER_FLAG` | 12 |
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
 | effect | `LOSE_MANA` | 10 |
+| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 10 |
 | effect | `ADJUST_COMMAND_SEALS` | 9 |
 | effect | `CYCLE_STATE_TRANSITION` | 9 |
 | effect | `DREAM_SUMMON_RULE` | 9 |
-| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 9 |
 | effect | `REVERSE_EFFECT_RULE` | 9 |
 | effect | `RULER_SEAL_RULE` | 9 |
 | effect | `SOURCE_CARD_POWER_BONUS` | 9 |
@@ -335,6 +335,7 @@ structuredAbilityCount=1030
 | effect | `PILGRIMAGE_LUCK_RULE` | 3 |
 | effect | `REINCARNATION_RULE` | 3 |
 | effect | `TERRAIN_EFFECT_MULTIPLIER_RULE` | 3 |
+| effect | `TERRITORY_CONSTRUCTION_SCALING_RULE` | 3 |
 | effect | `TRAINING_EXPERIENCE_RULE` | 3 |
 | effect | `TWELVE_LABORS_RULE` | 3 |
 | effect | `VISITOR_CARD_RULE` | 3 |
@@ -378,7 +379,6 @@ structuredAbilityCount=1030
 | effect | `SOURCE_CARD_POWER_FORMULA` | 2 |
 | effect | `TATARI_RULE` | 2 |
 | effect | `TEMPORARY_ATTACK_CREATION_RULE` | 2 |
-| effect | `TERRITORY_CONSTRUCTION_SCALING_RULE` | 2 |
 | effect | `TRANSFER_MANA` | 2 |
 | effect | `TRANSFER_MATCHING_CARDS` | 2 |
 | effect | `TRUE_NAME_HIDE_AND_ACTION_REPLAY_RULE` | 2 |
@@ -519,6 +519,19 @@ structuredAbilityCount=1030
 | effect | `KINGGIL_BARRAGE_RULE` | 1 |
 | effect | `KINGGIL_TREASURE_ATTRIBUTE_RULE` | 1 |
 | effect | `KINTOKI_GOLDEN_EATER_RULE` | 1 |
+| effect | `KIYOHIME_HOT_EMBRACE_RULE` | 1 |
+| effect | `KIYOHIME_TRUTH_QUESTION_RULE` | 1 |
+| effect | `KIYOHIME_TWIN_FLAME_RULE` | 1 |
+| effect | `KOTAROU_CHAOS_BRIGADE_RULE` | 1 |
+| effect | `KOTAROU_SCHEME_RULE` | 1 |
+| effect | `KOYO_DINOSAUR_MORPH_RULE` | 1 |
+| effect | `KOYO_MAPLE_HUNT_RULE` | 1 |
+| effect | `KOYO_NINE_DRAGON_RULE` | 1 |
+| effect | `KRIEMHILD_BALMUNG_TRANSFER_RULE` | 1 |
+| effect | `KRIEMHILD_RHINE_GOLD_RULE` | 1 |
+| effect | `KRIEMHILD_WIDOW_RULE` | 1 |
+| effect | `LADYAVALON_IDEAL_REALM_RULE` | 1 |
+| effect | `LADYAVALON_PRETENDER_RULE` | 1 |
 | effect | `LINKED_PLAYER_MANA_CONTRIBUTION` | 1 |
 | effect | `LOCATION_MERGE_RULE` | 1 |
 | effect | `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS` | 1 |
@@ -1587,27 +1600,27 @@ structuredAbilityCount=1030
 | `servant.kiritsugu.skill.sc-kiritsugu-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
 | `servant.kiritsugu.skill.sc-kiritsugu-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `AT_BATTLEFIELD`, `SOURCE_OWNED`, `TARGET_COUNT_AT_LEAST` | `NONE` | `CHOOSE_EACH_PLAYER_OPTION` | `INSTALL_ABILITY_RULE_MODIFIER`, `LOSE_VICTORY_POINTS` | `CHOOSE_EACH_PLAYER_OPTION` | `duration:this_round` | `rule:mana_spending:forbid` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `COMBAT_CONDITION` | `core.structured-skill` |
 | `servant.kiritsugu.skill.sc-kiritsugu-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `AT_BATTLEFIELD`, `EVENT_COUNT_AT_LEAST`, `METRIC`, `METRIC_COMPARE`, `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_EVENT` | `GAIN_VICTORY_POINTS`, `MOVE_SELECTED_EVENTS` | `CHOOSE_ONE_EVENT` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:selectedEventIds` | `COMBAT_CONDITION` | `core.structured-skill` |
-| `servant.kiyohime.skill.sc-kiyohime-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kiyohime-flame-colored-kiss` |
-| `servant.kiyohime.skill.sc-kiyohime-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kiyohime-no-more-lies` |
-| `servant.kiyohime.skill.sc-kiyohime-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kiyohime-samadhi` |
-| `servant.kotarou.skill.sc-kotarou-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
-| `servant.kotarou.skill.sc-kotarou-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kotarou-chaos-brigade` |
-| `servant.kotarou.skill.sc-kotarou-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kotarou-shinobi-sabotage` |
+| `servant.kiyohime.skill.sc-kiyohime-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KIYOHIME_HOT_EMBRACE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kiyohime-flame-colored-kiss` |
+| `servant.kiyohime.skill.sc-kiyohime-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KIYOHIME_TRUTH_QUESTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kiyohime-no-more-lies` |
+| `servant.kiyohime.skill.sc-kiyohime-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KIYOHIME_TWIN_FLAME_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kiyohime-samadhi` |
+| `servant.kotarou.skill.sc-kotarou-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
+| `servant.kotarou.skill.sc-kotarou-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KOTAROU_CHAOS_BRIGADE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kotarou-chaos-brigade` |
+| `servant.kotarou.skill.sc-kotarou-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KOTAROU_SCHEME_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kotarou-shinobi-sabotage` |
 | `servant.koyanskaya.skill.sc-koyanskaya-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
 | `servant.koyanskaya.skill.sc-koyanskaya-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CARGO_BOX_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.koyanskaya-nff` |
 | `servant.koyanskaya.skill.sc-koyanskaya-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CARGO_BOX_RULE`, `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.koyanskaya-package` |
 | `servant.koyanskaya.skill.sc-koyanskaya-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ATTACK_PLAY_COUNT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.rule-marker` |
 | `servant.koyanskaya.skill.sc-koyanskaya-5` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CARGO_ACQUISITION_RULE`, `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.koyanskaya-package` |
 | `servant.koyanskaya.skill.sc-koyanskaya-6` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CARGO_ACQUISITION_RULE`, `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.koyanskaya-package` |
-| `servant.koyo.skill.sc-koyo-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.koyo-momijigari` |
-| `servant.koyo.skill.sc-koyo-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.koyo-demon-form` |
-| `servant.koyo.skill.sc-koyo-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.koyo-fire-breathing` |
-| `servant.kriemhild.skill.sc-kriemhild-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kriemhild-das-rheingold` |
-| `servant.kriemhild.skill.sc-kriemhild-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kriemhild-black-wedding` |
-| `servant.kriemhild.skill.sc-kriemhild-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kriemhild-corrupted-balmung` |
-| `servant.ladyavalon.skill.sc-ladyavalon-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lady-avalon-ideal-land` |
-| `servant.ladyavalon.skill.sc-ladyavalon-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.pretender-class` |
-| `servant.ladyavalon.skill.sc-ladyavalon-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
+| `servant.koyo.skill.sc-koyo-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KOYO_MAPLE_HUNT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.koyo-momijigari` |
+| `servant.koyo.skill.sc-koyo-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KOYO_DINOSAUR_MORPH_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.koyo-demon-form` |
+| `servant.koyo.skill.sc-koyo-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KOYO_NINE_DRAGON_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.koyo-fire-breathing` |
+| `servant.kriemhild.skill.sc-kriemhild-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KRIEMHILD_RHINE_GOLD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kriemhild-das-rheingold` |
+| `servant.kriemhild.skill.sc-kriemhild-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KRIEMHILD_WIDOW_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kriemhild-black-wedding` |
+| `servant.kriemhild.skill.sc-kriemhild-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KRIEMHILD_BALMUNG_TRANSFER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kriemhild-corrupted-balmung` |
+| `servant.ladyavalon.skill.sc-ladyavalon-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LADYAVALON_IDEAL_REALM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lady-avalon-ideal-land` |
+| `servant.ladyavalon.skill.sc-ladyavalon-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LADYAVALON_PRETENDER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.pretender-class` |
+| `servant.ladyavalon.skill.sc-ladyavalon-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TERRITORY_CONSTRUCTION_SCALING_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
 | `servant.lakshmibai.skill.sc-lakshmibai-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE`, `PREVENT_ELIMINATION` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lakshmibai-package` |
 | `servant.lakshmibai.skill.sc-lakshmibai-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REACTIVE_CARD_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lakshmibai-package` |
 | `servant.lakshmibai.skill.sc-lakshmibai-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `SET_OPPONENT_ATTRIBUTE_POWER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |

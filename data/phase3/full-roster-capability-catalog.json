@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 752,
-    "explicitBlockCount": 192,
+    "contractMappedCount": 767,
+    "explicitBlockCount": 177,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -25,9 +25,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
       "READY_GENERIC_EXTENSION": 239,
-      "SPECIAL_HANDLER_CANDIDATE": 511,
+      "SPECIAL_HANDLER_CANDIDATE": 526,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 192,
+      "SOURCE_EVIDENCE_REQUIRED": 177,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -6446,6 +6446,30 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.kiyohime.skill.sc-kiyohime-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kiyohime.skill.sc-kiyohime-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kiyohime.skill.sc-kiyohime-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kotarou.skill.sc-kotarou-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kotarou.skill.sc-kotarou-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kotarou.skill.sc-kotarou-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -6467,6 +6491,42 @@
         },
         {
           "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.koyo.skill.sc-koyo-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.koyo.skill.sc-koyo-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.koyo.skill.sc-koyo-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kriemhild.skill.sc-kriemhild-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kriemhild.skill.sc-kriemhild-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kriemhild.skill.sc-kriemhild-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ladyavalon.skill.sc-ladyavalon-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ladyavalon.skill.sc-ladyavalon-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ladyavalon.skill.sc-ladyavalon-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -10112,12 +10172,27 @@
         "servant.kintoki.skill.sc-kintoki-2",
         "servant.kintoki.skill.sc-kintoki-3",
         "servant.kiritsugu.skill.sc-kiritsugu-1",
+        "servant.kiyohime.skill.sc-kiyohime-1",
+        "servant.kiyohime.skill.sc-kiyohime-2",
+        "servant.kiyohime.skill.sc-kiyohime-3",
+        "servant.kotarou.skill.sc-kotarou-1",
+        "servant.kotarou.skill.sc-kotarou-2",
+        "servant.kotarou.skill.sc-kotarou-3",
         "servant.koyanskaya.skill.sc-koyanskaya-1",
         "servant.koyanskaya.skill.sc-koyanskaya-2",
         "servant.koyanskaya.skill.sc-koyanskaya-3",
         "servant.koyanskaya.skill.sc-koyanskaya-4",
         "servant.koyanskaya.skill.sc-koyanskaya-5",
         "servant.koyanskaya.skill.sc-koyanskaya-6",
+        "servant.koyo.skill.sc-koyo-1",
+        "servant.koyo.skill.sc-koyo-2",
+        "servant.koyo.skill.sc-koyo-3",
+        "servant.kriemhild.skill.sc-kriemhild-1",
+        "servant.kriemhild.skill.sc-kriemhild-2",
+        "servant.kriemhild.skill.sc-kriemhild-3",
+        "servant.ladyavalon.skill.sc-ladyavalon-1",
+        "servant.ladyavalon.skill.sc-ladyavalon-2",
+        "servant.ladyavalon.skill.sc-ladyavalon-3",
         "servant.lakshmibai.skill.sc-lakshmibai-1",
         "servant.lakshmibai.skill.sc-lakshmibai-2",
         "servant.lakshmibai.skill.sc-lakshmibai-4",
@@ -12063,6 +12138,30 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.kiyohime.skill.sc-kiyohime-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kiyohime.skill.sc-kiyohime-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kiyohime.skill.sc-kiyohime-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kotarou.skill.sc-kotarou-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kotarou.skill.sc-kotarou-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kotarou.skill.sc-kotarou-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -12084,6 +12183,42 @@
         },
         {
           "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.koyo.skill.sc-koyo-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.koyo.skill.sc-koyo-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.koyo.skill.sc-koyo-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kriemhild.skill.sc-kriemhild-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kriemhild.skill.sc-kriemhild-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.kriemhild.skill.sc-kriemhild-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ladyavalon.skill.sc-ladyavalon-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ladyavalon.skill.sc-ladyavalon-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ladyavalon.skill.sc-ladyavalon-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -12976,12 +13111,27 @@
       "servant.kiritsugu.skill.sc-kiritsugu-1",
       "servant.kiritsugu.skill.sc-kiritsugu-2",
       "servant.kiritsugu.skill.sc-kiritsugu-3",
+      "servant.kiyohime.skill.sc-kiyohime-1",
+      "servant.kiyohime.skill.sc-kiyohime-2",
+      "servant.kiyohime.skill.sc-kiyohime-3",
+      "servant.kotarou.skill.sc-kotarou-1",
+      "servant.kotarou.skill.sc-kotarou-2",
+      "servant.kotarou.skill.sc-kotarou-3",
       "servant.koyanskaya.skill.sc-koyanskaya-1",
       "servant.koyanskaya.skill.sc-koyanskaya-2",
       "servant.koyanskaya.skill.sc-koyanskaya-3",
       "servant.koyanskaya.skill.sc-koyanskaya-4",
       "servant.koyanskaya.skill.sc-koyanskaya-5",
       "servant.koyanskaya.skill.sc-koyanskaya-6",
+      "servant.koyo.skill.sc-koyo-1",
+      "servant.koyo.skill.sc-koyo-2",
+      "servant.koyo.skill.sc-koyo-3",
+      "servant.kriemhild.skill.sc-kriemhild-1",
+      "servant.kriemhild.skill.sc-kriemhild-2",
+      "servant.kriemhild.skill.sc-kriemhild-3",
+      "servant.ladyavalon.skill.sc-ladyavalon-1",
+      "servant.ladyavalon.skill.sc-ladyavalon-2",
+      "servant.ladyavalon.skill.sc-ladyavalon-3",
       "servant.lakshmibai.skill.sc-lakshmibai-1",
       "servant.lakshmibai.skill.sc-lakshmibai-2",
       "servant.lakshmibai.skill.sc-lakshmibai-3",
@@ -13061,111 +13211,6 @@
       "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "servant.kiyohime.skill.sc-kiyohime-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.kiyohime.skill.sc-kiyohime-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.kiyohime.skill.sc-kiyohime-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.kotarou.skill.sc-kotarou-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.kotarou.skill.sc-kotarou-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.kotarou.skill.sc-kotarou-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.koyo.skill.sc-koyo-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.koyo.skill.sc-koyo-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.koyo.skill.sc-koyo-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.kriemhild.skill.sc-kriemhild-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.kriemhild.skill.sc-kriemhild-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.kriemhild.skill.sc-kriemhild-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ladyavalon.skill.sc-ladyavalon-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ladyavalon.skill.sc-ladyavalon-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ladyavalon.skill.sc-ladyavalon-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.lance.skill.sc-lance-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -14861,12 +14906,27 @@
       "servant.kintoki.skill.sc-kintoki-2",
       "servant.kintoki.skill.sc-kintoki-3",
       "servant.kiritsugu.skill.sc-kiritsugu-1",
+      "servant.kiyohime.skill.sc-kiyohime-1",
+      "servant.kiyohime.skill.sc-kiyohime-2",
+      "servant.kiyohime.skill.sc-kiyohime-3",
+      "servant.kotarou.skill.sc-kotarou-1",
+      "servant.kotarou.skill.sc-kotarou-2",
+      "servant.kotarou.skill.sc-kotarou-3",
       "servant.koyanskaya.skill.sc-koyanskaya-1",
       "servant.koyanskaya.skill.sc-koyanskaya-2",
       "servant.koyanskaya.skill.sc-koyanskaya-3",
       "servant.koyanskaya.skill.sc-koyanskaya-4",
       "servant.koyanskaya.skill.sc-koyanskaya-5",
       "servant.koyanskaya.skill.sc-koyanskaya-6",
+      "servant.koyo.skill.sc-koyo-1",
+      "servant.koyo.skill.sc-koyo-2",
+      "servant.koyo.skill.sc-koyo-3",
+      "servant.kriemhild.skill.sc-kriemhild-1",
+      "servant.kriemhild.skill.sc-kriemhild-2",
+      "servant.kriemhild.skill.sc-kriemhild-3",
+      "servant.ladyavalon.skill.sc-ladyavalon-1",
+      "servant.ladyavalon.skill.sc-ladyavalon-2",
+      "servant.ladyavalon.skill.sc-ladyavalon-3",
       "servant.lakshmibai.skill.sc-lakshmibai-1",
       "servant.lakshmibai.skill.sc-lakshmibai-2",
       "servant.lakshmibai.skill.sc-lakshmibai-4",
