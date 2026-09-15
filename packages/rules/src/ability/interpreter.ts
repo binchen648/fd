@@ -711,6 +711,8 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
         event.playerId !== c.controllerPlayerId) continue;
       if (event.type === 'after_controller_loses_battle' && isBattleLossStateTransformCandidate(a) &&
         !battleLossStateTransformTriggerEligible(s, c.instanceId)) continue;
+      if (event.type === 'on_card_played' && isSourcePlayBasicAttackDrawTriggerCandidate(a) &&
+        !sourcePlayBasicAttackDrawEventScopeMatches(event, c.instanceId, c.controllerPlayerId)) continue;
       if (!matches || !canActivate(s, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
       if (['on_card_played', 'on_use_declared'].includes(event.type) && event.sourceCardId !== c.instanceId &&
         !a.conditions.some((condition) => condition.type === 'event_played_card_has_attribute')) continue;
@@ -1141,9 +1143,11 @@ export function isFixedControllerManaSetComponent(effect: AuthoringAbility['effe
 
 export function isFixedControllerDrawCardsComponent(effect: AuthoringAbility['effects'][number]): boolean {
   if (str(effect.type) !== 'draw_cards') return false;
+  if (effect.owner !== undefined && effect.owner !== 'controller') return false;
   if (effect.player !== undefined && effect.player !== 'controller') return false;
+  if (effect.owner !== undefined && effect.player !== undefined) return false;
   if (!Number.isSafeInteger(effect.count) || Number(effect.count) <= 0) return false;
-  return Object.keys(effect).every((key) => ['type', 'player', 'count'].includes(key));
+  return Object.keys(effect).every((key) => ['type', 'owner', 'player', 'count'].includes(key));
 }
 
 export function isFixedControllerSourceRemovalComponent(effect: AuthoringAbility['effects'][number]): boolean {
@@ -1153,6 +1157,36 @@ export function isFixedControllerSourceRemovalComponent(effect: AuthoringAbility
   if (destination.owner !== undefined && destination.owner !== 'controller') return false;
   if (!Object.keys(destination).every((key) => ['zone', 'owner'].includes(key))) return false;
   return Object.keys(effect).every((key) => ['type', 'to'].includes(key));
+}
+
+function isSourcePlayBasicAttackDrawTriggerCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'forced_trigger' &&
+    str(a.activation.trigger) === 'on_card_played' &&
+    str(a.activation.requiresSourceState) === 'active' &&
+    (a.conditions.some((condition) => str(condition.type) === 'played_with_basic_attack') ||
+      a.effects.some((effect) => str(effect.type) === 'draw_cards'));
+}
+
+export function isSourcePlayBasicAttackDrawTriggerSemantic(a: AuthoringAbility): boolean {
+  if (!isSourcePlayBasicAttackDrawTriggerCandidate(a)) return false;
+  if (!Object.keys(a.activation).every((key) => ['trigger', 'requiresSourceState'].includes(key))) return false;
+  if (a.conditions.length !== 1 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0) return false;
+  const conditionNode = a.conditions[0]!;
+  if (str(conditionNode.type) !== 'played_with_basic_attack' || Object.keys(conditionNode).some((key) => key !== 'type')) return false;
+  if (a.effects.length !== 1) return false;
+  const effect = a.effects[0]!;
+  return isFixedControllerDrawCardsComponent(effect) && Number(effect.count) === 1;
+}
+
+function sourcePlayBasicAttackDrawEventScopeMatches(event: AbilityEvent, sourceCardId: string, controllerId: string): boolean {
+  if (event.type !== 'on_card_played' || event.sourceCardId !== sourceCardId || event.playerId !== controllerId) return false;
+  const playedCards = event.playedCards ?? [];
+  const sourcePlayedFaceUp = playedCards.some((played) =>
+    played.instanceId === sourceCardId && played.controllerId === controllerId && !played.faceDown);
+  const basicCompanion = playedCards.some((played) =>
+    played.instanceId !== sourceCardId && played.controllerId === controllerId && played.cardType === 'basic_attack' && !played.faceDown);
+  return sourcePlayedFaceUp && basicCompanion;
 }
 
 function isDeploymentResourceRewardCandidate(a: AuthoringAbility): boolean {
@@ -1915,13 +1949,14 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
-  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isDeploymentResourceRewardSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a)) {
+  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isDeploymentResourceRewardSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a) || isSourcePlayBasicAttackDrawTriggerSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
     cleanupOngoing(s);
     return;
   }
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
+  if (isSourcePlayBasicAttackDrawTriggerCandidate(a)) reject('resolution_failed', 'Unsupported source-play basic-attack draw trigger semantic shape');
   if (isDeploymentResourceRewardCandidate(a)) reject('resolution_failed', 'Unsupported deployment resource reward semantic shape');
   if (isBattleLossResourceTriggerCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss resource semantic shape');
   if (isBattleLossUnpreventableVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported unpreventable battle-loss VP semantic shape');
