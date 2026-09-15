@@ -1,16 +1,16 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-15T22:30:44.717Z",
-  "sourceFingerprint": "401d6d62a3f085eb84e54e1c6889108dcec5ee9fd38b4dbd9ee841059c906125",
+  "generatedAt": "2026-09-15T23:03:37.359Z",
+  "sourceFingerprint": "1b408949712eb6eb129577789e09050345f9492c2c9e2ba2814a1720bdb9413f",
   "counts": {
-    "totalArchives": 59,
-    "totalCards": 91,
-    "totalAbilities": 180,
+    "totalArchives": 69,
+    "totalCards": 101,
+    "totalAbilities": 200,
     "abilityKindCounts": {
       "CONDITIONAL_REVEAL": 1,
-      "CONTINUOUS_FORMULA": 1,
+      "CONTINUOUS_FORMULA": 11,
       "DECLARATION_REVEAL": 9,
-      "FORCED_TRIGGER": 40,
+      "FORCED_TRIGGER": 50,
       "OPTIONAL_TRIGGER": 26,
       "PASSIVE": 18,
       "PHASE_ACTION": 79,
@@ -40,17 +40,17 @@
       "after_controller_loses_all_command_seals": 1,
       "after_controller_loses_battle": 14,
       "after_controller_wins_battle": 3,
-      "after_player_deployed_to_battlefield": 1,
+      "after_player_deployed_to_battlefield": 11,
       "before_situation_or_event_resolves": 1,
       "game_start": 4,
-      "on_card_played": 19,
+      "on_card_played": 29,
       "on_use_declared": 9
     },
     "requirementCounts": {
-      "BATTLE_STATE": 79,
+      "BATTLE_STATE": 89,
       "LOCATION": 42,
       "MANA": 2,
-      "SOURCE_ACTIVE": 87
+      "SOURCE_ACTIVE": 97
     },
     "targetCounts": {
       "BRANCH_CHOICE": 1,
@@ -81,7 +81,7 @@
       "CARD_ACTION_SEMANTICS": 20,
       "CARD_ZONE": 29,
       "MOVEMENT": 16,
-      "RESOURCE_NUMERIC": 57,
+      "RESOURCE_NUMERIC": 67,
       "VISIBILITY": 14
     },
     "modifierCounts": {
@@ -119,7 +119,7 @@
       "RESULT_VAR": 2
     },
     "battleIntegrationCounts": {
-      "BATTLE_INTEGRATION": 79
+      "BATTLE_INTEGRATION": 89
     },
     "specialSubsystemCounts": {
       "SPECIAL_SUBSYSTEM": 17
@@ -1887,6 +1887,152 @@
       ]
     },
     {
+      "archiveId": "servant.anastasia",
+      "cardId": "servant.anastasia.skill.sc-anastasia-1",
+      "abilityId": "sc-anastasia-1.round-power",
+      "abilityKey": "servant.anastasia.skill.sc-anastasia-1::sc-anastasia-1.round-power",
+      "abilityKind": [
+        "CONTINUOUS_FORMULA"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.anastasia",
+      "cardId": "servant.anastasia.skill.sc-anastasia-1",
+      "abilityId": "sc-anastasia-1.deployment-reward",
+      "abilityKey": "servant.anastasia.skill.sc-anastasia-1::sc-anastasia-1.deployment-reward",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_player_deployed_to_battlefield"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_mana",
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.andersen",
+      "cardId": "servant.andersen.skill.sc-andersen-1",
+      "abilityId": "sc-andersen-1.round-power",
+      "abilityKey": "servant.andersen.skill.sc-andersen-1::sc-andersen-1.round-power",
+      "abilityKind": [
+        "CONTINUOUS_FORMULA"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.andersen",
+      "cardId": "servant.andersen.skill.sc-andersen-1",
+      "abilityId": "sc-andersen-1.deployment-reward",
+      "abilityKey": "servant.andersen.skill.sc-andersen-1::sc-andersen-1.deployment-reward",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_player_deployed_to_battlefield"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_mana",
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.arthur",
       "cardId": "servant.arthur.skill.sc-arthur-3",
       "abilityId": "sc-arthur-3.noble-bloom",
@@ -3034,6 +3180,79 @@
       "modifiers": [
         "RULE_MODIFIER"
       ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.avicebron",
+      "cardId": "servant.avicebron.skill.sc-avicebron-3",
+      "abilityId": "sc-avicebron-3.round-power",
+      "abilityKey": "servant.avicebron.skill.sc-avicebron-3::sc-avicebron-3.round-power",
+      "abilityKind": [
+        "CONTINUOUS_FORMULA"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.avicebron",
+      "cardId": "servant.avicebron.skill.sc-avicebron-3",
+      "abilityId": "sc-avicebron-3.deployment-reward",
+      "abilityKey": "servant.avicebron.skill.sc-avicebron-3::sc-avicebron-3.deployment-reward",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_player_deployed_to_battlefield"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_mana",
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
       "lifecyclePolicies": [],
       "hiddenInformation": [],
       "resultBinding": [],
@@ -5377,6 +5596,79 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.kinggil",
+      "cardId": "servant.kinggil.skill.sc-kinggil-1",
+      "abilityId": "sc-kinggil-1.round-power",
+      "abilityKey": "servant.kinggil.skill.sc-kinggil-1::sc-kinggil-1.round-power",
+      "abilityKind": [
+        "CONTINUOUS_FORMULA"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.kinggil",
+      "cardId": "servant.kinggil.skill.sc-kinggil-1",
+      "abilityId": "sc-kinggil-1.deployment-reward",
+      "abilityKey": "servant.kinggil.skill.sc-kinggil-1::sc-kinggil-1.deployment-reward",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_player_deployed_to_battlefield"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_mana",
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.kintoki",
       "cardId": "servant.kintoki.skill.sc-kintoki-1",
       "abilityId": "sc-kintoki-1.true-name-release",
@@ -5776,6 +6068,79 @@
       ]
     },
     {
+      "archiveId": "servant.ladyavalon",
+      "cardId": "servant.ladyavalon.skill.sc-ladyavalon-3",
+      "abilityId": "sc-ladyavalon-3.round-power",
+      "abilityKey": "servant.ladyavalon.skill.sc-ladyavalon-3::sc-ladyavalon-3.round-power",
+      "abilityKind": [
+        "CONTINUOUS_FORMULA"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.ladyavalon",
+      "cardId": "servant.ladyavalon.skill.sc-ladyavalon-3",
+      "abilityId": "sc-ladyavalon-3.deployment-reward",
+      "abilityKey": "servant.ladyavalon.skill.sc-ladyavalon-3::sc-ladyavalon-3.deployment-reward",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_player_deployed_to_battlefield"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_mana",
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.lakshmibai",
       "cardId": "servant.lakshmibai.skill.sc-lakshmibai-3",
       "abilityId": "sc-lakshmibai-3.noble-bloom",
@@ -6115,6 +6480,79 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.maxwell",
+      "cardId": "servant.maxwell.skill.sc-maxwell-1",
+      "abilityId": "sc-maxwell-1.round-power",
+      "abilityKey": "servant.maxwell.skill.sc-maxwell-1::sc-maxwell-1.round-power",
+      "abilityKind": [
+        "CONTINUOUS_FORMULA"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.maxwell",
+      "cardId": "servant.maxwell.skill.sc-maxwell-1",
+      "abilityId": "sc-maxwell-1.deployment-reward",
+      "abilityKey": "servant.maxwell.skill.sc-maxwell-1::sc-maxwell-1.deployment-reward",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_player_deployed_to_battlefield"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_mana",
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.medb",
       "cardId": "servant.medb.skill.sc-medb-1",
       "abilityId": "sc-medb-1.draw",
@@ -6281,6 +6719,79 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.mephisto",
+      "cardId": "servant.mephisto.skill.sc-mephisto-1",
+      "abilityId": "sc-mephisto-1.round-power",
+      "abilityKey": "servant.mephisto.skill.sc-mephisto-1::sc-mephisto-1.round-power",
+      "abilityKind": [
+        "CONTINUOUS_FORMULA"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.mephisto",
+      "cardId": "servant.mephisto.skill.sc-mephisto-1",
+      "abilityId": "sc-mephisto-1.deployment-reward",
+      "abilityKey": "servant.mephisto.skill.sc-mephisto-1::sc-mephisto-1.deployment-reward",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_player_deployed_to_battlefield"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_mana",
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.mordred",
       "cardId": "servant.mordred.skill.sc-mordred-3",
       "abilityId": "sc-mordred-3.noble-bloom",
@@ -6406,6 +6917,79 @@
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:runtime_route_unknown"
       ]
+    },
+    {
+      "archiveId": "servant.mozart",
+      "cardId": "servant.mozart.skill.sc-mozart-3",
+      "abilityId": "sc-mozart-3.round-power",
+      "abilityKey": "servant.mozart.skill.sc-mozart-3::sc-mozart-3.round-power",
+      "abilityKind": [
+        "CONTINUOUS_FORMULA"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.mozart",
+      "cardId": "servant.mozart.skill.sc-mozart-3",
+      "abilityId": "sc-mozart-3.deployment-reward",
+      "abilityKey": "servant.mozart.skill.sc-mozart-3::sc-mozart-3.deployment-reward",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_player_deployed_to_battlefield"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_mana",
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
     },
     {
       "archiveId": "servant.musashi",
@@ -7163,6 +7747,152 @@
       ]
     },
     {
+      "archiveId": "servant.semiramis",
+      "cardId": "servant.semiramis.skill.sc-semiramis-2",
+      "abilityId": "sc-semiramis-2.round-power",
+      "abilityKey": "servant.semiramis.skill.sc-semiramis-2::sc-semiramis-2.round-power",
+      "abilityKind": [
+        "CONTINUOUS_FORMULA"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.semiramis",
+      "cardId": "servant.semiramis.skill.sc-semiramis-2",
+      "abilityId": "sc-semiramis-2.deployment-reward",
+      "abilityKey": "servant.semiramis.skill.sc-semiramis-2::sc-semiramis-2.deployment-reward",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_player_deployed_to_battlefield"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_mana",
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.shakespeare",
+      "cardId": "servant.shakespeare.skill.sc-shakespeare-1",
+      "abilityId": "sc-shakespeare-1.round-power",
+      "abilityKey": "servant.shakespeare.skill.sc-shakespeare-1::sc-shakespeare-1.round-power",
+      "abilityKind": [
+        "CONTINUOUS_FORMULA"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.shakespeare",
+      "cardId": "servant.shakespeare.skill.sc-shakespeare-1",
+      "abilityId": "sc-shakespeare-1.deployment-reward",
+      "abilityKey": "servant.shakespeare.skill.sc-shakespeare-1::sc-shakespeare-1.deployment-reward",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_player_deployed_to_battlefield"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_mana",
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.teach",
       "cardId": "servant.teach.skill.sc-teach-3",
       "abilityId": "sc-teach-3.draw",
@@ -7726,8 +8456,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 117,
-      "after": 117,
+      "before": 127,
+      "after": 127,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -7736,8 +8466,8 @@
       "delta": 0
     },
     "notClassifiable": {
-      "before": 43,
-      "after": 38,
+      "before": 53,
+      "after": 48,
       "delta": -5
     },
     "pilotAllowlistEntries": {
@@ -7808,43 +8538,43 @@
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 529,
+        "line": 530,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 609,
+        "line": 610,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 919,
+        "line": 920,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 926,
+        "line": 927,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 976,
+        "line": 977,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1320,
+        "line": 1321,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 2366,
+        "line": 2367,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
@@ -7965,8 +8695,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 117,
-      "after": 117,
+      "before": 127,
+      "after": 127,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -7980,8 +8710,8 @@
       "delta": 0
     },
     "unsupportedNodes": {
-      "before": 43,
-      "after": 43,
+      "before": 53,
+      "after": 53,
       "delta": 0
     },
     "kpiNote": "KPI tracks routing/legacy consumers and unsupported nodes, not raw ability count."
@@ -7990,8 +8720,8 @@
     "exactPrimitiveCounts": {
       "activate_card_by_id": 1,
       "adjust_command_seals": 7,
-      "adjust_mana": 6,
-      "adjust_victory_points": 50,
+      "adjust_mana": 16,
+      "adjust_victory_points": 60,
       "append_only_rule": 1,
       "attach_card_to_player_attack": 1,
       "branch": 5,
@@ -8042,7 +8772,7 @@
       "CARD_ACTION_SEMANTICS": 20,
       "CARD_ZONE": 29,
       "MOVEMENT": 16,
-      "RESOURCE_NUMERIC": 57,
+      "RESOURCE_NUMERIC": 67,
       "VISIBILITY": 14
     },
     "unknownPrimitiveCounts": {
@@ -8883,6 +9613,18 @@
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
+      "archiveId": "servant.anastasia",
+      "cardId": "servant.anastasia.skill.sc-anastasia-1",
+      "abilityId": "sc-anastasia-1.round-power",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.andersen",
+      "cardId": "servant.andersen.skill.sc-andersen-1",
+      "abilityId": "sc-andersen-1.round-power",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
       "archiveId": "servant.arthur",
       "cardId": "servant.arthur.skill.sc-arthur-3",
       "abilityId": "sc-arthur-3.magic-resistance",
@@ -8941,6 +9683,12 @@
       "cardId": "servant.artoriac.skill.sc-artoriac-5",
       "abilityId": "sc-artoriac-5.gain-mana-or-vp",
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:can_adjust_mana"
+    },
+    {
+      "archiveId": "servant.avicebron",
+      "cardId": "servant.avicebron.skill.sc-avicebron-3",
+      "abilityId": "sc-avicebron-3.round-power",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
       "archiveId": "servant.bedivere",
@@ -9009,6 +9757,12 @@
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
+      "archiveId": "servant.kinggil",
+      "cardId": "servant.kinggil.skill.sc-kinggil-1",
+      "abilityId": "sc-kinggil-1.round-power",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
       "archiveId": "servant.kintoki",
       "cardId": "servant.kintoki.skill.sc-kintoki-1",
       "abilityId": "sc-kintoki-1.ignore-skill-zone-mana-requirement",
@@ -9051,15 +9805,39 @@
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:controller_at_battlefield"
     },
     {
+      "archiveId": "servant.ladyavalon",
+      "cardId": "servant.ladyavalon.skill.sc-ladyavalon-3",
+      "abilityId": "sc-ladyavalon-3.round-power",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
       "archiveId": "servant.lakshmibai",
       "cardId": "servant.lakshmibai.skill.sc-lakshmibai-3",
       "abilityId": "sc-lakshmibai-3.magic-resistance",
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
+      "archiveId": "servant.maxwell",
+      "cardId": "servant.maxwell.skill.sc-maxwell-1",
+      "abilityId": "sc-maxwell-1.round-power",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.mephisto",
+      "cardId": "servant.mephisto.skill.sc-mephisto-1",
+      "abilityId": "sc-mephisto-1.round-power",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
       "archiveId": "servant.mordred",
       "cardId": "servant.mordred.skill.sc-mordred-3",
       "abilityId": "sc-mordred-3.magic-resistance",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.mozart",
+      "cardId": "servant.mozart.skill.sc-mozart-3",
+      "abilityId": "sc-mozart-3.round-power",
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
@@ -9078,6 +9856,18 @@
       "archiveId": "servant.saitou",
       "cardId": "servant.saitou.skill.sc-saitou-1",
       "abilityId": "sc-saitou-1.magic-resistance",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.semiramis",
+      "cardId": "servant.semiramis.skill.sc-semiramis-2",
+      "abilityId": "sc-semiramis-2.round-power",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.shakespeare",
+      "cardId": "servant.shakespeare.skill.sc-shakespeare-1",
+      "abilityId": "sc-shakespeare-1.round-power",
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     }
   ],
