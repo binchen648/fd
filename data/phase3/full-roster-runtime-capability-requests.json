@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 365
+    "affectedIdentityCount": 386
   },
   "requests": [
     {
@@ -2176,6 +2176,7 @@
         "master.hinako.skill.s2",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
+        "master.hisui-detective.skill.s3",
         "master.iliya.skill.s4",
         "master.kadoc.skill.ascension",
         "master.kadoc.skill.s1",
@@ -3488,6 +3489,33 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[56].skills[4].text#line=9",
           "sha256": "00348bc72491f5dd1b17c8795903541c14f36c86e84a5cf6117b56475b34255e"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.hisui-detective/洗脑侦探·翡翠"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hisui_detective.s3"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.hisui-detective/s3"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[3].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[3].text#line=2",
+          "sha256": "81565717413621a7051069ab0e829e4c34c6f8dd527c2ca72db6b58f141d1b3e"
         },
         {
           "abilityId": "master.iliya.skill.s4",
@@ -5520,10 +5548,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 1,
-          "shared_handler": 76,
+          "shared_handler": 77,
           "specific_handler": 44
         },
-        "handlerCount": 64,
+        "handlerCount": 65,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -14332,6 +14360,7 @@
         "master.peperoncino.skill.s1b",
         "master.shiki-tohno.skill.s2",
         "master.sion.skill.s13",
+        "master.wallachia.skill.s1",
         "master.zouken.skill.ascension",
         "master.zouken.skill.s3",
         "master.zouken.skill.s4",
@@ -14901,6 +14930,33 @@
           "sha256": "381fae14c8722c124a3e6578d17559a3792c4e0ef0b63b1dd5a55f932718980c"
         },
         {
+          "abilityId": "master.wallachia.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.wallachia/瓦拉几亚之夜"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_wallachia.s1"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.wallachia/s1"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[0].text#line=1",
+          "sha256": "7a9383a0b5eda6156ddf7d027428d3379979117b952f8dec3f9569f8013b465a"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[0].text#line=2",
+          "sha256": "40313a93c589c6c430271178dd7fa2633aab307215013ebe1756a543805108ef"
+        },
+        {
           "abilityId": "master.zouken.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.zouken/间桐脏砚"
@@ -15061,10 +15117,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 14,
+          "shared_handler": 15,
           "specific_handler": 12
         },
-        "handlerCount": 21,
+        "handlerCount": 22,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -15081,6 +15137,7 @@
         "master.hinako.skill.s1",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
+        "master.hisui-detective.skill.s1",
         "master.kadoc.skill.ascension",
         "master.kadoc.skill.s1",
         "master.kadoc.skill.s2",
@@ -15266,6 +15323,27 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[56].skills[4].text#line=9",
           "sha256": "00348bc72491f5dd1b17c8795903541c14f36c86e84a5cf6117b56475b34255e"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.hisui-detective/洗脑侦探·翡翠"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hisui_detective.s1"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.hisui-detective/s1"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[0].text#line=1",
+          "sha256": "211e6d3ae17a990d50d9a6407188189b3cc6bd11dcde294c73960f5519f5603e"
         },
         {
           "abilityId": "master.kadoc.skill.ascension",
@@ -16217,10 +16295,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 29,
+          "shared_handler": 30,
           "specific_handler": 9
         },
-        "handlerCount": 17,
+        "handlerCount": 18,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -20946,6 +21024,7 @@
         "master.hinako.skill.s2",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
+        "master.hisui-detective.skill.s3",
         "master.iliya.skill.ascension",
         "master.iliya.skill.s3",
         "master.illya-mahou.skill.ascension",
@@ -22533,6 +22612,33 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[56].skills[4].text#line=9",
           "sha256": "00348bc72491f5dd1b17c8795903541c14f36c86e84a5cf6117b56475b34255e"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.hisui-detective/洗脑侦探·翡翠"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hisui_detective.s3"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.hisui-detective/s3"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[3].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[3].text#line=2",
+          "sha256": "81565717413621a7051069ab0e829e4c34c6f8dd527c2ca72db6b58f141d1b3e"
         },
         {
           "abilityId": "master.iliya.skill.ascension",
@@ -25221,10 +25327,10 @@
         "routeCounts": {
           "deterministic": 1,
           "none": 1,
-          "shared_handler": 100,
+          "shared_handler": 101,
           "specific_handler": 54
         },
-        "handlerCount": 82,
+        "handlerCount": 83,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -28444,6 +28550,7 @@
         "master.hinako.skill.s2",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
+        "master.hisui-detective.skill.s3",
         "master.iliya.skill.ascension",
         "master.irisviel.skill.ascension",
         "master.jinako.skill.s1",
@@ -29463,6 +29570,33 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[56].skills[4].text#line=9",
           "sha256": "00348bc72491f5dd1b17c8795903541c14f36c86e84a5cf6117b56475b34255e"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.hisui-detective/洗脑侦探·翡翠"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hisui_detective.s3"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.hisui-detective/s3"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[3].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[3].text#line=2",
+          "sha256": "81565717413621a7051069ab0e829e4c34c6f8dd527c2ca72db6b58f141d1b3e"
         },
         {
           "abilityId": "master.iliya.skill.ascension",
@@ -30844,10 +30978,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 1,
-          "shared_handler": 52,
+          "shared_handler": 53,
           "specific_handler": 27
         },
-        "handlerCount": 47,
+        "handlerCount": 48,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -30860,6 +30994,8 @@
       "capabilityId": "GENERIC_RESOURCE_NUMERIC",
       "mechanicFamily": "RESOURCE_NUMERIC",
       "affectedAbilityIds": [
+        "master.akasha.skill.s2",
+        "master.akasha.skill.s3",
         "master.akiha.skill.s3",
         "master.alice.skill.s1",
         "master.amakusa.skill.ascension",
@@ -30896,6 +31032,7 @@
         "master.hakuno-f.skill.s3",
         "master.hakuno-f.skill.s4",
         "master.hinako.skill.s3",
+        "master.hisui-detective.skill.s3",
         "master.iliya.skill.s1",
         "master.iliya.skill.s3",
         "master.iliya.skill.s4",
@@ -30960,6 +31097,60 @@
         "servant.stheno.skill.sc-stheno-2"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.akasha.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.akasha/阿卡夏之蛇"
+        },
+        {
+          "abilityId": "master.akasha.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_akasha.s2"
+        },
+        {
+          "abilityId": "master.akasha.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.akasha/s2"
+        },
+        {
+          "abilityId": "master.akasha.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[2].text#line=1",
+          "sha256": "705b4a557f41e007a23f3b42357d660e68fd82d66fb60fba37c5e21604e6238b"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.akasha/阿卡夏之蛇"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_akasha.s3"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.akasha/s3"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[3].text#line=1",
+          "sha256": "70f1024808f2c92b74e879359daa170c63a41b32a247b6aa26b964fbed8ee4fb"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[3].text#line=2",
+          "sha256": "441a49d0b59262cbc4b8f848744f7458e34d3115bd17e339ae2e27c74d2c56b9"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[3].text#line=3",
+          "sha256": "a49cd9e3028a9760e80b0e51cc89051451f3965cbb9d810dfd22a135916ae135"
+        },
         {
           "abilityId": "master.akiha.skill.s3",
           "document": "Fate_Domination-开发版",
@@ -31961,6 +32152,33 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[56].skills[3].text#line=2",
           "sha256": "402a9a864f181f9fb0be8061d95bdd8ce5564f9e57c0df48ca272dba8f376b2e"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.hisui-detective/洗脑侦探·翡翠"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hisui_detective.s3"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.hisui-detective/s3"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[3].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[3].text#line=2",
+          "sha256": "81565717413621a7051069ab0e829e4c34c6f8dd527c2ca72db6b58f141d1b3e"
         },
         {
           "abilityId": "master.iliya.skill.s1",
@@ -33560,10 +33778,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 57,
+          "shared_handler": 60,
           "specific_handler": 41
         },
-        "handlerCount": 62,
+        "handlerCount": 64,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -44580,6 +44798,13 @@
       "capabilityId": "REVIEWED_SPECIAL_HANDLER",
       "mechanicFamily": "SPECIAL_SUBSYSTEM",
       "affectedAbilityIds": [
+        "master.akasha.skill.ascension",
+        "master.akasha.skill.s1a",
+        "master.akasha.skill.s2",
+        "master.akasha.skill.s3",
+        "master.akasha.skill.s4",
+        "master.akasha.skill.s5",
+        "master.akasha.skill.s6",
         "master.akiha.skill.ascension",
         "master.akiha.skill.s1",
         "master.akiha.skill.s1a",
@@ -44636,6 +44861,11 @@
         "master.hinako.skill.s1",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
+        "master.hisui-detective.skill.ascension",
+        "master.hisui-detective.skill.s1",
+        "master.hisui-detective.skill.s1a",
+        "master.hisui-detective.skill.s2",
+        "master.hisui-detective.skill.s3",
         "master.iliya.skill.ascension",
         "master.illya-mahou.skill.s1",
         "master.jinako.skill.ascension",
@@ -44724,6 +44954,15 @@
         "master.tiamat.skill.ascension",
         "master.tiamat.skill.s1",
         "master.tokiomi.skill.s2",
+        "master.wallachia.skill.ascension",
+        "master.wallachia.skill.s1",
+        "master.wallachia.skill.s2",
+        "master.wallachia.skill.s3",
+        "master.wallachia.skill.s4",
+        "master.wallachia.skill.s5",
+        "master.wallachia.skill.s6",
+        "master.wallachia.skill.s7",
+        "master.wallachia.skill.s8",
         "master.waver.skill.ascension",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s1",
@@ -44744,6 +44983,201 @@
         "servant.valkyrie.skill.sc-valkyrie-3"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.akasha.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.akasha/阿卡夏之蛇"
+        },
+        {
+          "abilityId": "master.akasha.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_akasha.ascension"
+        },
+        {
+          "abilityId": "master.akasha.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.akasha/ascension"
+        },
+        {
+          "abilityId": "master.akasha.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[7].text#line=1",
+          "sha256": "9650a6fd6db56a4f250db21f3170a80260aa9d7ff5749f0d3cc63451ef710ca8"
+        },
+        {
+          "abilityId": "master.akasha.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[7].text#line=2",
+          "sha256": "f67f14dae3163cb7b9776af63c0f16c046500313711e7074ef1bbc75f8b7374c"
+        },
+        {
+          "abilityId": "master.akasha.skill.s1a",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.akasha/阿卡夏之蛇"
+        },
+        {
+          "abilityId": "master.akasha.skill.s1a",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_akasha.s1a"
+        },
+        {
+          "abilityId": "master.akasha.skill.s1a",
+          "document": "legacy-content.json",
+          "locator": "master/master.akasha/s1a"
+        },
+        {
+          "abilityId": "master.akasha.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[1].text#line=1",
+          "sha256": "280cee0b9832ad7322b91987a5c3e91e66939a34c2a8efd01a456c99dd16579d"
+        },
+        {
+          "abilityId": "master.akasha.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.akasha/阿卡夏之蛇"
+        },
+        {
+          "abilityId": "master.akasha.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_akasha.s2"
+        },
+        {
+          "abilityId": "master.akasha.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.akasha/s2"
+        },
+        {
+          "abilityId": "master.akasha.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[2].text#line=1",
+          "sha256": "705b4a557f41e007a23f3b42357d660e68fd82d66fb60fba37c5e21604e6238b"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.akasha/阿卡夏之蛇"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_akasha.s3"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.akasha/s3"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[3].text#line=1",
+          "sha256": "70f1024808f2c92b74e879359daa170c63a41b32a247b6aa26b964fbed8ee4fb"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[3].text#line=2",
+          "sha256": "441a49d0b59262cbc4b8f848744f7458e34d3115bd17e339ae2e27c74d2c56b9"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[3].text#line=3",
+          "sha256": "a49cd9e3028a9760e80b0e51cc89051451f3965cbb9d810dfd22a135916ae135"
+        },
+        {
+          "abilityId": "master.akasha.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.akasha/阿卡夏之蛇"
+        },
+        {
+          "abilityId": "master.akasha.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_akasha.s4"
+        },
+        {
+          "abilityId": "master.akasha.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.akasha/s4"
+        },
+        {
+          "abilityId": "master.akasha.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[4].text#line=1",
+          "sha256": "50a6cc6326f43a621e8771a8dab101a51f73a7f8e2c39ff572a83bedc9089cae"
+        },
+        {
+          "abilityId": "master.akasha.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[4].text#line=2",
+          "sha256": "7d4670818f5db33fcf1c12d57d1c9bcc374f8e0c1443bc44d4c05d9eccb13e05"
+        },
+        {
+          "abilityId": "master.akasha.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[4].text#line=3",
+          "sha256": "370ed1915095719a06cafbce3284e4a10120bbb089bcfad5be079e574e07ef86"
+        },
+        {
+          "abilityId": "master.akasha.skill.s5",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.akasha/阿卡夏之蛇"
+        },
+        {
+          "abilityId": "master.akasha.skill.s5",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_akasha.s5"
+        },
+        {
+          "abilityId": "master.akasha.skill.s5",
+          "document": "legacy-content.json",
+          "locator": "master/master.akasha/s5"
+        },
+        {
+          "abilityId": "master.akasha.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[5].text#line=1",
+          "sha256": "21d86d5e5f23022615fe46276aa1159c235291fba3fc9d0478f138ea87f970b7"
+        },
+        {
+          "abilityId": "master.akasha.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[5].text#line=2",
+          "sha256": "fd605fba1735fe10bd300893b6e77f17ab7166c421646ae3a36fcc13ed7213f4"
+        },
+        {
+          "abilityId": "master.akasha.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[5].text#line=3",
+          "sha256": "d74cc4cc7aea7693efb43ab669141bbc6ab861e6cd1537c025f95ab61a74b3e8"
+        },
+        {
+          "abilityId": "master.akasha.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.akasha/阿卡夏之蛇"
+        },
+        {
+          "abilityId": "master.akasha.skill.s6",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_akasha.s6"
+        },
+        {
+          "abilityId": "master.akasha.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.akasha/s6"
+        },
+        {
+          "abilityId": "master.akasha.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[6].text#line=1",
+          "sha256": "5c195f4943c9ff1d754b4713a680af2d0d282f3db669cce0cc80e42ca3dada0a"
+        },
+        {
+          "abilityId": "master.akasha.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[26].skills[6].text#line=2",
+          "sha256": "5d223b91f8e6fb32cdbe8dfd5e65f7d9ac785129ad55db30aeacae7cc7fd8b04"
+        },
         {
           "abilityId": "master.akiha.skill.ascension",
           "document": "Fate_Domination-开发版",
@@ -46339,6 +46773,129 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[56].skills[4].text#line=9",
           "sha256": "00348bc72491f5dd1b17c8795903541c14f36c86e84a5cf6117b56475b34255e"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.hisui-detective/洗脑侦探·翡翠"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hisui_detective.ascension"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.hisui-detective/ascension"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[4].text#line=1",
+          "sha256": "d7e7c4b3104e40c62875f879d36c5d45fe4754c127b85cdb5bc56780a216b33e"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.hisui-detective/洗脑侦探·翡翠"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hisui_detective.s1"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.hisui-detective/s1"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[0].text#line=1",
+          "sha256": "211e6d3ae17a990d50d9a6407188189b3cc6bd11dcde294c73960f5519f5603e"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1a",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.hisui-detective/洗脑侦探·翡翠"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1a",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hisui_detective.s1a"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1a",
+          "document": "legacy-content.json",
+          "locator": "master/master.hisui-detective/s1a"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1a",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[1].text#line=1",
+          "sha256": "892055d541656dad3ddc204c7b0f7c73eae8399338263f00c0be967784c689f1"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.hisui-detective/洗脑侦探·翡翠"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hisui_detective.s2"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.hisui-detective/s2"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[2].text#line=1",
+          "sha256": "7e6fd5862182ec15171c7680cad9c35edc1260619b44502d7f9adc28d0bba7e0"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[2].text#line=2",
+          "sha256": "ef657af2bb6ae18782b6af1bad4b2e09fe77a4796509060597b03c8781fc25e4"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[2].text#line=3",
+          "sha256": "95a67d705d3bf01d8f9a7214179f3ceb76cacee9a9ccf8feaa842fa1b4915d7d"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.hisui-detective/洗脑侦探·翡翠"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_hisui_detective.s3"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.hisui-detective/s3"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[3].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[20].skills[3].text#line=2",
+          "sha256": "81565717413621a7051069ab0e829e4c34c6f8dd527c2ca72db6b58f141d1b3e"
         },
         {
           "abilityId": "master.iliya.skill.ascension",
@@ -48700,6 +49257,225 @@
           "sha256": "4dcdbe858fe81e809aa7718fcce90844e4c3b122c04f3a745d982217e379d1d2"
         },
         {
+          "abilityId": "master.wallachia.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.wallachia/瓦拉几亚之夜"
+        },
+        {
+          "abilityId": "master.wallachia.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_wallachia.ascension"
+        },
+        {
+          "abilityId": "master.wallachia.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.wallachia/ascension"
+        },
+        {
+          "abilityId": "master.wallachia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[8].text#line=1",
+          "sha256": "29e6146bf041d0a3c495d74750e7048b11d12629d0bb7d4ec53bdc358966dd6e"
+        },
+        {
+          "abilityId": "master.wallachia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[8].text#line=2",
+          "sha256": "7d32981c3d36a77b1971abfb7992e68267e6d8939551b8a2d1690f078020b8c1"
+        },
+        {
+          "abilityId": "master.wallachia.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[8].text#line=3",
+          "sha256": "44bd08777f66f9699b4927203514c173c4cee30a6f4ba86e25485cbd9dfefdb3"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.wallachia/瓦拉几亚之夜"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_wallachia.s1"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.wallachia/s1"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[0].text#line=1",
+          "sha256": "7a9383a0b5eda6156ddf7d027428d3379979117b952f8dec3f9569f8013b465a"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[0].text#line=2",
+          "sha256": "40313a93c589c6c430271178dd7fa2633aab307215013ebe1756a543805108ef"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.wallachia/瓦拉几亚之夜"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_wallachia.s2"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.wallachia/s2"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[1].text#line=1",
+          "sha256": "9f5b306df46e4ec60289bf296b08b5bce3ef9a7d0a7e3c790e1015eb221fc99a"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.wallachia/瓦拉几亚之夜"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_wallachia.s3"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.wallachia/s3"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[2].text#line=1",
+          "sha256": "d96f7f04fe40102cac95d47608d7ec61e617257cdaf284dd54687adcfed5349e"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[2].text#line=2",
+          "sha256": "8d58f4bffeb74bf6803c543d4aa61b67ea36b2d2e2787ddea966237a2efb1925"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[2].text#line=3",
+          "sha256": "77b36cf3e848b79b6feb590ef18c4ac07a797bd1521618e27c19e2c075970f68"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.wallachia/瓦拉几亚之夜"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_wallachia.s4"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.wallachia/s4"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[3].text#line=1",
+          "sha256": "49272b85a786c83b2e1a367a1fa05a64d7bf9e4b355b35b9657fdc0573b47e89"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s5",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.wallachia/瓦拉几亚之夜"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s5",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_wallachia.s5"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s5",
+          "document": "legacy-content.json",
+          "locator": "master/master.wallachia/s5"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[4].text#line=1",
+          "sha256": "1083299e0fd8312cfadd58f0bd5db34e261d20bd70dd78a9c079bb5cc545de77"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.wallachia/瓦拉几亚之夜"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s6",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_wallachia.s6"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.wallachia/s6"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[5].text#line=1",
+          "sha256": "ef1d386c3df6386604fa3201ce30f6f85cb9b11d4d202d80307431b0c1e75d4a"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s7",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.wallachia/瓦拉几亚之夜"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s7",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_wallachia.s7"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s7",
+          "document": "legacy-content.json",
+          "locator": "master/master.wallachia/s7"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[6].text#line=1",
+          "sha256": "2c65011e5326c05813dc61d641c76742e9308369b9cee98af33a55cacabbbc45"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s8",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.wallachia/瓦拉几亚之夜"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s8",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_wallachia.s8"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s8",
+          "document": "legacy-content.json",
+          "locator": "master/master.wallachia/s8"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s8",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[28].skills[7].text#line=1",
+          "sha256": "d1549cf56a538a2a478e956f6de58cf3018cae45ed22f8acf9975ac153730a07"
+        },
+        {
           "abilityId": "master.waver.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.waver/韦伯·维尔维特"
@@ -49182,10 +49958,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 103,
+          "shared_handler": 124,
           "specific_handler": 58
         },
-        "handlerCount": 85,
+        "handlerCount": 88,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

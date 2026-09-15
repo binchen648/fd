@@ -16849,6 +16849,679 @@
         }
       ],
       "referencePrintedTextSha256": "8934a63d45029e2c6cdb8847bccd2500cb85eaa3d7ebfec32f63a8c9fb00359e"
+    },
+    {
+      "id": "master.akasha.skill.ascension",
+      "printedText": "若你在本局游戏已转生为所有【容器】过，你停止转生且同时视为所有【容器】。\n每个高潮回合开始时，将一张临时的【过负荷】放置于一处你选择的战场。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akasha.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "若你在本局游戏已转生为所有【容器】过，你停止转生且同时视为所有【容器】。\n每个高潮回合开始时，将一张临时的【过负荷】放置于一处你选择的战场。",
+        "sourceTextSha256": "99179187a3cca6b8da470b77ce755ab13999d37d6f6dc88a7f78c06d59d476d3"
+      },
+      "abilities": [
+        {
+          "id": "akasha.final-form",
+          "printedClause": "若你在本局游戏已转生为所有【容器】过，你停止转生且同时视为所有【容器】。\n每个高潮回合开始时，将一张临时的【过负荷】放置于一处你选择的战场。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "reincarnation_rule",
+              "operation": "final_form_after_all_vessels_seen",
+              "requiresAllVesselsReincarnated": true,
+              "stopReincarnation": true,
+              "treatAsAllVessels": true
+            },
+            {
+              "type": "overload_card_rule",
+              "operation": "place_temporary_overload_each_climax_round_start",
+              "timing": "climax_round_start",
+              "destination": "chosen_battlefield",
+              "temporary": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "99179187a3cca6b8da470b77ce755ab13999d37d6f6dc88a7f78c06d59d476d3"
+    },
+    {
+      "id": "master.akasha.skill.s1a",
+      "printedText": "你的首个【容器】是【米切尔·罗亚】。当你以5点及以上的战力差距被击败或【败北】时，转生。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akasha.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你的首个【容器】是【米切尔·罗亚】。当你以5点及以上的战力差距被击败或【败北】时，转生。",
+        "sourceTextSha256": "280cee0b9832ad7322b91987a5c3e91e66939a34c2a8efd01a456c99dd16579d"
+      },
+      "abilities": [
+        {
+          "id": "akasha.reincarnation.trigger",
+          "printedClause": "你的首个【容器】是【米切尔·罗亚】。当你以5点及以上的战力差距被击败或【败北】时，转生。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "reincarnation_rule",
+              "operation": "trigger_on_margin_defeat_or_defeat_status",
+              "firstVessel": "Michael Roa",
+              "combatPowerMarginAtLeast": 5,
+              "alsoTriggersOnDefeatStatus": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "280cee0b9832ad7322b91987a5c3e91e66939a34c2a8efd01a456c99dd16579d"
+    },
+    {
+      "id": "master.akasha.skill.s2",
+      "printedText": "在下个回合开始时，根据你以当前【容器】获得的战果数转生为新的【容器】，然后移除所有临时的【过负荷】直至仅剩2张。若你转生为相同的【容器】，失去3点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akasha.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "在下个回合开始时，根据你以当前【容器】获得的战果数转生为新的【容器】，然后移除所有临时的【过负荷】直至仅剩2张。若你转生为相同的【容器】，失去3点战果。",
+        "sourceTextSha256": "705b4a557f41e007a23f3b42357d660e68fd82d66fb60fba37c5e21604e6238b"
+      },
+      "abilities": [
+        {
+          "id": "akasha.reincarnation.resolve",
+          "printedClause": "在下个回合开始时，根据你以当前【容器】获得的战果数转生为新的【容器】，然后移除所有临时的【过负荷】直至仅剩2张。若你转生为相同的【容器】，失去3点战果。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "reincarnation_rule",
+              "operation": "next_round_choose_vessel_by_vp_earned_with_current_vessel",
+              "temporaryOverloadCopiesRemain": 2,
+              "sameVesselPenaltyVictoryPoints": 3
+            },
+            {
+              "type": "lose_victory_points",
+              "amount": 3,
+              "timing": "when_reincarnating_into_same_vessel"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "705b4a557f41e007a23f3b42357d660e68fd82d66fb60fba37c5e21604e6238b"
+    },
+    {
+      "id": "master.akasha.skill.s3",
+      "printedText": "【容器：0~5战果】\n诡计-你作为【罗亚】获得的战果仅在转生时双倍计算。\n神职特权-你从侦查获得的战果+1。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akasha.s3",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【容器：0~5战果】\n诡计-你作为【罗亚】获得的战果仅在转生时双倍计算。\n神职特权-你从侦查获得的战果+1。",
+        "sourceTextSha256": "0b0a8aa11124ecba39e9022a3c1cee5caccc74817299dfc503f46c37afd97c0c"
+      },
+      "abilities": [
+        {
+          "id": "akasha.vessel.roa",
+          "printedClause": "【容器：0~5战果】\n诡计-你作为【罗亚】获得的战果仅在转生时双倍计算。\n神职特权-你从侦查获得的战果+1。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "vessel_state_rule",
+              "vessel": "Michael Roa",
+              "victoryPointRange": {
+                "min": 0,
+                "max": 5
+              },
+              "reincarnationCountMultiplier": 2,
+              "scoutingVictoryPointBonus": 1
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 1,
+              "source": "scouting",
+              "timing": "when_gain_victory_points_from_scouting"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0b0a8aa11124ecba39e9022a3c1cee5caccc74817299dfc503f46c37afd97c0c"
+    },
+    {
+      "id": "master.akasha.skill.s4",
+      "printedText": "【容器：6~10战果】\n不稳定凭依-你作为【艾蕾西亚】获得的战果仅在转生时减半计算（向上取整）。\n满月-若你控制【过负荷】，你的技能获得+1威力且-1魔力消耗。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akasha.s4",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【容器：6~10战果】\n不稳定凭依-你作为【艾蕾西亚】获得的战果仅在转生时减半计算（向上取整）。\n满月-若你控制【过负荷】，你的技能获得+1威力且-1魔力消耗。",
+        "sourceTextSha256": "5d10f4172d67627c80de69fb26c5e559cc1e9f4490a9076f0998ef98e7029fee"
+      },
+      "abilities": [
+        {
+          "id": "akasha.vessel.alesia",
+          "printedClause": "【容器：6~10战果】\n不稳定凭依-你作为【艾蕾西亚】获得的战果仅在转生时减半计算（向上取整）。\n满月-若你控制【过负荷】，你的技能获得+1威力且-1魔力消耗。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "vessel_state_rule",
+              "vessel": "Alesia",
+              "victoryPointRange": {
+                "min": 6,
+                "max": 10
+              },
+              "reincarnationCountRule": "half_round_up",
+              "requiresControlledCard": "Overload",
+              "skillPowerBonus": 1,
+              "skillManaCostDelta": -1
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "5d10f4172d67627c80de69fb26c5e559cc1e9f4490a9076f0998ef98e7029fee"
+    },
+    {
+      "id": "master.akasha.skill.s5",
+      "printedText": "【容器：11+战果】\n奋迅-你拥有的魔力少于8点也可以打出【过负荷】，若如此做，令其+3威力且不关闭。\n见方-行动阶段：花费你激活的【过负荷】魔力消耗的魔力令它们的威力翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akasha.s5",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【容器：11+战果】\n奋迅-你拥有的魔力少于8点也可以打出【过负荷】，若如此做，令其+3威力且不关闭。\n见方-行动阶段：花费你激活的【过负荷】魔力消耗的魔力令它们的威力翻倍。",
+        "sourceTextSha256": "7242f75d93e8dfd84704992b4158efba910166e6c1ea70b5498187e855d38319"
+      },
+      "abilities": [
+        {
+          "id": "akasha.vessel.shiki",
+          "printedClause": "【容器：11+战果】\n奋迅-你拥有的魔力少于8点也可以打出【过负荷】，若如此做，令其+3威力且不关闭。\n见方-行动阶段：花费你激活的【过负荷】魔力消耗的魔力令它们的威力翻倍。",
+          "kind": "phase_action",
+          "effects": [
+            {
+              "type": "overload_card_rule",
+              "operation": "shiki_vessel_overload_permissions_and_double",
+              "victoryPointRange": {
+                "min": 11
+              },
+              "lowManaPlayThreshold": 8,
+              "lowManaPowerBonus": 3,
+              "lowManaDoesNotClose": true,
+              "doubleActivatedOverloadsByPayingTheirManaCosts": true
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "7242f75d93e8dfd84704992b4158efba910166e6c1ea70b5498187e855d38319"
+    },
+    {
+      "id": "master.akasha.skill.s6",
+      "printedText": "此牌需追加打出。沸腾-被动：当你部署于地利位置时，你可以选择将所有此地点的【过负荷】加入你的攻击或不加入，若加入，令它们获得+2威力。\n凝结-打出时：关闭此牌。若你关闭，将一张此牌的临时复制放置于你所在的地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akasha.s6",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌需追加打出。沸腾-被动：当你部署于地利位置时，你可以选择将所有此地点的【过负荷】加入你的攻击或不加入，若加入，令它们获得+2威力。\n凝结-打出时：关闭此牌。若你关闭，将一张此牌的临时复制放置于你所在的地点。",
+        "sourceTextSha256": "915bd3316d4059cedac0f24dc54c6338dd227b6c4b2d6b5f3651a1bb77ac6d26"
+      },
+      "abilities": [
+        {
+          "id": "akasha.overload.lifecycle",
+          "printedClause": "此牌需追加打出。沸腾-被动：当你部署于地利位置时，你可以选择将所有此地点的【过负荷】加入你的攻击或不加入，若加入，令它们获得+2威力。\n凝结-打出时：关闭此牌。若你关闭，将一张此牌的临时复制放置于你所在的地点。",
+          "kind": "play_option",
+          "effects": [
+            {
+              "type": "overload_card_rule",
+              "operation": "terrain_collect_and_condense",
+              "appendOnly": true,
+              "onTerrainDeploy": "choose_all_overloads_at_location_add_to_attack_or_not",
+              "addedOverloadPowerBonus": 2,
+              "onPlay": "close_source_then_if_closed_place_temporary_copy_at_current_location"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "915bd3316d4059cedac0f24dc54c6338dd227b6c4b2d6b5f3651a1bb77ac6d26"
+    },
+    {
+      "id": "master.hisui-detective.skill.ascension",
+      "printedText": "解锁此牌时，你立即切换一张【线索】，然后将一张事件牌弃牌堆的【固有结界】移除游戏。若你如此做，你可以于本局游戏重新使用一次携闻而至。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hisui_detective.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "解锁此牌时，你立即切换一张【线索】，然后将一张事件牌弃牌堆的【固有结界】移除游戏。若你如此做，你可以于本局游戏重新使用一次携闻而至。",
+        "sourceTextSha256": "d7e7c4b3104e40c62875f879d36c5d45fe4754c127b85cdb5bc56780a216b33e"
+      },
+      "abilities": [
+        {
+          "id": "hisui.detective-mode",
+          "printedClause": "解锁此牌时，你立即切换一张【线索】，然后将一张事件牌弃牌堆的【固有结界】移除游戏。若你如此做，你可以于本局游戏重新使用一次携闻而至。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "detective_clue_rule",
+              "operation": "on_unlock_flip_one_clue_remove_inherent_boundary_from_event_discard_and_restore_hearsay_use",
+              "flipClueCount": 1,
+              "removedEventDestination": "out_of_game",
+              "restoreOncePerGameAbility": "hearsay"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d7e7c4b3104e40c62875f879d36c5d45fe4754c127b85cdb5bc56780a216b33e"
+    },
+    {
+      "id": "master.hisui-detective.skill.s1",
+      "printedText": "游戏开始时，查看并选择一张事件牌堆内的【固有结界】（或类似事件牌）移除游戏。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hisui_detective.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，查看并选择一张事件牌堆内的【固有结界】（或类似事件牌）移除游戏。",
+        "sourceTextSha256": "211e6d3ae17a990d50d9a6407188189b3cc6bd11dcde294c73960f5519f5603e"
+      },
+      "abilities": [
+        {
+          "id": "hisui.locked-room.event",
+          "printedClause": "游戏开始时，查看并选择一张事件牌堆内的【固有结界】（或类似事件牌）移除游戏。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "game_start_select_and_remove_one_inherent_boundary_or_similar_from_event_deck",
+              "count": 1
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "211e6d3ae17a990d50d9a6407188189b3cc6bd11dcde294c73960f5519f5603e"
+    },
+    {
+      "id": "master.hisui-detective.skill.s1a",
+      "printedText": "每局游戏限一次，所有人的前哨阶段结束时，将一张被移除的【固有结界】放置于一处拥有2+名对手的战场，本回合于该战场获胜的对手在该处留下一枚【线索】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hisui_detective.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "每局游戏限一次，所有人的前哨阶段结束时，将一张被移除的【固有结界】放置于一处拥有2+名对手的战场，本回合于该战场获胜的对手在该处留下一枚【线索】。",
+        "sourceTextSha256": "892055d541656dad3ddc204c7b0f7c73eae8399338263f00c0be967784c689f1"
+      },
+      "abilities": [
+        {
+          "id": "hisui.hearsay.clue",
+          "printedClause": "每局游戏限一次，所有人的前哨阶段结束时，将一张被移除的【固有结界】放置于一处拥有2+名对手的战场，本回合于该战场获胜的对手在该处留下一枚【线索】。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "detective_clue_rule",
+              "operation": "once_per_game_place_removed_inherent_boundary_after_all_outposts_then_winner_leaves_clue",
+              "limit": {
+                "scope": "game",
+                "count": 1
+              },
+              "battlefieldOpponentMinimum": 2,
+              "winnerLeavesClue": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "892055d541656dad3ddc204c7b0f7c73eae8399338263f00c0be967784c689f1"
+    },
+    {
+      "id": "master.hisui-detective.skill.s2",
+      "printedText": "（将留下此【线索】的嫌疑人记录于此牌上。）\n唯一：当翡翠部署于此地点的地利位置时，将一张此地点的【线索】加入其技能区。\n调查-被动：当你进入侦查时，切换此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hisui_detective.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（将留下此【线索】的嫌疑人记录于此牌上。）\n唯一：当翡翠部署于此地点的地利位置时，将一张此地点的【线索】加入其技能区。\n调查-被动：当你进入侦查时，切换此牌。",
+        "sourceTextSha256": "afed34bf5cf244ad4d6b04701ead1259622772c1789b2e8095a1df090c64a5d6"
+      },
+      "abilities": [
+        {
+          "id": "hisui.clue.lifecycle",
+          "printedClause": "（将留下此【线索】的嫌疑人记录于此牌上。）\n唯一：当翡翠部署于此地点的地利位置时，将一张此地点的【线索】加入其技能区。\n调查-被动：当你进入侦查时，切换此牌。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "detective_clue_rule",
+              "operation": "record_suspect_collect_on_terrain_deploy_flip_on_enter_scouting",
+              "unique": true,
+              "recordSuspect": true,
+              "collectOneAtLocationOnTerrainDeploy": true,
+              "flipOnEnterScouting": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "afed34bf5cf244ad4d6b04701ead1259622772c1789b2e8095a1df090c64a5d6"
+    },
+    {
+      "id": "master.hisui-detective.skill.s3",
+      "printedText": "<每局游戏限一次>\n完美推理-被动/行动阶段：若此时为第11回合，令嫌疑人淘汰。若不为第11回合且嫌疑人与你位于同一战场，你获得5点合计威力并偷取其4点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hisui_detective.s3",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "<每局游戏限一次>\n完美推理-被动/行动阶段：若此时为第11回合，令嫌疑人淘汰。若不为第11回合且嫌疑人与你位于同一战场，你获得5点合计威力并偷取其4点战果。",
+        "sourceTextSha256": "e8130316c7389fa3a06446eb700c36051d18c5d5d502c08a909a0acbfd3d022b"
+      },
+      "abilities": [
+        {
+          "id": "hisui.accusation",
+          "printedClause": "<每局游戏限一次>\n完美推理-被动/行动阶段：若此时为第11回合，令嫌疑人淘汰。若不为第11回合且嫌疑人与你位于同一战场，你获得5点合计威力并偷取其4点战果。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "detective_accusation_rule",
+              "operation": "once_per_game_eliminate_on_round11_else_same_battlefield_power_and_vp_theft",
+              "limit": {
+                "scope": "game",
+                "count": 1
+              },
+              "round11EliminateSuspect": true,
+              "otherwiseRequiresSameBattlefield": true,
+              "totalPowerBonus": 5,
+              "stealVictoryPoints": 4
+            },
+            {
+              "type": "combat_power_bonus",
+              "amount": 5,
+              "condition": "non_round11_suspect_same_battlefield"
+            },
+            {
+              "type": "transfer_victory_points",
+              "amount": 4,
+              "from": "suspect",
+              "to": "controller",
+              "condition": "non_round11_suspect_same_battlefield"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "e8130316c7389fa3a06446eb700c36051d18c5d5d502c08a909a0acbfd3d022b"
+    },
+    {
+      "id": "master.wallachia.skill.ascension",
+      "printedText": "（此牌加入你的技能区。）此牌需追加打出。\n唯一/打出时：将你技能区其他所有的【不休梦魇】移除游戏。\n打出时：将一张此牌的复制加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wallachia.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（此牌加入你的技能区。）此牌需追加打出。\n唯一/打出时：将你技能区其他所有的【不休梦魇】移除游戏。\n打出时：将一张此牌的复制加入你的技能区。",
+        "sourceTextSha256": "0f6be962bbdde758522b973633fbb5d3d738c282a68ad154a131fb30e4e8b634"
+      },
+      "abilities": [
+        {
+          "id": "wallachia.restless-nightmare.copy",
+          "printedClause": "（此牌加入你的技能区。）此牌需追加打出。\n唯一/打出时：将你技能区其他所有的【不休梦魇】移除游戏。\n打出时：将一张此牌的复制加入你的技能区。",
+          "kind": "play_option",
+          "effects": [
+            {
+              "type": "skill_copy_lifecycle_rule",
+              "operation": "append_only_on_play_remove_other_same_named_skill_copies_then_add_copy_to_skill_zone",
+              "appendOnly": true,
+              "uniqueOnPlay": true,
+              "removeOtherSameNamedFromSkillZone": true,
+              "createCopyInSkillZoneOnPlay": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0f6be962bbdde758522b973633fbb5d3d738c282a68ad154a131fb30e4e8b634"
+    },
+    {
+      "id": "master.wallachia.skill.s1",
+      "printedText": "当你于每回合第一次进入战场时，在此战场加入一张临时的【塔塔利】事件牌。\n行动阶段：花费3点魔力并选择一名对手，当其位于【塔塔利】所在的地点时，你于本回合打出的攻击获得其从者恐惧的属性。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wallachia.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你于每回合第一次进入战场时，在此战场加入一张临时的【塔塔利】事件牌。\n行动阶段：花费3点魔力并选择一名对手，当其位于【塔塔利】所在的地点时，你于本回合打出的攻击获得其从者恐惧的属性。",
+        "sourceTextSha256": "5a6a59f17c8710cdada164f87da4901d8f33fe4e82ea58c7ecef36ef0a05a31c"
+      },
+      "abilities": [
+        {
+          "id": "wallachia.fear-incarnation",
+          "printedClause": "当你于每回合第一次进入战场时，在此战场加入一张临时的【塔塔利】事件牌。\n行动阶段：花费3点魔力并选择一名对手，当其位于【塔塔利】所在的地点时，你于本回合打出的攻击获得其从者恐惧的属性。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "tatari_rule",
+              "operation": "first_battlefield_entry_each_round_add_temporary_tatari_event",
+              "temporary": true,
+              "frequency": "first_each_round"
+            },
+            {
+              "type": "fear_attribute_rule",
+              "operation": "action_pay3_choose_opponent_attacks_gain_their_servant_fear_attribute_when_they_are_at_tatari_location",
+              "manaCost": 3
+            },
+            {
+              "type": "pay_mana",
+              "amount": 3,
+              "timing": "action_option"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "5a6a59f17c8710cdada164f87da4901d8f33fe4e82ea58c7ecef36ef0a05a31c"
+    },
+    {
+      "id": "master.wallachia.skill.s2",
+      "printedText": "其他对手的从者恐惧力量、敏捷或魔术属性——根据他们游戏开始时牌库中上述三种属性的牌最少的一个。若相同，则为基本威力之和最少的一种。若仍相同，则以魔术>力量>迅捷的顺序排列。你知晓其他从者恐惧的属性。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wallachia.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "其他对手的从者恐惧力量、敏捷或魔术属性——根据他们游戏开始时牌库中上述三种属性的牌最少的一个。若相同，则为基本威力之和最少的一种。若仍相同，则以魔术>力量>迅捷的顺序排列。你知晓其他从者恐惧的属性。",
+        "sourceTextSha256": "9f5b306df46e4ec60289bf296b08b5bce3ef9a7d0a7e3c790e1015eb221fc99a"
+      },
+      "abilities": [
+        {
+          "id": "wallachia.fear.compute",
+          "printedClause": "其他对手的从者恐惧力量、敏捷或魔术属性——根据他们游戏开始时牌库中上述三种属性的牌最少的一个。若相同，则为基本威力之和最少的一种。若仍相同，则以魔术>力量>迅捷的顺序排列。你知晓其他从者恐惧的属性。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "fear_attribute_rule",
+              "operation": "compute_servant_fear_from_starting_deck",
+              "candidateAttributes": [
+                "strength",
+                "agility",
+                "magic"
+              ],
+              "primary": "fewest_cards",
+              "secondary": "lowest_base_power_sum",
+              "tieBreak": [
+                "magic",
+                "strength",
+                "agility"
+              ],
+              "controllerKnowsAllOpponentFearAttributes": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "9f5b306df46e4ec60289bf296b08b5bce3ef9a7d0a7e3c790e1015eb221fc99a"
+    },
+    {
+      "id": "master.wallachia.skill.s3",
+      "printedText": "【塔塔利事件牌】战果：X（X=被加入【恶化】数量的一半，向上取整）\n永恒梦魇-瓦拉几亚于此处获胜时，将一张【恶化】永久加入【塔塔利】。\n被诅咒的固有结界-除非玩家花费X点魔力，否则他们无法离开此处。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wallachia.s3",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【塔塔利事件牌】战果：X（X=被加入【恶化】数量的一半，向上取整）\n永恒梦魇-瓦拉几亚于此处获胜时，将一张【恶化】永久加入【塔塔利】。\n被诅咒的固有结界-除非玩家花费X点魔力，否则他们无法离开此处。",
+        "sourceTextSha256": "be76106205b3fcad1865a181bd946ee5970ccdba4136d3432b4afdb8f550c555"
+      },
+      "abilities": [
+        {
+          "id": "wallachia.tatari.core",
+          "printedClause": "【塔塔利事件牌】战果：X（X=被加入【恶化】数量的一半，向上取整）\n永恒梦魇-瓦拉几亚于此处获胜时，将一张【恶化】永久加入【塔塔利】。\n被诅咒的固有结界-除非玩家花费X点魔力，否则他们无法离开此处。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "tatari_rule",
+              "operation": "vp_equals_ceil_deterioration_half_add_deterioration_on_controller_win_and_pay_x_to_leave",
+              "xFormula": "ceil(deterioration_count/2)",
+              "onControllerWinAddPermanentDeterioration": 1,
+              "leaveLocationManaCost": "X"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "be76106205b3fcad1865a181bd946ee5970ccdba4136d3432b4afdb8f550c555"
+    },
+    {
+      "id": "master.wallachia.skill.s4",
+      "printedText": "（恶化）每名此战场玩家恐惧的属性令其他玩家相应属性的攻击获得+1威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wallachia.s4",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（恶化）每名此战场玩家恐惧的属性令其他玩家相应属性的攻击获得+1威力。",
+        "sourceTextSha256": "49272b85a786c83b2e1a367a1fa05a64d7bf9e4b355b35b9657fdc0573b47e89"
+      },
+      "abilities": [
+        {
+          "id": "wallachia.deterioration.madness",
+          "printedClause": "（恶化）每名此战场玩家恐惧的属性令其他玩家相应属性的攻击获得+1威力。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "tatari_deterioration_rule",
+              "operation": "each_players_fear_attribute_grants_other_players_matching_attacks_plus1_power_per_source",
+              "powerBonusPerFearSource": 1
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "49272b85a786c83b2e1a367a1fa05a64d7bf9e4b355b35b9657fdc0573b47e89"
+    },
+    {
+      "id": "master.wallachia.skill.s5",
+      "printedText": "（恶化）所有玩家除非花费X点魔力或弃置一张他们恐惧的牌，否则他们无法于他们的回合进入此地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wallachia.s5",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（恶化）所有玩家除非花费X点魔力或弃置一张他们恐惧的牌，否则他们无法于他们的回合进入此地点。",
+        "sourceTextSha256": "1083299e0fd8312cfadd58f0bd5db34e261d20bd70dd78a9c079bb5cc545de77"
+      },
+      "abilities": [
+        {
+          "id": "wallachia.deterioration.darkness",
+          "printedClause": "（恶化）所有玩家除非花费X点魔力或弃置一张他们恐惧的牌，否则他们无法于他们的回合进入此地点。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "tatari_deterioration_rule",
+              "operation": "enter_location_requires_pay_x_mana_or_discard_one_feared_attribute_card",
+              "entryManaCost": "X",
+              "alternateCost": "discard_one_feared_attribute_card"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "1083299e0fd8312cfadd58f0bd5db34e261d20bd70dd78a9c079bb5cc545de77"
+    },
+    {
+      "id": "master.wallachia.skill.s6",
+      "printedText": "（恶化）若此战场的胜者控制败者恐惧的攻击，令相应的败者失去X点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wallachia.s6",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（恶化）若此战场的胜者控制败者恐惧的攻击，令相应的败者失去X点战果。",
+        "sourceTextSha256": "ef1d386c3df6386604fa3201ce30f6f85cb9b11d4d202d80307431b0c1e75d4a"
+      },
+      "abilities": [
+        {
+          "id": "wallachia.deterioration.malice",
+          "printedClause": "（恶化）若此战场的胜者控制败者恐惧的攻击，令相应的败者失去X点战果。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "tatari_deterioration_rule",
+              "operation": "winner_controls_loser_fear_attribute_attack_causes_loser_lose_x_vp",
+              "loss": "X"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ef1d386c3df6386604fa3201ce30f6f85cb9b11d4d202d80307431b0c1e75d4a"
+    },
+    {
+      "id": "master.wallachia.skill.s7",
+      "printedText": "（恶化）此战场的玩家手牌和技能区中，其恐惧属性的攻击+X魔力消耗。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wallachia.s7",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（恶化）此战场的玩家手牌和技能区中，其恐惧属性的攻击+X魔力消耗。",
+        "sourceTextSha256": "2c65011e5326c05813dc61d641c76742e9308369b9cee98af33a55cacabbbc45"
+      },
+      "abilities": [
+        {
+          "id": "wallachia.deterioration.obsession",
+          "printedClause": "（恶化）此战场的玩家手牌和技能区中，其恐惧属性的攻击+X魔力消耗。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "tatari_deterioration_rule",
+              "operation": "fear_attribute_attacks_in_hand_and_skill_zone_cost_plus_x_mana",
+              "manaCostDelta": "X"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "2c65011e5326c05813dc61d641c76742e9308369b9cee98af33a55cacabbbc45"
+    },
+    {
+      "id": "master.wallachia.skill.s8",
+      "printedText": "（恶化）令X增加1。当瓦拉几亚离开此地点时，弃置【塔塔利】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_wallachia.s8",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（恶化）令X增加1。当瓦拉几亚离开此地点时，弃置【塔塔利】。",
+        "sourceTextSha256": "d1549cf56a538a2a478e956f6de58cf3018cae45ed22f8acf9975ac153730a07"
+      },
+      "abilities": [
+        {
+          "id": "wallachia.deterioration.drama",
+          "printedClause": "（恶化）令X增加1。当瓦拉几亚离开此地点时，弃置【塔塔利】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "tatari_deterioration_rule",
+              "operation": "increase_x_by1_and_discard_tatari_when_controller_leaves",
+              "xDelta": 1,
+              "discardTatariOnControllerLeave": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d1549cf56a538a2a478e956f6de58cf3018cae45ed22f8acf9975ac153730a07"
     }
   ]
 }

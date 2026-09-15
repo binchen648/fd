@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 365,
-    "explicitBlockCount": 579,
+    "contractMappedCount": 386,
+    "explicitBlockCount": 558,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -25,9 +25,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
       "READY_GENERIC_EXTENSION": 198,
-      "SPECIAL_HANDLER_CANDIDATE": 165,
+      "SPECIAL_HANDLER_CANDIDATE": 186,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 579,
+      "SOURCE_EVIDENCE_REQUIRED": 558,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -3163,6 +3163,7 @@
         "master.hinako.skill.s2",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
+        "master.hisui-detective.skill.s3",
         "master.iliya.skill.s4",
         "master.kadoc.skill.ascension",
         "master.kadoc.skill.s1",
@@ -4123,6 +4124,7 @@
         "master.peperoncino.skill.s1b",
         "master.shiki-tohno.skill.s2",
         "master.sion.skill.s13",
+        "master.wallachia.skill.s1",
         "master.zouken.skill.ascension",
         "master.zouken.skill.s3",
         "master.zouken.skill.s4",
@@ -4161,6 +4163,7 @@
         "master.hinako.skill.s1",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
+        "master.hisui-detective.skill.s1",
         "master.kadoc.skill.ascension",
         "master.kadoc.skill.s1",
         "master.kadoc.skill.s2",
@@ -4198,6 +4201,34 @@
       ],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.akasha.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akasha.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akasha.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akasha.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akasha.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akasha.skill.s6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
         {
           "abilityId": "master.akiha.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
@@ -4412,6 +4443,22 @@
         },
         {
           "abilityId": "master.hinako.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -4680,6 +4727,42 @@
         },
         {
           "abilityId": "master.tokiomi.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s8",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -5035,6 +5118,7 @@
         "master.hinako.skill.s2",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
+        "master.hisui-detective.skill.s3",
         "master.iliya.skill.ascension",
         "master.iliya.skill.s3",
         "master.illya-mahou.skill.ascension",
@@ -5366,6 +5450,7 @@
         "master.hinako.skill.s2",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
+        "master.hisui-detective.skill.s3",
         "master.iliya.skill.ascension",
         "master.irisviel.skill.ascension",
         "master.jinako.skill.s1",
@@ -5444,6 +5529,8 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.akasha.skill.s2",
+        "master.akasha.skill.s3",
         "master.akiha.skill.s3",
         "master.alice.skill.s1",
         "master.amakusa.skill.ascension",
@@ -5480,6 +5567,7 @@
         "master.hakuno-f.skill.s3",
         "master.hakuno-f.skill.s4",
         "master.hinako.skill.s3",
+        "master.hisui-detective.skill.s3",
         "master.iliya.skill.s1",
         "master.iliya.skill.s3",
         "master.iliya.skill.s4",
@@ -6754,6 +6842,14 @@
       ],
       "skippedAbilities": [
         {
+          "abilityId": "master.akasha.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.akiha.skill.s3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -6895,6 +6991,10 @@
         },
         {
           "abilityId": "master.hinako.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -7525,6 +7625,13 @@
       "representatives": [],
       "acceptanceVehicle": "B/R reviewed-special exception with explicit deletion/reuse criteria",
       "eligibleAbilities": [
+        "master.akasha.skill.ascension",
+        "master.akasha.skill.s1a",
+        "master.akasha.skill.s2",
+        "master.akasha.skill.s3",
+        "master.akasha.skill.s4",
+        "master.akasha.skill.s5",
+        "master.akasha.skill.s6",
         "master.akiha.skill.ascension",
         "master.akiha.skill.s1",
         "master.akiha.skill.s1a",
@@ -7581,6 +7688,11 @@
         "master.hinako.skill.s1",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
+        "master.hisui-detective.skill.ascension",
+        "master.hisui-detective.skill.s1",
+        "master.hisui-detective.skill.s1a",
+        "master.hisui-detective.skill.s2",
+        "master.hisui-detective.skill.s3",
         "master.iliya.skill.ascension",
         "master.illya-mahou.skill.s1",
         "master.jinako.skill.ascension",
@@ -7669,6 +7781,15 @@
         "master.tiamat.skill.ascension",
         "master.tiamat.skill.s1",
         "master.tokiomi.skill.s2",
+        "master.wallachia.skill.ascension",
+        "master.wallachia.skill.s1",
+        "master.wallachia.skill.s2",
+        "master.wallachia.skill.s3",
+        "master.wallachia.skill.s4",
+        "master.wallachia.skill.s5",
+        "master.wallachia.skill.s6",
+        "master.wallachia.skill.s7",
+        "master.wallachia.skill.s8",
         "master.waver.skill.ascension",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s1",
@@ -7764,6 +7885,34 @@
       ],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.akasha.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akasha.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akasha.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akasha.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akasha.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akasha.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akasha.skill.s6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
         {
           "abilityId": "master.akiha.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
@@ -7986,6 +8135,26 @@
         },
         {
           "abilityId": "master.hinako.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.hisui-detective.skill.s3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -8341,6 +8510,42 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.wallachia.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.wallachia.skill.s8",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.waver.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -8441,7 +8646,14 @@
   ],
   "coverage": {
     "mappedAbilities": [
+      "master.akasha.skill.ascension",
       "master.akasha.skill.s1",
+      "master.akasha.skill.s1a",
+      "master.akasha.skill.s2",
+      "master.akasha.skill.s3",
+      "master.akasha.skill.s4",
+      "master.akasha.skill.s5",
+      "master.akasha.skill.s6",
       "master.akiha.skill.ascension",
       "master.akiha.skill.s1",
       "master.akiha.skill.s1a",
@@ -8562,6 +8774,11 @@
       "master.hinako.skill.s2",
       "master.hinako.skill.s3",
       "master.hinako.skill.s4",
+      "master.hisui-detective.skill.ascension",
+      "master.hisui-detective.skill.s1",
+      "master.hisui-detective.skill.s1a",
+      "master.hisui-detective.skill.s2",
+      "master.hisui-detective.skill.s3",
       "master.iliya.skill.ascension",
       "master.iliya.skill.s1",
       "master.iliya.skill.s2",
@@ -8730,6 +8947,15 @@
       "master.tokiomi.skill.s2",
       "master.twice.skill.ascension",
       "master.twice.skill.s1",
+      "master.wallachia.skill.ascension",
+      "master.wallachia.skill.s1",
+      "master.wallachia.skill.s2",
+      "master.wallachia.skill.s3",
+      "master.wallachia.skill.s4",
+      "master.wallachia.skill.s5",
+      "master.wallachia.skill.s6",
+      "master.wallachia.skill.s7",
+      "master.wallachia.skill.s8",
       "master.waver.skill.ascension",
       "master.waver.skill.s1",
       "master.waver.skill.s2",
@@ -8808,90 +9034,6 @@
       "servant.valkyrie.skill.sc-valkyrie-3"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "master.akasha.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.akasha.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.akasha.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.akasha.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.akasha.skill.s4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.akasha.skill.s5",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.akasha.skill.s6",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.hisui-detective.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.hisui-detective.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.hisui-detective.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.hisui-detective.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.hisui-detective.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "master.sion.skill.ascension",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -9006,69 +9148,6 @@
       },
       {
         "abilityId": "master.sion.skill.s9",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wallachia.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wallachia.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wallachia.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wallachia.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wallachia.skill.s4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wallachia.skill.s5",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wallachia.skill.s6",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wallachia.skill.s7",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.wallachia.skill.s8",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -12863,6 +12942,13 @@
       }
     ],
     "specialCandidates": [
+      "master.akasha.skill.ascension",
+      "master.akasha.skill.s1a",
+      "master.akasha.skill.s2",
+      "master.akasha.skill.s3",
+      "master.akasha.skill.s4",
+      "master.akasha.skill.s5",
+      "master.akasha.skill.s6",
       "master.akiha.skill.ascension",
       "master.akiha.skill.s1",
       "master.akiha.skill.s1a",
@@ -12920,6 +13006,11 @@
       "master.hinako.skill.s1",
       "master.hinako.skill.s3",
       "master.hinako.skill.s4",
+      "master.hisui-detective.skill.ascension",
+      "master.hisui-detective.skill.s1",
+      "master.hisui-detective.skill.s1a",
+      "master.hisui-detective.skill.s2",
+      "master.hisui-detective.skill.s3",
       "master.iliya.skill.ascension",
       "master.illya-mahou.skill.s1",
       "master.jinako.skill.ascension",
@@ -13009,6 +13100,15 @@
       "master.tiamat.skill.ascension",
       "master.tiamat.skill.s1",
       "master.tokiomi.skill.s2",
+      "master.wallachia.skill.ascension",
+      "master.wallachia.skill.s1",
+      "master.wallachia.skill.s2",
+      "master.wallachia.skill.s3",
+      "master.wallachia.skill.s4",
+      "master.wallachia.skill.s5",
+      "master.wallachia.skill.s6",
+      "master.wallachia.skill.s7",
+      "master.wallachia.skill.s8",
       "master.waver.skill.ascension",
       "master.wodime.skill.ascension",
       "master.wodime.skill.s1",

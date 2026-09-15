@@ -1300,6 +1300,23 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find((c) => c.id === 'master.shiki-tohno.skill.ascension')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'schedule_phase_effect' })]) }));
   });
 
+  it('grounds the twenty-one-ID Akasha/Hisui Detective/Wallachia slice with exact development snapshots and explicit state-machine boundaries', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.akasha.skill.ascension','master.akasha.skill.s1a','master.akasha.skill.s2','master.akasha.skill.s3','master.akasha.skill.s4','master.akasha.skill.s5','master.akasha.skill.s6',
+      'master.hisui-detective.skill.ascension','master.hisui-detective.skill.s1','master.hisui-detective.skill.s1a','master.hisui-detective.skill.s2','master.hisui-detective.skill.s3',
+      'master.wallachia.skill.ascension','master.wallachia.skill.s1','master.wallachia.skill.s2','master.wallachia.skill.s3','master.wallachia.skill.s4','master.wallachia.skill.s5','master.wallachia.skill.s6','master.wallachia.skill.s7','master.wallachia.skill.s8',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(21);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.document.endsWith('/data_masters.js') && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find((c) => c.id === 'master.akasha.skill.s2')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'reincarnation_rule' })]) }));
+    expect(slice.find((c) => c.id === 'master.akasha.skill.s5')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'overload_card_rule' })]) }));
+    expect(slice.find((c) => c.id === 'master.hisui-detective.skill.s3')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'detective_accusation_rule' })]) }));
+    expect(slice.find((c) => c.id === 'master.wallachia.skill.s2')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'fear_attribute_rule' })]) }));
+    expect(slice.find((c) => c.id === 'master.wallachia.skill.s8')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'tatari_deterioration_rule' })]) }));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1353,10 +1370,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 365,
-      blockedCount: 579,
+      sourceGroundedCount: 386,
+      blockedCount: 558,
       unclassifiedCount: 0,
-      structuredAbilityCount: 643,
+      structuredAbilityCount: 664,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
