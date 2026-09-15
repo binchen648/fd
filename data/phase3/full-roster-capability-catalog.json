@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 642,
-    "explicitBlockCount": 302,
+    "contractMappedCount": 657,
+    "explicitBlockCount": 287,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 229,
-      "SPECIAL_HANDLER_CANDIDATE": 411,
+      "READY_GENERIC_EXTENSION": 231,
+      "SPECIAL_HANDLER_CANDIDATE": 424,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 302,
+      "SOURCE_EVIDENCE_REQUIRED": 287,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -5678,6 +5678,22 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.danzou.skill.sc-danzou-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.darius.skill.sc-darius-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.davinci.skill.sc-davinci-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5735,6 +5751,42 @@
         },
         {
           "abilityId": "servant.diarmuid.skill.sc-diarmuid-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -6569,6 +6621,8 @@
         "servant.brynhildr.skill.sc-brynhildr-1",
         "servant.cu.skill.sc-cu-2",
         "servant.davinci.skill.sc-davinci-11",
+        "servant.diarmuid.skill.sc-diarmuid-3",
+        "servant.donquixote.skill.sc-donquixote-3",
         "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-3",
         "servant.gorgon.skill.sc-gorgon-3",
@@ -9373,6 +9427,10 @@
         "servant.dantes.skill.sc-dantes-1",
         "servant.dantes.skill.sc-dantes-2",
         "servant.dantes.skill.sc-dantes-3",
+        "servant.danzou.skill.sc-danzou-1",
+        "servant.danzou.skill.sc-danzou-2",
+        "servant.danzou.skill.sc-danzou-3",
+        "servant.darius.skill.sc-darius-4",
         "servant.davinci.skill.sc-davinci-1",
         "servant.davinci.skill.sc-davinci-11",
         "servant.davinci.skill.sc-davinci-12",
@@ -9388,6 +9446,15 @@
         "servant.deon.skill.sc-deon-2",
         "servant.deon.skill.sc-deon-3",
         "servant.diarmuid.skill.sc-diarmuid-1",
+        "servant.diarmuid.skill.sc-diarmuid-2",
+        "servant.dioscuri.skill.sc-dioscuri-1",
+        "servant.dioscuri.skill.sc-dioscuri-2",
+        "servant.dioscuri.skill.sc-dioscuri-3",
+        "servant.donquixote.skill.sc-donquixote-1",
+        "servant.donquixote.skill.sc-donquixote-2",
+        "servant.douman.skill.sc-douman-1",
+        "servant.douman.skill.sc-douman-2",
+        "servant.douman.skill.sc-douman-3",
         "servant.emiya-alt.skill.sc-emiya-alt-1",
         "servant.emiya-alt.skill.sc-emiya-alt-2",
         "servant.emiya-alt.skill.sc-emiya-alt-3",
@@ -10778,6 +10845,22 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.danzou.skill.sc-danzou-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.darius.skill.sc-darius-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.davinci.skill.sc-davinci-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -10835,6 +10918,42 @@
         },
         {
           "abilityId": "servant.diarmuid.skill.sc-diarmuid-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -11700,9 +11819,13 @@
       "servant.dantes.skill.sc-dantes-1",
       "servant.dantes.skill.sc-dantes-2",
       "servant.dantes.skill.sc-dantes-3",
+      "servant.danzou.skill.sc-danzou-1",
+      "servant.danzou.skill.sc-danzou-2",
+      "servant.danzou.skill.sc-danzou-3",
       "servant.darius.skill.sc-darius-1",
       "servant.darius.skill.sc-darius-2",
       "servant.darius.skill.sc-darius-3",
+      "servant.darius.skill.sc-darius-4",
       "servant.davinci.skill.sc-davinci-1",
       "servant.davinci.skill.sc-davinci-10",
       "servant.davinci.skill.sc-davinci-11",
@@ -11724,6 +11847,17 @@
       "servant.deon.skill.sc-deon-2",
       "servant.deon.skill.sc-deon-3",
       "servant.diarmuid.skill.sc-diarmuid-1",
+      "servant.diarmuid.skill.sc-diarmuid-2",
+      "servant.diarmuid.skill.sc-diarmuid-3",
+      "servant.dioscuri.skill.sc-dioscuri-1",
+      "servant.dioscuri.skill.sc-dioscuri-2",
+      "servant.dioscuri.skill.sc-dioscuri-3",
+      "servant.donquixote.skill.sc-donquixote-1",
+      "servant.donquixote.skill.sc-donquixote-2",
+      "servant.donquixote.skill.sc-donquixote-3",
+      "servant.douman.skill.sc-douman-1",
+      "servant.douman.skill.sc-douman-2",
+      "servant.douman.skill.sc-douman-3",
       "servant.drake.skill.sc-drake-2",
       "servant.drake.skill.sc-drake-3",
       "servant.edison.skill.sc-edison-2",
@@ -11858,111 +11992,6 @@
       "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "servant.danzou.skill.sc-danzou-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.danzou.skill.sc-danzou-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.danzou.skill.sc-danzou-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.darius.skill.sc-darius-4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.diarmuid.skill.sc-diarmuid-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.dioscuri.skill.sc-dioscuri-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.dioscuri.skill.sc-dioscuri-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.dioscuri.skill.sc-dioscuri-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.donquixote.skill.sc-donquixote-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.donquixote.skill.sc-donquixote-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.donquixote.skill.sc-donquixote-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.douman.skill.sc-douman-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.douman.skill.sc-douman-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.douman.skill.sc-douman-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.drake.skill.sc-drake-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -14282,6 +14311,10 @@
       "servant.dantes.skill.sc-dantes-1",
       "servant.dantes.skill.sc-dantes-2",
       "servant.dantes.skill.sc-dantes-3",
+      "servant.danzou.skill.sc-danzou-1",
+      "servant.danzou.skill.sc-danzou-2",
+      "servant.danzou.skill.sc-danzou-3",
+      "servant.darius.skill.sc-darius-4",
       "servant.davinci.skill.sc-davinci-1",
       "servant.davinci.skill.sc-davinci-11",
       "servant.davinci.skill.sc-davinci-12",
@@ -14297,6 +14330,15 @@
       "servant.deon.skill.sc-deon-2",
       "servant.deon.skill.sc-deon-3",
       "servant.diarmuid.skill.sc-diarmuid-1",
+      "servant.diarmuid.skill.sc-diarmuid-2",
+      "servant.dioscuri.skill.sc-dioscuri-1",
+      "servant.dioscuri.skill.sc-dioscuri-2",
+      "servant.dioscuri.skill.sc-dioscuri-3",
+      "servant.donquixote.skill.sc-donquixote-1",
+      "servant.donquixote.skill.sc-donquixote-2",
+      "servant.douman.skill.sc-douman-1",
+      "servant.douman.skill.sc-douman-2",
+      "servant.douman.skill.sc-douman-3",
       "servant.emiya-alt.skill.sc-emiya-alt-1",
       "servant.emiya-alt.skill.sc-emiya-alt-2",
       "servant.emiya-alt.skill.sc-emiya-alt-3",

@@ -1528,6 +1528,16 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.dantes.skill.sc-dantes-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'dantes_enfer_reveal_rule'})])}));
   });
 
+  it('grounds the fifteen-ID Danzou/Darius/Diarmuid/Dioscuri/DonQuixote/Douman slice from locked development snapshots', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.danzou.skill.sc-danzou-1","servant.danzou.skill.sc-danzou-2","servant.danzou.skill.sc-danzou-3","servant.darius.skill.sc-darius-4","servant.diarmuid.skill.sc-diarmuid-2","servant.diarmuid.skill.sc-diarmuid-3","servant.dioscuri.skill.sc-dioscuri-1","servant.dioscuri.skill.sc-dioscuri-2","servant.dioscuri.skill.sc-dioscuri-3","servant.donquixote.skill.sc-donquixote-1","servant.donquixote.skill.sc-donquixote-2","servant.donquixote.skill.sc-donquixote-3","servant.douman.skill.sc-douman-1","servant.douman.skill.sc-douman-2","servant.douman.skill.sc-douman-3"]); const slice=overlays.filter(c=>ids.has(c.id)); expect(slice).toHaveLength(15);
+    expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.danzou.skill.sc-danzou-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'presence_concealment_assassination_rule'})])}));
+    for(const id of ['servant.diarmuid.skill.sc-diarmuid-3','servant.donquixote.skill.sc-donquixote-3']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'move_player',destinationRule:'any_location_except_workshop'})])}));
+    for(const id of ['servant.dioscuri.skill.sc-dioscuri-1','servant.dioscuri.skill.sc-dioscuri-2','servant.dioscuri.skill.sc-dioscuri-3']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'dual_servant_rule'})])}));
+    for(const id of ['servant.douman.skill.sc-douman-1','servant.douman.skill.sc-douman-2','servant.douman.skill.sc-douman-3']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'reverse_effect_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.darius.skill.sc-darius-4')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'undead_army_half_close_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1581,10 +1591,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 642,
-      blockedCount: 302,
+      sourceGroundedCount: 657,
+      blockedCount: 287,
       unclassifiedCount: 0,
-      structuredAbilityCount: 920,
+      structuredAbilityCount: 935,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
