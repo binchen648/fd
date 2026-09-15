@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 586,
-    "explicitBlockCount": 358,
+    "contractMappedCount": 599,
+    "explicitBlockCount": 345,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -25,9 +25,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
       "READY_GENERIC_EXTENSION": 223,
-      "SPECIAL_HANDLER_CANDIDATE": 361,
+      "SPECIAL_HANDLER_CANDIDATE": 374,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 358,
+      "SOURCE_EVIDENCE_REQUIRED": 345,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -3421,6 +3421,7 @@
         "master.zouken.skill.s4",
         "servant.albion.skill.sc-albion-1",
         "servant.andersen.skill.sc-andersen-2",
+        "servant.angra.skill.sc-angra-3",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.astolfo.skill.sc-astolfo-1",
         "servant.darius.skill.sc-darius-1",
@@ -5209,6 +5210,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.arash.skill.sc-arash-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5309,6 +5322,22 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.astraea.skill.sc-astraea-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.atalanta.skill.sc-atalanta-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.avicebron.skill.sc-avicebron-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5322,6 +5351,30 @@
         },
         {
           "abilityId": "servant.avicebron.skill.sc-avicebron-5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -6494,7 +6547,10 @@
         "servant.artoria-alt.skill.sc-artoria-alt-1",
         "servant.artoria-alt.skill.sc-artoria-alt-3",
         "servant.artoriac.skill.sc-artoriac-1",
+        "servant.astraea.skill.sc-astraea-1",
+        "servant.astraea.skill.sc-astraea-2",
         "servant.atalanta.skill.sc-atalanta-1",
+        "servant.barghest.skill.sc-barghest-2",
         "servant.bedivere.skill.sc-bedivere-1",
         "servant.bedivere.skill.sc-bedivere-3",
         "servant.charlemagne.skill.sc-charlemagne-3",
@@ -8977,6 +9033,9 @@
         "servant.anastasia.skill.sc-anastasia-2",
         "servant.anastasia.skill.sc-anastasia-3",
         "servant.andersen.skill.sc-andersen-3",
+        "servant.angra.skill.sc-angra-1",
+        "servant.angra.skill.sc-angra-2",
+        "servant.angra.skill.sc-angra-3",
         "servant.arash.skill.sc-arash-1",
         "servant.arash.skill.sc-arash-2",
         "servant.arash.skill.sc-arash-3",
@@ -9002,10 +9061,20 @@
         "servant.ashva.skill.sc-ashva-3",
         "servant.astolfo.skill.sc-astolfo-2",
         "servant.astolfo.skill.sc-astolfo-3",
+        "servant.astraea.skill.sc-astraea-1",
+        "servant.astraea.skill.sc-astraea-2",
+        "servant.astraea.skill.sc-astraea-3",
+        "servant.atalanta.skill.sc-atalanta-3",
         "servant.avicebron.skill.sc-avicebron-1",
         "servant.avicebron.skill.sc-avicebron-2",
         "servant.avicebron.skill.sc-avicebron-4",
         "servant.avicebron.skill.sc-avicebron-5",
+        "servant.baobhan.skill.sc-baobhan-1",
+        "servant.baobhan.skill.sc-baobhan-2",
+        "servant.baobhan.skill.sc-baobhan-3",
+        "servant.barghest.skill.sc-barghest-1",
+        "servant.barghest.skill.sc-barghest-2",
+        "servant.barghest.skill.sc-barghest-3",
         "servant.bb.skill.sc-bb-1",
         "servant.bb.skill.sc-bb-2",
         "servant.bb.skill.sc-bb-3",
@@ -10050,6 +10119,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.arash.skill.sc-arash-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -10150,6 +10231,22 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.astraea.skill.sc-astraea-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.astraea.skill.sc-astraea-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.atalanta.skill.sc-atalanta-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.avicebron.skill.sc-avicebron-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -10163,6 +10260,30 @@
         },
         {
           "abilityId": "servant.avicebron.skill.sc-avicebron-5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.baobhan.skill.sc-baobhan-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.barghest.skill.sc-barghest-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -11035,6 +11156,9 @@
       "servant.andersen.skill.sc-andersen-1",
       "servant.andersen.skill.sc-andersen-2",
       "servant.andersen.skill.sc-andersen-3",
+      "servant.angra.skill.sc-angra-1",
+      "servant.angra.skill.sc-angra-2",
+      "servant.angra.skill.sc-angra-3",
       "servant.arash.skill.sc-arash-1",
       "servant.arash.skill.sc-arash-2",
       "servant.arash.skill.sc-arash-3",
@@ -11065,13 +11189,23 @@
       "servant.astolfo.skill.sc-astolfo-1",
       "servant.astolfo.skill.sc-astolfo-2",
       "servant.astolfo.skill.sc-astolfo-3",
+      "servant.astraea.skill.sc-astraea-1",
+      "servant.astraea.skill.sc-astraea-2",
+      "servant.astraea.skill.sc-astraea-3",
       "servant.atalanta.skill.sc-atalanta-1",
       "servant.atalanta.skill.sc-atalanta-2",
+      "servant.atalanta.skill.sc-atalanta-3",
       "servant.avicebron.skill.sc-avicebron-1",
       "servant.avicebron.skill.sc-avicebron-2",
       "servant.avicebron.skill.sc-avicebron-3",
       "servant.avicebron.skill.sc-avicebron-4",
       "servant.avicebron.skill.sc-avicebron-5",
+      "servant.baobhan.skill.sc-baobhan-1",
+      "servant.baobhan.skill.sc-baobhan-2",
+      "servant.baobhan.skill.sc-baobhan-3",
+      "servant.barghest.skill.sc-barghest-1",
+      "servant.barghest.skill.sc-barghest-2",
+      "servant.barghest.skill.sc-barghest-3",
       "servant.bb.skill.sc-bb-1",
       "servant.bb.skill.sc-bb-2",
       "servant.bb.skill.sc-bb-3",
@@ -11250,97 +11384,6 @@
       "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "servant.angra.skill.sc-angra-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.angra.skill.sc-angra-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.angra.skill.sc-angra-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.astraea.skill.sc-astraea-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.astraea.skill.sc-astraea-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.astraea.skill.sc-astraea-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.atalanta.skill.sc-atalanta-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.baobhan.skill.sc-baobhan-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.baobhan.skill.sc-baobhan-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.baobhan.skill.sc-baobhan-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.barghest.skill.sc-barghest-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.barghest.skill.sc-barghest-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.barghest.skill.sc-barghest-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.benkei.skill.sc-benkei-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -13972,6 +14015,9 @@
       "servant.anastasia.skill.sc-anastasia-3",
       "servant.andersen.skill.sc-andersen-2",
       "servant.andersen.skill.sc-andersen-3",
+      "servant.angra.skill.sc-angra-1",
+      "servant.angra.skill.sc-angra-2",
+      "servant.angra.skill.sc-angra-3",
       "servant.arash.skill.sc-arash-1",
       "servant.arash.skill.sc-arash-2",
       "servant.arash.skill.sc-arash-3",
@@ -13997,10 +14043,20 @@
       "servant.ashva.skill.sc-ashva-3",
       "servant.astolfo.skill.sc-astolfo-2",
       "servant.astolfo.skill.sc-astolfo-3",
+      "servant.astraea.skill.sc-astraea-1",
+      "servant.astraea.skill.sc-astraea-2",
+      "servant.astraea.skill.sc-astraea-3",
+      "servant.atalanta.skill.sc-atalanta-3",
       "servant.avicebron.skill.sc-avicebron-1",
       "servant.avicebron.skill.sc-avicebron-2",
       "servant.avicebron.skill.sc-avicebron-4",
       "servant.avicebron.skill.sc-avicebron-5",
+      "servant.baobhan.skill.sc-baobhan-1",
+      "servant.baobhan.skill.sc-baobhan-2",
+      "servant.baobhan.skill.sc-baobhan-3",
+      "servant.barghest.skill.sc-barghest-1",
+      "servant.barghest.skill.sc-barghest-2",
+      "servant.barghest.skill.sc-barghest-3",
       "servant.bb.skill.sc-bb-1",
       "servant.bb.skill.sc-bb-2",
       "servant.bb.skill.sc-bb-3",

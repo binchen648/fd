@@ -23294,6 +23294,344 @@
         }
       ],
       "referencePrintedTextSha256": "1dba4cf2001c62c1c76f9cb45285756c5e39fc9ffdb40c8a6e666c57671a4893"
+    },
+    {
+      "id": "servant.angra.skill.sc-angra-1",
+      "printedText": "【真名解放】\n行动阶段：战斗阶段结束后弃置自己4张牌（若不足4张，则手牌全部弃置）。若你战败，每弃置一张【复仇者】，你便可偷取一名击败你的胜利者2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_angra_1",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】\n行动阶段：战斗阶段结束后弃置自己4张牌（若不足4张，则手牌全部弃置）。若你战败，每弃置一张【复仇者】，你便可偷取一名击败你的胜利者2点战果。",
+        "sourceTextSha256": "33c0c269a15b16379b474454125dabf863e3a81971ef3e3458db05b1f64a6850"
+      },
+      "abilities": [
+        {
+          "id": "angra.sc_angra_1.semantic",
+          "printedClause": "【真名解放】\n行动阶段：战斗阶段结束后弃置自己4张牌（若不足4张，则手牌全部弃置）。若你战败，每弃置一张【复仇者】，你便可偷取一名击败你的胜利者2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "avenger_discard_vp_steal_rule",
+              "operation": "preserve_printed_rule_exactly_as_source_grounded_reviewed_special"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "33c0c269a15b16379b474454125dabf863e3a81971ef3e3458db05b1f64a6850"
+    },
+    {
+      "id": "servant.angra.skill.sc-angra-2",
+      "printedText": "行动阶段：将你的弃牌堆中的所有【复仇者】加入手牌。如果你于上一回合中战败，则将它们加入攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_angra_2",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "行动阶段：将你的弃牌堆中的所有【复仇者】加入手牌。如果你于上一回合中战败，则将它们加入攻击。",
+        "sourceTextSha256": "e2f06650b95fa1d7dd6dd5c415a9324f66a36431cb88e5d26b8f6432166ea51f"
+      },
+      "abilities": [
+        {
+          "id": "angra.sc_angra_2.semantic",
+          "printedClause": "行动阶段：将你的弃牌堆中的所有【复仇者】加入手牌。如果你于上一回合中战败，则将它们加入攻击。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "avenger_discard_recovery_rule",
+              "operation": "preserve_printed_rule_exactly_as_source_grounded_reviewed_special"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "e2f06650b95fa1d7dd6dd5c415a9324f66a36431cb88e5d26b8f6432166ea51f"
+    },
+    {
+      "id": "servant.angra.skill.sc-angra-3",
+      "printedText": "你拥有的魔力少于8点也可使用此牌。\n行动阶段：若你位于的战场存在对手，抽2张牌。若你独自位于一处战场，获得4点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_angra_3",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "你拥有的魔力少于8点也可使用此牌。\n行动阶段：若你位于的战场存在对手，抽2张牌。若你独自位于一处战场，获得4点魔力。",
+        "sourceTextSha256": "12c80006b8157e92652f08f6cdfa5ed3154a22b584489566081c6f13ef226ed8"
+      },
+      "abilities": [
+        {
+          "id": "angra.sc_angra_3.semantic",
+          "printedClause": "你拥有的魔力少于8点也可使用此牌。\n行动阶段：若你位于的战场存在对手，抽2张牌。若你独自位于一处战场，获得4点魔力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "battlefield_presence_resource_rule",
+              "operation": "preserve_printed_rule_exactly_as_source_grounded_reviewed_special"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "12c80006b8157e92652f08f6cdfa5ed3154a22b584489566081c6f13ef226ed8"
+    },
+    {
+      "id": "servant.astraea.skill.sc-astraea-1",
+      "printedText": "【真名解放】战斗阶段：移除所有玩家的【谴责】，每有一名被移除【谴责】的玩家，此牌+4威力（至多+8威力）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_astraea_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】战斗阶段：移除所有玩家的【谴责】，每有一名被移除【谴责】的玩家，此牌+4威力（至多+8威力）。",
+        "sourceTextSha256": "bea73c60695f7f75d05826ac2e52b772897e447823fe1f4665ea320a02e05363"
+      },
+      "abilities": [
+        {
+          "id": "astraea.sc_astraea_1.semantic",
+          "printedClause": "【真名解放】战斗阶段：移除所有玩家的【谴责】，每有一名被移除【谴责】的玩家，此牌+4威力（至多+8威力）。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "condemnation_release_power_rule",
+              "operation": "preserve_printed_rule_exactly_as_source_grounded_reviewed_special"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "bea73c60695f7f75d05826ac2e52b772897e447823fe1f4665ea320a02e05363"
+    },
+    {
+      "id": "servant.astraea.skill.sc-astraea-2",
+      "printedText": "被动/行动阶段：若你的攻击中不包含被【制约】的属性，合计威力+2。\n战斗阶段：若与你战斗的对手控制的攻击有两张及以上且其中不包含至少一种相同属性，则其合计威力-4。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_astraea_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动/行动阶段：若你的攻击中不包含被【制约】的属性，合计威力+2。\n战斗阶段：若与你战斗的对手控制的攻击有两张及以上且其中不包含至少一种相同属性，则其合计威力-4。",
+        "sourceTextSha256": "2c5c5b93ed7e088efa08d2329bc5dd17015af18c378c24f79d39d6d0b50e88c2"
+      },
+      "abilities": [
+        {
+          "id": "astraea.sc_astraea_2.semantic",
+          "printedClause": "被动/行动阶段：若你的攻击中不包含被【制约】的属性，合计威力+2。\n战斗阶段：若与你战斗的对手控制的攻击有两张及以上且其中不包含至少一种相同属性，则其合计威力-4。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "constrained_attribute_power_rule",
+              "operation": "preserve_printed_rule_exactly_as_source_grounded_reviewed_special"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "2c5c5b93ed7e088efa08d2329bc5dd17015af18c378c24f79d39d6d0b50e88c2"
+    },
+    {
+      "id": "servant.astraea.skill.sc-astraea-3",
+      "printedText": "被动/前哨阶段：弃置一张牌，【制约】它的一种属性。\n被【谴责】的玩家从手牌和技能区使用含【制约】属性的攻击时消耗+3（最多+12）。你的对手使用含【制约】属性卡牌即视为被【谴责】，直到他们的【谴责】被移除。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_astraea_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动/前哨阶段：弃置一张牌，【制约】它的一种属性。\n被【谴责】的玩家从手牌和技能区使用含【制约】属性的攻击时消耗+3（最多+12）。你的对手使用含【制约】属性卡牌即视为被【谴责】，直到他们的【谴责】被移除。",
+        "sourceTextSha256": "337ba3075de20babaed4fc6ef186f849e578a211f0559a1586af96898848d156"
+      },
+      "abilities": [
+        {
+          "id": "astraea.sc_astraea_3.semantic",
+          "printedClause": "被动/前哨阶段：弃置一张牌，【制约】它的一种属性。\n被【谴责】的玩家从手牌和技能区使用含【制约】属性的攻击时消耗+3（最多+12）。你的对手使用含【制约】属性卡牌即视为被【谴责】，直到他们的【谴责】被移除。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "restraint_condemnation_rule",
+              "operation": "preserve_printed_rule_exactly_as_source_grounded_reviewed_special"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "337ba3075de20babaed4fc6ef186f849e578a211f0559a1586af96898848d156"
+    },
+    {
+      "id": "servant.atalanta.skill.sc-atalanta-3",
+      "printedText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_atalanta_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+        "sourceTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+      },
+      "abilities": [
+        {
+          "id": "atalanta.sc_atalanta_3.semantic",
+          "printedClause": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "independent_action_rule",
+              "operation": "preserve_printed_rule_exactly_as_source_grounded_reviewed_special"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+    },
+    {
+      "id": "servant.baobhan.skill.sc-baobhan-1",
+      "printedText": "受祝福的后继者-战斗阶段：选择任意名与你位于同一地点的，不具有【分身】的对手，战力结算时，除非你处于【败北】状态或被选择的对手离开该地点，以他们各自的当前合计威力创造相应的【分身】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_baobhan_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "受祝福的后继者-战斗阶段：选择任意名与你位于同一地点的，不具有【分身】的对手，战力结算时，除非你处于【败北】状态或被选择的对手离开该地点，以他们各自的当前合计威力创造相应的【分身】。",
+        "sourceTextSha256": "6c50a6ea57b93dd012a47459a8669603db7c813df06d7471e903b61954e07b91"
+      },
+      "abilities": [
+        {
+          "id": "baobhan.sc_baobhan_1.semantic",
+          "printedClause": "受祝福的后继者-战斗阶段：选择任意名与你位于同一地点的，不具有【分身】的对手，战力结算时，除非你处于【败北】状态或被选择的对手离开该地点，以他们各自的当前合计威力创造相应的【分身】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "doppelganger_creation_rule",
+              "operation": "preserve_printed_rule_exactly_as_source_grounded_reviewed_special"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "6c50a6ea57b93dd012a47459a8669603db7c813df06d7471e903b61954e07b91"
+    },
+    {
+      "id": "servant.baobhan.skill.sc-baobhan-2",
+      "printedText": "【真名解放】\n妖精吸血-行动阶段：选择一名【分身】，在你的战斗阶段，若你的合计威力超过该【分身】，令【分身】的本体【败北】。回合结束时，移除该【分身】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_baobhan_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n妖精吸血-行动阶段：选择一名【分身】，在你的战斗阶段，若你的合计威力超过该【分身】，令【分身】的本体【败北】。回合结束时，移除该【分身】。",
+        "sourceTextSha256": "d24b08692c1f949b6f48b19e163705f8d36dc27e19540ba25d8e6510dcd52b8b"
+      },
+      "abilities": [
+        {
+          "id": "baobhan.sc_baobhan_2.semantic",
+          "printedClause": "【真名解放】\n妖精吸血-行动阶段：选择一名【分身】，在你的战斗阶段，若你的合计威力超过该【分身】，令【分身】的本体【败北】。回合结束时，移除该【分身】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "doppelganger_defeat_rule",
+              "operation": "preserve_printed_rule_exactly_as_source_grounded_reviewed_special"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d24b08692c1f949b6f48b19e163705f8d36dc27e19540ba25d8e6510dcd52b8b"
+    },
+    {
+      "id": "servant.baobhan.skill.sc-baobhan-3",
+      "printedText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_baobhan_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+        "sourceTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+      },
+      "abilities": [
+        {
+          "id": "baobhan.sc_baobhan_3.semantic",
+          "printedClause": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "independent_action_rule",
+              "operation": "preserve_printed_rule_exactly_as_source_grounded_reviewed_special"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+    },
+    {
+      "id": "servant.barghest.skill.sc-barghest-1",
+      "printedText": "故土难离-被动：你无法从魔术工房或深山町移动至新都，或是从新都移动至魔术工房或深山町。\n野性法则-战斗阶段：将与你位于同一战场的对手控制的，被使用了行动或战斗阶段能力的攻击威力设为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_barghest_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "故土难离-被动：你无法从魔术工房或深山町移动至新都，或是从新都移动至魔术工房或深山町。\n野性法则-战斗阶段：将与你位于同一战场的对手控制的，被使用了行动或战斗阶段能力的攻击威力设为0。",
+        "sourceTextSha256": "a493123fe6a2599bcdb2d2f3c91e96456330a8831b8f8de13b0a122817a54a35"
+      },
+      "abilities": [
+        {
+          "id": "barghest.sc_barghest_1.semantic",
+          "printedClause": "故土难离-被动：你无法从魔术工房或深山町移动至新都，或是从新都移动至魔术工房或深山町。\n野性法则-战斗阶段：将与你位于同一战场的对手控制的，被使用了行动或战斗阶段能力的攻击威力设为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "route_restriction_used_ability_suppression_rule",
+              "operation": "preserve_printed_rule_exactly_as_source_grounded_reviewed_special"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "a493123fe6a2599bcdb2d2f3c91e96456330a8831b8f8de13b0a122817a54a35"
+    },
+    {
+      "id": "servant.barghest.skill.sc-barghest-2",
+      "printedText": "【真名解放】\n行动阶段：展示至多3张你的手牌。此牌的威力增加你因此效果展示的牌的印刷基本威力之和。若你展示了3张印刷基本威力为3的牌，此牌的威力改为增加15点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_barghest_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n行动阶段：展示至多3张你的手牌。此牌的威力增加你因此效果展示的牌的印刷基本威力之和。若你展示了3张印刷基本威力为3的牌，此牌的威力改为增加15点。",
+        "sourceTextSha256": "171b52977d8d6d3099130e4a2bb7d19a2dcff860c9846fd2fdf8d334bda3c04e"
+      },
+      "abilities": [
+        {
+          "id": "barghest.sc_barghest_2.semantic",
+          "printedClause": "【真名解放】\n行动阶段：展示至多3张你的手牌。此牌的威力增加你因此效果展示的牌的印刷基本威力之和。若你展示了3张印刷基本威力为3的牌，此牌的威力改为增加15点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "revealed_hand_power_sum_rule",
+              "operation": "preserve_printed_rule_exactly_as_source_grounded_reviewed_special"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "171b52977d8d6d3099130e4a2bb7d19a2dcff860c9846fd2fdf8d334bda3c04e"
+    },
+    {
+      "id": "servant.barghest.skill.sc-barghest-3",
+      "printedText": "残留：当你进入魔术工房时，关闭此牌。你的行动阶段开始时抽2张牌，你本回合仅可打出这2张牌但你可以弃置以此效果抽取的✖特殊牌来打出一张你的技能牌（每弃置一张便可打出一张），以此法打出的技能魔力消耗-2。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_barghest_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "残留：当你进入魔术工房时，关闭此牌。你的行动阶段开始时抽2张牌，你本回合仅可打出这2张牌但你可以弃置以此效果抽取的✖特殊牌来打出一张你的技能牌（每弃置一张便可打出一张），以此法打出的技能魔力消耗-2。",
+        "sourceTextSha256": "6b11fe445b9f7bf9f8eab0a119052f8ae3c5a7014b970cbc4ccf6d8aada07c89"
+      },
+      "abilities": [
+        {
+          "id": "barghest.sc_barghest_3.semantic",
+          "printedClause": "残留：当你进入魔术工房时，关闭此牌。你的行动阶段开始时抽2张牌，你本回合仅可打出这2张牌但你可以弃置以此效果抽取的✖特殊牌来打出一张你的技能牌（每弃置一张便可打出一张），以此法打出的技能魔力消耗-2。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "drawn_cards_play_lock_rule",
+              "operation": "preserve_printed_rule_exactly_as_source_grounded_reviewed_special"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "6b11fe445b9f7bf9f8eab0a119052f8ae3c5a7014b970cbc4ccf6d8aada07c89"
     }
   ]
 }
