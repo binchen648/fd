@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 705,
-    "explicitBlockCount": 239,
+    "contractMappedCount": 721,
+    "explicitBlockCount": 223,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 236,
-      "SPECIAL_HANDLER_CANDIDATE": 467,
+      "READY_GENERIC_EXTENSION": 238,
+      "SPECIAL_HANDLER_CANDIDATE": 481,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 239,
+      "SOURCE_EVIDENCE_REQUIRED": 223,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -255,6 +255,14 @@
         },
         {
           "abilityId": "servant.illya.skill.sc-illya-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -548,6 +556,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.kama.skill.sc-kama-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -822,6 +838,14 @@
         },
         {
           "abilityId": "servant.illya.skill.sc-illya-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -1105,6 +1129,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1215,6 +1247,8 @@
         "servant.helena.skill.sc-helena-1",
         "servant.hephaistion.skill.sc-hephaistion-3",
         "servant.illya.skill.sc-illya-2",
+        "servant.iskandar.skill.sc-iskandar-1",
+        "servant.ivan.skill.sc-ivan-3",
         "servant.martha.skill.sc-martha-3",
         "servant.napoleon.skill.sc-napoleon-2",
         "servant.nero.skill.sc-nero-2",
@@ -1613,6 +1647,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1924,6 +1966,14 @@
         },
         {
           "abilityId": "servant.illya.skill.sc-illya-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2242,6 +2292,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2553,6 +2611,14 @@
         },
         {
           "abilityId": "servant.illya.skill.sc-illya-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2870,6 +2936,14 @@
         },
         {
           "abilityId": "servant.illya.skill.sc-illya-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3422,7 +3496,15 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.iskandar.skill.sc-iskandar-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -4066,7 +4148,15 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.iskandar.skill.sc-iskandar-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -4234,7 +4324,9 @@
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
         "servant.hephaistion.skill.sc-hephaistion-3",
+        "servant.iskandar.skill.sc-iskandar-1",
         "servant.iskandar.skill.sc-iskandar-2",
+        "servant.ivan.skill.sc-ivan-3",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
         "servant.lionking.skill.sc-lionking-3",
@@ -6090,6 +6182,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.himiko.skill.sc-himiko-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.himiko.skill.sc-himiko-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.himiko.skill.sc-himiko-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.hokusai.skill.sc-hokusai-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -6103,6 +6207,14 @@
         },
         {
           "abilityId": "servant.hokusai.skill.sc-hokusai-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ibaraki.skill.sc-ibaraki-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ibaraki.skill.sc-ibaraki-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -6151,6 +6263,42 @@
         },
         {
           "abilityId": "servant.ishtar.skill.sc-ishtar-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-np",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.izou.skill.sc-izou-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.izou.skill.sc-izou-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.izou.skill.sc-izou-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jack.skill.sc-jack-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jack.skill.sc-jack-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jack.skill.sc-jack-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -7131,6 +7279,7 @@
         "servant.gawain.skill.sc-gawain-3",
         "servant.hokusai.skill.sc-hokusai-3",
         "servant.ibaraki.skill.sc-ibaraki-1",
+        "servant.ibaraki.skill.sc-ibaraki-3",
         "servant.illya.skill.sc-illya-2",
         "servant.illya.skill.sc-illya-4",
         "servant.kama.skill.sc-kama-1",
@@ -9775,10 +9924,15 @@
         "servant.hijikata.skill.sc-hijikata-1",
         "servant.hijikata.skill.sc-hijikata-2",
         "servant.hijikata.skill.sc-hijikata-3",
+        "servant.himiko.skill.sc-himiko-1",
+        "servant.himiko.skill.sc-himiko-2",
+        "servant.himiko.skill.sc-himiko-3",
         "servant.hokusai.skill.sc-hokusai-1",
         "servant.hokusai.skill.sc-hokusai-2",
         "servant.hokusai.skill.sc-hokusai-3",
         "servant.hokusai.skill.sc-hokusai-4",
+        "servant.ibaraki.skill.sc-ibaraki-2",
+        "servant.ibaraki.skill.sc-ibaraki-3",
         "servant.illya.skill.sc-illya-1",
         "servant.illya.skill.sc-illya-10",
         "servant.illya.skill.sc-illya-3",
@@ -9791,6 +9945,15 @@
         "servant.ishtar.skill.sc-ishtar-1",
         "servant.ishtar.skill.sc-ishtar-2",
         "servant.ishtar.skill.sc-ishtar-3",
+        "servant.iskandar.skill.sc-iskandar-np",
+        "servant.ivan.skill.sc-ivan-1",
+        "servant.ivan.skill.sc-ivan-2",
+        "servant.izou.skill.sc-izou-1",
+        "servant.izou.skill.sc-izou-2",
+        "servant.izou.skill.sc-izou-3",
+        "servant.jack.skill.sc-jack-1",
+        "servant.jack.skill.sc-jack-2",
+        "servant.jack.skill.sc-jack-3",
         "servant.jason.skill.sc-jason-1",
         "servant.jason.skill.sc-jason-2",
         "servant.jason.skill.sc-jason-3",
@@ -11476,6 +11639,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.himiko.skill.sc-himiko-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.himiko.skill.sc-himiko-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.himiko.skill.sc-himiko-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.hokusai.skill.sc-hokusai-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -11489,6 +11664,14 @@
         },
         {
           "abilityId": "servant.hokusai.skill.sc-hokusai-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ibaraki.skill.sc-ibaraki-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ibaraki.skill.sc-ibaraki-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -11541,6 +11724,42 @@
         },
         {
           "abilityId": "servant.iskandar.skill.sc-iskandar-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-np",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ivan.skill.sc-ivan-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.izou.skill.sc-izou-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.izou.skill.sc-izou-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.izou.skill.sc-izou-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jack.skill.sc-jack-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jack.skill.sc-jack-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jack.skill.sc-jack-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -12407,11 +12626,16 @@
       "servant.hijikata.skill.sc-hijikata-1",
       "servant.hijikata.skill.sc-hijikata-2",
       "servant.hijikata.skill.sc-hijikata-3",
+      "servant.himiko.skill.sc-himiko-1",
+      "servant.himiko.skill.sc-himiko-2",
+      "servant.himiko.skill.sc-himiko-3",
       "servant.hokusai.skill.sc-hokusai-1",
       "servant.hokusai.skill.sc-hokusai-2",
       "servant.hokusai.skill.sc-hokusai-3",
       "servant.hokusai.skill.sc-hokusai-4",
       "servant.ibaraki.skill.sc-ibaraki-1",
+      "servant.ibaraki.skill.sc-ibaraki-2",
+      "servant.ibaraki.skill.sc-ibaraki-3",
       "servant.illya.skill.sc-illya-1",
       "servant.illya.skill.sc-illya-10",
       "servant.illya.skill.sc-illya-2",
@@ -12425,7 +12649,18 @@
       "servant.ishtar.skill.sc-ishtar-1",
       "servant.ishtar.skill.sc-ishtar-2",
       "servant.ishtar.skill.sc-ishtar-3",
+      "servant.iskandar.skill.sc-iskandar-1",
       "servant.iskandar.skill.sc-iskandar-2",
+      "servant.iskandar.skill.sc-iskandar-np",
+      "servant.ivan.skill.sc-ivan-1",
+      "servant.ivan.skill.sc-ivan-2",
+      "servant.ivan.skill.sc-ivan-3",
+      "servant.izou.skill.sc-izou-1",
+      "servant.izou.skill.sc-izou-2",
+      "servant.izou.skill.sc-izou-3",
+      "servant.jack.skill.sc-jack-1",
+      "servant.jack.skill.sc-jack-2",
+      "servant.jack.skill.sc-jack-3",
       "servant.jason.skill.sc-jason-1",
       "servant.jason.skill.sc-jason-2",
       "servant.jason.skill.sc-jason-3",
@@ -12523,118 +12758,6 @@
       "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "servant.himiko.skill.sc-himiko-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.himiko.skill.sc-himiko-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.himiko.skill.sc-himiko-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ibaraki.skill.sc-ibaraki-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ibaraki.skill.sc-ibaraki-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.iskandar.skill.sc-iskandar-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.iskandar.skill.sc-iskandar-np",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ivan.skill.sc-ivan-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ivan.skill.sc-ivan-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ivan.skill.sc-ivan-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.izou.skill.sc-izou-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.izou.skill.sc-izou-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.izou.skill.sc-izou-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jack.skill.sc-jack-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jack.skill.sc-jack-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jack.skill.sc-jack-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.jaguarman.skill.sc-jaguarman-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -14586,10 +14709,15 @@
       "servant.hijikata.skill.sc-hijikata-1",
       "servant.hijikata.skill.sc-hijikata-2",
       "servant.hijikata.skill.sc-hijikata-3",
+      "servant.himiko.skill.sc-himiko-1",
+      "servant.himiko.skill.sc-himiko-2",
+      "servant.himiko.skill.sc-himiko-3",
       "servant.hokusai.skill.sc-hokusai-1",
       "servant.hokusai.skill.sc-hokusai-2",
       "servant.hokusai.skill.sc-hokusai-3",
       "servant.hokusai.skill.sc-hokusai-4",
+      "servant.ibaraki.skill.sc-ibaraki-2",
+      "servant.ibaraki.skill.sc-ibaraki-3",
       "servant.illya.skill.sc-illya-1",
       "servant.illya.skill.sc-illya-10",
       "servant.illya.skill.sc-illya-3",
@@ -14602,6 +14730,15 @@
       "servant.ishtar.skill.sc-ishtar-1",
       "servant.ishtar.skill.sc-ishtar-2",
       "servant.ishtar.skill.sc-ishtar-3",
+      "servant.iskandar.skill.sc-iskandar-np",
+      "servant.ivan.skill.sc-ivan-1",
+      "servant.ivan.skill.sc-ivan-2",
+      "servant.izou.skill.sc-izou-1",
+      "servant.izou.skill.sc-izou-2",
+      "servant.izou.skill.sc-izou-3",
+      "servant.jack.skill.sc-jack-1",
+      "servant.jack.skill.sc-jack-2",
+      "servant.jack.skill.sc-jack-3",
       "servant.jason.skill.sc-jason-1",
       "servant.jason.skill.sc-jason-2",
       "servant.jason.skill.sc-jason-3",
