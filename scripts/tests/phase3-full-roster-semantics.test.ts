@@ -1490,6 +1490,25 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.benkei.skill.sc-benkei-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'skill_copy_lifecycle_rule'})])})); expect(slice.find(c=>c.id==='servant.brynhildr.skill.sc-brynhildr-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'love_bond_vp_rule'})])}));
   });
 
+  it('grounds the thirteen-ID Caenis/Caligula/Carmilla/Chloe/Clytie slice from locked development snapshots', () => {
+    const overlays=loadSourceEvidenceOverlayCards();
+    const ids=new Set([
+      'servant.caenis.skill.sc-caenis-1','servant.caenis.skill.sc-caenis-2','servant.caenis.skill.sc-caenis-3',
+      'servant.caligula.skill.sc-caligula-2','servant.caligula.skill.sc-caligula-3',
+      'servant.carmilla.skill.sc-carmilla-1','servant.carmilla.skill.sc-carmilla-2','servant.carmilla.skill.sc-carmilla-3',
+      'servant.chloe.skill.sc-chloe-2','servant.chloe.skill.sc-chloe-3',
+      'servant.clytie.skill.sc-clytie-1','servant.clytie.skill.sc-clytie-2','servant.clytie.skill.sc-clytie-4',
+    ]);
+    const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(13);
+    expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.caenis.skill.sc-caenis-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'caenis_poseidon_favor_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.caligula.skill.sc-caligula-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'caligula_madness_spread_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.carmilla.skill.sc-carmilla-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'carmilla_torture_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.chloe.skill.sc-chloe-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'chloe_kanshou_bakuya_rule'})])}));
+    for(const id of ['servant.clytie.skill.sc-clytie-1','servant.clytie.skill.sc-clytie-2','servant.clytie.skill.sc-clytie-4']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'foreign_life_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1543,10 +1562,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 614,
-      blockedCount: 330,
+      sourceGroundedCount: 627,
+      blockedCount: 317,
       unclassifiedCount: 0,
-      structuredAbilityCount: 892,
+      structuredAbilityCount: 905,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

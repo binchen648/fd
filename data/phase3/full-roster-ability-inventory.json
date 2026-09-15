@@ -72264,18 +72264,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_caenis_1"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CAENIS_POSEIDON_FAVOR_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -72283,26 +72288,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "caenis.sc_caenis_1.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+              "locator": "sc_caenis_1#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CAENIS_POSEIDON_FAVOR_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.caenis-poseidon-favor"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:caenis_poseidon_favor_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -72376,18 +72408,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_caenis_2"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CAENIS_GOLDEN_WINGS_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -72395,26 +72432,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "caenis.sc_caenis_2.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+              "locator": "sc_caenis_2#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CAENIS_GOLDEN_WINGS_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.caenis-golden-wings"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:caenis_golden_wings_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -72478,18 +72542,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_caenis_3"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CAENIS_MAELSTROM_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -72497,26 +72566,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "caenis.sc_caenis_3.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+              "locator": "sc_caenis_3#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CAENIS_MAELSTROM_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.caenis-maelstrom"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:caenis_maelstrom_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -72769,18 +72865,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_caligula_2"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CALIGULA_MAD_TYRANT_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -72788,26 +72889,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "caligula.sc_caligula_2.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+              "locator": "sc_caligula_2#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CALIGULA_MAD_TYRANT_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.caligula-mad-tyrant"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:caligula_mad_tyrant_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -72861,18 +72989,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_caligula_3"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CALIGULA_MADNESS_SPREAD_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -72880,26 +73013,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "caligula.sc_caligula_3.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+              "locator": "sc_caligula_3#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CALIGULA_MADNESS_SPREAD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.caligula-flucticulus-diana"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:caligula_madness_spread_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -72973,18 +73133,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_carmilla_1"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CARMILLA_FRESH_BLOOD_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -72992,26 +73157,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "carmilla.sc_carmilla_1.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+              "locator": "sc_carmilla_1#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CARMILLA_FRESH_BLOOD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.carmilla-fresh-blood"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:carmilla_fresh_blood_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -73075,18 +73267,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_carmilla_2"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CARMILLA_TORTURE_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -73094,26 +73291,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "carmilla.sc_carmilla_2.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+              "locator": "sc_carmilla_2#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CARMILLA_TORTURE_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.carmilla-immoral-suggestion"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:carmilla_torture_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -73177,18 +73401,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_carmilla_3"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CARMILLA_PHANTOM_MAIDEN_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -73196,26 +73425,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "carmilla.sc_carmilla_3.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+              "locator": "sc_carmilla_3#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CARMILLA_PHANTOM_MAIDEN_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.carmilla-phantom-maiden"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:carmilla_phantom_maiden_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -74332,18 +74588,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_chloe_2"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CHLOE_PROJECTION_MAGIC_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -74351,26 +74612,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chloe.sc_chloe_2.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_saber_archer.js",
+              "locator": "sc_chloe_2#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CHLOE_PROJECTION_MAGIC_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.chloe-projection-magic"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:chloe_projection_magic_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -74434,18 +74722,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_chloe_3"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CHLOE_KANSHOU_BAKUYA_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -74453,26 +74746,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chloe.sc_chloe_3.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_saber_archer.js",
+              "locator": "sc_chloe_3#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CHLOE_KANSHOU_BAKUYA_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.chloe-kanshou-bakuya"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:chloe_kanshou_bakuya_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -74536,18 +74856,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_clytie_1"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "FOREIGN_LIFE_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -74555,26 +74880,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "clytie.sc_clytie_1.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+              "locator": "sc_clytie_1#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "FOREIGN_LIFE_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.clytie-starry-night"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:foreign_life_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -74638,18 +74990,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_clytie_2"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "FOREIGN_LIFE_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -74657,26 +75014,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "clytie.sc_clytie_2.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+              "locator": "sc_clytie_2#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "FOREIGN_LIFE_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.clytie-water-nymph"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:foreign_life_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -74889,18 +75273,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_clytie_4"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "FOREIGN_LIFE_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -74908,26 +75297,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "clytie.sc_clytie_4.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+              "locator": "sc_clytie_4#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "FOREIGN_LIFE_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.outer-god-life"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:foreign_life_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -131089,15 +131505,15 @@
   ],
   "semanticSummary": {
     "totalIdentityCount": 944,
-    "sourceGroundedCount": 614,
-    "blockedCount": 330,
+    "sourceGroundedCount": 627,
+    "blockedCount": 317,
     "unclassifiedCount": 0,
-    "structuredAbilityCount": 892
+    "structuredAbilityCount": 905
   },
   "capabilitySummary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 614,
-    "explicitBlockCount": 330,
+    "contractMappedCount": 627,
+    "explicitBlockCount": 317,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -131113,9 +131529,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
       "READY_GENERIC_EXTENSION": 227,
-      "SPECIAL_HANDLER_CANDIDATE": 385,
+      "SPECIAL_HANDLER_CANDIDATE": 398,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 330,
+      "SOURCE_EVIDENCE_REQUIRED": 317,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },

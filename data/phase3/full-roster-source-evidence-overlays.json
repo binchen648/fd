@@ -24046,6 +24046,344 @@
         }
       ],
       "referencePrintedTextSha256": "96b2dc0f0e475bd6f4a394db7ced937711a32189e5c5fd7db160757027bfc2a4"
+    },
+    {
+      "id": "servant.caenis.skill.sc-caenis-1",
+      "printedText": "被动：当此牌存在于你的技能区时，你的移动不会受到卡牌效果的限制。\n残留：凯妮斯成为凯尼斯，凯尼斯为男性。\n前哨阶段：关闭此牌，获得3点魔力。本回合中你不可再打出此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_caenis_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "被动：当此牌存在于你的技能区时，你的移动不会受到卡牌效果的限制。\n残留：凯妮斯成为凯尼斯，凯尼斯为男性。\n前哨阶段：关闭此牌，获得3点魔力。本回合中你不可再打出此牌。",
+        "sourceTextSha256": "42f668d809b98653caf47b0cad9885f94ed2ee970a89b0b2cea9445add80b47f"
+      },
+      "abilities": [
+        {
+          "id": "caenis.sc_caenis_1.semantic",
+          "printedClause": "被动：当此牌存在于你的技能区时，你的移动不会受到卡牌效果的限制。\n残留：凯妮斯成为凯尼斯，凯尼斯为男性。\n前哨阶段：关闭此牌，获得3点魔力。本回合中你不可再打出此牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "caenis_poseidon_favor_rule",
+              "operation": "movement_card_restriction_immunity_persistent_gender_form_change_then_preparation_close_source_gain_3_mana_and_forbid_replay_this_turn"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "42f668d809b98653caf47b0cad9885f94ed2ee970a89b0b2cea9445add80b47f"
+    },
+    {
+      "id": "servant.caenis.skill.sc-caenis-2",
+      "printedText": "【真名解放】\n行动阶段或战斗阶段：若你是凯妮斯，移动至任意地点，然后【海神，凶猛狂暴大海啸】的威力+9。\n打出时：若你是凯尼斯，合计威力+5，不再拥有地利。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_caenis_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n行动阶段或战斗阶段：若你是凯妮斯，移动至任意地点，然后【海神，凶猛狂暴大海啸】的威力+9。\n打出时：若你是凯尼斯，合计威力+5，不再拥有地利。",
+        "sourceTextSha256": "de69615182b4f95160848dc7e2843d537fdf4f52376430ce6cd20cab76a43e78"
+      },
+      "abilities": [
+        {
+          "id": "caenis.sc_caenis_2.semantic",
+          "printedClause": "【真名解放】\n行动阶段或战斗阶段：若你是凯妮斯，移动至任意地点，然后【海神，凶猛狂暴大海啸】的威力+9。\n打出时：若你是凯尼斯，合计威力+5，不再拥有地利。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "caenis_golden_wings_rule",
+              "operation": "true_name_reveal_action_or_combat_if_female_form_move_anywhere_then_maelstrom_plus_9_power_on_play_if_male_form_plus_5_total_power_and_remove_terrain_advantage"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "de69615182b4f95160848dc7e2843d537fdf4f52376430ce6cd20cab76a43e78"
+    },
+    {
+      "id": "servant.caenis.skill.sc-caenis-3",
+      "printedText": "行动阶段：若你是凯妮斯，与一名位于侦察的玩家交换位置（视为移动）。\n战斗阶段：若你是凯尼斯，此战场所有非❄魔术攻击威力减少X，X为3-其拥有者的地利。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_caenis_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "行动阶段：若你是凯妮斯，与一名位于侦察的玩家交换位置（视为移动）。\n战斗阶段：若你是凯尼斯，此战场所有非❄魔术攻击威力减少X，X为3-其拥有者的地利。",
+        "sourceTextSha256": "c0d697bb913d699c963552b686dbad13a4b6d9e62f23d364b4d62600e0e1c5b5"
+      },
+      "abilities": [
+        {
+          "id": "caenis.sc_caenis_3.semantic",
+          "printedClause": "行动阶段：若你是凯妮斯，与一名位于侦察的玩家交换位置（视为移动）。\n战斗阶段：若你是凯尼斯，此战场所有非❄魔术攻击威力减少X，X为3-其拥有者的地利。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "caenis_maelstrom_rule",
+              "operation": "action_if_female_form_swap_position_with_one_scouting_player_as_movement_combat_if_male_form_reduce_all_non_magic_attacks_here_by_3_minus_owner_terrain_advantage"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c0d697bb913d699c963552b686dbad13a4b6d9e62f23d364b4d62600e0e1c5b5"
+    },
+    {
+      "id": "servant.caligula.skill.sc-caligula-2",
+      "printedText": "行动阶段：打出一张暗置攻击作为【蔑】。中伤-战斗阶段：花费【蔑】的魔力消耗将其激活，令一名你战斗中的其他败者失去2点战果。怜悯-战斗阶段：弃置暗置的【蔑】，若你获胜，获得1点魔力和1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_caligula_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "行动阶段：打出一张暗置攻击作为【蔑】。中伤-战斗阶段：花费【蔑】的魔力消耗将其激活，令一名你战斗中的其他败者失去2点战果。怜悯-战斗阶段：弃置暗置的【蔑】，若你获胜，获得1点魔力和1点战果。",
+        "sourceTextSha256": "94f5f1613ff028702869eac4f4feba8679ecf5ab425d0defa9deb2a21cac07c2"
+      },
+      "abilities": [
+        {
+          "id": "caligula.sc_caligula_2.semantic",
+          "printedClause": "行动阶段：打出一张暗置攻击作为【蔑】。中伤-战斗阶段：花费【蔑】的魔力消耗将其激活，令一名你战斗中的其他败者失去2点战果。怜悯-战斗阶段：弃置暗置的【蔑】，若你获胜，获得1点魔力和1点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "caligula_mad_tyrant_rule",
+              "operation": "action_play_one_hidden_attack_as_contempt_combat_pay_its_mana_cost_to_activate_and_make_another_defeated_combatant_lose_2_vp_or_discard_hidden_contempt_and_if_win_gain_1_mana_and_1_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "94f5f1613ff028702869eac4f4feba8679ecf5ab425d0defa9deb2a21cac07c2"
+    },
+    {
+      "id": "servant.caligula.skill.sc-caligula-3",
+      "printedText": "【真名解放】狂化蔓延-战斗阶段：你与交战对手于下回合陷入【癫狂】。【癫狂】的玩家印刷于卡上的所有需激活的能力更改为“：+3合计威力。”",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_caligula_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】狂化蔓延-战斗阶段：你与交战对手于下回合陷入【癫狂】。【癫狂】的玩家印刷于卡上的所有需激活的能力更改为“：+3合计威力。”",
+        "sourceTextSha256": "0c4944f0e468a28eb08ce88c24459ce3d24bf2478f75bca8d4d966635241c55b"
+      },
+      "abilities": [
+        {
+          "id": "caligula.sc_caligula_3.semantic",
+          "printedClause": "【真名解放】狂化蔓延-战斗阶段：你与交战对手于下回合陷入【癫狂】。【癫狂】的玩家印刷于卡上的所有需激活的能力更改为“：+3合计威力。”",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "caligula_madness_spread_rule",
+              "operation": "true_name_reveal_combat_controller_and_engaged_opponents_gain_madness_next_turn_madness_replaces_all_printed_activated_abilities_with_plus_3_total_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0c4944f0e468a28eb08ce88c24459ce3d24bf2478f75bca8d4d966635241c55b"
+    },
+    {
+      "id": "servant.carmilla.skill.sc-carmilla-1",
+      "printedText": "你拥有的魔力少于8点也可以使用此牌。\n浴血重生-被动：当你【败北】时，你可以花费3点战果并将此牌移除游戏，若如此做，你无视【败北】至回合结束。\n战斗阶段：从一名你战斗中的胜者处偷取2点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_carmilla_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "你拥有的魔力少于8点也可以使用此牌。\n浴血重生-被动：当你【败北】时，你可以花费3点战果并将此牌移除游戏，若如此做，你无视【败北】至回合结束。\n战斗阶段：从一名你战斗中的胜者处偷取2点魔力。",
+        "sourceTextSha256": "224e20bbfac78c16d1230e81c1417bee7873798b31a01696499722f79ca9e753"
+      },
+      "abilities": [
+        {
+          "id": "carmilla.sc_carmilla_1.semantic",
+          "printedClause": "你拥有的魔力少于8点也可以使用此牌。\n浴血重生-被动：当你【败北】时，你可以花费3点战果并将此牌移除游戏，若如此做，你无视【败北】至回合结束。\n战斗阶段：从一名你战斗中的胜者处偷取2点魔力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "carmilla_fresh_blood_rule",
+              "operation": "usable_below_8_mana_on_defeat_may_pay_3_vp_and_remove_source_from_game_to_ignore_defeat_until_turn_end_combat_steal_2_mana_from_one_winner_in_combat"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "224e20bbfac78c16d1230e81c1417bee7873798b31a01696499722f79ca9e753"
+    },
+    {
+      "id": "servant.carmilla.skill.sc-carmilla-2",
+      "printedText": "被动：当一名被你上回合以【吸血】偷取过魔力的玩家即将于前哨阶段进行部署时，若可能，你可以花费2点魔力为其选定部署的位置。\n战斗阶段：激活一张你的交战对手的暗置攻击，若此牌为基础攻击，你获得其控制权直至回合结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_carmilla_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "被动：当一名被你上回合以【吸血】偷取过魔力的玩家即将于前哨阶段进行部署时，若可能，你可以花费2点魔力为其选定部署的位置。\n战斗阶段：激活一张你的交战对手的暗置攻击，若此牌为基础攻击，你获得其控制权直至回合结束。",
+        "sourceTextSha256": "6bee26cf0e63ad23a02a2a9f9d8c399012324ff4bce8c4c048ad52c1cd06bab2"
+      },
+      "abilities": [
+        {
+          "id": "carmilla.sc_carmilla_2.semantic",
+          "printedClause": "被动：当一名被你上回合以【吸血】偷取过魔力的玩家即将于前哨阶段进行部署时，若可能，你可以花费2点魔力为其选定部署的位置。\n战斗阶段：激活一张你的交战对手的暗置攻击，若此牌为基础攻击，你获得其控制权直至回合结束。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "carmilla_torture_rule",
+              "operation": "before_preparation_deployment_of_player_from_whom_mana_was_stolen_last_turn_may_pay_2_mana_to_choose_their_deployment_if_possible_combat_activate_one_engaged_opponent_hidden_attack_and_if_base_attack_control_it_until_turn_end"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "6bee26cf0e63ad23a02a2a9f9d8c399012324ff4bce8c4c048ad52c1cd06bab2"
+    },
+    {
+      "id": "servant.carmilla.skill.sc-carmilla-3",
+      "printedText": "【真名解放】\n战斗阶段：战斗结束后，偷取一名合计威力低于你的你战斗中的败者3点战果。你无法偷取你使用了【拷问技术】的战斗阶段能力的玩家。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_carmilla_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n战斗阶段：战斗结束后，偷取一名合计威力低于你的你战斗中的败者3点战果。你无法偷取你使用了【拷问技术】的战斗阶段能力的玩家。",
+        "sourceTextSha256": "774d8c766181c22bc11824034510054bb8fc74759349a2454994fd703409a94f"
+      },
+      "abilities": [
+        {
+          "id": "carmilla.sc_carmilla_3.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：战斗结束后，偷取一名合计威力低于你的你战斗中的败者3点战果。你无法偷取你使用了【拷问技术】的战斗阶段能力的玩家。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "carmilla_phantom_maiden_rule",
+              "operation": "true_name_reveal_after_combat_steal_3_vp_from_one_defeated_combatant_with_lower_total_power_except_player_targeted_by_torture_combat_ability"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "774d8c766181c22bc11824034510054bb8fc74759349a2454994fd703409a94f"
+    },
+    {
+      "id": "servant.chloe.skill.sc-chloe-2",
+      "printedText": "磁想聚合-行动阶段：你的基础攻击获得：“行动阶段：你每控制一张与你控制的其他攻击不具有相同属性的攻击，此牌+1威力。”直至回合结束。此效果不能被任何方式阻止。\n战斗阶段：若你赢得战斗，获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_chloe_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "磁想聚合-行动阶段：你的基础攻击获得：“行动阶段：你每控制一张与你控制的其他攻击不具有相同属性的攻击，此牌+1威力。”直至回合结束。此效果不能被任何方式阻止。\n战斗阶段：若你赢得战斗，获得2点战果。",
+        "sourceTextSha256": "35bb5dc32868f00ee9e08ca8fc20cd7fb993b420ad75721582dafea1970bad0d"
+      },
+      "abilities": [
+        {
+          "id": "chloe.sc_chloe_2.semantic",
+          "printedClause": "磁想聚合-行动阶段：你的基础攻击获得：“行动阶段：你每控制一张与你控制的其他攻击不具有相同属性的攻击，此牌+1威力。”直至回合结束。此效果不能被任何方式阻止。\n战斗阶段：若你赢得战斗，获得2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "chloe_projection_magic_rule",
+              "operation": "action_until_turn_end_each_base_attack_gains_ability_plus_1_power_per_other_controlled_attack_with_no_shared_attribute_unpreventable_combat_if_win_gain_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "35bb5dc32868f00ee9e08ca8fc20cd7fb993b420ad75721582dafea1970bad0d"
+    },
+    {
+      "id": "servant.chloe.skill.sc-chloe-3",
+      "printedText": "被动/行动阶段：若你激活的攻击印刷基本威力之和恰好为5，打出一张牌。\n鹤翼三连-战斗阶段：如果你本回合于一处战场打出此牌，关闭之。若如此，在下回合开始时将此牌加入攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_chloe_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "被动/行动阶段：若你激活的攻击印刷基本威力之和恰好为5，打出一张牌。\n鹤翼三连-战斗阶段：如果你本回合于一处战场打出此牌，关闭之。若如此，在下回合开始时将此牌加入攻击。",
+        "sourceTextSha256": "06e1c4d6cfd32c6596b4f484abb8c144ee2c503099834d60d3016a04fca25f11"
+      },
+      "abilities": [
+        {
+          "id": "chloe.sc_chloe_3.semantic",
+          "printedClause": "被动/行动阶段：若你激活的攻击印刷基本威力之和恰好为5，打出一张牌。\n鹤翼三连-战斗阶段：如果你本回合于一处战场打出此牌，关闭之。若如此，在下回合开始时将此牌加入攻击。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "chloe_kanshou_bakuya_rule",
+              "operation": "passive_action_if_sum_of_printed_base_power_of_activated_attacks_exactly_5_play_one_card_combat_if_source_was_played_at_a_battlefield_this_turn_close_it_then_add_to_attack_at_start_of_next_turn"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "06e1c4d6cfd32c6596b4f484abb8c144ee2c503099834d60d3016a04fca25f11"
+    },
+    {
+      "id": "servant.clytie.skill.sc-clytie-1",
+      "printedText": "此牌需追加打出。\n战斗阶段：若你真名隐藏，位于战场和侦查的所有玩家将游戏外的一张【领域外生命】加入其手牌。若你已真名解放，所有【领域外生命】获得+3威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_clytie_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "此牌需追加打出。\n战斗阶段：若你真名隐藏，位于战场和侦查的所有玩家将游戏外的一张【领域外生命】加入其手牌。若你已真名解放，所有【领域外生命】获得+3威力。",
+        "sourceTextSha256": "c969724bde97e579ab0d0b5a9ae5f262640a481e750be22da82ad28272ea69ea"
+      },
+      "abilities": [
+        {
+          "id": "clytie.sc_clytie_1.semantic",
+          "printedClause": "此牌需追加打出。\n战斗阶段：若你真名隐藏，位于战场和侦查的所有玩家将游戏外的一张【领域外生命】加入其手牌。若你已真名解放，所有【领域外生命】获得+3威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "foreign_life_rule",
+              "operation": "must_be_additional_play_combat_if_true_name_hidden_all_players_on_battlefields_and_scouting_add_one_foreign_life_from_outside_game_to_hand_if_revealed_all_foreign_life_gain_3_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c969724bde97e579ab0d0b5a9ae5f262640a481e750be22da82ad28272ea69ea"
+    },
+    {
+      "id": "servant.clytie.skill.sc-clytie-2",
+      "printedText": "此牌需追加打出。若你真名隐藏，你无法打出此牌。\n行动阶段：为每张你控制的【领域外生命】分别抽并展示一张牌，该【领域外生命】获得对应被展示牌的所有属性。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_clytie_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "此牌需追加打出。若你真名隐藏，你无法打出此牌。\n行动阶段：为每张你控制的【领域外生命】分别抽并展示一张牌，该【领域外生命】获得对应被展示牌的所有属性。",
+        "sourceTextSha256": "8c9624394420327708acf6af28a06c83a34a630fe44ea854009bf20b53e429c6"
+      },
+      "abilities": [
+        {
+          "id": "clytie.sc_clytie_2.semantic",
+          "printedClause": "此牌需追加打出。若你真名隐藏，你无法打出此牌。\n行动阶段：为每张你控制的【领域外生命】分别抽并展示一张牌，该【领域外生命】获得对应被展示牌的所有属性。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "foreign_life_rule",
+              "operation": "must_be_additional_play_and_cannot_play_while_true_name_hidden_action_for_each_controlled_foreign_life_draw_and_reveal_one_card_then_that_foreign_life_gains_all_attributes_of_its_revealed_card"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8c9624394420327708acf6af28a06c83a34a630fe44ea854009bf20b53e429c6"
+    },
+    {
+      "id": "servant.clytie.skill.sc-clytie-4",
+      "printedText": "【真名解放】\n你和梵高各获得+6合计威力（若你是梵高，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入梵高的弃牌堆。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_clytie_4",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】\n你和梵高各获得+6合计威力（若你是梵高，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入梵高的弃牌堆。",
+        "sourceTextSha256": "146c26d2ca823f92c1a758e9e23c37f6d8f88c54e3818164b153af19260d464f"
+      },
+      "abilities": [
+        {
+          "id": "clytie.sc_clytie_4.semantic",
+          "printedClause": "【真名解放】\n你和梵高各获得+6合计威力（若你是梵高，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入梵高的弃牌堆。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "foreign_life_rule",
+              "operation": "true_name_reveal_controller_and_clytie_each_gain_6_total_power_no_double_if_same_player_after_combat_move_source_to_clytie_discard"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "146c26d2ca823f92c1a758e9e23c37f6d8f88c54e3818164b153af19260d464f"
     }
   ]
 }

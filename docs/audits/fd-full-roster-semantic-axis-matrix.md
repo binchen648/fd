@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=614
-blockedCount=330
+sourceGroundedCount=627
+blockedCount=317
 unclassifiedCount=0
-structuredAbilityCount=892
+structuredAbilityCount=905
 
 ## Axis Value Counts
 
@@ -275,10 +275,10 @@ structuredAbilityCount=892
 | effect | `CLOSE_SOURCE_CARD` | 14 |
 | effect | `LOSTBELT_EXPANSION` | 14 |
 | effect | `DEFEAT_PLAYER` | 13 |
+| effect | `FOREIGN_LIFE_RULE` | 13 |
 | effect | `SET_PLAYER_FLAG` | 12 |
 | effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 11 |
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
-| effect | `FOREIGN_LIFE_RULE` | 10 |
 | effect | `LOSE_MANA` | 10 |
 | effect | `ADJUST_COMMAND_SEALS` | 9 |
 | effect | `CYCLE_STATE_TRANSITION` | 9 |
@@ -387,11 +387,21 @@ structuredAbilityCount=892
 | effect | `BETRAYAL_THRESHOLD_RULE` | 1 |
 | effect | `BLOCK_COUNTER_RULE` | 1 |
 | effect | `BOUND_OPPONENT_RULE` | 1 |
+| effect | `CAENIS_GOLDEN_WINGS_RULE` | 1 |
+| effect | `CAENIS_MAELSTROM_RULE` | 1 |
+| effect | `CAENIS_POSEIDON_FAVOR_RULE` | 1 |
+| effect | `CALIGULA_MADNESS_SPREAD_RULE` | 1 |
+| effect | `CALIGULA_MAD_TYRANT_RULE` | 1 |
 | effect | `CAPTURED_OPPONENT_RULE` | 1 |
 | effect | `CARD_CASE_ATTACHMENT_RULE` | 1 |
 | effect | `CARD_CLOSE_IMMUNITY_MOVE_POWER_RULE` | 1 |
+| effect | `CARMILLA_FRESH_BLOOD_RULE` | 1 |
+| effect | `CARMILLA_PHANTOM_MAIDEN_RULE` | 1 |
+| effect | `CARMILLA_TORTURE_RULE` | 1 |
 | effect | `CHARGE_SELECTED_SKILL_ATTACK` | 1 |
 | effect | `CHEAT_CODE_TRANSFORM_RULE` | 1 |
+| effect | `CHLOE_KANSHOU_BAKUYA_RULE` | 1 |
+| effect | `CHLOE_PROJECTION_MAGIC_RULE` | 1 |
 | effect | `CLAIRVOYANCE_TERRAIN_REVEAL_RULE` | 1 |
 | effect | `CLEAR_TERRAIN_POSITION` | 1 |
 | effect | `CLOSE_SELECTED_CARD` | 1 |
@@ -1278,15 +1288,15 @@ structuredAbilityCount=892
 | `servant.brynhildr.skill.sc-brynhildr-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
 | `servant.brynhildr.skill.sc-brynhildr-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LOVE_BOND_VP_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.brynhildr-hero-bridesmaid` |
 | `servant.brynhildr.skill.sc-brynhildr-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LOVE_ATTRIBUTE_COST_POWER_TRANSFORM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
-| `servant.caenis.skill.sc-caenis-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caenis-poseidon-favor` |
-| `servant.caenis.skill.sc-caenis-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caenis-golden-wings` |
-| `servant.caenis.skill.sc-caenis-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caenis-maelstrom` |
+| `servant.caenis.skill.sc-caenis-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CAENIS_POSEIDON_FAVOR_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caenis-poseidon-favor` |
+| `servant.caenis.skill.sc-caenis-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CAENIS_GOLDEN_WINGS_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caenis-golden-wings` |
+| `servant.caenis.skill.sc-caenis-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CAENIS_MAELSTROM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caenis-maelstrom` |
 | `servant.caligula.skill.sc-caligula-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SITUATION_FORBIDS_ATTRIBUTE`, `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_CARD` | `PLAY_SELECTED_CARDS` | `CHOOSE_ONE_CARD` | `duration:permanent` | `rule:situation_card_play:ignore` | `NONE` | `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |
-| `servant.caligula.skill.sc-caligula-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caligula-mad-tyrant` |
-| `servant.caligula.skill.sc-caligula-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caligula-flucticulus-diana` |
-| `servant.carmilla.skill.sc-carmilla-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.carmilla-fresh-blood` |
-| `servant.carmilla.skill.sc-carmilla-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.carmilla-immoral-suggestion` |
-| `servant.carmilla.skill.sc-carmilla-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.carmilla-phantom-maiden` |
+| `servant.caligula.skill.sc-caligula-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CALIGULA_MAD_TYRANT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caligula-mad-tyrant` |
+| `servant.caligula.skill.sc-caligula-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CALIGULA_MADNESS_SPREAD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.caligula-flucticulus-diana` |
+| `servant.carmilla.skill.sc-carmilla-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CARMILLA_FRESH_BLOOD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.carmilla-fresh-blood` |
+| `servant.carmilla.skill.sc-carmilla-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CARMILLA_TORTURE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.carmilla-immoral-suggestion` |
+| `servant.carmilla.skill.sc-carmilla-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CARMILLA_PHANTOM_MAIDEN_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.carmilla-phantom-maiden` |
 | `servant.charlemagne.skill.sc-charlemagne-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_ATTRIBUTE_INFUSION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.charlemagne-joyeuse-ordre` |
 | `servant.charlemagne.skill.sc-charlemagne-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ROUND_COST_TERRAIN_EVENT_MULTIPLIER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.charlemagne-charles-patricius` |
 | `servant.charlemagne.skill.sc-charlemagne-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `SET_OPPONENT_ATTRIBUTE_POWER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
@@ -1294,12 +1304,12 @@ structuredAbilityCount=892
 | `servant.chiron.skill.sc-chiron-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `BASE_CARD_EXCHANGE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.chiron.skill.sc-chiron-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SELF_PLAY_COST_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.self-play-card` |
 | `servant.chloe.skill.sc-chloe-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `CONSTANT`, `METRIC`, `METRIC_COMPARE`, `SOURCE_ACTIVE` | `NONE` | `CHOOSE_N_CARDS`, `CHOOSE_ONE_CARD` | `CLOSE_SELECTED_CARD`, `IF_CONDITION`, `PLAY_SELECTED_CARDS` | `CHOOSE_N_CARDS`, `CHOOSE_ONE_CARD` | `duration:while_active` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:closedAttackIds`, `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |
-| `servant.chloe.skill.sc-chloe-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.chloe-projection-magic` |
-| `servant.chloe.skill.sc-chloe-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.chloe-kanshou-bakuya` |
-| `servant.clytie.skill.sc-clytie-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.clytie-starry-night` |
-| `servant.clytie.skill.sc-clytie-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.clytie-water-nymph` |
+| `servant.chloe.skill.sc-chloe-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CHLOE_PROJECTION_MAGIC_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.chloe-projection-magic` |
+| `servant.chloe.skill.sc-chloe-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CHLOE_KANSHOU_BAKUYA_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.chloe-kanshou-bakuya` |
+| `servant.clytie.skill.sc-clytie-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.clytie-starry-night` |
+| `servant.clytie.skill.sc-clytie-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.clytie-water-nymph` |
 | `servant.clytie.skill.sc-clytie-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `servant.true-name-revealed` | `EVENT_PLAYER_IS_CONTROLLER` | `NONE` | `NONE` | `EXILE_SOURCE_CARD`, `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS`, `TRANSFER_MATCHING_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.clytie.skill.sc-clytie-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.outer-god-life` |
+| `servant.clytie.skill.sc-clytie-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.outer-god-life` |
 | `servant.constantine.skill.sc-constantine-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
 | `servant.constantine.skill.sc-constantine-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.constantine.skill.sc-constantine-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.constantine-triple-walls` |
