@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.26
+- Version: P3-TI-1.27
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3223,7 +3223,7 @@ Fresh frozen-F1 reconciliation is 12/12 exact and dependency-complete. Coverage 
 ## TASK P3-FM02
 
 Owner: Codex S
-Status: MIGRATION_CANDIDATE
+Status: MIGRATION_ACCEPTED
 Branch: `codex/s-p3-fm02-any-location-except-workshop-movement`
 Base: exact P3-A-FB2-09 synchronization commit
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
@@ -3250,7 +3250,7 @@ Required validation and non-scope are defined in the handoff report. S must stop
 ## TASK P3-A-FM02-SYNC
 
 Owner: Codex A
-Status: MIGRATION_SYNC_CANDIDATE
+Status: MIGRATION_SYNC_ACCEPTED
 Branch: `codex/a-p3-fm02-evidence-sync`
 Base: exact P3-FM02 S candidate SHA `e1d8456637648d31127d6d69daeb9d74a6d01a18`
 Read: `docs/reports/2026-09-16-p3-a-fm02-synchronization.md`
@@ -3260,8 +3260,8 @@ Goal: independently recompute frozen-F1 before/after authoring overlap, exact 12
 ## TASK P3-R28
 
 Owner: Codex R
-Status: READY
-Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM02 lineage
+Status: MIGRATION_ACCEPTED
+Branch: `codex/r-p3-fm02-r28-review`
 
 Goal: independently review FM02 without implementing fixes. Required checks: exact 12-ID membership; source/printed-text preservation; accepted FB2-09 contract conformance; static card metadata/final 8-mana skill-zone rule; no runtime changes; focused end-to-end migration representative; A burn-down integrity; determinism; full required validation; diff check.
 
@@ -3276,6 +3276,16 @@ Permitted final status: `MIGRATION_ACCEPTED` or `REVIEW_BLOCKED`.
 - Compiled product identity remains unchanged at 70 cards / 14 characters / 0 blocking issues, definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`.
 - A recertification: typecheck PASS, focused `27/27`, content validation 0 blocking issues, deterministic generated-content hashes unchanged, diff check PASS. S supplied rules `287/287` and full CI `700/700`.
 - P3-R28 is READY from the exact A-synchronized FM02 lineage. No broader Movement, Target Selection, runtime fallback, or taxonomy acceptance is implied.
+
+## Full-Roster Dispatch State After P3-R28
+
+- P3-FM02 second F4 batch is `MIGRATION_ACCEPTED` for exactly 12 any-enabled-location-except-workshop Movement identities.
+- S candidate: `e1d8456637648d31127d6d69daeb9d74a6d01a18`; A synchronization: `51636bfdb337839f6b57dda25d4bb86a5572e0fb`.
+- Frozen 944-ID canonical-authoring overlap is now `49 / 944`, from exact `37 -> 49` (+12); exact batch `0/12 -> 12/12`; unauthorized additions, removals, and skipped members are all zero.
+- Independent R28 static source/reference review is `12/12 PASS`: F1 source hash, printed clause, Reference cost/basePower/legacy requirement/type label, minimal one-card archive, and final 8-mana skill-zone rule all agree. Li Shuwen remains Assassin-owned while preserving the source-defined Lancer-class card metadata.
+- Independent R28 dynamic evidence: typecheck PASS; focused `27/27`; rules `287/287`; full CI `700/700`; content validation 0 blockers; deterministic generated-content hashes unchanged; runtime lineage diff=0; diff check PASS.
+- Fresh reviewer coverage equals A material coverage except `generatedAt`: archives `39`, cards `71`, abilities `130`, raw `new=12 / legacyExecute=3 / legacyResolve=87 / dual=0 / notClassifiable=28 / taxonomyWarnings=104`, source fingerprint `3e8cc78e550b61c3924f91fcfeb1b6c304c586beed9e07ee18f60403d94eb315`.
+- This acceptance does not promote broad Movement, generic Target Selection, movement costs/conditions/modifiers, forced/third-party movement, reporter taxonomy changes, or any unrelated F1 identity.
 
 ## Prompt Templates
 

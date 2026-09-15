@@ -681,3 +681,12 @@ Permitted final status:
 - Compiled product identity remains unchanged at 70 cards / 14 characters / 0 blocking issues and definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`.
 - A checks: typecheck PASS, focused `27/27`, content validation PASS, deterministic hashes unchanged, diff check PASS. S evidence: rules `287/287`, full CI `700/700`.
 - R28 is READY; FM02 remains unaccepted until independent reviewer judgment.
+## P3-R28 / FM02 Second F4 Migration Acceptance — 2026-09-16
+
+- FM02 is `MIGRATION_ACCEPTED` for exactly 12 any-location-except-workshop Movement identities.
+- S candidate `e1d8456637648d31127d6d69daeb9d74a6d01a18`; A synchronization `51636bfdb337839f6b57dda25d4bb86a5572e0fb`.
+- Frozen canonical-authoring overlap moves `37 -> 49` (+12); exact batch `0/12 -> 12/12`; unauthorized additions/removals/skips are zero.
+- Independent source/reference verification is 12/12, including final 8-mana skill-zone rule and Li Shuwen owner-class preservation.
+- Independent evidence: focused 27/27; rules 287/287; full CI 700/700; content validation 0 blockers; deterministic hashes unchanged; runtime diff=0; diff check PASS.
+- Fresh reviewer coverage equals A material coverage except generatedAt at `39/71/130`, raw `12/3/87/0/28/104`, source fingerprint `3e8cc78e550b61c3924f91fcfeb1b6c304c586beed9e07ee18f60403d94eb315`.
+- No broad Movement, Target Selection, or taxonomy acceptance is implied.
