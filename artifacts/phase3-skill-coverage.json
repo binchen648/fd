@@ -1,27 +1,27 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-15T21:58:06.924Z",
-  "sourceFingerprint": "182a3d15d17cab83ac24e17389a1888330527c65f6434638fbac59913701557f",
+  "generatedAt": "2026-09-15T22:30:44.717Z",
+  "sourceFingerprint": "401d6d62a3f085eb84e54e1c6889108dcec5ee9fd38b4dbd9ee841059c906125",
   "counts": {
-    "totalArchives": 49,
-    "totalCards": 81,
-    "totalAbilities": 160,
+    "totalArchives": 59,
+    "totalCards": 91,
+    "totalAbilities": 180,
     "abilityKindCounts": {
       "CONDITIONAL_REVEAL": 1,
       "CONTINUOUS_FORMULA": 1,
       "DECLARATION_REVEAL": 9,
-      "FORCED_TRIGGER": 30,
+      "FORCED_TRIGGER": 40,
       "OPTIONAL_TRIGGER": 26,
       "PASSIVE": 18,
-      "PHASE_ACTION": 69,
+      "PHASE_ACTION": 79,
       "RESIDUAL": 5,
       "RESPONSE": 1
     },
     "timingCounts": {
-      "ACTION": 46,
+      "ACTION": 56,
       "ADVANCE": 2,
       "COMBAT": 44,
-      "CONTROLLER_ACTION_WINDOW": 49,
+      "CONTROLLER_ACTION_WINDOW": 59,
       "CONTROLLER_COMBAT_ACTION_WINDOW": 21,
       "IMMEDIATE": 7,
       "POST_BATTLE_OPTIONAL_TRIGGER_WINDOW": 3,
@@ -38,7 +38,7 @@
       "after_controller_first_loses_battle": 1,
       "after_controller_gains_victory": 1,
       "after_controller_loses_all_command_seals": 1,
-      "after_controller_loses_battle": 4,
+      "after_controller_loses_battle": 14,
       "after_controller_wins_battle": 3,
       "after_player_deployed_to_battlefield": 1,
       "before_situation_or_event_resolves": 1,
@@ -47,10 +47,10 @@
       "on_use_declared": 9
     },
     "requirementCounts": {
-      "BATTLE_STATE": 69,
+      "BATTLE_STATE": 79,
       "LOCATION": 42,
       "MANA": 2,
-      "SOURCE_ACTIVE": 77
+      "SOURCE_ACTIVE": 87
     },
     "targetCounts": {
       "BRANCH_CHOICE": 1,
@@ -81,12 +81,12 @@
       "CARD_ACTION_SEMANTICS": 20,
       "CARD_ZONE": 29,
       "MOVEMENT": 16,
-      "RESOURCE_NUMERIC": 37,
+      "RESOURCE_NUMERIC": 57,
       "VISIBILITY": 14
     },
     "modifierCounts": {
       "EFFECT_MODIFIER": 9,
-      "RULE_MODIFIER": 26
+      "RULE_MODIFIER": 36
     },
     "lifecyclePolicyCounts": {
       "lifecycle:cleanup:expire_after_duration": 1,
@@ -119,7 +119,7 @@
       "RESULT_VAR": 2
     },
     "battleIntegrationCounts": {
-      "BATTLE_INTEGRATION": 69
+      "BATTLE_INTEGRATION": 79
     },
     "specialSubsystemCounts": {
       "SPECIAL_SUBSYSTEM": 17
@@ -2966,6 +2966,168 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.atalanta",
+      "cardId": "servant.atalanta.skill.sc-atalanta-3",
+      "abilityId": "sc-atalanta-3.independent-action",
+      "abilityKey": "servant.atalanta.skill.sc-atalanta-3::sc-atalanta-3.independent-action",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticRoutes": [
+        "RESOURCE_NUMERIC_CORE_DIRECT_ACTION"
+      ],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.atalanta",
+      "cardId": "servant.atalanta.skill.sc-atalanta-3",
+      "abilityId": "sc-atalanta-3.penalty-on-defeat",
+      "abilityKey": "servant.atalanta.skill.sc-atalanta-3::sc-atalanta-3.penalty-on-defeat",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_loses_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.baobhan",
+      "cardId": "servant.baobhan.skill.sc-baobhan-3",
+      "abilityId": "sc-baobhan-3.independent-action",
+      "abilityKey": "servant.baobhan.skill.sc-baobhan-3::sc-baobhan-3.independent-action",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticRoutes": [
+        "RESOURCE_NUMERIC_CORE_DIRECT_ACTION"
+      ],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.baobhan",
+      "cardId": "servant.baobhan.skill.sc-baobhan-3",
+      "abilityId": "sc-baobhan-3.penalty-on-defeat",
+      "abilityKey": "servant.baobhan.skill.sc-baobhan-3::sc-baobhan-3.penalty-on-defeat",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_loses_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.bedivere",
       "cardId": "servant.bedivere.skill.sc-bedivere-1",
       "abilityId": "sc-bedivere-1.noble-bloom",
@@ -3439,6 +3601,87 @@
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:runtime_route_unknown"
       ]
+    },
+    {
+      "archiveId": "servant.chiron",
+      "cardId": "servant.chiron.skill.sc-chiron-1",
+      "abilityId": "sc-chiron-1.independent-action",
+      "abilityKey": "servant.chiron.skill.sc-chiron-1::sc-chiron-1.independent-action",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticRoutes": [
+        "RESOURCE_NUMERIC_CORE_DIRECT_ACTION"
+      ],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.chiron",
+      "cardId": "servant.chiron.skill.sc-chiron-1",
+      "abilityId": "sc-chiron-1.penalty-on-defeat",
+      "abilityKey": "servant.chiron.skill.sc-chiron-1::sc-chiron-1.penalty-on-defeat",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_loses_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
     },
     {
       "archiveId": "servant.constantine",
@@ -3999,6 +4242,87 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.emiya-alt",
+      "cardId": "servant.emiya-alt.skill.sc-emiya-alt-1",
+      "abilityId": "sc-emiya-alt-1.independent-action",
+      "abilityKey": "servant.emiya-alt.skill.sc-emiya-alt-1::sc-emiya-alt-1.independent-action",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticRoutes": [
+        "RESOURCE_NUMERIC_CORE_DIRECT_ACTION"
+      ],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.emiya-alt",
+      "cardId": "servant.emiya-alt.skill.sc-emiya-alt-1",
+      "abilityId": "sc-emiya-alt-1.penalty-on-defeat",
+      "abilityKey": "servant.emiya-alt.skill.sc-emiya-alt-1::sc-emiya-alt-1.penalty-on-defeat",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_loses_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.enkidu",
       "cardId": "servant.enkidu.skill.sc-enkidu-3",
       "abilityId": "sc-enkidu-3.move",
@@ -4342,6 +4666,87 @@
       ]
     },
     {
+      "archiveId": "servant.euryale",
+      "cardId": "servant.euryale.skill.sc-euryale-1",
+      "abilityId": "sc-euryale-1.independent-action",
+      "abilityKey": "servant.euryale.skill.sc-euryale-1::sc-euryale-1.independent-action",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticRoutes": [
+        "RESOURCE_NUMERIC_CORE_DIRECT_ACTION"
+      ],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.euryale",
+      "cardId": "servant.euryale.skill.sc-euryale-1",
+      "abilityId": "sc-euryale-1.penalty-on-defeat",
+      "abilityKey": "servant.euryale.skill.sc-euryale-1::sc-euryale-1.penalty-on-defeat",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_loses_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.gawain",
       "cardId": "servant.gawain.skill.sc-gawain-3",
       "abilityId": "sc-gawain-3.noble-bloom",
@@ -4469,6 +4874,87 @@
       ]
     },
     {
+      "archiveId": "servant.gil",
+      "cardId": "servant.gil.skill.sc-gil-1",
+      "abilityId": "sc-gil-1.independent-action",
+      "abilityKey": "servant.gil.skill.sc-gil-1::sc-gil-1.independent-action",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticRoutes": [
+        "RESOURCE_NUMERIC_CORE_DIRECT_ACTION"
+      ],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.gil",
+      "cardId": "servant.gil.skill.sc-gil-1",
+      "abilityId": "sc-gil-1.penalty-on-defeat",
+      "abilityKey": "servant.gil.skill.sc-gil-1::sc-gil-1.penalty-on-defeat",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_loses_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.hephaistion",
       "cardId": "servant.hephaistion.skill.sc-hephaistion-3",
       "abilityId": "sc-hephaistion-3.draw",
@@ -4549,6 +5035,87 @@
       "taxonomyWarnings": [
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.ishtar",
+      "cardId": "servant.ishtar.skill.sc-ishtar-3",
+      "abilityId": "sc-ishtar-3.independent-action",
+      "abilityKey": "servant.ishtar.skill.sc-ishtar-3::sc-ishtar-3.independent-action",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticRoutes": [
+        "RESOURCE_NUMERIC_CORE_DIRECT_ACTION"
+      ],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.ishtar",
+      "cardId": "servant.ishtar.skill.sc-ishtar-3",
+      "abilityId": "sc-ishtar-3.penalty-on-defeat",
+      "abilityKey": "servant.ishtar.skill.sc-ishtar-3::sc-ishtar-3.penalty-on-defeat",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_loses_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
       "unclassifiedReasons": []
     },
     {
@@ -5968,6 +6535,87 @@
       ]
     },
     {
+      "archiveId": "servant.napoleon",
+      "cardId": "servant.napoleon.skill.sc-napoleon-3",
+      "abilityId": "sc-napoleon-3.independent-action",
+      "abilityKey": "servant.napoleon.skill.sc-napoleon-3::sc-napoleon-3.independent-action",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticRoutes": [
+        "RESOURCE_NUMERIC_CORE_DIRECT_ACTION"
+      ],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.napoleon",
+      "cardId": "servant.napoleon.skill.sc-napoleon-3",
+      "abilityId": "sc-napoleon-3.penalty-on-defeat",
+      "abilityKey": "servant.napoleon.skill.sc-napoleon-3::sc-napoleon-3.penalty-on-defeat",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_loses_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.odysseus",
       "cardId": "servant.odysseus.skill.sc-odysseus-3",
       "abilityId": "sc-odysseus-3.draw",
@@ -6131,6 +6779,87 @@
       "taxonomyWarnings": [
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.robin",
+      "cardId": "servant.robin.skill.sc-robin-1",
+      "abilityId": "sc-robin-1.independent-action",
+      "abilityKey": "servant.robin.skill.sc-robin-1::sc-robin-1.independent-action",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticRoutes": [
+        "RESOURCE_NUMERIC_CORE_DIRECT_ACTION"
+      ],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.robin",
+      "cardId": "servant.robin.skill.sc-robin-1",
+      "abilityId": "sc-robin-1.penalty-on-defeat",
+      "abilityKey": "servant.robin.skill.sc-robin-1::sc-robin-1.penalty-on-defeat",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_loses_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
       "unclassifiedReasons": []
     },
     {
@@ -6765,6 +7494,87 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.tristan",
+      "cardId": "servant.tristan.skill.sc-tristan-3",
+      "abilityId": "sc-tristan-3.independent-action",
+      "abilityKey": "servant.tristan.skill.sc-tristan-3::sc-tristan-3.independent-action",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticRoutes": [
+        "RESOURCE_NUMERIC_CORE_DIRECT_ACTION"
+      ],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.tristan",
+      "cardId": "servant.tristan.skill.sc-tristan-3",
+      "abilityId": "sc-tristan-3.penalty-on-defeat",
+      "abilityKey": "servant.tristan.skill.sc-tristan-3::sc-tristan-3.penalty-on-defeat",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_loses_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.ushiwakamaru",
       "cardId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
       "abilityId": "sc-ushiwakamaru-3.draw",
@@ -6902,13 +7712,13 @@
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY": 1,
       "CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE": 1,
       "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA": 1,
-      "RESOURCE_NUMERIC_CORE_DIRECT_ACTION": 3,
+      "RESOURCE_NUMERIC_CORE_DIRECT_ACTION": 13,
       "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL": 3
     },
     "newRuntimeConsumers": {
       "before": 0,
-      "after": 12,
-      "delta": 12
+      "after": 22,
+      "delta": 22
     },
     "legacyExecuteAbilityConsumers": {
       "before": 3,
@@ -6916,8 +7726,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 107,
-      "after": 107,
+      "before": 117,
+      "after": 117,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -7155,8 +7965,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 107,
-      "after": 107,
+      "before": 117,
+      "after": 117,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -7181,7 +7991,7 @@
       "activate_card_by_id": 1,
       "adjust_command_seals": 7,
       "adjust_mana": 6,
-      "adjust_victory_points": 30,
+      "adjust_victory_points": 50,
       "append_only_rule": 1,
       "attach_card_to_player_attack": 1,
       "branch": 5,
@@ -7232,7 +8042,7 @@
       "CARD_ACTION_SEMANTICS": 20,
       "CARD_ZONE": 29,
       "MOVEMENT": 16,
-      "RESOURCE_NUMERIC": 37,
+      "RESOURCE_NUMERIC": 57,
       "VISIBILITY": 14
     },
     "unknownPrimitiveCounts": {
@@ -7571,6 +8381,18 @@
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "servant.atalanta",
+        "cardId": "servant.atalanta.skill.sc-atalanta-3",
+        "abilityId": "sc-atalanta-3.independent-action",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.baobhan",
+        "cardId": "servant.baobhan.skill.sc-baobhan-3",
+        "abilityId": "sc-baobhan-3.independent-action",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.bedivere",
         "cardId": "servant.bedivere.skill.sc-bedivere-1",
         "abilityId": "sc-bedivere-1.magic-resistance",
@@ -7604,6 +8426,12 @@
         "archiveId": "servant.charlemagne",
         "cardId": "servant.charlemagne.skill.sc-charlemagne-3",
         "abilityId": "sc-charlemagne-3.magic-resistance",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.chiron",
+        "cardId": "servant.chiron.skill.sc-chiron-1",
+        "abilityId": "sc-chiron-1.independent-action",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -7661,6 +8489,12 @@
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "servant.emiya-alt",
+        "cardId": "servant.emiya-alt.skill.sc-emiya-alt-1",
+        "abilityId": "sc-emiya-alt-1.independent-action",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.enkidu",
         "cardId": "servant.enkidu.skill.sc-enkidu-3",
         "abilityId": "sc-enkidu-3.move",
@@ -7703,15 +8537,33 @@
         "warning": "TAXONOMY_DRIFT_WARNING:target_reference_without_declared_pending_interaction"
       },
       {
+        "archiveId": "servant.euryale",
+        "cardId": "servant.euryale.skill.sc-euryale-1",
+        "abilityId": "sc-euryale-1.independent-action",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.gawain",
         "cardId": "servant.gawain.skill.sc-gawain-3",
         "abilityId": "sc-gawain-3.magic-resistance",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "servant.gil",
+        "cardId": "servant.gil.skill.sc-gil-1",
+        "abilityId": "sc-gil-1.independent-action",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.hephaistion",
         "cardId": "servant.hephaistion.skill.sc-hephaistion-3",
         "abilityId": "sc-hephaistion-3.mount-summon",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.ishtar",
+        "cardId": "servant.ishtar.skill.sc-ishtar-3",
+        "abilityId": "sc-ishtar-3.independent-action",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -7865,6 +8717,12 @@
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "servant.napoleon",
+        "cardId": "servant.napoleon.skill.sc-napoleon-3",
+        "abilityId": "sc-napoleon-3.independent-action",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.odysseus",
         "cardId": "servant.odysseus.skill.sc-odysseus-3",
         "abilityId": "sc-odysseus-3.mount-summon",
@@ -7874,6 +8732,12 @@
         "archiveId": "servant.roberts",
         "cardId": "servant.roberts.skill.sc-roberts-3",
         "abilityId": "sc-roberts-3.mount-summon",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.robin",
+        "cardId": "servant.robin.skill.sc-robin-1",
+        "abilityId": "sc-robin-1.independent-action",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -7928,6 +8792,12 @@
         "archiveId": "servant.tomoe",
         "cardId": "servant.tomoe.skill.sc-tomoe-3",
         "abilityId": "sc-tomoe-3.rain-of-fire",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.tristan",
+        "cardId": "servant.tristan.skill.sc-tristan-3",
+        "abilityId": "sc-tristan-3.independent-action",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {

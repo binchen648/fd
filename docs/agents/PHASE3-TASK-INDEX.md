@@ -3533,9 +3533,10 @@ Fresh lineage reconciliation confirms the exact eleven-member family remains one
 ## TASK P3-FM04
 
 Owner: Codex S
-Status: READY
+Status: MIGRATION_CANDIDATE
 Branch: `codex/s-p3-fm04-independent-action`
 Base: exact P3-A-FM04-DISPATCH-SYNC commit
+Candidate: `0047b30cd00fd3093f01db373f69cc9540466cd5`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Read: `docs/reports/2026-09-16-p3-fm04-independent-action-migration-handoff.md`
 
@@ -3548,9 +3549,10 @@ Completion status allowed:
 ## TASK P3-A-FM04-MIGRATION-SYNC
 
 Owner: Codex A
-Status: READY_AFTER_P3_FM04
+Status: MIGRATION_SYNC_CANDIDATE
 Branch: `codex/a-p3-fm04-migration-sync`
-Base: exact P3-FM04 S candidate SHA
+Base: P3-FM04 S candidate `0047b30cd00fd3093f01db373f69cc9540466cd5`
+Read: `docs/reports/2026-09-16-p3-a-fm04-migration-synchronization.md`
 
 Goal: independently recompute frozen-F1 burn-down, exact family/batch membership, material coverage, generated-content identity, and unrelated drift. A must not repair S authoring.
 
@@ -3561,7 +3563,7 @@ Completion status allowed:
 ## TASK P3-R32
 
 Owner: Codex R
-Status: READY_AFTER_P3_A_FM04_MIGRATION_SYNC
+Status: READY
 Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM04 lineage
 
 Goal: independently review FM04 without implementing fixes. Required checks: exact 11-member accepted family; only ten new archives; Tomoe unchanged; frozen source text/hash preservation; uniform locked static metadata; exact Tomoe-derived two-ability decomposition; accepted TO08 + B21/R15 structural conformance; representative end-to-end +3 VP and unpreventable -5 VP behavior; A burn-down integrity; determinism; full required validation; diff check.
@@ -3570,6 +3572,16 @@ Permitted final status:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `REJECTED`
+## Full-Roster Dispatch State After P3-A-FM04-MIGRATION-SYNC
+
+- FM04 S candidate is `0047b30cd00fd3093f01db373f69cc9540466cd5`; exact accepted family is 11 members with Tomoe pre-existing and exactly ten new sibling archives.
+- Frozen-F1 canonical-authoring overlap moves `59/944 -> 69/944` (+10); Independent Action family moves `1/11 -> 11/11`; unauthorized additions/removals/skips are zero and Tomoe has zero diff.
+- Fresh A material coverage is archives `59`, cards `91`, abilities `180`, raw `new=22 / legacyExecute=3 / legacyResolve=117 / dual=0 / notClassifiable=38 / taxonomyWarnings=124`.
+- The twenty new abilities split exactly into ten TO08 Resource direct actions and ten B21/R15 unpreventable battle-loss penalties under the reporter's existing legacy label.
+- Compiled product identity remains definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 cards / 14 characters / 0 blocking issues.
+- A recertification passes typecheck, focused `15/15`, content validation, deterministic generated-content verification, and diff check. S evidence supplies rules `292/292` and standard full CI `705/705`.
+- P3-R32 is READY on the exact A-synchronized lineage; FM04 is not accepted until R32 independently reviews it.
+
 ## Prompt Templates
 
 Codex A startup prompt:
