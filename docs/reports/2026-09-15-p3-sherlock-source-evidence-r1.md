@@ -1,21 +1,22 @@
-﻿# Phase 3 Sherlock Source Evidence R1
+﻿# P3 Sherlock Source Evidence S Report
 
-- Role: Codex S
+- Role: S source evidence / semantic normalization
 - Base accepted R: `0208919cb1c48bfb734609072502707b4e6b0e35`
 - Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 - Development source: `Fate_Domination-开发版/batch_berserker_extra.js`
 - Development source SHA-256: `6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc`
+- Scope: Sherlock Holmes 7 canonical servant skill identities
+- Exact source replay: 7/7 PASS
+- Candidate source-grounded: 454/944
+- Candidate blocked: 490
+- Batch classification: 0 generic / 7 reviewed-special
+- Special boundary: `deduction_rule`
+- Independent automation audit: EXACT_AGREEMENT, gapCount=0
+- Typecheck: PASS
+- Focused tests: 6 files / 110 tests PASS
+- Full CI: 84 files / 555 tests PASS
+- Production runtime diff (`packages`, `src`) from base: NONE
+- Generic mapper Sherlock/Holmes identity hardcoding: NONE
+- `git diff --check`: PASS
 
-## Verification
-- Exact source replay: 7/7 PASS.
-- Generated totals: sourceGrounded=454/944, blocked=490, structuredAbilityCount=732.
-- Classification totals: READY_EXISTING_CONTRACT=2, READY_GENERIC_EXTENSION=209, SPECIAL_HANDLER_CANDIDATE=243.
-- Sherlock slice: 7 reviewed-special via `deduction_rule`.
-- Automation audit: EXACT_AGREEMENT, gapCount=0.
-- Typecheck: PASS.
-- Focused Phase 3 suite: 6 files / 110 tests PASS.
-- Full CI: 84 files / 555 tests PASS, exit code 0.
-- Production runtime diff: NONE.
-- Sherlock identity hardcoding in generic mapper: NONE.
-
-Candidate is ready for independent A verification. Formal accepted checkpoint remains 447/944 until R acceptance.
+This batch is evidence/semantic normalization only. It does not promote runtime migration or claim reviewed-special handler implementation.
