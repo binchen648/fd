@@ -567,6 +567,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isPlayActionStructuralCandidate(a) && !isPlayActionRouteCandidate(a)) return false;
   if (isPlaySourceCardWithCostResponseStructuralCandidate(a) && !isPlaySourceCardWithCostResponseRouteCandidate(a)) return false;
   if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
+  if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
@@ -585,6 +586,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     if (playFailure(s, ctx.controllerId, sourceId, false, true, true, true)) return false;
     if (!hasAvailableManaForFixedCosts(s, ctx, a)) return false;
   }
+  if (isFixedControllerAdvanceDrawActionSemantic(a) &&
+    !hasAvailableManaForFixedCosts(s, context(s, sourceId, a.id, event), a)) return false;
   if (isCloseSourceCardOnPlayedTrigger(a) && closeSourceStateError(s, sourceId, card(s, sourceId).controllerPlayerId)) return false;
   return a.conditions.every(c => condition(s, context(s, sourceId, a.id, event), c));
 }
@@ -1136,6 +1139,13 @@ export function isFixedControllerManaSetComponent(effect: AuthoringAbility['effe
   return Object.keys(effect).every((key) => ['type', 'player', 'amount'].includes(key));
 }
 
+export function isFixedControllerDrawCardsComponent(effect: AuthoringAbility['effects'][number]): boolean {
+  if (str(effect.type) !== 'draw_cards') return false;
+  if (effect.player !== undefined && effect.player !== 'controller') return false;
+  if (!Number.isSafeInteger(effect.count) || Number(effect.count) <= 0) return false;
+  return Object.keys(effect).every((key) => ['type', 'player', 'count'].includes(key));
+}
+
 function isDeploymentResourceRewardCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'forced_trigger' &&
     str(a.activation.trigger) === 'after_player_deployed_to_battlefield' &&
@@ -1618,6 +1628,24 @@ function isCardZoneCoreDirectActionRouteCandidate(a: AuthoringAbility): boolean 
     referencesMovedCountBinding(mana?.amount, binding);
 }
 
+
+function isFixedControllerAdvanceDrawActionCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'phase_action' &&
+    str(a.activation.phase) === 'advance' &&
+    str(a.activation.opens) === 'controller_action_window' &&
+    a.cost.length === 1 && str(a.cost[0]?.type) === 'pay_mana' &&
+    a.effects.length === 1 && str(a.effects[0]?.type) === 'draw_cards';
+}
+
+export function isFixedControllerAdvanceDrawActionSemantic(a: AuthoringAbility): boolean {
+  if (!isFixedControllerAdvanceDrawActionCandidate(a)) return false;
+  if (str(a.activation.requiresSourceState) || str(a.activation.trigger)) return false;
+  if (a.conditions.length !== 0 || a.targets.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
+  return isFixedControllerManaCostComponent(a) && Number(a.cost[0]?.amount) === 1 &&
+    isFixedControllerDrawCardsComponent(a.effects[0]!) && Number(a.effects[0]?.count) === 2;
+}
+
 export function isActivateCardByIdTrigger(a: AuthoringAbility): boolean {
   if (a.kind !== 'forced_trigger' || str(a.activation.trigger) !== 'after_controller_first_loses_battle') return false;
   if (a.conditions.length || a.targets.length || a.cost.length || a.creates.length || a.effects.length !== 1) return false;
@@ -1748,7 +1776,9 @@ export function isFixedControllerManaCostComponent(a: AuthoringAbility): boolean
 
 function usesAcceptedFixedControllerManaCostComponent(a: AuthoringAbility): boolean {
   if (!isFixedControllerManaCostComponent(a)) return false;
-  return isPlaySourceCardWithCostResponseRouteCandidate(a) || isAddToAttackRouteCandidate(a);
+  return isPlaySourceCardWithCostResponseRouteCandidate(a) ||
+    isAddToAttackRouteCandidate(a) ||
+    isFixedControllerAdvanceDrawActionSemantic(a);
 }
 
 function hasFixedManaCost(costs: RuleNode[], amount: number): boolean {
@@ -1899,6 +1929,13 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
       return;
     }
   }
+  if (isFixedControllerAdvanceDrawActionCandidate(a)) {
+    if (!isFixedControllerAdvanceDrawActionSemantic(a)) reject('resolution_failed', 'Unsupported fixed controller advance-draw semantic shape');
+    executeResolutionEffects(s, ctx, [...a.cost, ...effects]);
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
   if (isCardZoneCoreDirectActionRouteCandidate(a)) {
     const pending = findPendingTarget(s, ctx, a, effects);
     if (pending) { runtime(s).pendingDecision = pending; return; }
@@ -1966,6 +2003,9 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
+  if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) {
+    reject('resolution_failed', 'Unsupported fixed controller advance-draw semantic shape');
+  }
   if (isBattleLossStateTransformCandidate(a)) {
     if (!isBattleLossStateTransformSemantic(a)) reject('resolution_failed', 'Unsupported battle-loss state-transform semantic shape');
     settleBattleLossStateTransform(s, ctx);
@@ -1999,7 +2039,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     });
     return;
   }
-  if (isCardZoneCoreDirectActionRouteCandidate(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a)) {
+  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a)) {
     try {
       normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     } catch (error) {
@@ -2036,6 +2076,8 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     } else reject('unsupported', 'Unsupported ability cost');
   }
   if (manaCost > p.mana) reject('insufficient_mana', 'Insufficient mana');
+  if (fixedControllerManaCost && isFixedControllerAdvanceDrawActionSemantic(a) &&
+    !hasAvailableManaForFixedCosts(s, ctx, a)) reject('insufficient_mana', 'Insufficient mana');
   p.mana -= manaCost;
   if (fixedControllerManaCost && isAddToAttackRouteCandidate(a)) executeFixedControllerManaCost(s, ctx, a);
   if (names.length) runtime(s).calculations.push({ controllerId: p.id, lines: names.map(name => ({ label: name, value: ctx.variables[name]! })) });
