@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.11
+- Version: P3-TI-1.12
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2644,6 +2644,85 @@ Completion status allowed:
 - No F1 authoring migration occurred and raw A coverage is unchanged.
 - P3-FM01 remains undispatched; current complete same-route deployment membership remains `6/10` of its minimum.
 - Continue wave-1 Resource Numeric / Cost closure before dependent runtime waves.
+
+## TASK P3-FB2-04
+
+Owner: Codex B2
+Status: READY
+Branch: `codex/b2-p3-fb2-04-fixed-command-seal-component-r1`
+Base: exact P3-FB2-04 A-owned handoff commit
+Runtime baseline before handoff: `0842bd83a1d7f86ea59fe8e92e948521dba73713`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Runtime request: `runtime-capability-6220d123d8e1` / `GENERIC_RESOURCE_NUMERIC`
+
+Goal: add one reusable fixed-controller command-seal adjustment component for literal signed `adjust_command_seals` effects. Reuse the existing typed Resolution Data-flow primitive and at least the already accepted Resource Numeric direct-action and B13 battle-loss parent routes. The component must not itself make unsupported parent abilities routable.
+
+Frozen F1 component membership: 6 exact identities / 7 exact effects:
+- `master.rin.skill.s2`
+- `master.shinji.skill.s3`
+- `master.shinji.skill.s4` (2 effects)
+- `master.sieg.skill.ascension`
+- `master.sieg.skill.s1a`
+- `servant.davinci.skill.sc-davinci-8`
+
+Accepted component shape to prove:
+- effect type exactly `adjust_command_seals`;
+- implicit or explicit controller only;
+- non-zero safe-integer literal amount, positive or negative;
+- optional non-empty string `directive` is allowed so existing accepted command-spell/B13 semantics remain compatible;
+- no target, all-opponent, same-battlefield-opponent, restore-all, variable/expression, payment, transfer, set, or other resource semantics are admitted by implication.
+
+Explicit F1 exclusions from this component:
+- `master.amakusa.skill.ascension`: all-opponents loss;
+- `master.bazett.skill.s4`: restore-all shape;
+- `master.zouken.skill.ascension`: opponents-on-same-battlefield loss.
+
+Required proof:
+- classifier is identity-free and text-free;
+- direct Resource Numeric action and B13 battle-loss route reuse the component without changing their parent-route gates;
+- existing command-spell `directive: spend_command_spell` and Shinji B13 directive remain accepted;
+- positive/negative literal adjustments emit typed `command_seals_adjusted` evidence;
+- underflow fails atomically and does not leak state/events;
+- zero, non-integer, variable/expression, third-party/targeted, restore-all, and unknown sibling shapes are rejected by the component;
+- an effect that matches the component but has an unsupported parent ability remains unroutable;
+- no new MatchSession/client/projection/F1 authoring/KPI changes;
+- typecheck, focused compatibility, rules regression, deterministic generated content, full CI, identity audit, and diff check all pass.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R21
+
+Owner: Codex R
+Status: READY_AFTER_P3_FB2_04
+Branch: reviewer-selected fresh worktree/branch from exact FB2-04 candidate SHA
+
+Goal: independently review FB2-04 without implementing fixes and without promoting broad Resource Numeric, Cost, Trigger, Target, or Interaction semantics.
+
+Required checks:
+- exact fixed-controller command-seal component boundary above;
+- existing typed primitive remains the single mutation owner;
+- direct-action and B13 parent routes remain independently gated;
+- underflow rollback and typed actual delta evidence;
+- all-opponents / same-battlefield-opponents / restore-all / variable / payment siblings remain excluded;
+- no card, owner, ability, printed-text, or location routing;
+- no migration or A-owned KPI/taxonomy mutation;
+- fresh typecheck, focused tests, rules regression, determinism, full CI, and diff check.
+
+Completion status allowed:
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
+## Full-Roster Dispatch State Before FB2-04
+
+- FB2-03 remains independently accepted and A-synchronized at `0842bd83a1d7f86ea59fe8e92e948521dba73713`.
+- Fresh F1 scan found 10 `adjust_command_seals` effects across 9 Resource Numeric identities. Only 7 effects across 6 identities are fixed controller literal adjustments and belong to FB2-04.
+- Three non-controller/non-literal sibling shapes are explicitly excluded and require later target/special semantics.
+- This is component alignment only; no new roster migration readiness is claimed because parent routes remain independently required.
+- P3-FM01 remains undispatched and wave-1 Resource Numeric / Cost closure continues.
+
 ## Prompt Templates
 
 Codex A startup prompt:
