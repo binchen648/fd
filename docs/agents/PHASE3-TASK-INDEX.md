@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.13
+- Version: P3-TI-1.14
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2731,6 +2731,91 @@ Completion status allowed:
 - This component does not make unsupported parent abilities routable and does not accept command-seal payment. Even if all 6 component identities later gain parents, this slice alone cannot meet the FM01 minimum of 10 exact IDs.
 - Fresh A coverage and compiled identity remain unchanged; no authoring migration occurred.
 - Continue wave-1 Resource Numeric / Cost membership analysis before dispatching a dependent wave.
+
+
+## TASK P3-FB2-05
+
+Owner: Codex B2
+Status: READY
+Branch: `codex/b2-p3-fb2-05-fixed-controller-set-mana-r1`
+Base: exact P3-FB2-05 A-owned handoff commit
+Runtime baseline before handoff: `8a3ce9fe318333cc9b1c0c0ea2f45d51ec588cf5`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Runtime request: `runtime-capability-6220d123d8e1` / `GENERIC_RESOURCE_NUMERIC`
+
+Goal: add one typed fixed-controller exact `set_mana` Resolution Data-flow primitive plus an identity-free semantic component. This task must not add a Trigger Gateway or otherwise make the five F1 members executable by itself.
+
+Frozen F1 component membership: 5 exact identities:
+- `master.iliya.skill.s1` -> controller mana = 6;
+- `master.shinji.skill.s4` -> controller mana = 4;
+- `master.shirou-emiya.skill.s3` -> controller mana = 0;
+- `master.taiga.skill.s1` -> controller mana = 3;
+- `master.zouken.skill.s1` -> controller mana = 10.
+
+Accepted primitive/component shape to prove:
+- effect type exactly `set_mana`;
+- implicit/explicit controller only at the authoring component boundary;
+- fixed safe-integer literal target amount only, no binding/expression;
+- target must be within the authoritative runtime interval `0..manaCap(controller)`; out-of-range fails closed;
+- assignment is exact: `after = targetAmount`;
+- this is not a gain operation, so `manaGainBlocked` does not suppress an otherwise valid exact set;
+- typed result records controller, target amount, actual delta, before, and after;
+- non-zero actual delta emits existing typed `mana_adjusted` evidence; same-value set is a no-op and emits no resource event;
+- transaction rollback remains authoritative on later failure.
+
+Explicit non-goals:
+- no Trigger Gateway, game-start gateway, condition, target, lifecycle, modifier, or special-handler acceptance;
+- no variable/expression `set_mana`;
+- no third-party set;
+- no Mana gain/loss/payment redefinition;
+- no authoring roster migration, KPI/taxonomy change, client/server change, or Reference handler copy.
+
+Allowed production files:
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/ability/interpreter.ts` only for the component predicate; no route promotion.
+
+Required evidence:
+- primitive registration, normalization/coercion, validation, result schema, typed event, and rollback tests;
+- component classifier rejects negative, above-cap-at-runtime, fractional, expression, third-party, and extra-semantic sibling shapes as applicable;
+- prove `manaGainBlocked` does not change exact-set semantics;
+- prove no parent route is added for the five F1 members;
+- typecheck, focused dataflow/component tests, all rules regression, determinism, full CI, identity audit, and diff check.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R22
+
+Owner: Codex R
+Status: READY_AFTER_P3_FB2_05
+Branch: reviewer-selected fresh worktree/branch from exact FB2-05 candidate SHA
+
+Goal: independently review the exact fixed-controller `set_mana` primitive/component without adding fixes or promoting Trigger Gateway.
+
+Required checks:
+- exact-set semantics and cap validation;
+- gain-block distinction;
+- typed result/event and transaction rollback;
+- fixed literal/controller-only component boundary;
+- no parent route promotion and no F1 migration claim;
+- no identity/text/location routing;
+- no unrelated hot-file/KPI changes;
+- fresh typecheck, focused tests, all rules regression, determinism, full CI, and diff check.
+
+Completion status allowed:
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
+## Full-Roster Dispatch State Before FB2-05
+
+- FB2-04 is independently accepted and A-synchronized at `8a3ce9fe318333cc9b1c0c0ea2f45d51ec588cf5`.
+- Fresh wave-1 scan shows all five F1 `set_mana` rows are fixed controller literal assignments (0/3/4/6/10). None requires target selection or result binding for the numeric primitive itself.
+- Their remaining blockers are later parent semantics: Iliya S1 and Taiga S1 require Trigger Gateway; Shinji S4 additionally requires condition/special handling; Shirou S3 condition/lifecycle/special; Zouken S1 lifecycle/modifier.
+- FB2-05 therefore closes only the independent numeric primitive/component and intentionally leaves all parent routes for their declared later waves.
+- Variable Mana payment rows remain deferred because they depend on selected-card values, hand counts, or result bindings; fixed Mana payment remains covered by FB2-01.
+- P3-FM01 remains undispatched.
 
 ## Prompt Templates
 
