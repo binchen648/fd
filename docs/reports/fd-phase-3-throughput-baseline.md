@@ -732,3 +732,9 @@ Permitted final status:
 - Focused `12/12`, rules `297/297`, standard full CI `710/710`, content 0 blockers, deterministic hashes unchanged; formula-op set and identity/text routing remain unchanged.
 - Prospective Territory Creation family independently reconciles at exact 10/10 with common full-text SHA, clause hashes, Reference handler/static metadata; current canonical 0/10.
 - F1 5 Resource + 5 scaling-blocked split is classification drift; complete printed family is covered by FB2-02 + FB2-11 after fresh A synchronization.
+
+## P3-A FB2-11 Synchronization / FM05 Dispatch - 2026-09-16
+
+- Coverage remains `59/91/180`, raw `22/3/117/0/38/124`; only timestamp + seven interpreter static-line shifts differ, so runtime-only regenerated artifact is not committed.
+- Frozen overlap remains `69/944`; Territory Creation is exact `0/10` canonical and dependency-complete under accepted FB2-11 + FB2-02.
+- P3-FM05 is READY at exact batch size 10 with dynamic Power `16 + (-2 * game.round_number)` and deployment reward +1 mana/+2 VP at magic workshop.
