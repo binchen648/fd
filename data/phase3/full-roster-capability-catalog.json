@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 403,
-    "explicitBlockCount": 541,
+    "contractMappedCount": 420,
+    "explicitBlockCount": 524,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 200,
-      "SPECIAL_HANDLER_CANDIDATE": 201,
+      "READY_GENERIC_EXTENSION": 206,
+      "SPECIAL_HANDLER_CANDIDATE": 212,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 541,
+      "SOURCE_EVIDENCE_REQUIRED": 524,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -3062,6 +3062,38 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-10",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-12",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-15",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-16",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-5",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.emiya.skill.sc-emiya-np",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -3228,6 +3260,10 @@
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.astolfo.skill.sc-astolfo-1",
         "servant.darius.skill.sc-darius-1",
+        "servant.davinci.skill.sc-davinci-10",
+        "servant.davinci.skill.sc-davinci-13",
+        "servant.davinci.skill.sc-davinci-3",
+        "servant.davinci.skill.sc-davinci-7",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-3",
@@ -3636,6 +3672,38 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-10",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-12",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-15",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-16",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.emiya.skill.sc-emiya-np",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3788,6 +3856,14 @@
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.andersen.skill.sc-andersen-2",
         "servant.clytie.skill.sc-clytie-3",
+        "servant.davinci.skill.sc-davinci-10",
+        "servant.davinci.skill.sc-davinci-11",
+        "servant.davinci.skill.sc-davinci-12",
+        "servant.davinci.skill.sc-davinci-14",
+        "servant.davinci.skill.sc-davinci-15",
+        "servant.davinci.skill.sc-davinci-16",
+        "servant.davinci.skill.sc-davinci-5",
+        "servant.davinci.skill.sc-davinci-6",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
         "servant.iskandar.skill.sc-iskandar-2",
@@ -4148,6 +4224,7 @@
         "master.zouken.skill.ascension",
         "master.zouken.skill.s3",
         "master.zouken.skill.s4",
+        "servant.davinci.skill.sc-davinci-6",
         "servant.roberts.skill.sc-roberts-1",
         "servant.roberts.skill.sc-roberts-2"
       ],
@@ -4874,6 +4951,50 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-12",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-15",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-17",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-9",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.diarmuid.skill.sc-diarmuid-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5116,6 +5237,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-16",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.mozart.skill.sc-mozart-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
@@ -5286,6 +5411,9 @@
         "servant.atalanta.skill.sc-atalanta-1",
         "servant.caligula.skill.sc-caligula-1",
         "servant.darius.skill.sc-darius-2",
+        "servant.davinci.skill.sc-davinci-13",
+        "servant.davinci.skill.sc-davinci-3",
+        "servant.davinci.skill.sc-davinci-7",
         "servant.drake.skill.sc-drake-3",
         "servant.edison.skill.sc-edison-3",
         "servant.emiya.skill.sc-emiya-np",
@@ -5362,6 +5490,7 @@
         "master.tiamat.skill.ascension",
         "master.zouken.skill.ascension",
         "master.zouken.skill.s4",
+        "servant.davinci.skill.sc-davinci-11",
         "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-3",
         "servant.gorgon.skill.sc-gorgon-3",
@@ -5454,6 +5583,7 @@
         "servant.atalanta.skill.sc-atalanta-2",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.davinci.skill.sc-davinci-14",
         "servant.drake.skill.sc-drake-2",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
@@ -5574,6 +5704,10 @@
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.atalanta.skill.sc-atalanta-1",
         "servant.darius.skill.sc-darius-2",
+        "servant.davinci.skill.sc-davinci-10",
+        "servant.davinci.skill.sc-davinci-13",
+        "servant.davinci.skill.sc-davinci-3",
+        "servant.davinci.skill.sc-davinci-7",
         "servant.edison.skill.sc-edison-3",
         "servant.ibaraki.skill.sc-ibaraki-1",
         "servant.kama.skill.sc-kama-1",
@@ -5695,6 +5829,9 @@
         "master.zouken.skill.s1",
         "master.zouken.skill.s4",
         "servant.albion.skill.sc-albion-1",
+        "servant.davinci.skill.sc-davinci-3",
+        "servant.davinci.skill.sc-davinci-4",
+        "servant.davinci.skill.sc-davinci-8",
         "servant.drake.skill.sc-drake-3",
         "servant.edison.skill.sc-edison-2",
         "servant.kama.skill.sc-kama-1",
@@ -5806,6 +5943,7 @@
         "servant.atalanta.skill.sc-atalanta-2",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.davinci.skill.sc-davinci-14",
         "servant.drake.skill.sc-drake-2",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
@@ -5863,6 +6001,7 @@
         "master.waver.skill.s3",
         "servant.albion.skill.sc-albion-2",
         "servant.arjuna.skill.sc-arjuna-1",
+        "servant.davinci.skill.sc-davinci-16",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.kama.skill.sc-kama-2",
         "servant.lionking.skill.sc-lionking-3",
@@ -6573,6 +6712,7 @@
         "servant.atalanta.skill.sc-atalanta-2",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.davinci.skill.sc-davinci-14",
         "servant.drake.skill.sc-drake-2",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
@@ -7263,6 +7403,18 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-4",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-8",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -7628,6 +7780,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -7899,6 +8055,17 @@
         "master.wodime.skill.s8",
         "master.wodime.skill.s9",
         "master.zouken.skill.s3",
+        "servant.davinci.skill.sc-davinci-1",
+        "servant.davinci.skill.sc-davinci-11",
+        "servant.davinci.skill.sc-davinci-12",
+        "servant.davinci.skill.sc-davinci-13",
+        "servant.davinci.skill.sc-davinci-15",
+        "servant.davinci.skill.sc-davinci-17",
+        "servant.davinci.skill.sc-davinci-2",
+        "servant.davinci.skill.sc-davinci-3",
+        "servant.davinci.skill.sc-davinci-5",
+        "servant.davinci.skill.sc-davinci-6",
+        "servant.davinci.skill.sc-davinci-9",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.gorgon.skill.sc-gorgon-3",
         "servant.medusa.skill.sc-medusa-2",
@@ -8758,6 +8925,50 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-12",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-15",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-17",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-9",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.diarmuid.skill.sc-diarmuid-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -9164,6 +9375,23 @@
       "servant.darius.skill.sc-darius-1",
       "servant.darius.skill.sc-darius-2",
       "servant.darius.skill.sc-darius-3",
+      "servant.davinci.skill.sc-davinci-1",
+      "servant.davinci.skill.sc-davinci-10",
+      "servant.davinci.skill.sc-davinci-11",
+      "servant.davinci.skill.sc-davinci-12",
+      "servant.davinci.skill.sc-davinci-13",
+      "servant.davinci.skill.sc-davinci-14",
+      "servant.davinci.skill.sc-davinci-15",
+      "servant.davinci.skill.sc-davinci-16",
+      "servant.davinci.skill.sc-davinci-17",
+      "servant.davinci.skill.sc-davinci-2",
+      "servant.davinci.skill.sc-davinci-3",
+      "servant.davinci.skill.sc-davinci-4",
+      "servant.davinci.skill.sc-davinci-5",
+      "servant.davinci.skill.sc-davinci-6",
+      "servant.davinci.skill.sc-davinci-7",
+      "servant.davinci.skill.sc-davinci-8",
+      "servant.davinci.skill.sc-davinci-9",
       "servant.diarmuid.skill.sc-diarmuid-1",
       "servant.drake.skill.sc-drake-2",
       "servant.drake.skill.sc-drake-3",
@@ -10119,125 +10347,6 @@
       },
       {
         "abilityId": "servant.darius.skill.sc-darius-4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-10",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-11",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-12",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-13",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-14",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-15",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-16",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-17",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-5",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-6",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-7",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-8",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.davinci.skill.sc-davinci-9",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -13192,6 +13301,17 @@
       "master.wodime.skill.s9",
       "master.zouken.skill.s3",
       "servant.andersen.skill.sc-andersen-2",
+      "servant.davinci.skill.sc-davinci-1",
+      "servant.davinci.skill.sc-davinci-11",
+      "servant.davinci.skill.sc-davinci-12",
+      "servant.davinci.skill.sc-davinci-13",
+      "servant.davinci.skill.sc-davinci-15",
+      "servant.davinci.skill.sc-davinci-17",
+      "servant.davinci.skill.sc-davinci-2",
+      "servant.davinci.skill.sc-davinci-3",
+      "servant.davinci.skill.sc-davinci-5",
+      "servant.davinci.skill.sc-davinci-6",
+      "servant.davinci.skill.sc-davinci-9",
       "servant.diarmuid.skill.sc-diarmuid-1",
       "servant.gorgon.skill.sc-gorgon-3",
       "servant.medusa.skill.sc-medusa-2",
