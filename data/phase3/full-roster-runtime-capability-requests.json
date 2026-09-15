@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 767
+    "affectedIdentityCount": 783
   },
   "requests": [
     {
@@ -2531,6 +2531,7 @@
         "servant.kiritsugu.skill.sc-kiritsugu-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
         "servant.lionking.skill.sc-lionking-3",
+        "servant.lubu.skill.sc-lubu-1",
         "servant.mechaeli.skill.sc-mechaeli-2",
         "servant.merlin.skill.sc-merlin-3",
         "servant.mozart.skill.sc-mozart-2",
@@ -5712,6 +5713,27 @@
           "sha256": "5e08b7a1c793ebb527e8715e29a8d71ee173274dba52e6227147dca58f9b62da"
         },
         {
+          "abilityId": "servant.lubu.skill.sc-lubu-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/吕布.htm"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lubu/吕布"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_lubu_1"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[151].skills[0].text#line=1",
+          "sha256": "4bbc6cce429b082d6af67f99783d28626ddd03ba5fca01843293e101ef507e4f"
+        },
+        {
           "abilityId": "servant.mechaeli.skill.sc-mechaeli-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/他人格/英文版/机械伊丽亲.htm"
@@ -5997,9 +6019,9 @@
         "routeCounts": {
           "deterministic": 1,
           "shared_handler": 79,
-          "specific_handler": 48
+          "specific_handler": 49
         },
-        "handlerCount": 71,
+        "handlerCount": 72,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -26589,6 +26611,7 @@
         "servant.illya.skill.sc-illya-7",
         "servant.jaguarman.skill.sc-jaguarman-1",
         "servant.kagetora.skill.sc-kagetora-3",
+        "servant.lishuwen.skill.sc-lishuwen-3",
         "servant.mozart.skill.sc-mozart-1"
       ],
       "sourceReferences": [
@@ -27841,6 +27864,27 @@
           "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
         },
         {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/李书文1.htm"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lishuwen/李书文"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_lishuwen_3"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[127].skills[2].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
           "abilityId": "servant.mozart.skill.sc-mozart-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/魔术师/英文版/莫扎特.htm"
@@ -27899,7 +27943,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 32,
+          "shared_handler": 33,
           "specific_handler": 15
         },
         "handlerCount": 28,
@@ -30195,6 +30239,8 @@
         "servant.kama.skill.sc-kama-1",
         "servant.karna.skill.sc-karna-1",
         "servant.lakshmibai.skill.sc-lakshmibai-3",
+        "servant.leonidas.skill.sc-leonidas-2",
+        "servant.lubu.skill.sc-lubu-3",
         "servant.mechaeli.skill.sc-mechaeli-2",
         "servant.mephisto.skill.sc-mephisto-2",
         "servant.molay.skill.sc-molay-1",
@@ -33259,6 +33305,54 @@
           "sha256": "dcaf950c99dfaf589dac80e3e1d6c0d65e6d97020e1943f499fcb1e204610158"
         },
         {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/列奥尼达一世.htm"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.leonidas/列奥尼达一世"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_leonidas_2"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[67].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[67].skills[1].text#line=2",
+          "sha256": "15098f92ee7541cc917556ed7b108c8ba4e311458cdccb5e0860bd475db3a1e3"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/吕布.htm"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lubu/吕布"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_lubu_3"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[151].skills[2].text#line=1",
+          "sha256": "6dd00c99ea5541f4def01d6e6658874c041bbfa65f136c2abf6170524cdf9a83"
+        },
+        {
           "abilityId": "servant.mechaeli.skill.sc-mechaeli-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/他人格/英文版/机械伊丽亲.htm"
@@ -33702,10 +33796,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 1,
-          "shared_handler": 72,
-          "specific_handler": 46
+          "shared_handler": 73,
+          "specific_handler": 47
         },
-        "handlerCount": 71,
+        "handlerCount": 72,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -48740,6 +48834,21 @@
         "servant.lakshmibai.skill.sc-lakshmibai-1",
         "servant.lakshmibai.skill.sc-lakshmibai-2",
         "servant.lakshmibai.skill.sc-lakshmibai-4",
+        "servant.lance.skill.sc-lance-1",
+        "servant.lance.skill.sc-lance-2",
+        "servant.lance.skill.sc-lance-3",
+        "servant.leonidas.skill.sc-leonidas-2",
+        "servant.leonidas.skill.sc-leonidas-3",
+        "servant.lionking.skill.sc-lionking-1",
+        "servant.lionking.skill.sc-lionking-2",
+        "servant.lishuwen.skill.sc-lishuwen-1",
+        "servant.lishuwen.skill.sc-lishuwen-2",
+        "servant.lobo.skill.sc-lobo-1",
+        "servant.lobo.skill.sc-lobo-2",
+        "servant.lobo.skill.sc-lobo-3",
+        "servant.lubu.skill.sc-lubu-1",
+        "servant.lubu.skill.sc-lubu-2",
+        "servant.lubu.skill.sc-lubu-3",
         "servant.martha.skill.sc-martha-1",
         "servant.martha.skill.sc-martha-2",
         "servant.martha.skill.sc-martha-4",
@@ -61677,6 +61786,375 @@
           "sha256": "70649545e7e64be325bee2640ab81cf306a4247778b8173384b30534db8afa13"
         },
         {
+          "abilityId": "servant.lance.skill.sc-lance-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/兰斯洛特1.htm"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lance/兰斯洛特"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_lance_1"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[13].skills[0].text#line=1",
+          "sha256": "559715e52164d3ca34724ff06f10c889f13ca4e10a3febc700b39ba2f65573fc"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/兰斯洛特1.htm"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lance/兰斯洛特"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_lance_2"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[13].skills[1].text#line=1",
+          "sha256": "255af7b7f92499888f524f1b13d4517e03a2b55a8452995090610acaeb5e56cb"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/兰斯洛特1.htm"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lance/兰斯洛特"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_lance_3"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[13].skills[2].text#line=1",
+          "sha256": "facd277252452e9727d0afda95919f891d13d75e75562460e61e5810e2f4b65a"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/列奥尼达一世.htm"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.leonidas/列奥尼达一世"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_leonidas_2"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[67].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[67].skills[1].text#line=2",
+          "sha256": "15098f92ee7541cc917556ed7b108c8ba4e311458cdccb5e0860bd475db3a1e3"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/列奥尼达一世.htm"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.leonidas/列奥尼达一世"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_leonidas_3"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[67].skills[2].text#line=1",
+          "sha256": "5c1fe7eda02ff10c72d5b6cb15b0c872758c072f9f374b3e1a2196a4cbc9c6b8"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[67].skills[2].text#line=2",
+          "sha256": "e5bdc75aa77221a4311b2c15bc76b7fc391d43bc9661a6ec9d60277dac0dc9eb"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[67].skills[2].text#line=3",
+          "sha256": "c38508d26ca231ca98ddd57e481c629a714608c47da35a8c75f095224ab38b21"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/伦戈米尼亚德.htm"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lionking/伦戈米尼亚德"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_lionking_1"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[72].skills[0].text#line=1",
+          "sha256": "f65036b3f8a4e41779a9ebfe783e39850dd51eaf12d1d1852a956668792f615d"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[72].skills[0].text#line=2",
+          "sha256": "236204fdd7cda266f69970f62546939a31196fb452f548a9320bd4c6a78a8656"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/伦戈米尼亚德.htm"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lionking/伦戈米尼亚德"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_lionking_2"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[72].skills[1].text#line=1",
+          "sha256": "a9184b43ab74e3e6f8420134d1eabfeb7091fa2e79235cc6eaab693247195c6b"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[72].skills[1].text#line=2",
+          "sha256": "c34de181be9dadd16665adf8d2593fb71a726884ac7ddf10109c79cc374053fa"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[72].skills[1].text#line=3",
+          "sha256": "51aff0e32041e6d1c1a7d41438591a4ede2a2fda34f812c1e7522706d94307a2"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/李书文1.htm"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lishuwen/李书文"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_lishuwen_1"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[127].skills[0].text#line=1",
+          "sha256": "9c7e6da645636864c948dac97e96a664ccab3883d6262669e302308c2ca2fed9"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[127].skills[0].text#line=2",
+          "sha256": "0cfe18f7f233d9410ef0787e79eda31dd8f76cb60194249dad8be6c7031ea485"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/李书文1.htm"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lishuwen/李书文"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_lishuwen_2"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[127].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[127].skills[1].text#line=2",
+          "sha256": "dc81239262c16010cc81035e97f54a177a4876111205d33c36d635ec90ce0128"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/黑森·罗伯.htm"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lobo/黑森·罗伯"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_lobo_1"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[165].skills[0].text#line=1",
+          "sha256": "f723471a5d4b710f8eb9bdaf382dabcfd1cd91977a3c9f84707e7319d2d0f394"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/黑森·罗伯.htm"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lobo/黑森·罗伯"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-2",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_lobo_2"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[165].skills[1].text#line=1",
+          "sha256": "4bd90a35e5d07857fe90b2875c6168b00959d2c3c50154b53633fb012be20b1d"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[165].skills[1].text#line=2",
+          "sha256": "525b43583917423a92bb00e56dec3ef2d213653da49574f50cc5c5bc3fe0d1e4"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/黑森·罗伯.htm"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lobo/黑森·罗伯"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_lobo_3"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[165].skills[2].text#line=1",
+          "sha256": "6e8083c1015af33ac393f592235864807b89f51eef323b93567f4226993a3f12"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/吕布.htm"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lubu/吕布"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_lubu_1"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[151].skills[0].text#line=1",
+          "sha256": "4bbc6cce429b082d6af67f99783d28626ddd03ba5fca01843293e101ef507e4f"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/吕布.htm"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lubu/吕布"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-2",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_lubu_2"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[151].skills[1].text#line=1",
+          "sha256": "e7f8646b1eb894a5c45e37086427df728eec1ddcd5fcf10d0cd4a08838cec94c"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/吕布.htm"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lubu/吕布"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_lubu_3"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[151].skills[2].text#line=1",
+          "sha256": "6dd00c99ea5541f4def01d6e6658874c041bbfa65f136c2abf6170524cdf9a83"
+        },
+        {
           "abilityId": "servant.martha.skill.sc-martha-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/玛尔达.htm"
@@ -62999,10 +63477,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 253,
-          "specific_handler": 269
+          "shared_handler": 256,
+          "specific_handler": 281
         },
-        "handlerCount": 329,
+        "handlerCount": 341,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
