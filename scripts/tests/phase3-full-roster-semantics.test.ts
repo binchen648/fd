@@ -1017,6 +1017,41 @@ describe('Phase 3 full-roster semantic normalization', () => {
     ]));
   });
 
+  it('grounds the nine-ID Goetia/Magical Ruby/Irisviel batch with exact development snapshots and explicit composite semantics', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.goetia.skill.s1', 'master.goetia.skill.s2', 'master.goetia.skill.ascension',
+      'master.illya-mahou.skill.s1', 'master.illya-mahou.skill.s1a', 'master.illya-mahou.skill.ascension',
+      'master.irisviel.skill.s1', 'master.irisviel.skill.s2', 'master.irisviel.skill.ascension',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(9);
+    expect(slice.every((card) =>
+      card.source?.authority === 'DEVELOPMENT_TEXT' &&
+      card.source.document === 'Fate_Domination-开发版/data_masters.js' &&
+      card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+      createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256 &&
+      card.source.sourceTextSha256 === card.referencePrintedTextSha256
+    )).toBe(true);
+
+    const goetia = slice.find((card) => card.id === 'master.goetia.skill.s2');
+    expect(goetia?.abilities).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: 'goetia.demon-gods.phenex-regeneration' }),
+      expect.objectContaining({ id: 'goetia.demon-gods.forneus-invocation', effects: expect.arrayContaining([expect.objectContaining({ type: 'retrigger_card_play_effects' })]) }),
+      expect.objectContaining({ id: 'goetia.demon-gods.raum-dream-flight', effects: expect.arrayContaining([expect.objectContaining({ type: 'move_player', destination: 'any_location' })]) }),
+    ]));
+    const ruby = slice.find((card) => card.id === 'master.illya-mahou.skill.s1a');
+    expect(ruby?.abilities).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: 'illya-ruby.kaleidostick.draw-any' }),
+      expect.objectContaining({ id: 'illya-ruby.kaleidostick.shuffle-discard', effects: expect.arrayContaining([expect.objectContaining({ type: 'pay_mana', amountFormula: '2 * controller_hand_count' })]) }),
+    ]));
+    const conversion = slice.find((card) => card.id === 'master.irisviel.skill.s2');
+    expect(conversion?.abilities).toContainEqual(expect.objectContaining({
+      id: 'conversion-magic.preparation',
+      effects: expect.arrayContaining([expect.objectContaining({ type: 'move_matching_cards', resultVar: 'discardedCount' }), expect.objectContaining({ type: 'gain_mana', amountBinding: 'discardedCount' })]),
+    }));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1070,10 +1105,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 171,
-      blockedCount: 773,
+      sourceGroundedCount: 180,
+      blockedCount: 764,
       unclassifiedCount: 0,
-      structuredAbilityCount: 323,
+      structuredAbilityCount: 349,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
