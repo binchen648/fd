@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.atalanta",
+  "name": "阿塔兰忒",
+  "class": "Archer",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from accepted F1 evidence/contracts; locked Reference is used only for static card metadata."
+  },
+  "cards": [
+    {
+      "id": "servant.atalanta.skill.sc-atalanta-3",
+      "aliases": [
+        "sc_atalanta_3"
+      ],
+      "legacyId": "sc_atalanta_3",
+      "name": "单独行动（Archer Class）",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.atalanta"
+      },
+      "printedText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 0,
+        "basePower": 6
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-atalanta-3.independent-action",
+          "kind": "phase_action",
+          "printedClause": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "controller_seat_in_first_half"
+            }
+          ],
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "player": "controller",
+              "amount": 3
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-atalanta-3.penalty-on-defeat",
+          "kind": "forced_trigger",
+          "printedClause": "如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+          "activation": {
+            "trigger": "after_controller_loses_battle"
+          },
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "player": "controller",
+              "amount": -5
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "unpreventable_vp_loss",
+              "printedClause": "此效果不能被任何方法阻止。",
+              "operation": "ignore",
+              "rule": "effect_prevention",
+              "scope": {
+                "object": "this_effect"
+              },
+              "priority": {
+                "tier": "explicit_exception"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "阿塔兰忒.htm",
+            "locator": "从者/弓兵/英文版/阿塔兰忒.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/阿塔兰忒.png",
+            "locator": "servant.atalanta/阿塔兰忒"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[37].skills[2].text#line=1",
+            "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[37].skills[2].text#line=2",
+            "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[37].skills[2].text#line=3",
+            "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
+          }
+        ],
+        "sourceTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_atalanta_3",
+          "cost": 0,
+          "basePower": 6,
+          "legacyRequirement": 0,
+          "typeLabel": "特殊"
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is retained as metadata only and does not override the final-rule skill-zone threshold."
+        },
+        "acceptedContracts": {
+          "independentAction": "P3-R31/TO08",
+          "penaltyOnDefeat": "P3-R31/B21/R15"
+        }
+      }
+    }
+  ]
+}
