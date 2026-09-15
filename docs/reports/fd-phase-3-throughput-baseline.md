@@ -637,3 +637,13 @@ Permitted final status:
 - Regenerated coverage drift is timestamp/static-line-only and is intentionally not committed.
 - Frozen F1 recheck confirms 14/14 selected servant skills have `blockedBy=[]`, required capabilities exactly `[CARD_ACTION_PLAY, GENERIC_CARD_ZONE]`, no extra semantic axes, and the identical two-clause source overlay.
 - TO13 + FB2-06 + FB2-08 now close the full composite dependency for those 14 identities. This is the first honest 10–40 F4 migration batch, so P3-FM01 is dispatched READY at 14 exact IDs.
+
+## P3-A FM01 Migration Synchronization — 2026-09-16
+
+- First F4 batch S candidate: `6203b70c5bc2a81ceecca31008dc2b71246519a9`; exact selected membership 14, newly canonical 13, pre-existing canonical Drake 1, skipped 0, runtime hot-file changes 0.
+- Frozen 944-ID canonical-authoring overlap moves `24 -> 37` (+13); selected-batch authoring presence moves `1/14 -> 14/14`; no non-selected F1 ID is added.
+- A fresh material coverage: archives `27`, cards `59`, abilities `118`, raw `new=12 / legacyExecute=3 / legacyResolve=75 / dual=0 / notClassifiable=28 / taxonomyWarnings=92`.
+- All 26 newly visible abilities are structurally identical, identity fields aside, to the two pre-FM01 Drake Riding representatives (`STRUCTURAL_MISMATCHES=0`). Those accepted Drake representatives were already labeled `LEGACY_RESOLVE_EFFECT`, so raw reporter growth records its existing TO13/FB2-08 classification gap rather than a new legacy runtime implementation.
+- Compiled product definition remains unchanged at hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 cards, 14 characters, 0 blocking issues; unclassified items and dual-runtime count are unchanged.
+- Independent A checks: typecheck PASS, focused `30/30`, content validation PASS, deterministic generated content unchanged, lineage diff check PASS. S supplied full CI `693/693` and rules `280/280`.
+- R26 is READY; F4 is not accepted until independent review.
