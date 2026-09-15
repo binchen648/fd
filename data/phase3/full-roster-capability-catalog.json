@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 614,
-    "explicitBlockCount": 330,
+    "contractMappedCount": 627,
+    "explicitBlockCount": 317,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -25,9 +25,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
       "READY_GENERIC_EXTENSION": 227,
-      "SPECIAL_HANDLER_CANDIDATE": 385,
+      "SPECIAL_HANDLER_CANDIDATE": 398,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 330,
+      "SOURCE_EVIDENCE_REQUIRED": 317,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -5508,6 +5508,38 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.caenis.skill.sc-caenis-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.caenis.skill.sc-caenis-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.caenis.skill.sc-caenis-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.caligula.skill.sc-caligula-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.caligula.skill.sc-caligula-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.carmilla.skill.sc-carmilla-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.carmilla.skill.sc-carmilla-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.carmilla.skill.sc-carmilla-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.charlemagne.skill.sc-charlemagne-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5525,6 +5557,26 @@
         },
         {
           "abilityId": "servant.chiron.skill.sc-chiron-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.chloe.skill.sc-chloe-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.chloe.skill.sc-chloe-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.clytie.skill.sc-clytie-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.clytie.skill.sc-clytie-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.clytie.skill.sc-clytie-4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -9191,11 +9243,24 @@
         "servant.bradamante.skill.sc-bradamante-3",
         "servant.brynhildr.skill.sc-brynhildr-2",
         "servant.brynhildr.skill.sc-brynhildr-3",
+        "servant.caenis.skill.sc-caenis-1",
+        "servant.caenis.skill.sc-caenis-2",
+        "servant.caenis.skill.sc-caenis-3",
+        "servant.caligula.skill.sc-caligula-2",
+        "servant.caligula.skill.sc-caligula-3",
+        "servant.carmilla.skill.sc-carmilla-1",
+        "servant.carmilla.skill.sc-carmilla-2",
+        "servant.carmilla.skill.sc-carmilla-3",
         "servant.charlemagne.skill.sc-charlemagne-1",
         "servant.charlemagne.skill.sc-charlemagne-2",
         "servant.chiron.skill.sc-chiron-1",
         "servant.chiron.skill.sc-chiron-2",
         "servant.chiron.skill.sc-chiron-3",
+        "servant.chloe.skill.sc-chloe-2",
+        "servant.chloe.skill.sc-chloe-3",
+        "servant.clytie.skill.sc-clytie-1",
+        "servant.clytie.skill.sc-clytie-2",
+        "servant.clytie.skill.sc-clytie-4",
         "servant.davinci.skill.sc-davinci-1",
         "servant.davinci.skill.sc-davinci-11",
         "servant.davinci.skill.sc-davinci-12",
@@ -10477,6 +10542,38 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.caenis.skill.sc-caenis-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.caenis.skill.sc-caenis-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.caenis.skill.sc-caenis-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.caligula.skill.sc-caligula-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.caligula.skill.sc-caligula-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.carmilla.skill.sc-carmilla-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.carmilla.skill.sc-carmilla-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.carmilla.skill.sc-carmilla-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.charlemagne.skill.sc-charlemagne-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -10494,6 +10591,26 @@
         },
         {
           "abilityId": "servant.chiron.skill.sc-chiron-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.chloe.skill.sc-chloe-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.chloe.skill.sc-chloe-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.clytie.skill.sc-clytie-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.clytie.skill.sc-clytie-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.clytie.skill.sc-clytie-4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -11382,7 +11499,15 @@
       "servant.brynhildr.skill.sc-brynhildr-1",
       "servant.brynhildr.skill.sc-brynhildr-2",
       "servant.brynhildr.skill.sc-brynhildr-3",
+      "servant.caenis.skill.sc-caenis-1",
+      "servant.caenis.skill.sc-caenis-2",
+      "servant.caenis.skill.sc-caenis-3",
       "servant.caligula.skill.sc-caligula-1",
+      "servant.caligula.skill.sc-caligula-2",
+      "servant.caligula.skill.sc-caligula-3",
+      "servant.carmilla.skill.sc-carmilla-1",
+      "servant.carmilla.skill.sc-carmilla-2",
+      "servant.carmilla.skill.sc-carmilla-3",
       "servant.charlemagne.skill.sc-charlemagne-1",
       "servant.charlemagne.skill.sc-charlemagne-2",
       "servant.charlemagne.skill.sc-charlemagne-3",
@@ -11390,7 +11515,12 @@
       "servant.chiron.skill.sc-chiron-2",
       "servant.chiron.skill.sc-chiron-3",
       "servant.chloe.skill.sc-chloe-1",
+      "servant.chloe.skill.sc-chloe-2",
+      "servant.chloe.skill.sc-chloe-3",
+      "servant.clytie.skill.sc-clytie-1",
+      "servant.clytie.skill.sc-clytie-2",
       "servant.clytie.skill.sc-clytie-3",
+      "servant.clytie.skill.sc-clytie-4",
       "servant.darius.skill.sc-darius-1",
       "servant.darius.skill.sc-darius-2",
       "servant.darius.skill.sc-darius-3",
@@ -11549,97 +11679,6 @@
       "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "servant.caenis.skill.sc-caenis-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.caenis.skill.sc-caenis-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.caenis.skill.sc-caenis-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.caligula.skill.sc-caligula-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.caligula.skill.sc-caligula-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.carmilla.skill.sc-carmilla-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.carmilla.skill.sc-carmilla-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.carmilla.skill.sc-carmilla-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.chloe.skill.sc-chloe-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.chloe.skill.sc-chloe-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.clytie.skill.sc-clytie-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.clytie.skill.sc-clytie-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.clytie.skill.sc-clytie-4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.constantine.skill.sc-constantine-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -14138,11 +14177,24 @@
       "servant.bradamante.skill.sc-bradamante-3",
       "servant.brynhildr.skill.sc-brynhildr-2",
       "servant.brynhildr.skill.sc-brynhildr-3",
+      "servant.caenis.skill.sc-caenis-1",
+      "servant.caenis.skill.sc-caenis-2",
+      "servant.caenis.skill.sc-caenis-3",
+      "servant.caligula.skill.sc-caligula-2",
+      "servant.caligula.skill.sc-caligula-3",
+      "servant.carmilla.skill.sc-carmilla-1",
+      "servant.carmilla.skill.sc-carmilla-2",
+      "servant.carmilla.skill.sc-carmilla-3",
       "servant.charlemagne.skill.sc-charlemagne-1",
       "servant.charlemagne.skill.sc-charlemagne-2",
       "servant.chiron.skill.sc-chiron-1",
       "servant.chiron.skill.sc-chiron-2",
       "servant.chiron.skill.sc-chiron-3",
+      "servant.chloe.skill.sc-chloe-2",
+      "servant.chloe.skill.sc-chloe-3",
+      "servant.clytie.skill.sc-clytie-1",
+      "servant.clytie.skill.sc-clytie-2",
+      "servant.clytie.skill.sc-clytie-4",
       "servant.davinci.skill.sc-davinci-1",
       "servant.davinci.skill.sc-davinci-11",
       "servant.davinci.skill.sc-davinci-12",

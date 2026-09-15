@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+﻿import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -206,6 +206,16 @@ const SPECIAL_EFFECTS = new Set([
   'PERSISTENT_POWER_AURA_RULE',
   'COLOR_MARKER_RULE',
   'FOREIGN_LIFE_RULE',
+  'CAENIS_POSEIDON_FAVOR_RULE',
+  'CAENIS_GOLDEN_WINGS_RULE',
+  'CAENIS_MAELSTROM_RULE',
+  'CALIGULA_MAD_TYRANT_RULE',
+  'CALIGULA_MADNESS_SPREAD_RULE',
+  'CARMILLA_FRESH_BLOOD_RULE',
+  'CARMILLA_TORTURE_RULE',
+  'CARMILLA_PHANTOM_MAIDEN_RULE',
+  'CHLOE_PROJECTION_MAGIC_RULE',
+  'CHLOE_KANSHOU_BAKUYA_RULE',
   'VISITOR_CARD_RULE',
   'IMPOSTOR_STATE_RULE',
   'RULER_SEAL_RULE',
