@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 829,
-    "explicitBlockCount": 115,
+    "contractMappedCount": 845,
+    "explicitBlockCount": 99,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 244,
-      "SPECIAL_HANDLER_CANDIDATE": 583,
+      "READY_GENERIC_EXTENSION": 245,
+      "SPECIAL_HANDLER_CANDIDATE": 598,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 115,
+      "SOURCE_EVIDENCE_REQUIRED": 99,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -311,6 +311,10 @@
         },
         {
           "abilityId": "servant.nero.skill.sc-nero-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -620,6 +624,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.okita.skill.sc-okita-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -902,6 +910,10 @@
         },
         {
           "abilityId": "servant.nero.skill.sc-nero-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -1217,6 +1229,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.okita.skill.sc-okita-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1303,6 +1319,7 @@
         "servant.medusa.skill.sc-medusa-1",
         "servant.napoleon.skill.sc-napoleon-2",
         "servant.nero.skill.sc-nero-2",
+        "servant.odysseus.skill.sc-odysseus-3",
         "servant.okita.skill.sc-okita-1",
         "servant.parvati.skill.sc-parvati-3"
       ],
@@ -1754,6 +1771,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.okita.skill.sc-okita-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2085,6 +2106,10 @@
         },
         {
           "abilityId": "servant.nero.skill.sc-nero-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2423,6 +2448,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.okita.skill.sc-okita-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2754,6 +2783,10 @@
         },
         {
           "abilityId": "servant.nero.skill.sc-nero-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3091,6 +3124,10 @@
         },
         {
           "abilityId": "servant.nero.skill.sc-nero-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3656,6 +3693,10 @@
         },
         {
           "abilityId": "servant.nero.skill.sc-nero-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -4324,6 +4365,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.okita.skill.sc-okita-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -4473,6 +4518,7 @@
         "servant.merlin.skill.sc-merlin-3",
         "servant.napoleon.skill.sc-napoleon-2",
         "servant.nero.skill.sc-nero-2",
+        "servant.odysseus.skill.sc-odysseus-3",
         "servant.okita.skill.sc-okita-1",
         "servant.roberts.skill.sc-roberts-2"
       ],
@@ -6990,6 +7036,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.nursery.skill.sc-nursery-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.nursery.skill.sc-nursery-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.oberon.skill.sc-oberon-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -7006,6 +7060,26 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.okita.skill.sc-okita-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -7015,6 +7089,38 @@
         },
         {
           "abilityId": "servant.okita.skill.sc-okita-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ozymandias.skill.sc-ozymandias-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ozymandias.skill.sc-ozymandias-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -7848,6 +7954,7 @@
         "servant.musashi.skill.sc-musashi-2",
         "servant.musashi.skill.sc-musashi-3",
         "servant.okita.skill.sc-okita-3",
+        "servant.orion.skill.sc-orion-3",
         "servant.ozymandias.skill.sc-ozymandias-2",
         "servant.sherlock.skill.sc-sherlock-2",
         "servant.siegfried.skill.sc-siegfried-3"
@@ -10646,13 +10753,28 @@
         "servant.nitocris.skill.sc-nitocris-3",
         "servant.nobunaga.skill.sc-nobunaga-1",
         "servant.nobunaga.skill.sc-nobunaga-2",
+        "servant.nursery.skill.sc-nursery-1",
+        "servant.nursery.skill.sc-nursery-3",
         "servant.oberon.skill.sc-oberon-1",
         "servant.oberon.skill.sc-oberon-2",
         "servant.oberon.skill.sc-oberon-3",
         "servant.oberon.skill.sc-oberon-4",
+        "servant.odysseus.skill.sc-odysseus-1",
+        "servant.odysseus.skill.sc-odysseus-2",
+        "servant.okita-alt.skill.sc-okita-alt-1",
+        "servant.okita-alt.skill.sc-okita-alt-2",
+        "servant.okita-alt.skill.sc-okita-alt-3",
         "servant.okita.skill.sc-okita-2",
         "servant.okita.skill.sc-okita-3",
         "servant.okita.skill.sc-okita-4",
+        "servant.orion.skill.sc-orion-1",
+        "servant.orion.skill.sc-orion-2",
+        "servant.orion.skill.sc-orion-3",
+        "servant.osakabe.skill.sc-osakabe-1",
+        "servant.osakabe.skill.sc-osakabe-2",
+        "servant.osakabe.skill.sc-osakabe-3",
+        "servant.ozymandias.skill.sc-ozymandias-1",
+        "servant.ozymandias.skill.sc-ozymandias-3",
         "servant.robin.skill.sc-robin-1",
         "servant.robin.skill.sc-robin-2",
         "servant.robin.skill.sc-robin-3",
@@ -12983,6 +13105,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.nursery.skill.sc-nursery-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.nursery.skill.sc-nursery-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.oberon.skill.sc-oberon-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -12999,6 +13129,26 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.okita.skill.sc-okita-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -13008,6 +13158,38 @@
         },
         {
           "abilityId": "servant.okita.skill.sc-okita-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ozymandias.skill.sc-ozymandias-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ozymandias.skill.sc-ozymandias-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -13892,16 +14074,32 @@
       "servant.nobunaga.skill.sc-nobunaga-1",
       "servant.nobunaga.skill.sc-nobunaga-2",
       "servant.nobunaga.skill.sc-nobunaga-3",
+      "servant.nursery.skill.sc-nursery-1",
       "servant.nursery.skill.sc-nursery-2",
+      "servant.nursery.skill.sc-nursery-3",
       "servant.oberon.skill.sc-oberon-1",
       "servant.oberon.skill.sc-oberon-2",
       "servant.oberon.skill.sc-oberon-3",
       "servant.oberon.skill.sc-oberon-4",
+      "servant.odysseus.skill.sc-odysseus-1",
+      "servant.odysseus.skill.sc-odysseus-2",
+      "servant.odysseus.skill.sc-odysseus-3",
+      "servant.okita-alt.skill.sc-okita-alt-1",
+      "servant.okita-alt.skill.sc-okita-alt-2",
+      "servant.okita-alt.skill.sc-okita-alt-3",
       "servant.okita.skill.sc-okita-1",
       "servant.okita.skill.sc-okita-2",
       "servant.okita.skill.sc-okita-3",
       "servant.okita.skill.sc-okita-4",
+      "servant.orion.skill.sc-orion-1",
+      "servant.orion.skill.sc-orion-2",
+      "servant.orion.skill.sc-orion-3",
+      "servant.osakabe.skill.sc-osakabe-1",
+      "servant.osakabe.skill.sc-osakabe-2",
+      "servant.osakabe.skill.sc-osakabe-3",
+      "servant.ozymandias.skill.sc-ozymandias-1",
       "servant.ozymandias.skill.sc-ozymandias-2",
+      "servant.ozymandias.skill.sc-ozymandias-3",
       "servant.parvati.skill.sc-parvati-3",
       "servant.roberts.skill.sc-roberts-1",
       "servant.roberts.skill.sc-roberts-2",
@@ -13930,118 +14128,6 @@
       "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "servant.nursery.skill.sc-nursery-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.nursery.skill.sc-nursery-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.odysseus.skill.sc-odysseus-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.odysseus.skill.sc-odysseus-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.odysseus.skill.sc-odysseus-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.okita-alt.skill.sc-okita-alt-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.okita-alt.skill.sc-okita-alt-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.okita-alt.skill.sc-okita-alt-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.orion.skill.sc-orion-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.orion.skill.sc-orion-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.orion.skill.sc-orion-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.osakabe.skill.sc-osakabe-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.osakabe.skill.sc-osakabe-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.osakabe.skill.sc-osakabe-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ozymandias.skill.sc-ozymandias-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ozymandias.skill.sc-ozymandias-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.parvati.skill.sc-parvati-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -15293,13 +15379,28 @@
       "servant.nitocris.skill.sc-nitocris-3",
       "servant.nobunaga.skill.sc-nobunaga-1",
       "servant.nobunaga.skill.sc-nobunaga-2",
+      "servant.nursery.skill.sc-nursery-1",
+      "servant.nursery.skill.sc-nursery-3",
       "servant.oberon.skill.sc-oberon-1",
       "servant.oberon.skill.sc-oberon-2",
       "servant.oberon.skill.sc-oberon-3",
       "servant.oberon.skill.sc-oberon-4",
+      "servant.odysseus.skill.sc-odysseus-1",
+      "servant.odysseus.skill.sc-odysseus-2",
+      "servant.okita-alt.skill.sc-okita-alt-1",
+      "servant.okita-alt.skill.sc-okita-alt-2",
+      "servant.okita-alt.skill.sc-okita-alt-3",
       "servant.okita.skill.sc-okita-2",
       "servant.okita.skill.sc-okita-3",
       "servant.okita.skill.sc-okita-4",
+      "servant.orion.skill.sc-orion-1",
+      "servant.orion.skill.sc-orion-2",
+      "servant.orion.skill.sc-orion-3",
+      "servant.osakabe.skill.sc-osakabe-1",
+      "servant.osakabe.skill.sc-osakabe-2",
+      "servant.osakabe.skill.sc-osakabe-3",
+      "servant.ozymandias.skill.sc-ozymandias-1",
+      "servant.ozymandias.skill.sc-ozymandias-3",
       "servant.robin.skill.sc-robin-1",
       "servant.robin.skill.sc-robin-2",
       "servant.robin.skill.sc-robin-3",
