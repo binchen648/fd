@@ -1538,6 +1538,18 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.darius.skill.sc-darius-4')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'undead_army_half_close_rule'})])}));
   });
 
+  it('grounds the sixteen-ID Drake/Edison/Elizabeth/EMIYA/Enkidu/Ereshkigal/Frank slice from locked development snapshots', () => {
+    const overlays=loadSourceEvidenceOverlayCards();
+    const ids=new Set(["servant.drake.skill.sc-drake-1","servant.edison.skill.sc-edison-1","servant.elizabeth.skill.sc-elizabeth-1","servant.elizabeth.skill.sc-elizabeth-2","servant.elizabeth.skill.sc-elizabeth-3","servant.emiya.skill.sc-emiya-1","servant.emiya.skill.sc-emiya-2","servant.enkidu.skill.sc-enkidu-1","servant.enkidu.skill.sc-enkidu-2","servant.enkidu.skill.sc-enkidu-3","servant.ereshkigal.skill.sc-ereshkigal-1","servant.ereshkigal.skill.sc-ereshkigal-2","servant.ereshkigal.skill.sc-ereshkigal-3","servant.frank.skill.sc-frank-1","servant.frank.skill.sc-frank-2","servant.frank.skill.sc-frank-3"]);
+    const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(16);
+    expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.drake.skill.sc-drake-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'draw_cards'}),expect.objectContaining({type:'play_selected_cards'})])}));
+    for(const id of ['servant.enkidu.skill.sc-enkidu-3','servant.ereshkigal.skill.sc-ereshkigal-1']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'move_player',destinationRule:'any_location_except_workshop'})])}));
+    for(const id of ['servant.elizabeth.skill.sc-elizabeth-1','servant.elizabeth.skill.sc-elizabeth-2','servant.elizabeth.skill.sc-elizabeth-3']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'volume_counter_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.frank.skill.sc-frank-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'prevent_elimination'}),expect.objectContaining({type:'schedule_phase_effect'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1591,10 +1603,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 657,
-      blockedCount: 287,
+      sourceGroundedCount: 673,
+      blockedCount: 271,
       unclassifiedCount: 0,
-      structuredAbilityCount: 935,
+      structuredAbilityCount: 951,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
