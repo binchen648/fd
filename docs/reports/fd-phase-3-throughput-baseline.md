@@ -584,3 +584,11 @@ Permitted final status:
 - Regenerated coverage changed only `generatedAt` and static-evidence source line numbers; source fingerprint, counters, compiled identity, classifications, and evidence identities are unchanged, so the artifact drift is intentionally not committed.
 - Independent R19 evidence: typecheck PASS; focused compatibility `58/58`; rules regression `247/247`; deterministic generated-content PASS; full root CI `660/660`; identity/hot-file audit clean.
 - No broad Resource Numeric, Trigger, Movement, Card Zone, Interaction, Battle, Cost, or special-handler family is promoted by implication.
+## P3-A FB2-03 Synchronization — 2026-09-16
+
+- P3-FB2-03 fixed controller Mana/VP adjustment component: `REVIEW_ACCEPTED` at candidate `3334598fc266c158aceea6796bcae03b6f65796e`, R20 `a2d2fcfedefead28897dd456aaefa8160061c53b`.
+- Exact F1 component alignment is `59` identities; only `6` currently have a complete accepted parent route, while `53` still depend on later parent/gateway/special contracts. No authoring migration occurred.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled identity remains unchanged.
+- Generated coverage drift is only timestamp/static source line numbers and is intentionally not committed.
+- Independent R20 evidence: typecheck PASS; focused `26/26`; rules `252/252`; deterministic PASS; full CI `665/665`; identity/forbidden-file audits clean.
+- Broad Resource Numeric and all later-wave parent gateways remain unpromoted.
