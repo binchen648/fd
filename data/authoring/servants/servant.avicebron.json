@@ -1,0 +1,150 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.avicebron",
+  "name": "阿维斯布隆",
+  "class": "Caster",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus accepted FB2-11/R33 and FB2-02/R19 contracts; locked Reference is used only for owner/static metadata."
+  },
+  "cards": [
+    {
+      "id": "servant.avicebron.skill.sc-avicebron-3",
+      "aliases": [
+        "sc_avicebron_3"
+      ],
+      "legacyId": "sc_avicebron_3",
+      "name": "阵地建造（Caster Class）",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.avicebron"
+      },
+      "printedText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 0,
+        "basePower": {
+          "printedExpression": "X",
+          "formula": {
+            "op": "add",
+            "args": [
+              16,
+              {
+                "op": "multiply",
+                "args": [
+                  -2,
+                  {
+                    "var": "game.round_number"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-avicebron-3.round-power",
+          "kind": "continuous_formula",
+          "printedClause": "X为16-（当前回合数×2）",
+          "activation": {
+            "trigger": "on_card_played",
+            "requiresSourceState": "active"
+          },
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-avicebron-3.deployment-reward",
+          "kind": "forced_trigger",
+          "printedClause": "残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "activation": {
+            "trigger": "after_player_deployed_to_battlefield",
+            "eventLocationId": "magic_workshop"
+          },
+          "effects": [
+            {
+              "type": "adjust_mana",
+              "player": "controller",
+              "amount": 1
+            },
+            {
+              "type": "adjust_victory_points",
+              "player": "controller",
+              "amount": 2
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "阿维斯布隆.htm",
+            "locator": "从者/魔术师/英文版/阿维斯布隆.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/阿维斯布隆.png",
+            "locator": "servant.avicebron/阿维斯布隆"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[102].skills[2].text#line=1",
+            "sha256": "a65ce56a69bba9214eba95ab30154209228bcd28f7fec21f6317c8a70f421847"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[102].skills[2].text#line=2",
+            "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+          }
+        ],
+        "sourceTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_avicebron_3",
+          "cost": 0,
+          "basePower": 2,
+          "legacyRequirement": 0,
+          "typeLabel": "魔术"
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is retained as evidence metadata only."
+        },
+        "acceptedContracts": {
+          "roundPower": "P3-R33/FB2-11",
+          "deploymentReward": "P3-R19/FB2-02"
+        }
+      }
+    }
+  ]
+}
