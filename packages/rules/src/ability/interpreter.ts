@@ -1690,6 +1690,28 @@ function hasMandatoryTargetAvailability(s: GameState, ctx: EffectContext, a: Aut
   return true;
 }
 
+function containsEffectLevelOptionalCost(value: unknown): boolean {
+  if (Array.isArray(value)) return value.some(containsEffectLevelOptionalCost);
+  if (!value || typeof value !== 'object') return false;
+  const current = value as Record<string, unknown>;
+  if (Object.prototype.hasOwnProperty.call(current, 'optionalCost')) return true;
+  return Object.values(current).some(containsEffectLevelOptionalCost);
+}
+
+export function isFixedControllerManaCostComponent(a: AuthoringAbility): boolean {
+  if (a.cost.length !== 1 || str(a.cost[0]?.type) !== 'pay_mana') return false;
+  const cost = a.cost[0]!;
+  if (cost.player !== undefined && cost.player !== 'controller') return false;
+  if (containsEffectLevelOptionalCost([...a.effects, ...a.creates])) return false;
+  const amount = cost.amount;
+  return typeof amount === 'number' && Number.isSafeInteger(amount) && amount > 0;
+}
+
+function usesAcceptedFixedControllerManaCostComponent(a: AuthoringAbility): boolean {
+  if (!isFixedControllerManaCostComponent(a)) return false;
+  return isPlaySourceCardWithCostResponseRouteCandidate(a) || isAddToAttackRouteCandidate(a);
+}
+
 function hasFixedManaCost(costs: RuleNode[], amount: number): boolean {
   if (costs.length !== 1 || str(costs[0]?.type) !== 'pay_mana') return false;
   const amountNode = node(costs[0]?.amount);
@@ -1792,6 +1814,10 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
   }
 }
 
+function executeFixedControllerManaCost(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  executeResolutionEffects(s, ctx, a.cost);
+}
+
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (isBattleEndMobilePlayersRewardSemantic(a)) {
@@ -1850,7 +1876,8 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     return;
   }
   if (isPlaySourceCardWithCostResponseRouteCandidate(a)) {
-    executeResolutionEffects(s, ctx, effects);
+    const resolutionEffects = usesAcceptedFixedControllerManaCostComponent(a) ? [...a.cost, ...effects] : effects;
+    executeResolutionEffects(s, ctx, resolutionEffects);
     installOngoing(s, ctx, a);
     cleanupOngoing(s);
     return;
@@ -1942,6 +1969,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isAddToAttackRouteCandidate(a)) assertAddToAttackSupportAvailable(s, ctx, a);
   const p = player(s, ctx.controllerId); let manaCost = 0;
+  const fixedControllerManaCost = usesAcceptedFixedControllerManaCostComponent(a);
   
   // Check usage limits
   const limitType = str(a.limit?.type);
@@ -1952,6 +1980,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   const names = a.cost.filter(c => c.type === 'pay_mana').map(c => str(node(c.amount).var)).filter(Boolean);
   if (Object.keys(ctx.variables).some(name => !names.includes(name))) reject('invalid_variable', 'Unexpected variable');
   for (const cost of a.cost) {
+    if (cost.type === 'pay_mana' && fixedControllerManaCost) {
+      continue;
+    }
     if (cost.type === 'pay_mana') {
       const value = numeric(s, ctx, cost.amount);
       if (!Number.isSafeInteger(value) || value < 0 || value > p.mana) reject('invalid_cost', 'Variable cost must be an integer within available mana');
@@ -1966,6 +1997,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (manaCost > p.mana) reject('insufficient_mana', 'Insufficient mana');
   p.mana -= manaCost;
+  if (fixedControllerManaCost && isAddToAttackRouteCandidate(a)) executeFixedControllerManaCost(s, ctx, a);
   if (names.length) runtime(s).calculations.push({ controllerId: p.id, lines: names.map(name => ({ label: name, value: ctx.variables[name]! })) });
   for (const cost of a.cost.filter(c => c.type === 'move_source_card')) moveCard(s, ctx.sourceCardId, str(node(cost.to).zone));
   if (a.visibility.revealTiming === 'on_use_declared') reveal(s, p.id);
