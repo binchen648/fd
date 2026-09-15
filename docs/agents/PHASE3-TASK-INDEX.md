@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.21
+- Version: P3-TI-1.22
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3066,7 +3066,7 @@ Completion status allowed:
 ## TASK P3-FM01
 
 Owner: Codex S
-Status: READY
+Status: MIGRATION_CANDIDATE
 Branch: `codex/s-p3-fm01-source-play-basic-draw`
 Base: exact P3-FB2-08 A synchronization commit
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
@@ -3108,7 +3108,7 @@ Completion status allowed:
 ## TASK P3-A-FM01-SYNC
 
 Owner: Codex A
-Status: READY_AFTER_P3_FM01
+Status: MIGRATION_SYNC_CANDIDATE
 Base: exact P3-FM01 S candidate SHA
 
 Goal: independently recompute before/after full-roster burn-down and verify that exactly the authorized 14 identities changed migration state without taxonomy/KPI redefinition or unrelated evidence drift.
@@ -3122,7 +3122,7 @@ Completion status allowed:
 ## TASK P3-R26
 
 Owner: Codex R
-Status: READY_AFTER_P3_A_FM01_SYNC
+Status: READY
 Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM01 lineage
 
 Goal: independently review the first F4 migration without implementing fixes.
@@ -3133,6 +3133,14 @@ Completion status allowed:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `REJECTED`
+
+## Full-Roster Dispatch State After P3-A-FM01-SYNC
+
+- S candidate `6203b70c5bc2a81ceecca31008dc2b71246519a9` migrates the exact authorized 14-ID batch as 13 new minimal authoring archives plus the unchanged pre-existing Drake representative; skipped=0 and runtime-file changes=0.
+- Independent A burn-down shows frozen-F1 canonical authoring overlap `24 -> 37` (+13) globally and exact FM01 membership `1/14 -> 14/14`, with zero unauthorized F1 IDs added.
+- Fresh material coverage is committed. Raw reporter counts become `new=12 / legacyExecute=3 / legacyResolve=75 / dual=0 / notClassifiable=28 / taxonomyWarnings=92` because the reporter labels the 26 newly visible abilities exactly as it already labels the independently accepted Drake representatives. Structural signature mismatch versus Drake is `0/26`.
+- Compiled product identity remains unchanged at 70 cards / 14 characters / 0 blocking issues, definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`.
+- A does not redefine taxonomy/KPI or repair the classifier during migration sync. R26 is now READY to judge the exact lineage and the reporter reconciliation.
 
 ## Prompt Templates
 
