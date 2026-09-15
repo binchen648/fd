@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 529,
-    "explicitBlockCount": 415,
+    "contractMappedCount": 544,
+    "explicitBlockCount": 400,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 219,
-      "SPECIAL_HANDLER_CANDIDATE": 308,
+      "READY_GENERIC_EXTENSION": 221,
+      "SPECIAL_HANDLER_CANDIDATE": 321,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 415,
+      "SOURCE_EVIDENCE_REQUIRED": 400,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -5252,6 +5252,26 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.charlemagne.skill.sc-charlemagne-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.charlemagne.skill.sc-charlemagne-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.chiron.skill.sc-chiron-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.chiron.skill.sc-chiron-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.chiron.skill.sc-chiron-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.davinci.skill.sc-davinci-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5293,6 +5313,18 @@
         },
         {
           "abilityId": "servant.davinci.skill.sc-davinci-9",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.deon.skill.sc-deon-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.deon.skill.sc-deon-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.deon.skill.sc-deon-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -5480,6 +5512,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.musashi.skill.sc-musashi-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.musashi.skill.sc-musashi-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.nero.skill.sc-nero-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5509,6 +5549,18 @@
         },
         {
           "abilityId": "servant.okita.skill.sc-okita-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.robin.skill.sc-robin-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.robin.skill.sc-robin-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.robin.skill.sc-robin-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -6283,6 +6335,7 @@
         "servant.atalanta.skill.sc-atalanta-1",
         "servant.bedivere.skill.sc-bedivere-1",
         "servant.bedivere.skill.sc-bedivere-3",
+        "servant.charlemagne.skill.sc-charlemagne-3",
         "servant.darius.skill.sc-darius-2",
         "servant.davinci.skill.sc-davinci-10",
         "servant.davinci.skill.sc-davinci-13",
@@ -6303,6 +6356,8 @@
         "servant.mozart.skill.sc-mozart-1",
         "servant.muramasa.skill.sc-muramasa-1",
         "servant.muramasa.skill.sc-muramasa-2",
+        "servant.musashi.skill.sc-musashi-2",
+        "servant.musashi.skill.sc-musashi-3",
         "servant.okita.skill.sc-okita-3",
         "servant.ozymandias.skill.sc-ozymandias-2",
         "servant.sherlock.skill.sc-sherlock-2",
@@ -6430,6 +6485,7 @@
         "servant.avicebron.skill.sc-avicebron-1",
         "servant.avicebron.skill.sc-avicebron-3",
         "servant.bedivere.skill.sc-bedivere-1",
+        "servant.charlemagne.skill.sc-charlemagne-3",
         "servant.davinci.skill.sc-davinci-3",
         "servant.davinci.skill.sc-davinci-4",
         "servant.davinci.skill.sc-davinci-8",
@@ -6447,6 +6503,7 @@
         "servant.merlin.skill.sc-merlin-3",
         "servant.mordred.skill.sc-mordred-3",
         "servant.mozart.skill.sc-mozart-2",
+        "servant.musashi.skill.sc-musashi-3",
         "servant.nero.skill.sc-nero-1",
         "servant.nobunaga.skill.sc-nobunaga-3",
         "servant.ozymandias.skill.sc-ozymandias-2",
@@ -8050,6 +8107,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.charlemagne.skill.sc-charlemagne-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.davinci.skill.sc-davinci-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -8115,6 +8176,10 @@
         },
         {
           "abilityId": "servant.mozart.skill.sc-mozart-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.musashi.skill.sc-musashi-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -8751,6 +8816,11 @@
         "servant.bikuni.skill.sc-bikuni-2",
         "servant.bikuni.skill.sc-bikuni-3",
         "servant.bikuni.skill.sc-bikuni-4",
+        "servant.charlemagne.skill.sc-charlemagne-1",
+        "servant.charlemagne.skill.sc-charlemagne-2",
+        "servant.chiron.skill.sc-chiron-1",
+        "servant.chiron.skill.sc-chiron-2",
+        "servant.chiron.skill.sc-chiron-3",
         "servant.davinci.skill.sc-davinci-1",
         "servant.davinci.skill.sc-davinci-11",
         "servant.davinci.skill.sc-davinci-12",
@@ -8762,6 +8832,9 @@
         "servant.davinci.skill.sc-davinci-5",
         "servant.davinci.skill.sc-davinci-6",
         "servant.davinci.skill.sc-davinci-9",
+        "servant.deon.skill.sc-deon-1",
+        "servant.deon.skill.sc-deon-2",
+        "servant.deon.skill.sc-deon-3",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.gawain.skill.sc-gawain-1",
         "servant.gawain.skill.sc-gawain-2",
@@ -8809,6 +8882,8 @@
         "servant.muramasa.skill.sc-muramasa-1",
         "servant.muramasa.skill.sc-muramasa-2",
         "servant.muramasa.skill.sc-muramasa-3",
+        "servant.musashi.skill.sc-musashi-1",
+        "servant.musashi.skill.sc-musashi-2",
         "servant.nero.skill.sc-nero-3",
         "servant.oberon.skill.sc-oberon-1",
         "servant.oberon.skill.sc-oberon-2",
@@ -8817,6 +8892,9 @@
         "servant.okita.skill.sc-okita-2",
         "servant.okita.skill.sc-okita-3",
         "servant.okita.skill.sc-okita-4",
+        "servant.robin.skill.sc-robin-1",
+        "servant.robin.skill.sc-robin-2",
+        "servant.robin.skill.sc-robin-3",
         "servant.sherlock.skill.sc-sherlock-1",
         "servant.sherlock.skill.sc-sherlock-2",
         "servant.sherlock.skill.sc-sherlock-3",
@@ -9804,6 +9882,26 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.charlemagne.skill.sc-charlemagne-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.charlemagne.skill.sc-charlemagne-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.chiron.skill.sc-chiron-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.chiron.skill.sc-chiron-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.chiron.skill.sc-chiron-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.davinci.skill.sc-davinci-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -9845,6 +9943,18 @@
         },
         {
           "abilityId": "servant.davinci.skill.sc-davinci-9",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.deon.skill.sc-deon-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.deon.skill.sc-deon-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.deon.skill.sc-deon-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -10052,6 +10162,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.musashi.skill.sc-musashi-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.musashi.skill.sc-musashi-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.nero.skill.sc-nero-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -10081,6 +10199,18 @@
         },
         {
           "abilityId": "servant.okita.skill.sc-okita-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.robin.skill.sc-robin-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.robin.skill.sc-robin-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.robin.skill.sc-robin-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -10552,6 +10682,12 @@
       "servant.bikuni.skill.sc-bikuni-3",
       "servant.bikuni.skill.sc-bikuni-4",
       "servant.caligula.skill.sc-caligula-1",
+      "servant.charlemagne.skill.sc-charlemagne-1",
+      "servant.charlemagne.skill.sc-charlemagne-2",
+      "servant.charlemagne.skill.sc-charlemagne-3",
+      "servant.chiron.skill.sc-chiron-1",
+      "servant.chiron.skill.sc-chiron-2",
+      "servant.chiron.skill.sc-chiron-3",
       "servant.chloe.skill.sc-chloe-1",
       "servant.clytie.skill.sc-clytie-3",
       "servant.darius.skill.sc-darius-1",
@@ -10574,6 +10710,9 @@
       "servant.davinci.skill.sc-davinci-7",
       "servant.davinci.skill.sc-davinci-8",
       "servant.davinci.skill.sc-davinci-9",
+      "servant.deon.skill.sc-deon-1",
+      "servant.deon.skill.sc-deon-2",
+      "servant.deon.skill.sc-deon-3",
       "servant.diarmuid.skill.sc-diarmuid-1",
       "servant.drake.skill.sc-drake-2",
       "servant.drake.skill.sc-drake-3",
@@ -10650,6 +10789,9 @@
       "servant.muramasa.skill.sc-muramasa-1",
       "servant.muramasa.skill.sc-muramasa-2",
       "servant.muramasa.skill.sc-muramasa-3",
+      "servant.musashi.skill.sc-musashi-1",
+      "servant.musashi.skill.sc-musashi-2",
+      "servant.musashi.skill.sc-musashi-3",
       "servant.napoleon.skill.sc-napoleon-1",
       "servant.napoleon.skill.sc-napoleon-2",
       "servant.nero.skill.sc-nero-1",
@@ -10669,6 +10811,9 @@
       "servant.parvati.skill.sc-parvati-3",
       "servant.roberts.skill.sc-roberts-1",
       "servant.roberts.skill.sc-roberts-2",
+      "servant.robin.skill.sc-robin-1",
+      "servant.robin.skill.sc-robin-2",
+      "servant.robin.skill.sc-robin-3",
       "servant.sherlock.skill.sc-sherlock-1",
       "servant.sherlock.skill.sc-sherlock-2",
       "servant.sherlock.skill.sc-sherlock-3",
@@ -11154,48 +11299,6 @@
         ]
       },
       {
-        "abilityId": "servant.charlemagne.skill.sc-charlemagne-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.charlemagne.skill.sc-charlemagne-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.charlemagne.skill.sc-charlemagne-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.chiron.skill.sc-chiron-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.chiron.skill.sc-chiron-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.chiron.skill.sc-chiron-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "servant.chloe.skill.sc-chloe-2",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -11358,27 +11461,6 @@
       },
       {
         "abilityId": "servant.darius.skill.sc-darius-4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.deon.skill.sc-deon-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.deon.skill.sc-deon-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.deon.skill.sc-deon-3",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -12666,27 +12748,6 @@
         ]
       },
       {
-        "abilityId": "servant.musashi.skill.sc-musashi-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.musashi.skill.sc-musashi-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.musashi.skill.sc-musashi-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "servant.napoleon.skill.sc-napoleon-3",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -12982,27 +13043,6 @@
       },
       {
         "abilityId": "servant.roberts.skill.sc-roberts-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.robin.skill.sc-robin-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.robin.skill.sc-robin-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.robin.skill.sc-robin-3",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -13823,6 +13863,11 @@
       "servant.bikuni.skill.sc-bikuni-2",
       "servant.bikuni.skill.sc-bikuni-3",
       "servant.bikuni.skill.sc-bikuni-4",
+      "servant.charlemagne.skill.sc-charlemagne-1",
+      "servant.charlemagne.skill.sc-charlemagne-2",
+      "servant.chiron.skill.sc-chiron-1",
+      "servant.chiron.skill.sc-chiron-2",
+      "servant.chiron.skill.sc-chiron-3",
       "servant.davinci.skill.sc-davinci-1",
       "servant.davinci.skill.sc-davinci-11",
       "servant.davinci.skill.sc-davinci-12",
@@ -13834,6 +13879,9 @@
       "servant.davinci.skill.sc-davinci-5",
       "servant.davinci.skill.sc-davinci-6",
       "servant.davinci.skill.sc-davinci-9",
+      "servant.deon.skill.sc-deon-1",
+      "servant.deon.skill.sc-deon-2",
+      "servant.deon.skill.sc-deon-3",
       "servant.diarmuid.skill.sc-diarmuid-1",
       "servant.gawain.skill.sc-gawain-1",
       "servant.gawain.skill.sc-gawain-2",
@@ -13881,6 +13929,8 @@
       "servant.muramasa.skill.sc-muramasa-1",
       "servant.muramasa.skill.sc-muramasa-2",
       "servant.muramasa.skill.sc-muramasa-3",
+      "servant.musashi.skill.sc-musashi-1",
+      "servant.musashi.skill.sc-musashi-2",
       "servant.nero.skill.sc-nero-3",
       "servant.oberon.skill.sc-oberon-1",
       "servant.oberon.skill.sc-oberon-2",
@@ -13889,6 +13939,9 @@
       "servant.okita.skill.sc-okita-2",
       "servant.okita.skill.sc-okita-3",
       "servant.okita.skill.sc-okita-4",
+      "servant.robin.skill.sc-robin-1",
+      "servant.robin.skill.sc-robin-2",
+      "servant.robin.skill.sc-robin-3",
       "servant.sherlock.skill.sc-sherlock-1",
       "servant.sherlock.skill.sc-sherlock-2",
       "servant.sherlock.skill.sc-sherlock-3",

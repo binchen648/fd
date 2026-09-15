@@ -21786,6 +21786,410 @@
         }
       ],
       "referencePrintedTextSha256": "68575ba34da56c997ecdaedc7f6840b4e7f55501f3b7c09d41af247f87637388"
+    },
+    {
+      "id": "servant.charlemagne.skill.sc-charlemagne-1",
+      "printedText": "【真名解放】\n被动：获得胜利时，你可将此战场中的一张事件牌洗回事件牌库。\n战斗阶段：抽一张事件牌并将之加入你的战场，你的所有攻击获得该事件牌上印刷的属性。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_charlemagne_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n被动：获得胜利时，你可将此战场中的一张事件牌洗回事件牌库。\n战斗阶段：抽一张事件牌并将之加入你的战场，你的所有攻击获得该事件牌上印刷的属性。",
+        "sourceTextSha256": "ec187dcc29d60411ec91b3a494e4b2fc318a0cd203e78f9cad52b06b07f06e98"
+      },
+      "abilities": [
+        {
+          "id": "charlemagne.sc_charlemagne_1.semantic",
+          "printedClause": "【真名解放】\n被动：获得胜利时，你可将此战场中的一张事件牌洗回事件牌库。\n战斗阶段：抽一张事件牌并将之加入你的战场，你的所有攻击获得该事件牌上印刷的属性。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "event_attribute_infusion_rule",
+              "operation": "true_name_reveal_passive_on_win_may_shuffle_one_event_at_controller_battlefield_into_event_deck_combat_draw_one_event_and_add_to_controller_battlefield_all_controller_attacks_gain_attributes_printed_on_that_event"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ec187dcc29d60411ec91b3a494e4b2fc318a0cd203e78f9cad52b06b07f06e98"
+    },
+    {
+      "id": "servant.charlemagne.skill.sc-charlemagne-2",
+      "printedText": "【真名解放】\nX为14-（当前回合数 × 2）\n残留：你的攻击因局势牌和事件牌提升的威力翻倍。高潮阶段时，变为三倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_charlemagne_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\nX为14-（当前回合数 × 2）\n残留：你的攻击因局势牌和事件牌提升的威力翻倍。高潮阶段时，变为三倍。",
+        "sourceTextSha256": "33e1ee76cfadf7c7c503394e2d1c5d8ed37b545813a2ce8815b7452949cb2da1"
+      },
+      "abilities": [
+        {
+          "id": "charlemagne.sc_charlemagne_2.semantic",
+          "printedClause": "【真名解放】\nX为14-（当前回合数 × 2）\n残留：你的攻击因局势牌和事件牌提升的威力翻倍。高潮阶段时，变为三倍。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "round_cost_terrain_event_multiplier_rule",
+              "operation": "true_name_reveal_source_x_equals_14_minus_current_round_times_2_residual_double_attack_power_increases_from_situation_and_event_cards_triple_in_climax_phase"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "33e1ee76cfadf7c7c503394e2d1c5d8ed37b545813a2ce8815b7452949cb2da1"
+    },
+    {
+      "id": "servant.charlemagne.skill.sc-charlemagne-3",
+      "printedText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_charlemagne_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+        "sourceTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+      },
+      "abilities": [
+        {
+          "id": "charlemagne.sc_charlemagne_3.semantic",
+          "printedClause": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 1,
+              "operation": "if_played_highest_mana_cost_noble_phantasm_attack_in_controller_combat_this_round_gain_1_vp_and_if_cost_at_least_4_gain_1_additional_vp"
+            },
+            {
+              "type": "set_opponent_attribute_power",
+              "attribute": "magic",
+              "value": 0,
+              "operation": "combat_set_magic_attribute_attack_power_of_engaged_opponents_at_same_battlefield_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+    },
+    {
+      "id": "servant.chiron.skill.sc-chiron-1",
+      "printedText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_chiron_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+        "sourceTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+      },
+      "abilities": [
+        {
+          "id": "chiron.sc_chiron_1.semantic",
+          "printedClause": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "independent_action_rule",
+              "operation": "usable_only_when_controller_action_order_is_in_first_floor_half_of_current_round_action_gain_3_vp_if_controller_loses_combat_this_round_lose_5_vp_unpreventably"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+    },
+    {
+      "id": "servant.chiron.skill.sc-chiron-2",
+      "printedText": "被动/战斗阶段：战斗结束后，你可选择你的基础牌和一张与你战斗的对手的相同属性的基础牌；选择的2张牌互相加入对方的手牌中，若你的牌拥有更高的基本威力，获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_chiron_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "被动/战斗阶段：战斗结束后，你可选择你的基础牌和一张与你战斗的对手的相同属性的基础牌；选择的2张牌互相加入对方的手牌中，若你的牌拥有更高的基本威力，获得2点战果。",
+        "sourceTextSha256": "da3d85e00858c00e5b0b91c1fca5e89f84ac733c34b861142d0432c506e5df8e"
+      },
+      "abilities": [
+        {
+          "id": "chiron.sc_chiron_2.semantic",
+          "printedClause": "被动/战斗阶段：战斗结束后，你可选择你的基础牌和一张与你战斗的对手的相同属性的基础牌；选择的2张牌互相加入对方的手牌中，若你的牌拥有更高的基本威力，获得2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "base_card_exchange_rule",
+              "operation": "passive_combat_after_combat_choose_one_controller_basic_card_and_one_same_attribute_basic_card_of_engaged_opponent_exchange_selected_cards_into_other_players_hands_if_controller_card_has_higher_base_power_gain_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "da3d85e00858c00e5b0b91c1fca5e89f84ac733c34b861142d0432c506e5df8e"
+    },
+    {
+      "id": "servant.chiron.skill.sc-chiron-3",
+      "printedText": "【真名解放】\n被动/战斗阶段：支付此牌的魔力消耗，将之加入你的攻击中。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_chiron_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n被动/战斗阶段：支付此牌的魔力消耗，将之加入你的攻击中。",
+        "sourceTextSha256": "70f7bf8481bb0becacbb6890708743789a36fe17e81dea09a8d6d735e7dc84c7"
+      },
+      "abilities": [
+        {
+          "id": "chiron.sc_chiron_3.semantic",
+          "printedClause": "【真名解放】\n被动/战斗阶段：支付此牌的魔力消耗，将之加入你的攻击中。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "self_play_cost_rule",
+              "operation": "true_name_reveal_passive_combat_pay_source_mana_cost_then_add_source_to_controller_attack"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "70f7bf8481bb0becacbb6890708743789a36fe17e81dea09a8d6d735e7dc84c7"
+    },
+    {
+      "id": "servant.deon.skill.sc-deon-1",
+      "printedText": "若你拥有的魔力不足8点，你可以额外花费1点魔力来打出此牌。\n行动阶段：此牌获得威力+4。若你本回合没有进行【格挡】，于你的战斗阶段回合结束时关闭此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_deon_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "若你拥有的魔力不足8点，你可以额外花费1点魔力来打出此牌。\n行动阶段：此牌获得威力+4。若你本回合没有进行【格挡】，于你的战斗阶段回合结束时关闭此牌。",
+        "sourceTextSha256": "b50841e93ff817473f69d9685bfe8cc826132c22cb52c253681d25fd0a79145d"
+      },
+      "abilities": [
+        {
+          "id": "deon.sc_deon_1.semantic",
+          "printedClause": "若你拥有的魔力不足8点，你可以额外花费1点魔力来打出此牌。\n行动阶段：此牌获得威力+4。若你本回合没有进行【格挡】，于你的战斗阶段回合结束时关闭此牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "conditional_play_surcharge_close_rule",
+              "operation": "if_controller_has_less_than_8_mana_may_pay_1_additional_mana_to_play_source_action_source_gains_4_power_if_controller_did_not_block_this_round_close_source_at_end_of_controller_combat_phase"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b50841e93ff817473f69d9685bfe8cc826132c22cb52c253681d25fd0a79145d"
+    },
+    {
+      "id": "servant.deon.skill.sc-deon-2",
+      "printedText": "【真名解放】\n战斗阶段：你可以额外进行两次【格挡】。\n格挡-被动/战斗阶段：弃置一张牌，关闭一张与弃置牌基本威力相同的交战对手本回合打出的攻击。若如此，此牌威力+3。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_deon_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n战斗阶段：你可以额外进行两次【格挡】。\n格挡-被动/战斗阶段：弃置一张牌，关闭一张与弃置牌基本威力相同的交战对手本回合打出的攻击。若如此，此牌威力+3。",
+        "sourceTextSha256": "338139db77a8cf7cc466d1d563bc1596560c6fa20bbfa57e19764aed739ed916"
+      },
+      "abilities": [
+        {
+          "id": "deon.sc_deon_2.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：你可以额外进行两次【格挡】。\n格挡-被动/战斗阶段：弃置一张牌，关闭一张与弃置牌基本威力相同的交战对手本回合打出的攻击。若如此，此牌威力+3。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "block_counter_rule",
+              "operation": "true_name_reveal_combat_controller_may_block_two_additional_times_block_passive_combat_discard_one_card_close_one_engaged_opponent_attack_played_this_round_with_same_base_power_if_so_source_gains_3_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "338139db77a8cf7cc466d1d563bc1596560c6fa20bbfa57e19764aed739ed916"
+    },
+    {
+      "id": "servant.deon.skill.sc-deon-3",
+      "printedText": "被动：你可将迪昂视作男性或女性，此能力不能被复制，也不能失去。\n行动阶段：查看你所在地点的一名玩家的手牌，选择其中一张牌弃置。获得该牌基本威力的合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_deon_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "被动：你可将迪昂视作男性或女性，此能力不能被复制，也不能失去。\n行动阶段：查看你所在地点的一名玩家的手牌，选择其中一张牌弃置。获得该牌基本威力的合计威力。",
+        "sourceTextSha256": "462e7ad02458ac90c47bbf815b26f80518552920afeedff9ae5639c77998867d"
+      },
+      "abilities": [
+        {
+          "id": "deon.sc_deon_3.semantic",
+          "printedClause": "被动：你可将迪昂视作男性或女性，此能力不能被复制，也不能失去。\n行动阶段：查看你所在地点的一名玩家的手牌，选择其中一张牌弃置。获得该牌基本威力的合计威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gender_identity_hand_discard_rule",
+              "operation": "passive_deon_may_count_as_male_or_female_this_ability_cannot_be_copied_or_lost_action_view_one_player_hand_at_same_location_choose_one_card_discard_it_gain_total_power_equal_to_that_cards_base_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "462e7ad02458ac90c47bbf815b26f80518552920afeedff9ae5639c77998867d"
+    },
+    {
+      "id": "servant.musashi.skill.sc-musashi-1",
+      "printedText": "【真名解放】\n被动：当你赢得战斗时，获得一枚【境界】标记。战斗中每有一名对手额外获得1枚【境界】标记。每回合获得【境界】标记不能超过3个。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_musashi_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n被动：当你赢得战斗时，获得一枚【境界】标记。战斗中每有一名对手额外获得1枚【境界】标记。每回合获得【境界】标记不能超过3个。",
+        "sourceTextSha256": "0ffe943f36f9000d639f491322c5ad941c59bf710f60fade0bf2042afe937fda"
+      },
+      "abilities": [
+        {
+          "id": "musashi.sc_musashi_1.semantic",
+          "printedClause": "【真名解放】\n被动：当你赢得战斗时，获得一枚【境界】标记。战斗中每有一名对手额外获得1枚【境界】标记。每回合获得【境界】标记不能超过3个。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "growth_counter_rule",
+              "operation": "true_name_reveal_passive_on_combat_win_gain_one_boundary_counter_plus_one_additional_boundary_counter_per_opponent_in_battle_maximum_3_boundary_counters_gained_per_round"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0ffe943f36f9000d639f491322c5ad941c59bf710f60fade0bf2042afe937fda"
+    },
+    {
+      "id": "servant.musashi.skill.sc-musashi-2",
+      "printedText": "被动：基于【境界】层数宫本武藏得到：\n2+：如果你控制的2张攻击拥有相同的基础威力，总威力+5。\n7+：将你的基本攻击的基础威力翻倍。\n12+：将武藏的技能牌基础威力翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_musashi_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "被动：基于【境界】层数宫本武藏得到：\n2+：如果你控制的2张攻击拥有相同的基础威力，总威力+5。\n7+：将你的基本攻击的基础威力翻倍。\n12+：将武藏的技能牌基础威力翻倍。",
+        "sourceTextSha256": "43cf721e55250b6bcefdc011ad7793f4c0a9126ae6ae5b2d4658b381d2451a6e"
+      },
+      "abilities": [
+        {
+          "id": "musashi.sc_musashi_2.semantic",
+          "printedClause": "被动：基于【境界】层数宫本武藏得到：\n2+：如果你控制的2张攻击拥有相同的基础威力，总威力+5。\n7+：将你的基本攻击的基础威力翻倍。\n12+：将武藏的技能牌基础威力翻倍。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "counter_threshold_power_rule",
+              "operation": "passive_by_boundary_counter_count_at_2_plus_if_controller_has_two_attacks_with_same_base_power_gain_5_total_power_at_7_plus_double_base_power_of_controller_basic_attacks_at_12_plus_double_base_power_of_musashi_skill_cards"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "43cf721e55250b6bcefdc011ad7793f4c0a9126ae6ae5b2d4658b381d2451a6e"
+    },
+    {
+      "id": "servant.musashi.skill.sc-musashi-3",
+      "printedText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_musashi_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+        "sourceTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+      },
+      "abilities": [
+        {
+          "id": "musashi.sc_musashi_3.semantic",
+          "printedClause": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 1,
+              "operation": "if_played_highest_mana_cost_noble_phantasm_attack_in_controller_combat_this_round_gain_1_vp_and_if_cost_at_least_4_gain_1_additional_vp"
+            },
+            {
+              "type": "set_opponent_attribute_power",
+              "attribute": "magic",
+              "value": 0,
+              "operation": "combat_set_magic_attribute_attack_power_of_engaged_opponents_at_same_battlefield_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+    },
+    {
+      "id": "servant.robin.skill.sc-robin-1",
+      "printedText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_robin_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+        "sourceTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+      },
+      "abilities": [
+        {
+          "id": "robin.sc_robin_1.semantic",
+          "printedClause": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "independent_action_rule",
+              "operation": "usable_only_when_controller_action_order_is_in_first_floor_half_of_current_round_action_gain_3_vp_if_controller_loses_combat_this_round_lose_5_vp_unpreventably"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+    },
+    {
+      "id": "servant.robin.skill.sc-robin-2",
+      "printedText": "你拥有的魔力少于8也可使用此牌。\n你不能将此牌与其他技能同时打出。隐藏真名，本牌获得以下效果：“行动阶段：沿着箭头移动至下一地点”或“行动阶段：将你的地利翻倍，战斗阶段：如果你赢得本场战斗获得2战果。”",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_robin_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "你拥有的魔力少于8也可使用此牌。\n你不能将此牌与其他技能同时打出。隐藏真名，本牌获得以下效果：“行动阶段：沿着箭头移动至下一地点”或“行动阶段：将你的地利翻倍，战斗阶段：如果你赢得本场战斗获得2战果。”",
+        "sourceTextSha256": "ea20fdeee491a310c2836621fcddb7e6aa55e8f676296ccfe1bd2e7949cb2604"
+      },
+      "abilities": [
+        {
+          "id": "robin.sc_robin_2.semantic",
+          "printedClause": "你拥有的魔力少于8也可使用此牌。\n你不能将此牌与其他技能同时打出。隐藏真名，本牌获得以下效果：“行动阶段：沿着箭头移动至下一地点”或“行动阶段：将你的地利翻倍，战斗阶段：如果你赢得本场战斗获得2战果。”",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "concealed_mode_rule",
+              "operation": "source_usable_with_less_than_8_mana_cannot_play_source_with_other_skills_hide_true_name_then_source_gains_choice_action_move_along_arrow_to_next_location_or_action_double_terrain_advantage_and_combat_if_win_gain_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ea20fdeee491a310c2836621fcddb7e6aa55e8f676296ccfe1bd2e7949cb2604"
+    },
+    {
+      "id": "servant.robin.skill.sc-robin-3",
+      "printedText": "【真名解放】\n当你真名隐藏打出此牌时不需要消耗魔力。\n战斗阶段：令所有与你交战的【中毒】玩家【败北】。之后，令与你交战的所有玩家【中毒】。【中毒】状态持续到下一回合的结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_robin_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n当你真名隐藏打出此牌时不需要消耗魔力。\n战斗阶段：令所有与你交战的【中毒】玩家【败北】。之后，令与你交战的所有玩家【中毒】。【中毒】状态持续到下一回合的结束。",
+        "sourceTextSha256": "bfc9277a5c7e835c790e27c8da51372e947809439187f38c39296164e26b400a"
+      },
+      "abilities": [
+        {
+          "id": "robin.sc_robin_3.semantic",
+          "printedClause": "【真名解放】\n当你真名隐藏打出此牌时不需要消耗魔力。\n战斗阶段：令所有与你交战的【中毒】玩家【败北】。之后，令与你交战的所有玩家【中毒】。【中毒】状态持续到下一回合的结束。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "poison_defeat_rule",
+              "operation": "true_name_reveal_if_played_while_true_name_hidden_costs_no_mana_combat_defeat_all_engaged_poisoned_players_then_poison_all_engaged_players_poison_lasts_until_end_of_next_round"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "bfc9277a5c7e835c790e27c8da51372e947809439187f38c39296164e26b400a"
     }
   ]
 }
