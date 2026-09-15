@@ -26046,6 +26046,434 @@
         }
       ],
       "referencePrintedTextSha256": "bb6a0c8fde2eeb04d1190bf394f2f8c0247cdee640bdaf925e92433f6e1c25b0"
+    },
+    {
+      "id": "servant.hassanhf.skill.sc-hassanhf-1",
+      "printedText": "被动：被【跟踪】的玩家于每回合结束时失去1点战果，他们每于该回合使用一张技能牌，便额外失去1点。若你获胜且战胜了至少一名被【跟踪】的对手，获得2点战果。战斗结束后，移除所有与你位于同一战场且交战的对手的【跟踪】。\n行动阶段：【跟踪】与你位于同一地点的所有对手。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_hassanHF_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "被动：被【跟踪】的玩家于每回合结束时失去1点战果，他们每于该回合使用一张技能牌，便额外失去1点。若你获胜且战胜了至少一名被【跟踪】的对手，获得2点战果。战斗结束后，移除所有与你位于同一战场且交战的对手的【跟踪】。\n行动阶段：【跟踪】与你位于同一地点的所有对手。",
+        "sourceTextSha256": "7eaacf4a59a98bae3a445e2c10b65fa52c74d1e23609fac34dfd6aa658f324e3"
+      },
+      "abilities": [
+        {
+          "id": "hassanhf.sc-hassanhf-1.semantic",
+          "printedClause": "被动：被【跟踪】的玩家于每回合结束时失去1点战果，他们每于该回合使用一张技能牌，便额外失去1点。若你获胜且战胜了至少一名被【跟踪】的对手，获得2点战果。战斗结束后，移除所有与你位于同一战场且交战的对手的【跟踪】。\n行动阶段：【跟踪】与你位于同一地点的所有对手。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "tracking_mark_rule",
+              "operation": "action_track_all_opponents_at_controller_location_end_round_tracked_players_lose_1_vp_plus_1_per_skill_card_used_that_round_on_controller_win_defeating_at_least_one_tracked_opponent_gain_2_vp_after_battle_remove_tracking_from_all_engaged_opponents_at_same_battlefield"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7eaacf4a59a98bae3a445e2c10b65fa52c74d1e23609fac34dfd6aa658f324e3"
+    },
+    {
+      "id": "servant.hassanhf.skill.sc-hassanhf-2",
+      "printedText": "【真名解放】\n行动阶段：抽2张牌并将之暗置加入到攻击中。\n战斗阶段：移动至侦察或激活2张暗置牌，花费其魔力消耗并使用其【行动阶段】效果。若你移动至侦察，获得2点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_hassanHF_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n行动阶段：抽2张牌并将之暗置加入到攻击中。\n战斗阶段：移动至侦察或激活2张暗置牌，花费其魔力消耗并使用其【行动阶段】效果。若你移动至侦察，获得2点魔力。",
+        "sourceTextSha256": "3a5cb90d75313478845cc1337812f2b0def7824daa756947251dcfe869e2fe9e"
+      },
+      "abilities": [
+        {
+          "id": "hassanhf.sc-hassanhf-2.semantic",
+          "printedClause": "【真名解放】\n行动阶段：抽2张牌并将之暗置加入到攻击中。\n战斗阶段：移动至侦察或激活2张暗置牌，花费其魔力消耗并使用其【行动阶段】效果。若你移动至侦察，获得2点魔力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "hundred_faces_illusion_rule",
+              "operation": "true_name_reveal_action_draw_2_and_add_them_hidden_to_attack_combat_choose_move_to_scout_or_activate_2_hidden_cards_pay_costs_and_use_action_phase_effects_if_move_to_scout_gain_2_mana"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "3a5cb90d75313478845cc1337812f2b0def7824daa756947251dcfe869e2fe9e"
+    },
+    {
+      "id": "servant.hassanhf.skill.sc-hassanhf-3",
+      "printedText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_hassanHF_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+        "sourceTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+      },
+      "abilities": [
+        {
+          "id": "hassanhf.sc-hassanhf-3.semantic",
+          "printedClause": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "presence_concealment_assassination_rule",
+              "operation": "combat_after_power_resolution_if_controller_below_all_top_power_opponents_no_other_opponent_above_controller_and_at_least_3_participants_defeat_all_top_power_engaged_opponents"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+    },
+    {
+      "id": "servant.hassanser.skill.sc-hassanser-1",
+      "printedText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_hassanSer_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+        "sourceTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+      },
+      "abilities": [
+        {
+          "id": "hassanser.sc-hassanser-1.semantic",
+          "printedClause": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "presence_concealment_assassination_rule",
+              "operation": "combat_after_power_resolution_if_controller_below_all_top_power_opponents_no_other_opponent_above_controller_and_at_least_3_participants_defeat_all_top_power_engaged_opponents"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+    },
+    {
+      "id": "servant.hassanser.skill.sc-hassanser-2",
+      "printedText": "你可将此牌追加打出。\n毒气-行动阶段：与你位于同一战场的对手失去1点战果。\n枯萎-被动/战斗阶段：与你位于同一战场的对手失去1点战果。\n死亡之吻-战斗阶段：关闭此战场的一张基础牌，你和该牌的拥有者各失去1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_hassanSer_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "你可将此牌追加打出。\n毒气-行动阶段：与你位于同一战场的对手失去1点战果。\n枯萎-被动/战斗阶段：与你位于同一战场的对手失去1点战果。\n死亡之吻-战斗阶段：关闭此战场的一张基础牌，你和该牌的拥有者各失去1点战果。",
+        "sourceTextSha256": "531607fef3f67b46ac52aec539315a334905fbbc31f55365d44ac0261d0aa2f4"
+      },
+      "abilities": [
+        {
+          "id": "hassanser.sc-hassanser-2.semantic",
+          "printedClause": "你可将此牌追加打出。\n毒气-行动阶段：与你位于同一战场的对手失去1点战果。\n枯萎-被动/战斗阶段：与你位于同一战场的对手失去1点战果。\n死亡之吻-战斗阶段：关闭此战场的一张基础牌，你和该牌的拥有者各失去1点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "poison_body_rule",
+              "operation": "source_may_be_extra_played_action_opponents_at_same_battlefield_lose_1_vp_passive_combat_opponents_at_same_battlefield_lose_1_vp_combat_close_one_basic_card_at_battlefield_controller_and_card_owner_each_lose_1_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "531607fef3f67b46ac52aec539315a334905fbbc31f55365d44ac0261d0aa2f4"
+    },
+    {
+      "id": "servant.hassanser.skill.sc-hassanser-3",
+      "printedText": "【真名解放】\n本回合你可以使用两次【妄想毒身】的能力。\n行动阶段：从一处战场移动至另一处战场。\n战斗阶段：下回合所有玩家位于魔术工房时，不能获得战果或魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_hassanSer_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n本回合你可以使用两次【妄想毒身】的能力。\n行动阶段：从一处战场移动至另一处战场。\n战斗阶段：下回合所有玩家位于魔术工房时，不能获得战果或魔力。",
+        "sourceTextSha256": "1fea6739250d0cbcaec0cc458f0ce1fd7c93b3d71e0374a09b13b32755db297b"
+      },
+      "abilities": [
+        {
+          "id": "hassanser.sc-hassanser-3.semantic",
+          "printedClause": "【真名解放】\n本回合你可以使用两次【妄想毒身】的能力。\n行动阶段：从一处战场移动至另一处战场。\n战斗阶段：下回合所有玩家位于魔术工房时，不能获得战果或魔力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "serenity_dance_rule",
+              "operation": "true_name_reveal_this_round_may_use_poison_body_abilities_twice_action_move_between_battlefields_combat_next_round_all_players_at_workshop_cannot_gain_vp_or_mana"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "1fea6739250d0cbcaec0cc458f0ce1fd7c93b3d71e0374a09b13b32755db297b"
+    },
+    {
+      "id": "servant.helena.skill.sc-helena-2",
+      "printedText": "启示-被动：当一名于本回合明置了技能的对手赢得你所在的战斗时，你获得2点战果。每局游戏限一次，当游戏内的所有技能均明置后，你获得5点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_helena_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "启示-被动：当一名于本回合明置了技能的对手赢得你所在的战斗时，你获得2点战果。每局游戏限一次，当游戏内的所有技能均明置后，你获得5点战果。",
+        "sourceTextSha256": "0fffb7a9ba2e53326dba47bdc9a95683ea07a098a7e78072c05f520b0edbab93"
+      },
+      "abilities": [
+        {
+          "id": "helena.sc-helena-2.semantic",
+          "printedClause": "启示-被动：当一名于本回合明置了技能的对手赢得你所在的战斗时，你获得2点战果。每局游戏限一次，当游戏内的所有技能均明置后，你获得5点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "revelation_visibility_vp_rule",
+              "operation": "passive_when_opponent_who_revealed_skill_this_round_wins_battle_at_controller_location_gain_2_vp_once_per_game_when_all_skills_in_game_are_revealed_gain_5_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0fffb7a9ba2e53326dba47bdc9a95683ea07a098a7e78072c05f520b0edbab93"
+    },
+    {
+      "id": "servant.hephaistion.skill.sc-hephaistion-1",
+      "printedText": "【真名解放】\n支配之眼-战斗阶段：你的交战对手可以立即花费1枚令咒。然后，令所有本回合未花费或使用至少1枚令咒的交战对手关闭其一半已激活的攻击（向上取整）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_hephaistion_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n支配之眼-战斗阶段：你的交战对手可以立即花费1枚令咒。然后，令所有本回合未花费或使用至少1枚令咒的交战对手关闭其一半已激活的攻击（向上取整）。",
+        "sourceTextSha256": "9df140bf1adf5fe882479fb8aede0dd47670ae1b6f40b6ccc8aca983d1f6bd26"
+      },
+      "abilities": [
+        {
+          "id": "hephaistion.sc-hephaistion-1.semantic",
+          "printedClause": "【真名解放】\n支配之眼-战斗阶段：你的交战对手可以立即花费1枚令咒。然后，令所有本回合未花费或使用至少1枚令咒的交战对手关闭其一半已激活的攻击（向上取整）。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "domination_wheel_command_spell_rule",
+              "operation": "true_name_reveal_combat_each_engaged_opponent_chooses_command_spell_use_and_at_least_1_command_spell_must_be_spent_unused_command_spell_use_is_allowed_then_each_engaged_opponent_who_has_not_spent_or_used_at_least_1_command_spell_this_round_closes_half_activated_attacks_rounded_up"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "9df140bf1adf5fe882479fb8aede0dd47670ae1b6f40b6ccc8aca983d1f6bd26"
+    },
+    {
+      "id": "servant.hephaistion.skill.sc-hephaistion-2",
+      "printedText": "被动：当你的从者真名公开时，将此牌加入攻击并获得X点战果。\n骗局-当此牌首次激活时，X将永久设置为以伪装者作为从者时的回合数。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_hephaistion_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "被动：当你的从者真名公开时，将此牌加入攻击并获得X点战果。\n骗局-当此牌首次激活时，X将永久设置为以伪装者作为从者时的回合数。",
+        "sourceTextSha256": "b635a9225814692e8ff5446110b61d27bb5f6be3731a558fa1c948d4255b4cad"
+      },
+      "abilities": [
+        {
+          "id": "hephaistion.sc-hephaistion-2.semantic",
+          "printedClause": "被动：当你的从者真名公开时，将此牌加入攻击并获得X点战果。\n骗局-当此牌首次激活时，X将永久设置为以伪装者作为从者时的回合数。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "pretender_identity_x_rule",
+              "operation": "passive_when_servant_true_name_revealed_add_source_to_attack_and_gain_x_vp_first_activation_permanently_set_x_to_round_number_when_pretender_was_servant"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b635a9225814692e8ff5446110b61d27bb5f6be3731a558fa1c948d4255b4cad"
+    },
+    {
+      "id": "servant.herc.skill.sc-herc-1",
+      "printedText": "【真名解放】\n若你战败，获得3点战果并令此战斗的所有胜者分别失去3点战果，然后将此牌移除游戏并令你的其他【十二试炼】获得+3威力直至游戏结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_herc_1",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】\n若你战败，获得3点战果并令此战斗的所有胜者分别失去3点战果，然后将此牌移除游戏并令你的其他【十二试炼】获得+3威力直至游戏结束。",
+        "sourceTextSha256": "14dbc082d25b024321478d3cf5e1426ea99610b42c08e0cd1a570babcb852ad5"
+      },
+      "abilities": [
+        {
+          "id": "herc.sc-herc-1.semantic",
+          "printedClause": "【真名解放】\n若你战败，获得3点战果并令此战斗的所有胜者分别失去3点战果，然后将此牌移除游戏并令你的其他【十二试炼】获得+3威力直至游戏结束。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "twelve_labors_rule",
+              "operation": "true_name_reveal_on_defeat_gain_3_vp_each_winner_loses_3_vp_remove_source_from_game_other_twelve_labors_gain_plus_3_power_until_game_end"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "14dbc082d25b024321478d3cf5e1426ea99610b42c08e0cd1a570babcb852ad5"
+    },
+    {
+      "id": "servant.herc.skill.sc-herc-2",
+      "printedText": "【真名解放】\n若你战败，获得3点战果并令此战斗的所有胜者分别失去3点战果，然后将此牌移除游戏并令你的其他【十二试炼】获得+3威力直至游戏结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_herc_2",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】\n若你战败，获得3点战果并令此战斗的所有胜者分别失去3点战果，然后将此牌移除游戏并令你的其他【十二试炼】获得+3威力直至游戏结束。",
+        "sourceTextSha256": "14dbc082d25b024321478d3cf5e1426ea99610b42c08e0cd1a570babcb852ad5"
+      },
+      "abilities": [
+        {
+          "id": "herc.sc-herc-2.semantic",
+          "printedClause": "【真名解放】\n若你战败，获得3点战果并令此战斗的所有胜者分别失去3点战果，然后将此牌移除游戏并令你的其他【十二试炼】获得+3威力直至游戏结束。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "twelve_labors_rule",
+              "operation": "true_name_reveal_on_defeat_gain_3_vp_each_winner_loses_3_vp_remove_source_from_game_other_twelve_labors_gain_plus_3_power_until_game_end"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "14dbc082d25b024321478d3cf5e1426ea99610b42c08e0cd1a570babcb852ad5"
+    },
+    {
+      "id": "servant.herc.skill.sc-herc-3",
+      "printedText": "【真名解放】\n若你战败，获得3点战果并令此战斗的所有胜者分别失去3点战果，然后将此牌移除游戏并令你的其他【十二试炼】获得+3威力直至游戏结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_herc_3",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】\n若你战败，获得3点战果并令此战斗的所有胜者分别失去3点战果，然后将此牌移除游戏并令你的其他【十二试炼】获得+3威力直至游戏结束。",
+        "sourceTextSha256": "14dbc082d25b024321478d3cf5e1426ea99610b42c08e0cd1a570babcb852ad5"
+      },
+      "abilities": [
+        {
+          "id": "herc.sc-herc-3.semantic",
+          "printedClause": "【真名解放】\n若你战败，获得3点战果并令此战斗的所有胜者分别失去3点战果，然后将此牌移除游戏并令你的其他【十二试炼】获得+3威力直至游戏结束。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "twelve_labors_rule",
+              "operation": "true_name_reveal_on_defeat_gain_3_vp_each_winner_loses_3_vp_remove_source_from_game_other_twelve_labors_gain_plus_3_power_until_game_end"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "14dbc082d25b024321478d3cf5e1426ea99610b42c08e0cd1a570babcb852ad5"
+    },
+    {
+      "id": "servant.hijikata.skill.sc-hijikata-1",
+      "printedText": "【真名解放】法度：律-被动：当你于你的回合进入唯一一名战果数倒数第一的对手所在的战场时，违背此法度。被动/前哨阶段：花费1点魔力，你+4合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_hijikata_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】法度：律-被动：当你于你的回合进入唯一一名战果数倒数第一的对手所在的战场时，违背此法度。被动/前哨阶段：花费1点魔力，你+4合计威力。",
+        "sourceTextSha256": "7928e2e5df000cd50ebb596c2d31cceea99ebba5510245fc0b173db01193a042"
+      },
+      "abilities": [
+        {
+          "id": "hijikata.sc-hijikata-1.semantic",
+          "printedClause": "【真名解放】法度：律-被动：当你于你的回合进入唯一一名战果数倒数第一的对手所在的战场时，违背此法度。被动/前哨阶段：花费1点魔力，你+4合计威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "hijikata_code_rule",
+              "operation": "true_name_reveal_law_ritsu_is_broken_when_on_controller_turn_controller_enters_battlefield_of_unique_last_place_vp_opponent_passive_scout_pay_1_mana_gain_plus_4_total_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7928e2e5df000cd50ebb596c2d31cceea99ebba5510245fc0b173db01193a042"
+    },
+    {
+      "id": "servant.hijikata.skill.sc-hijikata-2",
+      "printedText": "【真名解放】法度：诚-被动：若你于战场打出暗置攻击，违背此法度。激烈行进-行动阶段：抽一张牌，打出两张手牌。以此法打出的【狂战士】魔力消耗-1。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_hijikata_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】法度：诚-被动：若你于战场打出暗置攻击，违背此法度。激烈行进-行动阶段：抽一张牌，打出两张手牌。以此法打出的【狂战士】魔力消耗-1。",
+        "sourceTextSha256": "32259fb3f28b841e01ce17dc22d8c96fe9e2bc60f2cad9e5e261ad217d81c461"
+      },
+      "abilities": [
+        {
+          "id": "hijikata.sc-hijikata-2.semantic",
+          "printedClause": "【真名解放】法度：诚-被动：若你于战场打出暗置攻击，违背此法度。激烈行进-行动阶段：抽一张牌，打出两张手牌。以此法打出的【狂战士】魔力消耗-1。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "hijikata_code_rule",
+              "operation": "true_name_reveal_law_makoto_is_broken_if_controller_plays_hidden_attack_at_battlefield_action_draw_1_play_2_hand_cards_berserker_cards_played_this_way_cost_1_less_mana"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "32259fb3f28b841e01ce17dc22d8c96fe9e2bc60f2cad9e5e261ad217d81c461"
+    },
+    {
+      "id": "servant.hijikata.skill.sc-hijikata-3",
+      "printedText": "法度：和-被动：当你控制两张不具有相同属性的基础攻击时，违背此法度。被动：当你违背法度时，将记载该法度的技能牌移除游戏并将所有手牌替换为两张游戏外的力量属性3/7的【狂战士】。此效果于土方岁三不会因任何方式失效。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_hijikata_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "法度：和-被动：当你控制两张不具有相同属性的基础攻击时，违背此法度。被动：当你违背法度时，将记载该法度的技能牌移除游戏并将所有手牌替换为两张游戏外的力量属性3/7的【狂战士】。此效果于土方岁三不会因任何方式失效。",
+        "sourceTextSha256": "55204a073f0048e77a2d8f26af81be687f2c80d68c4148efc4a13cb29a87fa41"
+      },
+      "abilities": [
+        {
+          "id": "hijikata.sc-hijikata-3.semantic",
+          "printedClause": "法度：和-被动：当你控制两张不具有相同属性的基础攻击时，违背此法度。被动：当你违背法度时，将记载该法度的技能牌移除游戏并将所有手牌替换为两张游戏外的力量属性3/7的【狂战士】。此效果于土方岁三不会因任何方式失效。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "hijikata_code_rule",
+              "operation": "law_wa_is_broken_when_controller_controls_two_basic_attacks_without_shared_attribute_when_any_code_broken_remove_skill_card_recording_that_code_from_game_and_replace_all_hand_with_two_out_of_game_strength_3_7_berserkers_effect_cannot_be_disabled_for_hijikata"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "55204a073f0048e77a2d8f26af81be687f2c80d68c4148efc4a13cb29a87fa41"
+    },
+    {
+      "id": "servant.hephaistion.skill.sc-hephaistion-3",
+      "printedText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_hephaistion_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+        "sourceTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+      },
+      "abilities": [
+        {
+          "id": "hephaistion.sc_hephaistion_3.semantic",
+          "printedClause": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "draw_cards",
+              "count": 1,
+              "when": "source_played_with_one_base_attack"
+            },
+            {
+              "type": "play_selected_cards",
+              "sourceZone": "hand",
+              "maxCount": 3,
+              "filter": {
+                "basePowerMax": 3
+              }
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
     }
   ]
 }
