@@ -8,6 +8,7 @@ export type EffectResultType =
   | 'remove_advantage_position'
   | 'move_all_remaining'
   | 'move_source_card'
+  | 'move_player'
   | 'reveal_servant_package'
   | 'draw_cards'
   | 'play_selected_cards'
@@ -97,6 +98,13 @@ export interface MoveSourceCardResult {
   movedCount: number;
 }
 
+export interface MovePlayerEffectResult {
+  playerId: PlayerId;
+  fromLocationId: string;
+  toLocationId: string;
+  movedCount: number;
+}
+
 export interface RevealServantPackageResult {
   playerId: PlayerId;
   revealedCount: number;
@@ -159,6 +167,7 @@ export type KnownEffectResult =
   | EffectResultEnvelope<'remove_advantage_position', RemoveAdvantagePositionResult>
   | EffectResultEnvelope<'move_all_remaining', MoveAllRemainingResult>
   | EffectResultEnvelope<'move_source_card', MoveSourceCardResult>
+  | EffectResultEnvelope<'move_player', MovePlayerEffectResult>
   | EffectResultEnvelope<'reveal_servant_package', RevealServantPackageResult>
   | EffectResultEnvelope<'draw_cards', DrawCardsResult>
   | EffectResultEnvelope<'play_selected_cards', PlaySelectedCardsResult>
@@ -187,6 +196,10 @@ export const resultSchemas: Record<EffectResultType, BindingFieldSchema> = {
     status: 'status',
   },
   move_source_card: {
+    movedCount: 'number',
+    status: 'status',
+  },
+  move_player: {
     movedCount: 'number',
     status: 'status',
   },
@@ -297,6 +310,7 @@ export interface AbilityResolutionContext {
 }
 
 export interface AbilityResolutionHooks {
+  movePlayer?: (input: { state: GameState; playerId: PlayerId; targetId: string; toLocationId: string }) => { fromLocationId: string; toLocationId: string; movedCount: number; emittedEventIds: string[] };
   playSelectedCards?: (input: { state: GameState; playerId: PlayerId; cardInstanceIds: string[]; faceDown: boolean }) => { playedCount: number };
   playSourceCard?: (input: { state: GameState; playerId: PlayerId; sourceCardId: string; faceDown: boolean }) => { playedCount: number; destinationZone: string };
 }
@@ -319,6 +333,7 @@ export type ResolutionEffectNode =
   | { id: string; type: 'remove_advantage_position'; target: TargetExpression; bind?: string }
   | { id: string; type: 'move_all_remaining'; owner: 'controller'; from: string; to: string; bind?: string }
   | { id: string; type: 'move_source_card'; to: 'skill' | 'removed_from_game'; bind?: string }
+  | { id: string; type: 'move_player'; player: 'controller'; to: string; bind?: string }
   | { id: string; type: 'reveal_servant_package'; bind?: string }
   | { id: string; type: 'draw_cards'; player: 'controller'; count: ValueExpression; bind?: string }
   | { id: string; type: 'play_selected_cards'; target: string; face: 'face_down' | 'face_up'; bind?: string }
@@ -416,6 +431,11 @@ const primitiveDefinitions: ResolutionPrimitive[] = [
     type: 'move_source_card',
     resultSchema: resultSchemas.move_source_card,
     execute: moveSourceCardPrimitive,
+  },
+  {
+    type: 'move_player',
+    resultSchema: resultSchemas.move_player,
+    execute: movePlayerPrimitive,
   },
   {
     type: 'reveal_servant_package',
@@ -679,6 +699,15 @@ function validateEffectReferences(
         });
       }
       break;
+    case 'move_player':
+      if (effect.player !== 'controller' || !effect.to) {
+        issues.push({
+          code: 'invalid_resolution_node',
+          path,
+          message: 'Typed player movement requires controller player and a declared location target.',
+        });
+      }
+      break;
     case 'reveal_servant_package':
       break;
     case 'play_selected_cards':
@@ -866,6 +895,14 @@ function moveSourceCardPrimitive(
 ): KnownEffectResult {
   if (effect.type !== 'move_source_card') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
   return moveSourceCard(transaction, effect);
+}
+
+function movePlayerPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'move_player') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return movePlayer(transaction, effect);
 }
 
 function revealServantPackagePrimitive(
@@ -1103,6 +1140,37 @@ function moveSourceCard(
     affectedEntities: [{ kind: 'player', id: transaction.context.controllerId }],
     payload: { cardInstanceId: source.instanceId, fromZone, toZone: effect.to, movedCount: 1 },
     emittedEventIds: [eventId],
+  };
+}
+
+function movePlayer(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'move_player' }>,
+): KnownEffectResult {
+  const selected = transaction.context.selections[effect.to] ?? [];
+  if (selected.length !== 1 || !selected[0]) {
+    throw new ResolutionRuntimeError('invalid_target', 'Typed controller movement requires exactly one selected destination.');
+  }
+  const hook = transaction.context.hooks.movePlayer;
+  if (!hook) throw new ResolutionRuntimeError('missing_runtime_hook', 'move_player requires a trusted movement hook.');
+  const result = hook({
+    state: transaction.workingState,
+    playerId: transaction.context.controllerId,
+    targetId: effect.to,
+    toLocationId: selected[0],
+  });
+  return {
+    effectId: effect.id,
+    effectType: 'move_player',
+    status: result.movedCount === 0 ? 'no_op' : 'applied',
+    affectedEntities: result.movedCount === 0 ? [] : [{ kind: 'player', id: transaction.context.controllerId }],
+    payload: {
+      playerId: transaction.context.controllerId,
+      fromLocationId: result.fromLocationId,
+      toLocationId: result.toLocationId,
+      movedCount: result.movedCount,
+    },
+    emittedEventIds: result.emittedEventIds,
   };
 }
 
@@ -1598,6 +1666,7 @@ function evaluateValue(transaction: AbilityResolutionTransaction, expression: Va
   if (result.effectType === 'remove_advantage_position' && expression.field === 'removedCount') return result.payload.removedCount;
   if (result.effectType === 'move_all_remaining' && expression.field === 'movedCount') return result.payload.movedCount;
   if (result.effectType === 'move_source_card' && expression.field === 'movedCount') return result.payload.movedCount;
+  if (result.effectType === 'move_player' && expression.field === 'movedCount') return result.payload.movedCount;
   if (result.effectType === 'reveal_servant_package' && expression.field === 'revealedCount') return result.payload.revealedCount;
   if (result.effectType === 'draw_cards') {
     if (expression.field === 'requestedCount') return result.payload.requestedCount;
@@ -1760,6 +1829,14 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
         id,
         type,
         to: sourceCardDestination(current.to, `${path}.to`, issues),
+        ...coerceBind(current.bind),
+      };
+    case 'move_player':
+      return {
+        id,
+        type,
+        player: current.player === undefined || current.player === 'controller' ? 'controller' : reportControllerPlayer(path, issues),
+        to: stringField(current, 'to', `${path}.to`, issues),
         ...coerceBind(current.bind),
       };
     case 'reveal_information':

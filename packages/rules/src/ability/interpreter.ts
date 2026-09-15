@@ -568,6 +568,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isPlaySourceCardWithCostResponseStructuralCandidate(a) && !isPlaySourceCardWithCostResponseRouteCandidate(a)) return false;
   if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) return false;
+  if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
@@ -578,7 +579,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
   if (!isCommandSpellCard(s, sourceId) && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
   if (abilityLimitReached(s, sourceId, a)) return false;
-  if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a)) &&
+  if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isAnyLocationExceptWorkshopMovementSemantic(a)) &&
     !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
   if (isPlaySourceCardWithCostResponseRouteCandidate(a)) {
     const ctx = context(s, sourceId, a.id, event);
@@ -1607,6 +1608,36 @@ export function isBattleEndSourceReturnSemantic(a: AuthoringAbility): boolean {
     (destination.owner === undefined || destination.owner === 'controller');
 }
 
+export function isAnyLocationExceptWorkshopMovementCandidate(a: AuthoringAbility): boolean {
+  if (a.kind !== 'phase_action' || str(a.activation.phase) !== 'action' ||
+    str(a.activation.opens) !== 'controller_action_window' || a.targets.length !== 1) return false;
+  const target = a.targets[0]!;
+  const constraints = nodes(target.constraints);
+  return target.type === 'location' &&
+    a.effects.some((effect) => effect.type === 'move_player') &&
+    constraints.some((constraint) => constraint.type === 'any_enabled_location' ||
+      (constraint.type === 'not_location_kind' && constraint.locationKind === 'workshop'));
+}
+
+export function isAnyLocationExceptWorkshopMovementSemantic(a: AuthoringAbility): boolean {
+  if (!isAnyLocationExceptWorkshopMovementCandidate(a)) return false;
+  if (a.activation.requiresSourceState !== 'active' || a.conditions.length !== 0 || a.cost.length !== 0 ||
+    a.creates.length !== 0 || a.ruleModifiers.length !== 0 || Object.keys(a.lifecycle).length !== 0 ||
+    str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0 ||
+    a.effects.length !== 1) return false;
+  const target = a.targets[0]!;
+  const count = node(target.count);
+  const constraints = nodes(target.constraints);
+  const effect = a.effects[0]!;
+  const anyEnabled = constraints.filter((constraint) => constraint.type === 'any_enabled_location');
+  const notWorkshop = constraints.filter((constraint) => constraint.type === 'not_location_kind' && constraint.locationKind === 'workshop');
+  return Number(count.min) === 1 && Number(count.max) === 1 &&
+    constraints.length === 2 && anyEnabled.length === 1 && notWorkshop.length === 1 &&
+    nodes(target.conditions).length === 0 &&
+    effect.type === 'move_player' && str(effect.to) === str(target.id) &&
+    (effect.player === undefined || effect.player === 'controller');
+}
+
 export function isResourceNumericDirectActionSemantic(a: AuthoringAbility): boolean {
   return a.kind === 'phase_action' &&
     str(a.activation.phase) === 'action' &&
@@ -1889,6 +1920,21 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
       effects: normalized,
       selections: ctx.selections,
       hooks: {
+        movePlayer: ({ state, playerId, targetId, toLocationId }) => {
+          const movementAbility = abilityDefinition(state, ctx.sourceCardId, ctx.abilityId);
+          const movementTarget = movementAbility.targets.find((target) => str(target.id) === targetId);
+          if (!movementTarget || movementTarget.type !== 'location') reject('resolution_failed', 'Movement target definition is missing.');
+          const liveCandidates = candidates(state, { ...ctx, controllerId: playerId }, movementTarget);
+          if (!liveCandidates.includes(toLocationId)) reject('resolution_failed', 'Movement destination is no longer legal.');
+          const movingPlayer = player(state, playerId);
+          const fromLocationId = movingPlayer.locationId;
+          if (!fromLocationId || fromLocationId === toLocationId) reject('resolution_failed', 'Movement requires a different current location.');
+          movingPlayer.locationId = toLocationId as LocationId;
+          recordMovementForAbilityRuntime(state, playerId, fromLocationId, toLocationId);
+          const enterEventId = nextId(state, 'enter-location');
+          processEvent(state, { id: enterEventId, type: 'after_controller_enters_location', playerId, locationId: toLocationId });
+          return { fromLocationId, toLocationId, movedCount: 1, emittedEventIds: [enterEventId] };
+        },
         playSelectedCards: ({ state, playerId, cardInstanceIds, faceDown }) => {
           playBatch(state, playerId, cardInstanceIds.map((cardInstanceId) => ({ type: 'play_card', cardInstanceId, faceDown })), 'effect');
           return { playedCount: cardInstanceIds.length };
@@ -1955,6 +2001,15 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isAnyLocationExceptWorkshopMovementSemantic(a)) {
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    executeResolutionEffects(s, ctx, effects);
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
+  if (isAnyLocationExceptWorkshopMovementCandidate(a)) reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
   if (isSourcePlayBasicAttackDrawTriggerCandidate(a)) reject('resolution_failed', 'Unsupported source-play basic-attack draw trigger semantic shape');
   if (isDeploymentResourceRewardCandidate(a)) reject('resolution_failed', 'Unsupported deployment resource reward semantic shape');
@@ -2050,6 +2105,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) {
     reject('resolution_failed', 'Unsupported fixed controller advance-draw semantic shape');
   }
+  if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) {
+    reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
+  }
   if (isBattleLossStateTransformCandidate(a)) {
     if (!isBattleLossStateTransformSemantic(a)) reject('resolution_failed', 'Unsupported battle-loss state-transform semantic shape');
     settleBattleLossStateTransform(s, ctx);
@@ -2083,7 +2141,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     });
     return;
   }
-  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a)) {
+  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isAnyLocationExceptWorkshopMovementSemantic(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a)) {
     try {
       normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     } catch (error) {
