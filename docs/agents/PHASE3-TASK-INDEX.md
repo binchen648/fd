@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.20
+- Version: P3-TI-1.21
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2994,7 +2994,7 @@ Completion status allowed:
 ## TASK P3-FB2-08
 
 Owner: Codex B2
-Status: READY
+Status: REVIEW_ACCEPTED
 Branch: `codex/b2-p3-fb2-08-source-play-basic-draw-r1`
 Base: exact P3-FB2-08 A-owned handoff commit
 Runtime baseline before handoff: `e0f1a40b1e66c64df78f32e98791018475829af3`
@@ -3026,7 +3026,7 @@ Completion status allowed:
 ## TASK P3-R25
 
 Owner: Codex R
-Status: READY_AFTER_P3_FB2_08
+Status: REVIEW_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact FB2-08 candidate SHA
 
 Goal: independently review the exact FB2-08 trigger route without implementing fixes and without pre-authorizing F1 migration.
@@ -3054,6 +3054,85 @@ Completion status allowed:
 - A 14-identity same-shape servant family is the first visible 10+ composite batch candidate. TO13 covers its optional low-power hand-play half; the missing runtime Gate is the source-play/basic-attack/draw trigger half dispatched as FB2-08.
 - P3-FM01 remains undispatched until R25 and a fresh A-owned exact dependency check.
 
+
+## Full-Roster Dispatch State After FB2-08
+
+- FB2-08 candidate `ea6a1522f6382ef617ae26fbca7d208e999f204f` is independently accepted by R25 `33f0a0e1b3e9c4c62c8eb713ae45cd7117c7a0a7`.
+- Fresh A coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled definition hash remains `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 cards, 14 characters, 0 blocking issues.
+- Frozen-F1 recheck proves 14/14 selected servant rows have `blockedBy=[]`, exact required capabilities `[CARD_ACTION_PLAY, GENERIC_CARD_ZONE]`, no additional semantic axes, and an identical source overlay.
+- TO13 accepts the private optional `0..3` controller-hand/base-power-at-most-3 play half; FB2-06 accepts the typed controller draw primitive; FB2-08 accepts the missing exact source-play/basic-attack draw trigger half.
+- The first 10–40 F4 batch gate is therefore met at 14 exact IDs. P3-FM01 is dispatched as `READY`; Okita remains excluded.
+
+## TASK P3-FM01
+
+Owner: Codex S
+Status: READY
+Branch: `codex/s-p3-fm01-source-play-basic-draw`
+Base: exact P3-FB2-08 A synchronization commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Read: `docs/reports/2026-09-16-p3-fm01-source-play-basic-draw-migration-handoff.md`
+
+Goal: perform the first accepted F4 authoring migration for exactly the 14 source-play/basic-attack/draw + private optional low-power play identities frozen by A.
+
+Exact membership:
+- `servant.boudica.skill.sc-boudica-3`
+- `servant.constantine.skill.sc-constantine-1`
+- `servant.drake.skill.sc-drake-1`
+- `servant.hephaistion.skill.sc-hephaistion-3`
+- `servant.iskandar.skill.sc-iskandar-1`
+- `servant.ivan.skill.sc-ivan-3`
+- `servant.mandricardo.skill.sc-mandricardo-3`
+- `servant.martha.skill.sc-martha-3`
+- `servant.medb.skill.sc-medb-1`
+- `servant.medusa.skill.sc-medusa-1`
+- `servant.odysseus.skill.sc-odysseus-3`
+- `servant.roberts.skill.sc-roberts-3`
+- `servant.teach.skill.sc-teach-3`
+- `servant.ushiwakamaru.skill.sc-ushiwakamaru-3`
+
+Required accepted dependencies:
+- TO13 private optional controller-hand `0..3`, base-power-at-most-3 `play_selected_cards` interaction;
+- FB2-06 typed fixed controller ordinary-deck draw component;
+- FB2-08/R25 exact forced source-play/basic-attack draw-1 trigger.
+
+May touch only the selected `data/authoring/` records/files, exact-batch focused content/authoring tests or fixtures, and `docs/reports/2026-09-16-p3-fm01-source-play-basic-draw-migration.md`.
+
+Must not modify runtime hot files, client/server/app code, coverage/taxonomy definitions, F1 frozen artifacts, unrelated authoring, or Okita.
+
+Required validation: source/printed-clause preservation, exact semantic shape, compilation, focused content/authoring tests, typecheck, `content:validate`, deterministic generated-content verification, relevant runtime compatibility, runtime-file absence audit, and diff check.
+
+Completion status allowed:
+- `MIGRATION_CANDIDATE`
+- `MIGRATION_NEEDS_REVISION`
+
+## TASK P3-A-FM01-SYNC
+
+Owner: Codex A
+Status: READY_AFTER_P3_FM01
+Base: exact P3-FM01 S candidate SHA
+
+Goal: independently recompute before/after full-roster burn-down and verify that exactly the authorized 14 identities changed migration state without taxonomy/KPI redefinition or unrelated evidence drift.
+
+A must not repair S authoring. Record exact candidate SHA, fresh coverage, before/after legacy/new/dual where measurable, selected-membership reconciliation, generated-content identity, and any drift. Commit A evidence separately.
+
+Completion status allowed:
+- `MIGRATION_SYNC_CANDIDATE`
+- `MIGRATION_SYNC_NEEDS_REVISION`
+
+## TASK P3-R26
+
+Owner: Codex R
+Status: READY_AFTER_P3_A_FM01_SYNC
+Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM01 lineage
+
+Goal: independently review the first F4 migration without implementing fixes.
+
+Required checks: exact 14-ID membership, source and printed-clause preservation, accepted-contract conformance, no runtime changes or identity routing, focused/content/runtime compatibility, A before/after burn-down integrity, determinism, full required validation, and diff check.
+
+Completion status allowed:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `REJECTED`
 
 ## Prompt Templates
 
