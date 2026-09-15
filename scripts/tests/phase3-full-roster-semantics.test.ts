@@ -1682,6 +1682,14 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.scathach.skill.sc-scathach-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'scathach_shadow_land_gate_rule'})])}));
     expect(slice.find(c=>c.id==='servant.sei.skill.sc-sei-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'sei_pillow_book_rule'})])}));
   });
+  it('grounds the fifteen-ID Semiramis/Shakespeare/Shuten/Sitonai/Skadi slice with shared exact-text rules', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.semiramis.skill.sc-semiramis-1","servant.semiramis.skill.sc-semiramis-2","servant.semiramis.skill.sc-semiramis-3","servant.shakespeare.skill.sc-shakespeare-1","servant.shakespeare.skill.sc-shakespeare-2","servant.shakespeare.skill.sc-shakespeare-3","servant.shuten.skill.sc-shuten-1","servant.shuten.skill.sc-shuten-2","servant.shuten.skill.sc-shuten-3","servant.sitonai.skill.sc-sitonai-1","servant.sitonai.skill.sc-sitonai-2","servant.sitonai.skill.sc-sitonai-3","servant.skadi.skill.sc-skadi-1","servant.skadi.skill.sc-skadi-2","servant.skadi.skill.sc-skadi-3"]); const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(15); expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256 && c.source.sourceFileSha256.length===64)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.semiramis.skill.sc-semiramis-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'presence_concealment_assassination_rule'})])}));
+    for(const id of ['servant.semiramis.skill.sc-semiramis-2','servant.shakespeare.skill.sc-shakespeare-1']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'gain_mana',amount:1}),expect.objectContaining({type:'gain_victory_points',amount:2})])}));
+    expect(slice.find(c=>c.id==='servant.sitonai.skill.sc-sitonai-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'reverse_effect_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.skadi.skill.sc-skadi-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'skadi_runes_rule'})])}));
+  });
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1735,10 +1743,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 890,
-      blockedCount: 54,
+      sourceGroundedCount: 905,
+      blockedCount: 39,
       unclassifiedCount: 0,
-      structuredAbilityCount: 1168,
+      structuredAbilityCount: 1183,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

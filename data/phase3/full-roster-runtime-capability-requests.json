@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 890
+    "affectedIdentityCount": 905
   },
   "requests": [
     {
@@ -34374,6 +34374,8 @@
         "servant.ozymandias.skill.sc-ozymandias-2",
         "servant.saber.skill.sc-saber-1",
         "servant.saitou.skill.sc-saitou-1",
+        "servant.semiramis.skill.sc-semiramis-2",
+        "servant.shakespeare.skill.sc-shakespeare-1",
         "servant.sherlock.skill.sc-sherlock-2",
         "servant.spartacus.skill.sc-spartacus-2",
         "servant.stheno.skill.sc-stheno-2"
@@ -37608,6 +37610,60 @@
           "sha256": "dcaf950c99dfaf589dac80e3e1d6c0d65e6d97020e1943f499fcb1e204610158"
         },
         {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/塞弥拉弥斯.htm"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.semiramis/塞弥拉弥斯"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_semiramis_2"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[124].skills[1].text#line=1",
+          "sha256": "a65ce56a69bba9214eba95ab30154209228bcd28f7fec21f6317c8a70f421847"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[124].skills[1].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/威廉·莎士比亚.htm"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.shakespeare/威廉·莎士比亚"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_shakespeare_1"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[103].skills[0].text#line=1",
+          "sha256": "a65ce56a69bba9214eba95ab30154209228bcd28f7fec21f6317c8a70f421847"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[103].skills[0].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+        },
+        {
           "abilityId": "servant.sherlock.skill.sc-sherlock-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/裁定者/英文版/夏洛克·福尔摩斯.htm"
@@ -37721,7 +37777,7 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 1,
-          "shared_handler": 79,
+          "shared_handler": 81,
           "specific_handler": 43
         },
         "handlerCount": 71,
@@ -49482,6 +49538,10 @@
         "servant.sei.skill.sc-sei-1",
         "servant.sei.skill.sc-sei-2",
         "servant.sei.skill.sc-sei-3",
+        "servant.semiramis.skill.sc-semiramis-1",
+        "servant.semiramis.skill.sc-semiramis-3",
+        "servant.shakespeare.skill.sc-shakespeare-2",
+        "servant.shakespeare.skill.sc-shakespeare-3",
         "servant.sherlock.skill.sc-sherlock-1",
         "servant.sherlock.skill.sc-sherlock-2",
         "servant.sherlock.skill.sc-sherlock-3",
@@ -49489,11 +49549,20 @@
         "servant.sherlock.skill.sc-sherlock-5",
         "servant.sherlock.skill.sc-sherlock-6",
         "servant.sherlock.skill.sc-sherlock-7",
+        "servant.shuten.skill.sc-shuten-1",
+        "servant.shuten.skill.sc-shuten-2",
+        "servant.shuten.skill.sc-shuten-3",
         "servant.siegfried.skill.sc-siegfried-1",
         "servant.siegfried.skill.sc-siegfried-3",
         "servant.sigurd.skill.sc-sigurd-1",
         "servant.sigurd.skill.sc-sigurd-2",
         "servant.sigurd.skill.sc-sigurd-3",
+        "servant.sitonai.skill.sc-sitonai-1",
+        "servant.sitonai.skill.sc-sitonai-2",
+        "servant.sitonai.skill.sc-sitonai-3",
+        "servant.skadi.skill.sc-skadi-1",
+        "servant.skadi.skill.sc-skadi-2",
+        "servant.skadi.skill.sc-skadi-3",
         "servant.valkyrie.skill.sc-valkyrie-3",
         "servant.voyager.skill.sc-voyager-1",
         "servant.voyager.skill.sc-voyager-2",
@@ -66216,6 +66285,132 @@
           "sha256": "b04b50df60cbd7985392ffc22091aba58d25dd7b014b1539e1847094a07ab98a"
         },
         {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/塞弥拉弥斯.htm"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.semiramis/塞弥拉弥斯"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_semiramis_1"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[124].skills[0].text#line=1",
+          "sha256": "ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[124].skills[0].text#line=2",
+          "sha256": "1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[124].skills[0].text#line=3",
+          "sha256": "0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[124].skills[0].text#line=4",
+          "sha256": "1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/塞弥拉弥斯.htm"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.semiramis/塞弥拉弥斯"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_semiramis_3"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[124].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[124].skills[2].text#line=2",
+          "sha256": "1a7a18c017fd95cfd571185b960de7cd5be4973945303a2756ae234cead6a22d"
+        },
+        {
+          "abilityId": "servant.semiramis.skill.sc-semiramis-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[124].skills[2].text#line=3",
+          "sha256": "0098e70e18578cd6dbbfaf6a18ae2961035906260286fe38e1cda64c2e0a40f0"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/威廉·莎士比亚.htm"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.shakespeare/威廉·莎士比亚"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_shakespeare_2"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[103].skills[1].text#line=1",
+          "sha256": "35fc435a9c46a1f2031bb31408a0bca01db888dcc638c02b2e09b6f394bf46c0"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[103].skills[1].text#line=2",
+          "sha256": "c8945c099aae39ec385b58a6d671cf4e48a84768b6273cc487601eaabdc3d2b9"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/威廉·莎士比亚.htm"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.shakespeare/威廉·莎士比亚"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_shakespeare_3"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[103].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.shakespeare.skill.sc-shakespeare-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[103].skills[2].text#line=2",
+          "sha256": "5831781219110a235ee4792a8cbafcd994b0be0b91eeb90e66356a3cffea7921"
+        },
+        {
           "abilityId": "servant.sherlock.skill.sc-sherlock-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/裁定者/英文版/夏洛克·福尔摩斯.htm"
@@ -66381,6 +66576,81 @@
           "sha256": "f0e6f38da6ea0eb0d3aee6e175c187d607b067ca413b983eace1cb2f2fa320bc"
         },
         {
+          "abilityId": "servant.shuten.skill.sc-shuten-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/酒吞童子1.htm"
+        },
+        {
+          "abilityId": "servant.shuten.skill.sc-shuten-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.shuten/酒吞童子"
+        },
+        {
+          "abilityId": "servant.shuten.skill.sc-shuten-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_shuten_1"
+        },
+        {
+          "abilityId": "servant.shuten.skill.sc-shuten-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[128].skills[0].text#line=1",
+          "sha256": "74c6f2f5fc7c82e91f05977325dab28e161edec274ca9cddeb02f009e9514f80"
+        },
+        {
+          "abilityId": "servant.shuten.skill.sc-shuten-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/酒吞童子1.htm"
+        },
+        {
+          "abilityId": "servant.shuten.skill.sc-shuten-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.shuten/酒吞童子"
+        },
+        {
+          "abilityId": "servant.shuten.skill.sc-shuten-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_shuten_2"
+        },
+        {
+          "abilityId": "servant.shuten.skill.sc-shuten-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[128].skills[1].text#line=1",
+          "sha256": "8030299aab3a58b1caa35e57860a96fd058a80f0648b24bfc8d39d265f5bd1fa"
+        },
+        {
+          "abilityId": "servant.shuten.skill.sc-shuten-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[128].skills[1].text#line=2",
+          "sha256": "40f19505f4aa2acc994780ebb46b363fe9fd6f899f4979d02d249740af863fb4"
+        },
+        {
+          "abilityId": "servant.shuten.skill.sc-shuten-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/酒吞童子1.htm"
+        },
+        {
+          "abilityId": "servant.shuten.skill.sc-shuten-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.shuten/酒吞童子"
+        },
+        {
+          "abilityId": "servant.shuten.skill.sc-shuten-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_shuten_3"
+        },
+        {
+          "abilityId": "servant.shuten.skill.sc-shuten-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[128].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.shuten.skill.sc-shuten-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[128].skills[2].text#line=2",
+          "sha256": "b5ddc0341ed2243ea8895f690c44ba69377ec3c64acec1aca4379b2fe3355598"
+        },
+        {
           "abilityId": "servant.siegfried.skill.sc-siegfried-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/剑士/英文版/齐格飞.htm"
@@ -66526,6 +66796,186 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[20].skills[2].text#line=3",
           "sha256": "40036227cacecbe6d5405a17c8cccc9b1b30e85b81817f63493021e9386c0566"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/他人格/英文版/志度内.htm"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.sitonai/志度内"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_sitonai_1"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[85].skills[0].text#line=1",
+          "sha256": "d2bdf830bf9f0965119db35ce5865f965f42b0ca74d84b71af1501b17d0adfa5"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[85].skills[0].text#line=2",
+          "sha256": "75bd677a7c38a087416f2ccd8d27f5b4686b1a1bf1279f203a6896714a45db8e"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/他人格/英文版/志度内.htm"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.sitonai/志度内"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_sitonai_2"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[85].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[85].skills[1].text#line=2",
+          "sha256": "0a61623c5d357a554cd0ebff009fa6614b7c071d31df95a9508b7ae3d7f6e739"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[85].skills[1].text#line=3",
+          "sha256": "66c4589d012eeec929fb8138992acc0838a66d2878831bced38cfcb1ffdaefc6"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/他人格/英文版/志度内.htm"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.sitonai/志度内"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_sitonai_3"
+        },
+        {
+          "abilityId": "servant.sitonai.skill.sc-sitonai-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[85].skills[2].text#line=1",
+          "sha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/斯卡哈·斯卡蒂.htm"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.skadi/斯卡哈·斯卡蒂"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_skadi_1"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[115].skills[0].text#line=1",
+          "sha256": "3f506a117ac77e366734955aba63ffc0b87c5b88f4c4ec602c286a62eaea8f50"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[115].skills[0].text#line=2",
+          "sha256": "305c6eea4ebd5c30088880959d0420e56e7582566f72cb11271152d85d1f21ec"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/斯卡哈·斯卡蒂.htm"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.skadi/斯卡哈·斯卡蒂"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_skadi_2"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[115].skills[1].text#line=1",
+          "sha256": "1f2286c78b0155bffa23abdaae9056ad2c129432739a901fa514c7ac470aac46"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[115].skills[1].text#line=2",
+          "sha256": "5d5f99accbbbf3341d4b6b631fe86cb1a785d1d49c7e147510fe23bd1c10c04b"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[115].skills[1].text#line=3",
+          "sha256": "f0270b5944925e556fad7e080e3fb8cedd661bb81d6ba217963d805ca69cd3b3"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[115].skills[1].text#line=4",
+          "sha256": "861c5e2a7476e9693d923b907bb8b2e8daaed7cdf258e58d2517aeba9d3dbb67"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/斯卡哈·斯卡蒂.htm"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.skadi/斯卡哈·斯卡蒂"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_skadi_3"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[115].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[115].skills[2].text#line=2",
+          "sha256": "849f21389f4bdd9e0b908efef27b12421e5649d6e5b81d99d96a148d60af578f"
+        },
+        {
+          "abilityId": "servant.skadi.skill.sc-skadi-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[115].skills[2].text#line=3",
+          "sha256": "56e285d5927644bd420678fcf4527c04810fbc8bda2ce2b81c60097956351bd0"
         },
         {
           "abilityId": "servant.valkyrie.skill.sc-valkyrie-3",
@@ -66683,10 +67133,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 289,
-          "specific_handler": 346
+          "shared_handler": 293,
+          "specific_handler": 355
         },
-        "handlerCount": 413,
+        "handlerCount": 422,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
