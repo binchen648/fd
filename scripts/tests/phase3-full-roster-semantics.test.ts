@@ -1317,6 +1317,18 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find((c) => c.id === 'master.wallachia.skill.s8')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'tatari_deterioration_rule' })]) }));
   });
 
+  it('grounds the seventeen-ID Sion source-evidence slice with exact development snapshots and explicit training/EX boundaries', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set(['master.sion.skill.ascension','master.sion.skill.s1','master.sion.skill.s10','master.sion.skill.s11','master.sion.skill.s12','master.sion.skill.s14','master.sion.skill.s15','master.sion.skill.s16','master.sion.skill.s17','master.sion.skill.s2','master.sion.skill.s3','master.sion.skill.s4','master.sion.skill.s5','master.sion.skill.s6','master.sion.skill.s7','master.sion.skill.s8','master.sion.skill.s9']);
+    const slice=overlays.filter((card)=>ids.has(card.id)); expect(slice).toHaveLength(17);
+    expect(slice.every((card)=>card.source?.authority==='DEVELOPMENT_TEXT' && card.source.document.endsWith('/data_masters.js') && card.source.sourceText===card.printedText && card.source.sourceTextSha256===card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find(c=>c.id==='master.sion.skill.s1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'training_skill_overlay_rule'})])}));
+    expect(slice.find(c=>c.id==='master.sion.skill.s7')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'unpreventable_result_rule'})])}));
+    expect(slice.find(c=>c.id==='master.sion.skill.s15')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'moon_holy_grail_reset_rule'})])}));
+    expect(slice.find(c=>c.id==='master.sion.skill.s16')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'remove_cards_in_zone'})])}));
+    expect(slice.find(c=>c.id==='master.sion.skill.s17')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'luck_reveal_defeat_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1370,10 +1382,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 386,
-      blockedCount: 558,
+      sourceGroundedCount: 403,
+      blockedCount: 541,
       unclassifiedCount: 0,
-      structuredAbilityCount: 664,
+      structuredAbilityCount: 681,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

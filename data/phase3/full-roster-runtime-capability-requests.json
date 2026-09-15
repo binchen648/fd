@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 386
+    "affectedIdentityCount": 403
   },
   "requests": [
     {
@@ -5986,6 +5986,8 @@
         "master.shirou-meal.skill.ascension",
         "master.shishigou.skill.s1",
         "master.sieg.skill.s1a",
+        "master.sion.skill.s10",
+        "master.sion.skill.s16",
         "master.taiga.skill.ascension",
         "master.tiamat.skill.s1",
         "master.twice.skill.s1",
@@ -8019,6 +8021,54 @@
           "sha256": "89da852d7fec3917250e1206149d4af8bfbdb31d64e301adba8e7182c9f80feb"
         },
         {
+          "abilityId": "master.sion.skill.s10",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s10",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s10"
+        },
+        {
+          "abilityId": "master.sion.skill.s10",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s10"
+        },
+        {
+          "abilityId": "master.sion.skill.s10",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[9].text#line=1",
+          "sha256": "53c15760d67187bdefaf87276837fae5fb45152304dd3765472b47936aae7876"
+        },
+        {
+          "abilityId": "master.sion.skill.s10",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[9].text#line=2",
+          "sha256": "cab0fa732dd872487028d518afdd992635410fcfd98520dda90b0706641fa691"
+        },
+        {
+          "abilityId": "master.sion.skill.s16",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s16",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s16"
+        },
+        {
+          "abilityId": "master.sion.skill.s16",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s16"
+        },
+        {
+          "abilityId": "master.sion.skill.s16",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[15].text#line=1",
+          "sha256": "82ed8c111a52acee84cc45f5c3500866eea4282e24592147fc1eda67ed32707f"
+        },
+        {
           "abilityId": "master.taiga.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.taiga/藤村大河"
@@ -8500,10 +8550,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 57,
-          "specific_handler": 37
+          "shared_handler": 58,
+          "specific_handler": 38
         },
-        "handlerCount": 54,
+        "handlerCount": 55,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -14360,6 +14410,8 @@
         "master.peperoncino.skill.s1b",
         "master.shiki-tohno.skill.s2",
         "master.sion.skill.s13",
+        "master.sion.skill.s16",
+        "master.sion.skill.s6",
         "master.wallachia.skill.s1",
         "master.zouken.skill.ascension",
         "master.zouken.skill.s3",
@@ -14930,6 +14982,48 @@
           "sha256": "381fae14c8722c124a3e6578d17559a3792c4e0ef0b63b1dd5a55f932718980c"
         },
         {
+          "abilityId": "master.sion.skill.s16",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s16",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s16"
+        },
+        {
+          "abilityId": "master.sion.skill.s16",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s16"
+        },
+        {
+          "abilityId": "master.sion.skill.s16",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[15].text#line=1",
+          "sha256": "82ed8c111a52acee84cc45f5c3500866eea4282e24592147fc1eda67ed32707f"
+        },
+        {
+          "abilityId": "master.sion.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s6",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s6"
+        },
+        {
+          "abilityId": "master.sion.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s6"
+        },
+        {
+          "abilityId": "master.sion.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[5].text#line=1",
+          "sha256": "c18c4c5bcd6a2996af3d6de8f21020f096bdb2f47dd375ab0e2cdd9adb4708ed"
+        },
+        {
           "abilityId": "master.wallachia.skill.s1",
           "document": "Fate_Domination-开发版",
           "locator": "master.wallachia/瓦拉几亚之夜"
@@ -15117,7 +15211,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 15,
+          "shared_handler": 17,
           "specific_handler": 12
         },
         "handlerCount": 22,
@@ -25369,6 +25463,7 @@
         "master.reines.skill.s3",
         "master.ryuunosuke.skill.s1",
         "master.shishigou.skill.s2",
+        "master.sion.skill.s6",
         "master.tiamat.skill.ascension",
         "master.zouken.skill.ascension",
         "master.zouken.skill.s4",
@@ -26165,6 +26260,27 @@
           "sha256": "03ef82051f65cbc107031214a6d63342afad130ddfd918e6cb4042eeb18e5270"
         },
         {
+          "abilityId": "master.sion.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s6",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s6"
+        },
+        {
+          "abilityId": "master.sion.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s6"
+        },
+        {
+          "abilityId": "master.sion.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[5].text#line=1",
+          "sha256": "c18c4c5bcd6a2996af3d6de8f21020f096bdb2f47dd375ab0e2cdd9adb4708ed"
+        },
+        {
           "abilityId": "master.tiamat.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.tiamat/提亚马特"
@@ -26379,7 +26495,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 19,
+          "shared_handler": 20,
           "specific_handler": 14
         },
         "handlerCount": 25,
@@ -44949,6 +45065,21 @@
         "master.shishigou.skill.s2",
         "master.shishigou.skill.s3",
         "master.sieg.skill.s2",
+        "master.sion.skill.ascension",
+        "master.sion.skill.s1",
+        "master.sion.skill.s10",
+        "master.sion.skill.s11",
+        "master.sion.skill.s12",
+        "master.sion.skill.s14",
+        "master.sion.skill.s15",
+        "master.sion.skill.s17",
+        "master.sion.skill.s2",
+        "master.sion.skill.s3",
+        "master.sion.skill.s4",
+        "master.sion.skill.s5",
+        "master.sion.skill.s7",
+        "master.sion.skill.s8",
+        "master.sion.skill.s9",
         "master.taiga.skill.ascension",
         "master.tiamat.card.life-sea",
         "master.tiamat.skill.ascension",
@@ -49157,6 +49288,387 @@
           "sha256": "b42119137464b4723aae46395ae82969e95d09adb15179c39199d6fa997d37ee"
         },
         {
+          "abilityId": "master.sion.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.ascension"
+        },
+        {
+          "abilityId": "master.sion.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/ascension"
+        },
+        {
+          "abilityId": "master.sion.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[17].text#line=1",
+          "sha256": "25eb4c46743cb51e34bdf6323cb8f45e7462416b54e76370774f57c0c811a7d2"
+        },
+        {
+          "abilityId": "master.sion.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s1"
+        },
+        {
+          "abilityId": "master.sion.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s1"
+        },
+        {
+          "abilityId": "master.sion.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[0].text#line=1",
+          "sha256": "80923f8c74b6a084deef1d9c73af7e5afd58ae8a0adb4e28cdd0672945dca340"
+        },
+        {
+          "abilityId": "master.sion.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[0].text#line=2",
+          "sha256": "6c454c273444db713c98064c966df38782dd45b21281bd8b145847b400dbfc81"
+        },
+        {
+          "abilityId": "master.sion.skill.s10",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s10",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s10"
+        },
+        {
+          "abilityId": "master.sion.skill.s10",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s10"
+        },
+        {
+          "abilityId": "master.sion.skill.s10",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[9].text#line=1",
+          "sha256": "53c15760d67187bdefaf87276837fae5fb45152304dd3765472b47936aae7876"
+        },
+        {
+          "abilityId": "master.sion.skill.s10",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[9].text#line=2",
+          "sha256": "cab0fa732dd872487028d518afdd992635410fcfd98520dda90b0706641fa691"
+        },
+        {
+          "abilityId": "master.sion.skill.s11",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s11",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s11"
+        },
+        {
+          "abilityId": "master.sion.skill.s11",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s11"
+        },
+        {
+          "abilityId": "master.sion.skill.s11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[10].text#line=1",
+          "sha256": "52f7bce2381d558397ba5f1f2d534b776804e646aac6aec44ed949ae1105efd5"
+        },
+        {
+          "abilityId": "master.sion.skill.s11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[10].text#line=2",
+          "sha256": "93d8aa1eb10d6e0fb6004dae2a7387a460e11dece4932b7be148270c9778750c"
+        },
+        {
+          "abilityId": "master.sion.skill.s12",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s12",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s12"
+        },
+        {
+          "abilityId": "master.sion.skill.s12",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s12"
+        },
+        {
+          "abilityId": "master.sion.skill.s12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[11].text#line=1",
+          "sha256": "43c84de7cf6532ee6b561d8cfa35ddbdeac52850f6105684b23a82121636a892"
+        },
+        {
+          "abilityId": "master.sion.skill.s14",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s14",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s14"
+        },
+        {
+          "abilityId": "master.sion.skill.s14",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s14"
+        },
+        {
+          "abilityId": "master.sion.skill.s14",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[13].text#line=1",
+          "sha256": "df1b7f58a7450a5c2b06e9a36e8e1cb7f448f66d546cea487ee1c13495147a3f"
+        },
+        {
+          "abilityId": "master.sion.skill.s15",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s15",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s15"
+        },
+        {
+          "abilityId": "master.sion.skill.s15",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s15"
+        },
+        {
+          "abilityId": "master.sion.skill.s15",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[14].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.sion.skill.s15",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[14].text#line=2",
+          "sha256": "39706ee6ac22b2daf65242ec7e33673aa4425022eb7ea7165d9d2837c6bbc4cc"
+        },
+        {
+          "abilityId": "master.sion.skill.s15",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[14].text#line=3",
+          "sha256": "c7ce06ac3c24e36bf984f24fb6aba5d5ab7d35cd0f095980b9567c5a5b45c184"
+        },
+        {
+          "abilityId": "master.sion.skill.s17",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s17",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s17"
+        },
+        {
+          "abilityId": "master.sion.skill.s17",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s17"
+        },
+        {
+          "abilityId": "master.sion.skill.s17",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[16].text#line=1",
+          "sha256": "ef899905ef32f2e16e0e8fb887e5982f1e81707658e245ca39234a96a15aacdb"
+        },
+        {
+          "abilityId": "master.sion.skill.s17",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[16].text#line=2",
+          "sha256": "72beae45a5db0a85dd87b4566ba975d31e10eee1a381b03c6369d64c32173dc1"
+        },
+        {
+          "abilityId": "master.sion.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s2"
+        },
+        {
+          "abilityId": "master.sion.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s2"
+        },
+        {
+          "abilityId": "master.sion.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[1].text#line=1",
+          "sha256": "ce65f74499522972933e1af07177bf754aa0438360ec67d9ad82d6743ffbf025"
+        },
+        {
+          "abilityId": "master.sion.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[1].text#line=2",
+          "sha256": "76685cc5680476df285c2759a258f9f40b1c421412b665fcb6dbb76f79c1bf58"
+        },
+        {
+          "abilityId": "master.sion.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s3"
+        },
+        {
+          "abilityId": "master.sion.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s3"
+        },
+        {
+          "abilityId": "master.sion.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[2].text#line=1",
+          "sha256": "4c57c846bb14b58c2decbd1ae02d9f28fe65e9844102ade5354843c0c4569912"
+        },
+        {
+          "abilityId": "master.sion.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[2].text#line=2",
+          "sha256": "71434957df62024c494ddf76de024f3fb3d2b64a7f0d8e00980ba06956563684"
+        },
+        {
+          "abilityId": "master.sion.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s4"
+        },
+        {
+          "abilityId": "master.sion.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s4"
+        },
+        {
+          "abilityId": "master.sion.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[3].text#line=1",
+          "sha256": "fbf8b8e250298a4a8a435065e058211cd515f585a32617bbbec47c1b59fef20f"
+        },
+        {
+          "abilityId": "master.sion.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[3].text#line=2",
+          "sha256": "0612c95813732ee78eda7c8bc0d2d7bbda08459cdd5ab1adbc3a28a7ed581d2b"
+        },
+        {
+          "abilityId": "master.sion.skill.s5",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s5",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s5"
+        },
+        {
+          "abilityId": "master.sion.skill.s5",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s5"
+        },
+        {
+          "abilityId": "master.sion.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[4].text#line=1",
+          "sha256": "177b76d8d447463c6046dc322441a9e1c70350ea99bd3bedbd49b4fac77b4745"
+        },
+        {
+          "abilityId": "master.sion.skill.s7",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s7",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s7"
+        },
+        {
+          "abilityId": "master.sion.skill.s7",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s7"
+        },
+        {
+          "abilityId": "master.sion.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[6].text#line=1",
+          "sha256": "b441c43c525bfc15048c2f84ad2359eecb61e5125313795a966e2fc943033575"
+        },
+        {
+          "abilityId": "master.sion.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[6].text#line=2",
+          "sha256": "f47bd8d15749df33192fcb36f858bb51f2a1bff8fd7df25bcef3e25d5829cacd"
+        },
+        {
+          "abilityId": "master.sion.skill.s8",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s8",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s8"
+        },
+        {
+          "abilityId": "master.sion.skill.s8",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s8"
+        },
+        {
+          "abilityId": "master.sion.skill.s8",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[7].text#line=1",
+          "sha256": "bebbfef5240c32e5383b427e1264712c0b5d8b6845c491aa68f0c67491844ee4"
+        },
+        {
+          "abilityId": "master.sion.skill.s8",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[7].text#line=2",
+          "sha256": "db468dc7209153b75c852dfdeb9df0b2a7e6a82efc553c4d1876e222644ec522"
+        },
+        {
+          "abilityId": "master.sion.skill.s9",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.sion/紫苑·艾尔特纳姆"
+        },
+        {
+          "abilityId": "master.sion.skill.s9",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_sion.s9"
+        },
+        {
+          "abilityId": "master.sion.skill.s9",
+          "document": "legacy-content.json",
+          "locator": "master/master.sion/s9"
+        },
+        {
+          "abilityId": "master.sion.skill.s9",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[52].skills[8].text#line=1",
+          "sha256": "c77ada71896665f9ef44c7aa8f8201478c983cd33cc520141deb1c9908bd39ea"
+        },
+        {
           "abilityId": "master.taiga.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.taiga/藤村大河"
@@ -49958,10 +50470,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 124,
-          "specific_handler": 58
+          "shared_handler": 135,
+          "specific_handler": 62
         },
-        "handlerCount": 88,
+        "handlerCount": 95,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

@@ -6,19 +6,20 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=386
-blockedCount=558
+sourceGroundedCount=403
+blockedCount=541
 unclassifiedCount=0
-structuredAbilityCount=664
+structuredAbilityCount=681
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 86 |
+| timing | `ACTION` | 91 |
 | timing | `COMBAT` | 41 |
-| timing | `OUTPOST` | 27 |
+| timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
+| timing | `BATTLE` | 3 |
 | trigger | `combat.resolved` | 51 |
 | trigger | `game.started` | 29 |
 | trigger | `round.ending` | 15 |
@@ -245,7 +246,7 @@ structuredAbilityCount=664
 | condition | `TRUE_NAME_REVEALED` | 1 |
 | condition | `VICTORY_POINTS_IS_FIRST` | 1 |
 | condition | `VICTORY_POINTS_IS_LOWEST` | 1 |
-| cost | `MANA` | 21 |
+| cost | `MANA` | 23 |
 | cost | `VICTORY_POINTS` | 3 |
 | cost | `DISCARD_CARDS` | 2 |
 | cost | `COMMAND_SEAL` | 1 |
@@ -264,15 +265,15 @@ structuredAbilityCount=664
 | effect | `COMBAT_POWER_BONUS` | 26 |
 | effect | `EVENT_CARD_RULE` | 26 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
+| effect | `MOVE_SOURCE_CARD` | 22 |
 | effect | `DRAW_CARDS` | 21 |
-| effect | `MOVE_SOURCE_CARD` | 21 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
 | effect | `CLOSE_SOURCE_CARD` | 14 |
 | effect | `LOSTBELT_EXPANSION` | 14 |
 | effect | `MOVE_SELECTED_CARDS` | 14 |
-| effect | `DEFEAT_PLAYER` | 12 |
-| effect | `MOVE_PLAYER` | 12 |
+| effect | `DEFEAT_PLAYER` | 13 |
+| effect | `MOVE_PLAYER` | 13 |
 | effect | `PLAY_SELECTED_CARDS` | 12 |
 | effect | `SET_PLAYER_FLAG` | 12 |
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
@@ -292,9 +293,11 @@ structuredAbilityCount=664
 | effect | `MOVE_SELECTED_EVENTS` | 4 |
 | effect | `NECROMANCY_RITE_RULE` | 4 |
 | effect | `PROPHECY_RULE` | 4 |
+| effect | `REMOVE_CARDS_IN_ZONE` | 4 |
 | effect | `REMOVE_SELECTED_CARDS` | 4 |
 | effect | `SCHEDULE_EFFECT` | 4 |
 | effect | `SCHEDULE_PHASE_EFFECT` | 4 |
+| effect | `TRAINING_SKILL_OVERLAY_RULE` | 4 |
 | effect | `ADD_LINKED_STATUS` | 3 |
 | effect | `ADJUST_TERRAIN` | 3 |
 | effect | `ANALYSIS_TOKEN_RULE` | 3 |
@@ -307,7 +310,8 @@ structuredAbilityCount=664
 | effect | `OVERLOAD_CARD_RULE` | 3 |
 | effect | `PHANTOM_PLAYER_RULE` | 3 |
 | effect | `REINCARNATION_RULE` | 3 |
-| effect | `REMOVE_CARDS_IN_ZONE` | 3 |
+| effect | `TRAINING_EXPERIENCE_RULE` | 3 |
+| effect | `BATCH_CARD_USE_RULE` | 2 |
 | effect | `CHALLENGE_RPS_RULE` | 2 |
 | effect | `COMBAT_POWER_LOCK` | 2 |
 | effect | `CRAFT_ESSENCE_EFFECT_RULE` | 2 |
@@ -345,7 +349,6 @@ structuredAbilityCount=664
 | effect | `ASTRONOMICAL_SPHERE_RULE` | 1 |
 | effect | `ATTRIBUTE_CHAIN_RULE` | 1 |
 | effect | `BASE_CARD_EXCHANGE_RULE` | 1 |
-| effect | `BATCH_CARD_USE_RULE` | 1 |
 | effect | `BEAST_RESOURCE_RULE` | 1 |
 | effect | `BETRAYAL_ASCENSION_RULE` | 1 |
 | effect | `BETRAYAL_THRESHOLD_RULE` | 1 |
@@ -369,15 +372,20 @@ structuredAbilityCount=664
 | effect | `EVENT_BATTLEFIELD_PENALTY` | 1 |
 | effect | `GRANT_LINKED_ABILITY_TO_DEFINITION` | 1 |
 | effect | `GRANT_OPPONENT_ACTION_RULE` | 1 |
+| effect | `GROWTH_COUNTER_RULE` | 1 |
 | effect | `HEAVENS_HOLE_RULE` | 1 |
 | effect | `HIDDEN_DOUBLE_ATTACK_RULE` | 1 |
+| effect | `HIDDEN_DRAW_REMOVAL_RULE` | 1 |
 | effect | `INDEPENDENT_DECK_RULE` | 1 |
 | effect | `INFINITE_MANA_RULE` | 1 |
 | effect | `INFO_NOTE` | 1 |
 | effect | `ITEM_RULE` | 1 |
 | effect | `LINKED_PLAYER_MANA_CONTRIBUTION` | 1 |
 | effect | `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS` | 1 |
+| effect | `LUCK_REVEAL_DEFEAT_RULE` | 1 |
+| effect | `MAGIC_IMMUNITY_RULE` | 1 |
 | effect | `MAP_ARROW_REWRITE_RULE` | 1 |
+| effect | `MOON_HOLY_GRAIL_RESET_RULE` | 1 |
 | effect | `MURDER_IMPULSE_THRESHOLD_RULE` | 1 |
 | effect | `MYSTIC_CODE_RULE` | 1 |
 | effect | `MYSTIC_CODE_UPGRADE_RULE` | 1 |
@@ -392,6 +400,7 @@ structuredAbilityCount=664
 | effect | `REPEAT_SKILL_EFFECT_RULE` | 1 |
 | effect | `REPLACE_SELECTED_EVENT_FROM_DECK` | 1 |
 | effect | `RESET_SKILL_USAGE` | 1 |
+| effect | `REVERSE_EFFECT_RULE` | 1 |
 | effect | `ROSTER_REPLACEMENT_RULE` | 1 |
 | effect | `SCHEDULED_DECK_REBUILD_RULE` | 1 |
 | effect | `SEED_ATTACHED_SUPPLY` | 1 |
@@ -405,11 +414,14 @@ structuredAbilityCount=664
 | effect | `STOLEN_MANA_ATTRIBUTION_RULE` | 1 |
 | effect | `SWAP_SELECTED_EVENT_LOCATIONS` | 1 |
 | effect | `SWAP_VICTORY_POINTS` | 1 |
+| effect | `TEMPORARY_COMMAND_SEAL_RULE` | 1 |
+| effect | `TERRAIN_EFFECT_MULTIPLIER_RULE` | 1 |
 | effect | `TRANSFER_SELECTED_CARDS` | 1 |
 | effect | `TRAUMA_DECK_RULE` | 1 |
 | effect | `TRAUMA_STATE_RULE` | 1 |
 | effect | `TRIMMAU_CONFESSION_RULE` | 1 |
 | effect | `TRIMMAU_GROWTH_RULE` | 1 |
+| effect | `UNPREVENTABLE_RESULT_RULE` | 1 |
 | effect | `WINNER_PREDICTION_RULE` | 1 |
 | interaction | `CHOOSE_ONE_CARD` | 27 |
 | interaction | `BRANCH_CHOICE` | 15 |
@@ -992,24 +1004,24 @@ structuredAbilityCount=664
 | `master.sieg.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `CONTROLLER_MANA_AT_LEAST` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:while_condition_true` | `rule:card_play_mode:allow_append` | `NONE` | `NONE` | `NONE` | `core.game-start-rule-flags` |
 | `master.sieg.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `ADJUST_COMMAND_SEALS`, `GAIN_MANA`, `MOVE_MATCHING_CARDS` | `NONE` | `duration:round` | `rule:skill_play_mana_threshold:ignore_below` | `NONE` | `NONE` | `NONE` | `core.sieg-dragon-command-seal` |
 | `master.sieg.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `BRANCH_CHOICE` | `GRANT_OPPONENT_ACTION_RULE`, `SET_SOURCE_CARD_COST_FOR_TRANSACTION` | `BRANCH_CHOICE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sieg-balmung` |
-| `master.sion.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-add-skill` |
-| `master.sion.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-chaldea-training` |
-| `master.sion.skill.s10` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-presence-concealment-ex` |
-| `master.sion.skill.s11` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `master.sion.skill.s12` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
+| `master.sion.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TRAINING_SKILL_OVERLAY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-add-skill` |
+| `master.sion.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TRAINING_SKILL_OVERLAY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-chaldea-training` |
+| `master.sion.skill.s10` | `SOURCE_GROUNDED` | `NONE` | `BATTLE` | `NONE` | `NONE` | `NONE` | `NONE` | `DEFEAT_PLAYER`, `MOVE_SOURCE_CARD` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-presence-concealment-ex` |
+| `master.sion.skill.s11` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `HIDDEN_DRAW_REMOVAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `master.sion.skill.s12` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
 | `master.sion.skill.s13` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `CONSTANT`, `METRIC`, `METRIC_COMPARE`, `SOURCE_OWNED` | `VICTORY_POINTS` | `CHOOSE_ONE_CARD` | `PLAY_SELECTED_CARDS` | `CHOOSE_ONE_CARD` | `NONE` | `NONE` | `NONE` | `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |
-| `master.sion.skill.s14` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-chaldea-training` |
-| `master.sion.skill.s15` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-chaldea-training` |
-| `master.sion.skill.s16` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `master.sion.skill.s17` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-chaldea-training` |
-| `master.sion.skill.s2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-chaldea-training` |
-| `master.sion.skill.s3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-chaldea-training` |
-| `master.sion.skill.s4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-chaldea-training` |
-| `master.sion.skill.s5` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-magic-immunity-ex` |
-| `master.sion.skill.s6` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `master.sion.skill.s7` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-independent-action-ex` |
-| `master.sion.skill.s8` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
-| `master.sion.skill.s9` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-territory-expansion-ex` |
+| `master.sion.skill.s14` | `SOURCE_GROUNDED` | `NONE` | `OUTPOST` | `NONE` | `NONE` | `NONE` | `NONE` | `TEMPORARY_COMMAND_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-chaldea-training` |
+| `master.sion.skill.s15` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MOON_HOLY_GRAIL_RESET_RULE`, `TRAINING_SKILL_OVERLAY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-chaldea-training` |
+| `master.sion.skill.s16` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `MANA` | `NONE` | `REMOVE_CARDS_IN_ZONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `master.sion.skill.s17` | `SOURCE_GROUNDED` | `NONE` | `BATTLE` | `NONE` | `NONE` | `NONE` | `NONE` | `LUCK_REVEAL_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-chaldea-training` |
+| `master.sion.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TRAINING_EXPERIENCE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-chaldea-training` |
+| `master.sion.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TRAINING_EXPERIENCE_RULE`, `TRAINING_SKILL_OVERLAY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-chaldea-training` |
+| `master.sion.skill.s4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TRAINING_EXPERIENCE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-chaldea-training` |
+| `master.sion.skill.s5` | `SOURCE_GROUNDED` | `NONE` | `BATTLE` | `NONE` | `NONE` | `NONE` | `NONE` | `MAGIC_IMMUNITY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-magic-immunity-ex` |
+| `master.sion.skill.s6` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `MANA` | `NONE` | `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `master.sion.skill.s7` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `TERRAIN_EFFECT_MULTIPLIER_RULE`, `UNPREVENTABLE_RESULT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-independent-action-ex` |
+| `master.sion.skill.s8` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `BATCH_CARD_USE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `master.sion.skill.s9` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GROWTH_COUNTER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sion-territory-expansion-ex` |
 | `master.taiga.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LOCATION_TOKEN_RULE`, `MOVE_SOURCE_CARD` | `NONE` | `duration:while_source_active` | `NONE` | `NONE` | `NONE` | `NONE` | `core.taiga-domestic-carnage` |
 | `master.taiga.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `game.started` | `NONE` | `NONE` | `NONE` | `SET_MANA` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.master-initial-mana` |
 | `master.taiga.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved` | `EVENT_PLAYER_WON_COMBAT` | `NONE` | `NONE` | `ADD_LINKED_STATUS`, `GAIN_VICTORY_POINTS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.taiga-fates-guide` |
