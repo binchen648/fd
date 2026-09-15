@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.19
+- Version: P3-TI-1.20
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2988,6 +2988,71 @@ Completion status allowed:
 - Fresh A coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled definition hash remains `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, with 70 cards, 14 characters, and 0 blocking issues.
 - Generated coverage drift is only timestamp/static source-line locations and is intentionally not committed.
 - P3-FM01 remains undispatched. Wave 2 continues with the next high-yield Card Zone / Move / Return component; no Trigger/Power wave skipping is authorized.
+
+
+
+## TASK P3-FB2-08
+
+Owner: Codex B2
+Status: READY
+Branch: `codex/b2-p3-fb2-08-source-play-basic-draw-r1`
+Base: exact P3-FB2-08 A-owned handoff commit
+Runtime baseline before handoff: `e0f1a40b1e66c64df78f32e98791018475829af3`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+
+Goal: accept one narrow identity-free Trigger Runtime route for `forced on_card_played + source active + played_with_basic_attack + fixed controller draw 1`, using existing trusted play-batch provenance and typed draw dataflow.
+
+Frozen candidate F1 membership: 14 exact servant skill identities listed in `docs/reports/2026-09-16-p3-fb2-08-source-play-basic-draw-handoff.md`.
+
+Required boundary:
+- exact forced/source-active `on_card_played` candidate envelope;
+- exactly one `played_with_basic_attack` condition;
+- exactly one controller fixed draw-1 effect;
+- no targets/costs/creates/modifiers/lifecycle/response/limit or extra activation metadata;
+- event source/player/source-card batch membership and face-up controller basic companion are trusted-provenance scoped;
+- duplicate event IDs settle once;
+- malformed triggered near-matches fail closed before legacy mutation.
+
+Must not promote broad Trigger Gateway, Okita repeat-play, generic conditions, broad PLAY/TO13, CLOSE attribute triggers, client/projection, or F1 migration.
+
+May touch only interpreter routing/classification, focused trigger tests/narrow compatibility assertions, and the FB2-08 result report.
+
+Required validation: real batch positive/negative provenance, typed draw evidence, idempotency, malformed fail-closed, TO13/CLOSE/Trigger compatibility, typecheck, all rules regression, determinism, full CI, static audits, diff check.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R25
+
+Owner: Codex R
+Status: READY_AFTER_P3_FB2_08
+Branch: reviewer-selected fresh worktree/branch from exact FB2-08 candidate SHA
+
+Goal: independently review the exact FB2-08 trigger route without implementing fixes and without pre-authorizing F1 migration.
+
+Required checks:
+- exact trigger/condition/effect shape;
+- authoritative play-batch provenance and source/controller scoping;
+- separate/face-down/other-controller/wrong-source negatives;
+- typed draw and discard-recycle behavior;
+- replay/idempotency and atomic malformed failure;
+- no identity/text routing and no regression of TO13/CLOSE/other trigger contracts;
+- no F1 authoring/KPI/taxonomy changes;
+- fresh typecheck, focused tests, all rules regressions, determinism, full CI, static audits, diff check.
+
+Completion status allowed:
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
+## Full-Roster Dispatch State Before FB2-08
+
+- FB2-07 is accepted and A-synchronized at `e0f1a40b1e66c64df78f32e98791018475829af3`; stacked PRs are #287/#288/#289/#290.
+- Independent Wave-2 Card Zone closure is complete: among 121 `GENERIC_CARD_ZONE` identities, only Waver S2 has no other parent capability, and its exact route is already accepted by FB2-06. All residual Move/Return rows are dependency-bound or mix later owners.
+- Wave-3 Card Action scan shows PLAY=46, CLOSE=19, ACTIVATE=10, ADD_TO_ATTACK=8, CREATE_AND_ACTIVATE=2; no identity depends on that Card Action capability alone. Existing TO10/TO13 typed contracts cover the reusable independent primitives, so no broad Card Action reimplementation is dispatched.
+- A 14-identity same-shape servant family is the first visible 10+ composite batch candidate. TO13 covers its optional low-power hand-play half; the missing runtime Gate is the source-play/basic-attack/draw trigger half dispatched as FB2-08.
+- P3-FM01 remains undispatched until R25 and a fresh A-owned exact dependency check.
 
 
 ## Prompt Templates
