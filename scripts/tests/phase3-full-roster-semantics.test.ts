@@ -1650,6 +1650,14 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.nitocris.skill.sc-nitocris-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'nitocris_necromirror_rule'})])}));
   });
 
+  it('grounds the sixteen-ID Nursery/Odysseus/OkitaAlter/Orion/Osakabe/Ozymandias slice with Rider and Alter Ego rule reuse', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.nursery.skill.sc-nursery-1","servant.nursery.skill.sc-nursery-3","servant.odysseus.skill.sc-odysseus-1","servant.odysseus.skill.sc-odysseus-2","servant.odysseus.skill.sc-odysseus-3","servant.okita-alt.skill.sc-okita-alt-1","servant.okita-alt.skill.sc-okita-alt-2","servant.okita-alt.skill.sc-okita-alt-3","servant.orion.skill.sc-orion-1","servant.orion.skill.sc-orion-2","servant.orion.skill.sc-orion-3","servant.osakabe.skill.sc-osakabe-1","servant.osakabe.skill.sc-osakabe-2","servant.osakabe.skill.sc-osakabe-3","servant.ozymandias.skill.sc-ozymandias-1","servant.ozymandias.skill.sc-ozymandias-3"]); const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(16); expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256 && c.source.sourceFileSha256.length===64)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.odysseus.skill.sc-odysseus-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'draw_cards',count:1,when:'source_played_with_one_base_attack'}),expect.objectContaining({type:'play_selected_cards',sourceZone:'hand',maxCount:3})])}));
+    expect(slice.find(c=>c.id==='servant.okita-alt.skill.sc-okita-alt-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'reverse_effect_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.nursery.skill.sc-nursery-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'nursery_round_reset_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.ozymandias.skill.sc-ozymandias-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'ozymandias_temple_rule'})])}));
+  });
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1703,10 +1711,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 829,
-      blockedCount: 115,
+      sourceGroundedCount: 845,
+      blockedCount: 99,
       unclassifiedCount: 0,
-      structuredAbilityCount: 1107,
+      structuredAbilityCount: 1123,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

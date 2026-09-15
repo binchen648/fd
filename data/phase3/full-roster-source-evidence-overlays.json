@@ -29766,6 +29766,434 @@
         }
       ],
       "referencePrintedTextSha256": "6d7f64638f501200198abf68e4487c7842774f4da9c9eff4727f937340c4dd04"
+    },
+    {
+      "id": "servant.nursery.skill.sc-nursery-1",
+      "printedText": "【真名解放】 <每局游戏限一次>\n残留：当你即将战败时，关闭此牌和场上所有的非残留攻击，然后将所有玩家从桌面移除游戏并从准备阶段开始重新进行本回合。\n永动炉心-前哨阶段：获得1点魔力和1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_nursery_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】 <每局游戏限一次>\n残留：当你即将战败时，关闭此牌和场上所有的非残留攻击，然后将所有玩家从桌面移除游戏并从准备阶段开始重新进行本回合。\n永动炉心-前哨阶段：获得1点魔力和1点战果。",
+        "sourceTextSha256": "8ecf4150e47db98e6c58b9eb9aa40ed7883c5981840c082f1bbfa31154fb8506"
+      },
+      "abilities": [
+        {
+          "id": "nursery.sc-nursery-1.semantic",
+          "printedClause": "【真名解放】 <每局游戏限一次>\n残留：当你即将战败时，关闭此牌和场上所有的非残留攻击，然后将所有玩家从桌面移除游戏并从准备阶段开始重新进行本回合。\n永动炉心-前哨阶段：获得1点魔力和1点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "nursery_round_reset_rule",
+              "operation": "true_name_reveal_once_per_game_residual_when_controller_would_lose_close_source_and_all_non_residual_attacks_remove_all_players_from_board_and_restart_current_round_from_preparation_outpost_gain_1_mana_and_1_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8ecf4150e47db98e6c58b9eb9aa40ed7883c5981840c082f1bbfa31154fb8506"
+    },
+    {
+      "id": "servant.nursery.skill.sc-nursery-3",
+      "printedText": "你需将一张你手中的基础攻击作为【殇】展示后洗入一名与你位于同一地点的对手的牌库中才可打出此牌。\n残留：你的战斗阶段结束时，若你的交战对手控制与【殇】相同的攻击，关闭此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_nursery_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "你需将一张你手中的基础攻击作为【殇】展示后洗入一名与你位于同一地点的对手的牌库中才可打出此牌。\n残留：你的战斗阶段结束时，若你的交战对手控制与【殇】相同的攻击，关闭此牌。",
+        "sourceTextSha256": "b76058cfe0dbc76d050e9ab163ede6f6190acbcaecdace018a4d4995510ce49b"
+      },
+      "abilities": [
+        {
+          "id": "nursery.sc-nursery-3.semantic",
+          "printedClause": "你需将一张你手中的基础攻击作为【殇】展示后洗入一名与你位于同一地点的对手的牌库中才可打出此牌。\n残留：你的战斗阶段结束时，若你的交战对手控制与【殇】相同的攻击，关闭此牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "nursery_wound_seed_rule",
+              "operation": "play_cost_reveal_one_base_attack_from_hand_as_wound_and_shuffle_into_same_location_opponent_deck_residual_end_controller_combat_close_source_if_engaged_opponent_controls_attack_matching_wound"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b76058cfe0dbc76d050e9ab163ede6f6190acbcaecdace018a4d4995510ce49b"
+    },
+    {
+      "id": "servant.odysseus.skill.sc-odysseus-1",
+      "printedText": "你需将此牌借给一名与你位于同一地点的其他玩家才可打出。\n残留：回合结束时，奥德修斯偷取此牌的控制者1点战果。\n除此牌打出的回合，进行战力结算时若奥德修斯与控制者交战，令此牌返回奥德修斯的攻击区并于回合结束时关闭此牌。\n战术支援-你的✖特殊属性攻击+3威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_odysseus_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "你需将此牌借给一名与你位于同一地点的其他玩家才可打出。\n残留：回合结束时，奥德修斯偷取此牌的控制者1点战果。\n除此牌打出的回合，进行战力结算时若奥德修斯与控制者交战，令此牌返回奥德修斯的攻击区并于回合结束时关闭此牌。\n战术支援-你的✖特殊属性攻击+3威力。",
+        "sourceTextSha256": "3044320815407f90e283b9e9dacc48076ee4a17ee30b9a0165a292fbb9bfc9c3"
+      },
+      "abilities": [
+        {
+          "id": "odysseus.sc-odysseus-1.semantic",
+          "printedClause": "你需将此牌借给一名与你位于同一地点的其他玩家才可打出。\n残留：回合结束时，奥德修斯偷取此牌的控制者1点战果。\n除此牌打出的回合，进行战力结算时若奥德修斯与控制者交战，令此牌返回奥德修斯的攻击区并于回合结束时关闭此牌。\n战术支援-你的✖特殊属性攻击+3威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "odysseus_trojan_horse_rule",
+              "operation": "play_requires_lending_source_to_other_same_location_player_residual_round_end_odysseus_steals_1_vp_from_controller_after_play_round_if_odysseus_engaged_with_controller_at_power_resolution_return_source_to_odysseus_attack_zone_and_close_round_end_special_attribute_attacks_plus_3_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "3044320815407f90e283b9e9dacc48076ee4a17ee30b9a0165a292fbb9bfc9c3"
+    },
+    {
+      "id": "servant.odysseus.skill.sc-odysseus-2",
+      "printedText": "【真名解放】\n行动阶段：所有玩家依次逆着箭头移动至下一地点除非其支付4点魔力。没有移动的玩家合计威力-5。每个空间的移动成本+2。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_odysseus_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n行动阶段：所有玩家依次逆着箭头移动至下一地点除非其支付4点魔力。没有移动的玩家合计威力-5。每个空间的移动成本+2。",
+        "sourceTextSha256": "e6fd212520ac665f600ffc8ca3906e869cd66ad47f89c86666ef409307803974"
+      },
+      "abilities": [
+        {
+          "id": "odysseus.sc-odysseus-2.semantic",
+          "printedClause": "【真名解放】\n行动阶段：所有玩家依次逆着箭头移动至下一地点除非其支付4点魔力。没有移动的玩家合计威力-5。每个空间的移动成本+2。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "odysseus_divine_body_barrier_rule",
+              "operation": "true_name_reveal_action_each_player_in_order_moves_one_location_against_arrow_unless_pays_4_mana_nonmovers_total_power_minus_5_each_space_movement_cost_plus_2"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "e6fd212520ac665f600ffc8ca3906e869cd66ad47f89c86666ef409307803974"
+    },
+    {
+      "id": "servant.okita-alt.skill.sc-okita-alt-1",
+      "printedText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_okita_alt_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+        "sourceTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+      },
+      "abilities": [
+        {
+          "id": "okita-alt.sc-okita-alt-1.semantic",
+          "printedClause": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "reverse_effect_rule",
+              "operation": "persistent_when_controller_places_card_into_play_may_close_source_to_grant_reverse_effect_or_if_none_after_play_toggle_strength_quick_magic_attributes_to_any_combination"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+    },
+    {
+      "id": "servant.okita-alt.skill.sc-okita-alt-2",
+      "printedText": "不断-行动阶段：抽一张牌并将其加入攻击，然后重复此效果。当你未抽到与你激活的攻击具有相同属性的基础攻击时，改为将被抽取的牌弃置并立即停止不断。你每以此法将一张牌加入攻击，便失去1点魔力。若你的魔力因此效果被扣减至0，你【败北】并立即停止不断。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_okita_alt_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "不断-行动阶段：抽一张牌并将其加入攻击，然后重复此效果。当你未抽到与你激活的攻击具有相同属性的基础攻击时，改为将被抽取的牌弃置并立即停止不断。你每以此法将一张牌加入攻击，便失去1点魔力。若你的魔力因此效果被扣减至0，你【败北】并立即停止不断。",
+        "sourceTextSha256": "32317ed77bcc52fd480f0740ef96928ad3fc0b77a52c866897214ca47dad228d"
+      },
+      "abilities": [
+        {
+          "id": "okita-alt.sc-okita-alt-2.semantic",
+          "printedClause": "不断-行动阶段：抽一张牌并将其加入攻击，然后重复此效果。当你未抽到与你激活的攻击具有相同属性的基础攻击时，改为将被抽取的牌弃置并立即停止不断。你每以此法将一张牌加入攻击，便失去1点魔力。若你的魔力因此效果被扣减至0，你【败北】并立即停止不断。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "okita_alt_endless_draw_rule",
+              "operation": "action_repeat_draw_one_and_add_to_attack_while_drawn_base_attack_shares_attribute_with_active_attack_otherwise_discard_drawn_and_stop_lose_1_mana_per_card_added_if_mana_reaches_0_controller_is_defeated_and_stop"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "32317ed77bcc52fd480f0740ef96928ad3fc0b77a52c866897214ca47dad228d"
+    },
+    {
+      "id": "servant.okita-alt.skill.sc-okita-alt-3",
+      "printedText": "【真名解放】\n你拥有的魔力少于8点也可使用此牌。\n行动阶段：将两张你弃牌堆中的基础攻击洗回牌库。\n炼狱-反转/行动阶段：将你弃牌堆的所有牌移除游戏，若你以此法移除了2张及以上的牌，此牌+8威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_okita_alt_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n你拥有的魔力少于8点也可使用此牌。\n行动阶段：将两张你弃牌堆中的基础攻击洗回牌库。\n炼狱-反转/行动阶段：将你弃牌堆的所有牌移除游戏，若你以此法移除了2张及以上的牌，此牌+8威力。",
+        "sourceTextSha256": "d713b81918d455e201792f3209d6dbd4f930eec64c9542b06d1ce3c8473364d7"
+      },
+      "abilities": [
+        {
+          "id": "okita-alt.sc-okita-alt-3.semantic",
+          "printedClause": "【真名解放】\n你拥有的魔力少于8点也可使用此牌。\n行动阶段：将两张你弃牌堆中的基础攻击洗回牌库。\n炼狱-反转/行动阶段：将你弃牌堆的所有牌移除游戏，若你以此法移除了2张及以上的牌，此牌+8威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "okita_alt_purgatory_rule",
+              "operation": "true_name_reveal_playable_below_8_mana_action_shuffle_two_base_attacks_from_discard_into_deck_reverse_action_remove_all_discard_from_game_if_removed_at_least_2_source_plus_8_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d713b81918d455e201792f3209d6dbd4f930eec64c9542b06d1ce3c8473364d7"
+    },
+    {
+      "id": "servant.orion.skill.sc-orion-1",
+      "printedText": "被动/行动阶段：花费4点魔力并随机弃置一张手牌，你发动此效果后打出的基础攻击+2威力。同时，若你在常规打牌时打出了至少两张具有相同属性的攻击，+3合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_orion_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "被动/行动阶段：花费4点魔力并随机弃置一张手牌，你发动此效果后打出的基础攻击+2威力。同时，若你在常规打牌时打出了至少两张具有相同属性的攻击，+3合计威力。",
+        "sourceTextSha256": "a044b860abc4bca3a01780e69fb47104b20713f9ae6c0855a245276e9528a901"
+      },
+      "abilities": [
+        {
+          "id": "orion.sc-orion-1.semantic",
+          "printedClause": "被动/行动阶段：花费4点魔力并随机弃置一张手牌，你发动此效果后打出的基础攻击+2威力。同时，若你在常规打牌时打出了至少两张具有相同属性的攻击，+3合计威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "orion_hunter_rule",
+              "operation": "passive_action_pay_4_mana_and_random_discard_one_hand_card_base_attacks_played_after_activation_plus_2_power_and_if_regular_play_has_at_least_two_attacks_sharing_attribute_gain_3_total_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "a044b860abc4bca3a01780e69fb47104b20713f9ae6c0855a245276e9528a901"
+    },
+    {
+      "id": "servant.orion.skill.sc-orion-2",
+      "printedText": "【真名解放】\n无偿之爱-行动阶段：从你的手牌或牌库将1张【幸运】基础牌加入攻击并令其获得“残留”和“唯一：战斗结束后，若你战败或【败北】，关闭此牌。”直至被关闭。你可以额外花费4点魔力再使用一次此效果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_orion_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n无偿之爱-行动阶段：从你的手牌或牌库将1张【幸运】基础牌加入攻击并令其获得“残留”和“唯一：战斗结束后，若你战败或【败北】，关闭此牌。”直至被关闭。你可以额外花费4点魔力再使用一次此效果。",
+        "sourceTextSha256": "d970cd701a5d4078fac87059a98345022173f3ec18e56f8455352ec624c8a8a5"
+      },
+      "abilities": [
+        {
+          "id": "orion.sc-orion-2.semantic",
+          "printedClause": "【真名解放】\n无偿之爱-行动阶段：从你的手牌或牌库将1张【幸运】基础牌加入攻击并令其获得“残留”和“唯一：战斗结束后，若你战败或【败北】，关闭此牌。”直至被关闭。你可以额外花费4点魔力再使用一次此效果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "orion_free_love_rule",
+              "operation": "true_name_reveal_action_add_one_base_luck_from_hand_or_deck_to_attack_grant_residual_and_unique_close_after_battle_if_controller_loses_or_is_defeated_until_closed_may_pay_extra_4_mana_to_use_once_more"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d970cd701a5d4078fac87059a98345022173f3ec18e56f8455352ec624c8a8a5"
+    },
+    {
+      "id": "servant.orion.skill.sc-orion-3",
+      "printedText": "【真名解放】\n行动阶段：将你手牌或弃牌堆中的X张【幸运】移除游戏，获得+6X合计威力，X至多为2。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_orion_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n行动阶段：将你手牌或弃牌堆中的X张【幸运】移除游戏，获得+6X合计威力，X至多为2。",
+        "sourceTextSha256": "60404992b471b899f8704966aa4e72e4e16c9ae4a54f737b1aca5f8b7f61cdae"
+      },
+      "abilities": [
+        {
+          "id": "orion.sc-orion-3.semantic",
+          "printedClause": "【真名解放】\n行动阶段：将你手牌或弃牌堆中的X张【幸运】移除游戏，获得+6X合计威力，X至多为2。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "orion_luck_exile_power_rule",
+              "operation": "true_name_reveal_action_remove_x_luck_cards_from_hand_or_discard_from_game_gain_6x_total_power_x_max_2"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "60404992b471b899f8704966aa4e72e4e16c9ae4a54f737b1aca5f8b7f61cdae"
+    },
+    {
+      "id": "servant.osakabe.skill.sc-osakabe-1",
+      "printedText": "若你位于【姬路城】被放置的战场，此牌改为追加打出。\n行动阶段：将你的地利翻倍。\n公主大人【宅】-被动/战斗阶段：若你独自位于一处地点，获得1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_osakabe_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "若你位于【姬路城】被放置的战场，此牌改为追加打出。\n行动阶段：将你的地利翻倍。\n公主大人【宅】-被动/战斗阶段：若你独自位于一处地点，获得1点战果。",
+        "sourceTextSha256": "87b481f472fe30f1ebdcfbe71fd1cea54431cd818c99a89411fa5a966da8f70d"
+      },
+      "abilities": [
+        {
+          "id": "osakabe.sc-osakabe-1.semantic",
+          "printedClause": "若你位于【姬路城】被放置的战场，此牌改为追加打出。\n行动阶段：将你的地利翻倍。\n公主大人【宅】-被动/战斗阶段：若你独自位于一处地点，获得1点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "osakabe_castle_monster_rule",
+              "operation": "if_controller_at_himeji_castle_battlefield_source_becomes_additional_play_action_double_terrain_passive_combat_if_controller_alone_at_location_gain_1_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "87b481f472fe30f1ebdcfbe71fd1cea54431cd818c99a89411fa5a966da8f70d"
+    },
+    {
+      "id": "servant.osakabe.skill.sc-osakabe-2",
+      "printedText": "X = 3 × 你所在地点的对手数\nX = 0，若你位于【姬路城】被放置的地点\n战斗阶段：仅在你可以在你所在的地点与一处相邻地点间正常移动（不考虑人数限制）时才可使用此效果，从该处相邻地点的所有对手处分别偷取1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_osakabe_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "X = 3 × 你所在地点的对手数\nX = 0，若你位于【姬路城】被放置的地点\n战斗阶段：仅在你可以在你所在的地点与一处相邻地点间正常移动（不考虑人数限制）时才可使用此效果，从该处相邻地点的所有对手处分别偷取1点战果。",
+        "sourceTextSha256": "157a8cfeb3edb0f4cef9863ea91d1e28bc98b3966cc31dbcbf59d30203a2a5dc"
+      },
+      "abilities": [
+        {
+          "id": "osakabe.sc-osakabe-2.semantic",
+          "printedClause": "X = 3 × 你所在地点的对手数\nX = 0，若你位于【姬路城】被放置的地点\n战斗阶段：仅在你可以在你所在的地点与一处相邻地点间正常移动（不考虑人数限制）时才可使用此效果，从该处相邻地点的所有对手处分别偷取1点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "osakabe_chiyogami_rule",
+              "operation": "x_equals_3_times_opponents_at_location_or_0_if_at_himeji_castle_combat_only_if_normal_move_between_current_and_adjacent_location_possible_ignoring_population_steal_1_vp_from_each_opponent_at_that_adjacent_location"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "157a8cfeb3edb0f4cef9863ea91d1e28bc98b3966cc31dbcbf59d30203a2a5dc"
+    },
+    {
+      "id": "servant.osakabe.skill.sc-osakabe-3",
+      "printedText": "【真名解放】\n战斗阶段结束后，将此牌于下两个回合放置于你所在的地点。当此牌被放置时，其不视为攻击。\n从天而降-打出时：令一名位于你所在的地点且拥有3点及以上地利的对手【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_osakabe_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n战斗阶段结束后，将此牌于下两个回合放置于你所在的地点。当此牌被放置时，其不视为攻击。\n从天而降-打出时：令一名位于你所在的地点且拥有3点及以上地利的对手【败北】。",
+        "sourceTextSha256": "6cd313342e9a477a8575e2638bc97863715e0c6bf55f6dd3ffc8cd5569c201d0"
+      },
+      "abilities": [
+        {
+          "id": "osakabe.sc-osakabe-3.semantic",
+          "printedClause": "【真名解放】\n战斗阶段结束后，将此牌于下两个回合放置于你所在的地点。当此牌被放置时，其不视为攻击。\n从天而降-打出时：令一名位于你所在的地点且拥有3点及以上地利的对手【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "osakabe_himeji_castle_rule",
+              "operation": "true_name_reveal_after_combat_place_source_at_controller_location_for_next_two_rounds_while_placed_not_attack_on_play_defeat_one_same_location_opponent_with_at_least_3_terrain"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "6cd313342e9a477a8575e2638bc97863715e0c6bf55f6dd3ffc8cd5569c201d0"
+    },
+    {
+      "id": "servant.ozymandias.skill.sc-ozymandias-1",
+      "printedText": "被动/行动阶段：花费4点魔力，将此牌放置于你所在的地点。此牌被放置后的地点若为战场，你对手的特殊或宝具牌于此处+3魔力消耗（最大为12）。你位于此处时，对手无法以移动进入或离开此地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_ozymandias_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "被动/行动阶段：花费4点魔力，将此牌放置于你所在的地点。此牌被放置后的地点若为战场，你对手的特殊或宝具牌于此处+3魔力消耗（最大为12）。你位于此处时，对手无法以移动进入或离开此地点。",
+        "sourceTextSha256": "aa0d33bf69b2d5aa12d75b1e054413a1c679027c65a2324171f920a3d1672651"
+      },
+      "abilities": [
+        {
+          "id": "ozymandias.sc-ozymandias-1.semantic",
+          "printedClause": "被动/行动阶段：花费4点魔力，将此牌放置于你所在的地点。此牌被放置后的地点若为战场，你对手的特殊或宝具牌于此处+3魔力消耗（最大为12）。你位于此处时，对手无法以移动进入或离开此地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ozymandias_temple_rule",
+              "operation": "passive_action_pay_4_mana_place_source_at_controller_location_if_battlefield_opponent_special_or_noble_phantasm_cards_there_cost_plus_3_mana_max_12_while_controller_there_opponents_cannot_move_into_or_out_of_location"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "aa0d33bf69b2d5aa12d75b1e054413a1c679027c65a2324171f920a3d1672651"
+    },
+    {
+      "id": "servant.ozymandias.skill.sc-ozymandias-3",
+      "printedText": "【真名解放】\n魔力炮击-若你没在另外一处地点设置【光辉大复合神殿】，则关闭此牌。战斗之后将【光辉大复合神殿】放回技能区。此牌可以追加打出。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_ozymandias_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n魔力炮击-若你没在另外一处地点设置【光辉大复合神殿】，则关闭此牌。战斗之后将【光辉大复合神殿】放回技能区。此牌可以追加打出。",
+        "sourceTextSha256": "bf53cf8cbce21458625983d158a00271eb47167e6821fd6bbd975fe41efc8a25"
+      },
+      "abilities": [
+        {
+          "id": "ozymandias.sc-ozymandias-3.semantic",
+          "printedClause": "【真名解放】\n魔力炮击-若你没在另外一处地点设置【光辉大复合神殿】，则关闭此牌。战斗之后将【光辉大复合神殿】放回技能区。此牌可以追加打出。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ozymandias_dendera_rule",
+              "operation": "true_name_reveal_close_source_unless_radiant_temple_is_set_at_another_location_after_battle_return_radiant_temple_to_skill_zone_source_may_be_additional_play"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "bf53cf8cbce21458625983d158a00271eb47167e6821fd6bbd975fe41efc8a25"
+    },
+    {
+      "id": "servant.odysseus.skill.sc-odysseus-3",
+      "printedText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_odysseus_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+        "sourceTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+      },
+      "abilities": [
+        {
+          "id": "odysseus.sc_odysseus_3.semantic",
+          "printedClause": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "draw_cards",
+              "count": 1,
+              "when": "source_played_with_one_base_attack"
+            },
+            {
+              "type": "play_selected_cards",
+              "sourceZone": "hand",
+              "maxCount": 3,
+              "filter": {
+                "basePowerMax": 3
+              }
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
     }
   ]
 }

@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=829
-blockedCount=115
+sourceGroundedCount=845
+blockedCount=99
 unclassifiedCount=0
-structuredAbilityCount=1107
+structuredAbilityCount=1123
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 129 |
+| timing | `ACTION` | 130 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -262,12 +262,12 @@ structuredAbilityCount=1107
 | target | `CHOOSE_N_EVENTS` | 1 |
 | effect | `GAIN_VICTORY_POINTS` | 49 |
 | effect | `GAIN_MANA` | 36 |
-| effect | `DRAW_CARDS` | 33 |
+| effect | `DRAW_CARDS` | 34 |
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
 | effect | `EVENT_CARD_RULE` | 27 |
 | effect | `MOVE_PLAYER` | 27 |
-| effect | `PLAY_SELECTED_CARDS` | 23 |
+| effect | `PLAY_SELECTED_CARDS` | 24 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
@@ -278,10 +278,10 @@ structuredAbilityCount=1107
 | effect | `FOREIGN_LIFE_RULE` | 13 |
 | effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 12 |
 | effect | `SET_PLAYER_FLAG` | 12 |
+| effect | `REVERSE_EFFECT_RULE` | 11 |
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
 | effect | `LOSE_MANA` | 10 |
 | effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 10 |
-| effect | `REVERSE_EFFECT_RULE` | 10 |
 | effect | `ADJUST_COMMAND_SEALS` | 9 |
 | effect | `CYCLE_STATE_TRANSITION` | 9 |
 | effect | `DREAM_SUMMON_RULE` | 9 |
@@ -609,12 +609,26 @@ structuredAbilityCount=1107
 | effect | `NOBUNAGA_THREE_LINE_RULE` | 1 |
 | effect | `NOOP` | 1 |
 | effect | `NO_BATTLE_VP_LOSS_RESIDUAL_EXTENSION_RULE` | 1 |
+| effect | `NURSERY_ROUND_RESET_RULE` | 1 |
+| effect | `NURSERY_WOUND_SEED_RULE` | 1 |
+| effect | `ODYSSEUS_DIVINE_BODY_BARRIER_RULE` | 1 |
+| effect | `ODYSSEUS_TROJAN_HORSE_RULE` | 1 |
 | effect | `OFFBOARD_BATTLE_TAKEOVER_RULE` | 1 |
+| effect | `OKITA_ALT_ENDLESS_DRAW_RULE` | 1 |
+| effect | `OKITA_ALT_PURGATORY_RULE` | 1 |
 | effect | `OPPONENT_OPTION_LOCK_RULE` | 1 |
 | effect | `ORACLE_CHOICE_RULE` | 1 |
 | effect | `ORACLE_REPEAT_RULE` | 1 |
 | effect | `ORIGIN_BULLET_RULE` | 1 |
+| effect | `ORION_FREE_LOVE_RULE` | 1 |
+| effect | `ORION_HUNTER_RULE` | 1 |
+| effect | `ORION_LUCK_EXILE_POWER_RULE` | 1 |
+| effect | `OSAKABE_CASTLE_MONSTER_RULE` | 1 |
+| effect | `OSAKABE_CHIYOGAMI_RULE` | 1 |
+| effect | `OSAKABE_HIMEJI_CASTLE_RULE` | 1 |
 | effect | `OTHER_ATTACK_POWER_BONUS` | 1 |
+| effect | `OZYMANDIAS_DENDERA_RULE` | 1 |
+| effect | `OZYMANDIAS_TEMPLE_RULE` | 1 |
 | effect | `PAIN_CONVERSION_REWARD_RULE` | 1 |
 | effect | `PLACED_NOBLE_PHANTASM_FIELD_RULE` | 1 |
 | effect | `PLAYED_ATTACK_COST_SUM_POWER_RULE` | 1 |
@@ -1773,32 +1787,32 @@ structuredAbilityCount=1107
 | `servant.nobunaga.skill.sc-nobunaga-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NOBUNAGA_HELLFIRE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nobunaga-papiyas` |
 | `servant.nobunaga.skill.sc-nobunaga-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NOBUNAGA_THREE_LINE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nobunaga-three-line-formation` |
 | `servant.nobunaga.skill.sc-nobunaga-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved`, `player.defeated` | `EVENT_PLAYER_IS_CONTROLLER`, `EVENT_PLAYER_LOST_COMBAT` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `LOSE_VICTORY_POINTS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.structured-skill` |
-| `servant.nursery.skill.sc-nursery-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nursery-package` |
+| `servant.nursery.skill.sc-nursery-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NURSERY_ROUND_RESET_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nursery-package` |
 | `servant.nursery.skill.sc-nursery-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:while_active` | `rule:skill_use:forbid` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.nursery.skill.sc-nursery-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nursery-package` |
+| `servant.nursery.skill.sc-nursery-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NURSERY_WOUND_SEED_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nursery-package` |
 | `servant.oberon.skill.sc-oberon-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-player-config` |
 | `servant.oberon.skill.sc-oberon-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `IMPOSTOR_STATE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.pretender-class` |
 | `servant.oberon.skill.sc-oberon-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
 | `servant.oberon.skill.sc-oberon-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
-| `servant.odysseus.skill.sc-odysseus-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.odysseus-troia-hippos` |
-| `servant.odysseus.skill.sc-odysseus-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.odysseus-aigis` |
-| `servant.odysseus.skill.sc-odysseus-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
-| `servant.okita-alt.skill.sc-okita-alt-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
-| `servant.okita-alt.skill.sc-okita-alt-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-alt-boundless` |
-| `servant.okita-alt.skill.sc-okita-alt-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-alt-rengoku` |
+| `servant.odysseus.skill.sc-odysseus-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ODYSSEUS_TROJAN_HORSE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.odysseus-troia-hippos` |
+| `servant.odysseus.skill.sc-odysseus-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ODYSSEUS_DIVINE_BODY_BARRIER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.odysseus-aigis` |
+| `servant.odysseus.skill.sc-odysseus-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `servant.okita-alt.skill.sc-okita-alt-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
+| `servant.okita-alt.skill.sc-okita-alt-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OKITA_ALT_ENDLESS_DRAW_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-alt-boundless` |
+| `servant.okita-alt.skill.sc-okita-alt-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OKITA_ALT_PURGATORY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-alt-rengoku` |
 | `servant.okita.skill.sc-okita-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-sincerity-flag` |
 | `servant.okita.skill.sc-okita-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `TEMPORARY_ATTACK_CREATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.create-temporary-attacks` |
 | `servant.okita.skill.sc-okita-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVEALED_HAND_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-haori` |
 | `servant.okita.skill.sc-okita-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `WEAK_CONSTITUTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-weak-constitution` |
-| `servant.orion.skill.sc-orion-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.orion-hunter-moon` |
-| `servant.orion.skill.sc-orion-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.orion-sea-god-blessing` |
-| `servant.orion.skill.sc-orion-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.orion-luck-exile` |
-| `servant.osakabe.skill.sc-osakabe-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.osakabe-castle-apparition` |
-| `servant.osakabe.skill.sc-osakabe-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.osakabe-chiyogami-bats` |
-| `servant.osakabe.skill.sc-osakabe-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.osakabe-hakuro-castle` |
-| `servant.ozymandias.skill.sc-ozymandias-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ozymandias-ramesseum` |
+| `servant.orion.skill.sc-orion-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ORION_HUNTER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.orion-hunter-moon` |
+| `servant.orion.skill.sc-orion-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ORION_FREE_LOVE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.orion-sea-god-blessing` |
+| `servant.orion.skill.sc-orion-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ORION_LUCK_EXILE_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.orion-luck-exile` |
+| `servant.osakabe.skill.sc-osakabe-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OSAKABE_CASTLE_MONSTER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.osakabe-castle-apparition` |
+| `servant.osakabe.skill.sc-osakabe-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OSAKABE_CHIYOGAMI_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.osakabe-chiyogami-bats` |
+| `servant.osakabe.skill.sc-osakabe-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OSAKABE_HIMEJI_CASTLE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.osakabe-hakuro-castle` |
+| `servant.ozymandias.skill.sc-ozymandias-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OZYMANDIAS_TEMPLE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ozymandias-ramesseum` |
 | `servant.ozymandias.skill.sc-ozymandias-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `card.played`, `player.defeated`, `player.entered-location` | `EVENT_DEFINITION_IS_SELF`, `EVENT_FACE_IS`, `EVENT_LOCATION_EQUALS_CONTROLLER`, `EVENT_PLAYER_IS_CONTROLLER`, `EVENT_PLAYER_IS_OPPONENT`, `SOURCE_ACTIVE` | `NONE` | `NONE` | `CLOSE_SOURCE_CARD`, `GAIN_MANA`, `LOSE_MANA`, `SOURCE_CARD_POWER_BONUS` | `NONE` | `cleanup:remain_active`, `duration:while_active`, `starts:immediate` | `effect:source_card_power_bonus` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.ozymandias.skill.sc-ozymandias-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ozymandias-dendera` |
+| `servant.ozymandias.skill.sc-ozymandias-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OZYMANDIAS_DENDERA_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ozymandias-dendera` |
 | `servant.parvati.skill.sc-parvati-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.parvati-ashes-of-kama` |
 | `servant.parvati.skill.sc-parvati-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.parvati-imaginary-around` |
 | `servant.parvati.skill.sc-parvati-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION`, `COMBAT` | `NONE` | `METRIC`, `METRIC_COMPARE`, `PLAYER_FLAG_NUMBER_CURRENT_ROUND`, `SELECTED_CARDS_ALL_HAVE_ATTRIBUTE`, `SOURCE_ACTIVE` | `NONE` | `CHOOSE_N_CARDS`, `CHOOSE_ONE_PLAYER` | `IF_CONDITION`, `PLAY_SELECTED_CARDS` | `CHOOSE_N_CARDS`, `CHOOSE_ONE_PLAYER` | `duration:this_round` | `NONE` | `NONE` | `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |

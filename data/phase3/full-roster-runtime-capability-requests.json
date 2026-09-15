@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 829
+    "affectedIdentityCount": 845
   },
   "requests": [
     {
@@ -1279,6 +1279,7 @@
         "servant.medusa.skill.sc-medusa-1",
         "servant.napoleon.skill.sc-napoleon-2",
         "servant.nero.skill.sc-nero-2",
+        "servant.odysseus.skill.sc-odysseus-3",
         "servant.okita.skill.sc-okita-1",
         "servant.parvati.skill.sc-parvati-3"
       ],
@@ -2401,6 +2402,33 @@
           "sha256": "6bfc168b9460f7919c339f71ce905347c05261c69f90340f097769ba02b15e3b"
         },
         {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/奥德修斯.htm"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.odysseus/奥德修斯"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_odysseus_3"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[86].skills[2].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[86].skills[2].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
+        },
+        {
           "abilityId": "servant.okita.skill.sc-okita-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/剑士/英文版/冲田总司.htm"
@@ -2481,7 +2509,7 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 34,
+          "shared_handler": 35,
           "specific_handler": 7
         },
         "handlerCount": 20,
@@ -6581,6 +6609,7 @@
         "servant.merlin.skill.sc-merlin-3",
         "servant.napoleon.skill.sc-napoleon-2",
         "servant.nero.skill.sc-nero-2",
+        "servant.odysseus.skill.sc-odysseus-3",
         "servant.okita.skill.sc-okita-1",
         "servant.roberts.skill.sc-roberts-2"
       ],
@@ -9577,6 +9606,33 @@
           "sha256": "6bfc168b9460f7919c339f71ce905347c05261c69f90340f097769ba02b15e3b"
         },
         {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/奥德修斯.htm"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.odysseus/奥德修斯"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_odysseus_3"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[86].skills[2].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[86].skills[2].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
+        },
+        {
           "abilityId": "servant.okita.skill.sc-okita-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/剑士/英文版/冲田总司.htm"
@@ -9656,7 +9712,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 70,
+          "shared_handler": 71,
           "specific_handler": 47
         },
         "handlerCount": 67,
@@ -30442,6 +30498,7 @@
         "servant.musashi.skill.sc-musashi-2",
         "servant.musashi.skill.sc-musashi-3",
         "servant.okita.skill.sc-okita-3",
+        "servant.orion.skill.sc-orion-3",
         "servant.ozymandias.skill.sc-ozymandias-2",
         "servant.sherlock.skill.sc-sherlock-2",
         "servant.siegfried.skill.sc-siegfried-3"
@@ -33889,6 +33946,33 @@
           "sha256": "dcfdbc9db0588ad03c444a4b8088d166ac46eac5dbf8c3c87d4d267cab054cd1"
         },
         {
+          "abilityId": "servant.orion.skill.sc-orion-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/超人俄里翁.htm"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.orion/超人俄里翁"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-3",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_orion_3"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[53].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[53].skills[2].text#line=2",
+          "sha256": "a89dcac4b2d9189d2584d226b1ab62010b7de79bf511e1d297d9c9a5d4b7a705"
+        },
+        {
           "abilityId": "servant.ozymandias.skill.sc-ozymandias-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/奥兹曼迪亚斯.htm"
@@ -34015,9 +34099,9 @@
         "routeCounts": {
           "deterministic": 1,
           "shared_handler": 73,
-          "specific_handler": 48
+          "specific_handler": 49
         },
-        "handlerCount": 73,
+        "handlerCount": 74,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -49130,13 +49214,28 @@
         "servant.nitocris.skill.sc-nitocris-3",
         "servant.nobunaga.skill.sc-nobunaga-1",
         "servant.nobunaga.skill.sc-nobunaga-2",
+        "servant.nursery.skill.sc-nursery-1",
+        "servant.nursery.skill.sc-nursery-3",
         "servant.oberon.skill.sc-oberon-1",
         "servant.oberon.skill.sc-oberon-2",
         "servant.oberon.skill.sc-oberon-3",
         "servant.oberon.skill.sc-oberon-4",
+        "servant.odysseus.skill.sc-odysseus-1",
+        "servant.odysseus.skill.sc-odysseus-2",
+        "servant.okita-alt.skill.sc-okita-alt-1",
+        "servant.okita-alt.skill.sc-okita-alt-2",
+        "servant.okita-alt.skill.sc-okita-alt-3",
         "servant.okita.skill.sc-okita-2",
         "servant.okita.skill.sc-okita-3",
         "servant.okita.skill.sc-okita-4",
+        "servant.orion.skill.sc-orion-1",
+        "servant.orion.skill.sc-orion-2",
+        "servant.orion.skill.sc-orion-3",
+        "servant.osakabe.skill.sc-osakabe-1",
+        "servant.osakabe.skill.sc-osakabe-2",
+        "servant.osakabe.skill.sc-osakabe-3",
+        "servant.ozymandias.skill.sc-ozymandias-1",
+        "servant.ozymandias.skill.sc-ozymandias-3",
         "servant.robin.skill.sc-robin-1",
         "servant.robin.skill.sc-robin-2",
         "servant.robin.skill.sc-robin-3",
@@ -64110,6 +64209,66 @@
           "sha256": "4f4e3670dc1d3672be9ac93b32cadcd1cff9321efc90cb34e928041d415ce08a"
         },
         {
+          "abilityId": "servant.nursery.skill.sc-nursery-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/童谣.htm"
+        },
+        {
+          "abilityId": "servant.nursery.skill.sc-nursery-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.nursery/童谣"
+        },
+        {
+          "abilityId": "servant.nursery.skill.sc-nursery-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_nursery_1"
+        },
+        {
+          "abilityId": "servant.nursery.skill.sc-nursery-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[119].skills[0].text#line=1",
+          "sha256": "1aa9d9b7b2f87932c2fc7a2f884cd211434215006a66ab244e578d6790142aa8"
+        },
+        {
+          "abilityId": "servant.nursery.skill.sc-nursery-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[119].skills[0].text#line=2",
+          "sha256": "460bfbe8f6d1be58dc540b8a53fc18d968e5fc291f47fdfdca95de9742fb7758"
+        },
+        {
+          "abilityId": "servant.nursery.skill.sc-nursery-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[119].skills[0].text#line=3",
+          "sha256": "ecc12fdcce7d4ffbf33e8a84a9a32218c70dac9a9f8906fa2fbd11f40eb53b45"
+        },
+        {
+          "abilityId": "servant.nursery.skill.sc-nursery-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/童谣.htm"
+        },
+        {
+          "abilityId": "servant.nursery.skill.sc-nursery-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.nursery/童谣"
+        },
+        {
+          "abilityId": "servant.nursery.skill.sc-nursery-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_nursery_3"
+        },
+        {
+          "abilityId": "servant.nursery.skill.sc-nursery-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[119].skills[2].text#line=1",
+          "sha256": "aa18dcdd27ad535cf5bf6ea2d51760eea6df3691e80b8063cb8ed7bd2b5cc404"
+        },
+        {
+          "abilityId": "servant.nursery.skill.sc-nursery-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[119].skills[2].text#line=2",
+          "sha256": "fa9c277cb230a8ad18173a9274e2b54aaad454895ec45996403aa9b80d5acf52"
+        },
+        {
           "abilityId": "servant.oberon.skill.sc-oberon-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/身披角色者/英文版/奥伯龙·伏提庚.htm"
@@ -64218,6 +64377,153 @@
           "sha256": "d159e931a4573863ddfe89af916aa90e5389326f0b86465b14d46b43063d3a52"
         },
         {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/奥德修斯.htm"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.odysseus/奥德修斯"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_odysseus_1"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[86].skills[0].text#line=1",
+          "sha256": "2f310122f6964d53d328a4c5bc5a3d6d15618cc0bd5ce215b74e9c2d6c686c6d"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[86].skills[0].text#line=2",
+          "sha256": "fbf49cbee8aca04116e941ac33229ed5c1b49fdcb31ab0917e1e243d15c87c3e"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[86].skills[0].text#line=3",
+          "sha256": "f882b4368ee1466803dc78ae8b4b46836cacb2384e6897572c8bd0b16ae61f65"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[86].skills[0].text#line=4",
+          "sha256": "dc07b87fa69a4af561d68f7cc448b109d1e2db415862e9273a5363bfd490d299"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/奥德修斯.htm"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.odysseus/奥德修斯"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_odysseus_2"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[86].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.odysseus.skill.sc-odysseus-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[86].skills[1].text#line=2",
+          "sha256": "1e893fb545f92854c4d48858b996e4707f0f29a158f4b21ea4b08a33fa439d13"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/他人格/英文版/冲田总司(〔Alter_].htm"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.okita-alt/冲田总司 (Alter)"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-1",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_okita_alt_1"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[34].skills[0].text#line=1",
+          "sha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/他人格/英文版/冲田总司(〔Alter_].htm"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.okita-alt/冲田总司 (Alter)"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-2",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_okita_alt_2"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[34].skills[1].text#line=1",
+          "sha256": "32317ed77bcc52fd480f0740ef96928ad3fc0b77a52c866897214ca47dad228d"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/他人格/英文版/冲田总司(〔Alter_].htm"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.okita-alt/冲田总司 (Alter)"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-3",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_okita_alt_3"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[34].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[34].skills[2].text#line=2",
+          "sha256": "52f7bce2381d558397ba5f1f2d534b776804e646aac6aec44ed949ae1105efd5"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[34].skills[2].text#line=3",
+          "sha256": "ae9f6115cf03dd2042382521f25fef0efd2dd0fec9e7af62dfb17705eae84490"
+        },
+        {
+          "abilityId": "servant.okita-alt.skill.sc-okita-alt-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[34].skills[2].text#line=4",
+          "sha256": "482c7a618be999b21f31ab2c57c560a468ca60fb264db8e4efec4b69a5f3e4d3"
+        },
+        {
           "abilityId": "servant.okita.skill.sc-okita-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/剑士/英文版/冲田总司.htm"
@@ -64285,6 +64591,228 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[19].skills[3].text#line=1",
           "sha256": "3505e83a83fa7fcdc2b1a62d03a2aee89e7e58ee7a439f21b9c0d0aebac0bc08"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/超人俄里翁.htm"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.orion/超人俄里翁"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-1",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_orion_1"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[53].skills[0].text#line=1",
+          "sha256": "a044b860abc4bca3a01780e69fb47104b20713f9ae6c0855a245276e9528a901"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/超人俄里翁.htm"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.orion/超人俄里翁"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-2",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_orion_2"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[53].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[53].skills[1].text#line=2",
+          "sha256": "7be62936b03613062c9ac12fee0e566b72a2830abd3e2158c5e1082b84003032"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/超人俄里翁.htm"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.orion/超人俄里翁"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-3",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_orion_3"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[53].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.orion.skill.sc-orion-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[53].skills[2].text#line=2",
+          "sha256": "a89dcac4b2d9189d2584d226b1ab62010b7de79bf511e1d297d9c9a5d4b7a705"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/刑部姬.htm"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.osakabe/刑部姬"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_osakabe_1"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[139].skills[0].text#line=1",
+          "sha256": "6933bd5b3d4ce503bd656bf350efdf31ef1e15e743ada5a358b20e2cb4d7fad9"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[139].skills[0].text#line=2",
+          "sha256": "e9e699475ec8f12c84ffb4f166509ca8fbdeb97866bf2feedc26df38ec6c0b79"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[139].skills[0].text#line=3",
+          "sha256": "d6029a7dd333ece87804ba360f3201101d2806ab239b70a471c8ba11ba27714a"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/刑部姬.htm"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.osakabe/刑部姬"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_osakabe_2"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[139].skills[1].text#line=1",
+          "sha256": "4d04431a127071069339334aba9d84b94d32457d5c5bf03f2775cc3208bebb8e"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[139].skills[1].text#line=2",
+          "sha256": "707aaaf5646764cfec538b2342b0d6d35d12826e6009544872d4b04e81216fa0"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[139].skills[1].text#line=3",
+          "sha256": "c115ba483ca1f294adc54552568e00f2f44f458da14c851977a3260c3861bc83"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/刑部姬.htm"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.osakabe/刑部姬"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_osakabe_3"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[139].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[139].skills[2].text#line=2",
+          "sha256": "54b9d6b692f4447b291577bc79cf628d09103cc2d931689969329fc867dda01d"
+        },
+        {
+          "abilityId": "servant.osakabe.skill.sc-osakabe-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[139].skills[2].text#line=3",
+          "sha256": "8726e5ee394fc61c535140a339c026924fec64a2d100b7f615a35c260b3b542a"
+        },
+        {
+          "abilityId": "servant.ozymandias.skill.sc-ozymandias-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/奥兹曼迪亚斯.htm"
+        },
+        {
+          "abilityId": "servant.ozymandias.skill.sc-ozymandias-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.ozymandias/奥兹曼迪亚斯"
+        },
+        {
+          "abilityId": "servant.ozymandias.skill.sc-ozymandias-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_ozymandias_1"
+        },
+        {
+          "abilityId": "servant.ozymandias.skill.sc-ozymandias-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[84].skills[0].text#line=1",
+          "sha256": "aa0d33bf69b2d5aa12d75b1e054413a1c679027c65a2324171f920a3d1672651"
+        },
+        {
+          "abilityId": "servant.ozymandias.skill.sc-ozymandias-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/奥兹曼迪亚斯.htm"
+        },
+        {
+          "abilityId": "servant.ozymandias.skill.sc-ozymandias-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.ozymandias/奥兹曼迪亚斯"
+        },
+        {
+          "abilityId": "servant.ozymandias.skill.sc-ozymandias-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_ozymandias_3"
+        },
+        {
+          "abilityId": "servant.ozymandias.skill.sc-ozymandias-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[84].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.ozymandias.skill.sc-ozymandias-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[84].skills[2].text#line=2",
+          "sha256": "2acb02b6b9830cdb3ee8881f7c7aa9a6c49c84ce9110740219a99aff03fda1e2"
         },
         {
           "abilityId": "servant.robin.skill.sc-robin-1",
@@ -64847,10 +65375,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 274,
-          "specific_handler": 305
+          "shared_handler": 277,
+          "specific_handler": 317
         },
-        "handlerCount": 368,
+        "handlerCount": 381,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
