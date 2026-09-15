@@ -1,11 +1,11 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-15T20:30:23.046Z",
-  "sourceFingerprint": "abc541c2fa221eb52cdac69945c20492327f52a91e864a9f19d0aefd48079bc2",
+  "generatedAt": "2026-09-15T21:12:07.882Z",
+  "sourceFingerprint": "3e8cc78e550b61c3924f91fcfeb1b6c304c586beed9e07ee18f60403d94eb315",
   "counts": {
-    "totalArchives": 27,
-    "totalCards": 59,
-    "totalAbilities": 118,
+    "totalArchives": 39,
+    "totalCards": 71,
+    "totalAbilities": 130,
     "abilityKindCounts": {
       "CONDITIONAL_REVEAL": 1,
       "CONTINUOUS_FORMULA": 1,
@@ -13,15 +13,15 @@
       "FORCED_TRIGGER": 30,
       "OPTIONAL_TRIGGER": 6,
       "PASSIVE": 18,
-      "PHASE_ACTION": 47,
+      "PHASE_ACTION": 59,
       "RESIDUAL": 5,
       "RESPONSE": 1
     },
     "timingCounts": {
-      "ACTION": 34,
+      "ACTION": 46,
       "ADVANCE": 2,
       "COMBAT": 14,
-      "CONTROLLER_ACTION_WINDOW": 37,
+      "CONTROLLER_ACTION_WINDOW": 49,
       "CONTROLLER_COMBAT_ACTION_WINDOW": 11,
       "IMMEDIATE": 7,
       "POST_BATTLE_OPTIONAL_TRIGGER_WINDOW": 3,
@@ -48,13 +48,13 @@
     },
     "requirementCounts": {
       "BATTLE_STATE": 39,
-      "LOCATION": 20,
+      "LOCATION": 32,
       "MANA": 2,
-      "SOURCE_ACTIVE": 55
+      "SOURCE_ACTIVE": 67
     },
     "targetCounts": {
       "BRANCH_CHOICE": 1,
-      "CHOOSE_LOCATION": 3,
+      "CHOOSE_LOCATION": 15,
       "CHOOSE_N_CARDS": 19,
       "CHOOSE_ONE_PLAYER": 1
     },
@@ -65,7 +65,7 @@
     },
     "interactionCounts": {
       "BRANCH_CHOICE": 1,
-      "CHOOSE_LOCATION": 3,
+      "CHOOSE_LOCATION": 15,
       "CHOOSE_N_CARDS": 19,
       "CHOOSE_ONE_PLAYER": 1,
       "RESPONSE": 1,
@@ -73,14 +73,14 @@
     },
     "strictPendingInteractionCounts": {
       "BRANCH_CHOICE": 1,
-      "CHOOSE_LOCATION": 3,
+      "CHOOSE_LOCATION": 15,
       "CHOOSE_N_CARDS": 19,
       "CHOOSE_ONE_PLAYER": 1
     },
     "effectPrimitiveFamilyCounts": {
       "CARD_ACTION_SEMANTICS": 20,
       "CARD_ZONE": 29,
-      "MOVEMENT": 4,
+      "MOVEMENT": 16,
       "RESOURCE_NUMERIC": 17,
       "VISIBILITY": 14
     },
@@ -2712,6 +2712,52 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.benkei",
+      "cardId": "servant.benkei.skill.sc-benkei-1",
+      "abilityId": "sc-benkei-1.move",
+      "abilityKey": "servant.benkei.skill.sc-benkei-1::sc-benkei-1.move",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [
+        "CHOOSE_LOCATION"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_LOCATION"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_LOCATION"
+      ],
+      "effectPrimitiveFamilies": [
+        "MOVEMENT"
+      ],
+      "exactEffectPrimitives": [
+        "move_player"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.boudica",
       "cardId": "servant.boudica.skill.sc-boudica-3",
       "abilityId": "sc-boudica-3.draw",
@@ -2795,6 +2841,98 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.bradamante",
+      "cardId": "servant.bradamante.skill.sc-bradamante-1",
+      "abilityId": "sc-bradamante-1.move",
+      "abilityKey": "servant.bradamante.skill.sc-bradamante-1::sc-bradamante-1.move",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [
+        "CHOOSE_LOCATION"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_LOCATION"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_LOCATION"
+      ],
+      "effectPrimitiveFamilies": [
+        "MOVEMENT"
+      ],
+      "exactEffectPrimitives": [
+        "move_player"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.brynhildr",
+      "cardId": "servant.brynhildr.skill.sc-brynhildr-1",
+      "abilityId": "sc-brynhildr-1.move",
+      "abilityKey": "servant.brynhildr.skill.sc-brynhildr-1::sc-brynhildr-1.move",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [
+        "CHOOSE_LOCATION"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_LOCATION"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_LOCATION"
+      ],
+      "effectPrimitiveFamilies": [
+        "MOVEMENT"
+      ],
+      "exactEffectPrimitives": [
+        "move_player"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.constantine",
       "cardId": "servant.constantine.skill.sc-constantine-1",
       "abilityId": "sc-constantine-1.draw",
@@ -2867,6 +3005,144 @@
       "hiddenInformation": [
         "HIDDEN_OR_PRIVATE"
       ],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.cu",
+      "cardId": "servant.cu.skill.sc-cu-2",
+      "abilityId": "sc-cu-2.move",
+      "abilityKey": "servant.cu.skill.sc-cu-2::sc-cu-2.move",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [
+        "CHOOSE_LOCATION"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_LOCATION"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_LOCATION"
+      ],
+      "effectPrimitiveFamilies": [
+        "MOVEMENT"
+      ],
+      "exactEffectPrimitives": [
+        "move_player"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.diarmuid",
+      "cardId": "servant.diarmuid.skill.sc-diarmuid-3",
+      "abilityId": "sc-diarmuid-3.move",
+      "abilityKey": "servant.diarmuid.skill.sc-diarmuid-3::sc-diarmuid-3.move",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [
+        "CHOOSE_LOCATION"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_LOCATION"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_LOCATION"
+      ],
+      "effectPrimitiveFamilies": [
+        "MOVEMENT"
+      ],
+      "exactEffectPrimitives": [
+        "move_player"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.donquixote",
+      "cardId": "servant.donquixote.skill.sc-donquixote-3",
+      "abilityId": "sc-donquixote-3.move",
+      "abilityKey": "servant.donquixote.skill.sc-donquixote-3::sc-donquixote-3.move",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [
+        "CHOOSE_LOCATION"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_LOCATION"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_LOCATION"
+      ],
+      "effectPrimitiveFamilies": [
+        "MOVEMENT"
+      ],
+      "exactEffectPrimitives": [
+        "move_player"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
       "resultBinding": [],
       "battleIntegration": [],
       "specialSubsystems": [],
@@ -3206,6 +3482,52 @@
       "battleIntegration": [
         "BATTLE_INTEGRATION"
       ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.enkidu",
+      "cardId": "servant.enkidu.skill.sc-enkidu-3",
+      "abilityId": "sc-enkidu-3.move",
+      "abilityKey": "servant.enkidu.skill.sc-enkidu-3::sc-enkidu-3.move",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [
+        "CHOOSE_LOCATION"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_LOCATION"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_LOCATION"
+      ],
+      "effectPrimitiveFamilies": [
+        "MOVEMENT"
+      ],
+      "exactEffectPrimitives": [
+        "move_player"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
       "specialSubsystems": [],
       "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
       "semanticRoutes": [],
@@ -3761,6 +4083,98 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.jaguarman",
+      "cardId": "servant.jaguarman.skill.sc-jaguarman-1",
+      "abilityId": "sc-jaguarman-1.move",
+      "abilityKey": "servant.jaguarman.skill.sc-jaguarman-1::sc-jaguarman-1.move",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [
+        "CHOOSE_LOCATION"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_LOCATION"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_LOCATION"
+      ],
+      "effectPrimitiveFamilies": [
+        "MOVEMENT"
+      ],
+      "exactEffectPrimitives": [
+        "move_player"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.kagetora",
+      "cardId": "servant.kagetora.skill.sc-kagetora-3",
+      "abilityId": "sc-kagetora-3.move",
+      "abilityKey": "servant.kagetora.skill.sc-kagetora-3::sc-kagetora-3.move",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [
+        "CHOOSE_LOCATION"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_LOCATION"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_LOCATION"
+      ],
+      "effectPrimitiveFamilies": [
+        "MOVEMENT"
+      ],
+      "exactEffectPrimitives": [
+        "move_player"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.kintoki",
       "cardId": "servant.kintoki.skill.sc-kintoki-1",
       "abilityId": "sc-kintoki-1.true-name-release",
@@ -4158,6 +4572,52 @@
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:controller_at_battlefield"
       ]
+    },
+    {
+      "archiveId": "servant.lishuwen",
+      "cardId": "servant.lishuwen.skill.sc-lishuwen-3",
+      "abilityId": "sc-lishuwen-3.move",
+      "abilityKey": "servant.lishuwen.skill.sc-lishuwen-3::sc-lishuwen-3.move",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [
+        "CHOOSE_LOCATION"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_LOCATION"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_LOCATION"
+      ],
+      "effectPrimitiveFamilies": [
+        "MOVEMENT"
+      ],
+      "exactEffectPrimitives": [
+        "move_player"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
     },
     {
       "archiveId": "servant.mandricardo",
@@ -4658,6 +5118,52 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.romulus",
+      "cardId": "servant.romulus.skill.sc-romulus-3",
+      "abilityId": "sc-romulus-3.move",
+      "abilityKey": "servant.romulus.skill.sc-romulus-3::sc-romulus-3.move",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [
+        "CHOOSE_LOCATION"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_LOCATION"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_LOCATION"
+      ],
+      "effectPrimitiveFamilies": [
+        "MOVEMENT"
+      ],
+      "exactEffectPrimitives": [
+        "move_player"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.teach",
       "cardId": "servant.teach.skill.sc-teach-3",
       "abilityId": "sc-teach-3.draw",
@@ -5070,6 +5576,52 @@
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.vlad",
+      "cardId": "servant.vlad.skill.sc-vlad-3",
+      "abilityId": "sc-vlad-3.move",
+      "abilityKey": "servant.vlad.skill.sc-vlad-3::sc-vlad-3.move",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [
+        "CHOOSE_LOCATION"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_LOCATION"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_LOCATION"
+      ],
+      "effectPrimitiveFamilies": [
+        "MOVEMENT"
+      ],
+      "exactEffectPrimitives": [
+        "move_player"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
     }
   ],
   "runtimeRouting": {
@@ -5094,8 +5646,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 75,
-      "after": 75,
+      "before": 87,
+      "after": 87,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -5182,49 +5734,49 @@
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 607,
+        "line": 608,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 917,
+        "line": 918,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 924,
+        "line": 925,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 974,
+        "line": 975,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1279,
+        "line": 1280,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 2259,
+        "line": 2317,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/resolution-dataflow.ts",
-        "line": 1134,
+        "line": 1202,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/resolution-dataflow.ts",
-        "line": 1766,
+        "line": 1843,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
@@ -5333,8 +5885,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 75,
-      "after": 75,
+      "before": 87,
+      "after": 87,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -5384,7 +5936,7 @@
       "look_at_match_deck_bottoms": 1,
       "move_all_remaining": 2,
       "move_card": 5,
-      "move_player": 3,
+      "move_player": 15,
       "movement_rule_override": 1,
       "opponents_random_discard": 2,
       "pay_mana": 2,
@@ -5409,7 +5961,7 @@
     "primitiveFamilyCounts": {
       "CARD_ACTION_SEMANTICS": 20,
       "CARD_ZONE": 29,
-      "MOVEMENT": 4,
+      "MOVEMENT": 16,
       "RESOURCE_NUMERIC": 17,
       "VISIBILITY": 14
     },
@@ -5737,15 +6289,51 @@
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "servant.benkei",
+        "cardId": "servant.benkei.skill.sc-benkei-1",
+        "abilityId": "sc-benkei-1.move",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.boudica",
         "cardId": "servant.boudica.skill.sc-boudica-3",
         "abilityId": "sc-boudica-3.mount-summon",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "servant.bradamante",
+        "cardId": "servant.bradamante.skill.sc-bradamante-1",
+        "abilityId": "sc-bradamante-1.move",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.brynhildr",
+        "cardId": "servant.brynhildr.skill.sc-brynhildr-1",
+        "abilityId": "sc-brynhildr-1.move",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.constantine",
         "cardId": "servant.constantine.skill.sc-constantine-1",
         "abilityId": "sc-constantine-1.mount-summon",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.cu",
+        "cardId": "servant.cu.skill.sc-cu-2",
+        "abilityId": "sc-cu-2.move",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.diarmuid",
+        "cardId": "servant.diarmuid.skill.sc-diarmuid-3",
+        "abilityId": "sc-diarmuid-3.move",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.donquixote",
+        "cardId": "servant.donquixote.skill.sc-donquixote-3",
+        "abilityId": "sc-donquixote-3.move",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -5776,6 +6364,12 @@
         "archiveId": "servant.drake",
         "cardId": "servant.drake.skill.sc-drake-3",
         "abilityId": "sc-drake-3.plunder",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.enkidu",
+        "cardId": "servant.enkidu.skill.sc-enkidu-3",
+        "abilityId": "sc-enkidu-3.move",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -5830,6 +6424,18 @@
         "archiveId": "servant.ivan",
         "cardId": "servant.ivan.skill.sc-ivan-3",
         "abilityId": "sc-ivan-3.mount-summon",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.jaguarman",
+        "cardId": "servant.jaguarman.skill.sc-jaguarman-1",
+        "abilityId": "sc-jaguarman-1.move",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.kagetora",
+        "cardId": "servant.kagetora.skill.sc-kagetora-3",
+        "abilityId": "sc-kagetora-3.move",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -5911,6 +6517,12 @@
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "servant.lishuwen",
+        "cardId": "servant.lishuwen.skill.sc-lishuwen-3",
+        "abilityId": "sc-lishuwen-3.move",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.mandricardo",
         "cardId": "servant.mandricardo.skill.sc-mandricardo-3",
         "abilityId": "sc-mandricardo-3.mount-summon",
@@ -5944,6 +6556,12 @@
         "archiveId": "servant.roberts",
         "cardId": "servant.roberts.skill.sc-roberts-3",
         "abilityId": "sc-roberts-3.mount-summon",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.romulus",
+        "cardId": "servant.romulus.skill.sc-romulus-3",
+        "abilityId": "sc-romulus-3.move",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -5986,6 +6604,12 @@
         "archiveId": "servant.ushiwakamaru",
         "cardId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
         "abilityId": "sc-ushiwakamaru-3.mount-summon",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.vlad",
+        "cardId": "servant.vlad.skill.sc-vlad-3",
+        "abilityId": "sc-vlad-3.move",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       }
     ],
