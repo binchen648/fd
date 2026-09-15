@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=860
-blockedCount=84
+sourceGroundedCount=875
+blockedCount=69
 unclassifiedCount=0
-structuredAbilityCount=1138
+structuredAbilityCount=1153
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 131 |
+| timing | `ACTION` | 132 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -260,13 +260,13 @@ structuredAbilityCount=1138
 | target | `CHOOSE_EACH_PLAYER_OPTION` | 2 |
 | target | `CHOOSE_EACH_PLAYER_CARDS` | 1 |
 | target | `CHOOSE_N_EVENTS` | 1 |
-| effect | `GAIN_VICTORY_POINTS` | 49 |
+| effect | `GAIN_VICTORY_POINTS` | 51 |
 | effect | `GAIN_MANA` | 36 |
 | effect | `DRAW_CARDS` | 35 |
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
+| effect | `MOVE_PLAYER` | 28 |
 | effect | `EVENT_CARD_RULE` | 27 |
-| effect | `MOVE_PLAYER` | 27 |
 | effect | `PLAY_SELECTED_CARDS` | 25 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
@@ -274,10 +274,10 @@ structuredAbilityCount=1138
 | effect | `MOVE_SELECTED_CARDS` | 17 |
 | effect | `CLOSE_SOURCE_CARD` | 14 |
 | effect | `LOSTBELT_EXPANSION` | 14 |
+| effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 14 |
 | effect | `DEFEAT_PLAYER` | 13 |
 | effect | `FOREIGN_LIFE_RULE` | 13 |
 | effect | `REVERSE_EFFECT_RULE` | 12 |
-| effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 12 |
 | effect | `SET_PLAYER_FLAG` | 12 |
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
 | effect | `LOSE_MANA` | 10 |
@@ -667,11 +667,23 @@ structuredAbilityCount=1138
 | effect | `REVEALED_HAND_POWER_SUM_RULE` | 1 |
 | effect | `REVEALED_LUCK_PLAY_RULE` | 1 |
 | effect | `REVELATION_VISIBILITY_VP_RULE` | 1 |
+| effect | `ROMULUS_ROMAN_DISARM_RULE` | 1 |
+| effect | `ROMULUS_ROMAN_VICTORY_RULE` | 1 |
 | effect | `ROSTER_REPLACEMENT_RULE` | 1 |
 | effect | `ROUND_COST_TERRAIN_EVENT_MULTIPLIER_RULE` | 1 |
 | effect | `ROUTE_RESTRICTION_USED_ABILITY_SUPPRESSION_RULE` | 1 |
 | effect | `RULER_SEAL_DUAL_USE_RULE` | 1 |
 | effect | `RULER_SEAL_TRANSFER_THRESHOLD_RULE` | 1 |
+| effect | `RYOUMA_BLADE_RESTORATION_RULE` | 1 |
+| effect | `RYOUMA_DRAGON_RESTORATION_RULE` | 1 |
+| effect | `RYOUMA_SOARING_DRAGON_RULE` | 1 |
+| effect | `SABER_EXCALIBUR_CLIMAX_RULE` | 1 |
+| effect | `SABER_INVISIBLE_AIR_RULE` | 1 |
+| effect | `SAITOU_FLAG_SINCERITY_RULE` | 1 |
+| effect | `SAITOU_FORMLESSNESS_RULE` | 1 |
+| effect | `SALIERI_KYRIE_RULE` | 1 |
+| effect | `SALIERI_OBLIVION_CORRECTION_RULE` | 1 |
+| effect | `SALIERI_WILDFIRE_RULE` | 1 |
 | effect | `SCHEDULED_DECK_REBUILD_RULE` | 1 |
 | effect | `SEARCH_BASIC_CARD_PLAY_RULE` | 1 |
 | effect | `SEED_ATTACHED_SUPPLY` | 1 |
@@ -1847,21 +1859,21 @@ structuredAbilityCount=1138
 | `servant.robin.skill.sc-robin-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
 | `servant.robin.skill.sc-robin-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CONCEALED_MODE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.robin.skill.sc-robin-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `POISON_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.robin-prayer-bow` |
-| `servant.romulus.skill.sc-romulus-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.romulus-moles-necessrie` |
-| `servant.romulus.skill.sc-romulus-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.romulus-magna-voluisse-magnum` |
-| `servant.romulus.skill.sc-romulus-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
-| `servant.ryouma.skill.sc-ryouma-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ryouma-soaring-dragon` |
-| `servant.ryouma.skill.sc-ryouma-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ryouma-blade-restoration` |
-| `servant.ryouma.skill.sc-ryouma-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ryouma-dragon-restoration` |
-| `servant.saber.skill.sc-saber-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
-| `servant.saber.skill.sc-saber-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.zero-opponent-attribute` |
-| `servant.saber.skill.sc-saber-np` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
-| `servant.saitou.skill.sc-saitou-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
-| `servant.saitou.skill.sc-saitou-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saitou-flag-of-sincerity` |
-| `servant.saitou.skill.sc-saitou-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saitou-formlessness` |
-| `servant.salieri.skill.sc-salieri-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.salieri-avenger` |
-| `servant.salieri.skill.sc-salieri-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.salieri-avenger` |
-| `servant.salieri.skill.sc-salieri-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.salieri-avenger` |
+| `servant.romulus.skill.sc-romulus-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ROMULUS_ROMAN_DISARM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.romulus-moles-necessrie` |
+| `servant.romulus.skill.sc-romulus-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ROMULUS_ROMAN_VICTORY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.romulus-magna-voluisse-magnum` |
+| `servant.romulus.skill.sc-romulus-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
+| `servant.ryouma.skill.sc-ryouma-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RYOUMA_SOARING_DRAGON_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ryouma-soaring-dragon` |
+| `servant.ryouma.skill.sc-ryouma-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RYOUMA_BLADE_RESTORATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ryouma-blade-restoration` |
+| `servant.ryouma.skill.sc-ryouma-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RYOUMA_DRAGON_RESTORATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ryouma-dragon-restoration` |
+| `servant.saber.skill.sc-saber-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `SET_OPPONENT_ATTRIBUTE_POWER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
+| `servant.saber.skill.sc-saber-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SABER_INVISIBLE_AIR_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.zero-opponent-attribute` |
+| `servant.saber.skill.sc-saber-np` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SABER_EXCALIBUR_CLIMAX_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
+| `servant.saitou.skill.sc-saitou-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `SET_OPPONENT_ATTRIBUTE_POWER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
+| `servant.saitou.skill.sc-saitou-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SAITOU_FLAG_SINCERITY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saitou-flag-of-sincerity` |
+| `servant.saitou.skill.sc-saitou-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SAITOU_FORMLESSNESS_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saitou-formlessness` |
+| `servant.salieri.skill.sc-salieri-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SALIERI_KYRIE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.salieri-avenger` |
+| `servant.salieri.skill.sc-salieri-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SALIERI_WILDFIRE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.salieri-avenger` |
+| `servant.salieri.skill.sc-salieri-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SALIERI_OBLIVION_CORRECTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.salieri-avenger` |
 | `servant.sanson.skill.sc-sanson-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sanson-judgment-day` |
 | `servant.sanson.skill.sc-sanson-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sanson-death-hope` |
 | `servant.sanson.skill.sc-sanson-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.high-victory-combat-power` |

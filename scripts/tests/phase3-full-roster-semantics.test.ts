@@ -1666,6 +1666,13 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.parvati.skill.sc-parvati-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'parvati_twin_elimination_rule'})])}));
     expect(slice.find(c=>c.id==='servant.raikou.skill.sc-raikou-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'raikou_extra_attack_rule'})])}));
   });
+  it('grounds the fifteen-ID Romulus/Ryouma/Saber/Saitou/Salieri slice with Lancer movement and Saber resistance generics', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.romulus.skill.sc-romulus-1","servant.romulus.skill.sc-romulus-2","servant.romulus.skill.sc-romulus-3","servant.ryouma.skill.sc-ryouma-1","servant.ryouma.skill.sc-ryouma-2","servant.ryouma.skill.sc-ryouma-3","servant.saber.skill.sc-saber-1","servant.saber.skill.sc-saber-2","servant.saber.skill.sc-saber-np","servant.saitou.skill.sc-saitou-1","servant.saitou.skill.sc-saitou-2","servant.saitou.skill.sc-saitou-3","servant.salieri.skill.sc-salieri-1","servant.salieri.skill.sc-salieri-2","servant.salieri.skill.sc-salieri-3"]); const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(15); expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256 && c.source.sourceFileSha256.length===64)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.romulus.skill.sc-romulus-3')?.abilities).toContainEqual(expect.objectContaining({activation:{phase:'action'},effects:expect.arrayContaining([expect.objectContaining({type:'move_player',scope:'controller',destinationRule:'any_location_except_workshop'})])}));
+    for(const id of ['servant.saber.skill.sc-saber-1','servant.saitou.skill.sc-saitou-1']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'gain_victory_points',amount:1}),expect.objectContaining({type:'set_opponent_attribute_power',attribute:'magic',value:0})])}));
+    expect(slice.find(c=>c.id==='servant.salieri.skill.sc-salieri-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'salieri_wildfire_rule'})])}));
+  });
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1719,10 +1726,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 860,
-      blockedCount: 84,
+      sourceGroundedCount: 875,
+      blockedCount: 69,
       unclassifiedCount: 0,
-      structuredAbilityCount: 1138,
+      structuredAbilityCount: 1153,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
