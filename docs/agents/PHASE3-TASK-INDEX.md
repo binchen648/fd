@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.14
+- Version: P3-TI-1.15
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2736,7 +2736,7 @@ Completion status allowed:
 ## TASK P3-FB2-05
 
 Owner: Codex B2
-Status: READY
+Status: REVIEW_ACCEPTED
 Branch: `codex/b2-p3-fb2-05-fixed-controller-set-mana-r1`
 Base: exact P3-FB2-05 A-owned handoff commit
 Runtime baseline before handoff: `8a3ce9fe318333cc9b1c0c0ea2f45d51ec588cf5`
@@ -2788,7 +2788,7 @@ Completion status allowed:
 ## TASK P3-R22
 
 Owner: Codex R
-Status: READY_AFTER_P3_FB2_05
+Status: REVIEW_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact FB2-05 candidate SHA
 
 Goal: independently review the exact fixed-controller `set_mana` primitive/component without adding fixes or promoting Trigger Gateway.
@@ -2816,6 +2816,15 @@ Completion status allowed:
 - FB2-05 therefore closes only the independent numeric primitive/component and intentionally leaves all parent routes for their declared later waves.
 - Variable Mana payment rows remain deferred because they depend on selected-card values, hand counts, or result bindings; fixed Mana payment remains covered by FB2-01.
 - P3-FM01 remains undispatched.
+
+## Full-Roster Dispatch State After FB2-05
+
+- FB2-05 candidate `1a611635061f83f7b3aad5c5b2e3da2a33b201bf` is independently accepted by R22 `af6503692e23fb118b8956e00baa2b0f84cb2181`.
+- Accepted scope is the fixed-controller exact `set_mana` typed primitive/component only; no Trigger Gateway or authoring migration is promoted.
+- Exact F1 component alignment is 5 identities. All five still require later parent semantics, so complete migration readiness added by FB2-05 is `0`.
+- Fresh A coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled definition hash remains `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, with 70 cards, 14 characters, and 0 blocking issues.
+- Generated coverage drift is only timestamp/static source line numbers and is intentionally not committed.
+- P3-FM01 remains undispatched; wave-1 Resource Numeric / Cost closure continues, with variable/expression payments explicitly deferred to their dependent Result Binding/Target work.
 
 ## Prompt Templates
 
