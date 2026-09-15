@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=798
-blockedCount=146
+sourceGroundedCount=813
+blockedCount=131
 unclassifiedCount=0
-structuredAbilityCount=1076
+structuredAbilityCount=1091
 
 ## Axis Value Counts
 
@@ -281,10 +281,10 @@ structuredAbilityCount=1076
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
 | effect | `LOSE_MANA` | 10 |
 | effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 10 |
+| effect | `REVERSE_EFFECT_RULE` | 10 |
 | effect | `ADJUST_COMMAND_SEALS` | 9 |
 | effect | `CYCLE_STATE_TRANSITION` | 9 |
 | effect | `DREAM_SUMMON_RULE` | 9 |
-| effect | `REVERSE_EFFECT_RULE` | 9 |
 | effect | `RULER_SEAL_RULE` | 9 |
 | effect | `SOURCE_CARD_POWER_BONUS` | 9 |
 | effect | `SCHEDULE_PHASE_EFFECT` | 8 |
@@ -294,13 +294,13 @@ structuredAbilityCount=1076
 | effect | `MOON_HOLY_GRAIL_RULE` | 6 |
 | effect | `SET_MANA` | 6 |
 | effect | `TERRAIN_POSITION_ADJUSTMENT` | 6 |
+| effect | `TERRITORY_CONSTRUCTION_SCALING_RULE` | 6 |
 | effect | `TRANSFER_VICTORY_POINTS` | 6 |
 | effect | `ADD_STATUS` | 5 |
 | effect | `DUAL_SERVANT_RULE` | 5 |
 | effect | `MOVE_CARD` | 5 |
 | effect | `SECRET_GARDEN_RULE` | 5 |
 | effect | `TATARI_DETERIORATION_RULE` | 5 |
-| effect | `TERRITORY_CONSTRUCTION_SCALING_RULE` | 5 |
 | effect | `CLOSE_SELECTED_CARDS` | 4 |
 | effect | `GOLEM_RULE` | 4 |
 | effect | `GROWTH_COUNTER_RULE` | 4 |
@@ -351,6 +351,7 @@ structuredAbilityCount=1076
 | effect | `DECLARED_ATTRIBUTE_RULE` | 2 |
 | effect | `DEFEAT_OVERRIDE_RULE` | 2 |
 | effect | `DEMON_GOD_RULE` | 2 |
+| effect | `DRAGON_HEART_PENALTY_RULE` | 2 |
 | effect | `FEAR_ATTRIBUTE_RULE` | 2 |
 | effect | `FINISH_GAME` | 2 |
 | effect | `GEM_RESOURCE_RULE` | 2 |
@@ -371,6 +372,7 @@ structuredAbilityCount=1076
 | effect | `RETRIGGER_CARD_PLAY_EFFECTS` | 2 |
 | effect | `REVEALED_HAND_POWER_RULE` | 2 |
 | effect | `ROSTER_SKILL_DRAFT_RULE` | 2 |
+| effect | `RULER_COMMAND_SPELL_BINDING_RULE` | 2 |
 | effect | `SECRET_ROUND_BINDING` | 2 |
 | effect | `SERVANT_OWNERSHIP_RULE` | 2 |
 | effect | `SET_SELECTED_CARDS_FACE` | 2 |
@@ -471,7 +473,6 @@ structuredAbilityCount=1076
 | effect | `DOPPELGANGER_CREATION_RULE` | 1 |
 | effect | `DOPPELGANGER_DEFEAT_RULE` | 1 |
 | effect | `DRAGON_DESIGNATION_RULE` | 1 |
-| effect | `DRAGON_HEART_PENALTY_RULE` | 1 |
 | effect | `DRAWN_CARDS_PLAY_LOCK_RULE` | 1 |
 | effect | `EDISON_GALVANIC_BATTERY_RULE` | 1 |
 | effect | `ENSURE_EVENT_DECK_COUNT` | 1 |
@@ -571,10 +572,21 @@ structuredAbilityCount=1076
 | effect | `MEDB_SUBMISSION_DEPLOYMENT_RULE` | 1 |
 | effect | `MEDEA_RULE_BREAKER_COMMAND_SPELL_RULE` | 1 |
 | effect | `MEDEA_RULE_BREAKER_RECOVERY_RULE` | 1 |
+| effect | `MELT_SARASVATI_RULE` | 1 |
+| effect | `MELT_VIRUS_INFECTION_COPY_RULE` | 1 |
+| effect | `MELUSINE_ALBION_REPLACEMENT_RULE` | 1 |
+| effect | `MELUSINE_PERI_DANCER_RULE` | 1 |
+| effect | `MERLIN_ILLUSION_COST_POWER_RULE` | 1 |
+| effect | `MERLIN_PRE_MOVE_PLAY_RULE` | 1 |
+| effect | `MHX_GALAXY_REACTOR_RULE` | 1 |
+| effect | `MHX_MAGIC_RESISTANCE_NOBLE_REWARD_RULE` | 1 |
+| effect | `MHX_SABER_SLAYER_RULE` | 1 |
 | effect | `MILLENNIUM_CASTLE_OFFBOARD_LOCK_RULE` | 1 |
 | effect | `MIRROR_SHIELD_SACRED_LAND_RULE` | 1 |
 | effect | `MODIFY_OTHER_ATTACKS` | 1 |
 | effect | `MOON_HOLY_GRAIL_RESET_RULE` | 1 |
+| effect | `MORGAN_BERSERKER_SHIFT_RULE` | 1 |
+| effect | `MORGAN_IDEAL_VICTORY_RULE` | 1 |
 | effect | `MORPH_STACK_RULE` | 1 |
 | effect | `MOTHER_DESIGNATION_RULE` | 1 |
 | effect | `MURDER_IMPULSE_THRESHOLD_RULE` | 1 |
@@ -617,7 +629,6 @@ structuredAbilityCount=1076
 | effect | `ROSTER_REPLACEMENT_RULE` | 1 |
 | effect | `ROUND_COST_TERRAIN_EVENT_MULTIPLIER_RULE` | 1 |
 | effect | `ROUTE_RESTRICTION_USED_ABILITY_SUPPRESSION_RULE` | 1 |
-| effect | `RULER_COMMAND_SPELL_BINDING_RULE` | 1 |
 | effect | `RULER_SEAL_DUAL_USE_RULE` | 1 |
 | effect | `RULER_SEAL_TRANSFER_THRESHOLD_RULE` | 1 |
 | effect | `SCHEDULED_DECK_REBUILD_RULE` | 1 |
@@ -1693,21 +1704,21 @@ structuredAbilityCount=1076
 | `servant.medusa.skill.sc-medusa-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
 | `servant.medusa.skill.sc-medusa-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `NONE` | `DEFEAT_PLAYER` | `NONE` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.medusa.skill.sc-medusa-np` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_LOCATION` | `NONE` | `CHOOSE_ONE_LOCATION` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:targetLocationId` | `NONE` | `core.structured-skill` |
-| `servant.meltryllis.skill.sc-meltryllis-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.meltryllis-melt-virus` |
-| `servant.meltryllis.skill.sc-meltryllis-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.meltryllis-saraswati-meltout` |
-| `servant.meltryllis.skill.sc-meltryllis-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
-| `servant.melusine.skill.sc-melusine-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.melusine-ray-horizon` |
-| `servant.melusine.skill.sc-melusine-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.melusine-perl-dancer` |
-| `servant.melusine.skill.sc-melusine-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.dragon-heart` |
-| `servant.mephisto.skill.sc-mephisto-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
+| `servant.meltryllis.skill.sc-meltryllis-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MELT_VIRUS_INFECTION_COPY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.meltryllis-melt-virus` |
+| `servant.meltryllis.skill.sc-meltryllis-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MELT_SARASVATI_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.meltryllis-saraswati-meltout` |
+| `servant.meltryllis.skill.sc-meltryllis-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
+| `servant.melusine.skill.sc-melusine-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MELUSINE_ALBION_REPLACEMENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.melusine-ray-horizon` |
+| `servant.melusine.skill.sc-melusine-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MELUSINE_PERI_DANCER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.melusine-perl-dancer` |
+| `servant.melusine.skill.sc-melusine-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAGON_HEART_PENALTY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.dragon-heart` |
+| `servant.mephisto.skill.sc-mephisto-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TERRITORY_CONSTRUCTION_SCALING_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
 | `servant.mephisto.skill.sc-mephisto-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION`, `PREPARATION` | `round.started` | `SOURCE_ACTIVE`, `VICTORY_POINTS_IS_FIRST` | `NONE` | `NONE` | `DEFEAT_PLAYER`, `EXILE_SOURCE_CARD`, `SOURCE_CARD_POWER_BONUS`, `TRANSFER_MANA`, `TRANSFER_VICTORY_POINTS` | `NONE` | `NONE` | `effect:source_card_power_bonus` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.mephisto.skill.sc-mephisto-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `CHOOSE_ONE_CARD`, `CHOOSE_ONE_PLAYER` | `GAIN_VICTORY_POINTS` | `CHOOSE_ONE_CARD`, `CHOOSE_ONE_PLAYER` | `duration:permanent` | `NONE` | `NONE` | `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |
-| `servant.merlin.skill.sc-merlin-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-rule-flags` |
-| `servant.merlin.skill.sc-merlin-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.merlin-flower-sea` |
+| `servant.merlin.skill.sc-merlin-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MERLIN_PRE_MOVE_PLAY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-rule-flags` |
+| `servant.merlin.skill.sc-merlin-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MERLIN_ILLUSION_COST_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.merlin-flower-sea` |
 | `servant.merlin.skill.sc-merlin-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `combat.resolved` | `AT_BATTLEFIELD`, `EVENT_COUNT_AT_LEAST`, `EVENT_SCOUTING_REWARDED_CONTROLLER`, `SOURCE_OWNED` | `NONE` | `NONE` | `GAIN_MANA`, `GAIN_VICTORY_POINTS`, `MOVE_MATCHING_EVENTS` | `NONE` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.structured-skill` |
-| `servant.mhx.skill.sc-mhx-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mhx-anti-saber-weapon` |
-| `servant.mhx.skill.sc-mhx-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mhx-nameless-victory-sword` |
-| `servant.mhx.skill.sc-mhx-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
+| `servant.mhx.skill.sc-mhx-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MHX_SABER_SLAYER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mhx-anti-saber-weapon` |
+| `servant.mhx.skill.sc-mhx-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MHX_GALAXY_REACTOR_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mhx-nameless-victory-sword` |
+| `servant.mhx.skill.sc-mhx-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MHX_MAGIC_RESISTANCE_NOBLE_REWARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
 | `servant.molay.skill.sc-molay-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PERSISTENT_POWER_AURA_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.molay-pilgrims-reward` |
 | `servant.molay.skill.sc-molay-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE`, `FORM_STATE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.molay-mother-of-goats` |
 | `servant.molay.skill.sc-molay-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.molay-goats-invitation` |
@@ -1715,9 +1726,9 @@ structuredAbilityCount=1076
 | `servant.mordred.skill.sc-mordred-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TRUE_NAME_HIDE_AND_ACTION_REPLAY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mordred-hidden-helm` |
 | `servant.mordred.skill.sc-mordred-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MANA_BURST_REFUND_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mordred-clarent` |
 | `servant.mordred.skill.sc-mordred-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `SET_OPPONENT_ATTRIBUTE_POWER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
-| `servant.morgan.skill.sc-morgan-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.morgan-end-of-world` |
-| `servant.morgan.skill.sc-morgan-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.morgan-infinity-mirror` |
-| `servant.morgan.skill.sc-morgan-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
+| `servant.morgan.skill.sc-morgan-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MORGAN_IDEAL_VICTORY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.morgan-end-of-world` |
+| `servant.morgan.skill.sc-morgan-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MORGAN_BERSERKER_SHIFT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.morgan-infinity-mirror` |
+| `servant.morgan.skill.sc-morgan-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_COMMAND_SPELL_BINDING_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
 | `servant.moriarty.skill.sc-moriarty-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.moriarty-wicked-charisma` |
 | `servant.moriarty.skill.sc-moriarty-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.moriarty-spider-web` |
 | `servant.moriarty.skill.sc-moriarty-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.moriarty-dynamics` |

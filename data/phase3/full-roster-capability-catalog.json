@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 798,
-    "explicitBlockCount": 146,
+    "contractMappedCount": 813,
+    "explicitBlockCount": 131,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -25,9 +25,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
       "READY_GENERIC_EXTENSION": 244,
-      "SPECIAL_HANDLER_CANDIDATE": 552,
+      "SPECIAL_HANDLER_CANDIDATE": 567,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 146,
+      "SOURCE_EVIDENCE_REQUIRED": 131,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -6814,7 +6814,55 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.mephisto.skill.sc-mephisto-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.mephisto.skill.sc-mephisto-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -6839,6 +6887,18 @@
         },
         {
           "abilityId": "servant.mordred.skill.sc-mordred-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -7715,6 +7775,7 @@
         "servant.lubu.skill.sc-lubu-3",
         "servant.mechaeli.skill.sc-mechaeli-2",
         "servant.mephisto.skill.sc-mephisto-2",
+        "servant.merlin.skill.sc-merlin-2",
         "servant.molay.skill.sc-molay-1",
         "servant.mordred.skill.sc-mordred-3",
         "servant.mozart.skill.sc-mozart-1",
@@ -10477,13 +10538,28 @@
         "servant.medea.skill.sc-medea-2",
         "servant.medea.skill.sc-medea-np",
         "servant.medusa.skill.sc-medusa-2",
+        "servant.meltryllis.skill.sc-meltryllis-1",
+        "servant.meltryllis.skill.sc-meltryllis-2",
+        "servant.meltryllis.skill.sc-meltryllis-3",
+        "servant.melusine.skill.sc-melusine-1",
+        "servant.melusine.skill.sc-melusine-2",
+        "servant.melusine.skill.sc-melusine-3",
+        "servant.mephisto.skill.sc-mephisto-1",
         "servant.mephisto.skill.sc-mephisto-2",
+        "servant.merlin.skill.sc-merlin-1",
+        "servant.merlin.skill.sc-merlin-2",
+        "servant.mhx.skill.sc-mhx-1",
+        "servant.mhx.skill.sc-mhx-2",
+        "servant.mhx.skill.sc-mhx-3",
         "servant.molay.skill.sc-molay-1",
         "servant.molay.skill.sc-molay-2",
         "servant.molay.skill.sc-molay-3",
         "servant.molay.skill.sc-molay-4",
         "servant.mordred.skill.sc-mordred-1",
         "servant.mordred.skill.sc-mordred-2",
+        "servant.morgan.skill.sc-morgan-1",
+        "servant.morgan.skill.sc-morgan-2",
+        "servant.morgan.skill.sc-morgan-3",
         "servant.muramasa.skill.sc-muramasa-1",
         "servant.muramasa.skill.sc-muramasa-2",
         "servant.muramasa.skill.sc-muramasa-3",
@@ -12647,11 +12723,59 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.mephisto.skill.sc-mephisto-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.mephisto.skill.sc-mephisto-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.merlin.skill.sc-merlin-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.merlin.skill.sc-merlin-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -12676,6 +12800,18 @@
         },
         {
           "abilityId": "servant.mordred.skill.sc-mordred-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -13557,9 +13693,21 @@
       "servant.medusa.skill.sc-medusa-1",
       "servant.medusa.skill.sc-medusa-2",
       "servant.medusa.skill.sc-medusa-np",
+      "servant.meltryllis.skill.sc-meltryllis-1",
+      "servant.meltryllis.skill.sc-meltryllis-2",
+      "servant.meltryllis.skill.sc-meltryllis-3",
+      "servant.melusine.skill.sc-melusine-1",
+      "servant.melusine.skill.sc-melusine-2",
+      "servant.melusine.skill.sc-melusine-3",
+      "servant.mephisto.skill.sc-mephisto-1",
       "servant.mephisto.skill.sc-mephisto-2",
       "servant.mephisto.skill.sc-mephisto-3",
+      "servant.merlin.skill.sc-merlin-1",
+      "servant.merlin.skill.sc-merlin-2",
       "servant.merlin.skill.sc-merlin-3",
+      "servant.mhx.skill.sc-mhx-1",
+      "servant.mhx.skill.sc-mhx-2",
+      "servant.mhx.skill.sc-mhx-3",
       "servant.molay.skill.sc-molay-1",
       "servant.molay.skill.sc-molay-2",
       "servant.molay.skill.sc-molay-3",
@@ -13567,6 +13715,9 @@
       "servant.mordred.skill.sc-mordred-1",
       "servant.mordred.skill.sc-mordred-2",
       "servant.mordred.skill.sc-mordred-3",
+      "servant.morgan.skill.sc-morgan-1",
+      "servant.morgan.skill.sc-morgan-2",
+      "servant.morgan.skill.sc-morgan-3",
       "servant.mozart.skill.sc-mozart-1",
       "servant.mozart.skill.sc-mozart-2",
       "servant.muramasa.skill.sc-muramasa-1",
@@ -13619,111 +13770,6 @@
       "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "servant.meltryllis.skill.sc-meltryllis-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.meltryllis.skill.sc-meltryllis-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.meltryllis.skill.sc-meltryllis-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.melusine.skill.sc-melusine-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.melusine.skill.sc-melusine-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.melusine.skill.sc-melusine-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.mephisto.skill.sc-mephisto-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.merlin.skill.sc-merlin-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.merlin.skill.sc-merlin-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.mhx.skill.sc-mhx-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.mhx.skill.sc-mhx-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.mhx.skill.sc-mhx-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.morgan.skill.sc-morgan-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.morgan.skill.sc-morgan-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.morgan.skill.sc-morgan-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.moriarty.skill.sc-moriarty-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -15155,13 +15201,28 @@
       "servant.medea.skill.sc-medea-2",
       "servant.medea.skill.sc-medea-np",
       "servant.medusa.skill.sc-medusa-2",
+      "servant.meltryllis.skill.sc-meltryllis-1",
+      "servant.meltryllis.skill.sc-meltryllis-2",
+      "servant.meltryllis.skill.sc-meltryllis-3",
+      "servant.melusine.skill.sc-melusine-1",
+      "servant.melusine.skill.sc-melusine-2",
+      "servant.melusine.skill.sc-melusine-3",
+      "servant.mephisto.skill.sc-mephisto-1",
       "servant.mephisto.skill.sc-mephisto-2",
+      "servant.merlin.skill.sc-merlin-1",
+      "servant.merlin.skill.sc-merlin-2",
+      "servant.mhx.skill.sc-mhx-1",
+      "servant.mhx.skill.sc-mhx-2",
+      "servant.mhx.skill.sc-mhx-3",
       "servant.molay.skill.sc-molay-1",
       "servant.molay.skill.sc-molay-2",
       "servant.molay.skill.sc-molay-3",
       "servant.molay.skill.sc-molay-4",
       "servant.mordred.skill.sc-mordred-1",
       "servant.mordred.skill.sc-mordred-2",
+      "servant.morgan.skill.sc-morgan-1",
+      "servant.morgan.skill.sc-morgan-2",
+      "servant.morgan.skill.sc-morgan-3",
       "servant.muramasa.skill.sc-muramasa-1",
       "servant.muramasa.skill.sc-muramasa-2",
       "servant.muramasa.skill.sc-muramasa-3",
