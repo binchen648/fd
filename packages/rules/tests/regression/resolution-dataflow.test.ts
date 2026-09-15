@@ -152,6 +152,8 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
       return { id: `produce-${binding}`, type: 'adjust_victory_points', player: 'controller', amount: 1, bind: binding };
     case 'adjust_mana':
       return { id: `produce-${binding}`, type: 'adjust_mana', player: 'controller', amount: 1, bind: binding };
+    case 'set_mana':
+      return { id: `produce-${binding}`, type: 'set_mana', player: 'controller', amount: 1, bind: binding };
     case 'pay_mana':
       return { id: `produce-${binding}`, type: 'pay_mana', player: 'controller', amount: 0, bind: binding };
     case 'adjust_command_seals':
@@ -197,6 +199,7 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
     expect(listResolutionPrimitiveTypes()).toEqual(expect.arrayContaining([
       'remove_advantage_position',
       'adjust_mana',
+      'set_mana',
       'pay_mana',
       'adjust_command_seals',
       'adjust_victory_points',
