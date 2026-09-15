@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 875,
-    "explicitBlockCount": 69,
+    "contractMappedCount": 890,
+    "explicitBlockCount": 54,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -25,9 +25,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
       "READY_GENERIC_EXTENSION": 249,
-      "SPECIAL_HANDLER_CANDIDATE": 624,
+      "SPECIAL_HANDLER_CANDIDATE": 639,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 69,
+      "SOURCE_EVIDENCE_REQUIRED": 54,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -7286,6 +7286,66 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.sanson.skill.sc-sanson-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sanson.skill.sc-sanson-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sanson.skill.sc-sanson-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sanzang.skill.sc-sanzang-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sanzang.skill.sc-sanzang-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sanzang.skill.sc-sanzang-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sasaki.skill.sc-sasaki-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sasaki.skill.sc-sasaki-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sasaki.skill.sc-sasaki-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.scathach.skill.sc-scathach-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.scathach.skill.sc-scathach-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.scathach.skill.sc-scathach-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sei.skill.sc-sei-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sei.skill.sc-sei-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sei.skill.sc-sei-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.sherlock.skill.sc-sherlock-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -10967,6 +11027,21 @@
         "servant.salieri.skill.sc-salieri-1",
         "servant.salieri.skill.sc-salieri-2",
         "servant.salieri.skill.sc-salieri-3",
+        "servant.sanson.skill.sc-sanson-1",
+        "servant.sanson.skill.sc-sanson-2",
+        "servant.sanson.skill.sc-sanson-3",
+        "servant.sanzang.skill.sc-sanzang-1",
+        "servant.sanzang.skill.sc-sanzang-2",
+        "servant.sanzang.skill.sc-sanzang-3",
+        "servant.sasaki.skill.sc-sasaki-1",
+        "servant.sasaki.skill.sc-sasaki-2",
+        "servant.sasaki.skill.sc-sasaki-3",
+        "servant.scathach.skill.sc-scathach-1",
+        "servant.scathach.skill.sc-scathach-2",
+        "servant.scathach.skill.sc-scathach-3",
+        "servant.sei.skill.sc-sei-1",
+        "servant.sei.skill.sc-sei-2",
+        "servant.sei.skill.sc-sei-3",
         "servant.sherlock.skill.sc-sherlock-1",
         "servant.sherlock.skill.sc-sherlock-2",
         "servant.sherlock.skill.sc-sherlock-3",
@@ -13498,6 +13573,66 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.sanson.skill.sc-sanson-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sanson.skill.sc-sanson-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sanson.skill.sc-sanson-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sanzang.skill.sc-sanzang-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sanzang.skill.sc-sanzang-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sanzang.skill.sc-sanzang-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sasaki.skill.sc-sasaki-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sasaki.skill.sc-sasaki-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sasaki.skill.sc-sasaki-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.scathach.skill.sc-scathach-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.scathach.skill.sc-scathach-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.scathach.skill.sc-scathach-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sei.skill.sc-sei-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sei.skill.sc-sei-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sei.skill.sc-sei-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.sherlock.skill.sc-sherlock-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -14429,6 +14564,21 @@
       "servant.salieri.skill.sc-salieri-1",
       "servant.salieri.skill.sc-salieri-2",
       "servant.salieri.skill.sc-salieri-3",
+      "servant.sanson.skill.sc-sanson-1",
+      "servant.sanson.skill.sc-sanson-2",
+      "servant.sanson.skill.sc-sanson-3",
+      "servant.sanzang.skill.sc-sanzang-1",
+      "servant.sanzang.skill.sc-sanzang-2",
+      "servant.sanzang.skill.sc-sanzang-3",
+      "servant.sasaki.skill.sc-sasaki-1",
+      "servant.sasaki.skill.sc-sasaki-2",
+      "servant.sasaki.skill.sc-sasaki-3",
+      "servant.scathach.skill.sc-scathach-1",
+      "servant.scathach.skill.sc-scathach-2",
+      "servant.scathach.skill.sc-scathach-3",
+      "servant.sei.skill.sc-sei-1",
+      "servant.sei.skill.sc-sei-2",
+      "servant.sei.skill.sc-sei-3",
       "servant.sherlock.skill.sc-sherlock-1",
       "servant.sherlock.skill.sc-sherlock-2",
       "servant.sherlock.skill.sc-sherlock-3",
@@ -14451,111 +14601,6 @@
       "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "servant.sanson.skill.sc-sanson-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sanson.skill.sc-sanson-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sanson.skill.sc-sanson-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sanzang.skill.sc-sanzang-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sanzang.skill.sc-sanzang-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sanzang.skill.sc-sanzang-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sasaki.skill.sc-sasaki-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sasaki.skill.sc-sasaki-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sasaki.skill.sc-sasaki-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.scathach.skill.sc-scathach-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.scathach.skill.sc-scathach-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.scathach.skill.sc-scathach-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sei.skill.sc-sei-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sei.skill.sc-sei-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sei.skill.sc-sei-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.semiramis.skill.sc-semiramis-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -15543,6 +15588,21 @@
       "servant.salieri.skill.sc-salieri-1",
       "servant.salieri.skill.sc-salieri-2",
       "servant.salieri.skill.sc-salieri-3",
+      "servant.sanson.skill.sc-sanson-1",
+      "servant.sanson.skill.sc-sanson-2",
+      "servant.sanson.skill.sc-sanson-3",
+      "servant.sanzang.skill.sc-sanzang-1",
+      "servant.sanzang.skill.sc-sanzang-2",
+      "servant.sanzang.skill.sc-sanzang-3",
+      "servant.sasaki.skill.sc-sasaki-1",
+      "servant.sasaki.skill.sc-sasaki-2",
+      "servant.sasaki.skill.sc-sasaki-3",
+      "servant.scathach.skill.sc-scathach-1",
+      "servant.scathach.skill.sc-scathach-2",
+      "servant.scathach.skill.sc-scathach-3",
+      "servant.sei.skill.sc-sei-1",
+      "servant.sei.skill.sc-sei-2",
+      "servant.sei.skill.sc-sei-3",
       "servant.sherlock.skill.sc-sherlock-1",
       "servant.sherlock.skill.sc-sherlock-2",
       "servant.sherlock.skill.sc-sherlock-3",

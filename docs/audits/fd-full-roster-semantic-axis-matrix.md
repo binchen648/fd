@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=875
-blockedCount=69
+sourceGroundedCount=890
+blockedCount=54
 unclassifiedCount=0
-structuredAbilityCount=1153
+structuredAbilityCount=1168
 
 ## Axis Value Counts
 
@@ -684,9 +684,24 @@ structuredAbilityCount=1153
 | effect | `SALIERI_KYRIE_RULE` | 1 |
 | effect | `SALIERI_OBLIVION_CORRECTION_RULE` | 1 |
 | effect | `SALIERI_WILDFIRE_RULE` | 1 |
+| effect | `SANSON_DEATH_HOPE_RULE` | 1 |
+| effect | `SANSON_JUDGMENT_DAY_RULE` | 1 |
+| effect | `SANSON_REGICIDE_RULE` | 1 |
+| effect | `SANZANG_FIVE_ELEMENTS_PALM_RULE` | 1 |
+| effect | `SANZANG_GOLDEN_CICADA_RULE` | 1 |
+| effect | `SANZANG_TEACHINGS_RULE` | 1 |
+| effect | `SASAKI_FIRST_STRIKE_RULE` | 1 |
+| effect | `SASAKI_SECOND_STRIKE_RULE` | 1 |
+| effect | `SASAKI_THIRD_STRIKE_RULE` | 1 |
+| effect | `SCATHACH_PIERCING_SPEAR_RULE` | 1 |
+| effect | `SCATHACH_SHADOW_LAND_GATE_RULE` | 1 |
+| effect | `SCATHACH_WISDOM_RULE` | 1 |
 | effect | `SCHEDULED_DECK_REBUILD_RULE` | 1 |
 | effect | `SEARCH_BASIC_CARD_PLAY_RULE` | 1 |
 | effect | `SEED_ATTACHED_SUPPLY` | 1 |
+| effect | `SEI_PILLOW_BOOK_RULE` | 1 |
+| effect | `SEI_PLEIADES_RULE` | 1 |
+| effect | `SEI_TWILIGHT_CLOUD_SPRING_TREE_RULE` | 1 |
 | effect | `SELF_PLAY_COST_RULE` | 1 |
 | effect | `SEQUESTER_RANDOM_INACTIVE_SERVANT_SKILL` | 1 |
 | effect | `SERENITY_DANCE_RULE` | 1 |
@@ -1874,21 +1889,21 @@ structuredAbilityCount=1153
 | `servant.salieri.skill.sc-salieri-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SALIERI_KYRIE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.salieri-avenger` |
 | `servant.salieri.skill.sc-salieri-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SALIERI_WILDFIRE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.salieri-avenger` |
 | `servant.salieri.skill.sc-salieri-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SALIERI_OBLIVION_CORRECTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.salieri-avenger` |
-| `servant.sanson.skill.sc-sanson-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sanson-judgment-day` |
-| `servant.sanson.skill.sc-sanson-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sanson-death-hope` |
-| `servant.sanson.skill.sc-sanson-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.high-victory-combat-power` |
-| `servant.sanzang.skill.sc-sanzang-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `servant.sanzang.skill.sc-sanzang-1` |
-| `servant.sanzang.skill.sc-sanzang-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sanzang-teachings` |
-| `servant.sanzang.skill.sc-sanzang-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sanzang-five-elements-palm` |
-| `servant.sasaki.skill.sc-sasaki-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sasaki-first-strike` |
-| `servant.sasaki.skill.sc-sasaki-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sasaki-second-strike` |
-| `servant.sasaki.skill.sc-sasaki-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sasaki-third-strike` |
-| `servant.scathach.skill.sc-scathach-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.scathach-wisdom` |
-| `servant.scathach.skill.sc-scathach-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.scathach.skill.sc-scathach-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.scathach-mana-gate` |
-| `servant.sei.skill.sc-sei-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sei-nostalgia` |
-| `servant.sei.skill.sc-sei-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sei-nostalgia` |
-| `servant.sei.skill.sc-sei-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sei-nostalgia` |
+| `servant.sanson.skill.sc-sanson-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SANSON_JUDGMENT_DAY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sanson-judgment-day` |
+| `servant.sanson.skill.sc-sanson-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SANSON_DEATH_HOPE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sanson-death-hope` |
+| `servant.sanson.skill.sc-sanson-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SANSON_REGICIDE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.high-victory-combat-power` |
+| `servant.sanzang.skill.sc-sanzang-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SANZANG_GOLDEN_CICADA_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `servant.sanzang.skill.sc-sanzang-1` |
+| `servant.sanzang.skill.sc-sanzang-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SANZANG_TEACHINGS_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sanzang-teachings` |
+| `servant.sanzang.skill.sc-sanzang-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SANZANG_FIVE_ELEMENTS_PALM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sanzang-five-elements-palm` |
+| `servant.sasaki.skill.sc-sasaki-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SASAKI_FIRST_STRIKE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sasaki-first-strike` |
+| `servant.sasaki.skill.sc-sasaki-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SASAKI_SECOND_STRIKE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sasaki-second-strike` |
+| `servant.sasaki.skill.sc-sasaki-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SASAKI_THIRD_STRIKE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sasaki-third-strike` |
+| `servant.scathach.skill.sc-scathach-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SCATHACH_WISDOM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.scathach-wisdom` |
+| `servant.scathach.skill.sc-scathach-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SCATHACH_PIERCING_SPEAR_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.scathach.skill.sc-scathach-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SCATHACH_SHADOW_LAND_GATE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.scathach-mana-gate` |
+| `servant.sei.skill.sc-sei-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SEI_TWILIGHT_CLOUD_SPRING_TREE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sei-nostalgia` |
+| `servant.sei.skill.sc-sei-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SEI_PLEIADES_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sei-nostalgia` |
+| `servant.sei.skill.sc-sei-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SEI_PILLOW_BOOK_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sei-nostalgia` |
 | `servant.semiramis.skill.sc-semiramis-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
 | `servant.semiramis.skill.sc-semiramis-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
 | `servant.semiramis.skill.sc-semiramis-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |

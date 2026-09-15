@@ -1673,6 +1673,15 @@ describe('Phase 3 full-roster semantic normalization', () => {
     for(const id of ['servant.saber.skill.sc-saber-1','servant.saitou.skill.sc-saitou-1']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'gain_victory_points',amount:1}),expect.objectContaining({type:'set_opponent_attribute_power',attribute:'magic',value:0})])}));
     expect(slice.find(c=>c.id==='servant.salieri.skill.sc-salieri-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'salieri_wildfire_rule'})])}));
   });
+  it('grounds the fifteen-ID Sanson/Sanzang/Sasaki/Scathach/Sei slice with exact development-text evidence', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.sanson.skill.sc-sanson-1","servant.sanson.skill.sc-sanson-2","servant.sanson.skill.sc-sanson-3","servant.sanzang.skill.sc-sanzang-1","servant.sanzang.skill.sc-sanzang-2","servant.sanzang.skill.sc-sanzang-3","servant.sasaki.skill.sc-sasaki-1","servant.sasaki.skill.sc-sasaki-2","servant.sasaki.skill.sc-sasaki-3","servant.scathach.skill.sc-scathach-1","servant.scathach.skill.sc-scathach-2","servant.scathach.skill.sc-scathach-3","servant.sei.skill.sc-sei-1","servant.sei.skill.sc-sei-2","servant.sei.skill.sc-sei-3"]); const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(15); expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256 && c.source.sourceFileSha256.length===64)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.sanson.skill.sc-sanson-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'sanson_judgment_day_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.sanzang.skill.sc-sanzang-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'sanzang_teachings_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.sasaki.skill.sc-sasaki-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'sasaki_second_strike_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.scathach.skill.sc-scathach-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'scathach_shadow_land_gate_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.sei.skill.sc-sei-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'sei_pillow_book_rule'})])}));
+  });
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1726,10 +1735,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 875,
-      blockedCount: 69,
+      sourceGroundedCount: 890,
+      blockedCount: 54,
       unclassifiedCount: 0,
-      structuredAbilityCount: 1153,
+      structuredAbilityCount: 1168,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
