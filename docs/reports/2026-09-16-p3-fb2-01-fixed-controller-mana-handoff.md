@@ -24,9 +24,9 @@ FB2-01 may recognize and execute a cost component only when all of the following
 - the top-level authoring `cost` contains exactly one node with `type=pay_mana`;
 - the amount is a fixed positive safe-integer literal;
 - the payer is the ability controller through the existing authoritative controller context;
-- the payment is part of the same authoritative dispatch transaction as the downstream ability settlement;
-- insufficient mana fails closed before any payment/effect mutation is committed;
-- a later failure in the same dispatch rolls back the payment together with the downstream mutation;
+- payment obeys the parent route's already accepted authoritative stage boundary: non-staged routes settle payment and downstream effects atomically in one stage, while a staged route may commit its activation cost before opening an accepted pending decision;
+- insufficient mana fails closed before the current stage commits payment, effects, or a new pending decision;
+- a later failure inside the same stage rolls back that stage's payment and downstream mutation; a rejection in a later already-committed stage must not refund an earlier accepted activation-stage cost;
 - successful payment produces the existing typed `pay_mana` result/event envelope, including `before`, `after`, `requestedAmount`, `actualAmount`, and status;
 - routing and payment contain no card ID, ability ID, owner ID, printed-text parsing, or character-specific checks.
 
@@ -65,9 +65,9 @@ They are compatibility representatives only. Their card-action semantics are not
 2. Renaming card/ability IDs does not change cost-component behavior.
 3. Amount 2 with sufficient mana emits typed payment evidence and deducts exactly once.
 4. Insufficient mana rejects with no payment, downstream mutation, event, or revision leak.
-5. A forced downstream failure after payment proves transaction rollback restores mana and state.
+5. A forced failure later in the same stage proves stage-local rollback restores mana and state; Maiya's already accepted pending-target flow separately proves that a later target-stage rejection does not refund its committed activation-stage payment.
 6. Negative tests reject zero/negative/non-integer, variable/expression, additional cost nodes, non-mana costs, and effect-level `optionalCost` from this component route.
-7. Maiya and Kayneth current-lineage focused tests remain green without changing their semantic classifiers.
+7. Maiya and Kayneth current-lineage focused tests remain green without changing their semantic classifiers or transaction boundaries.
 8. Current B13-B23 runtime compatibility remains green; no new deterministic root failure is accepted.
 9. No new browser Gate C is required unless the implementation changes payment projection, pending interaction, reconnect, or stale-command behavior. If any of those surfaces change, fresh Gate C becomes mandatory before acceptance.
 
