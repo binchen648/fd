@@ -955,45 +955,123 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_akiha.ascensionSkill#line=60"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "card.played"
+          ],
+          "condition": [
+            "CONTROLLER_STATE_IS",
+            "EVENT_DEFINITION_IS_SELF"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "BLOODLUST_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:source_card_cost:add_if_state",
+            "rule:source_card_power:add_if_state"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "akiha.brilliant-fantasy.vermilion",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_akiha.ascensionSkill#line=60#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:source_card_cost:add_if_state",
+                "rule:source_card_power:add_if_state"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "akiha.brilliant-fantasy.plunder",
+            "kind": "PLAY_TRIGGER",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_akiha.ascensionSkill#line=60#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "card.played"
+              ],
+              "condition": [
+                "CONTROLLER_STATE_IS",
+                "EVENT_DEFINITION_IS_SELF"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "BLOODLUST_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.akiha-bloodlust"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CONDITION",
+          "MODIFIER",
+          "POWER",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:bloodlust_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -1045,45 +1123,83 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_akiha.skills[s1]#line=60"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "BLOODLUST_RULE"
+          ],
           "interaction": [],
-          "lifecycle": [],
+          "lifecycle": [
+            "duration:game"
+          ],
           "modifier": [],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "akiha.caging-hair.borrow-mana",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_akiha.skills[s1]#line=60#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "BLOODLUST_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.akiha-bloodlust"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "LIFECYCLE",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_LIFECYCLE_POLICY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:bloodlust_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -1135,45 +1251,83 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_akiha.skills[s1a]#line=60"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "BLOODLUST_RULE"
+          ],
           "interaction": [],
-          "lifecycle": [],
+          "lifecycle": [
+            "duration:game"
+          ],
           "modifier": [],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "akiha.demonic-heritage.bloodlust",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_akiha.skills[s1a]#line=60#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "BLOODLUST_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.akiha-bloodlust"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "LIFECYCLE",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_LIFECYCLE_POLICY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:bloodlust_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -1225,45 +1379,83 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_akiha.skills[s2]#line=60"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "BLOODLUST_RULE"
+          ],
           "interaction": [],
-          "lifecycle": [],
+          "lifecycle": [
+            "duration:game"
+          ],
           "modifier": [],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "akiha.vermilion.inversion",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_akiha.skills[s2]#line=60#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "BLOODLUST_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.akiha-bloodlust"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "LIFECYCLE",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_LIFECYCLE_POLICY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:bloodlust_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -1345,45 +1537,87 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_akiha.skills[s3]#line=60"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "ACTION"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "BLOODLUST_RULE"
+          ],
           "interaction": [],
-          "lifecycle": [],
+          "lifecycle": [
+            "duration:game"
+          ],
           "modifier": [],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "akiha.bloodlust.thresholds",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_akiha.skills[s3]#line=60#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "BLOODLUST_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.akiha-bloodlust"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "LIFECYCLE",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_LIFECYCLE_POLICY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:bloodlust_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -15549,46 +15783,124 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fujino.ascensionSkill#line=414"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "skill.unlocked"
+          ],
+          "condition": [
+            "EVENT_DEFINITION_IS_SELF",
+            "INJURY_RULE_EVENT"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "GAIN_VICTORY_POINTS",
+            "RETURN_CARD_BY_DEFINITION"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
-          "visibility": [],
+          "visibility": [
+            "FACE_UP"
+          ],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fujino.pain-residual.unlock",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fujino.ascensionSkill#line=414#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "skill.unlocked"
+              ],
+              "condition": [
+                "EVENT_DEFINITION_IS_SELF"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "RETURN_CARD_BY_DEFINITION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [
+                "FACE_UP"
+              ],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "fujino.pain-residual.reward",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fujino.ascensionSkill#line=414#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [
+                "INJURY_RULE_EVENT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "GAIN_VICTORY_POINTS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.fujino-injury-warp"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "CONDITION",
+          "HIDDEN_INFORMATION",
+          "RESOURCE_NUMERIC",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_TRIGGER_GATEWAY",
+          "GENERIC_VISIBILITY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -15639,46 +15951,88 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fujino.skills[s1]#line=414"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
+          "trigger": [
+            "game.started"
+          ],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "RETURN_CARD_BY_DEFINITION"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
-          "visibility": [],
+          "visibility": [
+            "FACE_UP"
+          ],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fujino.heir.add-eye",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fujino.skills[s1]#line=414#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "game.started"
+              ],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "RETURN_CARD_BY_DEFINITION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [
+                "FACE_UP"
+              ],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.game-start-add-skill"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "HIDDEN_INFORMATION",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
+          "GENERIC_TRIGGER_GATEWAY",
+          "GENERIC_VISIBILITY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -15729,45 +16083,93 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fujino.skills[s1a]#line=414"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "COMBAT"
+          ],
           "trigger": [],
-          "condition": [],
+          "condition": [
+            "CONTROLLER_IS_ON_BATTLEFIELD"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "INJURY_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fujino.analgesia.injury-draw",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fujino.skills[s1a]#line=414#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "COMBAT"
+              ],
+              "trigger": [],
+              "condition": [
+                "CONTROLLER_IS_ON_BATTLEFIELD"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "INJURY_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.fujino-injury-warp"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:injury_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -15829,45 +16231,114 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fujino.skills[s2]#line=414"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "ANY"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CLOSE_SOURCE_CARD",
+            "MAP_ADJACENCY_RULE"
+          ],
           "interaction": [],
-          "lifecycle": [],
+          "lifecycle": [
+            "duration:while_source_active"
+          ],
           "modifier": [],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fujino.warp-space.rules",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fujino.skills[s2]#line=414#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "MAP_ADJACENCY_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:while_source_active"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "fujino.warp-space.repair",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fujino.skills[s2]#line=414#ability-2"
+            },
+            "axes": {
+              "timing": [
+                "ANY"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CLOSE_SOURCE_CARD"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.fujino-injury-warp"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ACTION_SEMANTICS",
+          "LIFECYCLE",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "CARD_ACTION_CLOSE",
+          "GENERIC_LIFECYCLE_POLICY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:map_adjacency_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -15929,46 +16400,115 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fujino.skills[s3]#line=414"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "ACTION"
+          ],
           "trigger": [],
-          "condition": [],
+          "condition": [
+            "SOURCE_ACTIVE"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "ACTIVATE_CARD_BY_ID"
+          ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:card_play_mode:require_additional_play"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fujino.distortion.append",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fujino.skills[s3]#line=414#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:card_play_mode:require_additional_play"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "fujino.distortion.bend",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fujino.skills[s3]#line=414#ability-2"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [
+                "SOURCE_ACTIVE"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "ACTIVATE_CARD_BY_ID"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.fujino-injury-warp"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ACTION_SEMANTICS",
+          "CONDITION",
+          "MODIFIER"
+        ],
+        "requiredCapabilities": [
+          "CARD_ACTION_ACTIVATE",
+          "CARD_ACTION_PLAY",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_MODIFIER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -16079,45 +16619,83 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fujino.skills[s4]#line=414"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "INJURY_RULE"
+          ],
           "interaction": [],
-          "lifecycle": [],
+          "lifecycle": [
+            "duration:game"
+          ],
           "modifier": [],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "fujino.injury.package",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_fujino.skills[s4]#line=414#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "INJURY_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.fujino-injury-warp"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "LIFECYCLE",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_LIFECYCLE_POLICY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:injury_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -39169,45 +39747,115 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shiki_ryougi.ascensionSkill#line=405"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "GRANT_LINKED_ABILITY_TO_ATTRIBUTE"
+          ],
           "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
+          "lifecycle": [
+            "duration:game"
+          ],
+          "modifier": [
+            "rule:card_power:add"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "ryougi.boundary.agility-bonus",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_ryougi.ascensionSkill#line=405#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [
+                "rule:card_power:add"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "ryougi.boundary.bottom-discard",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_ryougi.ascensionSkill#line=405#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "GRANT_LINKED_ABILITY_TO_ATTRIBUTE"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.rule-marker"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "LIFECYCLE",
+          "MODIFIER",
+          "POWER",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:grant_linked_ability_to_attribute"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -39259,46 +39907,88 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shiki_ryougi.skills[s1]#line=405"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
+          "trigger": [
+            "game.started"
+          ],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "RETURN_CARD_BY_DEFINITION"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
-          "visibility": [],
+          "visibility": [
+            "FACE_UP"
+          ],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "ryougi.death-lines.add-life",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_ryougi.skills[s1]#line=405#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "game.started"
+              ],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "RETURN_CARD_BY_DEFINITION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [
+                "FACE_UP"
+              ],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.game-start-add-skill"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "HIDDEN_INFORMATION",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
+          "GENERIC_TRIGGER_GATEWAY",
+          "GENERIC_VISIBILITY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -39349,46 +40039,88 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shiki_ryougi.skills[s1a]#line=405"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
+          "trigger": [
+            "game.started"
+          ],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "RETURN_CARD_BY_DEFINITION"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
-          "visibility": [],
+          "visibility": [
+            "FACE_UP"
+          ],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "ryougi.deficiency.add-death",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_ryougi.skills[s1a]#line=405#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "game.started"
+              ],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "RETURN_CARD_BY_DEFINITION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [
+                "FACE_UP"
+              ],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.game-start-add-skill"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "HIDDEN_INFORMATION",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
+          "GENERIC_TRIGGER_GATEWAY",
+          "GENERIC_VISIBILITY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -39439,45 +40171,123 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shiki_ryougi.skills[s1b]#line=405"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
+          "trigger": [
+            "combat.power-resolving"
+          ],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "DECK_BOTTOM_RULE"
+          ],
           "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
+          "lifecycle": [
+            "duration:game"
+          ],
+          "modifier": [
+            "rule:deck_bottom_visibility:allow_view"
+          ],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "ryougi.void.bottom-vision",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_ryougi.skills[s1b]#line=405#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [
+                "rule:deck_bottom_visibility:allow_view"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "ryougi.void.empty-deck-defeat",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_ryougi.skills[s1b]#line=405#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.power-resolving"
+              ],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "DECK_BOTTOM_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_EVENT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.ryougi-void"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "LIFECYCLE",
+          "MODIFIER",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:deck_bottom_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -39539,45 +40349,119 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shiki_ryougi.skills[s2]#line=405"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "COMBAT"
+          ],
           "trigger": [],
-          "condition": [],
+          "condition": [
+            "SOURCE_ACTIVE"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "DECK_BOTTOM_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:card_cost:add_if_coplayed",
+            "rule:card_play_mode:require_additional_play"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "ryougi.sever.append",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_ryougi.skills[s2]#line=405#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:card_cost:add_if_coplayed",
+                "rule:card_play_mode:require_additional_play"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "ryougi.sever.bottom-match",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_ryougi.skills[s2]#line=405#ability-2"
+            },
+            "axes": {
+              "timing": [
+                "COMBAT"
+              ],
+              "trigger": [],
+              "condition": [
+                "SOURCE_ACTIVE"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "DECK_BOTTOM_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.ryougi-sever-life"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ACTION_SEMANTICS",
+          "CONDITION",
+          "MODIFIER",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "CARD_ACTION_PLAY",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_MODIFIER",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:deck_bottom_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -39639,46 +40523,134 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shiki_ryougi.skills[s3]#line=405"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "ACTION"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
+          "target": [
+            "CHOOSE_ONE_CARD",
+            "CHOOSE_ONE_PLAYER"
+          ],
+          "effect": [
+            "MOVE_SELECTED_CARDS"
+          ],
+          "interaction": [
+            "CHOOSE_ONE_CARD",
+            "CHOOSE_ONE_PLAYER"
+          ],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:card_play_mode:require_additional_play"
+          ],
           "visibility": [],
-          "binding": [],
+          "binding": [
+            "payload:selectedCardIds",
+            "payload:targetPlayerIds"
+          ],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "ryougi.death-grip.append",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_ryougi.skills[s3]#line=405#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:card_play_mode:require_additional_play"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "ryougi.death-grip.hand-return",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_ryougi.skills[s3]#line=405#ability-2"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [
+                "CHOOSE_ONE_CARD",
+                "CHOOSE_ONE_PLAYER"
+              ],
+              "effect": [
+                "MOVE_SELECTED_CARDS"
+              ],
+              "interaction": [
+                "CHOOSE_ONE_CARD",
+                "CHOOSE_ONE_PLAYER"
+              ],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:selectedCardIds",
+                "payload:targetPlayerIds"
+              ],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.structured-skill"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ACTION_SEMANTICS",
+          "CARD_ZONE",
+          "INTERACTION",
+          "MODIFIER",
+          "RESULT_BINDING",
+          "TARGET_SELECTION"
+        ],
+        "requiredCapabilities": [
+          "CARD_ACTION_PLAY",
+          "GENERIC_CARD_ZONE",
+          "GENERIC_MODIFIER",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TARGET_SELECTION"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -39729,45 +40701,99 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shiki_tohno.ascensionSkill#line=107"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "round.started"
+          ],
+          "condition": [
+            "ROUND_IS_AFTER_SKILL_UNLOCK"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CONTROL_RESOURCE_RULE",
+            "SET_TOTAL_POWER_LOCK"
+          ],
           "interaction": [],
-          "lifecycle": [],
+          "lifecycle": [
+            "duration:game"
+          ],
           "modifier": [],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "tohno.sobering-lucidity.next-round",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_tohno.ascensionSkill#line=107#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "round.started"
+              ],
+              "condition": [
+                "ROUND_IS_AFTER_SKILL_UNLOCK"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CONTROL_RESOURCE_RULE",
+                "SET_TOTAL_POWER_LOCK"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.tohno-shiki-possession"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CONDITION",
+          "LIFECYCLE",
+          "POWER",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_POWER",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:control_resource_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -39819,46 +40845,88 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shiki_tohno.skills[s1]#line=107"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
+          "trigger": [
+            "game.started"
+          ],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "RETURN_CARD_BY_DEFINITION"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
-          "visibility": [],
+          "visibility": [
+            "FACE_UP"
+          ],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "tohno.blood-art.add-erosion",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_tohno.skills[s1]#line=107#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "game.started"
+              ],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "RETURN_CARD_BY_DEFINITION"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [
+                "FACE_UP"
+              ],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.game-start-add-skill"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "HIDDEN_INFORMATION",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
+          "GENERIC_TRIGGER_GATEWAY",
+          "GENERIC_VISIBILITY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -39909,45 +40977,83 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shiki_tohno.skills[s1a]#line=107"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CONTROL_RESOURCE_RULE"
+          ],
           "interaction": [],
-          "lifecycle": [],
+          "lifecycle": [
+            "duration:game"
+          ],
           "modifier": [],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "tohno.possession.control",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_tohno.skills[s1a]#line=107#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CONTROL_RESOURCE_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.tohno-shiki-possession"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "LIFECYCLE",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_LIFECYCLE_POLICY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:control_resource_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -40019,45 +41125,117 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shiki_tohno.skills[s2]#line=107"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "COMBAT"
+          ],
           "trigger": [],
-          "condition": [],
+          "condition": [
+            "SOURCE_ACTIVE"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "FUSION_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:card_play_mode:require_additional_play"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "tohno.erosion.play",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_tohno.skills[s2]#line=107#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:card_play_mode:require_additional_play"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "tohno.erosion.fusion",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_tohno.skills[s2]#line=107#ability-2"
+            },
+            "axes": {
+              "timing": [
+                "COMBAT"
+              ],
+              "trigger": [],
+              "condition": [
+                "SOURCE_ACTIVE"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "FUSION_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.tohno-shiki-possession"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ACTION_SEMANTICS",
+          "CONDITION",
+          "MODIFIER",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "CARD_ACTION_PLAY",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_MODIFIER",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:fusion_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -40119,45 +41297,115 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shiki_tohno.skills[s3]#line=107"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CONTROL_RESOURCE_RULE"
+          ],
           "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
+          "lifecycle": [
+            "duration:game"
+          ],
+          "modifier": [
+            "rule:card_attribute:add",
+            "rule:skill_play_mana_threshold:ignore_below"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "tohno.serpent.control-stop",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_tohno.skills[s3]#line=107#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CONTROL_RESOURCE_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "tohno.serpent.erosion-upgrade",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_tohno.skills[s3]#line=107#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [
+                "rule:card_attribute:add",
+                "rule:skill_play_mana_threshold:ignore_below"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.tohno-shiki-possession"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "LIFECYCLE",
+          "MODIFIER",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:control_resource_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -40209,45 +41457,83 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shiki_tohno.skills[s4]#line=107"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "FUSION_RULE"
+          ],
           "interaction": [],
-          "lifecycle": [],
+          "lifecycle": [
+            "duration:game"
+          ],
           "modifier": [],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "tohno.demon.fusion-upgrade",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_shiki_tohno.skills[s4]#line=107#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "FUSION_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.tohno-shiki-possession"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "LIFECYCLE",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_LIFECYCLE_POLICY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:fusion_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -116495,15 +117781,15 @@
   ],
   "semanticSummary": {
     "totalIdentityCount": 944,
-    "sourceGroundedCount": 270,
-    "blockedCount": 674,
+    "sourceGroundedCount": 293,
+    "blockedCount": 651,
     "unclassifiedCount": 0,
-    "structuredAbilityCount": 492
+    "structuredAbilityCount": 525
   },
   "capabilitySummary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 270,
-    "explicitBlockCount": 674,
+    "contractMappedCount": 293,
+    "explicitBlockCount": 651,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -116518,10 +117804,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 171,
-      "SPECIAL_HANDLER_CANDIDATE": 97,
+      "READY_GENERIC_EXTENSION": 178,
+      "SPECIAL_HANDLER_CANDIDATE": 113,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 674,
+      "SOURCE_EVIDENCE_REQUIRED": 651,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },

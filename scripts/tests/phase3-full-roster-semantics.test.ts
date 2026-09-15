@@ -1210,6 +1210,23 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find((c) => c.id === 'master.shirou-meal.skill.s1')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'food_resource_rule',operation:'gain_food_from_current_location_event_and_active_situation_attributes'})])}));
   });
 
+  it('grounds the twenty-three-ID Fujino/Ryougi/Shiki/Akiha slice with explicit Injury, deck-bottom, Control/Fusion, and Bloodlust boundaries', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.fujino.skill.ascension','master.fujino.skill.s1','master.fujino.skill.s1a','master.fujino.skill.s2','master.fujino.skill.s3','master.fujino.skill.s4',
+      'master.shiki-ryougi.skill.ascension','master.shiki-ryougi.skill.s1','master.shiki-ryougi.skill.s1a','master.shiki-ryougi.skill.s1b','master.shiki-ryougi.skill.s2','master.shiki-ryougi.skill.s3',
+      'master.shiki-tohno.skill.ascension','master.shiki-tohno.skill.s1','master.shiki-tohno.skill.s1a','master.shiki-tohno.skill.s2','master.shiki-tohno.skill.s3','master.shiki-tohno.skill.s4',
+      'master.akiha.skill.ascension','master.akiha.skill.s1','master.akiha.skill.s1a','master.akiha.skill.s2','master.akiha.skill.s3',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(23);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find((c) => c.id === 'master.fujino.skill.s4')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'injury_rule'})])}));
+    expect(slice.find((c) => c.id === 'master.shiki-ryougi.skill.s2')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'deck_bottom_rule'})])}));
+    expect(slice.find((c) => c.id === 'master.shiki-tohno.skill.s2')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'fusion_rule'})])}));
+    expect(slice.find((c) => c.id === 'master.akiha.skill.s3')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'bloodlust_rule',operation:'threshold_package'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1263,10 +1280,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 270,
-      blockedCount: 674,
+      sourceGroundedCount: 293,
+      blockedCount: 651,
       unclassifiedCount: 0,
-      structuredAbilityCount: 492,
+      structuredAbilityCount: 525,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

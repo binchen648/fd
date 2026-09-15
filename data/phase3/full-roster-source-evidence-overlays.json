@@ -11959,6 +11959,959 @@
           ]
         }
       ]
+    },
+    {
+      "id": "master.fujino.skill.s1",
+      "printedText": "将一张【歪曲之魔眼】加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fujino.skills[s1]#line=414",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "将一张【歪曲之魔眼】加入你的技能区。",
+        "sourceTextSha256": "56df7da12a24eda99ea20c6daa55a387f0521f1651986c1797bb735882d8fdee"
+      },
+      "referencePrintedTextSha256": "56df7da12a24eda99ea20c6daa55a387f0521f1651986c1797bb735882d8fdee",
+      "abilities": [
+        {
+          "id": "fujino.heir.add-eye",
+          "printedClause": "将一张【歪曲之魔眼】加入你的技能区。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.fujino.skill.s3",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.fujino.skill.s1a",
+      "printedText": "战斗阶段，若你位于战场，随机抽取2张【创伤】，获得其中一张并将另一张洗回【创伤】牌堆。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fujino.skills[s1a]#line=414",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "战斗阶段，若你位于战场，随机抽取2张【创伤】，获得其中一张并将另一张洗回【创伤】牌堆。",
+        "sourceTextSha256": "fb2e22ace2e16d5e034888147fc96581a8ed47d97eeae3b91246095210104e29"
+      },
+      "referencePrintedTextSha256": "fb2e22ace2e16d5e034888147fc96581a8ed47d97eeae3b91246095210104e29",
+      "abilities": [
+        {
+          "id": "fujino.analgesia.injury-draw",
+          "printedClause": "战斗阶段，若你位于战场，随机抽取2张【创伤】，获得其中一张并将另一张洗回【创伤】牌堆。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "controller_is_on_battlefield"
+            }
+          ],
+          "effects": [
+            {
+              "type": "injury_rule",
+              "operation": "draw_two_choose_one_return_other"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.fujino.skill.s2",
+      "printedText": "从魔术工房指向深山町的移动箭头改为指向新都，从新都的改为指向深山町，从深山町的改为指向侦查。（同时更改相邻地点关系）\n修复-任何阶段：关闭【扭曲空间】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fujino.skills[s2]#line=414",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "从魔术工房指向深山町的移动箭头改为指向新都，从新都的改为指向深山町，从深山町的改为指向侦查。（同时更改相邻地点关系）\n修复-任何阶段：关闭【扭曲空间】。",
+        "sourceTextSha256": "c0e62bd607655968d85d8d5943cce7b886e3636ff709e347d6f35b3f82ef0cf1"
+      },
+      "referencePrintedTextSha256": "c0e62bd607655968d85d8d5943cce7b886e3636ff709e347d6f35b3f82ef0cf1",
+      "abilities": [
+        {
+          "id": "fujino.warp-space.rules",
+          "printedClause": "从魔术工房指向深山町的移动箭头改为指向新都，从新都的改为指向深山町，从深山町的改为指向侦查。（同时更改相邻地点关系）",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "map_adjacency_rule",
+              "operation": "fujino_warp_cycle"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "id": "fujino.warp-space.repair",
+          "printedClause": "修复-任何阶段：关闭【扭曲空间】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "any"
+          },
+          "effects": [
+            {
+              "type": "close_source_card"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.fujino.skill.s3",
+      "printedText": "此牌需追加打出。\n歪曲吧！-行动阶段：激活【扭曲空间】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fujino.skills[s3]#line=414",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌需追加打出。\n歪曲吧！-行动阶段：激活【扭曲空间】。",
+        "sourceTextSha256": "fc6365260dda2eb479f29c225a869d2571fb48a4ed8eb19ca9ca5408544f88d1"
+      },
+      "referencePrintedTextSha256": "fc6365260dda2eb479f29c225a869d2571fb48a4ed8eb19ca9ca5408544f88d1",
+      "abilities": [
+        {
+          "id": "fujino.distortion.append",
+          "printedClause": "此牌需追加打出。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mode",
+              "operation": "require_additional_play",
+              "subject": "source_card"
+            }
+          ]
+        },
+        {
+          "id": "fujino.distortion.bend",
+          "printedClause": "歪曲吧！-行动阶段：激活【扭曲空间】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "activate_card_by_id",
+              "definitionId": "master.fujino.skill.s2",
+              "subject": "controller"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.fujino.skill.s4",
+      "printedText": "【创伤【头部】】获得此牌时，立即随机弃置一张手牌。行动阶段开始时，随机弃置一张手牌。\n【创伤【肩部】】你的基础攻击威力-1。\n【创伤【胃部】】+2的魔术工房与+3的地利位置对你视为已被占领，无法部署。\n【创伤【腕部】】当你使用令咒时，失去1点战果。\n【创伤【腿部】】当你于你的回合移动后，失去1点魔力。\n【创伤【脊椎】】将【歪曲之魔眼】加入你的攻击，然后将牌堆中剩余的【创伤】移除游戏并将所有已有的【创伤】切换为【痛觉】。\n【痛觉】唯一：战斗结束后，弃置一张【痛觉】。失控-你的技能魔力消耗-1。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fujino.skills[s4]#line=414",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【创伤【头部】】获得此牌时，立即随机弃置一张手牌。行动阶段开始时，随机弃置一张手牌。\n【创伤【肩部】】你的基础攻击威力-1。\n【创伤【胃部】】+2的魔术工房与+3的地利位置对你视为已被占领，无法部署。\n【创伤【腕部】】当你使用令咒时，失去1点战果。\n【创伤【腿部】】当你于你的回合移动后，失去1点魔力。\n【创伤【脊椎】】将【歪曲之魔眼】加入你的攻击，然后将牌堆中剩余的【创伤】移除游戏并将所有已有的【创伤】切换为【痛觉】。\n【痛觉】唯一：战斗结束后，弃置一张【痛觉】。失控-你的技能魔力消耗-1。",
+        "sourceTextSha256": "984bb7fc240abf5493db1107da1edc7acdf9e856617a8e01370bb0dc3fb945f7"
+      },
+      "referencePrintedTextSha256": "984bb7fc240abf5493db1107da1edc7acdf9e856617a8e01370bb0dc3fb945f7",
+      "abilities": [
+        {
+          "id": "fujino.injury.package",
+          "printedClause": "【创伤【头部】】获得此牌时，立即随机弃置一张手牌。行动阶段开始时，随机弃置一张手牌。\n【创伤【肩部】】你的基础攻击威力-1。\n【创伤【胃部】】+2的魔术工房与+3的地利位置对你视为已被占领，无法部署。\n【创伤【腕部】】当你使用令咒时，失去1点战果。\n【创伤【腿部】】当你于你的回合移动后，失去1点魔力。\n【创伤【脊椎】】将【歪曲之魔眼】加入你的攻击，然后将牌堆中剩余的【创伤】移除游戏并将所有已有的【创伤】切换为【痛觉】。\n【痛觉】唯一：战斗结束后，弃置一张【痛觉】。失控-你的技能魔力消耗-1。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "injury_rule",
+              "operation": "full_injury_and_pain_package"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.fujino.skill.ascension",
+      "printedText": "解锁此技能时，将一张【歪曲之魔眼】的复制加入你的技能区。\n当你因获得【创伤【脊椎】】切换【痛觉】且所有【痛觉】被弃置之后，获得4点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fujino.ascensionSkill#line=414",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "解锁此技能时，将一张【歪曲之魔眼】的复制加入你的技能区。\n当你因获得【创伤【脊椎】】切换【痛觉】且所有【痛觉】被弃置之后，获得4点战果。",
+        "sourceTextSha256": "b8a4dcaa3cc7b6e569966a51f5bec5f39dded7df0cb4cf466fa26708c3fb1bfe"
+      },
+      "referencePrintedTextSha256": "b8a4dcaa3cc7b6e569966a51f5bec5f39dded7df0cb4cf466fa26708c3fb1bfe",
+      "abilities": [
+        {
+          "id": "fujino.pain-residual.unlock",
+          "printedClause": "解锁此技能时，将一张【歪曲之魔眼】的复制加入你的技能区。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_definition_is_self"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.fujino.skill.s3",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false,
+              "copy": true
+            }
+          ]
+        },
+        {
+          "id": "fujino.pain-residual.reward",
+          "printedClause": "当你因获得【创伤【脊椎】】切换【痛觉】且所有【痛觉】被弃置之后，获得4点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "injury_rule_event",
+              "operation": "all_pain_discarded_after_spine"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "subject": "controller",
+              "amount": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shiki-ryougi.skill.s1",
+      "printedText": "游戏开始时，将【生・切断】加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_ryougi.skills[s1]#line=405",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，将【生・切断】加入你的技能区。",
+        "sourceTextSha256": "15e33e1b9482d12051e5b028e9bf5b81bbe9e9204afcd6723190573ae1867d69"
+      },
+      "referencePrintedTextSha256": "15e33e1b9482d12051e5b028e9bf5b81bbe9e9204afcd6723190573ae1867d69",
+      "abilities": [
+        {
+          "id": "ryougi.death-lines.add-life",
+          "printedClause": "游戏开始时，将【生・切断】加入你的技能区。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.shiki-ryougi.skill.s2",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shiki-ryougi.skill.s1a",
+      "printedText": "游戏开始时，将【死・紧握】加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_ryougi.skills[s1a]#line=405",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，将【死・紧握】加入你的技能区。",
+        "sourceTextSha256": "d1e84428f5798f573fd01ed7f061e937925424f2fbab89c4a43ad6af7782d98f"
+      },
+      "referencePrintedTextSha256": "d1e84428f5798f573fd01ed7f061e937925424f2fbab89c4a43ad6af7782d98f",
+      "abilities": [
+        {
+          "id": "ryougi.deficiency.add-death",
+          "printedClause": "游戏开始时，将【死・紧握】加入你的技能区。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.shiki-ryougi.skill.s3",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shiki-ryougi.skill.s1b",
+      "printedText": "你可以查看所有玩家牌库底部的牌。战力结算时，你所在的战斗中所有牌库没有牌的玩家【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_ryougi.skills[s1b]#line=405",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你可以查看所有玩家牌库底部的牌。战力结算时，你所在的战斗中所有牌库没有牌的玩家【败北】。",
+        "sourceTextSha256": "3bf048d50b2543b3447c284f3b503205cf74af3aa53c03d1d4fb2e8871196470"
+      },
+      "referencePrintedTextSha256": "3bf048d50b2543b3447c284f3b503205cf74af3aa53c03d1d4fb2e8871196470",
+      "abilities": [
+        {
+          "id": "ryougi.void.bottom-vision",
+          "printedClause": "你可以查看所有玩家牌库底部的牌。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "deck_bottom_visibility",
+              "operation": "allow_view",
+              "subject": "controller",
+              "targets": "all_players"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "ryougi.void.empty-deck-defeat",
+          "printedClause": "战力结算时，你所在的战斗中所有牌库没有牌的玩家【败北】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.power-resolving"
+            }
+          ],
+          "effects": [
+            {
+              "type": "deck_bottom_rule",
+              "operation": "defeat_empty_deck_participants_on_controller_battlefield"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shiki-ryougi.skill.s2",
+      "printedText": "此牌需追加打出。若此牌与【死・紧握】一同打出，其+2魔力消耗。\n战斗阶段：选择一张你战斗中的非技能攻击，若其印刷威力与其所有者牌库底部的牌相同，弃置这两张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_ryougi.skills[s2]#line=405",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌需追加打出。若此牌与【死・紧握】一同打出，其+2魔力消耗。\n战斗阶段：选择一张你战斗中的非技能攻击，若其印刷威力与其所有者牌库底部的牌相同，弃置这两张牌。",
+        "sourceTextSha256": "f2ec99d579535b504321bd59d02ff5518e13a0ad88032d9b06cf21cfdf00a5ce"
+      },
+      "referencePrintedTextSha256": "f2ec99d579535b504321bd59d02ff5518e13a0ad88032d9b06cf21cfdf00a5ce",
+      "abilities": [
+        {
+          "id": "ryougi.sever.append",
+          "printedClause": "此牌需追加打出。若此牌与【死・紧握】一同打出，其+2魔力消耗。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mode",
+              "operation": "require_additional_play",
+              "subject": "source_card"
+            },
+            {
+              "rule": "card_cost",
+              "operation": "add_if_coplayed",
+              "amount": 2,
+              "definitionId": "master.shiki-ryougi.skill.s3"
+            }
+          ]
+        },
+        {
+          "id": "ryougi.sever.bottom-match",
+          "printedClause": "战斗阶段：选择一张你战斗中的非技能攻击，若其印刷威力与其所有者牌库底部的牌相同，弃置这两张牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "deck_bottom_rule",
+              "operation": "match_printed_power_then_discard_attack_and_bottom"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shiki-ryougi.skill.s3",
+      "printedText": "此牌需追加打出。\n行动阶段：查看一名与你位于同一战场的玩家的手牌，你可将其中一张牌洗回其所有者的牌库。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_ryougi.skills[s3]#line=405",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌需追加打出。\n行动阶段：查看一名与你位于同一战场的玩家的手牌，你可将其中一张牌洗回其所有者的牌库。",
+        "sourceTextSha256": "49bfaa05b153321ecdc5a317f257a228d8f9f16c5afcf337b69ea526bad90110"
+      },
+      "referencePrintedTextSha256": "49bfaa05b153321ecdc5a317f257a228d8f9f16c5afcf337b69ea526bad90110",
+      "abilities": [
+        {
+          "id": "ryougi.death-grip.append",
+          "printedClause": "此牌需追加打出。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mode",
+              "operation": "require_additional_play",
+              "subject": "source_card"
+            }
+          ]
+        },
+        {
+          "id": "ryougi.death-grip.hand-return",
+          "printedClause": "行动阶段：查看一名与你位于同一战场的玩家的手牌，你可将其中一张牌洗回其所有者的牌库。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_players",
+              "scope": "controller_battlefield",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "targetPlayerIds"
+            },
+            {
+              "type": "choose_cards",
+              "zone": "hand",
+              "ownerBinding": "targetPlayerIds[0]",
+              "minCount": 0,
+              "maxCount": 1,
+              "payloadKey": "selectedCardIds",
+              "revealTo": "controller"
+            },
+            {
+              "type": "move_selected_cards",
+              "payloadKey": "selectedCardIds",
+              "destination": "deck",
+              "shuffleIntoDestination": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shiki-ryougi.skill.ascension",
+      "printedText": "你的敏捷攻击获得威力+2和\"战斗阶段：弃置一张你战斗中的一名玩家牌堆底的牌。\"",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_ryougi.ascensionSkill#line=405",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你的敏捷攻击获得威力+2和\"战斗阶段：弃置一张你战斗中的一名玩家牌堆底的牌。\"",
+        "sourceTextSha256": "17babbf0b288ccaabb893285b979e569241c414e42575702403e642ccb426226"
+      },
+      "referencePrintedTextSha256": "17babbf0b288ccaabb893285b979e569241c414e42575702403e642ccb426226",
+      "abilities": [
+        {
+          "id": "ryougi.boundary.agility-bonus",
+          "printedClause": "你的敏捷攻击获得威力+2",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "amount": 2,
+              "subject": "controller_attacks",
+              "filter": {
+                "attribute": "agility"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "ryougi.boundary.bottom-discard",
+          "printedClause": "战斗阶段：弃置一张你战斗中的一名玩家牌堆底的牌。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "grant_linked_ability_to_attribute",
+              "attribute": "agility",
+              "ability": {
+                "activation": {
+                  "phase": "combat"
+                },
+                "effect": "discard_bottom_card_of_participant_deck"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.shiki-tohno.skill.s1",
+      "printedText": "将【侵蚀】加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_tohno.skills[s1]#line=107",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "将【侵蚀】加入你的技能区。",
+        "sourceTextSha256": "273cf9ef232863882acbc556785d1d2741a3a7752041987287f13df90989c97e"
+      },
+      "referencePrintedTextSha256": "273cf9ef232863882acbc556785d1d2741a3a7752041987287f13df90989c97e",
+      "abilities": [
+        {
+          "id": "tohno.blood-art.add-erosion",
+          "printedClause": "将【侵蚀】加入你的技能区。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.shiki-tohno.skill.s2",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shiki-tohno.skill.s1a",
+      "printedText": "当你因能力外的方式获得战果时，获得等量的【控制权】。当你的战果数第一次达到或超过13点时，若你拥有13点及以上的【控制权】，你转变为【魔】。否则，你转变为【蛇】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_tohno.skills[s1a]#line=107",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你因能力外的方式获得战果时，获得等量的【控制权】。当你的战果数第一次达到或超过13点时，若你拥有13点及以上的【控制权】，你转变为【魔】。否则，你转变为【蛇】。",
+        "sourceTextSha256": "2a56e2e743844d85cfcfdebe472161a0852cb345dfc84d7aeefe37a3b57b3edf"
+      },
+      "referencePrintedTextSha256": "2a56e2e743844d85cfcfdebe472161a0852cb345dfc84d7aeefe37a3b57b3edf",
+      "abilities": [
+        {
+          "id": "tohno.possession.control",
+          "printedClause": "当你因能力外的方式获得战果时，获得等量的【控制权】。当你的战果数第一次达到或超过13点时，若你拥有13点及以上的【控制权】，你转变为【魔】。否则，你转变为【蛇】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "control_resource_rule",
+              "operation": "gain_on_nonability_vp_and_transform_at_13"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.shiki-tohno.skill.s2",
+      "printedText": "此牌需追加打出。\n血滴-你需花费1点战果来打出此牌。\n共融-战斗阶段：随机展示一名你交战对手弃牌堆的至多3张牌，你可以选择其中的一张基础牌与你控制或手牌的一张基础牌交换。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_tohno.skills[s2]#line=107",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌需追加打出。\n血滴-你需花费1点战果来打出此牌。\n共融-战斗阶段：随机展示一名你交战对手弃牌堆的至多3张牌，你可以选择其中的一张基础牌与你控制或手牌的一张基础牌交换。",
+        "sourceTextSha256": "5662e774989664eee169aa908a5cd480149a2a3dd589860ebf225ff17f997769"
+      },
+      "referencePrintedTextSha256": "5662e774989664eee169aa908a5cd480149a2a3dd589860ebf225ff17f997769",
+      "abilities": [
+        {
+          "id": "tohno.erosion.play",
+          "printedClause": "此牌需追加打出。血滴-你需花费1点战果来打出此牌。",
+          "kind": "passive",
+          "cost": {
+            "type": "victory_points",
+            "amount": 1
+          },
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mode",
+              "operation": "require_additional_play",
+              "subject": "source_card"
+            }
+          ]
+        },
+        {
+          "id": "tohno.erosion.fusion",
+          "printedClause": "共融-战斗阶段：随机展示一名你交战对手弃牌堆的至多3张牌，你可以选择其中的一张基础牌与你控制或手牌的一张基础牌交换。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "fusion_rule",
+              "operation": "reveal_up_to_three_and_swap_basic"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shiki-tohno.skill.s3",
+      "printedText": "你无法再获得【控制权】或使用共融。\n阿卡夏之蛇-【侵蚀】获得魔术属性且你拥有的魔力少于8点也可以打出此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_tohno.skills[s3]#line=107",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你无法再获得【控制权】或使用共融。\n阿卡夏之蛇-【侵蚀】获得魔术属性且你拥有的魔力少于8点也可以打出此牌。",
+        "sourceTextSha256": "fa07c3d9b2fefae4c8de99b2dd2507474d048a67c98d8e59653fc3ab3960d237"
+      },
+      "referencePrintedTextSha256": "fa07c3d9b2fefae4c8de99b2dd2507474d048a67c98d8e59653fc3ab3960d237",
+      "abilities": [
+        {
+          "id": "tohno.serpent.control-stop",
+          "printedClause": "你无法再获得【控制权】或使用共融。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "control_resource_rule",
+              "operation": "disable_gain_and_fusion"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "tohno.serpent.erosion-upgrade",
+          "printedClause": "阿卡夏之蛇-【侵蚀】获得魔术属性且你拥有的魔力少于8点也可以打出此牌。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_attribute",
+              "operation": "add",
+              "definitionId": "master.shiki-tohno.skill.s2",
+              "attribute": "magic"
+            },
+            {
+              "rule": "skill_play_mana_threshold",
+              "operation": "ignore_below",
+              "definitionId": "master.shiki-tohno.skill.s2",
+              "threshold": 8
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.shiki-tohno.skill.s4",
+      "printedText": "复仇之灵-血滴不再需要花费战果，当你与一名战果点数多于你的对手共融时，偷取其2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_tohno.skills[s4]#line=107",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "复仇之灵-血滴不再需要花费战果，当你与一名战果点数多于你的对手共融时，偷取其2点战果。",
+        "sourceTextSha256": "89b6057410b2cbf816c0a881d022dbd934b778c0ce1bb0b5fc2f60389c1fa02d"
+      },
+      "referencePrintedTextSha256": "89b6057410b2cbf816c0a881d022dbd934b778c0ce1bb0b5fc2f60389c1fa02d",
+      "abilities": [
+        {
+          "id": "tohno.demon.fusion-upgrade",
+          "printedClause": "复仇之灵-血滴不再需要花费战果，当你与一名战果点数多于你的对手共融时，偷取其2点战果。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "fusion_rule",
+              "operation": "waive_vp_cost_and_steal_two_if_target_ahead"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.shiki-tohno.skill.ascension",
+      "printedText": "得不偿失-解锁此牌的下个回合开始时，获得等同于你【控制权】数量的战果。然后，你的合计威力视为0且无法被增加直至游戏结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shiki_tohno.ascensionSkill#line=107",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "得不偿失-解锁此牌的下个回合开始时，获得等同于你【控制权】数量的战果。然后，你的合计威力视为0且无法被增加直至游戏结束。",
+        "sourceTextSha256": "8934a63d45029e2c6cdb8847bccd2500cb85eaa3d7ebfec32f63a8c9fb00359e"
+      },
+      "referencePrintedTextSha256": "8934a63d45029e2c6cdb8847bccd2500cb85eaa3d7ebfec32f63a8c9fb00359e",
+      "abilities": [
+        {
+          "id": "tohno.sobering-lucidity.next-round",
+          "printedClause": "得不偿失-解锁此牌的下个回合开始时，获得等同于你【控制权】数量的战果。然后，你的合计威力视为0且无法被增加直至游戏结束。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.started"
+            },
+            {
+              "type": "round_is_after_skill_unlock"
+            }
+          ],
+          "effects": [
+            {
+              "type": "control_resource_rule",
+              "operation": "gain_vp_equal_control"
+            },
+            {
+              "type": "set_total_power_lock",
+              "subject": "controller",
+              "value": 0,
+              "preventIncrease": true
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.akiha.skill.s1",
+      "printedText": "你每回合可以从与你位于同一战场且拥有6点及以上魔力的对手处各花费1点魔力（用于出牌、使用能力等）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akiha.skills[s1]#line=60",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你每回合可以从与你位于同一战场且拥有6点及以上魔力的对手处各花费1点魔力（用于出牌、使用能力等）。",
+        "sourceTextSha256": "8d914a116165892d626d13a63cc0c72d4e991ba98cffc7e6a293888194d8be65"
+      },
+      "referencePrintedTextSha256": "8d914a116165892d626d13a63cc0c72d4e991ba98cffc7e6a293888194d8be65",
+      "abilities": [
+        {
+          "id": "akiha.caging-hair.borrow-mana",
+          "printedClause": "你每回合可以从与你位于同一战场且拥有6点及以上魔力的对手处各花费1点魔力（用于出牌、使用能力等）。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "bloodlust_rule",
+              "operation": "spend_one_mana_from_each_eligible_opponent_per_round"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.akiha.skill.s1a",
+      "printedText": "每当你花费魔力时，获得等量的【杀戮冲动】并根据其数量获得相应效果。战斗阶段结束后，你随机失去1-3点【杀戮冲动】，若你位于魔术工房则将失去值翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akiha.skills[s1a]#line=60",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "每当你花费魔力时，获得等量的【杀戮冲动】并根据其数量获得相应效果。战斗阶段结束后，你随机失去1-3点【杀戮冲动】，若你位于魔术工房则将失去值翻倍。",
+        "sourceTextSha256": "ab4b6b781da8952895b0c82c0e8ec5fec5251d41112c86813f18c09029cb5329"
+      },
+      "referencePrintedTextSha256": "ab4b6b781da8952895b0c82c0e8ec5fec5251d41112c86813f18c09029cb5329",
+      "abilities": [
+        {
+          "id": "akiha.demonic-heritage.bloodlust",
+          "printedClause": "每当你花费魔力时，获得等量的【杀戮冲动】并根据其数量获得相应效果。战斗阶段结束后，你随机失去1-3点【杀戮冲动】，若你位于魔术工房则将失去值翻倍。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "bloodlust_rule",
+              "operation": "gain_on_mana_spent_and_random_decay"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.akiha.skill.s2",
+      "printedText": "人格反转-你的【杀戮冲动】永远为15点，你失去所有令咒。你获得的战果点数减半（向下取整），获得的魔力翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akiha.skills[s2]#line=60",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "人格反转-你的【杀戮冲动】永远为15点，你失去所有令咒。你获得的战果点数减半（向下取整），获得的魔力翻倍。",
+        "sourceTextSha256": "628d975c0ff7e670b260ba420b663635660010b167e441051c5d226d1f616184"
+      },
+      "referencePrintedTextSha256": "628d975c0ff7e670b260ba420b663635660010b167e441051c5d226d1f616184",
+      "abilities": [
+        {
+          "id": "akiha.vermilion.inversion",
+          "printedClause": "人格反转-你的【杀戮冲动】永远为15点，你失去所有令咒。你获得的战果点数减半（向下取整），获得的魔力翻倍。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "bloodlust_rule",
+              "operation": "lock_fifteen_remove_seals_halve_vp_double_mana"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.akiha.skill.s3",
+      "printedText": "<5：行动阶段：获得1点魔力，+2合计威力和3点【杀戮冲动】，你本回合无法失去【杀戮冲动】。\n5+：你的技能攻击被激活时+1威力。\n10+：你拥有的魔力少于8点也可以打出技能牌。\n15+：回合结束时，将【远野秋叶】转换为【红赤朱】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akiha.skills[s3]#line=60",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "<5：行动阶段：获得1点魔力，+2合计威力和3点【杀戮冲动】，你本回合无法失去【杀戮冲动】。\n5+：你的技能攻击被激活时+1威力。\n10+：你拥有的魔力少于8点也可以打出技能牌。\n15+：回合结束时，将【远野秋叶】转换为【红赤朱】。",
+        "sourceTextSha256": "1acb8172f1c06b43768fe93757f2826436dd81f8469400d4766f919ec170ee7b"
+      },
+      "referencePrintedTextSha256": "1acb8172f1c06b43768fe93757f2826436dd81f8469400d4766f919ec170ee7b",
+      "abilities": [
+        {
+          "id": "akiha.bloodlust.thresholds",
+          "printedClause": "<5：行动阶段：获得1点魔力，+2合计威力和3点【杀戮冲动】，你本回合无法失去【杀戮冲动】。\n5+：你的技能攻击被激活时+1威力。\n10+：你拥有的魔力少于8点也可以打出技能牌。\n15+：回合结束时，将【远野秋叶】转换为【红赤朱】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "bloodlust_rule",
+              "operation": "threshold_package"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.akiha.skill.ascension",
+      "printedText": "（将此牌加入你的技能区）\n红赤休术-被动：若你是红赤朱，此牌+3魔力消耗且+4威力。\n掠夺-若你是远野秋叶，被你偷取魔力用于打出此牌的玩家-3合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akiha.ascensionSkill#line=60",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（将此牌加入你的技能区）\n红赤休术-被动：若你是红赤朱，此牌+3魔力消耗且+4威力。\n掠夺-若你是远野秋叶，被你偷取魔力用于打出此牌的玩家-3合计威力。",
+        "sourceTextSha256": "a5a399bf77932b9b834c3d20a54fa126e0290f6d911ff6680f0cdc8a581d357c"
+      },
+      "referencePrintedTextSha256": "a5a399bf77932b9b834c3d20a54fa126e0290f6d911ff6680f0cdc8a581d357c",
+      "abilities": [
+        {
+          "id": "akiha.brilliant-fantasy.vermilion",
+          "printedClause": "红赤休术-被动：若你是红赤朱，此牌+3魔力消耗且+4威力。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "source_card_cost",
+              "operation": "add_if_state",
+              "state": "vermilion",
+              "amount": 3
+            },
+            {
+              "rule": "source_card_power",
+              "operation": "add_if_state",
+              "state": "vermilion",
+              "amount": 4
+            }
+          ]
+        },
+        {
+          "id": "akiha.brilliant-fantasy.plunder",
+          "printedClause": "掠夺-若你是远野秋叶，被你偷取魔力用于打出此牌的玩家-3合计威力。",
+          "kind": "play_trigger",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "card.played"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "controller_state_is",
+              "state": "akiha"
+            }
+          ],
+          "effects": [
+            {
+              "type": "bloodlust_rule",
+              "operation": "penalize_mana_donors_power",
+              "amount": -3
+            }
+          ]
+        }
+      ]
     }
   ]
 }

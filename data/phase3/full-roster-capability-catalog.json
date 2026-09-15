@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 270,
-    "explicitBlockCount": 674,
+    "contractMappedCount": 293,
+    "explicitBlockCount": 651,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 171,
-      "SPECIAL_HANDLER_CANDIDATE": 97,
+      "READY_GENERIC_EXTENSION": 178,
+      "SPECIAL_HANDLER_CANDIDATE": 113,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 674,
+      "SOURCE_EVIDENCE_REQUIRED": 651,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -60,6 +60,7 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.fujino.skill.s3",
         "master.iliya.skill.s2",
         "master.kariya.skill.s3",
         "master.maiya.skill.s1",
@@ -111,6 +112,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -148,6 +153,18 @@
         },
         {
           "abilityId": "master.ryuunosuke.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -297,6 +314,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goetia.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -346,6 +371,18 @@
         },
         {
           "abilityId": "master.sakura.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -461,6 +498,7 @@
       "eligibleAbilities": [
         "master.arcueid.skill.s2",
         "master.chaos.skill.s11",
+        "master.fujino.skill.s2",
         "master.goetia.skill.s2",
         "master.kiritsugu.skill.s3",
         "master.ryuunosuke.skill.s2",
@@ -508,6 +546,10 @@
         },
         {
           "abilityId": "master.fiore.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -560,6 +602,18 @@
         },
         {
           "abilityId": "master.sakura.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -678,6 +732,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -739,6 +801,18 @@
         },
         {
           "abilityId": "master.sakura.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -857,12 +931,16 @@
         "master.ciel.skill.ascension",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.fujino.skill.s3",
         "master.goetia.skill.s2",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s2",
         "master.hinako.skill.s4",
         "master.kiritsugu.skill.s2",
         "master.maiya.skill.s2",
+        "master.shiki-ryougi.skill.s2",
+        "master.shiki-ryougi.skill.s3",
+        "master.shiki-tohno.skill.s2",
         "master.sieg.skill.s1",
         "master.sion.skill.s13",
         "master.wodime.skill.s2",
@@ -893,6 +971,10 @@
         },
         {
           "abilityId": "master.dan.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -1061,6 +1143,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1122,6 +1212,18 @@
         },
         {
           "abilityId": "master.sakura.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1291,6 +1393,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1348,6 +1458,18 @@
         },
         {
           "abilityId": "master.sakura.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1514,6 +1636,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1575,6 +1705,18 @@
         },
         {
           "abilityId": "master.sakura.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1744,6 +1886,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1801,6 +1951,18 @@
         },
         {
           "abilityId": "master.sakura.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1969,6 +2131,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2030,6 +2200,18 @@
         },
         {
           "abilityId": "master.sakura.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2270,6 +2452,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fujino.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2375,6 +2565,22 @@
         },
         {
           "abilityId": "master.sakura.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2528,6 +2734,7 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fiore.skill.s7",
+        "master.fujino.skill.s1a",
         "master.goetia.skill.s1",
         "master.goetia.skill.s2",
         "master.goredolf.skill.ascension",
@@ -2566,6 +2773,7 @@
         "master.rin.skill.s2",
         "master.ryuunosuke.skill.ascension",
         "master.ryuunosuke.skill.s1",
+        "master.shiki-ryougi.skill.s1b",
         "master.shinji.skill.s3",
         "master.taiga.skill.s1a",
         "master.twice.skill.ascension",
@@ -2740,6 +2948,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fujino.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -2841,6 +3057,22 @@
         },
         {
           "abilityId": "master.sakura.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -2986,6 +3218,8 @@
         "master.darnic.skill.ascension",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.fujino.skill.ascension",
+        "master.fujino.skill.s1",
         "master.goetia.skill.ascension",
         "master.goetia.skill.s2",
         "master.goredolf.skill.s1",
@@ -3013,6 +3247,10 @@
         "master.rin.skill.s3",
         "master.ryuunosuke.skill.ascension",
         "master.sakura.skill.ascension",
+        "master.shiki-ryougi.skill.s1",
+        "master.shiki-ryougi.skill.s1a",
+        "master.shiki-ryougi.skill.s3",
+        "master.shiki-tohno.skill.s1",
         "master.shirou-emiya.skill.ascension",
         "master.shirou-emiya.skill.s2",
         "master.shirou-meal.skill.ascension",
@@ -3090,6 +3328,7 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.akiha.skill.ascension",
         "master.amakusa.skill.ascension",
         "master.amakusa.skill.s1",
         "master.amakusa.skill.s1a",
@@ -3140,6 +3379,9 @@
         "master.fiore.skill.s7",
         "master.fou.skill.ascension",
         "master.fou.skill.s1",
+        "master.fujino.skill.ascension",
+        "master.fujino.skill.s1a",
+        "master.fujino.skill.s3",
         "master.goetia.skill.ascension",
         "master.goetia.skill.s1",
         "master.goetia.skill.s2",
@@ -3192,6 +3434,9 @@
         "master.sakura.skill.s1",
         "master.sakura.skill.s2",
         "master.sakura.skill.s3",
+        "master.shiki-ryougi.skill.s2",
+        "master.shiki-tohno.skill.ascension",
+        "master.shiki-tohno.skill.s2",
         "master.shinji.skill.ascension",
         "master.shinji.skill.s1",
         "master.shinji.skill.s2",
@@ -3387,6 +3632,26 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.akiha.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.amakusa.skill.s3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3487,6 +3752,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fujino.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goetia.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3572,6 +3849,38 @@
         },
         {
           "abilityId": "master.sakura.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s1b",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -3686,6 +3995,10 @@
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
         "master.akasha.skill.s1",
+        "master.akiha.skill.s1",
+        "master.akiha.skill.s1a",
+        "master.akiha.skill.s2",
+        "master.akiha.skill.s3",
         "master.amakusa.skill.s1a",
         "master.amakusa.skill.s3",
         "master.araya.skill.ascension",
@@ -3713,6 +4026,8 @@
         "master.fiore.skill.s6",
         "master.fou.skill.ascension",
         "master.fou.skill.s1",
+        "master.fujino.skill.s2",
+        "master.fujino.skill.s4",
         "master.goetia.skill.ascension",
         "master.goetia.skill.s1",
         "master.goetia.skill.s2",
@@ -3761,6 +4076,12 @@
         "master.ryuunosuke.skill.s1",
         "master.sakura.skill.ascension",
         "master.sakura.skill.s4",
+        "master.shiki-ryougi.skill.ascension",
+        "master.shiki-ryougi.skill.s1b",
+        "master.shiki-tohno.skill.ascension",
+        "master.shiki-tohno.skill.s1a",
+        "master.shiki-tohno.skill.s3",
+        "master.shiki-tohno.skill.s4",
         "master.shinji.skill.ascension",
         "master.shirou-emiya.skill.ascension",
         "master.shirou-emiya.skill.s1",
@@ -3866,6 +4187,7 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.akiha.skill.ascension",
         "master.amakusa.skill.ascension",
         "master.amakusa.skill.s1a",
         "master.amakusa.skill.s3",
@@ -3898,6 +4220,7 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
         "master.fou.skill.s1",
+        "master.fujino.skill.s3",
         "master.goetia.skill.ascension",
         "master.goetia.skill.s1",
         "master.goetia.skill.s2",
@@ -3944,6 +4267,12 @@
         "master.ryuunosuke.skill.s1",
         "master.sakura.skill.ascension",
         "master.sakura.skill.s4",
+        "master.shiki-ryougi.skill.ascension",
+        "master.shiki-ryougi.skill.s1b",
+        "master.shiki-ryougi.skill.s2",
+        "master.shiki-ryougi.skill.s3",
+        "master.shiki-tohno.skill.s2",
+        "master.shiki-tohno.skill.s3",
         "master.shirou-emiya.skill.ascension",
         "master.shirou-emiya.skill.s1",
         "master.sieg.skill.ascension",
@@ -4104,6 +4433,7 @@
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
         "master.rin.skill.s3",
+        "master.shiki-ryougi.skill.s3",
         "master.sieg.skill.s2",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
@@ -4161,6 +4491,7 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.akiha.skill.ascension",
         "master.amakusa.skill.ascension",
         "master.arcueid.skill.ascension",
         "master.arcueid.skill.s3",
@@ -4205,6 +4536,8 @@
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
         "master.rin.skill.ascension",
+        "master.shiki-ryougi.skill.ascension",
+        "master.shiki-tohno.skill.ascension",
         "master.shirou-emiya.skill.ascension",
         "master.sieg.skill.ascension",
         "master.tokiomi.skill.ascension",
@@ -4275,6 +4608,7 @@
         "master.fiore.skill.s3",
         "master.fiore.skill.s6",
         "master.fou.skill.ascension",
+        "master.fujino.skill.ascension",
         "master.goetia.skill.s2",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
@@ -4401,6 +4735,7 @@
         "master.rin.skill.s3",
         "master.ryuunosuke.skill.ascension",
         "master.ryuunosuke.skill.s2",
+        "master.shiki-ryougi.skill.s3",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "master.zouken.skill.s3",
@@ -4475,6 +4810,22 @@
       "skippedAbilities": [
         {
           "abilityId": "master.akasha.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -4559,6 +4910,14 @@
         },
         {
           "abilityId": "master.fou.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -4747,6 +5106,30 @@
         },
         {
           "abilityId": "master.sakura.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s1b",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -4993,6 +5376,7 @@
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
         "master.rin.skill.s3",
+        "master.shiki-ryougi.skill.s3",
         "master.sieg.skill.s2",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
@@ -5051,6 +5435,7 @@
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
         "master.akasha.skill.s1",
+        "master.akiha.skill.ascension",
         "master.amakusa.skill.ascension",
         "master.amakusa.skill.s1",
         "master.amakusa.skill.s2",
@@ -5095,6 +5480,8 @@
         "master.fiore.skill.s7",
         "master.fou.skill.ascension",
         "master.fou.skill.s1",
+        "master.fujino.skill.ascension",
+        "master.fujino.skill.s1",
         "master.goetia.skill.ascension",
         "master.goetia.skill.s1",
         "master.goetia.skill.s2",
@@ -5144,6 +5531,11 @@
         "master.sakura.skill.ascension",
         "master.sakura.skill.s1",
         "master.sakura.skill.s2",
+        "master.shiki-ryougi.skill.s1",
+        "master.shiki-ryougi.skill.s1a",
+        "master.shiki-ryougi.skill.s1b",
+        "master.shiki-tohno.skill.ascension",
+        "master.shiki-tohno.skill.s1",
         "master.shinji.skill.s1",
         "master.shinji.skill.s2",
         "master.shinji.skill.s3",
@@ -5228,6 +5620,8 @@
         "master.ciel.skill.s1a",
         "master.ciel.skill.s1b",
         "master.dan.skill.ascension",
+        "master.fujino.skill.ascension",
+        "master.fujino.skill.s1",
         "master.goetia.skill.ascension",
         "master.irisviel.skill.s2",
         "master.kayneth.skill.ascension",
@@ -5236,6 +5630,9 @@
         "master.peperoncino.skill.s1a",
         "master.rin.skill.ascension",
         "master.ryuunosuke.skill.ascension",
+        "master.shiki-ryougi.skill.s1",
+        "master.shiki-ryougi.skill.s1a",
+        "master.shiki-tohno.skill.s1",
         "master.shirou-emiya.skill.ascension",
         "master.waver.skill.s1",
         "master.waver.skill.s3",
@@ -5405,6 +5802,10 @@
         },
         {
           "abilityId": "master.fou.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -5833,6 +6234,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.shiki-ryougi.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.sion.skill.s13",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -5943,6 +6348,11 @@
       "representatives": [],
       "acceptanceVehicle": "B/R reviewed-special exception with explicit deletion/reuse criteria",
       "eligibleAbilities": [
+        "master.akiha.skill.ascension",
+        "master.akiha.skill.s1",
+        "master.akiha.skill.s1a",
+        "master.akiha.skill.s2",
+        "master.akiha.skill.s3",
         "master.amakusa.skill.s3",
         "master.araya.skill.ascension",
         "master.araya.skill.s1",
@@ -5968,6 +6378,9 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fou.skill.ascension",
+        "master.fujino.skill.s1a",
+        "master.fujino.skill.s2",
+        "master.fujino.skill.s4",
         "master.goetia.skill.s1",
         "master.goetia.skill.s2",
         "master.hinako.skill.ascension",
@@ -6010,6 +6423,14 @@
         "master.rin.skill.s3",
         "master.ryuunosuke.skill.ascension",
         "master.sakura.skill.s4",
+        "master.shiki-ryougi.skill.ascension",
+        "master.shiki-ryougi.skill.s1b",
+        "master.shiki-ryougi.skill.s2",
+        "master.shiki-tohno.skill.ascension",
+        "master.shiki-tohno.skill.s1a",
+        "master.shiki-tohno.skill.s2",
+        "master.shiki-tohno.skill.s3",
+        "master.shiki-tohno.skill.s4",
         "master.shinji.skill.ascension",
         "master.shinji.skill.s4",
         "master.shirou-emiya.skill.s3",
@@ -6115,6 +6536,26 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.akiha.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.amakusa.skill.s3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -6216,6 +6657,18 @@
         },
         {
           "abilityId": "master.fou.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -6383,6 +6836,38 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.shiki-ryougi.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s1b",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-ryougi.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shiki-tohno.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.shinji.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -6520,6 +7005,11 @@
   "coverage": {
     "mappedAbilities": [
       "master.akasha.skill.s1",
+      "master.akiha.skill.ascension",
+      "master.akiha.skill.s1",
+      "master.akiha.skill.s1a",
+      "master.akiha.skill.s2",
+      "master.akiha.skill.s3",
       "master.amakusa.skill.ascension",
       "master.amakusa.skill.s1",
       "master.amakusa.skill.s1a",
@@ -6593,6 +7083,12 @@
       "master.fiore.skill.s7",
       "master.fou.skill.ascension",
       "master.fou.skill.s1",
+      "master.fujino.skill.ascension",
+      "master.fujino.skill.s1",
+      "master.fujino.skill.s1a",
+      "master.fujino.skill.s2",
+      "master.fujino.skill.s3",
+      "master.fujino.skill.s4",
       "master.goetia.skill.ascension",
       "master.goetia.skill.s1",
       "master.goetia.skill.s2",
@@ -6688,6 +7184,18 @@
       "master.sakura.skill.s2",
       "master.sakura.skill.s3",
       "master.sakura.skill.s4",
+      "master.shiki-ryougi.skill.ascension",
+      "master.shiki-ryougi.skill.s1",
+      "master.shiki-ryougi.skill.s1a",
+      "master.shiki-ryougi.skill.s1b",
+      "master.shiki-ryougi.skill.s2",
+      "master.shiki-ryougi.skill.s3",
+      "master.shiki-tohno.skill.ascension",
+      "master.shiki-tohno.skill.s1",
+      "master.shiki-tohno.skill.s1a",
+      "master.shiki-tohno.skill.s2",
+      "master.shiki-tohno.skill.s3",
+      "master.shiki-tohno.skill.s4",
       "master.shinji.skill.ascension",
       "master.shinji.skill.s1",
       "master.shinji.skill.s2",
@@ -6841,41 +7349,6 @@
         ]
       },
       {
-        "abilityId": "master.akiha.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.akiha.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.akiha.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.akiha.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.akiha.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "master.alice.skill.ascension",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -6968,48 +7441,6 @@
       },
       {
         "abilityId": "master.chaos.skill.s17",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fujino.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fujino.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fujino.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fujino.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fujino.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fujino.skill.s4",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -7395,90 +7826,6 @@
       },
       {
         "abilityId": "master.shiki-nanaya.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-ryougi.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-ryougi.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-ryougi.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-ryougi.skill.s1b",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-ryougi.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-ryougi.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-tohno.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-tohno.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-tohno.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-tohno.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-tohno.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shiki-tohno.skill.s4",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -11512,6 +11859,11 @@
       }
     ],
     "specialCandidates": [
+      "master.akiha.skill.ascension",
+      "master.akiha.skill.s1",
+      "master.akiha.skill.s1a",
+      "master.akiha.skill.s2",
+      "master.akiha.skill.s3",
       "master.amakusa.skill.s3",
       "master.araya.skill.ascension",
       "master.araya.skill.s1",
@@ -11537,6 +11889,9 @@
       "master.fiore.skill.s5",
       "master.fiore.skill.s6",
       "master.fou.skill.ascension",
+      "master.fujino.skill.s1a",
+      "master.fujino.skill.s2",
+      "master.fujino.skill.s4",
       "master.goetia.skill.s1",
       "master.goetia.skill.s2",
       "master.goredolf.skill.s1",
@@ -11581,6 +11936,14 @@
       "master.rin.skill.s3",
       "master.ryuunosuke.skill.ascension",
       "master.sakura.skill.s4",
+      "master.shiki-ryougi.skill.ascension",
+      "master.shiki-ryougi.skill.s1b",
+      "master.shiki-ryougi.skill.s2",
+      "master.shiki-tohno.skill.ascension",
+      "master.shiki-tohno.skill.s1a",
+      "master.shiki-tohno.skill.s2",
+      "master.shiki-tohno.skill.s3",
+      "master.shiki-tohno.skill.s4",
       "master.shinji.skill.ascension",
       "master.shinji.skill.s4",
       "master.shirou-emiya.skill.s3",

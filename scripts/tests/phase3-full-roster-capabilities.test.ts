@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+﻿import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
@@ -291,11 +291,11 @@ describe('Phase 3 full-roster capability mapping', () => {
     const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
 
     expect(inventory.capabilitySummary.totalIdentityCount).toBe(944);
-    expect(inventory.capabilitySummary.contractMappedCount).toBe(270);
-    expect(inventory.capabilitySummary.explicitBlockCount).toBe(674);
+    expect(inventory.capabilitySummary.contractMappedCount).toBe(293);
+    expect(inventory.capabilitySummary.explicitBlockCount).toBe(651);
     expect(inventory.capabilitySummary.zeroSilentFallback).toBe(true);
-    expect(catalog.coverage.mappedAbilities).toHaveLength(270);
-    expect(catalog.coverage.blockedAbilities).toHaveLength(674);
+    expect(catalog.coverage.mappedAbilities).toHaveLength(293);
+    expect(catalog.coverage.blockedAbilities).toHaveLength(651);
     expect(catalog.coverage.mappedAbilities.length + catalog.coverage.blockedAbilities.length).toBe(944);
 
     const allowedCurrentRoutes = new Set(['legacy', 'new', 'dual', 'none']);
@@ -307,8 +307,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     }
 
     expect(markdown).toContain('totalIdentityCount=944');
-    expect(markdown).toContain('contractMappedCount=270');
-    expect(markdown).toContain('explicitBlockCount=674');
+    expect(markdown).toContain('contractMappedCount=293');
+    expect(markdown).toContain('explicitBlockCount=651');
     expect(markdown).toContain('zeroSilentFallback=true');
   });
 
@@ -433,8 +433,8 @@ describe('Phase 3 full-roster capability mapping', () => {
       expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION', 'GENERIC_CARD_ZONE', 'GENERIC_EVENT_DECK', 'GENERIC_MODIFIER', 'GENERIC_POWER', 'GENERIC_RESULT_BINDING', 'GENERIC_TRIGGER_GATEWAY', 'REVIEWED_SPECIAL_HANDLER']),
     );
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(2);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(171);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(97);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(178);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(113);
   });
 
   it('maps the nine-ID Fiore slice with four generic extensions and five reviewed-special transcend rules', () => {
@@ -487,8 +487,8 @@ describe('Phase 3 full-roster capability mapping', () => {
       expect.arrayContaining(['GENERIC_CARD_ZONE', 'GENERIC_COST_PAYMENT', 'GENERIC_MODIFIER', 'GENERIC_POWER', 'GENERIC_TRIGGER_GATEWAY']),
     );
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(2);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(171);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(97);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(178);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(113);
   });
 
   it('maps the thirteen-ID Kadoc and Hinako slice with explicit ordinary dependencies and zero inherited contracts', () => {
@@ -710,8 +710,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(byId.get('master.fou.skill.ascension').phase3.blockedBy).toEqual(expect.arrayContaining(['SPECIAL_EFFECT:prevent_elimination', 'SPECIAL_EFFECT:shared_victory_link', 'SPECIAL_EFFECT:swap_victory_points']));
 
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(2);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(171);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(97);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(178);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(113);
   });
 
   it('maps the nine-ID Ciel/Celenike/Dan batch as seven generic extensions and two reviewed-special identities', () => {
@@ -746,8 +746,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(byId.get('master.dan.skill.s1a').phase3.requiredCapabilities).toEqual(expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION','GENERIC_MODIFIER','GENERIC_STATUS_STATE','GENERIC_TRIGGER_GATEWAY']));
 
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(2);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(171);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(97);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(178);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(113);
   });
 
   it('maps the nine-ID Goetia/Magical Ruby/Irisviel batch as one existing contract, five generic extensions, and three reviewed-special identities', () => {
@@ -781,8 +781,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(byId.get('master.irisviel.skill.ascension').phase3.requiredCapabilities).toEqual(expect.arrayContaining(['GENERIC_CARD_ZONE','GENERIC_LIFECYCLE_POLICY','GENERIC_MODIFIER','GENERIC_PENDING_INTERACTION','GENERIC_POWER','GENERIC_TARGET_SELECTION']));
 
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(2);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(171);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(97);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(178);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(113);
   });
 
   it('maps the fourteen-ID Araya/Kayneth/Leonardo/Taiga/Tokiomi batch as nine generic extensions and five reviewed-special identities', () => {
@@ -824,8 +824,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(byId.get('master.taiga.skill.ascension').phase3.requiredCapabilities).toEqual(expect.arrayContaining(['GENERIC_CARD_ZONE','GENERIC_LIFECYCLE_POLICY']));
 
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(2);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(171);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(97);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(178);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(113);
   });
 
   it('maps the nineteen-ID Julius/Kuzuki/Waver/Sieg/Illya slice as thirteen generic and six reviewed-special identities', () => {
@@ -866,8 +866,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect((byId.get('master.kuzuki.skill.ascension') as any).phase3.requiredCapabilities).toEqual(expect.arrayContaining(['GENERIC_CARD_ZONE','GENERIC_MODIFIER','GENERIC_POWER','GENERIC_TRIGGER_GATEWAY']));
     expect((byId.get('master.iliya.skill.ascension') as any).phase3.requiredCapabilities).toEqual(expect.arrayContaining(['GENERIC_CARD_ZONE','GENERIC_MODIFIER','GENERIC_POWER','GENERIC_TRIGGER_GATEWAY']));
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(2);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(171);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(97);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(178);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(113);
   });
 
   it('maps the nineteen-ID Rin/Sakura/Shinji/Kirei batch as thirteen generic and six reviewed-special identities', () => {
@@ -907,8 +907,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect((byId.get('master.rin.skill.s3') as any).phase3.requiredCapabilities).toEqual(expect.arrayContaining(['GENERIC_CARD_ZONE','GENERIC_PENDING_INTERACTION','GENERIC_RESOURCE_NUMERIC','GENERIC_RESULT_BINDING','GENERIC_TARGET_SELECTION']));
     expect((byId.get('master.kirei.skill.ascension') as any).phase3.requiredCapabilities).toEqual(expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION','GENERIC_CONDITION_EVALUATION','GENERIC_MODIFIER','GENERIC_POWER']));
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(2);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(171);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(97);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(178);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(113);
   });
   it('maps the twenty-ID Kariya/Kiritsugu/Shirou/Maiya/Ryuunosuke batch as one existing, twelve generic, and seven reviewed-special identities', () => {
     const inventory = JSON.parse(readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8')) as any;
@@ -933,8 +933,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     ]);
     for (const [id, reason] of special) { expect((byId.get(id) as any).phase3.classificationRoute).toBe('SPECIAL_HANDLER_CANDIDATE'); expect((byId.get(id) as any).phase3.blockedBy).toContain(reason); }
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(2);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(171);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(97);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(178);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(113);
   });
   it('maps the eighteen-ID Zouken/Caren/Miyu/Shirou Meal batch as nine generic and nine reviewed-special identities', () => {
     const inventory = JSON.parse(readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8')) as any;
@@ -972,8 +972,36 @@ describe('Phase 3 full-roster capability mapping', () => {
       expect((byId.get(id) as any).phase3.blockedBy).toContain(reason);
     }
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(2);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(171);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(97);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(178);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(113);
+  });
+
+  it('maps the twenty-three-ID Fujino/Ryougi/Shiki/Akiha batch as seven generic and sixteen reviewed-special identities', () => {
+    const inventory = JSON.parse(readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8')) as any;
+    const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
+    const ids = [
+      'master.fujino.skill.ascension','master.fujino.skill.s1','master.fujino.skill.s1a','master.fujino.skill.s2','master.fujino.skill.s3','master.fujino.skill.s4',
+      'master.shiki-ryougi.skill.ascension','master.shiki-ryougi.skill.s1','master.shiki-ryougi.skill.s1a','master.shiki-ryougi.skill.s1b','master.shiki-ryougi.skill.s2','master.shiki-ryougi.skill.s3',
+      'master.shiki-tohno.skill.ascension','master.shiki-tohno.skill.s1','master.shiki-tohno.skill.s1a','master.shiki-tohno.skill.s2','master.shiki-tohno.skill.s3','master.shiki-tohno.skill.s4',
+      'master.akiha.skill.ascension','master.akiha.skill.s1','master.akiha.skill.s1a','master.akiha.skill.s2','master.akiha.skill.s3',
+    ];
+    const slice = entries.filter((e: any) => ids.includes(e.canonicalAbilityId));
+    const byId = new Map(slice.map((e: any) => [e.canonicalAbilityId,e]));
+    expect(slice).toHaveLength(23);
+    for (const id of ['master.fujino.skill.ascension','master.fujino.skill.s1','master.fujino.skill.s3','master.shiki-ryougi.skill.s1','master.shiki-ryougi.skill.s1a','master.shiki-ryougi.skill.s3','master.shiki-tohno.skill.s1']) {
+      expect((byId.get(id) as any).phase3.classificationRoute).toBe('READY_GENERIC_EXTENSION');
+      expect((byId.get(id) as any).phase3.blockedBy).toEqual([]);
+    }
+    const special = new Map([
+      ['master.fujino.skill.s1a','SPECIAL_EFFECT:injury_rule'],['master.fujino.skill.s2','SPECIAL_EFFECT:map_adjacency_rule'],['master.fujino.skill.s4','SPECIAL_EFFECT:injury_rule'],
+      ['master.shiki-ryougi.skill.ascension','SPECIAL_EFFECT:grant_linked_ability_to_attribute'],['master.shiki-ryougi.skill.s1b','SPECIAL_EFFECT:deck_bottom_rule'],['master.shiki-ryougi.skill.s2','SPECIAL_EFFECT:deck_bottom_rule'],
+      ['master.shiki-tohno.skill.ascension','SPECIAL_EFFECT:control_resource_rule'],['master.shiki-tohno.skill.s1a','SPECIAL_EFFECT:control_resource_rule'],['master.shiki-tohno.skill.s2','SPECIAL_EFFECT:fusion_rule'],['master.shiki-tohno.skill.s3','SPECIAL_EFFECT:control_resource_rule'],['master.shiki-tohno.skill.s4','SPECIAL_EFFECT:fusion_rule'],
+      ['master.akiha.skill.ascension','SPECIAL_EFFECT:bloodlust_rule'],['master.akiha.skill.s1','SPECIAL_EFFECT:bloodlust_rule'],['master.akiha.skill.s1a','SPECIAL_EFFECT:bloodlust_rule'],['master.akiha.skill.s2','SPECIAL_EFFECT:bloodlust_rule'],['master.akiha.skill.s3','SPECIAL_EFFECT:bloodlust_rule'],
+    ]);
+    for (const [id,reason] of special) { expect((byId.get(id) as any).phase3.classificationRoute).toBe('SPECIAL_HANDLER_CANDIDATE'); expect((byId.get(id) as any).phase3.blockedBy).toContain(reason); }
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(2);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(178);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(113);
   });
 
   it('bridges current semantic card IDs to stable canonical IDs only by exact ID or unique owner/name identity', () => {
@@ -1020,6 +1048,6 @@ describe('Phase 3 full-roster capability mapping', () => {
     }
     expect(
       catalog.capabilities.find((entry: any) => entry.id === 'CARD_ACTION_ACTIVATE').eligibleAbilities,
-    ).toEqual(['master.iliya.skill.s2','master.kariya.skill.s3','master.maiya.skill.s1','master.ryuunosuke.skill.s1','master.sakura.skill.s1','master.sakura.skill.s2','master.shinji.skill.s2']);
+    ).toEqual(['master.fujino.skill.s3','master.iliya.skill.s2','master.kariya.skill.s3','master.maiya.skill.s1','master.ryuunosuke.skill.s1','master.sakura.skill.s1','master.sakura.skill.s2','master.shinji.skill.s2']);
   });
 });
