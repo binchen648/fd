@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.6
+- Version: P3-TI-1.7
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2334,6 +2334,131 @@ Required output:
 - exactly-once / reconnect / stale judgment;
 - Gate A/B/C judgment;
 - explicit A03 synchronization input if accepted.
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
+## Full-Roster Dispatch State After F1
+
+- F1 independently accepted evidence: `59f145434695d29bdd17e4cb3adc887e84182377` (`944/944`, blocked `0`, unclassified `0`).
+- Latest accepted runtime baseline: `a5f390e96ac2560226f9d48f133c9b09f5a1e140` (P3-B23 -> P3-R17 -> A03 synchronization).
+- The F1 evidence branch and runtime branch are parallel. Runtime tasks base on the accepted runtime chain and consume F1 artifacts read-only.
+- P3-FM01 is not dispatched yet: the only exact `READY_EXISTING_CONTRACT` F1 rows are `master.irisviel.skill.s2` and `master.kiritsugu.skill.s2`, one candidate in each separate contract, so no honest 10-40 ability migration batch exists.
+- The active exclusive B runtime lane is closed through B23/R17/A03. The next runtime work is the explicitly scoped B2 task below.
+
+## TASK P3-FB2-01
+
+Owner: Codex B2
+Status: READY
+Branch: `codex/b2-p3-fb2-01-fixed-controller-mana-r1`
+Base: exact P3-FB2-01 A-owned handoff commit
+Runtime baseline before handoff: `a5f390e96ac2560226f9d48f133c9b09f5a1e140`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Runtime request: `runtime-capability-855dd7329e2d` / `GENERIC_COST_PAYMENT`
+
+Goal:
+
+Add one narrow reusable Cost/Payment component for a top-level fixed controller mana cost, using the already accepted typed `pay_mana` Resolution Data-flow primitive. This task does not migrate F1 authoring and does not make unsupported abilities routable.
+
+Exact supported semantic:
+
+- parent ability legality/routing must already be accepted independently;
+- top-level `cost` has exactly one `pay_mana` node;
+- amount is a fixed positive safe-integer literal;
+- payer is the controller from authoritative execution context;
+- payment and downstream settlement are one authoritative transaction;
+- insufficient mana fails closed without committed payment/effect/event/revision mutation;
+- downstream failure rolls payment back with the same transaction;
+- successful settlement consumes the existing typed `pay_mana` result/event envelope;
+- classification/execution is identity-free and does not parse printed text.
+
+Required implementation proof:
+
+- exact fixed-cost positive case with typed `before/after/requestedAmount/actualAmount/status` evidence;
+- renamed card/ability identity behaves identically;
+- insufficient mana is atomic and fail-closed;
+- forced downstream failure rolls back payment;
+- reject zero/negative/non-integer/variable or expression amounts from this sub-capability;
+- reject extra cost nodes and non-mana top-level costs from this sub-capability;
+- effect-level `optionalCost` is not admitted by this component;
+- current Maiya `military.attach-support-shot` and Kayneth `volumen.extra-play` focused/current-lineage behavior remains green;
+- current B13-B23 compatibility and full deterministic root baseline remain green.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- `docs/agents/PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`
+- `docs/reports/2026-09-16-p3-fb2-01-fixed-controller-mana-handoff.md`
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- focused Maiya/Kayneth regression tests before editing.
+
+May touch:
+
+- `packages/rules/src/ability/interpreter.ts`;
+- `packages/rules/src/ability/resolution-dataflow.ts` only for a minimal additive adapter to the existing primitive, never a duplicate payment implementation;
+- one new focused FB2-01 regression test;
+- narrow Maiya/Kayneth compatibility assertions if required;
+- `docs/reports/2026-09-16-p3-fb2-01-fixed-controller-mana-result.md`.
+
+Must not:
+
+- modify `packages/rules/src/match-session.ts`, server/client projection, or interaction protocols;
+- migrate any F1 roster authoring or edit F1 inventory/catalog/source-evidence artifacts;
+- change A-owned KPI/taxonomy;
+- add card/ability/owner/character identity routing;
+- parse Chinese/printed text at runtime;
+- support variable/X, effect-level optional, third-party/multi-player, upkeep, replacement, command-seal, VP, discard-card, source-move, or ordinary printed play costs;
+- broaden Maiya ADD_TO_ATTACK, Kayneth source-card PLAY, or any other parent semantic contract;
+- merge the parallel F1 evidence branch into runtime.
+
+Gate C:
+
+No new Gate C is required if FB2-01 remains a server-side fixed cost component and does not change payment projection, pending interaction, reconnect, or stale-command behavior. Any such surface change is out of scope and blocks acceptance until a new task explicitly authorizes it.
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R18
+
+Owner: Codex R
+Status: READY_AFTER_P3_FB2_01
+Branch: reviewer-selected fresh worktree/branch from exact FB2-01 candidate SHA
+
+Goal:
+
+Independently review the P3-FB2-01 fixed controller mana-cost component without implementing fixes or inheriting acceptance from Maiya, Kayneth, Golden Eater, or the generic legacy cost loop.
+
+Required independent checks:
+
+- fresh typecheck, FB2-01 focused tests, Maiya/Kayneth compatibility, and current-lineage/full-root baseline;
+- exact component shape is fixed positive controller `pay_mana` only and cannot make an unsupported parent ability routable;
+- classifier/adapter is identity-free and contains no printed-text parsing;
+- typed payment evidence has correct actual delta and causation;
+- insufficient mana and downstream failure are atomic and leak no payment/effect/event/revision mutation;
+- zero/negative/non-integer/variable, additional, non-mana, and effect-level optional costs remain outside this contract;
+- no MatchSession/client/projection or F1 authoring/KPI changes are present;
+- no broad Cost/Payment, Resource Numeric, Interaction, or Card Action family is promoted by implication.
+
+Must not:
+
+- implement fixes while reviewing;
+- widen the component or migrate F1 authoring;
+- modify A-owned KPI/taxonomy.
+
+Required output:
+
+- findings ordered by severity;
+- exact-shape / identity-independence judgment;
+- typed-payment / atomicity / rollback judgment;
+- Maiya/Kayneth compatibility judgment;
+- scope/non-promotion judgment;
+- explicit A synchronization input if accepted.
 
 Completion status allowed:
 
