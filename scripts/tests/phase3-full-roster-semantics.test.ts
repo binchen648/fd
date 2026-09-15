@@ -1451,6 +1451,15 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.robin.skill.sc-robin-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'poison_defeat_rule'})])}));
   });
 
+  it('grounds the fifteen-ID Arjuna/EMIYA Alter/Euryale/Ishtar/Jason slice from the locked saber/archer snapshot', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const prefixes=['servant.arjuna-archer.skill.','servant.emiya-alt.skill.','servant.euryale.skill.','servant.ishtar.skill.','servant.jason.skill.']; const slice=overlays.filter((card)=>prefixes.some((p)=>card.id.startsWith(p))); expect(slice).toHaveLength(15);
+    expect(slice.every((card)=>card.source?.authority==='DEVELOPMENT_TEXT' && card.source.document==='Fate_Domination-开发版/batch_saber_archer.js' && card.source.sourceFileSha256==='b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4' && card.source.sourceText===card.printedText && card.source.sourceTextSha256===card.referencePrintedTextSha256)).toBe(true);
+    for(const id of ['servant.emiya-alt.skill.sc-emiya-alt-1','servant.euryale.skill.sc-euryale-1','servant.ishtar.skill.sc-ishtar-3']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'independent_action_rule'})])}));
+    for(const id of ['servant.jason.skill.sc-jason-1','servant.jason.skill.sc-jason-2','servant.jason.skill.sc-jason-3']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'dispatch_quest_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.arjuna-archer.skill.sc-arjuna-archer-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'prophecy_hand_sum_defeat_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.ishtar.skill.sc-ishtar-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'offboard_battle_takeover_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1504,10 +1513,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 544,
-      blockedCount: 400,
+      sourceGroundedCount: 559,
+      blockedCount: 385,
       unclassifiedCount: 0,
-      structuredAbilityCount: 822,
+      structuredAbilityCount: 837,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
