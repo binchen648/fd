@@ -1396,6 +1396,18 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.martha.skill.sc-martha-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'draw_cards'}),expect.objectContaining({type:'play_selected_cards'})])}));
   });
 
+  it('grounds the twelve-ID Okita/Molay/Lakshmibai slice from the exact saber/archer development snapshot', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const prefixes = ['servant.okita.skill.','servant.molay.skill.','servant.lakshmibai.skill.'];
+    const slice = overlays.filter((card) => prefixes.some((prefix) => card.id.startsWith(prefix)));
+    expect(slice).toHaveLength(12);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.document === 'Fate_Domination-开发版/batch_saber_archer.js' && card.source.sourceFileSha256 === 'b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.lakshmibai.skill.sc-lakshmibai-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'prevent_elimination'}),expect.objectContaining({type:'event_card_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.molay.skill.sc-molay-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'form_state_rule'}),expect.objectContaining({type:'foreign_life_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.okita.skill.sc-okita-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'play_selected_cards'}),expect.objectContaining({type:'draw_cards'})])}));
+    expect(slice.find(c=>c.id==='servant.okita.skill.sc-okita-4')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'weak_constitution_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1449,10 +1461,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 490,
-      blockedCount: 454,
+      sourceGroundedCount: 502,
+      blockedCount: 442,
       unclassifiedCount: 0,
-      structuredAbilityCount: 768,
+      structuredAbilityCount: 780,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

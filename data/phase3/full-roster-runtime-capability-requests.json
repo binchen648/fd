@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 490
+    "affectedIdentityCount": 502
   },
   "requests": [
     {
@@ -1270,6 +1270,7 @@
         "servant.martha.skill.sc-martha-3",
         "servant.napoleon.skill.sc-napoleon-2",
         "servant.nero.skill.sc-nero-2",
+        "servant.okita.skill.sc-okita-1",
         "servant.parvati.skill.sc-parvati-3"
       ],
       "sourceReferences": [
@@ -2148,6 +2149,33 @@
           "sha256": "6bfc168b9460f7919c339f71ce905347c05261c69f90340f097769ba02b15e3b"
         },
         {
+          "abilityId": "servant.okita.skill.sc-okita-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/冲田总司.htm"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.okita/冲田总司"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-1",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_okita_1"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[19].skills[0].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[19].skills[0].text#line=2",
+          "sha256": "ffbedaff26be48b7714e7dd13318cfd0b77c604b650606498a22fb0e1588cdf6"
+        },
+        {
           "abilityId": "servant.parvati.skill.sc-parvati-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/枪兵/英文版/帕尔瓦蒂.htm"
@@ -2202,9 +2230,9 @@
         "routeCounts": {
           "none": 1,
           "shared_handler": 25,
-          "specific_handler": 6
+          "specific_handler": 7
         },
-        "handlerCount": 19,
+        "handlerCount": 20,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -6208,6 +6236,7 @@
         "servant.merlin.skill.sc-merlin-3",
         "servant.napoleon.skill.sc-napoleon-2",
         "servant.nero.skill.sc-nero-2",
+        "servant.okita.skill.sc-okita-1",
         "servant.roberts.skill.sc-roberts-2"
       ],
       "sourceReferences": [
@@ -8960,6 +8989,33 @@
           "sha256": "6bfc168b9460f7919c339f71ce905347c05261c69f90340f097769ba02b15e3b"
         },
         {
+          "abilityId": "servant.okita.skill.sc-okita-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/冲田总司.htm"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.okita/冲田总司"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-1",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_okita_1"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[19].skills[0].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[19].skills[0].text#line=2",
+          "sha256": "ffbedaff26be48b7714e7dd13318cfd0b77c604b650606498a22fb0e1588cdf6"
+        },
+        {
           "abilityId": "servant.roberts.skill.sc-roberts-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/巴沙洛缪·罗伯茨.htm"
@@ -9013,9 +9069,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 61,
-          "specific_handler": 46
+          "specific_handler": 47
         },
-        "handlerCount": 66,
+        "handlerCount": 67,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -15748,6 +15804,7 @@
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.lakshmibai.skill.sc-lakshmibai-1",
         "servant.lionking.skill.sc-lionking-3",
         "servant.merlin.skill.sc-merlin-3"
       ],
@@ -16794,6 +16851,27 @@
           "sha256": "06737d51cbb6bd19167488edc70ea347f0f289ff49439b4cd7724930316eec7c"
         },
         {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/拉克什米·芭伊.htm"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lakshmibai/拉克什米·芭伊"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-1",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_lakshmibai_1"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[33].skills[0].text#line=1",
+          "sha256": "e7a2409fd36290a1059c461cd97cf33db4085503a83abf7ecea5e1bed6311152"
+        },
+        {
           "abilityId": "servant.lionking.skill.sc-lionking-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/枪兵/英文版/伦戈米尼亚德.htm"
@@ -16873,10 +16951,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 30,
+          "shared_handler": 31,
           "specific_handler": 9
         },
-        "handlerCount": 18,
+        "handlerCount": 19,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -29500,9 +29578,12 @@
         "servant.illya.skill.sc-illya-2",
         "servant.illya.skill.sc-illya-4",
         "servant.kama.skill.sc-kama-1",
+        "servant.lakshmibai.skill.sc-lakshmibai-3",
         "servant.mechaeli.skill.sc-mechaeli-2",
         "servant.mephisto.skill.sc-mephisto-2",
+        "servant.molay.skill.sc-molay-1",
         "servant.mozart.skill.sc-mozart-1",
+        "servant.okita.skill.sc-okita-3",
         "servant.ozymandias.skill.sc-ozymandias-2",
         "servant.sherlock.skill.sc-sherlock-2"
       ],
@@ -31941,6 +32022,39 @@
           "sha256": "0cc83101200f3803da4858b0241d6d52ca875f4c89a7c7a04b8dbfa5730e7e39"
         },
         {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/拉克什米·芭伊.htm"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lakshmibai/拉克什米·芭伊"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_lakshmibai_3"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[33].skills[2].text#line=1",
+          "sha256": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[33].skills[2].text#line=2",
+          "sha256": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[33].skills[2].text#line=3",
+          "sha256": "dcaf950c99dfaf589dac80e3e1d6c0d65e6d97020e1943f499fcb1e204610158"
+        },
+        {
           "abilityId": "servant.mechaeli.skill.sc-mechaeli-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/他人格/英文版/机械伊丽亲.htm"
@@ -32001,6 +32115,39 @@
           "sha256": "92e806898798557eb69d5c9f933c590e6e19d99ecd2c4b1bb85bdda7e651f176"
         },
         {
+          "abilityId": "servant.molay.skill.sc-molay-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/雅克·德·莫莱.htm"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.molay/雅克·德·莫莱"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-1",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_molay_1"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[27].skills[0].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[27].skills[0].text#line=2",
+          "sha256": "07abcc84af3eb04ec0d5047dd9a2011d363dc7d0d113beb51b8d01a87924ad7c"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[27].skills[0].text#line=3",
+          "sha256": "3a606755a912447c23d36afa00a4cb425fb3a16817688a0b6a4fc56e503788ac"
+        },
+        {
           "abilityId": "servant.mozart.skill.sc-mozart-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/魔术师/英文版/莫扎特.htm"
@@ -32032,6 +32179,27 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[62].abilities[2].printedClause",
           "sha256": "1f8715720114bd77fd897009e7db293c5b861139531109b4bc0849a9abdd7451"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/冲田总司.htm"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.okita/冲田总司"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-3",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_okita_3"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[19].skills[2].text#line=1",
+          "sha256": "dcfdbc9db0588ad03c444a4b8088d166ac46eac5dbf8c3c87d4d267cab054cd1"
         },
         {
           "abilityId": "servant.ozymandias.skill.sc-ozymandias-2",
@@ -32132,10 +32300,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 1,
-          "shared_handler": 58,
-          "specific_handler": 31
+          "shared_handler": 59,
+          "specific_handler": 33
         },
-        "handlerCount": 55,
+        "handlerCount": 58,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -32247,6 +32415,7 @@
         "servant.kama.skill.sc-kama-2",
         "servant.kiritsugu.skill.sc-kiritsugu-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.lakshmibai.skill.sc-lakshmibai-3",
         "servant.mechaeli.skill.sc-mechaeli-2",
         "servant.mephisto.skill.sc-mephisto-2",
         "servant.mephisto.skill.sc-mephisto-3",
@@ -34850,6 +35019,39 @@
           "sha256": "06737d51cbb6bd19167488edc70ea347f0f289ff49439b4cd7724930316eec7c"
         },
         {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/拉克什米·芭伊.htm"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lakshmibai/拉克什米·芭伊"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_lakshmibai_3"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[33].skills[2].text#line=1",
+          "sha256": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[33].skills[2].text#line=2",
+          "sha256": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[33].skills[2].text#line=3",
+          "sha256": "dcaf950c99dfaf589dac80e3e1d6c0d65e6d97020e1943f499fcb1e204610158"
+        },
+        {
           "abilityId": "servant.mechaeli.skill.sc-mechaeli-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/他人格/英文版/机械伊丽亲.htm"
@@ -35191,10 +35393,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 1,
-          "shared_handler": 66,
+          "shared_handler": 67,
           "specific_handler": 43
         },
-        "handlerCount": 70,
+        "handlerCount": 71,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -46582,6 +46784,9 @@
         "servant.koyanskaya.skill.sc-koyanskaya-4",
         "servant.koyanskaya.skill.sc-koyanskaya-5",
         "servant.koyanskaya.skill.sc-koyanskaya-6",
+        "servant.lakshmibai.skill.sc-lakshmibai-1",
+        "servant.lakshmibai.skill.sc-lakshmibai-2",
+        "servant.lakshmibai.skill.sc-lakshmibai-4",
         "servant.martha.skill.sc-martha-1",
         "servant.martha.skill.sc-martha-2",
         "servant.martha.skill.sc-martha-4",
@@ -46591,10 +46796,17 @@
         "servant.mash.skill.sc-mash-4",
         "servant.medusa.skill.sc-medusa-2",
         "servant.mephisto.skill.sc-mephisto-2",
+        "servant.molay.skill.sc-molay-1",
+        "servant.molay.skill.sc-molay-2",
+        "servant.molay.skill.sc-molay-3",
+        "servant.molay.skill.sc-molay-4",
         "servant.oberon.skill.sc-oberon-1",
         "servant.oberon.skill.sc-oberon-2",
         "servant.oberon.skill.sc-oberon-3",
         "servant.oberon.skill.sc-oberon-4",
+        "servant.okita.skill.sc-okita-2",
+        "servant.okita.skill.sc-okita-3",
+        "servant.okita.skill.sc-okita-4",
         "servant.sherlock.skill.sc-sherlock-1",
         "servant.sherlock.skill.sc-sherlock-2",
         "servant.sherlock.skill.sc-sherlock-3",
@@ -53280,6 +53492,81 @@
           "sha256": "f7964d361dbb7383772b76ed1db66afb01001206f8b7e2367038f01a560bb732"
         },
         {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/拉克什米·芭伊.htm"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lakshmibai/拉克什米·芭伊"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-1",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_lakshmibai_1"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[33].skills[0].text#line=1",
+          "sha256": "e7a2409fd36290a1059c461cd97cf33db4085503a83abf7ecea5e1bed6311152"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/拉克什米·芭伊.htm"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lakshmibai/拉克什米·芭伊"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-2",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_lakshmibai_2"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[33].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[33].skills[1].text#line=2",
+          "sha256": "6f4b6ffea3a37a5c5d08d9a8e1c7b9e6eea3fbf6adbfcfca988a260f76a8ed4a"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-4",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/拉克什米·芭伊.htm"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-4",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.lakshmibai/拉克什米·芭伊"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-4",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_lakshmibai_4"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[33].skills[3].text#line=1",
+          "sha256": "ac47771e8a2691abf92d1f369c89daef6a3dfe63ee12dfa9b37bbb97f7ab8cf2"
+        },
+        {
+          "abilityId": "servant.lakshmibai.skill.sc-lakshmibai-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[33].skills[3].text#line=2",
+          "sha256": "70649545e7e64be325bee2640ab81cf306a4247778b8173384b30534db8afa13"
+        },
+        {
           "abilityId": "servant.martha.skill.sc-martha-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/玛尔达.htm"
@@ -53517,6 +53804,126 @@
           "sha256": "92e806898798557eb69d5c9f933c590e6e19d99ecd2c4b1bb85bdda7e651f176"
         },
         {
+          "abilityId": "servant.molay.skill.sc-molay-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/雅克·德·莫莱.htm"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.molay/雅克·德·莫莱"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-1",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_molay_1"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[27].skills[0].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[27].skills[0].text#line=2",
+          "sha256": "07abcc84af3eb04ec0d5047dd9a2011d363dc7d0d113beb51b8d01a87924ad7c"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[27].skills[0].text#line=3",
+          "sha256": "3a606755a912447c23d36afa00a4cb425fb3a16817688a0b6a4fc56e503788ac"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/雅克·德·莫莱.htm"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.molay/雅克·德·莫莱"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-2",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_molay_2"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[27].skills[1].text#line=1",
+          "sha256": "2dbccb02450edcc1eea253b2f736b055777b3ec08c60bf76db256f39e2112250"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[27].skills[1].text#line=2",
+          "sha256": "ddbf5bed08d6848ff09821b7bf28b41784c9bfab64ae4a8fab5ad007fc988932"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[27].skills[1].text#line=3",
+          "sha256": "f84574fb606c517c2b87994b7fdaf462542213f155e94b07e8379fb372dfba82"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/雅克·德·莫莱.htm"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.molay/雅克·德·莫莱"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-3",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_molay_3"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[27].skills[2].text#line=1",
+          "sha256": "7b46da253ce56bb2190a95d9f423692561c2fe0c3ee282641eecd40b0d2b049a"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[27].skills[2].text#line=2",
+          "sha256": "57cdc9d759525f810f7b95bdf9efdf719e9cd0b21f349fad336202768630bfb2"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-4",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/雅克·德·莫莱.htm"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-4",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.molay/雅克·德·莫莱"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-4",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_molay_4"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[27].skills[3].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.molay.skill.sc-molay-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[27].skills[3].text#line=2",
+          "sha256": "9dfd8a774540b789ab2a1fe8e9fe7481b493a083ba9a4c24b69b5192132cc62e"
+        },
+        {
           "abilityId": "servant.oberon.skill.sc-oberon-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/身披角色者/英文版/奥伯龙·伏提庚.htm"
@@ -53623,6 +54030,75 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[172].skills[3].text#line=4",
           "sha256": "d159e931a4573863ddfe89af916aa90e5389326f0b86465b14d46b43063d3a52"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/冲田总司.htm"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.okita/冲田总司"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-2",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_okita_2"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[19].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[19].skills[1].text#line=2",
+          "sha256": "180b4198d288d18b0d7bea958f2297b5bc61c0978239664565619733843fb10b"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/冲田总司.htm"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.okita/冲田总司"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-3",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_okita_3"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[19].skills[2].text#line=1",
+          "sha256": "dcfdbc9db0588ad03c444a4b8088d166ac46eac5dbf8c3c87d4d267cab054cd1"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-4",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/冲田总司.htm"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-4",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.okita/冲田总司"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-4",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_okita_4"
+        },
+        {
+          "abilityId": "servant.okita.skill.sc-okita-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[19].skills[3].text#line=1",
+          "sha256": "3505e83a83fa7fcdc2b1a62d03a2aee89e7e58ee7a439f21b9c0d0aebac0bc08"
         },
         {
           "abilityId": "servant.sherlock.skill.sc-sherlock-1",
@@ -53945,10 +54421,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 179,
-          "specific_handler": 94
+          "shared_handler": 184,
+          "specific_handler": 99
         },
-        "handlerCount": 142,
+        "handlerCount": 149,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

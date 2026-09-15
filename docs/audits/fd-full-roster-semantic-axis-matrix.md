@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=490
-blockedCount=454
+sourceGroundedCount=502
+blockedCount=442
 unclassifiedCount=0
-structuredAbilityCount=768
+structuredAbilityCount=780
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 106 |
+| timing | `ACTION` | 108 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -260,12 +260,12 @@ structuredAbilityCount=768
 | target | `CHOOSE_EACH_PLAYER_OPTION` | 2 |
 | target | `CHOOSE_EACH_PLAYER_CARDS` | 1 |
 | target | `CHOOSE_N_EVENTS` | 1 |
-| effect | `GAIN_VICTORY_POINTS` | 38 |
+| effect | `GAIN_VICTORY_POINTS` | 39 |
 | effect | `GAIN_MANA` | 34 |
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
-| effect | `EVENT_CARD_RULE` | 26 |
-| effect | `DRAW_CARDS` | 23 |
+| effect | `EVENT_CARD_RULE` | 27 |
+| effect | `DRAW_CARDS` | 24 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
@@ -273,17 +273,17 @@ structuredAbilityCount=768
 | effect | `MOVE_SELECTED_CARDS` | 17 |
 | effect | `CLOSE_SOURCE_CARD` | 14 |
 | effect | `LOSTBELT_EXPANSION` | 14 |
+| effect | `PLAY_SELECTED_CARDS` | 14 |
 | effect | `DEFEAT_PLAYER` | 13 |
-| effect | `PLAY_SELECTED_CARDS` | 13 |
 | effect | `SET_PLAYER_FLAG` | 12 |
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
+| effect | `FOREIGN_LIFE_RULE` | 10 |
 | effect | `LOSE_MANA` | 10 |
 | effect | `ADJUST_COMMAND_SEALS` | 9 |
 | effect | `CYCLE_STATE_TRANSITION` | 9 |
 | effect | `DREAM_SUMMON_RULE` | 9 |
 | effect | `SOURCE_CARD_POWER_BONUS` | 9 |
 | effect | `DEDUCTION_RULE` | 7 |
-| effect | `FOREIGN_LIFE_RULE` | 7 |
 | effect | `IF_CONDITION` | 7 |
 | effect | `RULER_SEAL_RULE` | 7 |
 | effect | `SCHEDULE_PHASE_EFFECT` | 7 |
@@ -316,11 +316,13 @@ structuredAbilityCount=768
 | effect | `DETECTIVE_CLUE_RULE` | 3 |
 | effect | `EXILE_SOURCE_CARD` | 3 |
 | effect | `FOOD_RESOURCE_RULE` | 3 |
+| effect | `FORM_STATE_RULE` | 3 |
 | effect | `GUARD_RULE` | 3 |
 | effect | `MOVE_MATCHING_EVENTS` | 3 |
 | effect | `OVERLOAD_CARD_RULE` | 3 |
 | effect | `PHANTOM_PLAYER_RULE` | 3 |
 | effect | `PILGRIMAGE_LUCK_RULE` | 3 |
+| effect | `PREVENT_ELIMINATION` | 3 |
 | effect | `REINCARNATION_RULE` | 3 |
 | effect | `TRAINING_EXPERIENCE_RULE` | 3 |
 | effect | `VISITOR_CARD_RULE` | 3 |
@@ -331,11 +333,11 @@ structuredAbilityCount=768
 | effect | `CRAFT_ESSENCE_EFFECT_RULE` | 2 |
 | effect | `DECK_ENTRY_REPLACEMENT` | 2 |
 | effect | `DECLARED_ATTRIBUTE_RULE` | 2 |
+| effect | `DEFEAT_OVERRIDE_RULE` | 2 |
 | effect | `DEMON_GOD_RULE` | 2 |
 | effect | `DUAL_SERVANT_RULE` | 2 |
 | effect | `FEAR_ATTRIBUTE_RULE` | 2 |
 | effect | `FINISH_GAME` | 2 |
-| effect | `FORM_STATE_RULE` | 2 |
 | effect | `GEM_RESOURCE_RULE` | 2 |
 | effect | `GRANT_LINKED_ABILITY_TO_ATTRIBUTE_ATTACKS` | 2 |
 | effect | `GROWTH_COUNTER_RULE` | 2 |
@@ -346,13 +348,14 @@ structuredAbilityCount=768
 | effect | `NEMESIS_RULE` | 2 |
 | effect | `NPC_RULE` | 2 |
 | effect | `OPPONENT_MANA_BORROW_RULE` | 2 |
-| effect | `PREVENT_ELIMINATION` | 2 |
+| effect | `PERSISTENT_POWER_AURA_RULE` | 2 |
 | effect | `REMOVE_LINKED_STATUS` | 2 |
 | effect | `REMOVE_STATUS` | 2 |
 | effect | `RETRIGGER_CARD_PLAY_EFFECTS` | 2 |
 | effect | `ROSTER_SKILL_DRAFT_RULE` | 2 |
 | effect | `SECRET_ROUND_BINDING` | 2 |
 | effect | `SERVANT_OWNERSHIP_RULE` | 2 |
+| effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 2 |
 | effect | `SET_SELECTED_CARDS_FACE` | 2 |
 | effect | `SHOP_AUCTION_RULE` | 2 |
 | effect | `TATARI_RULE` | 2 |
@@ -385,7 +388,6 @@ structuredAbilityCount=768
 | effect | `DAMAGE_RESOURCE_RULE` | 1 |
 | effect | `DECK_BOTTOM_MATCH_RULE` | 1 |
 | effect | `DECK_BOTTOM_RULE` | 1 |
-| effect | `DEFEAT_OVERRIDE_RULE` | 1 |
 | effect | `DETECTIVE_ACCUSATION_RULE` | 1 |
 | effect | `DISCARD_LUCK_STATE_RULE` | 1 |
 | effect | `ENSURE_EVENT_DECK_COUNT` | 1 |
@@ -416,8 +418,8 @@ structuredAbilityCount=768
 | effect | `ORIGIN_BULLET_RULE` | 1 |
 | effect | `OTHER_ATTACK_POWER_BONUS` | 1 |
 | effect | `PAIN_CONVERSION_REWARD_RULE` | 1 |
-| effect | `PERSISTENT_POWER_AURA_RULE` | 1 |
 | effect | `PLAY_SOURCE_CARD` | 1 |
+| effect | `REACTIVE_CARD_ACTION_RULE` | 1 |
 | effect | `REACTIVE_RESOURCE_RULE` | 1 |
 | effect | `RED_VERMILION_RULE` | 1 |
 | effect | `REMOVE_OWNED_CARDS_BY_LINKED_SKILL` | 1 |
@@ -425,12 +427,12 @@ structuredAbilityCount=768
 | effect | `REPEAT_SKILL_EFFECT_RULE` | 1 |
 | effect | `REPLACE_SELECTED_EVENT_FROM_DECK` | 1 |
 | effect | `RESET_SKILL_USAGE` | 1 |
+| effect | `REVEALED_HAND_POWER_RULE` | 1 |
 | effect | `ROSTER_REPLACEMENT_RULE` | 1 |
 | effect | `SCHEDULED_DECK_REBUILD_RULE` | 1 |
 | effect | `SEED_ATTACHED_SUPPLY` | 1 |
 | effect | `SEQUESTER_RANDOM_INACTIVE_SERVANT_SKILL` | 1 |
 | effect | `SET_COMBAT_POWER` | 1 |
-| effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 1 |
 | effect | `SET_SOURCE_CARD_COST_FOR_TRANSACTION` | 1 |
 | effect | `SHARED_VICTORY_LINK` | 1 |
 | effect | `SHUFFLE_EVENT_DECK` | 1 |
@@ -441,6 +443,7 @@ structuredAbilityCount=768
 | effect | `STOLEN_MANA_ATTRIBUTION_RULE` | 1 |
 | effect | `SWAP_SELECTED_EVENT_LOCATIONS` | 1 |
 | effect | `SWAP_VICTORY_POINTS` | 1 |
+| effect | `TEMPORARY_ATTACK_CREATION_RULE` | 1 |
 | effect | `TEMPORARY_CARD_COPY_RULE` | 1 |
 | effect | `TEMPORARY_COMMAND_SEAL_RULE` | 1 |
 | effect | `TRANSFER_SELECTED_CARDS` | 1 |
@@ -450,6 +453,7 @@ structuredAbilityCount=768
 | effect | `TRIMMAU_GROWTH_RULE` | 1 |
 | effect | `TRUE_NAME_REVEAL_RULE` | 1 |
 | effect | `UNPREVENTABLE_RESULT_RULE` | 1 |
+| effect | `WEAK_CONSTITUTION_RULE` | 1 |
 | effect | `WINNER_PREDICTION_RULE` | 1 |
 | interaction | `CHOOSE_ONE_CARD` | 27 |
 | interaction | `BRANCH_CHOICE` | 15 |
@@ -1435,10 +1439,10 @@ structuredAbilityCount=768
 | `servant.ladyavalon.skill.sc-ladyavalon-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lady-avalon-ideal-land` |
 | `servant.ladyavalon.skill.sc-ladyavalon-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.pretender-class` |
 | `servant.ladyavalon.skill.sc-ladyavalon-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
-| `servant.lakshmibai.skill.sc-lakshmibai-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lakshmibai-package` |
-| `servant.lakshmibai.skill.sc-lakshmibai-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lakshmibai-package` |
-| `servant.lakshmibai.skill.sc-lakshmibai-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
-| `servant.lakshmibai.skill.sc-lakshmibai-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lakshmibai-package` |
+| `servant.lakshmibai.skill.sc-lakshmibai-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE`, `PREVENT_ELIMINATION` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lakshmibai-package` |
+| `servant.lakshmibai.skill.sc-lakshmibai-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REACTIVE_CARD_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lakshmibai-package` |
+| `servant.lakshmibai.skill.sc-lakshmibai-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `SET_OPPONENT_ATTRIBUTE_POWER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
+| `servant.lakshmibai.skill.sc-lakshmibai-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DEFEAT_OVERRIDE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lakshmibai-package` |
 | `servant.lance.skill.sc-lance-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lancelot-eternal-arms-mastery` |
 | `servant.lance.skill.sc-lance-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-rule-flags` |
 | `servant.lance.skill.sc-lance-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lancelot-for-someones-glory` |
@@ -1498,10 +1502,10 @@ structuredAbilityCount=768
 | `servant.mhx.skill.sc-mhx-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mhx-anti-saber-weapon` |
 | `servant.mhx.skill.sc-mhx-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mhx-nameless-victory-sword` |
 | `servant.mhx.skill.sc-mhx-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
-| `servant.molay.skill.sc-molay-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.molay-pilgrims-reward` |
-| `servant.molay.skill.sc-molay-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.molay-mother-of-goats` |
-| `servant.molay.skill.sc-molay-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.molay-goats-invitation` |
-| `servant.molay.skill.sc-molay-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.outer-god-life` |
+| `servant.molay.skill.sc-molay-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PERSISTENT_POWER_AURA_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.molay-pilgrims-reward` |
+| `servant.molay.skill.sc-molay-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE`, `FORM_STATE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.molay-mother-of-goats` |
+| `servant.molay.skill.sc-molay-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.molay-goats-invitation` |
+| `servant.molay.skill.sc-molay-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.outer-god-life` |
 | `servant.mordred.skill.sc-mordred-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mordred-hidden-helm` |
 | `servant.mordred.skill.sc-mordred-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mordred-clarent` |
 | `servant.mordred.skill.sc-mordred-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
@@ -1551,10 +1555,10 @@ structuredAbilityCount=768
 | `servant.okita-alt.skill.sc-okita-alt-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
 | `servant.okita-alt.skill.sc-okita-alt-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-alt-boundless` |
 | `servant.okita-alt.skill.sc-okita-alt-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-alt-rengoku` |
-| `servant.okita.skill.sc-okita-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-sincerity-flag` |
-| `servant.okita.skill.sc-okita-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.create-temporary-attacks` |
-| `servant.okita.skill.sc-okita-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-haori` |
-| `servant.okita.skill.sc-okita-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-weak-constitution` |
+| `servant.okita.skill.sc-okita-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-sincerity-flag` |
+| `servant.okita.skill.sc-okita-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `TEMPORARY_ATTACK_CREATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.create-temporary-attacks` |
+| `servant.okita.skill.sc-okita-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVEALED_HAND_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-haori` |
+| `servant.okita.skill.sc-okita-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `WEAK_CONSTITUTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.okita-weak-constitution` |
 | `servant.orion.skill.sc-orion-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.orion-hunter-moon` |
 | `servant.orion.skill.sc-orion-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.orion-sea-god-blessing` |
 | `servant.orion.skill.sc-orion-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.orion-luck-exile` |
