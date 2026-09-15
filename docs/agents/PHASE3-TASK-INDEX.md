@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.7
+- Version: P3-TI-1.8
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2459,6 +2459,132 @@ Required output:
 - Maiya/Kayneth compatibility judgment;
 - scope/non-promotion judgment;
 - explicit A synchronization input if accepted.
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
+## Full-Roster Dispatch State After FB2-01
+
+- P3-FB2-01 fixed controller mana payment is independently accepted by P3-R18 at `30c1e5365eeba102853a7f20f5bad139b3953acc` and synchronized by A at `0d4426d8565157121a3e86f4cc6e10396c9366be`.
+- Post-acceptance membership audit: 30 Cost/Payment identities -> 24 MANA-axis -> 15 fixed positive literal MANA shapes -> `0` complete-skill migration-ready identities because every fixed member still has another unaccepted capability or reviewed-special dependency.
+- P3-FM01 remains undispatched; no synthetic F4 burn-down is allowed.
+- Dependency wave 1 continues with the narrow Resource Numeric deployment-reward task below.
+
+## TASK P3-FB2-02
+
+Owner: Codex B2
+Status: READY
+Branch: `codex/b2-p3-fb2-02-deployment-resource-r1`
+Base: exact P3-FB2-02 A-owned handoff commit
+Runtime baseline before handoff: `0d4426d8565157121a3e86f4cc6e10396c9366be`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Runtime request: `runtime-capability-6220d123d8e1` / `GENERIC_RESOURCE_NUMERIC`
+
+Goal:
+
+Add one narrow reusable Resource Numeric trigger contract for fixed positive controller mana / victory-point rewards caused by the trusted controller deployment event at a specified location. This task does not migrate F1 authoring and does not promote generic Trigger Gateway.
+
+Exact F1 sub-capability membership:
+
+- `servant.anastasia.skill.sc-anastasia-1`
+- `servant.andersen.skill.sc-andersen-1`
+- `servant.avicebron.skill.sc-avicebron-3`
+- `servant.davinci.skill.sc-davinci-4`
+- `servant.semiramis.skill.sc-semiramis-2`
+- `servant.shakespeare.skill.sc-shakespeare-1`
+
+Exact supported semantic:
+
+- forced/automatic trigger only;
+- trigger exactly `after_player_deployed_to_battlefield`;
+- non-empty `activation.eventLocationId`;
+- event controller and location provenance must both match;
+- no targets, cost, create, lifecycle, modifier, response/pending interaction, or variable input;
+- exactly 1 or 2 effects;
+- effects limited to controller `adjust_mana` / `adjust_victory_points`;
+- amounts are fixed positive safe-integer literals;
+- existing Resolution Data-flow provides one atomic event-stage settlement and typed result/event evidence;
+- identity-free classification; no printed-text parsing and no `magic_workshop` runtime hard-code.
+
+Required proof:
+
+- renamed identity;
+- one-resource and two-resource positive cases;
+- typed before/after/delta evidence;
+- wrong location rejected;
+- other-player deployment rejected;
+- ordinary movement into same location rejected;
+- stable replay exactly-once;
+- malformed/zero/negative/expression/third-effect/non-resource/command-seal shapes fail closed;
+- same-stage failure rolls back all reward mutations/evidence;
+- TO-11 Shinji, Ereshkigal deployment behavior, FB2-01 focused compatibility, typecheck, rules regression, deterministic generated-content verification, full root CI, and `git diff --check` remain green.
+
+Read:
+
+- `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- `docs/agents/PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`
+- `docs/reports/2026-09-16-p3-fb2-02-deployment-resource-handoff.md`
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/tests/regression/trigger-resource-runtime.test.ts`
+- Ereshkigal deployment regression before editing.
+
+May touch:
+
+- `packages/rules/src/ability/interpreter.ts`
+- one new focused FB2-02 regression test
+- `docs/reports/2026-09-16-p3-fb2-02-deployment-resource-result.md`
+
+Must not:
+
+- modify `packages/rules/src/match-session.ts`;
+- modify Resolution Data-flow primitives unless A explicitly re-dispatches scope;
+- modify client/server projection or interaction protocols;
+- migrate F1 roster authoring or edit F1 inventory/catalog/source evidence;
+- change A-owned KPI/taxonomy;
+- generalize arbitrary Trigger Gateway, Movement, Battle, Card Zone, Interaction, or Cost behavior;
+- add card/ability/owner/character identity routing;
+- parse printed text at runtime;
+- admit command-seal, transfer, set, swap, negative, zero, variable, target-dependent, battle-derived, or ordinary movement resource semantics.
+
+Gate C:
+
+No new browser Gate C is required if FB2-02 remains server-side and does not change projection, reconnect, stale-command, or pending-interaction behavior.
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R19
+
+Owner: Codex R
+Status: READY_AFTER_P3_FB2_02
+Branch: reviewer-selected fresh worktree/branch from exact FB2-02 candidate SHA
+
+Goal:
+
+Independently review P3-FB2-02 without implementing fixes and without promoting generic Trigger Gateway or all Resource Numeric semantics.
+
+Required independent checks:
+
+- fresh typecheck, focused FB2-02 tests, TO-11/Ereshkigal/FB2-01 compatibility, rules regression, deterministic generated content, and full root baseline;
+- exact trigger provenance requires matching trusted `playerId + locationId`;
+- ordinary movement and other-player deployment cannot trigger the reward;
+- exact effect surface is 1..2 fixed positive controller mana/VP adjustments only;
+- multi-effect settlement is atomic and emits typed evidence;
+- malformed sibling shapes fail closed before legacy fallback;
+- classifier/runtime contain no card, ability, owner, character, or magic-workshop identity checks;
+- no MatchSession/client/projection/F1 authoring/KPI change;
+- no broad Resource Numeric, Trigger, Movement, Battle, Cost, Interaction, or Special family is promoted by implication.
+
+Must not:
+
+- implement fixes while reviewing;
+- widen membership or migrate F1 authoring;
+- modify A-owned KPI/taxonomy.
 
 Completion status allowed:
 
