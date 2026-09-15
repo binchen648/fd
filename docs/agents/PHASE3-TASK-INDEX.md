@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.9
+- Version: P3-TI-1.10
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2599,6 +2599,44 @@ Completion status allowed:
 - No roster authoring migration has occurred; A raw coverage remains unchanged.
 - P3-FM01 remains undispatched because its implementation plan requires `10-40` exact eligible IDs under one selected accepted capability; FB2-02 currently provides `6/10` of that minimum.
 - Next B2 dispatch must be selected by fresh capability membership analysis and remain in dependency order.
+## TASK P3-FB2-03
+
+Owner: Codex B2
+Status: READY
+Branch: `codex/b2-p3-fb2-03-fixed-resource-component-r1`
+Base: exact P3-FB2-03 A-owned handoff commit
+Runtime baseline before handoff: `98518d02ff5e905426136ce7ae8450d646b62538`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Runtime request: `runtime-capability-6220d123d8e1` / `GENERIC_RESOURCE_NUMERIC`
+
+Goal: add one reusable fixed-controller Mana/VP adjustment component for signed literal `adjust_mana` / `adjust_victory_points` effects. It must be reused by accepted parent routes and must not itself make unsupported parent abilities routable.
+
+F1 component membership: `59` exact identities, frozen in `docs/reports/2026-09-16-p3-fb2-03-fixed-resource-component-handoff.md`.
+
+Must not add a generic catch-all resource route or admit command seals, payment, set, transfer, swap, third-party, variable/expression, linked-player, target-dependent, or unrelated gateway semantics.
+
+Required proof: positive/negative Mana and VP; implicit/explicit controller; invalid sibling rejection; authoritative cap/floor/gain-block evidence; TO-11 + FB2-02 + FB2-01 compatibility; unsupported parent remains unsupported; typecheck, regression, determinism, full CI, diff check.
+
+Completion status allowed:
+
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R20
+
+Owner: Codex R
+Status: READY_AFTER_P3_FB2_03
+Branch: reviewer-selected fresh worktree/branch from exact FB2-03 candidate SHA
+
+Goal: independently review FB2-03 without fixes and without promoting broad Resource Numeric or any parent gateway.
+
+Required checks: fresh validation; exact fixed controller Mana/VP effect shape; source gain/lose to signed-delta faithfulness for the 59-member subset; existing Data-flow ownership of cap/floor/blocked/actual delta; unsupported parent routes remain unsupported; no identity/text routing or forbidden-file changes; no broad later-wave promotion.
+
+Completion status allowed:
+
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
 ## Prompt Templates
 
 Codex A startup prompt:
