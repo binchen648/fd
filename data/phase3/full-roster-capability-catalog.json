@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 213,
-    "explicitBlockCount": 731,
+    "contractMappedCount": 232,
+    "explicitBlockCount": 712,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 1,
-      "READY_GENERIC_EXTENSION": 137,
-      "SPECIAL_HANDLER_CANDIDATE": 75,
+      "READY_GENERIC_EXTENSION": 150,
+      "SPECIAL_HANDLER_CANDIDATE": 81,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 731,
+      "SOURCE_EVIDENCE_REQUIRED": 712,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -60,7 +60,10 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
-        "master.iliya.skill.s2"
+        "master.iliya.skill.s2",
+        "master.sakura.skill.s1",
+        "master.sakura.skill.s2",
+        "master.shinji.skill.s2"
       ],
       "partialAbilities": [],
       "skippedAbilities": [
@@ -289,6 +292,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.sakura.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sakura.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.sieg.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -465,6 +480,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.sakura.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sakura.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.sieg.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -597,6 +624,18 @@
         },
         {
           "abilityId": "master.iliya.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sakura.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sakura.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -756,6 +795,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.sakura.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sakura.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.darius.skill.sc-darius-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -898,6 +949,18 @@
         },
         {
           "abilityId": "master.iliya.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.sakura.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.sakura.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1087,6 +1150,18 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.sakura.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.sakura.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.sieg.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1267,6 +1342,18 @@
         },
         {
           "abilityId": "master.iliya.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.sakura.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.sakura.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1454,6 +1541,18 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.sakura.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.sakura.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.sieg.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1636,6 +1735,18 @@
         },
         {
           "abilityId": "master.iliya.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.sakura.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.sakura.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1924,6 +2035,18 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.rin.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.sakura.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.sieg.skill.s1a",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2071,6 +2194,8 @@
         "master.kadoc.skill.s3",
         "master.kadoc.skill.s4",
         "master.kadoc.skill.s5",
+        "master.kirei.skill.ascension",
+        "master.kirei.skill.s3",
         "master.kuzuki.skill.s2",
         "master.leonardo.skill.ascension",
         "master.leonardo.skill.s1",
@@ -2087,6 +2212,9 @@
         "master.peperoncino.skill.s2",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.ascension",
+        "master.rin.skill.s2",
+        "master.shinji.skill.s3",
         "master.taiga.skill.s1a",
         "master.twice.skill.ascension",
         "master.wodime.skill.ascension",
@@ -2306,6 +2434,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.rin.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sakura.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.sieg.skill.s1a",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -2445,6 +2585,9 @@
         "master.kuzuki.skill.ascension",
         "master.leonardo.skill.ascension",
         "master.ophelia.skill.ascension",
+        "master.rin.skill.ascension",
+        "master.rin.skill.s3",
+        "master.sakura.skill.ascension",
         "master.sieg.skill.s1a",
         "master.taiga.skill.ascension",
         "master.twice.skill.s1",
@@ -2586,6 +2729,10 @@
         "master.kadoc.skill.s5",
         "master.kayneth.skill.ascension",
         "master.kayneth.skill.s3",
+        "master.kirei.skill.ascension",
+        "master.kirei.skill.s1",
+        "master.kirei.skill.s2",
+        "master.kirei.skill.s3",
         "master.kuzuki.skill.ascension",
         "master.kuzuki.skill.s2",
         "master.leonardo.skill.ascension",
@@ -2596,6 +2743,18 @@
         "master.peperoncino.skill.s2",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.ascension",
+        "master.rin.skill.s1",
+        "master.rin.skill.s2",
+        "master.sakura.skill.ascension",
+        "master.sakura.skill.s1",
+        "master.sakura.skill.s2",
+        "master.sakura.skill.s3",
+        "master.shinji.skill.ascension",
+        "master.shinji.skill.s1",
+        "master.shinji.skill.s2",
+        "master.shinji.skill.s3",
+        "master.shinji.skill.s4",
         "master.sieg.skill.ascension",
         "master.sieg.skill.s1",
         "master.sion.skill.s13",
@@ -2905,7 +3064,31 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.kirei.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.kuzuki.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.rin.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sakura.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -3037,6 +3220,9 @@
         "master.kayneth.skill.ascension",
         "master.kayneth.skill.s1",
         "master.kayneth.skill.s3",
+        "master.kirei.skill.ascension",
+        "master.kirei.skill.s1",
+        "master.kirei.skill.s3",
         "master.kuzuki.skill.ascension",
         "master.kuzuki.skill.s2",
         "master.kuzuki.skill.s3",
@@ -3047,6 +3233,12 @@
         "master.peperoncino.skill.s1b",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.ascension",
+        "master.rin.skill.s1",
+        "master.rin.skill.s4",
+        "master.sakura.skill.ascension",
+        "master.sakura.skill.s4",
+        "master.shinji.skill.ascension",
         "master.sieg.skill.ascension",
         "master.sieg.skill.s1",
         "master.sieg.skill.s1a",
@@ -3192,6 +3384,8 @@
         "master.kayneth.skill.ascension",
         "master.kayneth.skill.s1",
         "master.kayneth.skill.s3",
+        "master.kirei.skill.ascension",
+        "master.kirei.skill.s3",
         "master.kuzuki.skill.ascension",
         "master.kuzuki.skill.s2",
         "master.kuzuki.skill.s3",
@@ -3208,6 +3402,10 @@
         "master.peperoncino.skill.s1b",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.ascension",
+        "master.rin.skill.s4",
+        "master.sakura.skill.ascension",
+        "master.sakura.skill.s4",
         "master.sieg.skill.ascension",
         "master.sieg.skill.s1",
         "master.sieg.skill.s1a",
@@ -3283,6 +3481,7 @@
         "master.goredolf.skill.s1a",
         "master.kadoc.skill.s4",
         "master.kayneth.skill.s3",
+        "master.kirei.skill.s2",
         "master.kuzuki.skill.s2",
         "master.peperoncino.skill.s1b",
         "master.peperoncino.skill.s4",
@@ -3350,6 +3549,7 @@
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.s3",
         "master.sieg.skill.s2",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
@@ -3432,6 +3632,8 @@
         "master.iliya.skill.ascension",
         "master.irisviel.skill.ascension",
         "master.kadoc.skill.ascension",
+        "master.kirei.skill.ascension",
+        "master.kirei.skill.s3",
         "master.kuzuki.skill.ascension",
         "master.kuzuki.skill.s3",
         "master.leonardo.skill.s1",
@@ -3445,6 +3647,7 @@
         "master.peperoncino.skill.s1b",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.ascension",
         "master.sieg.skill.ascension",
         "master.tokiomi.skill.ascension",
         "master.twice.skill.ascension",
@@ -3527,6 +3730,13 @@
         "master.kadoc.skill.s5",
         "master.leonardo.skill.ascension",
         "master.peperoncino.skill.ascension",
+        "master.rin.skill.ascension",
+        "master.rin.skill.s2",
+        "master.rin.skill.s3",
+        "master.sakura.skill.s3",
+        "master.shinji.skill.s1",
+        "master.shinji.skill.s3",
+        "master.shinji.skill.s4",
         "master.sieg.skill.ascension",
         "master.sieg.skill.s1a",
         "master.taiga.skill.s1",
@@ -3609,6 +3819,7 @@
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.s3",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.astolfo.skill.sc-astolfo-1",
@@ -3666,6 +3877,7 @@
         "master.ciel.skill.s3",
         "master.dan.skill.s1a",
         "master.fiore.skill.ascension",
+        "master.kirei.skill.s1",
         "master.taiga.skill.s1a",
         "master.waver.skill.s3",
         "servant.albion.skill.sc-albion-2",
@@ -3839,6 +4051,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.kirei.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kirei.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.kuzuki.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3876,6 +4096,30 @@
         },
         {
           "abilityId": "master.peperoncino.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.rin.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sakura.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sakura.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -4072,6 +4316,7 @@
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.s3",
         "master.sieg.skill.s2",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
@@ -4201,6 +4446,16 @@
         "master.peperoncino.skill.s2",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.ascension",
+        "master.rin.skill.s1",
+        "master.rin.skill.s2",
+        "master.sakura.skill.ascension",
+        "master.sakura.skill.s1",
+        "master.sakura.skill.s2",
+        "master.shinji.skill.s1",
+        "master.shinji.skill.s2",
+        "master.shinji.skill.s3",
+        "master.shinji.skill.s4",
         "master.taiga.skill.s1",
         "master.taiga.skill.s1a",
         "master.wodime.skill.ascension",
@@ -4274,6 +4529,7 @@
         "master.irisviel.skill.s2",
         "master.kayneth.skill.ascension",
         "master.peperoncino.skill.s1a",
+        "master.rin.skill.ascension",
         "master.waver.skill.s1",
         "master.waver.skill.s3",
         "servant.albion.skill.sc-albion-1",
@@ -4497,6 +4753,34 @@
         },
         {
           "abilityId": "master.peperoncino.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.sakura.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shinji.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -4749,6 +5033,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.rin.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.sion.skill.s13",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -4891,6 +5179,7 @@
         "master.kadoc.skill.s4",
         "master.kadoc.skill.s5",
         "master.kayneth.skill.s2",
+        "master.kirei.skill.ascension",
         "master.kuzuki.skill.ascension",
         "master.ophelia.skill.ascension",
         "master.ophelia.skill.s1",
@@ -4904,6 +5193,11 @@
         "master.peperoncino.skill.s2",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.s1",
+        "master.rin.skill.s3",
+        "master.sakura.skill.s4",
+        "master.shinji.skill.ascension",
+        "master.shinji.skill.s4",
         "master.sieg.skill.s2",
         "master.taiga.skill.ascension",
         "master.tokiomi.skill.s2",
@@ -5157,6 +5451,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.kirei.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.kuzuki.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5206,6 +5504,26 @@
         },
         {
           "abilityId": "master.peperoncino.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.rin.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sakura.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -5423,6 +5741,10 @@
       "master.kayneth.skill.s1",
       "master.kayneth.skill.s2",
       "master.kayneth.skill.s3",
+      "master.kirei.skill.ascension",
+      "master.kirei.skill.s1",
+      "master.kirei.skill.s2",
+      "master.kirei.skill.s3",
       "master.kuzuki.skill.ascension",
       "master.kuzuki.skill.s1",
       "master.kuzuki.skill.s2",
@@ -5447,6 +5769,21 @@
       "master.peperoncino.skill.s2",
       "master.peperoncino.skill.s3",
       "master.peperoncino.skill.s4",
+      "master.rin.skill.ascension",
+      "master.rin.skill.s1",
+      "master.rin.skill.s2",
+      "master.rin.skill.s3",
+      "master.rin.skill.s4",
+      "master.sakura.skill.ascension",
+      "master.sakura.skill.s1",
+      "master.sakura.skill.s2",
+      "master.sakura.skill.s3",
+      "master.sakura.skill.s4",
+      "master.shinji.skill.ascension",
+      "master.shinji.skill.s1",
+      "master.shinji.skill.s2",
+      "master.shinji.skill.s3",
+      "master.shinji.skill.s4",
       "master.sieg.skill.ascension",
       "master.sieg.skill.s1",
       "master.sieg.skill.s1a",
@@ -6009,34 +6346,6 @@
         ]
       },
       {
-        "abilityId": "master.kirei.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kirei.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kirei.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kirei.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "master.kiritsugu.skill.ascension",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -6219,41 +6528,6 @@
         ]
       },
       {
-        "abilityId": "master.rin.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.rin.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.rin.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.rin.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.rin.skill.s4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "master.ritsuka-f.skill.ascension",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -6339,41 +6613,6 @@
       },
       {
         "abilityId": "master.ryuunosuke.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sakura.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sakura.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sakura.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sakura.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sakura.skill.s4",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -6493,41 +6732,6 @@
       },
       {
         "abilityId": "master.shiki-tohno.skill.s4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shinji.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shinji.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shinji.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shinji.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shinji.skill.s4",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -10693,6 +10897,7 @@
       "master.kadoc.skill.s4",
       "master.kadoc.skill.s5",
       "master.kayneth.skill.s2",
+      "master.kirei.skill.ascension",
       "master.kuzuki.skill.ascension",
       "master.ophelia.skill.ascension",
       "master.ophelia.skill.s1",
@@ -10706,6 +10911,11 @@
       "master.peperoncino.skill.s2",
       "master.peperoncino.skill.s3",
       "master.peperoncino.skill.s4",
+      "master.rin.skill.s1",
+      "master.rin.skill.s3",
+      "master.sakura.skill.s4",
+      "master.shinji.skill.ascension",
+      "master.shinji.skill.s4",
       "master.sieg.skill.s2",
       "master.taiga.skill.ascension",
       "master.tokiomi.skill.s2",

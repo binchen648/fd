@@ -8666,6 +8666,1064 @@
           }
         }
       ]
+    },
+    {
+      "id": "master.rin.skill.s1",
+      "printedText": "游戏开始时，你获得10枚【宝石】。高潮阶段时你可以在【宝石】上选择相同的选项，每个选项至多3次(共计9次)。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_rin.skills[s1]#line=8",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，你获得10枚【宝石】。高潮阶段时你可以在【宝石】上选择相同的选项，每个选项至多3次(共计9次)。",
+        "sourceTextSha256": "1ad529117c79a886e5780e3f5faae6504631e0c268a435b672fc1fdce7bf4829"
+      },
+      "referencePrintedTextSha256": "1ad529117c79a886e5780e3f5faae6504631e0c268a435b672fc1fdce7bf4829",
+      "abilities": [
+        {
+          "printedClause": "游戏开始时，你获得10枚【宝石】。高潮阶段时你可以在【宝石】上选择相同的选项，每个选项至多3次(共计9次)。",
+          "id": "rin.gem-magic.initialize",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gem_resource_rule",
+              "operation": "initialize",
+              "resource": "gem",
+              "subject": "controller",
+              "amount": 10
+            }
+          ]
+        },
+        {
+          "printedClause": "游戏开始时，你获得10枚【宝石】。高潮阶段时你可以在【宝石】上选择相同的选项，每个选项至多3次(共计9次)。",
+          "id": "rin.gem-magic.climax-repeat-rule",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "gem_resource_rule",
+              "operation": "climax_option_repeat_override",
+              "definitionId": "master.rin.skill.s3",
+              "perOptionMaxUses": 3,
+              "totalOptionUses": 9
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.rin.skill.s2",
+      "printedText": "你必须于第一回合使用一枚令咒。否则于该回合结束失去一枚令咒。若你以该令咒获得了魔力，战斗阶段结束后，你失去4点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_rin.skills[s2]#line=8",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你必须于第一回合使用一枚令咒。否则于该回合结束失去一枚令咒。若你以该令咒获得了魔力，战斗阶段结束后，你失去4点魔力。",
+        "sourceTextSha256": "dfb0c1309e905d358d459460f23cf6993f48565fc08ca77bd3cf87b43634aa28"
+      },
+      "referencePrintedTextSha256": "dfb0c1309e905d358d459460f23cf6993f48565fc08ca77bd3cf87b43634aa28",
+      "abilities": [
+        {
+          "printedClause": "你必须于第一回合使用一枚令咒。否则于该回合结束失去一枚令咒。若你以该令咒获得了魔力，战斗阶段结束后，你失去4点魔力。",
+          "id": "rin.absolute-command.first-round-duty",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            },
+            {
+              "type": "round_number_is",
+              "value": 1
+            },
+            {
+              "type": "controller_did_not_spend_command_seal_in_round",
+              "round": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "adjust_command_seals",
+              "subject": "controller",
+              "amount": -1
+            }
+          ]
+        },
+        {
+          "printedClause": "你必须于第一回合使用一枚令咒。否则于该回合结束失去一枚令咒。若你以该令咒获得了魔力，战斗阶段结束后，你失去4点魔力。",
+          "id": "rin.absolute-command.mana-repayment",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.ending"
+            },
+            {
+              "type": "round_number_is",
+              "value": 1
+            },
+            {
+              "type": "controller_command_seal_gained_mana_in_round",
+              "round": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_mana",
+              "subject": "controller",
+              "amount": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.rin.skill.s3",
+      "printedText": "<每局游戏限一次>\n行动阶段：选择一项本回合没有选择过的选项：\n-获得1点魔力。\n-打出一张游戏外的【阴炁弹】。\n-弃置1-3张牌，然后抽取相同数量的牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_rin.skills[s3]#line=8",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "<每局游戏限一次>\n行动阶段：选择一项本回合没有选择过的选项：\n-获得1点魔力。\n-打出一张游戏外的【阴炁弹】。\n-弃置1-3张牌，然后抽取相同数量的牌。",
+        "sourceTextSha256": "4f24f7a576f91a8301a0e71fc33eda3642e97d5026ce20d2661a12faaefaf0a2"
+      },
+      "referencePrintedTextSha256": "4f24f7a576f91a8301a0e71fc33eda3642e97d5026ce20d2661a12faaefaf0a2",
+      "abilities": [
+        {
+          "printedClause": "<每局游戏限一次>\n行动阶段：选择一项本回合没有选择过的选项：\n-获得1点魔力。\n-打出一张游戏外的【阴炁弹】。\n-弃置1-3张牌，然后抽取相同数量的牌。",
+          "id": "rin.gem.action",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "gem_resource_rule",
+              "operation": "spend_one_and_choose_option",
+              "resource": "gem",
+              "normalPerOptionMaxUsesPerRound": 1,
+              "choices": [
+                {
+                  "id": "gain-mana",
+                  "effects": [
+                    {
+                      "type": "gain_mana",
+                      "subject": "controller",
+                      "amount": 1
+                    }
+                  ]
+                },
+                {
+                  "id": "play-yinqi",
+                  "effects": [
+                    {
+                      "type": "move_matching_cards",
+                      "sourceZone": "outside_game",
+                      "destination": "attack",
+                      "definitionId": "card.card-yinqi",
+                      "owner": "controller",
+                      "count": 1,
+                      "playMode": "normal",
+                      "costMode": "free"
+                    }
+                  ]
+                },
+                {
+                  "id": "discard-draw",
+                  "effects": [
+                    {
+                      "type": "choose_cards",
+                      "zone": "hand",
+                      "owner": "controller",
+                      "minCount": 1,
+                      "maxCount": 3,
+                      "payloadKey": "selectedCardIds"
+                    },
+                    {
+                      "type": "move_selected_cards",
+                      "payloadKey": "selectedCardIds",
+                      "source": "hand",
+                      "destination": "discard"
+                    },
+                    {
+                      "type": "draw_cards",
+                      "target": "controller",
+                      "countBinding": "selectedCardIds:length"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.rin.skill.s4",
+      "printedText": "魔术属性，0耗1威。<每局游戏限一次>\n(<每局游戏限一次>的卡牌，关闭后将被移除游戏。对于其他卡牌的效果而言，它们便是游戏外的。)",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_rin.skills[s4]#line=8",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "魔术属性，0耗1威。<每局游戏限一次>\n(<每局游戏限一次>的卡牌，关闭后将被移除游戏。对于其他卡牌的效果而言，它们便是游戏外的。)",
+        "sourceTextSha256": "a84c9ab4c4aa5f34dd3fc62f197bb0499c4a3691e7d73bcf57403255749da54b"
+      },
+      "referencePrintedTextSha256": "a84c9ab4c4aa5f34dd3fc62f197bb0499c4a3691e7d73bcf57403255749da54b",
+      "abilities": [
+        {
+          "printedClause": "魔术属性，0耗1威。<每局游戏限一次>\n(<每局游戏限一次>的卡牌，关闭后将被移除游戏。对于其他卡牌的效果而言，它们便是游戏外的。)",
+          "id": "rin.yinqi.once-only-cleanup",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "source_card_play_limit",
+              "operation": "set",
+              "period": "game",
+              "value": 1
+            },
+            {
+              "rule": "source_card_close_destination",
+              "operation": "set",
+              "destination": "removed_from_game"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.rin.skill.ascension",
+      "printedText": "（升华技，将此牌加入你的技能区）\n被动：你的魔术基础牌和【阴炁弹】的威力+2。\n行动阶段：获得本回合所有玩家花费的魔力。战斗结束后，将此牌移除游戏。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_rin.ascensionSkill#line=8",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（升华技，将此牌加入你的技能区）\n被动：你的魔术基础牌和【阴炁弹】的威力+2。\n行动阶段：获得本回合所有玩家花费的魔力。战斗结束后，将此牌移除游戏。",
+        "sourceTextSha256": "5438833af1b6d4eeec6661a65af38257f2c067e0a3e651d7f0ad1306ffd64376"
+      },
+      "referencePrintedTextSha256": "5438833af1b6d4eeec6661a65af38257f2c067e0a3e651d7f0ad1306ffd64376",
+      "abilities": [
+        {
+          "printedClause": "（升华技，将此牌加入你的技能区）\n被动：你的魔术基础牌和【阴炁弹】的威力+2。\n行动阶段：获得本回合所有玩家花费的魔力。战斗结束后，将此牌移除游戏。",
+          "id": "rin.jewel-sword.ascension-setup",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "face": "up"
+            }
+          ]
+        },
+        {
+          "printedClause": "（升华技，将此牌加入你的技能区）\n被动：你的魔术基础牌和【阴炁弹】的威力+2。\n行动阶段：获得本回合所有玩家花费的魔力。战斗结束后，将此牌移除游戏。",
+          "id": "rin.jewel-sword.power",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "value": 2,
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "kind": "basic_attack",
+                  "attribute": "magic"
+                }
+              }
+            },
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "value": 2,
+              "definitionId": "card.card-yinqi"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "printedClause": "（升华技，将此牌加入你的技能区）\n被动：你的魔术基础牌和【阴炁弹】的威力+2。\n行动阶段：获得本回合所有玩家花费的魔力。战斗结束后，将此牌移除游戏。",
+          "id": "rin.jewel-sword.collect-spent-mana",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "gain_mana",
+              "subject": "controller",
+              "amountBinding": "all_players_round_mana_spent"
+            }
+          ]
+        },
+        {
+          "printedClause": "（升华技，将此牌加入你的技能区）\n被动：你的魔术基础牌和【阴炁弹】的威力+2。\n行动阶段：获得本回合所有玩家花费的魔力。战斗结束后，将此牌移除游戏。",
+          "id": "rin.jewel-sword.combat-end-remove",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.ending"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "removed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.sakura.skill.s1",
+      "printedText": "回合结束时，若你的战果低于所有其他玩家且你的第一名御主不是【间桐慎二】，激活【黑泥】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sakura.skills[s1]#line=9",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "回合结束时，若你的战果低于所有其他玩家且你的第一名御主不是【间桐慎二】，激活【黑泥】。",
+        "sourceTextSha256": "8612397268ca8d6f0c0421603be3720bf4c0d4b16a3ae757872f725dc0b8b540"
+      },
+      "referencePrintedTextSha256": "8612397268ca8d6f0c0421603be3720bf4c0d4b16a3ae757872f725dc0b8b540",
+      "abilities": [
+        {
+          "printedClause": "回合结束时，若你的战果低于所有其他玩家且你的第一名御主不是【间桐慎二】，激活【黑泥】。",
+          "id": "sakura.defective-vessel.activate-black-mud",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            },
+            {
+              "type": "controller_victory_points_lower_than_all_other_players"
+            },
+            {
+              "type": "controller_first_master_definition_is_not",
+              "definitionId": "master.shinji"
+            }
+          ],
+          "effects": [
+            {
+              "type": "activate_card_by_id",
+              "definitionId": "master.sakura.skill.s3",
+              "subject": "controller"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.sakura.skill.s2",
+      "printedText": "第8回合结束时，若你的战果排名不为第一，激活【被污染的圣杯】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sakura.skills[s2]#line=9",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "第8回合结束时，若你的战果排名不为第一，激活【被污染的圣杯】。",
+        "sourceTextSha256": "0da9388a0e5d12e7b0f6f9c7cdf49c86e23c44bbf2b29eb0f3b1121767e62048"
+      },
+      "referencePrintedTextSha256": "0da9388a0e5d12e7b0f6f9c7cdf49c86e23c44bbf2b29eb0f3b1121767e62048",
+      "abilities": [
+        {
+          "printedClause": "第8回合结束时，若你的战果排名不为第一，激活【被污染的圣杯】。",
+          "id": "sakura.all-evil.activate-corrupted-grail",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            },
+            {
+              "type": "round_number_is",
+              "value": 8
+            },
+            {
+              "type": "controller_victory_point_rank_is_not",
+              "rank": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "activate_card_by_id",
+              "definitionId": "master.sakura.skill.s4",
+              "subject": "controller"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.sakura.skill.s3",
+      "printedText": "准备阶段：花费2点魔力，若你未激活【被污染的圣杯】，获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sakura.skills[s3]#line=9",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "准备阶段：花费2点魔力，若你未激活【被污染的圣杯】，获得2点战果。",
+        "sourceTextSha256": "c999a08540cf5e45b1370dff95a74320c0e93f747223dc31c2f45596f2f26e59"
+      },
+      "referencePrintedTextSha256": "c999a08540cf5e45b1370dff95a74320c0e93f747223dc31c2f45596f2f26e59",
+      "abilities": [
+        {
+          "printedClause": "准备阶段：花费2点魔力，若你未激活【被污染的圣杯】，获得2点战果。",
+          "id": "sakura.black-mud.preparation",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "preparation"
+          },
+          "cost": {
+            "type": "mana",
+            "amount": 2
+          },
+          "conditions": [
+            {
+              "type": "definition_is_not_active_for_controller",
+              "definitionId": "master.sakura.skill.s4"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "subject": "controller",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.sakura.skill.s4",
+      "printedText": "你拥有无限魔力（此状态下无法获得或失去魔力）。每回合常规攻击可以多打一张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sakura.skills[s4]#line=9",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你拥有无限魔力（此状态下无法获得或失去魔力）。每回合常规攻击可以多打一张牌。",
+        "sourceTextSha256": "8cd2d57e4efad5a93f04ad20dacf2b08a05881bdcdcff09158420412cf20f588"
+      },
+      "referencePrintedTextSha256": "8cd2d57e4efad5a93f04ad20dacf2b08a05881bdcdcff09158420412cf20f588",
+      "abilities": [
+        {
+          "printedClause": "你拥有无限魔力（此状态下无法获得或失去魔力）。每回合常规攻击可以多打一张牌。",
+          "id": "sakura.corrupted-grail.infinite-mana",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "infinite_mana_rule",
+              "subject": "controller",
+              "operation": "lock_infinite_no_gain_or_loss"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "printedClause": "你拥有无限魔力（此状态下无法获得或失去魔力）。每回合常规攻击可以多打一张牌。",
+          "id": "sakura.corrupted-grail.extra-regular-attack",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "regular_attack_play_limit",
+              "operation": "add",
+              "subject": "controller",
+              "value": 1,
+              "period": "round"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.sakura.skill.ascension",
+      "printedText": "你只能在游戏的前四回合中解锁此牌。每局游戏限一次，当一名玩家被淘汰且【被污染的圣杯】处于激活状态，你可将其拥有的任意张从者技能牌加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sakura.ascensionSkill#line=9",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你只能在游戏的前四回合中解锁此牌。每局游戏限一次，当一名玩家被淘汰且【被污染的圣杯】处于激活状态，你可将其拥有的任意张从者技能牌加入你的技能区。",
+        "sourceTextSha256": "3ffe8725ccd12e36689dcb651368423cf5677b636352b1e5bf78c563a51ee648"
+      },
+      "referencePrintedTextSha256": "3ffe8725ccd12e36689dcb651368423cf5677b636352b1e5bf78c563a51ee648",
+      "abilities": [
+        {
+          "printedClause": "你只能在游戏的前四回合中解锁此牌。每局游戏限一次，当一名玩家被淘汰且【被污染的圣杯】处于激活状态，你可将其拥有的任意张从者技能牌加入你的技能区。",
+          "id": "sakura.corrosion.unlock-window",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "skill_unlock_round",
+              "operation": "max",
+              "value": 4
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "game",
+            "maxUses": 1
+          }
+        },
+        {
+          "printedClause": "你只能在游戏的前四回合中解锁此牌。每局游戏限一次，当一名玩家被淘汰且【被污染的圣杯】处于激活状态，你可将其拥有的任意张从者技能牌加入你的技能区。",
+          "id": "sakura.corrosion.claim-servant-skills",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.eliminated"
+            },
+            {
+              "type": "definition_is_active_for_controller",
+              "definitionId": "master.sakura.skill.s4"
+            }
+          ],
+          "target": {
+            "type": "event_player"
+          },
+          "effects": [
+            {
+              "type": "transfer_matching_cards",
+              "sourceOwner": "event_player",
+              "sourceZone": "skill",
+              "destinationOwner": "controller",
+              "destination": "skill",
+              "filter": {
+                "cardType": "servant_skill"
+              },
+              "minCount": 0,
+              "maxCount": "all",
+              "selection": "controller_choice"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shinji.skill.s1",
+      "printedText": "进入深山町时，获得1点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shinji.skills[s1]#line=13",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "进入深山町时，获得1点魔力。",
+        "sourceTextSha256": "135c32f6a2c99d178870dfe25a15126672b1e30448eab864a1f5fe1a78f3eaa4"
+      },
+      "referencePrintedTextSha256": "135c32f6a2c99d178870dfe25a15126672b1e30448eab864a1f5fe1a78f3eaa4",
+      "abilities": [
+        {
+          "printedClause": "进入深山町时，获得1点魔力。",
+          "id": "shinji.mana-absorption.enter-mountain",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.entered_location"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_location_is",
+              "location": "mountain"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_mana",
+              "subject": "controller",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shinji.skill.s2",
+      "printedText": "开局获得【伪臣之书】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shinji.skills[s2]#line=13",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "开局获得【伪臣之书】。",
+        "sourceTextSha256": "65930c3e1c3105fa047b5e61c1aea90ccca535edf590fad93cb1e6f1b8b74b92"
+      },
+      "referencePrintedTextSha256": "65930c3e1c3105fa047b5e61c1aea90ccca535edf590fad93cb1e6f1b8b74b92",
+      "abilities": [
+        {
+          "printedClause": "开局获得【伪臣之书】。",
+          "id": "shinji.useless-man.obtain-book",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "activate_card_by_id",
+              "definitionId": "master.shinji.skill.s4",
+              "subject": "controller"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shinji.skill.s3",
+      "printedText": "当你战败时，失去一枚令咒。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shinji.skills[s3]#line=13",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你战败时，失去一枚令咒。",
+        "sourceTextSha256": "ab192089e51de200b3818017d6c94a671644b18b06b78762e67468111a9ab768"
+      },
+      "referencePrintedTextSha256": "ab192089e51de200b3818017d6c94a671644b18b06b78762e67468111a9ab768",
+      "abilities": [
+        {
+          "printedClause": "当你战败时，失去一枚令咒。",
+          "id": "shinji.clown.defeat-seal-loss",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_player_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "adjust_command_seals",
+              "subject": "controller",
+              "amount": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shinji.skill.s4",
+      "printedText": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。\n当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shinji.skills[s4]#line=13",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。\n当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+        "sourceTextSha256": "4239b282b8e4158a51f73a0d433af66a0978b37f9a76c1c785e07e00fef11407"
+      },
+      "referencePrintedTextSha256": "4239b282b8e4158a51f73a0d433af66a0978b37f9a76c1c785e07e00fef11407",
+      "abilities": [
+        {
+          "printedClause": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。\n当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+          "id": "shinji.book.second-contract",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            },
+            {
+              "type": "controller_first_lost_all_command_seals_this_game"
+            },
+            {
+              "type": "master_definition_in_game",
+              "definitionId": "master.sakura"
+            }
+          ],
+          "effects": [
+            {
+              "type": "roster_replacement_rule",
+              "operation": "replace_servant_random_unused",
+              "subject": "controller",
+              "timing": "round_end",
+              "once": "game"
+            },
+            {
+              "type": "adjust_command_seals",
+              "subject": "controller",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "printedClause": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。\n当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+          "id": "shinji.book.replacement-master",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            },
+            {
+              "type": "controller_first_lost_all_command_seals_this_game"
+            },
+            {
+              "type": "master_definition_not_in_game",
+              "definitionId": "master.sakura"
+            }
+          ],
+          "effects": [
+            {
+              "type": "roster_replacement_rule",
+              "operation": "replace_master",
+              "subject": "controller",
+              "definitionId": "master.sakura",
+              "preserveVictoryPoints": true,
+              "timing": "round_end",
+              "once": "game"
+            },
+            {
+              "type": "set_mana",
+              "subject": "controller",
+              "amount": 4
+            },
+            {
+              "type": "adjust_command_seals",
+              "subject": "controller",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shinji.skill.ascension",
+      "printedText": "此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。若莎士比亚是你的第一名从者，你位于深山町时合计威力+12，当你获得X点战果时，所有位于深山町的对手失去X点战果；若莎士比亚并非你的第一名从者，你获得8点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shinji.ascensionSkill#line=13",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。若莎士比亚是你的第一名从者，你位于深山町时合计威力+12，当你获得X点战果时，所有位于深山町的对手失去X点战果；若莎士比亚并非你的第一名从者，你获得8点战果。",
+        "sourceTextSha256": "807f73bce3a525bb284717c080adb54fe809def1d4ac8d599b3903faa1850707"
+      },
+      "referencePrintedTextSha256": "807f73bce3a525bb284717c080adb54fe809def1d4ac8d599b3903faa1850707",
+      "abilities": [
+        {
+          "printedClause": "此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。若莎士比亚是你的第一名从者，你位于深山町时合计威力+12，当你获得X点战果时，所有位于深山町的对手失去X点战果；若莎士比亚并非你的第一名从者，你获得8点战果。",
+          "id": "shinji.holy-grail-core.rule",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "round_number_greater_than",
+              "value": 8
+            },
+            {
+              "type": "controller_servant_definition_is",
+              "definitionId": "servant.shakespeare"
+            }
+          ],
+          "effects": [
+            {
+              "type": "servant_ownership_rule",
+              "operation": "shinji_holy_grail_core",
+              "removeDefinitionId": "master.shinji.skill.s4",
+              "firstServantDefinitionId": "servant.shakespeare",
+              "firstServantBranch": {
+                "location": "mountain",
+                "totalPowerBonus": 12,
+                "onVictoryPointsGain": {
+                  "opponentsAtLocationLoseSameAmount": true
+                }
+              },
+              "laterServantBranch": {
+                "gainVictoryPoints": 8
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.kirei.skill.s1",
+      "printedText": "当从者真名隐藏时，你是【监督者】；其他情况下，你是【执行者】。（包括且不限于你没有从者）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kirei.skills[s1]#line=10",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当从者真名隐藏时，你是【监督者】；其他情况下，你是【执行者】。（包括且不限于你没有从者）",
+        "sourceTextSha256": "0075b055045448dd1cee1f808c317e9ea8322e0777d58195b5e99a5e9a04c430"
+      },
+      "referencePrintedTextSha256": "0075b055045448dd1cee1f808c317e9ea8322e0777d58195b5e99a5e9a04c430",
+      "abilities": [
+        {
+          "printedClause": "当从者真名隐藏时，你是【监督者】；其他情况下，你是【执行者】。（包括且不限于你没有从者）",
+          "id": "kirei.two-faces.supervisor",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_servant_true_name_is_hidden"
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_player_flag",
+              "subject": "controller",
+              "flag": "kirei_role",
+              "value": "supervisor"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_condition_true"
+          }
+        },
+        {
+          "printedClause": "当从者真名隐藏时，你是【监督者】；其他情况下，你是【执行者】。（包括且不限于你没有从者）",
+          "id": "kirei.two-faces.executor",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_servant_true_name_is_not_hidden_or_absent"
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_player_flag",
+              "subject": "controller",
+              "flag": "kirei_role",
+              "value": "executor"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_condition_true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.kirei.skill.s2",
+      "printedText": "管理者-所有玩家秘密告诉你从者职阶。 中立-行动阶段：你可以无视交战状态，花费2魔力移动至侦察。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kirei.skills[s2]#line=10",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "管理者-所有玩家秘密告诉你从者职阶。 中立-行动阶段：你可以无视交战状态，花费2魔力移动至侦察。",
+        "sourceTextSha256": "eefeef6faec214e753ac8ae30009da8ee71c79e7f3bc407b4dec52c4feb8228d"
+      },
+      "referencePrintedTextSha256": "eefeef6faec214e753ac8ae30009da8ee71c79e7f3bc407b4dec52c4feb8228d",
+      "abilities": [
+        {
+          "printedClause": "管理者-所有玩家秘密告诉你从者职阶。 中立-行动阶段：你可以无视交战状态，花费2魔力移动至侦察。",
+          "id": "kirei.supervisor.manager",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_flag_equals",
+              "flag": "kirei_role",
+              "value": "supervisor"
+            }
+          ],
+          "visibility": {
+            "mode": "private_reveal",
+            "viewer": "controller",
+            "information": "all_players_servant_classes"
+          }
+        },
+        {
+          "printedClause": "管理者-所有玩家秘密告诉你从者职阶。 中立-行动阶段：你可以无视交战状态，花费2魔力移动至侦察。",
+          "id": "kirei.supervisor.neutral-scout",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "cost": {
+            "type": "mana",
+            "amount": 2
+          },
+          "conditions": [
+            {
+              "type": "controller_flag_equals",
+              "flag": "kirei_role",
+              "value": "supervisor"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_player",
+              "subject": "controller",
+              "destination": "scout",
+              "ignoreEngagement": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kirei.skill.s3",
+      "printedText": "战斗阶段：你的总威力+2。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kirei.skills[s3]#line=10",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "战斗阶段：你的总威力+2。",
+        "sourceTextSha256": "19a115e54c0c7434f6365093c5bd1192d7b461ed156872c0c172a18ebe076f38"
+      },
+      "referencePrintedTextSha256": "19a115e54c0c7434f6365093c5bd1192d7b461ed156872c0c172a18ebe076f38",
+      "abilities": [
+        {
+          "printedClause": "战斗阶段：你的总威力+2。",
+          "id": "kirei.executor.combat-power",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_flag_equals",
+              "flag": "kirei_role",
+              "value": "executor"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "combat_total_power",
+              "operation": "add",
+              "subject": "controller",
+              "value": 2
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_condition_true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.kirei.skill.ascension",
+      "printedText": "当你为【监督者】时，战斗阶段：可【真名解放】使与你位于同一战场的一名玩家【败北】。当你为【执行者】时，你的所有基础攻击牌威力+2且无视【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kirei.ascensionSkill#line=10",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你为【监督者】时，战斗阶段：可【真名解放】使与你位于同一战场的一名玩家【败北】。当你为【执行者】时，你的所有基础攻击牌威力+2且无视【败北】。",
+        "sourceTextSha256": "292b6f9e7def0abe286ea7be936b832cbdd464fabc2a6d32cd862e4eac8e2b76"
+      },
+      "referencePrintedTextSha256": "292b6f9e7def0abe286ea7be936b832cbdd464fabc2a6d32cd862e4eac8e2b76",
+      "abilities": [
+        {
+          "printedClause": "当你为【监督者】时，战斗阶段：可【真名解放】使与你位于同一战场的一名玩家【败北】。当你为【执行者】时，你的所有基础攻击牌威力+2且无视【败北】。",
+          "id": "kirei.evil-protector.supervisor-release",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "cost": {
+            "type": "true_name_release",
+            "source": "source_card"
+          },
+          "conditions": [
+            {
+              "type": "controller_flag_equals",
+              "flag": "kirei_role",
+              "value": "supervisor"
+            }
+          ],
+          "target": {
+            "type": "player",
+            "relation": "other",
+            "location": "controller_battlefield",
+            "minCount": 1,
+            "maxCount": 1
+          },
+          "effects": [
+            {
+              "type": "defeat_player",
+              "subject": "selected_player"
+            }
+          ]
+        },
+        {
+          "printedClause": "当你为【监督者】时，战斗阶段：可【真名解放】使与你位于同一战场的一名玩家【败北】。当你为【执行者】时，你的所有基础攻击牌威力+2且无视【败北】。",
+          "id": "kirei.evil-protector.executor-blessing",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_flag_equals",
+              "flag": "kirei_role",
+              "value": "executor"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "value": 2,
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "kind": "basic_attack"
+                }
+              }
+            },
+            {
+              "rule": "defeat",
+              "operation": "ignore",
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_condition_true"
+          }
+        }
+      ]
     }
   ]
 }

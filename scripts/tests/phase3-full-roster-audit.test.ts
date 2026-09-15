@@ -1,4 +1,4 @@
-﻿import { createHash } from 'node:crypto';
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -500,10 +500,10 @@ describe('Phase 3 independent full-roster automation audit', () => {
     expect(report).toContain('totalIdentityCount=944');
     expect(report).toContain('authoringCardCount=72');
     expect(report).toContain('authoringAbilityCount=117');
-    expect(report).toContain('sourceEvidenceOverlayCount=141');
-    expect(report).toContain('sourceEvidenceOverlayAbilityCount=279');
-    expect(report).toContain('sourceGroundedCount=213');
-    expect(report).toContain('semanticBlockedCount=731');
+    expect(report).toContain('sourceEvidenceOverlayCount=160');
+    expect(report).toContain('sourceEvidenceOverlayAbilityCount=309');
+    expect(report).toContain('sourceGroundedCount=232');
+    expect(report).toContain('semanticBlockedCount=712');
     expect(report).toContain('gapCount=0');
   });
 });

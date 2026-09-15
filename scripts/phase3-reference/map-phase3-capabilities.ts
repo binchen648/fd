@@ -1,4 +1,4 @@
-﻿import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -218,6 +218,9 @@ const SPECIAL_EFFECTS = new Set([
   'WINNER_PREDICTION_RULE',
   'GRANT_LINKED_ABILITY_TO_DEFINITION',
   'DEFERRED_DEPLOYMENT_RULE',
+  'GEM_RESOURCE_RULE',
+  'INFINITE_MANA_RULE',
+  'ROSTER_REPLACEMENT_RULE',
 ]);
 
 const EVENT_DECK_EFFECTS = new Set([

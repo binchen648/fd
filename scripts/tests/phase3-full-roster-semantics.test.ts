@@ -1126,6 +1126,45 @@ describe('Phase 3 full-roster semantic normalization', () => {
     }));
   });
 
+  it('grounds the nineteen-ID Rin/Sakura/Shinji/Kirei Fuyuki slice with explicit replacement and role-state boundaries', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.rin.skill.s1','master.rin.skill.s2','master.rin.skill.s3','master.rin.skill.s4','master.rin.skill.ascension',
+      'master.sakura.skill.s1','master.sakura.skill.s2','master.sakura.skill.s3','master.sakura.skill.s4','master.sakura.skill.ascension',
+      'master.shinji.skill.s1','master.shinji.skill.s2','master.shinji.skill.s3','master.shinji.skill.s4','master.shinji.skill.ascension',
+      'master.kirei.skill.s1','master.kirei.skill.s2','master.kirei.skill.s3','master.kirei.skill.ascension',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(19);
+    expect(slice.every((card) =>
+      card.source?.authority === 'DEVELOPMENT_TEXT' &&
+      card.source.document.endsWith('/data_masters.js') &&
+      card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+      createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256 &&
+      card.source.sourceTextSha256 === card.referencePrintedTextSha256
+    )).toBe(true);
+
+    expect(slice.find((card) => card.id === 'master.rin.skill.s1')?.abilities).toEqual(expect.arrayContaining([
+      expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type: 'gem_resource_rule', operation: 'initialize', amount: 10 })]) }),
+      expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type: 'gem_resource_rule', operation: 'climax_option_repeat_override', perOptionMaxUses: 3 })]) }),
+    ]));
+    expect(slice.find((card) => card.id === 'master.rin.skill.s3')?.abilities).toContainEqual(expect.objectContaining({
+      effects: expect.arrayContaining([expect.objectContaining({ type: 'gem_resource_rule', operation: 'spend_one_and_choose_option' })]),
+    }));
+    expect(slice.find((card) => card.id === 'master.sakura.skill.s4')?.abilities).toContainEqual(expect.objectContaining({
+      effects: expect.arrayContaining([expect.objectContaining({ type: 'infinite_mana_rule', operation: 'lock_infinite_no_gain_or_loss' })]),
+    }));
+    expect(slice.find((card) => card.id === 'master.shinji.skill.s4')?.abilities).toEqual(expect.arrayContaining([
+      expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type: 'roster_replacement_rule', operation: 'replace_servant_random_unused' })]) }),
+      expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type: 'roster_replacement_rule', operation: 'replace_master', definitionId: 'master.sakura' })]) }),
+    ]));
+    expect(slice.find((card) => card.id === 'master.shinji.skill.ascension')?.abilities).toContainEqual(expect.objectContaining({
+      effects: expect.arrayContaining([expect.objectContaining({ type: 'servant_ownership_rule', operation: 'shinji_holy_grail_core' })]),
+    }));
+    expect(slice.find((card) => card.id === 'master.kirei.skill.ascension')?.abilities).toContainEqual(expect.objectContaining({
+      effects: expect.arrayContaining([expect.objectContaining({ type: 'defeat_player', subject: 'selected_player' })]),
+    }));
+  });
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1179,10 +1218,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 213,
-      blockedCount: 731,
+      sourceGroundedCount: 232,
+      blockedCount: 712,
       unclassifiedCount: 0,
-      structuredAbilityCount: 396,
+      structuredAbilityCount: 426,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
