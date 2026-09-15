@@ -1384,6 +1384,18 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.voyager.skill.sc-voyager-4')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'foreign_life_rule'})])}));
   });
 
+  it('grounds the eight-ID Kagetora/Martha slice from the exact lancer/rider development snapshot', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const prefixes = ['servant.kagetora.skill.','servant.martha.skill.'];
+    const slice = overlays.filter((card) => prefixes.some((prefix) => card.id.startsWith(prefix)));
+    expect(slice).toHaveLength(8);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.document === 'Fate_Domination-开发版/batch_lancer_rider.js' && card.source.sourceFileSha256 === '4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.kagetora.skill.sc-kagetora-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'opponent_mana_borrow_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.kagetora.skill.sc-kagetora-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'move_player'})])}));
+    expect(slice.find(c=>c.id==='servant.martha.skill.sc-martha-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'deferred_deployment_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.martha.skill.sc-martha-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'draw_cards'}),expect.objectContaining({type:'play_selected_cards'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1437,10 +1449,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 482,
-      blockedCount: 462,
+      sourceGroundedCount: 490,
+      blockedCount: 454,
       unclassifiedCount: 0,
-      structuredAbilityCount: 760,
+      structuredAbilityCount: 768,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

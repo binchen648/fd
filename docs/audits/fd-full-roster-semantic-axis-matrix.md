@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=482
-blockedCount=462
+sourceGroundedCount=490
+blockedCount=454
 unclassifiedCount=0
-structuredAbilityCount=760
+structuredAbilityCount=768
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 104 |
+| timing | `ACTION` | 106 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -265,16 +265,16 @@ structuredAbilityCount=760
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
 | effect | `EVENT_CARD_RULE` | 26 |
-| effect | `DRAW_CARDS` | 22 |
+| effect | `DRAW_CARDS` | 23 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
+| effect | `MOVE_PLAYER` | 17 |
 | effect | `MOVE_SELECTED_CARDS` | 17 |
-| effect | `MOVE_PLAYER` | 16 |
 | effect | `CLOSE_SOURCE_CARD` | 14 |
 | effect | `LOSTBELT_EXPANSION` | 14 |
 | effect | `DEFEAT_PLAYER` | 13 |
-| effect | `PLAY_SELECTED_CARDS` | 12 |
+| effect | `PLAY_SELECTED_CARDS` | 13 |
 | effect | `SET_PLAYER_FLAG` | 12 |
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
 | effect | `LOSE_MANA` | 10 |
@@ -285,6 +285,7 @@ structuredAbilityCount=760
 | effect | `DEDUCTION_RULE` | 7 |
 | effect | `FOREIGN_LIFE_RULE` | 7 |
 | effect | `IF_CONDITION` | 7 |
+| effect | `RULER_SEAL_RULE` | 7 |
 | effect | `SCHEDULE_PHASE_EFFECT` | 7 |
 | effect | `MOON_HOLY_GRAIL_RULE` | 6 |
 | effect | `SET_MANA` | 6 |
@@ -311,6 +312,7 @@ structuredAbilityCount=760
 | effect | `COMBAT_POWER_LOCK` | 3 |
 | effect | `CRAFTED_TREE_RULE` | 3 |
 | effect | `DECK_TOP_MANIPULATION_RULE` | 3 |
+| effect | `DEFERRED_DEPLOYMENT_RULE` | 3 |
 | effect | `DETECTIVE_CLUE_RULE` | 3 |
 | effect | `EXILE_SOURCE_CARD` | 3 |
 | effect | `FOOD_RESOURCE_RULE` | 3 |
@@ -320,7 +322,6 @@ structuredAbilityCount=760
 | effect | `PHANTOM_PLAYER_RULE` | 3 |
 | effect | `PILGRIMAGE_LUCK_RULE` | 3 |
 | effect | `REINCARNATION_RULE` | 3 |
-| effect | `RULER_SEAL_RULE` | 3 |
 | effect | `TRAINING_EXPERIENCE_RULE` | 3 |
 | effect | `VISITOR_CARD_RULE` | 3 |
 | effect | `BATCH_CARD_USE_RULE` | 2 |
@@ -330,7 +331,6 @@ structuredAbilityCount=760
 | effect | `CRAFT_ESSENCE_EFFECT_RULE` | 2 |
 | effect | `DECK_ENTRY_REPLACEMENT` | 2 |
 | effect | `DECLARED_ATTRIBUTE_RULE` | 2 |
-| effect | `DEFERRED_DEPLOYMENT_RULE` | 2 |
 | effect | `DEMON_GOD_RULE` | 2 |
 | effect | `DUAL_SERVANT_RULE` | 2 |
 | effect | `FEAR_ATTRIBUTE_RULE` | 2 |
@@ -345,6 +345,7 @@ structuredAbilityCount=760
 | effect | `MURDER_IMPULSE_RULE` | 2 |
 | effect | `NEMESIS_RULE` | 2 |
 | effect | `NPC_RULE` | 2 |
+| effect | `OPPONENT_MANA_BORROW_RULE` | 2 |
 | effect | `PREVENT_ELIMINATION` | 2 |
 | effect | `REMOVE_LINKED_STATUS` | 2 |
 | effect | `REMOVE_STATUS` | 2 |
@@ -412,7 +413,6 @@ structuredAbilityCount=760
 | effect | `MURDER_IMPULSE_THRESHOLD_RULE` | 1 |
 | effect | `MYSTIC_CODE_RULE` | 1 |
 | effect | `MYSTIC_CODE_UPGRADE_RULE` | 1 |
-| effect | `OPPONENT_MANA_BORROW_RULE` | 1 |
 | effect | `ORIGIN_BULLET_RULE` | 1 |
 | effect | `OTHER_ATTACK_POWER_BONUS` | 1 |
 | effect | `PAIN_CONVERSION_REWARD_RULE` | 1 |
@@ -1389,10 +1389,10 @@ structuredAbilityCount=760
 | `servant.kagekiyo.skill.sc-kagekiyo-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagekiyo-azamaru` |
 | `servant.kagekiyo.skill.sc-kagekiyo-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved` | `EVENT_LOCATION_EQUALS_CONTROLLER`, `EVENT_PLAYER_LOST_COMBAT`, `SOURCE_OWNED` | `NONE` | `BRANCH_CHOICE`, `CHOOSE_ONE_CARD` | `DRAW_CARDS`, `TRANSFER_SELECTED_CARDS` | `BRANCH_CHOICE`, `CHOOSE_ONE_CARD` | `NONE` | `NONE` | `FACE_DOWN`, `FACE_UP` | `payload:selectedInstanceIds` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.structured-skill` |
 | `servant.kagekiyo.skill.sc-kagekiyo-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagekiyo-never-dies` |
-| `servant.kagetora.skill.sc-kagetora-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagetora-god-of-war` |
-| `servant.kagetora.skill.sc-kagetora-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagetora-eight-phase` |
-| `servant.kagetora.skill.sc-kagetora-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
-| `servant.kagetora.skill.sc-kagetora-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagetora-ruler-seal` |
+| `servant.kagetora.skill.sc-kagetora-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagetora-god-of-war` |
+| `servant.kagetora.skill.sc-kagetora-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OPPONENT_MANA_BORROW_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagetora-eight-phase` |
+| `servant.kagetora.skill.sc-kagetora-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
+| `servant.kagetora.skill.sc-kagetora-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kagetora-ruler-seal` |
 | `servant.kama.skill.sc-kama-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `BRANCH_CHOICE`, `CHOOSE_ONE_LOCATION` | `CLOSE_SOURCE_CARD`, `COMBAT_POWER_BONUS`, `LOSE_MANA` | `BRANCH_CHOICE`, `CHOOSE_ONE_LOCATION` | `cleanup:remain_active`, `duration:while_active` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.structured-skill` |
 | `servant.kama.skill.sc-kama-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `player.entered-location`, `round.ended` | `AT_BATTLEFIELD`, `EVENT_LOCATION_NOT`, `EVENT_LOCATION_NOT_CONTROLLER`, `EVENT_PLAYER_IS_OPPONENT`, `PLAYER_FLAG_NUMBER_EQUALS_EVENT_FIELD`, `SOURCE_ACTIVE` | `NONE` | `NONE` | `CLEAR_PLAYER_FLAG`, `CLOSE_SOURCE_CARD`, `SET_PLAYER_FLAG`, `TRANSFER_VICTORY_POINTS` | `NONE` | `duration:while_active` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION` | `core.structured-skill` |
 | `servant.kama.skill.sc-kama-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
@@ -1460,10 +1460,10 @@ structuredAbilityCount=760
 | `servant.mandricardo.skill.sc-mandricardo-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mandricardo-instant-strike` |
 | `servant.mandricardo.skill.sc-mandricardo-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mandricardo-instant-strike` |
 | `servant.mandricardo.skill.sc-mandricardo-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
-| `servant.martha.skill.sc-martha-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.martha-divine-obedience` |
-| `servant.martha.skill.sc-martha-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.martha-tarasque` |
-| `servant.martha.skill.sc-martha-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
-| `servant.martha.skill.sc-martha-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.martha-divine-obedience` |
+| `servant.martha.skill.sc-martha-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.martha-divine-obedience` |
+| `servant.martha.skill.sc-martha-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DEFERRED_DEPLOYMENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.martha-tarasque` |
+| `servant.martha.skill.sc-martha-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `servant.martha.skill.sc-martha-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.martha-divine-obedience` |
 | `servant.mash.skill.sc-mash-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TERRAIN_EFFECT_MULTIPLIER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mash-lord-camelot` |
 | `servant.mash.skill.sc-mash-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GUARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.opponent-attack-power-modifier` |
 | `servant.mash.skill.sc-mash-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GUARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mash-ortenaus` |
