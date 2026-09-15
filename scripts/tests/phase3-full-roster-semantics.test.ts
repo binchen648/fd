@@ -1408,6 +1408,20 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.okita.skill.sc-okita-4')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'weak_constitution_rule'})])}));
   });
 
+  it('grounds the fifteen-ID Saber five slice from the locked saber/archer development snapshot', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const prefixes = ['servant.altera.skill.','servant.gawain.skill.','servant.bedivere.skill.','servant.arthur.skill.','servant.artoria-alt.skill.'];
+    const slice = overlays.filter((card) => prefixes.some((prefix) => card.id.startsWith(prefix)));
+    expect(slice).toHaveLength(15);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.document === 'Fate_Domination-开发版/batch_saber_archer.js' && card.source.sourceFileSha256 === 'b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    for (const id of ['servant.altera.skill.sc-altera-3','servant.gawain.skill.sc-gawain-3','servant.bedivere.skill.sc-bedivere-1','servant.arthur.skill.sc-arthur-3','servant.artoria-alt.skill.sc-artoria-alt-3']) {
+      expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'gain_victory_points'}),expect.objectContaining({type:'set_opponent_attribute_power'})])}));
+    }
+    expect(slice.find(c=>c.id==='servant.altera.skill.sc-altera-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'delayed_attack_event_replacement_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.bedivere.skill.sc-bedivere-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'zone_immunity_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.artoria-alt.skill.sc-artoria-alt-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'noble_phantasm_suppression_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1461,10 +1475,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 502,
-      blockedCount: 442,
+      sourceGroundedCount: 517,
+      blockedCount: 427,
       unclassifiedCount: 0,
-      structuredAbilityCount: 780,
+      structuredAbilityCount: 795,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

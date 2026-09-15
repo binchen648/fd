@@ -21022,6 +21022,447 @@
         }
       ],
       "referencePrintedTextSha256": "3505e83a83fa7fcdc2b1a62d03a2aee89e7e58ee7a439f21b9c0d0aebac0bc08"
+    },
+    {
+      "id": "servant.altera.skill.sc-altera-1",
+      "printedText": "轨道打击-此牌无法被打出。于此牌被放置的回合后，当你于此地点战斗时，于战斗阶段将此牌加入攻击并真名解放，然后于战斗阶段结束后，将此牌移除游戏并为其所在的地点抽取【文明废墟】事件牌代替原本的事件牌直至游戏结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_altera_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "轨道打击-此牌无法被打出。于此牌被放置的回合后，当你于此地点战斗时，于战斗阶段将此牌加入攻击并真名解放，然后于战斗阶段结束后，将此牌移除游戏并为其所在的地点抽取【文明废墟】事件牌代替原本的事件牌直至游戏结束。",
+        "sourceTextSha256": "1bcc870988df713b11d7e5b248c8df0cc9386ad383dc5202c091fd212c5b8548"
+      },
+      "abilities": [
+        {
+          "id": "altera.sc_altera_1.semantic",
+          "printedClause": "轨道打击-此牌无法被打出。于此牌被放置的回合后，当你于此地点战斗时，于战斗阶段将此牌加入攻击并真名解放，然后于战斗阶段结束后，将此牌移除游戏并为其所在的地点抽取【文明废墟】事件牌代替原本的事件牌直至游戏结束。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "delayed_attack_event_replacement_rule",
+              "operation": "source_cannot_be_played_after_round_it_was_placed_when_controller_battles_at_source_location_add_source_to_attacks_and_true_name_reveal_then_after_combat_remove_source_from_game_and_replace_location_event_with_civilization_ruins_until_game_end"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "1bcc870988df713b11d7e5b248c8df0cc9386ad383dc5202c091fd212c5b8548"
+    },
+    {
+      "id": "servant.altera.skill.sc-altera-2",
+      "printedText": "被动/行动阶段：阿蒂拉的技能牌减少等于你所在战场正面战果最高的事件牌的战果数的魔力消耗。\n行动阶段：你的攻击无法因其他能力被关闭或减少威力。\n战斗阶段：将【军神之剑·泪之星】放置于你所在的地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_altera_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "被动/行动阶段：阿蒂拉的技能牌减少等于你所在战场正面战果最高的事件牌的战果数的魔力消耗。\n行动阶段：你的攻击无法因其他能力被关闭或减少威力。\n战斗阶段：将【军神之剑·泪之星】放置于你所在的地点。",
+        "sourceTextSha256": "7946a11efd47d3a6967ddf6c32711ef5cdb7817d6bef91f0c2d724b3b2c75f68"
+      },
+      "abilities": [
+        {
+          "id": "altera.sc_altera_2.semantic",
+          "printedClause": "被动/行动阶段：阿蒂拉的技能牌减少等于你所在战场正面战果最高的事件牌的战果数的魔力消耗。\n行动阶段：你的攻击无法因其他能力被关闭或减少威力。\n战斗阶段：将【军神之剑·泪之星】放置于你所在的地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "event_power_cost_protection_rule",
+              "operation": "passive_action_reduce_altera_skill_mana_cost_by_highest_faceup_vp_on_event_at_controller_battlefield_action_controller_attacks_cannot_be_closed_or_have_power_reduced_by_other_abilities_combat_place_teardrop_photon_ray_at_controller_location"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7946a11efd47d3a6967ddf6c32711ef5cdb7817d6bef91f0c2d724b3b2c75f68"
+    },
+    {
+      "id": "servant.altera.skill.sc-altera-3",
+      "printedText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_altera_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+        "sourceTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+      },
+      "abilities": [
+        {
+          "id": "altera.sc_altera_3.semantic",
+          "printedClause": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 1,
+              "operation": "if_played_highest_mana_cost_noble_phantasm_attack_in_controller_combat_this_round_gain_1_vp_and_if_cost_at_least_4_gain_1_additional_vp"
+            },
+            {
+              "type": "set_opponent_attribute_power",
+              "attribute": "magic",
+              "value": 0,
+              "operation": "combat_set_magic_attribute_attack_power_of_engaged_opponents_at_same_battlefield_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+    },
+    {
+      "id": "servant.gawain.skill.sc-gawain-1",
+      "printedText": "【真名解放】\n被动/前哨阶段：如果你位于战场上，获得3点魔力且总威力+3。若你在本回合结束前没有打出【轮转胜利之剑】，失去所有魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_gawain_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n被动/前哨阶段：如果你位于战场上，获得3点魔力且总威力+3。若你在本回合结束前没有打出【轮转胜利之剑】，失去所有魔力。",
+        "sourceTextSha256": "54d6f3d6c5ece96f5096bbe2fc7ec1543a2a3ddbf04a3e3866c9ff5c54f95b2e"
+      },
+      "abilities": [
+        {
+          "id": "gawain.sc_gawain_1.semantic",
+          "printedClause": "【真名解放】\n被动/前哨阶段：如果你位于战场上，获得3点魔力且总威力+3。若你在本回合结束前没有打出【轮转胜利之剑】，失去所有魔力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "conditional_mana_forfeit_rule",
+              "operation": "true_name_reveal_passive_outpost_if_controller_on_battlefield_gain_3_mana_and_3_total_power_if_source_not_played_before_round_end_lose_all_mana"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "54d6f3d6c5ece96f5096bbe2fc7ec1543a2a3ddbf04a3e3866c9ff5c54f95b2e"
+    },
+    {
+      "id": "servant.gawain.skill.sc-gawain-2",
+      "printedText": "挑战-被动：当一张事件牌被展示后，你可以弃置一张与其提到的属性对应的手牌。若你如此做，被【挑战】的事件牌获得获得+3战果。\n不夜的魅力-战斗阶段：如果你位于被【挑战】事件牌的战斗中，或你支付3点魔力：将你所有基础威力为3的攻击的基础威力×3。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_gawain_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "挑战-被动：当一张事件牌被展示后，你可以弃置一张与其提到的属性对应的手牌。若你如此做，被【挑战】的事件牌获得获得+3战果。\n不夜的魅力-战斗阶段：如果你位于被【挑战】事件牌的战斗中，或你支付3点魔力：将你所有基础威力为3的攻击的基础威力×3。",
+        "sourceTextSha256": "c9a4eec6a5a16faf7db3b6d53c09db6e4970b9599f0f93bc818606ffde82e254"
+      },
+      "abilities": [
+        {
+          "id": "gawain.sc_gawain_2.semantic",
+          "printedClause": "挑战-被动：当一张事件牌被展示后，你可以弃置一张与其提到的属性对应的手牌。若你如此做，被【挑战】的事件牌获得获得+3战果。\n不夜的魅力-战斗阶段：如果你位于被【挑战】事件牌的战斗中，或你支付3点魔力：将你所有基础威力为3的攻击的基础威力×3。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "event_challenge_attack_multiplier_rule",
+              "operation": "after_event_revealed_may_discard_hand_card_matching_attribute_mentioned_by_event_if_so_mark_event_challenged_and_event_gains_3_vp_combat_if_in_battle_on_challenged_event_or_pay_3_mana_multiply_base_power_by_3_for_all_controller_attacks_with_base_power_3"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c9a4eec6a5a16faf7db3b6d53c09db6e4970b9599f0f93bc818606ffde82e254"
+    },
+    {
+      "id": "servant.gawain.skill.sc-gawain-3",
+      "printedText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_gawain_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+        "sourceTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+      },
+      "abilities": [
+        {
+          "id": "gawain.sc_gawain_3.semantic",
+          "printedClause": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 1,
+              "operation": "if_played_highest_mana_cost_noble_phantasm_attack_in_controller_combat_this_round_gain_1_vp_and_if_cost_at_least_4_gain_1_additional_vp"
+            },
+            {
+              "type": "set_opponent_attribute_power",
+              "attribute": "magic",
+              "value": 0,
+              "operation": "combat_set_magic_attribute_attack_power_of_engaged_opponents_at_same_battlefield_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+    },
+    {
+      "id": "servant.bedivere.skill.sc-bedivere-1",
+      "printedText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_bedivere_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+        "sourceTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+      },
+      "abilities": [
+        {
+          "id": "bedivere.sc_bedivere_1.semantic",
+          "printedClause": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 1,
+              "operation": "if_played_highest_mana_cost_noble_phantasm_attack_in_controller_combat_this_round_gain_1_vp_and_if_cost_at_least_4_gain_1_additional_vp"
+            },
+            {
+              "type": "set_opponent_attribute_power",
+              "attribute": "magic",
+              "value": 0,
+              "operation": "combat_set_magic_attribute_attack_power_of_engaged_opponents_at_same_battlefield_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+    },
+    {
+      "id": "servant.bedivere.skill.sc-bedivere-2",
+      "printedText": "被动/前哨阶段：弃置一张手牌，若如此做，你获得+2合计威力且你控制的攻击，你的技能区、手牌、牌库和你战场的事件牌不会被其他玩家的能力所影响直至回合结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_bedivere_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "被动/前哨阶段：弃置一张手牌，若如此做，你获得+2合计威力且你控制的攻击，你的技能区、手牌、牌库和你战场的事件牌不会被其他玩家的能力所影响直至回合结束。",
+        "sourceTextSha256": "0be515f4fbb3a59e6e99857b2a023db09a63f87494595cf18e7c1890bf4dca60"
+      },
+      "abilities": [
+        {
+          "id": "bedivere.sc_bedivere_2.semantic",
+          "printedClause": "被动/前哨阶段：弃置一张手牌，若如此做，你获得+2合计威力且你控制的攻击，你的技能区、手牌、牌库和你战场的事件牌不会被其他玩家的能力所影响直至回合结束。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "zone_immunity_rule",
+              "operation": "passive_outpost_discard_one_hand_card_if_paid_gain_2_total_power_and_until_round_end_other_players_abilities_cannot_affect_controller_attacks_skill_zone_hand_deck_or_event_at_controller_battlefield"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0be515f4fbb3a59e6e99857b2a023db09a63f87494595cf18e7c1890bf4dca60"
+    },
+    {
+      "id": "servant.bedivere.skill.sc-bedivere-3",
+      "printedText": "【真名解放】\n一闪即逝-被动：每当你的弃牌堆被洗回牌堆时，本局游戏你的合计威力便-1。\n紧握其剑-被动/行动阶段：将你剩余的牌堆从游戏中移除（至少2张牌），然后将此牌加入你的攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_bedivere_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n一闪即逝-被动：每当你的弃牌堆被洗回牌堆时，本局游戏你的合计威力便-1。\n紧握其剑-被动/行动阶段：将你剩余的牌堆从游戏中移除（至少2张牌），然后将此牌加入你的攻击。",
+        "sourceTextSha256": "e5e35ea38de48042f990c1fe53ff216327890b7465b47c50b83c979fdb03c70b"
+      },
+      "abilities": [
+        {
+          "id": "bedivere.sc_bedivere_3.semantic",
+          "printedClause": "【真名解放】\n一闪即逝-被动：每当你的弃牌堆被洗回牌堆时，本局游戏你的合计威力便-1。\n紧握其剑-被动/行动阶段：将你剩余的牌堆从游戏中移除（至少2张牌），然后将此牌加入你的攻击。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "deck_recycle_power_rule",
+              "operation": "true_name_reveal_passive_each_time_controller_discard_is_shuffled_into_deck_controller_total_power_minus_1_for_rest_of_game_passive_action_remove_remaining_deck_from_game_minimum_2_cards_then_add_source_to_controller_attacks"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "e5e35ea38de48042f990c1fe53ff216327890b7465b47c50b83c979fdb03c70b"
+    },
+    {
+      "id": "servant.arthur.skill.sc-arthur-1",
+      "printedText": "【真名解放】\n行动阶段：将任意数量亚瑟的技能移出游戏。每张移除的技能为[契约胜利之剑]增加5点威力以及2点消耗持续到游戏结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_arthur_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n行动阶段：将任意数量亚瑟的技能移出游戏。每张移除的技能为[契约胜利之剑]增加5点威力以及2点消耗持续到游戏结束。",
+        "sourceTextSha256": "94fc66fbf2bf05c55fbf591e24272430167f98288267912f3f868bbded339b3c"
+      },
+      "abilities": [
+        {
+          "id": "arthur.sc_arthur_1.semantic",
+          "printedClause": "【真名解放】\n行动阶段：将任意数量亚瑟的技能移出游戏。每张移除的技能为[契约胜利之剑]增加5点威力以及2点消耗持续到游戏结束。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "skill_sacrifice_scaling_rule",
+              "operation": "true_name_reveal_action_remove_any_number_of_arthur_skills_from_game_for_each_removed_skill_source_gains_5_power_and_2_mana_cost_until_game_end"
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "94fc66fbf2bf05c55fbf591e24272430167f98288267912f3f868bbded339b3c"
+    },
+    {
+      "id": "servant.arthur.skill.sc-arthur-2",
+      "printedText": "被动：该从者无法被真名解放。\n战斗阶段：将与你进行战斗的对手其力量属性攻击威力变为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_arthur_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "被动：该从者无法被真名解放。\n战斗阶段：将与你进行战斗的对手其力量属性攻击威力变为0。",
+        "sourceTextSha256": "b902fb2952079315ff97d66835891cc2c2374f97e5c0527a269330a596597366"
+      },
+      "abilities": [
+        {
+          "id": "arthur.sc_arthur_2.semantic",
+          "printedClause": "被动：该从者无法被真名解放。\n战斗阶段：将与你进行战斗的对手其力量属性攻击威力变为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "true_name_reveal_rule",
+              "operation": "passive_servant_cannot_be_true_name_released"
+            },
+            {
+              "type": "set_opponent_attribute_power",
+              "attribute": "strength",
+              "value": 0,
+              "operation": "combat_set_strength_attribute_attack_power_of_opponents_battling_controller_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b902fb2952079315ff97d66835891cc2c2374f97e5c0527a269330a596597366"
+    },
+    {
+      "id": "servant.arthur.skill.sc-arthur-3",
+      "printedText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_arthur_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+        "sourceTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+      },
+      "abilities": [
+        {
+          "id": "arthur.sc_arthur_3.semantic",
+          "printedClause": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 1,
+              "operation": "if_played_highest_mana_cost_noble_phantasm_attack_in_controller_combat_this_round_gain_1_vp_and_if_cost_at_least_4_gain_1_additional_vp"
+            },
+            {
+              "type": "set_opponent_attribute_power",
+              "attribute": "magic",
+              "value": 0,
+              "operation": "combat_set_magic_attribute_attack_power_of_engaged_opponents_at_same_battlefield_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+    },
+    {
+      "id": "servant.artoria-alt.skill.sc-artoria-alt-1",
+      "printedText": "【真名解放】\n局势牌无法阻止你打出此牌。\n风王铁锤-行动阶段：花费4点魔力，此牌每被连续打出一回合，便获得+3威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_artoria_alt_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n局势牌无法阻止你打出此牌。\n风王铁锤-行动阶段：花费4点魔力，此牌每被连续打出一回合，便获得+3威力。",
+        "sourceTextSha256": "694da3bf8a60df592c62063e8d1400b468912c948aa5e2455da8372969ea278e"
+      },
+      "abilities": [
+        {
+          "id": "artoria-alt.sc_artoria_alt_1.semantic",
+          "printedClause": "【真名解放】\n局势牌无法阻止你打出此牌。\n风王铁锤-行动阶段：花费4点魔力，此牌每被连续打出一回合，便获得+3威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "unpreventable_result_rule",
+              "operation": "true_name_reveal_situation_cards_cannot_prevent_playing_source"
+            },
+            {
+              "type": "source_card_power_formula",
+              "operation": "action_pay_4_mana_source_gains_3_power_for_each_consecutive_round_source_has_been_played"
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "694da3bf8a60df592c62063e8d1400b468912c948aa5e2455da8372969ea278e"
+    },
+    {
+      "id": "servant.artoria-alt.skill.sc-artoria-alt-2",
+      "printedText": "你拥有的魔力少于8点也可以打出此牌。\n安哥拉曼纽的拥抱-残留：当你使用宝具时，关闭此牌。\n若你的魔力少于8点，与你位于同一战场的对手无法使用宝具。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_artoria_alt_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "你拥有的魔力少于8点也可以打出此牌。\n安哥拉曼纽的拥抱-残留：当你使用宝具时，关闭此牌。\n若你的魔力少于8点，与你位于同一战场的对手无法使用宝具。",
+        "sourceTextSha256": "59aa115fd516aa7b4828f663e59e3e606e853ff10a9ab30b2346372006eebdf8"
+      },
+      "abilities": [
+        {
+          "id": "artoria-alt.sc_artoria_alt_2.semantic",
+          "printedClause": "你拥有的魔力少于8点也可以打出此牌。\n安哥拉曼纽的拥抱-残留：当你使用宝具时，关闭此牌。\n若你的魔力少于8点，与你位于同一战场的对手无法使用宝具。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "noble_phantasm_suppression_rule",
+              "operation": "source_may_be_played_while_controller_has_less_than_8_mana_residual_when_controller_uses_noble_phantasm_close_source_while_controller_has_less_than_8_mana_opponents_at_same_battlefield_cannot_use_noble_phantasms"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "59aa115fd516aa7b4828f663e59e3e606e853ff10a9ab30b2346372006eebdf8"
+    },
+    {
+      "id": "servant.artoria-alt.skill.sc-artoria-alt-3",
+      "printedText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_artoria_alt_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+        "sourceTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+      },
+      "abilities": [
+        {
+          "id": "artoria-alt.sc_artoria_alt_3.semantic",
+          "printedClause": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 1,
+              "operation": "if_played_highest_mana_cost_noble_phantasm_attack_in_controller_combat_this_round_gain_1_vp_and_if_cost_at_least_4_gain_1_additional_vp"
+            },
+            {
+              "type": "set_opponent_attribute_power",
+              "attribute": "magic",
+              "value": 0,
+              "operation": "combat_set_magic_attribute_attack_power_of_engaged_opponents_at_same_battlefield_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
     }
   ]
 }
