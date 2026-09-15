@@ -3594,7 +3594,7 @@ Permitted final status:
 ## TASK P3-FB2-11
 
 Owner: Codex B2
-Status: READY
+Status: REVIEW_ACCEPTED
 Branch: `codex/b2-p3-fb2-11-round-number-formula-r1`
 Base: exact A-owned FB2-11 handoff commit
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
@@ -3611,7 +3611,7 @@ Completion status allowed:
 ## TASK P3-R33
 
 Owner: Codex R
-Status: READY_AFTER_P3_FB2_11
+Status: REVIEW_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact FB2-11 candidate SHA
 
 Goal: independently review FB2-11 without implementing fixes. Required checks: exact read-only round metric; loader fail-closed near variables; no formula-op expansion; Territory expression round 1/4/7/8 values; deterministic trace; existing Drake compatibility; FB2-02 compatibility; no identity/text routing; typecheck, rules, determinism, full CI, diff check. R33 must also independently reconcile the prospective exact ten-card Territory Creation family: identical frozen full text/source clause hashes, same Reference handler/static metadata, F1 5+5 classification split is evidence-classification drift only, and the complete two-clause card is covered by FB2-11 + accepted FB2-02.
@@ -3623,7 +3623,7 @@ Permitted final status:
 ## TASK P3-A-FB2-11-SYNC
 
 Owner: Codex A
-Status: READY_AFTER_P3_R33
+Status: READY
 Branch: `codex/a-p3-fb2-11-round-number-formula-sync`
 
 Goal: synchronize exact R33 facts, run fresh coverage/recertification, and if and only if R33 accepts the metric plus ten-member family reconciliation, dispatch P3-FM05 at exact batch size 10. A must not migrate authoring.
@@ -3645,6 +3645,14 @@ Prospective exact batch: the ten identical-text Territory Creation cards frozen 
 - FB2-11 therefore adds only `game.round_number`; future Territory X is `16 + (-2 * game.round_number)`. Broad formula language expansion is forbidden.
 - Locked Reference static metadata for all ten is uniform: Magic type, cost 0, historical requirement 0, historical static basePower 2. Frozen F1 printed formula remains semantic authority; the historical 2 is metadata only.
 - F1's five Resource-only vs five scaling-only classification split cannot be used to split the migration because all ten frozen cards are text-identical. R33 must reconcile the complete family before FM05 dispatch.
+
+## Full-Roster Dispatch State After P3-R33 / FB2-11
+
+- R33 independently accepts exact FB2-11: only trusted read-only `game.round_number`; no formula-op expansion, string formula, arbitrary state path, identity/text routing, or authoring mutation.
+- Candidate `5383c37c8362341b8a581624b8ad1d77ddce3567` passes focused `12/12`, rules `297/297`, standard full CI `710/710`, content validation 0 blockers, determinism unchanged, diff/identity audit clean.
+- Exact prospective Territory Creation family is 10/10 text/source/handler/static-metadata identical and currently 0/10 canonical. Frozen F1 split is 5 block-free Resource + 5 scaling-blocked rows, independently judged classification drift only.
+- Accepted FB2-02 covers the deployment reward; accepted FB2-11 covers the only missing round-number formula dependency. The complete ten-card family is dependency-complete pending fresh A synchronization.
+- P3-A-FB2-11-SYNC is READY. P3-FM05 remains blocked until that synchronization dispatches it.
 
 ## Prompt Templates
 
