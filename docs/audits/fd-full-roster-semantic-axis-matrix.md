@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=657
-blockedCount=287
+sourceGroundedCount=673
+blockedCount=271
 unclassifiedCount=0
-structuredAbilityCount=935
+structuredAbilityCount=951
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 118 |
+| timing | `ACTION` | 121 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -264,20 +264,20 @@ structuredAbilityCount=935
 | effect | `GAIN_MANA` | 36 |
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
+| effect | `DRAW_CARDS` | 27 |
 | effect | `EVENT_CARD_RULE` | 27 |
-| effect | `DRAW_CARDS` | 26 |
-| effect | `MOVE_PLAYER` | 23 |
+| effect | `MOVE_PLAYER` | 25 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
 | effect | `MOVE_SELECTED_CARDS` | 17 |
-| effect | `PLAY_SELECTED_CARDS` | 16 |
+| effect | `PLAY_SELECTED_CARDS` | 17 |
 | effect | `CLOSE_SOURCE_CARD` | 14 |
 | effect | `LOSTBELT_EXPANSION` | 14 |
 | effect | `DEFEAT_PLAYER` | 13 |
 | effect | `FOREIGN_LIFE_RULE` | 13 |
+| effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 12 |
 | effect | `SET_PLAYER_FLAG` | 12 |
-| effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 11 |
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
 | effect | `LOSE_MANA` | 10 |
 | effect | `ADJUST_COMMAND_SEALS` | 9 |
@@ -286,10 +286,10 @@ structuredAbilityCount=935
 | effect | `REVERSE_EFFECT_RULE` | 9 |
 | effect | `RULER_SEAL_RULE` | 9 |
 | effect | `SOURCE_CARD_POWER_BONUS` | 9 |
+| effect | `SCHEDULE_PHASE_EFFECT` | 8 |
 | effect | `DEDUCTION_RULE` | 7 |
 | effect | `IF_CONDITION` | 7 |
 | effect | `INDEPENDENT_ACTION_RULE` | 7 |
-| effect | `SCHEDULE_PHASE_EFFECT` | 7 |
 | effect | `MOON_HOLY_GRAIL_RULE` | 6 |
 | effect | `SET_MANA` | 6 |
 | effect | `TERRAIN_POSITION_ADJUSTMENT` | 6 |
@@ -304,6 +304,7 @@ structuredAbilityCount=935
 | effect | `GROWTH_COUNTER_RULE` | 4 |
 | effect | `MOVE_SELECTED_EVENTS` | 4 |
 | effect | `NECROMANCY_RITE_RULE` | 4 |
+| effect | `PREVENT_ELIMINATION` | 4 |
 | effect | `PROPHECY_RULE` | 4 |
 | effect | `REMOVE_CARDS_IN_ZONE` | 4 |
 | effect | `REMOVE_SELECTED_CARDS` | 4 |
@@ -328,12 +329,14 @@ structuredAbilityCount=935
 | effect | `OVERLOAD_CARD_RULE` | 3 |
 | effect | `PHANTOM_PLAYER_RULE` | 3 |
 | effect | `PILGRIMAGE_LUCK_RULE` | 3 |
-| effect | `PREVENT_ELIMINATION` | 3 |
 | effect | `REINCARNATION_RULE` | 3 |
+| effect | `TERRAIN_EFFECT_MULTIPLIER_RULE` | 3 |
 | effect | `TRAINING_EXPERIENCE_RULE` | 3 |
 | effect | `VISITOR_CARD_RULE` | 3 |
+| effect | `VOLUME_COUNTER_RULE` | 3 |
 | effect | `BASE_CARD_EXCHANGE_RULE` | 2 |
 | effect | `BATCH_CARD_USE_RULE` | 2 |
+| effect | `BOUND_OPPONENT_RULE` | 2 |
 | effect | `CARGO_ACQUISITION_RULE` | 2 |
 | effect | `CARGO_BOX_RULE` | 2 |
 | effect | `CHALLENGE_RPS_RULE` | 2 |
@@ -351,6 +354,7 @@ structuredAbilityCount=935
 | effect | `LOCATION_TOKEN_RULE` | 2 |
 | effect | `MURDER_IMPULSE_RULE` | 2 |
 | effect | `NEMESIS_RULE` | 2 |
+| effect | `NETHERWORLD_BLESSING_RULE` | 2 |
 | effect | `NOBLE_PHANTASM_SUPPRESSION_RULE` | 2 |
 | effect | `NPC_RULE` | 2 |
 | effect | `OPPONENT_MANA_BORROW_RULE` | 2 |
@@ -368,7 +372,6 @@ structuredAbilityCount=935
 | effect | `SKILL_COPY_LIFECYCLE_RULE` | 2 |
 | effect | `SOURCE_CARD_POWER_FORMULA` | 2 |
 | effect | `TATARI_RULE` | 2 |
-| effect | `TERRAIN_EFFECT_MULTIPLIER_RULE` | 2 |
 | effect | `TRANSFER_MANA` | 2 |
 | effect | `TRANSFER_MATCHING_CARDS` | 2 |
 | effect | `TRUE_NAME_HIDE_AND_ACTION_REPLAY_RULE` | 2 |
@@ -389,7 +392,6 @@ structuredAbilityCount=935
 | effect | `BETRAYAL_ASCENSION_RULE` | 1 |
 | effect | `BETRAYAL_THRESHOLD_RULE` | 1 |
 | effect | `BLOCK_COUNTER_RULE` | 1 |
-| effect | `BOUND_OPPONENT_RULE` | 1 |
 | effect | `CAENIS_GOLDEN_WINGS_RULE` | 1 |
 | effect | `CAENIS_MAELSTROM_RULE` | 1 |
 | effect | `CAENIS_POSEIDON_FAVOR_RULE` | 1 |
@@ -450,6 +452,7 @@ structuredAbilityCount=935
 | effect | `DOPPELGANGER_DEFEAT_RULE` | 1 |
 | effect | `DRAGON_HEART_PENALTY_RULE` | 1 |
 | effect | `DRAWN_CARDS_PLAY_LOCK_RULE` | 1 |
+| effect | `EDISON_GALVANIC_BATTERY_RULE` | 1 |
 | effect | `ENSURE_EVENT_DECK_COUNT` | 1 |
 | effect | `EVENT_ATTRIBUTE_INFUSION_RULE` | 1 |
 | effect | `EVENT_BATTLEFIELD_PENALTY` | 1 |
@@ -484,6 +487,7 @@ structuredAbilityCount=935
 | effect | `LOVE_BOND_VP_RULE` | 1 |
 | effect | `LUCK_IDENTITY_REPLAY_RULE` | 1 |
 | effect | `LUCK_REVEAL_DEFEAT_RULE` | 1 |
+| effect | `MAGIC_ATTACK_CLOSE_REWARD_RULE` | 1 |
 | effect | `MAGIC_IMMUNITY_RULE` | 1 |
 | effect | `MANA_BURST_REFUND_RULE` | 1 |
 | effect | `MAP_ARROW_REWRITE_RULE` | 1 |
@@ -492,6 +496,7 @@ structuredAbilityCount=935
 | effect | `MILLENNIUM_CASTLE_OFFBOARD_LOCK_RULE` | 1 |
 | effect | `MODIFY_OTHER_ATTACKS` | 1 |
 | effect | `MOON_HOLY_GRAIL_RESET_RULE` | 1 |
+| effect | `MORPH_STACK_RULE` | 1 |
 | effect | `MURDER_IMPULSE_THRESHOLD_RULE` | 1 |
 | effect | `MYSTIC_CODE_RULE` | 1 |
 | effect | `MYSTIC_CODE_UPGRADE_RULE` | 1 |
@@ -500,6 +505,7 @@ structuredAbilityCount=935
 | effect | `ORIGIN_BULLET_RULE` | 1 |
 | effect | `OTHER_ATTACK_POWER_BONUS` | 1 |
 | effect | `PAIN_CONVERSION_REWARD_RULE` | 1 |
+| effect | `PLAYED_ATTACK_COST_SUM_POWER_RULE` | 1 |
 | effect | `PLAY_SOURCE_CARD` | 1 |
 | effect | `POISON_DEFEAT_RULE` | 1 |
 | effect | `PREPARATION_LEADER_VP_RULE` | 1 |
@@ -1380,33 +1386,33 @@ structuredAbilityCount=935
 | `servant.douman.skill.sc-douman-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.douman-evil-minister` |
 | `servant.douman.skill.sc-douman-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.douman-ridicule-cat` |
 | `servant.douman.skill.sc-douman-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
-| `servant.drake.skill.sc-drake-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `servant.drake.skill.sc-drake-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
 | `servant.drake.skill.sc-drake-2` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `AT_BATTLEFIELD`, `LOCATION_IS`, `SAME_LOCATION_PLAYER_COUNT_EQUALS`, `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_LOCATION` | `IF_CONDITION`, `MOVE_PLAYER` | `CHOOSE_ONE_LOCATION` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:targetLocationId` | `COMBAT_CONDITION` | `core.structured-skill` |
 | `servant.drake.skill.sc-drake-3` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `SOURCE_ACTIVE`, `SOURCE_OWNED` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS` | `NONE` | `NONE` | `rule:card_ability_move_direction:allow` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.edison.skill.sc-edison-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.opponent-bonus-per-costly-attack` |
+| `servant.edison.skill.sc-edison-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EDISON_GALVANIC_BATTERY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.opponent-bonus-per-costly-attack` |
 | `servant.edison.skill.sc-edison-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `card.played`, `player.deployed`, `player.mana.changed` | `EVENT_DEFINITION_IS_SELF`, `EVENT_LOCATION_IS`, `EVENT_NUMBER_COMPARE`, `EVENT_PLAYER_IS_CONTROLLER`, `EVENT_PLAYER_IS_OPPONENT`, `METRIC`, `METRIC_COMPARE`, `SOURCE_ACTIVE` | `NONE` | `NONE` | `CLOSE_SOURCE_CARD`, `GAIN_MANA`, `GAIN_VICTORY_POINTS`, `LOSE_MANA` | `NONE` | `cleanup:remain_active`, `duration:while_active`, `starts:immediate` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.edison.skill.sc-edison-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved` | `EVENT_COMBAT_HAS_ATTRIBUTE`, `EVENT_LOCATION_EQUALS_CONTROLLER`, `SOURCE_ACTIVE` | `NONE` | `NONE` | `CLOSE_SOURCE_CARD` | `NONE` | `cleanup:remain_active`, `duration:while_active` | `rule:card_power:set`, `rule:deployment_advantage:add` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.structured-skill` |
-| `servant.elizabeth.skill.sc-elizabeth-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.elizabeth-volume-power` |
-| `servant.elizabeth.skill.sc-elizabeth-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.elizabeth-vocal-performance` |
-| `servant.elizabeth.skill.sc-elizabeth-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.elizabeth-iron-maiden` |
+| `servant.elizabeth.skill.sc-elizabeth-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VOLUME_COUNTER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.elizabeth-volume-power` |
+| `servant.elizabeth.skill.sc-elizabeth-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VOLUME_COUNTER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.elizabeth-vocal-performance` |
+| `servant.elizabeth.skill.sc-elizabeth-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VOLUME_COUNTER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.elizabeth-iron-maiden` |
 | `servant.emiya-alt.skill.sc-emiya-alt-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
 | `servant.emiya-alt.skill.sc-emiya-alt-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DISCARD_ATTRIBUTE_RECYCLE_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.emiya-alt-unlimited-blade-works` |
 | `servant.emiya-alt.skill.sc-emiya-alt-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DISCARD_COST_ATTRIBUTE_GAIN_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.emiya-alt-kanshou-bakuya` |
-| `servant.emiya.skill.sc-emiya-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.zero-opponent-attribute` |
-| `servant.emiya.skill.sc-emiya-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.emiya-fake-spiral-sword` |
+| `servant.emiya.skill.sc-emiya-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SET_OPPONENT_ATTRIBUTE_POWER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.zero-opponent-attribute` |
+| `servant.emiya.skill.sc-emiya-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TERRAIN_EFFECT_MULTIPLIER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.emiya-fake-spiral-sword` |
 | `servant.emiya.skill.sc-emiya-np` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `CHOOSE_N_CARDS` | `MOVE_SELECTED_CARDS` | `CHOOSE_N_CARDS` | `duration:until_card_closed` | `rule:card_draw:forbid`, `rule:standard_attack_card_count:replace` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |
-| `servant.enkidu.skill.sc-enkidu-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.enkidu-transfiguration` |
-| `servant.enkidu.skill.sc-enkidu-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.enkidu-enuma-elish` |
-| `servant.enkidu.skill.sc-enkidu-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
-| `servant.ereshkigal.skill.sc-ereshkigal-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
-| `servant.ereshkigal.skill.sc-ereshkigal-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ereshkigal-blessing-of-kur` |
-| `servant.ereshkigal.skill.sc-ereshkigal-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ereshkigal-kur-kigal-irkalla` |
+| `servant.enkidu.skill.sc-enkidu-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MORPH_STACK_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.enkidu-transfiguration` |
+| `servant.enkidu.skill.sc-enkidu-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `BOUND_OPPONENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.enkidu-enuma-elish` |
+| `servant.enkidu.skill.sc-enkidu-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
+| `servant.ereshkigal.skill.sc-ereshkigal-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
+| `servant.ereshkigal.skill.sc-ereshkigal-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NETHERWORLD_BLESSING_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ereshkigal-blessing-of-kur` |
+| `servant.ereshkigal.skill.sc-ereshkigal-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NETHERWORLD_BLESSING_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ereshkigal-kur-kigal-irkalla` |
 | `servant.euryale.skill.sc-euryale-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
 | `servant.euryale.skill.sc-euryale-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SIREN_ACTION_OVERRIDE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.euryale-siren-song` |
 | `servant.euryale.skill.sc-euryale-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVEALED_LUCK_PLAY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.euryale-eye` |
-| `servant.frank.skill.sc-frank-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.frank.skill.sc-frank-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.combat-power-from-battlefield-played-costs` |
-| `servant.frank.skill.sc-frank-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.frank.skill.sc-frank-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MAGIC_ATTACK_CLOSE_REWARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.frank.skill.sc-frank-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PLAYED_ATTACK_COST_SUM_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.combat-power-from-battlefield-played-costs` |
+| `servant.frank.skill.sc-frank-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PREVENT_ELIMINATION`, `SCHEDULE_PHASE_EFFECT` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.gareth.skill.sc-gareth-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.gareth.skill.sc-gareth-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gareth-ira-lupus` |
 | `servant.gareth.skill.sc-gareth-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.gareth-gun-lance` |

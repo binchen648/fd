@@ -25188,6 +25188,448 @@
         }
       ],
       "referencePrintedTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+    },
+    {
+      "id": "servant.drake.skill.sc-drake-1",
+      "printedText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_drake_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+        "sourceTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+      },
+      "abilities": [
+        {
+          "id": "drake.sc-drake-1.semantic",
+          "printedClause": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "draw_cards",
+              "count": 1,
+              "when": "source_played_with_one_base_attack"
+            },
+            {
+              "type": "play_selected_cards",
+              "sourceZone": "hand",
+              "maxCount": 3,
+              "filter": {
+                "basePowerMax": 3
+              }
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+    },
+    {
+      "id": "servant.edison.skill.sc-edison-1",
+      "printedText": "你拥有的魔力少于8点也可使用此牌。\n战斗阶段：与你进行交战的对手每有一张1或更高的魔力消耗的攻击，便获得1点魔力且合计威力+2。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_edison_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "你拥有的魔力少于8点也可使用此牌。\n战斗阶段：与你进行交战的对手每有一张1或更高的魔力消耗的攻击，便获得1点魔力且合计威力+2。",
+        "sourceTextSha256": "f7a5276eedf80282f5b65beb67bc52c83a37e74ec61e2f69fe7cb5db4c8a2222"
+      },
+      "abilities": [
+        {
+          "id": "edison.sc-edison-1.semantic",
+          "printedClause": "你拥有的魔力少于8点也可使用此牌。\n战斗阶段：与你进行交战的对手每有一张1或更高的魔力消耗的攻击，便获得1点魔力且合计威力+2。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "edison_galvanic_battery_rule",
+              "operation": "usable_below_8_mana_combat_for_each_engaged_opponent_attack_with_mana_cost_at_least_1_gain_1_mana_and_2_total_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f7a5276eedf80282f5b65beb67bc52c83a37e74ec61e2f69fe7cb5db4c8a2222"
+    },
+    {
+      "id": "servant.elizabeth.skill.sc-elizabeth-1",
+      "printedText": "【真名解放】\n若你战败，失去3枚【音量】。\n战斗阶段：获得你【音量】标记3倍的合计威力（至多15）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_elizabeth_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n若你战败，失去3枚【音量】。\n战斗阶段：获得你【音量】标记3倍的合计威力（至多15）。",
+        "sourceTextSha256": "925950142a5e1b182ccf0b66160440bc5d6e42ecdb64a770d25d1caf36b91b08"
+      },
+      "abilities": [
+        {
+          "id": "elizabeth.sc-elizabeth-1.semantic",
+          "printedClause": "【真名解放】\n若你战败，失去3枚【音量】。\n战斗阶段：获得你【音量】标记3倍的合计威力（至多15）。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "volume_counter_rule",
+              "operation": "true_name_reveal_on_defeat_lose_3_volume_combat_gain_total_power_equal_3_times_volume_max_15"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "925950142a5e1b182ccf0b66160440bc5d6e42ecdb64a770d25d1caf36b91b08"
+    },
+    {
+      "id": "servant.elizabeth.skill.sc-elizabeth-2",
+      "printedText": "【真名解放】\n被动：战斗阶段结束后，若你未参与争夺战，失去1枚【音量】标记。\n“天籁之音”-战斗阶段：你的战斗中每有一名对手，你便获得1枚【音量】标记。此牌获得你【音量】标记数的威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_elizabeth_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n被动：战斗阶段结束后，若你未参与争夺战，失去1枚【音量】标记。\n“天籁之音”-战斗阶段：你的战斗中每有一名对手，你便获得1枚【音量】标记。此牌获得你【音量】标记数的威力。",
+        "sourceTextSha256": "d25b31e8e55fd9ccbcc6bfdc082206cd1cfdae2174606031c36e072044837a36"
+      },
+      "abilities": [
+        {
+          "id": "elizabeth.sc-elizabeth-2.semantic",
+          "printedClause": "【真名解放】\n被动：战斗阶段结束后，若你未参与争夺战，失去1枚【音量】标记。\n“天籁之音”-战斗阶段：你的战斗中每有一名对手，你便获得1枚【音量】标记。此牌获得你【音量】标记数的威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "volume_counter_rule",
+              "operation": "true_name_reveal_after_combat_if_not_in_contested_battle_lose_1_volume_combat_gain_1_volume_per_opponent_and_source_power_equals_volume"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d25b31e8e55fd9ccbcc6bfdc082206cd1cfdae2174606031c36e072044837a36"
+    },
+    {
+      "id": "servant.elizabeth.skill.sc-elizabeth-3",
+      "printedText": "嗜虐的魅力-若你与战果低于你的对手位于同一战场，此牌-2魔力消耗。\n铁处女-战斗阶段：若你获胜，你战斗中战果最低的所有败者失去2点战果。若其中包含战果排名倒数第一的，你再获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_elizabeth_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "嗜虐的魅力-若你与战果低于你的对手位于同一战场，此牌-2魔力消耗。\n铁处女-战斗阶段：若你获胜，你战斗中战果最低的所有败者失去2点战果。若其中包含战果排名倒数第一的，你再获得2点战果。",
+        "sourceTextSha256": "89a33ae74b073ecb09673d40ba3eccf055c065502444b9960aa3d6761db7f45c"
+      },
+      "abilities": [
+        {
+          "id": "elizabeth.sc-elizabeth-3.semantic",
+          "printedClause": "嗜虐的魅力-若你与战果低于你的对手位于同一战场，此牌-2魔力消耗。\n铁处女-战斗阶段：若你获胜，你战斗中战果最低的所有败者失去2点战果。若其中包含战果排名倒数第一的，你再获得2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "volume_counter_rule",
+              "operation": "if_colocated_with_opponent_with_lower_vp_source_cost_minus_2_combat_on_win_lowest_vp_defeated_opponents_lose_2_vp_and_if_any_is_last_rank_controller_gain_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "89a33ae74b073ecb09673d40ba3eccf055c065502444b9960aa3d6761db7f45c"
+    },
+    {
+      "id": "servant.emiya.skill.sc-emiya-1",
+      "printedText": "战斗阶段：将同一战场所有对手的迅捷属性威力变为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_emiya_1",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "战斗阶段：将同一战场所有对手的迅捷属性威力变为0。",
+        "sourceTextSha256": "fa883160fbf6875dc16b5919429c6a1be8470ce302fc0b503798e385d69f84df"
+      },
+      "abilities": [
+        {
+          "id": "emiya.sc-emiya-1.semantic",
+          "printedClause": "战斗阶段：将同一战场所有对手的迅捷属性威力变为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "set_opponent_attribute_power",
+              "attribute": "quick",
+              "value": 0,
+              "operation": "combat_set_quick_attribute_power_of_all_opponents_at_same_battlefield_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "fa883160fbf6875dc16b5919429c6a1be8470ce302fc0b503798e385d69f84df"
+    },
+    {
+      "id": "servant.emiya.skill.sc-emiya-2",
+      "printedText": "【真名解放】<每局游戏限一次>\n行动阶段：将你的地利变为3倍。\n战斗阶段：若赢得本场战斗，获得4战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_emiya_2",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】<每局游戏限一次>\n行动阶段：将你的地利变为3倍。\n战斗阶段：若赢得本场战斗，获得4战果。",
+        "sourceTextSha256": "c711ce5012614e30fac11919d8bec52a8ca843730c9627b74cc32337c6c238c9"
+      },
+      "abilities": [
+        {
+          "id": "emiya.sc-emiya-2.semantic",
+          "printedClause": "【真名解放】<每局游戏限一次>\n行动阶段：将你的地利变为3倍。\n战斗阶段：若赢得本场战斗，获得4战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "terrain_effect_multiplier_rule",
+              "operation": "true_name_reveal_once_per_game_action_set_controller_terrain_to_3_times_current_then_combat_if_win_gain_4_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c711ce5012614e30fac11919d8bec52a8ca843730c9627b74cc32337c6c238c9"
+    },
+    {
+      "id": "servant.enkidu.skill.sc-enkidu-1",
+      "printedText": "神造兵装-被动：【变容】获得此牌上的牌堆顶部牌的威力、费用、属性与能力。\n被动/行动阶段：从此牌上的牌堆顶部弃置任意张牌，你激活的攻击获得所有被弃置牌的属性。\n行动阶段：将一张你手牌中的基础攻击叠放在此牌上。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_enkidu_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "神造兵装-被动：【变容】获得此牌上的牌堆顶部牌的威力、费用、属性与能力。\n被动/行动阶段：从此牌上的牌堆顶部弃置任意张牌，你激活的攻击获得所有被弃置牌的属性。\n行动阶段：将一张你手牌中的基础攻击叠放在此牌上。",
+        "sourceTextSha256": "4d68cb15047a88515162cd2e8f8c661610ab2b8b3b7a762d6d2f95c53edca2c1"
+      },
+      "abilities": [
+        {
+          "id": "enkidu.sc-enkidu-1.semantic",
+          "printedClause": "神造兵装-被动：【变容】获得此牌上的牌堆顶部牌的威力、费用、属性与能力。\n被动/行动阶段：从此牌上的牌堆顶部弃置任意张牌，你激活的攻击获得所有被弃置牌的属性。\n行动阶段：将一张你手牌中的基础攻击叠放在此牌上。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "morph_stack_rule",
+              "operation": "passive_morph_inherits_top_attached_card_power_cost_attributes_and_abilities_action_may_discard_any_number_from_attachment_top_to_grant_all_discarded_attributes_to_active_attacks_and_may_attach_one_base_attack_from_hand"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4d68cb15047a88515162cd2e8f8c661610ab2b8b3b7a762d6d2f95c53edca2c1"
+    },
+    {
+      "id": "servant.enkidu.skill.sc-enkidu-2",
+      "printedText": "【真名解放】\n天之锁-战斗阶段：【束缚】你的所有交战对手直至下个回合结束。被【束缚】的玩家无法使用宝具。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_enkidu_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n天之锁-战斗阶段：【束缚】你的所有交战对手直至下个回合结束。被【束缚】的玩家无法使用宝具。",
+        "sourceTextSha256": "a7ed6e76b98a23ac0321805e09d7d6af6c8d9d577c9603c27aa5fae9464a3ee2"
+      },
+      "abilities": [
+        {
+          "id": "enkidu.sc-enkidu-2.semantic",
+          "printedClause": "【真名解放】\n天之锁-战斗阶段：【束缚】你的所有交战对手直至下个回合结束。被【束缚】的玩家无法使用宝具。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "bound_opponent_rule",
+              "operation": "true_name_reveal_combat_bind_all_engaged_opponents_until_end_of_next_round_bound_players_cannot_use_noble_phantasms"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "a7ed6e76b98a23ac0321805e09d7d6af6c8d9d577c9603c27aa5fae9464a3ee2"
+    },
+    {
+      "id": "servant.enkidu.skill.sc-enkidu-3",
+      "printedText": "行动阶段：移动至除魔术工房外的任意地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_enkidu_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "行动阶段：移动至除魔术工房外的任意地点。",
+        "sourceTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+      },
+      "abilities": [
+        {
+          "id": "enkidu.sc-enkidu-3.semantic",
+          "printedClause": "行动阶段：移动至除魔术工房外的任意地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "move_player",
+              "scope": "controller",
+              "destinationRule": "any_location_except_workshop"
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+    },
+    {
+      "id": "servant.ereshkigal.skill.sc-ereshkigal-1",
+      "printedText": "行动阶段：移动至除魔术工房外的任意地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_ereshkigal_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "行动阶段：移动至除魔术工房外的任意地点。",
+        "sourceTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+      },
+      "abilities": [
+        {
+          "id": "ereshkigal.sc-ereshkigal-1.semantic",
+          "printedClause": "行动阶段：移动至除魔术工房外的任意地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "move_player",
+              "scope": "controller",
+              "destinationRule": "any_location_except_workshop"
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+    },
+    {
+      "id": "servant.ereshkigal.skill.sc-ereshkigal-2",
+      "printedText": "位于此战场的玩家计算威力时，来自局势牌和事件牌的所有力量修正值乘以-1。\n每当有玩家部署于此战场时，埃列什基伽勒获得1点魔力。\n被动/行动阶段：埃列什基伽勒不受【冥界佑护】的影响。战斗阶段结束后将此牌放还于技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_ereshkigal_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "位于此战场的玩家计算威力时，来自局势牌和事件牌的所有力量修正值乘以-1。\n每当有玩家部署于此战场时，埃列什基伽勒获得1点魔力。\n被动/行动阶段：埃列什基伽勒不受【冥界佑护】的影响。战斗阶段结束后将此牌放还于技能区。",
+        "sourceTextSha256": "ccf90c3a5869d051a362bc77c7ce35fe139d1e9fa9f222fd169b53f51c2ecb5d"
+      },
+      "abilities": [
+        {
+          "id": "ereshkigal.sc-ereshkigal-2.semantic",
+          "printedClause": "位于此战场的玩家计算威力时，来自局势牌和事件牌的所有力量修正值乘以-1。\n每当有玩家部署于此战场时，埃列什基伽勒获得1点魔力。\n被动/行动阶段：埃列什基伽勒不受【冥界佑护】的影响。战斗阶段结束后将此牌放还于技能区。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "netherworld_blessing_rule",
+              "operation": "at_this_battlefield_multiply_all_power_modifiers_from_situation_and_event_cards_by_minus_1_on_player_deploy_here_controller_gain_1_mana_controller_unaffected_after_combat_return_source_to_skill_zone"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ccf90c3a5869d051a362bc77c7ce35fe139d1e9fa9f222fd169b53f51c2ecb5d"
+    },
+    {
+      "id": "servant.ereshkigal.skill.sc-ereshkigal-3",
+      "printedText": "【真名解放】\n花开冥界-行动阶段：若【冥界佑护】未位于版图内，将其放置于你所在的战场。若其已位于你所在的战场，你+6合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_ereshkigal_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n花开冥界-行动阶段：若【冥界佑护】未位于版图内，将其放置于你所在的战场。若其已位于你所在的战场，你+6合计威力。",
+        "sourceTextSha256": "7c59a2a5e388946c7b0367348fa89e93f9a02c79c63e6c1700f1281caf673806"
+      },
+      "abilities": [
+        {
+          "id": "ereshkigal.sc-ereshkigal-3.semantic",
+          "printedClause": "【真名解放】\n花开冥界-行动阶段：若【冥界佑护】未位于版图内，将其放置于你所在的战场。若其已位于你所在的战场，你+6合计威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "netherworld_blessing_rule",
+              "operation": "true_name_reveal_action_if_blessing_not_on_map_place_it_at_current_battlefield_else_if_already_here_gain_6_total_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7c59a2a5e388946c7b0367348fa89e93f9a02c79c63e6c1700f1281caf673806"
+    },
+    {
+      "id": "servant.frank.skill.sc-frank-1",
+      "printedText": "你拥有的魔力少于8点也可使用此牌。战斗阶段：关闭任意一张与你同一地点的魔术属性基础牌。若你成功使其无效，获得等同于该牌基本威力的魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_frank_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "你拥有的魔力少于8点也可使用此牌。战斗阶段：关闭任意一张与你同一地点的魔术属性基础牌。若你成功使其无效，获得等同于该牌基本威力的魔力。",
+        "sourceTextSha256": "df5c802e934e8eb04aab506701f935a3713b7dc5688497fd9089c879336aa00c"
+      },
+      "abilities": [
+        {
+          "id": "frank.sc-frank-1.semantic",
+          "printedClause": "你拥有的魔力少于8点也可使用此牌。战斗阶段：关闭任意一张与你同一地点的魔术属性基础牌。若你成功使其无效，获得等同于该牌基本威力的魔力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "magic_attack_close_reward_rule",
+              "operation": "usable_below_8_mana_combat_close_any_colocated_magic_attribute_base_card_if_successfully_negated_gain_mana_equal_to_base_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "df5c802e934e8eb04aab506701f935a3713b7dc5688497fd9089c879336aa00c"
+    },
+    {
+      "id": "servant.frank.skill.sc-frank-2",
+      "printedText": "【真名解放】战斗阶段：你的合计威力+X。X为你所处战场上所有玩家本回合打出的所有攻击的魔力消耗之和。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_frank_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】战斗阶段：你的合计威力+X。X为你所处战场上所有玩家本回合打出的所有攻击的魔力消耗之和。",
+        "sourceTextSha256": "13e996958fd20e416e9489d1ada4d12cd66ad530507d990375cec6ba8ad9c410"
+      },
+      "abilities": [
+        {
+          "id": "frank.sc-frank-2.semantic",
+          "printedClause": "【真名解放】战斗阶段：你的合计威力+X。X为你所处战场上所有玩家本回合打出的所有攻击的魔力消耗之和。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "played_attack_cost_sum_power_rule",
+              "operation": "true_name_reveal_combat_gain_total_power_equal_sum_of_mana_costs_of_all_attacks_played_this_round_by_all_players_at_controller_battlefield"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "13e996958fd20e416e9489d1ada4d12cd66ad530507d990375cec6ba8ad9c410"
+    },
+    {
+      "id": "servant.frank.skill.sc-frank-3",
+      "printedText": "【真名解放】死亡与新生-你无视【败北】效果。在下回合开始时你【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_frank_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】死亡与新生-你无视【败北】效果。在下回合开始时你【败北】。",
+        "sourceTextSha256": "fdd8d86872c3492fd768591afd1ad7c5a37e9f2554d3c859626f9a754f6b0e1c"
+      },
+      "abilities": [
+        {
+          "id": "frank.sc-frank-3.semantic",
+          "printedClause": "【真名解放】死亡与新生-你无视【败北】效果。在下回合开始时你【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "prevent_elimination",
+              "operation": "true_name_reveal_ignore_defeat_effects_now"
+            },
+            {
+              "type": "schedule_phase_effect",
+              "operation": "at_start_of_next_round_controller_is_defeated"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "fdd8d86872c3492fd768591afd1ad7c5a37e9f2554d3c859626f9a754f6b0e1c"
     }
   ]
 }
