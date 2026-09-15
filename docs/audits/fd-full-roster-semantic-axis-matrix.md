@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=921
-blockedCount=23
+sourceGroundedCount=944
+blockedCount=0
 unclassifiedCount=0
-structuredAbilityCount=1199
+structuredAbilityCount=1222
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 133 |
+| timing | `ACTION` | 135 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -262,12 +262,12 @@ structuredAbilityCount=1199
 | target | `CHOOSE_N_EVENTS` | 1 |
 | effect | `GAIN_VICTORY_POINTS` | 53 |
 | effect | `GAIN_MANA` | 38 |
-| effect | `DRAW_CARDS` | 36 |
+| effect | `DRAW_CARDS` | 37 |
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
-| effect | `MOVE_PLAYER` | 28 |
+| effect | `MOVE_PLAYER` | 29 |
 | effect | `EVENT_CARD_RULE` | 27 |
-| effect | `PLAY_SELECTED_CARDS` | 26 |
+| effect | `PLAY_SELECTED_CARDS` | 27 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
@@ -281,13 +281,13 @@ structuredAbilityCount=1199
 | effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 12 |
 | effect | `SET_PLAYER_FLAG` | 12 |
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
+| effect | `INDEPENDENT_ACTION_RULE` | 10 |
 | effect | `LOSE_MANA` | 10 |
 | effect | `ADJUST_COMMAND_SEALS` | 9 |
 | effect | `CYCLE_STATE_TRANSITION` | 9 |
 | effect | `DREAM_SUMMON_RULE` | 9 |
 | effect | `RULER_SEAL_RULE` | 9 |
 | effect | `SOURCE_CARD_POWER_BONUS` | 9 |
-| effect | `INDEPENDENT_ACTION_RULE` | 8 |
 | effect | `SCHEDULE_PHASE_EFFECT` | 8 |
 | effect | `DEDUCTION_RULE` | 7 |
 | effect | `IF_CONDITION` | 7 |
@@ -748,21 +748,40 @@ structuredAbilityCount=1199
 | effect | `TEMPORARY_OPPONENT_CARD_RULE` | 1 |
 | effect | `TERRAIN_COST_SITUATION_BURN_RULE` | 1 |
 | effect | `TERRITORY_ATTRIBUTE_STRIP_RULE` | 1 |
+| effect | `TESLA_FORCED_OVERCHARGE_RULE` | 1 |
+| effect | `TESLA_LIGHTNING_DESCENT_RULE` | 1 |
+| effect | `TESLA_LIGHTNING_HAND_RULE` | 1 |
+| effect | `TEZCAT_FIRST_SUN_RULE` | 1 |
+| effect | `TEZCAT_JAGUAR_KING_RULE` | 1 |
+| effect | `TEZCAT_WARRIOR_OFFICE_RULE` | 1 |
+| effect | `TOMOE_BLAZING_RAIN_RULE` | 1 |
+| effect | `TOMOE_DEMONIC_NATURE_RULE` | 1 |
 | effect | `TRACKING_MARK_RULE` | 1 |
 | effect | `TRANSFER_SELECTED_CARDS` | 1 |
 | effect | `TRAUMA_DECK_RULE` | 1 |
 | effect | `TRAUMA_STATE_RULE` | 1 |
 | effect | `TRIMMAU_CONFESSION_RULE` | 1 |
 | effect | `TRIMMAU_GROWTH_RULE` | 1 |
+| effect | `TRISTAN_LAMENT_RULE` | 1 |
+| effect | `TRISTAN_LOVE_RULE` | 1 |
 | effect | `TRUE_NAME_HIDE_IMMUNITY_RULE` | 1 |
 | effect | `TSAR_CHOICE_RULE` | 1 |
 | effect | `TURN_ORDER_REPOSITION_RULE` | 1 |
 | effect | `UNDEAD_ARMY_HALF_CLOSE_RULE` | 1 |
+| effect | `USHIWAKAMARU_EIGHT_BOAT_LEAP_RULE` | 1 |
+| effect | `USHIWAKAMARU_ICICLE_CUTTER_RULE` | 1 |
+| effect | `VALKYRIE_MAIDEN_DESCENT_RULE` | 1 |
+| effect | `VALKYRIE_SWAN_DRESS_RULE` | 1 |
 | effect | `VIY_POWER_PROTECTION_RULE` | 1 |
+| effect | `VLAD_KAZIKLI_BEY_RULE` | 1 |
+| effect | `VLAD_PROTECTOR_RULE` | 1 |
 | effect | `VP_SOURCE_MULTIPLIER_RULE` | 1 |
 | effect | `WEAK_CONSTITUTION_RULE` | 1 |
 | effect | `WINNER_PREDICTION_RULE` | 1 |
 | effect | `WORLD_RESET_EVENT_RULE` | 1 |
+| effect | `XIANGYU_CONQUERING_MIGHT_RULE` | 1 |
+| effect | `XIANGYU_OVERLORD_MARTIAL_RULE` | 1 |
+| effect | `XIANGYU_TACTICAL_BODY_RULE` | 1 |
 | effect | `ZONE_IMMUNITY_RULE` | 1 |
 | interaction | `CHOOSE_ONE_CARD` | 27 |
 | interaction | `BRANCH_CHOICE` | 15 |
@@ -1974,32 +1993,32 @@ structuredAbilityCount=1199
 | `servant.teach.skill.sc-teach-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TEACH_GENTLEMAN_LOVE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.teach-gentleman-love` |
 | `servant.teach.skill.sc-teach-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TEACH_QUEEN_ANNE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.teach-queen-anne` |
 | `servant.teach.skill.sc-teach-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
-| `servant.tesla.skill.sc-tesla-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tesla-lightning-hand` |
-| `servant.tesla.skill.sc-tesla-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tesla-lightning-descent` |
-| `servant.tesla.skill.sc-tesla-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.tezcat.skill.sc-tezcat-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
-| `servant.tezcat.skill.sc-tezcat-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tezcat-guise-warrior` |
-| `servant.tezcat.skill.sc-tezcat-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tezcat-first-sun` |
-| `servant.tomoe.skill.sc-tomoe-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
-| `servant.tomoe.skill.sc-tomoe-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tomoe-demonic-nature` |
-| `servant.tomoe.skill.sc-tomoe-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.same-battlefield-opponent-power` |
-| `servant.tristan.skill.sc-tristan-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tristan-lament` |
-| `servant.tristan.skill.sc-tristan-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tristan-love` |
-| `servant.tristan.skill.sc-tristan-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
-| `servant.ushiwakamaru.skill.sc-ushiwakamaru-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ushiwakamaru-icicle-cutter` |
-| `servant.ushiwakamaru.skill.sc-ushiwakamaru-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ushiwakamaru-eight-boat-leap` |
-| `servant.ushiwakamaru.skill.sc-ushiwakamaru-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
-| `servant.valkyrie.skill.sc-valkyrie-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.valkyrie-maiden-descent` |
-| `servant.valkyrie.skill.sc-valkyrie-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.valkyrie-swan-dress` |
+| `servant.tesla.skill.sc-tesla-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TESLA_LIGHTNING_HAND_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tesla-lightning-hand` |
+| `servant.tesla.skill.sc-tesla-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TESLA_LIGHTNING_DESCENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tesla-lightning-descent` |
+| `servant.tesla.skill.sc-tesla-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TESLA_FORCED_OVERCHARGE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.tezcat.skill.sc-tezcat-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TEZCAT_JAGUAR_KING_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
+| `servant.tezcat.skill.sc-tezcat-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TEZCAT_WARRIOR_OFFICE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tezcat-guise-warrior` |
+| `servant.tezcat.skill.sc-tezcat-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TEZCAT_FIRST_SUN_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tezcat-first-sun` |
+| `servant.tomoe.skill.sc-tomoe-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
+| `servant.tomoe.skill.sc-tomoe-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TOMOE_DEMONIC_NATURE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tomoe-demonic-nature` |
+| `servant.tomoe.skill.sc-tomoe-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TOMOE_BLAZING_RAIN_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.same-battlefield-opponent-power` |
+| `servant.tristan.skill.sc-tristan-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TRISTAN_LAMENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tristan-lament` |
+| `servant.tristan.skill.sc-tristan-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TRISTAN_LOVE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tristan-love` |
+| `servant.tristan.skill.sc-tristan-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
+| `servant.ushiwakamaru.skill.sc-ushiwakamaru-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `USHIWAKAMARU_ICICLE_CUTTER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ushiwakamaru-icicle-cutter` |
+| `servant.ushiwakamaru.skill.sc-ushiwakamaru-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `USHIWAKAMARU_EIGHT_BOAT_LEAP_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ushiwakamaru-eight-boat-leap` |
+| `servant.ushiwakamaru.skill.sc-ushiwakamaru-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `servant.valkyrie.skill.sc-valkyrie-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VALKYRIE_MAIDEN_DESCENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.valkyrie-maiden-descent` |
+| `servant.valkyrie.skill.sc-valkyrie-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VALKYRIE_SWAN_DRESS_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.valkyrie-swan-dress` |
 | `servant.valkyrie.skill.sc-valkyrie-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `CARD_COUNT_AT_LEAST`, `SOURCE_OWNED` | `NONE` | `NONE` | `RETRIGGER_CARD_PLAY_EFFECTS` | `NONE` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.vlad.skill.sc-vlad-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.vlad-protector-of-nation` |
-| `servant.vlad.skill.sc-vlad-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.vlad-kazikli-bey` |
-| `servant.vlad.skill.sc-vlad-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
+| `servant.vlad.skill.sc-vlad-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VLAD_PROTECTOR_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.vlad-protector-of-nation` |
+| `servant.vlad.skill.sc-vlad-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VLAD_KAZIKLI_BEY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.vlad-kazikli-bey` |
+| `servant.vlad.skill.sc-vlad-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
 | `servant.voyager.skill.sc-voyager-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VISITOR_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.voyager-message-hope` |
 | `servant.voyager.skill.sc-voyager-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VISITOR_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.voyager-message-peace` |
 | `servant.voyager.skill.sc-voyager-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VISITOR_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.voyager-pale-blue-dot` |
 | `servant.voyager.skill.sc-voyager-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.outer-god-life` |
-| `servant.xiangyu.skill.sc-xiangyu-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.xiangyu-ultimate-defense-matrix` |
-| `servant.xiangyu.skill.sc-xiangyu-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.xiangyu-martial-force` |
-| `servant.xiangyu.skill.sc-xiangyu-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.xiangyu-conquering-might` |
+| `servant.xiangyu.skill.sc-xiangyu-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `XIANGYU_TACTICAL_BODY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.xiangyu-ultimate-defense-matrix` |
+| `servant.xiangyu.skill.sc-xiangyu-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `XIANGYU_OVERLORD_MARTIAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.xiangyu-martial-force` |
+| `servant.xiangyu.skill.sc-xiangyu-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `XIANGYU_CONQUERING_MIGHT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.xiangyu-conquering-might` |
 | `master.tiamat.card.life-sea` | `SOURCE_GROUNDED` | `NONE` | `OUTPOST` | `NONE` | `NONE` | `NONE` | `NONE` | `BEAST_RESOURCE_RULE`, `CLOSE_SOURCE_CARD` | `NONE` | `duration:while_source_present` | `rule:card_play_permission:waive_eight_mana_threshold` | `NONE` | `NONE` | `NONE` | `NONE` |

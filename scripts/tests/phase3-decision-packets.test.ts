@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+﻿import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
@@ -237,12 +237,12 @@ describe('Phase 3 full-roster decision/runtime packet generation', () => {
       readFileSync(resolve('data/phase3/full-roster-runtime-capability-requests.json'), 'utf8'),
     );
 
-    expect(decisions.summary.coveredBlockedIdentityCount).toBe(23);
+    expect(decisions.summary.coveredBlockedIdentityCount).toBe(0);
     expect(decisions.summary.uncoveredBlockedIdentityCount).toBe(0);
     expect(decisions.summary.ruleDecisionPacketCount).toBe(0);
-    expect(decisions.summary.sourceEvidencePacketCount).toBeGreaterThan(0);
+    expect(decisions.summary.sourceEvidencePacketCount).toBe(0);
     expect(runtime.summary.runtimeRequestCount).toBeGreaterThan(0);
-    expect(runtime.summary.affectedIdentityCount).toBe(921);
+    expect(runtime.summary.affectedIdentityCount).toBe(944);
     expect(() => assertPacketSeparation(decisions, runtime)).not.toThrow();
   });
 });
