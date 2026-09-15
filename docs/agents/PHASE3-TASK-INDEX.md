@@ -3398,7 +3398,7 @@ Fresh coverage is KPI-stable and regenerated artifact drift is generatedAt/stati
 ## TASK P3-FM03
 
 Owner: Codex S
-Status: READY
+Status: MIGRATION_CANDIDATE
 Branch: `codex/s-p3-fm03-saber-magic-resistance`
 Base: exact P3-A-FB2-10 synchronization commit
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
@@ -3433,9 +3433,9 @@ Completion status allowed:
 ## TASK P3-A-FM03-SYNC
 
 Owner: Codex A
-Status: READY_AFTER_P3_FM03
+Status: MIGRATION_SYNC_CANDIDATE
 Branch: `codex/a-p3-fm03-evidence-sync`
-Base: exact P3-FM03 S candidate SHA
+Base: P3-FM03 S candidate `cac8a0065dadd190aab6666989571845e4de0f1c`
 
 Goal: independently recompute frozen-F1 authoring burn-down, exact ten-member batch reconciliation, fresh material coverage, generated-content identity, and unrelated drift. A must not repair S authoring.
 
@@ -3446,7 +3446,7 @@ Completion status allowed:
 ## TASK P3-R30
 
 Owner: Codex R
-Status: READY_AFTER_P3_A_FM03_SYNC
+Status: READY
 Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM03 lineage
 
 Goal: independently review FM03 without implementing fixes. Required checks: exact ten-ID membership; per-card F1 source/printed-text preservation; accepted B18/B19/FB2-10 structural conformance; locked static metadata/final 8-mana skill-zone rule; no runtime changes; representative end-to-end Power/VP behavior; A burn-down integrity; determinism; full required validation; diff check.
@@ -3466,6 +3466,16 @@ Permitted final status:
 - Source/printed text is not globally identical: F1 preserves three source-hash variants (`8a6da48...`, `b2b1bc7c...`, `0cdfc3fa...`) and S must preserve the per-card text exactly rather than normalize wording.
 - Fresh coverage remains archives `39`, cards `71`, abilities `130`, raw `new=12 / legacyExecute=3 / legacyResolve=87 / dual=0 / notClassifiable=28 / taxonomyWarnings=104`, compiled definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 compiled cards / 14 characters / 0 blocking issues. Regenerated artifact drift is only generatedAt/static source-line movement and is intentionally not committed.
 - P3-FM03 is therefore READY at the normal F4 minimum batch size 10.
+
+## Full-Roster Dispatch State After P3-A-FM03-SYNC
+
+- P3-FM03 S candidate is `cac8a0065dadd190aab6666989571845e4de0f1c`; exact batch membership is 10/10 and runtime hot-file changes are zero.
+- Frozen-F1 canonical-authoring overlap moves `49/944 -> 59/944` (+10); selected batch moves `0/10 -> 10/10`; unauthorized additions, removals, and skips are zero.
+- Fresh A material coverage is archives `49`, cards `81`, abilities `160`, raw `new=12 / legacyExecute=3 / legacyResolve=107 / dual=0 / notClassifiable=38 / taxonomyWarnings=114`.
+- The 20 newly visible Noble Bloom abilities retain the reporter's existing `LEGACY_RESOLVE_EFFECT` label; the 10 Magic Resistance phase actions retain the existing `NOT_CLASSIFIABLE` plus phase-action taxonomy warning. All 30 selected abilities are structurally identical, excluding identity fields, to the three independently accepted Artoria Alter representatives.
+- Compiled product identity remains definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 cards / 14 characters / 0 blocking issues.
+- A recertification passes typecheck, focused FM03 + FB2-10 + B18/B19 `21/21`, content validation, deterministic generated-content verification, and diff check. S evidence supplies rules `292/292`; standard parallel CI has only the known eleven-round 5s wall-clock timeout (`704/705`), with isolated match-session `26/26` and equivalent single-worker CI `705/705`.
+- P3-R30 is READY on the exact A-synchronized lineage; FM03 is not accepted until R30 independently reviews it.
 
 ## Prompt Templates
 
