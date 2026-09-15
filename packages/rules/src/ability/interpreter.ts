@@ -569,6 +569,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) return false;
   if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) return false;
+  if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
@@ -914,7 +915,7 @@ function cleanupOngoing(s: GameState): void {
       if (!validity.valid) pushLifecycleTransition(s, o, 'source_invalidated');
       continue;
     }
-    if (o.expiresAtRound !== undefined && s.round.roundNumber >= o.expiresAtRound && active(s, o.sourceCardId)) {
+    if (o.expiresAtRound !== undefined && s.round.roundNumber >= o.expiresAtRound && active(s, o.sourceCardId) && o.cleanup) {
       moveCard(s, o.sourceCardId, o.cleanup === 'remove_from_game' ? 'removed_from_game' : definition(s, o.sourceCardId)?.cardType === 'servant_skill' ? 'skill' : 'discard');
     }
   }
@@ -1219,6 +1220,45 @@ export function isResourceNumericTriggerSemantic(a: AuthoringAbility): boolean {
   if (a.effects.length !== 1) return false;
   const effect = a.effects[0]!;
   return effect.type === 'adjust_mana' && isFixedControllerResourceAdjustmentComponent(effect);
+}
+
+export function isMagicResistancePowerModifierCandidate(a: AuthoringAbility): boolean {
+  if (a.kind !== 'phase_action' || a.ruleModifiers.length === 0) return false;
+  return a.ruleModifiers.some((modifier) => {
+    const scope = node(modifier.scope);
+    return str(modifier.type) === 'combat_power_modifier' ||
+      (str(modifier.operation) === 'set' && str(modifier.rule) === 'attack.currentPower' &&
+        str(scope.controller) === 'engaged_opponents_same_battlefield');
+  });
+}
+
+export function isMagicResistancePowerModifierSemantic(a: AuthoringAbility): boolean {
+  if (!isMagicResistancePowerModifierCandidate(a)) return false;
+  if (str(a.activation.phase) !== 'combat' || str(a.activation.opens) !== 'controller_combat_action_window' ||
+    str(a.activation.requiresSourceState) !== 'active') return false;
+  if (!Object.keys(a.activation).every((key) => ['phase', 'opens', 'requiresSourceState'].includes(key))) return false;
+  if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.effects.length !== 0 || a.creates.length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0) return false;
+  if (str(a.responseWindow.opens) ||
+    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window') ||
+    !Object.keys(a.responseWindow).every((key) => ['order', 'passBehavior'].includes(key))) return false;
+  if (a.ruleModifiers.length !== 1) return false;
+
+  const modifier = a.ruleModifiers[0]!;
+  const scope = node(modifier.scope);
+  const constraints = nodes(scope.constraints);
+  const modifierLifecycle = node(modifier.lifecycle);
+  if (str(modifier.type) !== 'combat_power_modifier' || modifier.operation !== 'set' || modifier.rule !== 'attack.currentPower' ||
+    Number(modifier.value) !== 0 || !Number.isFinite(Number(modifier.value))) return false;
+  if (str(scope.controller) !== 'engaged_opponents_same_battlefield' || str(scope.object) !== 'attack_card' ||
+    !Object.keys(scope).every((key) => ['controller', 'object', 'constraints'].includes(key))) return false;
+  if (constraints.length !== 1 || str(constraints[0]!.type) !== 'has_attribute' || str(constraints[0]!.attribute) !== '魔术' ||
+    !Object.keys(constraints[0]!).every((key) => ['type', 'attribute'].includes(key))) return false;
+  if (str(modifierLifecycle.duration) !== 'this_round' ||
+    !Object.keys(modifierLifecycle).every((key) => key === 'duration')) return false;
+  return Object.keys(modifier).every((key) =>
+    ['id', 'printedClause', 'type', 'operation', 'rule', 'scope', 'value', 'lifecycle'].includes(key));
 }
 
 function isBattleLossResourceTriggerCandidate(a: AuthoringAbility): boolean {
@@ -2001,6 +2041,11 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isMagicResistancePowerModifierSemantic(a)) {
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
   if (isAnyLocationExceptWorkshopMovementSemantic(a)) {
     const pending = findPendingTarget(s, ctx, a, effects);
     if (pending) { runtime(s).pendingDecision = pending; return; }
@@ -2010,6 +2055,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     return;
   }
   if (isAnyLocationExceptWorkshopMovementCandidate(a)) reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
+  if (isMagicResistancePowerModifierCandidate(a)) reject('resolution_failed', 'Unsupported magic-resistance power modifier semantic shape');
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
   if (isSourcePlayBasicAttackDrawTriggerCandidate(a)) reject('resolution_failed', 'Unsupported source-play basic-attack draw trigger semantic shape');
   if (isDeploymentResourceRewardCandidate(a)) reject('resolution_failed', 'Unsupported deployment resource reward semantic shape');
@@ -2107,6 +2153,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) {
     reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
+  }
+  if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) {
+    reject('resolution_failed', 'Unsupported magic-resistance power modifier semantic shape');
   }
   if (isBattleLossStateTransformCandidate(a)) {
     if (!isBattleLossStateTransformSemantic(a)) reject('resolution_failed', 'Unsupported battle-loss state-transform semantic shape');

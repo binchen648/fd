@@ -8,6 +8,27 @@ export function node(value: unknown): RuleNode {
 }
 export function nodes(value: unknown): RuleNode[] { return Array.isArray(value) ? value.map(node) : []; }
 export function str(value: unknown): string { return typeof value === 'string' ? value : ''; }
+function isAcceptedMagicResistanceIndependentModifierLifecycle(rawAbility: RuleNode, modifier: RuleNode): boolean {
+  if (str(rawAbility.kind) !== 'phase_action') return false;
+  const activation = node(rawAbility.activation);
+  if (str(activation.phase) !== 'combat' || str(activation.opens) !== 'controller_combat_action_window' ||
+    str(activation.requiresSourceState) !== 'active' ||
+    !Object.keys(activation).every((key) => ['phase', 'opens', 'requiresSourceState'].includes(key))) return false;
+  if (nodes(rawAbility.conditions).length !== 0 || nodes(rawAbility.targets).length !== 0 ||
+    (Array.isArray(rawAbility.cost) ? nodes(rawAbility.cost).length !== 0 : rawAbility.cost !== undefined) ||
+    nodes(rawAbility.effects).length !== 0 || nodes(rawAbility.creates).length !== 0 || nodes(rawAbility.ruleModifiers).length !== 1 ||
+    Object.keys(node(rawAbility.lifecycle)).length !== 0 || Object.keys(node(rawAbility.responseWindow)).length !== 0 ||
+    Object.keys(node(rawAbility.limit)).length !== 0 || Object.keys(node(rawAbility.visibility)).length !== 0) return false;
+  const scope = node(modifier.scope); const constraints = nodes(scope.constraints); const lifecycle = node(modifier.lifecycle);
+  return str(modifier.type) === 'combat_power_modifier' && modifier.operation === 'set' && modifier.rule === 'attack.currentPower' &&
+    Number(modifier.value) === 0 && Number.isFinite(Number(modifier.value)) &&
+    str(scope.controller) === 'engaged_opponents_same_battlefield' && str(scope.object) === 'attack_card' &&
+    Object.keys(scope).every((key) => ['controller', 'object', 'constraints'].includes(key)) &&
+    constraints.length === 1 && str(constraints[0]!.type) === 'has_attribute' && str(constraints[0]!.attribute) === '魔术' &&
+    Object.keys(constraints[0]!).every((key) => ['type', 'attribute'].includes(key)) &&
+    str(lifecycle.duration) === 'this_round' && Object.keys(lifecycle).every((key) => key === 'duration') &&
+    Object.keys(modifier).every((key) => ['id', 'printedClause', 'type', 'operation', 'rule', 'scope', 'value', 'lifecycle'].includes(key));
+}
 const supportedTypes = new Set([
   'controller_alone_at_battlefield', 'claim_and_discard_location_events', 'any_enabled_location',
   'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'base_power_at_most',
@@ -203,7 +224,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         scan(m.value, 'ruleModifiers.value', id); scan(node(m.scope).constraints, 'ruleModifiers.scope.constraints', id);
         if (node(m.scope).object && !['source_card', 'this_card', 'attack_card', 'this_effect', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield', 'all_players'].includes(str(node(m.scope).object))) issue('ruleModifiers.scope.object', 'Unmapped modifier scope', id);
         if (node(m.scope).controller && !['self', 'controller', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield'].includes(str(node(m.scope).controller))) issue('ruleModifiers.scope.controller', 'Unmapped modifier controller', id);
-        if (m.lifecycle && a.lifecycle && JSON.stringify(m.lifecycle) !== JSON.stringify(a.lifecycle)) issue('ruleModifiers.lifecycle', 'Independent modifier lifecycles require a separate ongoing handler', id);
+        if (m.lifecycle && a.lifecycle && JSON.stringify(m.lifecycle) !== JSON.stringify(a.lifecycle) &&
+          !isAcceptedMagicResistanceIndependentModifierLifecycle(a, m)) {
+          issue('ruleModifiers.lifecycle', 'Independent modifier lifecycles require a separate ongoing handler', id);
+        }
       }
       const requested = execution.hostOps ?? execution.allowedOperations ?? hostOperations;
       const allowed = Array.isArray(requested) ? hostOperations.filter(op => requested.includes(op)) : [];
