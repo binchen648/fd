@@ -664,3 +664,11 @@ Permitted final status:
 - The accepted route is identity-free, typed through Resolution Data-flow, revalidates the authoritative legal destination set, and preserves movement counters/log/enter-location event provenance.
 - Broad Movement, forced/third-party/arrow movement, movement costs/conditions/modifiers, generic Target Selection, and FM02 migration are not promoted by implication.
 - A must freshly reconcile the exact frozen 12-member F1 family before FM02.
+
+## P3-A FB2-09 Synchronization / FM02 Dispatch — 2026-09-16
+
+- R27 accepts FB2-09 at `698dba5a8476e3d86363f286c57c9f515746eb3f`; fresh A F1 reconciliation is exact 12/12.
+- All 12 have only `GENERIC_MOVEMENT`, exact `ACTION + MOVE_PLAYER` axes, identical source hash `5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0`, and no current canonical authoring.
+- Fresh raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=75 / dual=0 / notClassifiable=28 / taxonomyWarnings=92`; compiled identity remains unchanged.
+- Coverage artifact drift is generatedAt/static source-line-only and is intentionally not committed.
+- FM02 is the second honest F4 migration batch and is dispatched READY at exact size 12.

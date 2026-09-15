@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.24
+- Version: P3-TI-1.25
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3210,6 +3210,60 @@ Permitted final status:
 - A separate 10-identity `GENERIC_POWER + GENERIC_RESOURCE_NUMERIC` group exists but broad Power is not independently accepted, so it is not dispatched ahead of the narrower Movement slice.
 - Existing runtime already owns authoritative location candidate constraints and movement side effects, but `move_player` is not yet a typed Resolution Data-flow primitive. P3-FB2-09 is therefore dispatched before any FM02 migration.
 - If and only if R27 accepts FB2-09 and fresh A reconciliation confirms all 12 retain no other dependency, A may dispatch P3-FM02 at exact batch size 12.
+
+## TASK P3-A-FB2-09-SYNC
+
+Owner: Codex A
+Status: SYNCHRONIZED
+Base: R27 `698dba5a8476e3d86363f286c57c9f515746eb3f`
+Read: `docs/reports/2026-09-16-p3-a-fb2-09-movement-synchronization.md`
+
+Fresh frozen-F1 reconciliation is 12/12 exact and dependency-complete. Coverage counters remain stable; regenerated artifact drift is timestamp/static-line-only and remains uncommitted. P3-FM02 is dispatched READY at 12 identities.
+
+## TASK P3-FM02
+
+Owner: Codex S
+Status: READY
+Branch: `codex/s-p3-fm02-any-location-except-workshop-movement`
+Base: exact P3-A-FB2-09 synchronization commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Read: `docs/reports/2026-09-16-p3-fm02-any-location-except-workshop-movement-migration-handoff.md`
+
+Goal: migrate exactly the 12 dependency-complete Movement identities below into canonical authoring under the independently accepted FB2-09 contract. Do not modify runtime.
+
+Exact batch:
+- `servant.benkei.skill.sc-benkei-1`
+- `servant.bradamante.skill.sc-bradamante-1`
+- `servant.brynhildr.skill.sc-brynhildr-1`
+- `servant.cu.skill.sc-cu-2`
+- `servant.diarmuid.skill.sc-diarmuid-3`
+- `servant.donquixote.skill.sc-donquixote-3`
+- `servant.enkidu.skill.sc-enkidu-3`
+- `servant.jaguarman.skill.sc-jaguarman-1`
+- `servant.kagetora.skill.sc-kagetora-3`
+- `servant.lishuwen.skill.sc-lishuwen-3`
+- `servant.romulus.skill.sc-romulus-3`
+- `servant.vlad.skill.sc-vlad-3`
+
+Required validation and non-scope are defined in the handoff report. S must stop rather than silently broaden the batch if any identity fails exact source or contract conformance.
+
+## TASK P3-A-FM02-SYNC
+
+Owner: Codex A
+Status: READY_AFTER_P3_FM02
+Base: exact P3-FM02 S candidate SHA
+
+Goal: independently recompute frozen-F1 before/after authoring overlap, exact 12-member batch reconciliation, fresh coverage, generated-content identity, and unrelated drift. A must not repair S authoring.
+
+## TASK P3-R28
+
+Owner: Codex R
+Status: READY_AFTER_P3_A_FM02_SYNC
+Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM02 lineage
+
+Goal: independently review FM02 without implementing fixes. Required checks: exact 12-ID membership; source/printed-text preservation; accepted FB2-09 contract conformance; static card metadata/final 8-mana skill-zone rule; no runtime changes; focused end-to-end migration representative; A burn-down integrity; determinism; full required validation; diff check.
+
+Permitted final status: `MIGRATION_ACCEPTED` or `REVIEW_BLOCKED`.
 
 ## Prompt Templates
 
