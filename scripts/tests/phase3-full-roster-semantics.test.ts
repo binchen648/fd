@@ -1227,6 +1227,25 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find((c) => c.id === 'master.akiha.skill.s3')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'bloodlust_rule',operation:'threshold_package'})])}));
   });
 
+  it('grounds the twenty-ID Hakuno/Rani/Jinako/Alice slice with explicit rule-family boundaries', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.hakuno-f.skill.ascension','master.hakuno-f.skill.s1','master.hakuno-f.skill.s2','master.hakuno-f.skill.s3','master.hakuno-f.skill.s4','master.hakuno-f.skill.s5',
+      'master.hakuno-m.skill.ascension','master.hakuno-m.skill.s1','master.hakuno-m.skill.s2','master.hakuno-m.skill.s3',
+      'master.rani.skill.ascension','master.rani.skill.s1','master.rani.skill.s2','master.rani.skill.s3',
+      'master.jinako.skill.ascension','master.jinako.skill.s1','master.jinako.skill.s2',
+      'master.alice.skill.ascension','master.alice.skill.s1','master.alice.skill.s2',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(20);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find((c)=>c.id==='master.hakuno-f.skill.s1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'mystic_code_rule'})])}));
+    expect(slice.find((c)=>c.id==='master.hakuno-m.skill.s1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'challenge_analysis_rule'})])}));
+    expect(slice.find((c)=>c.id==='master.rani.skill.s1')?.abilities).toEqual(expect.arrayContaining([expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'prophecy_rule'})])})]));
+    expect(slice.find((c)=>c.id==='master.jinako.skill.s2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'cheat_code_rule'})])}));
+    expect(slice.find((c)=>c.id==='master.alice.skill.s2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'phantom_player_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1280,10 +1299,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 293,
-      blockedCount: 651,
+      sourceGroundedCount: 313,
+      blockedCount: 631,
       unclassifiedCount: 0,
-      structuredAbilityCount: 525,
+      structuredAbilityCount: 557,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

@@ -12912,6 +12912,915 @@
           ]
         }
       ]
+    },
+    {
+      "id": "master.hakuno-f.skill.s1",
+      "printedText": "前哨阶段：随机弃置1张手牌。选择游戏外的一张【神秘代码】加入技能区，直到你再次使用此效果。【神秘代码】为追加打出。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hakuno_f.skills[s1]#line=149",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "前哨阶段：随机弃置1张手牌。选择游戏外的一张【神秘代码】加入技能区，直到你再次使用此效果。【神秘代码】为追加打出。",
+        "sourceTextSha256": "82d9c987357f80e1e7bc1098d94a24756a33d77c8a124932518e9ab661f68ead"
+      },
+      "referencePrintedTextSha256": "82d9c987357f80e1e7bc1098d94a24756a33d77c8a124932518e9ab661f68ead",
+      "abilities": [
+        {
+          "id": "hakuno-f.dress-change",
+          "printedClause": "前哨阶段：随机弃置1张手牌。选择游戏外的一张【神秘代码】加入技能区，直到你再次使用此效果。【神秘代码】为追加打出。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "source": "hand",
+              "destination": "discard",
+              "owner": "controller",
+              "selection": "random",
+              "count": 1
+            },
+            {
+              "type": "mystic_code_rule",
+              "operation": "choose_replace_active_code_from_outside_game"
+            }
+          ],
+          "lifecycle": {
+            "duration": "until_reused"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.hakuno-f.skill.s2",
+      "printedText": "（此牌为追加打出）\n精神同步-被动：你的令咒只可用来移动和支付它来使用某些能力。\n代码_月球驱动-行动阶段：你本回合的攻击增加其自身魔力消耗等值的威力（最多+3）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hakuno_f.skills[s2]#line=149",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（此牌为追加打出）\n精神同步-被动：你的令咒只可用来移动和支付它来使用某些能力。\n代码_月球驱动-行动阶段：你本回合的攻击增加其自身魔力消耗等值的威力（最多+3）。",
+        "sourceTextSha256": "e3529c6af610735e5a40438f907c24dcfb5e7162ee3149823ba44933d160c41e"
+      },
+      "referencePrintedTextSha256": "e3529c6af610735e5a40438f907c24dcfb5e7162ee3149823ba44933d160c41e",
+      "abilities": [
+        {
+          "id": "hakuno-f.link.seal-restriction",
+          "printedClause": "（此牌为追加打出）\n精神同步-被动：你的令咒只可用来移动和支付它来使用某些能力。\n代码_月球驱动-行动阶段：你本回合的攻击增加其自身魔力消耗等值的威力（最多+3）。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "command_seal_use",
+              "operation": "restrict",
+              "allowedUses": [
+                "movement",
+                "ability_payment"
+              ]
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_relevant"
+          }
+        },
+        {
+          "id": "hakuno-f.link.moon-drive",
+          "printedClause": "（此牌为追加打出）\n精神同步-被动：你的令咒只可用来移动和支付它来使用某些能力。\n代码_月球驱动-行动阶段：你本回合的攻击增加其自身魔力消耗等值的威力（最多+3）。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "mystic_code_rule",
+              "operation": "attacks_gain_power_equal_cost_capped",
+              "cap": 3
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.hakuno-f.skill.s3",
+      "printedText": "（此牌为追加打出）\n数据泄露-被动：当你输掉一场战斗时，失去1点战果。\n代码_非法侵入-行动阶段：选择一名位于当前战场的玩家，查看其牌堆顶3张牌。弃置其中任意数量的牌，然后将剩余牌按任意顺序放回其牌堆顶部。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hakuno_f.skills[s3]#line=149",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（此牌为追加打出）\n数据泄露-被动：当你输掉一场战斗时，失去1点战果。\n代码_非法侵入-行动阶段：选择一名位于当前战场的玩家，查看其牌堆顶3张牌。弃置其中任意数量的牌，然后将剩余牌按任意顺序放回其牌堆顶部。",
+        "sourceTextSha256": "25151894fa9430053e739371da828e6af1a1caac2507619a1362706ccd92777d"
+      },
+      "referencePrintedTextSha256": "25151894fa9430053e739371da828e6af1a1caac2507619a1362706ccd92777d",
+      "abilities": [
+        {
+          "id": "hakuno-f.ccc.data-leak",
+          "printedClause": "（此牌为追加打出）\n数据泄露-被动：当你输掉一场战斗时，失去1点战果。\n代码_非法侵入-行动阶段：选择一名位于当前战场的玩家，查看其牌堆顶3张牌。弃置其中任意数量的牌，然后将剩余牌按任意顺序放回其牌堆顶部。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "controller_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "subject": "controller",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "hakuno-f.ccc.hack",
+          "printedClause": "（此牌为追加打出）\n数据泄露-被动：当你输掉一场战斗时，失去1点战果。\n代码_非法侵入-行动阶段：选择一名位于当前战场的玩家，查看其牌堆顶3张牌。弃置其中任意数量的牌，然后将剩余牌按任意顺序放回其牌堆顶部。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "mystic_code_rule",
+              "operation": "inspect_top_three_discard_any_reorder_rest"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.hakuno-f.skill.s4",
+      "printedText": "（此牌为追加打出）\n频率对接-被动：当你移动时，将此牌移除游戏（其可以被再度加入技能区）。\ncc_回复()-战斗阶段：若你战败，获得等于你本回合打出的一张非残留攻击的魔力消耗一半的魔力（向上取整）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hakuno_f.skills[s4]#line=149",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（此牌为追加打出）\n频率对接-被动：当你移动时，将此牌移除游戏（其可以被再度加入技能区）。\ncc_回复()-战斗阶段：若你战败，获得等于你本回合打出的一张非残留攻击的魔力消耗一半的魔力（向上取整）。",
+        "sourceTextSha256": "7ca107067ea3cec84de5447732da4690192f855caaabc26380b271d7ca031c38"
+      },
+      "referencePrintedTextSha256": "7ca107067ea3cec84de5447732da4690192f855caaabc26380b271d7ca031c38",
+      "abilities": [
+        {
+          "id": "hakuno-f.extella.frequency-dock",
+          "printedClause": "（此牌为追加打出）\n频率对接-被动：当你移动时，将此牌移除游戏（其可以被再度加入技能区）。\ncc_回复()-战斗阶段：若你战败，获得等于你本回合打出的一张非残留攻击的魔力消耗一半的魔力（向上取整）。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.moved"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "removed_from_game"
+            }
+          ]
+        },
+        {
+          "id": "hakuno-f.extella.recover",
+          "printedClause": "（此牌为追加打出）\n频率对接-被动：当你移动时，将此牌移除游戏（其可以被再度加入技能区）。\ncc_回复()-战斗阶段：若你战败，获得等于你本回合打出的一张非残留攻击的魔力消耗一半的魔力（向上取整）。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "controller_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "mystic_code_rule",
+              "operation": "gain_half_rounded_up_cost_of_one_nonresidual_attack"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.hakuno-f.skill.s5",
+      "printedText": "（此牌为追加打出）\n应急协议-被动：当你赢得一场战斗时，将此牌移除游戏。\n代码_秘密通道-当一名其他玩家进入你所在的战场时，你可移动至侦查，此时你不计入侦查的人数限制。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hakuno_f.skills[s5]#line=149",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（此牌为追加打出）\n应急协议-被动：当你赢得一场战斗时，将此牌移除游戏。\n代码_秘密通道-当一名其他玩家进入你所在的战场时，你可移动至侦查，此时你不计入侦查的人数限制。",
+        "sourceTextSha256": "86ff7089000fe1a580295cce4e55be767fdf9d7e59cb41ffe3e3a597f9e6f95e"
+      },
+      "referencePrintedTextSha256": "86ff7089000fe1a580295cce4e55be767fdf9d7e59cb41ffe3e3a597f9e6f95e",
+      "abilities": [
+        {
+          "id": "hakuno-f.extra.emergency",
+          "printedClause": "（此牌为追加打出）\n应急协议-被动：当你赢得一场战斗时，将此牌移除游戏。\n代码_秘密通道-当一名其他玩家进入你所在的战场时，你可移动至侦查，此时你不计入侦查的人数限制。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "controller_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "removed_from_game"
+            }
+          ]
+        },
+        {
+          "id": "hakuno-f.extra.secret-passage",
+          "printedClause": "（此牌为追加打出）\n应急协议-被动：当你赢得一场战斗时，将此牌移除游戏。\n代码_秘密通道-当一名其他玩家进入你所在的战场时，你可移动至侦查，此时你不计入侦查的人数限制。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.entered-location"
+            },
+            {
+              "type": "event_player_is_opponent"
+            },
+            {
+              "type": "event_location_matches_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_player",
+              "subject": "controller",
+              "destination": "recon",
+              "ignoreCapacity": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.hakuno-f.skill.ascension",
+      "printedText": "【Extra】获得：你拥有的魔力少于8点也可使用此牌。\n【CCC】获得：临时打出一张因此弃置的牌的复制。\n【Extella】获得威力+5且你的地利变为0。\n【Link】获得：你的基础攻击威力+1。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hakuno_f.ascensionSkill#line=149",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【Extra】获得：你拥有的魔力少于8点也可使用此牌。\n【CCC】获得：临时打出一张因此弃置的牌的复制。\n【Extella】获得威力+5且你的地利变为0。\n【Link】获得：你的基础攻击威力+1。",
+        "sourceTextSha256": "dcd2cd137dfef6e448845de3042eaf781b270d5d7d8b6b4fd21f120f25faa5fb"
+      },
+      "referencePrintedTextSha256": "dcd2cd137dfef6e448845de3042eaf781b270d5d7d8b6b4fd21f120f25faa5fb",
+      "abilities": [
+        {
+          "id": "hakuno-f.ascension.code-upgrades",
+          "printedClause": "【Extra】获得：你拥有的魔力少于8点也可使用此牌。\n【CCC】获得：临时打出一张因此弃置的牌的复制。\n【Extella】获得威力+5且你的地利变为0。\n【Link】获得：你的基础攻击威力+1。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "mystic_code_rule",
+              "operation": "upgrade_extra_ccc_extella_link"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.hakuno-m.skill.s1",
+      "printedText": "战斗阶段：失去2威力然后给你交战的对手一张【分析】牌；或【挑战】与之进行三次猜拳，根据你获胜的次数决定【挑战结果】的全部效果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hakuno_m.skills[s1]#line=142",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "战斗阶段：失去2威力然后给你交战的对手一张【分析】牌；或【挑战】与之进行三次猜拳，根据你获胜的次数决定【挑战结果】的全部效果。",
+        "sourceTextSha256": "1380c27055984d009f01e46ecaa860edfaa72b44fed13f8034406d9c3e70a2df"
+      },
+      "referencePrintedTextSha256": "1380c27055984d009f01e46ecaa860edfaa72b44fed13f8034406d9c3e70a2df",
+      "abilities": [
+        {
+          "id": "hakuno-m.yomi",
+          "printedClause": "战斗阶段：失去2威力然后给你交战的对手一张【分析】牌；或【挑战】与之进行三次猜拳，根据你获胜的次数决定【挑战结果】的全部效果。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "effects": [
+            {
+              "type": "challenge_analysis_rule",
+              "operation": "give_analysis_or_rps_challenge"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.hakuno-m.skill.s2",
+      "printedText": "0胜：你【败北】。\n1+胜：你总威力+2。\n2+胜：你总威力+3。给挑战的对手1张【分析】。\n3+胜：挑战的对手【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hakuno_m.skills[s2]#line=142",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "0胜：你【败北】。\n1+胜：你总威力+2。\n2+胜：你总威力+3。给挑战的对手1张【分析】。\n3+胜：挑战的对手【败北】。",
+        "sourceTextSha256": "0a9bcc7ee9c7fa6c7dd4aea1e0819309d9721b213d80f6e390fe2206c2bb1692"
+      },
+      "referencePrintedTextSha256": "0a9bcc7ee9c7fa6c7dd4aea1e0819309d9721b213d80f6e390fe2206c2bb1692",
+      "abilities": [
+        {
+          "id": "hakuno-m.challenge-results",
+          "printedClause": "0胜：你【败北】。\n1+胜：你总威力+2。\n2+胜：你总威力+3。给挑战的对手1张【分析】。\n3+胜：挑战的对手【败北】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "challenge_analysis_rule",
+              "operation": "resolve_cumulative_challenge_results"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.hakuno-m.skill.s3",
+      "printedText": "当岸波白野【挑战】你时，每持有3张【分析】将使岸波白野获胜一局。\n当你被淘汰时，将你的【分析】按回合顺序传给下一位未被淘汰的岸波白野的对手。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hakuno_m.skills[s3]#line=142",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当岸波白野【挑战】你时，每持有3张【分析】将使岸波白野获胜一局。\n当你被淘汰时，将你的【分析】按回合顺序传给下一位未被淘汰的岸波白野的对手。",
+        "sourceTextSha256": "e5e4880f90914a5cf835295a289d8ea06f461c3c65408bcf9aefbacec3b92b50"
+      },
+      "referencePrintedTextSha256": "e5e4880f90914a5cf835295a289d8ea06f461c3c65408bcf9aefbacec3b92b50",
+      "abilities": [
+        {
+          "id": "hakuno-m.analysis",
+          "printedClause": "当岸波白野【挑战】你时，每持有3张【分析】将使岸波白野获胜一局。\n当你被淘汰时，将你的【分析】按回合顺序传给下一位未被淘汰的岸波白野的对手。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "challenge_analysis_rule",
+              "operation": "analysis_bias_and_elimination_transfer"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.hakuno-m.skill.ascension",
+      "printedText": "行动阶段：花费1点魔力，将一张分析牌从一名玩家移动到另一名玩家处。每回合你可多次使用此能力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_hakuno_m.ascensionSkill#line=142",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "行动阶段：花费1点魔力，将一张分析牌从一名玩家移动到另一名玩家处。每回合你可多次使用此能力。",
+        "sourceTextSha256": "5cbf9eb23622aaa1423b7c81118663c053981d89f070c5b27da52823aa7aa741"
+      },
+      "referencePrintedTextSha256": "5cbf9eb23622aaa1423b7c81118663c053981d89f070c5b27da52823aa7aa741",
+      "abilities": [
+        {
+          "id": "hakuno-m.dead-face-transfer",
+          "printedClause": "行动阶段：花费1点魔力，将一张分析牌从一名玩家移动到另一名玩家处。每回合你可多次使用此能力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "cost": {
+            "type": "mana",
+            "amount": 1
+          },
+          "effects": [
+            {
+              "type": "pay_mana",
+              "subject": "controller",
+              "amount": 1
+            },
+            {
+              "type": "challenge_analysis_rule",
+              "operation": "move_one_analysis_between_players"
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "round",
+            "maxUses": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.rani.skill.s1",
+      "printedText": "你可以查看被弃置的局势牌。当一张非高潮局势牌将要生效时，将其弃置。然后你放置一张被弃置的局势牌。\n在第四回合结束后，获得两张【预言】并立即使用。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_rani.skills[s1]#line=158",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你可以查看被弃置的局势牌。当一张非高潮局势牌将要生效时，将其弃置。然后你放置一张被弃置的局势牌。\n在第四回合结束后，获得两张【预言】并立即使用。",
+        "sourceTextSha256": "544c96ff53953c8ed25da2a499f9795bbf35ffcddedd20e3f62c6e702f0f9544"
+      },
+      "referencePrintedTextSha256": "544c96ff53953c8ed25da2a499f9795bbf35ffcddedd20e3f62c6e702f0f9544",
+      "abilities": [
+        {
+          "id": "rani.stargazer.inspect",
+          "printedClause": "你可以查看被弃置的局势牌。当一张非高潮局势牌将要生效时，将其弃置。然后你放置一张被弃置的局势牌。\n在第四回合结束后，获得两张【预言】并立即使用。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "discarded_situation_visibility",
+              "operation": "allow_view",
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "rani.stargazer.replace",
+          "printedClause": "你可以查看被弃置的局势牌。当一张非高潮局势牌将要生效时，将其弃置。然后你放置一张被弃置的局势牌。\n在第四回合结束后，获得两张【预言】并立即使用。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "situation.will-activate"
+            },
+            {
+              "type": "situation_is_non_climax"
+            }
+          ],
+          "effects": [
+            {
+              "type": "prophecy_rule",
+              "operation": "discard_pending_and_place_discarded_situation"
+            }
+          ]
+        },
+        {
+          "id": "rani.stargazer.round-four",
+          "printedClause": "你可以查看被弃置的局势牌。当一张非高潮局势牌将要生效时，将其弃置。然后你放置一张被弃置的局势牌。\n在第四回合结束后，获得两张【预言】并立即使用。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ending"
+            },
+            {
+              "type": "round_number_is",
+              "value": 4
+            }
+          ],
+          "effects": [
+            {
+              "type": "prophecy_rule",
+              "operation": "gain_two_and_assign_immediately"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.rani.skill.s2",
+      "printedText": "选择你的一名对手。每次该玩家从淘汰中幸存，你得到2战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_rani.skills[s2]#line=158",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "选择你的一名对手。每次该玩家从淘汰中幸存，你得到2战果。",
+        "sourceTextSha256": "e8c2f717972a6cc3e4057e67ca8ae01e1246c8a2cee8a92191ff56adb9425a91"
+      },
+      "referencePrintedTextSha256": "e8c2f717972a6cc3e4057e67ca8ae01e1246c8a2cee8a92191ff56adb9425a91",
+      "abilities": [
+        {
+          "id": "rani.prophecy.triumph",
+          "printedClause": "选择你的一名对手。每次该玩家从淘汰中幸存，你得到2战果。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "prophecy_rule",
+              "operation": "bind_opponent_gain_two_vp_each_survived_elimination"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.rani.skill.s3",
+      "printedText": "选择一位对手，如果他是第一轮被淘汰的玩家，你获得6点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_rani.skills[s3]#line=158",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "选择一位对手，如果他是第一轮被淘汰的玩家，你获得6点战果。",
+        "sourceTextSha256": "3c77488efb27965f91c95feda686def407444defaa18c628f86fbd14d7b85874"
+      },
+      "referencePrintedTextSha256": "3c77488efb27965f91c95feda686def407444defaa18c628f86fbd14d7b85874",
+      "abilities": [
+        {
+          "id": "rani.prophecy.doom",
+          "printedClause": "选择一位对手，如果他是第一轮被淘汰的玩家，你获得6点战果。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "prophecy_rule",
+              "operation": "bind_opponent_gain_six_if_first_eliminated"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.rani.skill.ascension",
+      "printedText": "解锁此技能后立刻获得数值等同于回合数的二倍减去当前存活玩家数的战果，并重新决定你的【预言】。\n在高潮回合，你从剩余的事件牌堆中选择放置新的事件牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_rani.ascensionSkill#line=158",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "解锁此技能后立刻获得数值等同于回合数的二倍减去当前存活玩家数的战果，并重新决定你的【预言】。\n在高潮回合，你从剩余的事件牌堆中选择放置新的事件牌。",
+        "sourceTextSha256": "0b91b9c1dcfd39f1dea7acda678e6dff7633e1d6c4239a73819bcb11552d93e3"
+      },
+      "referencePrintedTextSha256": "0b91b9c1dcfd39f1dea7acda678e6dff7633e1d6c4239a73819bcb11552d93e3",
+      "abilities": [
+        {
+          "id": "rani.atlas.unlock",
+          "printedClause": "解锁此技能后立刻获得数值等同于回合数的二倍减去当前存活玩家数的战果，并重新决定你的【预言】。\n在高潮回合，你从剩余的事件牌堆中选择放置新的事件牌。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_definition_is_self"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "subject": "controller",
+              "amountFormula": "2 * round - living_player_count"
+            },
+            {
+              "type": "prophecy_rule",
+              "operation": "reassign_prophecies"
+            }
+          ]
+        },
+        {
+          "id": "rani.atlas.climax-events",
+          "printedClause": "解锁此技能后立刻获得数值等同于回合数的二倍减去当前存活玩家数的战果，并重新决定你的【预言】。\n在高潮回合，你从剩余的事件牌堆中选择放置新的事件牌。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "prophecy_rule",
+              "operation": "choose_climax_event_from_remaining_event_deck"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.jinako.skill.s1",
+      "printedText": "游戏开始时拥有【作弊代码转换】。\n你的基础特殊属性攻击威力增加X点（X=8-2Y【Y=游戏开始时从者牌库中基础特殊属性攻击牌的数量】，且X至少为1。）\n当你离开魔术工房时，失去3点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_jinako.skills[s1]#line=165",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时拥有【作弊代码转换】。\n你的基础特殊属性攻击威力增加X点（X=8-2Y【Y=游戏开始时从者牌库中基础特殊属性攻击牌的数量】，且X至少为1。）\n当你离开魔术工房时，失去3点魔力。",
+        "sourceTextSha256": "94c6c5b9c2630efedff6e2ea4340033eef84c6cb1e09f01e972e83795c46f68c"
+      },
+      "referencePrintedTextSha256": "94c6c5b9c2630efedff6e2ea4340033eef84c6cb1e09f01e972e83795c46f68c",
+      "abilities": [
+        {
+          "id": "jinako.gamer.setup",
+          "printedClause": "游戏开始时拥有【作弊代码转换】。\n你的基础特殊属性攻击威力增加X点（X=8-2Y【Y=游戏开始时从者牌库中基础特殊属性攻击牌的数量】，且X至少为1。）\n当你离开魔术工房时，失去3点魔力。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.jinako.skill.s2",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            },
+            {
+              "type": "cheat_code_rule",
+              "operation": "basic_special_power_formula",
+              "formula": "max(1, 8 - 2 * starting_basic_special_count)"
+            }
+          ]
+        },
+        {
+          "id": "jinako.shut-in",
+          "printedClause": "游戏开始时拥有【作弊代码转换】。\n你的基础特殊属性攻击威力增加X点（X=8-2Y【Y=游戏开始时从者牌库中基础特殊属性攻击牌的数量】，且X至少为1。）\n当你离开魔术工房时，失去3点魔力。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.moved"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "movement_left_location",
+              "location": "workshop"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_mana",
+              "subject": "controller",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.jinako.skill.s2",
+      "printedText": "<每局游戏一次>\n行动阶段：本回合你可以将你的非特殊属性基础攻击变为威力相同的特殊属性基础攻击打出。（4变为【幸运】，3变为【急行】，2变为【远隔操作】，你需要支付它们变更后的魔力。）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_jinako.skills[s2]#line=165",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "<每局游戏一次>\n行动阶段：本回合你可以将你的非特殊属性基础攻击变为威力相同的特殊属性基础攻击打出。（4变为【幸运】，3变为【急行】，2变为【远隔操作】，你需要支付它们变更后的魔力。）",
+        "sourceTextSha256": "371e9ca235037678ea8062b4be0b12c8282485bcefcde25d33ae3e19e3ff756c"
+      },
+      "referencePrintedTextSha256": "371e9ca235037678ea8062b4be0b12c8282485bcefcde25d33ae3e19e3ff756c",
+      "abilities": [
+        {
+          "id": "jinako.cheat-code-cast",
+          "printedClause": "<每局游戏一次>\n行动阶段：本回合你可以将你的非特殊属性基础攻击变为威力相同的特殊属性基础攻击打出。（4变为【幸运】，3变为【急行】，2变为【远隔操作】，你需要支付它们变更后的魔力。）",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "cheat_code_rule",
+              "operation": "convert_basic_non_special_to_special_by_power_and_pay_new_cost"
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "game",
+            "maxUses": 1
+          },
+          "lifecycle": {
+            "duration": "this_round"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.jinako.skill.ascension",
+      "printedText": "你可以于前哨阶段选择不进行部署，若如此做，则重新获得【作弊代码转换】。你激活的攻击一直保留其原本印刷的属性。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_jinako.ascensionSkill#line=165",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你可以于前哨阶段选择不进行部署，若如此做，则重新获得【作弊代码转换】。你激活的攻击一直保留其原本印刷的属性。",
+        "sourceTextSha256": "1b4e4b0bff4586c9e2d659215cc38b0aaf5fd03dc7083a84bbfd079ccef1d17f"
+      },
+      "referencePrintedTextSha256": "1b4e4b0bff4586c9e2d659215cc38b0aaf5fd03dc7083a84bbfd079ccef1d17f",
+      "abilities": [
+        {
+          "id": "jinako.time-out",
+          "printedClause": "你可以于前哨阶段选择不进行部署，若如此做，则重新获得【作弊代码转换】。你激活的攻击一直保留其原本印刷的属性。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "cheat_code_rule",
+              "operation": "skip_deployment_restore_cheat_code"
+            }
+          ]
+        },
+        {
+          "id": "jinako.printed-attribute-lock",
+          "printedClause": "你可以于前哨阶段选择不进行部署，若如此做，则重新获得【作弊代码转换】。你激活的攻击一直保留其原本印刷的属性。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "active_attack_attribute",
+              "operation": "preserve_printed_attribute",
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.alice.skill.s1",
+      "printedText": "前哨阶段：若你未于上一回合输掉战斗，将【幻影爱丽丝】部署于一处战场。当一个爱丽丝移动或被移动后，若另一个爱丽丝可移动且未处于交战状态，朝相同方向移动相同的距离。你进行打牌后，失去此次打出的所有牌合计魔力消耗一半的魔力（向上取整）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_alice.skills[s1]#line=177",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "前哨阶段：若你未于上一回合输掉战斗，将【幻影爱丽丝】部署于一处战场。当一个爱丽丝移动或被移动后，若另一个爱丽丝可移动且未处于交战状态，朝相同方向移动相同的距离。你进行打牌后，失去此次打出的所有牌合计魔力消耗一半的魔力（向上取整）。",
+        "sourceTextSha256": "0cd2e1f380a9c8d40cf6de131d82a8fa9ef21840216cdfbdeed6d63938f782fc"
+      },
+      "referencePrintedTextSha256": "0cd2e1f380a9c8d40cf6de131d82a8fa9ef21840216cdfbdeed6d63938f782fc",
+      "abilities": [
+        {
+          "id": "alice.cyber-ghost.deploy",
+          "printedClause": "前哨阶段：若你未于上一回合输掉战斗，将【幻影爱丽丝】部署于一处战场。当一个爱丽丝移动或被移动后，若另一个爱丽丝可移动且未处于交战状态，朝相同方向移动相同的距离。你进行打牌后，失去此次打出的所有牌合计魔力消耗一半的魔力（向上取整）。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "conditions": [
+            {
+              "type": "controller_did_not_lose_combat_previous_round"
+            }
+          ],
+          "effects": [
+            {
+              "type": "phantom_player_rule",
+              "operation": "deploy_phantom_to_battlefield"
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "round",
+            "maxUses": 1
+          }
+        },
+        {
+          "id": "alice.cyber-ghost.follow",
+          "printedClause": "前哨阶段：若你未于上一回合输掉战斗，将【幻影爱丽丝】部署于一处战场。当一个爱丽丝移动或被移动后，若另一个爱丽丝可移动且未处于交战状态，朝相同方向移动相同的距离。你进行打牌后，失去此次打出的所有牌合计魔力消耗一半的魔力（向上取整）。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.moved"
+            }
+          ],
+          "effects": [
+            {
+              "type": "phantom_player_rule",
+              "operation": "mirror_move_if_able_unengaged"
+            }
+          ]
+        },
+        {
+          "id": "alice.cyber-ghost.tax",
+          "printedClause": "前哨阶段：若你未于上一回合输掉战斗，将【幻影爱丽丝】部署于一处战场。当一个爱丽丝移动或被移动后，若另一个爱丽丝可移动且未处于交战状态，朝相同方向移动相同的距离。你进行打牌后，失去此次打出的所有牌合计魔力消耗一半的魔力（向上取整）。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "attack.committed"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "phantom_player_rule",
+              "operation": "lose_half_total_played_cost_rounded_up"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.alice.skill.s2",
+      "printedText": "两位爱丽丝代表同一名玩家，她们视为激活了相同的卡牌，但是需要分别计算她们的威力。当她们分开时，你需要决定由哪一处的爱丽丝来发动你针对地点或战斗的效果。（你不会因此而触发两次你的能力。）\n幻影规则：1、爱丽丝和幻影爱丽丝视为\"1个对手\"，\"1名玩家\"，\"你\"。2、2个爱丽丝共同获得的：被动、牌面描述、合计威力增减、打出时牌的威力增减。3、战斗/地点相关：描述中提及交战、地点、战斗、战场视为地点或战斗相关。4、爱丽丝/幻影跟随移动受交战状态影响。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_alice.skills[s2]#line=177",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "两位爱丽丝代表同一名玩家，她们视为激活了相同的卡牌，但是需要分别计算她们的威力。当她们分开时，你需要决定由哪一处的爱丽丝来发动你针对地点或战斗的效果。（你不会因此而触发两次你的能力。）\n幻影规则：1、爱丽丝和幻影爱丽丝视为\"1个对手\"，\"1名玩家\"，\"你\"。2、2个爱丽丝共同获得的：被动、牌面描述、合计威力增减、打出时牌的威力增减。3、战斗/地点相关：描述中提及交战、地点、战斗、战场视为地点或战斗相关。4、爱丽丝/幻影跟随移动受交战状态影响。",
+        "sourceTextSha256": "f22c5dad7e9bcc5958abd81f94098e9fa39d08b65684fe65fa00a2888fe1972c"
+      },
+      "referencePrintedTextSha256": "f22c5dad7e9bcc5958abd81f94098e9fa39d08b65684fe65fa00a2888fe1972c",
+      "abilities": [
+        {
+          "id": "alice.phantom-player",
+          "printedClause": "两位爱丽丝代表同一名玩家，她们视为激活了相同的卡牌，但是需要分别计算她们的威力。当她们分开时，你需要决定由哪一处的爱丽丝来发动你针对地点或战斗的效果。（你不会因此而触发两次你的能力。）\n幻影规则：1、爱丽丝和幻影爱丽丝视为\"1个对手\"，\"1名玩家\"，\"你\"。2、2个爱丽丝共同获得的：被动、牌面描述、合计威力增减、打出时牌的威力增减。3、战斗/地点相关：描述中提及交战、地点、战斗、战场视为地点或战斗相关。4、爱丽丝/幻影跟随移动受交战状态影响。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "phantom_player_rule",
+              "operation": "shared_identity_cards_independent_power_location_effect_choice"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.alice.skill.ascension",
+      "printedText": "（将此牌加入你的技能区）\n被动：你于所在地点拥有的地利，为你所在所有地点提供地利。\n行动阶段：将幻影爱丽丝从桌面移除，使所有与她位于同一地点的玩家【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_alice.ascensionSkill#line=177",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（将此牌加入你的技能区）\n被动：你于所在地点拥有的地利，为你所在所有地点提供地利。\n行动阶段：将幻影爱丽丝从桌面移除，使所有与她位于同一地点的玩家【败北】。",
+        "sourceTextSha256": "536d402822549dcceb246372eee08f4384b6544d72463ab1bcf3a10158aa211d"
+      },
+      "referencePrintedTextSha256": "536d402822549dcceb246372eee08f4384b6544d72463ab1bcf3a10158aa211d",
+      "abilities": [
+        {
+          "id": "alice.queenside.terrain",
+          "printedClause": "（将此牌加入你的技能区）\n被动：你于所在地点拥有的地利，为你所在所有地点提供地利。\n行动阶段：将幻影爱丽丝从桌面移除，使所有与她位于同一地点的玩家【败北】。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "phantom_player_rule",
+              "operation": "share_terrain_advantage_across_all_occupied_locations"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "alice.queenside.sacrifice",
+          "printedClause": "（将此牌加入你的技能区）\n被动：你于所在地点拥有的地利，为你所在所有地点提供地利。\n行动阶段：将幻影爱丽丝从桌面移除，使所有与她位于同一地点的玩家【败北】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "phantom_player_rule",
+              "operation": "remove_phantom_and_defeat_all_at_location"
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "game",
+            "maxUses": 1
+          }
+        }
+      ]
     }
   ]
 }
