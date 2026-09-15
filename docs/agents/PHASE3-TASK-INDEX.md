@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.27
+- Version: P3-TI-1.28
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3286,6 +3286,104 @@ Permitted final status: `MIGRATION_ACCEPTED` or `REVIEW_BLOCKED`.
 - Independent R28 dynamic evidence: typecheck PASS; focused `27/27`; rules `287/287`; full CI `700/700`; content validation 0 blockers; deterministic generated-content hashes unchanged; runtime lineage diff=0; diff check PASS.
 - Fresh reviewer coverage equals A material coverage except `generatedAt`: archives `39`, cards `71`, abilities `130`, raw `new=12 / legacyExecute=3 / legacyResolve=87 / dual=0 / notClassifiable=28 / taxonomyWarnings=104`, source fingerprint `3e8cc78e550b61c3924f91fcfeb1b6c304c586beed9e07ee18f60403d94eb315`.
 - This acceptance does not promote broad Movement, generic Target Selection, movement costs/conditions/modifiers, forced/third-party movement, reporter taxonomy changes, or any unrelated F1 identity.
+
+## TASK P3-FB2-10
+
+Owner: Codex B2
+Status: READY
+Branch: `codex/b2-p3-fb2-10-saber-magic-resistance-r1`
+Base: exact P3-FB2-10 A-owned handoff commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Read: `docs/reports/2026-09-16-p3-fb2-10-saber-magic-resistance-handoff.md`
+
+Goal: accept exactly one identity-free TO15 Power sub-contract for the ten remaining Saber-family `对魔力` cards: combat-phase Magic Resistance sets same-battlefield engaged opponents' Magic-attribute attack-card current Power to zero for this round. Do not promote broad Power/Modifier runtime.
+
+Exact accepted semantic shape only:
+- `phase_action`; activation phase `combat`; opens `controller_combat_action_window`; `requiresSourceState=active`;
+- no conditions, targets, costs, effects, creates, response window, limit, or visibility semantics;
+- exactly one `ruleModifier`;
+- modifier type `combat_power_modifier`; operation `set`; rule `attack.currentPower`; value exactly `0`;
+- scope controller exactly `engaged_opponents_same_battlefield`; object exactly `attack_card`;
+- exactly one scope constraint `has_attribute(attribute=魔术)`;
+- modifier lifecycle duration exactly `this_round`;
+- routing/classification is structural and identity-free.
+
+Required runtime behavior:
+- exact semantic must enter a dedicated accepted route before generic/legacy fallback and install only the declared structured modifier;
+- source must be active at activation; existing phase-action usage ownership preserves one activation per round;
+- same-battlefield opponent Magic attacks resolve current Power to `0`;
+- controller's own attacks, non-Magic opponent attacks, and Magic attacks controlled outside the controller's battlefield remain unchanged;
+- modifier expires at the normal next-round boundary and must not leak into later rounds;
+- malformed same-family near-matches must fail closed before generic modifier installation, atomically preserving state;
+- retain existing deterministic Power trace / calculation-line provenance;
+- no new Power primitive or second battle calculator unless a fresh failing test proves the existing `calculateCardPower`/ongoing infrastructure cannot satisfy this exact shape.
+
+Already accepted sibling dependencies that B2 must preserve rather than reimplement:
+- P3-B18 / R12 base Noble Bloom: optional post-result typed controller VP `+1`;
+- P3-B19 / R13 Noble Bloom threshold sibling: independent optional post-result typed controller VP `+1` when highest tracked Noble Phantasm cost is at least 4;
+- existing typed Resource primitive and post-scoring result envelope;
+- existing phase-action once-per-round usage ownership and ongoing `this_round` cleanup.
+
+Exact frozen F1 evidence-membership list (future FM03 candidate set, not B2 migration scope):
+- `servant.altera.skill.sc-altera-3`
+- `servant.arthur.skill.sc-arthur-3`
+- `servant.bedivere.skill.sc-bedivere-1`
+- `servant.charlemagne.skill.sc-charlemagne-3`
+- `servant.gawain.skill.sc-gawain-3`
+- `servant.lakshmibai.skill.sc-lakshmibai-3`
+- `servant.mordred.skill.sc-mordred-3`
+- `servant.musashi.skill.sc-musashi-3`
+- `servant.saber.skill.sc-saber-1`
+- `servant.saitou.skill.sc-saitou-1`
+
+The ten F1 rows are block-free `READY_GENERIC_EXTENSION`, all use Reference handler `core.saber-magic-resistance`, and all normalize to the same three operations: Noble Bloom +1 VP, conditional extra +1 VP, and Magic Resistance opponent-Magic Power=0. B18/B19 already cover the two Resource siblings; FB2-10 covers only the missing Power sibling.
+
+Required evidence:
+- renamed-ID positive classifier plus near-miss negatives for phase/window/source-state/modifier type/operation/rule/scope/object/attribute/value/duration and extra semantics;
+- real legal-action activation proving combat-only + active-source + once-per-round exposure;
+- same-battlefield opponent Magic attack goes to exactly 0 with deterministic calculation trace;
+- own/non-Magic/other-battlefield negatives;
+- next-round expiry;
+- malformed same-family fail-closed and mutation-free;
+- B18/B19 compatibility;
+- all current rules regressions, full root CI, deterministic generated-content verification, runtime identity/text audit, and diff check.
+
+Must not touch/promote:
+- broad TO15 Power/Modifier runtime;
+- generic `set` or `add` modifiers beyond this exact shape;
+- opponent selection/Target Selection gateways;
+- card/character/ability identity routing;
+- F1 authoring migration or any of the ten future FM03 archives;
+- taxonomy/KPI definitions;
+- Noble Bloom semantics beyond compatibility.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R29
+
+Owner: Codex R
+Status: READY_AFTER_P3_FB2_10
+Branch: reviewer-selected fresh worktree/branch from exact FB2-10 candidate SHA
+
+Goal: independently review the exact FB2-10 Magic Resistance Power sub-contract without implementing fixes or promoting broad TO15.
+
+Required checks: exact identity-free classifier; fail-closed near-misses; active/combat/once-per-round activation; same-battlefield opponent Magic Power=0; own/non-Magic/other-battlefield negatives; this-round expiry; deterministic Power trace; no new broad Power primitive; no identity/text routing; B18/B19 compatibility; all rules, determinism, full CI, and diff check.
+
+Permitted final status:
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `REVIEW_BLOCKED`
+
+## Full-Roster Dispatch State After P3-R28 / Before P3-FB2-10
+
+- FM01 and FM02 are independently `MIGRATION_ACCEPTED`; frozen canonical-authoring overlap is `49 / 944`, leaving `895 / 944` F1 identities not yet represented by current canonical authoring.
+- Fresh R28-lineage scan finds exactly one remaining block-free, contract-mapped, `READY_GENERIC_EXTENSION` semantic group at normal F4 minimum size >=10: ten Saber-family `GENERIC_POWER + GENERIC_RESOURCE_NUMERIC` identities.
+- All ten share Reference handler `core.saber-magic-resistance` and the same normalized operation set. Printed-text/source-hash variation is wording/card-source variation, not a different operation family.
+- The Noble Bloom base and threshold Resource siblings are already independently accepted by R12/B18 and R13/B19 and use typed Resource settlement. They must not be reimplemented.
+- TO15 Modifier/Power remains spec-only with `Runtime authorization: none`. Existing Artoria Alter legacy/canonical content proves the intended structured modifier shape and existing ongoing/Power infrastructure can evaluate it, but that historical execution does not itself authorize broad Power.
+- P3-FB2-10 therefore dispatches only the exact Magic Resistance modifier shape. It must route/fail-close structurally before generic fallback and reuse existing `this_round` ongoing + `calculateCardPower` infrastructure.
+- If and only if R29 accepts FB2-10 and fresh A reconciliation confirms the same ten F1 rows retain no additional dependency, A may dispatch P3-FM03 at exact batch size 10.
 
 ## Prompt Templates
 
