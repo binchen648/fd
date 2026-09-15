@@ -3519,6 +3519,57 @@ Permitted final status:
 - `RECONCILIATION_BLOCKED`
 
 If and only if R31 returns `SPECIAL_FAMILY_ACCEPTED`, A may freshly reconcile the exact lineage and dispatch P3-FM04 at exact batch size 11 (Tomoe pre-existing + ten new siblings).
+
+## TASK P3-A-FM04-DISPATCH-SYNC
+
+Owner: Codex A
+Status: SYNCHRONIZED
+Branch: `codex/a-p3-fm04-independent-action-sync`
+Base: R31 `9d5498027f05ace0aa3a018da87473a1b47b7a21`
+Read: `docs/reports/2026-09-16-p3-a-fm04-independent-action-dispatch.md`
+
+Fresh lineage reconciliation confirms the exact eleven-member family remains one pre-existing canonical Tomoe plus ten missing siblings. Coverage is unchanged except `generatedAt`, so the regenerated artifact is intentionally not committed. P3-FM04 is READY at exact batch size 11.
+
+## TASK P3-FM04
+
+Owner: Codex S
+Status: READY
+Branch: `codex/s-p3-fm04-independent-action`
+Base: exact P3-A-FM04-DISPATCH-SYNC commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Read: `docs/reports/2026-09-16-p3-fm04-independent-action-migration-handoff.md`
+
+Goal: migrate exactly the accepted eleven-member Archer Independent Action family. Tomoe is already canonical and must remain unchanged; add only the ten missing siblings.
+
+Completion status allowed:
+- `MIGRATION_CANDIDATE`
+- `MIGRATION_NEEDS_REVISION`
+
+## TASK P3-A-FM04-MIGRATION-SYNC
+
+Owner: Codex A
+Status: READY_AFTER_P3_FM04
+Branch: `codex/a-p3-fm04-migration-sync`
+Base: exact P3-FM04 S candidate SHA
+
+Goal: independently recompute frozen-F1 burn-down, exact family/batch membership, material coverage, generated-content identity, and unrelated drift. A must not repair S authoring.
+
+Completion status allowed:
+- `MIGRATION_SYNC_CANDIDATE`
+- `MIGRATION_SYNC_NEEDS_REVISION`
+
+## TASK P3-R32
+
+Owner: Codex R
+Status: READY_AFTER_P3_A_FM04_MIGRATION_SYNC
+Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM04 lineage
+
+Goal: independently review FM04 without implementing fixes. Required checks: exact 11-member accepted family; only ten new archives; Tomoe unchanged; frozen source text/hash preservation; uniform locked static metadata; exact Tomoe-derived two-ability decomposition; accepted TO08 + B21/R15 structural conformance; representative end-to-end +3 VP and unpreventable -5 VP behavior; A burn-down integrity; determinism; full required validation; diff check.
+
+Permitted final status:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `REJECTED`
 ## Prompt Templates
 
 Codex A startup prompt:
