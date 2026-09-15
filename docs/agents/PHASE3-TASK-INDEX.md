@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.34
+- Version: P3-TI-1.35
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3752,9 +3752,10 @@ Permitted final status:
 ## TASK P3-FM06
 
 Owner: Codex S
-Status: READY
+Status: MIGRATION_SYNC_CANDIDATE
 Branch: `codex/s-p3-fm06-presence-concealment`
-Base: exact P3-FB2-12 A synchronization commit
+Base: exact P3-FB2-12 A synchronization `35aa5ef063fe6d8c6c611f70f0696bf111a80657`
+Candidate: `ebc1ca575fcef0e3894b13ec10613801e4227970`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 Read: `docs/reports/2026-09-16-p3-a-fb2-12-synchronization.md` and `docs/reports/2026-09-16-p3-fb2-12-presence-concealment-handoff.md`
@@ -3765,17 +3766,32 @@ Completion status allowed:
 - `MIGRATION_COMPLETE_CANDIDATE`
 - `MIGRATION_BLOCKED`
 
-## Full-Roster Dispatch State After P3-R35 / Before P3-FM06
+## TASK P3-R36
 
-- FM01-FM05 remain independently migration-accepted; canonical-authoring overlap is still `79/944`, leaving `865/944` absent until FM06 itself is accepted.
-- FB2-12 is independently accepted by R35 at `ee3367b1ea17e6db9d98b1ae42d769fae6122d5e`; its B2 candidate is `4c97449de07b1e7a859d8ef43b60e34069541830`.
-- Exact Presence Concealment migration family is `12/12`, currently `0/12` canonical, full-text SHA `29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f`, Reference handler `core.presence-concealment`.
-- Inventory top-level rows are `CONTRACT_MAPPED` with `blockedBy=[]`; the Phase-3 runtime route's `SPECIAL_EFFECT:presence_concealment_assassination_rule` gap is now closed only by the narrow accepted FB2-12 contract.
-- The frozen F1 inventory preserves four common clause-source SHAs: `ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb`, `1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25`, `0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217`, `1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871`.
-- Locked Reference card metadata is common across all twelve selected skill cards: Swift type, cost `3`, historical requirement `3`, base Power `4`; owner class remains source-defined and Kiritsugu remains `Master`. Final canonical skill-zone play still uses the established 8-mana rule.
-- Accepted runtime semantics are optional post-Power/pre-scoring response, active face-up source, 3+ participants, strict-second eligibility, all tied highest opponents derived from the frozen trusted snapshot, once per round on use, turn-order sequencing, Basic Luck defeat-ignore, same BattleResult/scoring pipeline, and battle-local cleanup.
-- A fresh recertification at R35 lineage keeps coverage materially unchanged at `69 archives / 101 cards / 200 abilities`, raw `22/3/127/0/48/124`, compiled identity unchanged, focused `10/10`, typecheck/content/determinism green.
-- P3-FM06 is therefore READY at exact batch size `12`; no canonical-overlap credit is taken until S migration, A material sync, and independent migration review complete.
+Owner: Codex R
+Status: READY
+Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM06 lineage
+Candidate S SHA: `ebc1ca575fcef0e3894b13ec10613801e4227970`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-16-p3-a-fm06-migration-synchronization.md`, `docs/reports/2026-09-16-p3-fm06-presence-concealment-migration.md`, and `docs/reports/2026-09-16-p3-r35-fb2-12-presence-concealment-review.md`
+
+Goal: independently review the exact twelve-member FM06 Presence Concealment migration without implementing fixes. Required checks: exact 12-ID addition and no removals/unauthorized additions; frozen full-text SHA and four clause-source SHAs; locked Reference legacy/static/owner metadata including Kiritsugu class Master; final 8-mana skill-zone gate with printed cost 3; exact FB2-12 structural conformance; Semiramis FM05 skill2 object preservation; material coverage/burn-down integrity; no runtime diff; representative real-card pre-scoring execution; focused/rules/content/determinism/full CI/diff check.
+
+Permitted final status:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `REJECTED`
+
+## Full-Roster Dispatch State After P3-A-FM06 / Before P3-R36
+
+- FM01-FM05 remain independently migration-accepted at accepted overlap `79/944`.
+- FM06 S candidate `ebc1ca575fcef0e3894b13ec10613801e4227970` materializes exactly 12 Presence Concealment identities; material canonical overlap is now `91/944`, while accepted overlap remains `79/944` until R36.
+- Frozen F1 explicitly contains `943` static identities plus dynamic `master.tiamat.card.life-sea`, for the authoritative total denominator `944`; after FM06 materialization, total absent is `853` (`852` absent static identities plus the dynamic identity).
+- A independently recomputed exact additions `12`, removals `0`, unauthorized additions `0`, and verified Semiramis FM05 skill2 object equality against the pre-FM06 base.
+- Fresh material coverage is `80 archives / 113 cards / 212 abilities`, raw `22/3/127/0/60/124`, source fingerprint `8bbbca216337b427509dd0dd133ef4515ede49c443937115ff9372259cd23ec4`, compiled definition hash unchanged.
+- FM06 changes no `packages/rules/src` production file. Fresh A recertification is typecheck PASS, focused `20/20`, content 0 blockers, deterministic hashes unchanged; S evidence is rules `388/388` and standard full CI `720/720`.
+- P3-R36 is READY and must independently decide migration acceptance on the exact A-synchronized lineage. No `91/944` accepted-overlap credit is final until R36 accepts.
 
 ## Prompt Templates
 
