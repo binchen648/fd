@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 798
+    "affectedIdentityCount": 813
   },
   "requests": [
     {
@@ -30433,6 +30433,7 @@
         "servant.lubu.skill.sc-lubu-3",
         "servant.mechaeli.skill.sc-mechaeli-2",
         "servant.mephisto.skill.sc-mephisto-2",
+        "servant.merlin.skill.sc-merlin-2",
         "servant.molay.skill.sc-molay-1",
         "servant.mordred.skill.sc-mordred-3",
         "servant.mozart.skill.sc-mozart-1",
@@ -33603,6 +33604,33 @@
           "sha256": "92e806898798557eb69d5c9f933c590e6e19d99ecd2c4b1bb85bdda7e651f176"
         },
         {
+          "abilityId": "servant.merlin.skill.sc-merlin-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/梅林.htm"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.merlin/梅林"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_merlin_2"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[108].skills[1].text#line=1",
+          "sha256": "a2d41a496d4ff001a61cb492a4c061fe031339f36eeaa4bc282ea0376cff5e28"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[108].skills[1].text#line=2",
+          "sha256": "c935a0e9b47edd62e25fe8547d82eb2fa92e3b87e08846ced5271d905a3157d6"
+        },
+        {
           "abilityId": "servant.molay.skill.sc-molay-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/剑士/英文版/雅克·德·莫莱.htm"
@@ -33987,9 +34015,9 @@
         "routeCounts": {
           "deterministic": 1,
           "shared_handler": 73,
-          "specific_handler": 47
+          "specific_handler": 48
         },
-        "handlerCount": 72,
+        "handlerCount": 73,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -49058,13 +49086,28 @@
         "servant.medea.skill.sc-medea-2",
         "servant.medea.skill.sc-medea-np",
         "servant.medusa.skill.sc-medusa-2",
+        "servant.meltryllis.skill.sc-meltryllis-1",
+        "servant.meltryllis.skill.sc-meltryllis-2",
+        "servant.meltryllis.skill.sc-meltryllis-3",
+        "servant.melusine.skill.sc-melusine-1",
+        "servant.melusine.skill.sc-melusine-2",
+        "servant.melusine.skill.sc-melusine-3",
+        "servant.mephisto.skill.sc-mephisto-1",
         "servant.mephisto.skill.sc-mephisto-2",
+        "servant.merlin.skill.sc-merlin-1",
+        "servant.merlin.skill.sc-merlin-2",
+        "servant.mhx.skill.sc-mhx-1",
+        "servant.mhx.skill.sc-mhx-2",
+        "servant.mhx.skill.sc-mhx-3",
         "servant.molay.skill.sc-molay-1",
         "servant.molay.skill.sc-molay-2",
         "servant.molay.skill.sc-molay-3",
         "servant.molay.skill.sc-molay-4",
         "servant.mordred.skill.sc-mordred-1",
         "servant.mordred.skill.sc-mordred-2",
+        "servant.morgan.skill.sc-morgan-1",
+        "servant.morgan.skill.sc-morgan-2",
+        "servant.morgan.skill.sc-morgan-3",
         "servant.muramasa.skill.sc-muramasa-1",
         "servant.muramasa.skill.sc-muramasa-2",
         "servant.muramasa.skill.sc-muramasa-3",
@@ -62857,6 +62900,183 @@
           "sha256": "fe34566fb9dbea83e43f7f97dc56a97f5176e07e8a124ee1816aa5645bf770ff"
         },
         {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/他人格/英文版/梅尔特莉莉丝.htm"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.meltryllis/梅尔特莉莉丝"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_meltryllis_1"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[64].skills[0].text#line=1",
+          "sha256": "421d36d3811f4425d65e7d7126fdfa810a67e80e7a968c48459e7c6b964ebb4e"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[64].skills[0].text#line=2",
+          "sha256": "ccc0afbf7f75b6636679d987db38ca0dbfe0344f9155477eb255dc6f1bc25f6c"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/他人格/英文版/梅尔特莉莉丝.htm"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.meltryllis/梅尔特莉莉丝"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_meltryllis_2"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[64].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[64].skills[1].text#line=2",
+          "sha256": "71b26aca9629e4aa0668ce2cc06a05d6c2927e5a2d51413655585b8174d42251"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[64].skills[1].text#line=3",
+          "sha256": "fe7fd62223cf70e983bca38987ac4d2e72b2fea9aceb35b4d406a5039b7498be"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[64].skills[1].text#line=4",
+          "sha256": "02867b4aaf4cf2728c5e16241f51a00ec10af48e344b6175bc4526f69340e6bb"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/他人格/英文版/梅尔特莉莉丝.htm"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.meltryllis/梅尔特莉莉丝"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_meltryllis_3"
+        },
+        {
+          "abilityId": "servant.meltryllis.skill.sc-meltryllis-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[64].skills[2].text#line=1",
+          "sha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/梅柳齐娜.htm"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.melusine/梅柳齐娜"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_melusine_1"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[76].skills[0].text#line=1",
+          "sha256": "eafa9adbd365f92bc94b9abb01f081bc6d4c159d4489a7bc2f281704cbe1c050"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/梅柳齐娜.htm"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.melusine/梅柳齐娜"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_melusine_2"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[76].skills[1].text#line=1",
+          "sha256": "d16b4903ede2211a04d9d27074627052021aea22d794746eb10753882ea86414"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/梅柳齐娜.htm"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.melusine/梅柳齐娜"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_melusine_3"
+        },
+        {
+          "abilityId": "servant.melusine.skill.sc-melusine-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[76].skills[2].text#line=1",
+          "sha256": "4bd77425bde34cec725d4b43f8a1987b7cd0ecf74c5a175cf64a16d588e89677"
+        },
+        {
+          "abilityId": "servant.mephisto.skill.sc-mephisto-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/梅菲斯托费勒斯.htm"
+        },
+        {
+          "abilityId": "servant.mephisto.skill.sc-mephisto-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.mephisto/梅菲斯托费勒斯"
+        },
+        {
+          "abilityId": "servant.mephisto.skill.sc-mephisto-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_mephisto_1"
+        },
+        {
+          "abilityId": "servant.mephisto.skill.sc-mephisto-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[114].skills[0].text#line=1",
+          "sha256": "a65ce56a69bba9214eba95ab30154209228bcd28f7fec21f6317c8a70f421847"
+        },
+        {
+          "abilityId": "servant.mephisto.skill.sc-mephisto-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[114].skills[0].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+        },
+        {
           "abilityId": "servant.mephisto.skill.sc-mephisto-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/魔术师/英文版/梅菲斯托费勒斯.htm"
@@ -62882,6 +63102,147 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[67].abilities[1].printedClause",
           "sha256": "92e806898798557eb69d5c9f933c590e6e19d99ecd2c4b1bb85bdda7e651f176"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/梅林.htm"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.merlin/梅林"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_merlin_1"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[108].skills[0].text#line=1",
+          "sha256": "661d20ed0ca5054ba64c55ea9eb60b071a54313594f25690891813413e0e5800"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/梅林.htm"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.merlin/梅林"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_merlin_2"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[108].skills[1].text#line=1",
+          "sha256": "a2d41a496d4ff001a61cb492a4c061fe031339f36eeaa4bc282ea0376cff5e28"
+        },
+        {
+          "abilityId": "servant.merlin.skill.sc-merlin-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[108].skills[1].text#line=2",
+          "sha256": "c935a0e9b47edd62e25fe8547d82eb2fa92e3b87e08846ced5271d905a3157d6"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/谜之女主角X.htm"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.mhx/谜之女主角X"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_mhx_1"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[138].skills[0].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[138].skills[0].text#line=2",
+          "sha256": "418b1b194884b1a564c3301ef18e401618d552d61d226397d2ab9e26bba11f30"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/谜之女主角X.htm"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.mhx/谜之女主角X"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_mhx_2"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[138].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[138].skills[1].text#line=2",
+          "sha256": "713bbda82d771303afb790483613bffc6e0bec33e90226a3993538dc12593a5d"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[138].skills[1].text#line=3",
+          "sha256": "965c612ace728e41086e22193fb475e543fe89d1800f58b73ff88ee23f68886b"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/谜之女主角X.htm"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.mhx/谜之女主角X"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_mhx_3"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[138].skills[2].text#line=1",
+          "sha256": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[138].skills[2].text#line=2",
+          "sha256": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85"
+        },
+        {
+          "abilityId": "servant.mhx.skill.sc-mhx-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[138].skills[2].text#line=3",
+          "sha256": "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
         },
         {
           "abilityId": "servant.molay.skill.sc-molay-1",
@@ -63056,6 +63417,69 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[15].skills[1].text#line=2",
           "sha256": "0b08d6e6528f94d2f46373c46a00da55f878013b682b494f9f715324b4799b01"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/裁定者/英文版/摩根.htm"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.morgan/摩根"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_morgan_1"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[173].skills[0].text#line=1",
+          "sha256": "169fcc24b2ccb416b2d209fedbdad8cdc36ad8cb42fe8b745a07ea1749bb827d"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/裁定者/英文版/摩根.htm"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.morgan/摩根"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-2",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_morgan_2"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[173].skills[1].text#line=1",
+          "sha256": "c4b477acb75f75bfe141a342ca8721ea7befd8dfd042fe4a8a916fda30f15a24"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/裁定者/英文版/摩根.htm"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.morgan/摩根"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_morgan_3"
+        },
+        {
+          "abilityId": "servant.morgan.skill.sc-morgan-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[173].skills[2].text#line=1",
+          "sha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
         },
         {
           "abilityId": "servant.muramasa.skill.sc-muramasa-1",
@@ -63969,10 +64393,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 263,
-          "specific_handler": 285
+          "shared_handler": 269,
+          "specific_handler": 294
         },
-        "handlerCount": 346,
+        "handlerCount": 356,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

@@ -1631,6 +1631,16 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.medb.skill.sc-medb-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'medb_submission_deployment_rule'})])}));
   });
 
+  it('grounds the fifteen-ID Meltryllis/Melusine/Mephisto/Merlin/MHX/Morgan slice and locks the Melusine replacement ruling', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.meltryllis.skill.sc-meltryllis-1","servant.meltryllis.skill.sc-meltryllis-2","servant.meltryllis.skill.sc-meltryllis-3","servant.melusine.skill.sc-melusine-1","servant.melusine.skill.sc-melusine-2","servant.melusine.skill.sc-melusine-3","servant.mephisto.skill.sc-mephisto-1","servant.merlin.skill.sc-merlin-1","servant.merlin.skill.sc-merlin-2","servant.mhx.skill.sc-mhx-1","servant.mhx.skill.sc-mhx-2","servant.mhx.skill.sc-mhx-3","servant.morgan.skill.sc-morgan-1","servant.morgan.skill.sc-morgan-2","servant.morgan.skill.sc-morgan-3"]); const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(15); expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256 && c.source.sourceFileSha256.length===64)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.meltryllis.skill.sc-meltryllis-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'reverse_effect_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.melusine.skill.sc-melusine-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'melusine_albion_replacement_rule',operation:'uncopyable_unstealable_first_defeat_reveal_source_second_defeat_replace_servant_with_albion_and_true_name_reveal_remove_pre_replacement_hand_discard_and_attack_zone_cards_from_game_remove_all_original_melusine_servant_cards_from_all_zones_preserve_non_original_servant_cards_previously_added_to_deck_then_use_albion_deck_and_skills'})])}));
+    expect(slice.find(c=>c.id==='servant.melusine.skill.sc-melusine-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'dragon_heart_penalty_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.mephisto.skill.sc-mephisto-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'territory_construction_scaling_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.morgan.skill.sc-morgan-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'ruler_command_spell_binding_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1684,10 +1694,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 798,
-      blockedCount: 146,
+      sourceGroundedCount: 813,
+      blockedCount: 131,
       unclassifiedCount: 0,
-      structuredAbilityCount: 1076,
+      structuredAbilityCount: 1091,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

@@ -28960,6 +28960,396 @@
         }
       ],
       "referencePrintedTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+    },
+    {
+      "id": "servant.meltryllis.skill.sc-meltryllis-1",
+      "printedText": "吸收-战斗阶段：与你交战的所有对手在其下个回合开始时随机【感染】一张技能区的牌直至回合结束。他们不能使用被【感染】的牌。\n反转：下个回合，将所有被【感染】的牌的临时复制加入你的技能区。当它们提到一个名字时，视为被提到的是你。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_meltryllis_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "吸收-战斗阶段：与你交战的所有对手在其下个回合开始时随机【感染】一张技能区的牌直至回合结束。他们不能使用被【感染】的牌。\n反转：下个回合，将所有被【感染】的牌的临时复制加入你的技能区。当它们提到一个名字时，视为被提到的是你。",
+        "sourceTextSha256": "92f1a6ddc3b00df4187bd75eea810e1ac88c012289fdf02fc2c5f4bed2cd18d2"
+      },
+      "abilities": [
+        {
+          "id": "meltryllis.sc-meltryllis-1.semantic",
+          "printedClause": "吸收-战斗阶段：与你交战的所有对手在其下个回合开始时随机【感染】一张技能区的牌直至回合结束。他们不能使用被【感染】的牌。\n反转：下个回合，将所有被【感染】的牌的临时复制加入你的技能区。当它们提到一个名字时，视为被提到的是你。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "melt_virus_infection_copy_rule",
+              "operation": "combat_infect_each_engaged_opponent_next_round_start_random_skill_zone_card_until_round_end_infected_cards_unusable_reverse_next_round_add_temporary_copies_of_all_infected_cards_to_controller_skill_zone_and_self_reference_names_refer_to_controller"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "92f1a6ddc3b00df4187bd75eea810e1ac88c012289fdf02fc2c5f4bed2cd18d2"
+    },
+    {
+      "id": "servant.meltryllis.skill.sc-meltryllis-2",
+      "printedText": "【真名解放】\n每回合仅限使用【弁财天五弦琵琶】上的一项能力。\n战斗阶段：将与你交战的所有对手的力量属性牌威力减至3点。\n反转/行动阶段：从手牌中打出最多三张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_meltryllis_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n每回合仅限使用【弁财天五弦琵琶】上的一项能力。\n战斗阶段：将与你交战的所有对手的力量属性牌威力减至3点。\n反转/行动阶段：从手牌中打出最多三张牌。",
+        "sourceTextSha256": "14374a9c12336ab32633958f41153eb16b39146a584dc8480b43aba7ffb4b733"
+      },
+      "abilities": [
+        {
+          "id": "meltryllis.sc-meltryllis-2.semantic",
+          "printedClause": "【真名解放】\n每回合仅限使用【弁财天五弦琵琶】上的一项能力。\n战斗阶段：将与你交战的所有对手的力量属性牌威力减至3点。\n反转/行动阶段：从手牌中打出最多三张牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "melt_sarasvati_rule",
+              "operation": "true_name_reveal_each_round_use_only_one_source_ability_combat_set_all_engaged_opponent_power_attribute_card_power_to_3_or_reverse_action_play_up_to_3_cards_from_hand"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "14374a9c12336ab32633958f41153eb16b39146a584dc8480b43aba7ffb4b733"
+    },
+    {
+      "id": "servant.meltryllis.skill.sc-meltryllis-3",
+      "printedText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_meltryllis_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+        "sourceTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+      },
+      "abilities": [
+        {
+          "id": "meltryllis.sc-meltryllis-3.semantic",
+          "printedClause": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "reverse_effect_rule",
+              "operation": "persistent_when_controller_places_card_in_play_may_close_alterego_to_grant_its_reverse_effect_or_if_none_choose_any_combination_of_power_quick_magic_attributes_after_play"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+    },
+    {
+      "id": "servant.melusine.skill.sc-melusine-1",
+      "printedText": "被动：此效果无法被复制或盗用，当梅柳齐娜战败时，展示此牌。若她战败时此牌已被展示，将你的从者梅柳齐娜替换为阿尔比恩之骸并【真名解放】（阿尔比恩之骸是一名拥有不同牌库和上述技能的从者）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_melusine_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "被动：此效果无法被复制或盗用，当梅柳齐娜战败时，展示此牌。若她战败时此牌已被展示，将你的从者梅柳齐娜替换为阿尔比恩之骸并【真名解放】（阿尔比恩之骸是一名拥有不同牌库和上述技能的从者）。",
+        "sourceTextSha256": "eafa9adbd365f92bc94b9abb01f081bc6d4c159d4489a7bc2f281704cbe1c050"
+      },
+      "abilities": [
+        {
+          "id": "melusine.sc-melusine-1.semantic",
+          "printedClause": "被动：此效果无法被复制或盗用，当梅柳齐娜战败时，展示此牌。若她战败时此牌已被展示，将你的从者梅柳齐娜替换为阿尔比恩之骸并【真名解放】（阿尔比恩之骸是一名拥有不同牌库和上述技能的从者）。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "melusine_albion_replacement_rule",
+              "operation": "uncopyable_unstealable_first_defeat_reveal_source_second_defeat_replace_servant_with_albion_and_true_name_reveal_remove_pre_replacement_hand_discard_and_attack_zone_cards_from_game_remove_all_original_melusine_servant_cards_from_all_zones_preserve_non_original_servant_cards_previously_added_to_deck_then_use_albion_deck_and_skills"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "eafa9adbd365f92bc94b9abb01f081bc6d4c159d4489a7bc2f281704cbe1c050"
+    },
+    {
+      "id": "servant.melusine.skill.sc-melusine-2",
+      "printedText": "行动阶段：从手牌中打出至多2张基础攻击。若你于本回合进行了移动，你可将此效果更改为“抽一张牌，然后从手牌中打出至多3张基础攻击。”",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_melusine_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "行动阶段：从手牌中打出至多2张基础攻击。若你于本回合进行了移动，你可将此效果更改为“抽一张牌，然后从手牌中打出至多3张基础攻击。”",
+        "sourceTextSha256": "d16b4903ede2211a04d9d27074627052021aea22d794746eb10753882ea86414"
+      },
+      "abilities": [
+        {
+          "id": "melusine.sc-melusine-2.semantic",
+          "printedClause": "行动阶段：从手牌中打出至多2张基础攻击。若你于本回合进行了移动，你可将此效果更改为“抽一张牌，然后从手牌中打出至多3张基础攻击。”",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "melusine_peri_dancer_rule",
+              "operation": "action_play_up_to_2_base_attacks_from_hand_or_if_controller_moved_this_round_draw_1_then_play_up_to_3_base_attacks_from_hand"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d16b4903ede2211a04d9d27074627052021aea22d794746eb10753882ea86414"
+    },
+    {
+      "id": "servant.melusine.skill.sc-melusine-3",
+      "printedText": "龙之心-若你赢得了一场战斗，且你的交战对手控制与你控制的攻击具有相同属性且威力高于该攻击的攻击，战斗阶段结束且计算战斗获得的战果后，你失去3点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_melusine_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "龙之心-若你赢得了一场战斗，且你的交战对手控制与你控制的攻击具有相同属性且威力高于该攻击的攻击，战斗阶段结束且计算战斗获得的战果后，你失去3点战果。",
+        "sourceTextSha256": "4bd77425bde34cec725d4b43f8a1987b7cd0ecf74c5a175cf64a16d588e89677"
+      },
+      "abilities": [
+        {
+          "id": "melusine.sc-melusine-3.semantic",
+          "printedClause": "龙之心-若你赢得了一场战斗，且你的交战对手控制与你控制的攻击具有相同属性且威力高于该攻击的攻击，战斗阶段结束且计算战斗获得的战果后，你失去3点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "dragon_heart_penalty_rule",
+              "operation": "after_controller_wins_if_engaged_opponent_controls_attack_sharing_attribute_with_controller_attack_and_with_higher_power_after_combat_vp_calculation_lose_3_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4bd77425bde34cec725d4b43f8a1987b7cd0ecf74c5a175cf64a16d588e89677"
+    },
+    {
+      "id": "servant.mephisto.skill.sc-mephisto-1",
+      "printedText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_mephisto_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+        "sourceTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+      },
+      "abilities": [
+        {
+          "id": "mephisto.sc-mephisto-1.semantic",
+          "printedClause": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "territory_construction_scaling_rule",
+              "operation": "x_equals_16_minus_current_round_times_2_residual_on_deploy_to_workshop_gain_1_mana_and_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+    },
+    {
+      "id": "servant.merlin.skill.sc-merlin-1",
+      "printedText": "被动：你在移动之前进行打牌而不是之后。当你移动时，无视交战状态。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_merlin_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "被动：你在移动之前进行打牌而不是之后。当你移动时，无视交战状态。",
+        "sourceTextSha256": "661d20ed0ca5054ba64c55ea9eb60b071a54313594f25690891813413e0e5800"
+      },
+      "abilities": [
+        {
+          "id": "merlin.sc-merlin-1.semantic",
+          "printedClause": "被动：你在移动之前进行打牌而不是之后。当你移动时，无视交战状态。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "merlin_pre_move_play_rule",
+              "operation": "passive_controller_plays_cards_before_movement_instead_of_after_and_ignores_engagement_state_when_moving"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "661d20ed0ca5054ba64c55ea9eb60b071a54313594f25690891813413e0e5800"
+    },
+    {
+      "id": "servant.merlin.skill.sc-merlin-2",
+      "printedText": "自由选择X。若X为0，则失去5点魔力。\n幻术-战斗阶段：将此战场中除此牌以外的所有消耗为X的攻击威力减至0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_merlin_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "自由选择X。若X为0，则失去5点魔力。\n幻术-战斗阶段：将此战场中除此牌以外的所有消耗为X的攻击威力减至0。",
+        "sourceTextSha256": "09705279478854977905c9c0f7c37a4924f28496be1fc69f4d7fcf2e66f2166a"
+      },
+      "abilities": [
+        {
+          "id": "merlin.sc-merlin-2.semantic",
+          "printedClause": "自由选择X。若X为0，则失去5点魔力。\n幻术-战斗阶段：将此战场中除此牌以外的所有消耗为X的攻击威力减至0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "merlin_illusion_cost_power_rule",
+              "operation": "choose_x_freely_if_x_is_0_lose_5_mana_combat_set_power_to_0_for_all_other_attacks_at_battlefield_with_mana_cost_x"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "09705279478854977905c9c0f7c37a4924f28496be1fc69f4d7fcf2e66f2166a"
+    },
+    {
+      "id": "servant.mhx.skill.sc-mhx-1",
+      "printedText": "<每局游戏限一次>\nSaber必须死！-战斗阶段：令一名交战对手【败北】。若其战败，偷取其2点战果。若其战败且从者为金发或职阶为Saber，改为偷取4点战果。若均满足，改为偷取6点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_mhx_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "<每局游戏限一次>\nSaber必须死！-战斗阶段：令一名交战对手【败北】。若其战败，偷取其2点战果。若其战败且从者为金发或职阶为Saber，改为偷取4点战果。若均满足，改为偷取6点战果。",
+        "sourceTextSha256": "0ee0fd75ee15c5e885104517d390ed69d27f99478bacaac6ca013646bd3fd9e0"
+      },
+      "abilities": [
+        {
+          "id": "mhx.sc-mhx-1.semantic",
+          "printedClause": "<每局游戏限一次>\nSaber必须死！-战斗阶段：令一名交战对手【败北】。若其战败，偷取其2点战果。若其战败且从者为金发或职阶为Saber，改为偷取4点战果。若均满足，改为偷取6点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "mhx_saber_slayer_rule",
+              "operation": "once_per_game_combat_defeat_one_engaged_opponent_if_defeated_steal_2_vp_or_4_if_blond_or_saber_class_or_6_if_both"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0ee0fd75ee15c5e885104517d390ed69d27f99478bacaac6ca013646bd3fd9e0"
+    },
+    {
+      "id": "servant.mhx.skill.sc-mhx-2",
+      "printedText": "【真名解放】\n银河流星剑-行动阶段：花费4点魔力，此牌+4威力。\n宇宙反应器-战斗阶段：每有一张因局势牌入场的事件牌，此牌+3威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_mhx_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n银河流星剑-行动阶段：花费4点魔力，此牌+4威力。\n宇宙反应器-战斗阶段：每有一张因局势牌入场的事件牌，此牌+3威力。",
+        "sourceTextSha256": "7f10b6eeba4dcab7ded6b0c446aea17b6339284d3a983f3590da2d42b75b1b10"
+      },
+      "abilities": [
+        {
+          "id": "mhx.sc-mhx-2.semantic",
+          "printedClause": "【真名解放】\n银河流星剑-行动阶段：花费4点魔力，此牌+4威力。\n宇宙反应器-战斗阶段：每有一张因局势牌入场的事件牌，此牌+3威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "mhx_galaxy_reactor_rule",
+              "operation": "true_name_reveal_action_pay_4_mana_source_plus_4_power_combat_source_plus_3_power_per_event_card_entered_due_to_situation_card"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7f10b6eeba4dcab7ded6b0c446aea17b6339284d3a983f3590da2d42b75b1b10"
+    },
+    {
+      "id": "servant.mhx.skill.sc-mhx-3",
+      "printedText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_mhx_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+        "sourceTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+      },
+      "abilities": [
+        {
+          "id": "mhx.sc-mhx-3.semantic",
+          "printedClause": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "mhx_magic_resistance_noble_reward_rule",
+              "operation": "passive_combat_if_controller_played_highest_mana_cost_noble_phantasm_attack_in_own_battle_gain_1_vp_and_if_cost_at_least_4_gain_1_more_combat_set_engaged_opponent_magic_attack_power_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+    },
+    {
+      "id": "servant.morgan.skill.sc-morgan-1",
+      "printedText": "【真名解放】止境-被动：当你赢得一场战斗，移除所有摩根已激活的宝具牌。当你以此法移除第七张牌后，获得游戏胜利。此效果于摩根不会因任何方式失效（包括但不限于此牌失去卡牌文字效果、被移除）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_morgan_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】止境-被动：当你赢得一场战斗，移除所有摩根已激活的宝具牌。当你以此法移除第七张牌后，获得游戏胜利。此效果于摩根不会因任何方式失效（包括但不限于此牌失去卡牌文字效果、被移除）。",
+        "sourceTextSha256": "169fcc24b2ccb416b2d209fedbdad8cdc36ad8cb42fe8b745a07ea1749bb827d"
+      },
+      "abilities": [
+        {
+          "id": "morgan.sc-morgan-1.semantic",
+          "printedClause": "【真名解放】止境-被动：当你赢得一场战斗，移除所有摩根已激活的宝具牌。当你以此法移除第七张牌后，获得游戏胜利。此效果于摩根不会因任何方式失效（包括但不限于此牌失去卡牌文字效果、被移除）。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "morgan_ideal_victory_rule",
+              "operation": "true_name_reveal_passive_on_controller_battle_win_remove_all_controller_activated_morgan_noble_phantasm_cards_after_seventh_removed_this_way_win_game_effect_never_disabled_even_if_source_loses_text_or_is_removed"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "169fcc24b2ccb416b2d209fedbdad8cdc36ad8cb42fe8b745a07ea1749bb827d"
+    },
+    {
+      "id": "servant.morgan.skill.sc-morgan-2",
+      "printedText": "被动/前哨阶段：花费一枚令咒或裁决者令咒，本回合摩根成为【狂战士】且她的魔术攻击与【远隔操作】获得宝具属性和+3威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_morgan_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动/前哨阶段：花费一枚令咒或裁决者令咒，本回合摩根成为【狂战士】且她的魔术攻击与【远隔操作】获得宝具属性和+3威力。",
+        "sourceTextSha256": "c4b477acb75f75bfe141a342ca8721ea7befd8dfd042fe4a8a916fda30f15a24"
+      },
+      "abilities": [
+        {
+          "id": "morgan.sc-morgan-2.semantic",
+          "printedClause": "被动/前哨阶段：花费一枚令咒或裁决者令咒，本回合摩根成为【狂战士】且她的魔术攻击与【远隔操作】获得宝具属性和+3威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "morgan_berserker_shift_rule",
+              "operation": "passive_vanguard_pay_one_command_spell_or_ruler_command_spell_this_round_morgan_becomes_berserker_and_her_magic_attacks_and_remote_operation_gain_noble_phantasm_attribute_and_plus_3_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c4b477acb75f75bfe141a342ca8721ea7befd8dfd042fe4a8a916fda30f15a24"
+    },
+    {
+      "id": "servant.morgan.skill.sc-morgan-3",
+      "printedText": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_morgan_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+        "sourceTextSha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
+      },
+      "abilities": [
+        {
+          "id": "morgan.sc-morgan-3.semantic",
+          "printedClause": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ruler_command_spell_binding_rule",
+              "operation": "source_and_effects_cannot_be_copied_or_stolen_three_times_per_game_action_give_two_other_least_bound_players_ruler_command_seals_and_only_binding_ruler_may_use_them_on_bound_players_during_own_action"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
     }
   ]
 }
