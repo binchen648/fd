@@ -237,12 +237,12 @@ describe('Phase 3 full-roster decision/runtime packet generation', () => {
       readFileSync(resolve('data/phase3/full-roster-runtime-capability-requests.json'), 'utf8'),
     );
 
-    expect(decisions.summary.coveredBlockedIdentityCount).toBe(385);
+    expect(decisions.summary.coveredBlockedIdentityCount).toBe(371);
     expect(decisions.summary.uncoveredBlockedIdentityCount).toBe(0);
     expect(decisions.summary.ruleDecisionPacketCount).toBe(0);
     expect(decisions.summary.sourceEvidencePacketCount).toBeGreaterThan(0);
     expect(runtime.summary.runtimeRequestCount).toBeGreaterThan(0);
-    expect(runtime.summary.affectedIdentityCount).toBe(559);
+    expect(runtime.summary.affectedIdentityCount).toBe(573);
     expect(() => assertPacketSeparation(decisions, runtime)).not.toThrow();
   });
 });

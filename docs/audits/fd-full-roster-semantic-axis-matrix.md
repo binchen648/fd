@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=559
-blockedCount=385
+sourceGroundedCount=573
+blockedCount=371
 unclassifiedCount=0
-structuredAbilityCount=837
+structuredAbilityCount=851
 
 ## Axis Value Counts
 
@@ -260,8 +260,8 @@ structuredAbilityCount=837
 | target | `CHOOSE_EACH_PLAYER_OPTION` | 2 |
 | target | `CHOOSE_EACH_PLAYER_CARDS` | 1 |
 | target | `CHOOSE_N_EVENTS` | 1 |
-| effect | `GAIN_VICTORY_POINTS` | 47 |
-| effect | `GAIN_MANA` | 34 |
+| effect | `GAIN_VICTORY_POINTS` | 49 |
+| effect | `GAIN_MANA` | 36 |
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
 | effect | `EVENT_CARD_RULE` | 27 |
@@ -283,10 +283,10 @@ structuredAbilityCount=837
 | effect | `ADJUST_COMMAND_SEALS` | 9 |
 | effect | `CYCLE_STATE_TRANSITION` | 9 |
 | effect | `DREAM_SUMMON_RULE` | 9 |
+| effect | `RULER_SEAL_RULE` | 9 |
 | effect | `SOURCE_CARD_POWER_BONUS` | 9 |
 | effect | `DEDUCTION_RULE` | 7 |
 | effect | `IF_CONDITION` | 7 |
-| effect | `RULER_SEAL_RULE` | 7 |
 | effect | `SCHEDULE_PHASE_EFFECT` | 7 |
 | effect | `MOON_HOLY_GRAIL_RULE` | 6 |
 | effect | `REVERSE_EFFECT_RULE` | 6 |
@@ -372,6 +372,7 @@ structuredAbilityCount=837
 | effect | `UNPREVENTABLE_RESULT_RULE` | 2 |
 | effect | `UPGRADE_ATTACHMENT_RULE` | 2 |
 | effect | `VESSEL_STATE_RULE` | 2 |
+| effect | `ACHILLES_HEEL_GALE_RULE` | 1 |
 | effect | `ACTIVATE_SELECTED_CARDS` | 1 |
 | effect | `ADD_PLAYER_FLAG_NUMBER` | 1 |
 | effect | `ASTRONOMICAL_SPHERE_RULE` | 1 |
@@ -394,6 +395,7 @@ structuredAbilityCount=837
 | effect | `CONDITIONAL_MANA_FORFEIT_RULE` | 1 |
 | effect | `CONDITIONAL_PLAY_SURCHARGE_CLOSE_RULE` | 1 |
 | effect | `CONTROL_RESOURCE_TRANSFORM_RULE` | 1 |
+| effect | `COSMOS_CHOICE_RULE` | 1 |
 | effect | `COUNTER_THRESHOLD_POWER_RULE` | 1 |
 | effect | `CRAFT_ESSENCE_POOL_RULE` | 1 |
 | effect | `CURSE_BASIC_CARD_MODIFIER_RULE` | 1 |
@@ -407,6 +409,7 @@ structuredAbilityCount=837
 | effect | `DISCARD_ATTRIBUTE_RECYCLE_DEFEAT_RULE` | 1 |
 | effect | `DISCARD_COST_ATTRIBUTE_GAIN_RULE` | 1 |
 | effect | `DISCARD_LUCK_STATE_RULE` | 1 |
+| effect | `DRAGON_HEART_PENALTY_RULE` | 1 |
 | effect | `ENSURE_EVENT_DECK_COUNT` | 1 |
 | effect | `EVENT_ATTRIBUTE_INFUSION_RULE` | 1 |
 | effect | `EVENT_BATTLEFIELD_PENALTY` | 1 |
@@ -418,12 +421,14 @@ structuredAbilityCount=837
 | effect | `GRANT_LINKED_ABILITY_TO_DEFINITION` | 1 |
 | effect | `GRANT_OPPONENT_ACTION_RULE` | 1 |
 | effect | `HEAVENS_HOLE_RULE` | 1 |
+| effect | `HERO_DUEL_FIELD_RULE` | 1 |
 | effect | `HIDDEN_DOUBLE_ATTACK_RULE` | 1 |
 | effect | `HIDDEN_DRAW_REMOVAL_RULE` | 1 |
 | effect | `IMPOSTOR_STATE_RULE` | 1 |
 | effect | `INDEPENDENT_DECK_RULE` | 1 |
 | effect | `INFINITE_MANA_RULE` | 1 |
 | effect | `INFO_NOTE` | 1 |
+| effect | `INNOCENT_MONSTER_WAGER_RULE` | 1 |
 | effect | `ITEM_RULE` | 1 |
 | effect | `JUDGMENT_LUCK_DEFEAT_RULE` | 1 |
 | effect | `LINKED_PLAYER_MANA_CONTRIBUTION` | 1 |
@@ -460,6 +465,8 @@ structuredAbilityCount=837
 | effect | `REVEALED_LUCK_PLAY_RULE` | 1 |
 | effect | `ROSTER_REPLACEMENT_RULE` | 1 |
 | effect | `ROUND_COST_TERRAIN_EVENT_MULTIPLIER_RULE` | 1 |
+| effect | `RULER_SEAL_DUAL_USE_RULE` | 1 |
+| effect | `RULER_SEAL_TRANSFER_THRESHOLD_RULE` | 1 |
 | effect | `SCHEDULED_DECK_REBUILD_RULE` | 1 |
 | effect | `SEARCH_BASIC_CARD_PLAY_RULE` | 1 |
 | effect | `SEED_ATTACHED_SUPPLY` | 1 |
@@ -480,6 +487,8 @@ structuredAbilityCount=837
 | effect | `TEMPORARY_ATTACK_CREATION_RULE` | 1 |
 | effect | `TEMPORARY_CARD_COPY_RULE` | 1 |
 | effect | `TEMPORARY_COMMAND_SEAL_RULE` | 1 |
+| effect | `TEMPORARY_OPPONENT_CARD_RULE` | 1 |
+| effect | `TERRITORY_ATTRIBUTE_STRIP_RULE` | 1 |
 | effect | `TRANSFER_SELECTED_CARDS` | 1 |
 | effect | `TRAUMA_DECK_RULE` | 1 |
 | effect | `TRAUMA_STATE_RULE` | 1 |
@@ -488,6 +497,7 @@ structuredAbilityCount=837
 | effect | `TRUE_NAME_HIDE_AND_ACTION_REPLAY_RULE` | 1 |
 | effect | `TRUE_NAME_HIDE_IMMUNITY_RULE` | 1 |
 | effect | `TURN_ORDER_REPOSITION_RULE` | 1 |
+| effect | `VIY_POWER_PROTECTION_RULE` | 1 |
 | effect | `WEAK_CONSTITUTION_RULE` | 1 |
 | effect | `WINNER_PREDICTION_RULE` | 1 |
 | effect | `ZONE_IMMUNITY_RULE` | 1 |
@@ -1137,27 +1147,27 @@ structuredAbilityCount=837
 | `servant.abigail.skill.sc-abigail-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.abigail-witch-trial` |
 | `servant.abigail.skill.sc-abigail-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.abigail-gate-to-nowhere` |
 | `servant.abigail.skill.sc-abigail-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.outer-god-life` |
-| `servant.achilles.skill.sc-achilles-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.achilles-package` |
-| `servant.achilles.skill.sc-achilles-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.achilles-package` |
-| `servant.achilles.skill.sc-achilles-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.achilles-package` |
+| `servant.achilles.skill.sc-achilles-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ACHILLES_HEEL_GALE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.achilles-package` |
+| `servant.achilles.skill.sc-achilles-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COSMOS_CHOICE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.achilles-package` |
+| `servant.achilles.skill.sc-achilles-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HERO_DUEL_FIELD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.achilles-package` |
 | `servant.albion.skill.sc-albion-1` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `combat.ending`, `player.entered-location` | `EVENT_LOCATION_IS`, `EVENT_PLAYER_IS_CONTROLLER`, `SOURCE_OWNED` | `NONE` | `BRANCH_CHOICE`, `CHOOSE_ONE_LOCATION` | `GAIN_MANA`, `GAIN_VICTORY_POINTS`, `LOSE_MANA`, `RETURN_CARD_BY_DEFINITION`, `SCHEDULE_EFFECT` | `BRANCH_CHOICE`, `CHOOSE_ONE_LOCATION` | `NONE` | `NONE` | `FACE_UP` | `NONE` | `COMBAT_EVENT` | `core.structured-skill` |
 | `servant.albion.skill.sc-albion-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `player.moved` | `EVENT_PLAYER_IS_CONTROLLER`, `PLAYER_FLAG_NUMBER_NOT_CURRENT_ROUND`, `SOURCE_ACTIVE` | `NONE` | `NONE` | `SET_PLAYER_FLAG`, `SOURCE_CARD_POWER_BONUS` | `NONE` | `NONE` | `effect:source_card_power_bonus` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.albion.skill.sc-albion-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.dragon-heart` |
+| `servant.albion.skill.sc-albion-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAGON_HEART_PENALTY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.dragon-heart` |
 | `servant.altera.skill.sc-altera-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DELAYED_ATTACK_EVENT_REPLACEMENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.altera-teardrop-photon-ray` |
 | `servant.altera.skill.sc-altera-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_POWER_COST_PROTECTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.altera-photon-ray` |
 | `servant.altera.skill.sc-altera-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `SET_OPPONENT_ATTRIBUTE_POWER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
 | `servant.amakusa.skill.sc-amakusa-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `card.played` | `EVENT_DEFINITION_IS_SELF`, `EVENT_FACE_IS`, `EVENT_PLAYER_IS_CONTROLLER` | `NONE` | `NONE` | `MOVE_MATCHING_EVENTS`, `SOURCE_CARD_POWER_BONUS` | `NONE` | `NONE` | `effect:source_card_power_bonus` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.amakusa.skill.sc-amakusa-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.amakusa-magician` |
-| `servant.amakusa.skill.sc-amakusa-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
-| `servant.amor.skill.sc-amor-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
-| `servant.amor.skill.sc-amor-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.amor-golden-arrow` |
-| `servant.amor.skill.sc-amor-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.amor-calling-agape` |
-| `servant.anastasia.skill.sc-anastasia-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
-| `servant.anastasia.skill.sc-anastasia-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.anastasia-sumerki-kremlin` |
-| `servant.anastasia.skill.sc-anastasia-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.anastasia-viy` |
-| `servant.andersen.skill.sc-andersen-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
+| `servant.amakusa.skill.sc-amakusa-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TEMPORARY_OPPONENT_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.amakusa-magician` |
+| `servant.amakusa.skill.sc-amakusa-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
+| `servant.amor.skill.sc-amor-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
+| `servant.amor.skill.sc-amor-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_DUAL_USE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.amor-golden-arrow` |
+| `servant.amor.skill.sc-amor-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_TRANSFER_THRESHOLD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.amor-calling-agape` |
+| `servant.anastasia.skill.sc-anastasia-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_MANA`, `GAIN_VICTORY_POINTS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
+| `servant.anastasia.skill.sc-anastasia-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TERRITORY_ATTRIBUTE_STRIP_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.anastasia-sumerki-kremlin` |
+| `servant.anastasia.skill.sc-anastasia-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VIY_POWER_PROTECTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.anastasia-viy` |
+| `servant.andersen.skill.sc-andersen-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_MANA`, `GAIN_VICTORY_POINTS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
 | `servant.andersen.skill.sc-andersen-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `NONE` | `NONE` | `NONE` | `cleanup:remain_active`, `duration:this_round`, `duration:while_active` | `rule:defeat:ignore`, `rule:non_effect_victory_point_gain:forbid` | `NONE` | `NONE` | `COMBAT_RULE_MODIFIER` | `core.structured-skill` |
-| `servant.andersen.skill.sc-andersen-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.andersen-innocent-monster` |
+| `servant.andersen.skill.sc-andersen-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INNOCENT_MONSTER_WAGER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.andersen-innocent-monster` |
 | `servant.angra.skill.sc-angra-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.angra-all-evils` |
 | `servant.angra.skill.sc-angra-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.angra-eternal-binding` |
 | `servant.angra.skill.sc-angra-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.angra-bites` |

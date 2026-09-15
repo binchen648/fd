@@ -22580,6 +22580,382 @@
         }
       ],
       "referencePrintedTextSha256": "1837b2c33bedc867b67f4ebd5ff6447d0473be8e3c3849f7e8df9761d8ccc006"
+    },
+    {
+      "id": "servant.achilles.skill.sc-achilles-1",
+      "printedText": "阿喀琉斯之踵-被动：当你战败后，你【真名解放】。\n疾风驰骋-被动/战斗阶段：若你真名隐藏，令你的所有交战对手随机弃置一张手牌，然后将未弃置牌或弃置的牌不是【幸运】或敏捷牌的对手的合计威力设为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_achilles_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "阿喀琉斯之踵-被动：当你战败后，你【真名解放】。\n疾风驰骋-被动/战斗阶段：若你真名隐藏，令你的所有交战对手随机弃置一张手牌，然后将未弃置牌或弃置的牌不是【幸运】或敏捷牌的对手的合计威力设为0。",
+        "sourceTextSha256": "70fbb2596dc78cb750d0520a6b6336e10fc75ca56b4868ec6c9847caede0ed5e"
+      },
+      "abilities": [
+        {
+          "id": "achilles.sc_achilles_1.semantic",
+          "printedClause": "阿喀琉斯之踵-被动：当你战败后，你【真名解放】。\n疾风驰骋-被动/战斗阶段：若你真名隐藏，令你的所有交战对手随机弃置一张手牌，然后将未弃置牌或弃置的牌不是【幸运】或敏捷牌的对手的合计威力设为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "achilles_heel_gale_rule",
+              "operation": "passive_after_controller_loses_reveal_true_name_then_while_true_name_hidden_in_combat_each_engaged_opponent_randomly_discards_one_card_and_set_total_power_to_0_for_opponents_that_did_not_discard_or_discarded_card_is_neither_luck_nor_agility"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "70fbb2596dc78cb750d0520a6b6336e10fc75ca56b4868ec6c9847caede0ed5e"
+    },
+    {
+      "id": "servant.achilles.skill.sc-achilles-2",
+      "printedText": "湛蓝天空-行动阶段：选择下列一项：\n1.与你位于同一战场的对手立即随机弃置一张手牌。\n2.与你位于同一战场的对手无法使用技能牌。\n3.花费3点魔力，隐藏你的从者真名直至回合结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_achilles_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "湛蓝天空-行动阶段：选择下列一项：\n1.与你位于同一战场的对手立即随机弃置一张手牌。\n2.与你位于同一战场的对手无法使用技能牌。\n3.花费3点魔力，隐藏你的从者真名直至回合结束。",
+        "sourceTextSha256": "4f45f3d052b69e9af57f9590d5c45596fc5341c2112d95434fa6335cc0786885"
+      },
+      "abilities": [
+        {
+          "id": "achilles.sc_achilles_2.semantic",
+          "printedClause": "湛蓝天空-行动阶段：选择下列一项：\n1.与你位于同一战场的对手立即随机弃置一张手牌。\n2.与你位于同一战场的对手无法使用技能牌。\n3.花费3点魔力，隐藏你的从者真名直至回合结束。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "cosmos_choice_rule",
+              "operation": "action_choose_one_same_battlefield_opponents_random_discard_one_or_same_battlefield_opponents_cannot_use_skill_cards_or_pay_3_mana_hide_servant_true_name_until_round_end"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4f45f3d052b69e9af57f9590d5c45596fc5341c2112d95434fa6335cc0786885"
+    },
+    {
+      "id": "servant.achilles.skill.sc-achilles-3",
+      "printedText": "英雄对决-行动阶段：当你所在的战场只有1名对手时，所有人无法进入或离开此战场，同时，你与此对手无法被地利和所有不属于你们的从者或NPC的牌或效果影响。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_achilles_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "英雄对决-行动阶段：当你所在的战场只有1名对手时，所有人无法进入或离开此战场，同时，你与此对手无法被地利和所有不属于你们的从者或NPC的牌或效果影响。",
+        "sourceTextSha256": "c3cf72179056049fc0496d3aa0a3476212ab7f8f79bdc6c93d1e3ab39c1b43cb"
+      },
+      "abilities": [
+        {
+          "id": "achilles.sc_achilles_3.semantic",
+          "printedClause": "英雄对决-行动阶段：当你所在的战场只有1名对手时，所有人无法进入或离开此战场，同时，你与此对手无法被地利和所有不属于你们的从者或NPC的牌或效果影响。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "hero_duel_field_rule",
+              "operation": "action_if_exactly_one_opponent_at_controller_battlefield_prevent_all_players_entering_or_leaving_that_battlefield_and_controller_and_that_opponent_ignore_terrain_and_cards_or_effects_from_other_servants_or_npcs"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c3cf72179056049fc0496d3aa0a3476212ab7f8f79bdc6c93d1e3ab39c1b43cb"
+    },
+    {
+      "id": "servant.albion.skill.sc-albion-3",
+      "printedText": "龙之心-若你赢得了一场战斗，且你的交战对手控制与你控制的攻击具有相同属性且威力高于该攻击的攻击，战斗阶段结束且计算战斗获得的战果后，你失去3点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_albion_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "龙之心-若你赢得了一场战斗，且你的交战对手控制与你控制的攻击具有相同属性且威力高于该攻击的攻击，战斗阶段结束且计算战斗获得的战果后，你失去3点战果。",
+        "sourceTextSha256": "4bd77425bde34cec725d4b43f8a1987b7cd0ecf74c5a175cf64a16d588e89677"
+      },
+      "abilities": [
+        {
+          "id": "albion.sc_albion_3.semantic",
+          "printedClause": "龙之心-若你赢得了一场战斗，且你的交战对手控制与你控制的攻击具有相同属性且威力高于该攻击的攻击，战斗阶段结束且计算战斗获得的战果后，你失去3点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "dragon_heart_penalty_rule",
+              "operation": "after_controller_wins_if_engaged_opponent_controls_attack_sharing_attribute_with_controller_attack_and_with_higher_power_after_combat_vp_calculation_lose_3_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4bd77425bde34cec725d4b43f8a1987b7cd0ecf74c5a175cf64a16d588e89677"
+    },
+    {
+      "id": "servant.amakusa.skill.sc-amakusa-2",
+      "printedText": "战斗阶段：花费3点魔力，抽取一位对手牌堆顶的一张牌并将之加入你的攻击。【奇术师】获得该牌的属性，且你可以使用该牌的【行动阶段】能力，战斗后将那张牌返回原主的弃牌堆。每回合你可使用两次此能力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_amakusa_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "战斗阶段：花费3点魔力，抽取一位对手牌堆顶的一张牌并将之加入你的攻击。【奇术师】获得该牌的属性，且你可以使用该牌的【行动阶段】能力，战斗后将那张牌返回原主的弃牌堆。每回合你可使用两次此能力。",
+        "sourceTextSha256": "411ddb188143b434b3ec6c53fd24d4602ea09064430cd8443355dfa53e4a66f5"
+      },
+      "abilities": [
+        {
+          "id": "amakusa.sc_amakusa_2.semantic",
+          "printedClause": "战斗阶段：花费3点魔力，抽取一位对手牌堆顶的一张牌并将之加入你的攻击。【奇术师】获得该牌的属性，且你可以使用该牌的【行动阶段】能力，战斗后将那张牌返回原主的弃牌堆。每回合你可使用两次此能力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "temporary_opponent_card_rule",
+              "operation": "combat_pay_3_mana_take_top_card_of_one_opponent_deck_add_to_controller_attack_gain_its_attributes_and_may_use_its_action_ability_then_after_combat_return_card_to_owner_discard_limit_twice_per_round"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "411ddb188143b434b3ec6c53fd24d4602ea09064430cd8443355dfa53e4a66f5"
+    },
+    {
+      "id": "servant.amakusa.skill.sc-amakusa-3",
+      "printedText": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_amakusa_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+        "sourceTextSha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
+      },
+      "abilities": [
+        {
+          "id": "amakusa.sc_amakusa_3.semantic",
+          "printedClause": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ruler_seal_rule",
+              "operation": "uncopyable_unstealable_three_per_game_action_choose_two_other_least_bound_count_players_grant_ruler_seal_binding_only_binding_ruler_may_use_on_bound_player"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
+    },
+    {
+      "id": "servant.amor.skill.sc-amor-1",
+      "printedText": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_amor_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+        "sourceTextSha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
+      },
+      "abilities": [
+        {
+          "id": "amor.sc_amor_1.semantic",
+          "printedClause": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ruler_seal_rule",
+              "operation": "uncopyable_unstealable_three_per_game_action_choose_two_other_least_bound_count_players_grant_ruler_seal_binding_only_binding_ruler_may_use_on_bound_player"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
+    },
+    {
+      "id": "servant.amor.skill.sc-amor-2",
+      "printedText": "【真名解放】被动：你可以同时使用【裁决者令咒】的两项效果，若你移动其他玩家，你仅可将其移动至你所在的战场。\n战斗阶段：回合结束时，令一名本回合于你的战斗中获胜，且被你使用过【裁决者令咒】的玩家获得一枚【裁决者令咒】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_amor_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】被动：你可以同时使用【裁决者令咒】的两项效果，若你移动其他玩家，你仅可将其移动至你所在的战场。\n战斗阶段：回合结束时，令一名本回合于你的战斗中获胜，且被你使用过【裁决者令咒】的玩家获得一枚【裁决者令咒】。",
+        "sourceTextSha256": "f088bf87cd5318e59e8eae6756404e8e9801aab3f42c69b489a452fbfd0cf939"
+      },
+      "abilities": [
+        {
+          "id": "amor.sc_amor_2.semantic",
+          "printedClause": "【真名解放】被动：你可以同时使用【裁决者令咒】的两项效果，若你移动其他玩家，你仅可将其移动至你所在的战场。\n战斗阶段：回合结束时，令一名本回合于你的战斗中获胜，且被你使用过【裁决者令咒】的玩家获得一枚【裁决者令咒】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ruler_seal_dual_use_rule",
+              "operation": "true_name_released_passive_may_use_both_ruler_seal_effects_together_and_if_moving_other_player_only_to_controller_battlefield_combat_round_end_grant_one_ruler_seal_to_player_who_won_in_controller_combat_and_was_targeted_by_controller_ruler_seal_this_round"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f088bf87cd5318e59e8eae6756404e8e9801aab3f42c69b489a452fbfd0cf939"
+    },
+    {
+      "id": "servant.amor.skill.sc-amor-3",
+      "printedText": "主之爱-被动：当一名拥有【裁决者令咒】的玩家被淘汰时，令一名对手获得其所有的【裁决者令咒】。\n全然降服-战斗阶段：令所有与你位于同一战场的，拥有3枚或更多【裁决者令咒】的玩家的合计威力降低至0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_amor_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "主之爱-被动：当一名拥有【裁决者令咒】的玩家被淘汰时，令一名对手获得其所有的【裁决者令咒】。\n全然降服-战斗阶段：令所有与你位于同一战场的，拥有3枚或更多【裁决者令咒】的玩家的合计威力降低至0。",
+        "sourceTextSha256": "52bdbd1016a8ba0239e4cc062f7558c9dcaf26257ba514b85b7f1a0c98d4298e"
+      },
+      "abilities": [
+        {
+          "id": "amor.sc_amor_3.semantic",
+          "printedClause": "主之爱-被动：当一名拥有【裁决者令咒】的玩家被淘汰时，令一名对手获得其所有的【裁决者令咒】。\n全然降服-战斗阶段：令所有与你位于同一战场的，拥有3枚或更多【裁决者令咒】的玩家的合计威力降低至0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ruler_seal_transfer_threshold_rule",
+              "operation": "passive_when_player_with_ruler_seals_is_eliminated_choose_opponent_to_receive_all_their_ruler_seals_combat_set_total_power_to_0_for_all_players_at_same_battlefield_with_at_least_3_ruler_seals"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "52bdbd1016a8ba0239e4cc062f7558c9dcaf26257ba514b85b7f1a0c98d4298e"
+    },
+    {
+      "id": "servant.anastasia.skill.sc-anastasia-2",
+      "printedText": "被动：当你的【阵地建造】激活时，你所在地点的对手，其非技能的✖特殊攻击失去所有卡牌文字效果。\n战斗阶段：将进行交战的对手，其攻击失去特殊和宝具外的所有属性。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_anastasia_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "被动：当你的【阵地建造】激活时，你所在地点的对手，其非技能的✖特殊攻击失去所有卡牌文字效果。\n战斗阶段：将进行交战的对手，其攻击失去特殊和宝具外的所有属性。",
+        "sourceTextSha256": "81a4c0e8fbe5ca0699509fb5810c94773fc115dda9141fb1b4543135eb764ebe"
+      },
+      "abilities": [
+        {
+          "id": "anastasia.sc_anastasia_2.semantic",
+          "printedClause": "被动：当你的【阵地建造】激活时，你所在地点的对手，其非技能的✖特殊攻击失去所有卡牌文字效果。\n战斗阶段：将进行交战的对手，其攻击失去特殊和宝具外的所有属性。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "territory_attribute_strip_rule",
+              "operation": "passive_while_territory_creation_active_opponents_at_controller_location_non_skill_special_attacks_lose_all_card_text_then_combat_engaged_opponent_attacks_lose_all_attributes_except_special_and_noble_phantasm"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "81a4c0e8fbe5ca0699509fb5810c94773fc115dda9141fb1b4543135eb764ebe"
+    },
+    {
+      "id": "servant.anastasia.skill.sc-anastasia-3",
+      "printedText": "【真名解放】\n战斗阶段：将与你交战的对手，其特殊属性攻击的威力设为0。你的魔术属性攻击的威力和你的合计威力不能被其他玩家的能力减少。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_anastasia_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n战斗阶段：将与你交战的对手，其特殊属性攻击的威力设为0。你的魔术属性攻击的威力和你的合计威力不能被其他玩家的能力减少。",
+        "sourceTextSha256": "bf63e769b6d143f544f074474e85bbb3696ee3dddd4367c92d64e33db8bc1920"
+      },
+      "abilities": [
+        {
+          "id": "anastasia.sc_anastasia_3.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：将与你交战的对手，其特殊属性攻击的威力设为0。你的魔术属性攻击的威力和你的合计威力不能被其他玩家的能力减少。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "viy_power_protection_rule",
+              "operation": "true_name_release_combat_set_engaged_opponent_special_attribute_attack_power_to_0_and_controller_magic_attack_power_and_total_power_cannot_be_reduced_by_other_player_abilities"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "bf63e769b6d143f544f074474e85bbb3696ee3dddd4367c92d64e33db8bc1920"
+    },
+    {
+      "id": "servant.andersen.skill.sc-andersen-3",
+      "printedText": "【真名解放】\n被动/前哨阶段：花费1点魔力，选择一名对手。若其本回合战败，你获得2点战果。\n行动阶段：花费至多12点魔力。选择一名玩家获得同等数量的合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_andersen_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n被动/前哨阶段：花费1点魔力，选择一名对手。若其本回合战败，你获得2点战果。\n行动阶段：花费至多12点魔力。选择一名玩家获得同等数量的合计威力。",
+        "sourceTextSha256": "c5783fccb850eee193c7dfab4f741b0af2dde6b0eecd5466b042769a58e03cbb"
+      },
+      "abilities": [
+        {
+          "id": "andersen.sc_andersen_3.semantic",
+          "printedClause": "【真名解放】\n被动/前哨阶段：花费1点魔力，选择一名对手。若其本回合战败，你获得2点战果。\n行动阶段：花费至多12点魔力。选择一名玩家获得同等数量的合计威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "innocent_monster_wager_rule",
+              "operation": "true_name_release_passive_outpost_pay_1_mana_choose_opponent_if_they_lose_combat_this_round_gain_2_vp_action_pay_up_to_12_mana_choose_player_gain_equal_total_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c5783fccb850eee193c7dfab4f741b0af2dde6b0eecd5466b042769a58e03cbb"
+    },
+    {
+      "id": "servant.anastasia.skill.sc-anastasia-1",
+      "printedText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_anastasia_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+        "sourceTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+      },
+      "abilities": [
+        {
+          "id": "anastasia.sc_anastasia_1.semantic",
+          "printedClause": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "gain_mana",
+              "amount": 1,
+              "condition": "controller_deploys_at_magic_workshop"
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 2,
+              "condition": "controller_deploys_at_magic_workshop"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+    },
+    {
+      "id": "servant.andersen.skill.sc-andersen-1",
+      "printedText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_andersen_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+        "sourceTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+      },
+      "abilities": [
+        {
+          "id": "andersen.sc_andersen_1.semantic",
+          "printedClause": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "gain_mana",
+              "amount": 1,
+              "condition": "controller_deploys_at_magic_workshop"
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 2,
+              "condition": "controller_deploys_at_magic_workshop"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
     }
   ]
 }
