@@ -7664,6 +7664,1008 @@
           }
         }
       ]
+    },
+    {
+      "id": "master.julius.skill.s1",
+      "printedText": "前哨阶段：本阶段不进行部署，于你的行动阶段开始时部署于一处战场。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_julius.skills[s1]#line=183",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "前哨阶段：本阶段不进行部署，于你的行动阶段开始时部署于一处战场。",
+        "sourceTextSha256": "855d431ea91523425e464ff49af8e5a25b84946b675c6113f697c1af9464ecef"
+      },
+      "referencePrintedTextSha256": "855d431ea91523425e464ff49af8e5a25b84946b675c6113f697c1af9464ecef",
+      "abilities": [
+        {
+          "printedClause": "前哨阶段：本阶段不进行部署，于你的行动阶段开始时部署于一处战场。",
+          "id": "julius.skulk.deferred-deployment",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "deferred_deployment_rule",
+              "operation": "skip_outpost_then_deploy",
+              "destination": "battlefield",
+              "timing": "controller_action_phase_start"
+            }
+          ],
+          "lifecycle": {
+            "duration": "round"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.julius.skill.s1a",
+      "printedText": "每回合结束时移除你弃牌堆中两张牌或随机弃置一张牌。若无法执行，需要先抽一张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_julius.skills[s1a]#line=183",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "每回合结束时移除你弃牌堆中两张牌或随机弃置一张牌。若无法执行，需要先抽一张牌。",
+        "sourceTextSha256": "58df0e9303c120dc11606102e7ffdcc107622f195cbd2f01e5693386d8c00dc0"
+      },
+      "referencePrintedTextSha256": "58df0e9303c120dc11606102e7ffdcc107622f195cbd2f01e5693386d8c00dc0",
+      "abilities": [
+        {
+          "printedClause": "每回合结束时移除你弃牌堆中两张牌或随机弃置一张牌。若无法执行，需要先抽一张牌。",
+          "id": "julius.rapid-aging.round-end-maintenance",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ending"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_one",
+              "chooser": "controller",
+              "minCount": 1,
+              "maxCount": 1,
+              "options": [
+                {
+                  "id": "remove-two-discard",
+                  "requirements": [
+                    {
+                      "type": "controller_discard_count_at_least",
+                      "value": 2
+                    }
+                  ],
+                  "effects": [
+                    {
+                      "type": "remove_selected_cards",
+                      "selection": {
+                        "zone": "discard",
+                        "owner": "controller",
+                        "minCount": 2,
+                        "maxCount": 2
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "random-discard-one",
+                  "effects": [
+                    {
+                      "type": "draw_cards",
+                      "target": "controller",
+                      "count": 1,
+                      "onlyIf": {
+                        "type": "controller_cannot_random_discard_one"
+                      }
+                    },
+                    {
+                      "type": "move_selected_cards",
+                      "selection": {
+                        "zone": "hand",
+                        "owner": "controller",
+                        "mode": "random",
+                        "minCount": 1,
+                        "maxCount": 1
+                      },
+                      "destination": "discard"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.julius.skill.ascension",
+      "printedText": "安全增强方案-当你使用【潜行】时，可以部署于魔术工房。\n隐身增强方案-当你使用【潜行】时，可以花费2点魔力，改为于自己的战斗阶段中进行部署。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_julius.ascensionSkill#line=183",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "安全增强方案-当你使用【潜行】时，可以部署于魔术工房。\n隐身增强方案-当你使用【潜行】时，可以花费2点魔力，改为于自己的战斗阶段中进行部署。",
+        "sourceTextSha256": "641f41df86efe64be318a8ea53d94bdfac236f0af39f23c1aeabf4558fc5a8ae"
+      },
+      "referencePrintedTextSha256": "641f41df86efe64be318a8ea53d94bdfac236f0af39f23c1aeabf4558fc5a8ae",
+      "abilities": [
+        {
+          "printedClause": "安全增强方案-当你使用【潜行】时，可以部署于魔术工房。\n隐身增强方案-当你使用【潜行】时，可以花费2点魔力，改为于自己的战斗阶段中进行部署。",
+          "id": "julius.black-scorpion.skulk-options",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_uses_skill",
+              "skillId": "master.julius.skill.s1"
+            }
+          ],
+          "effects": [
+            {
+              "type": "deferred_deployment_rule",
+              "operation": "extend_skulk_destination",
+              "destination": "workshop"
+            },
+            {
+              "type": "deferred_deployment_rule",
+              "operation": "pay_to_shift_skulk_deployment_timing",
+              "cost": {
+                "type": "mana",
+                "amount": 2
+              },
+              "timing": "controller_combat_phase"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.kuzuki.skill.s1",
+      "printedText": "开局将两张【蛇】加入牌库。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kuzuki.skills[s1]#line=11",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "开局将两张【蛇】加入牌库。",
+        "sourceTextSha256": "57a179229fd21e16f7706da54ca31ffb9108416e8f71e4c3595a26df174e3e8a"
+      },
+      "referencePrintedTextSha256": "57a179229fd21e16f7706da54ca31ffb9108416e8f71e4c3595a26df174e3e8a",
+      "abilities": [
+        {
+          "printedClause": "开局将两张【蛇】加入牌库。",
+          "id": "kuzuki.assassination.add-snakes",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "creates": [
+            {
+              "type": "card",
+              "definitionId": "master.kuzuki.skill.s3",
+              "zone": "deck",
+              "owner": "controller",
+              "count": 2,
+              "face": "down",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kuzuki.skill.s3",
+      "printedText": "力量和迅捷属性，0魔耗5威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kuzuki.skills[s3]#line=11",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "力量和迅捷属性，0魔耗5威力。",
+        "sourceTextSha256": "553b4905122fbf6fe2f72151dc81d707e9c28640b8e0b43935a6fffd3331ae20"
+      },
+      "referencePrintedTextSha256": "553b4905122fbf6fe2f72151dc81d707e9c28640b8e0b43935a6fffd3331ae20",
+      "abilities": [
+        {
+          "printedClause": "力量和迅捷属性，0魔耗5威力。",
+          "id": "kuzuki.snake.printed-stats",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_attribute",
+              "operation": "set",
+              "subject": "source_card",
+              "values": [
+                "strength",
+                "agility"
+              ]
+            },
+            {
+              "rule": "card_cost",
+              "operation": "set",
+              "subject": "source_card",
+              "value": 0
+            },
+            {
+              "rule": "card_power",
+              "operation": "set",
+              "subject": "source_card",
+              "value": 5
+            }
+          ],
+          "lifecycle": {
+            "duration": "printed_card_definition"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.kuzuki.skill.ascension",
+      "printedText": "解锁此技能后立刻从牌库，弃牌堆及手牌中移除所有魔术牌、迅捷基础牌威力+3。你的【蛇】获得以下效果\"被动/战斗阶段：花费6点魔力，将此牌加入你的攻击中。\"",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kuzuki.ascensionSkill#line=11",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "解锁此技能后立刻从牌库，弃牌堆及手牌中移除所有魔术牌、迅捷基础牌威力+3。你的【蛇】获得以下效果\"被动/战斗阶段：花费6点魔力，将此牌加入你的攻击中。\"",
+        "sourceTextSha256": "db80f07b3f83b38fd5f9684efd369197e5b96dd7dd13d4a165ea443d454b0fc5"
+      },
+      "referencePrintedTextSha256": "db80f07b3f83b38fd5f9684efd369197e5b96dd7dd13d4a165ea443d454b0fc5",
+      "abilities": [
+        {
+          "printedClause": "解锁此技能后立刻从牌库，弃牌堆及手牌中移除所有魔术牌、迅捷基础牌威力+3。你的【蛇】获得以下效果\"被动/战斗阶段：花费6点魔力，将此牌加入你的攻击中。\"",
+          "id": "kuzuki.perfect-breathing.unlock-cleanup",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "remove_cards_in_zone",
+              "zones": [
+                "deck",
+                "discard",
+                "hand"
+              ],
+              "owner": "controller",
+              "filter": {
+                "attribute": "magic"
+              }
+            }
+          ]
+        },
+        {
+          "printedClause": "解锁此技能后立刻从牌库，弃牌堆及手牌中移除所有魔术牌、迅捷基础牌威力+3。你的【蛇】获得以下效果\"被动/战斗阶段：花费6点魔力，将此牌加入你的攻击中。\"",
+          "id": "kuzuki.perfect-breathing.agility-basic-power",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "subject": "controller_basic_attacks",
+              "filter": {
+                "attribute": "agility"
+              },
+              "value": 3
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "printedClause": "解锁此技能后立刻从牌库，弃牌堆及手牌中移除所有魔术牌、迅捷基础牌威力+3。你的【蛇】获得以下效果\"被动/战斗阶段：花费6点魔力，将此牌加入你的攻击中。\"",
+          "id": "kuzuki.perfect-breathing.snake-combat-action",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "grant_linked_ability_to_definition",
+              "definitionId": "master.kuzuki.skill.s3",
+              "ability": {
+                "kind": "phase_action",
+                "phase": "combat",
+                "cost": {
+                  "type": "mana",
+                  "amount": 6
+                },
+                "effects": [
+                  {
+                    "type": "move_source_card",
+                    "destination": "attack"
+                  }
+                ]
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.waver.skill.s1",
+      "printedText": "你可观看背面朝上的事件牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_waver.skills[s1]#line=14",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你可观看背面朝上的事件牌。",
+        "sourceTextSha256": "c4004b02a61eb2cefa01526f174f4fb7815644f4267735020b2507177797058f"
+      },
+      "referencePrintedTextSha256": "c4004b02a61eb2cefa01526f174f4fb7815644f4267735020b2507177797058f",
+      "abilities": [
+        {
+          "printedClause": "你可观看背面朝上的事件牌。",
+          "id": "waver.discerning-eye.inspect-events",
+          "kind": "passive",
+          "visibility": {
+            "inspectZones": [
+              "face_down_event_cards"
+            ],
+            "access": "read_only"
+          },
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.waver.skill.s2",
+      "printedText": "你能支付1魔力来抽2张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_waver.skills[s2]#line=14",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你能支付1魔力来抽2张牌。",
+        "sourceTextSha256": "68b3ada84d7058a23517d12544478e2ed6f95274922ccc6010f2ae3819d0eb59"
+      },
+      "referencePrintedTextSha256": "68b3ada84d7058a23517d12544478e2ed6f95274922ccc6010f2ae3819d0eb59",
+      "abilities": [
+        {
+          "printedClause": "你能支付1魔力来抽2张牌。",
+          "id": "waver.strategic-deployment.draw",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "cost": {
+            "type": "mana",
+            "amount": 1
+          },
+          "effects": [
+            {
+              "type": "draw_cards",
+              "target": "controller",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.waver.skill.s3",
+      "printedText": "查看一位玩家的手牌。你可选择其中一张牌放于其拥有的牌库顶部，若如此，下回合你不可进行【调查】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_waver.skills[s3]#line=14",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "查看一位玩家的手牌。你可选择其中一张牌放于其拥有的牌库顶部，若如此，下回合你不可进行【调查】。",
+        "sourceTextSha256": "9863f1c6785fc3be2d26cd4314f8c31c8117115e75711a658f4af57acad23e04"
+      },
+      "referencePrintedTextSha256": "9863f1c6785fc3be2d26cd4314f8c31c8117115e75711a658f4af57acad23e04",
+      "abilities": [
+        {
+          "printedClause": "查看一位玩家的手牌。你可选择其中一张牌放于其拥有的牌库顶部，若如此，下回合你不可进行【调查】。",
+          "id": "waver.investigation.inspect-and-topdeck",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "targets": [
+            {
+              "type": "player",
+              "relationship": "any",
+              "minCount": 1,
+              "maxCount": 1
+            }
+          ],
+          "visibility": {
+            "inspectZones": [
+              "target_hand"
+            ],
+            "access": "controller_private"
+          },
+          "effects": [
+            {
+              "type": "choose_one",
+              "chooser": "controller",
+              "minCount": 0,
+              "maxCount": 1,
+              "allowCancel": true,
+              "options": [
+                {
+                  "id": "topdeck-one",
+                  "effects": [
+                    {
+                      "type": "move_selected_cards",
+                      "selection": {
+                        "zone": "target_hand",
+                        "minCount": 1,
+                        "maxCount": 1
+                      },
+                      "destination": "deck_top"
+                    },
+                    {
+                      "type": "set_player_flag",
+                      "subject": "controller",
+                      "flag": "waverInvestigationLockedNextRound",
+                      "value": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "lifecycle": {
+            "duration": "action_then_next_round_cooldown"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.waver.skill.ascension",
+      "printedText": "前哨阶段：预测每个游戏内的战场的胜者，战斗阶段结束时，你每预测正确一个，便获得1点战果。你本回合无法从侦查获得战果。\n前哨阶段：花费5点魔力，本阶段结束时，你所在地点的所有玩家均随机弃置2张手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_waver.ascensionSkill#line=14",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "前哨阶段：预测每个游戏内的战场的胜者，战斗阶段结束时，你每预测正确一个，便获得1点战果。你本回合无法从侦查获得战果。\n前哨阶段：花费5点魔力，本阶段结束时，你所在地点的所有玩家均随机弃置2张手牌。",
+        "sourceTextSha256": "242e2490745a9bbbbfb5d910acefef20cb32fe01610414b8f26e0afb9c1acf79"
+      },
+      "referencePrintedTextSha256": "242e2490745a9bbbbfb5d910acefef20cb32fe01610414b8f26e0afb9c1acf79",
+      "abilities": [
+        {
+          "printedClause": "前哨阶段：预测每个游戏内的战场的胜者，战斗阶段结束时，你每预测正确一个，便获得1点战果。你本回合无法从侦查获得战果。\n前哨阶段：花费5点魔力，本阶段结束时，你所在地点的所有玩家均随机弃置2张手牌。",
+          "id": "waver.case-files.predict-winners",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "winner_prediction_rule",
+              "operation": "bind_prediction_for_each_battlefield",
+              "resolveAt": "combat_phase_end",
+              "rewardPerCorrect": {
+                "type": "victory_points",
+                "amount": 1
+              }
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "scout_victory_point_gain",
+              "operation": "forbid",
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "round"
+          }
+        },
+        {
+          "printedClause": "前哨阶段：预测每个游戏内的战场的胜者，战斗阶段结束时，你每预测正确一个，便获得1点战果。你本回合无法从侦查获得战果。\n前哨阶段：花费5点魔力，本阶段结束时，你所在地点的所有玩家均随机弃置2张手牌。",
+          "id": "waver.case-files.mass-random-discard",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "cost": {
+            "type": "mana",
+            "amount": 5
+          },
+          "effects": [
+            {
+              "type": "schedule_phase_effect",
+              "timing": "outpost_phase_end",
+              "effect": {
+                "type": "move_selected_cards",
+                "selection": {
+                  "zone": "hand",
+                  "players": "all_at_controller_location",
+                  "mode": "random",
+                  "count": 2
+                },
+                "destination": "discard"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "until_outpost_phase_end"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.sieg.skill.s1",
+      "printedText": "若你拥有11点及以上的魔力，你可以于常规出牌时追加打出一张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sieg.skills[s1]#line=249",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "若你拥有11点及以上的魔力，你可以于常规出牌时追加打出一张牌。",
+        "sourceTextSha256": "215e0d96a9ee5e00825eb43ceda139f008e0047c9b0195e733f96eaf89d0c089"
+      },
+      "referencePrintedTextSha256": "215e0d96a9ee5e00825eb43ceda139f008e0047c9b0195e733f96eaf89d0c089",
+      "abilities": [
+        {
+          "printedClause": "若你拥有11点及以上的魔力，你可以于常规出牌时追加打出一张牌。",
+          "id": "sieg.overloaded-core.extra-standard-play",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_mana_at_least",
+              "value": 11
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mode",
+              "operation": "allow_append",
+              "window": "standard_play",
+              "additionalCards": 1
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_condition_true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.sieg.skill.s1a",
+      "printedText": "行动阶段：花费1枚令咒，然后你获得2点魔力并将【幻想大剑·天魔失坠】从游戏外加入你的技能区直至回合结束。你拥有的魔力少于8点也可以打出此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sieg.skills[s1a]#line=249",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "行动阶段：花费1枚令咒，然后你获得2点魔力并将【幻想大剑·天魔失坠】从游戏外加入你的技能区直至回合结束。你拥有的魔力少于8点也可以打出此牌。",
+        "sourceTextSha256": "89da852d7fec3917250e1206149d4af8bfbdb31d64e301adba8e7182c9f80feb"
+      },
+      "referencePrintedTextSha256": "89da852d7fec3917250e1206149d4af8bfbdb31d64e301adba8e7182c9f80feb",
+      "abilities": [
+        {
+          "printedClause": "行动阶段：花费1枚令咒，然后你获得2点魔力并将【幻想大剑·天魔失坠】从游戏外加入你的技能区直至回合结束。你拥有的魔力少于8点也可以打出此牌。",
+          "id": "sieg.dragon-command-seal.action",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "cost": {
+            "type": "command_seal",
+            "amount": 1
+          },
+          "effects": [
+            {
+              "type": "adjust_command_seals",
+              "subject": "controller",
+              "amount": -1
+            },
+            {
+              "type": "gain_mana",
+              "subject": "controller",
+              "amount": 2
+            },
+            {
+              "type": "move_matching_cards",
+              "source": "outside_game",
+              "destination": "skill",
+              "owner": "controller",
+              "filter": {
+                "definitionId": "master.sieg.skill.s2"
+              },
+              "maxCount": 1
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "skill_play_mana_threshold",
+              "operation": "ignore_below",
+              "definitionId": "master.sieg.skill.s2",
+              "threshold": 8
+            }
+          ],
+          "lifecycle": {
+            "duration": "round"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.sieg.skill.s2",
+      "printedText": "菩提之叶-你可以免费打出此牌。若如此做，与你位于同一战场的对手获得：\"行动阶段：关闭一张你控制的，基本威力大于等于5的敏捷攻击，然后令齐格【败北】。\"",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sieg.skills[s2]#line=249",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "菩提之叶-你可以免费打出此牌。若如此做，与你位于同一战场的对手获得：\"行动阶段：关闭一张你控制的，基本威力大于等于5的敏捷攻击，然后令齐格【败北】。\"",
+        "sourceTextSha256": "b42119137464b4723aae46395ae82969e95d09adb15179c39199d6fa997d37ee"
+      },
+      "referencePrintedTextSha256": "b42119137464b4723aae46395ae82969e95d09adb15179c39199d6fa997d37ee",
+      "abilities": [
+        {
+          "printedClause": "菩提之叶-你可以免费打出此牌。若如此做，与你位于同一战场的对手获得：\"行动阶段：关闭一张你控制的，基本威力大于等于5的敏捷攻击，然后令齐格【败北】。\"",
+          "id": "sieg.balmung.bodhi-leaf",
+          "kind": "play_option",
+          "effects": [
+            {
+              "type": "choose_one",
+              "chooser": "controller",
+              "minCount": 0,
+              "maxCount": 1,
+              "allowCancel": true,
+              "options": [
+                {
+                  "id": "play-free",
+                  "effects": [
+                    {
+                      "type": "set_source_card_cost_for_transaction",
+                      "value": 0
+                    },
+                    {
+                      "type": "grant_opponent_action_rule",
+                      "subjects": "opponents_same_battlefield",
+                      "ability": {
+                        "phase": "action",
+                        "cost": {
+                          "type": "close_attack",
+                          "filter": {
+                            "attribute": "agility",
+                            "basicPowerAtLeast": 5
+                          }
+                        },
+                        "effects": [
+                          {
+                            "type": "defeat_player",
+                            "subject": "sieg_controller"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.sieg.skill.ascension",
+      "printedText": "当位于你所在地点的一名对手花费了4点或更多的魔力时，你恢复一枚令咒。【同调】状态时，你的力量基础攻击获得威力+3。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sieg.ascensionSkill#line=249",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当位于你所在地点的一名对手花费了4点或更多的魔力时，你恢复一枚令咒。【同调】状态时，你的力量基础攻击获得威力+3。",
+        "sourceTextSha256": "eb9d0ba8a1afc090f85d3f010d3d7ec1890a82b61ef255f86ba824aa052a50b4"
+      },
+      "referencePrintedTextSha256": "eb9d0ba8a1afc090f85d3f010d3d7ec1890a82b61ef255f86ba824aa052a50b4",
+      "abilities": [
+        {
+          "printedClause": "当位于你所在地点的一名对手花费了4点或更多的魔力时，你恢复一枚令咒。【同调】状态时，你的力量基础攻击获得威力+3。",
+          "id": "sieg.galvanism.restore-command-seal",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "opponent_at_same_location_spent_mana_at_least",
+              "value": 4
+            }
+          ],
+          "effects": [
+            {
+              "type": "adjust_command_seals",
+              "subject": "controller",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "printedClause": "当位于你所在地点的一名对手花费了4点或更多的魔力时，你恢复一枚令咒。【同调】状态时，你的力量基础攻击获得威力+3。",
+          "id": "sieg.galvanism.synchronization-power",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_has_status",
+              "status": "synchronization"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "subject": "controller_basic_attacks",
+              "filter": {
+                "attribute": "strength"
+              },
+              "value": 3
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_condition_true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.iliya.skill.s1",
+      "printedText": "你的魔力初始值为6。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_iliya.skills[s1]#line=12",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你的魔力初始值为6。",
+        "sourceTextSha256": "681da5eab6814317aeb7428ffedec22af430a9b4f889ef2950a7f04ef6a12335"
+      },
+      "referencePrintedTextSha256": "681da5eab6814317aeb7428ffedec22af430a9b4f889ef2950a7f04ef6a12335",
+      "abilities": [
+        {
+          "printedClause": "你的魔力初始值为6。",
+          "id": "iliya.homunculus.initial-mana",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_mana",
+              "subject": "controller",
+              "amount": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.iliya.skill.s2",
+      "printedText": "第八回合开始时，激活【天之衣】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_iliya.skills[s2]#line=12",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "第八回合开始时，激活【天之衣】。",
+        "sourceTextSha256": "d397f42e1e5003272afd361aab824eddbf0a245ad358e0cc0096135be2887fa0"
+      },
+      "referencePrintedTextSha256": "d397f42e1e5003272afd361aab824eddbf0a245ad358e0cc0096135be2887fa0",
+      "abilities": [
+        {
+          "printedClause": "第八回合开始时，激活【天之衣】。",
+          "id": "iliya.grail-vessel.activate-heavenly-garment",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.started"
+            },
+            {
+              "type": "round_number_is",
+              "value": 8
+            }
+          ],
+          "effects": [
+            {
+              "type": "activate_card_by_id",
+              "definitionId": "master.iliya.skill.s4",
+              "subject": "controller"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.iliya.skill.s3",
+      "printedText": "你打出攻击时所需的魔力消耗-1。回合结束时，若你本回合打出的攻击均为暗置，获得1点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_iliya.skills[s3]#line=12",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你打出攻击时所需的魔力消耗-1。回合结束时，若你本回合打出的攻击均为暗置，获得1点魔力。",
+        "sourceTextSha256": "6cd57042536e4a4d1b955db999aa3fb62ab82c1eb74cebcdd09954ff7ee52d7d"
+      },
+      "referencePrintedTextSha256": "6cd57042536e4a4d1b955db999aa3fb62ab82c1eb74cebcdd09954ff7ee52d7d",
+      "abilities": [
+        {
+          "printedClause": "你打出攻击时所需的魔力消耗-1。回合结束时，若你本回合打出的攻击均为暗置，获得1点魔力。",
+          "id": "iliya.lesser-grail.attack-cost",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_cost",
+              "operation": "subtract",
+              "subject": "controller_attacks",
+              "value": 1
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "printedClause": "你打出攻击时所需的魔力消耗-1。回合结束时，若你本回合打出的攻击均为暗置，获得1点魔力。",
+          "id": "iliya.lesser-grail.face-down-round-reward",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ending"
+            },
+            {
+              "type": "controller_played_attacks_this_round_all_face_down"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_mana",
+              "subject": "controller",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.iliya.skill.s4",
+      "printedText": "归于虚无-回合开始时，若你上回合在战斗阶段时与至少一名被淘汰的玩家位于同一战场，获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_iliya.skills[s4]#line=12",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "归于虚无-回合开始时，若你上回合在战斗阶段时与至少一名被淘汰的玩家位于同一战场，获得2点战果。",
+        "sourceTextSha256": "191995cd2586600a461b045351d6419e71145c287a7bcdce3407dbb1b8a948d5"
+      },
+      "referencePrintedTextSha256": "191995cd2586600a461b045351d6419e71145c287a7bcdce3407dbb1b8a948d5",
+      "abilities": [
+        {
+          "printedClause": "归于虚无-回合开始时，若你上回合在战斗阶段时与至少一名被淘汰的玩家位于同一战场，获得2点战果。",
+          "id": "iliya.heavenly-garment.return-to-nothingness",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.started"
+            },
+            {
+              "type": "controller_shared_battlefield_last_combat_with_eliminated_player"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "subject": "controller",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.iliya.skill.ascension",
+      "printedText": "解锁此技能后，你立即从手牌、牌库及弃牌堆中移除所有力量牌。你的魔术和特殊属性的基本攻击获得+2威力。当局势牌为天之杯时，未被淘汰的玩家全部获胜。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_iliya.ascensionSkill#line=12",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "解锁此技能后，你立即从手牌、牌库及弃牌堆中移除所有力量牌。你的魔术和特殊属性的基本攻击获得+2威力。当局势牌为天之杯时，未被淘汰的玩家全部获胜。",
+        "sourceTextSha256": "27c1eaa2e2cca2c08ce680c5625206565eefe7e09cd5b4ac059ea216a89ddf17"
+      },
+      "referencePrintedTextSha256": "27c1eaa2e2cca2c08ce680c5625206565eefe7e09cd5b4ac059ea216a89ddf17",
+      "abilities": [
+        {
+          "printedClause": "解锁此技能后，你立即从手牌、牌库及弃牌堆中移除所有力量牌。你的魔术和特殊属性的基本攻击获得+2威力。当局势牌为天之杯时，未被淘汰的玩家全部获胜。",
+          "id": "iliya.third-magic.remove-strength",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "remove_cards_in_zone",
+              "zones": [
+                "hand",
+                "deck",
+                "discard"
+              ],
+              "owner": "controller",
+              "filter": {
+                "attribute": "strength"
+              }
+            }
+          ]
+        },
+        {
+          "printedClause": "解锁此技能后，你立即从手牌、牌库及弃牌堆中移除所有力量牌。你的魔术和特殊属性的基本攻击获得+2威力。当局势牌为天之杯时，未被淘汰的玩家全部获胜。",
+          "id": "iliya.third-magic.basic-power",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "subject": "controller_basic_attacks",
+              "filter": {
+                "attributes": [
+                  "magic",
+                  "special"
+                ]
+              },
+              "value": 2
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "printedClause": "解锁此技能后，你立即从手牌、牌库及弃牌堆中移除所有力量牌。你的魔术和特殊属性的基本攻击获得+2威力。当局势牌为天之杯时，未被淘汰的玩家全部获胜。",
+          "id": "iliya.third-magic.heavens-feel-victory",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "current_situation_is",
+              "situation": "Heavens Feel"
+            }
+          ],
+          "effects": [
+            {
+              "type": "finish_game",
+              "winners": "all_non_eliminated_players"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_condition_true"
+          }
+        }
+      ]
     }
   ]
 }

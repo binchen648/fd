@@ -1089,6 +1089,43 @@ describe('Phase 3 full-roster semantic normalization', () => {
     ]));
   });
 
+  it('grounds the nineteen-ID Julius/Kuzuki/Waver/Sieg/Illya slice without hiding bespoke cross-subsystem mechanics', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.julius.skill.s1','master.julius.skill.s1a','master.julius.skill.ascension',
+      'master.kuzuki.skill.s1','master.kuzuki.skill.s3','master.kuzuki.skill.ascension',
+      'master.waver.skill.s1','master.waver.skill.s2','master.waver.skill.s3','master.waver.skill.ascension',
+      'master.sieg.skill.s1','master.sieg.skill.s1a','master.sieg.skill.s2','master.sieg.skill.ascension',
+      'master.iliya.skill.s1','master.iliya.skill.s2','master.iliya.skill.s3','master.iliya.skill.s4','master.iliya.skill.ascension',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(19);
+    expect(slice.every((card) =>
+      card.source?.authority === 'DEVELOPMENT_TEXT' &&
+      card.source.document.endsWith('/data_masters.js') &&
+      card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+      createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256 &&
+      card.source.sourceTextSha256 === card.referencePrintedTextSha256
+    )).toBe(true);
+
+    expect(slice.find((card) => card.id === 'master.julius.skill.s1')?.abilities).toContainEqual(expect.objectContaining({
+      effects: expect.arrayContaining([expect.objectContaining({ type: 'deferred_deployment_rule', operation: 'skip_outpost_then_deploy' })]),
+    }));
+    expect(slice.find((card) => card.id === 'master.kuzuki.skill.ascension')?.abilities).toContainEqual(expect.objectContaining({
+      effects: expect.arrayContaining([expect.objectContaining({ type: 'grant_linked_ability_to_definition', definitionId: 'master.kuzuki.skill.s3' })]),
+    }));
+    expect(slice.find((card) => card.id === 'master.waver.skill.ascension')?.abilities).toEqual(expect.arrayContaining([
+      expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type: 'winner_prediction_rule' })]) }),
+      expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type: 'schedule_phase_effect', timing: 'outpost_phase_end' })]) }),
+    ]));
+    expect(slice.find((card) => card.id === 'master.sieg.skill.s2')?.abilities).toContainEqual(expect.objectContaining({
+      effects: expect.arrayContaining([expect.objectContaining({ type: 'choose_one' })]),
+    }));
+    expect(slice.find((card) => card.id === 'master.iliya.skill.ascension')?.abilities).toContainEqual(expect.objectContaining({
+      effects: expect.arrayContaining([expect.objectContaining({ type: 'finish_game', winners: 'all_non_eliminated_players' })]),
+    }));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1142,10 +1179,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 194,
-      blockedCount: 750,
+      sourceGroundedCount: 213,
+      blockedCount: 731,
       unclassifiedCount: 0,
-      structuredAbilityCount: 370,
+      structuredAbilityCount: 396,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
