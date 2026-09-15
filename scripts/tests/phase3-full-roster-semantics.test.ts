@@ -1602,6 +1602,14 @@ describe('Phase 3 full-roster semantic normalization', () => {
     for(const id of ['servant.kintoki.skill.sc-kintoki-1','servant.kintoki.skill.sc-kintoki-2']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'kintoki_golden_spark_rule'})])}));
   });
 
+  it('grounds the fifteen-ID Kiyohime/Kotarou/Koyo/Kriemhild/LadyAvalon slice from locked development snapshots', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.kiyohime.skill.sc-kiyohime-1","servant.kiyohime.skill.sc-kiyohime-2","servant.kiyohime.skill.sc-kiyohime-3","servant.kotarou.skill.sc-kotarou-1","servant.kotarou.skill.sc-kotarou-2","servant.kotarou.skill.sc-kotarou-3","servant.koyo.skill.sc-koyo-1","servant.koyo.skill.sc-koyo-2","servant.koyo.skill.sc-koyo-3","servant.kriemhild.skill.sc-kriemhild-1","servant.kriemhild.skill.sc-kriemhild-2","servant.kriemhild.skill.sc-kriemhild-3","servant.ladyavalon.skill.sc-ladyavalon-1","servant.ladyavalon.skill.sc-ladyavalon-2","servant.ladyavalon.skill.sc-ladyavalon-3"]); const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(15); expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.kotarou.skill.sc-kotarou-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'presence_concealment_assassination_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.ladyavalon.skill.sc-ladyavalon-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'territory_construction_scaling_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.kriemhild.skill.sc-kriemhild-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'kriemhild_rhine_gold_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1655,10 +1663,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 752,
-      blockedCount: 192,
+      sourceGroundedCount: 767,
+      blockedCount: 177,
       unclassifiedCount: 0,
-      structuredAbilityCount: 1030,
+      structuredAbilityCount: 1045,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
