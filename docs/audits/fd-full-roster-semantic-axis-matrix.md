@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=689
-blockedCount=255
+sourceGroundedCount=705
+blockedCount=239
 unclassifiedCount=0
-structuredAbilityCount=967
+structuredAbilityCount=983
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 121 |
+| timing | `ACTION` | 122 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -264,14 +264,14 @@ structuredAbilityCount=967
 | effect | `GAIN_MANA` | 36 |
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
-| effect | `DRAW_CARDS` | 27 |
+| effect | `DRAW_CARDS` | 28 |
 | effect | `EVENT_CARD_RULE` | 27 |
 | effect | `MOVE_PLAYER` | 25 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
+| effect | `PLAY_SELECTED_CARDS` | 18 |
 | effect | `MOVE_SELECTED_CARDS` | 17 |
-| effect | `PLAY_SELECTED_CARDS` | 17 |
 | effect | `CLOSE_SOURCE_CARD` | 14 |
 | effect | `LOSTBELT_EXPANSION` | 14 |
 | effect | `DEFEAT_PLAYER` | 13 |
@@ -297,6 +297,7 @@ structuredAbilityCount=967
 | effect | `ADD_STATUS` | 5 |
 | effect | `DUAL_SERVANT_RULE` | 5 |
 | effect | `MOVE_CARD` | 5 |
+| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 5 |
 | effect | `SECRET_GARDEN_RULE` | 5 |
 | effect | `TATARI_DETERIORATION_RULE` | 5 |
 | effect | `CLOSE_SELECTED_CARDS` | 4 |
@@ -325,14 +326,15 @@ structuredAbilityCount=967
 | effect | `FOOD_RESOURCE_RULE` | 3 |
 | effect | `FORM_STATE_RULE` | 3 |
 | effect | `GUARD_RULE` | 3 |
+| effect | `HIJIKATA_CODE_RULE` | 3 |
 | effect | `MOVE_MATCHING_EVENTS` | 3 |
 | effect | `OVERLOAD_CARD_RULE` | 3 |
 | effect | `PHANTOM_PLAYER_RULE` | 3 |
 | effect | `PILGRIMAGE_LUCK_RULE` | 3 |
-| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 3 |
 | effect | `REINCARNATION_RULE` | 3 |
 | effect | `TERRAIN_EFFECT_MULTIPLIER_RULE` | 3 |
 | effect | `TRAINING_EXPERIENCE_RULE` | 3 |
+| effect | `TWELVE_LABORS_RULE` | 3 |
 | effect | `VISITOR_CARD_RULE` | 3 |
 | effect | `VOLUME_COUNTER_RULE` | 3 |
 | effect | `BASE_CARD_EXCHANGE_RULE` | 2 |
@@ -449,6 +451,7 @@ structuredAbilityCount=967
 | effect | `DISCARD_ATTRIBUTE_RECYCLE_DEFEAT_RULE` | 1 |
 | effect | `DISCARD_COST_ATTRIBUTE_GAIN_RULE` | 1 |
 | effect | `DISCARD_LUCK_STATE_RULE` | 1 |
+| effect | `DOMINATION_WHEEL_COMMAND_SPELL_RULE` | 1 |
 | effect | `DOPPELGANGER_CREATION_RULE` | 1 |
 | effect | `DOPPELGANGER_DEFEAT_RULE` | 1 |
 | effect | `DRAGON_DESIGNATION_RULE` | 1 |
@@ -482,6 +485,7 @@ structuredAbilityCount=967
 | effect | `HIDDEN_LUCK_ACTIVATION_DOUBLE_RULE` | 1 |
 | effect | `HIDDEN_QUICK_ATTACK_ACTIVATION_RULE` | 1 |
 | effect | `HIDDEN_TRUE_NAME_VP_DOUBLE_DEFEAT_RULE` | 1 |
+| effect | `HUNDRED_FACES_ILLUSION_RULE` | 1 |
 | effect | `IMPERFECTION_DIRECT_DEFEAT_RULE` | 1 |
 | effect | `IMPOSTOR_STATE_RULE` | 1 |
 | effect | `INDEPENDENT_DECK_RULE` | 1 |
@@ -520,8 +524,10 @@ structuredAbilityCount=967
 | effect | `PLACED_NOBLE_PHANTASM_FIELD_RULE` | 1 |
 | effect | `PLAYED_ATTACK_COST_SUM_POWER_RULE` | 1 |
 | effect | `PLAY_SOURCE_CARD` | 1 |
+| effect | `POISON_BODY_RULE` | 1 |
 | effect | `POISON_DEFEAT_RULE` | 1 |
 | effect | `PREPARATION_LEADER_VP_RULE` | 1 |
+| effect | `PRETENDER_IDENTITY_X_RULE` | 1 |
 | effect | `PROPHECY_HAND_SUM_DEFEAT_RULE` | 1 |
 | effect | `REACTIVE_CARD_ACTION_RULE` | 1 |
 | effect | `REACTIVE_RESOURCE_RULE` | 1 |
@@ -537,6 +543,7 @@ structuredAbilityCount=967
 | effect | `RESTRAINT_CONDEMNATION_RULE` | 1 |
 | effect | `REVEALED_HAND_POWER_SUM_RULE` | 1 |
 | effect | `REVEALED_LUCK_PLAY_RULE` | 1 |
+| effect | `REVELATION_VISIBILITY_VP_RULE` | 1 |
 | effect | `ROSTER_REPLACEMENT_RULE` | 1 |
 | effect | `ROUND_COST_TERRAIN_EVENT_MULTIPLIER_RULE` | 1 |
 | effect | `ROUTE_RESTRICTION_USED_ABILITY_SUPPRESSION_RULE` | 1 |
@@ -547,6 +554,7 @@ structuredAbilityCount=967
 | effect | `SEED_ATTACHED_SUPPLY` | 1 |
 | effect | `SELF_PLAY_COST_RULE` | 1 |
 | effect | `SEQUESTER_RANDOM_INACTIVE_SERVANT_SKILL` | 1 |
+| effect | `SERENITY_DANCE_RULE` | 1 |
 | effect | `SET_COMBAT_POWER` | 1 |
 | effect | `SET_SOURCE_CARD_COST_FOR_TRANSACTION` | 1 |
 | effect | `SHARED_VICTORY_LINK` | 1 |
@@ -569,6 +577,7 @@ structuredAbilityCount=967
 | effect | `TERRAIN_COST_SITUATION_BURN_RULE` | 1 |
 | effect | `TERRITORY_ATTRIBUTE_STRIP_RULE` | 1 |
 | effect | `TERRITORY_CONSTRUCTION_SCALING_RULE` | 1 |
+| effect | `TRACKING_MARK_RULE` | 1 |
 | effect | `TRANSFER_SELECTED_CARDS` | 1 |
 | effect | `TRAUMA_DECK_RULE` | 1 |
 | effect | `TRAUMA_STATE_RULE` | 1 |
@@ -1449,24 +1458,24 @@ structuredAbilityCount=967
 | `servant.hassan.skill.sc-hassan-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
 | `servant.hassan.skill.sc-hassan-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CONCEALMENT_ELIMINATION_GROWTH_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.hassan.skill.sc-hassan-np` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HIDDEN_TRUE_NAME_VP_DOUBLE_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hassan-np` |
-| `servant.hassanhf.skill.sc-hassanhf-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hundred-faced-hassan-tracking` |
-| `servant.hassanhf.skill.sc-hassanhf-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hundred-faced-hassan-illusion` |
-| `servant.hassanhf.skill.sc-hassanhf-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
-| `servant.hassanser.skill.sc-hassanser-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
-| `servant.hassanser.skill.sc-hassanser-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.hassanser.skill.sc-hassanser-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.serenity-dance` |
+| `servant.hassanhf.skill.sc-hassanhf-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TRACKING_MARK_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hundred-faced-hassan-tracking` |
+| `servant.hassanhf.skill.sc-hassanhf-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HUNDRED_FACES_ILLUSION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hundred-faced-hassan-illusion` |
+| `servant.hassanhf.skill.sc-hassanhf-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
+| `servant.hassanser.skill.sc-hassanser-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
+| `servant.hassanser.skill.sc-hassanser-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `POISON_BODY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.hassanser.skill.sc-hassanser-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SERENITY_DANCE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.serenity-dance` |
 | `servant.helena.skill.sc-helena-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `CHOOSE_ONE_CARD` | `PLAY_SELECTED_CARDS`, `SET_SELECTED_CARDS_FACE` | `CHOOSE_ONE_CARD` | `NONE` | `NONE` | `FACE_DOWN`, `FACE_UP` | `payload:attackInstanceIds`, `payload:targetSkillInstanceIds` | `NONE` | `core.structured-skill` |
-| `servant.helena.skill.sc-helena-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.helena-search-unknown` |
+| `servant.helena.skill.sc-helena-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVELATION_VISIBILITY_VP_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.helena-search-unknown` |
 | `servant.helena.skill.sc-helena-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:this_round` | `rule:skill_use:forbid` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.hephaistion.skill.sc-hephaistion-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hephaistion-wheel` |
-| `servant.hephaistion.skill.sc-hephaistion-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.pretender-class` |
-| `servant.hephaistion.skill.sc-hephaistion-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
-| `servant.herc.skill.sc-herc-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.twelve-labors` |
-| `servant.herc.skill.sc-herc-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.twelve-labors` |
-| `servant.herc.skill.sc-herc-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.twelve-labors` |
-| `servant.hijikata.skill.sc-hijikata-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hijikata-coat` |
-| `servant.hijikata.skill.sc-hijikata-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hijikata-flag` |
-| `servant.hijikata.skill.sc-hijikata-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hijikata-law` |
+| `servant.hephaistion.skill.sc-hephaistion-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DOMINATION_WHEEL_COMMAND_SPELL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hephaistion-wheel` |
+| `servant.hephaistion.skill.sc-hephaistion-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PRETENDER_IDENTITY_X_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.pretender-class` |
+| `servant.hephaistion.skill.sc-hephaistion-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `servant.herc.skill.sc-herc-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TWELVE_LABORS_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.twelve-labors` |
+| `servant.herc.skill.sc-herc-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TWELVE_LABORS_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.twelve-labors` |
+| `servant.herc.skill.sc-herc-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TWELVE_LABORS_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.twelve-labors` |
+| `servant.hijikata.skill.sc-hijikata-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HIJIKATA_CODE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hijikata-coat` |
+| `servant.hijikata.skill.sc-hijikata-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HIJIKATA_CODE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hijikata-flag` |
+| `servant.hijikata.skill.sc-hijikata-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HIJIKATA_CODE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hijikata-law` |
 | `servant.himiko.skill.sc-himiko-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.himiko-oracle-kidou` |
 | `servant.himiko.skill.sc-himiko-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.himiko-oracle-kidou` |
 | `servant.himiko.skill.sc-himiko-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.himiko-oracle-kidou` |

@@ -1562,6 +1562,15 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.gilles.skill.sc-gilles-np')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'placed_noble_phantasm_field_rule'})])}));
   });
 
+  it('grounds the sixteen-ID HassanHF/HassanSer/Helena/Hephaistion/Herc/Hijikata slice from locked development snapshots and preserves the Domination Wheel ruling', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.hassanhf.skill.sc-hassanhf-1","servant.hassanhf.skill.sc-hassanhf-2","servant.hassanhf.skill.sc-hassanhf-3","servant.hassanser.skill.sc-hassanser-1","servant.hassanser.skill.sc-hassanser-2","servant.hassanser.skill.sc-hassanser-3","servant.helena.skill.sc-helena-2","servant.hephaistion.skill.sc-hephaistion-1","servant.hephaistion.skill.sc-hephaistion-2","servant.hephaistion.skill.sc-hephaistion-3","servant.herc.skill.sc-herc-1","servant.herc.skill.sc-herc-2","servant.herc.skill.sc-herc-3","servant.hijikata.skill.sc-hijikata-1","servant.hijikata.skill.sc-hijikata-2","servant.hijikata.skill.sc-hijikata-3"]); const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(16); expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256)).toBe(true);
+    for(const id of ['servant.hassanhf.skill.sc-hassanhf-3','servant.hassanser.skill.sc-hassanser-1']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'presence_concealment_assassination_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.hephaistion.skill.sc-hephaistion-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'draw_cards'}),expect.objectContaining({type:'play_selected_cards'})])}));
+    expect(slice.find(c=>c.id==='servant.hephaistion.skill.sc-hephaistion-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'domination_wheel_command_spell_rule',operation:'true_name_reveal_combat_each_engaged_opponent_chooses_command_spell_use_and_at_least_1_command_spell_must_be_spent_unused_command_spell_use_is_allowed_then_each_engaged_opponent_who_has_not_spent_or_used_at_least_1_command_spell_this_round_closes_half_activated_attacks_rounded_up'})])}));
+    for(const id of ['servant.herc.skill.sc-herc-1','servant.herc.skill.sc-herc-2','servant.herc.skill.sc-herc-3']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'twelve_labors_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1615,10 +1624,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 689,
-      blockedCount: 255,
+      sourceGroundedCount: 705,
+      blockedCount: 239,
       unclassifiedCount: 0,
-      structuredAbilityCount: 967,
+      structuredAbilityCount: 983,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

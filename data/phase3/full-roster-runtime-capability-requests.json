@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 689
+    "affectedIdentityCount": 705
   },
   "requests": [
     {
@@ -1269,6 +1269,7 @@
         "servant.constantine.skill.sc-constantine-1",
         "servant.drake.skill.sc-drake-1",
         "servant.helena.skill.sc-helena-1",
+        "servant.hephaistion.skill.sc-hephaistion-3",
         "servant.illya.skill.sc-illya-2",
         "servant.martha.skill.sc-martha-3",
         "servant.napoleon.skill.sc-napoleon-2",
@@ -2137,6 +2138,33 @@
           "sha256": "abc76e38254ac8688fa7caef5392e28a7b8baa507479231db743a638e9f3fc52"
         },
         {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/身披角色者/英文版/赫费斯提翁.htm"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hephaistion/赫费斯提翁"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_hephaistion_3"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[91].skills[2].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[91].skills[2].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
+        },
+        {
           "abilityId": "servant.illya.skill.sc-illya-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/魔术师/英文版/伊莉雅丝菲尔.htm"
@@ -2313,7 +2341,7 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 28,
+          "shared_handler": 29,
           "specific_handler": 7
         },
         "handlerCount": 20,
@@ -6377,6 +6405,7 @@
         "servant.drake.skill.sc-drake-1",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
+        "servant.hephaistion.skill.sc-hephaistion-3",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
@@ -9033,6 +9062,33 @@
           "sha256": "abc76e38254ac8688fa7caef5392e28a7b8baa507479231db743a638e9f3fc52"
         },
         {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/身披角色者/英文版/赫费斯提翁.htm"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hephaistion/赫费斯提翁"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_hephaistion_3"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[91].skills[2].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[91].skills[2].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
+        },
+        {
           "abilityId": "servant.iskandar.skill.sc-iskandar-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/伊斯坎达尔.htm"
@@ -9298,7 +9354,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 64,
+          "shared_handler": 65,
           "specific_handler": 47
         },
         "handlerCount": 67,
@@ -48395,6 +48451,21 @@
         "servant.hassan.skill.sc-hassan-1",
         "servant.hassan.skill.sc-hassan-2",
         "servant.hassan.skill.sc-hassan-np",
+        "servant.hassanhf.skill.sc-hassanhf-1",
+        "servant.hassanhf.skill.sc-hassanhf-2",
+        "servant.hassanhf.skill.sc-hassanhf-3",
+        "servant.hassanser.skill.sc-hassanser-1",
+        "servant.hassanser.skill.sc-hassanser-2",
+        "servant.hassanser.skill.sc-hassanser-3",
+        "servant.helena.skill.sc-helena-2",
+        "servant.hephaistion.skill.sc-hephaistion-1",
+        "servant.hephaistion.skill.sc-hephaistion-2",
+        "servant.herc.skill.sc-herc-1",
+        "servant.herc.skill.sc-herc-2",
+        "servant.herc.skill.sc-herc-3",
+        "servant.hijikata.skill.sc-hijikata-1",
+        "servant.hijikata.skill.sc-hijikata-2",
+        "servant.hijikata.skill.sc-hijikata-3",
         "servant.hokusai.skill.sc-hokusai-1",
         "servant.hokusai.skill.sc-hokusai-2",
         "servant.hokusai.skill.sc-hokusai-3",
@@ -58492,6 +58563,441 @@
           "sha256": "f441ea3b866ab8159a173327d0af04e25c19f856467f3f724d6795221a1e4982"
         },
         {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/哈桑·萨巴赫(百貌).htm"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hassanhf/哈桑·萨巴赫(百貌)"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_hassanHF_1"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[121].skills[0].text#line=1",
+          "sha256": "c38ac5e4e18dfad8e16d00f8233b1a6c6b3e8683b4ea995f8cc9cb53d3ca692f"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[121].skills[0].text#line=2",
+          "sha256": "c4ff9a7fee42958872228a26f5bcc0b4b56660e436a12a6da4209fde61f01cad"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/哈桑·萨巴赫(百貌).htm"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hassanhf/哈桑·萨巴赫(百貌)"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_hassanHF_2"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[121].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[121].skills[1].text#line=2",
+          "sha256": "f50308d195d4a23390e8a21c1e57b1c78b89601ca9ba5b48fe38bbf7159bb96e"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[121].skills[1].text#line=3",
+          "sha256": "4efb52744bca04568ede06ae28f38e7ef6b3a835bce26db9d8436bc758d1d169"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/哈桑·萨巴赫(百貌).htm"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hassanhf/哈桑·萨巴赫(百貌)"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_hassanHF_3"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[121].skills[2].text#line=1",
+          "sha256": "ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[121].skills[2].text#line=2",
+          "sha256": "1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[121].skills[2].text#line=3",
+          "sha256": "0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217"
+        },
+        {
+          "abilityId": "servant.hassanhf.skill.sc-hassanhf-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[121].skills[2].text#line=4",
+          "sha256": "1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/哈桑·萨巴赫(静谧).htm"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hassanser/哈桑·萨巴赫(静谧)"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_hassanSer_1"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[122].skills[0].text#line=1",
+          "sha256": "ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[122].skills[0].text#line=2",
+          "sha256": "1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[122].skills[0].text#line=3",
+          "sha256": "0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[122].skills[0].text#line=4",
+          "sha256": "1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/哈桑·萨巴赫(静谧).htm"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hassanser/哈桑·萨巴赫(静谧)"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_hassanSer_2"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[122].skills[1].text#line=1",
+          "sha256": "5317c2372793ec98f7de6da12bc1e31ac4243d4fdb4d7f54c5d06ade61c6cb46"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[122].skills[1].text#line=2",
+          "sha256": "b3f5151c1cca6b64b58ff2a52a376dd550badbd8442796ea9634a94efd469d0b"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[122].skills[1].text#line=3",
+          "sha256": "f9f952dee1c6802afef7fc826e3c2e62a6b6e8b314f54078bc6325c6248dd6b9"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[122].skills[1].text#line=4",
+          "sha256": "04b64011acefae899c4773ea21868765020654b1f136cca1048d3611f64208a8"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/哈桑·萨巴赫(静谧).htm"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hassanser/哈桑·萨巴赫(静谧)"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_hassanSer_3"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[122].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[122].skills[2].text#line=2",
+          "sha256": "61a1b1396a63ffe3fd67f86163f3ffca71c6b55f5f8d155f3631d880820597ba"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[122].skills[2].text#line=3",
+          "sha256": "4e4b977ef849f313e41e6fc7d6bf761125049d6c9b76bbcd12a662ac12010dd5"
+        },
+        {
+          "abilityId": "servant.hassanser.skill.sc-hassanser-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[122].skills[2].text#line=4",
+          "sha256": "6a53724db95a936758c6d27a7964535a3fc8d0d4b4a8844508c204c6bd815f9e"
+        },
+        {
+          "abilityId": "servant.helena.skill.sc-helena-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/海伦娜·布拉瓦茨基.htm"
+        },
+        {
+          "abilityId": "servant.helena.skill.sc-helena-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.helena/海伦娜·布拉瓦茨基"
+        },
+        {
+          "abilityId": "servant.helena.skill.sc-helena-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_helena_2"
+        },
+        {
+          "abilityId": "servant.helena.skill.sc-helena-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[120].skills[1].text#line=1",
+          "sha256": "0fffb7a9ba2e53326dba47bdc9a95683ea07a098a7e78072c05f520b0edbab93"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/身披角色者/英文版/赫费斯提翁.htm"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hephaistion/赫费斯提翁"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_hephaistion_1"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[91].skills[0].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[91].skills[0].text#line=2",
+          "sha256": "addd62f9f1e0003f3cd57e4dd18ae00df1116066594c911d5158e0e0defa2f6c"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/身披角色者/英文版/赫费斯提翁.htm"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hephaistion/赫费斯提翁"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_hephaistion_2"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[91].skills[1].text#line=1",
+          "sha256": "faa0ffb345addd650c27e3ab5fcc7fbb8f987e2669c5001aa4a0fcf6c9d2f948"
+        },
+        {
+          "abilityId": "servant.hephaistion.skill.sc-hephaistion-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[91].skills[1].text#line=2",
+          "sha256": "444aa6d0a24d98b9f249fbf2ffd4abaf6e641aabfb82255915754911c459b01a"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/赫拉克勒斯.htm"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.herc/赫拉克勒斯"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_herc_1"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[12].skills[0].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[12].skills[0].text#line=2",
+          "sha256": "242ff16370e2da5359d9fe12bfb10c2a27abf261c636ad5ae793bc17660e4f59"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/赫拉克勒斯.htm"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.herc/赫拉克勒斯"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_herc_2"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[12].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[12].skills[1].text#line=2",
+          "sha256": "242ff16370e2da5359d9fe12bfb10c2a27abf261c636ad5ae793bc17660e4f59"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/赫拉克勒斯.htm"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.herc/赫拉克勒斯"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_herc_3"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[12].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.herc.skill.sc-herc-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[12].skills[2].text#line=2",
+          "sha256": "242ff16370e2da5359d9fe12bfb10c2a27abf261c636ad5ae793bc17660e4f59"
+        },
+        {
+          "abilityId": "servant.hijikata.skill.sc-hijikata-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/土方岁三.htm"
+        },
+        {
+          "abilityId": "servant.hijikata.skill.sc-hijikata-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hijikata/土方岁三"
+        },
+        {
+          "abilityId": "servant.hijikata.skill.sc-hijikata-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_hijikata_1"
+        },
+        {
+          "abilityId": "servant.hijikata.skill.sc-hijikata-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[159].skills[0].text#line=1",
+          "sha256": "7928e2e5df000cd50ebb596c2d31cceea99ebba5510245fc0b173db01193a042"
+        },
+        {
+          "abilityId": "servant.hijikata.skill.sc-hijikata-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/土方岁三.htm"
+        },
+        {
+          "abilityId": "servant.hijikata.skill.sc-hijikata-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hijikata/土方岁三"
+        },
+        {
+          "abilityId": "servant.hijikata.skill.sc-hijikata-2",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_hijikata_2"
+        },
+        {
+          "abilityId": "servant.hijikata.skill.sc-hijikata-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[159].skills[1].text#line=1",
+          "sha256": "32259fb3f28b841e01ce17dc22d8c96fe9e2bc60f2cad9e5e261ad217d81c461"
+        },
+        {
+          "abilityId": "servant.hijikata.skill.sc-hijikata-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/土方岁三.htm"
+        },
+        {
+          "abilityId": "servant.hijikata.skill.sc-hijikata-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hijikata/土方岁三"
+        },
+        {
+          "abilityId": "servant.hijikata.skill.sc-hijikata-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_hijikata_3"
+        },
+        {
+          "abilityId": "servant.hijikata.skill.sc-hijikata-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[159].skills[2].text#line=1",
+          "sha256": "55204a073f0048e77a2d8f26af81be687f2c80d68c4148efc4a13cb29a87fa41"
+        },
+        {
           "abilityId": "servant.hokusai.skill.sc-hokusai-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/降临者/英文版/葛饰北斋.htm"
@@ -60681,10 +61187,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 226,
-          "specific_handler": 222
+          "shared_handler": 233,
+          "specific_handler": 230
         },
-        "handlerCount": 279,
+        "handlerCount": 288,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
