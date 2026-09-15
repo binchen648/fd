@@ -2369,9 +2369,9 @@ Exact supported semantic:
 - top-level `cost` has exactly one `pay_mana` node;
 - amount is a fixed positive safe-integer literal;
 - payer is the controller from authoritative execution context;
-- payment and downstream settlement are one authoritative transaction;
-- insufficient mana fails closed without committed payment/effect/event/revision mutation;
-- downstream failure rolls payment back with the same transaction;
+- payment follows the parent route's accepted authoritative stage boundary: non-staged routes settle payment and downstream effects atomically in one stage, while accepted staged routes may commit activation payment before opening their pending decision;
+- insufficient mana fails closed before the current stage commits payment/effect/event/revision/pending mutation;
+- a same-stage downstream failure rolls back that stage's payment; a rejection in a later already-committed stage does not refund an earlier accepted activation-stage payment;
 - successful settlement consumes the existing typed `pay_mana` result/event envelope;
 - classification/execution is identity-free and does not parse printed text.
 
@@ -2380,7 +2380,7 @@ Required implementation proof:
 - exact fixed-cost positive case with typed `before/after/requestedAmount/actualAmount/status` evidence;
 - renamed card/ability identity behaves identically;
 - insufficient mana is atomic and fail-closed;
-- forced downstream failure rolls back payment;
+- same-stage downstream failure rolls back that stage's payment, while Maiya's already accepted later target-stage rejection preserves its committed activation-stage payment;
 - reject zero/negative/non-integer/variable or expression amounts from this sub-capability;
 - reject extra cost nodes and non-mana top-level costs from this sub-capability;
 - effect-level `optionalCost` is not admitted by this component;
