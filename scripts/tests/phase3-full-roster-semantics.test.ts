@@ -1439,6 +1439,18 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.sigurd.skill.sc-sigurd-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'curse_basic_card_modifier_rule'})])}));
   });
 
+  it('grounds the fifteen-ID Charlemagne/Deon/Musashi/Robin/Chiron slice from the locked saber/archer snapshot', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const prefixes=['servant.charlemagne.skill.','servant.deon.skill.','servant.musashi.skill.','servant.robin.skill.','servant.chiron.skill.'];
+    const slice=overlays.filter((card)=>prefixes.some((prefix)=>card.id.startsWith(prefix)));
+    expect(slice).toHaveLength(15);
+    expect(slice.every((card)=>card.source?.authority==='DEVELOPMENT_TEXT' && card.source.document==='Fate_Domination-开发版/batch_saber_archer.js' && card.source.sourceFileSha256==='b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4' && card.source.sourceText===card.printedText && card.source.sourceTextSha256===card.referencePrintedTextSha256)).toBe(true);
+    for(const id of ['servant.chiron.skill.sc-chiron-1','servant.robin.skill.sc-robin-1']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'independent_action_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.deon.skill.sc-deon-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'block_counter_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.musashi.skill.sc-musashi-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'growth_counter_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.robin.skill.sc-robin-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'poison_defeat_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1492,10 +1504,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 529,
-      blockedCount: 415,
+      sourceGroundedCount: 544,
+      blockedCount: 400,
       unclassifiedCount: 0,
-      structuredAbilityCount: 807,
+      structuredAbilityCount: 822,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

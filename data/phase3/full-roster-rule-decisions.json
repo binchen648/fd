@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 415,
-    "coveredBlockedIdentityCount": 415,
+    "blockedIdentityCount": 400,
+    "coveredBlockedIdentityCount": 400,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 1,
@@ -85,12 +85,6 @@
         "servant.carmilla.skill.sc-carmilla-1",
         "servant.carmilla.skill.sc-carmilla-2",
         "servant.carmilla.skill.sc-carmilla-3",
-        "servant.charlemagne.skill.sc-charlemagne-1",
-        "servant.charlemagne.skill.sc-charlemagne-2",
-        "servant.charlemagne.skill.sc-charlemagne-3",
-        "servant.chiron.skill.sc-chiron-1",
-        "servant.chiron.skill.sc-chiron-2",
-        "servant.chiron.skill.sc-chiron-3",
         "servant.chloe.skill.sc-chloe-2",
         "servant.chloe.skill.sc-chloe-3",
         "servant.clytie.skill.sc-clytie-1",
@@ -115,9 +109,6 @@
         "servant.danzou.skill.sc-danzou-2",
         "servant.danzou.skill.sc-danzou-3",
         "servant.darius.skill.sc-darius-4",
-        "servant.deon.skill.sc-deon-1",
-        "servant.deon.skill.sc-deon-2",
-        "servant.deon.skill.sc-deon-3",
         "servant.diarmuid.skill.sc-diarmuid-2",
         "servant.diarmuid.skill.sc-diarmuid-3",
         "servant.dioscuri.skill.sc-dioscuri-1",
@@ -301,9 +292,6 @@
         "servant.moriarty.skill.sc-moriarty-2",
         "servant.moriarty.skill.sc-moriarty-3",
         "servant.mozart.skill.sc-mozart-3",
-        "servant.musashi.skill.sc-musashi-1",
-        "servant.musashi.skill.sc-musashi-2",
-        "servant.musashi.skill.sc-musashi-3",
         "servant.napoleon.skill.sc-napoleon-3",
         "servant.nemo.skill.sc-nemo-1",
         "servant.nemo.skill.sc-nemo-2",
@@ -347,9 +335,6 @@
         "servant.raikou.skill.sc-raikou-2",
         "servant.raikou.skill.sc-raikou-3",
         "servant.roberts.skill.sc-roberts-3",
-        "servant.robin.skill.sc-robin-1",
-        "servant.robin.skill.sc-robin-2",
-        "servant.robin.skill.sc-robin-3",
         "servant.romulus.skill.sc-romulus-1",
         "servant.romulus.skill.sc-romulus-2",
         "servant.romulus.skill.sc-romulus-3",
@@ -1841,156 +1826,6 @@
           "sha256": "5844d8abb57abe99698958dc62416a9939910e7e92496492c253cf9decdd66d7"
         },
         {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/查理曼.htm"
-        },
-        {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.charlemagne/Charlemagne"
-        },
-        {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[26].skills[0].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[26].skills[0].text#line=2",
-          "sha256": "a2479f480b71ecf8055cbd87cfe32a2caf6d1d39ffb73a5544846a5424297989"
-        },
-        {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[26].skills[0].text#line=3",
-          "sha256": "8306f6db547778f123a22e278f20d4fffa2c659afd0a50f467e661b26b060f6f"
-        },
-        {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/查理曼.htm"
-        },
-        {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.charlemagne/Charlemagne"
-        },
-        {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[26].skills[1].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[26].skills[1].text#line=2",
-          "sha256": "1c0a6f5100e5213ed42e66e10834335fc821820434d134ecccbb27d1c2fc0ed5"
-        },
-        {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[26].skills[1].text#line=3",
-          "sha256": "7a26142322ee2014facc3a3a4c04690e554129e2691c04f6938e73c5e7fa74db"
-        },
-        {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/查理曼.htm"
-        },
-        {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.charlemagne/Charlemagne"
-        },
-        {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[26].skills[2].text#line=1",
-          "sha256": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2"
-        },
-        {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[26].skills[2].text#line=2",
-          "sha256": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85"
-        },
-        {
-          "abilityId": "servant.charlemagne.skill.sc-charlemagne-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[26].skills[2].text#line=3",
-          "sha256": "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
-        },
-        {
-          "abilityId": "servant.chiron.skill.sc-chiron-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/喀戎.htm"
-        },
-        {
-          "abilityId": "servant.chiron.skill.sc-chiron-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.chiron/喀戎"
-        },
-        {
-          "abilityId": "servant.chiron.skill.sc-chiron-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[38].skills[0].text#line=1",
-          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
-        },
-        {
-          "abilityId": "servant.chiron.skill.sc-chiron-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[38].skills[0].text#line=2",
-          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
-        },
-        {
-          "abilityId": "servant.chiron.skill.sc-chiron-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[38].skills[0].text#line=3",
-          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
-        },
-        {
-          "abilityId": "servant.chiron.skill.sc-chiron-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/喀戎.htm"
-        },
-        {
-          "abilityId": "servant.chiron.skill.sc-chiron-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.chiron/喀戎"
-        },
-        {
-          "abilityId": "servant.chiron.skill.sc-chiron-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[38].skills[1].text#line=1",
-          "sha256": "da3d85e00858c00e5b0b91c1fca5e89f84ac733c34b861142d0432c506e5df8e"
-        },
-        {
-          "abilityId": "servant.chiron.skill.sc-chiron-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/喀戎.htm"
-        },
-        {
-          "abilityId": "servant.chiron.skill.sc-chiron-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.chiron/喀戎"
-        },
-        {
-          "abilityId": "servant.chiron.skill.sc-chiron-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[38].skills[2].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.chiron.skill.sc-chiron-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[38].skills[2].text#line=2",
-          "sha256": "3845e0b4578c99a7e1bda8d4fa8f78b77ce97a102e928490e84a1c22104327f2"
-        },
-        {
           "abilityId": "servant.chloe.skill.sc-chloe-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/弓兵/英文版/克洛伊·冯·爱因兹贝伦1.htm"
@@ -2517,78 +2352,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[150].skills[3].text#line=1",
           "sha256": "bf13eb6e32a5443b49070de1ed27b71b247d29a9a44e712595cd7792bafd7ff6"
-        },
-        {
-          "abilityId": "servant.deon.skill.sc-deon-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/迪昂·德·鲍蒙.htm"
-        },
-        {
-          "abilityId": "servant.deon.skill.sc-deon-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.deon/迪昂·德·鲍蒙"
-        },
-        {
-          "abilityId": "servant.deon.skill.sc-deon-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[22].skills[0].text#line=1",
-          "sha256": "148c90a3d367463be3b77c6fe8e49e4d1e8267a42e9a600dec5b027a54d13191"
-        },
-        {
-          "abilityId": "servant.deon.skill.sc-deon-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[22].skills[0].text#line=2",
-          "sha256": "fffea60687e0fa6d525ff5fee9aa0894f8b62e797b819685dfeda4b3141eb368"
-        },
-        {
-          "abilityId": "servant.deon.skill.sc-deon-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/迪昂·德·鲍蒙.htm"
-        },
-        {
-          "abilityId": "servant.deon.skill.sc-deon-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.deon/迪昂·德·鲍蒙"
-        },
-        {
-          "abilityId": "servant.deon.skill.sc-deon-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[22].skills[1].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.deon.skill.sc-deon-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[22].skills[1].text#line=2",
-          "sha256": "8749c0e6aca31bb6019a93826b99c4fecb2f272028bec53ed7b7ba5d604a1745"
-        },
-        {
-          "abilityId": "servant.deon.skill.sc-deon-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[22].skills[1].text#line=3",
-          "sha256": "b7e2221194fc5ec78f59110fb02b3d16195586d3a1bf586acd368a920d0efeac"
-        },
-        {
-          "abilityId": "servant.deon.skill.sc-deon-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/迪昂·德·鲍蒙.htm"
-        },
-        {
-          "abilityId": "servant.deon.skill.sc-deon-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.deon/迪昂·德·鲍蒙"
-        },
-        {
-          "abilityId": "servant.deon.skill.sc-deon-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[22].skills[2].text#line=1",
-          "sha256": "06938f107c857be15ada8429d04eceb92ee30d5b61e02e6ceea0f27b34597f1e"
-        },
-        {
-          "abilityId": "servant.deon.skill.sc-deon-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[22].skills[2].text#line=2",
-          "sha256": "27f12a6864135cab01c76d44a82e0e3ff6e38d3aaae2332a8bf4ba2f95ea16f9"
         },
         {
           "abilityId": "servant.diarmuid.skill.sc-diarmuid-2",
@@ -6617,90 +6380,6 @@
           "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
         },
         {
-          "abilityId": "servant.musashi.skill.sc-musashi-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/宫本武藏1.htm"
-        },
-        {
-          "abilityId": "servant.musashi.skill.sc-musashi-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.musashi/宫本武藏"
-        },
-        {
-          "abilityId": "servant.musashi.skill.sc-musashi-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[24].skills[0].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.musashi.skill.sc-musashi-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[24].skills[0].text#line=2",
-          "sha256": "9155d7113ee42e5fadd5fa555b89f97308cbd495d11ae00b9bd224ed541a6390"
-        },
-        {
-          "abilityId": "servant.musashi.skill.sc-musashi-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/宫本武藏1.htm"
-        },
-        {
-          "abilityId": "servant.musashi.skill.sc-musashi-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.musashi/宫本武藏"
-        },
-        {
-          "abilityId": "servant.musashi.skill.sc-musashi-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[24].skills[1].text#line=1",
-          "sha256": "87cfb8c6c96478787a4953e6777a6547d0ff18374b8ce47967825356abb5ba03"
-        },
-        {
-          "abilityId": "servant.musashi.skill.sc-musashi-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[24].skills[1].text#line=2",
-          "sha256": "18de1be7ba9a95fff724ec3566eeb07a8ad5a29375f83a35a121291bd0932c97"
-        },
-        {
-          "abilityId": "servant.musashi.skill.sc-musashi-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[24].skills[1].text#line=3",
-          "sha256": "5de7c98fe45b0b97eb5a93b5c13a44c49d6bfc6c4fb5e22339d4fe59a7e6bab6"
-        },
-        {
-          "abilityId": "servant.musashi.skill.sc-musashi-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[24].skills[1].text#line=4",
-          "sha256": "63cfd2ddeeff4db18dd1f1827ca4bd3dd9f29b1d3d65d4d70050510d9c5f41e0"
-        },
-        {
-          "abilityId": "servant.musashi.skill.sc-musashi-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/宫本武藏1.htm"
-        },
-        {
-          "abilityId": "servant.musashi.skill.sc-musashi-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.musashi/宫本武藏"
-        },
-        {
-          "abilityId": "servant.musashi.skill.sc-musashi-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[24].skills[2].text#line=1",
-          "sha256": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2"
-        },
-        {
-          "abilityId": "servant.musashi.skill.sc-musashi-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[24].skills[2].text#line=2",
-          "sha256": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85"
-        },
-        {
-          "abilityId": "servant.musashi.skill.sc-musashi-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[24].skills[2].text#line=3",
-          "sha256": "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
-        },
-        {
           "abilityId": "servant.napoleon.skill.sc-napoleon-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/弓兵/英文版/拿破仑.htm"
@@ -7633,84 +7312,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[88].skills[2].text#line=2",
           "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
-        },
-        {
-          "abilityId": "servant.robin.skill.sc-robin-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/罗宾汉.htm"
-        },
-        {
-          "abilityId": "servant.robin.skill.sc-robin-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.robin/罗宾汉"
-        },
-        {
-          "abilityId": "servant.robin.skill.sc-robin-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[39].skills[0].text#line=1",
-          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
-        },
-        {
-          "abilityId": "servant.robin.skill.sc-robin-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[39].skills[0].text#line=2",
-          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
-        },
-        {
-          "abilityId": "servant.robin.skill.sc-robin-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[39].skills[0].text#line=3",
-          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
-        },
-        {
-          "abilityId": "servant.robin.skill.sc-robin-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/罗宾汉.htm"
-        },
-        {
-          "abilityId": "servant.robin.skill.sc-robin-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.robin/罗宾汉"
-        },
-        {
-          "abilityId": "servant.robin.skill.sc-robin-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[39].skills[1].text#line=1",
-          "sha256": "f2b05a1cc50b2b4b59d37598cb7e573278944c332c2fe79f400dba3de21451bb"
-        },
-        {
-          "abilityId": "servant.robin.skill.sc-robin-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[39].skills[1].text#line=2",
-          "sha256": "8499e02838cbcc1cd2d25fec54d16f75f134c99150045f26d55c7333ec71bdb2"
-        },
-        {
-          "abilityId": "servant.robin.skill.sc-robin-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/罗宾汉.htm"
-        },
-        {
-          "abilityId": "servant.robin.skill.sc-robin-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.robin/罗宾汉"
-        },
-        {
-          "abilityId": "servant.robin.skill.sc-robin-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[39].skills[2].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.robin.skill.sc-robin-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[39].skills[2].text#line=2",
-          "sha256": "4108894a006b109a3aa17ba2f4b5745199f22bb3d2ed15f8457d326287e87d4a"
-        },
-        {
-          "abilityId": "servant.robin.skill.sc-robin-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[39].skills[2].text#line=3",
-          "sha256": "09b0e1ef07c8fff79bc12a242c577473b585ff084342f1363540f82ace317f08"
         },
         {
           "abilityId": "servant.romulus.skill.sc-romulus-1",
@@ -9634,10 +9235,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 150,
-          "specific_handler": 265
+          "shared_handler": 144,
+          "specific_handler": 256
         },
-        "handlerCount": 296,
+        "handlerCount": 287,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."

@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=529
-blockedCount=415
+sourceGroundedCount=544
+blockedCount=400
 unclassifiedCount=0
-structuredAbilityCount=807
+structuredAbilityCount=822
 
 ## Axis Value Counts
 
@@ -260,7 +260,7 @@ structuredAbilityCount=807
 | target | `CHOOSE_EACH_PLAYER_OPTION` | 2 |
 | target | `CHOOSE_EACH_PLAYER_CARDS` | 1 |
 | target | `CHOOSE_N_EVENTS` | 1 |
-| effect | `GAIN_VICTORY_POINTS` | 45 |
+| effect | `GAIN_VICTORY_POINTS` | 47 |
 | effect | `GAIN_MANA` | 34 |
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
@@ -276,13 +276,13 @@ structuredAbilityCount=807
 | effect | `PLAY_SELECTED_CARDS` | 14 |
 | effect | `DEFEAT_PLAYER` | 13 |
 | effect | `SET_PLAYER_FLAG` | 12 |
+| effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 11 |
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
 | effect | `FOREIGN_LIFE_RULE` | 10 |
 | effect | `LOSE_MANA` | 10 |
 | effect | `ADJUST_COMMAND_SEALS` | 9 |
 | effect | `CYCLE_STATE_TRANSITION` | 9 |
 | effect | `DREAM_SUMMON_RULE` | 9 |
-| effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 9 |
 | effect | `SOURCE_CARD_POWER_BONUS` | 9 |
 | effect | `DEDUCTION_RULE` | 7 |
 | effect | `IF_CONDITION` | 7 |
@@ -319,6 +319,7 @@ structuredAbilityCount=807
 | effect | `EXILE_SOURCE_CARD` | 3 |
 | effect | `FOOD_RESOURCE_RULE` | 3 |
 | effect | `FORM_STATE_RULE` | 3 |
+| effect | `GROWTH_COUNTER_RULE` | 3 |
 | effect | `GUARD_RULE` | 3 |
 | effect | `MOVE_MATCHING_EVENTS` | 3 |
 | effect | `OVERLOAD_CARD_RULE` | 3 |
@@ -328,6 +329,7 @@ structuredAbilityCount=807
 | effect | `REINCARNATION_RULE` | 3 |
 | effect | `TRAINING_EXPERIENCE_RULE` | 3 |
 | effect | `VISITOR_CARD_RULE` | 3 |
+| effect | `BASE_CARD_EXCHANGE_RULE` | 2 |
 | effect | `BATCH_CARD_USE_RULE` | 2 |
 | effect | `CARGO_ACQUISITION_RULE` | 2 |
 | effect | `CARGO_BOX_RULE` | 2 |
@@ -342,7 +344,7 @@ structuredAbilityCount=807
 | effect | `FINISH_GAME` | 2 |
 | effect | `GEM_RESOURCE_RULE` | 2 |
 | effect | `GRANT_LINKED_ABILITY_TO_ATTRIBUTE_ATTACKS` | 2 |
-| effect | `GROWTH_COUNTER_RULE` | 2 |
+| effect | `INDEPENDENT_ACTION_RULE` | 2 |
 | effect | `INSTALL_ABILITY_RULE_MODIFIER` | 2 |
 | effect | `LINKED_PLAYER_BATTLE_REWARD` | 2 |
 | effect | `LOCATION_TOKEN_RULE` | 2 |
@@ -373,10 +375,10 @@ structuredAbilityCount=807
 | effect | `ADD_PLAYER_FLAG_NUMBER` | 1 |
 | effect | `ASTRONOMICAL_SPHERE_RULE` | 1 |
 | effect | `ATTACK_PLAY_COUNT_RULE` | 1 |
-| effect | `BASE_CARD_EXCHANGE_RULE` | 1 |
 | effect | `BEAST_RESOURCE_RULE` | 1 |
 | effect | `BETRAYAL_ASCENSION_RULE` | 1 |
 | effect | `BETRAYAL_THRESHOLD_RULE` | 1 |
+| effect | `BLOCK_COUNTER_RULE` | 1 |
 | effect | `BOUND_OPPONENT_RULE` | 1 |
 | effect | `CAPTURED_OPPONENT_RULE` | 1 |
 | effect | `CARD_CASE_ATTACHMENT_RULE` | 1 |
@@ -387,8 +389,11 @@ structuredAbilityCount=807
 | effect | `COLLAPSE_RANDOM_PLAY_RULE` | 1 |
 | effect | `COLOR_MARKER_RULE` | 1 |
 | effect | `COMMAND_SEAL_REPLACEMENT_RULE` | 1 |
+| effect | `CONCEALED_MODE_RULE` | 1 |
 | effect | `CONDITIONAL_MANA_FORFEIT_RULE` | 1 |
+| effect | `CONDITIONAL_PLAY_SURCHARGE_CLOSE_RULE` | 1 |
 | effect | `CONTROL_RESOURCE_TRANSFORM_RULE` | 1 |
+| effect | `COUNTER_THRESHOLD_POWER_RULE` | 1 |
 | effect | `CRAFT_ESSENCE_POOL_RULE` | 1 |
 | effect | `CURSE_BASIC_CARD_MODIFIER_RULE` | 1 |
 | effect | `CURSE_MANA_RECOVERY_RULE` | 1 |
@@ -400,11 +405,13 @@ structuredAbilityCount=807
 | effect | `DETECTIVE_ACCUSATION_RULE` | 1 |
 | effect | `DISCARD_LUCK_STATE_RULE` | 1 |
 | effect | `ENSURE_EVENT_DECK_COUNT` | 1 |
+| effect | `EVENT_ATTRIBUTE_INFUSION_RULE` | 1 |
 | effect | `EVENT_BATTLEFIELD_PENALTY` | 1 |
 | effect | `EVENT_CHALLENGE_ATTACK_MULTIPLIER_RULE` | 1 |
 | effect | `EVENT_POWER_COST_PROTECTION_RULE` | 1 |
 | effect | `EVENT_SUPPRESSION_RULE` | 1 |
 | effect | `FREE_PLAY_PERMISSION_RULE` | 1 |
+| effect | `GENDER_IDENTITY_HAND_DISCARD_RULE` | 1 |
 | effect | `GRANT_LINKED_ABILITY_TO_DEFINITION` | 1 |
 | effect | `GRANT_OPPONENT_ACTION_RULE` | 1 |
 | effect | `HEAVENS_HOLE_RULE` | 1 |
@@ -432,6 +439,7 @@ structuredAbilityCount=807
 | effect | `OTHER_ATTACK_POWER_BONUS` | 1 |
 | effect | `PAIN_CONVERSION_REWARD_RULE` | 1 |
 | effect | `PLAY_SOURCE_CARD` | 1 |
+| effect | `POISON_DEFEAT_RULE` | 1 |
 | effect | `REACTIVE_CARD_ACTION_RULE` | 1 |
 | effect | `REACTIVE_RESOURCE_RULE` | 1 |
 | effect | `RED_VERMILION_RULE` | 1 |
@@ -443,8 +451,10 @@ structuredAbilityCount=807
 | effect | `REPLACE_SELECTED_EVENT_FROM_DECK` | 1 |
 | effect | `RESET_SKILL_USAGE` | 1 |
 | effect | `ROSTER_REPLACEMENT_RULE` | 1 |
+| effect | `ROUND_COST_TERRAIN_EVENT_MULTIPLIER_RULE` | 1 |
 | effect | `SCHEDULED_DECK_REBUILD_RULE` | 1 |
 | effect | `SEED_ATTACHED_SUPPLY` | 1 |
+| effect | `SELF_PLAY_COST_RULE` | 1 |
 | effect | `SEQUESTER_RANDOM_INACTIVE_SERVANT_SKILL` | 1 |
 | effect | `SET_COMBAT_POWER` | 1 |
 | effect | `SET_SOURCE_CARD_COST_FOR_TRANSACTION` | 1 |
@@ -1223,12 +1233,12 @@ structuredAbilityCount=807
 | `servant.carmilla.skill.sc-carmilla-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.carmilla-fresh-blood` |
 | `servant.carmilla.skill.sc-carmilla-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.carmilla-immoral-suggestion` |
 | `servant.carmilla.skill.sc-carmilla-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.carmilla-phantom-maiden` |
-| `servant.charlemagne.skill.sc-charlemagne-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.charlemagne-joyeuse-ordre` |
-| `servant.charlemagne.skill.sc-charlemagne-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.charlemagne-charles-patricius` |
-| `servant.charlemagne.skill.sc-charlemagne-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
-| `servant.chiron.skill.sc-chiron-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
-| `servant.chiron.skill.sc-chiron-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.chiron.skill.sc-chiron-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.self-play-card` |
+| `servant.charlemagne.skill.sc-charlemagne-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_ATTRIBUTE_INFUSION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.charlemagne-joyeuse-ordre` |
+| `servant.charlemagne.skill.sc-charlemagne-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ROUND_COST_TERRAIN_EVENT_MULTIPLIER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.charlemagne-charles-patricius` |
+| `servant.charlemagne.skill.sc-charlemagne-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `SET_OPPONENT_ATTRIBUTE_POWER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
+| `servant.chiron.skill.sc-chiron-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
+| `servant.chiron.skill.sc-chiron-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `BASE_CARD_EXCHANGE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.chiron.skill.sc-chiron-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SELF_PLAY_COST_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.self-play-card` |
 | `servant.chloe.skill.sc-chloe-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `CONSTANT`, `METRIC`, `METRIC_COMPARE`, `SOURCE_ACTIVE` | `NONE` | `CHOOSE_N_CARDS`, `CHOOSE_ONE_CARD` | `CLOSE_SELECTED_CARD`, `IF_CONDITION`, `PLAY_SELECTED_CARDS` | `CHOOSE_N_CARDS`, `CHOOSE_ONE_CARD` | `duration:while_active` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:closedAttackIds`, `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |
 | `servant.chloe.skill.sc-chloe-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.chloe-projection-magic` |
 | `servant.chloe.skill.sc-chloe-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.chloe-kanshou-bakuya` |
@@ -1275,9 +1285,9 @@ structuredAbilityCount=807
 | `servant.davinci.skill.sc-davinci-7` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_POWER_BONUS` | `NONE` | `NONE` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.card-play` |
 | `servant.davinci.skill.sc-davinci-8` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ADJUST_COMMAND_SEALS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` |
 | `servant.davinci.skill.sc-davinci-9` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SHOP_AUCTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.davinci-package` |
-| `servant.deon.skill.sc-deon-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.deon-sword-dance` |
-| `servant.deon.skill.sc-deon-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.deon-fleur-de-lys` |
-| `servant.deon.skill.sc-deon-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.deon-self-suggestion` |
+| `servant.deon.skill.sc-deon-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CONDITIONAL_PLAY_SURCHARGE_CLOSE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.deon-sword-dance` |
+| `servant.deon.skill.sc-deon-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `BLOCK_COUNTER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.deon-fleur-de-lys` |
+| `servant.deon.skill.sc-deon-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GENDER_IDENTITY_HAND_DISCARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.deon-self-suggestion` |
 | `servant.diarmuid.skill.sc-diarmuid-1` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `combat.resolved` | `EVENT_LOCATION_EQUALS_CONTROLLER`, `EVENT_PLAYER_WON_COMBAT`, `PLAYER_FLAG_NUMBER_CURRENT_ROUND`, `SOURCE_ACTIVE`, `SOURCE_OWNED` | `NONE` | `NONE` | `CLEAR_PLAYER_FLAG`, `SEQUESTER_RANDOM_INACTIVE_SERVANT_SKILL`, `SET_PLAYER_FLAG` | `NONE` | `duration:this_round` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.structured-skill` |
 | `servant.diarmuid.skill.sc-diarmuid-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.diarmuid-red-rose` |
 | `servant.diarmuid.skill.sc-diarmuid-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
@@ -1537,9 +1547,9 @@ structuredAbilityCount=807
 | `servant.muramasa.skill.sc-muramasa-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REMOVED_CARD_MEMORY_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.muramasa.skill.sc-muramasa-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REMOVED_CARD_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.muramasa-imperfect-edge` |
 | `servant.muramasa.skill.sc-muramasa-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ATTRIBUTE_CHAIN_RULE`, `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
-| `servant.musashi.skill.sc-musashi-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.musashi-mastery` |
-| `servant.musashi.skill.sc-musashi-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.musashi-niten-ichiryu` |
-| `servant.musashi.skill.sc-musashi-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
+| `servant.musashi.skill.sc-musashi-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GROWTH_COUNTER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.musashi-mastery` |
+| `servant.musashi.skill.sc-musashi-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COUNTER_THRESHOLD_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.musashi-niten-ichiryu` |
+| `servant.musashi.skill.sc-musashi-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `SET_OPPONENT_ATTRIBUTE_POWER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
 | `servant.napoleon.skill.sc-napoleon-1` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `AT_BATTLEFIELD`, `CARD_COUNT_AT_LEAST`, `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_CARD` | `NONE` | `CHOOSE_ONE_CARD` | `cleanup:remain_active`, `duration:this_round` | `rule:combat_reward_distribution:replace`, `rule:combat_winner_inclusion:allow`, `rule:defeat:ignore` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:selectedInstanceIds` | `COMBAT_CONDITION`, `COMBAT_RULE_MODIFIER` | `core.structured-skill` |
 | `servant.napoleon.skill.sc-napoleon-2` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `ENGAGED_OPPONENT_VICTORY_POINTS_GREATER_THAN_CONTROLLER`, `SOURCE_ACTIVE` | `NONE` | `CHOOSE_ONE_CARD` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `CHOOSE_ONE_CARD` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |
 | `servant.napoleon.skill.sc-napoleon-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
@@ -1602,9 +1612,9 @@ structuredAbilityCount=807
 | `servant.roberts.skill.sc-roberts-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `AT_BATTLEFIELD`, `EVENT_COUNT_AT_LEAST`, `SOURCE_OWNED`, `TARGET_COUNT_AT_LEAST` | `MANA` | `CHOOSE_EACH_PLAYER_OPTION`, `CHOOSE_ONE_EVENT` | `ADD_STATUS`, `IF_CONDITION`, `REMOVE_STATUS`, `SET_PLAYER_FLAG` | `CHOOSE_EACH_PLAYER_OPTION`, `CHOOSE_ONE_EVENT` | `duration:this_round` | `NONE` | `NONE` | `payload:selectedEventIds` | `COMBAT_CONDITION` | `core.structured-skill` |
 | `servant.roberts.skill.sc-roberts-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `PLAYER_FLAG_NUMBER_CURRENT_ROUND`, `SOURCE_ACTIVE`, `SOURCE_OWNED` | `MANA` | `CHOOSE_ONE_LOCATION` | `RETURN_CARD_BY_DEFINITION` | `CHOOSE_ONE_LOCATION` | `NONE` | `NONE` | `FACE_UP`, `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.roberts.skill.sc-roberts-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
-| `servant.robin.skill.sc-robin-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
-| `servant.robin.skill.sc-robin-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.robin.skill.sc-robin-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.robin-prayer-bow` |
+| `servant.robin.skill.sc-robin-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
+| `servant.robin.skill.sc-robin-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CONCEALED_MODE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.robin.skill.sc-robin-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `POISON_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.robin-prayer-bow` |
 | `servant.romulus.skill.sc-romulus-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.romulus-moles-necessrie` |
 | `servant.romulus.skill.sc-romulus-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.romulus-magna-voluisse-magnum` |
 | `servant.romulus.skill.sc-romulus-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
