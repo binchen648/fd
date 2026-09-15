@@ -15226,6 +15226,975 @@
           }
         }
       ]
+    },
+    {
+      "id": "master.akiha.skill.s1",
+      "printedText": "你每回合可以从与你位于同一战场且拥有6点及以上魔力的对手处各花费1点魔力（用于出牌、使用能力等）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akiha.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你每回合可以从与你位于同一战场且拥有6点及以上魔力的对手处各花费1点魔力（用于出牌、使用能力等）。",
+        "sourceTextSha256": "8d914a116165892d626d13a63cc0c72d4e991ba98cffc7e6a293888194d8be65"
+      },
+      "abilities": [
+        {
+          "id": "akiha.cage-hair.borrow-mana",
+          "printedClause": "Borrow up to 1 mana per eligible co-located opponent each round for card or ability costs.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "opponent_mana_borrow_rule",
+              "amountPerOpponentPerRound": 1,
+              "opponentManaMinimum": 6,
+              "scope": "opponents_same_battlefield",
+              "allowedSpendKinds": [
+                "card",
+                "ability"
+              ]
+            }
+          ],
+          "lifecycle": {
+            "reset": "round"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "8d914a116165892d626d13a63cc0c72d4e991ba98cffc7e6a293888194d8be65"
+    },
+    {
+      "id": "master.akiha.skill.s1a",
+      "printedText": "每当你花费魔力时，获得等量的【杀戮冲动】并根据其数量获得相应效果。战斗阶段结束后，你随机失去1-3点【杀戮冲动】，若你位于魔术工房则将失去值翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akiha.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "每当你花费魔力时，获得等量的【杀戮冲动】并根据其数量获得相应效果。战斗阶段结束后，你随机失去1-3点【杀戮冲动】，若你位于魔术工房则将失去值翻倍。",
+        "sourceTextSha256": "ab4b6b781da8952895b0c82c0e8ec5fec5251d41112c86813f18c09029cb5329"
+      },
+      "abilities": [
+        {
+          "id": "akiha.murder-impulse.gain",
+          "printedClause": "Gain Murder Impulse equal to mana spent.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.mana.spent"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "murder_impulse_rule",
+              "operation": "gain_equal_to_event_amount"
+            }
+          ]
+        },
+        {
+          "id": "akiha.murder-impulse.decay",
+          "printedClause": "After battle phase lose 1-3 Murder Impulse at random, doubled in Workshop.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "phase.ended"
+            },
+            {
+              "type": "event_phase_is",
+              "phase": "battle"
+            }
+          ],
+          "effects": [
+            {
+              "type": "murder_impulse_rule",
+              "operation": "random_decay",
+              "min": 1,
+              "max": 3,
+              "workshopMultiplier": 2
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ab4b6b781da8952895b0c82c0e8ec5fec5251d41112c86813f18c09029cb5329"
+    },
+    {
+      "id": "master.akiha.skill.s2",
+      "printedText": "人格反转-你的【杀戮冲动】永远为15点，你失去所有令咒。你获得的战果点数减半（向下取整），获得的魔力翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akiha.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "人格反转-你的【杀戮冲动】永远为15点，你失去所有令咒。你获得的战果点数减半（向下取整），获得的魔力翻倍。",
+        "sourceTextSha256": "628d975c0ff7e670b260ba420b663635660010b167e441051c5d226d1f616184"
+      },
+      "abilities": [
+        {
+          "id": "akiha.red-vermilion.state",
+          "printedClause": "Red Vermilion fixes Murder Impulse at 15, removes command seals, halves VP gains, and doubles mana gains.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "red_vermilion_rule",
+              "murderImpulse": 15,
+              "commandSeals": 0,
+              "victoryPointGainMode": "floor_half",
+              "manaGainMultiplier": 2
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "628d975c0ff7e670b260ba420b663635660010b167e441051c5d226d1f616184"
+    },
+    {
+      "id": "master.akiha.skill.s3",
+      "printedText": "<5：行动阶段：获得1点魔力，+2合计威力和3点【杀戮冲动】，你本回合无法失去【杀戮冲动】。\n5+：你的技能攻击被激活时+1威力。\n10+：你拥有的魔力少于8点也可以打出技能牌。\n15+：回合结束时，将【远野秋叶】转换为【红赤朱】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akiha.s3",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "<5：行动阶段：获得1点魔力，+2合计威力和3点【杀戮冲动】，你本回合无法失去【杀戮冲动】。\n5+：你的技能攻击被激活时+1威力。\n10+：你拥有的魔力少于8点也可以打出技能牌。\n15+：回合结束时，将【远野秋叶】转换为【红赤朱】。",
+        "sourceTextSha256": "1acb8172f1c06b43768fe93757f2826436dd81f8469400d4766f919ec170ee7b"
+      },
+      "abilities": [
+        {
+          "id": "akiha.murder-impulse.low-action",
+          "printedClause": "Below 5 Murder Impulse, action grants mana, total power, and Murder Impulse and prevents impulse loss this round.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "conditions": [
+            {
+              "type": "murder_impulse_compare",
+              "operator": "<",
+              "value": 5
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_mana",
+              "amount": 1
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "controller_total",
+              "amount": 2
+            },
+            {
+              "type": "murder_impulse_rule",
+              "operation": "gain_and_prevent_loss",
+              "amount": 3,
+              "duration": "round"
+            }
+          ],
+          "lifecycle": {
+            "duration": "round"
+          }
+        },
+        {
+          "id": "akiha.murder-impulse.thresholds",
+          "printedClause": "Murder Impulse thresholds modify skill power, skill-card play permission, and transform Akiha at 15.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "murder_impulse_threshold_rule",
+              "thresholds": [
+                {
+                  "value": 5,
+                  "effect": "activated_skill_attacks_power_plus_1"
+                },
+                {
+                  "value": 10,
+                  "effect": "allow_skill_cards_below_8_mana"
+                },
+                {
+                  "value": 15,
+                  "effect": "transform_to_red_vermilion_at_round_end"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "1acb8172f1c06b43768fe93757f2826436dd81f8469400d4766f919ec170ee7b"
+    },
+    {
+      "id": "master.akiha.skill.ascension",
+      "printedText": "（将此牌加入你的技能区）\n红赤休术-被动：若你是红赤朱，此牌+3魔力消耗且+4威力。\n掠夺-若你是远野秋叶，被你偷取魔力用于打出此牌的玩家-3合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_akiha.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（将此牌加入你的技能区）\n红赤休术-被动：若你是红赤朱，此牌+3魔力消耗且+4威力。\n掠夺-若你是远野秋叶，被你偷取魔力用于打出此牌的玩家-3合计威力。",
+        "sourceTextSha256": "a5a399bf77932b9b834c3d20a54fa126e0290f6d911ff6680f0cdc8a581d357c"
+      },
+      "abilities": [
+        {
+          "id": "akiha.brilliant-fantasy.state-and-attribution",
+          "printedClause": "Red Vermilion increases this card cost and power; as Akiha, stolen mana used for this card penalizes the source player.",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "source_card_mana_cost",
+              "operation": "add",
+              "amount": 3,
+              "condition": "controller_is_red_vermilion"
+            },
+            {
+              "rule": "source_card_power",
+              "operation": "add",
+              "amount": 4,
+              "condition": "controller_is_red_vermilion"
+            }
+          ],
+          "effects": [
+            {
+              "type": "stolen_mana_attribution_rule",
+              "condition": "controller_is_akiha",
+              "usage": "used_to_play_source_card",
+              "sourcePlayerTotalPowerDelta": -3
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "a5a399bf77932b9b834c3d20a54fa126e0290f6d911ff6680f0cdc8a581d357c"
+    },
+    {
+      "id": "master.kiara.skill.s1",
+      "printedText": "游戏开始时将6张【秘密花园】依轮次随机暗置于其他玩家处。他们可查看自己的【秘密花园】。在游戏第八回合结束后激活【天堂之孔】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kiara.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时将6张【秘密花园】依轮次随机暗置于其他玩家处。他们可查看自己的【秘密花园】。在游戏第八回合结束后激活【天堂之孔】。",
+        "sourceTextSha256": "20ac8e17fd9e6afafe9ae4a68a1b06dfd43819faba8793cf7371a276b8b78096"
+      },
+      "abilities": [
+        {
+          "id": "kiara.setup.secret-gardens-and-heavens-hole",
+          "printedClause": "Distribute six hidden Secret Gardens at setup and activate Heaven’s Hole after round 8.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "secret_garden_rule",
+              "operation": "distribute_at_game_start",
+              "count": 6,
+              "scope": "other_players_by_turn_order",
+              "face": "down",
+              "ownerCanInspect": true
+            },
+            {
+              "type": "schedule_phase_effect",
+              "timing": "after_round_8_end",
+              "effects": [
+                {
+                  "type": "activate_card_by_id",
+                  "cardId": "master.kiara.skill.s3"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "20ac8e17fd9e6afafe9ae4a68a1b06dfd43819faba8793cf7371a276b8b78096"
+    },
+    {
+      "id": "master.kiara.skill.s1a",
+      "printedText": "当你输给一位拥有暗置【秘密花园】的对手时，展示其一张【秘密花园】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kiara.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你输给一位拥有暗置【秘密花园】的对手时，展示其一张【秘密花园】。",
+        "sourceTextSha256": "f7b03df5656d69aca30f0fbfb5aa2752ed70c70db59be0287b6735f06efb04b8"
+      },
+      "abilities": [
+        {
+          "id": "kiara.five-stillness.reveal-on-loss",
+          "printedClause": "On losing to an opponent with a hidden Secret Garden, reveal one of theirs.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_lost_combat"
+            },
+            {
+              "type": "opponent_has_hidden_secret_garden"
+            }
+          ],
+          "effects": [
+            {
+              "type": "secret_garden_rule",
+              "operation": "reveal_one_from_opponent"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f7b03df5656d69aca30f0fbfb5aa2752ed70c70db59be0287b6735f06efb04b8"
+    },
+    {
+      "id": "master.kiara.skill.s2",
+      "printedText": "【无限的恐惧】战果3：当【钻石领域】放置入场时，展示此牌。当【钻石领域】打出时，杀生院以外的玩家抽3张牌。当此牌因【五停心观】展开时，若杀生院本回合未进行移动，其获得3点战果。\n【征服欲】战果2：当【此世全部之欲】放置入场时，展示此牌。【此世全部之欲】的威力-6。当此牌因【五停心观】展开时，若杀生院本回合未进行移动，其获得2点战果。\n【控制欲】战果2：当【此世全部之欲】放置入场时，展示此牌。当玩家移动至杀生院所在的地点时，【此世全部之欲】不触发效果。当此牌因【五停心观】展开时，若杀生院本回合未进行移动，其获得2点战果。\n【过往的遗憾】战果1：当【胎藏界】放置入场时，展示此牌。【胎藏界】无法在其打出的时候弃置事件牌。当此牌因【五停心观】展开时，若杀生院本回合未进行移动，其获得1点战果。\n【逃避现实】战果1：当【胎藏界】放置入场时，展示此牌。【胎藏界】无法在行动阶段开始时弃置事件牌。当此牌因【五停心观】展开时，若杀生院本回合未进行移动，其获得1点战果。\n【未来的恐惧】战果1：当【胎藏界】放置入场时，展示此牌。【胎藏界】无法在战斗阶段开始时弃置事件牌。当此牌因【五停心观】展开时，若杀生院本回合未进行移动，其获得1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kiara.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【无限的恐惧】战果3：当【钻石领域】放置入场时，展示此牌。当【钻石领域】打出时，杀生院以外的玩家抽3张牌。当此牌因【五停心观】展开时，若杀生院本回合未进行移动，其获得3点战果。\n【征服欲】战果2：当【此世全部之欲】放置入场时，展示此牌。【此世全部之欲】的威力-6。当此牌因【五停心观】展开时，若杀生院本回合未进行移动，其获得2点战果。\n【控制欲】战果2：当【此世全部之欲】放置入场时，展示此牌。当玩家移动至杀生院所在的地点时，【此世全部之欲】不触发效果。当此牌因【五停心观】展开时，若杀生院本回合未进行移动，其获得2点战果。\n【过往的遗憾】战果1：当【胎藏界】放置入场时，展示此牌。【胎藏界】无法在其打出的时候弃置事件牌。当此牌因【五停心观】展开时，若杀生院本回合未进行移动，其获得1点战果。\n【逃避现实】战果1：当【胎藏界】放置入场时，展示此牌。【胎藏界】无法在行动阶段开始时弃置事件牌。当此牌因【五停心观】展开时，若杀生院本回合未进行移动，其获得1点战果。\n【未来的恐惧】战果1：当【胎藏界】放置入场时，展示此牌。【胎藏界】无法在战斗阶段开始时弃置事件牌。当此牌因【五停心观】展开时，若杀生院本回合未进行移动，其获得1点战果。",
+        "sourceTextSha256": "35626777eb393713a146cb145377d0caf1cc05a54c863bd4d30bd31427f50ad6"
+      },
+      "abilities": [
+        {
+          "id": "kiara.secret-garden.catalogue",
+          "printedClause": "Six Secret Garden variants bind to Heaven’s Hole cards and grant reveal rewards when Kiara did not move.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "secret_garden_rule",
+              "operation": "variant_catalogue",
+              "variants": [
+                {
+                  "name": "无限的恐惧",
+                  "vp": 3,
+                  "bind": "钻石领域",
+                  "onPlay": "non_kiara_players_draw_3"
+                },
+                {
+                  "name": "征服欲",
+                  "vp": 2,
+                  "bind": "此世全部之欲",
+                  "modifier": "bound_card_power_minus_6"
+                },
+                {
+                  "name": "控制欲",
+                  "vp": 2,
+                  "bind": "此世全部之欲",
+                  "modifier": "suppress_bound_card_on_move_to_kiara"
+                },
+                {
+                  "name": "过往的遗憾",
+                  "vp": 1,
+                  "bind": "胎藏界",
+                  "modifier": "cannot_discard_event_on_play"
+                },
+                {
+                  "name": "逃避现实",
+                  "vp": 1,
+                  "bind": "胎藏界",
+                  "modifier": "cannot_discard_event_at_action_start"
+                },
+                {
+                  "name": "未来的恐惧",
+                  "vp": 1,
+                  "bind": "胎藏界",
+                  "modifier": "cannot_discard_event_at_battle_start"
+                }
+              ],
+              "revealRewardCondition": "revealed_by_five_stillness_and_kiara_did_not_move",
+              "revealReward": "gain_variant_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "35626777eb393713a146cb145377d0caf1cc05a54c863bd4d30bd31427f50ad6"
+    },
+    {
+      "id": "master.kiara.skill.s3",
+      "printedText": "移除任意数量的技能牌，然后将【胎藏界】【钻石领域】【此世全部之欲】补充至你的技能区达到3个技能。你在准备阶段即进行你的前哨及行动阶段。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kiara.s3",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "移除任意数量的技能牌，然后将【胎藏界】【钻石领域】【此世全部之欲】补充至你的技能区达到3个技能。你在准备阶段即进行你的前哨及行动阶段。",
+        "sourceTextSha256": "ddcba11438db47706a007cfeed838fed94d5001f1bd1541724aa3ce85e15d038"
+      },
+      "abilities": [
+        {
+          "id": "kiara.heavens-hole.activate",
+          "printedClause": "Remove any number of skill cards, refill Heaven’s Hole trio to three skills, and compress outpost/action into preparation.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "heavens_hole_rule",
+              "operation": "activate",
+              "removeSkills": "any_number",
+              "refillCardIds": [
+                "master.kiara.skill.s4",
+                "master.kiara.skill.s5",
+                "master.kiara.skill.s6"
+              ],
+              "targetSkillCount": 3,
+              "phaseCompression": "preparation_includes_outpost_and_action"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ddcba11438db47706a007cfeed838fed94d5001f1bd1541724aa3ce85e15d038"
+    },
+    {
+      "id": "master.kiara.skill.s4",
+      "printedText": "当你打出此牌时，下个玩家行动阶段开始时，战斗阶段开始时，你可以弃置一张事件牌，然后抽一新事件牌代替。获得你因此能力弃置的所有事件牌战果数的合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kiara.s4",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你打出此牌时，下个玩家行动阶段开始时，战斗阶段开始时，你可以弃置一张事件牌，然后抽一新事件牌代替。获得你因此能力弃置的所有事件牌战果数的合计威力。",
+        "sourceTextSha256": "3ff9a92b83c821029f4c0987fa757e1bbaa4f14743a7b05f5886e479b223ae5e"
+      },
+      "abilities": [
+        {
+          "id": "kiara.womb-realm.event-replacement",
+          "printedClause": "After play, at next player action start and battle start, may replace one event and gain power from discarded event VP.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "source_card_was_played"
+            }
+          ],
+          "effects": [
+            {
+              "type": "event_card_rule",
+              "operation": "optional_discard_and_draw_replacement",
+              "timings": [
+                "next_player_action_start",
+                "battle_start"
+              ],
+              "count": 1,
+              "resultVar": "discardedEventVpTotal"
+            },
+            {
+              "type": "source_card_power_bonus",
+              "amountFormula": "discardedEventVpTotal"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "3ff9a92b83c821029f4c0987fa757e1bbaa4f14743a7b05f5886e479b223ae5e"
+    },
+    {
+      "id": "master.kiara.skill.s5",
+      "printedText": "残留：玩家们无法通过【无限的恐惧】以外的方式抽牌。玩家们每回合可以打少于两张牌。\n当你【败北】时，此牌威力-5，且你无视【败北】与相应效果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kiara.s5",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "残留：玩家们无法通过【无限的恐惧】以外的方式抽牌。玩家们每回合可以打少于两张牌。\n当你【败北】时，此牌威力-5，且你无视【败北】与相应效果。",
+        "sourceTextSha256": "0a32df7f7f2c18326ce6ea93fe94ec388116e3e399af969950136f333b7d61a6"
+      },
+      "abilities": [
+        {
+          "id": "kiara.diamond-realm.residual-and-defeat",
+          "printedClause": "Residual draw/play restrictions apply; on defeat reduce source power by 5 and ignore defeat and its effects.",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "draw_permission",
+              "operation": "deny_except",
+              "exception": "secret_garden_infinite_fear"
+            },
+            {
+              "rule": "cards_played_per_round",
+              "operation": "set_maximum",
+              "value": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "defeat_override_rule",
+              "operation": "on_controller_defeat",
+              "sourceCardPowerDelta": -5,
+              "ignoreDefeat": true,
+              "ignoreDefeatEffects": true
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_active"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "0a32df7f7f2c18326ce6ea93fe94ec388116e3e399af969950136f333b7d61a6"
+    },
+    {
+      "id": "master.kiara.skill.s6",
+      "printedText": "当玩家部署于你所在的地点将移除游戏他们的一张【秘密花园】，如果他们无法移除则【败北】。当有玩家移动至你所在的地点，将弃置他们的所有手牌，如果他们弃置的手牌数低于3张则【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kiara.s6",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当玩家部署于你所在的地点将移除游戏他们的一张【秘密花园】，如果他们无法移除则【败北】。当有玩家移动至你所在的地点，将弃置他们的所有手牌，如果他们弃置的手牌数低于3张则【败北】。",
+        "sourceTextSha256": "2a493d54da17e1efeb3fabf6feac8e9f09ca3ed2d989d81e5aee066b5b95954b"
+      },
+      "abilities": [
+        {
+          "id": "kiara.all-world-desire.deployment",
+          "printedClause": "Opponent deploying to Kiara location must remove one Secret Garden or be defeated.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.deployed"
+            },
+            {
+              "type": "event_player_is_opponent"
+            },
+            {
+              "type": "event_location_equals_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "secret_garden_rule",
+              "operation": "remove_one_or_defeat_event_player"
+            }
+          ]
+        },
+        {
+          "id": "kiara.all-world-desire.movement",
+          "printedClause": "Opponent moving to Kiara location discards all hand; if fewer than three were discarded, defeat that player.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.moved"
+            },
+            {
+              "type": "event_player_is_opponent"
+            },
+            {
+              "type": "event_location_equals_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "sourceZone": "event_player_hand",
+              "destination": "event_player_discard",
+              "filter": "all",
+              "resultVar": "discardedCount"
+            },
+            {
+              "type": "defeat_player",
+              "target": "event_player",
+              "condition": {
+                "type": "result_count_compare",
+                "resultVar": "discardedCount",
+                "operator": "<",
+                "value": 3
+              }
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "2a493d54da17e1efeb3fabf6feac8e9f09ca3ed2d989d81e5aee066b5b95954b"
+    },
+    {
+      "id": "master.kiara.skill.ascension",
+      "printedText": "解锁此技能后，立即移除一张【秘密花园】并获得4点战果。当你激活【天堂之孔】时，莎士比亚的技能不计入你拥有的技能，不占用技能位。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kiara.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "解锁此技能后，立即移除一张【秘密花园】并获得4点战果。当你激活【天堂之孔】时，莎士比亚的技能不计入你拥有的技能，不占用技能位。",
+        "sourceTextSha256": "8d3fc63281f3ae66acdcd29679b37f1cc510c1f6ec4e7b046e9c72dd6c78115e"
+      },
+      "abilities": [
+        {
+          "id": "kiara.demonic-bodhisattva.unlock",
+          "printedClause": "On unlock remove a Secret Garden and gain 4 VP; Shakespeare skills do not consume slots while Heaven’s Hole is active.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "secret_garden_rule",
+              "operation": "remove_one_on_unlock"
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 4
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "skill_slot_count",
+              "operation": "exempt",
+              "filter": "shakespeare_skills",
+              "condition": "heavens_hole_active"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8d3fc63281f3ae66acdcd29679b37f1cc510c1f6ec4e7b046e9c72dd6c78115e"
+    },
+    {
+      "id": "master.fujino.skill.s1",
+      "printedText": "将一张【歪曲之魔眼】加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fujino.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "将一张【歪曲之魔眼】加入你的技能区。",
+        "sourceTextSha256": "56df7da12a24eda99ea20c6daa55a387f0521f1651986c1797bb735882d8fdee"
+      },
+      "abilities": [
+        {
+          "id": "fujino.asagami-heir.add-distortion-eye",
+          "printedClause": "Add Distortion Mystic Eyes to the skill zone.",
+          "kind": "passive",
+          "creates": [
+            {
+              "type": "card",
+              "definitionId": "master.fujino.skill.s3",
+              "destination": "skill_zone"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "56df7da12a24eda99ea20c6daa55a387f0521f1651986c1797bb735882d8fdee"
+    },
+    {
+      "id": "master.fujino.skill.s1a",
+      "printedText": "战斗阶段，若你位于战场，随机抽取2张【创伤】，获得其中一张并将另一张洗回【创伤】牌堆。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fujino.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "战斗阶段，若你位于战场，随机抽取2张【创伤】，获得其中一张并将另一张洗回【创伤】牌堆。",
+        "sourceTextSha256": "fb2e22ace2e16d5e034888147fc96581a8ed47d97eeae3b91246095210104e29"
+      },
+      "abilities": [
+        {
+          "id": "fujino.analgesia.trauma-draw",
+          "printedClause": "During battle while on a battlefield, draw two Trauma, keep one, and shuffle the other back.",
+          "kind": "triggered",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "controller_on_battlefield"
+            }
+          ],
+          "effects": [
+            {
+              "type": "trauma_deck_rule",
+              "operation": "draw_two_keep_one_return_other",
+              "drawCount": 2,
+              "keepCount": 1
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "fb2e22ace2e16d5e034888147fc96581a8ed47d97eeae3b91246095210104e29"
+    },
+    {
+      "id": "master.fujino.skill.s2",
+      "printedText": "从魔术工房指向深山町的移动箭头改为指向新都，从新都的改为指向深山町，从深山町的改为指向侦查。（同时更改相邻地点关系）\n修复-任何阶段：关闭【扭曲空间】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fujino.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "从魔术工房指向深山町的移动箭头改为指向新都，从新都的改为指向深山町，从深山町的改为指向侦查。（同时更改相邻地点关系）\n修复-任何阶段：关闭【扭曲空间】。",
+        "sourceTextSha256": "c0e62bd607655968d85d8d5943cce7b886e3636ff709e347d6f35b3f82ef0cf1"
+      },
+      "abilities": [
+        {
+          "id": "fujino.distorted-space.map-rewrite",
+          "printedClause": "Rewrite three movement arrows and adjacency while active.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "map_arrow_rewrite_rule",
+              "operation": "rewrite",
+              "changes": [
+                [
+                  "workshop",
+                  "shinto",
+                  "city"
+                ],
+                [
+                  "city",
+                  "workshop",
+                  "shinto"
+                ],
+                [
+                  "shinto",
+                  "city",
+                  "scouting"
+                ]
+              ],
+              "changesAdjacency": true
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_active"
+          }
+        },
+        {
+          "id": "fujino.distorted-space.repair",
+          "printedClause": "Any phase: close Distorted Space.",
+          "kind": "phase_action",
+          "activation": {
+            "phases": [
+              "preparation",
+              "outpost",
+              "action",
+              "combat"
+            ]
+          },
+          "effects": [
+            {
+              "type": "close_source_card"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c0e62bd607655968d85d8d5943cce7b886e3636ff709e347d6f35b3f82ef0cf1"
+    },
+    {
+      "id": "master.fujino.skill.s3",
+      "printedText": "此牌需追加打出。\n歪曲吧！-行动阶段：激活【扭曲空间】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fujino.s3",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌需追加打出。\n歪曲吧！-行动阶段：激活【扭曲空间】。",
+        "sourceTextSha256": "fc6365260dda2eb479f29c225a869d2571fb48a4ed8eb19ca9ca5408544f88d1"
+      },
+      "abilities": [
+        {
+          "id": "fujino.distortion-eye.activate-space",
+          "printedClause": "This card must be additional; during action activate Distorted Space.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mode",
+              "operation": "require_additional"
+            }
+          ],
+          "effects": [
+            {
+              "type": "activate_card_by_id",
+              "cardId": "master.fujino.skill.s2"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "fc6365260dda2eb479f29c225a869d2571fb48a4ed8eb19ca9ca5408544f88d1"
+    },
+    {
+      "id": "master.fujino.skill.s4",
+      "printedText": "【创伤【头部】】获得此牌时，立即随机弃置一张手牌。行动阶段开始时，随机弃置一张手牌。\n【创伤【肩部】】你的基础攻击威力-1。\n【创伤【胃部】】+2的魔术工房与+3的地利位置对你视为已被占领，无法部署。\n【创伤【腕部】】当你使用令咒时，失去1点战果。\n【创伤【腿部】】当你于你的回合移动后，失去1点魔力。\n【创伤【脊椎】】将【歪曲之魔眼】加入你的攻击，然后将牌堆中剩余的【创伤】移除游戏并将所有已有的【创伤】切换为【痛觉】。\n【痛觉】唯一：战斗结束后，弃置一张【痛觉】。失控-你的技能魔力消耗-1。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fujino.s4",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【创伤【头部】】获得此牌时，立即随机弃置一张手牌。行动阶段开始时，随机弃置一张手牌。\n【创伤【肩部】】你的基础攻击威力-1。\n【创伤【胃部】】+2的魔术工房与+3的地利位置对你视为已被占领，无法部署。\n【创伤【腕部】】当你使用令咒时，失去1点战果。\n【创伤【腿部】】当你于你的回合移动后，失去1点魔力。\n【创伤【脊椎】】将【歪曲之魔眼】加入你的攻击，然后将牌堆中剩余的【创伤】移除游戏并将所有已有的【创伤】切换为【痛觉】。\n【痛觉】唯一：战斗结束后，弃置一张【痛觉】。失控-你的技能魔力消耗-1。",
+        "sourceTextSha256": "984bb7fc240abf5493db1107da1edc7acdf9e856617a8e01370bb0dc3fb945f7"
+      },
+      "abilities": [
+        {
+          "id": "fujino.trauma.head",
+          "printedClause": "Head trauma causes random hand discard on acquisition and action start.",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "sourceZone": "hand",
+              "destination": "discard",
+              "selection": "random",
+              "count": 1,
+              "trigger": [
+                "on_acquire",
+                "action_start"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fujino.trauma.shoulder",
+          "printedClause": "Shoulder trauma gives base attacks -1 power.",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "base_attack_power",
+              "operation": "add",
+              "amount": -1
+            }
+          ]
+        },
+        {
+          "id": "fujino.trauma.stomach",
+          "printedClause": "Stomach trauma blocks deployment to high-advantage Workshop and terrain positions.",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "deployment_permission",
+              "operation": "deny",
+              "filter": "workshop_plus_2_or_terrain_plus_3"
+            }
+          ]
+        },
+        {
+          "id": "fujino.trauma.arm",
+          "printedClause": "Arm trauma loses 1 VP when a command seal is used.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "command-seal.spent"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "fujino.trauma.leg",
+          "printedClause": "Leg trauma loses 1 mana after moving on your turn.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.moved"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "controller_turn"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_mana",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "fujino.trauma.spine",
+          "printedClause": "Spine trauma adds Distortion Mystic Eyes to attack, removes remaining Trauma deck, and converts held Trauma to Pain.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "source_variant_is",
+              "variant": "spine"
+            },
+            {
+              "type": "on_acquire"
+            }
+          ],
+          "effects": [
+            {
+              "type": "trauma_state_rule",
+              "operation": "spine_transition",
+              "addCardToAttack": "master.fujino.skill.s3",
+              "removeRemainingTraumaDeck": true,
+              "convertHeldTraumaTo": "pain"
+            }
+          ]
+        },
+        {
+          "id": "fujino.trauma.pain",
+          "printedClause": "Pain is unique; discard one after battle and skill mana costs are reduced by 1 while Pain applies.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "trauma_state_rule",
+              "operation": "discard_one_pain_after_battle"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "skill_card_mana_cost",
+              "operation": "add",
+              "amount": -1
+            }
+          ],
+          "lifecycle": {
+            "uniqueness": "unique"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "984bb7fc240abf5493db1107da1edc7acdf9e856617a8e01370bb0dc3fb945f7"
+    },
+    {
+      "id": "master.fujino.skill.ascension",
+      "printedText": "解锁此技能时，将一张【歪曲之魔眼】的复制加入你的技能区。\n当你因获得【创伤【脊椎】】切换【痛觉】且所有【痛觉】被弃置之后，获得4点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fujino.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "解锁此技能时，将一张【歪曲之魔眼】的复制加入你的技能区。\n当你因获得【创伤【脊椎】】切换【痛觉】且所有【痛觉】被弃置之后，获得4点战果。",
+        "sourceTextSha256": "b8a4dcaa3cc7b6e569966a51f5bec5f39dded7df0cb4cf466fa26708c3fb1bfe"
+      },
+      "abilities": [
+        {
+          "id": "fujino.pain-remnant.copy-eye",
+          "printedClause": "On unlock add a copy of Distortion Mystic Eyes to the skill zone.",
+          "kind": "passive",
+          "creates": [
+            {
+              "type": "card",
+              "definitionId": "master.fujino.skill.s3",
+              "destination": "skill_zone",
+              "copy": true
+            }
+          ]
+        },
+        {
+          "id": "fujino.pain-remnant.reward",
+          "printedClause": "After spine conversion, when all Pain has been discarded, gain 4 VP.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "all_pain_discarded_after_spine_conversion"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 4
+            },
+            {
+              "type": "pain_conversion_reward_rule",
+              "operation": "gate_reward_after_spine_conversion"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b8a4dcaa3cc7b6e569966a51f5bec5f39dded7df0cb4cf466fa26708c3fb1bfe"
     }
   ]
 }

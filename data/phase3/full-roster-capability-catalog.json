@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 329,
-    "explicitBlockCount": 615,
+    "contractMappedCount": 348,
+    "explicitBlockCount": 596,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 190,
-      "SPECIAL_HANDLER_CANDIDATE": 137,
+      "READY_GENERIC_EXTENSION": 192,
+      "SPECIAL_HANDLER_CANDIDATE": 154,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 615,
+      "SOURCE_EVIDENCE_REQUIRED": 596,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -61,8 +61,10 @@
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
         "master.caules-yggdmillennia.skill.s2",
+        "master.fujino.skill.s3",
         "master.iliya.skill.s2",
         "master.kariya.skill.s3",
+        "master.kiara.skill.s1",
         "master.maiya.skill.s1",
         "master.ryuunosuke.skill.s1",
         "master.sakura.skill.s1",
@@ -117,6 +119,10 @@
         },
         {
           "abilityId": "master.fiore.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -338,6 +344,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goetia.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -363,6 +377,10 @@
         },
         {
           "abilityId": "master.kariya.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -523,6 +541,7 @@
         "master.arcueid.skill.s2",
         "master.caules-yggdmillennia.skill.s1a",
         "master.chaos.skill.s11",
+        "master.fujino.skill.s2",
         "master.goetia.skill.s2",
         "master.kiritsugu.skill.s3",
         "master.ryuunosuke.skill.s2",
@@ -582,6 +601,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -611,6 +634,10 @@
         },
         {
           "abilityId": "master.kariya.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -777,6 +804,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -810,6 +845,10 @@
         },
         {
           "abilityId": "master.kariya.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -977,6 +1016,7 @@
         "master.ciel.skill.ascension",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.fujino.skill.s3",
         "master.goetia.skill.s2",
         "master.goredolf.skill.s1a",
         "master.hakuno-f.skill.s1",
@@ -1029,6 +1069,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1042,6 +1086,10 @@
         },
         {
           "abilityId": "master.kariya.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -1206,6 +1254,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1239,6 +1295,10 @@
         },
         {
           "abilityId": "master.kariya.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.kiara.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1468,6 +1528,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1501,6 +1569,10 @@
         },
         {
           "abilityId": "master.kariya.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.kiara.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1723,6 +1795,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1756,6 +1836,10 @@
         },
         {
           "abilityId": "master.kariya.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.kiara.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1985,6 +2069,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2018,6 +2110,10 @@
         },
         {
           "abilityId": "master.kariya.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.kiara.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2242,6 +2338,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2275,6 +2379,10 @@
         },
         {
           "abilityId": "master.kariya.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.kiara.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2567,6 +2675,18 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fujino.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.s4",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2624,6 +2744,10 @@
         },
         {
           "abilityId": "master.kayneth.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.kiara.skill.s6",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2861,6 +2985,7 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.akiha.skill.s3",
         "master.alice.skill.s1",
         "master.amakusa.skill.s3",
         "master.araya.skill.s1a",
@@ -2890,6 +3015,7 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fiore.skill.s7",
+        "master.fujino.skill.s1a",
         "master.goetia.skill.s1",
         "master.goetia.skill.s2",
         "master.goredolf.skill.ascension",
@@ -2909,6 +3035,7 @@
         "master.kadoc.skill.s4",
         "master.kadoc.skill.s5",
         "master.kariya.skill.s3",
+        "master.kiara.skill.s1a",
         "master.kirei.skill.ascension",
         "master.kirei.skill.s3",
         "master.kohaku.skill.ascension",
@@ -3008,6 +3135,8 @@
         "master.akasha.skill.s1",
         "master.arcueid.skill.s1a",
         "master.bazett.skill.s1",
+        "master.fujino.skill.ascension",
+        "master.fujino.skill.s1",
         "master.hinako.skill.s1a",
         "master.kuzuki.skill.s1",
         "master.tokiomi.skill.s1",
@@ -3116,6 +3245,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fujino.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goetia.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3173,6 +3306,10 @@
         },
         {
           "abilityId": "master.kayneth.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s6",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -3423,6 +3560,7 @@
         "master.darnic.skill.ascension",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.fujino.skill.s4",
         "master.goetia.skill.ascension",
         "master.goetia.skill.s2",
         "master.goredolf.skill.s1",
@@ -3439,6 +3577,7 @@
         "master.julius.skill.s1a",
         "master.kadoc.skill.ascension",
         "master.kayneth.skill.ascension",
+        "master.kiara.skill.s6",
         "master.kiritsugu.skill.ascension",
         "master.kiritsugu.skill.s1",
         "master.kiritsugu.skill.s2",
@@ -3504,6 +3643,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fujino.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.kuzuki.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3542,6 +3689,8 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.akiha.skill.s1a",
+        "master.akiha.skill.s3",
         "master.alice.skill.s1",
         "master.amakusa.skill.ascension",
         "master.amakusa.skill.s1",
@@ -3599,6 +3748,9 @@
         "master.fiore.skill.s7",
         "master.fou.skill.ascension",
         "master.fou.skill.s1",
+        "master.fujino.skill.ascension",
+        "master.fujino.skill.s1a",
+        "master.fujino.skill.s4",
         "master.goetia.skill.ascension",
         "master.goetia.skill.s1",
         "master.goetia.skill.s2",
@@ -3627,6 +3779,9 @@
         "master.kariya.skill.s3",
         "master.kayneth.skill.ascension",
         "master.kayneth.skill.s3",
+        "master.kiara.skill.s1a",
+        "master.kiara.skill.s4",
+        "master.kiara.skill.s6",
         "master.kirei.skill.ascension",
         "master.kirei.skill.s1",
         "master.kirei.skill.s2",
@@ -3839,6 +3994,7 @@
         "master.kadoc.skill.s3",
         "master.kadoc.skill.s4",
         "master.kadoc.skill.s5",
+        "master.kiara.skill.s4",
         "master.ophelia.skill.ascension",
         "master.ophelia.skill.s1",
         "master.ophelia.skill.s3",
@@ -3869,6 +4025,26 @@
       ],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.akiha.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
         {
           "abilityId": "master.alice.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
@@ -4006,6 +4182,22 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fujino.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goetia.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -4087,6 +4279,34 @@
         },
         {
           "abilityId": "master.kayneth.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s6",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -4325,6 +4545,8 @@
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
         "master.akasha.skill.s1",
+        "master.akiha.skill.s1",
+        "master.akiha.skill.s3",
         "master.alice.skill.ascension",
         "master.alice.skill.s2",
         "master.amakusa.skill.s1a",
@@ -4363,6 +4585,8 @@
         "master.fiore.skill.s6",
         "master.fou.skill.ascension",
         "master.fou.skill.s1",
+        "master.fujino.skill.s2",
+        "master.fujino.skill.s4",
         "master.goetia.skill.ascension",
         "master.goetia.skill.s1",
         "master.goetia.skill.s2",
@@ -4395,6 +4619,7 @@
         "master.kayneth.skill.ascension",
         "master.kayneth.skill.s1",
         "master.kayneth.skill.s3",
+        "master.kiara.skill.s5",
         "master.kirei.skill.ascension",
         "master.kirei.skill.s1",
         "master.kirei.skill.s3",
@@ -4540,6 +4765,8 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.akiha.skill.ascension",
+        "master.akiha.skill.s3",
         "master.amakusa.skill.ascension",
         "master.amakusa.skill.s1a",
         "master.amakusa.skill.s3",
@@ -4577,6 +4804,8 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
         "master.fou.skill.s1",
+        "master.fujino.skill.s3",
+        "master.fujino.skill.s4",
         "master.goetia.skill.ascension",
         "master.goetia.skill.s1",
         "master.goetia.skill.s2",
@@ -4603,6 +4832,9 @@
         "master.kayneth.skill.ascension",
         "master.kayneth.skill.s1",
         "master.kayneth.skill.s3",
+        "master.kiara.skill.ascension",
+        "master.kiara.skill.s4",
+        "master.kiara.skill.s5",
         "master.kirei.skill.ascension",
         "master.kirei.skill.s3",
         "master.kohaku.skill.ascension",
@@ -4722,6 +4954,7 @@
         "master.darnic.skill.ascension",
         "master.fiore.skill.s2",
         "master.fiore.skill.s5",
+        "master.fujino.skill.s4",
         "master.goetia.skill.s2",
         "master.goredolf.skill.s1a",
         "master.hakuno-f.skill.s5",
@@ -4878,6 +5111,8 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.akiha.skill.ascension",
+        "master.akiha.skill.s3",
         "master.amakusa.skill.ascension",
         "master.arcueid.skill.ascension",
         "master.arcueid.skill.s3",
@@ -4896,6 +5131,7 @@
         "master.fiore.skill.s4",
         "master.fiore.skill.s7",
         "master.fou.skill.s1",
+        "master.fujino.skill.s4",
         "master.goetia.skill.ascension",
         "master.goetia.skill.s2",
         "master.goredolf.skill.ascension",
@@ -4911,6 +5147,7 @@
         "master.jinako.skill.s1",
         "master.kadoc.skill.ascension",
         "master.kariya.skill.ascension",
+        "master.kiara.skill.s4",
         "master.kirei.skill.ascension",
         "master.kirei.skill.s3",
         "master.kohaku.skill.ascension",
@@ -4981,6 +5218,7 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.akiha.skill.s3",
         "master.alice.skill.s1",
         "master.amakusa.skill.ascension",
         "master.amakusa.skill.s3",
@@ -5008,6 +5246,8 @@
         "master.fiore.skill.s3",
         "master.fiore.skill.s6",
         "master.fou.skill.ascension",
+        "master.fujino.skill.ascension",
+        "master.fujino.skill.s4",
         "master.goetia.skill.s2",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
@@ -5026,6 +5266,7 @@
         "master.kadoc.skill.s5",
         "master.kariya.skill.s1",
         "master.kariya.skill.s3",
+        "master.kiara.skill.ascension",
         "master.kohaku.skill.s1a",
         "master.kohaku.skill.s3",
         "master.leonardo.skill.ascension",
@@ -5135,6 +5376,9 @@
         "master.kariya.skill.s2",
         "master.kariya.skill.s3",
         "master.kayneth.skill.ascension",
+        "master.kiara.skill.s2",
+        "master.kiara.skill.s4",
+        "master.kiara.skill.s6",
         "master.kiritsugu.skill.ascension",
         "master.kiritsugu.skill.s2",
         "master.kiritsugu.skill.s3",
@@ -5230,6 +5474,14 @@
       "skippedAbilities": [
         {
           "abilityId": "master.akasha.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -5354,6 +5606,14 @@
         },
         {
           "abilityId": "master.fou.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s4",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -5482,6 +5742,10 @@
         },
         {
           "abilityId": "master.kayneth.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s5",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -5953,6 +6217,7 @@
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
         "master.akasha.skill.s1",
+        "master.akiha.skill.s1a",
         "master.alice.skill.s1",
         "master.amakusa.skill.ascension",
         "master.amakusa.skill.s1",
@@ -6002,6 +6267,7 @@
         "master.fiore.skill.s7",
         "master.fou.skill.ascension",
         "master.fou.skill.s1",
+        "master.fujino.skill.s4",
         "master.goetia.skill.ascension",
         "master.goetia.skill.s1",
         "master.goetia.skill.s2",
@@ -6031,6 +6297,8 @@
         "master.kariya.skill.s3",
         "master.kayneth.skill.ascension",
         "master.kayneth.skill.s2",
+        "master.kiara.skill.s1a",
+        "master.kiara.skill.s6",
         "master.kiritsugu.skill.ascension",
         "master.kiritsugu.skill.s1",
         "master.kohaku.skill.ascension",
@@ -6155,6 +6423,7 @@
         "master.irisviel.skill.s2",
         "master.jinako.skill.s1",
         "master.kayneth.skill.ascension",
+        "master.kiara.skill.s1",
         "master.kiritsugu.skill.s2",
         "master.kiritsugu.skill.s3",
         "master.kohaku.skill.ascension",
@@ -6249,6 +6518,10 @@
         "servant.tomoe.skill.sc-tomoe-1"
       ],
       "skippedAbilities": [
+        {
+          "abilityId": "master.akiha.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
         {
           "abilityId": "master.alice.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
@@ -6358,6 +6631,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.fujino.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fujino.skill.s4",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goetia.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -6427,6 +6708,10 @@
         },
         {
           "abilityId": "master.kariya.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.kiara.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -6787,6 +7072,18 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.kiara.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.kiara.skill.s4",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.kiara.skill.s6",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.kiritsugu.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -6977,6 +7274,11 @@
       "representatives": [],
       "acceptanceVehicle": "B/R reviewed-special exception with explicit deletion/reuse criteria",
       "eligibleAbilities": [
+        "master.akiha.skill.ascension",
+        "master.akiha.skill.s1",
+        "master.akiha.skill.s1a",
+        "master.akiha.skill.s2",
+        "master.akiha.skill.s3",
         "master.alice.skill.ascension",
         "master.alice.skill.s1",
         "master.alice.skill.s2",
@@ -7011,6 +7313,10 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fou.skill.ascension",
+        "master.fujino.skill.ascension",
+        "master.fujino.skill.s1a",
+        "master.fujino.skill.s2",
+        "master.fujino.skill.s4",
         "master.goetia.skill.s1",
         "master.goetia.skill.s2",
         "master.hakuno-f.skill.ascension",
@@ -7040,6 +7346,14 @@
         "master.kariya.skill.s3",
         "master.kariya.skill.s4",
         "master.kayneth.skill.s2",
+        "master.kiara.skill.ascension",
+        "master.kiara.skill.s1",
+        "master.kiara.skill.s1a",
+        "master.kiara.skill.s2",
+        "master.kiara.skill.s3",
+        "master.kiara.skill.s4",
+        "master.kiara.skill.s5",
+        "master.kiara.skill.s6",
         "master.kirei.skill.ascension",
         "master.kiritsugu.skill.s4",
         "master.kohaku.skill.ascension",
@@ -7189,6 +7503,26 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.akiha.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.akiha.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.alice.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -7329,6 +7663,22 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.fujino.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fujino.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goetia.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -7438,6 +7788,38 @@
         },
         {
           "abilityId": "master.kayneth.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kiara.skill.s6",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -7754,6 +8136,11 @@
   "coverage": {
     "mappedAbilities": [
       "master.akasha.skill.s1",
+      "master.akiha.skill.ascension",
+      "master.akiha.skill.s1",
+      "master.akiha.skill.s1a",
+      "master.akiha.skill.s2",
+      "master.akiha.skill.s3",
       "master.alice.skill.ascension",
       "master.alice.skill.s1",
       "master.alice.skill.s2",
@@ -7841,6 +8228,12 @@
       "master.fiore.skill.s7",
       "master.fou.skill.ascension",
       "master.fou.skill.s1",
+      "master.fujino.skill.ascension",
+      "master.fujino.skill.s1",
+      "master.fujino.skill.s1a",
+      "master.fujino.skill.s2",
+      "master.fujino.skill.s3",
+      "master.fujino.skill.s4",
       "master.goetia.skill.ascension",
       "master.goetia.skill.s1",
       "master.goetia.skill.s2",
@@ -7896,6 +8289,14 @@
       "master.kayneth.skill.s1",
       "master.kayneth.skill.s2",
       "master.kayneth.skill.s3",
+      "master.kiara.skill.ascension",
+      "master.kiara.skill.s1",
+      "master.kiara.skill.s1a",
+      "master.kiara.skill.s2",
+      "master.kiara.skill.s3",
+      "master.kiara.skill.s4",
+      "master.kiara.skill.s5",
+      "master.kiara.skill.s6",
       "master.kirei.skill.ascension",
       "master.kirei.skill.s1",
       "master.kirei.skill.s2",
@@ -8134,83 +8535,6 @@
         ]
       },
       {
-        "abilityId": "master.akiha.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.akiha.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.akiha.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.akiha.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.akiha.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fujino.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fujino.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fujino.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fujino.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fujino.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fujino.skill.s4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "master.hisui-detective.skill.ascension",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -8240,62 +8564,6 @@
       },
       {
         "abilityId": "master.hisui-detective.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kiara.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kiara.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kiara.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kiara.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kiara.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kiara.skill.s4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kiara.skill.s5",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kiara.skill.s6",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -12391,6 +12659,11 @@
       }
     ],
     "specialCandidates": [
+      "master.akiha.skill.ascension",
+      "master.akiha.skill.s1",
+      "master.akiha.skill.s1a",
+      "master.akiha.skill.s2",
+      "master.akiha.skill.s3",
       "master.alice.skill.ascension",
       "master.alice.skill.s1",
       "master.alice.skill.s2",
@@ -12425,6 +12698,10 @@
       "master.fiore.skill.s5",
       "master.fiore.skill.s6",
       "master.fou.skill.ascension",
+      "master.fujino.skill.ascension",
+      "master.fujino.skill.s1a",
+      "master.fujino.skill.s2",
+      "master.fujino.skill.s4",
       "master.goetia.skill.s1",
       "master.goetia.skill.s2",
       "master.goredolf.skill.s1",
@@ -12455,6 +12732,14 @@
       "master.kariya.skill.s3",
       "master.kariya.skill.s4",
       "master.kayneth.skill.s2",
+      "master.kiara.skill.ascension",
+      "master.kiara.skill.s1",
+      "master.kiara.skill.s1a",
+      "master.kiara.skill.s2",
+      "master.kiara.skill.s3",
+      "master.kiara.skill.s4",
+      "master.kiara.skill.s5",
+      "master.kiara.skill.s6",
       "master.kirei.skill.ascension",
       "master.kiritsugu.skill.s1",
       "master.kiritsugu.skill.s4",

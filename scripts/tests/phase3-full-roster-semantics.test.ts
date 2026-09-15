@@ -1266,6 +1266,23 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find((c) => c.id === 'master.kohaku.skill.s1a')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'gain_mana', amount:1 })]) }));
     expect(slice.find((c) => c.id === 'master.chaos.skill.s17')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'choose_effect' })]) }));
   });
+  it('grounds the nineteen-ID Akiha/Kiara/Fujino slice with exact development snapshots and explicit bespoke boundaries', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.akiha.skill.s1','master.akiha.skill.s1a','master.akiha.skill.s2','master.akiha.skill.s3','master.akiha.skill.ascension',
+      'master.kiara.skill.s1','master.kiara.skill.s1a','master.kiara.skill.s2','master.kiara.skill.s3','master.kiara.skill.s4','master.kiara.skill.s5','master.kiara.skill.s6','master.kiara.skill.ascension',
+      'master.fujino.skill.s1','master.fujino.skill.s1a','master.fujino.skill.s2','master.fujino.skill.s3','master.fujino.skill.s4','master.fujino.skill.ascension',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(19);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.document === 'Fate_Domination-开发版/data_masters.js' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find((c) => c.id === 'master.akiha.skill.s3')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'murder_impulse_rule' })]) }));
+    expect(slice.find((c) => c.id === 'master.kiara.skill.s2')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'secret_garden_rule' })]) }));
+    expect(slice.find((c) => c.id === 'master.kiara.skill.s6')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'defeat_player' })]) }));
+    expect(slice.find((c) => c.id === 'master.fujino.skill.s1')?.abilities).toContainEqual(expect.objectContaining({ creates: expect.arrayContaining([expect.objectContaining({ type:'card', definitionId:'master.fujino.skill.s3' })]) }));
+    expect(slice.find((c) => c.id === 'master.fujino.skill.s4')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'trauma_state_rule' })]) }));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1319,10 +1336,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 329,
-      blockedCount: 615,
+      sourceGroundedCount: 348,
+      blockedCount: 596,
       unclassifiedCount: 0,
-      structuredAbilityCount: 593,
+      structuredAbilityCount: 623,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
