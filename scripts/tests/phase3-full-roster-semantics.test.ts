@@ -1593,6 +1593,15 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.kagekiyo.skill.sc-kagekiyo-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'kagekiyo_hidden_attack_noble_phantasm_rule'})])}));
   });
 
+  it('grounds the sixteen-ID Karna/KingGil/KingHassan/Kingprotea/Kintoki/Kiritsugu slice from locked development snapshots', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.karna.skill.sc-karna-1","servant.karna.skill.sc-karna-2","servant.karna.skill.sc-karna-3","servant.kinggil.skill.sc-kinggil-1","servant.kinggil.skill.sc-kinggil-2","servant.kinggil.skill.sc-kinggil-3","servant.kinghassan.skill.sc-kinghassan-1","servant.kinghassan.skill.sc-kinghassan-2","servant.kinghassan.skill.sc-kinghassan-3","servant.kingprotea.skill.sc-kingprotea-1","servant.kingprotea.skill.sc-kingprotea-2","servant.kingprotea.skill.sc-kingprotea-3","servant.kintoki.skill.sc-kintoki-1","servant.kintoki.skill.sc-kintoki-2","servant.kintoki.skill.sc-kintoki-3","servant.kiritsugu.skill.sc-kiritsugu-1"]); const slice=overlays.filter(c=>ids.has(c.id)); expect(slice).toHaveLength(16);
+    expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256 && c.source.sourceFileSha256.length===64)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.kiritsugu.skill.sc-kiritsugu-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'presence_concealment_assassination_rule'})])}));
+    for(const id of ['servant.kinghassan.skill.sc-kinghassan-1','servant.kinghassan.skill.sc-kinghassan-2','servant.kinghassan.skill.sc-kinghassan-3']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'azrael_rule'})])}));
+    for(const id of ['servant.kingprotea.skill.sc-kingprotea-1','servant.kingprotea.skill.sc-kingprotea-2','servant.kingprotea.skill.sc-kingprotea-3']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'kingprotea_growth_rule'})])}));
+    for(const id of ['servant.kintoki.skill.sc-kintoki-1','servant.kintoki.skill.sc-kintoki-2']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'kintoki_golden_spark_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1646,10 +1655,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 736,
-      blockedCount: 208,
+      sourceGroundedCount: 752,
+      blockedCount: 192,
       unclassifiedCount: 0,
-      structuredAbilityCount: 1014,
+      structuredAbilityCount: 1030,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
