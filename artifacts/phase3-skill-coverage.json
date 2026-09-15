@@ -1,28 +1,28 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-15T21:12:07.882Z",
-  "sourceFingerprint": "3e8cc78e550b61c3924f91fcfeb1b6c304c586beed9e07ee18f60403d94eb315",
+  "generatedAt": "2026-09-15T21:58:06.924Z",
+  "sourceFingerprint": "182a3d15d17cab83ac24e17389a1888330527c65f6434638fbac59913701557f",
   "counts": {
-    "totalArchives": 39,
-    "totalCards": 71,
-    "totalAbilities": 130,
+    "totalArchives": 49,
+    "totalCards": 81,
+    "totalAbilities": 160,
     "abilityKindCounts": {
       "CONDITIONAL_REVEAL": 1,
       "CONTINUOUS_FORMULA": 1,
       "DECLARATION_REVEAL": 9,
       "FORCED_TRIGGER": 30,
-      "OPTIONAL_TRIGGER": 6,
+      "OPTIONAL_TRIGGER": 26,
       "PASSIVE": 18,
-      "PHASE_ACTION": 59,
+      "PHASE_ACTION": 69,
       "RESIDUAL": 5,
       "RESPONSE": 1
     },
     "timingCounts": {
       "ACTION": 46,
       "ADVANCE": 2,
-      "COMBAT": 14,
+      "COMBAT": 44,
       "CONTROLLER_ACTION_WINDOW": 49,
-      "CONTROLLER_COMBAT_ACTION_WINDOW": 11,
+      "CONTROLLER_COMBAT_ACTION_WINDOW": 21,
       "IMMEDIATE": 7,
       "POST_BATTLE_OPTIONAL_TRIGGER_WINDOW": 3,
       "PREPARATION": 1,
@@ -33,7 +33,7 @@
     },
     "domainEventTriggerCounts": {
       "after_battle_ended": 2,
-      "after_battle_result_determined": 3,
+      "after_battle_result_determined": 23,
       "after_controller_enters_location": 1,
       "after_controller_first_loses_battle": 1,
       "after_controller_gains_victory": 1,
@@ -47,10 +47,10 @@
       "on_use_declared": 9
     },
     "requirementCounts": {
-      "BATTLE_STATE": 39,
-      "LOCATION": 32,
+      "BATTLE_STATE": 69,
+      "LOCATION": 42,
       "MANA": 2,
-      "SOURCE_ACTIVE": 67
+      "SOURCE_ACTIVE": 77
     },
     "targetCounts": {
       "BRANCH_CHOICE": 1,
@@ -69,7 +69,7 @@
       "CHOOSE_N_CARDS": 19,
       "CHOOSE_ONE_PLAYER": 1,
       "RESPONSE": 1,
-      "YES_NO": 6
+      "YES_NO": 26
     },
     "strictPendingInteractionCounts": {
       "BRANCH_CHOICE": 1,
@@ -81,12 +81,12 @@
       "CARD_ACTION_SEMANTICS": 20,
       "CARD_ZONE": 29,
       "MOVEMENT": 16,
-      "RESOURCE_NUMERIC": 17,
+      "RESOURCE_NUMERIC": 37,
       "VISIBILITY": 14
     },
     "modifierCounts": {
       "EFFECT_MODIFIER": 9,
-      "RULE_MODIFIER": 16
+      "RULE_MODIFIER": 26
     },
     "lifecyclePolicyCounts": {
       "lifecycle:cleanup:expire_after_duration": 1,
@@ -119,7 +119,7 @@
       "RESULT_VAR": 2
     },
     "battleIntegrationCounts": {
-      "BATTLE_INTEGRATION": 39
+      "BATTLE_INTEGRATION": 69
     },
     "specialSubsystemCounts": {
       "SPECIAL_SUBSYSTEM": 17
@@ -1760,6 +1760,260 @@
       ]
     },
     {
+      "archiveId": "servant.altera",
+      "cardId": "servant.altera.skill.sc-altera-3",
+      "abilityId": "sc-altera-3.noble-bloom",
+      "abilityKey": "servant.altera.skill.sc-altera-3::sc-altera-3.noble-bloom",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.altera",
+      "cardId": "servant.altera.skill.sc-altera-3",
+      "abilityId": "sc-altera-3.noble-bloom-extra-vp",
+      "abilityKey": "servant.altera.skill.sc-altera-3::sc-altera-3.noble-bloom-extra-vp",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.altera",
+      "cardId": "servant.altera.skill.sc-altera-3",
+      "abilityId": "sc-altera-3.magic-resistance",
+      "abilityKey": "servant.altera.skill.sc-altera-3::sc-altera-3.magic-resistance",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.arthur",
+      "cardId": "servant.arthur.skill.sc-arthur-3",
+      "abilityId": "sc-arthur-3.noble-bloom",
+      "abilityKey": "servant.arthur.skill.sc-arthur-3::sc-arthur-3.noble-bloom",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.arthur",
+      "cardId": "servant.arthur.skill.sc-arthur-3",
+      "abilityId": "sc-arthur-3.noble-bloom-extra-vp",
+      "abilityKey": "servant.arthur.skill.sc-arthur-3::sc-arthur-3.noble-bloom-extra-vp",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.arthur",
+      "cardId": "servant.arthur.skill.sc-arthur-3",
+      "abilityId": "sc-arthur-3.magic-resistance",
+      "abilityKey": "servant.arthur.skill.sc-arthur-3::sc-arthur-3.magic-resistance",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
       "archiveId": "servant.artoria-alt",
       "cardId": "servant.artoria-alt.skill.sc-artoria-alt-1",
       "abilityId": "sc-artoria-alt-1.true-name-release",
@@ -2712,6 +2966,133 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.bedivere",
+      "cardId": "servant.bedivere.skill.sc-bedivere-1",
+      "abilityId": "sc-bedivere-1.noble-bloom",
+      "abilityKey": "servant.bedivere.skill.sc-bedivere-1::sc-bedivere-1.noble-bloom",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.bedivere",
+      "cardId": "servant.bedivere.skill.sc-bedivere-1",
+      "abilityId": "sc-bedivere-1.noble-bloom-extra-vp",
+      "abilityKey": "servant.bedivere.skill.sc-bedivere-1::sc-bedivere-1.noble-bloom-extra-vp",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.bedivere",
+      "cardId": "servant.bedivere.skill.sc-bedivere-1",
+      "abilityId": "sc-bedivere-1.magic-resistance",
+      "abilityKey": "servant.bedivere.skill.sc-bedivere-1::sc-bedivere-1.magic-resistance",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
       "archiveId": "servant.benkei",
       "cardId": "servant.benkei.skill.sc-benkei-1",
       "abilityId": "sc-benkei-1.move",
@@ -2931,6 +3312,133 @@
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.charlemagne",
+      "cardId": "servant.charlemagne.skill.sc-charlemagne-3",
+      "abilityId": "sc-charlemagne-3.noble-bloom",
+      "abilityKey": "servant.charlemagne.skill.sc-charlemagne-3::sc-charlemagne-3.noble-bloom",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.charlemagne",
+      "cardId": "servant.charlemagne.skill.sc-charlemagne-3",
+      "abilityId": "sc-charlemagne-3.noble-bloom-extra-vp",
+      "abilityKey": "servant.charlemagne.skill.sc-charlemagne-3::sc-charlemagne-3.noble-bloom-extra-vp",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.charlemagne",
+      "cardId": "servant.charlemagne.skill.sc-charlemagne-3",
+      "abilityId": "sc-charlemagne-3.magic-resistance",
+      "abilityKey": "servant.charlemagne.skill.sc-charlemagne-3::sc-charlemagne-3.magic-resistance",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
     },
     {
       "archiveId": "servant.constantine",
@@ -3834,6 +4342,133 @@
       ]
     },
     {
+      "archiveId": "servant.gawain",
+      "cardId": "servant.gawain.skill.sc-gawain-3",
+      "abilityId": "sc-gawain-3.noble-bloom",
+      "abilityKey": "servant.gawain.skill.sc-gawain-3::sc-gawain-3.noble-bloom",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.gawain",
+      "cardId": "servant.gawain.skill.sc-gawain-3",
+      "abilityId": "sc-gawain-3.noble-bloom-extra-vp",
+      "abilityKey": "servant.gawain.skill.sc-gawain-3::sc-gawain-3.noble-bloom-extra-vp",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.gawain",
+      "cardId": "servant.gawain.skill.sc-gawain-3",
+      "abilityId": "sc-gawain-3.magic-resistance",
+      "abilityKey": "servant.gawain.skill.sc-gawain-3::sc-gawain-3.magic-resistance",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
       "archiveId": "servant.hephaistion",
       "cardId": "servant.hephaistion.skill.sc-hephaistion-3",
       "abilityId": "sc-hephaistion-3.draw",
@@ -4574,6 +5209,133 @@
       ]
     },
     {
+      "archiveId": "servant.lakshmibai",
+      "cardId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+      "abilityId": "sc-lakshmibai-3.noble-bloom",
+      "abilityKey": "servant.lakshmibai.skill.sc-lakshmibai-3::sc-lakshmibai-3.noble-bloom",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.lakshmibai",
+      "cardId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+      "abilityId": "sc-lakshmibai-3.noble-bloom-extra-vp",
+      "abilityKey": "servant.lakshmibai.skill.sc-lakshmibai-3::sc-lakshmibai-3.noble-bloom-extra-vp",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.lakshmibai",
+      "cardId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+      "abilityId": "sc-lakshmibai-3.magic-resistance",
+      "abilityKey": "servant.lakshmibai.skill.sc-lakshmibai-3::sc-lakshmibai-3.magic-resistance",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
       "archiveId": "servant.lishuwen",
       "cardId": "servant.lishuwen.skill.sc-lishuwen-3",
       "abilityId": "sc-lishuwen-3.move",
@@ -4952,6 +5714,260 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.mordred",
+      "cardId": "servant.mordred.skill.sc-mordred-3",
+      "abilityId": "sc-mordred-3.noble-bloom",
+      "abilityKey": "servant.mordred.skill.sc-mordred-3::sc-mordred-3.noble-bloom",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.mordred",
+      "cardId": "servant.mordred.skill.sc-mordred-3",
+      "abilityId": "sc-mordred-3.noble-bloom-extra-vp",
+      "abilityKey": "servant.mordred.skill.sc-mordred-3::sc-mordred-3.noble-bloom-extra-vp",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.mordred",
+      "cardId": "servant.mordred.skill.sc-mordred-3",
+      "abilityId": "sc-mordred-3.magic-resistance",
+      "abilityKey": "servant.mordred.skill.sc-mordred-3::sc-mordred-3.magic-resistance",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.musashi",
+      "cardId": "servant.musashi.skill.sc-musashi-3",
+      "abilityId": "sc-musashi-3.noble-bloom",
+      "abilityKey": "servant.musashi.skill.sc-musashi-3::sc-musashi-3.noble-bloom",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.musashi",
+      "cardId": "servant.musashi.skill.sc-musashi-3",
+      "abilityId": "sc-musashi-3.noble-bloom-extra-vp",
+      "abilityKey": "servant.musashi.skill.sc-musashi-3::sc-musashi-3.noble-bloom-extra-vp",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.musashi",
+      "cardId": "servant.musashi.skill.sc-musashi-3",
+      "abilityId": "sc-musashi-3.magic-resistance",
+      "abilityKey": "servant.musashi.skill.sc-musashi-3::sc-musashi-3.magic-resistance",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
       "archiveId": "servant.odysseus",
       "cardId": "servant.odysseus.skill.sc-odysseus-3",
       "abilityId": "sc-odysseus-3.draw",
@@ -5162,6 +6178,260 @@
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.saber",
+      "cardId": "servant.saber.skill.sc-saber-1",
+      "abilityId": "sc-saber-1.noble-bloom",
+      "abilityKey": "servant.saber.skill.sc-saber-1::sc-saber-1.noble-bloom",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.saber",
+      "cardId": "servant.saber.skill.sc-saber-1",
+      "abilityId": "sc-saber-1.noble-bloom-extra-vp",
+      "abilityKey": "servant.saber.skill.sc-saber-1::sc-saber-1.noble-bloom-extra-vp",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.saber",
+      "cardId": "servant.saber.skill.sc-saber-1",
+      "abilityId": "sc-saber-1.magic-resistance",
+      "abilityKey": "servant.saber.skill.sc-saber-1::sc-saber-1.magic-resistance",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.saitou",
+      "cardId": "servant.saitou.skill.sc-saitou-1",
+      "abilityId": "sc-saitou-1.noble-bloom",
+      "abilityKey": "servant.saitou.skill.sc-saitou-1::sc-saitou-1.noble-bloom",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.saitou",
+      "cardId": "servant.saitou.skill.sc-saitou-1",
+      "abilityId": "sc-saitou-1.noble-bloom-extra-vp",
+      "abilityKey": "servant.saitou.skill.sc-saitou-1::sc-saitou-1.noble-bloom-extra-vp",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.saitou",
+      "cardId": "servant.saitou.skill.sc-saitou-1",
+      "abilityId": "sc-saitou-1.magic-resistance",
+      "abilityKey": "servant.saitou.skill.sc-saitou-1::sc-saitou-1.magic-resistance",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
     },
     {
       "archiveId": "servant.teach",
@@ -5646,8 +6916,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 87,
-      "after": 87,
+      "before": 107,
+      "after": 107,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -5656,8 +6926,8 @@
       "delta": 0
     },
     "notClassifiable": {
-      "before": 33,
-      "after": 28,
+      "before": 43,
+      "after": 38,
       "delta": -5
     },
     "pilotAllowlistEntries": {
@@ -5734,37 +7004,37 @@
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 608,
+        "line": 609,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 918,
+        "line": 919,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 925,
+        "line": 926,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 975,
+        "line": 976,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1280,
+        "line": 1320,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 2317,
+        "line": 2366,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
@@ -5885,8 +7155,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 87,
-      "after": 87,
+      "before": 107,
+      "after": 107,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -5900,8 +7170,8 @@
       "delta": 0
     },
     "unsupportedNodes": {
-      "before": 33,
-      "after": 33,
+      "before": 43,
+      "after": 43,
       "delta": 0
     },
     "kpiNote": "KPI tracks routing/legacy consumers and unsupported nodes, not raw ability count."
@@ -5911,7 +7181,7 @@
       "activate_card_by_id": 1,
       "adjust_command_seals": 7,
       "adjust_mana": 6,
-      "adjust_victory_points": 10,
+      "adjust_victory_points": 30,
       "append_only_rule": 1,
       "attach_card_to_player_attack": 1,
       "branch": 5,
@@ -5962,7 +7232,7 @@
       "CARD_ACTION_SEMANTICS": 20,
       "CARD_ZONE": 29,
       "MOVEMENT": 16,
-      "RESOURCE_NUMERIC": 17,
+      "RESOURCE_NUMERIC": 37,
       "VISIBILITY": 14
     },
     "unknownPrimitiveCounts": {
@@ -6211,6 +7481,18 @@
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "servant.altera",
+        "cardId": "servant.altera.skill.sc-altera-3",
+        "abilityId": "sc-altera-3.magic-resistance",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.arthur",
+        "cardId": "servant.arthur.skill.sc-arthur-3",
+        "abilityId": "sc-arthur-3.magic-resistance",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.artoria-alt",
         "cardId": "servant.artoria-alt.skill.sc-artoria-alt-1",
         "abilityId": "sc-artoria-alt-1.ignore-situation-restrictions",
@@ -6289,6 +7571,12 @@
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "servant.bedivere",
+        "cardId": "servant.bedivere.skill.sc-bedivere-1",
+        "abilityId": "sc-bedivere-1.magic-resistance",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.benkei",
         "cardId": "servant.benkei.skill.sc-benkei-1",
         "abilityId": "sc-benkei-1.move",
@@ -6310,6 +7598,12 @@
         "archiveId": "servant.brynhildr",
         "cardId": "servant.brynhildr.skill.sc-brynhildr-1",
         "abilityId": "sc-brynhildr-1.move",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.charlemagne",
+        "cardId": "servant.charlemagne.skill.sc-charlemagne-3",
+        "abilityId": "sc-charlemagne-3.magic-resistance",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -6407,6 +7701,12 @@
         "cardId": "servant.ereshkigal.skill.sc-ereshkigal-3",
         "abilityId": "sc-ereshkigal-3.blooming-netherworld",
         "warning": "TAXONOMY_DRIFT_WARNING:target_reference_without_declared_pending_interaction"
+      },
+      {
+        "archiveId": "servant.gawain",
+        "cardId": "servant.gawain.skill.sc-gawain-3",
+        "abilityId": "sc-gawain-3.magic-resistance",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
         "archiveId": "servant.hephaistion",
@@ -6517,6 +7817,12 @@
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "servant.lakshmibai",
+        "cardId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+        "abilityId": "sc-lakshmibai-3.magic-resistance",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.lishuwen",
         "cardId": "servant.lishuwen.skill.sc-lishuwen-3",
         "abilityId": "sc-lishuwen-3.move",
@@ -6547,6 +7853,18 @@
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "servant.mordred",
+        "cardId": "servant.mordred.skill.sc-mordred-3",
+        "abilityId": "sc-mordred-3.magic-resistance",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.musashi",
+        "cardId": "servant.musashi.skill.sc-musashi-3",
+        "abilityId": "sc-musashi-3.magic-resistance",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.odysseus",
         "cardId": "servant.odysseus.skill.sc-odysseus-3",
         "abilityId": "sc-odysseus-3.mount-summon",
@@ -6562,6 +7880,18 @@
         "archiveId": "servant.romulus",
         "cardId": "servant.romulus.skill.sc-romulus-3",
         "abilityId": "sc-romulus-3.move",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.saber",
+        "cardId": "servant.saber.skill.sc-saber-1",
+        "abilityId": "sc-saber-1.magic-resistance",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.saitou",
+        "cardId": "servant.saitou.skill.sc-saitou-1",
+        "abilityId": "sc-saitou-1.magic-resistance",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -6677,6 +8007,18 @@
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
+      "archiveId": "servant.altera",
+      "cardId": "servant.altera.skill.sc-altera-3",
+      "abilityId": "sc-altera-3.magic-resistance",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.arthur",
+      "cardId": "servant.arthur.skill.sc-arthur-3",
+      "abilityId": "sc-arthur-3.magic-resistance",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
       "archiveId": "servant.artoria-alt",
       "cardId": "servant.artoria-alt.skill.sc-artoria-alt-1",
       "abilityId": "sc-artoria-alt-1.ignore-situation-restrictions",
@@ -6731,6 +8073,18 @@
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:can_adjust_mana"
     },
     {
+      "archiveId": "servant.bedivere",
+      "cardId": "servant.bedivere.skill.sc-bedivere-1",
+      "abilityId": "sc-bedivere-1.magic-resistance",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.charlemagne",
+      "cardId": "servant.charlemagne.skill.sc-charlemagne-3",
+      "abilityId": "sc-charlemagne-3.magic-resistance",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
       "archiveId": "servant.drake",
       "cardId": "servant.drake.skill.sc-drake-2",
       "abilityId": "sc-drake-2.reward-and-move",
@@ -6779,6 +8133,12 @@
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:power_bonus"
     },
     {
+      "archiveId": "servant.gawain",
+      "cardId": "servant.gawain.skill.sc-gawain-3",
+      "abilityId": "sc-gawain-3.magic-resistance",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
       "archiveId": "servant.kintoki",
       "cardId": "servant.kintoki.skill.sc-kintoki-1",
       "abilityId": "sc-kintoki-1.ignore-skill-zone-mana-requirement",
@@ -6819,6 +8179,36 @@
       "cardId": "servant.kintoki.skill.sc-kintoki-3",
       "abilityId": "sc-kintoki-3.golden-eater",
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:controller_at_battlefield"
+    },
+    {
+      "archiveId": "servant.lakshmibai",
+      "cardId": "servant.lakshmibai.skill.sc-lakshmibai-3",
+      "abilityId": "sc-lakshmibai-3.magic-resistance",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.mordred",
+      "cardId": "servant.mordred.skill.sc-mordred-3",
+      "abilityId": "sc-mordred-3.magic-resistance",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.musashi",
+      "cardId": "servant.musashi.skill.sc-musashi-3",
+      "abilityId": "sc-musashi-3.magic-resistance",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.saber",
+      "cardId": "servant.saber.skill.sc-saber-1",
+      "abilityId": "sc-saber-1.magic-resistance",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.saitou",
+      "cardId": "servant.saitou.skill.sc-saitou-1",
+      "abilityId": "sc-saitou-1.magic-resistance",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     }
   ],
   "compiledDefinitions": {

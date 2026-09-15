@@ -690,3 +690,12 @@ Permitted final status:
 - Independent evidence: focused 27/27; rules 287/287; full CI 700/700; content validation 0 blockers; deterministic hashes unchanged; runtime diff=0; diff check PASS.
 - Fresh reviewer coverage equals A material coverage except generatedAt at `39/71/130`, raw `12/3/87/0/28/104`, source fingerprint `3e8cc78e550b61c3924f91fcfeb1b6c304c586beed9e07ee18f60403d94eb315`.
 - No broad Movement, Target Selection, or taxonomy acceptance is implied.
+
+## P3-A FM03 Migration Synchronization - 2026-09-16
+
+- Third F4 S candidate: `cac8a0065dadd190aab6666989571845e4de0f1c`; exact selected membership 10, newly canonical 10, skipped/extra/removed 0, runtime hot-file changes 0.
+- Frozen 944-ID canonical-authoring overlap moves `49 -> 59` (+10); exact batch `0/10 -> 10/10`.
+- Fresh material coverage: `49/81/160`, raw `new=12 / legacyExecute=3 / legacyResolve=107 / dual=0 / notClassifiable=38 / taxonomyWarnings=114`; compiled product identity unchanged.
+- Selected raw reporter growth is 20 Noble Bloom legacy labels plus 10 Magic Resistance not-classifiable/warning labels; 30/30 structures match accepted Artoria Alter representatives excluding identity.
+- A checks: typecheck PASS, focused `21/21`, content validation PASS, determinism unchanged, runtime diff=0, diff check PASS. S evidence: rules `292/292`; parallel CI only known 5s wall-clock timeout (`704/705`), isolated `26/26`, single-worker full CI `705/705`.
+- R30 is READY; FM03 remains unaccepted until independent reviewer judgment.
