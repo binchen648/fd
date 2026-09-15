@@ -725,3 +725,10 @@ Permitted final status:
 - Independent R32 evidence: frozen source/static/structure reconciliation 11/11; focused `15/15`; rules `292/292`; full CI `705/705`; content 0 blockers; deterministic hashes unchanged; runtime diff=0; Tomoe diff=0.
 - Fresh reviewer coverage equals A artifact except `generatedAt`: `59/91/180`, raw `22/3/117/0/38/124`, compiled identity unchanged.
 - No broad Special Subsystem or taxonomy acceptance is implied.
+
+## P3-R33 / FB2-11 Acceptance - 2026-09-16
+
+- Exact trusted metric `game.round_number` is `GATE_A_B_CANDIDATE_ACCEPTED`; production change is only loader allowlist + evaluator read of authoritative round number.
+- Focused `12/12`, rules `297/297`, standard full CI `710/710`, content 0 blockers, deterministic hashes unchanged; formula-op set and identity/text routing remain unchanged.
+- Prospective Territory Creation family independently reconciles at exact 10/10 with common full-text SHA, clause hashes, Reference handler/static metadata; current canonical 0/10.
+- F1 5 Resource + 5 scaling-blocked split is classification drift; complete printed family is covered by FB2-02 + FB2-11 after fresh A synchronization.
