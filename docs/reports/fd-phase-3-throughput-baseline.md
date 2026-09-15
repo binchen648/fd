@@ -618,3 +618,13 @@ Permitted final status:
 - Generated coverage drift is timestamp/static-line-only and is intentionally not committed.
 - Independent R23 evidence: typecheck PASS; focused `25/25`; rules `268/268`; deterministic PASS; full CI `681/681`; identity/forbidden-file audits clean.
 - The 14 mixed servant draw/play identities remain blocked by Trigger-owned draw semantics and are not counted as F4-ready.
+
+## P3-A FB2-07 Synchronization — 2026-09-16
+
+- FB2-07 fixed controller source-card removal component: `REVIEW_ACCEPTED` at candidate `7cfa53b1dcea1f8b0769ff247924724d20d1d626`, independent R24 `e9e6112ced21ffad738fa00025132f9c3fe9976d`.
+- Exact F1 component alignment is 12 identities; complete migration readiness added is 0 because every aligned identity retains another parent/special dependency. No F1 authoring migration occurred.
+- Existing B15 `move_source_card -> skill` semantics remain unchanged; FB2-07 adds only the typed `removed_from_game` destination for the executing controller-owned/controller-controlled source.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled identity remains definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 cards, 14 characters, 0 blocking issues.
+- Generated coverage drift remains timestamp/static-line-only and is intentionally not committed.
+- Independent R24 evidence: typecheck PASS; focused `34/34`; rules `274/274`; deterministic PASS; full CI `687/687`; identity/forbidden-file audits clean; corrected quoted-range diff check PASS.
+- Broad Card Zone, Return-by-definition/Card Create, Trigger/Lifecycle/Target/Movement/Power/Special, and F4 migration remain unpromoted.
