@@ -3066,7 +3066,7 @@ Completion status allowed:
 ## TASK P3-FM01
 
 Owner: Codex S
-Status: MIGRATION_CANDIDATE
+Status: MIGRATION_ACCEPTED
 Branch: `codex/s-p3-fm01-source-play-basic-draw`
 Base: exact P3-FB2-08 A synchronization commit
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
@@ -3108,7 +3108,7 @@ Completion status allowed:
 ## TASK P3-A-FM01-SYNC
 
 Owner: Codex A
-Status: MIGRATION_SYNC_CANDIDATE
+Status: MIGRATION_SYNC_ACCEPTED
 Base: exact P3-FM01 S candidate SHA
 
 Goal: independently recompute before/after full-roster burn-down and verify that exactly the authorized 14 identities changed migration state without taxonomy/KPI redefinition or unrelated evidence drift.
@@ -3122,7 +3122,7 @@ Completion status allowed:
 ## TASK P3-R26
 
 Owner: Codex R
-Status: READY
+Status: MIGRATION_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM01 lineage
 
 Goal: independently review the first F4 migration without implementing fixes.
@@ -3140,7 +3140,8 @@ Completion status allowed:
 - Independent A burn-down shows frozen-F1 canonical authoring overlap `24 -> 37` (+13) globally and exact FM01 membership `1/14 -> 14/14`, with zero unauthorized F1 IDs added.
 - Fresh material coverage is committed. Raw reporter counts become `new=12 / legacyExecute=3 / legacyResolve=75 / dual=0 / notClassifiable=28 / taxonomyWarnings=92` because the reporter labels the 26 newly visible abilities exactly as it already labels the independently accepted Drake representatives. Structural signature mismatch versus Drake is `0/26`.
 - Compiled product identity remains unchanged at 70 cards / 14 characters / 0 blocking issues, definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`.
-- A does not redefine taxonomy/KPI or repair the classifier during migration sync. R26 is now READY to judge the exact lineage and the reporter reconciliation.
+- A does not redefine taxonomy/KPI or repair the classifier during migration sync.
+- R26 independently accepts the exact FM01 lineage at reviewer report `docs/reports/2026-09-16-p3-r26-fm01-source-play-basic-draw-migration-review.md`; FM01 is `MIGRATION_ACCEPTED` for exactly 14 identities, with focused 30/30, rules 280/280, full CI 693/693, deterministic content unchanged, and reviewer coverage equal to A material coverage except `generatedAt`.
 
 ## Prompt Templates
 

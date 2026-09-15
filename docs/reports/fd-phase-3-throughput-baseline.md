@@ -647,3 +647,12 @@ Permitted final status:
 - Compiled product definition remains unchanged at hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 cards, 14 characters, 0 blocking issues; unclassified items and dual-runtime count are unchanged.
 - Independent A checks: typecheck PASS, focused `30/30`, content validation PASS, deterministic generated content unchanged, lineage diff check PASS. S supplied full CI `693/693` and rules `280/280`.
 - R26 is READY; F4 is not accepted until independent review.
+
+## P3-R26 / FM01 First F4 Migration Acceptance — 2026-09-16
+
+- P3-FM01 first F4 batch: `MIGRATION_ACCEPTED` for exactly 14 Riding-family identities.
+- S candidate: `6203b70c5bc2a81ceecca31008dc2b71246519a9`; A synchronization: `3b11668ba894d24dce9eef500d34ee74b1680355`.
+- Canonical frozen-F1 authoring overlap moves `24 -> 37` (+13); exact batch moves `1/14 -> 14/14`; unauthorized F1 additions=0.
+- Independent R26 evidence: source hashes 14/14; focused 30/30; rules 280/280; full CI 693/693; content validation 0 blocking; deterministic generated-content unchanged; runtime hot-file changes=0.
+- Fresh reviewer coverage reproduces the A artifact except `generatedAt`; 26 newly visible abilities have zero structural-signature mismatches against the already accepted Drake representatives.
+- Raw reporter `legacyResolveEffect=75` is retained without KPI/classifier redefinition because Drake's accepted representative abilities are already labeled the same way. No broader runtime or taxonomy acceptance is implied.
