@@ -1069,6 +1069,71 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(JSON.stringify(core)).toContain('event_victory_points_gained');
   });
 
+  it('grounds the ten-ID servant common slice with exact development snapshots and explicit common-class semantics', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'servant.gil.skill.sc-gil-1',
+      'servant.gilles.skill.sc-gilles-2',
+      'servant.hassan.skill.sc-hassan-1',
+      'servant.iskandar.skill.sc-iskandar-1',
+      'servant.medea.skill.sc-medea-2',
+      'servant.medusa.skill.sc-medusa-1',
+      'servant.cu.skill.sc-cu-2',
+      'servant.diarmuid.skill.sc-diarmuid-3',
+      'servant.emiya.skill.sc-emiya-1',
+      'servant.angra.skill.sc-angra-3',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(10);
+    expect(slice.every((card) =>
+      card.source?.authority === 'DEVELOPMENT_TEXT' &&
+      card.source.document === 'Fate_Domination-开发版/data_servants.js' &&
+      card.source.sourceFileSha256 === '6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3' &&
+      createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256
+    )).toBe(true);
+
+    const gil = slice.find((card) => card.id === 'servant.gil.skill.sc-gil-1');
+    expect(JSON.stringify(gil)).toContain('require_controller_action_order_in_first_half_floor');
+    expect(JSON.stringify(gil)).toContain('preventable');
+    expect(JSON.stringify(gil)).toContain('victory_point_loss_prevention');
+
+    for (const id of ['servant.gilles.skill.sc-gilles-2', 'servant.medea.skill.sc-medea-2']) {
+      const territory = slice.find((card) => card.id === id);
+      expect(JSON.stringify(territory)).toContain('16 - (current_round * 2)');
+      expect(JSON.stringify(territory)).toContain('player.deployed');
+      expect(JSON.stringify(territory)).toContain('magic_workshop');
+      expect(JSON.stringify(territory)).toContain('residual');
+    }
+
+    const hassan = slice.find((card) => card.id === 'servant.hassan.skill.sc-hassan-1');
+    expect(JSON.stringify(hassan)).toContain('combat.power-calculated');
+    expect(JSON.stringify(hassan)).toContain('defeat_player');
+    expect(JSON.stringify(hassan)).toContain('all_highest_power_opponents');
+
+    for (const id of ['servant.iskandar.skill.sc-iskandar-1', 'servant.medusa.skill.sc-medusa-1']) {
+      const riding = slice.find((card) => card.id === id);
+      expect(JSON.stringify(riding)).toContain('source_play_batch_contains_basic_attack');
+      expect(JSON.stringify(riding)).toContain('basePowerMax');
+      expect(JSON.stringify(riding)).toContain('play_selected_cards');
+    }
+
+    for (const id of ['servant.cu.skill.sc-cu-2', 'servant.diarmuid.skill.sc-diarmuid-3']) {
+      const continuation = slice.find((card) => card.id === id);
+      expect(JSON.stringify(continuation)).toContain('choose_locations');
+      expect(JSON.stringify(continuation)).toContain('magic_workshop');
+      expect(JSON.stringify(continuation)).toContain('move_player');
+    }
+
+    const emiya = slice.find((card) => card.id === 'servant.emiya.skill.sc-emiya-1');
+    expect(JSON.stringify(emiya)).toContain('combat_attribute_power');
+    expect(JSON.stringify(emiya)).toContain('opponents_at_controller_battlefield');
+
+    const angra = slice.find((card) => card.id === 'servant.angra.skill.sc-angra-3');
+    expect(JSON.stringify(angra)).toContain('allow_below_eight_mana');
+    expect(JSON.stringify(angra)).toContain('controller_battlefield_has_opponent');
+    expect(JSON.stringify(angra)).toContain('controller_alone_at_battlefield');
+  });
+
   it('keeps the checked-in full-roster JSON and Markdown matrix count-identical with zero unclassified identities', () => {
     const inventory = JSON.parse(
       readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8'),
@@ -1090,10 +1155,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 167,
-      blockedCount: 777,
+      sourceGroundedCount: 177,
+      blockedCount: 767,
       unclassifiedCount: 0,
-      structuredAbilityCount: 315,
+      structuredAbilityCount: 332,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
