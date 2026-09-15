@@ -3591,6 +3591,61 @@ Permitted final status:
 - Fresh reviewer coverage equals A material coverage except `generatedAt`: `59/91/180`, raw `22/3/117/0/38/124`, compiled identity unchanged.
 - No broad Special Subsystem or taxonomy promotion is implied.
 
+## TASK P3-FB2-11
+
+Owner: Codex B2
+Status: READY
+Branch: `codex/b2-p3-fb2-11-round-number-formula-r1`
+Base: exact A-owned FB2-11 handoff commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Read: `docs/reports/2026-09-16-p3-fb2-11-round-number-formula-handoff.md`
+
+Goal: add exactly one trusted read-only formula metric, `game.round_number`, returning authoritative `state.round.roundNumber`. Reuse existing controlled AST `add/multiply`; do not add subtraction or any other operator, string parsing, arbitrary state paths, identity routing, or F1 authoring.
+
+May touch only the formula metric allowlist/evaluator, focused tests, and B2 report. Preserve FB2-02 deployment-resource behavior and existing Drake formula behavior.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R33
+
+Owner: Codex R
+Status: READY_AFTER_P3_FB2_11
+Branch: reviewer-selected fresh worktree/branch from exact FB2-11 candidate SHA
+
+Goal: independently review FB2-11 without implementing fixes. Required checks: exact read-only round metric; loader fail-closed near variables; no formula-op expansion; Territory expression round 1/4/7/8 values; deterministic trace; existing Drake compatibility; FB2-02 compatibility; no identity/text routing; typecheck, rules, determinism, full CI, diff check. R33 must also independently reconcile the prospective exact ten-card Territory Creation family: identical frozen full text/source clause hashes, same Reference handler/static metadata, F1 5+5 classification split is evidence-classification drift only, and the complete two-clause card is covered by FB2-11 + accepted FB2-02.
+
+Permitted final status:
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `REVIEW_BLOCKED`
+
+## TASK P3-A-FB2-11-SYNC
+
+Owner: Codex A
+Status: READY_AFTER_P3_R33
+Branch: `codex/a-p3-fb2-11-round-number-formula-sync`
+
+Goal: synchronize exact R33 facts, run fresh coverage/recertification, and if and only if R33 accepts the metric plus ten-member family reconciliation, dispatch P3-FM05 at exact batch size 10. A must not migrate authoring.
+
+## TASK P3-FM05
+
+Owner: Codex S
+Status: BLOCKED_ON_P3_R33_AND_A_SYNC
+Branch: `codex/s-p3-fm05-territory-creation`
+
+Prospective exact batch: the ten identical-text Territory Creation cards frozen in the FB2-11 handoff. Migration may start only after R33 accepts and A synchronizes the complete FB2-02 + FB2-11 dependency coverage.
+
+## Full-Roster Dispatch State After P3-R32 / Before P3-FB2-11
+
+- FM01-FM04 are independently migration-accepted; frozen canonical-authoring overlap is `69 / 944`, leaving `875 / 944` absent.
+- Fresh exact-text scan finds next large families: Presence Concealment 12, Territory Creation 10, Alter Ego 9. Territory Creation is selected because its Resource sibling is already accepted by FB2-02 and the only runtime gap is a read-only current-round Power formula metric.
+- Exact Territory family text SHA is `295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58`; all ten share the same two clause hashes and Reference handler `core.territory-creation`.
+- Current formula engine already supports controlled `add/multiply`, numeric negative constants, formula AST budgeting, finite checks, and deterministic calculation lines. It does not currently authorize any current-round variable.
+- FB2-11 therefore adds only `game.round_number`; future Territory X is `16 + (-2 * game.round_number)`. Broad formula language expansion is forbidden.
+- Locked Reference static metadata for all ten is uniform: Magic type, cost 0, historical requirement 0, historical static basePower 2. Frozen F1 printed formula remains semantic authority; the historical 2 is metadata only.
+- F1's five Resource-only vs five scaling-only classification split cannot be used to split the migration because all ten frozen cards are text-identical. R33 must reconcile the complete family before FM05 dispatch.
+
 ## Prompt Templates
 
 Codex A startup prompt:
