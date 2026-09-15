@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.33
+- Version: P3-TI-1.34
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3721,9 +3721,11 @@ Permitted final status:
 ## TASK P3-FB2-12
 
 Owner: Codex B2
-Status: READY
+Status: REVIEW_ACCEPTED
 Branch: `codex/b2-p3-fb2-12-presence-concealment-r1`
-Base: exact P3-FB2-12 A-owned handoff commit
+Base: `f1bd75e958753ca48d8d08a9a37bb8901abbeadc`
+Candidate: `4c97449de07b1e7a859d8ef43b60e34069541830`
+Review: P3-R35 `ee3367b1ea17e6db9d98b1ae42d769fae6122d5e`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Read: `docs/reports/2026-09-16-p3-fb2-12-presence-concealment-handoff.md`
 
@@ -3736,8 +3738,10 @@ Completion status allowed:
 ## TASK P3-R35
 
 Owner: Codex R
-Status: BLOCKED_ON_FB2_12
-Branch: reviewer-selected fresh worktree/branch from exact FB2-12 candidate SHA
+Status: REVIEW_ACCEPTED
+Branch: `codex/r-p3-fb2-12-presence-concealment-review`
+Candidate: `4c97449de07b1e7a859d8ef43b60e34069541830`
+Review SHA: `ee3367b1ea17e6db9d98b1ae42d769fae6122d5e`
 
 Goal: independently review the exact FB2-12 Presence Concealment pre-scoring contract without implementing fixes or promoting broad Trigger/defeat/battle rewriting. Required checks are the handoff's exact classifier, trusted snapshot provenance, strict-second condition, tied-highest derived targets, optional decline, once-per-round ownership, defeat-ignore behavior, frozen-Power recomputation, scoring barrier, turn-order sequencing, replay idempotence, no identity/text routing, no global defeated/elimination state, all rules/determinism/full CI/diff check, plus independent reconciliation of the exact twelve-member future FM06 family.
 
@@ -3745,16 +3749,33 @@ Permitted final status:
 - `GATE_A_B_CANDIDATE_ACCEPTED`
 - `REVIEW_BLOCKED`
 
-## Full-Roster Dispatch State After P3-R34 / Before P3-FB2-12
+## TASK P3-FM06
 
-- FM01-FM05 are independently migration-accepted; frozen canonical-authoring overlap is `79/944`, leaving `865/944` absent.
-- Fresh identical-source scan finds Presence Concealment as the largest normal-F4 family at exactly 12 absent identities; Alter Ego is next at 9 and remains below the normal F4 minimum.
-- All twelve Presence rows are `CONTRACT_MAPPED`, `blockedBy=[]`, use Reference handler `core.presence-concealment`, and carry only semantic axis `PRESENCE_CONCEALMENT_ASSASSINATION_RULE`. Current canonical authoring is `0/12`.
-- Frozen source text SHA is `29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f`; the F1 overlay has no separate clause-source hashes for this family.
-- Locked Reference skill metadata is uniform: Swift type, cost 3, historical requirement 3, base Power 4. Owner class is source-defined; Kiritsugu is Reference class Master while the other selected owners are Assassin.
-- Reference semantics occur after Power is frozen but before winner/scoring settlement. Current product runtime scores before its post-battle Trigger Gateway, so an exact pre-scoring response bridge is the sole runtime gap.
-- Current response windows, stable event dedupe, per-round usage, active-source checks, priority-seat turn ordering, frozen participant breakdowns, and Basic Luck defeat-ignore authority are reusable. The historical statusEffects battle-phase module is not a current product path and must not be revived.
-- P3-FB2-12 is therefore dispatched only for this exact post-Power/pre-scoring assassination semantic. FM06 authoring remains blocked until R35 acceptance plus fresh A synchronization.
+Owner: Codex S
+Status: READY
+Branch: `codex/s-p3-fm06-presence-concealment`
+Base: exact P3-FB2-12 A synchronization commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-16-p3-a-fb2-12-synchronization.md` and `docs/reports/2026-09-16-p3-fb2-12-presence-concealment-handoff.md`
+
+Goal: migrate exactly the twelve frozen Presence Concealment identities authorized by P3-R35 into minimal canonical authoring archives using only the accepted FB2-12 structural response semantic. Preserve frozen F1 text/evidence and locked Reference static metadata. Do not include Sion EX, other Assassin skills, or unrelated special handlers. Do not modify runtime.
+
+Completion status allowed:
+- `MIGRATION_COMPLETE_CANDIDATE`
+- `MIGRATION_BLOCKED`
+
+## Full-Roster Dispatch State After P3-R35 / Before P3-FM06
+
+- FM01-FM05 remain independently migration-accepted; canonical-authoring overlap is still `79/944`, leaving `865/944` absent until FM06 itself is accepted.
+- FB2-12 is independently accepted by R35 at `ee3367b1ea17e6db9d98b1ae42d769fae6122d5e`; its B2 candidate is `4c97449de07b1e7a859d8ef43b60e34069541830`.
+- Exact Presence Concealment migration family is `12/12`, currently `0/12` canonical, full-text SHA `29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f`, Reference handler `core.presence-concealment`.
+- Inventory top-level rows are `CONTRACT_MAPPED` with `blockedBy=[]`; the Phase-3 runtime route's `SPECIAL_EFFECT:presence_concealment_assassination_rule` gap is now closed only by the narrow accepted FB2-12 contract.
+- The frozen F1 inventory preserves four common clause-source SHAs: `ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb`, `1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25`, `0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217`, `1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871`.
+- Locked Reference card metadata is common across all twelve selected skill cards: Swift type, cost `3`, historical requirement `3`, base Power `4`; owner class remains source-defined and Kiritsugu remains `Master`. Final canonical skill-zone play still uses the established 8-mana rule.
+- Accepted runtime semantics are optional post-Power/pre-scoring response, active face-up source, 3+ participants, strict-second eligibility, all tied highest opponents derived from the frozen trusted snapshot, once per round on use, turn-order sequencing, Basic Luck defeat-ignore, same BattleResult/scoring pipeline, and battle-local cleanup.
+- A fresh recertification at R35 lineage keeps coverage materially unchanged at `69 archives / 101 cards / 200 abilities`, raw `22/3/127/0/48/124`, compiled identity unchanged, focused `10/10`, typecheck/content/determinism green.
+- P3-FM06 is therefore READY at exact batch size `12`; no canonical-overlap credit is taken until S migration, A material sync, and independent migration review complete.
 
 ## Prompt Templates
 

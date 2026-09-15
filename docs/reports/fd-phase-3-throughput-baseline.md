@@ -766,3 +766,4 @@ Permitted final status:
 - Future FM06 remains exact 12 and blocked pending R35 + A synchronization.
 
 - 2026-09-16 P3-FB2-12 handoff: FM05 accepted baseline 79/944; exact Presence Concealment family 12/12 frozen-identical and 0/12 canonical. Next runtime gap is an optional trusted post-power/pre-scoring strict-second response; Sion EX excluded.
+- 2026-09-16 P3-R35 / A sync: FB2-12 Presence Concealment pre-scoring response independently accepted; FM06 exact 12 is READY from canonical overlap 79/944. Fresh runtime coverage remains 69/101/200 and 22/3/127/0/48/124; no migration credit taken yet.
