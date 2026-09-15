@@ -3533,7 +3533,7 @@ Fresh lineage reconciliation confirms the exact eleven-member family remains one
 ## TASK P3-FM04
 
 Owner: Codex S
-Status: MIGRATION_CANDIDATE
+Status: MIGRATION_ACCEPTED
 Branch: `codex/s-p3-fm04-independent-action`
 Base: exact P3-A-FM04-DISPATCH-SYNC commit
 Candidate: `0047b30cd00fd3093f01db373f69cc9540466cd5`
@@ -3549,7 +3549,7 @@ Completion status allowed:
 ## TASK P3-A-FM04-MIGRATION-SYNC
 
 Owner: Codex A
-Status: MIGRATION_SYNC_CANDIDATE
+Status: MIGRATION_SYNC_ACCEPTED
 Branch: `codex/a-p3-fm04-migration-sync`
 Base: P3-FM04 S candidate `0047b30cd00fd3093f01db373f69cc9540466cd5`
 Read: `docs/reports/2026-09-16-p3-a-fm04-migration-synchronization.md`
@@ -3563,7 +3563,7 @@ Completion status allowed:
 ## TASK P3-R32
 
 Owner: Codex R
-Status: READY
+Status: MIGRATION_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM04 lineage
 
 Goal: independently review FM04 without implementing fixes. Required checks: exact 11-member accepted family; only ten new archives; Tomoe unchanged; frozen source text/hash preservation; uniform locked static metadata; exact Tomoe-derived two-ability decomposition; accepted TO08 + B21/R15 structural conformance; representative end-to-end +3 VP and unpreventable -5 VP behavior; A burn-down integrity; determinism; full required validation; diff check.
@@ -3581,6 +3581,15 @@ Permitted final status:
 - Compiled product identity remains definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 cards / 14 characters / 0 blocking issues.
 - A recertification passes typecheck, focused `15/15`, content validation, deterministic generated-content verification, and diff check. S evidence supplies rules `292/292` and standard full CI `705/705`.
 - P3-R32 is READY on the exact A-synchronized lineage; FM04 is not accepted until R32 independently reviews it.
+
+## Full-Roster Dispatch State After P3-R32 / FM04
+
+- FM04 is independently `MIGRATION_ACCEPTED` for the exact eleven-member Archer Independent Action family: Tomoe pre-existing plus ten newly canonical siblings.
+- S candidate is `0047b30cd00fd3093f01db373f69cc9540466cd5`; A material synchronization is `3e816160d8051a314e8b20cf2c2d924dcd0c7e3e`.
+- Frozen-F1 canonical-authoring overlap moves `59/944 -> 69/944` (+10); family moves `1/11 -> 11/11`; unauthorized additions/removals/skips are zero.
+- Independent R32 evidence: static/source reconciliation 11/11; focused `15/15`; rules `292/292`; standard full CI `705/705`; content 0 blockers; determinism unchanged; runtime diff=0; Tomoe diff=0.
+- Fresh reviewer coverage equals A material coverage except `generatedAt`: `59/91/180`, raw `22/3/117/0/38/124`, compiled identity unchanged.
+- No broad Special Subsystem or taxonomy promotion is implied.
 
 ## Prompt Templates
 
