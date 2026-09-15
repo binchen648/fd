@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.15
+- Version: P3-TI-1.16
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2825,6 +2825,79 @@ Completion status allowed:
 - Fresh A coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled definition hash remains `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, with 70 cards, 14 characters, and 0 blocking issues.
 - Generated coverage drift is only timestamp/static source line numbers and is intentionally not committed.
 - P3-FM01 remains undispatched; wave-1 Resource Numeric / Cost closure continues, with variable/expression payments explicitly deferred to their dependent Result Binding/Target work.
+
+## TASK P3-FB2-06
+
+Owner: Codex B2
+Status: READY
+Branch: `codex/b2-p3-fb2-06-fixed-controller-draw-r1`
+Base: exact P3-FB2-06 A-owned handoff commit
+Runtime baseline before handoff: `de6e57c2610c560b81791ef931bf5bc09dab8fc7`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Runtime request: `runtime-capability-a600709be05b` / `GENERIC_CARD_ZONE`
+
+Goal: start wave 2 with one reusable fixed-controller ordinary-deck draw component, reusing the existing typed `draw_cards` primitive, plus one narrow complete direct route for the Waver-shaped `advance/outpost` action with fixed 1-Mana payment and draw 2. No roster migration is part of B2.
+
+Frozen F1 component membership: 23 exact identities listed in `docs/reports/2026-09-16-p3-fb2-06-fixed-controller-draw-handoff.md`.
+
+Required component boundary:
+- `draw_cards`; controller only; fixed positive safe-integer count; ordinary controller deck only;
+- reject custom deck, variable/binding count, draw-until, third-party, result-consuming, or sibling semantic shapes;
+- matching component alone never grants a parent route.
+
+Required complete direct route:
+- phase action in runtime `advance` (`outpost` source timing); controller action window;
+- exactly one fixed positive controller `pay_mana` cost of 1, using FB2-01;
+- exactly one fixed controller draw of 2;
+- no target/condition/create/modifier/lifecycle/response/limit;
+- cost + draw settle atomically through typed Resolution Data-flow;
+- insufficient Mana and malformed same-family shapes fail closed before legacy fallback.
+
+Must not promote:
+- generic Card Zone; broad PLAY; Trigger Gateway / `on_card_played`; the 14 mixed servant draw/play rows as complete routes; Result Binding; Target/PendingInteraction; Visibility; Lifecycle; Power/Battle/Special; F1 authoring migration.
+
+May touch:
+- `packages/rules/src/ability/interpreter.ts`;
+- one focused FB2-06 regression test;
+- narrow existing Card Zone assertions only if required;
+- `docs/reports/2026-09-16-p3-fb2-06-fixed-controller-draw-result.md`.
+
+Required validation: identity/text-free classifier, negative sibling coverage, Waver-shaped atomic payment+draw, discard recycle path, existing FB2-01/Card Zone/PLAY/Interaction compatibility, typecheck, all rules regressions, determinism, full CI, identity/forbidden-file audit, diff check.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R23
+
+Owner: Codex R
+Status: READY_AFTER_P3_FB2_06
+Branch: reviewer-selected fresh worktree/branch from exact FB2-06 candidate SHA
+
+Goal: independently review FB2-06 without implementing fixes and without promoting broad Card Zone, Trigger, PLAY, Interaction, or F4 migration.
+
+Required checks:
+- exact fixed-controller ordinary-deck draw component boundary;
+- existing typed draw primitive remains the single mutation owner;
+- Waver-shaped `advance + pay 1 + draw 2` route is structural and atomic;
+- malformed/unsupported parent shapes fail closed and do not fall to legacy;
+- the 14 mixed servant rows remain component-only until their `on_card_played` draw parent is independently accepted;
+- no identity/text routing, no F1 migration, no KPI mutation;
+- fresh typecheck, focused tests, all rules regressions, deterministic verification, full CI, and diff check.
+
+Completion status allowed:
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
+## Full-Roster Dispatch State Before FB2-06
+
+- Wave 1 independent Resource Numeric / Cost primitives are closed through FB2-01/02/03/04/05. Remaining rows are explicitly dependency-deferred to later Result Binding, Target, Trigger, Card Zone, Lifecycle, Modifier/Power, or reviewed-special owners rather than silently broadened.
+- Wave 2 may begin under the accepted dependency order.
+- Fresh F1 Card Zone scan found 30 draw identities; 23 contain a fixed positive ordinary-controller-deck draw core.
+- A 14-identity servant family shares the same source-grounded draw-1 + optional low-power hand-play pattern, but its draw clause is still Trigger-owned. TO03 is specification-accepted only and the broad `on_card_played -> draw_cards` runtime is not accepted; therefore those 14 are not F4-ready.
+- `master.waver.skill.s2` provides the first complete wave-2 direct representative: outpost/advance, fixed 1 Mana, draw 2. Source overlay cost must be preserved even though the F1 capability axis did not separately request Cost Payment.
+- P3-FM01 remains undispatched.
 
 ## Prompt Templates
 
