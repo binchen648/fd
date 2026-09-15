@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.12
+- Version: P3-TI-1.13
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2648,7 +2648,7 @@ Completion status allowed:
 ## TASK P3-FB2-04
 
 Owner: Codex B2
-Status: READY
+Status: REVIEW_ACCEPTED
 Branch: `codex/b2-p3-fb2-04-fixed-command-seal-component-r1`
 Base: exact P3-FB2-04 A-owned handoff commit
 Runtime baseline before handoff: `0842bd83a1d7f86ea59fe8e92e948521dba73713`
@@ -2695,7 +2695,7 @@ Completion status allowed:
 ## TASK P3-R21
 
 Owner: Codex R
-Status: READY_AFTER_P3_FB2_04
+Status: REVIEW_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact FB2-04 candidate SHA
 
 Goal: independently review FB2-04 without implementing fixes and without promoting broad Resource Numeric, Cost, Trigger, Target, or Interaction semantics.
@@ -2722,6 +2722,15 @@ Completion status allowed:
 - Three non-controller/non-literal sibling shapes are explicitly excluded and require later target/special semantics.
 - This is component alignment only; no new roster migration readiness is claimed because parent routes remain independently required.
 - P3-FM01 remains undispatched and wave-1 Resource Numeric / Cost closure continues.
+
+## Full-Roster Dispatch State After FB2-04
+
+- FB2-04 candidate `5e6500a72f2d82c2cb12644a163ed6b9d96f0fc7` is independently accepted by R21 `92c55fc53164ce52ad9489ef5d5067cb516ea4e3`.
+- Accepted component scope is fixed non-zero controller `adjust_command_seals` with optional non-empty string directive, reusing the existing typed Resolution Data-flow primitive under independently accepted parents.
+- Exact F1 component alignment is 6 identities / 7 effects; the three all-opponent / same-battlefield-opponent / restore-all siblings remain excluded.
+- This component does not make unsupported parent abilities routable and does not accept command-seal payment. Even if all 6 component identities later gain parents, this slice alone cannot meet the FM01 minimum of 10 exact IDs.
+- Fresh A coverage and compiled identity remain unchanged; no authoring migration occurred.
+- Continue wave-1 Resource Numeric / Cost membership analysis before dispatching a dependent wave.
 
 ## Prompt Templates
 
