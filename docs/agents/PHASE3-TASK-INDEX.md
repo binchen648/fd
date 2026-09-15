@@ -3398,7 +3398,7 @@ Fresh coverage is KPI-stable and regenerated artifact drift is generatedAt/stati
 ## TASK P3-FM03
 
 Owner: Codex S
-Status: MIGRATION_CANDIDATE
+Status: MIGRATION_ACCEPTED
 Branch: `codex/s-p3-fm03-saber-magic-resistance`
 Base: exact P3-A-FB2-10 synchronization commit
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
@@ -3433,7 +3433,7 @@ Completion status allowed:
 ## TASK P3-A-FM03-SYNC
 
 Owner: Codex A
-Status: MIGRATION_SYNC_CANDIDATE
+Status: MIGRATION_SYNC_ACCEPTED
 Branch: `codex/a-p3-fm03-evidence-sync`
 Base: P3-FM03 S candidate `cac8a0065dadd190aab6666989571845e4de0f1c`
 
@@ -3446,7 +3446,7 @@ Completion status allowed:
 ## TASK P3-R30
 
 Owner: Codex R
-Status: READY
+Status: MIGRATION_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM03 lineage
 
 Goal: independently review FM03 without implementing fixes. Required checks: exact ten-ID membership; per-card F1 source/printed-text preservation; accepted B18/B19/FB2-10 structural conformance; locked static metadata/final 8-mana skill-zone rule; no runtime changes; representative end-to-end Power/VP behavior; A burn-down integrity; determinism; full required validation; diff check.

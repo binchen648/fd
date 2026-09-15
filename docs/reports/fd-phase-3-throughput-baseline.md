@@ -699,3 +699,11 @@ Permitted final status:
 - Selected raw reporter growth is 20 Noble Bloom legacy labels plus 10 Magic Resistance not-classifiable/warning labels; 30/30 structures match accepted Artoria Alter representatives excluding identity.
 - A checks: typecheck PASS, focused `21/21`, content validation PASS, determinism unchanged, runtime diff=0, diff check PASS. S evidence: rules `292/292`; parallel CI only known 5s wall-clock timeout (`704/705`), isolated `26/26`, single-worker full CI `705/705`.
 - R30 is READY; FM03 remains unaccepted until independent reviewer judgment.
+## P3-R30 / FM03 Third F4 Migration Acceptance - 2026-09-16
+
+- FM03 is `MIGRATION_ACCEPTED` for exactly 10 Saber-family Magic Resistance identities.
+- S candidate `cac8a0065dadd190aab6666989571845e4de0f1c`; A synchronization `44050db9fb1ebfb4f4684da7de738f0d9498c189`.
+- Frozen canonical-authoring overlap moves `49 -> 59` (+10); exact batch `0/10 -> 10/10`; unauthorized additions/removals/skips are zero.
+- Independent R30 evidence: focused `21/21`, rules `292/292`, standard full CI `705/705`, content validation 0 blockers, deterministic hashes unchanged, runtime diff=0, diff check PASS.
+- Fresh reviewer coverage equals the A material artifact except `generatedAt`: `49/81/160`, raw `12/3/107/0/38/114`, compiled identity unchanged.
+- No broad Power/Modifier or taxonomy acceptance is implied.
