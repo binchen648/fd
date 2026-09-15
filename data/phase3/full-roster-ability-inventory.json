@@ -15731,46 +15731,199 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goetia.ascensionSkill#line=374"
+        },
         "axes": {
-          "timing": [],
-          "trigger": [],
-          "condition": [],
-          "cost": [],
+          "timing": [
+            "OUTPOST"
+          ],
+          "trigger": [
+            "card.activated"
+          ],
+          "condition": [
+            "CONTROLLER_HAND_HAS_NO_TRAIT",
+            "EVENT_DEFINITION_IS_SELF"
+          ],
+          "cost": [
+            "MANA"
+          ],
           "target": [],
-          "effect": [],
+          "effect": [
+            "DRAW_CARDS",
+            "MOVE_CARD",
+            "MOVE_MATCHING_CARDS"
+          ],
           "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
-          "visibility": [],
+          "lifecycle": [
+            "duration:while_source_active"
+          ],
+          "modifier": [
+            "rule:card_activation_persistence:never_close",
+            "rule:card_on_play_power:add"
+          ],
+          "visibility": [
+            "FACE_UP"
+          ],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "goetia.temple-of-time.activate-into-attack",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.ascensionSkill#line=374#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "card.activated"
+              ],
+              "condition": [
+                "EVENT_DEFINITION_IS_SELF"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "MOVE_CARD"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "goetia.temple-of-time.permanent",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.ascensionSkill#line=374#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:while_source_active"
+              ],
+              "modifier": [
+                "rule:card_activation_persistence:never_close"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "goetia.temple-of-time.demon-god-on-play-power",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.ascensionSkill#line=374#ability-3"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:while_source_active"
+              ],
+              "modifier": [
+                "rule:card_on_play_power:add"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "goetia.temple-of-time.outpost-refill",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.ascensionSkill#line=374#ability-4"
+            },
+            "axes": {
+              "timing": [
+                "OUTPOST"
+              ],
+              "trigger": [],
+              "condition": [
+                "CONTROLLER_HAND_HAS_NO_TRAIT"
+              ],
+              "cost": [
+                "MANA"
+              ],
+              "target": [],
+              "effect": [
+                "DRAW_CARDS",
+                "MOVE_MATCHING_CARDS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [
+                "FACE_UP"
+              ],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.goetia-demon-gods"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ACTION_SEMANTICS",
+          "CARD_ZONE",
+          "CONDITION",
+          "COST_PAYMENT",
+          "HIDDEN_INFORMATION",
+          "LIFECYCLE",
+          "MODIFIER",
+          "POWER",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "CARD_ACTION_ADD_TO_ATTACK",
+          "GENERIC_CARD_ZONE",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_COST_PAYMENT",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER",
+          "GENERIC_TRIGGER_GATEWAY",
+          "GENERIC_VISIBILITY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -15821,45 +15974,156 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goetia.skills[s1]#line=372"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "game.started",
+            "round.ending"
+          ],
+          "condition": [
+            "CONTROLLER_DID_NOT_WIN_COMBAT_THIS_ROUND"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "DEMON_GOD_RULE"
+          ],
           "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
+          "lifecycle": [
+            "duration:game"
+          ],
+          "modifier": [
+            "rule:command_seal_capacity:set"
+          ],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "goetia.collective.no-command-seals",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.skills[s1]#line=372#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [
+                "rule:command_seal_capacity:set"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "goetia.collective.seed-seven-demon-gods",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.skills[s1]#line=372#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "game.started"
+              ],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "DEMON_GOD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "goetia.collective.round-end-sacrifice",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.skills[s1]#line=372#ability-3"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "round.ending"
+              ],
+              "condition": [
+                "CONTROLLER_DID_NOT_WIN_COMBAT_THIS_ROUND"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "DEMON_GOD_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.goetia-demon-gods"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "LIFECYCLE",
+          "MODIFIER",
+          "SPECIAL_SUBSYSTEM",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:demon_god_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -15971,45 +16235,421 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
-        "axes": {
-          "timing": [],
-          "trigger": [],
-          "condition": [],
-          "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
-          "visibility": [],
-          "binding": [],
-          "battle": []
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_goetia.skills[s2]#line=373"
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "axes": {
+          "timing": [
+            "ACTION",
+            "COMBAT",
+            "OUTPOST"
+          ],
+          "trigger": [
+            "combat.ending",
+            "combat.resolved"
+          ],
+          "condition": [
+            "CONTROLLER_LOCATION_IS",
+            "EVENT_PLAYER_LOST_COMBAT"
+          ],
+          "cost": [],
+          "target": [
+            "BRANCH_CHOICE",
+            "CHOOSE_ONE_CARD"
+          ],
+          "effect": [
+            "CLOSE_SELECTED_CARDS",
+            "DEMON_GOD_RULE",
+            "GAIN_MANA",
+            "GAIN_VICTORY_POINTS",
+            "MOVE_PLAYER",
+            "MOVE_SELECTED_CARDS",
+            "MOVE_SOURCE_CARD",
+            "PLAY_SELECTED_CARDS",
+            "REMOVE_SELECTED_CARDS",
+            "RETRIGGER_CARD_PLAY_EFFECTS"
+          ],
+          "interaction": [
+            "BRANCH_CHOICE",
+            "CHOOSE_ONE_CARD"
+          ],
+          "lifecycle": [
+            "duration:this_round",
+            "duration:while_card_relevant",
+            "duration:while_source_active"
+          ],
+          "modifier": [
+            "rule:card_cost:reduce_by_sum",
+            "rule:card_play_mana_requirement:ignore_below_threshold",
+            "rule:card_play_mode:require_additional_play",
+            "rule:card_power_change:prohibit",
+            "rule:command_seal_transaction:replace_with_mana",
+            "rule:noble_phantasm_situation_restriction:ignore",
+            "rule:total_power:add"
+          ],
+          "visibility": [],
+          "binding": [
+            "payload:closeAttackIds",
+            "payload:playCardIds",
+            "payload:raumIds",
+            "payload:raumReconChoice",
+            "payload:selectedDemonGodIds",
+            "payload:zeparChoice"
+          ],
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
+        },
+        "abilities": [
+          {
+            "sourceAbilityId": "goetia.demon-gods.baal-passives",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.skills[s2]#line=373#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:while_card_relevant"
+              ],
+              "modifier": [
+                "rule:card_cost:reduce_by_sum",
+                "rule:card_play_mode:require_additional_play",
+                "rule:card_power_change:prohibit"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "goetia.demon-gods.phenex-regeneration",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.skills[s2]#line=373#ability-2"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [
+                "CHOOSE_ONE_CARD"
+              ],
+              "effect": [
+                "GAIN_MANA",
+                "REMOVE_SELECTED_CARDS"
+              ],
+              "interaction": [
+                "CHOOSE_ONE_CARD"
+              ],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:selectedDemonGodIds"
+              ],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "goetia.demon-gods.forneus-invocation",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.skills[s2]#line=373#ability-3"
+            },
+            "axes": {
+              "timing": [
+                "COMBAT"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [
+                "CHOOSE_ONE_CARD"
+              ],
+              "effect": [
+                "CLOSE_SELECTED_CARDS",
+                "MOVE_SOURCE_CARD",
+                "PLAY_SELECTED_CARDS",
+                "RETRIGGER_CARD_PLAY_EFFECTS"
+              ],
+              "interaction": [
+                "CHOOSE_ONE_CARD"
+              ],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:closeAttackIds",
+                "payload:playCardIds"
+              ],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "goetia.demon-gods.flauros-conversion",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.skills[s2]#line=373#ability-4"
+            },
+            "axes": {
+              "timing": [
+                "OUTPOST"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "MOVE_SOURCE_CARD"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:this_round"
+              ],
+              "modifier": [
+                "rule:total_power:add"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "goetia.demon-gods.zepar-loss-return",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.skills[s2]#line=373#ability-5"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "EVENT_PLAYER_LOST_COMBAT"
+              ],
+              "cost": [],
+              "target": [
+                "BRANCH_CHOICE"
+              ],
+              "effect": [
+                "DEMON_GOD_RULE",
+                "GAIN_VICTORY_POINTS",
+                "MOVE_SOURCE_CARD"
+              ],
+              "interaction": [
+                "BRANCH_CHOICE"
+              ],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:zeparChoice"
+              ],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "goetia.demon-gods.raum-recon-return",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.skills[s2]#line=373#ability-6"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.ending"
+              ],
+              "condition": [
+                "CONTROLLER_LOCATION_IS"
+              ],
+              "cost": [],
+              "target": [
+                "BRANCH_CHOICE"
+              ],
+              "effect": [
+                "DEMON_GOD_RULE",
+                "MOVE_SOURCE_CARD"
+              ],
+              "interaction": [
+                "BRANCH_CHOICE"
+              ],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:raumReconChoice"
+              ],
+              "battle": [
+                "COMBAT_EVENT"
+              ]
+            }
+          },
+          {
+            "sourceAbilityId": "goetia.demon-gods.raum-dream-flight",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.skills[s2]#line=373#ability-7"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [
+                "CHOOSE_ONE_CARD"
+              ],
+              "effect": [
+                "MOVE_PLAYER",
+                "MOVE_SELECTED_CARDS"
+              ],
+              "interaction": [
+                "CHOOSE_ONE_CARD"
+              ],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:raumIds"
+              ],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "goetia.demon-gods.barbatos-seal-replacement",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.skills[s2]#line=373#ability-8"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:while_source_active"
+              ],
+              "modifier": [
+                "rule:command_seal_transaction:replace_with_mana"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "goetia.demon-gods.barbatos-future-sight",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_goetia.skills[s2]#line=373#ability-9"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "MOVE_SOURCE_CARD"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:this_round"
+              ],
+              "modifier": [
+                "rule:card_play_mana_requirement:ignore_below_threshold",
+                "rule:noble_phantasm_situation_restriction:ignore"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.goetia-demon-gods"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CARD_ACTION_SEMANTICS",
+          "CARD_ZONE",
+          "CONDITION",
+          "INTERACTION",
+          "LIFECYCLE",
+          "MODIFIER",
+          "MOVEMENT",
+          "POWER",
+          "RESOURCE_NUMERIC",
+          "RESULT_BINDING",
+          "SPECIAL_SUBSYSTEM",
+          "TARGET_SELECTION",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "CARD_ACTION_CLOSE",
+          "CARD_ACTION_PLAY",
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CARD_ZONE",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER",
+          "GENERIC_MOVEMENT",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_POWER",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TARGET_SELECTION",
+          "GENERIC_TRIGGER_GATEWAY",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:demon_god_rule",
+          "SPECIAL_EFFECT:retrigger_card_play_effects"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -20107,46 +20747,140 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_illya_mahou.ascensionSkill#line=395"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
+          "trigger": [
+            "round.ending"
+          ],
           "condition": [],
-          "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
+          "cost": [
+            "MANA"
+          ],
+          "target": [
+            "BRANCH_CHOICE"
+          ],
+          "effect": [
+            "MOVE_SOURCE_CARD"
+          ],
+          "interaction": [
+            "BRANCH_CHOICE"
+          ],
+          "lifecycle": [
+            "duration:while_source_active"
+          ],
+          "modifier": [
+            "rule:incoming_situation_or_event_effect:multiply"
+          ],
           "visibility": [],
-          "binding": [],
+          "binding": [
+            "payload:doppelgangerUpkeep"
+          ],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "illya-ruby.doppelganger.upkeep",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_illya_mahou.ascensionSkill#line=395#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "round.ending"
+              ],
+              "condition": [],
+              "cost": [
+                "MANA"
+              ],
+              "target": [
+                "BRANCH_CHOICE"
+              ],
+              "effect": [
+                "MOVE_SOURCE_CARD"
+              ],
+              "interaction": [
+                "BRANCH_CHOICE"
+              ],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:doppelgangerUpkeep"
+              ],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "illya-ruby.doppelganger.double-non-resource-effects",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_illya_mahou.ascensionSkill#line=395#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:while_source_active"
+              ],
+              "modifier": [
+                "rule:incoming_situation_or_event_effect:multiply"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.magical-ruby"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "COST_PAYMENT",
+          "INTERACTION",
+          "LIFECYCLE",
+          "MODIFIER",
+          "RESULT_BINDING",
+          "TARGET_SELECTION",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
+          "GENERIC_COST_PAYMENT",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TARGET_SELECTION",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -20197,45 +20931,89 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_illya_mahou.skills[s1]#line=393"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "DECK_ENTRY_REPLACEMENT"
+          ],
           "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
+          "lifecycle": [
+            "duration:game"
+          ],
+          "modifier": [
+            "rule:card_zone_destination:replace"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "illya-ruby.unlimited-imagination.deck-entry-replacement",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_illya_mahou.skills[s1]#line=393#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "DECK_ENTRY_REPLACEMENT"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [
+                "rule:card_zone_destination:replace"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.magical-ruby"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "LIFECYCLE",
+          "MODIFIER",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:deck_entry_replacement"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -20297,46 +21075,151 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_illya_mahou.skills[s1a]#line=394"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "PREPARATION"
+          ],
           "trigger": [],
           "condition": [],
-          "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
-          "lifecycle": [],
+          "cost": [
+            "MANA"
+          ],
+          "target": [
+            "CHOOSE_NUMBER"
+          ],
+          "effect": [
+            "DRAW_CARDS",
+            "MOVE_MATCHING_CARDS"
+          ],
+          "interaction": [
+            "CHOOSE_NUMBER"
+          ],
+          "lifecycle": [
+            "limit.ability:draw",
+            "limit.ability:shuffle",
+            "limit.maxUses:1",
+            "limit.period:round",
+            "limit.scope:controller"
+          ],
           "modifier": [],
           "visibility": [],
-          "binding": [],
+          "binding": [
+            "payload:drawCount",
+            "result:drawnCardIds"
+          ],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "illya-ruby.kaleidostick.draw-any",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_illya_mahou.skills[s1a]#line=394#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "PREPARATION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [
+                "CHOOSE_NUMBER"
+              ],
+              "effect": [
+                "DRAW_CARDS"
+              ],
+              "interaction": [
+                "CHOOSE_NUMBER"
+              ],
+              "lifecycle": [
+                "limit.ability:draw",
+                "limit.maxUses:1",
+                "limit.period:round",
+                "limit.scope:controller"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:drawCount",
+                "result:drawnCardIds"
+              ],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "illya-ruby.kaleidostick.shuffle-discard",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_illya_mahou.skills[s1a]#line=394#ability-2"
+            },
+            "axes": {
+              "timing": [
+                "PREPARATION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [
+                "MANA"
+              ],
+              "target": [],
+              "effect": [
+                "MOVE_MATCHING_CARDS"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "limit.ability:shuffle",
+                "limit.maxUses:1",
+                "limit.period:round",
+                "limit.scope:controller"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.magical-ruby"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "COST_PAYMENT",
+          "INTERACTION",
+          "LIFECYCLE",
+          "RESULT_BINDING",
+          "TARGET_SELECTION"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
+          "GENERIC_COST_PAYMENT",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TARGET_SELECTION"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -20417,46 +21300,177 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_irisviel.ascensionSkill#line=20"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "ACTION",
+            "COMBAT"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
+          "target": [
+            "CHOOSE_ONE_CARD"
+          ],
+          "effect": [
+            "MOVE_SOURCE_CARD"
+          ],
+          "interaction": [
+            "CHOOSE_ONE_CARD"
+          ],
+          "lifecycle": [
+            "duration:this_combat_resolution",
+            "limit.group:irisviel.life-giving.choice",
+            "limit.maxUses:1",
+            "limit.period:round",
+            "limit.scope:source_card"
+          ],
+          "modifier": [
+            "rule:card_activation_persistence:remain_active_until",
+            "rule:card_attribute:add",
+            "rule:card_power:add"
+          ],
           "visibility": [],
-          "binding": [],
+          "binding": [
+            "payload:selectedAttackIds"
+          ],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "irisviel.life-giving.ascension-setup",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_irisviel.ascensionSkill#line=20#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "MOVE_SOURCE_CARD"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "irisviel.life-giving.keep-basic-active",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_irisviel.ascensionSkill#line=20#ability-2"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [
+                "CHOOSE_ONE_CARD"
+              ],
+              "effect": [],
+              "interaction": [
+                "CHOOSE_ONE_CARD"
+              ],
+              "lifecycle": [
+                "limit.group:irisviel.life-giving.choice",
+                "limit.maxUses:1",
+                "limit.period:round",
+                "limit.scope:source_card"
+              ],
+              "modifier": [
+                "rule:card_activation_persistence:remain_active_until"
+              ],
+              "visibility": [],
+              "binding": [
+                "payload:selectedAttackIds"
+              ],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "irisviel.life-giving.magic-attack-boost",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_irisviel.ascensionSkill#line=20#ability-3"
+            },
+            "axes": {
+              "timing": [
+                "COMBAT"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:this_combat_resolution",
+                "limit.group:irisviel.life-giving.choice",
+                "limit.maxUses:1",
+                "limit.period:round",
+                "limit.scope:source_card"
+              ],
+              "modifier": [
+                "rule:card_attribute:add",
+                "rule:card_power:add"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.active-attack-lifecycle-boost"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "INTERACTION",
+          "LIFECYCLE",
+          "MODIFIER",
+          "POWER",
+          "RESULT_BINDING",
+          "TARGET_SELECTION"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_POWER",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TARGET_SELECTION"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -20507,11 +21521,14 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_irisviel.skills[s1]#line=20"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
@@ -20520,33 +21537,66 @@
           "target": [],
           "effect": [],
           "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
+          "lifecycle": [
+            "duration:game"
+          ],
+          "modifier": [
+            "rule:command_seal_usage_phase:replace"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "irisviel.proxy-master.command-seal-window",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_irisviel.skills[s1]#line=20#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:game"
+              ],
+              "modifier": [
+                "rule:command_seal_usage_phase:replace"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.game-start-rule-flags"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "LIFECYCLE",
+          "MODIFIER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER"
+        ],
         "currentRoute": "legacy",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [
             "proxy-master.command-spell-timing"
@@ -20600,46 +21650,99 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_irisviel.skills[s2]#line=20"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "OUTPOST"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "GAIN_MANA",
+            "MOVE_MATCHING_CARDS"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
-          "visibility": [],
-          "binding": [],
+          "visibility": [
+            "FACE_UP"
+          ],
+          "binding": [
+            "result:discardedCount"
+          ],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "conversion-magic.preparation",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate_Domination-开发版/data_masters.js",
+              "locator": "m_irisviel.skills[s2]#line=20#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "OUTPOST"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "GAIN_MANA",
+                "MOVE_MATCHING_CARDS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [
+                "FACE_UP"
+              ],
+              "binding": [
+                "result:discardedCount"
+              ],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.irisviel-conversion-magic"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "HIDDEN_INFORMATION",
+          "RESOURCE_NUMERIC",
+          "RESULT_BINDING"
+        ],
+        "requiredCapabilities": [
+          "CARD_ZONE_CORE_DIRECT_ACTION",
+          "GENERIC_CARD_ZONE",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_VISIBILITY"
+        ],
         "currentRoute": "new",
         "referenceRoute": "specific_handler",
-        "inheritedAcceptanceContracts": [],
-        "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "inheritedAcceptanceContracts": [
+          "CARD_ZONE_CORE_DIRECT_ACTION"
         ],
+        "partialAcceptanceContracts": [],
+        "classificationRoute": "READY_EXISTING_CONTRACT",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [
             "conversion-magic.preparation"
@@ -109449,15 +110552,15 @@
   ],
   "semanticSummary": {
     "totalIdentityCount": 944,
-    "sourceGroundedCount": 171,
-    "blockedCount": 773,
+    "sourceGroundedCount": 180,
+    "blockedCount": 764,
     "unclassifiedCount": 0,
-    "structuredAbilityCount": 323
+    "structuredAbilityCount": 349
   },
   "capabilitySummary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 171,
-    "explicitBlockCount": 773,
+    "contractMappedCount": 180,
+    "explicitBlockCount": 764,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -109471,11 +110574,11 @@
       "none": 1
     },
     "classificationRouteCounts": {
-      "READY_EXISTING_CONTRACT": 0,
-      "READY_GENERIC_EXTENSION": 110,
-      "SPECIAL_HANDLER_CANDIDATE": 61,
+      "READY_EXISTING_CONTRACT": 1,
+      "READY_GENERIC_EXTENSION": 115,
+      "SPECIAL_HANDLER_CANDIDATE": 64,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 773,
+      "SOURCE_EVIDENCE_REQUIRED": 764,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },

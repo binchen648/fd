@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 171,
-    "explicitBlockCount": 773,
+    "contractMappedCount": 180,
+    "explicitBlockCount": 764,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -23,11 +23,11 @@
       "none": 1
     },
     "classificationRouteCounts": {
-      "READY_EXISTING_CONTRACT": 0,
-      "READY_GENERIC_EXTENSION": 110,
-      "SPECIAL_HANDLER_CANDIDATE": 61,
+      "READY_EXISTING_CONTRACT": 1,
+      "READY_GENERIC_EXTENSION": 115,
+      "SPECIAL_HANDLER_CANDIDATE": 64,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 773,
+      "SOURCE_EVIDENCE_REQUIRED": 764,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -100,6 +100,14 @@
         },
         {
           "abilityId": "master.fiore.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goetia.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goetia.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -225,6 +233,7 @@
         "master.artoira.skill.s1",
         "master.bazett.skill.s5",
         "master.dan.skill.ascension",
+        "master.goetia.skill.ascension",
         "servant.kagekiyo.skill.sc-kagekiyo-2"
       ],
       "partialAbilities": [],
@@ -251,6 +260,10 @@
         },
         {
           "abilityId": "master.fiore.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goetia.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -370,6 +383,7 @@
       "eligibleAbilities": [
         "master.arcueid.skill.s2",
         "master.chaos.skill.s11",
+        "master.goetia.skill.s2",
         "servant.chloe.skill.sc-chloe-1",
         "servant.darius.skill.sc-darius-1",
         "servant.edison.skill.sc-edison-2",
@@ -414,6 +428,10 @@
         },
         {
           "abilityId": "master.fiore.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goetia.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -536,6 +554,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.goetia.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goetia.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goredolf.skill.s1a",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -655,6 +681,7 @@
         "master.ciel.skill.ascension",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.goetia.skill.s2",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s2",
         "master.hinako.skill.s4",
@@ -687,6 +714,10 @@
         },
         {
           "abilityId": "master.dan.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goetia.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -808,6 +839,14 @@
         },
         {
           "abilityId": "master.fiore.skill.s7",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.goetia.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.goetia.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -981,6 +1020,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.goetia.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.goetia.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goredolf.skill.s1a",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1145,6 +1192,14 @@
         },
         {
           "abilityId": "master.fiore.skill.s7",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.goetia.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.goetia.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1313,6 +1368,14 @@
         },
         {
           "abilityId": "master.fiore.skill.s7",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.goetia.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.goetia.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1485,6 +1548,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.goetia.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.goetia.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goredolf.skill.s1a",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1612,7 +1683,9 @@
         "master.kiritsugu.skill.time-alter"
       ],
       "acceptanceVehicle": "Mechanic Batch Gate A/B/C representative evidence",
-      "eligibleAbilities": [],
+      "eligibleAbilities": [
+        "master.irisviel.skill.s2"
+      ],
       "partialAbilities": [],
       "skippedAbilities": [
         {
@@ -1712,6 +1785,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.goetia.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.goetia.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goredolf.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1721,6 +1802,18 @@
         },
         {
           "abilityId": "master.hinako.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.illya-mahou.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.illya-mahou.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.irisviel.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1845,6 +1938,8 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fiore.skill.s7",
+        "master.goetia.skill.s1",
+        "master.goetia.skill.s2",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s1a",
@@ -2026,11 +2121,35 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.goetia.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goetia.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goredolf.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
           "abilityId": "master.hinako.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.illya-mahou.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.illya-mahou.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.irisviel.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.irisviel.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -2149,9 +2268,15 @@
         "master.darnic.skill.ascension",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.goetia.skill.ascension",
+        "master.goetia.skill.s2",
         "master.goredolf.skill.s1",
         "master.hinako.skill.ascension",
         "master.hinako.skill.s1a",
+        "master.illya-mahou.skill.ascension",
+        "master.illya-mahou.skill.s1a",
+        "master.irisviel.skill.ascension",
+        "master.irisviel.skill.s2",
         "master.kadoc.skill.ascension",
         "master.ophelia.skill.ascension",
         "master.twice.skill.s1",
@@ -2259,6 +2384,9 @@
         "master.fiore.skill.s7",
         "master.fou.skill.ascension",
         "master.fou.skill.s1",
+        "master.goetia.skill.ascension",
+        "master.goetia.skill.s1",
+        "master.goetia.skill.s2",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s1a",
@@ -2378,7 +2506,10 @@
         "master.darnic.skill.ascension",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.goetia.skill.ascension",
         "master.hinako.skill.ascension",
+        "master.illya-mahou.skill.ascension",
+        "master.illya-mahou.skill.s1a",
         "master.ophelia.skill.s2",
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s1b",
@@ -2537,11 +2668,23 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.goetia.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goetia.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goredolf.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
           "abilityId": "master.hinako.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.illya-mahou.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -2637,10 +2780,18 @@
         "master.fiore.skill.s6",
         "master.fou.skill.ascension",
         "master.fou.skill.s1",
+        "master.goetia.skill.ascension",
+        "master.goetia.skill.s1",
+        "master.goetia.skill.s2",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.ascension",
         "master.hinako.skill.s2",
+        "master.illya-mahou.skill.ascension",
+        "master.illya-mahou.skill.s1",
+        "master.illya-mahou.skill.s1a",
+        "master.irisviel.skill.ascension",
+        "master.irisviel.skill.s1",
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
         "master.ophelia.skill.s2",
@@ -2760,11 +2911,18 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
         "master.fou.skill.s1",
+        "master.goetia.skill.ascension",
+        "master.goetia.skill.s1",
+        "master.goetia.skill.s2",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s2",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
+        "master.illya-mahou.skill.ascension",
+        "master.illya-mahou.skill.s1",
+        "master.irisviel.skill.ascension",
+        "master.irisviel.skill.s1",
         "master.kadoc.skill.ascension",
         "master.kadoc.skill.s4",
         "master.kayneth.skill.s3",
@@ -2845,6 +3003,7 @@
         "master.darnic.skill.ascension",
         "master.fiore.skill.s2",
         "master.fiore.skill.s5",
+        "master.goetia.skill.s2",
         "master.goredolf.skill.s1a",
         "master.kadoc.skill.s4",
         "master.kayneth.skill.s3",
@@ -2904,7 +3063,11 @@
         "master.fiore.skill.s1a",
         "master.fiore.skill.s6",
         "master.fou.skill.s1",
+        "master.goetia.skill.s2",
         "master.hinako.skill.ascension",
+        "master.illya-mahou.skill.ascension",
+        "master.illya-mahou.skill.s1a",
+        "master.irisviel.skill.ascension",
         "master.kadoc.skill.ascension",
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s3",
@@ -2978,12 +3141,15 @@
         "master.fiore.skill.s4",
         "master.fiore.skill.s7",
         "master.fou.skill.s1",
+        "master.goetia.skill.ascension",
+        "master.goetia.skill.s2",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s2",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
+        "master.irisviel.skill.ascension",
         "master.kadoc.skill.ascension",
         "master.ophelia.skill.ascension",
         "master.ophelia.skill.s1b",
@@ -3060,9 +3226,11 @@
         "master.fiore.skill.s3",
         "master.fiore.skill.s6",
         "master.fou.skill.ascension",
+        "master.goetia.skill.s2",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s3",
+        "master.irisviel.skill.s2",
         "master.kadoc.skill.ascension",
         "master.kadoc.skill.s1a",
         "master.kadoc.skill.s3",
@@ -3135,7 +3303,12 @@
         "master.fiore.skill.s6",
         "master.fou.skill.ascension",
         "master.fou.skill.s1",
+        "master.goetia.skill.s2",
         "master.hinako.skill.ascension",
+        "master.illya-mahou.skill.ascension",
+        "master.illya-mahou.skill.s1a",
+        "master.irisviel.skill.ascension",
+        "master.irisviel.skill.s2",
         "master.kadoc.skill.ascension",
         "master.ophelia.skill.ascension",
         "master.peperoncino.skill.ascension",
@@ -3289,6 +3462,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.goetia.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goetia.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goetia.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.goredolf.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3302,6 +3487,26 @@
         },
         {
           "abilityId": "master.hinako.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.illya-mahou.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.illya-mahou.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.illya-mahou.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.irisviel.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.irisviel.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -3483,7 +3688,11 @@
         "master.fiore.skill.s1a",
         "master.fiore.skill.s6",
         "master.fou.skill.s1",
+        "master.goetia.skill.s2",
         "master.hinako.skill.ascension",
+        "master.illya-mahou.skill.ascension",
+        "master.illya-mahou.skill.s1a",
+        "master.irisviel.skill.ascension",
         "master.kadoc.skill.ascension",
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s3",
@@ -3581,12 +3790,16 @@
         "master.fiore.skill.s7",
         "master.fou.skill.ascension",
         "master.fou.skill.s1",
+        "master.goetia.skill.ascension",
+        "master.goetia.skill.s1",
+        "master.goetia.skill.s2",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s1a",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
+        "master.illya-mahou.skill.ascension",
         "master.kadoc.skill.s1",
         "master.kadoc.skill.s1a",
         "master.kadoc.skill.s3",
@@ -3666,6 +3879,8 @@
         "master.ciel.skill.s1a",
         "master.ciel.skill.s1b",
         "master.dan.skill.ascension",
+        "master.goetia.skill.ascension",
+        "master.irisviel.skill.s2",
         "master.peperoncino.skill.s1a",
         "servant.albion.skill.sc-albion-1",
         "servant.amakusa.skill.sc-amakusa-1",
@@ -3831,6 +4046,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.goetia.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.goredolf.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -3840,6 +4059,10 @@
         },
         {
           "abilityId": "master.hinako.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.irisviel.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -4052,7 +4275,27 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.goetia.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.hinako.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.illya-mahou.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.illya-mahou.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.irisviel.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.irisviel.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -4199,10 +4442,13 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fou.skill.ascension",
+        "master.goetia.skill.s1",
+        "master.goetia.skill.s2",
         "master.hinako.skill.ascension",
         "master.hinako.skill.s1",
         "master.hinako.skill.s3",
         "master.hinako.skill.s4",
+        "master.illya-mahou.skill.s1",
         "master.kadoc.skill.ascension",
         "master.kadoc.skill.s1",
         "master.kadoc.skill.s2",
@@ -4398,6 +4644,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.goetia.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.goetia.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.hinako.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -4407,6 +4661,10 @@
         },
         {
           "abilityId": "master.hinako.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.illya-mahou.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -4641,6 +4899,9 @@
       "master.fiore.skill.s7",
       "master.fou.skill.ascension",
       "master.fou.skill.s1",
+      "master.goetia.skill.ascension",
+      "master.goetia.skill.s1",
+      "master.goetia.skill.s2",
       "master.goredolf.skill.ascension",
       "master.goredolf.skill.s1",
       "master.goredolf.skill.s1a",
@@ -4650,6 +4911,12 @@
       "master.hinako.skill.s2",
       "master.hinako.skill.s3",
       "master.hinako.skill.s4",
+      "master.illya-mahou.skill.ascension",
+      "master.illya-mahou.skill.s1",
+      "master.illya-mahou.skill.s1a",
+      "master.irisviel.skill.ascension",
+      "master.irisviel.skill.s1",
+      "master.irisviel.skill.s2",
       "master.kadoc.skill.ascension",
       "master.kadoc.skill.s1",
       "master.kadoc.skill.s1a",
@@ -5021,27 +5288,6 @@
         ]
       },
       {
-        "abilityId": "master.goetia.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.goetia.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.goetia.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "master.hakuno-f.skill.ascension",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -5176,48 +5422,6 @@
       },
       {
         "abilityId": "master.iliya.skill.s4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.illya-mahou.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.illya-mahou.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.illya-mahou.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.irisviel.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.irisviel.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.irisviel.skill.s2",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -10182,11 +10386,14 @@
       "master.fiore.skill.s5",
       "master.fiore.skill.s6",
       "master.fou.skill.ascension",
+      "master.goetia.skill.s1",
+      "master.goetia.skill.s2",
       "master.goredolf.skill.s1",
       "master.hinako.skill.ascension",
       "master.hinako.skill.s1",
       "master.hinako.skill.s3",
       "master.hinako.skill.s4",
+      "master.illya-mahou.skill.s1",
       "master.kadoc.skill.ascension",
       "master.kadoc.skill.s1",
       "master.kadoc.skill.s2",

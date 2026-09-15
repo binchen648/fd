@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 773,
-    "coveredBlockedIdentityCount": 773,
+    "blockedIdentityCount": 764,
+    "coveredBlockedIdentityCount": 764,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 2,
@@ -58,9 +58,6 @@
         "master.fujino.skill.s2",
         "master.fujino.skill.s3",
         "master.fujino.skill.s4",
-        "master.goetia.skill.ascension",
-        "master.goetia.skill.s1",
-        "master.goetia.skill.s2",
         "master.hakuno-f.skill.ascension",
         "master.hakuno-f.skill.s1",
         "master.hakuno-f.skill.s2",
@@ -81,12 +78,6 @@
         "master.iliya.skill.s2",
         "master.iliya.skill.s3",
         "master.iliya.skill.s4",
-        "master.illya-mahou.skill.ascension",
-        "master.illya-mahou.skill.s1",
-        "master.illya-mahou.skill.s1a",
-        "master.irisviel.skill.ascension",
-        "master.irisviel.skill.s1",
-        "master.irisviel.skill.s2",
         "master.jinako.skill.ascension",
         "master.jinako.skill.s1",
         "master.jinako.skill.s2",
@@ -1676,102 +1667,6 @@
           "sha256": "672232aa5e3bfcdd95a81b8a1763b911bbde465c9cdee6e4e2c11a0e2112eb82"
         },
         {
-          "abilityId": "master.goetia.skill.ascension",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.goetia/盖提亚"
-        },
-        {
-          "abilityId": "master.goetia.skill.ascension",
-          "document": "legacy-content.json",
-          "locator": "master/master.goetia/ascension"
-        },
-        {
-          "abilityId": "master.goetia.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[59].skills[2].text#line=1",
-          "sha256": "22f54ae8020b91a583021c6414ed2983d88cbf64246fffc1837924e899879325"
-        },
-        {
-          "abilityId": "master.goetia.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[59].skills[2].text#line=2",
-          "sha256": "b94aa92c4adcc0c29f0089359694992d7ce905b30874e58dd118a16622d1ff19"
-        },
-        {
-          "abilityId": "master.goetia.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[59].skills[2].text#line=3",
-          "sha256": "3542a8cdb0c93866ac1216d8023f82c611f69a964e8130a0f6ce17c44eb07f12"
-        },
-        {
-          "abilityId": "master.goetia.skill.s1",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.goetia/盖提亚"
-        },
-        {
-          "abilityId": "master.goetia.skill.s1",
-          "document": "legacy-content.json",
-          "locator": "master/master.goetia/s1"
-        },
-        {
-          "abilityId": "master.goetia.skill.s1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[59].skills[0].text#line=1",
-          "sha256": "1c3fc41ef374b0a4c03e5b971b3d4a35e72c372b7a41e1ae3b73cea9d7e66c67"
-        },
-        {
-          "abilityId": "master.goetia.skill.s2",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.goetia/盖提亚"
-        },
-        {
-          "abilityId": "master.goetia.skill.s2",
-          "document": "legacy-content.json",
-          "locator": "master/master.goetia/s2"
-        },
-        {
-          "abilityId": "master.goetia.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[59].skills[1].text#line=1",
-          "sha256": "1b78840cde52ccb21a6ec61dc1b7e9ff9403de654459202219b6886f106d0be4"
-        },
-        {
-          "abilityId": "master.goetia.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[59].skills[1].text#line=2",
-          "sha256": "10605509ce7cbd48c7421ae5b6bb5ab98475f9dfa9941dc7913edd2f38c493c2"
-        },
-        {
-          "abilityId": "master.goetia.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[59].skills[1].text#line=3",
-          "sha256": "369b9788e16756f91a9fe90445d3cf1a9b16f61f9d10640f11402ec5b67fb8f4"
-        },
-        {
-          "abilityId": "master.goetia.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[59].skills[1].text#line=4",
-          "sha256": "c9f613b46579c62032f603c60a7b715fa94d3844432a53d01a5620e2289111e8"
-        },
-        {
-          "abilityId": "master.goetia.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[59].skills[1].text#line=5",
-          "sha256": "23cd8774ab4138290d671ac408e4b2adb024dc5244020c24bce5e2cd19815782"
-        },
-        {
-          "abilityId": "master.goetia.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[59].skills[1].text#line=6",
-          "sha256": "e6b2482fdf9ad62780d6ce6cb576681f0ec5e30e84adab0a7229ba5bb04bd703"
-        },
-        {
-          "abilityId": "master.goetia.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[59].skills[1].text#line=7",
-          "sha256": "214c7befad923f65debf7582da0c7871485be358dc5e7ebe6b631598dfc2a13b"
-        },
-        {
           "abilityId": "master.hakuno-f.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.hakuno-f/岸波白野（女）"
@@ -2198,132 +2093,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[7].skills[3].text#line=1",
           "sha256": "191995cd2586600a461b045351d6419e71145c287a7bcdce3407dbb1b8a948d5"
-        },
-        {
-          "abilityId": "master.illya-mahou.skill.ascension",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.illya-mahou/魔法少女☆伊莉雅"
-        },
-        {
-          "abilityId": "master.illya-mahou.skill.ascension",
-          "document": "legacy-content.json",
-          "locator": "master/master.illya-mahou/ascension"
-        },
-        {
-          "abilityId": "master.illya-mahou.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[62].skills[2].text#line=1",
-          "sha256": "261756c8216c3d8d50f197e8d19b9f97adbe08e5aee2de9e04da1fd747a2b67e"
-        },
-        {
-          "abilityId": "master.illya-mahou.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[62].skills[2].text#line=2",
-          "sha256": "63162edc6fbe753a0e8b6d0a66c0724a42695313cd28892dd49556c6b6e55abd"
-        },
-        {
-          "abilityId": "master.illya-mahou.skill.s1",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.illya-mahou/魔法少女☆伊莉雅"
-        },
-        {
-          "abilityId": "master.illya-mahou.skill.s1",
-          "document": "legacy-content.json",
-          "locator": "master/master.illya-mahou/s1"
-        },
-        {
-          "abilityId": "master.illya-mahou.skill.s1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[62].skills[0].text#line=1",
-          "sha256": "cd9408ccd7d5299c4c1e258a45f11a3cba07991864d28a915fdfa32237c1d8ed"
-        },
-        {
-          "abilityId": "master.illya-mahou.skill.s1a",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.illya-mahou/魔法少女☆伊莉雅"
-        },
-        {
-          "abilityId": "master.illya-mahou.skill.s1a",
-          "document": "legacy-content.json",
-          "locator": "master/master.illya-mahou/s1a"
-        },
-        {
-          "abilityId": "master.illya-mahou.skill.s1a",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[62].skills[1].text#line=1",
-          "sha256": "7e3ba930644cf954890adb898088c60487c2b87a430e660b2c296a675f1f89c8"
-        },
-        {
-          "abilityId": "master.illya-mahou.skill.s1a",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[62].skills[1].text#line=2",
-          "sha256": "bb4d280acff7f0f06fc2eb849bf7234a289a846d91da3a52b7653659cca54f21"
-        },
-        {
-          "abilityId": "master.irisviel.skill.ascension",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.irisviel/爱丽丝菲尔"
-        },
-        {
-          "abilityId": "master.irisviel.skill.ascension",
-          "document": "legacy-content.json",
-          "locator": "master/master.irisviel/ascension"
-        },
-        {
-          "abilityId": "master.irisviel.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[15].skills[2].text#line=1",
-          "sha256": "764186a6e18e6809aae2fac1606962feda161ba0f7e5a91e9d5a2a4575f2d0f2"
-        },
-        {
-          "abilityId": "master.irisviel.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[15].skills[2].text#line=2",
-          "sha256": "2e1aa81c66cb7c8c37ca72d9da458c2e0aee4ea286f510a4c386abbd5f73060f"
-        },
-        {
-          "abilityId": "master.irisviel.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[15].skills[2].text#line=3",
-          "sha256": "3b8136218dd2ca0707eb4d6b480ee36d3d4186bcfebd586a4f96cee39adad95f"
-        },
-        {
-          "abilityId": "master.irisviel.skill.ascension",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[15].skills[2].text#line=4",
-          "sha256": "ce2524bda62f58881683da59bf06a5ee7bab5a8ff7d3820b074b8401ccb861c2"
-        },
-        {
-          "abilityId": "master.irisviel.skill.s1",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.irisviel/爱丽丝菲尔"
-        },
-        {
-          "abilityId": "master.irisviel.skill.s1",
-          "document": "legacy-content.json",
-          "locator": "master/master.irisviel/s1"
-        },
-        {
-          "abilityId": "master.irisviel.skill.s1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[15].skills[0].text#line=1",
-          "sha256": "d880afd3807b56ddd0ae4c2ad35829fc7991428aee15438515ade2ade66bf9fd"
-        },
-        {
-          "abilityId": "master.irisviel.skill.s2",
-          "document": "Fate_Domination-开发版",
-          "locator": "master.irisviel/爱丽丝菲尔"
-        },
-        {
-          "abilityId": "master.irisviel.skill.s2",
-          "document": "legacy-content.json",
-          "locator": "master/master.irisviel/s2"
-        },
-        {
-          "abilityId": "master.irisviel.skill.s2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[15].skills[1].text#line=1",
-          "sha256": "75fa71628bf0f1ce128eb156a6b7bd1d3e49bf1e155e3e11978d342190548304"
         },
         {
           "abilityId": "master.jinako.skill.ascension",
@@ -17456,10 +17225,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 2,
-          "shared_handler": 366,
-          "specific_handler": 404
+          "shared_handler": 359,
+          "specific_handler": 402
         },
-        "handlerCount": 472,
+        "handlerCount": 468,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."

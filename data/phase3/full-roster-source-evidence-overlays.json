@@ -6160,6 +6160,844 @@
           ]
         }
       ]
+    },
+    {
+      "id": "master.goetia.skill.s1",
+      "printedText": "你没有令咒。将7张【魔神柱】加入攻击。回合结束时若你该回合未获得胜利，将一张你控制的【魔神柱】移除游戏，若无法达成，你被淘汰。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_goetia.skills[s1]#line=372",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你没有令咒。将7张【魔神柱】加入攻击。回合结束时若你该回合未获得胜利，将一张你控制的【魔神柱】移除游戏，若无法达成，你被淘汰。",
+        "sourceTextSha256": "1c3fc41ef374b0a4c03e5b971b3d4a35e72c372b7a41e1ae3b73cea9d7e66c67"
+      },
+      "referencePrintedTextSha256": "1c3fc41ef374b0a4c03e5b971b3d4a35e72c372b7a41e1ae3b73cea9d7e66c67",
+      "abilities": [
+        {
+          "id": "goetia.collective.no-command-seals",
+          "printedClause": "你没有令咒。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "command_seal_capacity",
+              "operation": "set",
+              "value": 0,
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "goetia.collective.seed-seven-demon-gods",
+          "printedClause": "将7张【魔神柱】加入攻击。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "demon_god_rule",
+              "operation": "seed_into_attack",
+              "count": 7,
+              "owner": "controller"
+            }
+          ]
+        },
+        {
+          "id": "goetia.collective.round-end-sacrifice",
+          "printedClause": "回合结束时若你该回合未获得胜利，将一张你控制的【魔神柱】移除游戏，若无法达成，你被淘汰。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ending"
+            },
+            {
+              "type": "controller_did_not_win_combat_this_round"
+            }
+          ],
+          "effects": [
+            {
+              "type": "demon_god_rule",
+              "operation": "remove_one_controlled_or_eliminate",
+              "destination": "removed_from_game"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.goetia.skill.s2",
+      "printedText": "【魔神柱巴力】13耗13需1威：残留：此卡的威力不可改变。魔神柱只能追加打出并且它们的费用减少X（X=打出的非魔神柱攻击的费用）。\n【魔神柱菲尼克斯】13耗13需1威：残留：此牌的威力不可变动。行动阶段：移除一张菲尼克斯以外的激活的魔神柱，获得6点魔力。\n【魔神柱佛钮司】力量5耗5需0威：残留。战斗阶段：将佛钮司洗入你的牌库并关闭你控制的一张牌。打出一张牌，支付其费用且使用该牌行动阶段能力。\n【魔神柱佛劳洛斯】迅捷4耗4需0威：残留。前哨阶段：将佛劳洛斯洗入你的牌库，直到回合结束合计威力+5。\n【魔神柱桀派】魔术6耗6需0威：残留：当你输掉战斗时，你可将桀派洗入你的牌库并获得2点战果，如此便可无需于回合结束时将魔神柱移除游戏。\n【魔神柱劳姆】特殊2耗2需0威：残留：战斗阶段结束后若你位于侦察，你可将劳姆加入手牌，如此便可无需于回合结束时将魔神柱移除游戏。被动/行动阶段：从手牌或场上弃置劳姆，移动至任意地点。\n【魔神柱巴巴妥司】3耗3需0威：残留：当你将要获得、失去或支付一枚令咒时，改为获得、失去、支付4点魔力。行动阶段：将巴巴妥司洗入你的牌库，直到回合结束之前，你拥有的魔力少于8点也可打出技能、你的宝具不会被局势牌禁止使用。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_goetia.skills[s2]#line=373",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【魔神柱巴力】13耗13需1威：残留：此卡的威力不可改变。魔神柱只能追加打出并且它们的费用减少X（X=打出的非魔神柱攻击的费用）。\n【魔神柱菲尼克斯】13耗13需1威：残留：此牌的威力不可变动。行动阶段：移除一张菲尼克斯以外的激活的魔神柱，获得6点魔力。\n【魔神柱佛钮司】力量5耗5需0威：残留。战斗阶段：将佛钮司洗入你的牌库并关闭你控制的一张牌。打出一张牌，支付其费用且使用该牌行动阶段能力。\n【魔神柱佛劳洛斯】迅捷4耗4需0威：残留。前哨阶段：将佛劳洛斯洗入你的牌库，直到回合结束合计威力+5。\n【魔神柱桀派】魔术6耗6需0威：残留：当你输掉战斗时，你可将桀派洗入你的牌库并获得2点战果，如此便可无需于回合结束时将魔神柱移除游戏。\n【魔神柱劳姆】特殊2耗2需0威：残留：战斗阶段结束后若你位于侦察，你可将劳姆加入手牌，如此便可无需于回合结束时将魔神柱移除游戏。被动/行动阶段：从手牌或场上弃置劳姆，移动至任意地点。\n【魔神柱巴巴妥司】3耗3需0威：残留：当你将要获得、失去或支付一枚令咒时，改为获得、失去、支付4点魔力。行动阶段：将巴巴妥司洗入你的牌库，直到回合结束之前，你拥有的魔力少于8点也可打出技能、你的宝具不会被局势牌禁止使用。",
+        "sourceTextSha256": "6306589a5208cb4660d2599d14589d8df2b43b996761c02fd4663c61d91f0f4f"
+      },
+      "referencePrintedTextSha256": "6306589a5208cb4660d2599d14589d8df2b43b996761c02fd4663c61d91f0f4f",
+      "abilities": [
+        {
+          "id": "goetia.demon-gods.baal-passives",
+          "printedClause": "【魔神柱巴力】残留：此卡的威力不可改变。魔神柱只能追加打出并且它们的费用减少X（X=打出的非魔神柱攻击的费用）。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_power_change",
+              "operation": "prohibit",
+              "filter": "baal_or_phenex"
+            },
+            {
+              "rule": "card_play_mode",
+              "operation": "require_additional_play",
+              "filter": "demon_god"
+            },
+            {
+              "rule": "card_cost",
+              "operation": "reduce_by_sum",
+              "filter": "demon_god",
+              "sourceFilter": "played_non_demon_god_attacks"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_card_relevant"
+          }
+        },
+        {
+          "id": "goetia.demon-gods.phenex-regeneration",
+          "printedClause": "行动阶段：移除一张菲尼克斯以外的激活的魔神柱，获得6点魔力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "attack",
+              "owner": "controller",
+              "trait": "demon_god",
+              "excludeDefinition": "phenex",
+              "active": true,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedDemonGodIds"
+            },
+            {
+              "type": "remove_selected_cards",
+              "payloadKey": "selectedDemonGodIds",
+              "destination": "removed_from_game"
+            },
+            {
+              "type": "gain_mana",
+              "subject": "controller",
+              "amount": 6
+            }
+          ]
+        },
+        {
+          "id": "goetia.demon-gods.forneus-invocation",
+          "printedClause": "战斗阶段：将佛钮司洗入你的牌库并关闭你控制的一张牌。打出一张牌，支付其费用且使用该牌行动阶段能力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "effects": [
+            {
+              "type": "move_source_card",
+              "source": "attack",
+              "destination": "deck",
+              "shuffleIntoDestination": true
+            },
+            {
+              "type": "choose_cards",
+              "zone": "attack",
+              "owner": "controller",
+              "active": true,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "closeAttackIds"
+            },
+            {
+              "type": "close_selected_cards",
+              "payloadKey": "closeAttackIds"
+            },
+            {
+              "type": "choose_cards",
+              "zone": "hand",
+              "owner": "controller",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "playCardIds"
+            },
+            {
+              "type": "play_selected_cards",
+              "sourceZone": "hand",
+              "payloadKey": "playCardIds",
+              "payPrintedCost": true
+            },
+            {
+              "type": "retrigger_card_play_effects",
+              "payloadKey": "playCardIds",
+              "mode": "action_phase_ability"
+            }
+          ]
+        },
+        {
+          "id": "goetia.demon-gods.flauros-conversion",
+          "printedClause": "前哨阶段：将佛劳洛斯洗入你的牌库，直到回合结束合计威力+5。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "move_source_card",
+              "source": "attack",
+              "destination": "deck",
+              "shuffleIntoDestination": true
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "total_power",
+              "operation": "add",
+              "amount": 5,
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          }
+        },
+        {
+          "id": "goetia.demon-gods.zepar-loss-return",
+          "printedClause": "当你输掉战斗时，你可将桀派洗入你的牌库并获得2点战果，如此便可无需于回合结束时将魔神柱移除游戏。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_one",
+              "chooser": "controller",
+              "minCount": 0,
+              "maxCount": 1,
+              "allowCancel": true,
+              "options": [
+                {
+                  "id": "return-zepar",
+                  "effects": [
+                    {
+                      "type": "move_source_card",
+                      "source": "attack",
+                      "destination": "deck",
+                      "shuffleIntoDestination": true
+                    },
+                    {
+                      "type": "gain_victory_points",
+                      "subject": "controller",
+                      "amount": 2
+                    },
+                    {
+                      "type": "demon_god_rule",
+                      "operation": "satisfy_round_end_sacrifice"
+                    }
+                  ]
+                }
+              ],
+              "payloadKey": "zeparChoice"
+            }
+          ]
+        },
+        {
+          "id": "goetia.demon-gods.raum-recon-return",
+          "printedClause": "战斗阶段结束后若你位于侦察，你可将劳姆加入手牌，如此便可无需于回合结束时将魔神柱移除游戏。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.ending"
+            },
+            {
+              "type": "controller_location_is",
+              "location": "recon"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_one",
+              "chooser": "controller",
+              "minCount": 0,
+              "maxCount": 1,
+              "allowCancel": true,
+              "options": [
+                {
+                  "id": "return-raum",
+                  "effects": [
+                    {
+                      "type": "move_source_card",
+                      "source": "attack",
+                      "destination": "hand"
+                    },
+                    {
+                      "type": "demon_god_rule",
+                      "operation": "satisfy_round_end_sacrifice"
+                    }
+                  ]
+                }
+              ],
+              "payloadKey": "raumReconChoice"
+            }
+          ]
+        },
+        {
+          "id": "goetia.demon-gods.raum-dream-flight",
+          "printedClause": "被动/行动阶段：从手牌或场上弃置劳姆，移动至任意地点。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "hand_or_attack",
+              "owner": "controller",
+              "definition": "raum",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "raumIds"
+            },
+            {
+              "type": "move_selected_cards",
+              "payloadKey": "raumIds",
+              "destination": "discard"
+            },
+            {
+              "type": "move_player",
+              "subject": "controller",
+              "destination": "any_location"
+            }
+          ]
+        },
+        {
+          "id": "goetia.demon-gods.barbatos-seal-replacement",
+          "printedClause": "当你将要获得、失去或支付一枚令咒时，改为获得、失去、支付4点魔力。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "command_seal_transaction",
+              "operation": "replace_with_mana",
+              "manaPerSeal": 4,
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "id": "goetia.demon-gods.barbatos-future-sight",
+          "printedClause": "行动阶段：将巴巴妥司洗入你的牌库，直到回合结束之前，你拥有的魔力少于8点也可打出技能、你的宝具不会被局势牌禁止使用。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "move_source_card",
+              "source": "attack",
+              "destination": "deck",
+              "shuffleIntoDestination": true
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mana_requirement",
+              "operation": "ignore_below_threshold",
+              "threshold": 8,
+              "filter": "controller_skills"
+            },
+            {
+              "rule": "noble_phantasm_situation_restriction",
+              "operation": "ignore",
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.goetia.skill.ascension",
+      "printedText": "此牌激活时，立即将此牌加入你的攻击。\n残留：此牌永不关闭。【魔神柱】获得\"打出时：此牌+4威力。\"\n前哨阶段：花费1点魔力，若你的手牌中没有【魔神柱】，弃置你的所有手牌并抽三张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_goetia.ascensionSkill#line=374",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌激活时，立即将此牌加入你的攻击。\n残留：此牌永不关闭。【魔神柱】获得\"打出时：此牌+4威力。\"\n前哨阶段：花费1点魔力，若你的手牌中没有【魔神柱】，弃置你的所有手牌并抽三张牌。",
+        "sourceTextSha256": "ff1df804c1be3e9381eaea921f6f1b162317b48aa0278d03e33806f3db4effbc"
+      },
+      "referencePrintedTextSha256": "ff1df804c1be3e9381eaea921f6f1b162317b48aa0278d03e33806f3db4effbc",
+      "abilities": [
+        {
+          "id": "goetia.temple-of-time.activate-into-attack",
+          "printedClause": "此牌激活时，立即将此牌加入你的攻击。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "card.activated"
+            },
+            {
+              "type": "event_definition_is_self"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_card",
+              "source": "self",
+              "sourceZone": "skill",
+              "destination": "attack"
+            }
+          ]
+        },
+        {
+          "id": "goetia.temple-of-time.permanent",
+          "printedClause": "残留：此牌永不关闭。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_activation_persistence",
+              "operation": "never_close",
+              "definitionId": "master.goetia.skill.ascension"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "id": "goetia.temple-of-time.demon-god-on-play-power",
+          "printedClause": "【魔神柱】获得“打出时：此牌+4威力。”",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_on_play_power",
+              "operation": "add",
+              "amount": 4,
+              "filter": "demon_god"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "id": "goetia.temple-of-time.outpost-refill",
+          "printedClause": "前哨阶段：花费1点魔力，若你的手牌中没有【魔神柱】，弃置你的所有手牌并抽三张牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "conditions": [
+            {
+              "type": "controller_hand_has_no_trait",
+              "trait": "demon_god"
+            }
+          ],
+          "effects": [
+            {
+              "type": "pay_mana",
+              "amount": 1,
+              "subject": "controller"
+            },
+            {
+              "type": "move_matching_cards",
+              "subject": "controller",
+              "source": "hand",
+              "destination": "discard",
+              "match": "all",
+              "face": "up"
+            },
+            {
+              "type": "draw_cards",
+              "target": "controller",
+              "count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.illya-mahou.skill.s1",
+      "printedText": "当有牌将通过万花筒之杖以外的效果进入你的牌库时，改为将其弃置。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_illya_mahou.skills[s1]#line=393",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当有牌将通过万花筒之杖以外的效果进入你的牌库时，改为将其弃置。",
+        "sourceTextSha256": "cd9408ccd7d5299c4c1e258a45f11a3cba07991864d28a915fdfa32237c1d8ed"
+      },
+      "referencePrintedTextSha256": "cd9408ccd7d5299c4c1e258a45f11a3cba07991864d28a915fdfa32237c1d8ed",
+      "abilities": [
+        {
+          "id": "illya-ruby.unlimited-imagination.deck-entry-replacement",
+          "printedClause": "当有牌将通过万花筒之杖以外的效果进入你的牌库时，改为将其弃置。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "deck_entry_replacement",
+              "destination": "discard",
+              "exceptionSourceDefinitionId": "master.illya-mahou.skill.s1a"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_zone_destination",
+              "operation": "replace",
+              "fromDestination": "deck",
+              "toDestination": "discard",
+              "unlessSourceDefinitionId": "master.illya-mahou.skill.s1a"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.illya-mahou.skill.s1a",
+      "printedText": "准备阶段：抽任意张牌。\n准备阶段：花费你手牌数两倍的魔力，将你弃牌堆的牌洗入牌库。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_illya_mahou.skills[s1a]#line=394",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "准备阶段：抽任意张牌。\n准备阶段：花费你手牌数两倍的魔力，将你弃牌堆的牌洗入牌库。",
+        "sourceTextSha256": "707e8ac55ed483120fe6255b95cb068aebfe585e6049a7d63a393ed1f4fdae13"
+      },
+      "referencePrintedTextSha256": "707e8ac55ed483120fe6255b95cb068aebfe585e6049a7d63a393ed1f4fdae13",
+      "abilities": [
+        {
+          "id": "illya-ruby.kaleidostick.draw-any",
+          "printedClause": "准备阶段：抽任意张牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "preparation"
+          },
+          "effects": [
+            {
+              "type": "choose_number",
+              "min": 0,
+              "maxFormula": "controller_deck_count",
+              "payloadKey": "drawCount"
+            },
+            {
+              "type": "draw_cards",
+              "target": "controller",
+              "countBinding": "drawCount",
+              "resultVar": "drawnCardIds"
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "round",
+            "maxUses": 1,
+            "ability": "draw"
+          }
+        },
+        {
+          "id": "illya-ruby.kaleidostick.shuffle-discard",
+          "printedClause": "准备阶段：花费你手牌数两倍的魔力，将你弃牌堆的牌洗入牌库。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "preparation"
+          },
+          "effects": [
+            {
+              "type": "pay_mana",
+              "subject": "controller",
+              "amountFormula": "2 * controller_hand_count"
+            },
+            {
+              "type": "move_matching_cards",
+              "subject": "controller",
+              "source": "discard",
+              "destination": "deck",
+              "match": "all",
+              "shuffleIntoDestination": true
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "round",
+            "maxUses": 1,
+            "ability": "shuffle"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.illya-mahou.skill.ascension",
+      "printedText": "回合结束时，花费3点魔力，否则将此牌移除游戏。\n你从局势牌和事件牌受到的影响翻倍。（不包括局势牌的魔力和事件牌的战果）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_illya_mahou.ascensionSkill#line=395",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "回合结束时，花费3点魔力，否则将此牌移除游戏。\n你从局势牌和事件牌受到的影响翻倍。（不包括局势牌的魔力和事件牌的战果）",
+        "sourceTextSha256": "0d8e64500690f5319378d54dfc9bf0a14976fe5ed956b98cf1646445bde36535"
+      },
+      "referencePrintedTextSha256": "0d8e64500690f5319378d54dfc9bf0a14976fe5ed956b98cf1646445bde36535",
+      "abilities": [
+        {
+          "id": "illya-ruby.doppelganger.upkeep",
+          "printedClause": "回合结束时，花费3点魔力，否则将此牌移除游戏。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ending"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_one",
+              "chooser": "controller",
+              "minCount": 1,
+              "maxCount": 1,
+              "allowCancel": false,
+              "options": [
+                {
+                  "id": "pay-mana",
+                  "availability": {
+                    "type": "controller_mana_at_least",
+                    "value": 3
+                  },
+                  "effects": [
+                    {
+                      "type": "pay_mana",
+                      "subject": "controller",
+                      "amount": 3
+                    }
+                  ]
+                },
+                {
+                  "id": "remove-source",
+                  "effects": [
+                    {
+                      "type": "move_source_card",
+                      "destination": "removed_from_game"
+                    }
+                  ]
+                }
+              ],
+              "payloadKey": "doppelgangerUpkeep"
+            }
+          ]
+        },
+        {
+          "id": "illya-ruby.doppelganger.double-non-resource-effects",
+          "printedClause": "你从局势牌和事件牌受到的影响翻倍。（不包括局势牌的魔力和事件牌的战果）",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "incoming_situation_or_event_effect",
+              "operation": "multiply",
+              "factor": 2,
+              "subject": "controller",
+              "exclude": [
+                "situation_mana",
+                "event_victory_points"
+              ]
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.irisviel.skill.s1",
+      "printedText": "令咒改为在前哨阶段使用。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_irisviel.skills[s1]#line=20",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "令咒改为在前哨阶段使用。",
+        "sourceTextSha256": "d880afd3807b56ddd0ae4c2ad35829fc7991428aee15438515ade2ade66bf9fd"
+      },
+      "referencePrintedTextSha256": "d880afd3807b56ddd0ae4c2ad35829fc7991428aee15438515ade2ade66bf9fd",
+      "abilities": [
+        {
+          "id": "irisviel.proxy-master.command-seal-window",
+          "printedClause": "令咒改为在前哨阶段使用。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "command_seal_usage_phase",
+              "operation": "replace",
+              "phase": "outpost",
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.irisviel.skill.s2",
+      "printedText": "弃置所有手牌，每1张获得1点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_irisviel.skills[s2]#line=20",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "弃置所有手牌，每1张获得1点魔力。",
+        "sourceTextSha256": "75fa71628bf0f1ce128eb156a6b7bd1d3e49bf1e155e3e11978d342190548304"
+      },
+      "referencePrintedTextSha256": "75fa71628bf0f1ce128eb156a6b7bd1d3e49bf1e155e3e11978d342190548304",
+      "abilities": [
+        {
+          "id": "conversion-magic.preparation",
+          "printedClause": "弃置所有手牌，每1张获得1点魔力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "subject": "controller",
+              "source": "hand",
+              "destination": "discard",
+              "match": "all",
+              "resultVar": "discardedCount",
+              "face": "up"
+            },
+            {
+              "type": "gain_mana",
+              "subject": "controller",
+              "amountBinding": "discardedCount"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.irisviel.skill.ascension",
+      "printedText": "（升华技，将此牌加入你的技能区）\n你每回合只能使用此攻击的其中一项能力。\n行动阶段：本回合的一张基础攻击可以保持激活至下回合结束。\n战斗阶段：你的攻击获得魔术属性并且威力+1。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_irisviel.ascensionSkill#line=20",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（升华技，将此牌加入你的技能区）\n你每回合只能使用此攻击的其中一项能力。\n行动阶段：本回合的一张基础攻击可以保持激活至下回合结束。\n战斗阶段：你的攻击获得魔术属性并且威力+1。",
+        "sourceTextSha256": "ca13472ec4b1730aee18eafeb6490330497296417cb3fb590a649259124e9948"
+      },
+      "referencePrintedTextSha256": "ca13472ec4b1730aee18eafeb6490330497296417cb3fb590a649259124e9948",
+      "abilities": [
+        {
+          "id": "irisviel.life-giving.ascension-setup",
+          "printedClause": "（升华技，将此牌加入你的技能区）",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "reason": "ascension_setup"
+            }
+          ]
+        },
+        {
+          "id": "irisviel.life-giving.keep-basic-active",
+          "printedClause": "行动阶段：本回合的一张基础攻击可以保持激活至下回合结束。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "attack",
+              "owner": "controller",
+              "basic": true,
+              "playedThisRound": true,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedAttackIds"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_activation_persistence",
+              "operation": "remain_active_until",
+              "payloadKey": "selectedAttackIds",
+              "until": "next_round_end"
+            }
+          ],
+          "limit": {
+            "scope": "source_card",
+            "period": "round",
+            "maxUses": 1,
+            "group": "irisviel.life-giving.choice"
+          }
+        },
+        {
+          "id": "irisviel.life-giving.magic-attack-boost",
+          "printedClause": "战斗阶段：你的攻击获得魔术属性并且威力+1。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "card_attribute",
+              "operation": "add",
+              "attribute": "magic",
+              "scope": "controller_attacks"
+            },
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "amount": 1,
+              "scope": "controller_attacks"
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_combat_resolution"
+          },
+          "limit": {
+            "scope": "source_card",
+            "period": "round",
+            "maxUses": 1,
+            "group": "irisviel.life-giving.choice"
+          }
+        }
+      ]
     }
   ]
 }
