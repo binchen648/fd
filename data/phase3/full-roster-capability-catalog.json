@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 167,
-    "explicitBlockCount": 777,
+    "contractMappedCount": 177,
+    "explicitBlockCount": 767,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
-      "READY_GENERIC_EXTENSION": 109,
-      "SPECIAL_HANDLER_CANDIDATE": 58,
+      "READY_GENERIC_EXTENSION": 118,
+      "SPECIAL_HANDLER_CANDIDATE": 59,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 777,
+      "SOURCE_EVIDENCE_REQUIRED": 767,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -115,6 +115,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -139,11 +143,19 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
           "abilityId": "servant.helena.skill.sc-helena-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -160,6 +172,10 @@
         },
         {
           "abilityId": "servant.leonidas.skill.sc-leonidas-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -264,6 +280,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -288,11 +308,19 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
           "abilityId": "servant.helena.skill.sc-helena-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -305,6 +333,10 @@
         },
         {
           "abilityId": "servant.leonidas.skill.sc-leonidas-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -422,6 +454,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -430,11 +466,23 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.helena.skill.sc-helena-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -533,6 +581,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -553,11 +605,19 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
           "abilityId": "servant.helena.skill.sc-helena-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -574,6 +634,10 @@
         },
         {
           "abilityId": "servant.leonidas.skill.sc-leonidas-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -637,9 +701,13 @@
         "master.rin.skill.s3",
         "master.sion.skill.s13",
         "master.wodime.skill.s2",
+        "servant.angra.skill.sc-angra-3",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.gil.skill.sc-gil-1",
         "servant.helena.skill.sc-helena-1",
+        "servant.iskandar.skill.sc-iskandar-1",
+        "servant.medusa.skill.sc-medusa-1",
         "servant.napoleon.skill.sc-napoleon-2",
         "servant.nero.skill.sc-nero-2",
         "servant.parvati.skill.sc-parvati-3"
@@ -792,6 +860,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -816,11 +888,19 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
           "abilityId": "servant.helena.skill.sc-helena-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -837,6 +917,10 @@
         },
         {
           "abilityId": "servant.leonidas.skill.sc-leonidas-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -954,6 +1038,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -978,11 +1066,19 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
           "abilityId": "servant.helena.skill.sc-helena-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -999,6 +1095,10 @@
         },
         {
           "abilityId": "servant.leonidas.skill.sc-leonidas-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1113,6 +1213,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1137,11 +1241,19 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
           "abilityId": "servant.helena.skill.sc-helena-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1158,6 +1270,10 @@
         },
         {
           "abilityId": "servant.leonidas.skill.sc-leonidas-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1273,6 +1389,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1297,11 +1417,19 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
           "abilityId": "servant.helena.skill.sc-helena-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1318,6 +1446,10 @@
         },
         {
           "abilityId": "servant.leonidas.skill.sc-leonidas-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1434,6 +1566,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1458,11 +1594,19 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
           "abilityId": "servant.helena.skill.sc-helena-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1479,6 +1623,10 @@
         },
         {
           "abilityId": "servant.leonidas.skill.sc-leonidas-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1677,6 +1825,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.clytie.skill.sc-clytie-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1686,6 +1838,10 @@
         },
         {
           "abilityId": "servant.helena.skill.sc-helena-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1702,6 +1858,10 @@
         },
         {
           "abilityId": "servant.lionking.skill.sc-lionking-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1804,13 +1964,17 @@
         "master.wodime.skill.s9",
         "servant.albion.skill.sc-albion-1",
         "servant.andersen.skill.sc-andersen-2",
+        "servant.angra.skill.sc-angra-3",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.astolfo.skill.sc-astolfo-1",
         "servant.darius.skill.sc-darius-1",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-3",
+        "servant.emiya.skill.sc-emiya-1",
+        "servant.gil.skill.sc-gil-1",
         "servant.gorgon.skill.sc-gorgon-2",
+        "servant.hassan.skill.sc-hassan-1",
         "servant.ibaraki.skill.sc-ibaraki-1",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
@@ -1979,6 +2143,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.clytie.skill.sc-clytie-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1988,6 +2156,10 @@
         },
         {
           "abilityId": "servant.helena.skill.sc-helena-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -2004,6 +2176,10 @@
         },
         {
           "abilityId": "servant.lionking.skill.sc-lionking-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -2078,13 +2254,16 @@
         "servant.albion.skill.sc-albion-1",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.andersen.skill.sc-andersen-2",
+        "servant.angra.skill.sc-angra-3",
         "servant.clytie.skill.sc-clytie-3",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
+        "servant.iskandar.skill.sc-iskandar-1",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
         "servant.lionking.skill.sc-lionking-3",
+        "servant.medusa.skill.sc-medusa-1",
         "servant.merlin.skill.sc-merlin-3",
         "servant.napoleon.skill.sc-napoleon-2",
         "servant.nero.skill.sc-nero-2",
@@ -2209,6 +2388,7 @@
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.andersen.skill.sc-andersen-2",
+        "servant.angra.skill.sc-angra-3",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.astolfo.skill.sc-astolfo-1",
         "servant.atalanta.skill.sc-atalanta-1",
@@ -2225,10 +2405,14 @@
         "servant.edison.skill.sc-edison-2",
         "servant.edison.skill.sc-edison-3",
         "servant.emiya.skill.sc-emiya-np",
+        "servant.gil.skill.sc-gil-1",
+        "servant.gilles.skill.sc-gilles-2",
         "servant.gorgon.skill.sc-gorgon-2",
         "servant.gorgon.skill.sc-gorgon-3",
+        "servant.hassan.skill.sc-hassan-1",
         "servant.helena.skill.sc-helena-3",
         "servant.ibaraki.skill.sc-ibaraki-1",
+        "servant.iskandar.skill.sc-iskandar-1",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kama.skill.sc-kama-1",
@@ -2238,6 +2422,8 @@
         "servant.leonidas.skill.sc-leonidas-1",
         "servant.lionking.skill.sc-lionking-3",
         "servant.mechaeli.skill.sc-mechaeli-2",
+        "servant.medea.skill.sc-medea-2",
+        "servant.medusa.skill.sc-medusa-1",
         "servant.medusa.skill.sc-medusa-2",
         "servant.medusa.skill.sc-medusa-np",
         "servant.mephisto.skill.sc-mephisto-2",
@@ -2475,6 +2661,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.medusa.skill.sc-medusa-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -2555,6 +2745,8 @@
         "servant.edison.skill.sc-edison-2",
         "servant.edison.skill.sc-edison-3",
         "servant.emiya.skill.sc-emiya-np",
+        "servant.gil.skill.sc-gil-1",
+        "servant.gilles.skill.sc-gilles-2",
         "servant.gorgon.skill.sc-gorgon-2",
         "servant.gorgon.skill.sc-gorgon-3",
         "servant.helena.skill.sc-helena-3",
@@ -2564,6 +2756,7 @@
         "servant.kiritsugu.skill.sc-kiritsugu-2",
         "servant.leonidas.skill.sc-leonidas-1",
         "servant.lionking.skill.sc-lionking-3",
+        "servant.medea.skill.sc-medea-2",
         "servant.mephisto.skill.sc-mephisto-3",
         "servant.mozart.skill.sc-mozart-1",
         "servant.napoleon.skill.sc-napoleon-1",
@@ -2684,13 +2877,17 @@
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.andersen.skill.sc-andersen-2",
+        "servant.angra.skill.sc-angra-3",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.atalanta.skill.sc-atalanta-1",
         "servant.caligula.skill.sc-caligula-1",
         "servant.darius.skill.sc-darius-2",
         "servant.drake.skill.sc-drake-3",
         "servant.edison.skill.sc-edison-3",
+        "servant.emiya.skill.sc-emiya-1",
         "servant.emiya.skill.sc-emiya-np",
+        "servant.gil.skill.sc-gil-1",
+        "servant.gilles.skill.sc-gilles-2",
         "servant.gorgon.skill.sc-gorgon-2",
         "servant.gorgon.skill.sc-gorgon-3",
         "servant.helena.skill.sc-helena-3",
@@ -2699,6 +2896,7 @@
         "servant.kiritsugu.skill.sc-kiritsugu-2",
         "servant.leonidas.skill.sc-leonidas-1",
         "servant.mechaeli.skill.sc-mechaeli-2",
+        "servant.medea.skill.sc-medea-2",
         "servant.mephisto.skill.sc-mephisto-2",
         "servant.mozart.skill.sc-mozart-1",
         "servant.napoleon.skill.sc-napoleon-1",
@@ -2749,10 +2947,14 @@
         "master.peperoncino.skill.s1b",
         "master.peperoncino.skill.s4",
         "master.wodime.skill.s9",
+        "servant.cu.skill.sc-cu-2",
+        "servant.diarmuid.skill.sc-diarmuid-3",
         "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-2",
         "servant.edison.skill.sc-edison-3",
+        "servant.gilles.skill.sc-gilles-2",
         "servant.gorgon.skill.sc-gorgon-3",
+        "servant.medea.skill.sc-medea-2",
         "servant.mozart.skill.sc-mozart-1"
       ],
       "partialAbilities": [],
@@ -2812,14 +3014,18 @@
         "servant.atalanta.skill.sc-atalanta-2",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.cu.skill.sc-cu-2",
+        "servant.diarmuid.skill.sc-diarmuid-3",
         "servant.drake.skill.sc-drake-2",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
+        "servant.iskandar.skill.sc-iskandar-1",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kama.skill.sc-kama-1",
         "servant.kiritsugu.skill.sc-kiritsugu-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.medusa.skill.sc-medusa-1",
         "servant.medusa.skill.sc-medusa-np",
         "servant.mephisto.skill.sc-mephisto-3",
         "servant.napoleon.skill.sc-napoleon-1",
@@ -2896,6 +3102,7 @@
         "servant.atalanta.skill.sc-atalanta-1",
         "servant.darius.skill.sc-darius-2",
         "servant.edison.skill.sc-edison-3",
+        "servant.emiya.skill.sc-emiya-1",
         "servant.ibaraki.skill.sc-ibaraki-1",
         "servant.kama.skill.sc-kama-1",
         "servant.mechaeli.skill.sc-mechaeli-2",
@@ -2966,13 +3173,17 @@
         "master.shinji.skill.s4",
         "master.wodime.skill.s3",
         "servant.albion.skill.sc-albion-1",
+        "servant.angra.skill.sc-angra-3",
         "servant.drake.skill.sc-drake-3",
         "servant.edison.skill.sc-edison-2",
+        "servant.gil.skill.sc-gil-1",
+        "servant.gilles.skill.sc-gilles-2",
         "servant.kama.skill.sc-kama-1",
         "servant.kama.skill.sc-kama-2",
         "servant.kiritsugu.skill.sc-kiritsugu-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
         "servant.mechaeli.skill.sc-mechaeli-2",
+        "servant.medea.skill.sc-medea-2",
         "servant.mephisto.skill.sc-mephisto-2",
         "servant.mephisto.skill.sc-mephisto-3",
         "servant.merlin.skill.sc-merlin-3",
@@ -3038,12 +3249,16 @@
         "servant.atalanta.skill.sc-atalanta-2",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.cu.skill.sc-cu-2",
+        "servant.diarmuid.skill.sc-diarmuid-3",
         "servant.drake.skill.sc-drake-2",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
+        "servant.iskandar.skill.sc-iskandar-1",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.medusa.skill.sc-medusa-1",
         "servant.medusa.skill.sc-medusa-np",
         "servant.mephisto.skill.sc-mephisto-3",
         "servant.napoleon.skill.sc-napoleon-1",
@@ -3237,6 +3452,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3262,6 +3485,10 @@
         },
         {
           "abilityId": "servant.leonidas.skill.sc-leonidas-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -3352,14 +3579,18 @@
         "servant.atalanta.skill.sc-atalanta-2",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.cu.skill.sc-cu-2",
+        "servant.diarmuid.skill.sc-diarmuid-3",
         "servant.drake.skill.sc-drake-2",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
+        "servant.iskandar.skill.sc-iskandar-1",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kama.skill.sc-kama-1",
         "servant.kiritsugu.skill.sc-kiritsugu-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.medusa.skill.sc-medusa-1",
         "servant.medusa.skill.sc-medusa-np",
         "servant.mephisto.skill.sc-mephisto-3",
         "servant.napoleon.skill.sc-napoleon-1",
@@ -3473,12 +3704,18 @@
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.edison.skill.sc-edison-2",
         "servant.edison.skill.sc-edison-3",
+        "servant.gil.skill.sc-gil-1",
+        "servant.gilles.skill.sc-gilles-2",
         "servant.gorgon.skill.sc-gorgon-2",
+        "servant.hassan.skill.sc-hassan-1",
+        "servant.iskandar.skill.sc-iskandar-1",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kama.skill.sc-kama-2",
         "servant.leonidas.skill.sc-leonidas-1",
         "servant.lionking.skill.sc-lionking-3",
         "servant.mechaeli.skill.sc-mechaeli-2",
+        "servant.medea.skill.sc-medea-2",
+        "servant.medusa.skill.sc-medusa-1",
         "servant.mephisto.skill.sc-mephisto-2",
         "servant.merlin.skill.sc-merlin-3",
         "servant.mozart.skill.sc-mozart-1",
@@ -3744,11 +3981,23 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
           "abilityId": "servant.edison.skill.sc-edison-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3769,6 +4018,10 @@
         },
         {
           "abilityId": "servant.mechaeli.skill.sc-mechaeli-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3953,6 +4206,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -3965,6 +4226,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.iskandar.skill.sc-iskandar-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -3974,6 +4239,10 @@
         },
         {
           "abilityId": "servant.kiritsugu.skill.sc-kiritsugu-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -4084,6 +4353,7 @@
         "master.wodime.skill.s9",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.gorgon.skill.sc-gorgon-3",
+        "servant.hassan.skill.sc-hassan-1",
         "servant.medusa.skill.sc-medusa-2",
         "servant.mephisto.skill.sc-mephisto-2",
         "servant.valkyrie.skill.sc-valkyrie-3"
@@ -4380,6 +4650,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.iskandar.skill.sc-iskandar-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -4528,6 +4802,7 @@
       "servant.albion.skill.sc-albion-2",
       "servant.amakusa.skill.sc-amakusa-1",
       "servant.andersen.skill.sc-andersen-2",
+      "servant.angra.skill.sc-angra-3",
       "servant.arjuna.skill.sc-arjuna-1",
       "servant.astolfo.skill.sc-astolfo-1",
       "servant.atalanta.skill.sc-atalanta-1",
@@ -4535,20 +4810,27 @@
       "servant.caligula.skill.sc-caligula-1",
       "servant.chloe.skill.sc-chloe-1",
       "servant.clytie.skill.sc-clytie-3",
+      "servant.cu.skill.sc-cu-2",
       "servant.darius.skill.sc-darius-1",
       "servant.darius.skill.sc-darius-2",
       "servant.darius.skill.sc-darius-3",
       "servant.diarmuid.skill.sc-diarmuid-1",
+      "servant.diarmuid.skill.sc-diarmuid-3",
       "servant.drake.skill.sc-drake-2",
       "servant.drake.skill.sc-drake-3",
       "servant.edison.skill.sc-edison-2",
       "servant.edison.skill.sc-edison-3",
+      "servant.emiya.skill.sc-emiya-1",
       "servant.emiya.skill.sc-emiya-np",
+      "servant.gil.skill.sc-gil-1",
+      "servant.gilles.skill.sc-gilles-2",
       "servant.gorgon.skill.sc-gorgon-2",
       "servant.gorgon.skill.sc-gorgon-3",
+      "servant.hassan.skill.sc-hassan-1",
       "servant.helena.skill.sc-helena-1",
       "servant.helena.skill.sc-helena-3",
       "servant.ibaraki.skill.sc-ibaraki-1",
+      "servant.iskandar.skill.sc-iskandar-1",
       "servant.iskandar.skill.sc-iskandar-2",
       "servant.kagekiyo.skill.sc-kagekiyo-2",
       "servant.kama.skill.sc-kama-1",
@@ -4558,6 +4840,8 @@
       "servant.leonidas.skill.sc-leonidas-1",
       "servant.lionking.skill.sc-lionking-3",
       "servant.mechaeli.skill.sc-mechaeli-2",
+      "servant.medea.skill.sc-medea-2",
+      "servant.medusa.skill.sc-medusa-1",
       "servant.medusa.skill.sc-medusa-2",
       "servant.medusa.skill.sc-medusa-np",
       "servant.mephisto.skill.sc-mephisto-2",
@@ -6396,13 +6680,6 @@
         ]
       },
       {
-        "abilityId": "servant.angra.skill.sc-angra-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "servant.arash.skill.sc-arash-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -7089,13 +7366,6 @@
         ]
       },
       {
-        "abilityId": "servant.cu.skill.sc-cu-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "servant.cu.skill.sc-cu-np",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -7299,13 +7569,6 @@
         ]
       },
       {
-        "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "servant.dioscuri.skill.sc-dioscuri-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -7419,13 +7682,6 @@
       },
       {
         "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.emiya.skill.sc-emiya-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -7586,13 +7842,6 @@
         ]
       },
       {
-        "abilityId": "servant.gil.skill.sc-gil-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "servant.gil.skill.sc-gil-2",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -7614,13 +7863,6 @@
         ]
       },
       {
-        "abilityId": "servant.gilles.skill.sc-gilles-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "servant.gilles.skill.sc-gilles-np",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -7629,13 +7871,6 @@
       },
       {
         "abilityId": "servant.gorgon.skill.sc-gorgon-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.hassan.skill.sc-hassan-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -7916,13 +8151,6 @@
       },
       {
         "abilityId": "servant.ishtar.skill.sc-ishtar-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.iskandar.skill.sc-iskandar-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -8692,21 +8920,7 @@
         ]
       },
       {
-        "abilityId": "servant.medea.skill.sc-medea-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "servant.medea.skill.sc-medea-np",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.medusa.skill.sc-medusa-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -10078,6 +10292,7 @@
       "servant.andersen.skill.sc-andersen-2",
       "servant.diarmuid.skill.sc-diarmuid-1",
       "servant.gorgon.skill.sc-gorgon-3",
+      "servant.hassan.skill.sc-hassan-1",
       "servant.medusa.skill.sc-medusa-2",
       "servant.mephisto.skill.sc-mephisto-2",
       "servant.valkyrie.skill.sc-valkyrie-3"

@@ -9,7 +9,7 @@
     "runtimeRequestCount": 23,
     "genericCapabilityRequestCount": 21,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 167
+    "affectedIdentityCount": 177
   },
   "requests": [
     {
@@ -612,9 +612,13 @@
         "master.rin.skill.s3",
         "master.sion.skill.s13",
         "master.wodime.skill.s2",
+        "servant.angra.skill.sc-angra-3",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.gil.skill.sc-gil-1",
         "servant.helena.skill.sc-helena-1",
+        "servant.iskandar.skill.sc-iskandar-1",
+        "servant.medusa.skill.sc-medusa-1",
         "servant.napoleon.skill.sc-napoleon-2",
         "servant.nero.skill.sc-nero-2",
         "servant.parvati.skill.sc-parvati-3"
@@ -969,6 +973,33 @@
           "sha256": "1c5a231f3336797f83a686443e8af271eaa24740fbf65fa35bd0d0b85f73234d"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/安格拉·曼纽.htm"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.angra/安格拉·曼纽"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "安格拉·曼纽/sc_angra_3#line=5"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=1",
+          "sha256": "52f7bce2381d558397ba5f1f2d534b776804e646aac6aec44ed949ae1105efd5"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=2",
+          "sha256": "ef0ea316016263296ab296c49933a3076f512352284b5f97598e986abdb4c161"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/狂战士/英文版/卡利古拉.htm"
@@ -1023,6 +1054,39 @@
           "sha256": "480a180bdb8582523510a155d61848f427da536dff7453248134a62f25aa90b9"
         },
         {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/吉尔伽美什.htm"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gil/吉尔伽美什"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "吉尔伽美什/sc_gil_1#line=8"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=1",
+          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=2",
+          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=3",
+          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
+        },
+        {
           "abilityId": "servant.helena.skill.sc-helena-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/魔术师/英文版/海伦娜·布拉瓦茨基.htm"
@@ -1042,6 +1106,60 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[31].abilities[0].printedClause",
           "sha256": "abc76e38254ac8688fa7caef5392e28a7b8baa507479231db743a638e9f3fc52"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/伊斯坎达尔.htm"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.iskandar/伊斯坎达尔"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "伊斯坎达尔/sc_iskandar_1#line=9"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[4].skills[0].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[4].skills[0].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/美杜莎.htm"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.medusa/美杜莎"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "美杜莎/sc_medusa_1#line=10"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[5].skills[0].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[5].skills[0].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
         },
         {
           "abilityId": "servant.napoleon.skill.sc-napoleon-2",
@@ -1138,10 +1256,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 11,
-          "specific_handler": 5
+          "shared_handler": 14,
+          "specific_handler": 6
         },
-        "handlerCount": 9,
+        "handlerCount": 12,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -1211,13 +1329,17 @@
         "master.wodime.skill.s9",
         "servant.albion.skill.sc-albion-1",
         "servant.andersen.skill.sc-andersen-2",
+        "servant.angra.skill.sc-angra-3",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.astolfo.skill.sc-astolfo-1",
         "servant.darius.skill.sc-darius-1",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-3",
+        "servant.emiya.skill.sc-emiya-1",
+        "servant.gil.skill.sc-gil-1",
         "servant.gorgon.skill.sc-gorgon-2",
+        "servant.hassan.skill.sc-hassan-1",
         "servant.ibaraki.skill.sc-ibaraki-1",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
@@ -2862,6 +2984,33 @@
           "sha256": "8ca9c8143d72538f449be401909f1f0dc39879d446c0b817283d353e47b0eca4"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/安格拉·曼纽.htm"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.angra/安格拉·曼纽"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "安格拉·曼纽/sc_angra_3#line=5"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=1",
+          "sha256": "52f7bce2381d558397ba5f1f2d534b776804e646aac6aec44ed949ae1105efd5"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=2",
+          "sha256": "ef0ea316016263296ab296c49933a3076f512352284b5f97598e986abdb4c161"
+        },
+        {
           "abilityId": "servant.arjuna.skill.sc-arjuna-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/狂战士/英文版/阿周那(Alter).htm"
@@ -3018,6 +3167,60 @@
           "sha256": "6e988f3620874deab1c4835aa1bcde3f06392296cead84123f401eb4d296df55"
         },
         {
+          "abilityId": "servant.emiya.skill.sc-emiya-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/卫宫.htm"
+        },
+        {
+          "abilityId": "servant.emiya.skill.sc-emiya-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.emiya/卫宫"
+        },
+        {
+          "abilityId": "servant.emiya.skill.sc-emiya-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "卫宫/sc_emiya_1#line=7"
+        },
+        {
+          "abilityId": "servant.emiya.skill.sc-emiya-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[2].skills[0].text#line=1",
+          "sha256": "fa883160fbf6875dc16b5919429c6a1be8470ce302fc0b503798e385d69f84df"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/吉尔伽美什.htm"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gil/吉尔伽美什"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "吉尔伽美什/sc_gil_1#line=8"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=1",
+          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=2",
+          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=3",
+          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/复仇者/英文版/戈耳工.htm"
@@ -3049,6 +3252,45 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[5].abilities[2].printedClause",
           "sha256": "915cebea978af7fabe16a81886c5b18e70b908db2673426b581288c586190130"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/哈桑·萨巴赫(咒腕).htm"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hassan/哈桑·萨巴赫(咒腕)"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "哈桑·萨巴赫(咒腕)/sc_hassan_1#line=16"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=1",
+          "sha256": "ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=2",
+          "sha256": "1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=3",
+          "sha256": "0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=4",
+          "sha256": "1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871"
         },
         {
           "abilityId": "servant.ibaraki.skill.sc-ibaraki-1",
@@ -3520,10 +3762,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 58,
-          "specific_handler": 24
+          "shared_handler": 61,
+          "specific_handler": 25
         },
-        "handlerCount": 32,
+        "handlerCount": 36,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -3730,13 +3972,16 @@
         "servant.albion.skill.sc-albion-1",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.andersen.skill.sc-andersen-2",
+        "servant.angra.skill.sc-angra-3",
         "servant.clytie.skill.sc-clytie-3",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
+        "servant.iskandar.skill.sc-iskandar-1",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
         "servant.lionking.skill.sc-lionking-3",
+        "servant.medusa.skill.sc-medusa-1",
         "servant.merlin.skill.sc-merlin-3",
         "servant.napoleon.skill.sc-napoleon-2",
         "servant.nero.skill.sc-nero-2",
@@ -4515,6 +4760,33 @@
           "sha256": "8ca9c8143d72538f449be401909f1f0dc39879d446c0b817283d353e47b0eca4"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/安格拉·曼纽.htm"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.angra/安格拉·曼纽"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "安格拉·曼纽/sc_angra_3#line=5"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=1",
+          "sha256": "52f7bce2381d558397ba5f1f2d534b776804e646aac6aec44ed949ae1105efd5"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=2",
+          "sha256": "ef0ea316016263296ab296c49933a3076f512352284b5f97598e986abdb4c161"
+        },
+        {
           "abilityId": "servant.clytie.skill.sc-clytie-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/降临者/英文版/克吕提厄·梵高.htm"
@@ -4582,6 +4854,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[31].abilities[0].printedClause",
           "sha256": "abc76e38254ac8688fa7caef5392e28a7b8baa507479231db743a638e9f3fc52"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/伊斯坎达尔.htm"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.iskandar/伊斯坎达尔"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "伊斯坎达尔/sc_iskandar_1#line=9"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[4].skills[0].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[4].skills[0].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
         },
         {
           "abilityId": "servant.iskandar.skill.sc-iskandar-2",
@@ -4672,6 +4971,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[48].abilities[1].printedClause",
           "sha256": "5e08b7a1c793ebb527e8715e29a8d71ee173274dba52e6227147dca58f9b62da"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/美杜莎.htm"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.medusa/美杜莎"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "美杜莎/sc_medusa_1#line=10"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[5].skills[0].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[5].skills[0].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
         },
         {
           "abilityId": "servant.merlin.skill.sc-merlin-3",
@@ -4795,10 +5121,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 31,
-          "specific_handler": 9
+          "shared_handler": 33,
+          "specific_handler": 10
         },
-        "handlerCount": 15,
+        "handlerCount": 17,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -4885,6 +5211,7 @@
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.andersen.skill.sc-andersen-2",
+        "servant.angra.skill.sc-angra-3",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.astolfo.skill.sc-astolfo-1",
         "servant.atalanta.skill.sc-atalanta-1",
@@ -4901,10 +5228,14 @@
         "servant.edison.skill.sc-edison-2",
         "servant.edison.skill.sc-edison-3",
         "servant.emiya.skill.sc-emiya-np",
+        "servant.gil.skill.sc-gil-1",
+        "servant.gilles.skill.sc-gilles-2",
         "servant.gorgon.skill.sc-gorgon-2",
         "servant.gorgon.skill.sc-gorgon-3",
+        "servant.hassan.skill.sc-hassan-1",
         "servant.helena.skill.sc-helena-3",
         "servant.ibaraki.skill.sc-ibaraki-1",
+        "servant.iskandar.skill.sc-iskandar-1",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kama.skill.sc-kama-1",
@@ -4914,6 +5245,8 @@
         "servant.leonidas.skill.sc-leonidas-1",
         "servant.lionking.skill.sc-lionking-3",
         "servant.mechaeli.skill.sc-mechaeli-2",
+        "servant.medea.skill.sc-medea-2",
+        "servant.medusa.skill.sc-medusa-1",
         "servant.medusa.skill.sc-medusa-2",
         "servant.medusa.skill.sc-medusa-np",
         "servant.mephisto.skill.sc-mephisto-2",
@@ -6942,6 +7275,33 @@
           "sha256": "8ca9c8143d72538f449be401909f1f0dc39879d446c0b817283d353e47b0eca4"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/安格拉·曼纽.htm"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.angra/安格拉·曼纽"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "安格拉·曼纽/sc_angra_3#line=5"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=1",
+          "sha256": "52f7bce2381d558397ba5f1f2d534b776804e646aac6aec44ed949ae1105efd5"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=2",
+          "sha256": "ef0ea316016263296ab296c49933a3076f512352284b5f97598e986abdb4c161"
+        },
+        {
           "abilityId": "servant.arjuna.skill.sc-arjuna-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/狂战士/英文版/阿周那(Alter).htm"
@@ -7344,6 +7704,66 @@
           "sha256": "35d7d572e150f9010e90b44ecc903ee60423abab9e810d8d49f10484f7bbeb81"
         },
         {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/吉尔伽美什.htm"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gil/吉尔伽美什"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "吉尔伽美什/sc_gil_1#line=8"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=1",
+          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=2",
+          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=3",
+          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/吉尔·德·雷.htm"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gilles/吉尔·德·雷"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "吉尔·德·雷/sc_gilles_2#line=14"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[1].text#line=1",
+          "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[1].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/复仇者/英文版/戈耳工.htm"
@@ -7404,6 +7824,45 @@
           "sha256": "fd3573298bf64ddf55ce4e1519e18a3f315723c069ea0124f6bce6c68a535656"
         },
         {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/哈桑·萨巴赫(咒腕).htm"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hassan/哈桑·萨巴赫(咒腕)"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "哈桑·萨巴赫(咒腕)/sc_hassan_1#line=16"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=1",
+          "sha256": "ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=2",
+          "sha256": "1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=3",
+          "sha256": "0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=4",
+          "sha256": "1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871"
+        },
+        {
           "abilityId": "servant.helena.skill.sc-helena-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/魔术师/英文版/海伦娜·布拉瓦茨基.htm"
@@ -7444,6 +7903,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[38].abilities[0].printedClause",
           "sha256": "1ed4b6ca04b7bec829e082e897fa5d5a1a23d3cc7215d2a8865261218e24f14d"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/伊斯坎达尔.htm"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.iskandar/伊斯坎达尔"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "伊斯坎达尔/sc_iskandar_1#line=9"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[4].skills[0].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[4].skills[0].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
         },
         {
           "abilityId": "servant.iskandar.skill.sc-iskandar-2",
@@ -7669,6 +8155,60 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[6].abilities[2].printedClause",
           "sha256": "e0b852e51e0b6806eec72d9c0b4e8b95be946941bc44578c4853a6f9f0bdddb5"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/美狄亚.htm"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.medea/美狄亚"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "美狄亚/sc_medea_2#line=13"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[8].skills[1].text#line=1",
+          "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[8].skills[1].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/美杜莎.htm"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.medusa/美杜莎"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "美杜莎/sc_medusa_1#line=10"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[5].skills[0].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[5].skills[0].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
         },
         {
           "abilityId": "servant.medusa.skill.sc-medusa-2",
@@ -8221,10 +8761,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 96,
-          "specific_handler": 28
+          "shared_handler": 102,
+          "specific_handler": 29
         },
-        "handlerCount": 37,
+        "handlerCount": 42,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -9709,6 +10249,8 @@
         "servant.edison.skill.sc-edison-2",
         "servant.edison.skill.sc-edison-3",
         "servant.emiya.skill.sc-emiya-np",
+        "servant.gil.skill.sc-gil-1",
+        "servant.gilles.skill.sc-gilles-2",
         "servant.gorgon.skill.sc-gorgon-2",
         "servant.gorgon.skill.sc-gorgon-3",
         "servant.helena.skill.sc-helena-3",
@@ -9718,6 +10260,7 @@
         "servant.kiritsugu.skill.sc-kiritsugu-2",
         "servant.leonidas.skill.sc-leonidas-1",
         "servant.lionking.skill.sc-lionking-3",
+        "servant.medea.skill.sc-medea-2",
         "servant.mephisto.skill.sc-mephisto-3",
         "servant.mozart.skill.sc-mozart-1",
         "servant.napoleon.skill.sc-napoleon-1",
@@ -10900,6 +11443,66 @@
           "sha256": "35d7d572e150f9010e90b44ecc903ee60423abab9e810d8d49f10484f7bbeb81"
         },
         {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/吉尔伽美什.htm"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gil/吉尔伽美什"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "吉尔伽美什/sc_gil_1#line=8"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=1",
+          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=2",
+          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=3",
+          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/吉尔·德·雷.htm"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gilles/吉尔·德·雷"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "吉尔·德·雷/sc_gilles_2#line=14"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[1].text#line=1",
+          "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[1].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/复仇者/英文版/戈耳工.htm"
@@ -11129,6 +11732,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[48].abilities[1].printedClause",
           "sha256": "5e08b7a1c793ebb527e8715e29a8d71ee173274dba52e6227147dca58f9b62da"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/美狄亚.htm"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.medea/美狄亚"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "美狄亚/sc_medea_2#line=13"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[8].skills[1].text#line=1",
+          "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[8].skills[1].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
         },
         {
           "abilityId": "servant.mephisto.skill.sc-mephisto-3",
@@ -11387,10 +12017,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 47,
+          "shared_handler": 50,
           "specific_handler": 13
         },
-        "handlerCount": 20,
+        "handlerCount": 22,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -11460,13 +12090,17 @@
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.andersen.skill.sc-andersen-2",
+        "servant.angra.skill.sc-angra-3",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.atalanta.skill.sc-atalanta-1",
         "servant.caligula.skill.sc-caligula-1",
         "servant.darius.skill.sc-darius-2",
         "servant.drake.skill.sc-drake-3",
         "servant.edison.skill.sc-edison-3",
+        "servant.emiya.skill.sc-emiya-1",
         "servant.emiya.skill.sc-emiya-np",
+        "servant.gil.skill.sc-gil-1",
+        "servant.gilles.skill.sc-gilles-2",
         "servant.gorgon.skill.sc-gorgon-2",
         "servant.gorgon.skill.sc-gorgon-3",
         "servant.helena.skill.sc-helena-3",
@@ -11475,6 +12109,7 @@
         "servant.kiritsugu.skill.sc-kiritsugu-2",
         "servant.leonidas.skill.sc-leonidas-1",
         "servant.mechaeli.skill.sc-mechaeli-2",
+        "servant.medea.skill.sc-medea-2",
         "servant.mephisto.skill.sc-mephisto-2",
         "servant.mozart.skill.sc-mozart-1",
         "servant.napoleon.skill.sc-napoleon-1",
@@ -13119,6 +13754,33 @@
           "sha256": "8ca9c8143d72538f449be401909f1f0dc39879d446c0b817283d353e47b0eca4"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/安格拉·曼纽.htm"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.angra/安格拉·曼纽"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "安格拉·曼纽/sc_angra_3#line=5"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=1",
+          "sha256": "52f7bce2381d558397ba5f1f2d534b776804e646aac6aec44ed949ae1105efd5"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=2",
+          "sha256": "ef0ea316016263296ab296c49933a3076f512352284b5f97598e986abdb4c161"
+        },
+        {
           "abilityId": "servant.arjuna.skill.sc-arjuna-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/狂战士/英文版/阿周那(Alter).htm"
@@ -13281,6 +13943,27 @@
           "sha256": "6e988f3620874deab1c4835aa1bcde3f06392296cead84123f401eb4d296df55"
         },
         {
+          "abilityId": "servant.emiya.skill.sc-emiya-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/卫宫.htm"
+        },
+        {
+          "abilityId": "servant.emiya.skill.sc-emiya-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.emiya/卫宫"
+        },
+        {
+          "abilityId": "servant.emiya.skill.sc-emiya-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "卫宫/sc_emiya_1#line=7"
+        },
+        {
+          "abilityId": "servant.emiya.skill.sc-emiya-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[2].skills[0].text#line=1",
+          "sha256": "fa883160fbf6875dc16b5919429c6a1be8470ce302fc0b503798e385d69f84df"
+        },
+        {
           "abilityId": "servant.emiya.skill.sc-emiya-np",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/弓兵/英文版/卫宫.htm"
@@ -13306,6 +13989,66 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[71].abilities[1].printedClause",
           "sha256": "35d7d572e150f9010e90b44ecc903ee60423abab9e810d8d49f10484f7bbeb81"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/吉尔伽美什.htm"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gil/吉尔伽美什"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "吉尔伽美什/sc_gil_1#line=8"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=1",
+          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=2",
+          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=3",
+          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/吉尔·德·雷.htm"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gilles/吉尔·德·雷"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "吉尔·德·雷/sc_gilles_2#line=14"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[1].text#line=1",
+          "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[1].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
         },
         {
           "abilityId": "servant.gorgon.skill.sc-gorgon-2",
@@ -13518,6 +14261,33 @@
           "sha256": "e0b852e51e0b6806eec72d9c0b4e8b95be946941bc44578c4853a6f9f0bdddb5"
         },
         {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/美狄亚.htm"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.medea/美狄亚"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "美狄亚/sc_medea_2#line=13"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[8].skills[1].text#line=1",
+          "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[8].skills[1].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+        },
+        {
           "abilityId": "servant.mephisto.skill.sc-mephisto-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/魔术师/英文版/梅菲斯托费勒斯.htm"
@@ -13717,10 +14487,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 56,
-          "specific_handler": 22
+          "shared_handler": 60,
+          "specific_handler": 23
         },
-        "handlerCount": 34,
+        "handlerCount": 38,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -13748,10 +14518,14 @@
         "master.peperoncino.skill.s1b",
         "master.peperoncino.skill.s4",
         "master.wodime.skill.s9",
+        "servant.cu.skill.sc-cu-2",
+        "servant.diarmuid.skill.sc-diarmuid-3",
         "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-2",
         "servant.edison.skill.sc-edison-3",
+        "servant.gilles.skill.sc-gilles-2",
         "servant.gorgon.skill.sc-gorgon-3",
+        "servant.medea.skill.sc-medea-2",
         "servant.mozart.skill.sc-mozart-1"
       ],
       "sourceReferences": [
@@ -14203,6 +14977,48 @@
           "sha256": "031162f6cb7f6ee1b383aec7910fdb47f63ddf2f2333868def79ec8431ffa31b"
         },
         {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/库·丘林.htm"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.cu/库·丘林"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "库·丘林/sc_cu_2#line=12"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[7].skills[1].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/迪卢木多·奥迪那.htm"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.diarmuid/迪卢木多·奥迪那"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "迪卢木多·奥迪那/sc_diarmuid_3#line=11"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[6].skills[2].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
@@ -14284,6 +15100,33 @@
           "sha256": "6e988f3620874deab1c4835aa1bcde3f06392296cead84123f401eb4d296df55"
         },
         {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/吉尔·德·雷.htm"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gilles/吉尔·德·雷"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "吉尔·德·雷/sc_gilles_2#line=14"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[1].text#line=1",
+          "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[1].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/复仇者/英文版/戈耳工.htm"
@@ -14309,6 +15152,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[63].abilities[1].printedClause",
           "sha256": "fd3573298bf64ddf55ce4e1519e18a3f315723c069ea0124f6bce6c68a535656"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/美狄亚.htm"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.medea/美狄亚"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "美狄亚/sc_medea_2#line=13"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[8].skills[1].text#line=1",
+          "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[8].skills[1].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
         },
         {
           "abilityId": "servant.mozart.skill.sc-mozart-1",
@@ -14369,10 +15239,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 15,
+          "shared_handler": 19,
           "specific_handler": 5
         },
-        "handlerCount": 12,
+        "handlerCount": 14,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -14414,14 +15284,18 @@
         "servant.atalanta.skill.sc-atalanta-2",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.cu.skill.sc-cu-2",
+        "servant.diarmuid.skill.sc-diarmuid-3",
         "servant.drake.skill.sc-drake-2",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
+        "servant.iskandar.skill.sc-iskandar-1",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kama.skill.sc-kama-1",
         "servant.kiritsugu.skill.sc-kiritsugu-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.medusa.skill.sc-medusa-1",
         "servant.medusa.skill.sc-medusa-np",
         "servant.mephisto.skill.sc-mephisto-3",
         "servant.napoleon.skill.sc-napoleon-1",
@@ -15283,6 +16157,48 @@
           "sha256": "480a180bdb8582523510a155d61848f427da536dff7453248134a62f25aa90b9"
         },
         {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/库·丘林.htm"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.cu/库·丘林"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "库·丘林/sc_cu_2#line=12"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[7].skills[1].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/迪卢木多·奥迪那.htm"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.diarmuid/迪卢木多·奥迪那"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "迪卢木多·奥迪那/sc_diarmuid_3#line=11"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[6].skills[2].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
@@ -15350,6 +16266,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[31].abilities[0].printedClause",
           "sha256": "abc76e38254ac8688fa7caef5392e28a7b8baa507479231db743a638e9f3fc52"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/伊斯坎达尔.htm"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.iskandar/伊斯坎达尔"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "伊斯坎达尔/sc_iskandar_1#line=9"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[4].skills[0].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[4].skills[0].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
         },
         {
           "abilityId": "servant.iskandar.skill.sc-iskandar-2",
@@ -15461,6 +16404,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[42].abilities[0].printedClause",
           "sha256": "06737d51cbb6bd19167488edc70ea347f0f289ff49439b4cd7724930316eec7c"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/美杜莎.htm"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.medusa/美杜莎"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "美杜莎/sc_medusa_1#line=10"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[5].skills[0].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[5].skills[0].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
         },
         {
           "abilityId": "servant.medusa.skill.sc-medusa-np",
@@ -15689,10 +16659,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 36,
+          "shared_handler": 40,
           "specific_handler": 10
         },
-        "handlerCount": 13,
+        "handlerCount": 15,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -15743,6 +16713,7 @@
         "servant.atalanta.skill.sc-atalanta-1",
         "servant.darius.skill.sc-darius-2",
         "servant.edison.skill.sc-edison-3",
+        "servant.emiya.skill.sc-emiya-1",
         "servant.ibaraki.skill.sc-ibaraki-1",
         "servant.kama.skill.sc-kama-1",
         "servant.mechaeli.skill.sc-mechaeli-2",
@@ -16868,6 +17839,27 @@
           "sha256": "6e988f3620874deab1c4835aa1bcde3f06392296cead84123f401eb4d296df55"
         },
         {
+          "abilityId": "servant.emiya.skill.sc-emiya-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/卫宫.htm"
+        },
+        {
+          "abilityId": "servant.emiya.skill.sc-emiya-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.emiya/卫宫"
+        },
+        {
+          "abilityId": "servant.emiya.skill.sc-emiya-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "卫宫/sc_emiya_1#line=7"
+        },
+        {
+          "abilityId": "servant.emiya.skill.sc-emiya-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[2].skills[0].text#line=1",
+          "sha256": "fa883160fbf6875dc16b5919429c6a1be8470ce302fc0b503798e385d69f84df"
+        },
+        {
           "abilityId": "servant.ibaraki.skill.sc-ibaraki-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/狂战士/英文版/茨木童子.htm"
@@ -17073,10 +18065,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 29,
+          "shared_handler": 30,
           "specific_handler": 15
         },
-        "handlerCount": 23,
+        "handlerCount": 24,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -17124,13 +18116,17 @@
         "master.shinji.skill.s4",
         "master.wodime.skill.s3",
         "servant.albion.skill.sc-albion-1",
+        "servant.angra.skill.sc-angra-3",
         "servant.drake.skill.sc-drake-3",
         "servant.edison.skill.sc-edison-2",
+        "servant.gil.skill.sc-gil-1",
+        "servant.gilles.skill.sc-gilles-2",
         "servant.kama.skill.sc-kama-1",
         "servant.kama.skill.sc-kama-2",
         "servant.kiritsugu.skill.sc-kiritsugu-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
         "servant.mechaeli.skill.sc-mechaeli-2",
+        "servant.medea.skill.sc-medea-2",
         "servant.mephisto.skill.sc-mephisto-2",
         "servant.mephisto.skill.sc-mephisto-3",
         "servant.merlin.skill.sc-merlin-3",
@@ -18076,6 +19072,33 @@
           "sha256": "679fed0d35a87156418c6a298693e00215da2b793ca03b03712f43c5b316915f"
         },
         {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/安格拉·曼纽.htm"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.angra/安格拉·曼纽"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "安格拉·曼纽/sc_angra_3#line=5"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=1",
+          "sha256": "52f7bce2381d558397ba5f1f2d534b776804e646aac6aec44ed949ae1105efd5"
+        },
+        {
+          "abilityId": "servant.angra.skill.sc-angra-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[0].skills[2].text#line=2",
+          "sha256": "ef0ea316016263296ab296c49933a3076f512352284b5f97598e986abdb4c161"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
@@ -18134,6 +19157,66 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[53].abilities[2].printedClause",
           "sha256": "9ce3c9b19f9b277448bbcfcbedde59763b38f93967b0a82648d5a7df8faed1c1"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/吉尔伽美什.htm"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gil/吉尔伽美什"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "吉尔伽美什/sc_gil_1#line=8"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=1",
+          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=2",
+          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=3",
+          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/吉尔·德·雷.htm"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gilles/吉尔·德·雷"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "吉尔·德·雷/sc_gilles_2#line=14"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[1].text#line=1",
+          "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[1].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
         },
         {
           "abilityId": "servant.kama.skill.sc-kama-1",
@@ -18263,6 +19346,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[6].abilities[2].printedClause",
           "sha256": "e0b852e51e0b6806eec72d9c0b4e8b95be946941bc44578c4853a6f9f0bdddb5"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/美狄亚.htm"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.medea/美狄亚"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "美狄亚/sc_medea_2#line=13"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[8].skills[1].text#line=1",
+          "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[8].skills[1].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
         },
         {
           "abilityId": "servant.mephisto.skill.sc-mephisto-2",
@@ -18539,10 +19649,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 36,
-          "specific_handler": 15
+          "shared_handler": 39,
+          "specific_handler": 16
         },
-        "handlerCount": 23,
+        "handlerCount": 26,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -18582,12 +19692,16 @@
         "servant.atalanta.skill.sc-atalanta-2",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.cu.skill.sc-cu-2",
+        "servant.diarmuid.skill.sc-diarmuid-3",
         "servant.drake.skill.sc-drake-2",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
+        "servant.iskandar.skill.sc-iskandar-1",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.medusa.skill.sc-medusa-1",
         "servant.medusa.skill.sc-medusa-np",
         "servant.mephisto.skill.sc-mephisto-3",
         "servant.napoleon.skill.sc-napoleon-1",
@@ -19387,6 +20501,48 @@
           "sha256": "480a180bdb8582523510a155d61848f427da536dff7453248134a62f25aa90b9"
         },
         {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/库·丘林.htm"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.cu/库·丘林"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "库·丘林/sc_cu_2#line=12"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[7].skills[1].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/迪卢木多·奥迪那.htm"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.diarmuid/迪卢木多·奥迪那"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "迪卢木多·奥迪那/sc_diarmuid_3#line=11"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[6].skills[2].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
@@ -19456,6 +20612,33 @@
           "sha256": "abc76e38254ac8688fa7caef5392e28a7b8baa507479231db743a638e9f3fc52"
         },
         {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/伊斯坎达尔.htm"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.iskandar/伊斯坎达尔"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "伊斯坎达尔/sc_iskandar_1#line=9"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[4].skills[0].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[4].skills[0].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
+        },
+        {
           "abilityId": "servant.iskandar.skill.sc-iskandar-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/伊斯坎达尔.htm"
@@ -19517,6 +20700,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[42].abilities[0].printedClause",
           "sha256": "06737d51cbb6bd19167488edc70ea347f0f289ff49439b4cd7724930316eec7c"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/美杜莎.htm"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.medusa/美杜莎"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "美杜莎/sc_medusa_1#line=10"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[5].skills[0].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[5].skills[0].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
         },
         {
           "abilityId": "servant.medusa.skill.sc-medusa-np",
@@ -19697,10 +20907,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 29,
+          "shared_handler": 33,
           "specific_handler": 11
         },
-        "handlerCount": 14,
+        "handlerCount": 16,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -20256,14 +21466,18 @@
         "servant.atalanta.skill.sc-atalanta-2",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.cu.skill.sc-cu-2",
+        "servant.diarmuid.skill.sc-diarmuid-3",
         "servant.drake.skill.sc-drake-2",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
+        "servant.iskandar.skill.sc-iskandar-1",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kama.skill.sc-kama-1",
         "servant.kiritsugu.skill.sc-kiritsugu-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.medusa.skill.sc-medusa-1",
         "servant.medusa.skill.sc-medusa-np",
         "servant.mephisto.skill.sc-mephisto-3",
         "servant.napoleon.skill.sc-napoleon-1",
@@ -21125,6 +22339,48 @@
           "sha256": "480a180bdb8582523510a155d61848f427da536dff7453248134a62f25aa90b9"
         },
         {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/库·丘林.htm"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.cu/库·丘林"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "库·丘林/sc_cu_2#line=12"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[7].skills[1].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/迪卢木多·奥迪那.htm"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.diarmuid/迪卢木多·奥迪那"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "迪卢木多·奥迪那/sc_diarmuid_3#line=11"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[6].skills[2].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
@@ -21192,6 +22448,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[31].abilities[0].printedClause",
           "sha256": "abc76e38254ac8688fa7caef5392e28a7b8baa507479231db743a638e9f3fc52"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/伊斯坎达尔.htm"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.iskandar/伊斯坎达尔"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "伊斯坎达尔/sc_iskandar_1#line=9"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[4].skills[0].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[4].skills[0].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
         },
         {
           "abilityId": "servant.iskandar.skill.sc-iskandar-2",
@@ -21303,6 +22586,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[42].abilities[0].printedClause",
           "sha256": "06737d51cbb6bd19167488edc70ea347f0f289ff49439b4cd7724930316eec7c"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/美杜莎.htm"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.medusa/美杜莎"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "美杜莎/sc_medusa_1#line=10"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[5].skills[0].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[5].skills[0].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
         },
         {
           "abilityId": "servant.medusa.skill.sc-medusa-np",
@@ -21531,10 +22841,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 36,
+          "shared_handler": 40,
           "specific_handler": 10
         },
-        "handlerCount": 13,
+        "handlerCount": 15,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -21622,12 +22932,18 @@
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.edison.skill.sc-edison-2",
         "servant.edison.skill.sc-edison-3",
+        "servant.gil.skill.sc-gil-1",
+        "servant.gilles.skill.sc-gilles-2",
         "servant.gorgon.skill.sc-gorgon-2",
+        "servant.hassan.skill.sc-hassan-1",
+        "servant.iskandar.skill.sc-iskandar-1",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kama.skill.sc-kama-2",
         "servant.leonidas.skill.sc-leonidas-1",
         "servant.lionking.skill.sc-lionking-3",
         "servant.mechaeli.skill.sc-mechaeli-2",
+        "servant.medea.skill.sc-medea-2",
+        "servant.medusa.skill.sc-medusa-1",
         "servant.mephisto.skill.sc-mephisto-2",
         "servant.merlin.skill.sc-merlin-3",
         "servant.mozart.skill.sc-mozart-1",
@@ -23702,6 +25018,66 @@
           "sha256": "6e988f3620874deab1c4835aa1bcde3f06392296cead84123f401eb4d296df55"
         },
         {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/吉尔伽美什.htm"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gil/吉尔伽美什"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "吉尔伽美什/sc_gil_1#line=8"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=1",
+          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=2",
+          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
+        },
+        {
+          "abilityId": "servant.gil.skill.sc-gil-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[3].skills[0].text#line=3",
+          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/吉尔·德·雷.htm"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.gilles/吉尔·德·雷"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "吉尔·德·雷/sc_gilles_2#line=14"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[1].text#line=1",
+          "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+        },
+        {
+          "abilityId": "servant.gilles.skill.sc-gilles-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[9].skills[1].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+        },
+        {
           "abilityId": "servant.gorgon.skill.sc-gorgon-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/复仇者/英文版/戈耳工.htm"
@@ -23733,6 +25109,72 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[5].abilities[2].printedClause",
           "sha256": "915cebea978af7fabe16a81886c5b18e70b908db2673426b581288c586190130"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/哈桑·萨巴赫(咒腕).htm"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hassan/哈桑·萨巴赫(咒腕)"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "哈桑·萨巴赫(咒腕)/sc_hassan_1#line=16"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=1",
+          "sha256": "ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=2",
+          "sha256": "1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=3",
+          "sha256": "0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=4",
+          "sha256": "1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/伊斯坎达尔.htm"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.iskandar/伊斯坎达尔"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "伊斯坎达尔/sc_iskandar_1#line=9"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[4].skills[0].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.iskandar.skill.sc-iskandar-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[4].skills[0].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
         },
         {
           "abilityId": "servant.kagekiyo.skill.sc-kagekiyo-2",
@@ -23868,6 +25310,60 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[6].abilities[2].printedClause",
           "sha256": "e0b852e51e0b6806eec72d9c0b4e8b95be946941bc44578c4853a6f9f0bdddb5"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/美狄亚.htm"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.medea/美狄亚"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "美狄亚/sc_medea_2#line=13"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[8].skills[1].text#line=1",
+          "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+        },
+        {
+          "abilityId": "servant.medea.skill.sc-medea-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[8].skills[1].text#line=2",
+          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/美杜莎.htm"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.medusa/美杜莎"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "美杜莎/sc_medusa_1#line=10"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[5].skills[0].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.medusa.skill.sc-medusa-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[5].skills[0].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
         },
         {
           "abilityId": "servant.mephisto.skill.sc-mephisto-2",
@@ -24177,10 +25673,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 64,
+          "shared_handler": 70,
           "specific_handler": 27
         },
-        "handlerCount": 35,
+        "handlerCount": 39,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -25212,6 +26708,7 @@
         "master.wodime.skill.s9",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.gorgon.skill.sc-gorgon-3",
+        "servant.hassan.skill.sc-hassan-1",
         "servant.medusa.skill.sc-medusa-2",
         "servant.mephisto.skill.sc-mephisto-2",
         "servant.valkyrie.skill.sc-valkyrie-3"
@@ -26703,6 +28200,45 @@
           "sha256": "fd3573298bf64ddf55ce4e1519e18a3f315723c069ea0124f6bce6c68a535656"
         },
         {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/哈桑·萨巴赫(咒腕).htm"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hassan/哈桑·萨巴赫(咒腕)"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "哈桑·萨巴赫(咒腕)/sc_hassan_1#line=16"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=1",
+          "sha256": "ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=2",
+          "sha256": "1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=3",
+          "sha256": "0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217"
+        },
+        {
+          "abilityId": "servant.hassan.skill.sc-hassan-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[11].skills[0].text#line=4",
+          "sha256": "1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871"
+        },
+        {
           "abilityId": "servant.medusa.skill.sc-medusa-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/美杜莎.htm"
@@ -26797,10 +28333,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 37,
+          "shared_handler": 38,
           "specific_handler": 19
         },
-        "handlerCount": 29,
+        "handlerCount": 30,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
