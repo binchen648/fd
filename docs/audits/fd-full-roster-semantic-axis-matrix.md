@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=365
-blockedCount=579
+sourceGroundedCount=386
+blockedCount=558
 unclassifiedCount=0
-structuredAbilityCount=643
+structuredAbilityCount=664
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 85 |
+| timing | `ACTION` | 86 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 27 |
 | timing | `PREPARATION` | 7 |
@@ -245,7 +245,7 @@ structuredAbilityCount=643
 | condition | `TRUE_NAME_REVEALED` | 1 |
 | condition | `VICTORY_POINTS_IS_FIRST` | 1 |
 | condition | `VICTORY_POINTS_IS_LOWEST` | 1 |
-| cost | `MANA` | 20 |
+| cost | `MANA` | 21 |
 | cost | `VICTORY_POINTS` | 3 |
 | cost | `DISCARD_CARDS` | 2 |
 | cost | `COMMAND_SEAL` | 1 |
@@ -259,12 +259,12 @@ structuredAbilityCount=643
 | target | `CHOOSE_EACH_PLAYER_OPTION` | 2 |
 | target | `CHOOSE_EACH_PLAYER_CARDS` | 1 |
 | target | `CHOOSE_N_EVENTS` | 1 |
-| effect | `GAIN_VICTORY_POINTS` | 34 |
+| effect | `GAIN_VICTORY_POINTS` | 35 |
 | effect | `GAIN_MANA` | 28 |
-| effect | `COMBAT_POWER_BONUS` | 25 |
-| effect | `EVENT_CARD_RULE` | 25 |
+| effect | `COMBAT_POWER_BONUS` | 26 |
+| effect | `EVENT_CARD_RULE` | 26 |
+| effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `DRAW_CARDS` | 21 |
-| effect | `LOSE_VICTORY_POINTS` | 21 |
 | effect | `MOVE_SOURCE_CARD` | 21 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
@@ -283,9 +283,10 @@ structuredAbilityCount=643
 | effect | `IF_CONDITION` | 7 |
 | effect | `SET_MANA` | 6 |
 | effect | `TERRAIN_POSITION_ADJUSTMENT` | 6 |
+| effect | `TRANSFER_VICTORY_POINTS` | 6 |
 | effect | `MOVE_CARD` | 5 |
 | effect | `SECRET_GARDEN_RULE` | 5 |
-| effect | `TRANSFER_VICTORY_POINTS` | 5 |
+| effect | `TATARI_DETERIORATION_RULE` | 5 |
 | effect | `ADD_STATUS` | 4 |
 | effect | `CLOSE_SELECTED_CARDS` | 4 |
 | effect | `MOVE_SELECTED_EVENTS` | 4 |
@@ -299,10 +300,13 @@ structuredAbilityCount=643
 | effect | `ANALYSIS_TOKEN_RULE` | 3 |
 | effect | `CLEAR_PLAYER_FLAG` | 3 |
 | effect | `CRAFTED_TREE_RULE` | 3 |
+| effect | `DETECTIVE_CLUE_RULE` | 3 |
 | effect | `EXILE_SOURCE_CARD` | 3 |
 | effect | `FOOD_RESOURCE_RULE` | 3 |
 | effect | `MOVE_MATCHING_EVENTS` | 3 |
+| effect | `OVERLOAD_CARD_RULE` | 3 |
 | effect | `PHANTOM_PLAYER_RULE` | 3 |
+| effect | `REINCARNATION_RULE` | 3 |
 | effect | `REMOVE_CARDS_IN_ZONE` | 3 |
 | effect | `CHALLENGE_RPS_RULE` | 2 |
 | effect | `COMBAT_POWER_LOCK` | 2 |
@@ -313,6 +317,7 @@ structuredAbilityCount=643
 | effect | `DEFERRED_DEPLOYMENT_RULE` | 2 |
 | effect | `DEMON_GOD_RULE` | 2 |
 | effect | `DUAL_SERVANT_RULE` | 2 |
+| effect | `FEAR_ATTRIBUTE_RULE` | 2 |
 | effect | `FINISH_GAME` | 2 |
 | effect | `FORM_STATE_RULE` | 2 |
 | effect | `GEM_RESOURCE_RULE` | 2 |
@@ -331,8 +336,10 @@ structuredAbilityCount=643
 | effect | `SECRET_ROUND_BINDING` | 2 |
 | effect | `SERVANT_OWNERSHIP_RULE` | 2 |
 | effect | `SET_SELECTED_CARDS_FACE` | 2 |
+| effect | `TATARI_RULE` | 2 |
 | effect | `TRANSFER_MANA` | 2 |
 | effect | `TRANSFER_MATCHING_CARDS` | 2 |
+| effect | `VESSEL_STATE_RULE` | 2 |
 | effect | `ACTIVATE_SELECTED_CARDS` | 1 |
 | effect | `ADD_PLAYER_FLAG_NUMBER` | 1 |
 | effect | `ASTRONOMICAL_SPHERE_RULE` | 1 |
@@ -356,6 +363,7 @@ structuredAbilityCount=643
 | effect | `DECK_BOTTOM_MATCH_RULE` | 1 |
 | effect | `DECK_BOTTOM_RULE` | 1 |
 | effect | `DEFEAT_OVERRIDE_RULE` | 1 |
+| effect | `DETECTIVE_ACCUSATION_RULE` | 1 |
 | effect | `DREAM_SUMMON_RULE` | 1 |
 | effect | `ENSURE_EVENT_DECK_COUNT` | 1 |
 | effect | `EVENT_BATTLEFIELD_PENALTY` | 1 |
@@ -392,6 +400,7 @@ structuredAbilityCount=643
 | effect | `SET_SOURCE_CARD_COST_FOR_TRANSACTION` | 1 |
 | effect | `SHARED_VICTORY_LINK` | 1 |
 | effect | `SHUFFLE_EVENT_DECK` | 1 |
+| effect | `SKILL_COPY_LIFECYCLE_RULE` | 1 |
 | effect | `SKIP_DEPLOYMENT_RECOVERY_RULE` | 1 |
 | effect | `STOLEN_MANA_ATTRIBUTION_RULE` | 1 |
 | effect | `SWAP_SELECTED_EVENT_LOCATIONS` | 1 |
@@ -467,7 +476,7 @@ structuredAbilityCount=643
 | lifecycle | `limit:once_per_game` | 1 |
 | lifecycle | `reset:round` | 1 |
 | lifecycle | `uniqueness:unique` | 1 |
-| modifier | `effect:combat_power_bonus` | 25 |
+| modifier | `effect:combat_power_bonus` | 26 |
 | modifier | `rule:card_power:add` | 18 |
 | modifier | `effect:source_card_power_bonus` | 8 |
 | modifier | `rule:card_cost:add` | 5 |
@@ -688,21 +697,21 @@ structuredAbilityCount=643
 | binding | `result:targetPlayer` | 1 |
 | battle | `COMBAT_CONDITION` | 80 |
 | battle | `COMBAT_EVENT` | 65 |
-| battle | `COMBAT_EFFECT` | 30 |
+| battle | `COMBAT_EFFECT` | 31 |
 | battle | `COMBAT_RULE_MODIFIER` | 17 |
 
 ## Identity-Level Matrix
 
 | Canonical Ability | Status | Blocks | Timing | Trigger | Condition | Cost | Target | Effect | Interaction | Lifecycle | Modifier | Visibility | Binding | Battle | Observed Handler |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `master.akasha.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akasha-reincarnation` |
+| `master.akasha.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OVERLOAD_CARD_RULE`, `REINCARNATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akasha-reincarnation` |
 | `master.akasha.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `game.started` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `cleanup:remain_active`, `duration:until_condition_met`, `expiresOn:master.akasha.reincarnation` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `master.akasha.skill.s1a` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akasha-reincarnation` |
-| `master.akasha.skill.s2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akasha-reincarnation` |
-| `master.akasha.skill.s3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akasha-reincarnation` |
-| `master.akasha.skill.s4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akasha-reincarnation` |
-| `master.akasha.skill.s5` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akasha-reincarnation` |
-| `master.akasha.skill.s6` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akasha-reincarnation` |
+| `master.akasha.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REINCARNATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akasha-reincarnation` |
+| `master.akasha.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LOSE_VICTORY_POINTS`, `REINCARNATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akasha-reincarnation` |
+| `master.akasha.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `VESSEL_STATE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akasha-reincarnation` |
+| `master.akasha.skill.s4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VESSEL_STATE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akasha-reincarnation` |
+| `master.akasha.skill.s5` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `OVERLOAD_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akasha-reincarnation` |
+| `master.akasha.skill.s6` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OVERLOAD_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akasha-reincarnation` |
 | `master.akiha.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `STOLEN_MANA_ATTRIBUTION_RULE` | `NONE` | `NONE` | `rule:source_card_mana_cost:add`, `rule:source_card_power:add` | `NONE` | `NONE` | `NONE` | `core.akiha-bloodlust` |
 | `master.akiha.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OPPONENT_MANA_BORROW_RULE` | `NONE` | `reset:round` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akiha-bloodlust` |
 | `master.akiha.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `phase.ended`, `player.mana.spent` | `EVENT_PHASE_IS`, `EVENT_PLAYER_IS_CONTROLLER` | `NONE` | `NONE` | `MURDER_IMPULSE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.akiha-bloodlust` |
@@ -823,11 +832,11 @@ structuredAbilityCount=643
 | `master.hinako.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:until_combat_end`, `limit.scope:this_card`, `limit.type:per_game`, `limit.uses:1` | `rule:card_play_mode:allow_additional_play`, `rule:combat_card_power:add` | `NONE` | `NONE` | `COMBAT_RULE_MODIFIER` | `core.hinako-package` |
 | `master.hinako.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.power-calculated`, `combat.resolved`, `game.started` | `EVENT_NPC_WON_COMBAT`, `NPC_NOT_AT_ANY_LOCATION` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `LOSTBELT_EXPANSION`, `NPC_RULE` | `NONE` | `NONE` | `rule:npc_total_power:set` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.hinako-package` |
 | `master.hinako.skill.s4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.ending` | `COMBAT_OCCURS_AT_SOURCE_EVENT_BATTLEFIELD`, `PLAYER_ALL_ATTACKS_PRINTED_POWER_EVEN`, `PLAYER_FACE_UP_ATTACKS_PLAYED_THIS_ROUND_EQUALS`, `PLAYER_USED_DECLARATION_REVEAL_THIS_ROUND` | `NONE` | `NONE` | `COMBAT_POWER_BONUS`, `EVENT_CARD_RULE`, `LOSTBELT_EXPANSION` | `NONE` | `NONE` | `effect:combat_power_bonus`, `rule:attack_power_bonus_from_situation_or_event:multiply`, `rule:card_play_permission:prohibit`, `rule:defeat_effect:ignore` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EFFECT`, `COMBAT_EVENT`, `COMBAT_RULE_MODIFIER` | `core.hinako-package` |
-| `master.hisui-detective.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hisui-detective` |
-| `master.hisui-detective.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hisui-detective` |
-| `master.hisui-detective.skill.s1a` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hisui-detective` |
-| `master.hisui-detective.skill.s2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hisui-detective` |
-| `master.hisui-detective.skill.s3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hisui-detective` |
+| `master.hisui-detective.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DETECTIVE_CLUE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hisui-detective` |
+| `master.hisui-detective.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hisui-detective` |
+| `master.hisui-detective.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DETECTIVE_CLUE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hisui-detective` |
+| `master.hisui-detective.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DETECTIVE_CLUE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hisui-detective` |
+| `master.hisui-detective.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_POWER_BONUS`, `DETECTIVE_ACCUSATION_RULE`, `TRANSFER_VICTORY_POINTS` | `NONE` | `NONE` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.hisui-detective` |
 | `master.iliya.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `skill.unlocked` | `CURRENT_SITUATION_IS`, `EVENT_PLAYER_IS_CONTROLLER` | `NONE` | `NONE` | `FINISH_GAME`, `REMOVE_CARDS_IN_ZONE` | `NONE` | `duration:while_condition_true`, `duration:while_source_active` | `rule:card_power:add` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `master.iliya.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `game.started` | `NONE` | `NONE` | `NONE` | `SET_MANA` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.master-initial-mana` |
 | `master.iliya.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `round.started` | `ROUND_NUMBER_IS` | `NONE` | `NONE` | `ACTIVATE_CARD_BY_ID` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.round-start-activate-skill` |
@@ -1012,15 +1021,15 @@ structuredAbilityCount=643
 | `master.tokiomi.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ITEM_RULE` | `NONE` | `duration:game` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-add-skill` |
 | `master.twice.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `SOURCE_OWNED`, `VICTORY_POINTS_IS_LOWEST` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `rule:combat_power:add`, `rule:elimination:replace` | `NONE` | `NONE` | `COMBAT_RULE_MODIFIER` | `core.structured-skill` |
 | `master.twice.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `ACTION`, `PREPARATION` | `NONE` | `ANY_OF`, `COMMAND_SEALS_AT_LEAST`, `EVENT_COUNT_AT_LEAST`, `IMPLIES`, `METRIC`, `METRIC_COMPARE`, `PHASE_IS`, `SOURCE_OWNED` | `NONE` | `BRANCH_CHOICE`, `CHOOSE_N_EVENTS`, `CHOOSE_ONE_EVENT` | `IF_CONDITION`, `REPLACE_SELECTED_EVENT_FROM_DECK`, `SWAP_SELECTED_EVENT_LOCATIONS` | `BRANCH_CHOICE`, `CHOOSE_N_EVENTS`, `CHOOSE_ONE_EVENT` | `NONE` | `NONE` | `NONE` | `payload:twiceReplaceEventIds`, `payload:twiceSwapEventIds` | `NONE` | `core.structured-skill` |
-| `master.wallachia.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
-| `master.wallachia.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
-| `master.wallachia.skill.s2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
-| `master.wallachia.skill.s3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
-| `master.wallachia.skill.s4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
-| `master.wallachia.skill.s5` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
-| `master.wallachia.skill.s6` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
-| `master.wallachia.skill.s7` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
-| `master.wallachia.skill.s8` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
+| `master.wallachia.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SKILL_COPY_LIFECYCLE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
+| `master.wallachia.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `MANA` | `NONE` | `FEAR_ATTRIBUTE_RULE`, `TATARI_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
+| `master.wallachia.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FEAR_ATTRIBUTE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
+| `master.wallachia.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TATARI_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
+| `master.wallachia.skill.s4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TATARI_DETERIORATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
+| `master.wallachia.skill.s5` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TATARI_DETERIORATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
+| `master.wallachia.skill.s6` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TATARI_DETERIORATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
+| `master.wallachia.skill.s7` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TATARI_DETERIORATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
+| `master.wallachia.skill.s8` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TATARI_DETERIORATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.wallachia-tatari` |
 | `master.waver.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `OUTPOST` | `NONE` | `NONE` | `NONE` | `NONE` | `SCHEDULE_PHASE_EFFECT`, `WINNER_PREDICTION_RULE` | `NONE` | `duration:round`, `duration:until_outpost_phase_end` | `rule:scout_victory_point_gain:forbid` | `NONE` | `NONE` | `NONE` | `core.waver-case-files` |
 | `master.waver.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:game` | `NONE` | `inspectZone:face_down_event_cards` | `NONE` | `NONE` | `core.game-start-rule-flags` |
 | `master.waver.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `OUTPOST` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.pay-mana-draw` |
