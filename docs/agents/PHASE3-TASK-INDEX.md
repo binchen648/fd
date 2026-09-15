@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.25
+- Version: P3-TI-1.26
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3223,7 +3223,7 @@ Fresh frozen-F1 reconciliation is 12/12 exact and dependency-complete. Coverage 
 ## TASK P3-FM02
 
 Owner: Codex S
-Status: READY
+Status: MIGRATION_CANDIDATE
 Branch: `codex/s-p3-fm02-any-location-except-workshop-movement`
 Base: exact P3-A-FB2-09 synchronization commit
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
@@ -3250,20 +3250,32 @@ Required validation and non-scope are defined in the handoff report. S must stop
 ## TASK P3-A-FM02-SYNC
 
 Owner: Codex A
-Status: READY_AFTER_P3_FM02
-Base: exact P3-FM02 S candidate SHA
+Status: MIGRATION_SYNC_CANDIDATE
+Branch: `codex/a-p3-fm02-evidence-sync`
+Base: exact P3-FM02 S candidate SHA `e1d8456637648d31127d6d69daeb9d74a6d01a18`
+Read: `docs/reports/2026-09-16-p3-a-fm02-synchronization.md`
 
 Goal: independently recompute frozen-F1 before/after authoring overlap, exact 12-member batch reconciliation, fresh coverage, generated-content identity, and unrelated drift. A must not repair S authoring.
 
 ## TASK P3-R28
 
 Owner: Codex R
-Status: READY_AFTER_P3_A_FM02_SYNC
+Status: READY
 Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM02 lineage
 
 Goal: independently review FM02 without implementing fixes. Required checks: exact 12-ID membership; source/printed-text preservation; accepted FB2-09 contract conformance; static card metadata/final 8-mana skill-zone rule; no runtime changes; focused end-to-end migration representative; A burn-down integrity; determinism; full required validation; diff check.
 
 Permitted final status: `MIGRATION_ACCEPTED` or `REVIEW_BLOCKED`.
+
+## Full-Roster Dispatch State After P3-A-FM02-SYNC
+
+- S candidate `e1d8456637648d31127d6d69daeb9d74a6d01a18` migrates exactly the authorized 12 Movement identities as 12 new minimal servant authoring archives plus one focused migration test and one S report; runtime hot-file changes=0.
+- Independent A frozen-F1 burn-down is exact: canonical authoring overlap `37 -> 49` (+12), selected batch `0/12 -> 12/12`, unauthorized additions=0, removals=0, skipped=0.
+- Fresh material coverage is committed: archives `39`, cards `71`, abilities `130`, raw `new=12 / legacyExecute=3 / legacyResolve=87 / dual=0 / notClassifiable=28 / taxonomyWarnings=104`.
+- The 12 newly visible Movement abilities form one identical raw coverage signature. Their `LEGACY_RESOLVE_EFFECT` plus `phase_action_is_not_domain_trigger` reporter labels are retained without taxonomy/KPI redefinition; accepted execution is judged against the independently accepted FB2-09 contract.
+- Compiled product identity remains unchanged at 70 cards / 14 characters / 0 blocking issues, definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`.
+- A recertification: typecheck PASS, focused `27/27`, content validation 0 blocking issues, deterministic generated-content hashes unchanged, diff check PASS. S supplied rules `287/287` and full CI `700/700`.
+- P3-R28 is READY from the exact A-synchronized FM02 lineage. No broader Movement, Target Selection, runtime fallback, or taxonomy acceptance is implied.
 
 ## Prompt Templates
 

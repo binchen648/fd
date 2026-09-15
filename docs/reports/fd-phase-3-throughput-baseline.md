@@ -672,3 +672,12 @@ Permitted final status:
 - Fresh raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=75 / dual=0 / notClassifiable=28 / taxonomyWarnings=92`; compiled identity remains unchanged.
 - Coverage artifact drift is generatedAt/static source-line-only and is intentionally not committed.
 - FM02 is the second honest F4 migration batch and is dispatched READY at exact size 12.
+## P3-A FM02 Migration Synchronization — 2026-09-16
+
+- Second F4 S candidate: `e1d8456637648d31127d6d69daeb9d74a6d01a18`; exact selected membership 12, newly canonical 12, skipped 0, unauthorized additions 0, runtime hot-file changes 0.
+- Frozen 944-ID canonical-authoring overlap moves `37 -> 49` (+12); selected batch moves `0/12 -> 12/12`; no F1 ID is removed.
+- Fresh material coverage: archives `39`, cards `71`, abilities `130`, raw `new=12 / legacyExecute=3 / legacyResolve=87 / dual=0 / notClassifiable=28 / taxonomyWarnings=104`.
+- All 12 newly visible Movement abilities share one raw coverage signature; the reporter's legacy/phase-action labels are preserved pending any separately owned taxonomy work.
+- Compiled product identity remains unchanged at 70 cards / 14 characters / 0 blocking issues and definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`.
+- A checks: typecheck PASS, focused `27/27`, content validation PASS, deterministic hashes unchanged, diff check PASS. S evidence: rules `287/287`, full CI `700/700`.
+- R28 is READY; FM02 remains unaccepted until independent reviewer judgment.
