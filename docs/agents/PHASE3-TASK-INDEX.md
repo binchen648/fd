@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.22
+- Version: P3-TI-1.23
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3142,6 +3142,74 @@ Completion status allowed:
 - Compiled product identity remains unchanged at 70 cards / 14 characters / 0 blocking issues, definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`.
 - A does not redefine taxonomy/KPI or repair the classifier during migration sync.
 - R26 independently accepts the exact FM01 lineage at reviewer report `docs/reports/2026-09-16-p3-r26-fm01-source-play-basic-draw-migration-review.md`; FM01 is `MIGRATION_ACCEPTED` for exactly 14 identities, with focused 30/30, rules 280/280, full CI 693/693, deterministic content unchanged, and reviewer coverage equal to A material coverage except `generatedAt`.
+
+## TASK P3-FB2-09
+
+Owner: Codex B2
+Status: READY
+Branch: `codex/b2-p3-fb2-09-any-location-except-workshop-movement-r1`
+Base: exact P3-FB2-09 A-owned handoff commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Read: `docs/reports/2026-09-16-p3-fb2-09-any-location-except-workshop-movement-handoff.md`
+
+Goal: implement one narrow identity-free Movement contract sufficient for the 12 frozen F1 servant skills that all say, in the action phase, move the controller to any enabled location except the Magic Workshop.
+
+Accepted shape only:
+- `phase_action`; action phase; controller action window; active source;
+- exactly one location target, exactly one choice;
+- location constraints exactly `any_enabled_location` + `not_location_kind: workshop`;
+- exactly one effect `move_player` to that declared target;
+- no conditions, cost, creates, rule modifiers, lifecycle, response window, or unrelated limits;
+- controller-only movement, identity-free routing.
+
+Implementation requirements:
+- add a typed Resolution Data-flow `move_player` primitive rather than routing the new contract through legacy `resolveEffect`;
+- the typed primitive must use a trusted runtime hook for authoritative movement side effects, including movement distance/battlefield counters, movement log provenance, and `after_controller_enters_location`;
+- preserve existing occupancy, enabled-location, locked-battlefield, and source-active checks;
+- ordinary current location and `magic_workshop` must not be legal candidates;
+- recognized malformed near-matches must fail closed before generic/legacy execution;
+- do not promote generic Movement, arbitrary `move_player`, multi-step/reachable movement, forced movement, third-party movement, movement modifiers, or movement with costs/conditions.
+
+Exact frozen F1 evidence-membership list (12):
+- `servant.benkei.skill.sc-benkei-1`
+- `servant.bradamante.skill.sc-bradamante-1`
+- `servant.brynhildr.skill.sc-brynhildr-1`
+- `servant.cu.skill.sc-cu-2`
+- `servant.diarmuid.skill.sc-diarmuid-3`
+- `servant.donquixote.skill.sc-donquixote-3`
+- `servant.enkidu.skill.sc-enkidu-3`
+- `servant.jaguarman.skill.sc-jaguarman-1`
+- `servant.kagetora.skill.sc-kagetora-3`
+- `servant.lishuwen.skill.sc-lishuwen-3`
+- `servant.romulus.skill.sc-romulus-3`
+- `servant.vlad.skill.sc-vlad-3`
+
+The 12 overlays have identical printed-text SHA-256 `5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0`, exact axes `ACTION + MOVE_PLAYER`, and exact overlay effect `{ type: move_player, scope: controller, destinationRule: any_location_except_workshop }`.
+
+B2 must not migrate these 12 F1 rows. Migration remains S-owned after independent review and fresh A dependency reconciliation.
+
+## TASK P3-R27
+
+Owner: Codex R
+Status: READY_AFTER_P3_FB2_09
+Branch: reviewer-selected fresh worktree/branch from exact FB2-09 candidate SHA
+
+Goal: independently review the exact FB2-09 Movement sub-contract without implementing fixes and without promoting broad Movement.
+
+Required checks include exact classifier shape, typed primitive/hook atomicity, current-location/workshop/closed/occupancy/lock negatives, same-controller source scoping, movement counters/log/event provenance, replay/state integrity where applicable, malformed fail-closed behavior, no identity routing, focused regressions, all rules, determinism, full CI, and diff check.
+
+Permitted final status:
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `REVIEW_BLOCKED`
+
+## Full-Roster Dispatch State After P3-R26 / Before P3-FB2-09
+
+- FM01 is independently `MIGRATION_ACCEPTED` by R26 `6d015d5bacd8cffcaf0df9827fb3e36bfa817c31`; first F4 exact batch 14 is closed.
+- Frozen-F1/current-authoring scan leaves 237 block-free contract-mapped identities not yet represented by current canonical authoring.
+- The largest exact single-capability block-free group is 12 `GENERIC_MOVEMENT` identities with identical `ACTION + MOVE_PLAYER` axes and identical `any_location_except_workshop` overlay semantics.
+- A separate 10-identity `GENERIC_POWER + GENERIC_RESOURCE_NUMERIC` group exists but broad Power is not independently accepted, so it is not dispatched ahead of the narrower Movement slice.
+- Existing runtime already owns authoritative location candidate constraints and movement side effects, but `move_player` is not yet a typed Resolution Data-flow primitive. P3-FB2-09 is therefore dispatched before any FM02 migration.
+- If and only if R27 accepts FB2-09 and fresh A reconciliation confirms all 12 retain no other dependency, A may dispatch P3-FM02 at exact batch size 12.
 
 ## Prompt Templates
 
