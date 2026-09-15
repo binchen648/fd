@@ -716,3 +716,12 @@ Permitted final status:
 - New reporter growth is exactly ten TO08 Resource direct actions plus ten B21/R15 defeat penalties under the reporter's existing legacy label; no dual/not-classifiable growth.
 - A checks: typecheck PASS, focused `15/15`, content validation PASS, determinism unchanged, runtime diff=0, Tomoe diff=0, diff check PASS. S evidence: rules `292/292`, full CI `705/705`.
 - R32 is READY; FM04 remains unaccepted until independent reviewer judgment.
+
+## P3-R32 / FM04 Fourth F4 Migration Acceptance - 2026-09-16
+
+- FM04 is `MIGRATION_ACCEPTED` for the exact 11-member Archer Independent Action family: Tomoe pre-existing plus 10 newly canonical siblings.
+- S candidate `0047b30cd00fd3093f01db373f69cc9540466cd5`; A synchronization `3e816160d8051a314e8b20cf2c2d924dcd0c7e3e`.
+- Frozen canonical-authoring overlap moves `59 -> 69` (+10); family `1/11 -> 11/11`; unauthorized additions/removals/skips are zero.
+- Independent R32 evidence: frozen source/static/structure reconciliation 11/11; focused `15/15`; rules `292/292`; full CI `705/705`; content 0 blockers; deterministic hashes unchanged; runtime diff=0; Tomoe diff=0.
+- Fresh reviewer coverage equals A artifact except `generatedAt`: `59/91/180`, raw `22/3/117/0/38/124`, compiled identity unchanged.
+- No broad Special Subsystem or taxonomy acceptance is implied.
