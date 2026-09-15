@@ -25630,6 +25630,422 @@
         }
       ],
       "referencePrintedTextSha256": "fdd8d86872c3492fd768591afd1ad7c5a37e9f2554d3c859626f9a754f6b0e1c"
+    },
+    {
+      "id": "servant.gareth.skill.sc-gareth-1",
+      "printedText": "荣光之冠-被动：当你赢得一场战斗时，你【真名解放】。若你以此法【真名解放】，你获得1点战果。\n伪装-打出时：隐藏真名。\n无名骑士-被动/行动阶段：花费2点魔力，若你真名隐藏，移动至一处相邻的地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_gareth_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "荣光之冠-被动：当你赢得一场战斗时，你【真名解放】。若你以此法【真名解放】，你获得1点战果。\n伪装-打出时：隐藏真名。\n无名骑士-被动/行动阶段：花费2点魔力，若你真名隐藏，移动至一处相邻的地点。",
+        "sourceTextSha256": "e716d3040c912f57973aefdce3bf9e12783fd95d971d62eeb286d91ceb4b2e54"
+      },
+      "abilities": [
+        {
+          "id": "gareth.sc-gareth-1.semantic",
+          "printedClause": "荣光之冠-被动：当你赢得一场战斗时，你【真名解放】。若你以此法【真名解放】，你获得1点战果。\n伪装-打出时：隐藏真名。\n无名骑士-被动/行动阶段：花费2点魔力，若你真名隐藏，移动至一处相邻的地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gareth_disguise_knight_rule",
+              "operation": "on_combat_win_reveal_true_name_and_if_revealed_this_way_gain_1_vp_on_play_hide_true_name_action_pay_2_mana_while_hidden_move_to_adjacent_location"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "e716d3040c912f57973aefdce3bf9e12783fd95d971d62eeb286d91ceb4b2e54"
+    },
+    {
+      "id": "servant.gareth.skill.sc-gareth-2",
+      "printedText": "狼不眠-战斗阶段：你所在的战斗中每有一名除第一个的对手，抽一张牌并将其打出。（例：存在两名对手，抽一张牌打出；三名对手，抽一张牌打出，重复一次。）每一张以狼不眠打出的暗置牌减少该战场的1点竞争战果且令你下次使用狼不眠时额外抽一张牌并打出",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_gareth_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "狼不眠-战斗阶段：你所在的战斗中每有一名除第一个的对手，抽一张牌并将其打出。（例：存在两名对手，抽一张牌打出；三名对手，抽一张牌打出，重复一次。）每一张以狼不眠打出的暗置牌减少该战场的1点竞争战果且令你下次使用狼不眠时额外抽一张牌并打出",
+        "sourceTextSha256": "14de6831ba85ff109d4909d553fb804a2affa899894f16f9f0f11b7b7fee4a7f"
+      },
+      "abilities": [
+        {
+          "id": "gareth.sc-gareth-2.semantic",
+          "printedClause": "狼不眠-战斗阶段：你所在的战斗中每有一名除第一个的对手，抽一张牌并将其打出。（例：存在两名对手，抽一张牌打出；三名对手，抽一张牌打出，重复一次。）每一张以狼不眠打出的暗置牌减少该战场的1点竞争战果且令你下次使用狼不眠时额外抽一张牌并打出",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gareth_wolf_never_sleeps_rule",
+              "operation": "combat_for_each_opponent_after_first_draw_and_play_one_card_each_hidden_card_played_this_way_reduces_battlefield_competitive_vp_by_1_and_increases_next_use_draw_play_count_by_1"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "14de6831ba85ff109d4909d553fb804a2affa899894f16f9f0f11b7b7fee4a7f"
+    },
+    {
+      "id": "servant.gareth.skill.sc-gareth-3",
+      "printedText": "以太充能-此牌需从手牌弃置一张魔术基础牌来打出。\n魔能过载-被动/战斗阶段：花费2点战果，你控制的一张魔术基础攻击获得力量属性和+2威力并于回合结束后将其移除游戏。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_gareth_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "以太充能-此牌需从手牌弃置一张魔术基础牌来打出。\n魔能过载-被动/战斗阶段：花费2点战果，你控制的一张魔术基础攻击获得力量属性和+2威力并于回合结束后将其移除游戏。",
+        "sourceTextSha256": "5a626f37df1f06bbd9087fa75bc2e1ed51402564530bcb605d75a33567424c0a"
+      },
+      "abilities": [
+        {
+          "id": "gareth.sc-gareth-3.semantic",
+          "printedClause": "以太充能-此牌需从手牌弃置一张魔术基础牌来打出。\n魔能过载-被动/战斗阶段：花费2点战果，你控制的一张魔术基础攻击获得力量属性和+2威力并于回合结束后将其移除游戏。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gareth_mana_overload_rule",
+              "operation": "play_requires_discard_one_basic_magic_card_from_hand_combat_pay_2_vp_one_controlled_basic_magic_attack_gains_strength_attribute_and_plus_2_power_then_remove_it_from_game_at_round_end"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "5a626f37df1f06bbd9087fa75bc2e1ed51402564530bcb605d75a33567424c0a"
+    },
+    {
+      "id": "servant.georgios.skill.sc-georgios-1",
+      "printedText": "坚定-被动：你的【幸运】获得：“残留：此牌激活的第二个回合结束时关闭此牌。该效果不能被任何方式阻止。”\n圣洁-被动/行动阶段：局势牌禁止使用宝具的效果对你更改为“令你的宝具和【幸运】获得+3威力。”",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_georgios_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "坚定-被动：你的【幸运】获得：“残留：此牌激活的第二个回合结束时关闭此牌。该效果不能被任何方式阻止。”\n圣洁-被动/行动阶段：局势牌禁止使用宝具的效果对你更改为“令你的宝具和【幸运】获得+3威力。”",
+        "sourceTextSha256": "57f1916fe520f4debb7c4db8b1833869a61e59126039be0612e0346f050d0174"
+      },
+      "abilities": [
+        {
+          "id": "georgios.sc-georgios-1.semantic",
+          "printedClause": "坚定-被动：你的【幸运】获得：“残留：此牌激活的第二个回合结束时关闭此牌。该效果不能被任何方式阻止。”\n圣洁-被动/行动阶段：局势牌禁止使用宝具的效果对你更改为“令你的宝具和【幸运】获得+3威力。”",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "georgios_martyr_soul_rule",
+              "operation": "passive_luck_closes_at_end_of_second_round_after_activation_unpreventably_and_situation_noble_phantasm_prohibition_against_controller_becomes_plus_3_power_to_controller_noble_phantasm_and_luck"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "57f1916fe520f4debb7c4db8b1833869a61e59126039be0612e0346f050d0174"
+    },
+    {
+      "id": "servant.georgios.skill.sc-georgios-2",
+      "printedText": "守护骑士-被动：当【龙】移动至一处战场时，你可以打出此牌。若如此做，你移动至【龙】所在的战场。\n打出时：抽一张牌。从手牌中追加打出至多3张基本威力3及以下的牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_georgios_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "守护骑士-被动：当【龙】移动至一处战场时，你可以打出此牌。若如此做，你移动至【龙】所在的战场。\n打出时：抽一张牌。从手牌中追加打出至多3张基本威力3及以下的牌。",
+        "sourceTextSha256": "0cf4406b58fea290a6f1b49e264a5bd351404e1568c7a199162b8447722739c3"
+      },
+      "abilities": [
+        {
+          "id": "georgios.sc-georgios-2.semantic",
+          "printedClause": "守护骑士-被动：当【龙】移动至一处战场时，你可以打出此牌。若如此做，你移动至【龙】所在的战场。\n打出时：抽一张牌。从手牌中追加打出至多3张基本威力3及以下的牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "georgios_guardian_rider_rule",
+              "operation": "passive_when_dragon_moves_to_battlefield_may_play_source_and_move_to_dragons_battlefield_on_play_draw_1_then_play_up_to_3_hand_cards_with_base_power_at_most_3"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0cf4406b58fea290a6f1b49e264a5bd351404e1568c7a199162b8447722739c3"
+    },
+    {
+      "id": "servant.georgios.skill.sc-georgios-3",
+      "printedText": "【真名解放】\n若你与【龙】战斗，此牌威力+5。\n你也是龙-被动：当一名对手赢得一场有另一名对手参与的争夺战时，你可以令其成为【龙】直至你再次发动你也是龙。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_georgios_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n若你与【龙】战斗，此牌威力+5。\n你也是龙-被动：当一名对手赢得一场有另一名对手参与的争夺战时，你可以令其成为【龙】直至你再次发动你也是龙。",
+        "sourceTextSha256": "ea60fdfb5e3d329b6004056b600d0dd395640b7ca6bea2b6820e4ac3a99f427b"
+      },
+      "abilities": [
+        {
+          "id": "georgios.sc-georgios-3.semantic",
+          "printedClause": "【真名解放】\n若你与【龙】战斗，此牌威力+5。\n你也是龙-被动：当一名对手赢得一场有另一名对手参与的争夺战时，你可以令其成为【龙】直至你再次发动你也是龙。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "dragon_designation_rule",
+              "operation": "true_name_reveal_source_plus_5_power_when_fighting_dragon_passive_when_opponent_wins_contested_battle_with_another_opponent_may_designate_winner_as_dragon_until_this_ability_is_used_again"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ea60fdfb5e3d329b6004056b600d0dd395640b7ca6bea2b6820e4ac3a99f427b"
+    },
+    {
+      "id": "servant.gil.skill.sc-gil-1",
+      "printedText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_gil_1",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+        "sourceTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+      },
+      "abilities": [
+        {
+          "id": "gil.sc-gil-1.semantic",
+          "printedClause": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gil_independent_action_rule",
+              "operation": "usable_only_when_controller_action_order_is_in_first_floor_half_of_round_action_gain_3_vp_if_controller_loses_battle_this_round_lose_5_vp_unpreventably"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+    },
+    {
+      "id": "servant.gil.skill.sc-gil-2",
+      "printedText": "【真名解放】\n打出时：自由选择X（作为魔力消耗）。此牌获得X种非特殊属性（由你选择）。\n行动阶段：翻倍你的地利。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_gil_2",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】\n打出时：自由选择X（作为魔力消耗）。此牌获得X种非特殊属性（由你选择）。\n行动阶段：翻倍你的地利。",
+        "sourceTextSha256": "c083c4862fe6b5631eb8397c7fd858cad37780895e25ff7046c6f4ec48252171"
+      },
+      "abilities": [
+        {
+          "id": "gil.sc-gil-2.semantic",
+          "printedClause": "【真名解放】\n打出时：自由选择X（作为魔力消耗）。此牌获得X种非特殊属性（由你选择）。\n行动阶段：翻倍你的地利。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gate_of_babylon_rule",
+              "operation": "true_name_reveal_on_play_choose_x_as_mana_cost_source_gains_x_controller_chosen_non_special_attributes_action_double_controller_terrain"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c083c4862fe6b5631eb8397c7fd858cad37780895e25ff7046c6f4ec48252171"
+    },
+    {
+      "id": "servant.gil.skill.sc-gil-np",
+      "printedText": "【真名解放】\n切裂世界-战斗阶段：令所有控制特殊属性宝具的交战对手【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_gil_np",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】\n切裂世界-战斗阶段：令所有控制特殊属性宝具的交战对手【败北】。",
+        "sourceTextSha256": "d3d10cf1eb3d17e0f174bc8239a3f82d8a305c36e6f5c02dd5ba26a727268383"
+      },
+      "abilities": [
+        {
+          "id": "gil.sc-gil-np.semantic",
+          "printedClause": "【真名解放】\n切裂世界-战斗阶段：令所有控制特殊属性宝具的交战对手【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "special_noble_phantasm_defeat_rule",
+              "operation": "true_name_reveal_combat_defeat_all_engaged_opponents_controlling_special_attribute_noble_phantasm"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d3d10cf1eb3d17e0f174bc8239a3f82d8a305c36e6f5c02dd5ba26a727268383"
+    },
+    {
+      "id": "servant.gilles.skill.sc-gilles-1",
+      "printedText": "【真名解放】\n打出时：若此牌与魔术攻击一同打出，抽一张牌。\n行动阶段：从手牌打出至多3张魔术攻击并将它们的属性切换为力量或敏捷(必须切换)。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_gilles_1",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】\n打出时：若此牌与魔术攻击一同打出，抽一张牌。\n行动阶段：从手牌打出至多3张魔术攻击并将它们的属性切换为力量或敏捷(必须切换)。",
+        "sourceTextSha256": "d56c3a7d7b37ec15a7c07304a7cbd490ae74ffa0c790e8108d99fc1cec0ff02f"
+      },
+      "abilities": [
+        {
+          "id": "gilles.sc-gilles-1.semantic",
+          "printedClause": "【真名解放】\n打出时：若此牌与魔术攻击一同打出，抽一张牌。\n行动阶段：从手牌打出至多3张魔术攻击并将它们的属性切换为力量或敏捷(必须切换)。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "magic_attack_attribute_conversion_rule",
+              "operation": "true_name_reveal_on_play_if_source_played_with_magic_attack_draw_1_action_play_up_to_3_magic_attacks_from_hand_and_mandatorily_switch_each_attribute_to_strength_or_quickness"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d56c3a7d7b37ec15a7c07304a7cbd490ae74ffa0c790e8108d99fc1cec0ff02f"
+    },
+    {
+      "id": "servant.gilles.skill.sc-gilles-2",
+      "printedText": "X为16 - (当前回合数 × 2)\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_gilles_2",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "X为16 - (当前回合数 × 2)\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+        "sourceTextSha256": "33c9377158b49fad67a503f1368f81efa65b97cff870c2331c8ca4ee69937446"
+      },
+      "abilities": [
+        {
+          "id": "gilles.sc-gilles-2.semantic",
+          "printedClause": "X为16 - (当前回合数 × 2)\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "territory_construction_scaling_rule",
+              "operation": "source_x_equals_16_minus_current_round_times_2_residual_when_controller_deploys_to_workshop_gain_1_mana_and_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "33c9377158b49fad67a503f1368f81efa65b97cff870c2331c8ca4ee69937446"
+    },
+    {
+      "id": "servant.gilles.skill.sc-gilles-np",
+      "printedText": "【真名解放】\n打出时：将此牌放置于你所在的战场或关闭此牌。\n古神的呼唤-此牌失去宝具属性。当你位于被放置的此牌所在的战场时，将此牌加入攻击。当你于此战场战败，该战场关闭或其不(再)为战场时，关闭此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_gilles_np",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】\n打出时：将此牌放置于你所在的战场或关闭此牌。\n古神的呼唤-此牌失去宝具属性。当你位于被放置的此牌所在的战场时，将此牌加入攻击。当你于此战场战败，该战场关闭或其不(再)为战场时，关闭此牌。",
+        "sourceTextSha256": "7afd3f62e96a16d0ffa25fd5851727f505accd426293365c28b2265ed64359e7"
+      },
+      "abilities": [
+        {
+          "id": "gilles.sc-gilles-np.semantic",
+          "printedClause": "【真名解放】\n打出时：将此牌放置于你所在的战场或关闭此牌。\n古神的呼唤-此牌失去宝具属性。当你位于被放置的此牌所在的战场时，将此牌加入攻击。当你于此战场战败，该战场关闭或其不(再)为战场时，关闭此牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "placed_noble_phantasm_field_rule",
+              "operation": "true_name_reveal_on_play_place_source_at_controller_battlefield_or_close_it_source_loses_noble_phantasm_attribute_while_controller_at_placed_battlefield_add_source_to_attack_close_source_if_controller_loses_there_or_battlefield_closes_or_ceases_to_be_battlefield"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7afd3f62e96a16d0ffa25fd5851727f505accd426293365c28b2265ed64359e7"
+    },
+    {
+      "id": "servant.gorgon.skill.sc-gorgon-1",
+      "printedText": "被动：当一张宝具牌于一个回合内第一次被对手使用时，你获得1点魔力。若游戏内的玩家数小于等于5，更改为获得2点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_gorgon_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动：当一张宝具牌于一个回合内第一次被对手使用时，你获得1点魔力。若游戏内的玩家数小于等于5，更改为获得2点魔力。",
+        "sourceTextSha256": "64c3d2e2325e604e33d6c8a60cb1802d5a46d64d58d3b95ecb4281d91f3ae03b"
+      },
+      "abilities": [
+        {
+          "id": "gorgon.sc-gorgon-1.semantic",
+          "printedClause": "被动：当一张宝具牌于一个回合内第一次被对手使用时，你获得1点魔力。若游戏内的玩家数小于等于5，更改为获得2点魔力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "first_opponent_noble_phantasm_mana_rule",
+              "operation": "passive_first_time_each_round_an_opponent_uses_a_noble_phantasm_gain_1_mana_or_2_mana_if_player_count_at_most_5"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "64c3d2e2325e604e33d6c8a60cb1802d5a46d64d58d3b95ecb4281d91f3ae03b"
+    },
+    {
+      "id": "servant.hassan.skill.sc-hassan-1",
+      "printedText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_hassan_1",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+        "sourceTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+      },
+      "abilities": [
+        {
+          "id": "hassan.sc-hassan-1.semantic",
+          "printedClause": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "presence_concealment_assassination_rule",
+              "operation": "combat_after_power_resolution_if_controller_below_all_top_power_opponents_no_other_opponent_above_controller_and_at_least_3_participants_defeat_all_top_power_engaged_opponents"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+    },
+    {
+      "id": "servant.hassan.skill.sc-hassan-2",
+      "printedText": "打出时：隐藏真名并获得2点战果。\n残留：若与你进行交战的玩家本回合被淘汰时，此牌获得威力+1。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_hassan_2",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "打出时：隐藏真名并获得2点战果。\n残留：若与你进行交战的玩家本回合被淘汰时，此牌获得威力+1。",
+        "sourceTextSha256": "d9196eaa271a0e170759d0afde4267e7172e640a08bb18ac85186a1855810e39"
+      },
+      "abilities": [
+        {
+          "id": "hassan.sc-hassan-2.semantic",
+          "printedClause": "打出时：隐藏真名并获得2点战果。\n残留：若与你进行交战的玩家本回合被淘汰时，此牌获得威力+1。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "concealment_elimination_growth_rule",
+              "operation": "on_play_hide_true_name_and_gain_2_vp_residual_when_player_engaged_with_controller_is_eliminated_this_round_source_gains_plus_1_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d9196eaa271a0e170759d0afde4267e7172e640a08bb18ac85186a1855810e39"
+    },
+    {
+      "id": "servant.hassan.skill.sc-hassan-np",
+      "printedText": "【真名解放】\n只有当真名隐藏时才能使用此牌。\n战斗阶段：如果你战胜了一名玩家，将本回合获得的战果翻倍。如果游戏除你外仅剩1名玩家，改为使其【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_hassan_np",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】\n只有当真名隐藏时才能使用此牌。\n战斗阶段：如果你战胜了一名玩家，将本回合获得的战果翻倍。如果游戏除你外仅剩1名玩家，改为使其【败北】。",
+        "sourceTextSha256": "bb6a0c8fde2eeb04d1190bf394f2f8c0247cdee640bdaf925e92433f6e1c25b0"
+      },
+      "abilities": [
+        {
+          "id": "hassan.sc-hassan-np.semantic",
+          "printedClause": "【真名解放】\n只有当真名隐藏时才能使用此牌。\n战斗阶段：如果你战胜了一名玩家，将本回合获得的战果翻倍。如果游戏除你外仅剩1名玩家，改为使其【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "hidden_true_name_vp_double_defeat_rule",
+              "operation": "true_name_reveal_usable_only_while_true_name_hidden_combat_if_controller_defeats_player_double_vp_gained_this_round_if_only_one_other_player_remains_in_game_instead_defeat_that_player"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "bb6a0c8fde2eeb04d1190bf394f2f8c0247cdee640bdaf925e92433f6e1c25b0"
     }
   ]
 }

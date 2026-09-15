@@ -1550,6 +1550,18 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.frank.skill.sc-frank-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'prevent_elimination'}),expect.objectContaining({type:'schedule_phase_effect'})])}));
   });
 
+  it('grounds the sixteen-ID Gareth/Georgios/Gil/Gilles/Gorgon/Hassan slice from locked development snapshots', () => {
+    const overlays=loadSourceEvidenceOverlayCards();
+    const ids=new Set(["servant.gareth.skill.sc-gareth-1","servant.gareth.skill.sc-gareth-2","servant.gareth.skill.sc-gareth-3","servant.georgios.skill.sc-georgios-1","servant.georgios.skill.sc-georgios-2","servant.georgios.skill.sc-georgios-3","servant.gil.skill.sc-gil-1","servant.gil.skill.sc-gil-2","servant.gil.skill.sc-gil-np","servant.gilles.skill.sc-gilles-1","servant.gilles.skill.sc-gilles-2","servant.gilles.skill.sc-gilles-np","servant.gorgon.skill.sc-gorgon-1","servant.hassan.skill.sc-hassan-1","servant.hassan.skill.sc-hassan-2","servant.hassan.skill.sc-hassan-np"]);
+    const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(16);
+    expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.gil.skill.sc-gil-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'gate_of_babylon_rule',operation:'true_name_reveal_on_play_choose_x_as_mana_cost_source_gains_x_controller_chosen_non_special_attributes_action_double_controller_terrain'})])}));
+    expect(slice.find(c=>c.id==='servant.hassan.skill.sc-hassan-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'presence_concealment_assassination_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.georgios.skill.sc-georgios-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'dragon_designation_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.gilles.skill.sc-gilles-np')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'placed_noble_phantasm_field_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1603,10 +1615,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 673,
-      blockedCount: 271,
+      sourceGroundedCount: 689,
+      blockedCount: 255,
       unclassifiedCount: 0,
-      structuredAbilityCount: 951,
+      structuredAbilityCount: 967,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
