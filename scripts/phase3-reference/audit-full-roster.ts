@@ -156,8 +156,9 @@ function compareRaw(snapshot: ReferenceAuditSnapshot, inventory: any, gaps: Auto
   if (!sameStrings(snapshot.programIds, expectedStaticIds)) pushGap(gaps, 'REFERENCE_PROGRAM_ID_SET_MISMATCH', [...snapshot.programIds, ...expectedStaticIds], 'Raw skill-rule program IDs differ from raw static skill IDs.');
 
   const byId = new Map(staticEntries.map((entry: any) => [String(entry.canonicalAbilityId), entry] as const));
+  const dynamicById = new Map(dynamicEntries.map((entry: any) => [String(entry.canonicalAbilityId), entry] as const));
   const authoringSet = new Set(snapshot.authoringCardIds);
-  const expectedStaticSet = new Set(expectedStaticIds);
+  const expectedIdentitySet = new Set([...expectedStaticIds, ...snapshot.dynamicSkillIds]);
   const overlayById = new Map<string, any>();
   for (const card of sourceEvidenceCards) {
     const id = String(card?.id ?? '');
@@ -166,7 +167,7 @@ function compareRaw(snapshot: ReferenceAuditSnapshot, inventory: any, gaps: Auto
       continue;
     }
     overlayById.set(id, card);
-    if (!expectedStaticSet.has(id)) pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_UNKNOWN_ID', [id], 'Source-evidence overlay does not match a locked Reference canonical identity.');
+    if (!expectedIdentitySet.has(id)) pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_UNKNOWN_ID', [id], 'Source-evidence overlay does not match a locked Reference canonical identity.');
     if (authoringSet.has(id)) pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_SHADOWS_REFERENCE', [id], 'Source-evidence overlay must not override an existing locked Reference authoring card.');
     const source = card?.source ?? {};
     if (typeof source.locator !== 'string' || source.locator.length === 0) {
@@ -188,6 +189,7 @@ function compareRaw(snapshot: ReferenceAuditSnapshot, inventory: any, gaps: Auto
       const allowedDevelopmentDocuments = new Set([
         'Fate_Domination-开发版/data_masters.js',
         'Fate_Domination-开发版/data_servants.js',
+        'Fate_Domination-开发版/index.html',
       ]);
       const sourceText = typeof source.sourceText === 'string' ? source.sourceText : '';
       const sourceTextHash = sourceText
@@ -198,7 +200,9 @@ function compareRaw(snapshot: ReferenceAuditSnapshot, inventory: any, gaps: Auto
         !/^[a-f0-9]{64}$/.test(String(source.sourceFileSha256 ?? '')) ||
         sourceText.length === 0 ||
         !/^[a-f0-9]{64}$/.test(String(source.sourceTextSha256 ?? '')) ||
-        sourceTextHash !== source.sourceTextSha256
+        sourceTextHash !== source.sourceTextSha256 ||
+        source.sourceText !== card.printedText ||
+        source.sourceTextSha256 !== card.referencePrintedTextSha256
       ) {
         pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_DEVELOPMENT_SNAPSHOT_MISMATCH', [id], 'Development-text evidence must be an allowlisted, hash-locked source snapshot.');
       }
@@ -239,7 +243,30 @@ function compareRaw(snapshot: ReferenceAuditSnapshot, inventory: any, gaps: Auto
       if (!sameStrings(expectedAbilityIds, actualAbilityIds)) pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_ABILITY_ID_SET_MISMATCH', [expected.id], 'Normalized subability IDs differ from source-evidence overlay ability IDs.');
     }
   }
-  for (const conflict of snapshot.referenceConflicts ?? []) pushGap(gaps, conflict.code, [conflict.id], conflict.detail);
+  for (const id of snapshot.dynamicSkillIds) {
+    const actual = dynamicById.get(id);
+    if (!actual) continue;
+    const semantic = actual.semanticNormalization ?? {};
+    const overlayCard = overlayById.get(id);
+    const shouldBeGrounded = Boolean(overlayCard);
+    if ((shouldBeGrounded && semantic.status !== 'SOURCE_GROUNDED') || (!shouldBeGrounded && semantic.status !== 'BLOCKED')) {
+      pushGap(gaps, 'SEMANTIC_SOURCE_CATEGORY_MISMATCH', [id], 'Generated dynamic semantic source category disagrees with accepted overlay evidence presence.');
+    }
+    if (overlayCard) {
+      const source = overlayCard.source ?? {};
+      const sourceText = typeof source.sourceText === 'string' ? source.sourceText : '';
+      const evidenceHash = sourceText ? createHash('sha256').update(sourceText, 'utf8').digest('hex') : '';
+      if (overlayCard.referencePrintedTextSha256 !== evidenceHash) {
+        pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_REFERENCE_BINDING_MISMATCH', [id], 'Dynamic source-evidence overlay is not bound to its exact locked source snapshot.');
+      }
+      if (semantic.source?.document !== source.document || semantic.source?.locator !== source.locator) {
+        pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_PROVENANCE_MISMATCH', [id], 'Normalized dynamic semantic provenance differs from the accepted source-evidence overlay.');
+      }
+      const expectedAbilityIds = (overlayCard.abilities ?? []).map((ability: any) => String(ability.id));
+      const actualAbilityIds = (semantic.abilities ?? []).map((ability: any) => String(ability.sourceAbilityId));
+      if (!sameStrings(expectedAbilityIds, actualAbilityIds)) pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_ABILITY_ID_SET_MISMATCH', [id], 'Normalized dynamic subability IDs differ from source-evidence overlay ability IDs.');
+    }
+  }  for (const conflict of snapshot.referenceConflicts ?? []) pushGap(gaps, conflict.code, [conflict.id], conflict.detail);
 }
 
 function compareSummaries(inventory: any, catalog: any, gaps: AutomationAuditGap[]) {

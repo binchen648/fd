@@ -243,17 +243,17 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(markdown).toContain('unclassifiedCount=0');
   });
 
-  it('accepts only the allowed Fate/Domination Wiki overlay and keeps Chaos Scrambled Seals unresolved', () => {
+  it('accepts the allowed Fate/Domination Wiki overlay plus the locked development-text Chaos Scrambled Seals card', () => {
     const overlays = loadSourceEvidenceOverlayCards();
     const chaos = overlays.filter((card) => card.id.startsWith('master.chaos.skill.'));
     const ids = chaos.map((card) => card.id);
-    expect(chaos).toHaveLength(17);
+    expect(chaos).toHaveLength(18);
     expect(ids).toContain('master.chaos.skill.s1');
     expect(ids).toContain('master.chaos.skill.s16');
     expect(ids).toContain('master.chaos.skill.ascension');
-    expect(ids).not.toContain('master.chaos.skill.s17');
+    expect(ids).toContain('master.chaos.skill.s17');
     expect(
-      chaos.every((card) => card.source?.url.startsWith('https://fatedomination.fandom.com/wiki/')),
+      chaos.every((card) => card.source?.authority === 'FATE_DOMINATION_WIKI' ? card.source.url.startsWith('https://fatedomination.fandom.com/wiki/') : card.source?.authority === 'DEVELOPMENT_TEXT'),
     ).toBe(true);
 
     const breaker = chaos.find((card) => card.id === 'master.chaos.skill.s12');
@@ -363,7 +363,7 @@ describe('Phase 3 full-roster semantic normalization', () => {
         activation: { phase: 'action' },
         effects: [{ type: 'gain_mana', amount: 1 }],
       }],
-      referencePrintedTextSha256: 'b'.repeat(64),
+      referencePrintedTextSha256: createHash('sha256').update(sourceText, 'utf8').digest('hex'),
     };
 
     try {
@@ -384,7 +384,7 @@ describe('Phase 3 full-roster semantic normalization', () => {
       expect(() => loadSourceEvidenceOverlayCards(root, 'overlay.json')).toThrow(/locked development-text snapshot/);
 
       const badDocument = structuredClone(card) as any;
-      badDocument.source.document = 'Fate_Domination-开发版/index.html';
+      badDocument.source.document = 'Fate_Domination-开发版/SkillLib.js';
       writeFileSync(overlayPath, JSON.stringify({
         schemaVersion: 1,
         kind: 'phase3-full-roster-source-evidence-overlays',
@@ -1246,6 +1246,26 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find((c) => c.id === 'master.alice.skill.s2')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'phantom_player_rule' })]) }));
   });
 
+  it('grounds the nineteen-ID Ritsuka/Roche/Tiamat/Kohaku/Chaos slice including dynamic Life Sea evidence', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.ritsuka-f.skill.s1','master.ritsuka-f.skill.s1a','master.ritsuka-f.skill.ascension',
+      'master.ritsuka-m.skill.s1','master.ritsuka-m.skill.s2','master.ritsuka-m.skill.ascension',
+      'master.roche.skill.s1','master.roche.skill.s1a','master.roche.skill.s2','master.roche.skill.ascension',
+      'master.tiamat.skill.s1','master.tiamat.skill.s1a','master.tiamat.skill.ascension','master.tiamat.card.life-sea',
+      'master.kohaku.skill.s1','master.kohaku.skill.s1a','master.kohaku.skill.s3','master.kohaku.skill.ascension',
+      'master.chaos.skill.s17',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(19);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find((c) => c.id === 'master.ritsuka-f.skill.s1')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'dual_servant_rule' })]) }));
+    expect(slice.find((c) => c.id === 'master.roche.skill.s1a')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'gain_mana', amount:1 }), expect.objectContaining({ type:'gain_victory_points', amount:1 })]) }));
+    expect(slice.find((c) => c.id === 'master.tiamat.card.life-sea')?.source?.document).toBe('Fate_Domination-开发版/index.html');
+    expect(slice.find((c) => c.id === 'master.tiamat.card.life-sea')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'beast_resource_rule' })]) }));
+    expect(slice.find((c) => c.id === 'master.kohaku.skill.s1a')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'gain_mana', amount:1 })]) }));
+    expect(slice.find((c) => c.id === 'master.chaos.skill.s17')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type:'choose_effect' })]) }));
+  });
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1299,10 +1319,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 310,
-      blockedCount: 634,
+      sourceGroundedCount: 329,
+      blockedCount: 615,
       unclassifiedCount: 0,
-      structuredAbilityCount: 556,
+      structuredAbilityCount: 593,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

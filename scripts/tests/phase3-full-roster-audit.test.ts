@@ -339,6 +339,7 @@ describe('Phase 3 independent full-roster automation audit', () => {
 
     const overlay = [{
       id: groundedId,
+      printedText: f.snapshot.staticSkills[0].printedText,
       referencePrintedTextSha256: sha256(f.snapshot.staticSkills[0].printedText),
       source: {
         authority: 'FATE_DOMINATION_WIKI',
@@ -402,7 +403,7 @@ describe('Phase 3 independent full-roster automation audit', () => {
   it('accepts hash-locked development-text snapshots and rejects mutated or non-allowlisted snapshots', () => {
     const f = fixture();
     const groundedId = f.staticId;
-    const sourceText = '开发版原始技能文本';
+    const sourceText = f.snapshot.staticSkills[0].printedText;
     f.snapshot.authoringCardIds = [];
     f.snapshot.authoringAbilityCount = 0;
     f.snapshot.staticSkills[0].authoringAbilityIds = [];
@@ -424,6 +425,7 @@ describe('Phase 3 independent full-roster automation audit', () => {
 
     const overlay = [{
       id: groundedId,
+      printedText: sourceText,
       referencePrintedTextSha256: sha256(f.snapshot.staticSkills[0].printedText),
       source: {
         authority: 'DEVELOPMENT_TEXT',
@@ -462,7 +464,7 @@ describe('Phase 3 independent full-roster automation audit', () => {
     ).toBe(true);
 
     const badDocument = structuredClone(overlay);
-    badDocument[0].source.document = 'Fate_Domination-开发版/index.html';
+    badDocument[0].source.document = 'Fate_Domination-开发版/SkillLib.js';
     const badDocumentAudit = auditFullRosterArtifacts(
       f.snapshot,
       f.inventory as any,
@@ -500,10 +502,10 @@ describe('Phase 3 independent full-roster automation audit', () => {
     expect(report).toContain('totalIdentityCount=944');
     expect(report).toContain('authoringCardCount=72');
     expect(report).toContain('authoringAbilityCount=117');
-    expect(report).toContain('sourceEvidenceOverlayCount=238');
-    expect(report).toContain('sourceEvidenceOverlayAbilityCount=439');
-    expect(report).toContain('sourceGroundedCount=310');
-    expect(report).toContain('semanticBlockedCount=634');
+    expect(report).toContain('sourceEvidenceOverlayCount=257');
+    expect(report).toContain('sourceEvidenceOverlayAbilityCount=476');
+    expect(report).toContain('sourceGroundedCount=329');
+    expect(report).toContain('semanticBlockedCount=615');
     expect(report).toContain('gapCount=0');
   });
 });

@@ -30,7 +30,8 @@ export type StructuredSourceEvidence =
       authority: 'DEVELOPMENT_TEXT';
       document:
         | 'Fate_Domination-开发版/data_masters.js'
-        | 'Fate_Domination-开发版/data_servants.js';
+        | 'Fate_Domination-开发版/data_servants.js'
+        | 'Fate_Domination-开发版/index.html';
       locator: string;
       sourceFileSha256: string;
       sourceText: string;
@@ -550,6 +551,63 @@ function normalizeStaticEntry(
   };
 }
 
+function normalizeDynamicEntry(
+  entry: FullRosterDynamicSkillEntry,
+  card: StructuredAuthoringCard | undefined,
+): SemanticDynamicSkillEntry {
+  if (!card?.source) {
+    return {
+      ...entry,
+      semanticNormalization: blockedRecord(entry, [
+        ...entry.blockedBy,
+        'SEMANTIC_SOURCE_REQUIRED',
+      ]),
+    };
+  }
+
+  const expectedEvidenceHash = createHash('sha256').update(card.printedText, 'utf8').digest('hex');
+  if (card.referencePrintedTextSha256 !== expectedEvidenceHash) {
+    return {
+      ...entry,
+      semanticNormalization: blockedRecord(entry, [
+        ...entry.blockedBy,
+        'SEMANTIC_SOURCE_CONFLICT',
+      ]),
+    };
+  }
+
+  const abilities: NormalizedStructuredAbility[] = card.abilities.map((ability, abilityIndex) => ({
+    sourceAbilityId: ability.id,
+    kind: stringValue(ability.kind)?.toUpperCase() ?? 'UNSPECIFIED',
+    source: ability.source
+      ? { document: ability.source.document, locator: ability.source.locator }
+      : { document: card.source!.document, locator: `${card.source!.locator}#ability-${abilityIndex + 1}` },
+    axes: normalizeStructuredAbility(ability),
+  }));
+
+  if (abilities.length === 0) {
+    return {
+      ...entry,
+      semanticNormalization: blockedRecord(entry, [
+        ...entry.blockedBy,
+        'SEMANTIC_SOURCE_REQUIRED',
+      ]),
+    };
+  }
+
+  return {
+    ...entry,
+    semanticNormalization: {
+      status: 'SOURCE_GROUNDED',
+      source: { document: card.source.document, locator: card.source.locator },
+      axes: mergeAxes(abilities),
+      abilities,
+      blocks: [],
+      observedBehavior: observedBehavior(entry),
+    },
+  };
+}
+
 export function loadSourceEvidenceOverlayCards(
   projectRoot = process.cwd(),
   overlayPath = DEFAULT_SOURCE_EVIDENCE_OVERLAY_PATH,
@@ -598,6 +656,7 @@ export function loadSourceEvidenceOverlayCards(
       const allowedDevelopmentDocuments = new Set([
         'Fate_Domination-开发版/data_masters.js',
         'Fate_Domination-开发版/data_servants.js',
+        'Fate_Domination-开发版/index.html',
       ]);
       if (
         !allowedDevelopmentDocuments.has(source.document) ||
@@ -605,7 +664,9 @@ export function loadSourceEvidenceOverlayCards(
         typeof source.sourceText !== 'string' ||
         source.sourceText.length === 0 ||
         !/^[a-f0-9]{64}$/.test(source.sourceTextSha256) ||
-        createHash('sha256').update(source.sourceText, 'utf8').digest('hex') !== source.sourceTextSha256
+        createHash('sha256').update(source.sourceText, 'utf8').digest('hex') !== source.sourceTextSha256 ||
+        source.sourceText !== card.printedText ||
+        source.sourceTextSha256 !== card.referencePrintedTextSha256
       ) {
         throw new Error(`Source-evidence overlay is not a valid locked development-text snapshot: ${card.id}`);
       }
@@ -638,13 +699,10 @@ export function normalizeFullRosterSemantics(
     return normalizeStaticEntry(entry, source?.card, source?.index);
   });
 
-  const dynamicSkills = inventory.dynamicSkills.map((entry) => ({
-    ...entry,
-    semanticNormalization: blockedRecord(entry, [
-      ...entry.blockedBy,
-      'SEMANTIC_SOURCE_REQUIRED',
-    ]),
-  }));
+  const dynamicSkills = inventory.dynamicSkills.map((entry) => {
+    const source = authoringById.get(entry.reference.skillId);
+    return normalizeDynamicEntry(entry, source?.card);
+  });
 
   const all = [...staticSkills, ...dynamicSkills];
   const sourceGroundedCount = all.filter(

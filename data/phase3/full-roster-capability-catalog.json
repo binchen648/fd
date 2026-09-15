@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 310,
-    "explicitBlockCount": 634,
+    "contractMappedCount": 329,
+    "explicitBlockCount": 615,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 184,
-      "SPECIAL_HANDLER_CANDIDATE": 124,
+      "READY_GENERIC_EXTENSION": 190,
+      "SPECIAL_HANDLER_CANDIDATE": 137,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 634,
+      "SOURCE_EVIDENCE_REQUIRED": 615,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -180,6 +180,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.tiamat.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.wodime.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -253,6 +257,10 @@
         },
         {
           "abilityId": "servant.siegfried.skill.sc-siegfried-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.tiamat.card.life-sea",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
       ]
@@ -406,6 +414,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.tiamat.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.wodime.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -476,6 +488,10 @@
         {
           "abilityId": "servant.siegfried.skill.sc-siegfried-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.tiamat.card.life-sea",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
       ]
     },
@@ -510,6 +526,7 @@
         "master.goetia.skill.s2",
         "master.kiritsugu.skill.s3",
         "master.ryuunosuke.skill.s2",
+        "master.tiamat.card.life-sea",
         "servant.chloe.skill.sc-chloe-1",
         "servant.darius.skill.sc-darius-1",
         "servant.edison.skill.sc-edison-2",
@@ -638,6 +655,10 @@
         },
         {
           "abilityId": "master.sion.skill.s13",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.tiamat.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -844,6 +865,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.tiamat.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.wodime.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -914,6 +939,10 @@
         {
           "abilityId": "servant.siegfried.skill.sc-siegfried-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.tiamat.card.life-sea",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
       ]
     },
@@ -959,6 +988,8 @@
         "master.shishigou.skill.s2",
         "master.sieg.skill.s1",
         "master.sion.skill.s13",
+        "master.tiamat.card.life-sea",
+        "master.tiamat.skill.ascension",
         "master.wodime.skill.s2",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
@@ -1263,6 +1294,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.tiamat.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.wodime.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1336,6 +1371,10 @@
         },
         {
           "abilityId": "servant.siegfried.skill.sc-siegfried-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.tiamat.card.life-sea",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         }
       ]
@@ -1513,6 +1552,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.tiamat.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.wodime.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1586,6 +1629,10 @@
         },
         {
           "abilityId": "servant.siegfried.skill.sc-siegfried-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.tiamat.card.life-sea",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         }
       ]
@@ -1764,6 +1811,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.tiamat.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.wodime.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1837,6 +1888,10 @@
         },
         {
           "abilityId": "servant.siegfried.skill.sc-siegfried-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.tiamat.card.life-sea",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         }
       ]
@@ -2014,6 +2069,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.tiamat.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.wodime.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2087,6 +2146,10 @@
         },
         {
           "abilityId": "servant.siegfried.skill.sc-siegfried-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.tiamat.card.life-sea",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         }
       ]
@@ -2267,6 +2330,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.tiamat.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.wodime.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2340,6 +2407,10 @@
         },
         {
           "abilityId": "servant.siegfried.skill.sc-siegfried-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.tiamat.card.life-sea",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         }
       ]
@@ -2568,6 +2639,22 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.kohaku.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.kohaku.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.kohaku.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.kohaku.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.kuzuki.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2616,6 +2703,22 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.ritsuka-f.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.ritsuka-m.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.roche.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.roche.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.ryuunosuke.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2645,6 +2748,10 @@
         },
         {
           "abilityId": "master.taiga.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.tiamat.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2804,6 +2911,9 @@
         "master.kariya.skill.s3",
         "master.kirei.skill.ascension",
         "master.kirei.skill.s3",
+        "master.kohaku.skill.ascension",
+        "master.kohaku.skill.s1a",
+        "master.kohaku.skill.s3",
         "master.kuzuki.skill.s2",
         "master.leonardo.skill.ascension",
         "master.leonardo.skill.s1",
@@ -2824,10 +2934,12 @@
         "master.reines.skill.s1a",
         "master.rin.skill.ascension",
         "master.rin.skill.s2",
+        "master.roche.skill.s1a",
         "master.ryuunosuke.skill.ascension",
         "master.ryuunosuke.skill.s1",
         "master.shinji.skill.s3",
         "master.taiga.skill.s1a",
+        "master.tiamat.skill.s1a",
         "master.twice.skill.ascension",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s2",
@@ -3076,6 +3188,22 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.kohaku.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kohaku.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kohaku.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kohaku.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.kuzuki.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3120,6 +3248,22 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.ritsuka-f.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.ritsuka-m.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.roche.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.roche.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.ryuunosuke.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3149,6 +3293,10 @@
         },
         {
           "abilityId": "master.taiga.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.tiamat.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -3294,6 +3442,10 @@
         "master.kiritsugu.skill.ascension",
         "master.kiritsugu.skill.s1",
         "master.kiritsugu.skill.s2",
+        "master.kohaku.skill.ascension",
+        "master.kohaku.skill.s1",
+        "master.kohaku.skill.s1a",
+        "master.kohaku.skill.s3",
         "master.kuzuki.skill.ascension",
         "master.leonardo.skill.ascension",
         "master.maiya.skill.ascension",
@@ -3305,6 +3457,10 @@
         "master.reines.skill.s1a",
         "master.rin.skill.ascension",
         "master.rin.skill.s3",
+        "master.ritsuka-f.skill.s1a",
+        "master.ritsuka-m.skill.ascension",
+        "master.roche.skill.s1a",
+        "master.roche.skill.s2",
         "master.ryuunosuke.skill.ascension",
         "master.sakura.skill.ascension",
         "master.shirou-emiya.skill.ascension",
@@ -3313,6 +3469,7 @@
         "master.shishigou.skill.s1",
         "master.sieg.skill.s1a",
         "master.taiga.skill.ascension",
+        "master.tiamat.skill.s1",
         "master.twice.skill.s1",
         "master.waver.skill.s2",
         "master.waver.skill.s3",
@@ -3475,6 +3632,8 @@
         "master.kirei.skill.s2",
         "master.kirei.skill.s3",
         "master.kiritsugu.skill.ascension",
+        "master.kohaku.skill.ascension",
+        "master.kohaku.skill.s3",
         "master.kuzuki.skill.ascension",
         "master.kuzuki.skill.s2",
         "master.leonardo.skill.ascension",
@@ -3499,6 +3658,10 @@
         "master.rin.skill.ascension",
         "master.rin.skill.s1",
         "master.rin.skill.s2",
+        "master.ritsuka-f.skill.ascension",
+        "master.ritsuka-m.skill.ascension",
+        "master.roche.skill.ascension",
+        "master.roche.skill.s2",
         "master.ryuunosuke.skill.ascension",
         "master.ryuunosuke.skill.s1",
         "master.sakura.skill.ascension",
@@ -3519,6 +3682,7 @@
         "master.sieg.skill.s1",
         "master.sion.skill.s13",
         "master.taiga.skill.s1a",
+        "master.tiamat.skill.s1a",
         "master.twice.skill.ascension",
         "master.twice.skill.s1",
         "master.wodime.skill.ascension",
@@ -3794,6 +3958,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.chaos.skill.s17",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.chaos.skill.s8",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3934,6 +4102,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.kohaku.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.kuzuki.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3975,6 +4147,38 @@
         },
         {
           "abilityId": "master.rin.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.ritsuka-f.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.ritsuka-f.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.ritsuka-f.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.ritsuka-m.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.ritsuka-m.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.ritsuka-m.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.roche.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.roche.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -4030,6 +4234,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.tiamat.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.tiamat.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.tokiomi.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -4079,6 +4291,10 @@
         },
         {
           "abilityId": "servant.valkyrie.skill.sc-valkyrie-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.tiamat.card.life-sea",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
       ]
@@ -4131,6 +4347,7 @@
         "master.caules.skill.s3",
         "master.chaos.skill.s1",
         "master.chaos.skill.s11",
+        "master.chaos.skill.s17",
         "master.chaos.skill.s4",
         "master.chaos.skill.s5",
         "master.ciel.skill.ascension",
@@ -4181,6 +4398,9 @@
         "master.kirei.skill.ascension",
         "master.kirei.skill.s1",
         "master.kirei.skill.s3",
+        "master.kohaku.skill.s1",
+        "master.kohaku.skill.s1a",
+        "master.kohaku.skill.s3",
         "master.kuzuki.skill.ascension",
         "master.kuzuki.skill.s2",
         "master.kuzuki.skill.s3",
@@ -4203,6 +4423,10 @@
         "master.rin.skill.ascension",
         "master.rin.skill.s1",
         "master.rin.skill.s4",
+        "master.ritsuka-m.skill.ascension",
+        "master.ritsuka-m.skill.s2",
+        "master.roche.skill.s1",
+        "master.roche.skill.s1a",
         "master.ryuunosuke.skill.s1",
         "master.sakura.skill.ascension",
         "master.sakura.skill.s4",
@@ -4217,6 +4441,10 @@
         "master.sieg.skill.s1",
         "master.sieg.skill.s1a",
         "master.taiga.skill.ascension",
+        "master.tiamat.card.life-sea",
+        "master.tiamat.skill.ascension",
+        "master.tiamat.skill.s1",
+        "master.tiamat.skill.s1a",
         "master.tokiomi.skill.ascension",
         "master.tokiomi.skill.s2",
         "master.waver.skill.ascension",
@@ -4377,6 +4605,10 @@
         "master.kayneth.skill.s3",
         "master.kirei.skill.ascension",
         "master.kirei.skill.s3",
+        "master.kohaku.skill.ascension",
+        "master.kohaku.skill.s1",
+        "master.kohaku.skill.s1a",
+        "master.kohaku.skill.s3",
         "master.kuzuki.skill.ascension",
         "master.kuzuki.skill.s2",
         "master.kuzuki.skill.s3",
@@ -4400,6 +4632,9 @@
         "master.reines.skill.s2",
         "master.rin.skill.ascension",
         "master.rin.skill.s4",
+        "master.ritsuka-m.skill.ascension",
+        "master.roche.skill.s1",
+        "master.roche.skill.s1a",
         "master.ryuunosuke.skill.s1",
         "master.sakura.skill.ascension",
         "master.sakura.skill.s4",
@@ -4410,6 +4645,10 @@
         "master.sieg.skill.ascension",
         "master.sieg.skill.s1",
         "master.sieg.skill.s1a",
+        "master.tiamat.card.life-sea",
+        "master.tiamat.skill.ascension",
+        "master.tiamat.skill.s1",
+        "master.tiamat.skill.s1a",
         "master.tokiomi.skill.ascension",
         "master.twice.skill.ascension",
         "master.waver.skill.ascension",
@@ -4477,6 +4716,7 @@
         "master.araya.skill.ascension",
         "master.chaos.skill.s10",
         "master.chaos.skill.s12",
+        "master.chaos.skill.s17",
         "master.ciel.skill.s1",
         "master.dan.skill.s1",
         "master.darnic.skill.ascension",
@@ -4490,12 +4730,14 @@
         "master.kariya.skill.s1",
         "master.kayneth.skill.s3",
         "master.kirei.skill.s2",
+        "master.kohaku.skill.s3",
         "master.kuzuki.skill.s2",
         "master.peperoncino.skill.s1b",
         "master.peperoncino.skill.s4",
         "master.reines.skill.s3",
         "master.ryuunosuke.skill.s1",
         "master.shishigou.skill.s2",
+        "master.tiamat.skill.ascension",
         "master.zouken.skill.ascension",
         "master.zouken.skill.s4",
         "servant.drake.skill.sc-drake-2",
@@ -4566,6 +4808,7 @@
         "master.kiritsugu.skill.ascension",
         "master.kiritsugu.skill.s2",
         "master.kiritsugu.skill.s3",
+        "master.kohaku.skill.s1a",
         "master.miyu.skill.ascension",
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s3",
@@ -4670,6 +4913,8 @@
         "master.kariya.skill.ascension",
         "master.kirei.skill.ascension",
         "master.kirei.skill.s3",
+        "master.kohaku.skill.ascension",
+        "master.kohaku.skill.s1a",
         "master.kuzuki.skill.ascension",
         "master.kuzuki.skill.s3",
         "master.leonardo.skill.s1",
@@ -4685,9 +4930,11 @@
         "master.peperoncino.skill.s4",
         "master.reines.skill.s2",
         "master.rin.skill.ascension",
+        "master.roche.skill.s1a",
         "master.shirou-emiya.skill.ascension",
         "master.shishigou.skill.s3",
         "master.sieg.skill.ascension",
+        "master.tiamat.skill.ascension",
         "master.tokiomi.skill.ascension",
         "master.twice.skill.ascension",
         "master.wodime.skill.s2",
@@ -4750,6 +4997,7 @@
         "master.caules.skill.s2",
         "master.celenike.skill.s1",
         "master.celenike.skill.s1a",
+        "master.chaos.skill.s17",
         "master.chaos.skill.s3",
         "master.chaos.skill.s7",
         "master.ciel.skill.s2",
@@ -4778,6 +5026,8 @@
         "master.kadoc.skill.s5",
         "master.kariya.skill.s1",
         "master.kariya.skill.s3",
+        "master.kohaku.skill.s1a",
+        "master.kohaku.skill.s3",
         "master.leonardo.skill.ascension",
         "master.maiya.skill.ascension",
         "master.peperoncino.skill.ascension",
@@ -4787,6 +5037,7 @@
         "master.rin.skill.ascension",
         "master.rin.skill.s2",
         "master.rin.skill.s3",
+        "master.roche.skill.s1a",
         "master.ryuunosuke.skill.s1",
         "master.ryuunosuke.skill.s2",
         "master.sakura.skill.s3",
@@ -4799,6 +5050,7 @@
         "master.sieg.skill.s1a",
         "master.taiga.skill.s1",
         "master.taiga.skill.s1a",
+        "master.tiamat.skill.s1a",
         "master.wodime.skill.s3",
         "master.zouken.skill.ascension",
         "master.zouken.skill.s1",
@@ -4886,6 +5138,7 @@
         "master.kiritsugu.skill.ascension",
         "master.kiritsugu.skill.s2",
         "master.kiritsugu.skill.s3",
+        "master.kohaku.skill.s1a",
         "master.maiya.skill.ascension",
         "master.miyu.skill.ascension",
         "master.ophelia.skill.ascension",
@@ -5049,6 +5302,10 @@
         },
         {
           "abilityId": "master.chaos.skill.s11",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.chaos.skill.s17",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -5236,6 +5493,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.kohaku.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kohaku.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.kohaku.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.kuzuki.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5324,6 +5593,22 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.ritsuka-m.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.ritsuka-m.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.roche.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.roche.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.ryuunosuke.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5377,6 +5662,18 @@
         },
         {
           "abilityId": "master.taiga.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.tiamat.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.tiamat.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.tiamat.skill.s1a",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -5518,6 +5815,10 @@
         {
           "abilityId": "servant.spartacus.skill.sc-spartacus-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.tiamat.card.life-sea",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
       ]
     },
@@ -5581,6 +5882,7 @@
         "master.kiritsugu.skill.ascension",
         "master.kiritsugu.skill.s2",
         "master.kiritsugu.skill.s3",
+        "master.kohaku.skill.s1a",
         "master.miyu.skill.ascension",
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s3",
@@ -5731,6 +6033,9 @@
         "master.kayneth.skill.s2",
         "master.kiritsugu.skill.ascension",
         "master.kiritsugu.skill.s1",
+        "master.kohaku.skill.ascension",
+        "master.kohaku.skill.s1",
+        "master.kohaku.skill.s3",
         "master.kuzuki.skill.ascension",
         "master.kuzuki.skill.s1",
         "master.kuzuki.skill.s2",
@@ -5751,6 +6056,10 @@
         "master.rin.skill.ascension",
         "master.rin.skill.s1",
         "master.rin.skill.s2",
+        "master.ritsuka-f.skill.s1",
+        "master.ritsuka-m.skill.ascension",
+        "master.roche.skill.ascension",
+        "master.roche.skill.s2",
         "master.ryuunosuke.skill.ascension",
         "master.ryuunosuke.skill.s1",
         "master.sakura.skill.ascension",
@@ -5767,6 +6076,7 @@
         "master.shirou-meal.skill.s2",
         "master.taiga.skill.s1",
         "master.taiga.skill.s1a",
+        "master.tiamat.skill.s1a",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s1",
         "master.wodime.skill.s4",
@@ -5847,13 +6157,16 @@
         "master.kayneth.skill.ascension",
         "master.kiritsugu.skill.s2",
         "master.kiritsugu.skill.s3",
+        "master.kohaku.skill.ascension",
         "master.peperoncino.skill.s1a",
         "master.reines.skill.s1",
         "master.reines.skill.s1a",
         "master.rin.skill.ascension",
+        "master.roche.skill.s1",
         "master.ryuunosuke.skill.ascension",
         "master.shirou-emiya.skill.ascension",
         "master.shishigou.skill.s1",
+        "master.tiamat.skill.s1",
         "master.waver.skill.s1",
         "master.waver.skill.s3",
         "master.zouken.skill.s2",
@@ -6001,6 +6314,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.chaos.skill.s17",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.chaos.skill.s3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -6113,6 +6430,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.kohaku.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.kohaku.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.leonardo.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -6146,6 +6471,10 @@
         },
         {
           "abilityId": "master.rin.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.roche.skill.s1a",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -6194,6 +6523,10 @@
         },
         {
           "abilityId": "master.taiga.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.tiamat.skill.s1a",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -6466,6 +6799,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.kohaku.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.maiya.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -6662,6 +6999,7 @@
         "master.caules.skill.ascension",
         "master.caules.skill.s2",
         "master.caules.skill.s3",
+        "master.chaos.skill.s17",
         "master.chaos.skill.s8",
         "master.ciel.skill.ascension",
         "master.dan.skill.ascension",
@@ -6704,6 +7042,7 @@
         "master.kayneth.skill.s2",
         "master.kirei.skill.ascension",
         "master.kiritsugu.skill.s4",
+        "master.kohaku.skill.ascension",
         "master.kuzuki.skill.ascension",
         "master.miyu.skill.s1",
         "master.miyu.skill.s2",
@@ -6728,6 +7067,14 @@
         "master.reines.skill.s4",
         "master.rin.skill.s1",
         "master.rin.skill.s3",
+        "master.ritsuka-f.skill.ascension",
+        "master.ritsuka-f.skill.s1",
+        "master.ritsuka-f.skill.s1a",
+        "master.ritsuka-m.skill.ascension",
+        "master.ritsuka-m.skill.s1",
+        "master.ritsuka-m.skill.s2",
+        "master.roche.skill.ascension",
+        "master.roche.skill.s2",
         "master.ryuunosuke.skill.ascension",
         "master.sakura.skill.s4",
         "master.shinji.skill.ascension",
@@ -6742,6 +7089,9 @@
         "master.shishigou.skill.s3",
         "master.sieg.skill.s2",
         "master.taiga.skill.ascension",
+        "master.tiamat.card.life-sea",
+        "master.tiamat.skill.ascension",
+        "master.tiamat.skill.s1",
         "master.tokiomi.skill.s2",
         "master.waver.skill.ascension",
         "master.wodime.skill.ascension",
@@ -6931,6 +7281,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.chaos.skill.s17",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.chaos.skill.s8",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -7095,6 +7449,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.kohaku.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.kuzuki.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -7191,6 +7549,38 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.ritsuka-f.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.ritsuka-f.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.ritsuka-f.skill.s1a",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.ritsuka-m.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.ritsuka-m.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.ritsuka-m.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.roche.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.roche.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.ryuunosuke.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -7244,6 +7634,14 @@
         },
         {
           "abilityId": "master.taiga.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.tiamat.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.tiamat.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -7345,6 +7743,10 @@
         {
           "abilityId": "servant.valkyrie.skill.sc-valkyrie-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.tiamat.card.life-sea",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
       ]
     }
@@ -7407,6 +7809,7 @@
       "master.chaos.skill.s14",
       "master.chaos.skill.s15",
       "master.chaos.skill.s16",
+      "master.chaos.skill.s17",
       "master.chaos.skill.s2",
       "master.chaos.skill.s3",
       "master.chaos.skill.s4",
@@ -7502,6 +7905,10 @@
       "master.kiritsugu.skill.s2",
       "master.kiritsugu.skill.s3",
       "master.kiritsugu.skill.s4",
+      "master.kohaku.skill.ascension",
+      "master.kohaku.skill.s1",
+      "master.kohaku.skill.s1a",
+      "master.kohaku.skill.s3",
       "master.kuzuki.skill.ascension",
       "master.kuzuki.skill.s1",
       "master.kuzuki.skill.s2",
@@ -7548,6 +7955,16 @@
       "master.rin.skill.s2",
       "master.rin.skill.s3",
       "master.rin.skill.s4",
+      "master.ritsuka-f.skill.ascension",
+      "master.ritsuka-f.skill.s1",
+      "master.ritsuka-f.skill.s1a",
+      "master.ritsuka-m.skill.ascension",
+      "master.ritsuka-m.skill.s1",
+      "master.ritsuka-m.skill.s2",
+      "master.roche.skill.ascension",
+      "master.roche.skill.s1",
+      "master.roche.skill.s1a",
+      "master.roche.skill.s2",
       "master.ryuunosuke.skill.ascension",
       "master.ryuunosuke.skill.s1",
       "master.ryuunosuke.skill.s2",
@@ -7580,6 +7997,10 @@
       "master.taiga.skill.ascension",
       "master.taiga.skill.s1",
       "master.taiga.skill.s1a",
+      "master.tiamat.card.life-sea",
+      "master.tiamat.skill.ascension",
+      "master.tiamat.skill.s1",
+      "master.tiamat.skill.s1a",
       "master.tokiomi.skill.ascension",
       "master.tokiomi.skill.s1",
       "master.tokiomi.skill.s2",
@@ -7748,13 +8169,6 @@
         ]
       },
       {
-        "abilityId": "master.chaos.skill.s17",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "master.fujino.skill.ascension",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -7882,104 +8296,6 @@
       },
       {
         "abilityId": "master.kiara.skill.s6",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kohaku.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kohaku.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kohaku.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.kohaku.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.ritsuka-f.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.ritsuka-f.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.ritsuka-f.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.ritsuka-m.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.ritsuka-m.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.ritsuka-m.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.roche.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.roche.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.roche.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.roche.skill.s2",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -8218,35 +8534,6 @@
       },
       {
         "abilityId": "master.sion.skill.s9",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.tiamat.card.life-sea",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED",
-          "SOURCE_EVIDENCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.tiamat.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.tiamat.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.tiamat.skill.s1a",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -12126,6 +12413,7 @@
       "master.caules.skill.ascension",
       "master.caules.skill.s2",
       "master.caules.skill.s3",
+      "master.chaos.skill.s17",
       "master.chaos.skill.s8",
       "master.ciel.skill.ascension",
       "master.dan.skill.ascension",
@@ -12170,6 +12458,7 @@
       "master.kirei.skill.ascension",
       "master.kiritsugu.skill.s1",
       "master.kiritsugu.skill.s4",
+      "master.kohaku.skill.ascension",
       "master.kuzuki.skill.ascension",
       "master.miyu.skill.s1",
       "master.miyu.skill.s2",
@@ -12194,6 +12483,14 @@
       "master.reines.skill.s4",
       "master.rin.skill.s1",
       "master.rin.skill.s3",
+      "master.ritsuka-f.skill.ascension",
+      "master.ritsuka-f.skill.s1",
+      "master.ritsuka-f.skill.s1a",
+      "master.ritsuka-m.skill.ascension",
+      "master.ritsuka-m.skill.s1",
+      "master.ritsuka-m.skill.s2",
+      "master.roche.skill.ascension",
+      "master.roche.skill.s2",
       "master.ryuunosuke.skill.ascension",
       "master.sakura.skill.s4",
       "master.shinji.skill.ascension",
@@ -12208,6 +12505,9 @@
       "master.shishigou.skill.s3",
       "master.sieg.skill.s2",
       "master.taiga.skill.ascension",
+      "master.tiamat.card.life-sea",
+      "master.tiamat.skill.ascension",
+      "master.tiamat.skill.s1",
       "master.tokiomi.skill.s2",
       "master.waver.skill.ascension",
       "master.wodime.skill.ascension",

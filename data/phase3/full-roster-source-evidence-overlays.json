@@ -14161,6 +14161,1071 @@
           ]
         }
       ]
+    },
+    {
+      "id": "master.ritsuka-f.skill.s1",
+      "printedText": "游戏开始时你抽取2名从者。将二者的牌堆组合在一起，分配一名从者为【战士】，一名从者为【替补】。【替补】从者的技能牌从游戏中移除。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ritsuka_f.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时你抽取2名从者。将二者的牌堆组合在一起，分配一名从者为【战士】，一名从者为【替补】。【替补】从者的技能牌从游戏中移除。",
+        "sourceTextSha256": "c6c4fd4373de83c57836b55300fac6962e3cb9815dafb4229ded438efe27aaea"
+      },
+      "referencePrintedTextSha256": "c6c4fd4373de83c57836b55300fac6962e3cb9815dafb4229ded438efe27aaea",
+      "abilities": [
+        {
+          "id": "ritsuka-f.gacha-queen.setup",
+          "printedClause": "游戏开始时抽取2名从者，合并牌库，指定战士/替补并移除替补技能牌。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "dual_servant_rule",
+              "operation": "draft_two_merge_decks_assign_frontline_and_reserve_remove_reserve_skills"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.ritsuka-f.skill.s1a",
+      "printedText": "前哨阶段：弃置所有手牌，抽3张牌。将【战士】与【替补】进行替换。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ritsuka_f.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "前哨阶段：弃置所有手牌，抽3张牌。将【战士】与【替补】进行替换。",
+        "sourceTextSha256": "570e076a1bfcc12e08075786f96790a0f4ac7b2d78fd681b2119fc9b2870faa8"
+      },
+      "referencePrintedTextSha256": "570e076a1bfcc12e08075786f96790a0f4ac7b2d78fd681b2119fc9b2870faa8",
+      "abilities": [
+        {
+          "id": "ritsuka-f.support.swap",
+          "printedClause": "前哨阶段：弃置所有手牌，抽3张牌。将战士与替补替换。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "zone": "hand",
+              "owner": "controller",
+              "destination": "discard",
+              "match": "all"
+            },
+            {
+              "type": "draw_cards",
+              "target": "controller",
+              "count": 3
+            },
+            {
+              "type": "dual_servant_rule",
+              "operation": "swap_frontline_and_reserve"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.ritsuka-f.skill.ascension",
+      "printedText": "行动阶段：如果你打出两张具有相同属性的卡牌，根据相同的属性激活以下其中一种效果：\n力量：合计威力+3。\n迅捷：下一回合，合计威力+5。\n魔术：获得2点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ritsuka_f.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "行动阶段：如果你打出两张具有相同属性的卡牌，根据相同的属性激活以下其中一种效果：\n力量：合计威力+3。\n迅捷：下一回合，合计威力+5。\n魔术：获得2点魔力。",
+        "sourceTextSha256": "d47e4069e6edbddedd881c1da62e2c778d3427bdb0902a87c24fdc0424899133"
+      },
+      "referencePrintedTextSha256": "d47e4069e6edbddedd881c1da62e2c778d3427bdb0902a87c24fdc0424899133",
+      "abilities": [
+        {
+          "id": "ritsuka-f.chain-command.action",
+          "printedClause": "行动阶段：若打出两张相同属性卡牌，按属性选择对应效果。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "conditions": [
+            {
+              "type": "controller_played_two_cards_with_same_attribute_this_round"
+            }
+          ],
+          "effects": [
+            {
+              "type": "attribute_chain_rule",
+              "operation": "apply_matching_attribute_reward",
+              "rewards": {
+                "力量": "total_power_plus_3",
+                "迅捷": "next_round_total_power_plus_5",
+                "魔术": "gain_2_mana"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.ritsuka-m.skill.s1",
+      "printedText": "抽取从者后，从15张【精品】中移除3张。\n前哨阶段：花费X点魔力，洗混【精品】并抽X+1张，然后选择其中一张于本回合获得相应效果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ritsuka_m.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "抽取从者后，从15张【精品】中移除3张。\n前哨阶段：花费X点魔力，洗混【精品】并抽X+1张，然后选择其中一张于本回合获得相应效果。",
+        "sourceTextSha256": "1a2e9d861de6f2bc2bfb8b94dc51c8ebd86c02a4a673415146d9fecd91803884"
+      },
+      "referencePrintedTextSha256": "1a2e9d861de6f2bc2bfb8b94dc51c8ebd86c02a4a673415146d9fecd91803884",
+      "abilities": [
+        {
+          "id": "ritsuka-m.gacha-slave.pool",
+          "printedClause": "抽取从者后，从15张精品中移除3张；前哨阶段花费X魔力，抽X+1张并选择一张本回合生效。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "craft_essence_pool_rule",
+              "operation": "initialize_remove_three_then_pay_x_reveal_x_plus_one_choose_one"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.ritsuka-m.skill.s2",
+      "printedText": "【破坏】你的力量攻击获得威力+2。你的其他属性攻击威力-1。\n【集中】你的迅捷攻击获得威力+2。你的其他属性攻击威力-1。\n【技巧】你的魔术攻击获得威力+2。你的其他属性攻击威力-1。\n【闪光】你的技能牌获得威力+3。你的基础牌威力-1。\n【斗争】你不能获得魔力。每有一名交战对手，合计威力便+1。\n【暗澹】你所在地点的所有特殊属性基础牌的能力禁止使用。\n【断绝】将你的地利变为2倍。你不可于自己的回合中移动。\n【先制】若你赢得一场战斗，获得2点战果。若没有赢得战斗，则失去1点战果。\n【麻婆豆腐】你的合计威力-2。本回合从侦察处获得的战果+2。\n【顽强】你的合计威力-3。你可无视【败北】效果。\n【龙脉】获得3点魔力。所有其他玩家获得1点魔力。\n【冥想】获得1点魔力。从可获得的【精品】池中永久移除一张牌。\n【欺瞒】战斗阶段：激活你的一张暗置牌（支付其魔力消耗）。\n【良机】额外抽1张【精品】。你选择发动该牌两次。\n【连锁】你下次使用【扭蛋奴隶】时，可以选择其中2张获得其效果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ritsuka_m.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【破坏】你的力量攻击获得威力+2。你的其他属性攻击威力-1。\n【集中】你的迅捷攻击获得威力+2。你的其他属性攻击威力-1。\n【技巧】你的魔术攻击获得威力+2。你的其他属性攻击威力-1。\n【闪光】你的技能牌获得威力+3。你的基础牌威力-1。\n【斗争】你不能获得魔力。每有一名交战对手，合计威力便+1。\n【暗澹】你所在地点的所有特殊属性基础牌的能力禁止使用。\n【断绝】将你的地利变为2倍。你不可于自己的回合中移动。\n【先制】若你赢得一场战斗，获得2点战果。若没有赢得战斗，则失去1点战果。\n【麻婆豆腐】你的合计威力-2。本回合从侦察处获得的战果+2。\n【顽强】你的合计威力-3。你可无视【败北】效果。\n【龙脉】获得3点魔力。所有其他玩家获得1点魔力。\n【冥想】获得1点魔力。从可获得的【精品】池中永久移除一张牌。\n【欺瞒】战斗阶段：激活你的一张暗置牌（支付其魔力消耗）。\n【良机】额外抽1张【精品】。你选择发动该牌两次。\n【连锁】你下次使用【扭蛋奴隶】时，可以选择其中2张获得其效果。",
+        "sourceTextSha256": "6fc8a172449db9e799bae19198004b34e557cdbfb8bfe46bb62d20c1fa5d8fb7"
+      },
+      "referencePrintedTextSha256": "6fc8a172449db9e799bae19198004b34e557cdbfb8bfe46bb62d20c1fa5d8fb7",
+      "abilities": [
+        {
+          "id": "ritsuka-m.craft-essences.rules",
+          "printedClause": "精品牌分别提供破坏、集中、技巧、闪光、斗争、暗澹、断绝、先制、麻婆豆腐、顽强、龙脉、冥想、欺瞒、良机、连锁效果。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "craft_essence_effect_rule",
+              "operation": "apply_selected_craft_essence_effect"
+            }
+          ],
+          "lifecycle": {
+            "duration": "round_or_effect_defined"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.ritsuka-m.skill.ascension",
+      "printedText": "立刻将此牌加入你的攻击。\n永无止境-残留：此牌不会关闭。\n悲惨、绝望已经战胜一切痛苦的决心-每当你获得【麻婆豆腐】时，此牌的威力永久翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_ritsuka_m.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "立刻将此牌加入你的攻击。\n永无止境-残留：此牌不会关闭。\n悲惨、绝望已经战胜一切痛苦的决心-每当你获得【麻婆豆腐】时，此牌的威力永久翻倍。",
+        "sourceTextSha256": "be8b5f479e3b990d005a05ff6da0b9ab9a7fde461ba173fc724180da46875f68"
+      },
+      "referencePrintedTextSha256": "be8b5f479e3b990d005a05ff6da0b9ab9a7fde461ba173fc724180da46875f68",
+      "abilities": [
+        {
+          "id": "ritsuka-m.lords-favor.enter",
+          "printedClause": "立刻将此牌加入你的攻击。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_definition_is_self"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "attack"
+            }
+          ]
+        },
+        {
+          "id": "ritsuka-m.lords-favor.residual",
+          "printedClause": "永无止境-残留：此牌不会关闭。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_close",
+              "operation": "prevent",
+              "scope": {
+                "source": "self"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_present"
+          }
+        },
+        {
+          "id": "ritsuka-m.lords-favor.mapo",
+          "printedClause": "每当你获得【麻婆豆腐】时，此牌威力永久翻倍。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "craft-essence.gained"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_named_choice_is",
+              "name": "麻婆豆腐"
+            }
+          ],
+          "effects": [
+            {
+              "type": "craft_essence_effect_rule",
+              "operation": "double_source_power_permanently"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.roche.skill.s1",
+      "printedText": "你的手牌保持展示，你改为于整个行动阶段开始时而不是准备阶段开始时抽牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_roche.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你的手牌保持展示，你改为于整个行动阶段开始时而不是准备阶段开始时抽牌。",
+        "sourceTextSha256": "c21cc7056dcd9b129a004a0de428e842517497949e012c2202bb91287f64ad61"
+      },
+      "referencePrintedTextSha256": "c21cc7056dcd9b129a004a0de428e842517497949e012c2202bb91287f64ad61",
+      "abilities": [
+        {
+          "id": "roche.innocence.visibility",
+          "printedClause": "你的手牌保持展示。",
+          "kind": "passive",
+          "visibility": {
+            "revealScope": "controller_hand_public"
+          },
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "roche.innocence.draw-timing",
+          "printedClause": "改为于整个行动阶段开始时而不是准备阶段开始时抽牌。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "draw_timing",
+              "operation": "replace_preparation_with_action_phase_start",
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.roche.skill.s1a",
+      "printedText": "行动阶段：获得1点战果、1点魔力，2点合计威力并抽一张牌。然后将一张【变节】从游戏外洗入你的牌库。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_roche.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "行动阶段：获得1点战果、1点魔力，2点合计威力并抽一张牌。然后将一张【变节】从游戏外洗入你的牌库。",
+        "sourceTextSha256": "127dcbf5cae10887c188efd676b8d6eb01dcf2331656120ad1760f64633dac2f"
+      },
+      "referencePrintedTextSha256": "127dcbf5cae10887c188efd676b8d6eb01dcf2331656120ad1760f64633dac2f",
+      "abilities": [
+        {
+          "id": "roche.giant-guidance.action",
+          "printedClause": "行动阶段：获得1战果、1魔力、2合计威力并抽1张，然后将一张变节洗入牌库。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "subject": "controller",
+              "amount": 1
+            },
+            {
+              "type": "gain_mana",
+              "subject": "controller",
+              "amount": 1
+            },
+            {
+              "type": "combat_power_bonus",
+              "subject": "controller",
+              "amount": 2
+            },
+            {
+              "type": "draw_cards",
+              "target": "controller",
+              "count": 1
+            },
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.roche.skill.s2",
+              "destination": "deck",
+              "createIfMissing": true,
+              "shuffle": true
+            }
+          ],
+          "lifecycle": {
+            "duration": "round"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.roche.skill.s2",
+      "printedText": "被动：当你抽到此牌时，再抽一张牌。\n主从争斗-唯一/被动：当罗榭的手牌中拥有3张或更多【变节】时，他立即失去6点战果，然后他可以花费一枚令咒并将所有【变节】洗回牌堆。若他不花费，其立即【败北】并将所有【变节】弃置。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_roche.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "被动：当你抽到此牌时，再抽一张牌。\n主从争斗-唯一/被动：当罗榭的手牌中拥有3张或更多【变节】时，他立即失去6点战果，然后他可以花费一枚令咒并将所有【变节】洗回牌堆。若他不花费，其立即【败北】并将所有【变节】弃置。",
+        "sourceTextSha256": "73734172e08ff307018997b71f6c7062d5199edb1909f9e78bafcd79591c181e"
+      },
+      "referencePrintedTextSha256": "73734172e08ff307018997b71f6c7062d5199edb1909f9e78bafcd79591c181e",
+      "abilities": [
+        {
+          "id": "roche.betrayal.draw",
+          "printedClause": "当你抽到此牌时，再抽一张牌。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "card.drawn"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "target": "controller",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "id": "roche.betrayal.threshold",
+          "printedClause": "手牌中有3张或更多变节时立即失去6战果，然后可花1令咒洗回全部变节，否则败北并弃置全部变节。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "controller_hand_definition_count_at_least",
+              "definitionId": "master.roche.skill.s2",
+              "count": 3
+            }
+          ],
+          "effects": [
+            {
+              "type": "betrayal_threshold_rule",
+              "operation": "lose_6_vp_then_choose_seal_shuffle_or_defeat_discard"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.roche.skill.ascension",
+      "printedText": "若你本局游戏未因【变节】败北：失去巨测指导、天真和你的所有令咒。每失去一枚令咒，【变节】获得+3威力。【变节】同时获得魔术属性和\"此牌需追加打出\"并失去主从争斗。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_roche.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "若你本局游戏未因【变节】败北：失去巨测指导、天真和你的所有令咒。每失去一枚令咒，【变节】获得+3威力。【变节】同时获得魔术属性和\"此牌需追加打出\"并失去主从争斗。",
+        "sourceTextSha256": "0a562f8797aa2de5f7ebfea3a1a6b8285aacba0e6150786e3e80b47bbdd9ee53"
+      },
+      "referencePrintedTextSha256": "0a562f8797aa2de5f7ebfea3a1a6b8285aacba0e6150786e3e80b47bbdd9ee53",
+      "abilities": [
+        {
+          "id": "roche.noble-sacrifice.ascension",
+          "printedClause": "若本局未因变节败北：失去巨测指导、天真和所有令咒；按失去令咒强化变节并改变其属性/打出规则，移除主从争斗。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "controller_not_previously_defeated_by_betrayal"
+            }
+          ],
+          "effects": [
+            {
+              "type": "betrayal_ascension_rule",
+              "operation": "sacrifice_skills_and_seals_empower_betrayal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.tiamat.skill.s1",
+      "printedText": "你没有令咒。将【生命之海】加入你的技能区。当你获得令咒时，改为将一张【魔兽】加入攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_tiamat.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你没有令咒。将【生命之海】加入你的技能区。当你获得令咒时，改为将一张【魔兽】加入攻击。",
+        "sourceTextSha256": "b3cde0a75fcfe40ac04bd6f792b5d8561e516c140eb684fa8649be9e8e3950cb"
+      },
+      "referencePrintedTextSha256": "b3cde0a75fcfe40ac04bd6f792b5d8561e516c140eb684fa8649be9e8e3950cb",
+      "abilities": [
+        {
+          "id": "tiamat.mother.no-seals-and-sea",
+          "printedClause": "你没有令咒。将生命之海加入技能区。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.tiamat.card.life-sea",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "command_seal_capacity",
+              "operation": "set",
+              "subject": "controller",
+              "value": 0
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "tiamat.mother.seal-replacement",
+          "printedClause": "当你获得令咒时，改为将一张魔兽加入攻击。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "command_seal_replacement_rule",
+              "operation": "replace_gain_with_beast_added_to_attack"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.tiamat.skill.s1a",
+      "printedText": "你的魔力初始值为8点。战胜你的玩家获得1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_tiamat.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你的魔力初始值为8点。战胜你的玩家获得1点战果。",
+        "sourceTextSha256": "daf0a7c59653a82ac8437c7abed7a3d3c0951dc5ac7a892d1f9bd3f603440ff8"
+      },
+      "referencePrintedTextSha256": "daf0a7c59653a82ac8437c7abed7a3d3c0951dc5ac7a892d1f9bd3f603440ff8",
+      "abilities": [
+        {
+          "id": "tiamat.human-evil.starting-mana",
+          "printedClause": "你的魔力初始值为8点。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "starting_mana",
+              "operation": "set",
+              "subject": "controller",
+              "value": 8
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "tiamat.human-evil.reward-winner",
+          "printedClause": "战胜你的玩家获得1点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_lost_combat",
+              "subject": "controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "subject": "winners_of_controllers_combat",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.tiamat.skill.ascension",
+      "printedText": "你不能进入魔术工房。无视阻碍你打出牌的卡牌效果。你的基础攻击费用+3且威力+5。你可以选择暗置打出2张牌作为攻击，若如此，将【生命之海】加入你的攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_tiamat.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你不能进入魔术工房。无视阻碍你打出牌的卡牌效果。你的基础攻击费用+3且威力+5。你可以选择暗置打出2张牌作为攻击，若如此，将【生命之海】加入你的攻击。",
+        "sourceTextSha256": "6f050b968e748f09520b88e7f2fdb568870638b9fc6d76567768b61db7621642"
+      },
+      "referencePrintedTextSha256": "6f050b968e748f09520b88e7f2fdb568870638b9fc6d76567768b61db7621642",
+      "abilities": [
+        {
+          "id": "tiamat.titan.location",
+          "printedClause": "你不能进入魔术工房。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "movement_destination",
+              "operation": "forbid",
+              "subject": "controller",
+              "destination": "workshop"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "tiamat.titan.play-permission",
+          "printedClause": "无视阻碍你打出牌的卡牌效果。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_play_permission",
+              "operation": "ignore_card_effect_prohibitions",
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "tiamat.titan.basic-attacks",
+          "printedClause": "你的基础攻击费用+3且威力+5。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_cost",
+              "operation": "add",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "basic": true
+                }
+              },
+              "value": 3
+            },
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "basic": true
+                }
+              },
+              "value": 5
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "tiamat.titan.hidden-double",
+          "printedClause": "你可以选择暗置打出2张牌作为攻击，若如此，将生命之海加入你的攻击。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "hidden_double_attack_rule",
+              "operation": "allow_two_face_down_cards_and_add_life_sea"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.tiamat.card.life-sea",
+      "printedText": "你拥有的魔力少于8点也可以打出此牌。\n残留：在你的回合，当你因其他能力需要花费令咒时，你可以改为关闭一张【魔兽】。\n前哨阶段：关闭此牌，从游戏外打出一张【魔兽】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/index.html",
+        "locator": "index.html#sc_tiamat_sea",
+        "sourceFileSha256": "1adeb8ca963d18bc53a6fe18edd365eabd1125d554e25a393e036cef9e28c3d1",
+        "sourceText": "你拥有的魔力少于8点也可以打出此牌。\n残留：在你的回合，当你因其他能力需要花费令咒时，你可以改为关闭一张【魔兽】。\n前哨阶段：关闭此牌，从游戏外打出一张【魔兽】。",
+        "sourceTextSha256": "ff219ccdc4117ee1973076ea01c6ee5f96b2f1cebef4870407475f729095c698"
+      },
+      "referencePrintedTextSha256": "ff219ccdc4117ee1973076ea01c6ee5f96b2f1cebef4870407475f729095c698",
+      "abilities": [
+        {
+          "id": "tiamat.life-sea.low-mana",
+          "printedClause": "你拥有的魔力少于8点也可以打出此牌。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_play_permission",
+              "operation": "waive_eight_mana_threshold",
+              "scope": {
+                "source": "self"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_present"
+          }
+        },
+        {
+          "id": "tiamat.life-sea.seal-substitute",
+          "printedClause": "在你的回合，当你因其他能力需要花费令咒时，可以改为关闭一张魔兽。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "beast_resource_rule",
+              "operation": "close_beast_instead_of_command_seal_cost"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_present"
+          }
+        },
+        {
+          "id": "tiamat.life-sea.outpost",
+          "printedClause": "前哨阶段：关闭此牌，从游戏外打出一张魔兽。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "close_source_card"
+            },
+            {
+              "type": "beast_resource_rule",
+              "operation": "play_one_beast_from_outside_game"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kohaku.skill.s1",
+      "printedText": "游戏开始，将2张【魔力猛攻】加入你的牌库。准备阶段开始进行抽牌时，你抽至4张牌（而不是3张）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kohaku.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始，将2张【魔力猛攻】加入你的牌库。准备阶段开始进行抽牌时，你抽至4张牌（而不是3张）。",
+        "sourceTextSha256": "90c8823a0a49f0dca70cd93c536d678294a264fe849a8366ad57353affc15d4f"
+      },
+      "referencePrintedTextSha256": "90c8823a0a49f0dca70cd93c536d678294a264fe849a8366ad57353affc15d4f",
+      "abilities": [
+        {
+          "id": "kohaku.smile.setup",
+          "printedClause": "游戏开始，将2张魔力猛攻加入牌库。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "kohaku.mana-rush",
+              "destination": "deck",
+              "createIfMissing": true,
+              "count": 2,
+              "shuffle": true
+            }
+          ]
+        },
+        {
+          "id": "kohaku.smile.draw-to-four",
+          "printedClause": "准备阶段开始进行抽牌时，你抽至4张牌（而不是3张）。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "preparation_draw_hand_size",
+              "operation": "set",
+              "subject": "controller",
+              "value": 4
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.kohaku.skill.s1a",
+      "printedText": "行动阶段：弃置一张与你控制的攻击完全相同的手牌，获得+2合计威力和1点魔力。\n【魔力猛攻】为牌库牌，抽到手牌后于战斗时打出。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kohaku.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "行动阶段：弃置一张与你控制的攻击完全相同的手牌，获得+2合计威力和1点魔力。\n【魔力猛攻】为牌库牌，抽到手牌后于战斗时打出。",
+        "sourceTextSha256": "95390da94917c0f64786c4a761fe7b14ea46d2a1c73c82bb2722b515a4e96f35"
+      },
+      "referencePrintedTextSha256": "95390da94917c0f64786c4a761fe7b14ea46d2a1c73c82bb2722b515a4e96f35",
+      "abilities": [
+        {
+          "id": "kohaku.sympathizer.action",
+          "printedClause": "行动阶段：弃置一张与你控制的攻击完全相同的手牌，获得+2合计威力和1点魔力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "hand",
+              "owner": "controller",
+              "filter": {
+                "matchesControlledAttackExactly": true
+              },
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedCardIds"
+            },
+            {
+              "type": "move_selected_cards",
+              "bindingField": "selectedCardIds",
+              "destination": "discard"
+            },
+            {
+              "type": "combat_power_bonus",
+              "subject": "controller",
+              "amount": 2
+            },
+            {
+              "type": "gain_mana",
+              "subject": "controller",
+              "amount": 1
+            }
+          ],
+          "lifecycle": {
+            "duration": "round"
+          }
+        },
+        {
+          "id": "kohaku.sympathizer.mana-rush-rule",
+          "printedClause": "魔力猛攻为牌库牌，抽到手牌后于战斗时打出。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_play_timing",
+              "operation": "allow_combat_from_hand",
+              "filter": {
+                "definitionId": "kohaku.mana-rush"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.kohaku.skill.s3",
+      "printedText": "你无法部署于魔术工房，且你通过局势牌获得的魔力减半。行动阶段：本回合你只能使用一张正面向上的攻击。如果你在战斗阶段后位于【深山町】，则在本回合结束后将此卡移出游戏。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kohaku.s3",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你无法部署于魔术工房，且你通过局势牌获得的魔力减半。行动阶段：本回合你只能使用一张正面向上的攻击。如果你在战斗阶段后位于【深山町】，则在本回合结束后将此卡移出游戏。",
+        "sourceTextSha256": "f5c37ce2900d6b21c23eead13881f87d2b30ff0eb2cbf65480541fbabc84533f"
+      },
+      "referencePrintedTextSha256": "f5c37ce2900d6b21c23eead13881f87d2b30ff0eb2cbf65480541fbabc84533f",
+      "abilities": [
+        {
+          "id": "kohaku.burned-workshop.deploy",
+          "printedClause": "你无法部署于魔术工房。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "deployment_destination",
+              "operation": "forbid",
+              "subject": "controller",
+              "destination": "workshop"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_present"
+          }
+        },
+        {
+          "id": "kohaku.burned-workshop.situation-mana",
+          "printedClause": "你通过局势牌获得的魔力减半。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "mana_gain",
+              "operation": "multiply_floor",
+              "subject": "controller",
+              "source": "situation",
+              "numerator": 1,
+              "denominator": 2
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_present"
+          }
+        },
+        {
+          "id": "kohaku.burned-workshop.face-up-limit",
+          "printedClause": "行动阶段：本回合你只能使用一张正面向上的攻击。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "face_up_attack_play_limit",
+              "operation": "set",
+              "subject": "controller",
+              "value": 1,
+              "duration": "round"
+            }
+          ],
+          "lifecycle": {
+            "duration": "round"
+          }
+        },
+        {
+          "id": "kohaku.burned-workshop.remove",
+          "printedClause": "若战斗阶段后位于深山町，则回合结束后将此卡移出游戏。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ending"
+            },
+            {
+              "type": "controller_was_at_location_after_combat",
+              "location": "deep-mountain"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "removed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kohaku.skill.ascension",
+      "printedText": "（将此卡加入你的技能区）\n行动阶段：使用至多2张【魔力猛攻】。\n战斗阶段：与你交战的对手地利小于你则合计威力-4。如果你获胜，所有位于魔术工房的玩家获得【燃尽的工房】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kohaku.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（将此卡加入你的技能区）\n行动阶段：使用至多2张【魔力猛攻】。\n战斗阶段：与你交战的对手地利小于你则合计威力-4。如果你获胜，所有位于魔术工房的玩家获得【燃尽的工房】。",
+        "sourceTextSha256": "589c505569d6977e184eeda8ce927d3e57115381cf8ae93a4be795f51a6cc569"
+      },
+      "referencePrintedTextSha256": "589c505569d6977e184eeda8ce927d3e57115381cf8ae93a4be795f51a6cc569",
+      "abilities": [
+        {
+          "id": "kohaku.mech-hisui.mana-rush",
+          "printedClause": "行动阶段：使用至多2张魔力猛攻。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "batch_card_use_rule",
+              "operation": "use_up_to_two_mana_rush"
+            }
+          ]
+        },
+        {
+          "id": "kohaku.mech-hisui.terrain-penalty",
+          "printedClause": "战斗阶段：与你交战的对手地利小于你则合计威力-4。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "subject": "engaged_opponents_with_lower_terrain",
+              "amount": -4
+            }
+          ]
+        },
+        {
+          "id": "kohaku.mech-hisui.win-burn",
+          "printedClause": "如果你获胜，所有位于魔术工房的玩家获得燃尽的工房。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_won_combat",
+              "subject": "controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "all_players_at_workshop",
+              "definitionId": "master.kohaku.skill.s3",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.chaos.skill.s17",
+      "printedText": "选择下列一项： <每局游戏限一次>\n行动阶段：再使用一次兽王之巢的前哨阶段效果。\n行动阶段：获得2点魔力（并抽一张【兽】）。\n行动阶段：若你获胜，获得2点战果。\n行动阶段：移动至一处相邻的地点。\n（注：兽没有魔力消耗，印刷的消耗为其需要弃置的兽数量。）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_chaos.s17",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "选择下列一项： <每局游戏限一次>\n行动阶段：再使用一次兽王之巢的前哨阶段效果。\n行动阶段：获得2点魔力（并抽一张【兽】）。\n行动阶段：若你获胜，获得2点战果。\n行动阶段：移动至一处相邻的地点。\n（注：兽没有魔力消耗，印刷的消耗为其需要弃置的兽数量。）",
+        "sourceTextSha256": "789bd74e9c49c2089eec74f3a7cf0a8c42ce0a15577252004d2f0704dd18d596"
+      },
+      "referencePrintedTextSha256": "789bd74e9c49c2089eec74f3a7cf0a8c42ce0a15577252004d2f0704dd18d596",
+      "abilities": [
+        {
+          "id": "chaos.scrambled-seal.choose",
+          "printedClause": "每局游戏限一次，行动阶段选择：再使用一次兽王之巢前哨效果；获得2魔力；若本回合获胜获得2战果；或移动至相邻地点。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_effect",
+              "choices": [
+                {
+                  "id": "repeat",
+                  "effects": [
+                    {
+                      "type": "repeat_skill_effect_rule",
+                      "operation": "repeat_beast_nest_outpost_effect"
+                    }
+                  ]
+                },
+                {
+                  "id": "mana",
+                  "effects": [
+                    {
+                      "type": "gain_mana",
+                      "subject": "controller",
+                      "amount": 2
+                    }
+                  ]
+                },
+                {
+                  "id": "victory",
+                  "effects": [
+                    {
+                      "type": "schedule_effect",
+                      "timing": "on_controller_win_this_round",
+                      "effects": [
+                        {
+                          "type": "gain_victory_points",
+                          "subject": "controller",
+                          "amount": 2
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "move",
+                  "effects": [
+                    {
+                      "type": "move_player",
+                      "subject": "controller",
+                      "destination": "adjacent_location"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "limit": {
+            "period": "game",
+            "maxUses": 1
+          }
+        }
+      ]
     }
   ]
 }

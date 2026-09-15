@@ -6,23 +6,23 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=310
-blockedCount=634
+sourceGroundedCount=329
+blockedCount=615
 unclassifiedCount=0
-structuredAbilityCount=556
+structuredAbilityCount=593
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 75 |
-| timing | `COMBAT` | 35 |
-| timing | `OUTPOST` | 22 |
+| timing | `ACTION` | 81 |
+| timing | `COMBAT` | 36 |
+| timing | `OUTPOST` | 25 |
 | timing | `PREPARATION` | 6 |
-| trigger | `combat.resolved` | 48 |
-| trigger | `game.started` | 27 |
-| trigger | `round.ending` | 14 |
-| trigger | `skill.unlocked` | 13 |
+| trigger | `combat.resolved` | 50 |
+| trigger | `game.started` | 29 |
+| trigger | `round.ending` | 15 |
+| trigger | `skill.unlocked` | 15 |
 | trigger | `combat.ending` | 12 |
 | trigger | `round.ended` | 9 |
 | trigger | `player.entered-location` | 8 |
@@ -35,6 +35,7 @@ structuredAbilityCount=556
 | trigger | `player.mana.changed` | 3 |
 | trigger | `player.victory-points.changed` | 3 |
 | trigger | `card.activated` | 2 |
+| trigger | `card.drawn` | 2 |
 | trigger | `elimination.pending` | 2 |
 | trigger | `elimination.resolved` | 2 |
 | trigger | `player.defeated` | 2 |
@@ -42,11 +43,11 @@ structuredAbilityCount=556
 | trigger | `situation.will-activate` | 2 |
 | trigger | `action.ending` | 1 |
 | trigger | `attack.committed` | 1 |
-| trigger | `card.drawn` | 1 |
 | trigger | `card.exiled` | 1 |
 | trigger | `card.left-deck` | 1 |
 | trigger | `card_or_ability.used` | 1 |
 | trigger | `command-seal.spent` | 1 |
+| trigger | `craft-essence.gained` | 1 |
 | trigger | `event.entered-battlefield` | 1 |
 | trigger | `event.entered-discard` | 1 |
 | trigger | `event.revealed` | 1 |
@@ -57,12 +58,12 @@ structuredAbilityCount=556
 | trigger | `player.entered_location` | 1 |
 | trigger | `skill.used` | 1 |
 | trigger | `yuga_cycle.changing` | 1 |
-| condition | `EVENT_PLAYER_IS_CONTROLLER` | 42 |
+| condition | `EVENT_PLAYER_IS_CONTROLLER` | 44 |
 | condition | `SOURCE_ACTIVE` | 37 |
 | condition | `SOURCE_OWNED` | 32 |
-| condition | `EVENT_PLAYER_WON_COMBAT` | 24 |
-| condition | `EVENT_DEFINITION_IS_SELF` | 19 |
-| condition | `EVENT_PLAYER_LOST_COMBAT` | 14 |
+| condition | `EVENT_PLAYER_WON_COMBAT` | 25 |
+| condition | `EVENT_DEFINITION_IS_SELF` | 21 |
+| condition | `EVENT_PLAYER_LOST_COMBAT` | 15 |
 | condition | `EVENT_LOCATION_EQUALS_CONTROLLER` | 13 |
 | condition | `AT_BATTLEFIELD` | 11 |
 | condition | `EVENT_PLAYER_IS_OPPONENT` | 11 |
@@ -128,6 +129,7 @@ structuredAbilityCount=556
 | condition | `CONTROLLER_EFFECTIVE_LOCATION_IS` | 1 |
 | condition | `CONTROLLER_FIRST_LOST_ALL_COMMAND_SEALS_THIS_GAME` | 1 |
 | condition | `CONTROLLER_FIRST_MASTER_DEFINITION_IS_NOT` | 1 |
+| condition | `CONTROLLER_HAND_DEFINITION_COUNT_AT_LEAST` | 1 |
 | condition | `CONTROLLER_HAND_HAS_NO_TRAIT` | 1 |
 | condition | `CONTROLLER_HAS_STATUS` | 1 |
 | condition | `CONTROLLER_HAS_TERRAIN_POSITION` | 1 |
@@ -135,8 +137,10 @@ structuredAbilityCount=556
 | condition | `CONTROLLER_LOSES_CURRENT_COMBAT` | 1 |
 | condition | `CONTROLLER_NOT_AT_RECON` | 1 |
 | condition | `CONTROLLER_NOT_ON_BATTLEFIELD` | 1 |
+| condition | `CONTROLLER_NOT_PREVIOUSLY_DEFEATED_BY_BETRAYAL` | 1 |
 | condition | `CONTROLLER_PERSISTENT_LOCATION_ADVANTAGE_AT_LEAST` | 1 |
 | condition | `CONTROLLER_PLAYED_ATTACKS_THIS_ROUND_ALL_FACE_DOWN` | 1 |
+| condition | `CONTROLLER_PLAYED_TWO_CARDS_WITH_SAME_ATTRIBUTE_THIS_ROUND` | 1 |
 | condition | `CONTROLLER_ROUND_MANA_GAIN_BELOW` | 1 |
 | condition | `CONTROLLER_SERVANT_DEFINITION_IS` | 1 |
 | condition | `CONTROLLER_SERVANT_TRUE_NAME_IS_HIDDEN` | 1 |
@@ -147,6 +151,7 @@ structuredAbilityCount=556
 | condition | `CONTROLLER_USES_SKILL` | 1 |
 | condition | `CONTROLLER_VICTORY_POINTS_LOWER_THAN_ALL_OTHER_PLAYERS` | 1 |
 | condition | `CONTROLLER_VICTORY_POINT_RANK_IS_NOT` | 1 |
+| condition | `CONTROLLER_WAS_AT_LOCATION_AFTER_COMBAT` | 1 |
 | condition | `CURRENT_SITUATION_IS` | 1 |
 | condition | `CYCLE_TRANSITION_PENDING` | 1 |
 | condition | `DECK_HAS_POSITION_FOR_SELECTED_CARD_COST_PLUS_ONE` | 1 |
@@ -169,6 +174,7 @@ structuredAbilityCount=556
 | condition | `EVENT_LOCATION_NOT` | 1 |
 | condition | `EVENT_LOCATION_NOT_CONTROLLER` | 1 |
 | condition | `EVENT_MANA_FIRST_CROSSES_AT_OR_BELOW` | 1 |
+| condition | `EVENT_NAMED_CHOICE_IS` | 1 |
 | condition | `EVENT_NPC_WON_COMBAT` | 1 |
 | condition | `EVENT_OPPONENT_MATCHES_BOUND_TARGET` | 1 |
 | condition | `EVENT_PHASE_IS` | 1 |
@@ -228,7 +234,7 @@ structuredAbilityCount=556
 | cost | `DISCARD_CARDS` | 2 |
 | cost | `VICTORY_POINTS` | 2 |
 | cost | `COMMAND_SEAL` | 1 |
-| target | `CHOOSE_ONE_CARD` | 26 |
+| target | `CHOOSE_ONE_CARD` | 27 |
 | target | `BRANCH_CHOICE` | 15 |
 | target | `CHOOSE_ONE_PLAYER` | 12 |
 | target | `CHOOSE_NUMBER` | 9 |
@@ -238,22 +244,22 @@ structuredAbilityCount=556
 | target | `CHOOSE_EACH_PLAYER_OPTION` | 2 |
 | target | `CHOOSE_EACH_PLAYER_CARDS` | 1 |
 | target | `CHOOSE_N_EVENTS` | 1 |
-| effect | `GAIN_VICTORY_POINTS` | 28 |
+| effect | `GAIN_VICTORY_POINTS` | 31 |
+| effect | `GAIN_MANA` | 27 |
 | effect | `EVENT_CARD_RULE` | 24 |
-| effect | `GAIN_MANA` | 24 |
-| effect | `COMBAT_POWER_BONUS` | 20 |
+| effect | `COMBAT_POWER_BONUS` | 23 |
+| effect | `DRAW_CARDS` | 21 |
+| effect | `MOVE_SOURCE_CARD` | 21 |
 | effect | `LOSE_VICTORY_POINTS` | 19 |
-| effect | `MOVE_SOURCE_CARD` | 19 |
-| effect | `DRAW_CARDS` | 18 |
-| effect | `MOVE_MATCHING_CARDS` | 16 |
-| effect | `RETURN_CARD_BY_DEFINITION` | 15 |
+| effect | `RETURN_CARD_BY_DEFINITION` | 19 |
+| effect | `MOVE_MATCHING_CARDS` | 17 |
 | effect | `LOSTBELT_EXPANSION` | 14 |
-| effect | `CLOSE_SOURCE_CARD` | 12 |
-| effect | `MOVE_SELECTED_CARDS` | 12 |
+| effect | `CLOSE_SOURCE_CARD` | 13 |
+| effect | `MOVE_SELECTED_CARDS` | 13 |
+| effect | `MOVE_PLAYER` | 12 |
 | effect | `PLAY_SELECTED_CARDS` | 12 |
 | effect | `SET_PLAYER_FLAG` | 12 |
 | effect | `DEFEAT_PLAYER` | 11 |
-| effect | `MOVE_PLAYER` | 11 |
 | effect | `CYCLE_STATE_TRANSITION` | 9 |
 | effect | `LOSE_MANA` | 9 |
 | effect | `ACTIVATE_CARD_BY_ID` | 8 |
@@ -269,6 +275,7 @@ structuredAbilityCount=556
 | effect | `NECROMANCY_RITE_RULE` | 4 |
 | effect | `PROPHECY_RULE` | 4 |
 | effect | `REMOVE_SELECTED_CARDS` | 4 |
+| effect | `SCHEDULE_EFFECT` | 4 |
 | effect | `TRANSFER_VICTORY_POINTS` | 4 |
 | effect | `ADD_LINKED_STATUS` | 3 |
 | effect | `ADJUST_TERRAIN` | 3 |
@@ -280,12 +287,13 @@ structuredAbilityCount=556
 | effect | `MOVE_MATCHING_EVENTS` | 3 |
 | effect | `PHANTOM_PLAYER_RULE` | 3 |
 | effect | `REMOVE_CARDS_IN_ZONE` | 3 |
-| effect | `SCHEDULE_EFFECT` | 3 |
 | effect | `CHALLENGE_RPS_RULE` | 2 |
 | effect | `COMBAT_POWER_LOCK` | 2 |
+| effect | `CRAFT_ESSENCE_EFFECT_RULE` | 2 |
 | effect | `DECLARED_ATTRIBUTE_RULE` | 2 |
 | effect | `DEFERRED_DEPLOYMENT_RULE` | 2 |
 | effect | `DEMON_GOD_RULE` | 2 |
+| effect | `DUAL_SERVANT_RULE` | 2 |
 | effect | `FINISH_GAME` | 2 |
 | effect | `GEM_RESOURCE_RULE` | 2 |
 | effect | `INSTALL_ABILITY_RULE_MODIFIER` | 2 |
@@ -307,12 +315,19 @@ structuredAbilityCount=556
 | effect | `ACTIVATE_SELECTED_CARDS` | 1 |
 | effect | `ADD_PLAYER_FLAG_NUMBER` | 1 |
 | effect | `ASTRONOMICAL_SPHERE_RULE` | 1 |
+| effect | `ATTRIBUTE_CHAIN_RULE` | 1 |
+| effect | `BATCH_CARD_USE_RULE` | 1 |
+| effect | `BEAST_RESOURCE_RULE` | 1 |
+| effect | `BETRAYAL_ASCENSION_RULE` | 1 |
+| effect | `BETRAYAL_THRESHOLD_RULE` | 1 |
 | effect | `BOUND_OPPONENT_RULE` | 1 |
 | effect | `CHARGE_SELECTED_SKILL_ATTACK` | 1 |
 | effect | `CHEAT_CODE_TRANSFORM_RULE` | 1 |
 | effect | `CLEAR_TERRAIN_POSITION` | 1 |
 | effect | `CLOSE_SELECTED_CARD` | 1 |
 | effect | `COLLAPSE_RANDOM_PLAY_RULE` | 1 |
+| effect | `COMMAND_SEAL_REPLACEMENT_RULE` | 1 |
+| effect | `CRAFT_ESSENCE_POOL_RULE` | 1 |
 | effect | `DECK_ENTRY_REPLACEMENT` | 1 |
 | effect | `DECK_TOP_MANIPULATION_RULE` | 1 |
 | effect | `DREAM_SUMMON_RULE` | 1 |
@@ -321,6 +336,7 @@ structuredAbilityCount=556
 | effect | `GRANT_LINKED_ABILITY_TO_ATTRIBUTE_ATTACKS` | 1 |
 | effect | `GRANT_LINKED_ABILITY_TO_DEFINITION` | 1 |
 | effect | `GRANT_OPPONENT_ACTION_RULE` | 1 |
+| effect | `HIDDEN_DOUBLE_ATTACK_RULE` | 1 |
 | effect | `INDEPENDENT_DECK_RULE` | 1 |
 | effect | `INFINITE_MANA_RULE` | 1 |
 | effect | `INFO_NOTE` | 1 |
@@ -334,6 +350,7 @@ structuredAbilityCount=556
 | effect | `REACTIVE_RESOURCE_RULE` | 1 |
 | effect | `REMOVE_OWNED_CARDS_BY_LINKED_SKILL` | 1 |
 | effect | `REPEAT_REPLACEMENT_WINDOW` | 1 |
+| effect | `REPEAT_SKILL_EFFECT_RULE` | 1 |
 | effect | `REPLACE_SELECTED_EVENT_FROM_DECK` | 1 |
 | effect | `RESET_SKILL_USAGE` | 1 |
 | effect | `ROSTER_REPLACEMENT_RULE` | 1 |
@@ -350,7 +367,7 @@ structuredAbilityCount=556
 | effect | `TRIMMAU_CONFESSION_RULE` | 1 |
 | effect | `TRIMMAU_GROWTH_RULE` | 1 |
 | effect | `WINNER_PREDICTION_RULE` | 1 |
-| interaction | `CHOOSE_ONE_CARD` | 26 |
+| interaction | `CHOOSE_ONE_CARD` | 27 |
 | interaction | `BRANCH_CHOICE` | 15 |
 | interaction | `CHOOSE_ONE_PLAYER` | 12 |
 | interaction | `CHOOSE_NUMBER` | 9 |
@@ -360,24 +377,24 @@ structuredAbilityCount=556
 | interaction | `CHOOSE_EACH_PLAYER_OPTION` | 2 |
 | interaction | `CHOOSE_EACH_PLAYER_CARDS` | 1 |
 | interaction | `CHOOSE_N_EVENTS` | 1 |
-| lifecycle | `duration:game` | 36 |
+| lifecycle | `duration:game` | 43 |
 | lifecycle | `duration:this_round` | 25 |
 | lifecycle | `duration:while_source_active` | 20 |
 | lifecycle | `duration:while_active` | 19 |
-| lifecycle | `limit.maxUses:1` | 15 |
+| lifecycle | `limit.maxUses:1` | 16 |
 | lifecycle | `cleanup:remain_active` | 14 |
 | lifecycle | `limit.scope:controller` | 13 |
+| lifecycle | `duration:round` | 11 |
 | lifecycle | `limit.period:round` | 11 |
 | lifecycle | `duration:permanent` | 8 |
-| lifecycle | `duration:round` | 8 |
 | lifecycle | `duration:while_condition_true` | 8 |
+| lifecycle | `limit.period:game` | 7 |
 | lifecycle | `starts:immediate` | 7 |
-| lifecycle | `limit.period:game` | 6 |
+| lifecycle | `duration:while_source_present` | 5 |
 | lifecycle | `duration:until_card_closed` | 2 |
 | lifecycle | `duration:until_combat_end` | 2 |
 | lifecycle | `duration:until_condition_met` | 2 |
 | lifecycle | `duration:until_round_end` | 2 |
-| lifecycle | `duration:while_source_present` | 2 |
 | lifecycle | `cleanup:clear_bound_target` | 1 |
 | lifecycle | `cleanup:remove_from_game` | 1 |
 | lifecycle | `cleanup:restore_base_pairs` | 1 |
@@ -385,6 +402,7 @@ structuredAbilityCount=556
 | lifecycle | `duration:continuous` | 1 |
 | lifecycle | `duration:current_round` | 1 |
 | lifecycle | `duration:printed_card_definition` | 1 |
+| lifecycle | `duration:round_or_effect_defined` | 1 |
 | lifecycle | `duration:this_action_resolution` | 1 |
 | lifecycle | `duration:this_combat_resolution` | 1 |
 | lifecycle | `duration:until_combat_resolved` | 1 |
@@ -411,21 +429,21 @@ structuredAbilityCount=556
 | lifecycle | `limit.type:per_game` | 1 |
 | lifecycle | `limit.uses:1` | 1 |
 | lifecycle | `limit:once_per_game` | 1 |
-| modifier | `effect:combat_power_bonus` | 20 |
-| modifier | `rule:card_power:add` | 17 |
+| modifier | `effect:combat_power_bonus` | 23 |
+| modifier | `rule:card_power:add` | 18 |
 | modifier | `effect:source_card_power_bonus` | 7 |
+| modifier | `rule:card_cost:add` | 5 |
 | modifier | `rule:skill_use:forbid` | 5 |
 | modifier | `rule:total_power:add` | 5 |
-| modifier | `rule:card_cost:add` | 4 |
 | modifier | `rule:defeat:ignore` | 4 |
 | modifier | `rule:card_play_mode:require_additional_play` | 3 |
 | modifier | `rule:card_power:set` | 3 |
+| modifier | `rule:command_seal_capacity:set` | 3 |
 | modifier | `rule:card_activation_persistence:remain_active_until` | 2 |
 | modifier | `rule:card_play_mana_requirement:ignore_below_threshold` | 2 |
 | modifier | `rule:card_play_mode:require_append` | 2 |
 | modifier | `rule:combat_power:add` | 2 |
 | modifier | `rule:combat_reward_distribution:replace` | 2 |
-| modifier | `rule:command_seal_capacity:set` | 2 |
 | modifier | `rule:command_seal_transaction:replace_with_mana` | 2 |
 | modifier | `rule:defeat_effect:ignore` | 2 |
 | modifier | `rule:deployment_advantage:multiply` | 2 |
@@ -447,6 +465,7 @@ structuredAbilityCount=556
 | modifier | `rule:card_attribute:set` | 1 |
 | modifier | `rule:card_base_power:add` | 1 |
 | modifier | `rule:card_close:forbid` | 1 |
+| modifier | `rule:card_close:prevent` | 1 |
 | modifier | `rule:card_cost:reduce_by_sum` | 1 |
 | modifier | `rule:card_cost:set` | 1 |
 | modifier | `rule:card_cost:subtract` | 1 |
@@ -463,8 +482,11 @@ structuredAbilityCount=556
 | modifier | `rule:card_play_mode:set` | 1 |
 | modifier | `rule:card_play_permission:allow` | 1 |
 | modifier | `rule:card_play_permission:allow_append` | 1 |
+| modifier | `rule:card_play_permission:ignore_card_effect_prohibitions` | 1 |
 | modifier | `rule:card_play_permission:prohibit` | 1 |
 | modifier | `rule:card_play_permission:require_condition` | 1 |
+| modifier | `rule:card_play_permission:waive_eight_mana_threshold` | 1 |
+| modifier | `rule:card_play_timing:allow_combat_from_hand` | 1 |
 | modifier | `rule:card_play_with_others:forbid` | 1 |
 | modifier | `rule:card_power:add_formula` | 1 |
 | modifier | `rule:card_power:add_from_printed_mana_cost_capped` | 1 |
@@ -487,28 +509,34 @@ structuredAbilityCount=556
 | modifier | `rule:defeat_immunity:disable` | 1 |
 | modifier | `rule:deployment_advantage:add` | 1 |
 | modifier | `rule:deployment_advantage:set` | 1 |
+| modifier | `rule:deployment_destination:forbid` | 1 |
 | modifier | `rule:deployment_destinations:replace` | 1 |
 | modifier | `rule:deployment_mana_gain:add` | 1 |
 | modifier | `rule:deployment_mana_gain:set` | 1 |
 | modifier | `rule:deployment_requirement:require_battlefield` | 1 |
 | modifier | `rule:deployment_resource_gain:forbid` | 1 |
+| modifier | `rule:draw_timing:replace_preparation_with_action_phase_start` | 1 |
 | modifier | `rule:elimination:replace` | 1 |
 | modifier | `rule:event_card_mana:add` | 1 |
 | modifier | `rule:event_card_victory_points:add` | 1 |
+| modifier | `rule:face_up_attack_play_limit:set` | 1 |
 | modifier | `rule:face_up_cards_per_round:set` | 1 |
 | modifier | `rule:incoming_situation_or_event_effect:multiply` | 1 |
 | modifier | `rule:initial_mana:set` | 1 |
 | modifier | `rule:linked_ability_condition:grant_to_basic_cards` | 1 |
 | modifier | `rule:linked_ability_condition:remove` | 1 |
 | modifier | `rule:mana_capacity:set` | 1 |
+| modifier | `rule:mana_gain:multiply_floor` | 1 |
 | modifier | `rule:mana_spending:forbid` | 1 |
 | modifier | `rule:movement_cost:subtract` | 1 |
+| modifier | `rule:movement_destination:forbid` | 1 |
 | modifier | `rule:movement_engagement_restriction:ignore_against_source_controller` | 1 |
 | modifier | `rule:movement_entry_permission:require_cost` | 1 |
 | modifier | `rule:non_effect_victory_point_gain:forbid` | 1 |
 | modifier | `rule:npc_total_power:set` | 1 |
 | modifier | `rule:opponent_same_location_movement:forbid_exit` | 1 |
 | modifier | `rule:opponent_standard_attack_face:require_face_down` | 1 |
+| modifier | `rule:preparation_draw_hand_size:set` | 1 |
 | modifier | `rule:printed_mana_cost:add` | 1 |
 | modifier | `rule:regular_attack_play_limit:add` | 1 |
 | modifier | `rule:regular_movement_mana_cost_per_step:add` | 1 |
@@ -528,24 +556,27 @@ structuredAbilityCount=556
 | modifier | `rule:source_card_play_limit:set` | 1 |
 | modifier | `rule:source_card_power:add` | 1 |
 | modifier | `rule:standard_attack_card_count:replace` | 1 |
+| modifier | `rule:starting_mana:set` | 1 |
 | modifier | `rule:status_removal_mana_cost:add` | 1 |
 | modifier | `rule:status_total_power_per_stack:set` | 1 |
 | modifier | `rule:total_power:conditional_set_bonus` | 1 |
+| visibility | `FACE_UP` | 28 |
 | visibility | `REVEALS_TRUE_NAME` | 28 |
 | visibility | `revealScope:servant_package` | 28 |
 | visibility | `revealTiming:on_use_declared` | 28 |
-| visibility | `FACE_UP` | 26 |
 | visibility | `FACE_DOWN` | 6 |
 | visibility | `inspectZone:face_down_event_cards` | 1 |
 | visibility | `inspectZone:opponent_discard` | 1 |
 | visibility | `inspectZone:target_hand` | 1 |
+| visibility | `revealScope:controller_hand_public` | 1 |
 | binding | `payload:selectedInstanceIds` | 13 |
-| binding | `payload:selectedCardIds` | 7 |
+| binding | `payload:selectedCardIds` | 8 |
 | binding | `payload:selectedEventIds` | 7 |
 | binding | `payload:x` | 5 |
 | binding | `binding:nemesisPlayerId` | 3 |
 | binding | `payload:targetPlayerIds` | 3 |
 | binding | `result:discardedCount` | 3 |
+| binding | `binding:selectedCardIds` | 2 |
 | binding | `binding:x` | 2 |
 | binding | `payload:closeAttackIds` | 2 |
 | binding | `payload:selectedBeastIds` | 2 |
@@ -556,7 +587,6 @@ structuredAbilityCount=556
 | binding | `binding:fullRecoveryTranscendChoice` | 1 |
 | binding | `binding:preventedPlayerId` | 1 |
 | binding | `binding:removedEventCount` | 1 |
-| binding | `binding:selectedCardIds` | 1 |
 | binding | `payload:attackInstanceIds` | 1 |
 | binding | `payload:bloodWormTargetIds` | 1 |
 | binding | `payload:closedAttackIds` | 1 |
@@ -602,9 +632,9 @@ structuredAbilityCount=556
 | binding | `result:fullRecoveryTranscendChoice` | 1 |
 | binding | `result:removedEventCount` | 1 |
 | binding | `result:removedMagicCardIds` | 1 |
-| battle | `COMBAT_CONDITION` | 73 |
-| battle | `COMBAT_EVENT` | 62 |
-| battle | `COMBAT_EFFECT` | 24 |
+| battle | `COMBAT_CONDITION` | 76 |
+| battle | `COMBAT_EVENT` | 64 |
+| battle | `COMBAT_EFFECT` | 27 |
 | battle | `COMBAT_RULE_MODIFIER` | 17 |
 
 ## Identity-Level Matrix
@@ -679,7 +709,7 @@ structuredAbilityCount=556
 | `master.chaos.skill.s14` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `rule:card_power:add` | `NONE` | `NONE` | `NONE` | `core.chaos-phantom` |
 | `master.chaos.skill.s15` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `rule:total_power:add` | `NONE` | `NONE` | `NONE` | `core.same-battlefield-opponent-power` |
 | `master.chaos.skill.s16` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `card.played` | `EVENT_DEFINITION_IS_SELF`, `EVENT_PLAYER_IS_CONTROLLER` | `NONE` | `NONE` | `MOVE_MATCHING_CARDS`, `SOURCE_CARD_POWER_BONUS` | `NONE` | `NONE` | `effect:source_card_power_bonus` | `NONE` | `binding:discardedCount`, `result:discardedCount` | `NONE` | `core.chaos-beast-engine` |
-| `master.chaos.skill.s17` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.chaos-beast-engine` |
+| `master.chaos.skill.s17` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_MANA`, `GAIN_VICTORY_POINTS`, `MOVE_PLAYER`, `REPEAT_SKILL_EFFECT_RULE`, `SCHEDULE_EFFECT` | `NONE` | `limit.maxUses:1`, `limit.period:game` | `NONE` | `NONE` | `NONE` | `NONE` | `core.chaos-beast-engine` |
 | `master.chaos.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_POWER_BONUS` | `NONE` | `NONE` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.chaos-hunter` |
 | `master.chaos.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `CHOOSE_N_CARDS` | `GAIN_MANA`, `MOVE_SELECTED_CARDS` | `CHOOSE_N_CARDS` | `NONE` | `NONE` | `NONE` | `payload:selectedBeastIds`, `result:discardedCount` | `NONE` | `core.chaos-beast-engine` |
 | `master.chaos.skill.s4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `card.played` | `EVENT_DEFINITION_IS_SELF`, `EVENT_PLAYER_IS_CONTROLLER` | `NONE` | `CHOOSE_N_CARDS` | `DRAW_CARDS`, `MOVE_SELECTED_CARDS`, `SCHEDULE_EFFECT` | `CHOOSE_N_CARDS` | `duration:until_next_preparation` | `NONE` | `NONE` | `payload:discardBeastIds` | `NONE` | `core.chaos-beast-engine` |
@@ -794,10 +824,10 @@ structuredAbilityCount=556
 | `master.kiritsugu.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `CHOOSE_ONE_CARD` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `CHOOSE_ONE_CARD` | `NONE` | `NONE` | `FACE_DOWN` | `payload:selectedCardIds` | `NONE` | `core.kiritsugu-time-control` |
 | `master.kiritsugu.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `NONE` | `NONE` | `CHOOSE_ONE_CARD` | `ACTIVATE_SELECTED_CARDS`, `CLOSE_SELECTED_CARDS` | `CHOOSE_ONE_CARD` | `NONE` | `NONE` | `FACE_DOWN`, `FACE_UP` | `payload:closeAttackIds`, `payload:originIds` | `NONE` | `core.kiritsugu-fourfold-speed` |
 | `master.kiritsugu.skill.s4` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `NONE` | `NONE` | `NONE` | `NONE` | `ORIGIN_BULLET_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kiritsugu-origin-bullet` |
-| `master.kohaku.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kohaku-mech-hisui` |
-| `master.kohaku.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kohaku-smile` |
-| `master.kohaku.skill.s1a` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `master.kohaku.skill.s3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kohaku-burned-workshop` |
+| `master.kohaku.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `ACTION`, `COMBAT` | `combat.resolved` | `EVENT_PLAYER_WON_COMBAT` | `NONE` | `NONE` | `BATCH_CARD_USE_RULE`, `COMBAT_POWER_BONUS`, `RETURN_CARD_BY_DEFINITION` | `NONE` | `NONE` | `effect:combat_power_bonus` | `FACE_UP` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EFFECT`, `COMBAT_EVENT` | `core.kohaku-mech-hisui` |
+| `master.kohaku.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `game.started` | `NONE` | `NONE` | `NONE` | `RETURN_CARD_BY_DEFINITION` | `NONE` | `duration:game` | `rule:preparation_draw_hand_size:set` | `NONE` | `NONE` | `NONE` | `core.kohaku-smile` |
+| `master.kohaku.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `CHOOSE_ONE_CARD` | `COMBAT_POWER_BONUS`, `GAIN_MANA`, `MOVE_SELECTED_CARDS` | `CHOOSE_ONE_CARD` | `duration:game`, `duration:round` | `effect:combat_power_bonus`, `rule:card_play_timing:allow_combat_from_hand` | `NONE` | `binding:selectedCardIds`, `payload:selectedCardIds` | `COMBAT_EFFECT` | `core.structured-skill` |
+| `master.kohaku.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `round.ending` | `CONTROLLER_WAS_AT_LOCATION_AFTER_COMBAT` | `NONE` | `NONE` | `MOVE_SOURCE_CARD` | `NONE` | `duration:round`, `duration:while_source_present` | `rule:deployment_destination:forbid`, `rule:face_up_attack_play_limit:set`, `rule:mana_gain:multiply_floor` | `NONE` | `NONE` | `COMBAT_CONDITION` | `core.kohaku-burned-workshop` |
 | `master.kuzuki.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `skill.unlocked` | `EVENT_PLAYER_IS_CONTROLLER` | `NONE` | `NONE` | `GRANT_LINKED_ABILITY_TO_DEFINITION`, `REMOVE_CARDS_IN_ZONE` | `NONE` | `duration:while_source_active` | `rule:card_power:add` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `master.kuzuki.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `game.started` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-add-deck-cards` |
 | `master.kuzuki.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.ending` | `LOCATION_IS`, `ROUND_VICTORY_POINTS_GAINED_EQUALS`, `SAME_LOCATION_PLAYER_COUNT_EQUALS`, `SOURCE_OWNED` | `NONE` | `NONE` | `IF_CONDITION` | `NONE` | `duration:permanent` | `rule:deployment_resource_gain:forbid`, `rule:movement_cost:subtract` | `NONE` | `NONE` | `COMBAT_EVENT` | `core.structured-skill` |
@@ -844,16 +874,16 @@ structuredAbilityCount=556
 | `master.rin.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.ending`, `round.ended` | `CONTROLLER_COMMAND_SEAL_GAINED_MANA_IN_ROUND`, `CONTROLLER_DID_NOT_SPEND_COMMAND_SEAL_IN_ROUND`, `ROUND_NUMBER_IS` | `NONE` | `NONE` | `ADJUST_COMMAND_SEALS`, `LOSE_MANA` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_EVENT` | `core.rin-command-seal-duty` |
 | `master.rin.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `CHOOSE_N_CARDS` | `DRAW_CARDS`, `GAIN_MANA`, `GEM_RESOURCE_RULE`, `MOVE_MATCHING_CARDS`, `MOVE_SELECTED_CARDS` | `CHOOSE_N_CARDS` | `NONE` | `NONE` | `NONE` | `payload:selectedCardIds` | `NONE` | `core.rin-gem` |
 | `master.rin.skill.s4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:while_source_active` | `rule:source_card_close_destination:set`, `rule:source_card_play_limit:set` | `NONE` | `NONE` | `NONE` | `core.card-play` |
-| `master.ritsuka-f.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ritsuka-f-dual-servant` |
-| `master.ritsuka-f.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ritsuka-f-dual-servant` |
-| `master.ritsuka-f.skill.s1a` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ritsuka-f-dual-servant` |
-| `master.ritsuka-m.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ritsuka-m-craft-essence` |
-| `master.ritsuka-m.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ritsuka-m-craft-essence` |
-| `master.ritsuka-m.skill.s2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ritsuka-m-craft-essence` |
-| `master.roche.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.roche-noble-sacrifice` |
-| `master.roche.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.roche-innocence` |
-| `master.roche.skill.s1a` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.roche-giant-guidance` |
-| `master.roche.skill.s2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.roche-betrayal` |
+| `master.ritsuka-f.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `CONTROLLER_PLAYED_TWO_CARDS_WITH_SAME_ATTRIBUTE_THIS_ROUND` | `NONE` | `NONE` | `ATTRIBUTE_CHAIN_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ritsuka-f-dual-servant` |
+| `master.ritsuka-f.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `game.started` | `NONE` | `NONE` | `NONE` | `DUAL_SERVANT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ritsuka-f-dual-servant` |
+| `master.ritsuka-f.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `OUTPOST` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `DUAL_SERVANT_RULE`, `MOVE_MATCHING_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ritsuka-f-dual-servant` |
+| `master.ritsuka-m.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `craft-essence.gained`, `skill.unlocked` | `EVENT_DEFINITION_IS_SELF`, `EVENT_NAMED_CHOICE_IS`, `EVENT_PLAYER_IS_CONTROLLER` | `NONE` | `NONE` | `CRAFT_ESSENCE_EFFECT_RULE`, `MOVE_SOURCE_CARD` | `NONE` | `duration:game`, `duration:while_source_present` | `rule:card_close:prevent` | `NONE` | `NONE` | `NONE` | `core.ritsuka-m-craft-essence` |
+| `master.ritsuka-m.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `OUTPOST` | `NONE` | `NONE` | `NONE` | `NONE` | `CRAFT_ESSENCE_POOL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ritsuka-m-craft-essence` |
+| `master.ritsuka-m.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CRAFT_ESSENCE_EFFECT_RULE` | `NONE` | `duration:round_or_effect_defined` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ritsuka-m-craft-essence` |
+| `master.roche.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `skill.unlocked` | `CONTROLLER_NOT_PREVIOUSLY_DEFEATED_BY_BETRAYAL` | `NONE` | `NONE` | `BETRAYAL_ASCENSION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.roche-noble-sacrifice` |
+| `master.roche.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:game` | `rule:draw_timing:replace_preparation_with_action_phase_start` | `revealScope:controller_hand_public` | `NONE` | `NONE` | `core.roche-innocence` |
+| `master.roche.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_POWER_BONUS`, `DRAW_CARDS`, `GAIN_MANA`, `GAIN_VICTORY_POINTS`, `RETURN_CARD_BY_DEFINITION` | `NONE` | `duration:round` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.roche-giant-guidance` |
+| `master.roche.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `card.drawn` | `CONTROLLER_HAND_DEFINITION_COUNT_AT_LEAST`, `EVENT_DEFINITION_IS_SELF`, `EVENT_PLAYER_IS_CONTROLLER` | `NONE` | `NONE` | `BETRAYAL_THRESHOLD_RULE`, `DRAW_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.roche-betrayal` |
 | `master.ryuunosuke.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `skill.unlocked` | `EVENT_DEFINITION_IS_SELF` | `NONE` | `NONE` | `EVENT_BATTLEFIELD_PENALTY`, `MOVE_SELECTED_EVENTS`, `MOVE_SOURCE_CARD` | `NONE` | `NONE` | `NONE` | `FACE_UP` | `binding:X`, `payload:selectedEventId` | `COMBAT_EFFECT` | `core.ryuunosuke-blasphemer` |
 | `master.ryuunosuke.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved`, `game.started`, `player.deployed` | `CONTROLLER_WON_COMBAT`, `EVENT_LOCATION_IS`, `EVENT_PLAYER_IS_CONTROLLER` | `NONE` | `NONE` | `ACTIVATE_CARD_BY_ID` | `NONE` | `duration:game` | `rule:deployment_mana_gain:set` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.ryuunosuke-chain-killer` |
 | `master.ryuunosuke.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `CLEAR_TERRAIN_POSITION`, `CLOSE_SOURCE_CARD`, `GAIN_MANA`, `GAIN_VICTORY_POINTS` | `NONE` | `NONE` | `NONE` | `NONE` | `result:abandonedTerrainPosition` | `NONE` | `core.ryuunosuke-death-art` |
@@ -920,9 +950,9 @@ structuredAbilityCount=556
 | `master.taiga.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LOCATION_TOKEN_RULE`, `MOVE_SOURCE_CARD` | `NONE` | `duration:while_source_active` | `NONE` | `NONE` | `NONE` | `NONE` | `core.taiga-domestic-carnage` |
 | `master.taiga.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `game.started` | `NONE` | `NONE` | `NONE` | `SET_MANA` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.master-initial-mana` |
 | `master.taiga.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved` | `EVENT_PLAYER_WON_COMBAT` | `NONE` | `NONE` | `ADD_LINKED_STATUS`, `GAIN_VICTORY_POINTS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.taiga-fates-guide` |
-| `master.tiamat.skill.ascension` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `master.tiamat.skill.s1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tiamat-mother-of-all` |
-| `master.tiamat.skill.s1a` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tiamat-human-evil` |
+| `master.tiamat.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HIDDEN_DOUBLE_ATTACK_RULE` | `NONE` | `duration:game` | `rule:card_cost:add`, `rule:card_play_permission:ignore_card_effect_prohibitions`, `rule:card_power:add`, `rule:movement_destination:forbid` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `master.tiamat.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMMAND_SEAL_REPLACEMENT_RULE`, `RETURN_CARD_BY_DEFINITION` | `NONE` | `duration:game` | `rule:command_seal_capacity:set` | `FACE_UP` | `NONE` | `NONE` | `core.tiamat-mother-of-all` |
+| `master.tiamat.skill.s1a` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved` | `EVENT_PLAYER_LOST_COMBAT` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS` | `NONE` | `duration:game` | `rule:starting_mana:set` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.tiamat-human-evil` |
 | `master.tokiomi.skill.ascension` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:while_source_active` | `rule:card_cost:add`, `rule:card_power:add`, `rule:status_removal_mana_cost:add`, `rule:status_total_power_per_stack:set` | `NONE` | `NONE` | `NONE` | `core.rule-marker` |
 | `master.tokiomi.skill.s1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.tokiomi-elementalist` |
 | `master.tokiomi.skill.s2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ITEM_RULE` | `NONE` | `duration:game` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-add-skill` |
@@ -1554,4 +1584,4 @@ structuredAbilityCount=556
 | `servant.xiangyu.skill.sc-xiangyu-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.xiangyu-ultimate-defense-matrix` |
 | `servant.xiangyu.skill.sc-xiangyu-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.xiangyu-martial-force` |
 | `servant.xiangyu.skill.sc-xiangyu-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.xiangyu-conquering-might` |
-| `master.tiamat.card.life-sea` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED`, `SOURCE_EVIDENCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` |
+| `master.tiamat.card.life-sea` | `SOURCE_GROUNDED` | `NONE` | `OUTPOST` | `NONE` | `NONE` | `NONE` | `NONE` | `BEAST_RESOURCE_RULE`, `CLOSE_SOURCE_CARD` | `NONE` | `duration:while_source_present` | `rule:card_play_permission:waive_eight_mana_threshold` | `NONE` | `NONE` | `NONE` | `NONE` |
