@@ -266,6 +266,21 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(mapped.specialReasons).toContain('SPECIAL_EFFECT:charge_selected_skill_attack');
   });
 
+  it('keeps structural ability reuse reviewed-special without an identity branch', () => {
+    const axes = emptyAxes();
+    axes.effect = ['ABILITY_REUSE_RULE'];
+    const mapped = mapStructuredCapabilityNeeds(
+      {
+        id: 'ability-reuse-fixture',
+        printedClause: 'fixture',
+        effects: [{ type: 'ability_reuse_rule', definitionId: 'master.fixture.skill.s1' }],
+      },
+      axes,
+    );
+    expect(mapped.requiredCapabilities).toContain('REVIEWED_SPECIAL_HANDLER');
+    expect(mapped.specialReasons).toContain('SPECIAL_EFFECT:ability_reuse_rule');
+  });
+
   it('maps a card-play requirement to Card Action semantics without granting an acceptance contract', () => {
     const axes = emptyAxes();
     axes.modifier = ['rule:card_play_requirement:require_face_down_attack'];
@@ -331,11 +346,11 @@ describe('Phase 3 full-roster capability mapping', () => {
     const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
 
     expect(inventory.capabilitySummary.totalIdentityCount).toBe(944);
-    expect(inventory.capabilitySummary.contractMappedCount).toBe(156);
-    expect(inventory.capabilitySummary.explicitBlockCount).toBe(788);
+    expect(inventory.capabilitySummary.contractMappedCount).toBe(157);
+    expect(inventory.capabilitySummary.explicitBlockCount).toBe(787);
     expect(inventory.capabilitySummary.zeroSilentFallback).toBe(true);
-    expect(catalog.coverage.mappedAbilities).toHaveLength(156);
-    expect(catalog.coverage.blockedAbilities).toHaveLength(788);
+    expect(catalog.coverage.mappedAbilities).toHaveLength(157);
+    expect(catalog.coverage.blockedAbilities).toHaveLength(787);
     expect(catalog.coverage.mappedAbilities.length + catalog.coverage.blockedAbilities.length).toBe(944);
 
     const allowedCurrentRoutes = new Set(['legacy', 'new', 'dual', 'none']);
@@ -347,8 +362,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     }
 
     expect(markdown).toContain('totalIdentityCount=944');
-    expect(markdown).toContain('contractMappedCount=156');
-    expect(markdown).toContain('explicitBlockCount=788');
+    expect(markdown).toContain('contractMappedCount=157');
+    expect(markdown).toContain('explicitBlockCount=787');
     expect(markdown).toContain('zeroSilentFallback=true');
   });
 
@@ -365,7 +380,9 @@ describe('Phase 3 full-roster capability mapping', () => {
     expect(byId.get('master.chaos.skill.s16').phase3.requiredCapabilities).toContain('GENERIC_CARD_ZONE');
     expect(byId.get('master.chaos.skill.s8').phase3.classificationRoute).toBe('SPECIAL_HANDLER_CANDIDATE');
     expect(byId.get('master.chaos.skill.s8').phase3.blockedBy).toContain('SPECIAL_EFFECT:defeat_player');
-    expect(byId.get('master.chaos.skill.s17').phase3.classificationRoute).toBe('SOURCE_EVIDENCE_REQUIRED');
+    expect(byId.get('master.chaos.skill.s17').phase3.classificationRoute).toBe('SPECIAL_HANDLER_CANDIDATE');
+    expect(byId.get('master.chaos.skill.s17').phase3.blockedBy).toContain('SPECIAL_EFFECT:ability_reuse_rule');
+    expect(byId.get('master.chaos.skill.s17').phase3.inheritedAcceptanceContracts).toEqual([]);
     expect(byId.get('master.chaos.skill.ascension').phase3.classificationRoute).toBe('READY_GENERIC_EXTENSION');
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
   });
@@ -474,7 +491,7 @@ describe('Phase 3 full-roster capability mapping', () => {
     );
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(100);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(56);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(57);
   });
 
   it('maps the nine-ID Fiore slice with four generic extensions and five reviewed-special transcend rules', () => {
@@ -528,7 +545,7 @@ describe('Phase 3 full-roster capability mapping', () => {
     );
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(100);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(56);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(57);
   });
 
   it('maps the thirteen-ID Kadoc and Hinako slice with explicit ordinary dependencies and zero inherited contracts', () => {

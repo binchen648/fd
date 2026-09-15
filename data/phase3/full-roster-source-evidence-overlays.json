@@ -5074,6 +5074,120 @@
           ]
         }
       ]
+    },
+    {
+      "id": "master.chaos.skill.s17",
+      "printedText": "选择下列一项： <每局游戏限一次>\n行动阶段：再使用一次兽王之巢的前哨阶段效果。\n行动阶段：获得2点魔力（并抽一张【兽】）。\n行动阶段：若你获胜，获得2点战果。\n行动阶段：移动至一处相邻的地点。\n（注：兽没有魔力消耗，印刷的消耗为其需要弃置的兽数量。）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_chaos.skills[s17]#line=96",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "选择下列一项： <每局游戏限一次>\n行动阶段：再使用一次兽王之巢的前哨阶段效果。\n行动阶段：获得2点魔力（并抽一张【兽】）。\n行动阶段：若你获胜，获得2点战果。\n行动阶段：移动至一处相邻的地点。\n（注：兽没有魔力消耗，印刷的消耗为其需要弃置的兽数量。）",
+        "sourceTextSha256": "789bd74e9c49c2089eec74f3a7cf0a8c42ce0a15577252004d2f0704dd18d596"
+      },
+      "referencePrintedTextSha256": "789bd74e9c49c2089eec74f3a7cf0a8c42ce0a15577252004d2f0704dd18d596",
+      "abilities": [
+        {
+          "id": "chaos.scrambled-seals.action-choice",
+          "printedClause": "行动阶段：选择下列一项：再使用一次兽王之巢的前哨阶段效果；获得2点魔力（并由兽王之巢正常触发抽一张【兽】）；若你获胜，获得2点战果；移动至一处相邻的地点。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_one",
+              "payloadKey": "scrambledSealsChoice",
+              "resultVar": "scrambledSealsChoice",
+              "options": [
+                {
+                  "id": "repeat-the-666-outpost",
+                  "effects": [
+                    {
+                      "type": "ability_reuse_rule",
+                      "definitionId": "master.chaos.skill.s1",
+                      "abilityId": "chaos.the-666.outpost-play-beast",
+                      "sourcePhase": "outpost",
+                      "executionPhase": "action",
+                      "uses": 1
+                    }
+                  ]
+                },
+                {
+                  "id": "gain-two-mana",
+                  "effects": [
+                    {
+                      "type": "gain_mana",
+                      "amount": 2,
+                      "preserveTriggeredEffects": true,
+                      "expectedTriggeredEffect": {
+                        "definitionId": "master.chaos.skill.s1",
+                        "abilityId": "chaos.the-666.mana-gain-draw",
+                        "expectedOutcome": "draw_1_beast"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "win-two-vp",
+                  "effects": [
+                    {
+                      "type": "add_status",
+                      "statusId": "chaos.scrambled-seals.win-reward",
+                      "lifecycle": {
+                        "duration": "this_round"
+                      },
+                      "effects": [
+                        {
+                          "type": "gain_victory_points",
+                          "amount": 2,
+                          "conditions": [
+                            {
+                              "type": "event_type_is",
+                              "eventType": "combat.resolved"
+                            },
+                            {
+                              "type": "event_player_won_combat"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "move-adjacent",
+                  "effects": [
+                    {
+                      "type": "move_player",
+                      "subject": "controller",
+                      "direction": "adjacent",
+                      "maxSteps": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "limit": {
+            "type": "per_game",
+            "uses": 1,
+            "scope": "this_card"
+          }
+        },
+        {
+          "id": "chaos.scrambled-seals.beast-cost-reminder",
+          "printedClause": "（注：兽没有魔力消耗，印刷的消耗为其需要弃置的兽数量。）",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "beast_cost_payment",
+              "operation": "printed_cost_is_beast_discard_count_no_mana"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
