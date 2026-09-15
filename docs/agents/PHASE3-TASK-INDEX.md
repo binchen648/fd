@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.10
+- Version: P3-TI-1.11
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2602,7 +2602,7 @@ Completion status allowed:
 ## TASK P3-FB2-03
 
 Owner: Codex B2
-Status: READY
+Status: REVIEW_ACCEPTED
 Branch: `codex/b2-p3-fb2-03-fixed-resource-component-r1`
 Base: exact P3-FB2-03 A-owned handoff commit
 Runtime baseline before handoff: `98518d02ff5e905426136ce7ae8450d646b62538`
@@ -2625,7 +2625,7 @@ Completion status allowed:
 ## TASK P3-R20
 
 Owner: Codex R
-Status: READY_AFTER_P3_FB2_03
+Status: REVIEW_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact FB2-03 candidate SHA
 
 Goal: independently review FB2-03 without fixes and without promoting broad Resource Numeric or any parent gateway.
@@ -2637,6 +2637,13 @@ Completion status allowed:
 - `GATE_A_B_CANDIDATE_ACCEPTED`
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `REJECTED`
+## Full-Roster Dispatch State After FB2-03
+
+- FB2-03 candidate `3334598fc266c158aceea6796bcae03b6f65796e` is independently accepted by R20 `a2d2fcfedefead28897dd456aaefa8160061c53b`.
+- Fixed controller Mana/VP component alignment covers `59` exact F1 identities, but only `6` have complete accepted parent routes; `53` remain later-wave blocked.
+- No F1 authoring migration occurred and raw A coverage is unchanged.
+- P3-FM01 remains undispatched; current complete same-route deployment membership remains `6/10` of its minimum.
+- Continue wave-1 Resource Numeric / Cost closure before dependent runtime waves.
 ## Prompt Templates
 
 Codex A startup prompt:
