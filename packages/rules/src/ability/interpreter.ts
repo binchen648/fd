@@ -1129,6 +1129,13 @@ export function isFixedControllerCommandSealAdjustmentComponent(effect: Authorin
   return Object.keys(effect).every((key) => ['type', 'player', 'amount', 'directive'].includes(key));
 }
 
+export function isFixedControllerManaSetComponent(effect: AuthoringAbility['effects'][number]): boolean {
+  if (str(effect.type) !== 'set_mana') return false;
+  if (effect.player !== undefined && effect.player !== 'controller') return false;
+  if (!Number.isSafeInteger(effect.amount) || Number(effect.amount) < 0) return false;
+  return Object.keys(effect).every((key) => ['type', 'player', 'amount'].includes(key));
+}
+
 function isDeploymentResourceRewardCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'forced_trigger' &&
     str(a.activation.trigger) === 'after_player_deployed_to_battlefield' &&
