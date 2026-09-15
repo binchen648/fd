@@ -17522,6 +17522,561 @@
         }
       ],
       "referencePrintedTextSha256": "d1549cf56a538a2a478e956f6de58cf3018cae45ed22f8acf9975ac153730a07"
+    },
+    {
+      "id": "master.sion.skill.ascension",
+      "printedText": "新迦勒底-此牌展示时，将【对魔力】，【战斗续行】，【单独行动】，【骑乘】，【气息遮断】与【狂战士】（力量属性，5/9，你拥有的魔力少于8点也可以使用此牌且为技能）分别加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "新迦勒底-此牌展示时，将【对魔力】，【战斗续行】，【单独行动】，【骑乘】，【气息遮断】与【狂战士】（力量属性，5/9，你拥有的魔力少于8点也可以使用此牌且为技能）分别加入你的技能区。",
+        "sourceTextSha256": "25eb4c46743cb51e34bdf6323cb8f45e7462416b54e76370774f57c0c811a7d2"
+      },
+      "abilities": [
+        {
+          "id": "sion.ascension.semantic",
+          "printedClause": "On reveal add the listed class-training EX skills to your skill zone; Berserker is a 5/9 Strength skill usable below 8 mana.",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "training_skill_overlay_rule",
+              "operation": "add_fixed_ex_skill_loadout_on_ascension",
+              "skills": [
+                "magic_resistance",
+                "battle_continuation",
+                "independent_action",
+                "riding",
+                "presence_concealment",
+                "berserker"
+              ],
+              "berserkerOverride": {
+                "attribute": "strength",
+                "cost": 5,
+                "requirement": 9,
+                "allowBelowEightMana": true
+              }
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "25eb4c46743cb51e34bdf6323cb8f45e7462416b54e76370774f57c0c811a7d2"
+    },
+    {
+      "id": "master.sion.skill.s1",
+      "printedText": "游戏开始时，以3张【迦勒底】技能分别覆盖你的从者技能。被覆盖的技能无法使用且失去所有卡牌文字效果。\n准备阶段：移除任意张你的【迦勒底】技能，然后激活其训练效果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，以3张【迦勒底】技能分别覆盖你的从者技能。被覆盖的技能无法使用且失去所有卡牌文字效果。\n准备阶段：移除任意张你的【迦勒底】技能，然后激活其训练效果。",
+        "sourceTextSha256": "40dd6a89eb81abdc5fd883e25de3bfde16cd7e24303cd803e365879f7e6b8c60"
+      },
+      "abilities": [
+        {
+          "id": "sion.s1.semantic",
+          "printedClause": "At game start cover three Servant skills with Chaldea training skills; covered skills are disabled; during preparation remove any training skills and resolve their training effects.",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "training_skill_overlay_rule",
+              "operation": "cover_three_servant_skills_and_remove_during_preparation",
+              "coverCount": 3,
+              "coveredSkillsDisabled": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "40dd6a89eb81abdc5fd883e25de3bfde16cd7e24303cd803e365879f7e6b8c60"
+    },
+    {
+      "id": "master.sion.skill.s10",
+      "printedText": "被动：当你输掉一场战斗后，将此牌移除游戏。\n完美处决-战斗阶段：令一名与你交战的对手【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s10",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "被动：当你输掉一场战斗后，将此牌移除游戏。\n完美处决-战斗阶段：令一名与你交战的对手【败北】。",
+        "sourceTextSha256": "c9a2bbbae331a22d399aab95af9c3b9196d0c43f6eabf43b366b41dcc8d10d20"
+      },
+      "abilities": [
+        {
+          "id": "sion.s10.semantic",
+          "printedClause": "When you lose a battle remove this card from the game. Battle: defeat one engaged opponent.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "battle"
+          },
+          "effects": [
+            {
+              "type": "defeat_player",
+              "target": "engaged_opponent"
+            },
+            {
+              "type": "move_source_card",
+              "toZone": "removed",
+              "condition": "after_owner_loses_battle"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c9a2bbbae331a22d399aab95af9c3b9196d0c43f6eabf43b366b41dcc8d10d20"
+    },
+    {
+      "id": "master.sion.skill.s11",
+      "printedText": "你拥有的魔力少于8点也可使用此牌。\n狂化-行动阶段：以背面朝上抽取至多三张牌并将其移除（以此方法被移除的牌不触发任何卡牌效果），你每以此法抽一张牌，此牌+4威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s11",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你拥有的魔力少于8点也可使用此牌。\n狂化-行动阶段：以背面朝上抽取至多三张牌并将其移除（以此方法被移除的牌不触发任何卡牌效果），你每以此法抽一张牌，此牌+4威力。",
+        "sourceTextSha256": "7256e7964697246b06d3861a075f2beeb906f7e4b2248ba31435393f5f28c8fc"
+      },
+      "abilities": [
+        {
+          "id": "sion.s11.semantic",
+          "printedClause": "May be used below 8 mana. Action: draw and remove up to three cards face-down without triggering them; this card gains +4 power for each.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "hidden_draw_removal_rule",
+              "operation": "face_down_draw_remove_without_effects_for_power",
+              "maxCards": 3,
+              "powerPerCard": 4,
+              "allowBelowEightMana": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7256e7964697246b06d3861a075f2beeb906f7e4b2248ba31435393f5f28c8fc"
+    },
+    {
+      "id": "master.sion.skill.s12",
+      "printedText": "残留：当你将一张牌放置入场时，你可以支付3点魔力以使其获得反转效果。此效果每回合仅对一张牌生效。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s12",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "残留：当你将一张牌放置入场时，你可以支付3点魔力以使其获得反转效果。此效果每回合仅对一张牌生效。",
+        "sourceTextSha256": "43c84de7cf6532ee6b561d8cfa35ddbdeac52850f6105684b23a82121636a892"
+      },
+      "abilities": [
+        {
+          "id": "sion.s12.semantic",
+          "printedClause": "Residual: when placing a card into play, once per round you may pay 3 mana to give it its reverse effect.",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "reverse_effect_rule",
+              "operation": "paid_once_per_round_reverse_effect_on_placed_card",
+              "manaCost": 3,
+              "limitPerRound": 1
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "43c84de7cf6532ee6b561d8cfa35ddbdeac52850f6105684b23a82121636a892"
+    },
+    {
+      "id": "master.sion.skill.s14",
+      "printedText": "神圣敕条-被动/前哨阶段：令一名其他玩家获得一枚临时的【裁决者令咒】直至回合结束。你不能在三回合之内选择同一名玩家。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s14",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "神圣敕条-被动/前哨阶段：令一名其他玩家获得一枚临时的【裁决者令咒】直至回合结束。你不能在三回合之内选择同一名玩家。",
+        "sourceTextSha256": "df1b7f58a7450a5c2b06e9a36e8e1cb7f448f66d546cea487ee1c13495147a3f"
+      },
+      "abilities": [
+        {
+          "id": "sion.s14.semantic",
+          "printedClause": "Passive/Outpost: give another player a temporary Ruler command seal until end of round; the same player cannot be selected again for three rounds.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "temporary_command_seal_rule",
+              "operation": "grant_temporary_ruler_command_seal_with_target_cooldown",
+              "duration": "round",
+              "targetCooldownRounds": 3
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "df1b7f58a7450a5c2b06e9a36e8e1cb7f448f66d546cea487ee1c13495147a3f"
+    },
+    {
+      "id": "master.sion.skill.s15",
+      "printedText": "<每局游戏限一次>\n当此牌因训练被展示后，改为获得被覆盖的技能而非替换。\n重启-被动/战斗阶段：依轮次顺序，所有位于【月之圣杯】的玩家重新部署，然后弃置【月之圣杯】上的所有事件牌并将其从游戏中移除（可以再被开启）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s15",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "<每局游戏限一次>\n当此牌因训练被展示后，改为获得被覆盖的技能而非替换。\n重启-被动/战斗阶段：依轮次顺序，所有位于【月之圣杯】的玩家重新部署，然后弃置【月之圣杯】上的所有事件牌并将其从游戏中移除（可以再被开启）。",
+        "sourceTextSha256": "3d91f2c3ff585b26d96e1cd097b90abb4bd18c5e95cc8f412ffd89747bf71aef"
+      },
+      "abilities": [
+        {
+          "id": "sion.s15.semantic",
+          "printedClause": "When revealed by training, gain the covered skill instead of replacing it. Battle: reset Moon Holy Grail by redeploying all players there in round order and discarding/removing its event cards.",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "training_skill_overlay_rule",
+              "operation": "gain_covered_skill_instead_of_replace_on_reveal"
+            },
+            {
+              "type": "moon_holy_grail_reset_rule",
+              "operation": "redeploy_players_and_remove_events_for_reopen"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "3d91f2c3ff585b26d96e1cd097b90abb4bd18c5e95cc8f412ffd89747bf71aef"
+    },
+    {
+      "id": "master.sion.skill.s16",
+      "printedText": "凝视深渊-行动阶段：你所在地点的所有玩家弃置所有手牌。你可花费2点魔力，将目标更改为\"游戏内的所有玩家\"。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s16",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "凝视深渊-行动阶段：你所在地点的所有玩家弃置所有手牌。你可花费2点魔力，将目标更改为\"游戏内的所有玩家\"。",
+        "sourceTextSha256": "82ed8c111a52acee84cc45f5c3500866eea4282e24592147fc1eda67ed32707f"
+      },
+      "abilities": [
+        {
+          "id": "sion.s16.semantic",
+          "printedClause": "Action: all players at your location discard all cards in hand; you may pay 2 mana to change the target to all players in the game.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_effect",
+              "operation": "local_or_paid_global_hand_discard"
+            },
+            {
+              "type": "pay_mana",
+              "amount": 2,
+              "appliesTo": "global_target_option"
+            },
+            {
+              "type": "remove_cards_in_zone",
+              "zone": "hand",
+              "amount": "all",
+              "targetScope": "source_location_or_all_players"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "82ed8c111a52acee84cc45f5c3500866eea4282e24592147fc1eda67ed32707f"
+    },
+    {
+      "id": "master.sion.skill.s17",
+      "printedText": "此牌需花费1枚令咒打出。\n以太湮灭-战斗阶段：关闭你战斗中所有的【幸运】。所有与你交战的对手抽2张牌并展示所有手牌和暗置攻击，然后令展示了【幸运】的所有对手【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s17",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌需花费1枚令咒打出。\n以太湮灭-战斗阶段：关闭你战斗中所有的【幸运】。所有与你交战的对手抽2张牌并展示所有手牌和暗置攻击，然后令展示了【幸运】的所有对手【败北】。",
+        "sourceTextSha256": "6382241c1f6d36581163c72c412cccf1649bdbe1cadae235692866ee1c38eb90"
+      },
+      "abilities": [
+        {
+          "id": "sion.s17.semantic",
+          "printedClause": "Costs 1 command seal to play. Battle: close all Luck in your battle; engaged opponents draw two and reveal hand plus face-down attacks, then all opponents who revealed Luck are defeated.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "battle"
+          },
+          "effects": [
+            {
+              "type": "luck_reveal_defeat_rule",
+              "operation": "close_luck_draw_reveal_and_defeat_matching_opponents",
+              "commandSealPlayCost": 1,
+              "drawCount": 2
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "6382241c1f6d36581163c72c412cccf1649bdbe1cadae235692866ee1c38eb90"
+    },
+    {
+      "id": "master.sion.skill.s2",
+      "printedText": "被动：当一名与你位于同一地点的对手首次真名解放时，你获得1点战果并将1枚【经验】放置于此牌上。\n训练：此牌上每有2枚【经验】，便永久减少此牌覆盖的技能的1点魔力消耗。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "被动：当一名与你位于同一地点的对手首次真名解放时，你获得1点战果并将1枚【经验】放置于此牌上。\n训练：此牌上每有2枚【经验】，便永久减少此牌覆盖的技能的1点魔力消耗。",
+        "sourceTextSha256": "2e26b130c87069a009496c6a23e01118d82c26e4d3851bf57b5ff529a384ec0f"
+      },
+      "abilities": [
+        {
+          "id": "sion.s2.semantic",
+          "printedClause": "When a co-located opponent first reveals their True Name, gain 1 VP and add 1 Experience; training permanently reduces the covered skill cost by 1 per two Experience.",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "training_experience_rule",
+              "operation": "true_name_experience_and_cost_training",
+              "experiencePerTrigger": 1,
+              "victoryPointsPerTrigger": 1,
+              "experiencePerCostReduction": 2,
+              "costReduction": 1
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "2e26b130c87069a009496c6a23e01118d82c26e4d3851bf57b5ff529a384ec0f"
+    },
+    {
+      "id": "master.sion.skill.s3",
+      "printedText": "被动/战斗阶段：令所有与你位于同一地点的玩家获得1点魔力。若有对手获得，将1枚【经验】放置于此牌上。\n训练：若此牌上有2枚及以上的【经验】，你可以将覆盖的技能替换为游戏外的暗置的，你从者职阶的【EX技能】。【EX技能】在卡名上同时视为原技能。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s3",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "被动/战斗阶段：令所有与你位于同一地点的玩家获得1点魔力。若有对手获得，将1枚【经验】放置于此牌上。\n训练：若此牌上有2枚及以上的【经验】，你可以将覆盖的技能替换为游戏外的暗置的，你从者职阶的【EX技能】。【EX技能】在卡名上同时视为原技能。",
+        "sourceTextSha256": "9122a32efe8b3817e40db54987356dbc032985076fa568f1b38389179d3b8e49"
+      },
+      "abilities": [
+        {
+          "id": "sion.s3.semantic",
+          "printedClause": "During battle all co-located players gain 1 mana and opponents doing so add Experience; with at least two Experience, training may replace the covered skill with a face-down class EX skill from outside the game.",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "training_experience_rule",
+              "operation": "canteen_mana_experience_and_ex_skill_replacement",
+              "manaGain": 1,
+              "experienceThreshold": 2
+            },
+            {
+              "type": "training_skill_overlay_rule",
+              "operation": "replace_covered_skill_with_class_ex_skill",
+              "replacementKeepsOriginalName": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "9122a32efe8b3817e40db54987356dbc032985076fa568f1b38389179d3b8e49"
+    },
+    {
+      "id": "master.sion.skill.s4",
+      "printedText": "被动：你的基础攻击获得+1威力。当你进行了一场争夺战后，将1枚【经验】放置于此牌上。\n训练：此牌上每有2枚经验，便永久增加此牌覆盖的技能的1点威力或将一张基础力量或敏捷，5威力的攻击加入你的手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s4",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "被动：你的基础攻击获得+1威力。当你进行了一场争夺战后，将1枚【经验】放置于此牌上。\n训练：此牌上每有2枚经验，便永久增加此牌覆盖的技能的1点威力或将一张基础力量或敏捷，5威力的攻击加入你的手牌。",
+        "sourceTextSha256": "c94202d5e108552c444ec858de7dc38b5b7f1bbe2447aff04ddddc345fe27d64"
+      },
+      "abilities": [
+        {
+          "id": "sion.s4.semantic",
+          "printedClause": "Base attacks gain +1 power and contested battles add Experience; training spends accumulated pairs of Experience to raise covered-skill power or add a base Strength/Agility 5-power attack to hand.",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "training_experience_rule",
+              "operation": "gym_power_experience_and_attack_training",
+              "baseAttackPowerBonus": 1,
+              "experiencePerContestedBattle": 1,
+              "experiencePerUpgrade": 2,
+              "powerUpgrade": 1,
+              "createdBaseAttackPower": 5
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c94202d5e108552c444ec858de7dc38b5b7f1bbe2447aff04ddddc345fe27d64"
+    },
+    {
+      "id": "master.sion.skill.s5",
+      "printedText": "魔术免疫-战斗阶段：将同一战场所有对手的魔术属性攻击威力以及通过令咒获得的威力变为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s5",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "魔术免疫-战斗阶段：将同一战场所有对手的魔术属性攻击威力以及通过令咒获得的威力变为0。",
+        "sourceTextSha256": "177b76d8d447463c6046dc322441a9e1c70350ea99bd3bedbd49b4fac77b4745"
+      },
+      "abilities": [
+        {
+          "id": "sion.s5.semantic",
+          "printedClause": "Battle: set all opponents magic-attribute attack power and command-seal-derived power in this battlefield to 0.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "battle"
+          },
+          "effects": [
+            {
+              "type": "magic_immunity_rule",
+              "operation": "zero_opponent_magic_and_command_seal_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "177b76d8d447463c6046dc322441a9e1c70350ea99bd3bedbd49b4fac77b4745"
+    },
+    {
+      "id": "master.sion.skill.s6",
+      "printedText": "追猎-行动阶段：重新部署至一处战场或花费1点魔力，移动至侦查。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s6",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "追猎-行动阶段：重新部署至一处战场或花费1点魔力，移动至侦查。",
+        "sourceTextSha256": "c18c4c5bcd6a2996af3d6de8f21020f096bdb2f47dd375ab0e2cdd9adb4708ed"
+      },
+      "abilities": [
+        {
+          "id": "sion.s6.semantic",
+          "printedClause": "Action: redeploy to a battlefield, or pay 1 mana to move to scouting.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_effect",
+              "operation": "choose_redeploy_or_paid_scout_move"
+            },
+            {
+              "type": "move_player",
+              "destination": "battlefield_or_scouting"
+            },
+            {
+              "type": "pay_mana",
+              "amount": 1,
+              "appliesTo": "scouting_option"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c18c4c5bcd6a2996af3d6de8f21020f096bdb2f47dd375ab0e2cdd9adb4708ed"
+    },
+    {
+      "id": "master.sion.skill.s7",
+      "printedText": "远隔操作-行动阶段：地利效果翻倍。\n战斗阶段：若你赢得战斗，获得2点战果。如果你本回合战斗失败，失去3点战果，此效果不能被任何方式阻止。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s7",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "远隔操作-行动阶段：地利效果翻倍。\n战斗阶段：若你赢得战斗，获得2点战果。如果你本回合战斗失败，失去3点战果，此效果不能被任何方式阻止。",
+        "sourceTextSha256": "a71fa922e47fc21aff949b596aba56908b4e26c6e512eb283a7b62e355ea3b8b"
+      },
+      "abilities": [
+        {
+          "id": "sion.s7.semantic",
+          "printedClause": "Action: double terrain benefit. Battle: on win gain 2 VP; on loss lose 3 VP and that loss cannot be prevented.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "terrain_effect_multiplier_rule",
+              "operation": "double_terrain_effect",
+              "multiplier": 2
+            },
+            {
+              "type": "unpreventable_result_rule",
+              "operation": "battle_win_gain_two_loss_three_unpreventable",
+              "winVictoryPoints": 2,
+              "lossVictoryPoints": 3
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "a71fa922e47fc21aff949b596aba56908b4e26c6e512eb283a7b62e355ea3b8b"
+    },
+    {
+      "id": "master.sion.skill.s8",
+      "printedText": "延时召唤-残留。\n行动阶段：从手牌中追加打出至多3张基本威力3及以下的牌，在你使用此效果的回合结束关闭此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s8",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "延时召唤-残留。\n行动阶段：从手牌中追加打出至多3张基本威力3及以下的牌，在你使用此效果的回合结束关闭此牌。",
+        "sourceTextSha256": "fea67482cd596c3adb781f454bba5c025bb07103739e613b9bc427faabeca12b"
+      },
+      "abilities": [
+        {
+          "id": "sion.s8.semantic",
+          "printedClause": "Residual. Action: additionally play up to three cards from hand with printed base power 3 or less; close this card at end of the turn this effect is used.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "batch_card_use_rule",
+              "operation": "additional_play_up_to_three_low_base_power_cards",
+              "maxCards": 3,
+              "maxPrintedBasePower": 3,
+              "closeSourceAtTurnEnd": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "fea67482cd596c3adb781f454bba5c025bb07103739e613b9bc427faabeca12b"
+    },
+    {
+      "id": "master.sion.skill.s9",
+      "printedText": "领域扩张-残留：当你部署于魔术工房时，获得X点合计威力和战果。X初始为0，每当你赢得一场战斗，X永久增加1点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_sion.s9",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "领域扩张-残留：当你部署于魔术工房时，获得X点合计威力和战果。X初始为0，每当你赢得一场战斗，X永久增加1点。",
+        "sourceTextSha256": "c77ada71896665f9ef44c7aa8f8201478c983cd33cc520141deb1c9908bd39ea"
+      },
+      "abilities": [
+        {
+          "id": "sion.s9.semantic",
+          "printedClause": "Residual at Magic Workshop: gain X total power and VP; X starts at 0 and permanently increases by 1 whenever you win a battle.",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "growth_counter_rule",
+              "operation": "workshop_win_growth",
+              "initialValue": 0,
+              "incrementPerWin": 1,
+              "rewards": [
+                "total_power",
+                "victory_points"
+              ]
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c77ada71896665f9ef44c7aa8f8201478c983cd33cc520141deb1c9908bd39ea"
     }
   ]
 }

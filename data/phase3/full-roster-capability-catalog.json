@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 386,
-    "explicitBlockCount": 558,
+    "contractMappedCount": 403,
+    "explicitBlockCount": 541,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 198,
-      "SPECIAL_HANDLER_CANDIDATE": 186,
+      "READY_GENERIC_EXTENSION": 200,
+      "SPECIAL_HANDLER_CANDIDATE": 201,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 558,
+      "SOURCE_EVIDENCE_REQUIRED": 541,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -3006,6 +3006,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.sion.skill.s10",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.sion.skill.s16",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.taiga.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -3580,6 +3588,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.sion.skill.s10",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s16",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.taiga.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3760,6 +3776,8 @@
         "master.shirou-meal.skill.ascension",
         "master.shishigou.skill.s1",
         "master.sieg.skill.s1a",
+        "master.sion.skill.s10",
+        "master.sion.skill.s16",
         "master.taiga.skill.ascension",
         "master.tiamat.skill.s1",
         "master.twice.skill.s1",
@@ -4124,6 +4142,8 @@
         "master.peperoncino.skill.s1b",
         "master.shiki-tohno.skill.s2",
         "master.sion.skill.s13",
+        "master.sion.skill.s16",
+        "master.sion.skill.s6",
         "master.wallachia.skill.s1",
         "master.zouken.skill.ascension",
         "master.zouken.skill.s3",
@@ -4714,6 +4734,66 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.sion.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s10",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s11",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s12",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s14",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s15",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s17",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s8",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s9",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.taiga.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5278,6 +5358,7 @@
         "master.reines.skill.s3",
         "master.ryuunosuke.skill.s1",
         "master.shishigou.skill.s2",
+        "master.sion.skill.s6",
         "master.tiamat.skill.ascension",
         "master.zouken.skill.ascension",
         "master.zouken.skill.s4",
@@ -7776,6 +7857,21 @@
         "master.shishigou.skill.s2",
         "master.shishigou.skill.s3",
         "master.sieg.skill.s2",
+        "master.sion.skill.ascension",
+        "master.sion.skill.s1",
+        "master.sion.skill.s10",
+        "master.sion.skill.s11",
+        "master.sion.skill.s12",
+        "master.sion.skill.s14",
+        "master.sion.skill.s15",
+        "master.sion.skill.s17",
+        "master.sion.skill.s2",
+        "master.sion.skill.s3",
+        "master.sion.skill.s4",
+        "master.sion.skill.s5",
+        "master.sion.skill.s7",
+        "master.sion.skill.s8",
+        "master.sion.skill.s9",
         "master.taiga.skill.ascension",
         "master.tiamat.card.life-sea",
         "master.tiamat.skill.ascension",
@@ -8490,6 +8586,66 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.sion.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s10",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s11",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s12",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s14",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s15",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s17",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s8",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.sion.skill.s9",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.taiga.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -8934,7 +9090,24 @@
       "master.sieg.skill.s1",
       "master.sieg.skill.s1a",
       "master.sieg.skill.s2",
+      "master.sion.skill.ascension",
+      "master.sion.skill.s1",
+      "master.sion.skill.s10",
+      "master.sion.skill.s11",
+      "master.sion.skill.s12",
       "master.sion.skill.s13",
+      "master.sion.skill.s14",
+      "master.sion.skill.s15",
+      "master.sion.skill.s16",
+      "master.sion.skill.s17",
+      "master.sion.skill.s2",
+      "master.sion.skill.s3",
+      "master.sion.skill.s4",
+      "master.sion.skill.s5",
+      "master.sion.skill.s6",
+      "master.sion.skill.s7",
+      "master.sion.skill.s8",
+      "master.sion.skill.s9",
       "master.taiga.skill.ascension",
       "master.taiga.skill.s1",
       "master.taiga.skill.s1a",
@@ -9034,125 +9207,6 @@
       "servant.valkyrie.skill.sc-valkyrie-3"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "master.sion.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s10",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s11",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s12",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s14",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s15",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s16",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s17",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s5",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s6",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s7",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s8",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.sion.skill.s9",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.abigail.skill.sc-abigail-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -13095,6 +13149,21 @@
       "master.shishigou.skill.s2",
       "master.shishigou.skill.s3",
       "master.sieg.skill.s2",
+      "master.sion.skill.ascension",
+      "master.sion.skill.s1",
+      "master.sion.skill.s10",
+      "master.sion.skill.s11",
+      "master.sion.skill.s12",
+      "master.sion.skill.s14",
+      "master.sion.skill.s15",
+      "master.sion.skill.s17",
+      "master.sion.skill.s2",
+      "master.sion.skill.s3",
+      "master.sion.skill.s4",
+      "master.sion.skill.s5",
+      "master.sion.skill.s7",
+      "master.sion.skill.s8",
+      "master.sion.skill.s9",
       "master.taiga.skill.ascension",
       "master.tiamat.card.life-sea",
       "master.tiamat.skill.ascension",
