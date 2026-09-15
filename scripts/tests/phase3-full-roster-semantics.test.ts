@@ -1353,6 +1353,14 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.koyanskaya.skill.sc-koyanskaya-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'cargo_box_rule'})])}));
   });
 
+  it('grounds the seven-ID Sherlock slice from the exact berserker/extra development snapshot', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const slice = overlays.filter((card) => card.id.startsWith('servant.sherlock.skill.'));
+    expect(slice).toHaveLength(7);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.document === 'Fate_Domination-开发版/batch_berserker_extra.js' && card.source.sourceFileSha256 === '6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.every((card) => card.abilities.some((ability) => ability.effects?.some((effect:any) => effect.type === 'deduction_rule')))).toBe(true);
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1406,10 +1414,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 447,
-      blockedCount: 497,
+      sourceGroundedCount: 454,
+      blockedCount: 490,
       unclassifiedCount: 0,
-      structuredAbilityCount: 725,
+      structuredAbilityCount: 732,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

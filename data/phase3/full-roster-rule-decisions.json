@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 497,
-    "coveredBlockedIdentityCount": 497,
+    "blockedIdentityCount": 490,
+    "coveredBlockedIdentityCount": 490,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 1,
@@ -452,13 +452,6 @@
         "servant.shakespeare.skill.sc-shakespeare-1",
         "servant.shakespeare.skill.sc-shakespeare-2",
         "servant.shakespeare.skill.sc-shakespeare-3",
-        "servant.sherlock.skill.sc-sherlock-1",
-        "servant.sherlock.skill.sc-sherlock-2",
-        "servant.sherlock.skill.sc-sherlock-3",
-        "servant.sherlock.skill.sc-sherlock-4",
-        "servant.sherlock.skill.sc-sherlock-5",
-        "servant.sherlock.skill.sc-sherlock-6",
-        "servant.sherlock.skill.sc-sherlock-7",
         "servant.shuten.skill.sc-shuten-1",
         "servant.shuten.skill.sc-shuten-2",
         "servant.shuten.skill.sc-shuten-3",
@@ -10093,136 +10086,6 @@
           "sha256": "5831781219110a235ee4792a8cbafcd994b0be0b91eeb90e66356a3cffea7921"
         },
         {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/裁定者/英文版/夏洛克·福尔摩斯.htm"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.sherlock/夏洛克·福尔摩斯"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[170].skills[0].text#line=1",
-          "sha256": "801e798c4387355647df571596a44c56d18f455ebb95b04f948846b0c6478235"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/裁定者/英文版/夏洛克·福尔摩斯.htm"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.sherlock/夏洛克·福尔摩斯"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[170].skills[1].text#line=1",
-          "sha256": "d0ef5af21059c0f7922efa2fdebc6d180709c0851f358215343558ee0a4b5dd3"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[170].skills[1].text#line=2",
-          "sha256": "6a7392b72c2cf04c6243288f33c50a19830c15b11363a81616b782e452aed6a9"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[170].skills[1].text#line=3",
-          "sha256": "53b38d6d055022df3e0acabbacf8bc1320e665584280b401af580621ae1c769c"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/裁定者/英文版/夏洛克·福尔摩斯.htm"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.sherlock/夏洛克·福尔摩斯"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[170].skills[2].text#line=1",
-          "sha256": "c2d8ca92bef1e5114ebf02157eff53c4d37db67889fbfb034542dee367fca7a8"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[170].skills[2].text#line=2",
-          "sha256": "198eb021e3da5de82226c3d563cc96b4b98059872726b2446fe7a5b9a2eb7d65"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-4",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/裁定者/英文版/夏洛克·福尔摩斯.htm"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-4",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.sherlock/夏洛克·福尔摩斯"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[170].skills[3].text#line=1",
-          "sha256": "ec249b0e2b49c2da14f498a4375a097f0ae5e266065225f0a6be9631e13ae740"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-5",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/裁定者/英文版/夏洛克·福尔摩斯.htm"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-5",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.sherlock/夏洛克·福尔摩斯"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[170].skills[4].text#line=1",
-          "sha256": "d9296538f73286788fb532b73131bad58f991e40bc6b0f004d54b29f5c35e70a"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-6",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/裁定者/英文版/夏洛克·福尔摩斯.htm"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-6",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.sherlock/夏洛克·福尔摩斯"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-6",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[170].skills[5].text#line=1",
-          "sha256": "dec20ca5a482f117e696babaae09b6977a02244df5497250a3b11964b2f1f7ae"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-7",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/裁定者/英文版/夏洛克·福尔摩斯.htm"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-7",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.sherlock/夏洛克·福尔摩斯"
-        },
-        {
-          "abilityId": "servant.sherlock.skill.sc-sherlock-7",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[170].skills[6].text#line=1",
-          "sha256": "f0e6f38da6ea0eb0d3aee6e175c187d607b067ca413b983eace1cb2f2fa320bc"
-        },
-        {
           "abilityId": "servant.shuten.skill.sc-shuten-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/暗匿者/英文版/酒吞童子1.htm"
@@ -11544,10 +11407,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 190,
-          "specific_handler": 307
+          "shared_handler": 186,
+          "specific_handler": 304
         },
-        "handlerCount": 344,
+        "handlerCount": 341,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."

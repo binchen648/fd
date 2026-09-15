@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 447,
-    "explicitBlockCount": 497,
+    "contractMappedCount": 454,
+    "explicitBlockCount": 490,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -25,9 +25,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
       "READY_GENERIC_EXTENSION": 209,
-      "SPECIAL_HANDLER_CANDIDATE": 236,
+      "SPECIAL_HANDLER_CANDIDATE": 243,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 497,
+      "SOURCE_EVIDENCE_REQUIRED": 490,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -5199,6 +5199,34 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.valkyrie.skill.sc-valkyrie-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5910,7 +5938,8 @@
         "servant.mechaeli.skill.sc-mechaeli-2",
         "servant.mephisto.skill.sc-mephisto-2",
         "servant.mozart.skill.sc-mozart-1",
-        "servant.ozymandias.skill.sc-ozymandias-2"
+        "servant.ozymandias.skill.sc-ozymandias-2",
+        "servant.sherlock.skill.sc-sherlock-2"
       ],
       "partialAbilities": [],
       "skippedAbilities": []
@@ -6047,6 +6076,7 @@
         "servant.nero.skill.sc-nero-1",
         "servant.nobunaga.skill.sc-nobunaga-3",
         "servant.ozymandias.skill.sc-ozymandias-2",
+        "servant.sherlock.skill.sc-sherlock-2",
         "servant.spartacus.skill.sc-spartacus-2",
         "servant.stheno.skill.sc-stheno-2"
       ],
@@ -7698,6 +7728,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.spartacus.skill.sc-spartacus-2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -8325,6 +8359,13 @@
         "servant.koyanskaya.skill.sc-koyanskaya-6",
         "servant.medusa.skill.sc-medusa-2",
         "servant.mephisto.skill.sc-mephisto-2",
+        "servant.sherlock.skill.sc-sherlock-1",
+        "servant.sherlock.skill.sc-sherlock-2",
+        "servant.sherlock.skill.sc-sherlock-3",
+        "servant.sherlock.skill.sc-sherlock-4",
+        "servant.sherlock.skill.sc-sherlock-5",
+        "servant.sherlock.skill.sc-sherlock-6",
+        "servant.sherlock.skill.sc-sherlock-7",
         "servant.valkyrie.skill.sc-valkyrie-3"
       ],
       "partialAbilities": [],
@@ -9352,6 +9393,34 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.sherlock.skill.sc-sherlock-7",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.valkyrie.skill.sc-valkyrie-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -9807,6 +9876,13 @@
       "servant.parvati.skill.sc-parvati-3",
       "servant.roberts.skill.sc-roberts-1",
       "servant.roberts.skill.sc-roberts-2",
+      "servant.sherlock.skill.sc-sherlock-1",
+      "servant.sherlock.skill.sc-sherlock-2",
+      "servant.sherlock.skill.sc-sherlock-3",
+      "servant.sherlock.skill.sc-sherlock-4",
+      "servant.sherlock.skill.sc-sherlock-5",
+      "servant.sherlock.skill.sc-sherlock-6",
+      "servant.sherlock.skill.sc-sherlock-7",
       "servant.siegfried.skill.sc-siegfried-2",
       "servant.spartacus.skill.sc-spartacus-2",
       "servant.stheno.skill.sc-stheno-2",
@@ -12845,55 +12921,6 @@
         ]
       },
       {
-        "abilityId": "servant.sherlock.skill.sc-sherlock-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sherlock.skill.sc-sherlock-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sherlock.skill.sc-sherlock-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sherlock.skill.sc-sherlock-4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sherlock.skill.sc-sherlock-5",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sherlock.skill.sc-sherlock-6",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.sherlock.skill.sc-sherlock-7",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "servant.shuten.skill.sc-shuten-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -13529,6 +13556,13 @@
       "servant.koyanskaya.skill.sc-koyanskaya-6",
       "servant.medusa.skill.sc-medusa-2",
       "servant.mephisto.skill.sc-mephisto-2",
+      "servant.sherlock.skill.sc-sherlock-1",
+      "servant.sherlock.skill.sc-sherlock-2",
+      "servant.sherlock.skill.sc-sherlock-3",
+      "servant.sherlock.skill.sc-sherlock-4",
+      "servant.sherlock.skill.sc-sherlock-5",
+      "servant.sherlock.skill.sc-sherlock-6",
+      "servant.sherlock.skill.sc-sherlock-7",
       "servant.valkyrie.skill.sc-valkyrie-3"
     ]
   }
