@@ -9,7 +9,7 @@
     "runtimeRequestCount": 23,
     "genericCapabilityRequestCount": 21,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 154
+    "affectedIdentityCount": 162
   },
   "requests": [
     {
@@ -18,11 +18,39 @@
       "capabilityId": "CARD_ACTION_ADD_TO_ATTACK",
       "mechanicFamily": "CARD_ACTION_SEMANTICS",
       "affectedAbilityIds": [
+        "master.arcueid.skill.s2",
         "master.artoira.skill.s1",
         "master.bazett.skill.s5",
         "servant.kagekiyo.skill.sc-kagekiyo-2"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.skills[s2]#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/s2"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=2",
+          "sha256": "7371bcf4ffed9cac0f6081fb0f1de40f3d0de91a8adef38ea98df607372c1149"
+        },
         {
           "abilityId": "master.artoira.skill.s1",
           "document": "Fate_Domination-开发版",
@@ -131,9 +159,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 1,
-          "specific_handler": 2
+          "specific_handler": 3
         },
-        "handlerCount": 3,
+        "handlerCount": 4,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -146,6 +174,7 @@
       "capabilityId": "CARD_ACTION_CLOSE",
       "mechanicFamily": "CARD_ACTION_SEMANTICS",
       "affectedAbilityIds": [
+        "master.arcueid.skill.s2",
         "master.chaos.skill.s11",
         "servant.chloe.skill.sc-chloe-1",
         "servant.darius.skill.sc-darius-1",
@@ -160,6 +189,33 @@
         "servant.siegfried.skill.sc-siegfried-2"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.skills[s2]#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/s2"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=2",
+          "sha256": "7371bcf4ffed9cac0f6081fb0f1de40f3d0de91a8adef38ea98df607372c1149"
+        },
         {
           "abilityId": "master.chaos.skill.s11",
           "document": "Fate/Domination Wiki",
@@ -522,9 +578,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 12
+          "shared_handler": 12,
+          "specific_handler": 1
         },
-        "handlerCount": 2,
+        "handlerCount": 3,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -602,6 +659,7 @@
       "capabilityId": "CARD_ACTION_PLAY",
       "mechanicFamily": "CARD_ACTION_SEMANTICS",
       "affectedAbilityIds": [
+        "master.arcueid.skill.ascension",
         "master.chaos.skill.s1",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
@@ -618,6 +676,39 @@
         "servant.parvati.skill.sc-parvati-3"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.ascensionSkill#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/ascension"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=2",
+          "sha256": "31c7593fd895c5a325cafad79e25b703e6e3066776ebee7dab1ccd4fedcefa9b"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=3",
+          "sha256": "6f52b36f241f84e56909a29fda3420d1062155448949e349f46d5714a2fd5261"
+        },
         {
           "abilityId": "master.chaos.skill.s1",
           "document": "Fate/Domination Wiki",
@@ -1064,7 +1155,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 11,
+          "shared_handler": 12,
           "specific_handler": 3
         },
         "handlerCount": 7,
@@ -1080,6 +1171,7 @@
       "capabilityId": "GENERIC_BATTLE_INTEGRATION",
       "mechanicFamily": "BATTLE_RESULT",
       "affectedAbilityIds": [
+        "master.amakusa.skill.s3",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1a",
         "master.artoira.skill.ascension",
@@ -1092,6 +1184,7 @@
         "master.chaos.skill.s7",
         "master.ciel.skill.s2",
         "master.ciel.skill.s3",
+        "master.darnic.skill.ascension",
         "master.darnic.skill.s1a",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
@@ -1160,6 +1253,27 @@
         "servant.stheno.skill.sc-stheno-2"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.amakusa/天草四郎"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_amakusa.skills[s3]#line=256"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.amakusa/s3"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[3].text#line=1",
+          "sha256": "ba05904d946c26976bab8947143a407054d20c1a84eae5c6ab7dd08a91b6a1f3"
+        },
         {
           "abilityId": "master.araya.skill.s1a",
           "document": "Fate_Domination-开发版",
@@ -1471,6 +1585,39 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[39].abilities[0].printedClause",
           "sha256": "4e20d56d0540c3ae75b21f62b8277b79ba27aeeeeb7b503b91c384c318f3de19"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.darnic/达尼克·普雷斯通"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_darnic.ascensionSkill#line=200"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.darnic/ascension"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=2",
+          "sha256": "479ad1752f3efa593a4c0ce34b0a5d8bff0bf648c7c068f8801d2af1aefb1eca"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=3",
+          "sha256": "563819fc89b15b9e4932695f244c866a8eb2355b9ee19613016d95b628435558"
         },
         {
           "abilityId": "master.darnic.skill.s1a",
@@ -3317,9 +3464,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 57,
-          "specific_handler": 21
+          "specific_handler": 23
         },
-        "handlerCount": 29,
+        "handlerCount": 31,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -3498,7 +3645,9 @@
       "mechanicFamily": "CARD_ZONE",
       "affectedAbilityIds": [
         "master.araya.skill.s1a",
+        "master.arcueid.skill.ascension",
         "master.arcueid.skill.s1",
+        "master.arcueid.skill.s2",
         "master.artoira.skill.ascension",
         "master.artoira.skill.s1",
         "master.bazett.skill.s4",
@@ -3510,6 +3659,7 @@
         "master.chaos.skill.s4",
         "master.chaos.skill.s6",
         "master.ciel.skill.s1b",
+        "master.darnic.skill.ascension",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
         "master.goredolf.skill.s1",
@@ -3556,6 +3706,39 @@
           "sha256": "5e766d3894dc8f0032c61347446570fd36e55fb24c5d660f4cb1276cd977bd16"
         },
         {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.ascensionSkill#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/ascension"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=2",
+          "sha256": "31c7593fd895c5a325cafad79e25b703e6e3066776ebee7dab1ccd4fedcefa9b"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=3",
+          "sha256": "6f52b36f241f84e56909a29fda3420d1062155448949e349f46d5714a2fd5261"
+        },
+        {
           "abilityId": "master.arcueid.skill.s1",
           "document": "Fate_Domination-开发版",
           "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
@@ -3581,6 +3764,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[29].abilities[1].printedClause",
           "sha256": "92a73ecc5f991a33e1004ed6f0ed7c572ad41a1bbcdefa6072a0311046aaff49"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.skills[s2]#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/s2"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=2",
+          "sha256": "7371bcf4ffed9cac0f6081fb0f1de40f3d0de91a8adef38ea98df607372c1149"
         },
         {
           "abilityId": "master.artoira.skill.ascension",
@@ -3872,6 +4082,39 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[15].abilities[0].printedClause",
           "sha256": "98a4becbbedd9d11ae2b93ea1b192b781a6943fb0ff62e1dbff4bb9697bbb6fc"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.darnic/达尼克·普雷斯通"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_darnic.ascensionSkill#line=200"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.darnic/ascension"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=2",
+          "sha256": "479ad1752f3efa593a4c0ce34b0a5d8bff0bf648c7c068f8801d2af1aefb1eca"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=3",
+          "sha256": "563819fc89b15b9e4932695f244c866a8eb2355b9ee19613016d95b628435558"
         },
         {
           "abilityId": "master.fiore.skill.s5",
@@ -4439,10 +4682,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 28,
-          "specific_handler": 7
+          "shared_handler": 29,
+          "specific_handler": 9
         },
-        "handlerCount": 11,
+        "handlerCount": 13,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -4455,12 +4698,16 @@
       "capabilityId": "GENERIC_CONDITION_EVALUATION",
       "mechanicFamily": "CONDITION",
       "affectedAbilityIds": [
+        "master.amakusa.skill.ascension",
         "master.amakusa.skill.s1",
         "master.amakusa.skill.s1a",
         "master.amakusa.skill.s2",
+        "master.amakusa.skill.s3",
         "master.araya.skill.s1a",
+        "master.arcueid.skill.ascension",
         "master.arcueid.skill.s1",
         "master.arcueid.skill.s1a",
+        "master.arcueid.skill.s2",
         "master.arcueid.skill.s3",
         "master.artoira.skill.ascension",
         "master.artoira.skill.s1",
@@ -4480,6 +4727,7 @@
         "master.ciel.skill.s1b",
         "master.ciel.skill.s2",
         "master.ciel.skill.s3",
+        "master.darnic.skill.ascension",
         "master.darnic.skill.s1a",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
@@ -4487,6 +4735,8 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fiore.skill.s7",
+        "master.fou.skill.ascension",
+        "master.fou.skill.s1",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s1a",
@@ -4572,6 +4822,33 @@
       ],
       "sourceReferences": [
         {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.amakusa/天草四郎"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_amakusa.ascensionSkill#line=256"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.amakusa/ascension"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[4].text#line=1",
+          "sha256": "ff19d8ff5b8dc9affc2365868387f69be82ead7f0babbf1964282ac99dccf0e4"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[4].text#line=2",
+          "sha256": "461ded53db38af50c312962831f0f68300418810ec41567f5dfd14c0f7f83a99"
+        },
+        {
           "abilityId": "master.amakusa.skill.s1",
           "document": "Fate_Domination-开发版",
           "locator": "master.amakusa/天草四郎"
@@ -4641,6 +4918,27 @@
           "sha256": "8ffc8c511cb60a8fdcbe48639033c36c4b8dcfc123474571e82337cbbf1c920c"
         },
         {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.amakusa/天草四郎"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_amakusa.skills[s3]#line=256"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.amakusa/s3"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[3].text#line=1",
+          "sha256": "ba05904d946c26976bab8947143a407054d20c1a84eae5c6ab7dd08a91b6a1f3"
+        },
+        {
           "abilityId": "master.araya.skill.s1a",
           "document": "Fate_Domination-开发版",
           "locator": "master.araya/荒耶宗莲"
@@ -4660,6 +4958,39 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[19].abilities[0].printedClause",
           "sha256": "5e766d3894dc8f0032c61347446570fd36e55fb24c5d660f4cb1276cd977bd16"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.ascensionSkill#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/ascension"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=2",
+          "sha256": "31c7593fd895c5a325cafad79e25b703e6e3066776ebee7dab1ccd4fedcefa9b"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=3",
+          "sha256": "6f52b36f241f84e56909a29fda3420d1062155448949e349f46d5714a2fd5261"
         },
         {
           "abilityId": "master.arcueid.skill.s1",
@@ -4720,6 +5051,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[40].abilities[2].printedClause",
           "sha256": "e8712a4847cf27c66704c85af0403eaf8673e96f4810769a3feced081b216581"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.skills[s2]#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/s2"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=2",
+          "sha256": "7371bcf4ffed9cac0f6081fb0f1de40f3d0de91a8adef38ea98df607372c1149"
         },
         {
           "abilityId": "master.arcueid.skill.s3",
@@ -5217,6 +5575,39 @@
           "sha256": "4e20d56d0540c3ae75b21f62b8277b79ba27aeeeeb7b503b91c384c318f3de19"
         },
         {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.darnic/达尼克·普雷斯通"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_darnic.ascensionSkill#line=200"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.darnic/ascension"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=2",
+          "sha256": "479ad1752f3efa593a4c0ce34b0a5d8bff0bf648c7c068f8801d2af1aefb1eca"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=3",
+          "sha256": "563819fc89b15b9e4932695f244c866a8eb2355b9ee19613016d95b628435558"
+        },
+        {
           "abilityId": "master.darnic.skill.s1a",
           "document": "Fate_Domination-开发版",
           "locator": "master.darnic/达尼克·普雷斯通"
@@ -5410,6 +5801,48 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[42].skills[7].text#line=3",
           "sha256": "0ee60f412a4fad9ed8ab577b5fee3bcdb97049af10b79c53bdfd29cd70a784ce"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fou/芙芙"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fou.ascensionSkill#line=310"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.fou/ascension"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[53].skills[1].text#line=1",
+          "sha256": "391de328a01458eff6795a7209a6ca0cc2da3f2fe8d46a87753dfeccb7002fa0"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fou/芙芙"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fou.skills[s1]#line=310"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.fou/s1"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[53].skills[0].text#line=1",
+          "sha256": "35c61ccf59fdfa81dd1f444314d13fe7a8d4ac0f8f63dca07e659cc6d058a909"
         },
         {
           "abilityId": "master.goredolf.skill.ascension",
@@ -7585,10 +8018,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 92,
-          "specific_handler": 22
+          "shared_handler": 93,
+          "specific_handler": 28
         },
-        "handlerCount": 29,
+        "handlerCount": 35,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -7601,8 +8034,10 @@
       "capabilityId": "GENERIC_COST_PAYMENT",
       "mechanicFamily": "COST_PAYMENT",
       "affectedAbilityIds": [
+        "master.amakusa.skill.s3",
         "master.chaos.skill.ascension",
         "master.chaos.skill.s1",
+        "master.darnic.skill.ascension",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
         "master.hinako.skill.ascension",
@@ -7614,6 +8049,27 @@
         "servant.roberts.skill.sc-roberts-2"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.amakusa/天草四郎"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_amakusa.skills[s3]#line=256"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.amakusa/s3"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[3].text#line=1",
+          "sha256": "ba05904d946c26976bab8947143a407054d20c1a84eae5c6ab7dd08a91b6a1f3"
+        },
         {
           "abilityId": "master.chaos.skill.ascension",
           "document": "Fate/Domination Wiki",
@@ -7667,6 +8123,39 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[25].skills[0].text#line=2",
           "sha256": "46eaee97dde7fb4ed80123ad78f1fdc889c3974ea425a1fd916d0819ae4b68ab"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.darnic/达尼克·普雷斯通"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_darnic.ascensionSkill#line=200"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.darnic/ascension"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=2",
+          "sha256": "479ad1752f3efa593a4c0ce34b0a5d8bff0bf648c7c068f8801d2af1aefb1eca"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=3",
+          "sha256": "563819fc89b15b9e4932695f244c866a8eb2355b9ee19613016d95b628435558"
         },
         {
           "abilityId": "master.fiore.skill.s5",
@@ -7938,9 +8427,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 7,
-          "specific_handler": 4
+          "specific_handler": 6
         },
-        "handlerCount": 8,
+        "handlerCount": 10,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -9033,7 +9522,10 @@
       "affectedAbilityIds": [
         "master.akasha.skill.s1",
         "master.amakusa.skill.s1a",
+        "master.amakusa.skill.s3",
+        "master.arcueid.skill.ascension",
         "master.arcueid.skill.s1a",
+        "master.arcueid.skill.s2",
         "master.bazett.skill.s1b",
         "master.bazett.skill.s1c",
         "master.bazett.skill.s2",
@@ -9042,9 +9534,13 @@
         "master.chaos.skill.s4",
         "master.chaos.skill.s5",
         "master.ciel.skill.s3",
+        "master.darnic.skill.ascension",
+        "master.darnic.skill.s1",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
         "master.fiore.skill.s6",
+        "master.fou.skill.ascension",
+        "master.fou.skill.s1",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.ascension",
@@ -9132,6 +9628,60 @@
           "sha256": "e7bd371c3bcf2d0f86f2995ac118643c9a929b17d698fa66528889ccb03f503c"
         },
         {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.amakusa/天草四郎"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_amakusa.skills[s3]#line=256"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.amakusa/s3"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[3].text#line=1",
+          "sha256": "ba05904d946c26976bab8947143a407054d20c1a84eae5c6ab7dd08a91b6a1f3"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.ascensionSkill#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/ascension"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=2",
+          "sha256": "31c7593fd895c5a325cafad79e25b703e6e3066776ebee7dab1ccd4fedcefa9b"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=3",
+          "sha256": "6f52b36f241f84e56909a29fda3420d1062155448949e349f46d5714a2fd5261"
+        },
+        {
           "abilityId": "master.arcueid.skill.s1a",
           "document": "Fate_Domination-开发版",
           "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
@@ -9163,6 +9713,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[40].abilities[2].printedClause",
           "sha256": "e8712a4847cf27c66704c85af0403eaf8673e96f4810769a3feced081b216581"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.skills[s2]#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/s2"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=2",
+          "sha256": "7371bcf4ffed9cac0f6081fb0f1de40f3d0de91a8adef38ea98df607372c1149"
         },
         {
           "abilityId": "master.bazett.skill.s1b",
@@ -9363,6 +9940,60 @@
           "sha256": "4e20d56d0540c3ae75b21f62b8277b79ba27aeeeeb7b503b91c384c318f3de19"
         },
         {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.darnic/达尼克·普雷斯通"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_darnic.ascensionSkill#line=200"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.darnic/ascension"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=2",
+          "sha256": "479ad1752f3efa593a4c0ce34b0a5d8bff0bf648c7c068f8801d2af1aefb1eca"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=3",
+          "sha256": "563819fc89b15b9e4932695f244c866a8eb2355b9ee19613016d95b628435558"
+        },
+        {
+          "abilityId": "master.darnic.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.darnic/达尼克·普雷斯通"
+        },
+        {
+          "abilityId": "master.darnic.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_darnic.skills[s1]#line=200"
+        },
+        {
+          "abilityId": "master.darnic.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.darnic/s1"
+        },
+        {
+          "abilityId": "master.darnic.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[0].text#line=1",
+          "sha256": "e6220bdcb4489b7bfb650f27461557ed3bfb1afd8bff3bc93072c94c7a23e9d6"
+        },
+        {
           "abilityId": "master.fiore.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.fiore/菲奥蕾·弗尔维吉"
@@ -9430,6 +10061,48 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[42].skills[6].text#line=1",
           "sha256": "e880efb6b838c57a6ba1b24e2f8a16415e5d9556f6ebf6b5822c42cafbb6ddce"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fou/芙芙"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fou.ascensionSkill#line=310"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.fou/ascension"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[53].skills[1].text#line=1",
+          "sha256": "391de328a01458eff6795a7209a6ca0cc2da3f2fe8d46a87753dfeccb7002fa0"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fou/芙芙"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fou.skills[s1]#line=310"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.fou/s1"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[53].skills[0].text#line=1",
+          "sha256": "35c61ccf59fdfa81dd1f444314d13fe7a8d4ac0f8f63dca07e659cc6d058a909"
         },
         {
           "abilityId": "master.goredolf.skill.ascension",
@@ -10603,10 +11276,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 45,
-          "specific_handler": 11
+          "shared_handler": 46,
+          "specific_handler": 17
         },
-        "handlerCount": 17,
+        "handlerCount": 23,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -10619,7 +11292,10 @@
       "capabilityId": "GENERIC_MODIFIER",
       "mechanicFamily": "MODIFIER",
       "affectedAbilityIds": [
+        "master.amakusa.skill.ascension",
         "master.amakusa.skill.s1a",
+        "master.amakusa.skill.s3",
+        "master.arcueid.skill.ascension",
         "master.arcueid.skill.s3",
         "master.artoira.skill.ascension",
         "master.bazett.skill.ascension",
@@ -10636,11 +11312,13 @@
         "master.chaos.skill.s5",
         "master.chaos.skill.s9",
         "master.ciel.skill.s3",
+        "master.darnic.skill.ascension",
         "master.fiore.skill.s2",
         "master.fiore.skill.s3",
         "master.fiore.skill.s4",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.fou.skill.s1",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s2",
@@ -10692,6 +11370,33 @@
       ],
       "sourceReferences": [
         {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.amakusa/天草四郎"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_amakusa.ascensionSkill#line=256"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.amakusa/ascension"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[4].text#line=1",
+          "sha256": "ff19d8ff5b8dc9affc2365868387f69be82ead7f0babbf1964282ac99dccf0e4"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[4].text#line=2",
+          "sha256": "461ded53db38af50c312962831f0f68300418810ec41567f5dfd14c0f7f83a99"
+        },
+        {
           "abilityId": "master.amakusa.skill.s1a",
           "document": "Fate_Domination-开发版",
           "locator": "master.amakusa/天草四郎"
@@ -10711,6 +11416,60 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[51].abilities[0].printedClause",
           "sha256": "e7bd371c3bcf2d0f86f2995ac118643c9a929b17d698fa66528889ccb03f503c"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.amakusa/天草四郎"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_amakusa.skills[s3]#line=256"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.amakusa/s3"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[3].text#line=1",
+          "sha256": "ba05904d946c26976bab8947143a407054d20c1a84eae5c6ab7dd08a91b6a1f3"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.ascensionSkill#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/ascension"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=2",
+          "sha256": "31c7593fd895c5a325cafad79e25b703e6e3066776ebee7dab1ccd4fedcefa9b"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=3",
+          "sha256": "6f52b36f241f84e56909a29fda3420d1062155448949e349f46d5714a2fd5261"
         },
         {
           "abilityId": "master.arcueid.skill.s3",
@@ -11133,6 +11892,39 @@
           "sha256": "4e20d56d0540c3ae75b21f62b8277b79ba27aeeeeb7b503b91c384c318f3de19"
         },
         {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.darnic/达尼克·普雷斯通"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_darnic.ascensionSkill#line=200"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.darnic/ascension"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=2",
+          "sha256": "479ad1752f3efa593a4c0ce34b0a5d8bff0bf648c7c068f8801d2af1aefb1eca"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=3",
+          "sha256": "563819fc89b15b9e4932695f244c866a8eb2355b9ee19613016d95b628435558"
+        },
+        {
           "abilityId": "master.fiore.skill.s2",
           "document": "Fate_Domination-开发版",
           "locator": "master.fiore/菲奥蕾·弗尔维吉"
@@ -11272,6 +12064,27 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[42].skills[7].text#line=3",
           "sha256": "0ee60f412a4fad9ed8ab577b5fee3bcdb97049af10b79c53bdfd29cd70a784ce"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fou/芙芙"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fou.skills[s1]#line=310"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.fou/s1"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[53].skills[0].text#line=1",
+          "sha256": "35c61ccf59fdfa81dd1f444314d13fe7a8d4ac0f8f63dca07e659cc6d058a909"
         },
         {
           "abilityId": "master.goredolf.skill.ascension",
@@ -12679,10 +13492,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 53,
-          "specific_handler": 17
+          "shared_handler": 54,
+          "specific_handler": 21
         },
-        "handlerCount": 27,
+        "handlerCount": 31,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -12695,8 +13508,10 @@
       "capabilityId": "GENERIC_MOVEMENT",
       "mechanicFamily": "MOVEMENT",
       "affectedAbilityIds": [
+        "master.amakusa.skill.s3",
         "master.chaos.skill.s10",
         "master.chaos.skill.s12",
+        "master.darnic.skill.ascension",
         "master.fiore.skill.s2",
         "master.fiore.skill.s5",
         "master.goredolf.skill.s1a",
@@ -12711,6 +13526,27 @@
         "servant.mozart.skill.sc-mozart-1"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.amakusa/天草四郎"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_amakusa.skills[s3]#line=256"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.amakusa/s3"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[3].text#line=1",
+          "sha256": "ba05904d946c26976bab8947143a407054d20c1a84eae5c6ab7dd08a91b6a1f3"
+        },
         {
           "abilityId": "master.chaos.skill.s10",
           "document": "Fate/Domination Wiki",
@@ -12764,6 +13600,39 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[25].skills[11].text#line=2",
           "sha256": "b8410f1aad171f9c3a66a3b5cd05a4b968adfb8838081750f9da70c8deb2718b"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.darnic/达尼克·普雷斯通"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_darnic.ascensionSkill#line=200"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.darnic/ascension"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=2",
+          "sha256": "479ad1752f3efa593a4c0ce34b0a5d8bff0bf648c7c068f8801d2af1aefb1eca"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=3",
+          "sha256": "563819fc89b15b9e4932695f244c866a8eb2355b9ee19613016d95b628435558"
         },
         {
           "abilityId": "master.fiore.skill.s2",
@@ -13140,9 +14009,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 11,
-          "specific_handler": 3
+          "specific_handler": 5
         },
-        "handlerCount": 8,
+        "handlerCount": 10,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -13159,6 +14028,7 @@
         "master.amakusa.skill.s2",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1a",
+        "master.arcueid.skill.s2",
         "master.artoira.skill.s1",
         "master.chaos.skill.s1",
         "master.chaos.skill.s12",
@@ -13166,10 +14036,12 @@
         "master.chaos.skill.s3",
         "master.chaos.skill.s4",
         "master.chaos.skill.s8",
+        "master.darnic.skill.ascension",
         "master.darnic.skill.s1a",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
         "master.fiore.skill.s6",
+        "master.fou.skill.s1",
         "master.hinako.skill.ascension",
         "master.kadoc.skill.ascension",
         "master.peperoncino.skill.ascension",
@@ -13302,6 +14174,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[40].abilities[2].printedClause",
           "sha256": "e8712a4847cf27c66704c85af0403eaf8673e96f4810769a3feced081b216581"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.skills[s2]#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/s2"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=2",
+          "sha256": "7371bcf4ffed9cac0f6081fb0f1de40f3d0de91a8adef38ea98df607372c1149"
         },
         {
           "abilityId": "master.artoira.skill.s1",
@@ -13493,6 +14392,39 @@
           "sha256": "f87c1d74ebce52352603c02c4d12104abbf1b58ac61e266620205d31d9fda2bf"
         },
         {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.darnic/达尼克·普雷斯通"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_darnic.ascensionSkill#line=200"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.darnic/ascension"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=2",
+          "sha256": "479ad1752f3efa593a4c0ce34b0a5d8bff0bf648c7c068f8801d2af1aefb1eca"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=3",
+          "sha256": "563819fc89b15b9e4932695f244c866a8eb2355b9ee19613016d95b628435558"
+        },
+        {
           "abilityId": "master.darnic.skill.s1a",
           "document": "Fate_Domination-开发版",
           "locator": "master.darnic/达尼克·普雷斯通"
@@ -13587,6 +14519,27 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[42].skills[6].text#line=1",
           "sha256": "e880efb6b838c57a6ba1b24e2f8a16415e5d9556f6ebf6b5822c42cafbb6ddce"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fou/芙芙"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fou.skills[s1]#line=310"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.fou/s1"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[53].skills[0].text#line=1",
+          "sha256": "35c61ccf59fdfa81dd1f444314d13fe7a8d4ac0f8f63dca07e659cc6d058a909"
         },
         {
           "abilityId": "master.hinako.skill.ascension",
@@ -14362,9 +15315,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 35,
-          "specific_handler": 9
+          "specific_handler": 12
         },
-        "handlerCount": 12,
+        "handlerCount": 15,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -14377,6 +15330,8 @@
       "capabilityId": "GENERIC_POWER",
       "mechanicFamily": "POWER",
       "affectedAbilityIds": [
+        "master.amakusa.skill.ascension",
+        "master.arcueid.skill.ascension",
         "master.arcueid.skill.s3",
         "master.bazett.skill.s1b",
         "master.chaos.skill.s12",
@@ -14389,6 +15344,7 @@
         "master.ciel.skill.s3",
         "master.fiore.skill.s4",
         "master.fiore.skill.s7",
+        "master.fou.skill.s1",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1",
         "master.goredolf.skill.s1a",
@@ -14423,6 +15379,66 @@
         "servant.ozymandias.skill.sc-ozymandias-2"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.amakusa/天草四郎"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_amakusa.ascensionSkill#line=256"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.amakusa/ascension"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[4].text#line=1",
+          "sha256": "ff19d8ff5b8dc9affc2365868387f69be82ead7f0babbf1964282ac99dccf0e4"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[4].text#line=2",
+          "sha256": "461ded53db38af50c312962831f0f68300418810ec41567f5dfd14c0f7f83a99"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.ascensionSkill#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/ascension"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=2",
+          "sha256": "31c7593fd895c5a325cafad79e25b703e6e3066776ebee7dab1ccd4fedcefa9b"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[4].text#line=3",
+          "sha256": "6f52b36f241f84e56909a29fda3420d1062155448949e349f46d5714a2fd5261"
+        },
         {
           "abilityId": "master.arcueid.skill.s3",
           "document": "Fate_Domination-开发版",
@@ -14746,6 +15762,27 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[42].skills[7].text#line=3",
           "sha256": "0ee60f412a4fad9ed8ab577b5fee3bcdb97049af10b79c53bdfd29cd70a784ce"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fou/芙芙"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fou.skills[s1]#line=310"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.fou/s1"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[53].skills[0].text#line=1",
+          "sha256": "35c61ccf59fdfa81dd1f444314d13fe7a8d4ac0f8f63dca07e659cc6d058a909"
         },
         {
           "abilityId": "master.goredolf.skill.ascension",
@@ -15745,10 +16782,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 29,
-          "specific_handler": 15
+          "shared_handler": 30,
+          "specific_handler": 17
         },
-        "handlerCount": 23,
+        "handlerCount": 25,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -15761,6 +16798,8 @@
       "capabilityId": "GENERIC_RESOURCE_NUMERIC",
       "mechanicFamily": "RESOURCE_NUMERIC",
       "affectedAbilityIds": [
+        "master.amakusa.skill.ascension",
+        "master.amakusa.skill.s3",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s3",
         "master.bazett.skill.s1a",
@@ -15777,6 +16816,7 @@
         "master.fiore.skill.s1a",
         "master.fiore.skill.s3",
         "master.fiore.skill.s6",
+        "master.fou.skill.ascension",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s3",
@@ -15806,6 +16846,54 @@
         "servant.stheno.skill.sc-stheno-2"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.amakusa/天草四郎"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_amakusa.ascensionSkill#line=256"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.amakusa/ascension"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[4].text#line=1",
+          "sha256": "ff19d8ff5b8dc9affc2365868387f69be82ead7f0babbf1964282ac99dccf0e4"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[4].text#line=2",
+          "sha256": "461ded53db38af50c312962831f0f68300418810ec41567f5dfd14c0f7f83a99"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.amakusa/天草四郎"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_amakusa.skills[s3]#line=256"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.amakusa/s3"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[3].text#line=1",
+          "sha256": "ba05904d946c26976bab8947143a407054d20c1a84eae5c6ab7dd08a91b6a1f3"
+        },
         {
           "abilityId": "master.araya.skill.s1a",
           "document": "Fate_Domination-开发版",
@@ -16195,6 +17283,27 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[42].skills[6].text#line=1",
           "sha256": "e880efb6b838c57a6ba1b24e2f8a16415e5d9556f6ebf6b5822c42cafbb6ddce"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fou/芙芙"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fou.ascensionSkill#line=310"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.fou/ascension"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[53].skills[1].text#line=1",
+          "sha256": "391de328a01458eff6795a7209a6ca0cc2da3f2fe8d46a87753dfeccb7002fa0"
         },
         {
           "abilityId": "master.goredolf.skill.ascension",
@@ -16964,9 +18073,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 33,
-          "specific_handler": 10
+          "specific_handler": 13
         },
-        "handlerCount": 17,
+        "handlerCount": 20,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -16981,6 +18090,7 @@
       "affectedAbilityIds": [
         "master.amakusa.skill.s1a",
         "master.araya.skill.s1a",
+        "master.arcueid.skill.s2",
         "master.artoira.skill.s1",
         "master.chaos.skill.s1",
         "master.chaos.skill.s12",
@@ -16989,9 +18099,12 @@
         "master.chaos.skill.s3",
         "master.chaos.skill.s4",
         "master.chaos.skill.s8",
+        "master.darnic.skill.ascension",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
         "master.fiore.skill.s6",
+        "master.fou.skill.ascension",
+        "master.fou.skill.s1",
         "master.hinako.skill.ascension",
         "master.kadoc.skill.ascension",
         "master.ophelia.skill.ascension",
@@ -17060,6 +18173,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[19].abilities[0].printedClause",
           "sha256": "5e766d3894dc8f0032c61347446570fd36e55fb24c5d660f4cb1276cd977bd16"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.skills[s2]#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/s2"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=2",
+          "sha256": "7371bcf4ffed9cac0f6081fb0f1de40f3d0de91a8adef38ea98df607372c1149"
         },
         {
           "abilityId": "master.artoira.skill.s1",
@@ -17278,6 +18418,39 @@
           "sha256": "f87c1d74ebce52352603c02c4d12104abbf1b58ac61e266620205d31d9fda2bf"
         },
         {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.darnic/达尼克·普雷斯通"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_darnic.ascensionSkill#line=200"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.darnic/ascension"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=2",
+          "sha256": "479ad1752f3efa593a4c0ce34b0a5d8bff0bf648c7c068f8801d2af1aefb1eca"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=3",
+          "sha256": "563819fc89b15b9e4932695f244c866a8eb2355b9ee19613016d95b628435558"
+        },
+        {
           "abilityId": "master.fiore.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.fiore/菲奥蕾·弗尔维吉"
@@ -17345,6 +18518,48 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[42].skills[6].text#line=1",
           "sha256": "e880efb6b838c57a6ba1b24e2f8a16415e5d9556f6ebf6b5822c42cafbb6ddce"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fou/芙芙"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fou.ascensionSkill#line=310"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.fou/ascension"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[53].skills[1].text#line=1",
+          "sha256": "391de328a01458eff6795a7209a6ca0cc2da3f2fe8d46a87753dfeccb7002fa0"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fou/芙芙"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fou.skills[s1]#line=310"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.fou/s1"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[53].skills[0].text#line=1",
+          "sha256": "35c61ccf59fdfa81dd1f444314d13fe7a8d4ac0f8f63dca07e659cc6d058a909"
         },
         {
           "abilityId": "master.hinako.skill.ascension",
@@ -18024,9 +19239,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 28,
-          "specific_handler": 10
+          "specific_handler": 14
         },
-        "handlerCount": 13,
+        "handlerCount": 17,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -18461,6 +19676,7 @@
         "master.amakusa.skill.s2",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1a",
+        "master.arcueid.skill.s2",
         "master.artoira.skill.s1",
         "master.chaos.skill.s1",
         "master.chaos.skill.s12",
@@ -18468,10 +19684,12 @@
         "master.chaos.skill.s3",
         "master.chaos.skill.s4",
         "master.chaos.skill.s8",
+        "master.darnic.skill.ascension",
         "master.darnic.skill.s1a",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
         "master.fiore.skill.s6",
+        "master.fou.skill.s1",
         "master.hinako.skill.ascension",
         "master.kadoc.skill.ascension",
         "master.peperoncino.skill.ascension",
@@ -18604,6 +19822,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[40].abilities[2].printedClause",
           "sha256": "e8712a4847cf27c66704c85af0403eaf8673e96f4810769a3feced081b216581"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.skills[s2]#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/s2"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=2",
+          "sha256": "7371bcf4ffed9cac0f6081fb0f1de40f3d0de91a8adef38ea98df607372c1149"
         },
         {
           "abilityId": "master.artoira.skill.s1",
@@ -18795,6 +20040,39 @@
           "sha256": "f87c1d74ebce52352603c02c4d12104abbf1b58ac61e266620205d31d9fda2bf"
         },
         {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.darnic/达尼克·普雷斯通"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_darnic.ascensionSkill#line=200"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.darnic/ascension"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=2",
+          "sha256": "479ad1752f3efa593a4c0ce34b0a5d8bff0bf648c7c068f8801d2af1aefb1eca"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=3",
+          "sha256": "563819fc89b15b9e4932695f244c866a8eb2355b9ee19613016d95b628435558"
+        },
+        {
           "abilityId": "master.darnic.skill.s1a",
           "document": "Fate_Domination-开发版",
           "locator": "master.darnic/达尼克·普雷斯通"
@@ -18889,6 +20167,27 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[42].skills[6].text#line=1",
           "sha256": "e880efb6b838c57a6ba1b24e2f8a16415e5d9556f6ebf6b5822c42cafbb6ddce"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fou/芙芙"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fou.skills[s1]#line=310"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.fou/s1"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[53].skills[0].text#line=1",
+          "sha256": "35c61ccf59fdfa81dd1f444314d13fe7a8d4ac0f8f63dca07e659cc6d058a909"
         },
         {
           "abilityId": "master.hinako.skill.ascension",
@@ -19664,9 +20963,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 35,
-          "specific_handler": 9
+          "specific_handler": 12
         },
-        "handlerCount": 12,
+        "handlerCount": 15,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -19680,8 +20979,10 @@
       "mechanicFamily": "TRIGGER",
       "affectedAbilityIds": [
         "master.akasha.skill.s1",
+        "master.amakusa.skill.ascension",
         "master.amakusa.skill.s1",
         "master.amakusa.skill.s2",
+        "master.amakusa.skill.s3",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1",
         "master.arcueid.skill.s1a",
@@ -19704,12 +21005,15 @@
         "master.chaos.skill.s7",
         "master.ciel.skill.s1b",
         "master.ciel.skill.s2",
+        "master.darnic.skill.ascension",
         "master.darnic.skill.s1a",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fiore.skill.s7",
+        "master.fou.skill.ascension",
+        "master.fou.skill.s1",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1",
         "master.goredolf.skill.s1a",
@@ -19783,6 +21087,33 @@
           "sha256": "bf191947cf5226ecc4c9d7f5d62c33d4735b60f462ac26f7995214ddc72c84c9"
         },
         {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.amakusa/天草四郎"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_amakusa.ascensionSkill#line=256"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.amakusa/ascension"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[4].text#line=1",
+          "sha256": "ff19d8ff5b8dc9affc2365868387f69be82ead7f0babbf1964282ac99dccf0e4"
+        },
+        {
+          "abilityId": "master.amakusa.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[4].text#line=2",
+          "sha256": "461ded53db38af50c312962831f0f68300418810ec41567f5dfd14c0f7f83a99"
+        },
+        {
           "abilityId": "master.amakusa.skill.s1",
           "document": "Fate_Domination-开发版",
           "locator": "master.amakusa/天草四郎"
@@ -19829,6 +21160,27 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[50].abilities[1].printedClause",
           "sha256": "8ffc8c511cb60a8fdcbe48639033c36c4b8dcfc123474571e82337cbbf1c920c"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.amakusa/天草四郎"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_amakusa.skills[s3]#line=256"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.amakusa/s3"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[3].text#line=1",
+          "sha256": "ba05904d946c26976bab8947143a407054d20c1a84eae5c6ab7dd08a91b6a1f3"
         },
         {
           "abilityId": "master.araya.skill.s1a",
@@ -20413,6 +21765,39 @@
           "sha256": "aa9c706b41223a3a1ce19a89093bf5f533af1ae483ce352319e94a7081869b57"
         },
         {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.darnic/达尼克·普雷斯通"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_darnic.ascensionSkill#line=200"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.darnic/ascension"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=2",
+          "sha256": "479ad1752f3efa593a4c0ce34b0a5d8bff0bf648c7c068f8801d2af1aefb1eca"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=3",
+          "sha256": "563819fc89b15b9e4932695f244c866a8eb2355b9ee19613016d95b628435558"
+        },
+        {
           "abilityId": "master.darnic.skill.s1a",
           "document": "Fate_Domination-开发版",
           "locator": "master.darnic/达尼克·普雷斯通"
@@ -20579,6 +21964,48 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[42].skills[7].text#line=3",
           "sha256": "0ee60f412a4fad9ed8ab577b5fee3bcdb97049af10b79c53bdfd29cd70a784ce"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fou/芙芙"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fou.ascensionSkill#line=310"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.fou/ascension"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[53].skills[1].text#line=1",
+          "sha256": "391de328a01458eff6795a7209a6ca0cc2da3f2fe8d46a87753dfeccb7002fa0"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fou/芙芙"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fou.skills[s1]#line=310"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.fou/s1"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[53].skills[0].text#line=1",
+          "sha256": "35c61ccf59fdfa81dd1f444314d13fe7a8d4ac0f8f63dca07e659cc6d058a909"
         },
         {
           "abilityId": "master.goredolf.skill.ascension",
@@ -22014,9 +23441,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 59,
-          "specific_handler": 21
+          "specific_handler": 26
         },
-        "handlerCount": 27,
+        "handlerCount": 32,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -22967,6 +24394,8 @@
       "capabilityId": "REVIEWED_SPECIAL_HANDLER",
       "mechanicFamily": "SPECIAL_SUBSYSTEM",
       "affectedAbilityIds": [
+        "master.amakusa.skill.s3",
+        "master.arcueid.skill.s2",
         "master.artoira.skill.ascension",
         "master.artoira.skill.s1",
         "master.bazett.skill.s1a",
@@ -22976,11 +24405,14 @@
         "master.bazett.skill.s4",
         "master.bazett.skill.s5",
         "master.chaos.skill.s8",
+        "master.darnic.skill.ascension",
+        "master.darnic.skill.s1",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1",
         "master.fiore.skill.s1a",
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
+        "master.fou.skill.ascension",
         "master.hinako.skill.ascension",
         "master.hinako.skill.s1",
         "master.hinako.skill.s3",
@@ -23021,6 +24453,54 @@
         "servant.valkyrie.skill.sc-valkyrie-3"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.amakusa/天草四郎"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_amakusa.skills[s3]#line=256"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.amakusa/s3"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[47].skills[3].text#line=1",
+          "sha256": "ba05904d946c26976bab8947143a407054d20c1a84eae5c6ab7dd08a91b6a1f3"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_arcueid.skills[s2]#line=66"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.arcueid/s2"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[23].skills[2].text#line=2",
+          "sha256": "7371bcf4ffed9cac0f6081fb0f1de40f3d0de91a8adef38ea98df607372c1149"
+        },
         {
           "abilityId": "master.artoira.skill.ascension",
           "document": "Fate_Domination-开发版",
@@ -23253,6 +24733,60 @@
           "sha256": "f87c1d74ebce52352603c02c4d12104abbf1b58ac61e266620205d31d9fda2bf"
         },
         {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.darnic/达尼克·普雷斯通"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_darnic.ascensionSkill#line=200"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.darnic/ascension"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=1",
+          "sha256": "9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=2",
+          "sha256": "479ad1752f3efa593a4c0ce34b0a5d8bff0bf648c7c068f8801d2af1aefb1eca"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[2].text#line=3",
+          "sha256": "563819fc89b15b9e4932695f244c866a8eb2355b9ee19613016d95b628435558"
+        },
+        {
+          "abilityId": "master.darnic.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.darnic/达尼克·普雷斯通"
+        },
+        {
+          "abilityId": "master.darnic.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_darnic.skills[s1]#line=200"
+        },
+        {
+          "abilityId": "master.darnic.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.darnic/s1"
+        },
+        {
+          "abilityId": "master.darnic.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[40].skills[0].text#line=1",
+          "sha256": "e6220bdcb4489b7bfb650f27461557ed3bfb1afd8bff3bc93072c94c7a23e9d6"
+        },
+        {
           "abilityId": "master.fiore.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.fiore/菲奥蕾·弗尔维吉"
@@ -23380,6 +24914,27 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[42].skills[6].text#line=1",
           "sha256": "e880efb6b838c57a6ba1b24e2f8a16415e5d9556f6ebf6b5822c42cafbb6ddce"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.fou/芙芙"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_fou.ascensionSkill#line=310"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.fou/ascension"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[53].skills[1].text#line=1",
+          "sha256": "391de328a01458eff6795a7209a6ca0cc2da3f2fe8d46a87753dfeccb7002fa0"
         },
         {
           "abilityId": "master.hinako.skill.ascension",
@@ -24476,9 +26031,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 35,
-          "specific_handler": 17
+          "specific_handler": 22
         },
-        "handlerCount": 25,
+        "handlerCount": 30,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

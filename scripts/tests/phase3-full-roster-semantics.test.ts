@@ -887,6 +887,75 @@ describe('Phase 3 full-roster semantic normalization', () => {
     );
   });
 
+  it('grounds the eight-ID Arcueid/Darnic/Amakusa/Fou batch with exact development text and explicit special boundaries', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.arcueid.skill.s2',
+      'master.arcueid.skill.ascension',
+      'master.darnic.skill.s1',
+      'master.darnic.skill.ascension',
+      'master.amakusa.skill.s3',
+      'master.amakusa.skill.ascension',
+      'master.fou.skill.s1',
+      'master.fou.skill.ascension',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(8);
+    expect(
+      slice.every((card) =>
+        card.source?.authority === 'DEVELOPMENT_TEXT' &&
+        card.source.document === 'Fate_Domination-开发版/data_masters.js' &&
+        card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+        createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256 &&
+        card.source.sourceTextSha256 === card.referencePrintedTextSha256
+      ),
+    ).toBe(true);
+
+    const materialization = slice.find((card) => card.id === 'master.arcueid.skill.s2');
+    expect(materialization?.abilities).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: 'arcueid.materialization.prepare', activation: { phase: 'action' } }),
+        expect.objectContaining({
+          id: 'arcueid.materialization.replace-basic-attack',
+          activation: { phase: 'combat' },
+          effects: expect.arrayContaining([
+            expect.objectContaining({ type: 'choose_cards', zone: 'current_combat_attack', basic: true }),
+            expect.objectContaining({ type: 'close_selected_cards' }),
+            expect.objectContaining({ type: 'draw_cards', until: { cardType: 'basic_attack' } }),
+            expect.objectContaining({ type: 'move_selected_cards', destination: 'attack' }),
+            expect.objectContaining({ type: 'repeat_replacement_window', maxAdditionalUses: 1 }),
+          ]),
+        }),
+      ]),
+    );
+
+    const darnic = slice.find((card) => card.id === 'master.darnic.skill.ascension');
+    expect(darnic?.abilities).toContainEqual(
+      expect.objectContaining({
+        id: 'darnic.old-acquaintances.scorched-earth',
+        effects: [expect.objectContaining({ type: 'choose_one' })],
+      }),
+    );
+
+    const vassal = slice.find((card) => card.id === 'master.amakusa.skill.s3');
+    expect(vassal?.abilities).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: 'amakusa.vassal.entry-seal-cost' }),
+        expect.objectContaining({ id: 'amakusa.vassal.linked-mana-contribution' }),
+        expect.objectContaining({ id: 'amakusa.vassal.different-combat-shared-vp' }),
+      ]),
+    );
+
+    const fou = slice.find((card) => card.id === 'master.fou.skill.ascension');
+    expect(fou?.abilities).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: 'fou.force-of-providence.prevent-elimination' }),
+        expect.objectContaining({ id: 'fou.force-of-providence.swap-vp' }),
+        expect.objectContaining({ id: 'fou.force-of-providence.shared-victory' }),
+      ]),
+    );
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -940,10 +1009,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 154,
-      blockedCount: 790,
+      sourceGroundedCount: 162,
+      blockedCount: 782,
       unclassifiedCount: 0,
-      structuredAbilityCount: 288,
+      structuredAbilityCount: 306,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

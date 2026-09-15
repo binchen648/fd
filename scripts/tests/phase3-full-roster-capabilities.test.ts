@@ -291,11 +291,11 @@ describe('Phase 3 full-roster capability mapping', () => {
     const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
 
     expect(inventory.capabilitySummary.totalIdentityCount).toBe(944);
-    expect(inventory.capabilitySummary.contractMappedCount).toBe(154);
-    expect(inventory.capabilitySummary.explicitBlockCount).toBe(790);
+    expect(inventory.capabilitySummary.contractMappedCount).toBe(162);
+    expect(inventory.capabilitySummary.explicitBlockCount).toBe(782);
     expect(inventory.capabilitySummary.zeroSilentFallback).toBe(true);
-    expect(catalog.coverage.mappedAbilities).toHaveLength(154);
-    expect(catalog.coverage.blockedAbilities).toHaveLength(790);
+    expect(catalog.coverage.mappedAbilities).toHaveLength(162);
+    expect(catalog.coverage.blockedAbilities).toHaveLength(782);
     expect(catalog.coverage.mappedAbilities.length + catalog.coverage.blockedAbilities.length).toBe(944);
 
     const allowedCurrentRoutes = new Set(['legacy', 'new', 'dual', 'none']);
@@ -307,8 +307,8 @@ describe('Phase 3 full-roster capability mapping', () => {
     }
 
     expect(markdown).toContain('totalIdentityCount=944');
-    expect(markdown).toContain('contractMappedCount=154');
-    expect(markdown).toContain('explicitBlockCount=790');
+    expect(markdown).toContain('contractMappedCount=162');
+    expect(markdown).toContain('explicitBlockCount=782');
     expect(markdown).toContain('zeroSilentFallback=true');
   });
 
@@ -433,8 +433,8 @@ describe('Phase 3 full-roster capability mapping', () => {
       expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION', 'GENERIC_CARD_ZONE', 'GENERIC_EVENT_DECK', 'GENERIC_MODIFIER', 'GENERIC_POWER', 'GENERIC_RESULT_BINDING', 'GENERIC_TRIGGER_GATEWAY', 'REVIEWED_SPECIAL_HANDLER']),
     );
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(100);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(54);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(103);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(59);
   });
 
   it('maps the nine-ID Fiore slice with four generic extensions and five reviewed-special transcend rules', () => {
@@ -487,8 +487,8 @@ describe('Phase 3 full-roster capability mapping', () => {
       expect.arrayContaining(['GENERIC_CARD_ZONE', 'GENERIC_COST_PAYMENT', 'GENERIC_MODIFIER', 'GENERIC_POWER', 'GENERIC_TRIGGER_GATEWAY']),
     );
     expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
-    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(100);
-    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(54);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(103);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(59);
   });
 
   it('maps the thirteen-ID Kadoc and Hinako slice with explicit ordinary dependencies and zero inherited contracts', () => {
@@ -664,6 +664,54 @@ describe('Phase 3 full-roster capability mapping', () => {
       ]),
     );
     expect(byId.get('master.artoira.skill.ascension').phase3.blockedBy).toContain('SPECIAL_EFFECT:finish_game');
+  });
+
+  it('maps the eight-ID Arcueid/Darnic/Amakusa/Fou batch as three generic extensions and five reviewed-special identities', () => {
+    const inventory = JSON.parse(
+      readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8'),
+    ) as any;
+    const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
+    const ids = [
+      'master.arcueid.skill.s2',
+      'master.arcueid.skill.ascension',
+      'master.darnic.skill.s1',
+      'master.darnic.skill.ascension',
+      'master.amakusa.skill.s3',
+      'master.amakusa.skill.ascension',
+      'master.fou.skill.s1',
+      'master.fou.skill.ascension',
+    ];
+    const slice = entries.filter((entry: any) => ids.includes(entry.canonicalAbilityId));
+    const byId = new Map(slice.map((entry: any) => [entry.canonicalAbilityId, entry]));
+    expect(slice).toHaveLength(8);
+    expect(slice.every((entry: any) => entry.phase3.inheritedAcceptanceContracts.length === 0)).toBe(true);
+
+    for (const id of ['master.arcueid.skill.ascension', 'master.amakusa.skill.ascension', 'master.fou.skill.s1']) {
+      expect(byId.get(id).phase3.classificationRoute).toBe('READY_GENERIC_EXTENSION');
+      expect(byId.get(id).phase3.blockedBy).toEqual([]);
+    }
+    for (const id of ['master.arcueid.skill.s2', 'master.darnic.skill.s1', 'master.darnic.skill.ascension', 'master.amakusa.skill.s3', 'master.fou.skill.ascension']) {
+      expect(byId.get(id).phase3.classificationRoute).toBe('SPECIAL_HANDLER_CANDIDATE');
+      expect(byId.get(id).phase3.requiredCapabilities).toContain('REVIEWED_SPECIAL_HANDLER');
+    }
+
+    expect(byId.get('master.arcueid.skill.s2').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining(['CARD_ACTION_ADD_TO_ATTACK', 'CARD_ACTION_CLOSE', 'GENERIC_CARD_ZONE', 'GENERIC_PENDING_INTERACTION', 'GENERIC_RESULT_BINDING', 'GENERIC_TARGET_SELECTION']),
+    );
+    expect(byId.get('master.amakusa.skill.s3').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining(['GENERIC_BATTLE_INTEGRATION', 'GENERIC_COST_PAYMENT', 'GENERIC_MOVEMENT', 'GENERIC_RESOURCE_NUMERIC', 'GENERIC_TRIGGER_GATEWAY']),
+    );
+    expect(byId.get('master.fou.skill.ascension').phase3.requiredCapabilities).toEqual(
+      expect.arrayContaining(['GENERIC_LIFECYCLE_POLICY', 'GENERIC_RESOURCE_NUMERIC', 'GENERIC_RESULT_BINDING', 'GENERIC_TRIGGER_GATEWAY']),
+    );
+    expect(byId.get('master.darnic.skill.ascension').phase3.blockedBy).toContain('SPECIAL_EFFECT:terrain_position_adjustment');
+    expect(byId.get('master.arcueid.skill.s2').phase3.blockedBy).toEqual(expect.arrayContaining(['SPECIAL_EFFECT:repeat_replacement_window', 'SPECIAL_EFFECT:schedule_phase_effect']));
+    expect(byId.get('master.amakusa.skill.s3').phase3.blockedBy).toEqual(expect.arrayContaining(['SPECIAL_EFFECT:linked_player_battle_reward', 'SPECIAL_EFFECT:linked_player_mana_contribution']));
+    expect(byId.get('master.fou.skill.ascension').phase3.blockedBy).toEqual(expect.arrayContaining(['SPECIAL_EFFECT:prevent_elimination', 'SPECIAL_EFFECT:shared_victory_link', 'SPECIAL_EFFECT:swap_victory_points']));
+
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_GENERIC_EXTENSION).toBe(103);
+    expect(inventory.capabilitySummary.classificationRouteCounts.SPECIAL_HANDLER_CANDIDATE).toBe(59);
   });
 
   it('bridges current semantic card IDs to stable canonical IDs only by exact ID or unique owner/name identity', () => {

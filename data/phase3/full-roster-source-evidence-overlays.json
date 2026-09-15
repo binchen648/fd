@@ -4953,6 +4953,612 @@
           ]
         }
       ]
+    },
+    {
+      "id": "master.arcueid.skill.s2",
+      "printedText": "<每局游戏限一次>\n行动阶段：在你的战斗阶段时，你可以关闭一张你战斗中的基础攻击。若如此做，其控制者抽牌直至抽到一张基础攻击后，将其加入攻击，然后你可以重复使用一次此效果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_arcueid.skills[s2]#line=66",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "<每局游戏限一次>\n行动阶段：在你的战斗阶段时，你可以关闭一张你战斗中的基础攻击。若如此做，其控制者抽牌直至抽到一张基础攻击后，将其加入攻击，然后你可以重复使用一次此效果。",
+        "sourceTextSha256": "f7f027d5e87a6213e14317434187ec3446a4d37879ac42ac80d51feb259c9e62"
+      },
+      "referencePrintedTextSha256": "f7f027d5e87a6213e14317434187ec3446a4d37879ac42ac80d51feb259c9e62",
+      "abilities": [
+        {
+          "id": "arcueid.materialization.prepare",
+          "printedClause": "<每局游戏限一次>\n行动阶段：在你的战斗阶段时，你可以关闭一张你战斗中的基础攻击。若如此做，其控制者抽牌直至抽到一张基础攻击后，将其加入攻击，然后你可以重复使用一次此效果。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "schedule_phase_effect",
+              "phase": "combat",
+              "linkedAbilityId": "arcueid.materialization.replace-basic-attack"
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          },
+          "limit": {
+            "scope": "controller",
+            "period": "game",
+            "maxUses": 1
+          }
+        },
+        {
+          "id": "arcueid.materialization.replace-basic-attack",
+          "printedClause": "在你的战斗阶段时，你可以关闭一张你战斗中的基础攻击。若如此做，其控制者抽牌直至抽到一张基础攻击后，将其加入攻击，然后你可以重复使用一次此效果。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "ability_prepared_this_round",
+              "abilityId": "arcueid.materialization.prepare"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "current_combat_attack",
+              "basic": true,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedBasicAttackIds"
+            },
+            {
+              "type": "close_selected_cards",
+              "payloadKey": "selectedBasicAttackIds"
+            },
+            {
+              "type": "draw_cards",
+              "subject": "controller_of_selected_card",
+              "deck": "owner_deck",
+              "until": {
+                "cardType": "basic_attack"
+              },
+              "resultVar": "drawnUntilBasicAttackIds"
+            },
+            {
+              "type": "move_selected_cards",
+              "sourceBinding": "drawnUntilBasicAttackIds:last_basic_attack",
+              "destination": "attack",
+              "controller": "controller_of_selected_card"
+            },
+            {
+              "type": "repeat_replacement_window",
+              "maxAdditionalUses": 1,
+              "optional": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.arcueid.skill.ascension",
+      "printedText": "（将此牌加入你的技能区）\n只有在你本回合使用了【空想具现化】时，才可打出此牌。\n月之真祖-被动：你的基础攻击受到【血之渴望】效果的双倍影响。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_arcueid.ascensionSkill#line=66",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（将此牌加入你的技能区）\n只有在你本回合使用了【空想具现化】时，才可打出此牌。\n月之真祖-被动：你的基础攻击受到【血之渴望】效果的双倍影响。",
+        "sourceTextSha256": "e214b31b2e6090e0c496eb89ae78f528ab185d7a02764d64bea05434d2fcd639"
+      },
+      "referencePrintedTextSha256": "e214b31b2e6090e0c496eb89ae78f528ab185d7a02764d64bea05434d2fcd639",
+      "abilities": [
+        {
+          "id": "arcueid.millennium-castle.ascension-setup",
+          "printedClause": "（将此牌加入你的技能区）",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "reason": "ascension_setup"
+            }
+          ]
+        },
+        {
+          "id": "arcueid.millennium-castle.play-restriction",
+          "printedClause": "只有在你本回合使用了【空想具现化】时，才可打出此牌。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "ability_used_this_round",
+              "definitionId": "master.arcueid.skill.s2"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_play_permission",
+              "operation": "require_condition",
+              "definitionId": "master.arcueid.skill.ascension",
+              "condition": "master.arcueid.skill.s2_used_this_round"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_available"
+          }
+        },
+        {
+          "id": "arcueid.millennium-castle.true-ancestor-of-moon",
+          "printedClause": "月之真祖-被动：你的基础攻击受到【血之渴望】效果的双倍影响。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_power_linked_skill_effect",
+              "operation": "multiply",
+              "linkedSkillId": "master.arcueid.skill.s3",
+              "filter": "controller_basic_attacks",
+              "factor": 2
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.darnic.skill.s1",
+      "printedText": "你战场上未被占领的地利将属于你。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_darnic.skills[s1]#line=200",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你战场上未被占领的地利将属于你。",
+        "sourceTextSha256": "e6220bdcb4489b7bfb650f27461557ed3bfb1afd8bff3bc93072c94c7a23e9d6"
+      },
+      "referencePrintedTextSha256": "e6220bdcb4489b7bfb650f27461557ed3bfb1afd8bff3bc93072c94c7a23e9d6",
+      "abilities": [
+        {
+          "id": "darnic.territory.unoccupied-advantage",
+          "printedClause": "你战场上未被占领的地利将属于你。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "terrain_position_adjustment",
+              "operation": "claim_unoccupied",
+              "subject": "controller",
+              "battlefields": "controller_battlefields"
+            }
+          ],
+          "lifecycle": {
+            "duration": "continuous"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.darnic.skill.ascension",
+      "printedText": "（将此牌加入你的技能区）\n焦土作战-被动：与你位于同一战场的对手的行动阶段开始时必须花费2点战果维持地利，否则其失去地利。\n空中支援-行动阶段：将你的地利翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_darnic.ascensionSkill#line=200",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（将此牌加入你的技能区）\n焦土作战-被动：与你位于同一战场的对手的行动阶段开始时必须花费2点战果维持地利，否则其失去地利。\n空中支援-行动阶段：将你的地利翻倍。",
+        "sourceTextSha256": "ce8b80b6f52c03f29bec9e95213b919ddcd408b9a1b5fec2c7d51b677c9c73ea"
+      },
+      "referencePrintedTextSha256": "ce8b80b6f52c03f29bec9e95213b919ddcd408b9a1b5fec2c7d51b677c9c73ea",
+      "abilities": [
+        {
+          "id": "darnic.old-acquaintances.ascension-setup",
+          "printedClause": "（将此牌加入你的技能区）",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "reason": "ascension_setup"
+            }
+          ]
+        },
+        {
+          "id": "darnic.old-acquaintances.scorched-earth",
+          "printedClause": "焦土作战-被动：与你位于同一战场的对手的行动阶段开始时必须花费2点战果维持地利，否则其失去地利。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "phase.started"
+            },
+            {
+              "type": "event_phase_is",
+              "phase": "action"
+            },
+            {
+              "type": "event_player_is_opponent"
+            },
+            {
+              "type": "event_player_same_battlefield_as_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_one",
+              "chooser": "event_player",
+              "minCount": 1,
+              "maxCount": 1,
+              "options": [
+                {
+                  "id": "pay",
+                  "effects": [
+                    {
+                      "type": "pay_victory_points",
+                      "amount": 2,
+                      "subject": "event_player",
+                      "purpose": "maintain_terrain"
+                    }
+                  ]
+                },
+                {
+                  "id": "lose-terrain",
+                  "effects": [
+                    {
+                      "type": "terrain_position_adjustment",
+                      "operation": "lose_all",
+                      "subject": "event_player",
+                      "battlefield": "shared_with_controller"
+                    }
+                  ]
+                }
+              ],
+              "payloadKey": "scorchedEarthChoice"
+            }
+          ]
+        },
+        {
+          "id": "darnic.old-acquaintances.air-support",
+          "printedClause": "空中支援-行动阶段：将你的地利翻倍。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "deployment_advantage",
+              "operation": "multiply",
+              "factor": 2,
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_action_resolution"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.amakusa.skill.s3",
+      "printedText": "非高潮回合，你需花费一枚令咒才可进入天草四郎所在的战场。每回合限一次，若你与天草四郎同时位于不同的战场，你花费魔力时，可以将天草四郎的1点魔力加入支付。若你与天草四郎于同一回合赢得了不同的战斗，你与其各获得1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_amakusa.skills[s3]#line=256",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "非高潮回合，你需花费一枚令咒才可进入天草四郎所在的战场。每回合限一次，若你与天草四郎同时位于不同的战场，你花费魔力时，可以将天草四郎的1点魔力加入支付。若你与天草四郎于同一回合赢得了不同的战斗，你与其各获得1点战果。",
+        "sourceTextSha256": "ba05904d946c26976bab8947143a407054d20c1a84eae5c6ab7dd08a91b6a1f3"
+      },
+      "referencePrintedTextSha256": "ba05904d946c26976bab8947143a407054d20c1a84eae5c6ab7dd08a91b6a1f3",
+      "abilities": [
+        {
+          "id": "amakusa.vassal.entry-seal-cost",
+          "printedClause": "非高潮回合，你需花费一枚令咒才可进入天草四郎所在的战场。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_is_god_servant"
+            },
+            {
+              "type": "round_is_not_climax"
+            }
+          ],
+          "effects": [
+            {
+              "type": "pay_command_seals",
+              "amount": 1,
+              "subject": "controller",
+              "timing": "before_entering_amakusa_battlefield"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "movement_entry_permission",
+              "operation": "require_cost",
+              "targetBattlefield": "amakusa_location",
+              "costType": "command_seal",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "amakusa.vassal.linked-mana-contribution",
+          "printedClause": "每回合限一次，若你与天草四郎同时位于不同的战场，你花费魔力时，可以将天草四郎的1点魔力加入支付。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_and_amakusa_on_different_battlefields"
+            }
+          ],
+          "effects": [
+            {
+              "type": "linked_player_mana_contribution",
+              "contributor": "amakusa",
+              "beneficiary": "controller",
+              "amount": 1,
+              "timing": "during_controller_mana_payment",
+              "optional": true
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "round",
+            "maxUses": 1
+          }
+        },
+        {
+          "id": "amakusa.vassal.different-combat-shared-vp",
+          "printedClause": "若你与天草四郎于同一回合赢得了不同的战斗，你与其各获得1点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "controller_and_amakusa_won_different_battles_same_round"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 1,
+              "subject": "controller"
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 1,
+              "subject": "amakusa"
+            },
+            {
+              "type": "linked_player_battle_reward",
+              "relationship": "god_servant_to_amakusa",
+              "requireDifferentBattlefields": true
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "round",
+            "maxUses": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.amakusa.skill.ascension",
+      "printedText": "解锁此牌后所有对手立即失去2枚令咒。\n【开演之时已至，此处应有雷鸣般的喝彩】激活时，你的基础牌获得威力+4。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_amakusa.ascensionSkill#line=256",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "解锁此牌后所有对手立即失去2枚令咒。\n【开演之时已至，此处应有雷鸣般的喝彩】激活时，你的基础牌获得威力+4。",
+        "sourceTextSha256": "fbc6bc453843f4b912d85aace61a2ce57251bc5f6c3489e126ca424207ba6988"
+      },
+      "referencePrintedTextSha256": "fbc6bc453843f4b912d85aace61a2ce57251bc5f6c3489e126ca424207ba6988",
+      "abilities": [
+        {
+          "id": "amakusa.past-ruler.unlock-seal-loss",
+          "printedClause": "解锁此牌后所有对手立即失去2枚令咒。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_source_is_this_skill"
+            }
+          ],
+          "effects": [
+            {
+              "type": "adjust_command_seals",
+              "operation": "lose",
+              "amount": 2,
+              "subject": "all_opponents"
+            }
+          ]
+        },
+        {
+          "id": "amakusa.past-ruler.first-folio-basic-power",
+          "printedClause": "【开演之时已至，此处应有雷鸣般的喝彩】激活时，你的基础牌获得威力+4。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "card.activated"
+            },
+            {
+              "type": "event_definition_is",
+              "definitionId": "servant.shakespeare.skill.sc-shakespeare-3"
+            },
+            {
+              "type": "event_card_controller_is_controller"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "value": 4,
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "basic": true
+                }
+              },
+              "duration": "while_trigger_source_active"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.fou.skill.s1",
+      "printedText": "在你花费了1枚或以上的令咒的回合结束时：选择一个本回合回到你技能区的技能，其获得+1威力和-1魔力消耗直至游戏结束。降低过的消耗不能低于其印刷魔力消耗的一半。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fou.skills[s1]#line=310",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "在你花费了1枚或以上的令咒的回合结束时：选择一个本回合回到你技能区的技能，其获得+1威力和-1魔力消耗直至游戏结束。降低过的消耗不能低于其印刷魔力消耗的一半。",
+        "sourceTextSha256": "35c61ccf59fdfa81dd1f444314d13fe7a8d4ac0f8f63dca07e659cc6d058a909"
+      },
+      "referencePrintedTextSha256": "35c61ccf59fdfa81dd1f444314d13fe7a8d4ac0f8f63dca07e659cc6d058a909",
+      "abilities": [
+        {
+          "id": "fou.mark-of-beast.end-round-mark",
+          "printedClause": "在你花费了1枚或以上的令咒的回合结束时：选择一个本回合回到你技能区的技能，其获得+1威力和-1魔力消耗直至游戏结束。降低过的消耗不能低于其印刷魔力消耗的一半。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ending"
+            },
+            {
+              "type": "controller_spent_command_seals_this_round",
+              "minimum": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "skill",
+              "owner": "controller",
+              "returnedToSkillZoneThisRound": true,
+              "isSkill": true,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedSkillIds"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "targetBinding": "selectedSkillIds",
+              "value": 1,
+              "duration": "game"
+            },
+            {
+              "rule": "printed_mana_cost",
+              "operation": "add",
+              "targetBinding": "selectedSkillIds",
+              "value": -1,
+              "duration": "game",
+              "minPrintedFraction": 0.5
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.fou.skill.ascension",
+      "printedText": "复活吧，我的爱人-每局游戏限一次，当一名玩家即将被淘汰时，防止其淘汰。本次淘汰结算后，若该玩家为你的对手，交换你们的战果。你们其中一人获得游戏胜利时，另一人也获胜（即使另一人被淘汰）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_fou.ascensionSkill#line=310",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "复活吧，我的爱人-每局游戏限一次，当一名玩家即将被淘汰时，防止其淘汰。本次淘汰结算后，若该玩家为你的对手，交换你们的战果。你们其中一人获得游戏胜利时，另一人也获胜（即使另一人被淘汰）。",
+        "sourceTextSha256": "391de328a01458eff6795a7209a6ca0cc2da3f2fe8d46a87753dfeccb7002fa0"
+      },
+      "referencePrintedTextSha256": "391de328a01458eff6795a7209a6ca0cc2da3f2fe8d46a87753dfeccb7002fa0",
+      "abilities": [
+        {
+          "id": "fou.force-of-providence.prevent-elimination",
+          "printedClause": "复活吧，我的爱人-每局游戏限一次，当一名玩家即将被淘汰时，防止其淘汰。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "elimination.pending"
+            }
+          ],
+          "effects": [
+            {
+              "type": "prevent_elimination",
+              "subject": "event_player",
+              "bindingField": "preventedPlayerId"
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "game",
+            "maxUses": 1
+          }
+        },
+        {
+          "id": "fou.force-of-providence.swap-vp",
+          "printedClause": "本次淘汰结算后，若该玩家为你的对手，交换你们的战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "elimination.resolved"
+            },
+            {
+              "type": "event_player_matches_binding",
+              "bindingField": "preventedPlayerId"
+            },
+            {
+              "type": "bound_player_is_opponent",
+              "bindingField": "preventedPlayerId"
+            }
+          ],
+          "effects": [
+            {
+              "type": "swap_victory_points",
+              "left": "controller",
+              "rightBinding": "preventedPlayerId"
+            }
+          ]
+        },
+        {
+          "id": "fou.force-of-providence.shared-victory",
+          "printedClause": "你们其中一人获得游戏胜利时，另一人也获胜（即使另一人被淘汰）。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "prevention_target_binding_exists",
+              "bindingField": "preventedPlayerId"
+            }
+          ],
+          "effects": [
+            {
+              "type": "shared_victory_link",
+              "left": "controller",
+              "rightBinding": "preventedPlayerId",
+              "includeEliminated": true
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
     }
   ]
 }

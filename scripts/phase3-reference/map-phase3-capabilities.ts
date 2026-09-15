@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+﻿import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -144,6 +144,7 @@ const RESOURCE_EFFECTS = new Set([
   'GAIN_VICTORY_POINTS',
   'LOSE_VICTORY_POINTS',
   'TRANSFER_VICTORY_POINTS',
+  'SWAP_VICTORY_POINTS',
   'ADJUST_COMMAND_SEALS',
 ]);
 
@@ -188,6 +189,13 @@ const STATUS_EFFECTS = new Set([
 const SPECIAL_EFFECTS = new Set([
   'CHARGE_SELECTED_SKILL_ATTACK',
   'CYCLE_STATE_TRANSITION',
+  'LINKED_PLAYER_BATTLE_REWARD',
+  'LINKED_PLAYER_MANA_CONTRIBUTION',
+  'PREVENT_ELIMINATION',
+  'REPEAT_REPLACEMENT_WINDOW',
+  'SCHEDULE_PHASE_EFFECT',
+  'SHARED_VICTORY_LINK',
+  'SWAP_VICTORY_POINTS',
   'DEFEAT_PLAYER',
   'EVENT_CARD_RULE',
   'FINISH_GAME',

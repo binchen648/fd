@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 154,
-    "explicitBlockCount": 790,
+    "contractMappedCount": 162,
+    "explicitBlockCount": 782,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
-      "READY_GENERIC_EXTENSION": 100,
-      "SPECIAL_HANDLER_CANDIDATE": 54,
+      "READY_GENERIC_EXTENSION": 103,
+      "SPECIAL_HANDLER_CANDIDATE": 59,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 790,
+      "SOURCE_EVIDENCE_REQUIRED": 782,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -62,6 +62,14 @@
       "eligibleAbilities": [],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
         {
           "abilityId": "master.artoira.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
@@ -205,12 +213,17 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.arcueid.skill.s2",
         "master.artoira.skill.s1",
         "master.bazett.skill.s5",
         "servant.kagekiyo.skill.sc-kagekiyo-2"
       ],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
         {
           "abilityId": "master.chaos.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
@@ -342,6 +355,7 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.arcueid.skill.s2",
         "master.chaos.skill.s11",
         "servant.chloe.skill.sc-chloe-1",
         "servant.darius.skill.sc-darius-1",
@@ -357,6 +371,10 @@
       ],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
         {
           "abilityId": "master.artoira.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
@@ -456,6 +474,14 @@
       ],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
         {
           "abilityId": "master.artoira.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
@@ -595,6 +621,7 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.arcueid.skill.ascension",
         "master.chaos.skill.s1",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
@@ -612,6 +639,10 @@
       ],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
         {
           "abilityId": "master.artoira.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
@@ -705,6 +736,14 @@
       "eligibleAbilities": [],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
         {
           "abilityId": "master.artoira.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
@@ -860,6 +899,14 @@
       ],
       "skippedAbilities": [
         {
+          "abilityId": "master.arcueid.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.artoira.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1010,6 +1057,14 @@
         "servant.artoria-alt.skill.sc-artoria-alt-2"
       ],
       "skippedAbilities": [
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
         {
           "abilityId": "master.artoira.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
@@ -1163,6 +1218,14 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.arcueid.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.artoira.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1315,6 +1378,14 @@
       "eligibleAbilities": [],
       "partialAbilities": [],
       "skippedAbilities": [
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
         {
           "abilityId": "master.artoira.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
@@ -1479,11 +1550,19 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.arcueid.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.arcueid.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
           "abilityId": "master.arcueid.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1532,6 +1611,10 @@
         },
         {
           "abilityId": "master.ciel.skill.s1b",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -1653,6 +1736,7 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.amakusa.skill.s3",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1a",
         "master.artoira.skill.ascension",
@@ -1665,6 +1749,7 @@
         "master.chaos.skill.s7",
         "master.ciel.skill.s2",
         "master.ciel.skill.s3",
+        "master.darnic.skill.ascension",
         "master.darnic.skill.s1a",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
@@ -1773,7 +1858,15 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.arcueid.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.arcueid.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -1818,6 +1911,10 @@
         },
         {
           "abilityId": "master.ciel.skill.s1b",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.darnic.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -1932,7 +2029,9 @@
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
         "master.araya.skill.s1a",
+        "master.arcueid.skill.ascension",
         "master.arcueid.skill.s1",
+        "master.arcueid.skill.s2",
         "master.artoira.skill.ascension",
         "master.artoira.skill.s1",
         "master.bazett.skill.s4",
@@ -1944,6 +2043,7 @@
         "master.chaos.skill.s4",
         "master.chaos.skill.s6",
         "master.ciel.skill.s1b",
+        "master.darnic.skill.ascension",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
         "master.goredolf.skill.s1",
@@ -2012,12 +2112,16 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.amakusa.skill.ascension",
         "master.amakusa.skill.s1",
         "master.amakusa.skill.s1a",
         "master.amakusa.skill.s2",
+        "master.amakusa.skill.s3",
         "master.araya.skill.s1a",
+        "master.arcueid.skill.ascension",
         "master.arcueid.skill.s1",
         "master.arcueid.skill.s1a",
+        "master.arcueid.skill.s2",
         "master.arcueid.skill.s3",
         "master.artoira.skill.ascension",
         "master.artoira.skill.s1",
@@ -2037,6 +2141,7 @@
         "master.ciel.skill.s1b",
         "master.ciel.skill.s2",
         "master.ciel.skill.s3",
+        "master.darnic.skill.ascension",
         "master.darnic.skill.s1a",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
@@ -2044,6 +2149,8 @@
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fiore.skill.s7",
+        "master.fou.skill.ascension",
+        "master.fou.skill.s1",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s1a",
@@ -2155,8 +2262,10 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.amakusa.skill.s3",
         "master.chaos.skill.ascension",
         "master.chaos.skill.s1",
+        "master.darnic.skill.ascension",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
         "master.hinako.skill.ascension",
@@ -2234,6 +2343,14 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.amakusa.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.artoira.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -2270,6 +2387,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.darnic.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.darnic.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.fiore.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -2287,6 +2412,10 @@
         },
         {
           "abilityId": "master.fiore.skill.s6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -2366,7 +2495,10 @@
       "eligibleAbilities": [
         "master.akasha.skill.s1",
         "master.amakusa.skill.s1a",
+        "master.amakusa.skill.s3",
+        "master.arcueid.skill.ascension",
         "master.arcueid.skill.s1a",
+        "master.arcueid.skill.s2",
         "master.bazett.skill.s1b",
         "master.bazett.skill.s1c",
         "master.bazett.skill.s2",
@@ -2375,9 +2507,13 @@
         "master.chaos.skill.s4",
         "master.chaos.skill.s5",
         "master.ciel.skill.s3",
+        "master.darnic.skill.ascension",
+        "master.darnic.skill.s1",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
         "master.fiore.skill.s6",
+        "master.fou.skill.ascension",
+        "master.fou.skill.s1",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.ascension",
@@ -2466,7 +2602,10 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.amakusa.skill.ascension",
         "master.amakusa.skill.s1a",
+        "master.amakusa.skill.s3",
+        "master.arcueid.skill.ascension",
         "master.arcueid.skill.s3",
         "master.artoira.skill.ascension",
         "master.bazett.skill.ascension",
@@ -2483,11 +2622,13 @@
         "master.chaos.skill.s5",
         "master.chaos.skill.s9",
         "master.ciel.skill.s3",
+        "master.darnic.skill.ascension",
         "master.fiore.skill.s2",
         "master.fiore.skill.s3",
         "master.fiore.skill.s4",
         "master.fiore.skill.s5",
         "master.fiore.skill.s7",
+        "master.fou.skill.s1",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s2",
@@ -2565,8 +2706,10 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.amakusa.skill.s3",
         "master.chaos.skill.s10",
         "master.chaos.skill.s12",
+        "master.darnic.skill.ascension",
         "master.fiore.skill.s2",
         "master.fiore.skill.s5",
         "master.goredolf.skill.s1a",
@@ -2612,6 +2755,7 @@
         "master.amakusa.skill.s2",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1a",
+        "master.arcueid.skill.s2",
         "master.artoira.skill.s1",
         "master.chaos.skill.s1",
         "master.chaos.skill.s12",
@@ -2619,10 +2763,12 @@
         "master.chaos.skill.s3",
         "master.chaos.skill.s4",
         "master.chaos.skill.s8",
+        "master.darnic.skill.ascension",
         "master.darnic.skill.s1a",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
         "master.fiore.skill.s6",
+        "master.fou.skill.s1",
         "master.hinako.skill.ascension",
         "master.kadoc.skill.ascension",
         "master.peperoncino.skill.ascension",
@@ -2681,6 +2827,8 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.amakusa.skill.ascension",
+        "master.arcueid.skill.ascension",
         "master.arcueid.skill.s3",
         "master.bazett.skill.s1b",
         "master.chaos.skill.s12",
@@ -2693,6 +2841,7 @@
         "master.ciel.skill.s3",
         "master.fiore.skill.s4",
         "master.fiore.skill.s7",
+        "master.fou.skill.s1",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1",
         "master.goredolf.skill.s1a",
@@ -2754,6 +2903,8 @@
       "representatives": [],
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
+        "master.amakusa.skill.ascension",
+        "master.amakusa.skill.s3",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s3",
         "master.bazett.skill.s1a",
@@ -2770,6 +2921,7 @@
         "master.fiore.skill.s1a",
         "master.fiore.skill.s3",
         "master.fiore.skill.s6",
+        "master.fou.skill.ascension",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s3",
@@ -2828,6 +2980,7 @@
       "eligibleAbilities": [
         "master.amakusa.skill.s1a",
         "master.araya.skill.s1a",
+        "master.arcueid.skill.s2",
         "master.artoira.skill.s1",
         "master.chaos.skill.s1",
         "master.chaos.skill.s12",
@@ -2836,9 +2989,12 @@
         "master.chaos.skill.s3",
         "master.chaos.skill.s4",
         "master.chaos.skill.s8",
+        "master.darnic.skill.ascension",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
         "master.fiore.skill.s6",
+        "master.fou.skill.ascension",
+        "master.fou.skill.s1",
         "master.hinako.skill.ascension",
         "master.kadoc.skill.ascension",
         "master.ophelia.skill.ascension",
@@ -2915,6 +3071,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.amakusa.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.arcueid.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.bazett.skill.s1b",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -2939,11 +3107,27 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.darnic.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.darnic.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.fiore.skill.s1a",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
           "abilityId": "master.fiore.skill.s6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -3125,6 +3309,7 @@
         "master.amakusa.skill.s2",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1a",
+        "master.arcueid.skill.s2",
         "master.artoira.skill.s1",
         "master.chaos.skill.s1",
         "master.chaos.skill.s12",
@@ -3132,10 +3317,12 @@
         "master.chaos.skill.s3",
         "master.chaos.skill.s4",
         "master.chaos.skill.s8",
+        "master.darnic.skill.ascension",
         "master.darnic.skill.s1a",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
         "master.fiore.skill.s6",
+        "master.fou.skill.s1",
         "master.hinako.skill.ascension",
         "master.kadoc.skill.ascension",
         "master.peperoncino.skill.ascension",
@@ -3195,8 +3382,10 @@
       "acceptanceVehicle": "new Phase 3 capability request + Gate A/B/C representative",
       "eligibleAbilities": [
         "master.akasha.skill.s1",
+        "master.amakusa.skill.ascension",
         "master.amakusa.skill.s1",
         "master.amakusa.skill.s2",
+        "master.amakusa.skill.s3",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1",
         "master.arcueid.skill.s1a",
@@ -3219,12 +3408,15 @@
         "master.chaos.skill.s7",
         "master.ciel.skill.s1b",
         "master.ciel.skill.s2",
+        "master.darnic.skill.ascension",
         "master.darnic.skill.s1a",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1a",
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
         "master.fiore.skill.s7",
+        "master.fou.skill.ascension",
+        "master.fou.skill.s1",
         "master.goredolf.skill.ascension",
         "master.goredolf.skill.s1",
         "master.goredolf.skill.s1a",
@@ -3388,6 +3580,14 @@
       ],
       "skippedAbilities": [
         {
+          "abilityId": "master.amakusa.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.amakusa.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.araya.skill.s1a",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -3449,6 +3649,10 @@
         },
         {
           "abilityId": "master.fiore.skill.s6",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3605,6 +3809,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.arcueid.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.artoira.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -3637,6 +3845,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.darnic.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.fiore.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -3646,6 +3858,14 @@
         },
         {
           "abilityId": "master.fiore.skill.s6",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.fou.skill.s1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3775,6 +3995,8 @@
       "representatives": [],
       "acceptanceVehicle": "B/R reviewed-special exception with explicit deletion/reuse criteria",
       "eligibleAbilities": [
+        "master.amakusa.skill.s3",
+        "master.arcueid.skill.s2",
         "master.artoira.skill.ascension",
         "master.artoira.skill.s1",
         "master.bazett.skill.s1a",
@@ -3784,11 +4006,14 @@
         "master.bazett.skill.s4",
         "master.bazett.skill.s5",
         "master.chaos.skill.s8",
+        "master.darnic.skill.ascension",
+        "master.darnic.skill.s1",
         "master.fiore.skill.ascension",
         "master.fiore.skill.s1",
         "master.fiore.skill.s1a",
         "master.fiore.skill.s5",
         "master.fiore.skill.s6",
+        "master.fou.skill.ascension",
         "master.hinako.skill.ascension",
         "master.hinako.skill.s1",
         "master.hinako.skill.s3",
@@ -3900,6 +4125,14 @@
       "partialAbilities": [],
       "skippedAbilities": [
         {
+          "abilityId": "master.amakusa.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.arcueid.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.artoira.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3940,6 +4173,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.darnic.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.darnic.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.fiore.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3957,6 +4198,10 @@
         },
         {
           "abilityId": "master.fiore.skill.s6",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.fou.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -4137,12 +4382,16 @@
   "coverage": {
     "mappedAbilities": [
       "master.akasha.skill.s1",
+      "master.amakusa.skill.ascension",
       "master.amakusa.skill.s1",
       "master.amakusa.skill.s1a",
       "master.amakusa.skill.s2",
+      "master.amakusa.skill.s3",
       "master.araya.skill.s1a",
+      "master.arcueid.skill.ascension",
       "master.arcueid.skill.s1",
       "master.arcueid.skill.s1a",
+      "master.arcueid.skill.s2",
       "master.arcueid.skill.s3",
       "master.artoira.skill.ascension",
       "master.artoira.skill.s1",
@@ -4176,6 +4425,8 @@
       "master.ciel.skill.s1b",
       "master.ciel.skill.s2",
       "master.ciel.skill.s3",
+      "master.darnic.skill.ascension",
+      "master.darnic.skill.s1",
       "master.darnic.skill.s1a",
       "master.fiore.skill.ascension",
       "master.fiore.skill.s1",
@@ -4186,6 +4437,8 @@
       "master.fiore.skill.s5",
       "master.fiore.skill.s6",
       "master.fiore.skill.s7",
+      "master.fou.skill.ascension",
+      "master.fou.skill.s1",
       "master.goredolf.skill.ascension",
       "master.goredolf.skill.s1",
       "master.goredolf.skill.s1a",
@@ -4398,20 +4651,6 @@
         ]
       },
       {
-        "abilityId": "master.amakusa.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.amakusa.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "master.araya.skill.ascension",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -4420,20 +4659,6 @@
       },
       {
         "abilityId": "master.araya.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.arcueid.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.arcueid.skill.s2",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -4609,34 +4834,6 @@
       },
       {
         "abilityId": "master.dan.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.darnic.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.darnic.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fou.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.fou.skill.s1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -9825,6 +10022,8 @@
       }
     ],
     "specialCandidates": [
+      "master.amakusa.skill.s3",
+      "master.arcueid.skill.s2",
       "master.artoira.skill.ascension",
       "master.artoira.skill.s1",
       "master.bazett.skill.s1a",
@@ -9834,11 +10033,14 @@
       "master.bazett.skill.s4",
       "master.bazett.skill.s5",
       "master.chaos.skill.s8",
+      "master.darnic.skill.ascension",
+      "master.darnic.skill.s1",
       "master.fiore.skill.ascension",
       "master.fiore.skill.s1",
       "master.fiore.skill.s1a",
       "master.fiore.skill.s5",
       "master.fiore.skill.s6",
+      "master.fou.skill.ascension",
       "master.goredolf.skill.s1",
       "master.hinako.skill.ascension",
       "master.hinako.skill.s1",
