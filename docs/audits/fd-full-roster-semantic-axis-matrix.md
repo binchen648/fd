@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=470
-blockedCount=474
+sourceGroundedCount=482
+blockedCount=462
 unclassifiedCount=0
-structuredAbilityCount=748
+structuredAbilityCount=760
 
 ## Axis Value Counts
 
@@ -283,9 +283,9 @@ structuredAbilityCount=748
 | effect | `DREAM_SUMMON_RULE` | 9 |
 | effect | `SOURCE_CARD_POWER_BONUS` | 9 |
 | effect | `DEDUCTION_RULE` | 7 |
+| effect | `FOREIGN_LIFE_RULE` | 7 |
 | effect | `IF_CONDITION` | 7 |
 | effect | `SCHEDULE_PHASE_EFFECT` | 7 |
-| effect | `FOREIGN_LIFE_RULE` | 6 |
 | effect | `MOON_HOLY_GRAIL_RULE` | 6 |
 | effect | `SET_MANA` | 6 |
 | effect | `TERRAIN_POSITION_ADJUSTMENT` | 6 |
@@ -314,12 +314,15 @@ structuredAbilityCount=748
 | effect | `DETECTIVE_CLUE_RULE` | 3 |
 | effect | `EXILE_SOURCE_CARD` | 3 |
 | effect | `FOOD_RESOURCE_RULE` | 3 |
+| effect | `GUARD_RULE` | 3 |
 | effect | `MOVE_MATCHING_EVENTS` | 3 |
 | effect | `OVERLOAD_CARD_RULE` | 3 |
 | effect | `PHANTOM_PLAYER_RULE` | 3 |
 | effect | `PILGRIMAGE_LUCK_RULE` | 3 |
 | effect | `REINCARNATION_RULE` | 3 |
+| effect | `RULER_SEAL_RULE` | 3 |
 | effect | `TRAINING_EXPERIENCE_RULE` | 3 |
+| effect | `VISITOR_CARD_RULE` | 3 |
 | effect | `BATCH_CARD_USE_RULE` | 2 |
 | effect | `CARGO_ACQUISITION_RULE` | 2 |
 | effect | `CARGO_BOX_RULE` | 2 |
@@ -352,6 +355,7 @@ structuredAbilityCount=748
 | effect | `SET_SELECTED_CARDS_FACE` | 2 |
 | effect | `SHOP_AUCTION_RULE` | 2 |
 | effect | `TATARI_RULE` | 2 |
+| effect | `TERRAIN_EFFECT_MULTIPLIER_RULE` | 2 |
 | effect | `TRANSFER_MANA` | 2 |
 | effect | `TRANSFER_MATCHING_CARDS` | 2 |
 | effect | `UPGRADE_ATTACHMENT_RULE` | 2 |
@@ -392,6 +396,7 @@ structuredAbilityCount=748
 | effect | `HEAVENS_HOLE_RULE` | 1 |
 | effect | `HIDDEN_DOUBLE_ATTACK_RULE` | 1 |
 | effect | `HIDDEN_DRAW_REMOVAL_RULE` | 1 |
+| effect | `IMPOSTOR_STATE_RULE` | 1 |
 | effect | `INDEPENDENT_DECK_RULE` | 1 |
 | effect | `INFINITE_MANA_RULE` | 1 |
 | effect | `INFO_NOTE` | 1 |
@@ -438,7 +443,6 @@ structuredAbilityCount=748
 | effect | `SWAP_VICTORY_POINTS` | 1 |
 | effect | `TEMPORARY_CARD_COPY_RULE` | 1 |
 | effect | `TEMPORARY_COMMAND_SEAL_RULE` | 1 |
-| effect | `TERRAIN_EFFECT_MULTIPLIER_RULE` | 1 |
 | effect | `TRANSFER_SELECTED_CARDS` | 1 |
 | effect | `TRAUMA_DECK_RULE` | 1 |
 | effect | `TRAUMA_STATE_RULE` | 1 |
@@ -1460,10 +1464,10 @@ structuredAbilityCount=748
 | `servant.martha.skill.sc-martha-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.martha-tarasque` |
 | `servant.martha.skill.sc-martha-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
 | `servant.martha.skill.sc-martha-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.martha-divine-obedience` |
-| `servant.mash.skill.sc-mash-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mash-lord-camelot` |
-| `servant.mash.skill.sc-mash-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.opponent-attack-power-modifier` |
-| `servant.mash.skill.sc-mash-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mash-ortenaus` |
-| `servant.mash.skill.sc-mash-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.rule-marker` |
+| `servant.mash.skill.sc-mash-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TERRAIN_EFFECT_MULTIPLIER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mash-lord-camelot` |
+| `servant.mash.skill.sc-mash-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GUARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.opponent-attack-power-modifier` |
+| `servant.mash.skill.sc-mash-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GUARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mash-ortenaus` |
+| `servant.mash.skill.sc-mash-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GUARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.rule-marker` |
 | `servant.maxwell.skill.sc-maxwell-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
 | `servant.maxwell.skill.sc-maxwell-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.maxwell.skill.sc-maxwell-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mana-gain-replacement-residual` |
@@ -1537,10 +1541,10 @@ structuredAbilityCount=748
 | `servant.nursery.skill.sc-nursery-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nursery-package` |
 | `servant.nursery.skill.sc-nursery-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:while_active` | `rule:skill_use:forbid` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.nursery.skill.sc-nursery-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.nursery-package` |
-| `servant.oberon.skill.sc-oberon-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-player-config` |
-| `servant.oberon.skill.sc-oberon-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.pretender-class` |
-| `servant.oberon.skill.sc-oberon-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
-| `servant.oberon.skill.sc-oberon-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
+| `servant.oberon.skill.sc-oberon-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-player-config` |
+| `servant.oberon.skill.sc-oberon-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `IMPOSTOR_STATE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.pretender-class` |
+| `servant.oberon.skill.sc-oberon-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
+| `servant.oberon.skill.sc-oberon-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ruler-class` |
 | `servant.odysseus.skill.sc-odysseus-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.odysseus-troia-hippos` |
 | `servant.odysseus.skill.sc-odysseus-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.odysseus-aigis` |
 | `servant.odysseus.skill.sc-odysseus-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
@@ -1678,10 +1682,10 @@ structuredAbilityCount=748
 | `servant.vlad.skill.sc-vlad-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.vlad-protector-of-nation` |
 | `servant.vlad.skill.sc-vlad-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.vlad-kazikli-bey` |
 | `servant.vlad.skill.sc-vlad-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
-| `servant.voyager.skill.sc-voyager-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.voyager-message-hope` |
-| `servant.voyager.skill.sc-voyager-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.voyager-message-peace` |
-| `servant.voyager.skill.sc-voyager-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.voyager-pale-blue-dot` |
-| `servant.voyager.skill.sc-voyager-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.outer-god-life` |
+| `servant.voyager.skill.sc-voyager-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VISITOR_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.voyager-message-hope` |
+| `servant.voyager.skill.sc-voyager-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VISITOR_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.voyager-message-peace` |
+| `servant.voyager.skill.sc-voyager-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VISITOR_CARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.voyager-pale-blue-dot` |
+| `servant.voyager.skill.sc-voyager-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.outer-god-life` |
 | `servant.xiangyu.skill.sc-xiangyu-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.xiangyu-ultimate-defense-matrix` |
 | `servant.xiangyu.skill.sc-xiangyu-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.xiangyu-martial-force` |
 | `servant.xiangyu.skill.sc-xiangyu-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.xiangyu-conquering-might` |

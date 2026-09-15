@@ -1372,6 +1372,18 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.hokusai.skill.sc-hokusai-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'color_marker_rule'})])}));
   });
 
+  it('grounds the twelve-ID Mash/Oberon/Voyager slice from the exact berserker/extra development snapshot', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const prefixes = ['servant.mash.skill.','servant.oberon.skill.','servant.voyager.skill.'];
+    const slice = overlays.filter((card) => prefixes.some((prefix) => card.id.startsWith(prefix)));
+    expect(slice).toHaveLength(12);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.document === 'Fate_Domination-开发版/batch_berserker_extra.js' && card.source.sourceFileSha256 === '6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.mash.skill.sc-mash-4')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'guard_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.oberon.skill.sc-oberon-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'ruler_seal_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.voyager.skill.sc-voyager-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'visitor_card_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.voyager.skill.sc-voyager-4')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'foreign_life_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1425,10 +1437,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 470,
-      blockedCount: 474,
+      sourceGroundedCount: 482,
+      blockedCount: 462,
       unclassifiedCount: 0,
-      structuredAbilityCount: 748,
+      structuredAbilityCount: 760,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
