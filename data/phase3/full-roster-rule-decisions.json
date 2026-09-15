@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 462,
-    "coveredBlockedIdentityCount": 462,
+    "blockedIdentityCount": 454,
+    "coveredBlockedIdentityCount": 454,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 1,
@@ -234,10 +234,6 @@
         "servant.jekyll.skill.sc-jekyll-3",
         "servant.kagekiyo.skill.sc-kagekiyo-1",
         "servant.kagekiyo.skill.sc-kagekiyo-3",
-        "servant.kagetora.skill.sc-kagetora-1",
-        "servant.kagetora.skill.sc-kagetora-2",
-        "servant.kagetora.skill.sc-kagetora-3",
-        "servant.kagetora.skill.sc-kagetora-4",
         "servant.kama.skill.sc-kama-3",
         "servant.karna.skill.sc-karna-1",
         "servant.karna.skill.sc-karna-2",
@@ -293,10 +289,6 @@
         "servant.mandricardo.skill.sc-mandricardo-1",
         "servant.mandricardo.skill.sc-mandricardo-2",
         "servant.mandricardo.skill.sc-mandricardo-3",
-        "servant.martha.skill.sc-martha-1",
-        "servant.martha.skill.sc-martha-2",
-        "servant.martha.skill.sc-martha-3",
-        "servant.martha.skill.sc-martha-4",
         "servant.maxwell.skill.sc-maxwell-1",
         "servant.maxwell.skill.sc-maxwell-2",
         "servant.maxwell.skill.sc-maxwell-3",
@@ -5334,106 +5326,6 @@
           "sha256": "d1cba177bbadb7bae4afa0b53184d609a32ba0465ca7600eb4e34282320f8dec"
         },
         {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/枪兵/英文版/长尾景虎.htm"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.kagetora/长尾景虎"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[75].skills[0].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[75].skills[0].text#line=2",
-          "sha256": "c354e5501ca89a9e6a2ded6aff5d75d16805e6107e7bab0a134a656846000d88"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/枪兵/英文版/长尾景虎.htm"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.kagetora/长尾景虎"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[75].skills[1].text#line=1",
-          "sha256": "debbd4658ac046d8fbac018afe76a10aef747393d7366fe61d4e47a712fc385e"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[75].skills[1].text#line=2",
-          "sha256": "1cf0a41af9efe681afc0600970c197376ea23918dac916931f7960493f6ffec1"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[75].skills[1].text#line=3",
-          "sha256": "b03c43b9c3957c6d53f80cef5d46cfe273cb5e2e5d0a262984461de3294dbfd5"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/枪兵/英文版/长尾景虎.htm"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.kagetora/长尾景虎"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[75].skills[2].text#line=1",
-          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-4",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/枪兵/英文版/长尾景虎.htm"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-4",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.kagetora/长尾景虎"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[75].skills[3].text#line=1",
-          "sha256": "e582bcd3565fd3cc70fd05c1f7a6f0c2b9adeb6c29c29b7883b80806b07ceb98"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[75].skills[3].text#line=2",
-          "sha256": "e31a036f016aab3ce4b3ee954ce006ed1cb2e06f3c94af16930ae0bf0a4eaf46"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[75].skills[3].text#line=3",
-          "sha256": "2bf5e67b4ed31e19108dbd6796d04dbc2440d95a8813d727877728647eb1d95d"
-        },
-        {
-          "abilityId": "servant.kagetora.skill.sc-kagetora-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[75].skills[3].text#line=4",
-          "sha256": "d159e931a4573863ddfe89af916aa90e5389326f0b86465b14d46b43063d3a52"
-        },
-        {
           "abilityId": "servant.kama.skill.sc-kama-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/暗匿者/英文版/伽摩.htm"
@@ -6570,112 +6462,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[94].skills[2].text#line=2",
           "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/骑兵/英文版/玛尔达.htm"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.martha/玛尔达"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[95].skills[0].text#line=1",
-          "sha256": "c64928377655aaf175087a0875137387fb57e996368330bd713b35ebdc3559c2"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[95].skills[0].text#line=2",
-          "sha256": "07962ef5671743da05a11a79e4da285ac9aa3f281020327932cb1ae71fc4b7b7"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[95].skills[0].text#line=3",
-          "sha256": "0c04d81dcdeec111ba5406334f979ced8b1512ebdec49226e30496a10df95aa7"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/骑兵/英文版/玛尔达.htm"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.martha/玛尔达"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[95].skills[1].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[95].skills[1].text#line=2",
-          "sha256": "6c877b0b63b76d6035d4be2e587b093461b9f87fd93f8f0eff8f2e6b6b3d6bb2"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/骑兵/英文版/玛尔达.htm"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.martha/玛尔达"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[95].skills[2].text#line=1",
-          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[95].skills[2].text#line=2",
-          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-4",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/骑兵/英文版/玛尔达.htm"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-4",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.martha/玛尔达"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[95].skills[3].text#line=1",
-          "sha256": "e582bcd3565fd3cc70fd05c1f7a6f0c2b9adeb6c29c29b7883b80806b07ceb98"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[95].skills[3].text#line=2",
-          "sha256": "e31a036f016aab3ce4b3ee954ce006ed1cb2e06f3c94af16930ae0bf0a4eaf46"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[95].skills[3].text#line=3",
-          "sha256": "2bf5e67b4ed31e19108dbd6796d04dbc2440d95a8813d727877728647eb1d95d"
-        },
-        {
-          "abilityId": "servant.martha.skill.sc-martha-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[95].skills[3].text#line=4",
-          "sha256": "c2afe11b72fbe8d7de417c9dfdb83882a6e3fb814b8f8101d08c9f7c5cea8eda"
         },
         {
           "abilityId": "servant.maxwell.skill.sc-maxwell-1",
@@ -10805,10 +10591,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 170,
-          "specific_handler": 292
+          "shared_handler": 166,
+          "specific_handler": 288
         },
-        "handlerCount": 325,
+        "handlerCount": 320,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."
