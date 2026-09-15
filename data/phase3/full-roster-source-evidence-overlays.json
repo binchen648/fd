@@ -27311,6 +27311,396 @@
         }
       ],
       "referencePrintedTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+    },
+    {
+      "id": "servant.karna.skill.sc-karna-1",
+      "printedText": "【真名解放】\n吾之心，吾之炎-行动阶段：你可以花费至多5点战果，每点战果令你获得1点魔力以及令此牌获得+3威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_karna_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n吾之心，吾之炎-行动阶段：你可以花费至多5点战果，每点战果令你获得1点魔力以及令此牌获得+3威力。",
+        "sourceTextSha256": "e6ef9c029d38ee0f2bb1667f91b1d3e5f6539316ffc91dea6589ba686ea2938a"
+      },
+      "abilities": [
+        {
+          "id": "karna.sc_karna_1.semantic",
+          "printedClause": "【真名解放】\n吾之心，吾之炎-行动阶段：你可以花费至多5点战果，每点战果令你获得1点魔力以及令此牌获得+3威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "karna_brahma_rule",
+              "operation": "true_name_reveal_action_pay_up_to_5_vp_each_paid_vp_gain_1_mana_and_source_gains_3_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "e6ef9c029d38ee0f2bb1667f91b1d3e5f6539316ffc91dea6589ba686ea2938a"
+    },
+    {
+      "id": "servant.karna.skill.sc-karna-2",
+      "printedText": "被动：你无法使用迦尔纳的其他宝具。\n被动/前哨阶段：将此牌移除游戏。\n吾之辉，吾之铠-战斗阶段：你的战斗中每有一名对手，你便需花费1点魔力使用此效果。将与你位于同一战场的对手控制的基础攻击的威力设为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_karna_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "被动：你无法使用迦尔纳的其他宝具。\n被动/前哨阶段：将此牌移除游戏。\n吾之辉，吾之铠-战斗阶段：你的战斗中每有一名对手，你便需花费1点魔力使用此效果。将与你位于同一战场的对手控制的基础攻击的威力设为0。",
+        "sourceTextSha256": "3b80fe2385de41fc21a0be34f246c9592b14ca8b1e20ee37f53ce6182d4e671e"
+      },
+      "abilities": [
+        {
+          "id": "karna.sc_karna_2.semantic",
+          "printedClause": "被动：你无法使用迦尔纳的其他宝具。\n被动/前哨阶段：将此牌移除游戏。\n吾之辉，吾之铠-战斗阶段：你的战斗中每有一名对手，你便需花费1点魔力使用此效果。将与你位于同一战场的对手控制的基础攻击的威力设为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "karna_armor_rule",
+              "operation": "passive_cannot_use_other_karna_noble_phantasms_passive_outpost_remove_source_from_game_combat_pay_1_mana_per_opponent_then_set_same_battlefield_opponents_basic_attack_power_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "3b80fe2385de41fc21a0be34f246c9592b14ca8b1e20ee37f53ce6182d4e671e"
+    },
+    {
+      "id": "servant.karna.skill.sc-karna-3",
+      "printedText": "【真名解放】 <每局游戏限一次>\n战斗阶段：如果你赢得战斗，令所有因此战败的玩家在下一回合开始时【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_karna_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】 <每局游戏限一次>\n战斗阶段：如果你赢得战斗，令所有因此战败的玩家在下一回合开始时【败北】。",
+        "sourceTextSha256": "2fec2662062be72a1e948b1b0c46e798b2df406a03e95781ee45ce710bfc2656"
+      },
+      "abilities": [
+        {
+          "id": "karna.sc_karna_3.semantic",
+          "printedClause": "【真名解放】 <每局游戏限一次>\n战斗阶段：如果你赢得战斗，令所有因此战败的玩家在下一回合开始时【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "karna_vasavi_rule",
+              "operation": "true_name_reveal_once_per_game_combat_if_controller_wins_all_players_defeated_by_that_combat_gain_defeat_at_next_round_start"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "2fec2662062be72a1e948b1b0c46e798b2df406a03e95781ee45ce710bfc2656"
+    },
+    {
+      "id": "servant.kinggil.skill.sc-kinggil-1",
+      "printedText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_kinggil_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+        "sourceTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+      },
+      "abilities": [
+        {
+          "id": "kinggil.sc_kinggil_1.semantic",
+          "printedClause": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "kinggil_territory_rule",
+              "operation": "x_equals_16_minus_current_round_times_2_residual_on_deploy_workshop_gain_1_mana_and_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+    },
+    {
+      "id": "servant.kinggil.skill.sc-kinggil-2",
+      "printedText": "【真名解放】\n行动阶段：弃置你的所有手牌，然后令此牌获得被弃置牌的所有属性。\n战斗阶段：此牌威力翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_kinggil_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n行动阶段：弃置你的所有手牌，然后令此牌获得被弃置牌的所有属性。\n战斗阶段：此牌威力翻倍。",
+        "sourceTextSha256": "4534ade4c8cc0b8ea34f4dd611a9aa66a7a6f2e6914cff8672604b79830df936"
+      },
+      "abilities": [
+        {
+          "id": "kinggil.sc_kinggil_2.semantic",
+          "printedClause": "【真名解放】\n行动阶段：弃置你的所有手牌，然后令此牌获得被弃置牌的所有属性。\n战斗阶段：此牌威力翻倍。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "kinggil_treasure_rule",
+              "operation": "true_name_reveal_action_discard_all_hand_then_source_gains_all_attributes_of_discarded_cards_combat_source_power_doubles"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4534ade4c8cc0b8ea34f4dd611a9aa66a7a6f2e6914cff8672604b79830df936"
+    },
+    {
+      "id": "servant.kinggil.skill.sc-kinggil-3",
+      "printedText": "【真名解放】\n开炮！开炮！-你需关闭你激活的【阵地作成】才可打出此牌。下个回合，你于准备阶段抽牌后额外抽2张牌且于进行常规出牌时可以追加打出1张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_kinggil_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n开炮！开炮！-你需关闭你激活的【阵地作成】才可打出此牌。下个回合，你于准备阶段抽牌后额外抽2张牌且于进行常规出牌时可以追加打出1张牌。",
+        "sourceTextSha256": "17eb3afe56c393fce7c55d0b58e0c707a120ada004db28647e83519c2f243f65"
+      },
+      "abilities": [
+        {
+          "id": "kinggil.sc_kinggil_3.semantic",
+          "printedClause": "【真名解放】\n开炮！开炮！-你需关闭你激活的【阵地作成】才可打出此牌。下个回合，你于准备阶段抽牌后额外抽2张牌且于进行常规出牌时可以追加打出1张牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "kinggil_cannon_rule",
+              "operation": "true_name_reveal_play_requires_closing_activated_territory_construction_next_round_after_preparation_draw_draw_2_extra_and_regular_play_may_play_1_additional_card"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "17eb3afe56c393fce7c55d0b58e0c707a120ada004db28647e83519c2f243f65"
+    },
+    {
+      "id": "servant.kinghassan.skill.sc-kinghassan-1",
+      "printedText": "此牌需追加打出。\n晚钟-战斗阶段：与你交战的所有对手分别投掷一次六面骰，若掷出6，令其【败北】。\n你可以弃置一张【幸运】令一名对手进行一次重骰。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_kinghassan_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "此牌需追加打出。\n晚钟-战斗阶段：与你交战的所有对手分别投掷一次六面骰，若掷出6，令其【败北】。\n你可以弃置一张【幸运】令一名对手进行一次重骰。",
+        "sourceTextSha256": "b30b98b01d7e19ea489aa9ad7e14e247a2f18b85be22ac44336e44c6e40a6d1e"
+      },
+      "abilities": [
+        {
+          "id": "kinghassan.sc_kinghassan_1.semantic",
+          "printedClause": "此牌需追加打出。\n晚钟-战斗阶段：与你交战的所有对手分别投掷一次六面骰，若掷出6，令其【败北】。\n你可以弃置一张【幸运】令一名对手进行一次重骰。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "kinghassan_death_bell_rule",
+              "operation": "append_play_combat_each_engaged_opponent_roll_d6_on_6_defeat_controller_may_discard_luck_to_force_one_opponent_reroll"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b30b98b01d7e19ea489aa9ad7e14e247a2f18b85be22ac44336e44c6e40a6d1e"
+    },
+    {
+      "id": "servant.kinghassan.skill.sc-kinghassan-2",
+      "printedText": "【真名解放】 <每局游戏限一次>\n斩断命运-战斗阶段：【杀死】一名你交战对手的从者并令其【败北】。回合结束时，该对手随机抽取一名新的从者。（杀死：将被杀死的从者的所有牌移除游戏。）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_kinghassan_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】 <每局游戏限一次>\n斩断命运-战斗阶段：【杀死】一名你交战对手的从者并令其【败北】。回合结束时，该对手随机抽取一名新的从者。（杀死：将被杀死的从者的所有牌移除游戏。）",
+        "sourceTextSha256": "53dcaab9f44a791ba5b8b15e8a5d54c6fcd719ec51dd2d3b460f8d9654421635"
+      },
+      "abilities": [
+        {
+          "id": "kinghassan.sc_kinghassan_2.semantic",
+          "printedClause": "【真名解放】 <每局游戏限一次>\n斩断命运-战斗阶段：【杀死】一名你交战对手的从者并令其【败北】。回合结束时，该对手随机抽取一名新的从者。（杀死：将被杀死的从者的所有牌移除游戏。）",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "kinghassan_servant_kill_rule",
+              "operation": "true_name_reveal_once_per_game_combat_kill_one_engaged_opponent_servant_and_defeat_player_at_round_end_opponent_randomly_draws_new_servant_kill_removes_all_killed_servant_cards_from_game"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "53dcaab9f44a791ba5b8b15e8a5d54c6fcd719ec51dd2d3b460f8d9654421635"
+    },
+    {
+      "id": "servant.kinghassan.skill.sc-kinghassan-3",
+      "printedText": "每有一名处于【败北】状态或被淘汰的对手，此牌获得威力+1。\n晚钟-战斗阶段：与你交战的所有对手分别投掷一次骰子。若掷出5或6，令其【败北】。你可以弃置一张【幸运】令一名对手进行重骰。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_kinghassan_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "每有一名处于【败北】状态或被淘汰的对手，此牌获得威力+1。\n晚钟-战斗阶段：与你交战的所有对手分别投掷一次骰子。若掷出5或6，令其【败北】。你可以弃置一张【幸运】令一名对手进行重骰。",
+        "sourceTextSha256": "3670495b93cd8cc527a8c6bf48b35b00a35b922c7657abfccb636650975e45af"
+      },
+      "abilities": [
+        {
+          "id": "kinghassan.sc_kinghassan_3.semantic",
+          "printedClause": "每有一名处于【败北】状态或被淘汰的对手，此牌获得威力+1。\n晚钟-战斗阶段：与你交战的所有对手分别投掷一次骰子。若掷出5或6，令其【败北】。你可以弃置一张【幸运】令一名对手进行重骰。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "kinghassan_death_bell_rule",
+              "operation": "source_gains_1_power_per_defeated_or_eliminated_opponent_combat_each_engaged_opponent_roll_die_on_5_or_6_defeat_controller_may_discard_luck_to_force_one_opponent_reroll"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "3670495b93cd8cc527a8c6bf48b35b00a35b922c7657abfccb636650975e45af"
+    },
+    {
+      "id": "servant.kingprotea.skill.sc-kingprotea-1",
+      "printedText": "【真名解放】被动/前哨阶段：支付2X点魔力，本回合你不会因幼儿退行关闭攻击且无法使用【渴爱之眠】。X为1+你激活的攻击数量。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_kingprotea_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】被动/前哨阶段：支付2X点魔力，本回合你不会因幼儿退行关闭攻击且无法使用【渴爱之眠】。X为1+你激活的攻击数量。",
+        "sourceTextSha256": "851270a7b1418ebbd0863c203c7720c44f02bb1d9134c7d6fb643d0a981bfdfe"
+      },
+      "abilities": [
+        {
+          "id": "kingprotea.sc_kingprotea_1.semantic",
+          "printedClause": "【真名解放】被动/前哨阶段：支付2X点魔力，本回合你不会因幼儿退行关闭攻击且无法使用【渴爱之眠】。X为1+你激活的攻击数量。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "kingprotea_giant_shadow_rule",
+              "operation": "true_name_reveal_passive_outpost_pay_2x_mana_x_equals_1_plus_activated_attack_count_this_round_attacks_do_not_close_from_infant_regression_and_cannot_use_love_sleep"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "851270a7b1418ebbd0863c203c7720c44f02bb1d9134c7d6fb643d0a981bfdfe"
+    },
+    {
+      "id": "servant.kingprotea.skill.sc-kingprotea-2",
+      "printedText": "你拥有的魔力少于8点也可使用此牌。此牌不能同其他牌一同打出。行动阶段：你的至多2张非特殊基础攻击获得“残留”至本回合结束。本回合你每关闭一张基础攻击，获得1点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_kingprotea_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "你拥有的魔力少于8点也可使用此牌。此牌不能同其他牌一同打出。行动阶段：你的至多2张非特殊基础攻击获得“残留”至本回合结束。本回合你每关闭一张基础攻击，获得1点魔力。",
+        "sourceTextSha256": "17b456b1652dbef2cd550bdb370f363ced0570397eacc8b1f5a08bad6b4ad52c"
+      },
+      "abilities": [
+        {
+          "id": "kingprotea.sc_kingprotea_2.semantic",
+          "printedClause": "你拥有的魔力少于8点也可使用此牌。此牌不能同其他牌一同打出。行动阶段：你的至多2张非特殊基础攻击获得“残留”至本回合结束。本回合你每关闭一张基础攻击，获得1点魔力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "kingprotea_love_sleep_rule",
+              "operation": "may_use_below_8_mana_cannot_play_with_other_cards_action_up_to_2_non_special_basic_attacks_gain_residual_until_round_end_each_basic_attack_closed_this_round_gain_1_mana"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "17b456b1652dbef2cd550bdb370f363ced0570397eacc8b1f5a08bad6b4ad52c"
+    },
+    {
+      "id": "servant.kingprotea.skill.sc-kingprotea-3",
+      "printedText": "被动：当你打出基础攻击时，你的所有基础攻击获得“残留”至本回合结束。幼儿退行-被动：当你在你战斗阶段的任何时候，合计威力超过21时，关闭你的所有攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_kingprotea_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动：当你打出基础攻击时，你的所有基础攻击获得“残留”至本回合结束。幼儿退行-被动：当你在你战斗阶段的任何时候，合计威力超过21时，关闭你的所有攻击。",
+        "sourceTextSha256": "1eebd868bb89ebdc14b67fc6c77de2989f088717332c76b88be9dd0c913e1d46"
+      },
+      "abilities": [
+        {
+          "id": "kingprotea.sc_kingprotea_3.semantic",
+          "printedClause": "被动：当你打出基础攻击时，你的所有基础攻击获得“残留”至本回合结束。幼儿退行-被动：当你在你战斗阶段的任何时候，合计威力超过21时，关闭你的所有攻击。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "kingprotea_infinite_growth_rule",
+              "operation": "passive_when_basic_attack_played_all_basic_attacks_gain_residual_until_round_end_infant_regression_if_total_power_exceeds_21_at_any_time_in_controller_combat_phase_close_all_controller_attacks"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "1eebd868bb89ebdc14b67fc6c77de2989f088717332c76b88be9dd0c913e1d46"
+    },
+    {
+      "id": "servant.kintoki.skill.sc-kintoki-1",
+      "printedText": "【真名解放】<每局游戏限一次>你拥有的魔力少于8点也可打出此牌。局势牌无法禁止你打出此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_kintoki_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】<每局游戏限一次>你拥有的魔力少于8点也可打出此牌。局势牌无法禁止你打出此牌。",
+        "sourceTextSha256": "2ba5830e96a355944cb174a95f5ba1713c139c4386d33fc374295beb49dcd198"
+      },
+      "abilities": [
+        {
+          "id": "kintoki.sc_kintoki_1.semantic",
+          "printedClause": "【真名解放】<每局游戏限一次>你拥有的魔力少于8点也可打出此牌。局势牌无法禁止你打出此牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "kintoki_golden_spark_rule",
+              "operation": "true_name_reveal_once_per_game_may_play_below_8_mana_situation_cards_cannot_prohibit_playing_source"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "2ba5830e96a355944cb174a95f5ba1713c139c4386d33fc374295beb49dcd198"
+    },
+    {
+      "id": "servant.kintoki.skill.sc-kintoki-2",
+      "printedText": "【真名解放】<每局游戏限一次>你拥有的魔力少于8点也可打出此牌。局势牌无法禁止你打出此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_kintoki_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】<每局游戏限一次>你拥有的魔力少于8点也可打出此牌。局势牌无法禁止你打出此牌。",
+        "sourceTextSha256": "2ba5830e96a355944cb174a95f5ba1713c139c4386d33fc374295beb49dcd198"
+      },
+      "abilities": [
+        {
+          "id": "kintoki.sc_kintoki_2.semantic",
+          "printedClause": "【真名解放】<每局游戏限一次>你拥有的魔力少于8点也可打出此牌。局势牌无法禁止你打出此牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "kintoki_golden_spark_rule",
+              "operation": "true_name_reveal_once_per_game_may_play_below_8_mana_situation_cards_cannot_prohibit_playing_source"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "2ba5830e96a355944cb174a95f5ba1713c139c4386d33fc374295beb49dcd198"
+    },
+    {
+      "id": "servant.kintoki.skill.sc-kintoki-3",
+      "printedText": "【真名解放】战斗阶段：将一张被移除游戏的【黄金冲击】加入你的技能区，你可以花费7点魔力将另一张黄金冲击也加入你的技能区。若你位于一处战场，每加入一张【黄金冲击】便获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_kintoki_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】战斗阶段：将一张被移除游戏的【黄金冲击】加入你的技能区，你可以花费7点魔力将另一张黄金冲击也加入你的技能区。若你位于一处战场，每加入一张【黄金冲击】便获得2点战果。",
+        "sourceTextSha256": "07ef0e7cf4359fa53d99c8accc7e54d35536fc6af47ee44f8bc9e2607b5666ab"
+      },
+      "abilities": [
+        {
+          "id": "kintoki.sc_kintoki_3.semantic",
+          "printedClause": "【真名解放】战斗阶段：将一张被移除游戏的【黄金冲击】加入你的技能区，你可以花费7点魔力将另一张黄金冲击也加入你的技能区。若你位于一处战场，每加入一张【黄金冲击】便获得2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "kintoki_golden_eater_rule",
+              "operation": "true_name_reveal_combat_return_one_removed_golden_spark_to_skill_zone_may_pay_7_mana_to_return_other_golden_spark_if_at_battlefield_gain_2_vp_per_golden_spark_returned"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "07ef0e7cf4359fa53d99c8accc7e54d35536fc6af47ee44f8bc9e2607b5666ab"
     }
   ]
 }

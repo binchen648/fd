@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=736
-blockedCount=208
+sourceGroundedCount=751
+blockedCount=193
 unclassifiedCount=0
-structuredAbilityCount=1014
+structuredAbilityCount=1029
 
 ## Axis Value Counts
 
@@ -353,6 +353,8 @@ structuredAbilityCount=1014
 | effect | `GEM_RESOURCE_RULE` | 2 |
 | effect | `GRANT_LINKED_ABILITY_TO_ATTRIBUTE_ATTACKS` | 2 |
 | effect | `INSTALL_ABILITY_RULE_MODIFIER` | 2 |
+| effect | `KINGHASSAN_DEATH_BELL_RULE` | 2 |
+| effect | `KINTOKI_GOLDEN_SPARK_RULE` | 2 |
 | effect | `LINKED_PLAYER_BATTLE_REWARD` | 2 |
 | effect | `LOCATION_TOKEN_RULE` | 2 |
 | effect | `MURDER_IMPULSE_RULE` | 2 |
@@ -510,6 +512,17 @@ structuredAbilityCount=1014
 | effect | `JUDGMENT_LUCK_DEFEAT_RULE` | 1 |
 | effect | `KAGEKIYO_HIDDEN_ATTACK_RULE` | 1 |
 | effect | `KAGEKIYO_VENGEANCE_RULE` | 1 |
+| effect | `KARNA_ARMOR_RULE` | 1 |
+| effect | `KARNA_BRAHMA_RULE` | 1 |
+| effect | `KARNA_VASAVI_RULE` | 1 |
+| effect | `KINGGIL_CANNON_RULE` | 1 |
+| effect | `KINGGIL_TERRITORY_RULE` | 1 |
+| effect | `KINGGIL_TREASURE_RULE` | 1 |
+| effect | `KINGHASSAN_SERVANT_KILL_RULE` | 1 |
+| effect | `KINGPROTEA_GIANT_SHADOW_RULE` | 1 |
+| effect | `KINGPROTEA_INFINITE_GROWTH_RULE` | 1 |
+| effect | `KINGPROTEA_LOVE_SLEEP_RULE` | 1 |
+| effect | `KINTOKI_GOLDEN_EATER_RULE` | 1 |
 | effect | `LINKED_PLAYER_MANA_CONTRIBUTION` | 1 |
 | effect | `LOCATION_MERGE_RULE` | 1 |
 | effect | `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS` | 1 |
@@ -1559,21 +1572,21 @@ structuredAbilityCount=1014
 | `servant.kama.skill.sc-kama-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `BRANCH_CHOICE`, `CHOOSE_ONE_LOCATION` | `CLOSE_SOURCE_CARD`, `COMBAT_POWER_BONUS`, `LOSE_MANA` | `BRANCH_CHOICE`, `CHOOSE_ONE_LOCATION` | `cleanup:remain_active`, `duration:while_active` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.structured-skill` |
 | `servant.kama.skill.sc-kama-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `player.entered-location`, `round.ended` | `AT_BATTLEFIELD`, `EVENT_LOCATION_NOT`, `EVENT_LOCATION_NOT_CONTROLLER`, `EVENT_PLAYER_IS_OPPONENT`, `PLAYER_FLAG_NUMBER_EQUALS_EVENT_FIELD`, `SOURCE_ACTIVE` | `NONE` | `NONE` | `CLEAR_PLAYER_FLAG`, `CLOSE_SOURCE_CARD`, `SET_PLAYER_FLAG`, `TRANSFER_VICTORY_POINTS` | `NONE` | `duration:while_active` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION` | `core.structured-skill` |
 | `servant.kama.skill.sc-kama-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
-| `servant.karna.skill.sc-karna-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.karna-victory-for-power` |
-| `servant.karna.skill.sc-karna-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.karna-sun-armor` |
-| `servant.karna.skill.sc-karna-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.karna-next-round-defeat` |
-| `servant.kinggil.skill.sc-kinggil-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
-| `servant.kinggil.skill.sc-kinggil-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.king-gil-gate-of-babylon` |
-| `servant.kinggil.skill.sc-kinggil-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.king-gil-melammu-dingir` |
-| `servant.kinghassan.skill.sc-kinghassan-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.king-hassan-azrael` |
-| `servant.kinghassan.skill.sc-kinghassan-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.king-hassan-azrael` |
-| `servant.kinghassan.skill.sc-kinghassan-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.king-hassan-azrael` |
-| `servant.kingprotea.skill.sc-kingprotea-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kingprotea-limit-break` |
-| `servant.kingprotea.skill.sc-kingprotea-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kingprotea-hibernation` |
-| `servant.kingprotea.skill.sc-kingprotea-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kingprotea-infinite-growth` |
-| `servant.kintoki.skill.sc-kintoki-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
-| `servant.kintoki.skill.sc-kintoki-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
-| `servant.kintoki.skill.sc-kintoki-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.karna.skill.sc-karna-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KARNA_BRAHMA_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.karna-victory-for-power` |
+| `servant.karna.skill.sc-karna-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KARNA_ARMOR_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.karna-sun-armor` |
+| `servant.karna.skill.sc-karna-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KARNA_VASAVI_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.karna-next-round-defeat` |
+| `servant.kinggil.skill.sc-kinggil-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KINGGIL_TERRITORY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
+| `servant.kinggil.skill.sc-kinggil-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KINGGIL_TREASURE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.king-gil-gate-of-babylon` |
+| `servant.kinggil.skill.sc-kinggil-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KINGGIL_CANNON_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.king-gil-melammu-dingir` |
+| `servant.kinghassan.skill.sc-kinghassan-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KINGHASSAN_DEATH_BELL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.king-hassan-azrael` |
+| `servant.kinghassan.skill.sc-kinghassan-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KINGHASSAN_SERVANT_KILL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.king-hassan-azrael` |
+| `servant.kinghassan.skill.sc-kinghassan-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KINGHASSAN_DEATH_BELL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.king-hassan-azrael` |
+| `servant.kingprotea.skill.sc-kingprotea-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KINGPROTEA_GIANT_SHADOW_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kingprotea-limit-break` |
+| `servant.kingprotea.skill.sc-kingprotea-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KINGPROTEA_LOVE_SLEEP_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kingprotea-hibernation` |
+| `servant.kingprotea.skill.sc-kingprotea-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KINGPROTEA_INFINITE_GROWTH_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.kingprotea-infinite-growth` |
+| `servant.kintoki.skill.sc-kintoki-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KINTOKI_GOLDEN_SPARK_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
+| `servant.kintoki.skill.sc-kintoki-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KINTOKI_GOLDEN_SPARK_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
+| `servant.kintoki.skill.sc-kintoki-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `KINTOKI_GOLDEN_EATER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.kiritsugu.skill.sc-kiritsugu-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
 | `servant.kiritsugu.skill.sc-kiritsugu-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `AT_BATTLEFIELD`, `SOURCE_OWNED`, `TARGET_COUNT_AT_LEAST` | `NONE` | `CHOOSE_EACH_PLAYER_OPTION` | `INSTALL_ABILITY_RULE_MODIFIER`, `LOSE_VICTORY_POINTS` | `CHOOSE_EACH_PLAYER_OPTION` | `duration:this_round` | `rule:mana_spending:forbid` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `COMBAT_CONDITION` | `core.structured-skill` |
 | `servant.kiritsugu.skill.sc-kiritsugu-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `AT_BATTLEFIELD`, `EVENT_COUNT_AT_LEAST`, `METRIC`, `METRIC_COMPARE`, `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_EVENT` | `GAIN_VICTORY_POINTS`, `MOVE_SELECTED_EVENTS` | `CHOOSE_ONE_EVENT` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:selectedEventIds` | `COMBAT_CONDITION` | `core.structured-skill` |

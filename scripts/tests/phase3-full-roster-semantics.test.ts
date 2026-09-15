@@ -1595,6 +1595,16 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.kagekiyo.skill.sc-kagekiyo-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'kagekiyo_hidden_attack_rule'})])}));
   });
 
+  it('grounds the fifteen-ID Karna/KingGil/KingHassan/Kingprotea/Kintoki slice from locked development snapshots', () => {
+    const overlays=loadSourceEvidenceOverlayCards();
+    const ids=new Set(["servant.karna.skill.sc-karna-1","servant.karna.skill.sc-karna-2","servant.karna.skill.sc-karna-3","servant.kinggil.skill.sc-kinggil-1","servant.kinggil.skill.sc-kinggil-2","servant.kinggil.skill.sc-kinggil-3","servant.kinghassan.skill.sc-kinghassan-1","servant.kinghassan.skill.sc-kinghassan-2","servant.kinghassan.skill.sc-kinghassan-3","servant.kingprotea.skill.sc-kingprotea-1","servant.kingprotea.skill.sc-kingprotea-2","servant.kingprotea.skill.sc-kingprotea-3","servant.kintoki.skill.sc-kintoki-1","servant.kintoki.skill.sc-kintoki-2","servant.kintoki.skill.sc-kintoki-3"]);
+    const slice=overlays.filter(c=>ids.has(c.id)); expect(slice).toHaveLength(15);
+    expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256)).toBe(true);
+    for(const id of ['servant.kinghassan.skill.sc-kinghassan-1','servant.kinghassan.skill.sc-kinghassan-3']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'kinghassan_death_bell_rule'})])}));
+    for(const id of ['servant.kintoki.skill.sc-kintoki-1','servant.kintoki.skill.sc-kintoki-2']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'kintoki_golden_spark_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.karna.skill.sc-karna-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'karna_vasavi_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1648,10 +1658,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 736,
-      blockedCount: 208,
+      sourceGroundedCount: 751,
+      blockedCount: 193,
       unclassifiedCount: 0,
-      structuredAbilityCount: 1014,
+      structuredAbilityCount: 1029,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
