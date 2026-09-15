@@ -502,10 +502,10 @@ describe('Phase 3 independent full-roster automation audit', () => {
     expect(report).toContain('totalIdentityCount=944');
     expect(report).toContain('authoringCardCount=72');
     expect(report).toContain('authoringAbilityCount=117');
-    expect(report).toContain('sourceEvidenceOverlayCount=445');
-    expect(report).toContain('sourceEvidenceOverlayAbilityCount=678');
-    expect(report).toContain('sourceGroundedCount=517');
-    expect(report).toContain('semanticBlockedCount=427');
+    expect(report).toContain('sourceEvidenceOverlayCount=457');
+    expect(report).toContain('sourceEvidenceOverlayAbilityCount=690');
+    expect(report).toContain('sourceGroundedCount=529');
+    expect(report).toContain('semanticBlockedCount=415');
     expect(report).toContain('gapCount=0');
   });
 });

@@ -21463,6 +21463,329 @@
         }
       ],
       "referencePrintedTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+    },
+    {
+      "id": "servant.mordred.skill.sc-mordred-1",
+      "printedText": "行动阶段：隐藏你的从者真名。\n战斗阶段：你可以关闭本牌并打出另一张牌，支付其花费并使用其行动阶段的效果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_mordred_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "行动阶段：隐藏你的从者真名。\n战斗阶段：你可以关闭本牌并打出另一张牌，支付其花费并使用其行动阶段的效果。",
+        "sourceTextSha256": "de1e933bee541c3922e6ebd5f3874cc66f5db442f0bd268c8022266d461cefbe"
+      },
+      "abilities": [
+        {
+          "id": "mordred.sc_mordred_1.semantic",
+          "printedClause": "行动阶段：隐藏你的从者真名。\n战斗阶段：你可以关闭本牌并打出另一张牌，支付其花费并使用其行动阶段的效果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "true_name_hide_and_action_replay_rule",
+              "operation": "action_hide_controller_servant_true_name_combat_may_close_source_then_play_one_other_card_pay_its_cost_and_use_that_card_action_phase_effect"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "de1e933bee541c3922e6ebd5f3874cc66f5db442f0bd268c8022266d461cefbe"
+    },
+    {
+      "id": "servant.mordred.skill.sc-mordred-2",
+      "printedText": "【真名解放】\n魔力放出-行动阶段：花费X点魔力，此牌获得+2X威力（X至多为10）。若你战败，恢复因魔力放出消耗的魔力的一半（向上取整），该恢复效果不能被任何方式阻止。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_mordred_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n魔力放出-行动阶段：花费X点魔力，此牌获得+2X威力（X至多为10）。若你战败，恢复因魔力放出消耗的魔力的一半（向上取整），该恢复效果不能被任何方式阻止。",
+        "sourceTextSha256": "ccda6c81d54b17e13f9ce86386971a42ba7c13ae582b0500e9c83bc5b17c5b2a"
+      },
+      "abilities": [
+        {
+          "id": "mordred.sc_mordred_2.semantic",
+          "printedClause": "【真名解放】\n魔力放出-行动阶段：花费X点魔力，此牌获得+2X威力（X至多为10）。若你战败，恢复因魔力放出消耗的魔力的一半（向上取整），该恢复效果不能被任何方式阻止。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "mana_burst_refund_rule",
+              "operation": "true_name_reveal_action_pay_x_mana_source_gains_2x_power_x_max_10_if_controller_loses_restore_ceil_half_of_mana_spent_by_this_effect_and_restore_cannot_be_prevented"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ccda6c81d54b17e13f9ce86386971a42ba7c13ae582b0500e9c83bc5b17c5b2a"
+    },
+    {
+      "id": "servant.mordred.skill.sc-mordred-3",
+      "printedText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_mordred_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+        "sourceTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+      },
+      "abilities": [
+        {
+          "id": "mordred.sc_mordred_3.semantic",
+          "printedClause": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 1,
+              "operation": "if_played_highest_mana_cost_noble_phantasm_attack_in_controller_combat_this_round_gain_1_vp_and_if_cost_at_least_4_gain_1_additional_vp"
+            },
+            {
+              "type": "set_opponent_attribute_power",
+              "attribute": "magic",
+              "value": 0,
+              "operation": "combat_set_magic_attribute_attack_power_of_engaged_opponents_at_same_battlefield_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8a6da48db16868ce5d5766fa7ff05c00b2c392f715106f869cb59aaabee65ffc"
+    },
+    {
+      "id": "servant.muramasa.skill.sc-muramasa-1",
+      "printedText": "【真名解放】 <每局游戏限一次>\n此牌不能同其他牌一起打出，是你本回合打出唯一的一张牌。\nX等于你本局游戏中通过【试斩】移除的所有牌的基本威力之和。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_muramasa_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】 <每局游戏限一次>\n此牌不能同其他牌一起打出，是你本回合打出唯一的一张牌。\nX等于你本局游戏中通过【试斩】移除的所有牌的基本威力之和。",
+        "sourceTextSha256": "b7001d12af7ee28064e8a786309a5c04cc5cc3ffa5b9818f1b2997876304edf7"
+      },
+      "abilities": [
+        {
+          "id": "muramasa.sc_muramasa_1.semantic",
+          "printedClause": "【真名解放】 <每局游戏限一次>\n此牌不能同其他牌一起打出，是你本回合打出唯一的一张牌。\nX等于你本局游戏中通过【试斩】移除的所有牌的基本威力之和。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "removed_card_memory_power_rule",
+              "operation": "true_name_reveal_once_per_game_source_cannot_be_played_with_other_cards_and_must_be_only_card_controller_plays_this_round_source_power_x_equals_sum_base_power_of_all_cards_removed_by_tameshigiri_this_game"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b7001d12af7ee28064e8a786309a5c04cc5cc3ffa5b9818f1b2997876304edf7"
+    },
+    {
+      "id": "servant.muramasa.skill.sc-muramasa-2",
+      "printedText": "【真名解放】\n战斗阶段：将至多3张手牌移除游戏，此牌获得移除牌基本威力之和的威力。\n反转/行动阶段：抽4张牌，弃3张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_muramasa_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n战斗阶段：将至多3张手牌移除游戏，此牌获得移除牌基本威力之和的威力。\n反转/行动阶段：抽4张牌，弃3张牌。",
+        "sourceTextSha256": "4494a277cba824a5b0e01f7c765ac8bbc36c3a9e5df65e956b0d0dd1da4ec27a"
+      },
+      "abilities": [
+        {
+          "id": "muramasa.sc_muramasa_2.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：将至多3张手牌移除游戏，此牌获得移除牌基本威力之和的威力。\n反转/行动阶段：抽4张牌，弃3张牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "removed_card_power_rule",
+              "operation": "true_name_reveal_combat_remove_up_to_3_hand_cards_from_game_source_gains_power_equal_to_sum_of_removed_cards_base_power_reverse_action_draw_4_then_discard_3"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4494a277cba824a5b0e01f7c765ac8bbc36c3a9e5df65e956b0d0dd1da4ec27a"
+    },
+    {
+      "id": "servant.muramasa.skill.sc-muramasa-3",
+      "printedText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_muramasa_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+        "sourceTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+      },
+      "abilities": [
+        {
+          "id": "muramasa.sc_muramasa_3.semantic",
+          "printedClause": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "reverse_effect_rule",
+              "operation": "residual_when_controller_places_card_into_play_may_close_source_to_grant_that_card_its_reverse_effect"
+            },
+            {
+              "type": "attribute_chain_rule",
+              "operation": "if_placed_card_has_no_reverse_effect_may_after_play_add_or_remove_strength_quick_magic_attributes_in_any_combination"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+    },
+    {
+      "id": "servant.nero.skill.sc-nero-3",
+      "printedText": "准备阶段/被动：你可以花费2魔力选择在本轮将自己的玩家顺位调至第一或最后一位，这不会影响其他玩家的行动顺序。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_nero_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "准备阶段/被动：你可以花费2魔力选择在本轮将自己的玩家顺位调至第一或最后一位，这不会影响其他玩家的行动顺序。",
+        "sourceTextSha256": "9d355a8c1aa35de9a9e6f929461f43ea5afc4c1e10f03dba9d5c812eda6b1ae9"
+      },
+      "abilities": [
+        {
+          "id": "nero.sc_nero_3.semantic",
+          "printedClause": "准备阶段/被动：你可以花费2魔力选择在本轮将自己的玩家顺位调至第一或最后一位，这不会影响其他玩家的行动顺序。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "turn_order_reposition_rule",
+              "operation": "preparation_passive_pay_2_mana_choose_controller_turn_order_first_or_last_for_this_round_without_changing_other_players_relative_action_order"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "9d355a8c1aa35de9a9e6f929461f43ea5afc4c1e10f03dba9d5c812eda6b1ae9"
+    },
+    {
+      "id": "servant.siegfried.skill.sc-siegfried-1",
+      "printedText": "打出时：失去X点战果，X为本局游戏你打出此牌的次数。\n行动阶段：直到回合结束，齐格飞的真名处于隐藏状态。你不受你所在地点的其他玩家的能力影响。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_siegfried_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "打出时：失去X点战果，X为本局游戏你打出此牌的次数。\n行动阶段：直到回合结束，齐格飞的真名处于隐藏状态。你不受你所在地点的其他玩家的能力影响。",
+        "sourceTextSha256": "284e1af649de5a55c6aa51ceafde99bf8fa6110fc43d65b488f3c9a2d2291fe2"
+      },
+      "abilities": [
+        {
+          "id": "siegfried.sc_siegfried_1.semantic",
+          "printedClause": "打出时：失去X点战果，X为本局游戏你打出此牌的次数。\n行动阶段：直到回合结束，齐格飞的真名处于隐藏状态。你不受你所在地点的其他玩家的能力影响。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "true_name_hide_immunity_rule",
+              "operation": "on_play_lose_x_vp_where_x_is_number_of_times_source_has_been_played_this_game_action_until_round_end_hide_siegfried_true_name_and_ignore_other_players_abilities_at_controller_location"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "284e1af649de5a55c6aa51ceafde99bf8fa6110fc43d65b488f3c9a2d2291fe2"
+    },
+    {
+      "id": "servant.siegfried.skill.sc-siegfried-3",
+      "printedText": "【真名解放】\n行动阶段：展示你的手牌。其中每有一张威力不低于4的牌，合计威力+2（最大为6）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_siegfried_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n行动阶段：展示你的手牌。其中每有一张威力不低于4的牌，合计威力+2（最大为6）",
+        "sourceTextSha256": "476c0569a33ad1d6668e7ca747d73b81e12e0dd5ad1215c9ede006ecb8bfea3d"
+      },
+      "abilities": [
+        {
+          "id": "siegfried.sc_siegfried_3.semantic",
+          "printedClause": "【真名解放】\n行动阶段：展示你的手牌。其中每有一张威力不低于4的牌，合计威力+2（最大为6）",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "revealed_hand_power_rule",
+              "operation": "true_name_reveal_action_reveal_hand_source_grants_2_total_power_per_hand_card_with_base_power_at_least_4_maximum_6_total_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "476c0569a33ad1d6668e7ca747d73b81e12e0dd5ad1215c9ede006ecb8bfea3d"
+    },
+    {
+      "id": "servant.sigurd.skill.sc-sigurd-1",
+      "printedText": "【真名解放】\n诅咒-被动：此牌展示后，每个回合开始时失去1点战果。\n残留：战斗阶段结束后获得X点魔力，X为与你交战的一名对手本回合打出的一张攻击的魔力消耗。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_sigurd_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n诅咒-被动：此牌展示后，每个回合开始时失去1点战果。\n残留：战斗阶段结束后获得X点魔力，X为与你交战的一名对手本回合打出的一张攻击的魔力消耗。",
+        "sourceTextSha256": "0ad4e5636d8bcd9b6ff3d061b8e15593bbf4eb2b48d16394ab9ade07bbc1150d"
+      },
+      "abilities": [
+        {
+          "id": "sigurd.sc_sigurd_1.semantic",
+          "printedClause": "【真名解放】\n诅咒-被动：此牌展示后，每个回合开始时失去1点战果。\n残留：战斗阶段结束后获得X点魔力，X为与你交战的一名对手本回合打出的一张攻击的魔力消耗。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "curse_mana_recovery_rule",
+              "operation": "true_name_reveal_curse_passive_after_source_revealed_lose_1_vp_at_each_round_start_residual_after_combat_gain_x_mana_where_x_is_mana_cost_of_one_attack_played_this_round_by_one_engaged_opponent"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0ad4e5636d8bcd9b6ff3d061b8e15593bbf4eb2b48d16394ab9ade07bbc1150d"
+    },
+    {
+      "id": "servant.sigurd.skill.sc-sigurd-2",
+      "printedText": "诅咒-被动：此牌展示后，每个回合开始时失去1点战果。\n剑刃风暴-被动：你所有的的基础牌获得以下效果：“行动阶段：花费2点魔力，将此牌的基本威力翻倍，战斗阶段结束后将此牌移除游戏。”",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_sigurd_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "诅咒-被动：此牌展示后，每个回合开始时失去1点战果。\n剑刃风暴-被动：你所有的的基础牌获得以下效果：“行动阶段：花费2点魔力，将此牌的基本威力翻倍，战斗阶段结束后将此牌移除游戏。”",
+        "sourceTextSha256": "057d9456a79350032a13645cd7e2702cc2c63f4d837e1f5ae854f80e5c11b94f"
+      },
+      "abilities": [
+        {
+          "id": "sigurd.sc_sigurd_2.semantic",
+          "printedClause": "诅咒-被动：此牌展示后，每个回合开始时失去1点战果。\n剑刃风暴-被动：你所有的的基础牌获得以下效果：“行动阶段：花费2点魔力，将此牌的基本威力翻倍，战斗阶段结束后将此牌移除游戏。”",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "curse_basic_card_modifier_rule",
+              "operation": "curse_passive_after_source_revealed_lose_1_vp_at_each_round_start_blade_storm_passive_all_controller_basic_cards_gain_action_pay_2_mana_double_that_cards_base_power_then_remove_that_card_from_game_after_combat"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "057d9456a79350032a13645cd7e2702cc2c63f4d837e1f5ae854f80e5c11b94f"
+    },
+    {
+      "id": "servant.sigurd.skill.sc-sigurd-3",
+      "printedText": "此牌需追加打出。\n当【坏劫之天轮】展示后，此牌获得迅捷属性。\n当【破灭之黎明】展示后，此牌获得魔术属性。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_sigurd_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "此牌需追加打出。\n当【坏劫之天轮】展示后，此牌获得迅捷属性。\n当【破灭之黎明】展示后，此牌获得魔术属性。",
+        "sourceTextSha256": "68575ba34da56c997ecdaedc7f6840b4e7f55501f3b7c09d41af247f87637388"
+      },
+      "abilities": [
+        {
+          "id": "sigurd.sc_sigurd_3.semantic",
+          "printedClause": "此牌需追加打出。\n当【坏劫之天轮】展示后，此牌获得迅捷属性。\n当【破灭之黎明】展示后，此牌获得魔术属性。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "attribute_chain_rule",
+              "operation": "source_requires_additional_play_when_bolverk_gram_is_revealed_source_gains_quick_attribute_when_gram_ii_is_revealed_source_gains_magic_attribute"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "68575ba34da56c997ecdaedc7f6840b4e7f55501f3b7c09d41af247f87637388"
     }
   ]
 }

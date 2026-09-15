@@ -106580,18 +106580,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_mordred_1"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "TRUE_NAME_HIDE_AND_ACTION_REPLAY_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -106599,26 +106604,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "mordred.sc_mordred_1.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_saber_archer.js",
+              "locator": "sc_mordred_1#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "TRUE_NAME_HIDE_AND_ACTION_REPLAY_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.mordred-hidden-helm"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:true_name_hide_and_action_replay_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -106682,18 +106714,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_mordred_2"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "MANA_BURST_REFUND_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -106701,26 +106738,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "mordred.sc_mordred_2.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_saber_archer.js",
+              "locator": "sc_mordred_2#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "MANA_BURST_REFUND_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.mordred-clarent"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:mana_burst_refund_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -106794,18 +106858,24 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_mordred_3"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "GAIN_VICTORY_POINTS",
+            "SET_OPPONENT_ATTRIBUTE_POWER"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -106813,27 +106883,55 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "mordred.sc_mordred_3.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_saber_archer.js",
+              "locator": "sc_mordred_3#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "GAIN_VICTORY_POINTS",
+                "SET_OPPONENT_ATTRIBUTE_POWER"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.saber-magic-resistance"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "POWER",
+          "RESOURCE_NUMERIC"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_POWER",
+          "GENERIC_RESOURCE_NUMERIC"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -108034,18 +108132,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_muramasa_1"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "REMOVED_CARD_MEMORY_POWER_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -108053,26 +108156,55 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "muramasa.sc_muramasa_1.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_saber_archer.js",
+              "locator": "sc_muramasa_1#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "REMOVED_CARD_MEMORY_POWER_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.structured-skill"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "POWER",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_POWER",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:removed_card_memory_power_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -108146,18 +108278,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_muramasa_2"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "REMOVED_CARD_POWER_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -108165,26 +108302,55 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "muramasa.sc_muramasa_2.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_saber_archer.js",
+              "locator": "sc_muramasa_2#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "REMOVED_CARD_POWER_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.muramasa-imperfect-edge"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "POWER",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_POWER",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:removed_card_power_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -108238,18 +108404,24 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_muramasa_3"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "ATTRIBUTE_CHAIN_RULE",
+            "REVERSE_EFFECT_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -108257,26 +108429,55 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "muramasa.sc_muramasa_3.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_saber_archer.js",
+              "locator": "sc_muramasa_3#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "ATTRIBUTE_CHAIN_RULE",
+                "REVERSE_EFFECT_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.alter-ego-transform"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:attribute_chain_rule",
+          "SPECIAL_EFFECT:reverse_effect_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -109816,18 +110017,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_nero_3"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "TURN_ORDER_REPOSITION_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -109835,26 +110041,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "nero.sc_nero_3.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_saber_archer.js",
+              "locator": "sc_nero_3#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "TURN_ORDER_REPOSITION_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.nero-emperor-privilege"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:turn_order_reposition_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -121374,18 +121607,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_siegfried_1"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "TRUE_NAME_HIDE_IMMUNITY_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -121393,26 +121631,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "siegfried.sc_siegfried_1.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_saber_archer.js",
+              "locator": "sc_siegfried_1#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "TRUE_NAME_HIDE_IMMUNITY_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.siegfried-invisibility-cloak"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:true_name_hide_immunity_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -121625,18 +121890,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_siegfried_3"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "REVEALED_HAND_POWER_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -121644,26 +121914,55 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "siegfried.sc_siegfried_3.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_saber_archer.js",
+              "locator": "sc_siegfried_3#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "REVEALED_HAND_POWER_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.reveal-hand-power-bonus"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "POWER",
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_POWER",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:revealed_hand_power_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -121737,18 +122036,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_sigurd_1"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CURSE_MANA_RECOVERY_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -121756,26 +122060,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "sigurd.sc_sigurd_1.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_saber_archer.js",
+              "locator": "sc_sigurd_1#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CURSE_MANA_RECOVERY_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.sigurd-gram-ii"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:curse_mana_recovery_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -121839,18 +122170,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_sigurd_2"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CURSE_BASIC_CARD_MODIFIER_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -121858,26 +122194,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "sigurd.sc_sigurd_2.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_saber_archer.js",
+              "locator": "sc_sigurd_2#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CURSE_BASIC_CARD_MODIFIER_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.sigurd-bolverk-gram"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:curse_basic_card_modifier_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -121951,18 +122314,23 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_sigurd_3"
+        },
         "axes": {
           "timing": [],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "ATTRIBUTE_CHAIN_RULE"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
@@ -121970,26 +122338,53 @@
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "sigurd.sc_sigurd_3.semantic",
+            "kind": "MIXED",
+            "source": {
+              "document": "Fate_Domination-开发版/batch_saber_archer.js",
+              "locator": "sc_sigurd_3#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "ATTRIBUTE_CHAIN_RULE"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.structured-skill"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "SPECIAL_SUBSYSTEM"
+        ],
+        "requiredCapabilities": [
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:attribute_chain_rule"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -127932,15 +128327,15 @@
   ],
   "semanticSummary": {
     "totalIdentityCount": 944,
-    "sourceGroundedCount": 517,
-    "blockedCount": 427,
+    "sourceGroundedCount": 529,
+    "blockedCount": 415,
     "unclassifiedCount": 0,
-    "structuredAbilityCount": 795
+    "structuredAbilityCount": 807
   },
   "capabilitySummary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 517,
-    "explicitBlockCount": 427,
+    "contractMappedCount": 529,
+    "explicitBlockCount": 415,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -127955,10 +128350,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 218,
-      "SPECIAL_HANDLER_CANDIDATE": 297,
+      "READY_GENERIC_EXTENSION": 219,
+      "SPECIAL_HANDLER_CANDIDATE": 308,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 427,
+      "SOURCE_EVIDENCE_REQUIRED": 415,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
