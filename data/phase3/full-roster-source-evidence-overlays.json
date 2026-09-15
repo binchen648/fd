@@ -28534,6 +28534,432 @@
         }
       ],
       "referencePrintedTextSha256": "6dd00c99ea5541f4def01d6e6658874c041bbfa65f136c2abf6170524cdf9a83"
+    },
+    {
+      "id": "servant.mandricardo.skill.sc-mandricardo-1",
+      "printedText": "【真名解放】\n顷刻一击-行动阶段：+5合计威力，战斗结束后，你的战果数每于本回合超过一名对手，便获得1点战果，之后将此牌移除游戏。若【不带剑的誓言】因此效果被移除，令曼迪卡尔多的【木剑】获得顷刻一击并更改为“战斗阶段：”直至游戏结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_mandricardo_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n顷刻一击-行动阶段：+5合计威力，战斗结束后，你的战果数每于本回合超过一名对手，便获得1点战果，之后将此牌移除游戏。若【不带剑的誓言】因此效果被移除，令曼迪卡尔多的【木剑】获得顷刻一击并更改为“战斗阶段：”直至游戏结束。",
+        "sourceTextSha256": "f8b14b31643d0b61a9195998892af821f672c7ba9c934a98f6fa9a8c004eefa1"
+      },
+      "abilities": [
+        {
+          "id": "mandricardo.sc_mandricardo_1.semantic",
+          "printedClause": "【真名解放】\n顷刻一击-行动阶段：+5合计威力，战斗结束后，你的战果数每于本回合超过一名对手，便获得1点战果，之后将此牌移除游戏。若【不带剑的誓言】因此效果被移除，令曼迪卡尔多的【木剑】获得顷刻一击并更改为“战斗阶段：”直至游戏结束。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "mandricardo_wooden_sword_inheritance_rule",
+              "operation": "true_name_reveal_action_gain_5_total_power_then_after_battle_gain_1_vp_per_opponent_current_vp_exceeds_remove_source_from_game_and_permanently_grant_wooden_sword_momentary_strike_as_combat_effect"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f8b14b31643d0b61a9195998892af821f672c7ba9c934a98f6fa9a8c004eefa1"
+    },
+    {
+      "id": "servant.mandricardo.skill.sc-mandricardo-2",
+      "printedText": "（注：此牌卡面下方无额外文字描述）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_mandricardo_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "（注：此牌卡面下方无额外文字描述）",
+        "sourceTextSha256": "81c3db05882aa64a16e7be3d074b1f042a358ea3c0abf7658e3179234897bc53"
+      },
+      "abilities": [
+        {
+          "id": "mandricardo.sc_mandricardo_2.semantic",
+          "printedClause": "（注：此牌卡面下方无额外文字描述）",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "noop",
+              "operation": "printed_card_has_no_additional_rules_text"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "81c3db05882aa64a16e7be3d074b1f042a358ea3c0abf7658e3179234897bc53"
+    },
+    {
+      "id": "servant.mandricardo.skill.sc-mandricardo-3",
+      "printedText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_mandricardo_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+        "sourceTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+      },
+      "abilities": [
+        {
+          "id": "mandricardo.sc_mandricardo_3.semantic",
+          "printedClause": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+          "kind": "mixed",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "draw_cards",
+              "count": 1,
+              "when": "source_played_with_one_base_attack"
+            },
+            {
+              "type": "play_selected_cards",
+              "sourceZone": "hand",
+              "maxCount": 3,
+              "filter": {
+                "basePowerMax": 3
+              }
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+    },
+    {
+      "id": "servant.maxwell.skill.sc-maxwell-1",
+      "printedText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_maxwell_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+        "sourceTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+      },
+      "abilities": [
+        {
+          "id": "maxwell.sc_maxwell_1.semantic",
+          "printedClause": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "territory_construction_scaling_rule",
+              "operation": "x_equals_16_minus_current_round_times_2_residual_on_deploy_to_workshop_gain_1_mana_and_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+    },
+    {
+      "id": "servant.maxwell.skill.sc-maxwell-2",
+      "printedText": "你拥有的魔力少于8点也可打出此牌。\n行动阶段：你所在地点的玩家获得2点魔力与一个【悖论】指示物。\n战斗阶段：<每局游戏限一次>【真名解放】，令拥有【悖论】的数量大于其魔力值一半的所有玩家【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_maxwell_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "你拥有的魔力少于8点也可打出此牌。\n行动阶段：你所在地点的玩家获得2点魔力与一个【悖论】指示物。\n战斗阶段：<每局游戏限一次>【真名解放】，令拥有【悖论】的数量大于其魔力值一半的所有玩家【败北】。",
+        "sourceTextSha256": "4642e70b3b368239463fb6c424a90a034d7a47096b41cd72edfcf29602b3e5f3"
+      },
+      "abilities": [
+        {
+          "id": "maxwell.sc_maxwell_2.semantic",
+          "printedClause": "你拥有的魔力少于8点也可打出此牌。\n行动阶段：你所在地点的玩家获得2点魔力与一个【悖论】指示物。\n战斗阶段：<每局游戏限一次>【真名解放】，令拥有【悖论】的数量大于其魔力值一半的所有玩家【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "maxwell_paradox_defeat_rule",
+              "operation": "may_play_below_8_mana_action_all_players_at_location_gain_2_mana_and_one_paradox_counter_combat_once_per_game_true_name_reveal_defeat_all_players_whose_paradox_count_exceeds_half_their_mana"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4642e70b3b368239463fb6c424a90a034d7a47096b41cd72edfcf29602b3e5f3"
+    },
+    {
+      "id": "servant.maxwell.skill.sc-maxwell-3",
+      "printedText": "残留：当你要获得魔力时，改为令此牌在关闭前增加相同数量的威力。在战斗阶段开始时，你所在地点的玩家失去2点魔力。若其中有玩家在失去魔力前其魔力值小于2，关闭此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_maxwell_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "残留：当你要获得魔力时，改为令此牌在关闭前增加相同数量的威力。在战斗阶段开始时，你所在地点的玩家失去2点魔力。若其中有玩家在失去魔力前其魔力值小于2，关闭此牌。",
+        "sourceTextSha256": "d56034f4f401859c2e64f596b828b0b0fd2d0aad932ea25c7def4fd1481f6df3"
+      },
+      "abilities": [
+        {
+          "id": "maxwell.sc_maxwell_3.semantic",
+          "printedClause": "残留：当你要获得魔力时，改为令此牌在关闭前增加相同数量的威力。在战斗阶段开始时，你所在地点的玩家失去2点魔力。若其中有玩家在失去魔力前其魔力值小于2，关闭此牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "maxwell_mana_gain_replacement_rule",
+              "operation": "residual_replace_controller_mana_gain_with_equal_source_power_until_closed_at_combat_start_players_at_location_lose_2_mana_close_source_if_any_had_less_than_2_before_loss"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d56034f4f401859c2e64f596b828b0b0fd2d0aad932ea25c7def4fd1481f6df3"
+    },
+    {
+      "id": "servant.mechaeli.skill.sc-mechaeli-1",
+      "printedText": "你可以追加打出此牌。\n砰！-行动阶段反转：或战斗阶段：将一名与你位于同一战场且其回合顺位在你之后的对手沿箭头移动一个地点。你每回合可以使用砰！两次。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_mechaeli_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "你可以追加打出此牌。\n砰！-行动阶段反转：或战斗阶段：将一名与你位于同一战场且其回合顺位在你之后的对手沿箭头移动一个地点。你每回合可以使用砰！两次。",
+        "sourceTextSha256": "b29b3acfab2acfc2b3c3174ccdf5691c8fc7638e905fcb2f5b91611d36a9dd0f"
+      },
+      "abilities": [
+        {
+          "id": "mechaeli.sc_mechaeli_1.semantic",
+          "printedClause": "你可以追加打出此牌。\n砰！-行动阶段反转：或战斗阶段：将一名与你位于同一战场且其回合顺位在你之后的对手沿箭头移动一个地点。你每回合可以使用砰！两次。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "mechaeli_rocket_punch_rule",
+              "operation": "may_play_as_additional_card_action_reversal_or_combat_move_later_turn_order_opponent_at_same_battlefield_one_location_along_arrow_up_to_twice_per_round"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b29b3acfab2acfc2b3c3174ccdf5691c8fc7638e905fcb2f5b91611d36a9dd0f"
+    },
+    {
+      "id": "servant.mechaeli.skill.sc-mechaeli-3",
+      "printedText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_mechaeli_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+        "sourceTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+      },
+      "abilities": [
+        {
+          "id": "mechaeli.sc_mechaeli_3.semantic",
+          "printedClause": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "alter_ego_reverse_attribute_rule",
+              "operation": "residual_when_controller_places_card_into_play_may_close_source_to_grant_reverse_effect_or_if_none_after_play_toggle_strength_quick_magic_attributes_to_any_combination"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+    },
+    {
+      "id": "servant.medb.skill.sc-medb-1",
+      "printedText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_medb_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+        "sourceTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+      },
+      "abilities": [
+        {
+          "id": "medb.sc_medb_1.semantic",
+          "printedClause": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+          "kind": "mixed",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "draw_cards",
+              "count": 1,
+              "when": "source_played_with_one_base_attack"
+            },
+            {
+              "type": "play_selected_cards",
+              "sourceZone": "hand",
+              "maxCount": 3,
+              "filter": {
+                "basePowerMax": 3
+              }
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+    },
+    {
+      "id": "servant.medb.skill.sc-medb-2",
+      "printedText": "【真名解放】\n行动阶段：令一名与你位于同一地点的对手于下回合【迷醉】。下个回合结束时，你获得所有【迷醉】的对手本回合获得的等量战果。若其获得的战果少于3点，其失去3点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_medb_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n行动阶段：令一名与你位于同一地点的对手于下回合【迷醉】。下个回合结束时，你获得所有【迷醉】的对手本回合获得的等量战果。若其获得的战果少于3点，其失去3点战果。",
+        "sourceTextSha256": "f433216766653308522142faf41bd3183853f6643529ae66ff04c89ffe96410b"
+      },
+      "abilities": [
+        {
+          "id": "medb.sc_medb_2.semantic",
+          "printedClause": "【真名解放】\n行动阶段：令一名与你位于同一地点的对手于下回合【迷醉】。下个回合结束时，你获得所有【迷醉】的对手本回合获得的等量战果。若其获得的战果少于3点，其失去3点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "medb_intoxication_vp_rule",
+              "operation": "true_name_reveal_action_mark_same_location_opponent_intoxicated_next_round_at_next_round_end_gain_equal_vp_to_all_intoxicated_opponents_vp_gained_that_round_if_their_gain_below_3_they_lose_3_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f433216766653308522142faf41bd3183853f6643529ae66ff04c89ffe96410b"
+    },
+    {
+      "id": "servant.medb.skill.sc-medb-3",
+      "printedText": "【真名解放】\n战斗阶段：令一名你战斗中的胜者于下回合【拜服】。下个回合前哨阶段，【拜服】者不进行部署，改为在你部署后，部署于你所在的地点，你必须部署在一处至少可供2名玩家部署的地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_medb_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n战斗阶段：令一名你战斗中的胜者于下回合【拜服】。下个回合前哨阶段，【拜服】者不进行部署，改为在你部署后，部署于你所在的地点，你必须部署在一处至少可供2名玩家部署的地点。",
+        "sourceTextSha256": "7c95b39e3c7919001aaa6117484f5235e90f44d973e8aa89551132626b18b055"
+      },
+      "abilities": [
+        {
+          "id": "medb.sc_medb_3.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：令一名你战斗中的胜者于下回合【拜服】。下个回合前哨阶段，【拜服】者不进行部署，改为在你部署后，部署于你所在的地点，你必须部署在一处至少可供2名玩家部署的地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "medb_submission_deployment_rule",
+              "operation": "true_name_reveal_combat_mark_one_battle_winner_submissive_next_round_outpost_they_skip_deployment_then_deploy_to_controller_location_after_controller_controller_must_choose_location_with_capacity_at_least_2"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7c95b39e3c7919001aaa6117484f5235e90f44d973e8aa89551132626b18b055"
+    },
+    {
+      "id": "servant.medea.skill.sc-medea-1",
+      "printedText": "【真名解放】\n战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_medea_1",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】\n战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+        "sourceTextSha256": "c01850ffc239160dcf0959c176270f28d9b958a334e87166a076366d731042f7"
+      },
+      "abilities": [
+        {
+          "id": "medea.sc_medea_1.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "medea_rule_breaker_recovery_rule",
+              "operation": "true_name_reveal_combat_on_controller_battle_loss_return_one_removed_rule_breaker_to_controller_skill_zone"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c01850ffc239160dcf0959c176270f28d9b958a334e87166a076366d731042f7"
+    },
+    {
+      "id": "servant.medea.skill.sc-medea-2",
+      "printedText": "X为16 - (当前回合数 × 2)\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_medea_2",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "X为16 - (当前回合数 × 2)\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+        "sourceTextSha256": "33c9377158b49fad67a503f1368f81efa65b97cff870c2331c8ca4ee69937446"
+      },
+      "abilities": [
+        {
+          "id": "medea.sc_medea_2.semantic",
+          "printedClause": "X为16 - (当前回合数 × 2)\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "territory_construction_scaling_rule",
+              "operation": "x_equals_16_minus_current_round_times_2_residual_on_deploy_to_workshop_gain_1_mana_and_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "33c9377158b49fad67a503f1368f81efa65b97cff870c2331c8ca4ee69937446"
+    },
+    {
+      "id": "servant.medea.skill.sc-medea-np",
+      "printedText": "【真名解放】<每局游戏限一次>\n行动阶段：你所在战场的一名玩家失去一枚令咒，若其原本只有一枚或更少的令咒，另其【败北】。若其原本没有令咒，你总威力+10。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_medea_np",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】<每局游戏限一次>\n行动阶段：你所在战场的一名玩家失去一枚令咒，若其原本只有一枚或更少的令咒，另其【败北】。若其原本没有令咒，你总威力+10。",
+        "sourceTextSha256": "a15b6e98527c1faa4914911d66597c7c139dab9653a3578fdb699271e4c52228"
+      },
+      "abilities": [
+        {
+          "id": "medea.sc_medea_np.semantic",
+          "printedClause": "【真名解放】<每局游戏限一次>\n行动阶段：你所在战场的一名玩家失去一枚令咒，若其原本只有一枚或更少的令咒，另其【败北】。若其原本没有令咒，你总威力+10。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "medea_rule_breaker_command_spell_rule",
+              "operation": "true_name_reveal_once_per_game_action_same_battlefield_player_loses_one_command_spell_if_they_had_at_most_one_before_loss_defeat_them_if_they_had_none_controller_total_power_plus_10"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "a15b6e98527c1faa4914911d66597c7c139dab9653a3578fdb699271e4c52228"
+    },
+    {
+      "id": "servant.medusa.skill.sc-medusa-1",
+      "printedText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_medusa_1",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+        "sourceTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+      },
+      "abilities": [
+        {
+          "id": "medusa.sc_medusa_1.semantic",
+          "printedClause": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+          "kind": "mixed",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "draw_cards",
+              "count": 1,
+              "when": "source_played_with_one_base_attack"
+            },
+            {
+              "type": "play_selected_cards",
+              "sourceZone": "hand",
+              "maxCount": 3,
+              "filter": {
+                "basePowerMax": 3
+              }
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
     }
   ]
 }
