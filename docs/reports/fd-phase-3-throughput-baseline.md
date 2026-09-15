@@ -628,3 +628,12 @@ Permitted final status:
 - Generated coverage drift remains timestamp/static-line-only and is intentionally not committed.
 - Independent R24 evidence: typecheck PASS; focused `34/34`; rules `274/274`; deterministic PASS; full CI `687/687`; identity/forbidden-file audits clean; corrected quoted-range diff check PASS.
 - Broad Card Zone, Return-by-definition/Card Create, Trigger/Lifecycle/Target/Movement/Power/Special, and F4 migration remain unpromoted.
+
+## P3-A FB2-08 Synchronization — 2026-09-16
+
+- FB2-08 exact source-play/basic-attack controller draw-1 trigger: `REVIEW_ACCEPTED` at candidate `ea6a1522f6382ef617ae26fbca7d208e999f204f`, independent R25 `33f0a0e1b3e9c4c62c8eb713ae45cd7117c7a0a7`.
+- Independent evidence: typecheck PASS; focused `78/78`; Drake Riding `5/5`; all rules `280/280`; deterministic hashes unchanged; second clean full CI `693/693`. One first-run unrelated executable-pack test timeout was isolated twice at 65ms/59ms PASS.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled identity remains 70 cards / 14 characters / 0 blocking issues with definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`.
+- Regenerated coverage drift is timestamp/static-line-only and is intentionally not committed.
+- Frozen F1 recheck confirms 14/14 selected servant skills have `blockedBy=[]`, required capabilities exactly `[CARD_ACTION_PLAY, GENERIC_CARD_ZONE]`, no extra semantic axes, and the identical two-clause source overlay.
+- TO13 + FB2-06 + FB2-08 now close the full composite dependency for those 14 identities. This is the first honest 10–40 F4 migration batch, so P3-FM01 is dispatched READY at 14 exact IDs.
