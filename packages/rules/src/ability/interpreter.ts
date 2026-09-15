@@ -704,6 +704,8 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
       if (event.type === 'after_battle_ended' && isBattleEndSourceReturnCandidate(a) && !battleEndSourceReturnTriggerEligible(s, c.instanceId)) continue;
       if (event.type === 'after_battle_ended' && isBattleEndMobilePlayersRewardSemantic(a) &&
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
+      if (event.type === 'after_player_deployed_to_battlefield' && isDeploymentResourceRewardCandidate(a) &&
+        event.playerId !== c.controllerPlayerId) continue;
       if (event.type === 'after_controller_loses_battle' && isBattleLossStateTransformCandidate(a) &&
         !battleLossStateTransformTriggerEligible(s, c.instanceId)) continue;
       if (!matches || !canActivate(s, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
@@ -1110,6 +1112,27 @@ function createPrivateOptionalHandPlayInteraction(s: GameState, ctx: EffectConte
 }
 
 const directResourcePrimitiveTypes = new Set(['adjust_mana', 'adjust_command_seals', 'adjust_victory_points']);
+const deploymentRewardPrimitiveTypes = new Set(['adjust_mana', 'adjust_victory_points']);
+
+function isDeploymentResourceRewardCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'forced_trigger' &&
+    str(a.activation.trigger) === 'after_player_deployed_to_battlefield' &&
+    !!str(a.activation.eventLocationId);
+}
+
+export function isDeploymentResourceRewardSemantic(a: AuthoringAbility): boolean {
+  if (!isDeploymentResourceRewardCandidate(a)) return false;
+  if (str(a.activation.phase) || str(a.activation.opens) || str(a.activation.requiresSourceState)) return false;
+  if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
+  if (a.effects.length < 1 || a.effects.length > 2) return false;
+  return a.effects.every((effect) => {
+    if (!deploymentRewardPrimitiveTypes.has(str(effect.type))) return false;
+    if (effect.player !== undefined && effect.player !== 'controller') return false;
+    if (!Number.isSafeInteger(effect.amount) || Number(effect.amount) <= 0) return false;
+    return Object.keys(effect).every((key) => ['type', 'player', 'amount'].includes(key));
+  });
+}
 
 function isResourceNumericTriggerCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'forced_trigger' &&
@@ -1837,13 +1860,14 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
-  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a)) {
+  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isDeploymentResourceRewardSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
     cleanupOngoing(s);
     return;
   }
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
+  if (isDeploymentResourceRewardCandidate(a)) reject('resolution_failed', 'Unsupported deployment resource reward semantic shape');
   if (isBattleLossResourceTriggerCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss resource semantic shape');
   if (isBattleLossUnpreventableVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported unpreventable battle-loss VP semantic shape');
   if (isBattleLossServantRevealCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss servant reveal semantic shape');
