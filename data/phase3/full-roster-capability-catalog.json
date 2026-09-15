@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 544,
-    "explicitBlockCount": 400,
+    "contractMappedCount": 559,
+    "explicitBlockCount": 385,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -25,9 +25,9 @@
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
       "READY_GENERIC_EXTENSION": 221,
-      "SPECIAL_HANDLER_CANDIDATE": 321,
+      "SPECIAL_HANDLER_CANDIDATE": 336,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 400,
+      "SOURCE_EVIDENCE_REQUIRED": 385,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -3433,6 +3433,7 @@
         "servant.edison.skill.sc-edison-3",
         "servant.gorgon.skill.sc-gorgon-2",
         "servant.ibaraki.skill.sc-ibaraki-1",
+        "servant.ishtar.skill.sc-ishtar-2",
         "servant.iskandar.skill.sc-iskandar-2",
         "servant.kagekiyo.skill.sc-kagekiyo-2",
         "servant.kama.skill.sc-kama-1",
@@ -5160,6 +5161,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.arthur.skill.sc-arthur-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5332,6 +5345,30 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.euryale.skill.sc-euryale-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.euryale.skill.sc-euryale-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.euryale.skill.sc-euryale-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.gawain.skill.sc-gawain-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -5393,6 +5430,30 @@
         },
         {
           "abilityId": "servant.illya.skill.sc-illya-9",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ishtar.skill.sc-ishtar-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ishtar.skill.sc-ishtar-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ishtar.skill.sc-ishtar-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jason.skill.sc-jason-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jason.skill.sc-jason-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jason.skill.sc-jason-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -8793,6 +8854,9 @@
         "servant.abigail.skill.sc-abigail-4",
         "servant.altera.skill.sc-altera-1",
         "servant.altera.skill.sc-altera-2",
+        "servant.arjuna-archer.skill.sc-arjuna-archer-1",
+        "servant.arjuna-archer.skill.sc-arjuna-archer-2",
+        "servant.arjuna-archer.skill.sc-arjuna-archer-3",
         "servant.arthur.skill.sc-arthur-1",
         "servant.arthur.skill.sc-arthur-2",
         "servant.artoria-alt.skill.sc-artoria-alt-1",
@@ -8836,6 +8900,12 @@
         "servant.deon.skill.sc-deon-2",
         "servant.deon.skill.sc-deon-3",
         "servant.diarmuid.skill.sc-diarmuid-1",
+        "servant.emiya-alt.skill.sc-emiya-alt-1",
+        "servant.emiya-alt.skill.sc-emiya-alt-2",
+        "servant.emiya-alt.skill.sc-emiya-alt-3",
+        "servant.euryale.skill.sc-euryale-1",
+        "servant.euryale.skill.sc-euryale-2",
+        "servant.euryale.skill.sc-euryale-3",
         "servant.gawain.skill.sc-gawain-1",
         "servant.gawain.skill.sc-gawain-2",
         "servant.gorgon.skill.sc-gorgon-3",
@@ -8852,6 +8922,12 @@
         "servant.illya.skill.sc-illya-7",
         "servant.illya.skill.sc-illya-8",
         "servant.illya.skill.sc-illya-9",
+        "servant.ishtar.skill.sc-ishtar-1",
+        "servant.ishtar.skill.sc-ishtar-2",
+        "servant.ishtar.skill.sc-ishtar-3",
+        "servant.jason.skill.sc-jason-1",
+        "servant.jason.skill.sc-jason-2",
+        "servant.jason.skill.sc-jason-3",
         "servant.kagetora.skill.sc-kagetora-1",
         "servant.kagetora.skill.sc-kagetora-2",
         "servant.kagetora.skill.sc-kagetora-4",
@@ -9790,6 +9866,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.arthur.skill.sc-arthur-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -9962,6 +10050,30 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.euryale.skill.sc-euryale-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.euryale.skill.sc-euryale-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.euryale.skill.sc-euryale-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.gawain.skill.sc-gawain-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -10026,7 +10138,31 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.ishtar.skill.sc-ishtar-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ishtar.skill.sc-ishtar-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ishtar.skill.sc-ishtar-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.iskandar.skill.sc-iskandar-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jason.skill.sc-jason-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jason.skill.sc-jason-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.jason.skill.sc-jason-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -10649,6 +10785,9 @@
       "servant.altera.skill.sc-altera-3",
       "servant.amakusa.skill.sc-amakusa-1",
       "servant.andersen.skill.sc-andersen-2",
+      "servant.arjuna-archer.skill.sc-arjuna-archer-1",
+      "servant.arjuna-archer.skill.sc-arjuna-archer-2",
+      "servant.arjuna-archer.skill.sc-arjuna-archer-3",
       "servant.arjuna.skill.sc-arjuna-1",
       "servant.arthur.skill.sc-arthur-1",
       "servant.arthur.skill.sc-arthur-2",
@@ -10718,7 +10857,13 @@
       "servant.drake.skill.sc-drake-3",
       "servant.edison.skill.sc-edison-2",
       "servant.edison.skill.sc-edison-3",
+      "servant.emiya-alt.skill.sc-emiya-alt-1",
+      "servant.emiya-alt.skill.sc-emiya-alt-2",
+      "servant.emiya-alt.skill.sc-emiya-alt-3",
       "servant.emiya.skill.sc-emiya-np",
+      "servant.euryale.skill.sc-euryale-1",
+      "servant.euryale.skill.sc-euryale-2",
+      "servant.euryale.skill.sc-euryale-3",
       "servant.gawain.skill.sc-gawain-1",
       "servant.gawain.skill.sc-gawain-2",
       "servant.gawain.skill.sc-gawain-3",
@@ -10741,7 +10886,13 @@
       "servant.illya.skill.sc-illya-7",
       "servant.illya.skill.sc-illya-8",
       "servant.illya.skill.sc-illya-9",
+      "servant.ishtar.skill.sc-ishtar-1",
+      "servant.ishtar.skill.sc-ishtar-2",
+      "servant.ishtar.skill.sc-ishtar-3",
       "servant.iskandar.skill.sc-iskandar-2",
+      "servant.jason.skill.sc-jason-1",
+      "servant.jason.skill.sc-jason-2",
+      "servant.jason.skill.sc-jason-3",
       "servant.kagekiyo.skill.sc-kagekiyo-2",
       "servant.kagetora.skill.sc-kagetora-1",
       "servant.kagetora.skill.sc-kagetora-2",
@@ -10992,27 +11143,6 @@
       },
       {
         "abilityId": "servant.arcueid.skill.sc-arcueid-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-3",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -11579,27 +11709,6 @@
         ]
       },
       {
-        "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "servant.emiya.skill.sc-emiya-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -11650,27 +11759,6 @@
       },
       {
         "abilityId": "servant.ereshkigal.skill.sc-ereshkigal-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.euryale.skill.sc-euryale-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.euryale.skill.sc-euryale-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.euryale.skill.sc-euryale-3",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -11957,27 +12045,6 @@
         ]
       },
       {
-        "abilityId": "servant.ishtar.skill.sc-ishtar-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ishtar.skill.sc-ishtar-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ishtar.skill.sc-ishtar-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "servant.iskandar.skill.sc-iskandar-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -12070,27 +12137,6 @@
       },
       {
         "abilityId": "servant.jaguarman.skill.sc-jaguarman-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jason.skill.sc-jason-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jason.skill.sc-jason-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.jason.skill.sc-jason-3",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -13840,6 +13886,9 @@
       "servant.altera.skill.sc-altera-1",
       "servant.altera.skill.sc-altera-2",
       "servant.andersen.skill.sc-andersen-2",
+      "servant.arjuna-archer.skill.sc-arjuna-archer-1",
+      "servant.arjuna-archer.skill.sc-arjuna-archer-2",
+      "servant.arjuna-archer.skill.sc-arjuna-archer-3",
       "servant.arthur.skill.sc-arthur-1",
       "servant.arthur.skill.sc-arthur-2",
       "servant.artoria-alt.skill.sc-artoria-alt-1",
@@ -13883,6 +13932,12 @@
       "servant.deon.skill.sc-deon-2",
       "servant.deon.skill.sc-deon-3",
       "servant.diarmuid.skill.sc-diarmuid-1",
+      "servant.emiya-alt.skill.sc-emiya-alt-1",
+      "servant.emiya-alt.skill.sc-emiya-alt-2",
+      "servant.emiya-alt.skill.sc-emiya-alt-3",
+      "servant.euryale.skill.sc-euryale-1",
+      "servant.euryale.skill.sc-euryale-2",
+      "servant.euryale.skill.sc-euryale-3",
       "servant.gawain.skill.sc-gawain-1",
       "servant.gawain.skill.sc-gawain-2",
       "servant.gorgon.skill.sc-gorgon-3",
@@ -13899,6 +13954,12 @@
       "servant.illya.skill.sc-illya-7",
       "servant.illya.skill.sc-illya-8",
       "servant.illya.skill.sc-illya-9",
+      "servant.ishtar.skill.sc-ishtar-1",
+      "servant.ishtar.skill.sc-ishtar-2",
+      "servant.ishtar.skill.sc-ishtar-3",
+      "servant.jason.skill.sc-jason-1",
+      "servant.jason.skill.sc-jason-2",
+      "servant.jason.skill.sc-jason-3",
       "servant.kagetora.skill.sc-kagetora-1",
       "servant.kagetora.skill.sc-kagetora-2",
       "servant.kagetora.skill.sc-kagetora-4",

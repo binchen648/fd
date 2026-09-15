@@ -7,8 +7,8 @@
 - Fallback Policy: zero silent fallback; every canonical identity is mapped or explicitly blocked.
 
 totalIdentityCount=944
-contractMappedCount=544
-explicitBlockCount=400
+contractMappedCount=559
+explicitBlockCount=385
 capabilityCount=32
 zeroSilentFallback=true
 
@@ -27,12 +27,12 @@ zeroSilentFallback=true
 | `CARD_ACTION_SEMANTICS_MINIMAL_PLAY` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 1 | 0 | 65 | Time Alter Gate A/B/C candidate |
 | `CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 0 | 66 | Volumen Gate A/B/C candidate |
 | `CARD_ZONE_CORE_DIRECT_ACTION` | `existing_contract` | `CARD_ZONE` | 1 | 0 | 119 | Mechanic Batch Gate A/B/C representative evidence |
-| `GENERIC_BATTLE_INTEGRATION` | `generic_request` | `BATTLE_RESULT` | 126 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_BATTLE_INTEGRATION` | `generic_request` | `BATTLE_RESULT` | 127 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_CARD_CREATE` | `generic_request` | `CARD_ZONE` | 13 | 0 | 107 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_CARD_ZONE` | `generic_request` | `CARD_ZONE` | 108 | 0 | 12 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_CONDITION_EVALUATION` | `generic_request` | `CONDITION` | 216 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_COST_PAYMENT` | `generic_request` | `COST_PAYMENT` | 30 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_EVENT_DECK` | `generic_request` | `SPECIAL_SUBSYSTEM` | 40 | 0 | 288 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_EVENT_DECK` | `generic_request` | `SPECIAL_SUBSYSTEM` | 40 | 0 | 303 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_LIFECYCLE_POLICY` | `generic_request` | `LIFECYCLE` | 169 | 0 | 7 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_MODIFIER` | `generic_request` | `MODIFIER` | 161 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_MOVEMENT` | `generic_request` | `MOVEMENT` | 38 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
@@ -46,8 +46,8 @@ zeroSilentFallback=true
 | `GENERIC_VISIBILITY` | `generic_request` | `HIDDEN_INFORMATION` | 62 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `RESOURCE_NUMERIC_CORE_DIRECT_ACTION` | `existing_contract` | `RESOURCE_NUMERIC` | 0 | 1 | 119 | Mechanic Batch Gate A/B/C representative evidence |
 | `RESULT_BINDING_PHASE3A` | `existing_contract` | `RESULT_BINDING` | 0 | 1 | 81 | Golden Eater Gate A/B/C candidate |
-| `REVIEWED_SPECIAL_HANDLER` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 318 | 0 | 10 | B/R reviewed-special exception with explicit deletion/reuse criteria |
-| `REVIEWED_SPECIAL_TRANSFORM` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 4 | 0 | 324 | B/R reviewed-special exception with explicit deletion/reuse criteria |
+| `REVIEWED_SPECIAL_HANDLER` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 333 | 0 | 10 | B/R reviewed-special exception with explicit deletion/reuse criteria |
+| `REVIEWED_SPECIAL_TRANSFORM` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 4 | 0 | 339 | B/R reviewed-special exception with explicit deletion/reuse criteria |
 
 ## Identity Mapping
 
@@ -434,9 +434,9 @@ zeroSilentFallback=true
 | `servant.arcueid.skill.sc-arcueid-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.arcueid.skill.sc-arcueid-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.arcueid.skill.sc-arcueid-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.arjuna-archer.skill.sc-arjuna-archer-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.arjuna-archer.skill.sc-arjuna-archer-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.arjuna-archer.skill.sc-arjuna-archer-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
+| `servant.arjuna-archer.skill.sc-arjuna-archer-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:search_basic_card_play_rule` |
+| `servant.arjuna-archer.skill.sc-arjuna-archer-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:prophecy_hand_sum_defeat_rule` |
+| `servant.arjuna-archer.skill.sc-arjuna-archer-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:judgment_luck_defeat_rule` |
 | `servant.arjuna.skill.sc-arjuna-1` | `READY_GENERIC_EXTENSION` | `none` | `shared_handler` | `BATTLE_RESULT`, `CONDITION`, `HIDDEN_INFORMATION`, `LIFECYCLE`, `MODIFIER`, `POWER`, `TRIGGER` | `GENERIC_BATTLE_INTEGRATION`, `GENERIC_CONDITION_EVALUATION`, `GENERIC_LIFECYCLE_POLICY`, `GENERIC_MODIFIER`, `GENERIC_POWER`, `GENERIC_STATUS_STATE`, `GENERIC_TRIGGER_GATEWAY`, `GENERIC_VISIBILITY` | `NONE` | `NONE` | `NONE` |
 | `servant.arjuna.skill.sc-arjuna-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.arjuna.skill.sc-arjuna-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
@@ -586,9 +586,9 @@ zeroSilentFallback=true
 | `servant.elizabeth.skill.sc-elizabeth-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.elizabeth.skill.sc-elizabeth-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.elizabeth.skill.sc-elizabeth-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.emiya-alt.skill.sc-emiya-alt-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.emiya-alt.skill.sc-emiya-alt-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.emiya-alt.skill.sc-emiya-alt-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
+| `servant.emiya-alt.skill.sc-emiya-alt-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:independent_action_rule` |
+| `servant.emiya-alt.skill.sc-emiya-alt-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:discard_attribute_recycle_defeat_rule` |
+| `servant.emiya-alt.skill.sc-emiya-alt-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:discard_cost_attribute_gain_rule` |
 | `servant.emiya.skill.sc-emiya-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.emiya.skill.sc-emiya-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.emiya.skill.sc-emiya-np` | `READY_GENERIC_EXTENSION` | `none` | `shared_handler` | `CARD_ZONE`, `CONDITION`, `HIDDEN_INFORMATION`, `INTERACTION`, `LIFECYCLE`, `MODIFIER`, `RESULT_BINDING`, `TARGET_SELECTION` | `GENERIC_CARD_ZONE`, `GENERIC_CONDITION_EVALUATION`, `GENERIC_LIFECYCLE_POLICY`, `GENERIC_MODIFIER`, `GENERIC_PENDING_INTERACTION`, `GENERIC_RESULT_BINDING`, `GENERIC_TARGET_SELECTION`, `GENERIC_VISIBILITY` | `NONE` | `NONE` | `NONE` |
@@ -598,9 +598,9 @@ zeroSilentFallback=true
 | `servant.ereshkigal.skill.sc-ereshkigal-1` | `SOURCE_EVIDENCE_REQUIRED` | `legacy` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.ereshkigal.skill.sc-ereshkigal-2` | `SOURCE_EVIDENCE_REQUIRED` | `legacy` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.ereshkigal.skill.sc-ereshkigal-3` | `SOURCE_EVIDENCE_REQUIRED` | `legacy` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.euryale.skill.sc-euryale-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.euryale.skill.sc-euryale-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.euryale.skill.sc-euryale-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
+| `servant.euryale.skill.sc-euryale-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:independent_action_rule` |
+| `servant.euryale.skill.sc-euryale-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:siren_action_override_rule` |
+| `servant.euryale.skill.sc-euryale-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:revealed_luck_play_rule` |
 | `servant.frank.skill.sc-frank-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.frank.skill.sc-frank-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.frank.skill.sc-frank-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
@@ -663,9 +663,9 @@ zeroSilentFallback=true
 | `servant.illya.skill.sc-illya-7` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `MOVEMENT`, `SPECIAL_SUBSYSTEM` | `GENERIC_MOVEMENT`, `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:dream_summon_rule` |
 | `servant.illya.skill.sc-illya-8` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:dream_summon_rule` |
 | `servant.illya.skill.sc-illya-9` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:dream_summon_rule` |
-| `servant.ishtar.skill.sc-ishtar-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.ishtar.skill.sc-ishtar-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.ishtar.skill.sc-ishtar-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
+| `servant.ishtar.skill.sc-ishtar-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:luck_identity_replay_rule` |
+| `servant.ishtar.skill.sc-ishtar-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `BATTLE_RESULT`, `SPECIAL_SUBSYSTEM` | `GENERIC_BATTLE_INTEGRATION`, `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:offboard_battle_takeover_rule` |
+| `servant.ishtar.skill.sc-ishtar-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:independent_action_rule` |
 | `servant.iskandar.skill.sc-iskandar-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.iskandar.skill.sc-iskandar-2` | `READY_GENERIC_EXTENSION` | `none` | `shared_handler` | `BATTLE_RESULT`, `CARD_ZONE`, `CONDITION`, `HIDDEN_INFORMATION`, `INTERACTION`, `RESULT_BINDING`, `SPECIAL_SUBSYSTEM`, `TARGET_SELECTION` | `GENERIC_BATTLE_INTEGRATION`, `GENERIC_CARD_ZONE`, `GENERIC_CONDITION_EVALUATION`, `GENERIC_EVENT_DECK`, `GENERIC_PENDING_INTERACTION`, `GENERIC_RESULT_BINDING`, `GENERIC_TARGET_SELECTION`, `GENERIC_VISIBILITY` | `NONE` | `NONE` | `NONE` |
 | `servant.iskandar.skill.sc-iskandar-np` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
@@ -681,9 +681,9 @@ zeroSilentFallback=true
 | `servant.jaguarman.skill.sc-jaguarman-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.jaguarman.skill.sc-jaguarman-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.jaguarman.skill.sc-jaguarman-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.jason.skill.sc-jason-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.jason.skill.sc-jason-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.jason.skill.sc-jason-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
+| `servant.jason.skill.sc-jason-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:dispatch_quest_rule` |
+| `servant.jason.skill.sc-jason-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:dispatch_quest_rule` |
+| `servant.jason.skill.sc-jason-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:dispatch_quest_rule` |
 | `servant.jeanne-alter.skill.sc-jeanne-alter-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.jeanne-alter.skill.sc-jeanne-alter-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.jeanne-alter.skill.sc-jeanne-alter-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |

@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 400,
-    "coveredBlockedIdentityCount": 400,
+    "blockedIdentityCount": 385,
+    "coveredBlockedIdentityCount": 385,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 1,
@@ -42,9 +42,6 @@
         "servant.arcueid.skill.sc-arcueid-1",
         "servant.arcueid.skill.sc-arcueid-2",
         "servant.arcueid.skill.sc-arcueid-3",
-        "servant.arjuna-archer.skill.sc-arjuna-archer-1",
-        "servant.arjuna-archer.skill.sc-arjuna-archer-2",
-        "servant.arjuna-archer.skill.sc-arjuna-archer-3",
         "servant.arjuna.skill.sc-arjuna-2",
         "servant.arjuna.skill.sc-arjuna-3",
         "servant.ashva.skill.sc-ashva-1",
@@ -125,9 +122,6 @@
         "servant.elizabeth.skill.sc-elizabeth-1",
         "servant.elizabeth.skill.sc-elizabeth-2",
         "servant.elizabeth.skill.sc-elizabeth-3",
-        "servant.emiya-alt.skill.sc-emiya-alt-1",
-        "servant.emiya-alt.skill.sc-emiya-alt-2",
-        "servant.emiya-alt.skill.sc-emiya-alt-3",
         "servant.emiya.skill.sc-emiya-1",
         "servant.emiya.skill.sc-emiya-2",
         "servant.enkidu.skill.sc-enkidu-1",
@@ -136,9 +130,6 @@
         "servant.ereshkigal.skill.sc-ereshkigal-1",
         "servant.ereshkigal.skill.sc-ereshkigal-2",
         "servant.ereshkigal.skill.sc-ereshkigal-3",
-        "servant.euryale.skill.sc-euryale-1",
-        "servant.euryale.skill.sc-euryale-2",
-        "servant.euryale.skill.sc-euryale-3",
         "servant.frank.skill.sc-frank-1",
         "servant.frank.skill.sc-frank-2",
         "servant.frank.skill.sc-frank-3",
@@ -179,9 +170,6 @@
         "servant.himiko.skill.sc-himiko-3",
         "servant.ibaraki.skill.sc-ibaraki-2",
         "servant.ibaraki.skill.sc-ibaraki-3",
-        "servant.ishtar.skill.sc-ishtar-1",
-        "servant.ishtar.skill.sc-ishtar-2",
-        "servant.ishtar.skill.sc-ishtar-3",
         "servant.iskandar.skill.sc-iskandar-1",
         "servant.iskandar.skill.sc-iskandar-np",
         "servant.ivan.skill.sc-ivan-1",
@@ -196,9 +184,6 @@
         "servant.jaguarman.skill.sc-jaguarman-1",
         "servant.jaguarman.skill.sc-jaguarman-2",
         "servant.jaguarman.skill.sc-jaguarman-3",
-        "servant.jason.skill.sc-jason-1",
-        "servant.jason.skill.sc-jason-2",
-        "servant.jason.skill.sc-jason-3",
         "servant.jeanne-alter.skill.sc-jeanne-alter-1",
         "servant.jeanne-alter.skill.sc-jeanne-alter-2",
         "servant.jeanne-alter.skill.sc-jeanne-alter-3",
@@ -890,66 +875,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[142].skills[2].text#line=1",
           "sha256": "d3042a3c054799c9c36b190fcad2c837181b41229c691b5960eb631ec9cb891f"
-        },
-        {
-          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/阿周那.htm"
-        },
-        {
-          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.arjuna-archer/阿周那"
-        },
-        {
-          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[40].skills[0].text#line=1",
-          "sha256": "f0625bd691fd9b40febec632f93d030ebe11f129728d8bdff1bb75cbd4a4da82"
-        },
-        {
-          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/阿周那.htm"
-        },
-        {
-          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.arjuna-archer/阿周那"
-        },
-        {
-          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[40].skills[1].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[40].skills[1].text#line=2",
-          "sha256": "5403ff1441ad492215c87a928710afc44ecace66f5a9f2e41335f8512c043232"
-        },
-        {
-          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/阿周那.htm"
-        },
-        {
-          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.arjuna-archer/阿周那"
-        },
-        {
-          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[40].skills[2].text#line=1",
-          "sha256": "1aa9d9b7b2f87932c2fc7a2f884cd211434215006a66ab244e578d6790142aa8"
-        },
-        {
-          "abilityId": "servant.arjuna-archer.skill.sc-arjuna-archer-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[40].skills[2].text#line=2",
-          "sha256": "187454ec25f9d689b0cff60917d97d0bae0b34dfc7bc62b6833735f2c97d3a2f"
         },
         {
           "abilityId": "servant.arjuna.skill.sc-arjuna-2",
@@ -2730,78 +2655,6 @@
           "sha256": "e72271d504bf20410928201c2b39da4b1f183e10fdd14802250d85a43b34ee2e"
         },
         {
-          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/卫宫(Alter.htm"
-        },
-        {
-          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.emiya-alt/卫宫 (Alter)"
-        },
-        {
-          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[50].skills[0].text#line=1",
-          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
-        },
-        {
-          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[50].skills[0].text#line=2",
-          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
-        },
-        {
-          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[50].skills[0].text#line=3",
-          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
-        },
-        {
-          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/卫宫(Alter.htm"
-        },
-        {
-          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.emiya-alt/卫宫 (Alter)"
-        },
-        {
-          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[50].skills[1].text#line=1",
-          "sha256": "fc94ead6782f7fcb5c8ff163234cb9d051ce3e655a07118087aa88d7d047e0f1"
-        },
-        {
-          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/卫宫(Alter.htm"
-        },
-        {
-          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.emiya-alt/卫宫 (Alter)"
-        },
-        {
-          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[50].skills[2].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[50].skills[2].text#line=2",
-          "sha256": "b2297f3d15db067f7d49c577a313bcb5365f5f6447e1c6ce58b528d94f8163b3"
-        },
-        {
-          "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[50].skills[2].text#line=3",
-          "sha256": "3c62c89cf71334a82e1be35764255ce68ce0960877918e0b4f9c428249f2f608"
-        },
-        {
           "abilityId": "servant.emiya.skill.sc-emiya-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/弓兵/英文版/卫宫.htm"
@@ -2976,78 +2829,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[62].skills[2].text#line=2",
           "sha256": "35dd3e74c20e2c166abea31a74d7fb01976ad421b363f672d3b75e77ff89092e"
-        },
-        {
-          "abilityId": "servant.euryale.skill.sc-euryale-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/尤瑞艾莉.htm"
-        },
-        {
-          "abilityId": "servant.euryale.skill.sc-euryale-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.euryale/尤瑞艾莉"
-        },
-        {
-          "abilityId": "servant.euryale.skill.sc-euryale-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[56].skills[0].text#line=1",
-          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
-        },
-        {
-          "abilityId": "servant.euryale.skill.sc-euryale-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[56].skills[0].text#line=2",
-          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
-        },
-        {
-          "abilityId": "servant.euryale.skill.sc-euryale-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[56].skills[0].text#line=3",
-          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
-        },
-        {
-          "abilityId": "servant.euryale.skill.sc-euryale-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/尤瑞艾莉.htm"
-        },
-        {
-          "abilityId": "servant.euryale.skill.sc-euryale-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.euryale/尤瑞艾莉"
-        },
-        {
-          "abilityId": "servant.euryale.skill.sc-euryale-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[56].skills[1].text#line=1",
-          "sha256": "42c5ef722f030fa078aa5bfe7447903aeb396bbcee17c699d192ac892e71e5bb"
-        },
-        {
-          "abilityId": "servant.euryale.skill.sc-euryale-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[56].skills[1].text#line=2",
-          "sha256": "f4db52b570acf3a555fe1ba27473210ab692c6843d09dae64f7fea7b5660283e"
-        },
-        {
-          "abilityId": "servant.euryale.skill.sc-euryale-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/尤瑞艾莉.htm"
-        },
-        {
-          "abilityId": "servant.euryale.skill.sc-euryale-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.euryale/尤瑞艾莉"
-        },
-        {
-          "abilityId": "servant.euryale.skill.sc-euryale-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[56].skills[2].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.euryale.skill.sc-euryale-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[56].skills[2].text#line=2",
-          "sha256": "3a5b4e6179c2c46c5c8c53e80acc34d73dd286160888795038e8c2cd81fc1cfd"
         },
         {
           "abilityId": "servant.frank.skill.sc-frank-1",
@@ -3972,84 +3753,6 @@
           "sha256": "50703d4093bc1d992a139cb0ce65065a97be84bb433d5b49a69d195ac98637db"
         },
         {
-          "abilityId": "servant.ishtar.skill.sc-ishtar-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/伊什塔尔.htm"
-        },
-        {
-          "abilityId": "servant.ishtar.skill.sc-ishtar-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.ishtar/伊什塔尔"
-        },
-        {
-          "abilityId": "servant.ishtar.skill.sc-ishtar-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[41].skills[0].text#line=1",
-          "sha256": "a73e71d0b2f0f37e924e205ecb50779c9248d08ab0343f55d1332a1d371b0cd2"
-        },
-        {
-          "abilityId": "servant.ishtar.skill.sc-ishtar-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[41].skills[0].text#line=2",
-          "sha256": "ddbe0cc1c3ccf6150ce3803dba734c4e15020ab40cbb8713d30eab86f5ef3fa1"
-        },
-        {
-          "abilityId": "servant.ishtar.skill.sc-ishtar-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/伊什塔尔.htm"
-        },
-        {
-          "abilityId": "servant.ishtar.skill.sc-ishtar-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.ishtar/伊什塔尔"
-        },
-        {
-          "abilityId": "servant.ishtar.skill.sc-ishtar-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[41].skills[1].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.ishtar.skill.sc-ishtar-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[41].skills[1].text#line=2",
-          "sha256": "98699facfbd8416483f04658e94c3e900b65666f24e023d64fc01ca59dfc4150"
-        },
-        {
-          "abilityId": "servant.ishtar.skill.sc-ishtar-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[41].skills[1].text#line=3",
-          "sha256": "20c15e5fa4a8857c90f510f608d532923b150a453bc8bee949bc9d11f2049005"
-        },
-        {
-          "abilityId": "servant.ishtar.skill.sc-ishtar-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/弓兵/英文版/伊什塔尔.htm"
-        },
-        {
-          "abilityId": "servant.ishtar.skill.sc-ishtar-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.ishtar/伊什塔尔"
-        },
-        {
-          "abilityId": "servant.ishtar.skill.sc-ishtar-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[41].skills[2].text#line=1",
-          "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
-        },
-        {
-          "abilityId": "servant.ishtar.skill.sc-ishtar-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[41].skills[2].text#line=2",
-          "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
-        },
-        {
-          "abilityId": "servant.ishtar.skill.sc-ishtar-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[41].skills[2].text#line=3",
-          "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
-        },
-        {
           "abilityId": "servant.iskandar.skill.sc-iskandar-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/伊斯坎达尔.htm"
@@ -4380,78 +4083,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[69].skills[2].text#line=2",
           "sha256": "98c4ac2445c0fd993970a56360cf4936d3613b9175273315213a777cc7d0f4f3"
-        },
-        {
-          "abilityId": "servant.jason.skill.sc-jason-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/伊阿宋.htm"
-        },
-        {
-          "abilityId": "servant.jason.skill.sc-jason-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.jason/伊阿宋"
-        },
-        {
-          "abilityId": "servant.jason.skill.sc-jason-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[29].skills[0].text#line=1",
-          "sha256": "53b5164945e8c1423e1087752cb740329c5bae49294c6854e4ca19f10f1e3d41"
-        },
-        {
-          "abilityId": "servant.jason.skill.sc-jason-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[29].skills[0].text#line=2",
-          "sha256": "131a8b76e8638b01fbe99c91ea7fa8e0e8c30a7ac3f2010ec70da15cf7431af7"
-        },
-        {
-          "abilityId": "servant.jason.skill.sc-jason-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/伊阿宋.htm"
-        },
-        {
-          "abilityId": "servant.jason.skill.sc-jason-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.jason/伊阿宋"
-        },
-        {
-          "abilityId": "servant.jason.skill.sc-jason-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[29].skills[1].text#line=1",
-          "sha256": "53b5164945e8c1423e1087752cb740329c5bae49294c6854e4ca19f10f1e3d41"
-        },
-        {
-          "abilityId": "servant.jason.skill.sc-jason-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[29].skills[1].text#line=2",
-          "sha256": "4a70a3890a972b1be1d33471ea3f53d5d8162a22c18364f7babfbb1cbab40086"
-        },
-        {
-          "abilityId": "servant.jason.skill.sc-jason-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[29].skills[1].text#line=3",
-          "sha256": "8ba29616a7b5953e4c39c651ce65c7b38c4ecd56f0e06af437f48a697dab83fa"
-        },
-        {
-          "abilityId": "servant.jason.skill.sc-jason-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/伊阿宋.htm"
-        },
-        {
-          "abilityId": "servant.jason.skill.sc-jason-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.jason/伊阿宋"
-        },
-        {
-          "abilityId": "servant.jason.skill.sc-jason-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[29].skills[2].text#line=1",
-          "sha256": "53b5164945e8c1423e1087752cb740329c5bae49294c6854e4ca19f10f1e3d41"
-        },
-        {
-          "abilityId": "servant.jason.skill.sc-jason-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[29].skills[2].text#line=2",
-          "sha256": "bb6ddff158926100e076ed009e2c54d4b23e815642605041cf3728a567a32599"
         },
         {
           "abilityId": "servant.jeanne-alter.skill.sc-jeanne-alter-1",
@@ -9235,10 +8866,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 144,
-          "specific_handler": 256
+          "shared_handler": 138,
+          "specific_handler": 247
         },
-        "handlerCount": 287,
+        "handlerCount": 277,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."

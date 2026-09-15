@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=544
-blockedCount=400
+sourceGroundedCount=559
+blockedCount=385
 unclassifiedCount=0
-structuredAbilityCount=822
+structuredAbilityCount=837
 
 ## Axis Value Counts
 
@@ -294,6 +294,7 @@ structuredAbilityCount=822
 | effect | `TERRAIN_POSITION_ADJUSTMENT` | 6 |
 | effect | `TRANSFER_VICTORY_POINTS` | 6 |
 | effect | `ADD_STATUS` | 5 |
+| effect | `INDEPENDENT_ACTION_RULE` | 5 |
 | effect | `MOVE_CARD` | 5 |
 | effect | `SECRET_GARDEN_RULE` | 5 |
 | effect | `TATARI_DETERIORATION_RULE` | 5 |
@@ -316,6 +317,7 @@ structuredAbilityCount=822
 | effect | `DECK_TOP_MANIPULATION_RULE` | 3 |
 | effect | `DEFERRED_DEPLOYMENT_RULE` | 3 |
 | effect | `DETECTIVE_CLUE_RULE` | 3 |
+| effect | `DISPATCH_QUEST_RULE` | 3 |
 | effect | `EXILE_SOURCE_CARD` | 3 |
 | effect | `FOOD_RESOURCE_RULE` | 3 |
 | effect | `FORM_STATE_RULE` | 3 |
@@ -344,7 +346,6 @@ structuredAbilityCount=822
 | effect | `FINISH_GAME` | 2 |
 | effect | `GEM_RESOURCE_RULE` | 2 |
 | effect | `GRANT_LINKED_ABILITY_TO_ATTRIBUTE_ATTACKS` | 2 |
-| effect | `INDEPENDENT_ACTION_RULE` | 2 |
 | effect | `INSTALL_ABILITY_RULE_MODIFIER` | 2 |
 | effect | `LINKED_PLAYER_BATTLE_REWARD` | 2 |
 | effect | `LOCATION_TOKEN_RULE` | 2 |
@@ -403,6 +404,8 @@ structuredAbilityCount=822
 | effect | `DECK_RECYCLE_POWER_RULE` | 1 |
 | effect | `DELAYED_ATTACK_EVENT_REPLACEMENT_RULE` | 1 |
 | effect | `DETECTIVE_ACCUSATION_RULE` | 1 |
+| effect | `DISCARD_ATTRIBUTE_RECYCLE_DEFEAT_RULE` | 1 |
+| effect | `DISCARD_COST_ATTRIBUTE_GAIN_RULE` | 1 |
 | effect | `DISCARD_LUCK_STATE_RULE` | 1 |
 | effect | `ENSURE_EVENT_DECK_COUNT` | 1 |
 | effect | `EVENT_ATTRIBUTE_INFUSION_RULE` | 1 |
@@ -422,9 +425,11 @@ structuredAbilityCount=822
 | effect | `INFINITE_MANA_RULE` | 1 |
 | effect | `INFO_NOTE` | 1 |
 | effect | `ITEM_RULE` | 1 |
+| effect | `JUDGMENT_LUCK_DEFEAT_RULE` | 1 |
 | effect | `LINKED_PLAYER_MANA_CONTRIBUTION` | 1 |
 | effect | `LOCATION_MERGE_RULE` | 1 |
 | effect | `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS` | 1 |
+| effect | `LUCK_IDENTITY_REPLAY_RULE` | 1 |
 | effect | `LUCK_REVEAL_DEFEAT_RULE` | 1 |
 | effect | `MAGIC_IMMUNITY_RULE` | 1 |
 | effect | `MANA_BURST_REFUND_RULE` | 1 |
@@ -435,11 +440,13 @@ structuredAbilityCount=822
 | effect | `MYSTIC_CODE_RULE` | 1 |
 | effect | `MYSTIC_CODE_UPGRADE_RULE` | 1 |
 | effect | `NOBLE_PHANTASM_SUPPRESSION_RULE` | 1 |
+| effect | `OFFBOARD_BATTLE_TAKEOVER_RULE` | 1 |
 | effect | `ORIGIN_BULLET_RULE` | 1 |
 | effect | `OTHER_ATTACK_POWER_BONUS` | 1 |
 | effect | `PAIN_CONVERSION_REWARD_RULE` | 1 |
 | effect | `PLAY_SOURCE_CARD` | 1 |
 | effect | `POISON_DEFEAT_RULE` | 1 |
+| effect | `PROPHECY_HAND_SUM_DEFEAT_RULE` | 1 |
 | effect | `REACTIVE_CARD_ACTION_RULE` | 1 |
 | effect | `REACTIVE_RESOURCE_RULE` | 1 |
 | effect | `RED_VERMILION_RULE` | 1 |
@@ -450,9 +457,11 @@ structuredAbilityCount=822
 | effect | `REPEAT_SKILL_EFFECT_RULE` | 1 |
 | effect | `REPLACE_SELECTED_EVENT_FROM_DECK` | 1 |
 | effect | `RESET_SKILL_USAGE` | 1 |
+| effect | `REVEALED_LUCK_PLAY_RULE` | 1 |
 | effect | `ROSTER_REPLACEMENT_RULE` | 1 |
 | effect | `ROUND_COST_TERRAIN_EVENT_MULTIPLIER_RULE` | 1 |
 | effect | `SCHEDULED_DECK_REBUILD_RULE` | 1 |
+| effect | `SEARCH_BASIC_CARD_PLAY_RULE` | 1 |
 | effect | `SEED_ATTACHED_SUPPLY` | 1 |
 | effect | `SELF_PLAY_COST_RULE` | 1 |
 | effect | `SEQUESTER_RANDOM_INACTIVE_SERVANT_SKILL` | 1 |
@@ -460,6 +469,7 @@ structuredAbilityCount=822
 | effect | `SET_SOURCE_CARD_COST_FOR_TRANSACTION` | 1 |
 | effect | `SHARED_VICTORY_LINK` | 1 |
 | effect | `SHUFFLE_EVENT_DECK` | 1 |
+| effect | `SIREN_ACTION_OVERRIDE_RULE` | 1 |
 | effect | `SKILL_COPY_LIFECYCLE_RULE` | 1 |
 | effect | `SKILL_SACRIFICE_SCALING_RULE` | 1 |
 | effect | `SKIP_DEPLOYMENT_RECOVERY_RULE` | 1 |
@@ -769,7 +779,7 @@ structuredAbilityCount=822
 | binding | `result:targetPlayer` | 1 |
 | battle | `COMBAT_CONDITION` | 80 |
 | battle | `COMBAT_EVENT` | 65 |
-| battle | `COMBAT_EFFECT` | 35 |
+| battle | `COMBAT_EFFECT` | 36 |
 | battle | `COMBAT_RULE_MODIFIER` | 17 |
 
 ## Identity-Level Matrix
@@ -1157,9 +1167,9 @@ structuredAbilityCount=822
 | `servant.arcueid.skill.sc-arcueid-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.arcueid-crimson-moon` |
 | `servant.arcueid.skill.sc-arcueid-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.arcueid-millennium-castle` |
 | `servant.arcueid.skill.sc-arcueid-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.arcueid-marble-phantasm` |
-| `servant.arjuna-archer.skill.sc-arjuna-archer-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.arjuna-endowed-hero` |
-| `servant.arjuna-archer.skill.sc-arjuna-archer-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.arjuna-agni-gandiva` |
-| `servant.arjuna-archer.skill.sc-arjuna-archer-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.arjuna-judgment` |
+| `servant.arjuna-archer.skill.sc-arjuna-archer-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SEARCH_BASIC_CARD_PLAY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.arjuna-endowed-hero` |
+| `servant.arjuna-archer.skill.sc-arjuna-archer-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PROPHECY_HAND_SUM_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.arjuna-agni-gandiva` |
+| `servant.arjuna-archer.skill.sc-arjuna-archer-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `JUDGMENT_LUCK_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.arjuna-judgment` |
 | `servant.arjuna.skill.sc-arjuna-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `card.exiled`, `combat.resolved` | `EVENT_DEFINITION_IS_SELF`, `EVENT_PLAYER_LOST_COMBAT`, `EVENT_PLAYER_WON_COMBAT`, `SOURCE_OWNED` | `NONE` | `NONE` | `ADD_LINKED_STATUS`, `COMBAT_POWER_BONUS`, `EXILE_SOURCE_CARD`, `REMOVE_LINKED_STATUS` | `NONE` | `duration:until_card_closed`, `expiresOn:card.exiled` | `effect:combat_power_bonus` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EFFECT`, `COMBAT_EVENT` | `core.structured-skill` |
 | `servant.arjuna.skill.sc-arjuna-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.god-arjuna-world-reset` |
 | `servant.arjuna.skill.sc-arjuna-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.god-arjuna-imperfection-is-sin` |
@@ -1309,9 +1319,9 @@ structuredAbilityCount=822
 | `servant.elizabeth.skill.sc-elizabeth-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.elizabeth-volume-power` |
 | `servant.elizabeth.skill.sc-elizabeth-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.elizabeth-vocal-performance` |
 | `servant.elizabeth.skill.sc-elizabeth-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.elizabeth-iron-maiden` |
-| `servant.emiya-alt.skill.sc-emiya-alt-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
-| `servant.emiya-alt.skill.sc-emiya-alt-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.emiya-alt-unlimited-blade-works` |
-| `servant.emiya-alt.skill.sc-emiya-alt-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.emiya-alt-kanshou-bakuya` |
+| `servant.emiya-alt.skill.sc-emiya-alt-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
+| `servant.emiya-alt.skill.sc-emiya-alt-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DISCARD_ATTRIBUTE_RECYCLE_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.emiya-alt-unlimited-blade-works` |
+| `servant.emiya-alt.skill.sc-emiya-alt-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DISCARD_COST_ATTRIBUTE_GAIN_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.emiya-alt-kanshou-bakuya` |
 | `servant.emiya.skill.sc-emiya-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.zero-opponent-attribute` |
 | `servant.emiya.skill.sc-emiya-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.emiya-fake-spiral-sword` |
 | `servant.emiya.skill.sc-emiya-np` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `CHOOSE_N_CARDS` | `MOVE_SELECTED_CARDS` | `CHOOSE_N_CARDS` | `duration:until_card_closed` | `rule:card_draw:forbid`, `rule:standard_attack_card_count:replace` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:selectedInstanceIds` | `NONE` | `core.structured-skill` |
@@ -1321,9 +1331,9 @@ structuredAbilityCount=822
 | `servant.ereshkigal.skill.sc-ereshkigal-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
 | `servant.ereshkigal.skill.sc-ereshkigal-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ereshkigal-blessing-of-kur` |
 | `servant.ereshkigal.skill.sc-ereshkigal-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ereshkigal-kur-kigal-irkalla` |
-| `servant.euryale.skill.sc-euryale-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
-| `servant.euryale.skill.sc-euryale-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.euryale-siren-song` |
-| `servant.euryale.skill.sc-euryale-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.euryale-eye` |
+| `servant.euryale.skill.sc-euryale-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
+| `servant.euryale.skill.sc-euryale-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SIREN_ACTION_OVERRIDE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.euryale-siren-song` |
+| `servant.euryale.skill.sc-euryale-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVEALED_LUCK_PLAY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.euryale-eye` |
 | `servant.frank.skill.sc-frank-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.frank.skill.sc-frank-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.combat-power-from-battlefield-played-costs` |
 | `servant.frank.skill.sc-frank-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
@@ -1386,9 +1396,9 @@ structuredAbilityCount=822
 | `servant.illya.skill.sc-illya-7` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DREAM_SUMMON_RULE`, `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
 | `servant.illya.skill.sc-illya-8` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DREAM_SUMMON_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.illya-dream-assassin` |
 | `servant.illya.skill.sc-illya-9` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DREAM_SUMMON_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
-| `servant.ishtar.skill.sc-ishtar-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ishtar-divine-authority` |
-| `servant.ishtar.skill.sc-ishtar-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ishtar-an-gal-ta-kigal-she` |
-| `servant.ishtar.skill.sc-ishtar-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
+| `servant.ishtar.skill.sc-ishtar-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LUCK_IDENTITY_REPLAY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ishtar-divine-authority` |
+| `servant.ishtar.skill.sc-ishtar-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OFFBOARD_BATTLE_TAKEOVER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.ishtar-an-gal-ta-kigal-she` |
+| `servant.ishtar.skill.sc-ishtar-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
 | `servant.iskandar.skill.sc-iskandar-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
 | `servant.iskandar.skill.sc-iskandar-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `AT_BATTLEFIELD`, `EVENT_COUNT_AT_LEAST`, `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_EVENT` | `ENSURE_EVENT_DECK_COUNT`, `MOVE_SELECTED_EVENTS`, `SHUFFLE_EVENT_DECK` | `CHOOSE_ONE_EVENT` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:discardedEventIds`, `payload:replacementEventIds` | `COMBAT_CONDITION` | `core.structured-skill` |
 | `servant.iskandar.skill.sc-iskandar-np` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.create-temporary-attacks` |
@@ -1404,9 +1414,9 @@ structuredAbilityCount=822
 | `servant.jaguarman.skill.sc-jaguarman-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
 | `servant.jaguarman.skill.sc-jaguarman-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jaguarman-dark-forest` |
 | `servant.jaguarman.skill.sc-jaguarman-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jaguarman-death-claw` |
-| `servant.jason.skill.sc-jason-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jason-argonaut-quest` |
-| `servant.jason.skill.sc-jason-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jason-argonaut-quest` |
-| `servant.jason.skill.sc-jason-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jason-argonaut-quest` |
+| `servant.jason.skill.sc-jason-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DISPATCH_QUEST_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jason-argonaut-quest` |
+| `servant.jason.skill.sc-jason-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DISPATCH_QUEST_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jason-argonaut-quest` |
+| `servant.jason.skill.sc-jason-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DISPATCH_QUEST_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jason-argonaut-quest` |
 | `servant.jeanne-alter.skill.sc-jeanne-alter-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.defeat-engaged-if-more-attacks` |
 | `servant.jeanne-alter.skill.sc-jeanne-alter-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jeanne-alter-dragon-witch` |
 | `servant.jeanne-alter.skill.sc-jeanne-alter-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jeanne-alter-oblivion-correction` |
