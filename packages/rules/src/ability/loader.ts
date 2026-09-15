@@ -48,6 +48,7 @@ const supportedTypes = new Set([
   'controller_at_battlefield_with_exactly_one_opponent',
   'reverse_situation_event_power_modifiers', 'reverse_situation_and_event_power_modifiers',
   'controller_played_highest_cost_noble_phantasm_in_battle_this_round',
+  'controller_strict_second_battle_power', 'defeat_highest_power_opponents',
   'highest_cost_noble_phantasm_cost_at_least', 'selected_count_at_least',
   'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'not_card_id',
   // Master authoring adapters
@@ -69,7 +70,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   'after_battle_ended', 'after_player_deployed_to_battlefield', 'when_play_requirements_checked',
   // Master triggers
   'game_start', 'after_controller_enters_location', 'after_controller_loses_all_command_seals',
-  'round_end', 'after_controller_first_loses_battle',
+  'round_end', 'after_controller_first_loses_battle', 'after_battle_power_calculated',
   'before_situation_or_event_resolves', 'when_movement_options_requested',
 ]);
 const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
