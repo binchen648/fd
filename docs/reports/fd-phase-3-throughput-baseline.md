@@ -609,3 +609,12 @@ Permitted final status:
 - Generated coverage drift is timestamp/static-line-only and is intentionally not committed.
 - Independent R22 evidence: typecheck PASS; focused `35/35`; rules `262/262`; deterministic generated-content PASS; full CI `675/675`; identity/forbidden-file audits clean.
 - Broad Resource Numeric, Trigger Gateway, variable/expression payment, Result Binding, Target Selection, and F4 migration are not promoted by implication.
+
+## P3-A FB2-06 Synchronization — 2026-09-16
+
+- FB2-06 fixed controller draw component / advance-pay-draw route: `REVIEW_ACCEPTED` at candidate `3f1080a7cb4f68e7c08af91b349680a6536cd362`, independent R23 `0dc6619eba6f2ff67c96b6ec9c3ff736cae66740`.
+- Exact F1 draw-component alignment is 23 identities; complete direct-route readiness from this contract is only the Waver-shaped `advance + pay 1 + draw 2` representative. No F1 authoring migration occurred.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled identity remains unchanged at 70 cards / 14 characters / 0 blocking issues.
+- Generated coverage drift is timestamp/static-line-only and is intentionally not committed.
+- Independent R23 evidence: typecheck PASS; focused `25/25`; rules `268/268`; deterministic PASS; full CI `681/681`; identity/forbidden-file audits clean.
+- The 14 mixed servant draw/play identities remain blocked by Trigger-owned draw semantics and are not counted as F4-ready.

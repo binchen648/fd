@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.16
+- Version: P3-TI-1.17
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2829,7 +2829,7 @@ Completion status allowed:
 ## TASK P3-FB2-06
 
 Owner: Codex B2
-Status: READY
+Status: REVIEW_ACCEPTED
 Branch: `codex/b2-p3-fb2-06-fixed-controller-draw-r1`
 Base: exact P3-FB2-06 A-owned handoff commit
 Runtime baseline before handoff: `de6e57c2610c560b81791ef931bf5bc09dab8fc7`
@@ -2871,7 +2871,7 @@ Completion status allowed:
 ## TASK P3-R23
 
 Owner: Codex R
-Status: READY_AFTER_P3_FB2_06
+Status: REVIEW_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact FB2-06 candidate SHA
 
 Goal: independently review FB2-06 without implementing fixes and without promoting broad Card Zone, Trigger, PLAY, Interaction, or F4 migration.
@@ -2898,6 +2898,16 @@ Completion status allowed:
 - A 14-identity servant family shares the same source-grounded draw-1 + optional low-power hand-play pattern, but its draw clause is still Trigger-owned. TO03 is specification-accepted only and the broad `on_card_played -> draw_cards` runtime is not accepted; therefore those 14 are not F4-ready.
 - `master.waver.skill.s2` provides the first complete wave-2 direct representative: outpost/advance, fixed 1 Mana, draw 2. Source overlay cost must be preserved even though the F1 capability axis did not separately request Cost Payment.
 - P3-FM01 remains undispatched.
+
+## Full-Roster Dispatch State After FB2-06
+
+- FB2-06 candidate `3f1080a7cb4f68e7c08af91b349680a6536cd362` is independently accepted by R23 `0dc6619eba6f2ff67c96b6ec9c3ff736cae66740`.
+- Accepted component scope is fixed positive controller ordinary-deck draw; exact F1 component alignment is 23 identities. Parent-only qualifiers remain independently gated.
+- Accepted complete direct route is only the structural `advance/outpost + fixed pay 1 Mana + draw 2` family. At current F1 membership this yields one complete representative (`master.waver.skill.s2`) pending separate S migration; it does not create a 10–40 F4 batch.
+- The 14-identity servant draw/play family remains blocked by the `on_card_played` Trigger-owned draw clause; TO13 already covers the optional low-power hand-play half, but TO03 is specification-only and broad Trigger runtime is not accepted.
+- Fresh A coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled definition hash remains `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, with 70 cards, 14 characters, and 0 blocking issues.
+- Generated coverage drift is only timestamp/static source line numbers and is intentionally not committed.
+- P3-FM01 remains undispatched. Wave 2 continues with the next high-yield Card Zone / Move / Return component; no wave skipping to Trigger or Power is allowed.
 
 ## Prompt Templates
 
