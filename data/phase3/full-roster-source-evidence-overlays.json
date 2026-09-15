@@ -11959,6 +11959,1158 @@
           ]
         }
       ]
+    },
+    {
+      "id": "master.reines.skill.s1",
+      "printedText": "行动阶段：将一张游戏外的【特里姆玛乌】加入你的手牌（不展示）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_reines.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "行动阶段：将一张游戏外的【特里姆玛乌】加入你的手牌（不展示）。",
+        "sourceTextSha256": "5adfc4a0dd7d4ec0c569f41505468b9c965bb38fe046c5540a82523d975afa5b"
+      },
+      "referencePrintedTextSha256": "5adfc4a0dd7d4ec0c569f41505468b9c965bb38fe046c5540a82523d975afa5b",
+      "abilities": [
+        {
+          "id": "reines.alchemist.fetch",
+          "printedClause": "行动阶段：将一张游戏外的【特里姆玛乌】加入你的手牌（不展示）。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_one",
+              "pool": "outside_game_trimmau",
+              "payloadKey": "trimmauDefinitionId"
+            },
+            {
+              "type": "move_matching_cards",
+              "sourceZone": "outside_game",
+              "destination": "hand",
+              "owner": "controller",
+              "definitionIdBinding": "trimmauDefinitionId",
+              "count": 1,
+              "face": "down"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.reines.skill.s1a",
+      "printedText": "当你获胜并计算战果后，从你的战斗中的一名下次淘汰结算时会被淘汰的败者处偷取1点战果。当你战败时，弃置所有手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_reines.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你获胜并计算战果后，从你的战斗中的一名下次淘汰结算时会被淘汰的败者处偷取1点战果。当你战败时，弃置所有手牌。",
+        "sourceTextSha256": "4cae3b2f77351cdaed5045882067802f2ec23c29c6044cdf9dff5a781ca0965a"
+      },
+      "referencePrintedTextSha256": "4cae3b2f77351cdaed5045882067802f2ec23c29c6044cdf9dff5a781ca0965a",
+      "abilities": [
+        {
+          "id": "reines.little-devil.win-steal",
+          "printedClause": "当你获胜并计算战果后，从你的战斗中的一名下次淘汰结算时会被淘汰的败者处偷取1点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "controller_won_combat"
+            },
+            {
+              "type": "combat_has_loser_who_would_be_eliminated_next_climax"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_players",
+              "scope": "combat_losers_who_would_be_eliminated_next_climax",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "targetPlayerIds"
+            },
+            {
+              "type": "transfer_victory_points",
+              "from": "selected_player",
+              "to": "controller",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "reines.little-devil.loss-discard",
+          "printedClause": "当你战败时，弃置所有手牌。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_lost_combat",
+              "subject": "controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "subject": "controller",
+              "source": "hand",
+              "destination": "discard",
+              "match": "all",
+              "face": "up"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.reines.skill.s2",
+      "printedText": "斩击-行动阶段：打出一张攻击。\n被动/战斗阶段：若此牌在你的手牌中，获得+2合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_reines.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "斩击-行动阶段：打出一张攻击。\n被动/战斗阶段：若此牌在你的手牌中，获得+2合计威力。",
+        "sourceTextSha256": "36e70dffa8da1816521b99bbb85a6e5429e5f97451832d60b036433155179666"
+      },
+      "referencePrintedTextSha256": "36e70dffa8da1816521b99bbb85a6e5429e5f97451832d60b036433155179666",
+      "abilities": [
+        {
+          "id": "reines.trimmau-slash.action",
+          "printedClause": "斩击-行动阶段：打出一张攻击。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "hand",
+              "owner": "controller",
+              "filter": {
+                "cardType": "attack"
+              },
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedCardIds"
+            },
+            {
+              "type": "play_selected_cards",
+              "payloadKey": "selectedCardIds",
+              "payPrintedCost": true
+            }
+          ]
+        },
+        {
+          "id": "reines.trimmau-slash.hand-power",
+          "printedClause": "被动/战斗阶段：若此牌在你的手牌中，获得+2合计威力。",
+          "kind": "passive",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "source_card_in_controller_hand"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "total_power",
+              "operation": "add",
+              "subject": "controller",
+              "value": 2,
+              "duration": "combat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.reines.skill.s3",
+      "printedText": "汝之骨血，化为羽翼-行动阶段：逆着箭头移动一步。\n被动/战斗阶段：若此牌在你的手牌中，沿着箭头移动一步。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_reines.s3",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "汝之骨血，化为羽翼-行动阶段：逆着箭头移动一步。\n被动/战斗阶段：若此牌在你的手牌中，沿着箭头移动一步。",
+        "sourceTextSha256": "6015b8eaa9cf3b0f9d2da7b4e3ca203785163dc7a982905b50f37e556fe7af02"
+      },
+      "referencePrintedTextSha256": "6015b8eaa9cf3b0f9d2da7b4e3ca203785163dc7a982905b50f37e556fe7af02",
+      "abilities": [
+        {
+          "id": "reines.trimmau-wing.action",
+          "printedClause": "汝之骨血，化为羽翼-行动阶段：逆着箭头移动一步。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "move_player",
+              "subject": "controller",
+              "direction": "against_arrows",
+              "maxSteps": 1
+            }
+          ]
+        },
+        {
+          "id": "reines.trimmau-wing.hand-move",
+          "printedClause": "被动/战斗阶段：若此牌在你的手牌中，沿着箭头移动一步。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "source_card_in_controller_hand"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_player",
+              "subject": "controller",
+              "direction": "along_arrows",
+              "maxSteps": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.reines.skill.s4",
+      "printedText": "指令：告解-行动阶段：查看一名与你位于同一地点的对手的技能区，若你使用此效果时其已【真名解放】，你改为获得+4合计威力。\n被动/战斗阶段：若此牌在你的手牌中，获得1点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_reines.s4",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "指令：告解-行动阶段：查看一名与你位于同一地点的对手的技能区，若你使用此效果时其已【真名解放】，你改为获得+4合计威力。\n被动/战斗阶段：若此牌在你的手牌中，获得1点魔力。",
+        "sourceTextSha256": "6abf684faf15e0886509678f798ff6c7dcde97539660e6809cd0449fdf588105"
+      },
+      "referencePrintedTextSha256": "6abf684faf15e0886509678f798ff6c7dcde97539660e6809cd0449fdf588105",
+      "abilities": [
+        {
+          "id": "reines.trimmau-confession.action",
+          "printedClause": "指令：告解-行动阶段：查看一名与你位于同一地点的对手的技能区，若你使用此效果时其已【真名解放】，你改为获得+4合计威力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_players",
+              "scope": "opponents_same_location",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "targetPlayerIds"
+            },
+            {
+              "type": "trimmau_confession_rule",
+              "operation": "inspect_or_power_if_true_name_revealed",
+              "powerBonus": 4
+            }
+          ]
+        },
+        {
+          "id": "reines.trimmau-confession.hand-mana",
+          "printedClause": "被动/战斗阶段：若此牌在你的手牌中，获得1点魔力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "source_card_in_controller_hand"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_mana",
+              "subject": "controller",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.reines.skill.ascension",
+      "printedText": "（将此牌加入你的技能区。）\n沸腾吧，我的血液-被动：所有【特里姆玛乌】获得力量属性，你每于本局游戏打出一张【特里姆玛乌】，你的所有【特里姆玛乌】获得+1威力至游戏结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_reines.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（将此牌加入你的技能区。）\n沸腾吧，我的血液-被动：所有【特里姆玛乌】获得力量属性，你每于本局游戏打出一张【特里姆玛乌】，你的所有【特里姆玛乌】获得+1威力至游戏结束。",
+        "sourceTextSha256": "bc002cc8845a6f65d98a30dafc4c5598aaf2b9e47f6824c7369f5a7f45aad61a"
+      },
+      "referencePrintedTextSha256": "bc002cc8845a6f65d98a30dafc4c5598aaf2b9e47f6824c7369f5a7f45aad61a",
+      "abilities": [
+        {
+          "id": "reines.trimmau-boiling.growth",
+          "printedClause": "沸腾吧，我的血液-被动：所有【特里姆玛乌】获得力量属性，你每于本局游戏打出一张【特里姆玛乌】，你的所有【特里姆玛乌】获得+1威力至游戏结束。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "effects": [
+            {
+              "type": "trimmau_growth_rule",
+              "operation": "grant_strength_and_increment_all_on_each_play",
+              "powerPerPlayed": 1
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_attribute",
+              "operation": "grant",
+              "filter": {
+                "trait": "trimmau"
+              },
+              "attribute": "力量",
+              "duration": "game"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.caules.skill.s1",
+      "printedText": "当你位于魔术工房时，可以使用【巴格达电池】。每回合只可使用【巴格达电池】的一项能力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caules.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你位于魔术工房时，可以使用【巴格达电池】。每回合只可使用【巴格达电池】的一项能力。",
+        "sourceTextSha256": "586587a07544a3262869389e3a2c867cfbaf1d6fcebaf603fca9f4c1f21c108e"
+      },
+      "referencePrintedTextSha256": "586587a07544a3262869389e3a2c867cfbaf1d6fcebaf603fca9f4c1f21c108e",
+      "abilities": [
+        {
+          "id": "caules.bioelectromancy.rule",
+          "printedClause": "当你位于魔术工房时，可以使用【巴格达电池】。每回合只可使用【巴格达电池】的一项能力。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_location_is",
+              "location": "workshop"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "skill_use_limit",
+              "operation": "set",
+              "definitionId": "master.caules.skill.s2",
+              "scope": "all_abilities_combined",
+              "period": "round",
+              "maxUses": 1
+            },
+            {
+              "rule": "skill_use_location",
+              "operation": "require",
+              "definitionId": "master.caules.skill.s2",
+              "location": "workshop"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.caules.skill.s1a",
+      "printedText": "你每次从非高潮局势牌获得魔力最多为1点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caules.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你每次从非高潮局势牌获得魔力最多为1点。",
+        "sourceTextSha256": "16dc09cc37b8a95665d4fb5301e6048b0be422af19b9836d3fff07d9ef7e3c32"
+      },
+      "referencePrintedTextSha256": "16dc09cc37b8a95665d4fb5301e6048b0be422af19b9836d3fff07d9ef7e3c32",
+      "abilities": [
+        {
+          "id": "caules.mediocre-cap",
+          "printedClause": "你每次从非高潮局势牌获得魔力最多为1点。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "round_mana_gain_cap",
+              "operation": "cap_per_source_resolution",
+              "source": "non_climax_situation",
+              "value": 1
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.caules.skill.s2",
+      "printedText": "若你于前哨阶段部署于魔术工房，可选择下列一项：充电-花费X点战果，获得2×X+1点魔力；检修-花费2点魔力，你无视【败北】状态直至回合结束。过载-战斗阶段：将一张游戏外的【绞首刑之雷】暗置且加入你的技能区（不展示）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caules.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "若你于前哨阶段部署于魔术工房，可选择下列一项：充电-花费X点战果，获得2×X+1点魔力；检修-花费2点魔力，你无视【败北】状态直至回合结束。过载-战斗阶段：将一张游戏外的【绞首刑之雷】暗置且加入你的技能区（不展示）。",
+        "sourceTextSha256": "6655102db5930080bad5e81721ffe269f9bcfd6dea65706c5f42142acf465ab9"
+      },
+      "referencePrintedTextSha256": "6655102db5930080bad5e81721ffe269f9bcfd6dea65706c5f42142acf465ab9",
+      "abilities": [
+        {
+          "id": "caules.battery.recharge",
+          "printedClause": "充电-花费X点战果，获得2×X+1点魔力",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "conditions": [
+            {
+              "type": "controller_location_is",
+              "location": "workshop"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_number",
+              "min": 0,
+              "maxBinding": "controller_victory_points",
+              "payloadKey": "x"
+            },
+            {
+              "type": "lose_victory_points",
+              "subject": "controller",
+              "amountBinding": "x"
+            },
+            {
+              "type": "gain_mana",
+              "subject": "controller",
+              "amountFormula": "2 * x + 1"
+            }
+          ]
+        },
+        {
+          "id": "caules.battery.overheal",
+          "printedClause": "检修-花费2点魔力，你无视【败北】状态直至回合结束。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "conditions": [
+            {
+              "type": "controller_location_is",
+              "location": "workshop"
+            }
+          ],
+          "cost": {
+            "type": "mana",
+            "amount": 2
+          },
+          "effects": [
+            {
+              "type": "pay_mana",
+              "amount": 2
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "defeat_effect",
+              "operation": "ignore",
+              "subject": "controller",
+              "duration": "round"
+            }
+          ],
+          "lifecycle": {
+            "duration": "round"
+          }
+        },
+        {
+          "id": "caules.battery.overload",
+          "printedClause": "过载-战斗阶段：将一张游戏外的【绞首刑之雷】暗置且加入你的技能区（不展示）。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "controller_location_is",
+              "location": "workshop"
+            }
+          ],
+          "effects": [
+            {
+              "type": "crafted_tree_rule",
+              "operation": "create_unused_variant_hidden_in_skill_zone"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.caules.skill.s3",
+      "printedText": "魔术3耗3需6威。<每局游戏限一次>\n五种变体（各限一次）：\n瘫痪陷阱-与你位于同一地点的力量属性牌上的能力无法被使用。\n静电浪涌-与你位于同一地点的敏捷属性牌上的能力无法被使用。\n神经眩晕-与你位于同一地点的魔术属性牌上的能力无法被使用。\n破坏之网-与你位于同一地点的，除【幸运】外的特殊属性牌上的能力无法被使用。\n感官超载-与你位于同一地点的，除令咒外的无属性牌上的能力无法被使用。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caules.s3",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "魔术3耗3需6威。<每局游戏限一次>\n五种变体（各限一次）：\n瘫痪陷阱-与你位于同一地点的力量属性牌上的能力无法被使用。\n静电浪涌-与你位于同一地点的敏捷属性牌上的能力无法被使用。\n神经眩晕-与你位于同一地点的魔术属性牌上的能力无法被使用。\n破坏之网-与你位于同一地点的，除【幸运】外的特殊属性牌上的能力无法被使用。\n感官超载-与你位于同一地点的，除令咒外的无属性牌上的能力无法被使用。",
+        "sourceTextSha256": "5e9bd90ca3af6267c9550045ed81ce971a0fedc0cc11f783eb3de514b4362d7e"
+      },
+      "referencePrintedTextSha256": "5e9bd90ca3af6267c9550045ed81ce971a0fedc0cc11f783eb3de514b4362d7e",
+      "abilities": [
+        {
+          "id": "caules.crafted-tree.variants",
+          "printedClause": "五种变体（各限一次）：瘫痪陷阱/静电浪涌/神经眩晕/破坏之网/感官超载。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "crafted_tree_rule",
+              "operation": "lock_matching_attribute_abilities_at_location",
+              "variants": [
+                "力量",
+                "迅捷",
+                "魔术",
+                "特殊",
+                "无属性"
+              ],
+              "onceEach": true,
+              "exclude": {
+                "特殊": [
+                  "幸运"
+                ],
+                "无属性": [
+                  "command-seal",
+                  "ruler-seal"
+                ]
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.caules.skill.ascension",
+      "printedText": "将所有【绞首刑之雷】加入你的技能区。\n你无法再过载。当你使用【巴格达电池】后，你的魔术攻击+2威力直至回合结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caules.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "将所有【绞首刑之雷】加入你的技能区。\n你无法再过载。当你使用【巴格达电池】后，你的魔术攻击+2威力直至回合结束。",
+        "sourceTextSha256": "58079cab4e3f7d9e0472b142703852a4264c92c365032a287ac61cd47a4dbcd8"
+      },
+      "referencePrintedTextSha256": "58079cab4e3f7d9e0472b142703852a4264c92c365032a287ac61cd47a4dbcd8",
+      "abilities": [
+        {
+          "id": "caules.enhanced-circuits.unlock",
+          "printedClause": "将所有【绞首刑之雷】加入你的技能区。你无法再过载。当你使用【巴格达电池】后，你的魔术攻击+2威力直至回合结束。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "crafted_tree_rule",
+              "operation": "materialize_all_unused_variants_and_disable_overload"
+            },
+            {
+              "type": "combat_power_bonus",
+              "subject": "controller_magic_attacks",
+              "amount": 2,
+              "trigger": "battery_ability_used",
+              "duration": "round"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.caules-yggdmillennia.skill.s1",
+      "printedText": "你拥有【巴格达电池】与【绞首刑之雷】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caules_yggdmillennia.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你拥有【巴格达电池】与【绞首刑之雷】。",
+        "sourceTextSha256": "04f3937163428e7c889372d1ddf5061b721739030740d043d1f65daa66ea60bc"
+      },
+      "referencePrintedTextSha256": "04f3937163428e7c889372d1ddf5061b721739030740d043d1f65daa66ea60bc",
+      "abilities": [
+        {
+          "id": "caules-ygg.electromancy.stock",
+          "printedClause": "你拥有【巴格达电池】与【绞首刑之雷】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.caules-yggdmillennia.skill.s2",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            },
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.caules-yggdmillennia.skill.s3",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.caules-yggdmillennia.skill.s1a",
+      "printedText": "游戏开始与每回合结束时，【绞首刑之雷】更改为未激活状态（【绞首刑之雷】视为技能）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caules_yggdmillennia.s1a",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始与每回合结束时，【绞首刑之雷】更改为未激活状态（【绞首刑之雷】视为技能）。",
+        "sourceTextSha256": "44c7ec6f62cf2b231c95e05fdb4e32694be7a774eb777db95ceaf07ad24c15f5"
+      },
+      "referencePrintedTextSha256": "44c7ec6f62cf2b231c95e05fdb4e32694be7a774eb777db95ceaf07ad24c15f5",
+      "abilities": [
+        {
+          "id": "caules-ygg.current.reset-start",
+          "printedClause": "游戏开始时，【绞首刑之雷】更改为未激活状态",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "close_selected_cards",
+              "selection": {
+                "owner": "controller",
+                "definitionId": "master.caules-yggdmillennia.skill.s3"
+              }
+            }
+          ]
+        },
+        {
+          "id": "caules-ygg.current.reset-round",
+          "printedClause": "每回合结束时，【绞首刑之雷】更改为未激活状态",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ending"
+            }
+          ],
+          "effects": [
+            {
+              "type": "close_selected_cards",
+              "selection": {
+                "owner": "controller",
+                "definitionId": "master.caules-yggdmillennia.skill.s3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.caules-yggdmillennia.skill.s2",
+      "printedText": "充电-前哨阶段：若你于前哨阶段部署于魔术工房，选择下列一项：1.获得1点魔力。2.花费2点魔力，你于本回合无视【败北】状态。\n起载-前哨阶段：若你于前哨阶段部署于战场，激活【绞首刑之雷】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caules_yggdmillennia.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "充电-前哨阶段：若你于前哨阶段部署于魔术工房，选择下列一项：1.获得1点魔力。2.花费2点魔力，你于本回合无视【败北】状态。\n起载-前哨阶段：若你于前哨阶段部署于战场，激活【绞首刑之雷】。",
+        "sourceTextSha256": "3b220e60b2d59c8430594def46e0db5f7efcbfea91d7090a03d899c594006f8a"
+      },
+      "referencePrintedTextSha256": "3b220e60b2d59c8430594def46e0db5f7efcbfea91d7090a03d899c594006f8a",
+      "abilities": [
+        {
+          "id": "caules-ygg.battery.workshop",
+          "printedClause": "充电-前哨阶段：若你于前哨阶段部署于魔术工房，选择下列一项：1.获得1点魔力。2.花费2点魔力，你于本回合无视【败北】状态。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "conditions": [
+            {
+              "type": "controller_location_is",
+              "location": "workshop"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_effect",
+              "choices": [
+                {
+                  "id": "mana",
+                  "effects": [
+                    {
+                      "type": "gain_mana",
+                      "subject": "controller",
+                      "amount": 1
+                    }
+                  ]
+                },
+                {
+                  "id": "ignore-defeat",
+                  "effects": [
+                    {
+                      "type": "pay_mana",
+                      "amount": 2
+                    },
+                    {
+                      "type": "set_player_flag",
+                      "flag": "ignoreDefeatRound",
+                      "valueBinding": "current_round"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "lifecycle": {
+            "duration": "round"
+          }
+        },
+        {
+          "id": "caules-ygg.battery.battlefield",
+          "printedClause": "起载-前哨阶段：若你于前哨阶段部署于战场，激活【绞首刑之雷】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "conditions": [
+            {
+              "type": "controller_location_is_battlefield"
+            }
+          ],
+          "effects": [
+            {
+              "type": "activate_card_by_id",
+              "definitionId": "master.caules-yggdmillennia.skill.s3",
+              "subject": "controller"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.caules-yggdmillennia.skill.s3",
+      "printedText": "此牌需追加打出，你需宣言一种本局游戏未宣言过的属性才可打出此牌。\n电气魔术-战斗阶段：将所有与你位于同一战场的对手控制的，具有你宣言属性的基础攻击的威力设为0。\n（Deck变体：力量/迅捷/魔术/特殊/宝具 五种属性各可宣言一次）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caules_yggdmillennia.s3",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌需追加打出，你需宣言一种本局游戏未宣言过的属性才可打出此牌。\n电气魔术-战斗阶段：将所有与你位于同一战场的对手控制的，具有你宣言属性的基础攻击的威力设为0。\n（Deck变体：力量/迅捷/魔术/特殊/宝具 五种属性各可宣言一次）",
+        "sourceTextSha256": "a33323cef1f83bcf541c9c60aea118587c56ad5f4a92b958228630d5018be6df"
+      },
+      "referencePrintedTextSha256": "a33323cef1f83bcf541c9c60aea118587c56ad5f4a92b958228630d5018be6df",
+      "abilities": [
+        {
+          "id": "caules-ygg.thunder.declare-and-zero",
+          "printedClause": "此牌需追加打出，你需宣言一种本局游戏未宣言过的属性才可打出此牌。电气魔术-战斗阶段：将所有与你位于同一战场的对手控制的，具有你宣言属性的基础攻击的威力设为0。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "controller_location_is_battlefield"
+            }
+          ],
+          "effects": [
+            {
+              "type": "declared_attribute_rule",
+              "operation": "declare_unused_attribute_on_append_play",
+              "allowed": [
+                "力量",
+                "迅捷",
+                "魔术",
+                "特殊",
+                "宝具"
+              ],
+              "onceEach": true
+            },
+            {
+              "type": "combat_power_lock",
+              "subject": "opponent_basic_attacks_matching_declared_attribute",
+              "value": 0
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_play_mode",
+              "operation": "require_append",
+              "definitionId": "master.caules-yggdmillennia.skill.s3"
+            }
+          ],
+          "lifecycle": {
+            "duration": "round"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.caules-yggdmillennia.skill.ascension",
+      "printedText": "你的【绞首刑之雷】更改为：\"打出时：秘密宣言一种属性并于你的战斗阶段开始时展示\"。解锁此技能的回合结束后，从牌库、弃牌堆以及手牌移除你的所有牌；并以如下牌组成一副新的牌库使用：力量4x2 力量5x3 魔术4x2 魔术5x3 幸运x1 侦查x1。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caules_yggdmillennia.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你的【绞首刑之雷】更改为：\"打出时：秘密宣言一种属性并于你的战斗阶段开始时展示\"。解锁此技能的回合结束后，从牌库、弃牌堆以及手牌移除你的所有牌；并以如下牌组成一副新的牌库使用：力量4x2 力量5x3 魔术4x2 魔术5x3 幸运x1 侦查x1。",
+        "sourceTextSha256": "3d47013f151e984bb50139967a85d16f0a70a825d4e2865d3f5a781f8151881b"
+      },
+      "referencePrintedTextSha256": "3d47013f151e984bb50139967a85d16f0a70a825d4e2865d3f5a781f8151881b",
+      "abilities": [
+        {
+          "id": "caules-ygg.narrator.unlock",
+          "printedClause": "你的【绞首刑之雷】更改为：“打出时：秘密宣言一种属性并于你的战斗阶段开始时展示”。解锁此技能的回合结束后，从牌库、弃牌堆以及手牌移除你的所有牌；并以如下牌组成一副新的牌库使用。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_definition_is_self"
+            }
+          ],
+          "effects": [
+            {
+              "type": "declared_attribute_rule",
+              "operation": "make_declaration_secret_until_combat_start",
+              "definitionId": "master.caules-yggdmillennia.skill.s3"
+            },
+            {
+              "type": "scheduled_deck_rebuild_rule",
+              "operation": "replace_all_cards_after_unlock_round",
+              "definitionIds": [
+                "card.cardb3",
+                "card.cardb3",
+                "card.cardb4",
+                "card.cardb4",
+                "card.cardb4",
+                "card.carda3",
+                "card.carda3",
+                "card.carda4",
+                "card.carda4",
+                "card.carda4",
+                "card.cardluck",
+                "card.cardsurveil"
+              ]
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.shishigou.skill.s1",
+      "printedText": "行动阶段：展示一张以尸体冷藏移除的暗置牌（展示后该暗置牌不再暗置且不可再被展示），根据被展示牌的属性，使用一种属性符合的【死灵魔术】。\n战斗阶段：若你位于魔术工房，将一张你控制的暗置攻击移除游戏（不展示）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shishigou.s1",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "行动阶段：展示一张以尸体冷藏移除的暗置牌（展示后该暗置牌不再暗置且不可再被展示），根据被展示牌的属性，使用一种属性符合的【死灵魔术】。\n战斗阶段：若你位于魔术工房，将一张你控制的暗置攻击移除游戏（不展示）。",
+        "sourceTextSha256": "dfa969c6b64663eab20d80c51bcbaa310f9a486337450ddb1a952a696d97eb77"
+      },
+      "referencePrintedTextSha256": "dfa969c6b64663eab20d80c51bcbaa310f9a486337450ddb1a952a696d97eb77",
+      "abilities": [
+        {
+          "id": "shishigou.corpse-storage.use",
+          "printedClause": "行动阶段：展示一张以尸体冷藏移除的暗置牌（展示后该暗置牌不再暗置且不可再被展示），根据被展示牌的属性，使用一种属性符合的【死灵魔术】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "removed",
+              "owner": "controller",
+              "filter": {
+                "marker": "shishigou-corpse-crafted",
+                "face": "down"
+              },
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "corpseInstanceIds"
+            },
+            {
+              "type": "necromancy_rite_rule",
+              "operation": "reveal_once_and_dispatch_by_attribute",
+              "sourceBinding": "corpseInstanceIds"
+            }
+          ]
+        },
+        {
+          "id": "shishigou.corpse-storage.store",
+          "printedClause": "战斗阶段：若你位于魔术工房，将一张你控制的暗置攻击移除游戏（不展示）。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "controller_location_is",
+              "location": "workshop"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "attack",
+              "owner": "controller",
+              "filter": {
+                "face": "down"
+              },
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedCardIds"
+            },
+            {
+              "type": "move_selected_cards",
+              "source": "attack",
+              "destination": "removed",
+              "payloadKey": "selectedCardIds",
+              "face": "down"
+            },
+            {
+              "type": "necromancy_rite_rule",
+              "operation": "mark_stored_corpse",
+              "sourceBinding": "selectedCardIds"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shishigou.skill.s2",
+      "printedText": "力量属性-心脏手雷-移动至一处战场并获得2点地利。\n迅捷属性-魔术指弹-打出你牌库顶的牌（支付其消耗）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shishigou.s2",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "力量属性-心脏手雷-移动至一处战场并获得2点地利。\n迅捷属性-魔术指弹-打出你牌库顶的牌（支付其消耗）。",
+        "sourceTextSha256": "2b19f83747ef383ad47b3200cf3fff5d2f7e15ddc4fc298519261440225ffb2d"
+      },
+      "referencePrintedTextSha256": "2b19f83747ef383ad47b3200cf3fff5d2f7e15ddc4fc298519261440225ffb2d",
+      "abilities": [
+        {
+          "id": "shishigou.rite.strength",
+          "printedClause": "力量属性-心脏手雷-移动至一处战场并获得2点地利。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "necromancy_rite_rule",
+              "operation": "attribute_dispatch",
+              "attribute": "力量"
+            },
+            {
+              "type": "move_player",
+              "subject": "controller",
+              "destination": "chosen_battlefield"
+            },
+            {
+              "type": "adjust_terrain",
+              "subject": "controller",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "shishigou.rite.agility",
+          "printedClause": "迅捷属性-魔术指弹-打出你牌库顶的牌（支付其消耗）。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "necromancy_rite_rule",
+              "operation": "attribute_dispatch",
+              "attribute": "迅捷"
+            },
+            {
+              "type": "choose_cards",
+              "zone": "deck",
+              "owner": "controller",
+              "selection": "top",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedCardIds"
+            },
+            {
+              "type": "play_selected_cards",
+              "payloadKey": "selectedCardIds",
+              "payPrintedCost": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shishigou.skill.s3",
+      "printedText": "魔术属性-猫头鹰的眼球-将你的地利变为2倍。\n特殊属性-海德拉剧毒-将你的1张力量或迅捷牌基本威力变为2倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shishigou.s3",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "魔术属性-猫头鹰的眼球-将你的地利变为2倍。\n特殊属性-海德拉剧毒-将你的1张力量或迅捷牌基本威力变为2倍。",
+        "sourceTextSha256": "fd880561f6fc3ba597004fae53c6ae7044e6e926ef4b662c90495162dadb2b58"
+      },
+      "referencePrintedTextSha256": "fd880561f6fc3ba597004fae53c6ae7044e6e926ef4b662c90495162dadb2b58",
+      "abilities": [
+        {
+          "id": "shishigou.rite.magic",
+          "printedClause": "魔术属性-猫头鹰的眼球-将你的地利变为2倍。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "necromancy_rite_rule",
+              "operation": "attribute_dispatch",
+              "attribute": "魔术"
+            },
+            {
+              "type": "adjust_terrain",
+              "subject": "controller",
+              "operation": "multiply",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "id": "shishigou.rite.special",
+          "printedClause": "特殊属性-海德拉剧毒-将你的1张力量或迅捷牌基本威力变为2倍。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "necromancy_rite_rule",
+              "operation": "attribute_dispatch",
+              "attribute": "特殊"
+            },
+            {
+              "type": "choose_cards",
+              "zone": "attack",
+              "owner": "controller",
+              "filter": {
+                "attributesAny": [
+                  "力量",
+                  "迅捷"
+                ]
+              },
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedCardIds"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card_power",
+              "operation": "multiply_base",
+              "cardsBinding": "selectedCardIds",
+              "value": 2,
+              "duration": "round"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shishigou.skill.ascension",
+      "printedText": "你所有的的基础牌得到效果：\"行动阶段：花费3点魔力，根据此牌属性激活【死灵魔术】。\"",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shishigou.ascension",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你所有的的基础牌得到效果：\"行动阶段：花费3点魔力，根据此牌属性激活【死灵魔术】。\"",
+        "sourceTextSha256": "6818b3442e213f8c3f176b30427356c5531b3fc4358e2ae8635090ee2daaf521"
+      },
+      "referencePrintedTextSha256": "6818b3442e213f8c3f176b30427356c5531b3fc4358e2ae8635090ee2daaf521",
+      "abilities": [
+        {
+          "id": "shishigou.mastery.basic-card-rites",
+          "printedClause": "你所有的的基础牌得到效果：“行动阶段：花费3点魔力，根据此牌属性激活【死灵魔术】。”",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "necromancy_rite_rule",
+              "operation": "grant_basic_card_action_by_attribute",
+              "phase": "action",
+              "manaCost": 3
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "linked_ability_condition",
+              "operation": "grant_to_basic_cards",
+              "cost": {
+                "type": "mana",
+                "amount": 3
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
     }
   ]
 }

@@ -1,4 +1,4 @@
-﻿import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -230,6 +230,12 @@ const SPECIAL_EFFECTS = new Set([
   'ROSTER_SKILL_DRAFT_RULE',
   'DREAM_SUMMON_RULE',
   'FOOD_RESOURCE_RULE',
+  'TRIMMAU_GROWTH_RULE',
+  'TRIMMAU_CONFESSION_RULE',
+  'CRAFTED_TREE_RULE',
+  'DECLARED_ATTRIBUTE_RULE',
+  'SCHEDULED_DECK_REBUILD_RULE',
+  'NECROMANCY_RITE_RULE',
 ]);
 
 const EVENT_DECK_EFFECTS = new Set([

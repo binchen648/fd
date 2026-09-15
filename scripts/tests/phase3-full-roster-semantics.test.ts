@@ -1210,6 +1210,23 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find((c) => c.id === 'master.shirou-meal.skill.s1')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'food_resource_rule',operation:'gain_food_from_current_location_event_and_active_situation_attributes'})])}));
   });
 
+  it('grounds the twenty-ID Reines/Caules/Shishigou slice with explicit subsystem boundaries', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.reines.skill.s1','master.reines.skill.s1a','master.reines.skill.s2','master.reines.skill.s3','master.reines.skill.s4','master.reines.skill.ascension',
+      'master.caules.skill.s1','master.caules.skill.s1a','master.caules.skill.s2','master.caules.skill.s3','master.caules.skill.ascension',
+      'master.caules-yggdmillennia.skill.s1','master.caules-yggdmillennia.skill.s1a','master.caules-yggdmillennia.skill.s2','master.caules-yggdmillennia.skill.s3','master.caules-yggdmillennia.skill.ascension',
+      'master.shishigou.skill.s1','master.shishigou.skill.s2','master.shishigou.skill.s3','master.shishigou.skill.ascension',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(20);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find((c) => c.id === 'master.reines.skill.ascension')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type: 'trimmau_growth_rule' })]) }));
+    expect(slice.find((c) => c.id === 'master.caules.skill.s2')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type: 'crafted_tree_rule' })]) }));
+    expect(slice.find((c) => c.id === 'master.caules-yggdmillennia.skill.ascension')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type: 'scheduled_deck_rebuild_rule' })]) }));
+    expect(slice.find((c) => c.id === 'master.shishigou.skill.s1')?.abilities).toContainEqual(expect.objectContaining({ effects: expect.arrayContaining([expect.objectContaining({ type: 'necromancy_rite_rule' })]) }));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1263,10 +1280,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 270,
-      blockedCount: 674,
+      sourceGroundedCount: 290,
+      blockedCount: 654,
       unclassifiedCount: 0,
-      structuredAbilityCount: 492,
+      structuredAbilityCount: 523,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
