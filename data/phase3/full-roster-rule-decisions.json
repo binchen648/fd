@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 524,
-    "coveredBlockedIdentityCount": 524,
+    "blockedIdentityCount": 497,
+    "coveredBlockedIdentityCount": 497,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 1,
@@ -60,12 +60,6 @@
         "servant.artoria-alt.skill.sc-artoria-alt-1",
         "servant.artoria-alt.skill.sc-artoria-alt-2",
         "servant.artoria-alt.skill.sc-artoria-alt-3",
-        "servant.artoriac.skill.sc-artoriac-1",
-        "servant.artoriac.skill.sc-artoriac-2",
-        "servant.artoriac.skill.sc-artoriac-3",
-        "servant.artoriac.skill.sc-artoriac-4",
-        "servant.artoriac.skill.sc-artoriac-5",
-        "servant.artoriac.skill.sc-artoriac-6",
         "servant.ashva.skill.sc-ashva-1",
         "servant.ashva.skill.sc-ashva-2",
         "servant.ashva.skill.sc-ashva-3",
@@ -75,11 +69,6 @@
         "servant.astraea.skill.sc-astraea-2",
         "servant.astraea.skill.sc-astraea-3",
         "servant.atalanta.skill.sc-atalanta-3",
-        "servant.avicebron.skill.sc-avicebron-1",
-        "servant.avicebron.skill.sc-avicebron-2",
-        "servant.avicebron.skill.sc-avicebron-3",
-        "servant.avicebron.skill.sc-avicebron-4",
-        "servant.avicebron.skill.sc-avicebron-5",
         "servant.baobhan.skill.sc-baobhan-1",
         "servant.baobhan.skill.sc-baobhan-2",
         "servant.baobhan.skill.sc-baobhan-3",
@@ -230,16 +219,6 @@
         "servant.hokusai.skill.sc-hokusai-4",
         "servant.ibaraki.skill.sc-ibaraki-2",
         "servant.ibaraki.skill.sc-ibaraki-3",
-        "servant.illya.skill.sc-illya-1",
-        "servant.illya.skill.sc-illya-10",
-        "servant.illya.skill.sc-illya-2",
-        "servant.illya.skill.sc-illya-3",
-        "servant.illya.skill.sc-illya-4",
-        "servant.illya.skill.sc-illya-5",
-        "servant.illya.skill.sc-illya-6",
-        "servant.illya.skill.sc-illya-7",
-        "servant.illya.skill.sc-illya-8",
-        "servant.illya.skill.sc-illya-9",
         "servant.ishtar.skill.sc-ishtar-1",
         "servant.ishtar.skill.sc-ishtar-2",
         "servant.ishtar.skill.sc-ishtar-3",
@@ -298,12 +277,6 @@
         "servant.kotarou.skill.sc-kotarou-1",
         "servant.kotarou.skill.sc-kotarou-2",
         "servant.kotarou.skill.sc-kotarou-3",
-        "servant.koyanskaya.skill.sc-koyanskaya-1",
-        "servant.koyanskaya.skill.sc-koyanskaya-2",
-        "servant.koyanskaya.skill.sc-koyanskaya-3",
-        "servant.koyanskaya.skill.sc-koyanskaya-4",
-        "servant.koyanskaya.skill.sc-koyanskaya-5",
-        "servant.koyanskaya.skill.sc-koyanskaya-6",
         "servant.koyo.skill.sc-koyo-1",
         "servant.koyo.skill.sc-koyo-2",
         "servant.koyo.skill.sc-koyo-3",
@@ -1418,132 +1391,6 @@
           "sha256": "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
         },
         {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/阿尔托莉雅·卡斯特.htm"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.artoriac/阿尔托莉雅·卡斯特"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[113].skills[0].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[113].skills[0].text#line=2",
-          "sha256": "f982c7cc24e7ecef3c0e2fdfa63a1f8847851d3f067fbdc5ba3c34d6bc09eaa4"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[113].skills[0].text#line=3",
-          "sha256": "5de55f13f521c13158ba35743c1c4fff2cfe639f8132ab601d39532b1741a6ea"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/阿尔托莉雅·卡斯特.htm"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.artoriac/阿尔托莉雅·卡斯特"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[113].skills[1].text#line=1",
-          "sha256": "db298d7c656f0aaf84c116597c6314eff3193898c8c3cddd7dbe7f0d80fe77b4"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/阿尔托莉雅·卡斯特.htm"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.artoriac/阿尔托莉雅·卡斯特"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[113].skills[2].text#line=1",
-          "sha256": "12c885019dc41e854b10a79949694a4620f790cee3761f559a3f75ae832a6234"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-4",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/阿尔托莉雅·卡斯特.htm"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-4",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.artoriac/阿尔托莉雅·卡斯特"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[113].skills[3].text#line=1",
-          "sha256": "474d364a17340be51e5f3c49973d78d9347cb75dd69131bf049faa56920a97b9"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[113].skills[3].text#line=2",
-          "sha256": "d93a6daf1b93ca8ce2ed45feea2dbea4c36c175764b7dca457f4e45a5839d4df"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-5",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/阿尔托莉雅·卡斯特.htm"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-5",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.artoriac/阿尔托莉雅·卡斯特"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[113].skills[4].text#line=1",
-          "sha256": "474d364a17340be51e5f3c49973d78d9347cb75dd69131bf049faa56920a97b9"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[113].skills[4].text#line=2",
-          "sha256": "656a3d73782c20c32c7c6ae5bbb8b5068c3a42244cc3491abd69eb4a7ea88744"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-6",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/阿尔托莉雅·卡斯特.htm"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-6",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.artoriac/阿尔托莉雅·卡斯特"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-6",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[113].skills[5].text#line=1",
-          "sha256": "474d364a17340be51e5f3c49973d78d9347cb75dd69131bf049faa56920a97b9"
-        },
-        {
-          "abilityId": "servant.artoriac.skill.sc-artoriac-6",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[113].skills[5].text#line=2",
-          "sha256": "5651fb4c695ab09ba430b096ab3be5b3b3b9d8d9cc121ae7d506ced6fad146bb"
-        },
-        {
           "abilityId": "servant.ashva.skill.sc-ashva-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/弓兵/英文版/马嘶.htm"
@@ -1740,116 +1587,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[37].skills[2].text#line=3",
           "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/阿维斯布隆.htm"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.avicebron/阿维斯布隆"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[102].skills[0].text#line=1",
-          "sha256": "ff77e16faf44289b912570253df20aeb91a7f3da70fa76e095aef0b8c2146675"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[102].skills[0].text#line=2",
-          "sha256": "b3ddaf2c7540882b60a720e608747d3f65b1aeb2c454176bbf257f81d646b775"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/阿维斯布隆.htm"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.avicebron/阿维斯布隆"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[102].skills[1].text#line=1",
-          "sha256": "1aa9d9b7b2f87932c2fc7a2f884cd211434215006a66ab244e578d6790142aa8"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[102].skills[1].text#line=2",
-          "sha256": "f125b57aa31ab33c0d01fd7cbe34526dae68efe093f708b59a92ea6ad2d81ef5"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/阿维斯布隆.htm"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.avicebron/阿维斯布隆"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[102].skills[2].text#line=1",
-          "sha256": "a65ce56a69bba9214eba95ab30154209228bcd28f7fec21f6317c8a70f421847"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[102].skills[2].text#line=2",
-          "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-4",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/阿维斯布隆.htm"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-4",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.avicebron/阿维斯布隆"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[102].skills[3].text#line=1",
-          "sha256": "85212e1736bcb960a2761da0c403772bc913b4339a2ef56f78d4dc94b3f64b56"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[102].skills[3].text#line=2",
-          "sha256": "63686c9ddca7d47b51e6b3748f93d334d7ab6083eb67c2b7dae2a2aaa0f3a634"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-5",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/阿维斯布隆.htm"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-5",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.avicebron/阿维斯布隆"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[102].skills[4].text#line=1",
-          "sha256": "85212e1736bcb960a2761da0c403772bc913b4339a2ef56f78d4dc94b3f64b56"
-        },
-        {
-          "abilityId": "servant.avicebron.skill.sc-avicebron-5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[102].skills[4].text#line=2",
-          "sha256": "63686c9ddca7d47b51e6b3748f93d334d7ab6083eb67c2b7dae2a2aaa0f3a634"
         },
         {
           "abilityId": "servant.baobhan.skill.sc-baobhan-1",
@@ -5254,226 +4991,6 @@
           "sha256": "50703d4093bc1d992a139cb0ce65065a97be84bb433d5b49a69d195ac98637db"
         },
         {
-          "abilityId": "servant.illya.skill.sc-illya-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/伊莉雅丝菲尔.htm"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.illya/伊莉雅丝菲尔"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[0].text#line=1",
-          "sha256": "a18c6580fbd0cba8c379af9cb3ea62c7c831de59532ed5b948bc1554d05d39a4"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-10",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/伊莉雅丝菲尔.htm"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-10",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.illya/伊莉雅丝菲尔"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-10",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[9].text#line=1",
-          "sha256": "10be535e7663cada1a72e463e159b9c54a726e26e36ea02e630ab93b03d9fe7a"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-10",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[9].text#line=2",
-          "sha256": "023145c63f32d5e9b85ba9c458700433d050cdbcc3492eb86a5ce8fb5442af11"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/伊莉雅丝菲尔.htm"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.illya/伊莉雅丝菲尔"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[1].text#line=1",
-          "sha256": "52f7bce2381d558397ba5f1f2d534b776804e646aac6aec44ed949ae1105efd5"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[1].text#line=2",
-          "sha256": "22dc50aeacd30f5b237d5253782f9123e0093454b7145811141fd8823b00bbc9"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/伊莉雅丝菲尔.htm"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.illya/伊莉雅丝菲尔"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[2].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[2].text#line=2",
-          "sha256": "e7da760c78aac342f918e87606a17b08485285d9b0459a4b687b3f9fcb9b1f2b"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[2].text#line=3",
-          "sha256": "b518fe89b198ad1cd087da2b4221905ed42a845047e2cf3018385ac67d538a42"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-4",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/伊莉雅丝菲尔.htm"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-4",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.illya/伊莉雅丝菲尔"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[3].text#line=1",
-          "sha256": "10be535e7663cada1a72e463e159b9c54a726e26e36ea02e630ab93b03d9fe7a"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[3].text#line=2",
-          "sha256": "567c6a9dcd2e250c6d4c0a088d878aafa28db3dfb64e6332c587fa2dfe807e0f"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-5",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/伊莉雅丝菲尔.htm"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-5",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.illya/伊莉雅丝菲尔"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[4].text#line=1",
-          "sha256": "10be535e7663cada1a72e463e159b9c54a726e26e36ea02e630ab93b03d9fe7a"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[4].text#line=2",
-          "sha256": "964b5e16de2967d8905314484df755985240f1f34217819e72fee6180428deb3"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-6",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/伊莉雅丝菲尔.htm"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-6",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.illya/伊莉雅丝菲尔"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-6",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[5].text#line=1",
-          "sha256": "10be535e7663cada1a72e463e159b9c54a726e26e36ea02e630ab93b03d9fe7a"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-6",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[5].text#line=2",
-          "sha256": "a9abfc51461ff98c93231b81b6b8504191e0aa7d15c497cfcdde1dbddbacae74"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-7",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/伊莉雅丝菲尔.htm"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-7",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.illya/伊莉雅丝菲尔"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-7",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[6].text#line=1",
-          "sha256": "10be535e7663cada1a72e463e159b9c54a726e26e36ea02e630ab93b03d9fe7a"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-7",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[6].text#line=2",
-          "sha256": "59b818d0589379d262623d674367f1757dab8942867461b3eda59203c2bee373"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-8",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/伊莉雅丝菲尔.htm"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-8",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.illya/伊莉雅丝菲尔"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-8",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[7].text#line=1",
-          "sha256": "10be535e7663cada1a72e463e159b9c54a726e26e36ea02e630ab93b03d9fe7a"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-8",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[7].text#line=2",
-          "sha256": "c812560310ae3423524b54bb830a08a8ac23fe8bc2be6168a4fb78cf7215b3d3"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-9",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/魔术师/英文版/伊莉雅丝菲尔.htm"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-9",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.illya/伊莉雅丝菲尔"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-9",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[8].text#line=1",
-          "sha256": "10be535e7663cada1a72e463e159b9c54a726e26e36ea02e630ab93b03d9fe7a"
-        },
-        {
-          "abilityId": "servant.illya.skill.sc-illya-9",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[106].skills[8].text#line=2",
-          "sha256": "b6d44ba51de7ebb35c7256e6a3d26aaac17786dcc3363f2d0f35b46ca49403c6"
-        },
-        {
           "abilityId": "servant.ishtar.skill.sc-ishtar-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/弓兵/英文版/伊什塔尔.htm"
@@ -6790,138 +6307,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[135].skills[2].text#line=2",
           "sha256": "ad749ec7b218501f155158058e9a04e5f452a684fe82224abc86ea4c63193843"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/他人格/英文版/高扬斯卡娅.htm"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.koyanskaya/高扬斯卡娅"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[132].skills[0].text#line=1",
-          "sha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/他人格/英文版/高扬斯卡娅.htm"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.koyanskaya/高扬斯卡娅"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[132].skills[1].text#line=1",
-          "sha256": "5a6a6f64a148f0470b5a067c4693985c48853a894e4775c1c31ea9f8c4bb1e3d"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[132].skills[1].text#line=2",
-          "sha256": "12664823afcaf38ea455ce5d871720fae62f5cf68281eec6a7179c92080c3f62"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/他人格/英文版/高扬斯卡娅.htm"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.koyanskaya/高扬斯卡娅"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[132].skills[2].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[132].skills[2].text#line=2",
-          "sha256": "0a2f67087d90a51ed6ffd9e7368076ea502b0fb922fd01ef97e2a2deeaaaeeba"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[132].skills[2].text#line=3",
-          "sha256": "165b59f9dd537645d0156edba8019ea99efe406b9f7dc79d240f1beecf01873e"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-4",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/他人格/英文版/高扬斯卡娅.htm"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-4",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.koyanskaya/高扬斯卡娅"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[132].skills[3].text#line=1",
-          "sha256": "6a1aaae81c9fa5aa2d15446ef8a019752379ef9cfe75c1eee25630751daf320e"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-4",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[132].skills[3].text#line=2",
-          "sha256": "dcbedb15946d3389f443ba3e16beb92eaf4b133be6fd1a8794c77e1d86fce08c"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-5",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/他人格/英文版/高扬斯卡娅.htm"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-5",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.koyanskaya/高扬斯卡娅"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[132].skills[4].text#line=1",
-          "sha256": "60c23bc9048358e7e5c285e04a8f6be52a904876100b505100d8335090bec5d9"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-5",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[132].skills[4].text#line=2",
-          "sha256": "54de5b482b53e34aa61c3117d77be4cf30c52b1c2ec89bc7307c5608895263d6"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-6",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/他人格/英文版/高扬斯卡娅.htm"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-6",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.koyanskaya/高扬斯卡娅"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-6",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[132].skills[5].text#line=1",
-          "sha256": "f1dd8c5c62ee9bf70634c2c83e61b79e169c7f7ed1e3b55fbeff6a9c28ec967f"
-        },
-        {
-          "abilityId": "servant.koyanskaya.skill.sc-koyanskaya-6",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[132].skills[5].text#line=2",
-          "sha256": "f7964d361dbb7383772b76ed1db66afb01001206f8b7e2367038f01a560bb732"
         },
         {
           "abilityId": "servant.koyo.skill.sc-koyo-1",
@@ -12159,10 +11544,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 211,
-          "specific_handler": 313
+          "shared_handler": 190,
+          "specific_handler": 307
         },
-        "handlerCount": 353,
+        "handlerCount": 344,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."

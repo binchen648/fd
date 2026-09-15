@@ -18698,6 +18698,826 @@
         }
       ],
       "referencePrintedTextSha256": "e786aa589d6273ed5b27cde8c28c33b8a75ff40d4bb1a480f3acce68f800c0c7"
+    },
+    {
+      "id": "servant.avicebron.skill.sc-avicebron-1",
+      "printedText": "被动/前哨阶段：弃置2张魔术基础牌或远隔操作以获得2点魔力。\n战斗阶段：本回合你的【魔像】关闭时机改为战斗阶段结束后。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_avicebron_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "被动/前哨阶段：弃置2张魔术基础牌或远隔操作以获得2点魔力。\n战斗阶段：本回合你的【魔像】关闭时机改为战斗阶段结束后。",
+        "sourceTextSha256": "e0650cf7d0a9aaabd33e6970ead2f4bb76344e449fe4ea326c00d54ec41b4136"
+      },
+      "abilities": [
+        {
+          "id": "avicebron.sc-avicebron-1.semantic",
+          "printedClause": "被动/前哨阶段：弃置2张魔术基础牌或远隔操作以获得2点魔力。\n战斗阶段：本回合你的【魔像】关闭时机改为战斗阶段结束后。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "controller_hand",
+              "filter": "magic_basic_or_remote_operation",
+              "minCount": 2,
+              "maxCount": 2,
+              "payloadKey": "selectedCardIds"
+            },
+            {
+              "type": "move_selected_cards",
+              "sourceZone": "controller_hand",
+              "destination": "discard",
+              "payloadKey": "selectedCardIds"
+            },
+            {
+              "type": "gain_mana",
+              "amount": 2
+            },
+            {
+              "type": "golem_rule",
+              "operation": "delay_golem_close_until_combat_end"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "e0650cf7d0a9aaabd33e6970ead2f4bb76344e449fe4ea326c00d54ec41b4136"
+    },
+    {
+      "id": "servant.avicebron.skill.sc-avicebron-2",
+      "printedText": "【真名解放】 <每局游戏限一次>\n残留：此牌视为【魔像】，若你于进行的战斗中合计威力不是最高，关闭所有【魔像】。若你赢得一场战斗，将一张【魔像】从你的手牌，牌库或弃牌堆加入攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_avicebron_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】 <每局游戏限一次>\n残留：此牌视为【魔像】，若你于进行的战斗中合计威力不是最高，关闭所有【魔像】。若你赢得一场战斗，将一张【魔像】从你的手牌，牌库或弃牌堆加入攻击。",
+        "sourceTextSha256": "1a9c0d815a3fb280574e40e5e702d0b8a9fe2f3d7c3dc83968a7ec7b8fc25b21"
+      },
+      "abilities": [
+        {
+          "id": "avicebron.sc-avicebron-2.semantic",
+          "printedClause": "【真名解放】 <每局游戏限一次>\n残留：此牌视为【魔像】，若你于进行的战斗中合计威力不是最高，关闭所有【魔像】。若你赢得一场战斗，将一张【魔像】从你的手牌，牌库或弃牌堆加入攻击。",
+          "kind": "residual",
+          "effects": [
+            {
+              "type": "golem_rule",
+              "operation": "self_counts_as_golem_close_all_if_not_highest_and_on_win_add_one_golem_from_hand_deck_or_discard_to_attack"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "1a9c0d815a3fb280574e40e5e702d0b8a9fe2f3d7c3dc83968a7ec7b8fc25b21"
+    },
+    {
+      "id": "servant.avicebron.skill.sc-avicebron-3",
+      "printedText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_avicebron_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+        "sourceTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+      },
+      "abilities": [
+        {
+          "id": "avicebron.sc-avicebron-3.semantic",
+          "printedClause": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "gain_mana",
+              "amount": 1,
+              "condition": "controller_deploys_at_magic_workshop"
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 2,
+              "condition": "controller_deploys_at_magic_workshop"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+    },
+    {
+      "id": "servant.avicebron.skill.sc-avicebron-4",
+      "printedText": "残留：你手牌中的【魔像】魔力消耗+1。\n唯一：在你的战斗阶段中每有一名交战对手，便关闭一张非技能牌的【魔像】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_avicebron_4",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "残留：你手牌中的【魔像】魔力消耗+1。\n唯一：在你的战斗阶段中每有一名交战对手，便关闭一张非技能牌的【魔像】。",
+        "sourceTextSha256": "17a59254adcd383b80436863d31e5cb5810399fdca52fbebe02e4b3f428861eb"
+      },
+      "abilities": [
+        {
+          "id": "avicebron.sc-avicebron-4.semantic",
+          "printedClause": "残留：你手牌中的【魔像】魔力消耗+1。\n唯一：在你的战斗阶段中每有一名交战对手，便关闭一张非技能牌的【魔像】。",
+          "kind": "residual",
+          "effects": [
+            {
+              "type": "golem_rule",
+              "operation": "hand_golem_cost_plus_one_and_close_one_non_skill_golem_per_engaged_opponent"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "17a59254adcd383b80436863d31e5cb5810399fdca52fbebe02e4b3f428861eb"
+    },
+    {
+      "id": "servant.avicebron.skill.sc-avicebron-5",
+      "printedText": "残留：你手牌中的【魔像】魔力消耗+1。\n唯一：在你的战斗阶段中每有一名交战对手，便关闭一张非技能牌的【魔像】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_avicebron_5",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "残留：你手牌中的【魔像】魔力消耗+1。\n唯一：在你的战斗阶段中每有一名交战对手，便关闭一张非技能牌的【魔像】。",
+        "sourceTextSha256": "17a59254adcd383b80436863d31e5cb5810399fdca52fbebe02e4b3f428861eb"
+      },
+      "abilities": [
+        {
+          "id": "avicebron.sc-avicebron-5.semantic",
+          "printedClause": "残留：你手牌中的【魔像】魔力消耗+1。\n唯一：在你的战斗阶段中每有一名交战对手，便关闭一张非技能牌的【魔像】。",
+          "kind": "residual",
+          "effects": [
+            {
+              "type": "golem_rule",
+              "operation": "hand_golem_cost_plus_one_and_close_one_non_skill_golem_per_engaged_opponent"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "17a59254adcd383b80436863d31e5cb5810399fdca52fbebe02e4b3f428861eb"
+    },
+    {
+      "id": "servant.illya.skill.sc-illya-1",
+      "printedText": "被动/前哨阶段：若【魔卡皮套】上没有牌，将你的一张手牌正面朝上放置于此牌上。你可以将【魔卡皮套】上的牌如同手牌一般打出。若【魔卡皮套】上有牌，弃置其并获得等同于其魔力消耗的魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_illya_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "被动/前哨阶段：若【魔卡皮套】上没有牌，将你的一张手牌正面朝上放置于此牌上。你可以将【魔卡皮套】上的牌如同手牌一般打出。若【魔卡皮套】上有牌，弃置其并获得等同于其魔力消耗的魔力。",
+        "sourceTextSha256": "a18c6580fbd0cba8c379af9cb3ea62c7c831de59532ed5b948bc1554d05d39a4"
+      },
+      "abilities": [
+        {
+          "id": "illya.sc-illya-1.semantic",
+          "printedClause": "被动/前哨阶段：若【魔卡皮套】上没有牌，将你的一张手牌正面朝上放置于此牌上。你可以将【魔卡皮套】上的牌如同手牌一般打出。若【魔卡皮套】上有牌，弃置其并获得等同于其魔力消耗的魔力。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "card_case_attachment_rule",
+              "operation": "attach_faceup_hand_card_play_as_hand_or_discard_attached_for_mana_equal_cost"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "a18c6580fbd0cba8c379af9cb3ea62c7c831de59532ed5b948bc1554d05d39a4"
+    },
+    {
+      "id": "servant.illya.skill.sc-illya-2",
+      "printedText": "你拥有的魔力少于8点也可使用此牌。\n打出时：若你在打出此牌时拥有至少8点魔力，此牌获得威力+3。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_illya_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "你拥有的魔力少于8点也可使用此牌。\n打出时：若你在打出此牌时拥有至少8点魔力，此牌获得威力+3。",
+        "sourceTextSha256": "39832fca3caf7e744b483dfdb42e1b629c0e3702d9601d07e117c10a7a8e8212"
+      },
+      "abilities": [
+        {
+          "id": "illya.sc-illya-2.semantic",
+          "printedClause": "你拥有的魔力少于8点也可使用此牌。\n打出时：若你在打出此牌时拥有至少8点魔力，此牌获得威力+3。",
+          "kind": "on_play",
+          "ruleModifiers": [
+            {
+              "rule": "card_play_permission",
+              "operation": "allow_below_eight_mana"
+            }
+          ],
+          "effects": [
+            {
+              "type": "source_card_power_bonus",
+              "amount": 3,
+              "condition": "controller_mana_at_play_at_least_8"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "39832fca3caf7e744b483dfdb42e1b629c0e3702d9601d07e117c10a7a8e8212"
+    },
+    {
+      "id": "servant.illya.skill.sc-illya-3",
+      "printedText": "【真名解放】\n下个回合，你无法获得魔力。\n行动阶段：伊莉雅的【梦幻召唤】获得<每局游戏限一次>直至回合结束，然后无视“每回合只能进行1次”的限制，免费打出任意张【梦幻召唤】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_illya_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n下个回合，你无法获得魔力。\n行动阶段：伊莉雅的【梦幻召唤】获得<每局游戏限一次>直至回合结束，然后无视“每回合只能进行1次”的限制，免费打出任意张【梦幻召唤】。",
+        "sourceTextSha256": "88726ae10fde6c8fc85b256928f85eb536c1a47dfd6337aac15b725de99d43a6"
+      },
+      "abilities": [
+        {
+          "id": "illya.sc-illya-3.semantic",
+          "printedClause": "【真名解放】\n下个回合，你无法获得魔力。\n行动阶段：伊莉雅的【梦幻召唤】获得<每局游戏限一次>直至回合结束，然后无视“每回合只能进行1次”的限制，免费打出任意张【梦幻召唤】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "schedule_phase_effect",
+              "timing": "next_round",
+              "operation": "controller_cannot_gain_mana"
+            },
+            {
+              "type": "dream_summon_rule",
+              "operation": "this_round_remove_once_per_game_and_once_per_round_limits_and_play_any_number_free"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "88726ae10fde6c8fc85b256928f85eb536c1a47dfd6337aac15b725de99d43a6"
+    },
+    {
+      "id": "servant.illya.skill.sc-illya-4",
+      "printedText": "每回合只能进行1次【梦幻召唤】\n战斗阶段：将同一战场所有对手的魔术属性威力变为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_illya_4",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "每回合只能进行1次【梦幻召唤】\n战斗阶段：将同一战场所有对手的魔术属性威力变为0。",
+        "sourceTextSha256": "cb4621e3f652e73082fce3fd560cb1a67de78dc6d00c5ca482f2f63608c150cf"
+      },
+      "abilities": [
+        {
+          "id": "illya.sc-illya-4.semantic",
+          "printedClause": "每回合只能进行1次【梦幻召唤】\n战斗阶段：将同一战场所有对手的魔术属性威力变为0。",
+          "kind": "combat",
+          "effects": [
+            {
+              "type": "dream_summon_rule",
+              "operation": "shared_once_per_round_group"
+            },
+            {
+              "type": "set_opponent_attribute_power",
+              "attribute": "magic",
+              "amount": 0,
+              "scope": "same_battlefield"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "cb4621e3f652e73082fce3fd560cb1a67de78dc6d00c5ca482f2f63608c150cf"
+    },
+    {
+      "id": "servant.illya.skill.sc-illya-5",
+      "printedText": "每回合只能进行1次【梦幻召唤】\n你控制的其他攻击获得威力+1和力量属性并失去所有其他属性。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_illya_5",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "每回合只能进行1次【梦幻召唤】\n你控制的其他攻击获得威力+1和力量属性并失去所有其他属性。",
+        "sourceTextSha256": "eae6fb3bb09a0d6c861491a9d3a9d0186d669640ed4f6accf170865c99c0d054"
+      },
+      "abilities": [
+        {
+          "id": "illya.sc-illya-5.semantic",
+          "printedClause": "每回合只能进行1次【梦幻召唤】\n你控制的其他攻击获得威力+1和力量属性并失去所有其他属性。",
+          "kind": "residual",
+          "effects": [
+            {
+              "type": "dream_summon_rule",
+              "operation": "shared_once_per_round_group"
+            },
+            {
+              "type": "modify_other_attacks",
+              "powerDelta": 1,
+              "addAttribute": "strength",
+              "removeOtherAttributes": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "eae6fb3bb09a0d6c861491a9d3a9d0186d669640ed4f6accf170865c99c0d054"
+    },
+    {
+      "id": "servant.illya.skill.sc-illya-6",
+      "printedText": "每回合只能进行1次【梦幻召唤】\n战斗阶段：若你战胜，每有一名当前回合顺位在你之后的玩家就额外获得1战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_illya_6",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "每回合只能进行1次【梦幻召唤】\n战斗阶段：若你战胜，每有一名当前回合顺位在你之后的玩家就额外获得1战果。",
+        "sourceTextSha256": "749a099328c86813ee2bd05c47ccfffcfdd0114bfa673a8fcb54c7be9f972d1f"
+      },
+      "abilities": [
+        {
+          "id": "illya.sc-illya-6.semantic",
+          "printedClause": "每回合只能进行1次【梦幻召唤】\n战斗阶段：若你战胜，每有一名当前回合顺位在你之后的玩家就额外获得1战果。",
+          "kind": "combat",
+          "effects": [
+            {
+              "type": "dream_summon_rule",
+              "operation": "on_win_gain_one_vp_per_player_later_in_round_order"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "749a099328c86813ee2bd05c47ccfffcfdd0114bfa673a8fcb54c7be9f972d1f"
+    },
+    {
+      "id": "servant.illya.skill.sc-illya-7",
+      "printedText": "每回合只能进行1次【梦幻召唤】\n行动阶段：移动到【魔术工房】以外的任何地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_illya_7",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "每回合只能进行1次【梦幻召唤】\n行动阶段：移动到【魔术工房】以外的任何地点。",
+        "sourceTextSha256": "5a8904e1b0ea0c269fd0b9ec252eda251c3bd5849270fd81e470e0b3604acccd"
+      },
+      "abilities": [
+        {
+          "id": "illya.sc-illya-7.semantic",
+          "printedClause": "每回合只能进行1次【梦幻召唤】\n行动阶段：移动到【魔术工房】以外的任何地点。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "dream_summon_rule",
+              "operation": "shared_once_per_round_group"
+            },
+            {
+              "type": "move_player",
+              "destination": "any_location_except_magic_workshop"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "5a8904e1b0ea0c269fd0b9ec252eda251c3bd5849270fd81e470e0b3604acccd"
+    },
+    {
+      "id": "servant.illya.skill.sc-illya-8",
+      "printedText": "每回合只能进行1次【梦幻召唤】\n战斗阶段：与你交战的对手本回合每使用过一张技能牌，便偷取他们的1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_illya_8",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "每回合只能进行1次【梦幻召唤】\n战斗阶段：与你交战的对手本回合每使用过一张技能牌，便偷取他们的1点战果。",
+        "sourceTextSha256": "b6a79996be816ff0a8b1caa07fa536b6d9409807a00b0ebffd12af4995584d1c"
+      },
+      "abilities": [
+        {
+          "id": "illya.sc-illya-8.semantic",
+          "printedClause": "每回合只能进行1次【梦幻召唤】\n战斗阶段：与你交战的对手本回合每使用过一张技能牌，便偷取他们的1点战果。",
+          "kind": "combat",
+          "effects": [
+            {
+              "type": "dream_summon_rule",
+              "operation": "steal_one_vp_from_each_engaged_opponent_per_skill_card_they_used_this_round"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b6a79996be816ff0a8b1caa07fa536b6d9409807a00b0ebffd12af4995584d1c"
+    },
+    {
+      "id": "servant.illya.skill.sc-illya-9",
+      "printedText": "每回合只能进行1次【梦幻召唤】\n你可以于常规出牌时追加打出此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_illya_9",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "每回合只能进行1次【梦幻召唤】\n你可以于常规出牌时追加打出此牌。",
+        "sourceTextSha256": "fee5ce08dd1eb34d403021eaf58effc82053a37125b2ebcaf5dbdd4bd66c7579"
+      },
+      "abilities": [
+        {
+          "id": "illya.sc-illya-9.semantic",
+          "printedClause": "每回合只能进行1次【梦幻召唤】\n你可以于常规出牌时追加打出此牌。",
+          "kind": "play_modifier",
+          "effects": [
+            {
+              "type": "dream_summon_rule",
+              "operation": "shared_once_per_round_group_and_additional_normal_play"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "fee5ce08dd1eb34d403021eaf58effc82053a37125b2ebcaf5dbdd4bd66c7579"
+    },
+    {
+      "id": "servant.illya.skill.sc-illya-10",
+      "printedText": "每回合只能进行1次【梦幻召唤】\n残留：当你打出另一张【梦幻召唤】时关闭此牌。令那张牌获得获得威力+4或费用-3。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_illya_10",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "每回合只能进行1次【梦幻召唤】\n残留：当你打出另一张【梦幻召唤】时关闭此牌。令那张牌获得获得威力+4或费用-3。",
+        "sourceTextSha256": "9ac0f34c4c1e9a4a370542b1489be328f8bd655e2ddcb3734ade9e5c226632cd"
+      },
+      "abilities": [
+        {
+          "id": "illya.sc-illya-10.semantic",
+          "printedClause": "每回合只能进行1次【梦幻召唤】\n残留：当你打出另一张【梦幻召唤】时关闭此牌。令那张牌获得获得威力+4或费用-3。",
+          "kind": "residual",
+          "effects": [
+            {
+              "type": "dream_summon_rule",
+              "operation": "when_another_dream_summon_is_played_close_self_and_choose_plus4_power_or_minus3_cost"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "9ac0f34c4c1e9a4a370542b1489be328f8bd655e2ddcb3734ade9e5c226632cd"
+    },
+    {
+      "id": "servant.artoriac.skill.sc-artoriac-1",
+      "printedText": "【真名解放】\n残留：此卡持续激活两回合。你的其他特殊属性攻击威力+2。\n战斗阶段：将一张你本回合打出的非技能卡或背面向上的攻击返回你的手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_artoriaC_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n残留：此卡持续激活两回合。你的其他特殊属性攻击威力+2。\n战斗阶段：将一张你本回合打出的非技能卡或背面向上的攻击返回你的手牌。",
+        "sourceTextSha256": "75999e70a507e1f29769255c94b3d80e0531ec6c54270b0436da2ca43a6aa4fc"
+      },
+      "abilities": [
+        {
+          "id": "artoriac.sc-artoriac-1.semantic",
+          "printedClause": "【真名解放】\n残留：此卡持续激活两回合。你的其他特殊属性攻击威力+2。\n战斗阶段：将一张你本回合打出的非技能卡或背面向上的攻击返回你的手牌。",
+          "kind": "residual",
+          "lifecycle": {
+            "duration": "two_rounds"
+          },
+          "effects": [
+            {
+              "type": "other_attack_power_bonus",
+              "attribute": "special",
+              "amount": 2
+            },
+            {
+              "type": "move_selected_cards",
+              "sourceZone": "attack",
+              "destination": "hand",
+              "selection": "one_non_skill_played_this_round_or_facedown_attack",
+              "timing": "combat"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "75999e70a507e1f29769255c94b3d80e0531ec6c54270b0436da2ca43a6aa4fc"
+    },
+    {
+      "id": "servant.artoriac.skill.sc-artoriac-2",
+      "printedText": "行动阶段：花费X点魔力，然后查看你牌库顶的X+2张牌，你可以将其中一张加入手牌，然后弃置其余被查看的牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_artoriaC_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "行动阶段：花费X点魔力，然后查看你牌库顶的X+2张牌，你可以将其中一张加入手牌，然后弃置其余被查看的牌。",
+        "sourceTextSha256": "db298d7c656f0aaf84c116597c6314eff3193898c8c3cddd7dbe7f0d80fe77b4"
+      },
+      "abilities": [
+        {
+          "id": "artoriac.sc-artoriac-2.semantic",
+          "printedClause": "行动阶段：花费X点魔力，然后查看你牌库顶的X+2张牌，你可以将其中一张加入手牌，然后弃置其余被查看的牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "deck_top_manipulation_rule",
+              "operation": "pay_x_mana_inspect_x_plus_2_take_up_to_one_to_hand_discard_rest"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "db298d7c656f0aaf84c116597c6314eff3193898c8c3cddd7dbe7f0d80fe77b4"
+    },
+    {
+      "id": "servant.artoriac.skill.sc-artoriac-3",
+      "printedText": "残留：你的弃牌堆持续公开，X为你弃牌堆中幸运牌的数量×5（至多为15）。当X大于0时，【真名解放】。当你获得一场胜利时，将你的弃牌堆洗回牌库，此效果无法被阻止。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_artoriaC_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "残留：你的弃牌堆持续公开，X为你弃牌堆中幸运牌的数量×5（至多为15）。当X大于0时，【真名解放】。当你获得一场胜利时，将你的弃牌堆洗回牌库，此效果无法被阻止。",
+        "sourceTextSha256": "12c885019dc41e854b10a79949694a4620f790cee3761f559a3f75ae832a6234"
+      },
+      "abilities": [
+        {
+          "id": "artoriac.sc-artoriac-3.semantic",
+          "printedClause": "残留：你的弃牌堆持续公开，X为你弃牌堆中幸运牌的数量×5（至多为15）。当X大于0时，【真名解放】。当你获得一场胜利时，将你的弃牌堆洗回牌库，此效果无法被阻止。",
+          "kind": "residual",
+          "effects": [
+            {
+              "type": "discard_luck_state_rule",
+              "operation": "discard_public_x_is_luck_count_times_5_cap_15_reveal_true_name_if_positive_on_win_shuffle_discard_into_deck_unpreventable"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "12c885019dc41e854b10a79949694a4620f790cee3761f559a3f75ae832a6234"
+    },
+    {
+      "id": "servant.artoriac.skill.sc-artoriac-4",
+      "printedText": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n行动阶段：如果你位于侦察，获得2点战果。沿着箭头移动至多两个地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_artoriaC_4",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n行动阶段：如果你位于侦察，获得2点战果。沿着箭头移动至多两个地点。",
+        "sourceTextSha256": "0adb2662240543913af94f2970bb730a42ee2319cb551e4577e2e6734126b853"
+      },
+      "abilities": [
+        {
+          "id": "artoriac.sc-artoriac-4.semantic",
+          "printedClause": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n行动阶段：如果你位于侦察，获得2点战果。沿着箭头移动至多两个地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "pilgrimage_luck_rule",
+              "operation": "on_win_may_remove_self_from_hand_and_shuffle_one_luck_into_deck"
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 2,
+              "condition": "controller_at_scouting"
+            },
+            {
+              "type": "move_player",
+              "direction": "along_arrows",
+              "maxSteps": 2
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0adb2662240543913af94f2970bb730a42ee2319cb551e4577e2e6734126b853"
+    },
+    {
+      "id": "servant.artoriac.skill.sc-artoriac-5",
+      "printedText": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n行动阶段：获得2点魔力，如果你无法增加魔力则获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_artoriaC_5",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n行动阶段：获得2点魔力，如果你无法增加魔力则获得2点战果。",
+        "sourceTextSha256": "ae102f5d0895894820a1abd7c68362ee84c9995365b8573934ff08f0c9ce68f1"
+      },
+      "abilities": [
+        {
+          "id": "artoriac.sc-artoriac-5.semantic",
+          "printedClause": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n行动阶段：获得2点魔力，如果你无法增加魔力则获得2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "pilgrimage_luck_rule",
+              "operation": "on_win_may_remove_self_from_hand_and_shuffle_one_luck_into_deck"
+            },
+            {
+              "type": "gain_mana",
+              "amount": 2,
+              "fallback": {
+                "type": "gain_victory_points",
+                "amount": 2
+              },
+              "condition": "action_phase"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ae102f5d0895894820a1abd7c68362ee84c9995365b8573934ff08f0c9ce68f1"
+    },
+    {
+      "id": "servant.artoriac.skill.sc-artoriac-6",
+      "printedText": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n战斗阶段：如果你赢得战斗且不是单独获胜，获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_artoriaC_6",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n战斗阶段：如果你赢得战斗且不是单独获胜，获得2点战果。",
+        "sourceTextSha256": "172ba3af04ce5db895b3bee103317d1b7448f96151d79728a87e159bf8219faa"
+      },
+      "abilities": [
+        {
+          "id": "artoriac.sc-artoriac-6.semantic",
+          "printedClause": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n战斗阶段：如果你赢得战斗且不是单独获胜，获得2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "pilgrimage_luck_rule",
+              "operation": "on_win_may_remove_self_from_hand_and_shuffle_one_luck_into_deck"
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 2,
+              "condition": "wins_combat_not_solo"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "172ba3af04ce5db895b3bee103317d1b7448f96151d79728a87e159bf8219faa"
+    },
+    {
+      "id": "servant.koyanskaya.skill.sc-koyanskaya-1",
+      "printedText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_koyanskaya_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+        "sourceTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+      },
+      "abilities": [
+        {
+          "id": "koyanskaya.sc-koyanskaya-1.semantic",
+          "printedClause": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+          "kind": "residual",
+          "effects": [
+            {
+              "type": "reverse_effect_rule",
+              "operation": "when_card_enters_play_may_close_self_to_apply_reverse_or_choose_strength_quick_magic_attribute_combination"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+    },
+    {
+      "id": "servant.koyanskaya.skill.sc-koyanskaya-2",
+      "printedText": "被动/前哨阶段：从手中将两张牌背面向上设置在战场上，作为【货箱】。\n当一名玩家进入有【货箱】的地点时，其从此处的【货箱】中随机加入一张牌至其攻击中。战斗阶段结束后所有被获取的【货箱】返回高扬斯卡娅的弃牌堆。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_koyanskaya_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "被动/前哨阶段：从手中将两张牌背面向上设置在战场上，作为【货箱】。\n当一名玩家进入有【货箱】的地点时，其从此处的【货箱】中随机加入一张牌至其攻击中。战斗阶段结束后所有被获取的【货箱】返回高扬斯卡娅的弃牌堆。",
+        "sourceTextSha256": "d3398b3700cc89e9db5c4206f714f91aadf8f4c18506c1c670374597d9734218"
+      },
+      "abilities": [
+        {
+          "id": "koyanskaya.sc-koyanskaya-2.semantic",
+          "printedClause": "被动/前哨阶段：从手中将两张牌背面向上设置在战场上，作为【货箱】。\n当一名玩家进入有【货箱】的地点时，其从此处的【货箱】中随机加入一张牌至其攻击中。战斗阶段结束后所有被获取的【货箱】返回高扬斯卡娅的弃牌堆。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "cargo_box_rule",
+              "operation": "outpost_set_two_hand_cards_facedown_on_battlefields_entry_randomly_adds_one_to_attack_and_returns_acquired_cargo_to_owner_discard_after_combat"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d3398b3700cc89e9db5c4206f714f91aadf8f4c18506c1c670374597d9734218"
+    },
+    {
+      "id": "servant.koyanskaya.skill.sc-koyanskaya-3",
+      "printedText": "【真名解放】\n战斗阶段：对手可以关闭他们从【货箱】获得的牌。每有一名未如此做的获胜者，你获得2点战果。\n反转/战斗阶段：获得任意张对手从【货箱】获得的攻击的控制权且令它们获得反转效果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_koyanskaya_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n战斗阶段：对手可以关闭他们从【货箱】获得的牌。每有一名未如此做的获胜者，你获得2点战果。\n反转/战斗阶段：获得任意张对手从【货箱】获得的攻击的控制权且令它们获得反转效果。",
+        "sourceTextSha256": "c038a49f8872642f363f0dd450ed7c2c4ddde4591a503ed170402289eaf5a176"
+      },
+      "abilities": [
+        {
+          "id": "koyanskaya.sc-koyanskaya-3.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：对手可以关闭他们从【货箱】获得的牌。每有一名未如此做的获胜者，你获得2点战果。\n反转/战斗阶段：获得任意张对手从【货箱】获得的攻击的控制权且令它们获得反转效果。",
+          "kind": "combat",
+          "effects": [
+            {
+              "type": "cargo_box_rule",
+              "operation": "opponents_may_close_cargo_attacks_gain_2_vp_per_winner_not_doing_so"
+            },
+            {
+              "type": "reverse_effect_rule",
+              "operation": "take_control_of_any_number_cargo_attacks_and_grant_reverse"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c038a49f8872642f363f0dd450ed7c2c4ddde4591a503ed170402289eaf5a176"
+    },
+    {
+      "id": "servant.koyanskaya.skill.sc-koyanskaya-4",
+      "printedText": "本轮少打出一张攻击。（不论是你即将打出攻击时已经控制此牌，或者是你即将将此牌作为攻击中的一张打出时，此效果都生效。）\n反转/战斗阶段：创造并激活3张临时的威力为2的迅捷攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_koyanskaya_4",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "本轮少打出一张攻击。（不论是你即将打出攻击时已经控制此牌，或者是你即将将此牌作为攻击中的一张打出时，此效果都生效。）\n反转/战斗阶段：创造并激活3张临时的威力为2的迅捷攻击。",
+        "sourceTextSha256": "909a390d0420e95e5bb729f7686b69ede26efc6d2153a2df9b55d4a273964dec"
+      },
+      "abilities": [
+        {
+          "id": "koyanskaya.sc-koyanskaya-4.semantic",
+          "printedClause": "本轮少打出一张攻击。（不论是你即将打出攻击时已经控制此牌，或者是你即将将此牌作为攻击中的一张打出时，此效果都生效。）\n反转/战斗阶段：创造并激活3张临时的威力为2的迅捷攻击。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "attack_play_count_rule",
+              "operation": "play_one_fewer_attack_this_round_if_controlled_or_played_as_attack"
+            }
+          ],
+          "creates": [
+            {
+              "type": "card",
+              "active": true,
+              "temporary": true,
+              "count": 3,
+              "power": 2,
+              "attribute": "quick"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "909a390d0420e95e5bb729f7686b69ede26efc6d2153a2df9b55d4a273964dec"
+    },
+    {
+      "id": "servant.koyanskaya.skill.sc-koyanskaya-5",
+      "printedText": "当你获得此牌而不将之打出时，失去3点魔力。\n反转/战斗阶段：无视【固有结界】，移动至任意地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_koyanskaya_5",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "当你获得此牌而不将之打出时，失去3点魔力。\n反转/战斗阶段：无视【固有结界】，移动至任意地点。",
+        "sourceTextSha256": "24f4ebde3e7b075d383ff0fb650bb6e3876c72c57d2b6c4cee593b4d755d76e0"
+      },
+      "abilities": [
+        {
+          "id": "koyanskaya.sc-koyanskaya-5.semantic",
+          "printedClause": "当你获得此牌而不将之打出时，失去3点魔力。\n反转/战斗阶段：无视【固有结界】，移动至任意地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "cargo_acquisition_rule",
+              "operation": "if_acquired_without_play_lose_3_mana"
+            },
+            {
+              "type": "reverse_effect_rule",
+              "operation": "combat_move_anywhere_ignoring_reality_marble"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "24f4ebde3e7b075d383ff0fb650bb6e3876c72c57d2b6c4cee593b4d755d76e0"
+    },
+    {
+      "id": "servant.koyanskaya.skill.sc-koyanskaya-6",
+      "printedText": "当你从【货箱】中获得此牌时，你【败北】。\n反转/战斗阶段：战力结算后，如果与你位于同一战场的对手有两名及以上，威力高于你的玩家中不包含战力不同的，使他们【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_koyanskaya_6",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "当你从【货箱】中获得此牌时，你【败北】。\n反转/战斗阶段：战力结算后，如果与你位于同一战场的对手有两名及以上，威力高于你的玩家中不包含战力不同的，使他们【败北】。",
+        "sourceTextSha256": "a5aebd543d8caa5f7f05376b3cdfb7eaf2c5f40d40d59c7d7f6b8fcd231448d3"
+      },
+      "abilities": [
+        {
+          "id": "koyanskaya.sc-koyanskaya-6.semantic",
+          "printedClause": "当你从【货箱】中获得此牌时，你【败北】。\n反转/战斗阶段：战力结算后，如果与你位于同一战场的对手有两名及以上，威力高于你的玩家中不包含战力不同的，使他们【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "cargo_acquisition_rule",
+              "operation": "if_acquired_from_cargo_controller_is_defeated"
+            },
+            {
+              "type": "reverse_effect_rule",
+              "operation": "after_power_resolution_with_two_or_more_opponents_defeat_higher_power_players_if_no_distinct_power_between_controller_and_them"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "a5aebd543d8caa5f7f05376b3cdfb7eaf2c5f40d40d59c7d7f6b8fcd231448d3"
     }
   ]
 }

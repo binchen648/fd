@@ -1340,6 +1340,19 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.davinci.skill.sc-davinci-17')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'upgrade_attachment_rule'})])}));
   });
 
+  it('grounds the twenty-seven-ID Illya/Artoria Caster/Koyanskaya/Avicebron slice from the exact caster/assassin development snapshot', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const prefixes = ['servant.illya.skill.','servant.artoriac.skill.','servant.koyanskaya.skill.','servant.avicebron.skill.'];
+    const slice = overlays.filter((card) => prefixes.some((prefix) => card.id.startsWith(prefix)));
+    expect(slice).toHaveLength(27);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.document === 'Fate_Domination-开发版/batch_caster_assassin.js' && card.source.sourceFileSha256 === 'd6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.avicebron.skill.sc-avicebron-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'golem_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.illya.skill.sc-illya-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'card_case_attachment_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.illya.skill.sc-illya-2')?.abilities).toContainEqual(expect.objectContaining({ruleModifiers:expect.arrayContaining([expect.objectContaining({rule:'card_play_permission'})])}));
+    expect(slice.find(c=>c.id==='servant.artoriac.skill.sc-artoriac-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'discard_luck_state_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.koyanskaya.skill.sc-koyanskaya-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'cargo_box_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1393,10 +1406,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 420,
-      blockedCount: 524,
+      sourceGroundedCount: 447,
+      blockedCount: 497,
       unclassifiedCount: 0,
-      structuredAbilityCount: 698,
+      structuredAbilityCount: 725,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
