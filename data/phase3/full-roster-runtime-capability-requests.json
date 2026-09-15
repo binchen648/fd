@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 454
+    "affectedIdentityCount": 470
   },
   "requests": [
     {
@@ -29417,6 +29417,7 @@
         "servant.davinci.skill.sc-davinci-3",
         "servant.davinci.skill.sc-davinci-7",
         "servant.edison.skill.sc-edison-3",
+        "servant.hokusai.skill.sc-hokusai-3",
         "servant.ibaraki.skill.sc-ibaraki-1",
         "servant.illya.skill.sc-illya-2",
         "servant.illya.skill.sc-illya-4",
@@ -31733,6 +31734,33 @@
           "sha256": "6e988f3620874deab1c4835aa1bcde3f06392296cead84123f401eb4d296df55"
         },
         {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/降临者/英文版/葛饰北斋.htm"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hokusai/葛饰北斋"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_hokusai_3"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[179].skills[2].text#line=1",
+          "sha256": "3083495877bc24b5d73458edbf0dfcb2f716f8dd0d816620c7d4b51530abc8f3"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[179].skills[2].text#line=2",
+          "sha256": "2025213605a92692cd99574bb6aaab5c8c1f02aa26453f3806e3aa9e726d848b"
+        },
+        {
           "abilityId": "servant.ibaraki.skill.sc-ibaraki-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/狂战士/英文版/茨木童子.htm"
@@ -32027,9 +32055,9 @@
         "routeCounts": {
           "deterministic": 1,
           "shared_handler": 58,
-          "specific_handler": 30
+          "specific_handler": 31
         },
-        "handlerCount": 54,
+        "handlerCount": 55,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -46420,6 +46448,10 @@
         "master.wodime.skill.s8",
         "master.wodime.skill.s9",
         "master.zouken.skill.s3",
+        "servant.abigail.skill.sc-abigail-1",
+        "servant.abigail.skill.sc-abigail-2",
+        "servant.abigail.skill.sc-abigail-3",
+        "servant.abigail.skill.sc-abigail-4",
         "servant.artoriac.skill.sc-artoriac-2",
         "servant.artoriac.skill.sc-artoriac-3",
         "servant.artoriac.skill.sc-artoriac-4",
@@ -46429,6 +46461,14 @@
         "servant.avicebron.skill.sc-avicebron-2",
         "servant.avicebron.skill.sc-avicebron-4",
         "servant.avicebron.skill.sc-avicebron-5",
+        "servant.bb.skill.sc-bb-1",
+        "servant.bb.skill.sc-bb-2",
+        "servant.bb.skill.sc-bb-3",
+        "servant.bb.skill.sc-bb-4",
+        "servant.bikuni.skill.sc-bikuni-1",
+        "servant.bikuni.skill.sc-bikuni-2",
+        "servant.bikuni.skill.sc-bikuni-3",
+        "servant.bikuni.skill.sc-bikuni-4",
         "servant.davinci.skill.sc-davinci-1",
         "servant.davinci.skill.sc-davinci-11",
         "servant.davinci.skill.sc-davinci-12",
@@ -46442,6 +46482,10 @@
         "servant.davinci.skill.sc-davinci-9",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.gorgon.skill.sc-gorgon-3",
+        "servant.hokusai.skill.sc-hokusai-1",
+        "servant.hokusai.skill.sc-hokusai-2",
+        "servant.hokusai.skill.sc-hokusai-3",
+        "servant.hokusai.skill.sc-hokusai-4",
         "servant.illya.skill.sc-illya-1",
         "servant.illya.skill.sc-illya-10",
         "servant.illya.skill.sc-illya-3",
@@ -51676,6 +51720,108 @@
           "sha256": "eebcb82e2cc75d9f64efcdee761235dbfdf49182c5a36d1a1b7dc1eb850afe10"
         },
         {
+          "abilityId": "servant.abigail.skill.sc-abigail-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/降临者/英文版/阿比盖尔·威廉姆斯.htm"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.abigail/阿比盖尔·威廉姆斯"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_abigail_1"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[178].skills[0].text#line=1",
+          "sha256": "69d643135ce8c1e86dcf14c314c3fcca02793f96664ce58d6fae554e37fd30c8"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/降临者/英文版/阿比盖尔·威廉姆斯.htm"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.abigail/阿比盖尔·威廉姆斯"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-2",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_abigail_2"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[178].skills[1].text#line=1",
+          "sha256": "07e4bf9a55531bef6014b6ca7c8be49eb8a678555484c961e21ef53548e69d7a"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/降临者/英文版/阿比盖尔·威廉姆斯.htm"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.abigail/阿比盖尔·威廉姆斯"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_abigail_3"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[178].skills[2].text#line=1",
+          "sha256": "967eb0e8af3fde249604483793fb7d414e2e702dc7f37dff62ebd122b3675838"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[178].skills[2].text#line=2",
+          "sha256": "a68c200c1a14a2a22a091514c57ab1ae24a8aff0ae94becd97fe139eb9d9c208"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-4",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/降临者/英文版/阿比盖尔·威廉姆斯.htm"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-4",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.abigail/阿比盖尔·威廉姆斯"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-4",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_abigail_4"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[178].skills[3].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[178].skills[3].text#line=2",
+          "sha256": "6a848e72c9475916be224140aae1bd920e23d7716e82ced6b7c039321ea54a60"
+        },
+        {
+          "abilityId": "servant.abigail.skill.sc-abigail-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[178].skills[3].text#line=3",
+          "sha256": "04d91af3bd1b263a8e9a2ed8d6562257fc21cdb07810c9344230caa419ad1231"
+        },
+        {
           "abilityId": "servant.artoriac.skill.sc-artoriac-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/魔术师/英文版/阿尔托莉雅·卡斯特.htm"
@@ -51905,6 +52051,204 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[102].skills[4].text#line=2",
           "sha256": "63686c9ddca7d47b51e6b3748f93d334d7ab6083eb67c2b7dae2a2aaa0f3a634"
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/月之癌/英文版/B.B..htm"
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.bb/B.B."
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_bb_1"
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[176].skills[0].text#line=1",
+          "sha256": "f45c8711c8319ada8b409be4fe650bc2ba181ee8d5613ea16c3633473ed1f0ba"
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/月之癌/英文版/B.B..htm"
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.bb/B.B."
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-2",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_bb_2"
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[176].skills[1].text#line=1",
+          "sha256": "68f1c9060be10172065a8cd54d6b72eedfd66ce1adb9241c4e503967fe0a7f34"
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/月之癌/英文版/B.B..htm"
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.bb/B.B."
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_bb_3"
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[176].skills[2].text#line=1",
+          "sha256": "77c6bbe5596ac82b48383a1f6f0aec14684dd02bfd4c9c150e97c5e3673df879"
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[176].skills[2].text#line=2",
+          "sha256": "02b700679b2365b763760f008fc0b043ce7b5dcd526fbb471e29db456321fc6f"
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-4",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/月之癌/英文版/B.B..htm"
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-4",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.bb/B.B."
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-4",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_bb_4"
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[176].skills[3].text#line=1",
+          "sha256": "e55f09a2d51bd81e284d6463bfb6a231dfdecaad33a8b57bd2b4c9b518b4d6cf"
+        },
+        {
+          "abilityId": "servant.bb.skill.sc-bb-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[176].skills[3].text#line=2",
+          "sha256": "01ab9755e80761f41195eab0c4c1007ed1ecbedd0fa1ebcd10321a919f417eda"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/月之癌/英文版/八百比丘尼.htm"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.bikuni/八百比丘尼"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_bikuni_1"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[177].skills[0].text#line=1",
+          "sha256": "61b1bcbbec7d27267aff0ee12416764ccb763844c6bd9b036c9f75daf3c462a7"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[177].skills[0].text#line=2",
+          "sha256": "e429ee1e9595d0afc4847570fe407980b118a8a4886c01bb31aed8a68e2b039f"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/月之癌/英文版/八百比丘尼.htm"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.bikuni/八百比丘尼"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-2",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_bikuni_2"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[177].skills[1].text#line=1",
+          "sha256": "f3279d3d4489526238363d532709400f2a4764d263ed8f6d584346fc2dd777cc"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/月之癌/英文版/八百比丘尼.htm"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.bikuni/八百比丘尼"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_bikuni_3"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[177].skills[2].text#line=1",
+          "sha256": "6eab2d14f8815c57bfcb3c21eddbd90e174785f2b0a2147ce83aa2c43a275b25"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[177].skills[2].text#line=2",
+          "sha256": "55649bcea0ebb464ee21c03b1049c3917477ba4050fd5868eb6bd5638c3159c9"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-4",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/月之癌/英文版/八百比丘尼.htm"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-4",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.bikuni/八百比丘尼"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-4",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_bikuni_4"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[177].skills[3].text#line=1",
+          "sha256": "e55f09a2d51bd81e284d6463bfb6a231dfdecaad33a8b57bd2b4c9b518b4d6cf"
+        },
+        {
+          "abilityId": "servant.bikuni.skill.sc-bikuni-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[177].skills[3].text#line=2",
+          "sha256": "01ab9755e80761f41195eab0c4c1007ed1ecbedd0fa1ebcd10321a919f417eda"
         },
         {
           "abilityId": "servant.davinci.skill.sc-davinci-1",
@@ -52226,6 +52570,114 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[63].abilities[1].printedClause",
           "sha256": "fd3573298bf64ddf55ce4e1519e18a3f315723c069ea0124f6bce6c68a535656"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/降临者/英文版/葛饰北斋.htm"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hokusai/葛饰北斋"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_hokusai_1"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[179].skills[0].text#line=1",
+          "sha256": "cce7db06cb77b40b74a924d4a807adaf7434377eb0317a286b2abacc0e72f942"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[179].skills[0].text#line=2",
+          "sha256": "e79a56e21b38562a62eed795acadfc881eadf5c8d16d423a4ec70d87f7a85fa4"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/降临者/英文版/葛饰北斋.htm"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hokusai/葛饰北斋"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-2",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_hokusai_2"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[179].skills[1].text#line=1",
+          "sha256": "272fd515b7fd92b29c69a4019a5b81d0d2eb61a632eec2515668505e62ff7ba4"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/降临者/英文版/葛饰北斋.htm"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hokusai/葛饰北斋"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_hokusai_3"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[179].skills[2].text#line=1",
+          "sha256": "3083495877bc24b5d73458edbf0dfcb2f716f8dd0d816620c7d4b51530abc8f3"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[179].skills[2].text#line=2",
+          "sha256": "2025213605a92692cd99574bb6aaab5c8c1f02aa26453f3806e3aa9e726d848b"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-4",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/降临者/英文版/葛饰北斋.htm"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-4",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.hokusai/葛饰北斋"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-4",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_hokusai_4"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[179].skills[3].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[179].skills[3].text#line=2",
+          "sha256": "eca6a45296b52d5da94a4fd8036b72128ba874fe83e86b7978c90e923323eacb"
+        },
+        {
+          "abilityId": "servant.hokusai.skill.sc-hokusai-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[179].skills[3].text#line=3",
+          "sha256": "f2c68a69394fd0a22dd63b406a01604b8268b7aa03510e368bdcf97a9b8d307c"
         },
         {
           "abilityId": "servant.illya.skill.sc-illya-1",
@@ -52893,10 +53345,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 161,
-          "specific_handler": 78
+          "shared_handler": 171,
+          "specific_handler": 84
         },
-        "handlerCount": 118,
+        "handlerCount": 128,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

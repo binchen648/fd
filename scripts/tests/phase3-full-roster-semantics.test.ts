@@ -1361,6 +1361,17 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.every((card) => card.abilities.some((ability) => ability.effects?.some((effect:any) => effect.type === 'deduction_rule')))).toBe(true);
   });
 
+  it('grounds the sixteen-ID Abigail/BB/Bikuni/Hokusai slice from the exact berserker/extra development snapshot', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const prefixes = ['servant.abigail.skill.','servant.bb.skill.','servant.bikuni.skill.','servant.hokusai.skill.'];
+    const slice = overlays.filter((card) => prefixes.some((prefix) => card.id.startsWith(prefix)));
+    expect(slice).toHaveLength(16);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.document === 'Fate_Domination-开发版/batch_berserker_extra.js' && card.source.sourceFileSha256 === '6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.bb.skill.sc-bb-4')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'moon_holy_grail_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.abigail.skill.sc-abigail-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'foreign_life_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.hokusai.skill.sc-hokusai-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'color_marker_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1414,10 +1425,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 454,
-      blockedCount: 490,
+      sourceGroundedCount: 470,
+      blockedCount: 474,
       unclassifiedCount: 0,
-      structuredAbilityCount: 732,
+      structuredAbilityCount: 748,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

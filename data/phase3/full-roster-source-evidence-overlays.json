@@ -19713,6 +19713,435 @@
         }
       ],
       "referencePrintedTextSha256": "f0e6f38da6ea0eb0d3aee6e175c187d607b067ca413b983eace1cb2f2fa320bc"
+    },
+    {
+      "id": "servant.bb.skill.sc-bb-1",
+      "printedText": "被动/行动阶段：花费3点魔力。移动至【月之圣杯】或你于月之圣杯没有处于交战状态时，移动至一处战场并且保留你的地利。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_bb_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动/行动阶段：花费3点魔力。移动至【月之圣杯】或你于月之圣杯没有处于交战状态时，移动至一处战场并且保留你的地利。",
+        "sourceTextSha256": "f45c8711c8319ada8b409be4fe650bc2ba181ee8d5613ea16c3633473ed1f0ba"
+      },
+      "abilities": [
+        {
+          "id": "bb.sc_bb_1.semantic",
+          "printedClause": "被动/行动阶段：花费3点魔力。移动至【月之圣杯】或你于月之圣杯没有处于交战状态时，移动至一处战场并且保留你的地利。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "moon_holy_grail_rule",
+              "operation": "pay_3_mana_move_to_moon_holy_grail_or_if_unengaged_there_move_to_battlefield_preserving_terrain"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f45c8711c8319ada8b409be4fe650bc2ba181ee8d5613ea16c3633473ed1f0ba"
+    },
+    {
+      "id": "servant.bb.skill.sc-bb-2",
+      "printedText": "行动阶段：至多三名玩家随机弃置一张牌。根据弃置牌的类型获得奖励：力量：获得威力+2。迅捷：沿着箭头移动至多一个地点。魔术：获得1点魔力。特殊：选择上述任意一种奖励。若你同时获得三次同样的奖励，获得3点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_bb_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "行动阶段：至多三名玩家随机弃置一张牌。根据弃置牌的类型获得奖励：力量：获得威力+2。迅捷：沿着箭头移动至多一个地点。魔术：获得1点魔力。特殊：选择上述任意一种奖励。若你同时获得三次同样的奖励，获得3点战果。",
+        "sourceTextSha256": "68f1c9060be10172065a8cd54d6b72eedfd66ce1adb9241c4e503967fe0a7f34"
+      },
+      "abilities": [
+        {
+          "id": "bb.sc_bb_2.semantic",
+          "printedClause": "行动阶段：至多三名玩家随机弃置一张牌。根据弃置牌的类型获得奖励：力量：获得威力+2。迅捷：沿着箭头移动至多一个地点。魔术：获得1点魔力。特殊：选择上述任意一种奖励。若你同时获得三次同样的奖励，获得3点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "slot_machine_rule",
+              "operation": "up_to_three_players_random_discard_reward_by_card_type_triple_same_reward_gains_3_vp",
+              "rewards": {
+                "strength": "power_plus_2",
+                "quick": "move_forward_up_to_1",
+                "magic": "gain_1_mana",
+                "special": "choose_any_reward"
+              }
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "68f1c9060be10172065a8cd54d6b72eedfd66ce1adb9241c4e503967fe0a7f34"
+    },
+    {
+      "id": "servant.bb.skill.sc-bb-3",
+      "printedText": "【真名解放】将你所在地点与【月之圣杯】合成一处地点直至回合结束。\n若你只处于【月之圣杯】，此牌威力+5。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_bb_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】将你所在地点与【月之圣杯】合成一处地点直至回合结束。\n若你只处于【月之圣杯】，此牌威力+5。",
+        "sourceTextSha256": "2faf318a2dba814dcf0c438ae4ba92d05be3d1e89b1feadb33a2907f26fa800d"
+      },
+      "abilities": [
+        {
+          "id": "bb.sc_bb_3.semantic",
+          "printedClause": "【真名解放】将你所在地点与【月之圣杯】合成一处地点直至回合结束。\n若你只处于【月之圣杯】，此牌威力+5。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "location_merge_rule",
+              "operation": "merge_controller_location_with_moon_holy_grail_until_round_end_if_only_at_moon_holy_grail_source_power_plus_5"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "2faf318a2dba814dcf0c438ae4ba92d05be3d1e89b1feadb33a2907f26fa800d"
+    },
+    {
+      "id": "servant.bb.skill.sc-bb-4",
+      "printedText": "被动/行动阶段：弃置此牌，月之圣杯的事件牌效果只影响你所在的地点。战斗阶段结束后弃置月之圣杯事件牌。\n行动阶段：将你所在地点的一张事件牌与月之圣杯的事件牌互换。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_bb_4",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动/行动阶段：弃置此牌，月之圣杯的事件牌效果只影响你所在的地点。战斗阶段结束后弃置月之圣杯事件牌。\n行动阶段：将你所在地点的一张事件牌与月之圣杯的事件牌互换。",
+        "sourceTextSha256": "b9fd127c2143f92a9a9027dbe066a79555ba197ef36c49e5fa6615dfbfe49742"
+      },
+      "abilities": [
+        {
+          "id": "bb.sc_bb_4.semantic",
+          "printedClause": "被动/行动阶段：弃置此牌，月之圣杯的事件牌效果只影响你所在的地点。战斗阶段结束后弃置月之圣杯事件牌。\n行动阶段：将你所在地点的一张事件牌与月之圣杯的事件牌互换。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "moon_holy_grail_rule",
+              "operation": "discard_source_to_scope_moon_holy_grail_event_to_controller_location_then_discard_event_after_combat_or_swap_local_event_with_moon_holy_grail_event"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b9fd127c2143f92a9a9027dbe066a79555ba197ef36c49e5fa6615dfbfe49742"
+    },
+    {
+      "id": "servant.bikuni.skill.sc-bikuni-1",
+      "printedText": "【真名解放】被动/行动阶段：令所有位于【月之圣杯】的对手获得1点战果，每有一名获得战果的对手，你获得1点魔力。\n天堂之沫-战斗阶段：【月之圣杯】上每有一张事件牌，此牌+2威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_bikuni_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】被动/行动阶段：令所有位于【月之圣杯】的对手获得1点战果，每有一名获得战果的对手，你获得1点魔力。\n天堂之沫-战斗阶段：【月之圣杯】上每有一张事件牌，此牌+2威力。",
+        "sourceTextSha256": "f74e655cc36c88bbb9b40e03140b1a7489e700c1c335043d37e1ee126c46ee1b"
+      },
+      "abilities": [
+        {
+          "id": "bikuni.sc_bikuni_1.semantic",
+          "printedClause": "【真名解放】被动/行动阶段：令所有位于【月之圣杯】的对手获得1点战果，每有一名获得战果的对手，你获得1点魔力。\n天堂之沫-战斗阶段：【月之圣杯】上每有一张事件牌，此牌+2威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "moon_holy_grail_rule",
+              "operation": "grant_1_vp_to_each_opponent_at_moon_holy_grail_gain_1_mana_per_recipient_and_source_power_plus_2_per_event_on_moon_holy_grail"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f74e655cc36c88bbb9b40e03140b1a7489e700c1c335043d37e1ee126c46ee1b"
+    },
+    {
+      "id": "servant.bikuni.skill.sc-bikuni-2",
+      "printedText": "被动：所有人的战斗阶段开始时，若你的战斗中没有事件牌，将【月之圣杯】上的一张事件牌移动至你所在的战场。【月之圣杯】上的所有事件牌更改为1点战果。当世幻都-行动阶段：将你所在战场的一张事件牌移动至【月之圣杯】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_bikuni_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动：所有人的战斗阶段开始时，若你的战斗中没有事件牌，将【月之圣杯】上的一张事件牌移动至你所在的战场。【月之圣杯】上的所有事件牌更改为1点战果。当世幻都-行动阶段：将你所在战场的一张事件牌移动至【月之圣杯】。",
+        "sourceTextSha256": "f3279d3d4489526238363d532709400f2a4764d263ed8f6d584346fc2dd777cc"
+      },
+      "abilities": [
+        {
+          "id": "bikuni.sc_bikuni_2.semantic",
+          "printedClause": "被动：所有人的战斗阶段开始时，若你的战斗中没有事件牌，将【月之圣杯】上的一张事件牌移动至你所在的战场。【月之圣杯】上的所有事件牌更改为1点战果。当世幻都-行动阶段：将你所在战场的一张事件牌移动至【月之圣杯】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "moon_holy_grail_rule",
+              "operation": "at_each_combat_start_if_controller_combat_has_no_event_move_one_from_moon_holy_grail_all_moon_holy_grail_events_become_1_vp_action_move_local_event_back"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f3279d3d4489526238363d532709400f2a4764d263ed8f6d584346fc2dd777cc"
+    },
+    {
+      "id": "servant.bikuni.skill.sc-bikuni-3",
+      "printedText": "长生-残留：回合结束时，弃置一张【月之圣杯】上的事件牌或关闭此牌。\n梦幻泡影-行动阶段：弃置一张【幸运】，然后弃置一处地点的一张事件牌后抽2张新事件牌放置于该地点。被抽取的事件牌改为1点战果至本回合结束且无法被增加。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_bikuni_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "长生-残留：回合结束时，弃置一张【月之圣杯】上的事件牌或关闭此牌。\n梦幻泡影-行动阶段：弃置一张【幸运】，然后弃置一处地点的一张事件牌后抽2张新事件牌放置于该地点。被抽取的事件牌改为1点战果至本回合结束且无法被增加。",
+        "sourceTextSha256": "3b29f0570e3202665d15650079a74f14211118d07cbfa26e276feea009f33eaf"
+      },
+      "abilities": [
+        {
+          "id": "bikuni.sc_bikuni_3.semantic",
+          "printedClause": "长生-残留：回合结束时，弃置一张【月之圣杯】上的事件牌或关闭此牌。\n梦幻泡影-行动阶段：弃置一张【幸运】，然后弃置一处地点的一张事件牌后抽2张新事件牌放置于该地点。被抽取的事件牌改为1点战果至本回合结束且无法被增加。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "moon_holy_grail_rule",
+              "operation": "round_end_discard_moon_holy_grail_event_or_close_source_action_discard_luck_replace_location_event_with_two_new_events_each_fixed_1_vp_this_round"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "3b29f0570e3202665d15650079a74f14211118d07cbfa26e276feea009f33eaf"
+    },
+    {
+      "id": "servant.bikuni.skill.sc-bikuni-4",
+      "printedText": "被动/行动阶段：弃置此牌，月之圣杯的事件牌效果只影响你所在的地点。战斗阶段结束后弃置月之圣杯事件牌。\n行动阶段：将你所在地点的一张事件牌与月之圣杯的事件牌互换。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_bikuni_4",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动/行动阶段：弃置此牌，月之圣杯的事件牌效果只影响你所在的地点。战斗阶段结束后弃置月之圣杯事件牌。\n行动阶段：将你所在地点的一张事件牌与月之圣杯的事件牌互换。",
+        "sourceTextSha256": "b9fd127c2143f92a9a9027dbe066a79555ba197ef36c49e5fa6615dfbfe49742"
+      },
+      "abilities": [
+        {
+          "id": "bikuni.sc_bikuni_4.semantic",
+          "printedClause": "被动/行动阶段：弃置此牌，月之圣杯的事件牌效果只影响你所在的地点。战斗阶段结束后弃置月之圣杯事件牌。\n行动阶段：将你所在地点的一张事件牌与月之圣杯的事件牌互换。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "moon_holy_grail_rule",
+              "operation": "discard_source_to_scope_moon_holy_grail_event_to_controller_location_then_discard_event_after_combat_or_swap_local_event_with_moon_holy_grail_event"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b9fd127c2143f92a9a9027dbe066a79555ba197ef36c49e5fa6615dfbfe49742"
+    },
+    {
+      "id": "servant.abigail.skill.sc-abigail-1",
+      "printedText": "X为你本局游戏以理智丧失分发的【领域外生命】数。打出时：若X为12，你获得游戏胜利。理智丧失-行动阶段：令所有与你位于同一地点的对手将游戏外的一张【领域外生命】加入手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_abigail_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "X为你本局游戏以理智丧失分发的【领域外生命】数。打出时：若X为12，你获得游戏胜利。理智丧失-行动阶段：令所有与你位于同一地点的对手将游戏外的一张【领域外生命】加入手牌。",
+        "sourceTextSha256": "69d643135ce8c1e86dcf14c314c3fcca02793f96664ce58d6fae554e37fd30c8"
+      },
+      "abilities": [
+        {
+          "id": "abigail.sc_abigail_1.semantic",
+          "printedClause": "X为你本局游戏以理智丧失分发的【领域外生命】数。打出时：若X为12，你获得游戏胜利。理智丧失-行动阶段：令所有与你位于同一地点的对手将游戏外的一张【领域外生命】加入手牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "foreign_life_rule",
+              "operation": "x_equals_foreign_life_distributed_by_sanity_loss_if_x_12_win_game_action_each_colocated_opponent_adds_one_foreign_life_from_outside_game_to_hand"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "69d643135ce8c1e86dcf14c314c3fcca02793f96664ce58d6fae554e37fd30c8"
+    },
+    {
+      "id": "servant.abigail.skill.sc-abigail-2",
+      "printedText": "银之钥-战斗阶段：隐藏真名，令交战对手随机弃置一张手牌后展示弃牌堆，因银之钥展示了最多【领域外生命】（至少1张）的交战对手【败北】。然后你将所有因银之钥展示的【领域外生命】加入你的弃牌堆。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_abigail_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "银之钥-战斗阶段：隐藏真名，令交战对手随机弃置一张手牌后展示弃牌堆，因银之钥展示了最多【领域外生命】（至少1张）的交战对手【败北】。然后你将所有因银之钥展示的【领域外生命】加入你的弃牌堆。",
+        "sourceTextSha256": "07e4bf9a55531bef6014b6ca7c8be49eb8a678555484c961e21ef53548e69d7a"
+      },
+      "abilities": [
+        {
+          "id": "abigail.sc_abigail_2.semantic",
+          "printedClause": "银之钥-战斗阶段：隐藏真名，令交战对手随机弃置一张手牌后展示弃牌堆，因银之钥展示了最多【领域外生命】（至少1张）的交战对手【败北】。然后你将所有因银之钥展示的【领域外生命】加入你的弃牌堆。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "foreign_life_rule",
+              "operation": "silver_key_hide_true_name_engaged_opponents_random_discard_reveal_discard_piles_defeat_max_foreign_life_count_at_least_1_then_collect_all_revealed_foreign_life_to_controller_discard"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "07e4bf9a55531bef6014b6ca7c8be49eb8a678555484c961e21ef53548e69d7a"
+    },
+    {
+      "id": "servant.abigail.skill.sc-abigail-3",
+      "printedText": "被动/行动阶段：移除手牌的一张【领域外生命】。若如此，获得2点魔力。\n行动阶段：将你的弃牌堆中任意数量的【领域外生命】打出，战斗阶段结束后将你所有激活的【领域外生命】洗入牌库。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_abigail_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动/行动阶段：移除手牌的一张【领域外生命】。若如此，获得2点魔力。\n行动阶段：将你的弃牌堆中任意数量的【领域外生命】打出，战斗阶段结束后将你所有激活的【领域外生命】洗入牌库。",
+        "sourceTextSha256": "ddbd7ad78560eaa563433b99dd05a74c8f5e1011f9bf92f3ea63ba904cdec1c9"
+      },
+      "abilities": [
+        {
+          "id": "abigail.sc_abigail_3.semantic",
+          "printedClause": "被动/行动阶段：移除手牌的一张【领域外生命】。若如此，获得2点魔力。\n行动阶段：将你的弃牌堆中任意数量的【领域外生命】打出，战斗阶段结束后将你所有激活的【领域外生命】洗入牌库。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "foreign_life_rule",
+              "operation": "remove_one_foreign_life_from_hand_gain_2_mana_action_play_any_number_foreign_life_from_discard_then_after_combat_shuffle_all_active_foreign_life_into_deck"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ddbd7ad78560eaa563433b99dd05a74c8f5e1011f9bf92f3ea63ba904cdec1c9"
+    },
+    {
+      "id": "servant.abigail.skill.sc-abigail-4",
+      "printedText": "【真名解放】\n你和阿比盖尔各获得+6合计威力（若你是阿比盖尔，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入阿比盖尔的弃牌堆。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_abigail_4",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】\n你和阿比盖尔各获得+6合计威力（若你是阿比盖尔，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入阿比盖尔的弃牌堆。",
+        "sourceTextSha256": "c067eaf714c63dc3cb08957261a643c8107e21ebd66fc2981008ac075957e940"
+      },
+      "abilities": [
+        {
+          "id": "abigail.sc_abigail_4.semantic",
+          "printedClause": "【真名解放】\n你和阿比盖尔各获得+6合计威力（若你是阿比盖尔，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入阿比盖尔的弃牌堆。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "foreign_life_rule",
+              "operation": "true_name_reveal_controller_and_named_servant_each_gain_6_total_power_no_double_if_same_player_after_combat_move_to_named_servant_discard"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c067eaf714c63dc3cb08957261a643c8107e21ebd66fc2981008ac075957e940"
+    },
+    {
+      "id": "servant.hokusai.skill.sc-hokusai-1",
+      "printedText": "被动：激活的【领域外生命】拥有所有属性。\n被动/行动阶段：支付一张激活的非<每局游戏限一次>的攻击的魔力消耗，将其移除游戏直至本回合结束，并将你手牌中的一张【领域外生命】放置入场（如果你无法放置，便不能使用这项能力）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_hokusai_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动：激活的【领域外生命】拥有所有属性。\n被动/行动阶段：支付一张激活的非<每局游戏限一次>的攻击的魔力消耗，将其移除游戏直至本回合结束，并将你手牌中的一张【领域外生命】放置入场（如果你无法放置，便不能使用这项能力）。",
+        "sourceTextSha256": "cbf75c8a5d6df5cc6c7c3807bcf2a4190ecedae3302cfbe189f675b7e9e02f98"
+      },
+      "abilities": [
+        {
+          "id": "hokusai.sc_hokusai_1.semantic",
+          "printedClause": "被动：激活的【领域外生命】拥有所有属性。\n被动/行动阶段：支付一张激活的非<每局游戏限一次>的攻击的魔力消耗，将其移除游戏直至本回合结束，并将你手牌中的一张【领域外生命】放置入场（如果你无法放置，便不能使用这项能力）。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "foreign_life_rule",
+              "operation": "active_foreign_life_has_all_attributes_action_pay_active_non_once_per_game_attack_cost_remove_it_until_round_end_then_put_foreign_life_from_hand_into_play_if_possible"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "cbf75c8a5d6df5cc6c7c3807bcf2a4190ecedae3302cfbe189f675b7e9e02f98"
+    },
+    {
+      "id": "servant.hokusai.skill.sc-hokusai-2",
+      "printedText": "行动阶段：将至多3枚【颜色】标记放置于不同的，明置的牌上直至回合结束，每种【颜色】标记有且仅有一个（力量，迅捷，魔法，特殊和宝具）。被放置【颜色】标记的牌上印刷的所有属性均更改为标记的属性。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_hokusai_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "行动阶段：将至多3枚【颜色】标记放置于不同的，明置的牌上直至回合结束，每种【颜色】标记有且仅有一个（力量，迅捷，魔法，特殊和宝具）。被放置【颜色】标记的牌上印刷的所有属性均更改为标记的属性。",
+        "sourceTextSha256": "272fd515b7fd92b29c69a4019a5b81d0d2eb61a632eec2515668505e62ff7ba4"
+      },
+      "abilities": [
+        {
+          "id": "hokusai.sc_hokusai_2.semantic",
+          "printedClause": "行动阶段：将至多3枚【颜色】标记放置于不同的，明置的牌上直至回合结束，每种【颜色】标记有且仅有一个（力量，迅捷，魔法，特殊和宝具）。被放置【颜色】标记的牌上印刷的所有属性均更改为标记的属性。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "color_marker_rule",
+              "operation": "place_up_to_three_unique_attribute_markers_on_distinct_face_up_cards_until_round_end_replace_all_printed_attributes_with_marker_attribute",
+              "attributes": [
+                "strength",
+                "quick",
+                "magic",
+                "special",
+                "noble_phantasm"
+              ]
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "272fd515b7fd92b29c69a4019a5b81d0d2eb61a632eec2515668505e62ff7ba4"
+    },
+    {
+      "id": "servant.hokusai.skill.sc-hokusai-3",
+      "printedText": "【真名解放】残留：此牌残留至下个回合结束并且下个回合中此牌威力-3。\n战斗阶段：位于你所在的战场的对手的非魔术攻击威力-2。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_hokusai_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】残留：此牌残留至下个回合结束并且下个回合中此牌威力-3。\n战斗阶段：位于你所在的战场的对手的非魔术攻击威力-2。",
+        "sourceTextSha256": "e558ded9c3f49ece9b562b55439e678c4becf6d77d797c3ae61e3fa9256d6f21"
+      },
+      "abilities": [
+        {
+          "id": "hokusai.sc_hokusai_3.semantic",
+          "printedClause": "【真名解放】残留：此牌残留至下个回合结束并且下个回合中此牌威力-3。\n战斗阶段：位于你所在的战场的对手的非魔术攻击威力-2。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "persistent_power_aura_rule",
+              "operation": "true_name_reveal_source_remains_until_next_round_end_next_round_source_power_minus_3_combat_opponents_non_magic_attacks_at_controller_battlefield_power_minus_2"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "e558ded9c3f49ece9b562b55439e678c4becf6d77d797c3ae61e3fa9256d6f21"
+    },
+    {
+      "id": "servant.hokusai.skill.sc-hokusai-4",
+      "printedText": "【真名解放】\n你和葛饰北斋各获得+6合计威力（若你是葛饰北斋，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入葛饰北斋的弃牌堆。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_hokusai_4",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】\n你和葛饰北斋各获得+6合计威力（若你是葛饰北斋，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入葛饰北斋的弃牌堆。",
+        "sourceTextSha256": "e0c05d4411c50ccc67a2354a8d856c79014a6a6e63d41f32b59d364b471326f3"
+      },
+      "abilities": [
+        {
+          "id": "hokusai.sc_hokusai_4.semantic",
+          "printedClause": "【真名解放】\n你和葛饰北斋各获得+6合计威力（若你是葛饰北斋，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入葛饰北斋的弃牌堆。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "foreign_life_rule",
+              "operation": "true_name_reveal_controller_and_named_servant_each_gain_6_total_power_no_double_if_same_player_after_combat_move_to_named_servant_discard"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "e0c05d4411c50ccc67a2354a8d856c79014a6a6e63d41f32b59d364b471326f3"
     }
   ]
 }

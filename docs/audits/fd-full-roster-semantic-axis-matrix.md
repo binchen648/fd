@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=454
-blockedCount=490
+sourceGroundedCount=470
+blockedCount=474
 unclassifiedCount=0
-structuredAbilityCount=732
+structuredAbilityCount=748
 
 ## Axis Value Counts
 
@@ -285,6 +285,8 @@ structuredAbilityCount=732
 | effect | `DEDUCTION_RULE` | 7 |
 | effect | `IF_CONDITION` | 7 |
 | effect | `SCHEDULE_PHASE_EFFECT` | 7 |
+| effect | `FOREIGN_LIFE_RULE` | 6 |
+| effect | `MOON_HOLY_GRAIL_RULE` | 6 |
 | effect | `SET_MANA` | 6 |
 | effect | `TERRAIN_POSITION_ADJUSTMENT` | 6 |
 | effect | `TRANSFER_VICTORY_POINTS` | 6 |
@@ -371,6 +373,7 @@ structuredAbilityCount=732
 | effect | `CLEAR_TERRAIN_POSITION` | 1 |
 | effect | `CLOSE_SELECTED_CARD` | 1 |
 | effect | `COLLAPSE_RANDOM_PLAY_RULE` | 1 |
+| effect | `COLOR_MARKER_RULE` | 1 |
 | effect | `COMMAND_SEAL_REPLACEMENT_RULE` | 1 |
 | effect | `CONTROL_RESOURCE_TRANSFORM_RULE` | 1 |
 | effect | `CRAFT_ESSENCE_POOL_RULE` | 1 |
@@ -394,6 +397,7 @@ structuredAbilityCount=732
 | effect | `INFO_NOTE` | 1 |
 | effect | `ITEM_RULE` | 1 |
 | effect | `LINKED_PLAYER_MANA_CONTRIBUTION` | 1 |
+| effect | `LOCATION_MERGE_RULE` | 1 |
 | effect | `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS` | 1 |
 | effect | `LUCK_REVEAL_DEFEAT_RULE` | 1 |
 | effect | `MAGIC_IMMUNITY_RULE` | 1 |
@@ -407,6 +411,7 @@ structuredAbilityCount=732
 | effect | `ORIGIN_BULLET_RULE` | 1 |
 | effect | `OTHER_ATTACK_POWER_BONUS` | 1 |
 | effect | `PAIN_CONVERSION_REWARD_RULE` | 1 |
+| effect | `PERSISTENT_POWER_AURA_RULE` | 1 |
 | effect | `PLAY_SOURCE_CARD` | 1 |
 | effect | `REACTIVE_RESOURCE_RULE` | 1 |
 | effect | `RED_VERMILION_RULE` | 1 |
@@ -426,6 +431,7 @@ structuredAbilityCount=732
 | effect | `SHUFFLE_EVENT_DECK` | 1 |
 | effect | `SKILL_COPY_LIFECYCLE_RULE` | 1 |
 | effect | `SKIP_DEPLOYMENT_RECOVERY_RULE` | 1 |
+| effect | `SLOT_MACHINE_RULE` | 1 |
 | effect | `SOURCE_CARD_POWER_FORMULA` | 1 |
 | effect | `STOLEN_MANA_ATTRIBUTION_RULE` | 1 |
 | effect | `SWAP_SELECTED_EVENT_LOCATIONS` | 1 |
@@ -1083,10 +1089,10 @@ structuredAbilityCount=732
 | `master.zouken.skill.s3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `MANA` | `CHOOSE_NUMBER` | `COMBAT_POWER_BONUS`, `LINKED_PLAYER_BATTLE_REWARD` | `CHOOSE_NUMBER` | `duration:game`, `duration:this_round` | `effect:combat_power_bonus`, `rule:command_seal_capacity:set`, `rule:command_seal_transaction:replace_with_mana` | `NONE` | `binding:x`, `payload:x` | `COMBAT_EFFECT` | `core.zouken-founder` |
 | `master.zouken.skill.s4` | `SOURCE_GROUNDED` | `NONE` | `COMBAT` | `round.ending` | `COMBAT_HAS_OTHER_PLAYERS`, `CONTROLLER_AT_RECON_OR_COMBAT_HAS_NO_OTHER_PLAYER`, `CONTROLLER_NOT_AT_RECON`, `CONTROLLER_ROUND_MANA_GAIN_BELOW`, `CONTROLLER_WON_COMBAT` | `MANA` | `CHOOSE_NUMBER`, `CHOOSE_ONE_PLAYER` | `GAIN_MANA`, `LOSE_VICTORY_POINTS`, `MOVE_PLAYER`, `TRANSFER_MANA` | `CHOOSE_NUMBER`, `CHOOSE_ONE_PLAYER` | `limit.ability:blood-worms`, `limit.ability:bug-form`, `limit.maxUses:1`, `limit.period:round`, `limit.scope:controller` | `NONE` | `NONE` | `payload:bloodWormTargetIds`, `payload:manaAmount` | `COMBAT_CONDITION` | `core.zouken-pseudo-vampire` |
 | `master.zouken.skill.s5` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:game` | `rule:noble_phantasm_situation_restriction:ignore` | `NONE` | `NONE` | `NONE` | `core.game-start-rule-flags` |
-| `servant.abigail.skill.sc-abigail-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.abigail-witching-hour` |
-| `servant.abigail.skill.sc-abigail-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.abigail-witch-trial` |
-| `servant.abigail.skill.sc-abigail-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.abigail-gate-to-nowhere` |
-| `servant.abigail.skill.sc-abigail-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.outer-god-life` |
+| `servant.abigail.skill.sc-abigail-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.abigail-witching-hour` |
+| `servant.abigail.skill.sc-abigail-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.abigail-witch-trial` |
+| `servant.abigail.skill.sc-abigail-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.abigail-gate-to-nowhere` |
+| `servant.abigail.skill.sc-abigail-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.outer-god-life` |
 | `servant.achilles.skill.sc-achilles-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.achilles-package` |
 | `servant.achilles.skill.sc-achilles-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.achilles-package` |
 | `servant.achilles.skill.sc-achilles-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.achilles-package` |
@@ -1158,20 +1164,20 @@ structuredAbilityCount=732
 | `servant.barghest.skill.sc-barghest-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.barghest-demon-chains` |
 | `servant.barghest.skill.sc-barghest-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.barghest-black-dog-galatine` |
 | `servant.barghest.skill.sc-barghest-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.barghest-sun-devourer` |
-| `servant.bb.skill.sc-bb-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bb-moon-cell` |
-| `servant.bb.skill.sc-bb-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bb-moon-cell` |
-| `servant.bb.skill.sc-bb-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bb-moon-cell` |
-| `servant.bb.skill.sc-bb-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.moon-cancer` |
+| `servant.bb.skill.sc-bb-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MOON_HOLY_GRAIL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bb-moon-cell` |
+| `servant.bb.skill.sc-bb-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SLOT_MACHINE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bb-moon-cell` |
+| `servant.bb.skill.sc-bb-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LOCATION_MERGE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bb-moon-cell` |
+| `servant.bb.skill.sc-bb-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MOON_HOLY_GRAIL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.moon-cancer` |
 | `servant.bedivere.skill.sc-bedivere-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
 | `servant.bedivere.skill.sc-bedivere-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bedivere-oath-of-protection` |
 | `servant.bedivere.skill.sc-bedivere-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bedivere-silver-arm` |
 | `servant.benkei.skill.sc-benkei-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
 | `servant.benkei.skill.sc-benkei-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.benkei-bulwark` |
 | `servant.benkei.skill.sc-benkei-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.benkei-evenly-matched` |
-| `servant.bikuni.skill.sc-bikuni-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bikuni-moon-cell` |
-| `servant.bikuni.skill.sc-bikuni-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bikuni-moon-cell` |
-| `servant.bikuni.skill.sc-bikuni-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bikuni-moon-cell` |
-| `servant.bikuni.skill.sc-bikuni-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.moon-cancer` |
+| `servant.bikuni.skill.sc-bikuni-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MOON_HOLY_GRAIL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bikuni-moon-cell` |
+| `servant.bikuni.skill.sc-bikuni-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MOON_HOLY_GRAIL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bikuni-moon-cell` |
+| `servant.bikuni.skill.sc-bikuni-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MOON_HOLY_GRAIL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.bikuni-moon-cell` |
+| `servant.bikuni.skill.sc-bikuni-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MOON_HOLY_GRAIL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.moon-cancer` |
 | `servant.billy.skill.sc-billy-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.billy-thunderer-hidden-attacks` |
 | `servant.billy.skill.sc-billy-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.billy-luck-double` |
 | `servant.billy.skill.sc-billy-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.billy-quick-draw` |
@@ -1329,10 +1335,10 @@ structuredAbilityCount=732
 | `servant.himiko.skill.sc-himiko-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.himiko-oracle-kidou` |
 | `servant.himiko.skill.sc-himiko-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.himiko-oracle-kidou` |
 | `servant.himiko.skill.sc-himiko-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.himiko-oracle-kidou` |
-| `servant.hokusai.skill.sc-hokusai-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hokusai-colors-beyond` |
-| `servant.hokusai.skill.sc-hokusai-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hokusai-colors-world` |
-| `servant.hokusai.skill.sc-hokusai-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hokusai-great-wave` |
-| `servant.hokusai.skill.sc-hokusai-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.outer-god-life` |
+| `servant.hokusai.skill.sc-hokusai-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hokusai-colors-beyond` |
+| `servant.hokusai.skill.sc-hokusai-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COLOR_MARKER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hokusai-colors-world` |
+| `servant.hokusai.skill.sc-hokusai-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PERSISTENT_POWER_AURA_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hokusai-great-wave` |
+| `servant.hokusai.skill.sc-hokusai-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.outer-god-life` |
 | `servant.ibaraki.skill.sc-ibaraki-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `SOURCE_OWNED` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:permanent` | `rule:combat_power:add` | `NONE` | `NONE` | `COMBAT_RULE_MODIFIER` | `core.structured-skill` |
 | `servant.ibaraki.skill.sc-ibaraki-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mana-threshold-vp-loss` |
 | `servant.ibaraki.skill.sc-ibaraki-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ibaraki-rashomon-grudge` |
