@@ -126,6 +126,8 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
       return { id: `produce-${binding}`, type: 'move_all_remaining', owner: 'controller', from: 'hand', to: 'discard', bind: binding };
     case 'move_source_card':
       return { id: `produce-${binding}`, type: 'move_source_card', to: 'skill', bind: binding };
+    case 'move_player':
+      return { id: `produce-${binding}`, type: 'move_player', player: 'controller', to: 'movement_destination', bind: binding };
     case 'reveal_servant_package':
       return { id: `produce-${binding}`, type: 'reveal_servant_package', bind: binding };
     case 'draw_cards':
@@ -391,8 +393,14 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
           sourceCardId: 'synthetic-source',
           abilityId: 'synthetic-ability',
           effects,
-          selections: { selected_cards: [], supported_player: ['P2'] },
+          selections: { selected_cards: [], supported_player: ['P2'], movement_destination: ['shinto'] },
           hooks: {
+            movePlayer: ({ state, playerId, toLocationId }) => {
+              const moving = state.players.find((player) => player.id === playerId)!;
+              const fromLocationId = moving.locationId ?? 'miyama_town';
+              moving.locationId = toLocationId as LocationId;
+              return { fromLocationId, toLocationId, movedCount: 1, emittedEventIds: [] };
+            },
             playSelectedCards: ({ cardInstanceIds }) => ({ playedCount: cardInstanceIds.length }),
             playSourceCard: ({ state, sourceCardId }) => {
               const source = state.cards.find((card) => card.instanceId === sourceCardId)!;
