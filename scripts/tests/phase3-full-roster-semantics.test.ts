@@ -1052,6 +1052,43 @@ describe('Phase 3 full-roster semantic normalization', () => {
     }));
   });
 
+  it('grounds the fourteen-ID Araya/Kayneth/Leonardo/Taiga/Tokiomi batch with exact development evidence and explicit special boundaries', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.araya.skill.s1', 'master.araya.skill.ascension',
+      'master.kayneth.skill.s1', 'master.kayneth.skill.s2', 'master.kayneth.skill.ascension',
+      'master.leonardo.skill.s1', 'master.leonardo.skill.s1a', 'master.leonardo.skill.ascension',
+      'master.taiga.skill.s1', 'master.taiga.skill.s1a', 'master.taiga.skill.ascension',
+      'master.tokiomi.skill.s1', 'master.tokiomi.skill.s2', 'master.tokiomi.skill.ascension',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(14);
+    expect(slice.every((card) =>
+      card.source?.authority === 'DEVELOPMENT_TEXT' &&
+      card.source.document.endsWith('/data_masters.js') &&
+      card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+      createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256 &&
+      card.source.sourceTextSha256 === card.referencePrintedTextSha256
+    )).toBe(true);
+
+    expect(slice.find((card) => card.id === 'master.araya.skill.s1')?.abilities).toContainEqual(expect.objectContaining({
+      id: 'araya.triple-boundary.persistent-terrain',
+      effects: expect.arrayContaining([expect.objectContaining({ type: 'terrain_position_adjustment', operation: 'replace_deployment_terrain_with_persistent_location_advantage', max: 5 })]),
+    }));
+    expect(slice.find((card) => card.id === 'master.kayneth.skill.s2')?.abilities).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: 'kayneth.alchemist.independent-deck', effects: expect.arrayContaining([expect.objectContaining({ type: 'independent_deck_rule', operation: 'create_and_shuffle', count: 6 })]) }),
+      expect.objectContaining({ id: 'kayneth.alchemist.draw-volumen', effects: expect.arrayContaining([expect.objectContaining({ type: 'independent_deck_rule', operation: 'draw', count: 1 })]) }),
+    ]));
+    expect(slice.find((card) => card.id === 'master.taiga.skill.ascension')?.abilities).toContainEqual(expect.objectContaining({
+      id: 'taiga.domestic-carnage.workshop-battlefield',
+      effects: expect.arrayContaining([expect.objectContaining({ type: 'location_token_rule', operation: 'treat_location_as_battlefield', location: 'workshop' })]),
+    }));
+    expect(slice.find((card) => card.id === 'master.tokiomi.skill.s2')?.abilities).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: 'tokiomi.careless-mentor.add-items', effects: expect.arrayContaining([expect.objectContaining({ type: 'item_rule', operation: 'add_four_items_to_game', count: 4 })]) }),
+      expect.objectContaining({ id: 'tokiomi.careless-mentor.item-permission', effects: expect.arrayContaining([expect.objectContaining({ type: 'item_rule', operation: 'grant_use_permission', maxUsesPerPlayerPerRound: 1 })]) }),
+    ]));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1105,10 +1142,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 180,
-      blockedCount: 764,
+      sourceGroundedCount: 194,
+      blockedCount: 750,
       unclassifiedCount: 0,
-      structuredAbilityCount: 349,
+      structuredAbilityCount: 370,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

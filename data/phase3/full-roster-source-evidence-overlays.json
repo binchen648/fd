@@ -6998,6 +6998,672 @@
           }
         }
       ]
+    },
+    {
+      "id": "master.araya.skill.s1",
+      "printedText": "你部署于一处地利位置时不获得原本的地利，改为令你位于此地点时获得+1地利直至游戏结束（至多为5）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_araya.skills[s1]#line=423",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你部署于一处地利位置时不获得原本的地利，改为令你位于此地点时获得+1地利直至游戏结束（至多为5）。",
+        "sourceTextSha256": "9b0fc39e5746cc00c33fc717973a1bf1fc73a4565ef8e75f34135f2d726bea12"
+      },
+      "referencePrintedTextSha256": "9b0fc39e5746cc00c33fc717973a1bf1fc73a4565ef8e75f34135f2d726bea12",
+      "abilities": [
+        {
+          "id": "araya.triple-boundary.persistent-terrain",
+          "printedClause": "你部署于一处地利位置时不获得原本的地利，改为令你位于此地点时获得+1地利直至游戏结束（至多为5）。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.deployed"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_deployed_to_terrain_position"
+            }
+          ],
+          "effects": [
+            {
+              "type": "terrain_position_adjustment",
+              "operation": "replace_deployment_terrain_with_persistent_location_advantage",
+              "amount": 1,
+              "max": 5,
+              "subject": "controller",
+              "duration": "game"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.araya.skill.ascension",
+      "printedText": "当你部署于一处因三重结界拥有5点或更多的地利的位置时，将你所在的地点同时视为魔术工房。\n当你位于魔术工房时，你的对手无法离开你所在的地点且其于常规出牌时必须打出一张暗置攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_araya.ascensionSkill#line=423",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你部署于一处因三重结界拥有5点或更多的地利的位置时，将你所在的地点同时视为魔术工房。\n当你位于魔术工房时，你的对手无法离开你所在的地点且其于常规出牌时必须打出一张暗置攻击。",
+        "sourceTextSha256": "4be70ac975ea72732984065571de2f9eb47ac143f98c9d8e7594ce864958223e"
+      },
+      "referencePrintedTextSha256": "4be70ac975ea72732984065571de2f9eb47ac143f98c9d8e7594ce864958223e",
+      "abilities": [
+        {
+          "id": "araya.paradox-spiral.qualifying-location-workshop",
+          "printedClause": "当你部署于一处因三重结界拥有5点或更多的地利的位置时，将你所在的地点同时视为魔术工房。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_persistent_location_advantage_at_least",
+              "sourceSkillId": "master.araya.skill.s1",
+              "value": 5
+            }
+          ],
+          "effects": [
+            {
+              "type": "terrain_position_adjustment",
+              "operation": "treat_current_location_as",
+              "locationType": "workshop",
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_condition_true"
+          }
+        },
+        {
+          "id": "araya.paradox-spiral.workshop-lock",
+          "printedClause": "当你位于魔术工房时，你的对手无法离开你所在的地点且其于常规出牌时必须打出一张暗置攻击。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_effective_location_is",
+              "location": "workshop"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "opponent_same_location_movement",
+              "operation": "forbid_exit"
+            },
+            {
+              "rule": "opponent_standard_attack_face",
+              "operation": "require_face_down"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_condition_true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.kayneth.skill.s1",
+      "printedText": "你拥有的魔力少于8点也可以使用技能牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kayneth.skills[s1]#line=15",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你拥有的魔力少于8点也可以使用技能牌。",
+        "sourceTextSha256": "f271e17c6be016ad61c54b06c0ab0b36e456d427e169b63fcb3e847c825c4c57"
+      },
+      "referencePrintedTextSha256": "f271e17c6be016ad61c54b06c0ab0b36e456d427e169b63fcb3e847c825c4c57",
+      "abilities": [
+        {
+          "id": "kayneth.double-master.low-mana-skill-waiver",
+          "printedClause": "你拥有的魔力少于8点也可以使用技能牌。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "skill_play_mana_threshold",
+              "operation": "ignore_below",
+              "threshold": 8,
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.kayneth.skill.s2",
+      "printedText": "游戏开始时，将6张【月灵髓液】洗成一副独立的牌库。行动阶段：从独立牌库抽一张【月灵髓液】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kayneth.skills[s2]#line=15",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，将6张【月灵髓液】洗成一副独立的牌库。行动阶段：从独立牌库抽一张【月灵髓液】。",
+        "sourceTextSha256": "08f2fbaa07d05dc2db3c1f63b77440aa9a1bea43da025e36a8f39305e5af8208"
+      },
+      "referencePrintedTextSha256": "08f2fbaa07d05dc2db3c1f63b77440aa9a1bea43da025e36a8f39305e5af8208",
+      "abilities": [
+        {
+          "id": "kayneth.alchemist.independent-deck",
+          "printedClause": "游戏开始时，将6张【月灵髓液】洗成一副独立的牌库。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "independent_deck_rule",
+              "operation": "create_and_shuffle",
+              "definitionId": "card.derived.master.kayneth.volumen-hydrargyrum",
+              "count": 6,
+              "owner": "controller"
+            }
+          ]
+        },
+        {
+          "id": "kayneth.alchemist.draw-volumen",
+          "printedClause": "行动阶段：从独立牌库抽一张【月灵髓液】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "independent_deck_rule",
+              "operation": "draw",
+              "definitionId": "card.derived.master.kayneth.volumen-hydrargyrum",
+              "count": 1,
+              "target": "controller"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.kayneth.skill.ascension",
+      "printedText": "你的所有攻击牌可以残留至下回合结束。当你从从者牌库中抽到【月灵髓液】时，你可以将其展示并再抽一张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_kayneth.ascensionSkill#line=15",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你的所有攻击牌可以残留至下回合结束。当你从从者牌库中抽到【月灵髓液】时，你可以将其展示并再抽一张牌。",
+        "sourceTextSha256": "0f929075d814cc90bb289af7e6aa62a2e9790aaffa6949d6478ca45407199505"
+      },
+      "referencePrintedTextSha256": "0f929075d814cc90bb289af7e6aa62a2e9790aaffa6949d6478ca45407199505",
+      "abilities": [
+        {
+          "id": "kayneth.fluid-dynamics.attack-persistence",
+          "printedClause": "你的所有攻击牌可以残留至下回合结束。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "attack_card_activation_persistence",
+              "operation": "remain_active_until",
+              "until": "next_round_end",
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "id": "kayneth.fluid-dynamics.volumen-reveal-draw",
+          "printedClause": "当你从从者牌库中抽到【月灵髓液】时，你可以将其展示并再抽一张牌。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "card.drawn"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_card_definition_is",
+              "definitionId": "card.derived.master.kayneth.volumen-hydrargyrum"
+            },
+            {
+              "type": "event_source_deck_is",
+              "deck": "servant"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_one",
+              "chooser": "controller",
+              "minCount": 0,
+              "maxCount": 1,
+              "allowCancel": true,
+              "options": [
+                {
+                  "id": "reveal-and-draw",
+                  "effects": [
+                    {
+                      "type": "set_selected_cards_face",
+                      "selection": "event_card",
+                      "face": "up",
+                      "visibility": "public"
+                    },
+                    {
+                      "type": "draw_cards",
+                      "target": "controller",
+                      "count": 1
+                    }
+                  ]
+                }
+              ],
+              "payloadKey": "fluidRevealChoice"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.leonardo.skill.s1",
+      "printedText": "若你于上回合获得胜利，合计威力+3。若你于之前的两回合都获得胜利，改为合计威力+5。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_leonardo.skills[s1]#line=189",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "若你于上回合获得胜利，合计威力+3。若你于之前的两回合都获得胜利，改为合计威力+5。",
+        "sourceTextSha256": "7bdfc80338b6a0b1186b541604848458a9928867e2a68bcd99d989de3cf3b45b"
+      },
+      "referencePrintedTextSha256": "7bdfc80338b6a0b1186b541604848458a9928867e2a68bcd99d989de3cf3b45b",
+      "abilities": [
+        {
+          "id": "leonardo.born-to-rule.victory-streak",
+          "printedClause": "若你于上回合获得胜利，合计威力+3。若你于之前的两回合都获得胜利，改为合计威力+5。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "controller_combat_history"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "total_power",
+              "operation": "conditional_set_bonus",
+              "cases": [
+                {
+                  "condition": "won_previous_two_rounds",
+                  "value": 5
+                },
+                {
+                  "condition": "won_previous_round",
+                  "value": 3
+                }
+              ],
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "current_round"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.leonardo.skill.s1a",
+      "printedText": "为你所在战场上事件牌描述的战果和魔力增加1点。（也会增加事件牌右上角的战果数。）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_leonardo.skills[s1a]#line=189",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "为你所在战场上事件牌描述的战果和魔力增加1点。（也会增加事件牌右上角的战果数。）",
+        "sourceTextSha256": "3e3e881e4d5558767dfbb924aca0f228d698d5172ca0291ddd070314bbadb9a0"
+      },
+      "referencePrintedTextSha256": "3e3e881e4d5558767dfbb924aca0f228d698d5172ca0291ddd070314bbadb9a0",
+      "abilities": [
+        {
+          "id": "leonardo.emperor-aura.event-reward-bonus",
+          "printedClause": "为你所在战场上事件牌描述的战果和魔力增加1点。（也会增加事件牌右上角的战果数。）",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "event_card_victory_points",
+              "operation": "add",
+              "value": 1,
+              "scope": "controller_current_battlefield"
+            },
+            {
+              "rule": "event_card_mana",
+              "operation": "add",
+              "value": 1,
+              "scope": "controller_current_battlefield"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.leonardo.skill.ascension",
+      "printedText": "（将此牌加入你的技能区）\n战斗阶段：战斗阶段结束后，若你的合计威力≥20，所有合计威力低于你的交战对手失去3点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_leonardo.ascensionSkill#line=189",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（将此牌加入你的技能区）\n战斗阶段：战斗阶段结束后，若你的合计威力≥20，所有合计威力低于你的交战对手失去3点战果。",
+        "sourceTextSha256": "b9416bb2eea87a5cd5ae0a7e8f8f868bcf1d0f9ffc29ba6acdf8a4c751ed2a2b"
+      },
+      "referencePrintedTextSha256": "b9416bb2eea87a5cd5ae0a7e8f8f868bcf1d0f9ffc29ba6acdf8a4c751ed2a2b",
+      "abilities": [
+        {
+          "id": "leonardo.final-judgment.ascension-setup",
+          "printedClause": "（将此牌加入你的技能区）",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "reason": "ascension_setup"
+            }
+          ]
+        },
+        {
+          "id": "leonardo.final-judgment.resolve",
+          "printedClause": "战斗阶段：战斗阶段结束后，若你的合计威力≥20，所有合计威力低于你的交战对手失去3点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "controller_total_power_at_least",
+              "value": 20
+            },
+            {
+              "type": "target_engaged_opponent_power_below_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "subject": "all_qualifying_engaged_opponents",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.taiga.skill.s1",
+      "printedText": "你的魔力初始值为3。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_taiga.skills[s1]#line=136",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你的魔力初始值为3。",
+        "sourceTextSha256": "ab00e7ecf418b26b1a697eaede5ef229bfa9ad00707630efd97fd9c1b5352951"
+      },
+      "referencePrintedTextSha256": "ab00e7ecf418b26b1a697eaede5ef229bfa9ad00707630efd97fd9c1b5352951",
+      "abilities": [
+        {
+          "id": "taiga.helper.initial-mana",
+          "printedClause": "你的魔力初始值为3。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_mana",
+              "subject": "controller",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.taiga.skill.s1a",
+      "printedText": "当你赢得一场战斗时，每位因此战败的玩家获得一枚【老虎】标记。你每分发一枚【老虎】标记便获得1点战果。每有1枚【老虎】标记合计威力+1，至多+3。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_taiga.skills[s1a]#line=136",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你赢得一场战斗时，每位因此战败的玩家获得一枚【老虎】标记。你每分发一枚【老虎】标记便获得1点战果。每有1枚【老虎】标记合计威力+1，至多+3。",
+        "sourceTextSha256": "6cbd2ed3f23dd90953a37aacfeace920896b9eb03473606333b61846b4b00181"
+      },
+      "referencePrintedTextSha256": "6cbd2ed3f23dd90953a37aacfeace920896b9eb03473606333b61846b4b00181",
+      "abilities": [
+        {
+          "id": "taiga.fates-guide.tiger-stamps",
+          "printedClause": "当你赢得一场战斗时，每位因此战败的玩家获得一枚【老虎】标记。你每分发一枚【老虎】标记便获得1点战果。每有1枚【老虎】标记合计威力+1，至多+3。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "add_linked_status",
+              "statusId": "status.tiger-stamp",
+              "subject": "each_defeated_player_in_controller_combat",
+              "stacks": 1,
+              "totalPowerPerStack": 1,
+              "maxPowerStacks": 3
+            },
+            {
+              "type": "gain_victory_points",
+              "subject": "controller",
+              "amountFormula": "tiger_stamps_distributed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.taiga.skill.ascension",
+      "printedText": "（将此牌加入你的技能区）\n家里的屠杀-魔术工房变为战场。（交战规则适用，不添加任何事件牌）。魔术工房的竞争战果等于当前局势牌的魔力值。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_taiga.ascensionSkill#line=136",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（将此牌加入你的技能区）\n家里的屠杀-魔术工房变为战场。（交战规则适用，不添加任何事件牌）。魔术工房的竞争战果等于当前局势牌的魔力值。",
+        "sourceTextSha256": "817650a9633c66ba4237ff77821578311596cfa1289af1b2abd9b348deed15b7"
+      },
+      "referencePrintedTextSha256": "817650a9633c66ba4237ff77821578311596cfa1289af1b2abd9b348deed15b7",
+      "abilities": [
+        {
+          "id": "taiga.domestic-carnage.ascension-setup",
+          "printedClause": "（将此牌加入你的技能区）",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "reason": "ascension_setup"
+            }
+          ]
+        },
+        {
+          "id": "taiga.domestic-carnage.workshop-battlefield",
+          "printedClause": "家里的屠杀-魔术工房变为战场。（交战规则适用，不添加任何事件牌）。魔术工房的竞争战果等于当前局势牌的魔力值。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "location_token_rule",
+              "operation": "treat_location_as_battlefield",
+              "location": "workshop",
+              "applyEngagementRules": true,
+              "eventCards": "none",
+              "competitionVictoryPointsFormula": "current_situation_mana"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.tokiomi.skill.s1",
+      "printedText": "将【火炎弹】加入你的技能区。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_tokiomi.skills[s1]#line=17",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "将【火炎弹】加入你的技能区。",
+        "sourceTextSha256": "1b9d0afa8f14520cb93d03b56c0bb8ac65a5802f8f2b7d33ca8acaf9016ede9c"
+      },
+      "referencePrintedTextSha256": "1b9d0afa8f14520cb93d03b56c0bb8ac65a5802f8f2b7d33ca8acaf9016ede9c",
+      "abilities": [
+        {
+          "id": "tokiomi.elementalist.add-fireball",
+          "printedClause": "将【火炎弹】加入你的技能区。",
+          "kind": "passive",
+          "creates": [
+            {
+              "type": "card",
+              "definitionId": "card.derived.master.tokiomi.fireball",
+              "zone": "skill",
+              "owner": "controller",
+              "count": 1,
+              "active": false,
+              "face": "up"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.tokiomi.skill.s2",
+      "printedText": "将4件【道具】加入游戏。回合顺位倒数两位的玩家可以在他们的回合使用1件【道具】。远坂时臣使用【道具】时无法获得战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_tokiomi.skills[s2]#line=17",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "将4件【道具】加入游戏。回合顺位倒数两位的玩家可以在他们的回合使用1件【道具】。远坂时臣使用【道具】时无法获得战果。",
+        "sourceTextSha256": "4dcdbe858fe81e809aa7718fcce90844e4c3b122c04f3a745d982217e379d1d2"
+      },
+      "referencePrintedTextSha256": "4dcdbe858fe81e809aa7718fcce90844e4c3b122c04f3a745d982217e379d1d2",
+      "abilities": [
+        {
+          "id": "tokiomi.careless-mentor.add-items",
+          "printedClause": "将4件【道具】加入游戏。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "item_rule",
+              "operation": "add_four_items_to_game",
+              "count": 4,
+              "owner": "controller"
+            }
+          ]
+        },
+        {
+          "id": "tokiomi.careless-mentor.item-permission",
+          "printedClause": "回合顺位倒数两位的玩家可以在他们的回合使用1件【道具】。远坂时臣使用【道具】时无法获得战果。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "item_rule",
+              "operation": "grant_use_permission",
+              "eligiblePlayers": "last_two_active_turn_order",
+              "maxUsesPerPlayerPerRound": 1,
+              "window": "own_turn"
+            },
+            {
+              "type": "item_rule",
+              "operation": "controller_item_use_cannot_gain_victory_points"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.tokiomi.skill.ascension",
+      "printedText": "【火炎弹】+2魔力消耗与威力。\n【燃烧】印记更改为-3合计威力且移除时需额外花费2点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_tokiomi.ascensionSkill#line=17",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【火炎弹】+2魔力消耗与威力。\n【燃烧】印记更改为-3合计威力且移除时需额外花费2点魔力。",
+        "sourceTextSha256": "751658f1911f8b4b60b9464e27308e95427a6f84f103978f71549a9b2a5495d5"
+      },
+      "referencePrintedTextSha256": "751658f1911f8b4b60b9464e27308e95427a6f84f103978f71549a9b2a5495d5",
+      "abilities": [
+        {
+          "id": "tokiomi.advanced-pyromancy.fireball-upgrade",
+          "printedClause": "【火炎弹】+2魔力消耗与威力。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "card_cost",
+              "operation": "add",
+              "definitionId": "card.derived.master.tokiomi.fireball",
+              "value": 2
+            },
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "definitionId": "card.derived.master.tokiomi.fireball",
+              "value": 2
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        },
+        {
+          "id": "tokiomi.advanced-pyromancy.burn-upgrade",
+          "printedClause": "【燃烧】印记更改为-3合计威力且移除时需额外花费2点魔力。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "status_total_power_per_stack",
+              "operation": "set",
+              "status": "burning",
+              "value": -3
+            },
+            {
+              "rule": "status_removal_mana_cost",
+              "operation": "add",
+              "status": "burning",
+              "value": 2
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_active"
+          }
+        }
+      ]
     }
   ]
 }
