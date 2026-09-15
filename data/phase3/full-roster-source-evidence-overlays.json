@@ -29350,6 +29350,422 @@
         }
       ],
       "referencePrintedTextSha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
+    },
+    {
+      "id": "servant.moriarty.skill.sc-moriarty-1",
+      "printedText": "增幅-被动：当一名从者首次真名解放时，你抽一张牌并以一张基础手牌作为增幅牌置于其的一个技能上。被增幅的技能获得增幅牌的属性，威力，费用和卡牌文字效果。（增幅后的魔力至多12，若其不是一张攻击，变成攻击）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_moriarty_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "增幅-被动：当一名从者首次真名解放时，你抽一张牌并以一张基础手牌作为增幅牌置于其的一个技能上。被增幅的技能获得增幅牌的属性，威力，费用和卡牌文字效果。（增幅后的魔力至多12，若其不是一张攻击，变成攻击）",
+        "sourceTextSha256": "ecfa48c16a3f2a82f99aa60bd575210aff42cf501517d92a30e5f9fbccbb17dd"
+      },
+      "abilities": [
+        {
+          "id": "moriarty.sc-moriarty-1.semantic",
+          "printedClause": "增幅-被动：当一名从者首次真名解放时，你抽一张牌并以一张基础手牌作为增幅牌置于其的一个技能上。被增幅的技能获得增幅牌的属性，威力，费用和卡牌文字效果。（增幅后的魔力至多12，若其不是一张攻击，变成攻击）",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "moriarty_augmentation_rule",
+              "operation": "passive_when_a_servant_first_true_name_reveals_draw_1_then_place_one_base_card_from_hand_as_augmentation_on_one_of_that_servants_skills_augmented_skill_gains_augmentation_attributes_power_cost_and_text_cost_capped_12_and_if_not_attack_becomes_attack"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ecfa48c16a3f2a82f99aa60bd575210aff42cf501517d92a30e5f9fbccbb17dd"
+    },
+    {
+      "id": "servant.moriarty.skill.sc-moriarty-2",
+      "printedText": "残留：当你获胜后，关闭此牌。\n清算-行动阶段：偷取所有与你位于同一地点且控制激活的增幅技能的对手1点战果。\n诡昧-战斗阶段：将一张增幅牌从增幅技能上移除并加入你的攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_moriarty_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "残留：当你获胜后，关闭此牌。\n清算-行动阶段：偷取所有与你位于同一地点且控制激活的增幅技能的对手1点战果。\n诡昧-战斗阶段：将一张增幅牌从增幅技能上移除并加入你的攻击。",
+        "sourceTextSha256": "c320fb870540c5f92f7d32f1ec17454e958a669a29d0b1d9ca347b9a603aac25"
+      },
+      "abilities": [
+        {
+          "id": "moriarty.sc-moriarty-2.semantic",
+          "printedClause": "残留：当你获胜后，关闭此牌。\n清算-行动阶段：偷取所有与你位于同一地点且控制激活的增幅技能的对手1点战果。\n诡昧-战斗阶段：将一张增幅牌从增幅技能上移除并加入你的攻击。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "moriarty_settlement_rule",
+              "operation": "residual_close_source_after_controller_wins_action_steal_1_vp_from_each_same_location_opponent_controlling_active_augmented_skill_combat_remove_one_augmentation_card_from_augmented_skill_and_add_it_to_controller_attack"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c320fb870540c5f92f7d32f1ec17454e958a669a29d0b1d9ca347b9a603aac25"
+    },
+    {
+      "id": "servant.moriarty.skill.sc-moriarty-3",
+      "printedText": "【真名解放】\n邪来之一笔-行动阶段：此牌变成一张未激活的增幅技能的复制（包括增幅牌及效果）且本回合原增幅技能不能被使用、回合结束时将受此效果影响的技能的增幅牌弃置。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_moriarty_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n邪来之一笔-行动阶段：此牌变成一张未激活的增幅技能的复制（包括增幅牌及效果）且本回合原增幅技能不能被使用、回合结束时将受此效果影响的技能的增幅牌弃置。",
+        "sourceTextSha256": "d4ee3301741467b04636dbe981e5c80106e57c10bb303e061a01074d6508589f"
+      },
+      "abilities": [
+        {
+          "id": "moriarty.sc-moriarty-3.semantic",
+          "printedClause": "【真名解放】\n邪来之一笔-行动阶段：此牌变成一张未激活的增幅技能的复制（包括增幅牌及效果）且本回合原增幅技能不能被使用、回合结束时将受此效果影响的技能的增幅牌弃置。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "moriarty_ultimate_crime_rule",
+              "operation": "true_name_reveal_action_source_becomes_copy_of_one_inactive_augmented_skill_including_augmentation_card_and_effects_original_augmented_skill_unusable_this_round_end_round_discard_augmentation_card_from_affected_original_skill"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d4ee3301741467b04636dbe981e5c80106e57c10bb303e061a01074d6508589f"
+    },
+    {
+      "id": "servant.mozart.skill.sc-mozart-3",
+      "printedText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_mozart_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+        "sourceTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+      },
+      "abilities": [
+        {
+          "id": "mozart.sc-mozart-3.semantic",
+          "printedClause": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "territory_construction_scaling_rule",
+              "operation": "x_equals_16_minus_current_round_times_2_residual_on_deploy_to_workshop_gain_1_mana_and_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+    },
+    {
+      "id": "servant.napoleon.skill.sc-napoleon-3",
+      "printedText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_napoleon_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+        "sourceTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+      },
+      "abilities": [
+        {
+          "id": "napoleon.sc-napoleon-3.semantic",
+          "printedClause": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "independent_action_rule",
+              "operation": "play_only_if_turn_order_in_first_half_floor_action_gain_3_vp_if_controller_loses_battle_this_round_lose_5_vp_unpreventable"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+    },
+    {
+      "id": "servant.nemo.skill.sc-nemo-1",
+      "printedText": "唤潮之佑-被动：计算你的威力时，你可以视为受到所有你本回合停留过的地点的事件牌影响。\n疏通航道-被动/行动阶段：从深山町移动至新都，或从新都移动至深山町。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_nemo_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "唤潮之佑-被动：计算你的威力时，你可以视为受到所有你本回合停留过的地点的事件牌影响。\n疏通航道-被动/行动阶段：从深山町移动至新都，或从新都移动至深山町。",
+        "sourceTextSha256": "a919ab2215d98f480cb78162e71bb436146909525fe3048ff3b25c54a0b558b8"
+      },
+      "abilities": [
+        {
+          "id": "nemo.sc-nemo-1.semantic",
+          "printedClause": "唤潮之佑-被动：计算你的威力时，你可以视为受到所有你本回合停留过的地点的事件牌影响。\n疏通航道-被动/行动阶段：从深山町移动至新都，或从新都移动至深山町。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "nemo_sea_route_rule",
+              "operation": "passive_when_calculating_power_may_be_treated_as_affected_by_all_event_cards_at_locations_controller_visited_this_round_passive_action_move_between_fuyuki_new_city_and_miyama_in_either_direction"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "a919ab2215d98f480cb78162e71bb436146909525fe3048ff3b25c54a0b558b8"
+    },
+    {
+      "id": "servant.nemo.skill.sc-nemo-2",
+      "printedText": "被动/行动阶段：花费2X-1点魔力，将X张手牌明置于此牌上。你无法于【分割思考】上放置卡名相同的牌。（非✖特殊属性的同属性基础牌视为同一卡名）\n齐心协力-行动阶段：打出所有此牌上非本回合被放置的牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_nemo_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "被动/行动阶段：花费2X-1点魔力，将X张手牌明置于此牌上。你无法于【分割思考】上放置卡名相同的牌。（非✖特殊属性的同属性基础牌视为同一卡名）\n齐心协力-行动阶段：打出所有此牌上非本回合被放置的牌。",
+        "sourceTextSha256": "39c6f0505b69a91ab2c50a58d0956c6199ec98e1e66ede5c7d48ea51604982f0"
+      },
+      "abilities": [
+        {
+          "id": "nemo.sc-nemo-2.semantic",
+          "printedClause": "被动/行动阶段：花费2X-1点魔力，将X张手牌明置于此牌上。你无法于【分割思考】上放置卡名相同的牌。（非✖特殊属性的同属性基础牌视为同一卡名）\n齐心协力-行动阶段：打出所有此牌上非本回合被放置的牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "nemo_split_thought_rule",
+              "operation": "passive_action_pay_2x_minus_1_mana_place_x_hand_cards_face_up_on_source_no_duplicate_card_names_with_non_special_same_attribute_base_cards_same_name_action_play_all_cards_on_source_not_placed_this_round"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "39c6f0505b69a91ab2c50a58d0956c6199ec98e1e66ede5c7d48ea51604982f0"
+    },
+    {
+      "id": "servant.nemo.skill.sc-nemo-3",
+      "printedText": "残留：每当你部署于魔术工房，此牌威力+1直至被关闭。\n大冲角-行动阶段：【真名解放】。获得等同于此牌威力的地利，战斗结束后关闭此牌",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_nemo_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "残留：每当你部署于魔术工房，此牌威力+1直至被关闭。\n大冲角-行动阶段：【真名解放】。获得等同于此牌威力的地利，战斗结束后关闭此牌",
+        "sourceTextSha256": "5c44a0a30dfad054f76e4df9b9fab528f9d476038d772070828b8377da2b8bbf"
+      },
+      "abilities": [
+        {
+          "id": "nemo.sc-nemo-3.semantic",
+          "printedClause": "残留：每当你部署于魔术工房，此牌威力+1直至被关闭。\n大冲角-行动阶段：【真名解放】。获得等同于此牌威力的地利，战斗结束后关闭此牌",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "nemo_nautilus_rule",
+              "operation": "residual_each_deploy_to_workshop_source_plus_1_power_until_closed_action_true_name_reveal_gain_terrain_equal_source_power_then_close_source_after_battle"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "5c44a0a30dfad054f76e4df9b9fab528f9d476038d772070828b8377da2b8bbf"
+    },
+    {
+      "id": "servant.nightingale.skill.sc-nightingale-1",
+      "printedText": "【真名解放】打出此牌时，你可支付一名与你同战场正在控制【克里米亚天使】的玩家的魔力。若你自己支付，则将任意战场一名玩家激活的【克里米亚天使】加入你的攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_nightingale_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】打出此牌时，你可支付一名与你同战场正在控制【克里米亚天使】的玩家的魔力。若你自己支付，则将任意战场一名玩家激活的【克里米亚天使】加入你的攻击。",
+        "sourceTextSha256": "3ff8d04df37e7fdd5d69ab759ff4bb9e0e4461b8a589600fe2ad109724fe3d3c"
+      },
+      "abilities": [
+        {
+          "id": "nightingale.sc-nightingale-1.semantic",
+          "printedClause": "【真名解放】打出此牌时，你可支付一名与你同战场正在控制【克里米亚天使】的玩家的魔力。若你自己支付，则将任意战场一名玩家激活的【克里米亚天使】加入你的攻击。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "nightingale_poison_purge_rule",
+              "operation": "true_name_reveal_on_play_may_pay_mana_of_player_at_same_battlefield_controlling_crimean_angel_if_controller_pays_own_mana_add_any_players_active_crimean_angel_from_any_battlefield_to_controller_attack"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "3ff8d04df37e7fdd5d69ab759ff4bb9e0e4461b8a589600fe2ad109724fe3d3c"
+    },
+    {
+      "id": "servant.nightingale.skill.sc-nightingale-2",
+      "printedText": "被动：当一名位于魔术工房的对手控制【克里米亚天使】时，你打出【狂战士】时无需支付魔力。战斗阶段：若你于战斗中败北，且该战斗中存在战力比你少的玩家，获得3点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_nightingale_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动：当一名位于魔术工房的对手控制【克里米亚天使】时，你打出【狂战士】时无需支付魔力。战斗阶段：若你于战斗中败北，且该战斗中存在战力比你少的玩家，获得3点战果。",
+        "sourceTextSha256": "a190ce4299b251ba38dd360369f7141f6589b2bda7b0e5daf24650cda510ca0e"
+      },
+      "abilities": [
+        {
+          "id": "nightingale.sc-nightingale-2.semantic",
+          "printedClause": "被动：当一名位于魔术工房的对手控制【克里米亚天使】时，你打出【狂战士】时无需支付魔力。战斗阶段：若你于战斗中败北，且该战斗中存在战力比你少的玩家，获得3点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "nightingale_steel_nursing_rule",
+              "operation": "passive_if_workshop_opponent_controls_crimean_angel_controller_pays_no_mana_to_play_berserker_combat_if_controller_loses_and_any_battle_participant_has_lower_combat_power_gain_3_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "a190ce4299b251ba38dd360369f7141f6589b2bda7b0e5daf24650cda510ca0e"
+    },
+    {
+      "id": "servant.nightingale.skill.sc-nightingale-3",
+      "printedText": "当你部署于魔术工房，你不能离开，获得1点魔力且南丁格尔获得2点战果。被动/准备阶段：将技能区的此牌加入一名上回合你未选择的对手的攻击之中。此牌不能通过其他任何方式入场。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_nightingale_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "当你部署于魔术工房，你不能离开，获得1点魔力且南丁格尔获得2点战果。被动/准备阶段：将技能区的此牌加入一名上回合你未选择的对手的攻击之中。此牌不能通过其他任何方式入场。",
+        "sourceTextSha256": "4ef237d4044da1b901e0701c0695cb3c8a47ffa172a3003ed55f4d8a524feeaf"
+      },
+      "abilities": [
+        {
+          "id": "nightingale.sc-nightingale-3.semantic",
+          "printedClause": "当你部署于魔术工房，你不能离开，获得1点魔力且南丁格尔获得2点战果。被动/准备阶段：将技能区的此牌加入一名上回合你未选择的对手的攻击之中。此牌不能通过其他任何方式入场。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "nightingale_crimean_angel_rule",
+              "operation": "on_deploy_to_workshop_controller_cannot_leave_gain_1_mana_and_nightingale_gains_2_vp_passive_preparation_add_source_from_skill_zone_to_attack_of_opponent_not_chosen_last_round_source_cannot_enter_play_other_way"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4ef237d4044da1b901e0701c0695cb3c8a47ffa172a3003ed55f4d8a524feeaf"
+    },
+    {
+      "id": "servant.nitocris.skill.sc-nitocris-1",
+      "printedText": "你拥有的魔力少于8点也可使用此牌。\n埃及魔术-行动阶段：三倍化你的地利。若你赢得战斗，选择一张该战斗中的事件牌，你不获得该事件牌提供的战果，改为获得等同于比战果点数的魔力并将该事件牌【埋葬】于此牌下。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_nitocris_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "你拥有的魔力少于8点也可使用此牌。\n埃及魔术-行动阶段：三倍化你的地利。若你赢得战斗，选择一张该战斗中的事件牌，你不获得该事件牌提供的战果，改为获得等同于比战果点数的魔力并将该事件牌【埋葬】于此牌下。",
+        "sourceTextSha256": "be4768788f7714b38ebf863f2bac97db1acb0de8efba7a3a28cf7f0af1f84d03"
+      },
+      "abilities": [
+        {
+          "id": "nitocris.sc-nitocris-1.semantic",
+          "printedClause": "你拥有的魔力少于8点也可使用此牌。\n埃及魔术-行动阶段：三倍化你的地利。若你赢得战斗，选择一张该战斗中的事件牌，你不获得该事件牌提供的战果，改为获得等同于比战果点数的魔力并将该事件牌【埋葬】于此牌下。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "nitocris_burial_rule",
+              "operation": "may_play_below_8_mana_action_triple_terrain_if_controller_wins_choose_one_event_from_battle_gain_no_vp_from_it_instead_gain_mana_equal_event_vp_and_bury_event_under_source"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "be4768788f7714b38ebf863f2bac97db1acb0de8efba7a3a28cf7f0af1f84d03"
+    },
+    {
+      "id": "servant.nitocris.skill.sc-nitocris-2",
+      "printedText": "【真名解放】\n你无法于本回合【埋葬】事件牌。\n行动阶段：将任意张被【埋葬】的事件牌放置于你所在的战场，你获得等于它们合计战果点数的合计威力。\n战斗阶段：令所有交战对手【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_nitocris_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n你无法于本回合【埋葬】事件牌。\n行动阶段：将任意张被【埋葬】的事件牌放置于你所在的战场，你获得等于它们合计战果点数的合计威力。\n战斗阶段：令所有交战对手【败北】。",
+        "sourceTextSha256": "6b07070a06d32f07cef3c39936ad8520d655a853bbad0b0945a61e4030df563f"
+      },
+      "abilities": [
+        {
+          "id": "nitocris.sc-nitocris-2.semantic",
+          "printedClause": "【真名解放】\n你无法于本回合【埋葬】事件牌。\n行动阶段：将任意张被【埋葬】的事件牌放置于你所在的战场，你获得等于它们合计战果点数的合计威力。\n战斗阶段：令所有交战对手【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "nitocris_necromirror_rule",
+              "operation": "true_name_reveal_controller_cannot_bury_events_this_round_action_place_any_number_buried_events_at_controller_battlefield_gain_total_power_equal_their_combined_vp_combat_defeat_all_engaged_opponents"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "6b07070a06d32f07cef3c39936ad8520d655a853bbad0b0945a61e4030df563f"
+    },
+    {
+      "id": "servant.nitocris.skill.sc-nitocris-3",
+      "printedText": "【真名解放】\n圣祭-行动阶段：每有一张被【埋葬】的事件牌，你获得1点战果。\n战斗阶段：你无视【败北】效果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_nitocris_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n圣祭-行动阶段：每有一张被【埋葬】的事件牌，你获得1点战果。\n战斗阶段：你无视【败北】效果。",
+        "sourceTextSha256": "bf7dab5f82ec53bebc7f16fd90578782d80ed2a85504f1d1b10146f94386841e"
+      },
+      "abilities": [
+        {
+          "id": "nitocris.sc-nitocris-3.semantic",
+          "printedClause": "【真名解放】\n圣祭-行动阶段：每有一张被【埋葬】的事件牌，你获得1点战果。\n战斗阶段：你无视【败北】效果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "nitocris_sacred_rite_rule",
+              "operation": "true_name_reveal_action_gain_1_vp_per_buried_event_combat_ignore_defeat_effects"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "bf7dab5f82ec53bebc7f16fd90578782d80ed2a85504f1d1b10146f94386841e"
+    },
+    {
+      "id": "servant.nobunaga.skill.sc-nobunaga-1",
+      "printedText": "地狱之火-残留：准备阶段，你需花费2点魔力，否则关闭此牌。每当一名玩家【败北】或淘汰时，此牌+1威力直至游戏结束（至多+7）。\n亵渎-战斗阶段：令你战斗中所有控制【幸运】的玩家【败北】，然后关闭他们的所有【幸运】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_nobunaga_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "地狱之火-残留：准备阶段，你需花费2点魔力，否则关闭此牌。每当一名玩家【败北】或淘汰时，此牌+1威力直至游戏结束（至多+7）。\n亵渎-战斗阶段：令你战斗中所有控制【幸运】的玩家【败北】，然后关闭他们的所有【幸运】。",
+        "sourceTextSha256": "b5a9a43e2678b84fe97c67652627e2448ce9a64c8aab082aede2234fb981b855"
+      },
+      "abilities": [
+        {
+          "id": "nobunaga.sc-nobunaga-1.semantic",
+          "printedClause": "地狱之火-残留：准备阶段，你需花费2点魔力，否则关闭此牌。每当一名玩家【败北】或淘汰时，此牌+1威力直至游戏结束（至多+7）。\n亵渎-战斗阶段：令你战斗中所有控制【幸运】的玩家【败北】，然后关闭他们的所有【幸运】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "nobunaga_hellfire_rule",
+              "operation": "residual_preparation_pay_2_mana_or_close_source_each_time_any_player_is_defeated_or_eliminated_source_permanently_plus_1_power_max_plus_7_combat_defeat_all_players_in_controller_battle_who_control_luck_then_close_all_their_luck"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b5a9a43e2678b84fe97c67652627e2448ce9a64c8aab082aede2234fb981b855"
+    },
+    {
+      "id": "servant.nobunaga.skill.sc-nobunaga-2",
+      "printedText": "【真名解放】\n三千世界-战斗阶段：与你位于同一战场的对手控制的非❄魔术攻击威力-2，战力结算时，令所有控制威力为0的非残留攻击的交战对手【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_nobunaga_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n三千世界-战斗阶段：与你位于同一战场的对手控制的非❄魔术攻击威力-2，战力结算时，令所有控制威力为0的非残留攻击的交战对手【败北】。",
+        "sourceTextSha256": "6d7f64638f501200198abf68e4487c7842774f4da9c9eff4727f937340c4dd04"
+      },
+      "abilities": [
+        {
+          "id": "nobunaga.sc-nobunaga-2.semantic",
+          "printedClause": "【真名解放】\n三千世界-战斗阶段：与你位于同一战场的对手控制的非❄魔术攻击威力-2，战力结算时，令所有控制威力为0的非残留攻击的交战对手【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "nobunaga_three_line_rule",
+              "operation": "true_name_reveal_combat_same_battlefield_opponent_non_magic_attacks_minus_2_power_at_power_resolution_defeat_all_engaged_opponents_controlling_zero_power_non_residual_attacks"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "6d7f64638f501200198abf68e4487c7842774f4da9c9eff4727f937340c4dd04"
     }
   ]
 }
