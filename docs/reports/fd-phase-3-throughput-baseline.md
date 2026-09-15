@@ -707,3 +707,12 @@ Permitted final status:
 - Independent R30 evidence: focused `21/21`, rules `292/292`, standard full CI `705/705`, content validation 0 blockers, deterministic hashes unchanged, runtime diff=0, diff check PASS.
 - Fresh reviewer coverage equals the A material artifact except `generatedAt`: `49/81/160`, raw `12/3/107/0/38/114`, compiled identity unchanged.
 - No broad Power/Modifier or taxonomy acceptance is implied.
+
+## P3-A FM04 Migration Synchronization - 2026-09-16
+
+- Fourth F4 S candidate: `0047b30cd00fd3093f01db373f69cc9540466cd5`; accepted family 11, pre-existing Tomoe 1, newly canonical siblings 10, skipped/extra/removed 0, runtime hot-file changes 0.
+- Frozen 944-ID canonical-authoring overlap moves `59 -> 69` (+10); Independent Action family moves `1/11 -> 11/11`; Tomoe is unchanged.
+- Fresh material coverage: `59/91/180`, raw `new=22 / legacyExecute=3 / legacyResolve=117 / dual=0 / notClassifiable=38 / taxonomyWarnings=124`; compiled product identity unchanged.
+- New reporter growth is exactly ten TO08 Resource direct actions plus ten B21/R15 defeat penalties under the reporter's existing legacy label; no dual/not-classifiable growth.
+- A checks: typecheck PASS, focused `15/15`, content validation PASS, determinism unchanged, runtime diff=0, Tomoe diff=0, diff check PASS. S evidence: rules `292/292`, full CI `705/705`.
+- R32 is READY; FM04 remains unaccepted until independent reviewer judgment.
