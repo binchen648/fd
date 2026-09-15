@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=403
-blockedCount=541
+sourceGroundedCount=420
+blockedCount=524
 unclassifiedCount=0
-structuredAbilityCount=681
+structuredAbilityCount=698
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 91 |
+| timing | `ACTION` | 101 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -246,49 +246,50 @@ structuredAbilityCount=681
 | condition | `TRUE_NAME_REVEALED` | 1 |
 | condition | `VICTORY_POINTS_IS_FIRST` | 1 |
 | condition | `VICTORY_POINTS_IS_LOWEST` | 1 |
-| cost | `MANA` | 23 |
+| cost | `MANA` | 24 |
 | cost | `VICTORY_POINTS` | 3 |
 | cost | `DISCARD_CARDS` | 2 |
 | cost | `COMMAND_SEAL` | 1 |
 | target | `CHOOSE_ONE_CARD` | 27 |
 | target | `BRANCH_CHOICE` | 15 |
 | target | `CHOOSE_ONE_PLAYER` | 12 |
-| target | `CHOOSE_NUMBER` | 9 |
-| target | `CHOOSE_N_CARDS` | 9 |
+| target | `CHOOSE_NUMBER` | 10 |
+| target | `CHOOSE_N_CARDS` | 10 |
 | target | `CHOOSE_ONE_EVENT` | 9 |
 | target | `CHOOSE_ONE_LOCATION` | 5 |
 | target | `CHOOSE_EACH_PLAYER_OPTION` | 2 |
 | target | `CHOOSE_EACH_PLAYER_CARDS` | 1 |
 | target | `CHOOSE_N_EVENTS` | 1 |
 | effect | `GAIN_VICTORY_POINTS` | 35 |
-| effect | `GAIN_MANA` | 28 |
-| effect | `COMBAT_POWER_BONUS` | 26 |
+| effect | `GAIN_MANA` | 30 |
+| effect | `MOVE_SOURCE_CARD` | 30 |
+| effect | `COMBAT_POWER_BONUS` | 29 |
 | effect | `EVENT_CARD_RULE` | 26 |
+| effect | `DRAW_CARDS` | 22 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
-| effect | `MOVE_SOURCE_CARD` | 22 |
-| effect | `DRAW_CARDS` | 21 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
+| effect | `MOVE_SELECTED_CARDS` | 15 |
 | effect | `CLOSE_SOURCE_CARD` | 14 |
 | effect | `LOSTBELT_EXPANSION` | 14 |
-| effect | `MOVE_SELECTED_CARDS` | 14 |
+| effect | `MOVE_PLAYER` | 14 |
 | effect | `DEFEAT_PLAYER` | 13 |
-| effect | `MOVE_PLAYER` | 13 |
 | effect | `PLAY_SELECTED_CARDS` | 12 |
 | effect | `SET_PLAYER_FLAG` | 12 |
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
 | effect | `LOSE_MANA` | 10 |
+| effect | `ADJUST_COMMAND_SEALS` | 9 |
 | effect | `CYCLE_STATE_TRANSITION` | 9 |
-| effect | `ADJUST_COMMAND_SEALS` | 8 |
 | effect | `SOURCE_CARD_POWER_BONUS` | 8 |
 | effect | `IF_CONDITION` | 7 |
+| effect | `SCHEDULE_PHASE_EFFECT` | 6 |
 | effect | `SET_MANA` | 6 |
 | effect | `TERRAIN_POSITION_ADJUSTMENT` | 6 |
 | effect | `TRANSFER_VICTORY_POINTS` | 6 |
+| effect | `ADD_STATUS` | 5 |
 | effect | `MOVE_CARD` | 5 |
 | effect | `SECRET_GARDEN_RULE` | 5 |
 | effect | `TATARI_DETERIORATION_RULE` | 5 |
-| effect | `ADD_STATUS` | 4 |
 | effect | `CLOSE_SELECTED_CARDS` | 4 |
 | effect | `MOVE_SELECTED_EVENTS` | 4 |
 | effect | `NECROMANCY_RITE_RULE` | 4 |
@@ -296,12 +297,12 @@ structuredAbilityCount=681
 | effect | `REMOVE_CARDS_IN_ZONE` | 4 |
 | effect | `REMOVE_SELECTED_CARDS` | 4 |
 | effect | `SCHEDULE_EFFECT` | 4 |
-| effect | `SCHEDULE_PHASE_EFFECT` | 4 |
 | effect | `TRAINING_SKILL_OVERLAY_RULE` | 4 |
 | effect | `ADD_LINKED_STATUS` | 3 |
 | effect | `ADJUST_TERRAIN` | 3 |
 | effect | `ANALYSIS_TOKEN_RULE` | 3 |
 | effect | `CLEAR_PLAYER_FLAG` | 3 |
+| effect | `COMBAT_POWER_LOCK` | 3 |
 | effect | `CRAFTED_TREE_RULE` | 3 |
 | effect | `DETECTIVE_CLUE_RULE` | 3 |
 | effect | `EXILE_SOURCE_CARD` | 3 |
@@ -313,7 +314,6 @@ structuredAbilityCount=681
 | effect | `TRAINING_EXPERIENCE_RULE` | 3 |
 | effect | `BATCH_CARD_USE_RULE` | 2 |
 | effect | `CHALLENGE_RPS_RULE` | 2 |
-| effect | `COMBAT_POWER_LOCK` | 2 |
 | effect | `CRAFT_ESSENCE_EFFECT_RULE` | 2 |
 | effect | `DECK_ENTRY_REPLACEMENT` | 2 |
 | effect | `DECK_TOP_MANIPULATION_RULE` | 2 |
@@ -326,6 +326,7 @@ structuredAbilityCount=681
 | effect | `FORM_STATE_RULE` | 2 |
 | effect | `GEM_RESOURCE_RULE` | 2 |
 | effect | `GRANT_LINKED_ABILITY_TO_ATTRIBUTE_ATTACKS` | 2 |
+| effect | `GROWTH_COUNTER_RULE` | 2 |
 | effect | `INSTALL_ABILITY_RULE_MODIFIER` | 2 |
 | effect | `LINKED_PLAYER_BATTLE_REWARD` | 2 |
 | effect | `LOCATION_TOKEN_RULE` | 2 |
@@ -340,9 +341,11 @@ structuredAbilityCount=681
 | effect | `SECRET_ROUND_BINDING` | 2 |
 | effect | `SERVANT_OWNERSHIP_RULE` | 2 |
 | effect | `SET_SELECTED_CARDS_FACE` | 2 |
+| effect | `SHOP_AUCTION_RULE` | 2 |
 | effect | `TATARI_RULE` | 2 |
 | effect | `TRANSFER_MANA` | 2 |
 | effect | `TRANSFER_MATCHING_CARDS` | 2 |
+| effect | `UPGRADE_ATTACHMENT_RULE` | 2 |
 | effect | `VESSEL_STATE_RULE` | 2 |
 | effect | `ACTIVATE_SELECTED_CARDS` | 1 |
 | effect | `ADD_PLAYER_FLAG_NUMBER` | 1 |
@@ -370,9 +373,10 @@ structuredAbilityCount=681
 | effect | `DREAM_SUMMON_RULE` | 1 |
 | effect | `ENSURE_EVENT_DECK_COUNT` | 1 |
 | effect | `EVENT_BATTLEFIELD_PENALTY` | 1 |
+| effect | `EVENT_SUPPRESSION_RULE` | 1 |
+| effect | `FREE_PLAY_PERMISSION_RULE` | 1 |
 | effect | `GRANT_LINKED_ABILITY_TO_DEFINITION` | 1 |
 | effect | `GRANT_OPPONENT_ACTION_RULE` | 1 |
-| effect | `GROWTH_COUNTER_RULE` | 1 |
 | effect | `HEAVENS_HOLE_RULE` | 1 |
 | effect | `HIDDEN_DOUBLE_ATTACK_RULE` | 1 |
 | effect | `HIDDEN_DRAW_REMOVAL_RULE` | 1 |
@@ -414,6 +418,7 @@ structuredAbilityCount=681
 | effect | `STOLEN_MANA_ATTRIBUTION_RULE` | 1 |
 | effect | `SWAP_SELECTED_EVENT_LOCATIONS` | 1 |
 | effect | `SWAP_VICTORY_POINTS` | 1 |
+| effect | `TEMPORARY_CARD_COPY_RULE` | 1 |
 | effect | `TEMPORARY_COMMAND_SEAL_RULE` | 1 |
 | effect | `TERRAIN_EFFECT_MULTIPLIER_RULE` | 1 |
 | effect | `TRANSFER_SELECTED_CARDS` | 1 |
@@ -421,13 +426,14 @@ structuredAbilityCount=681
 | effect | `TRAUMA_STATE_RULE` | 1 |
 | effect | `TRIMMAU_CONFESSION_RULE` | 1 |
 | effect | `TRIMMAU_GROWTH_RULE` | 1 |
+| effect | `TRUE_NAME_REVEAL_RULE` | 1 |
 | effect | `UNPREVENTABLE_RESULT_RULE` | 1 |
 | effect | `WINNER_PREDICTION_RULE` | 1 |
 | interaction | `CHOOSE_ONE_CARD` | 27 |
 | interaction | `BRANCH_CHOICE` | 15 |
 | interaction | `CHOOSE_ONE_PLAYER` | 12 |
-| interaction | `CHOOSE_NUMBER` | 9 |
-| interaction | `CHOOSE_N_CARDS` | 9 |
+| interaction | `CHOOSE_NUMBER` | 10 |
+| interaction | `CHOOSE_N_CARDS` | 10 |
 | interaction | `CHOOSE_ONE_EVENT` | 9 |
 | interaction | `CHOOSE_ONE_LOCATION` | 5 |
 | interaction | `CHOOSE_EACH_PLAYER_OPTION` | 2 |
@@ -488,7 +494,7 @@ structuredAbilityCount=681
 | lifecycle | `limit:once_per_game` | 1 |
 | lifecycle | `reset:round` | 1 |
 | lifecycle | `uniqueness:unique` | 1 |
-| modifier | `effect:combat_power_bonus` | 26 |
+| modifier | `effect:combat_power_bonus` | 29 |
 | modifier | `rule:card_power:add` | 18 |
 | modifier | `effect:source_card_power_bonus` | 8 |
 | modifier | `rule:card_cost:add` | 5 |
@@ -648,6 +654,8 @@ structuredAbilityCount=681
 | binding | `binding:selectedCardIds` | 2 |
 | binding | `binding:x` | 2 |
 | binding | `payload:closeAttackIds` | 2 |
+| binding | `payload:discardIds` | 2 |
+| binding | `payload:drawCount` | 2 |
 | binding | `payload:selectedBeastIds` | 2 |
 | binding | `payload:targetLocationId` | 2 |
 | binding | `result:drawnCardIds` | 2 |
@@ -664,10 +672,8 @@ structuredAbilityCount=681
 | binding | `payload:closedAttackIds` | 1 |
 | binding | `payload:corpseInstanceIds` | 1 |
 | binding | `payload:discardBeastIds` | 1 |
-| binding | `payload:discardIds` | 1 |
 | binding | `payload:discardedEventIds` | 1 |
 | binding | `payload:doppelgangerUpkeep` | 1 |
-| binding | `payload:drawCount` | 1 |
 | binding | `payload:fluidRevealChoice` | 1 |
 | binding | `payload:fullRecoveryTranscendChoice` | 1 |
 | binding | `payload:keptInstanceIds` | 1 |
@@ -709,7 +715,7 @@ structuredAbilityCount=681
 | binding | `result:targetPlayer` | 1 |
 | battle | `COMBAT_CONDITION` | 80 |
 | battle | `COMBAT_EVENT` | 65 |
-| battle | `COMBAT_EFFECT` | 31 |
+| battle | `COMBAT_EFFECT` | 35 |
 | battle | `COMBAT_RULE_MODIFIER` | 17 |
 
 ## Identity-Level Matrix
@@ -1208,23 +1214,23 @@ structuredAbilityCount=681
 | `servant.darius.skill.sc-darius-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:this_round` | `rule:card_close:forbid`, `rule:card_power:add` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.darius.skill.sc-darius-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:this_round` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.darius.skill.sc-darius-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.davinci.skill.sc-davinci-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.davinci-package` |
-| `servant.davinci.skill.sc-davinci-10` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.zero-target-strength-and-exile` |
-| `servant.davinci.skill.sc-davinci-11` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.imaginary-submarine-and-exile` |
-| `servant.davinci.skill.sc-davinci-12` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.spiritron-transfer-and-exile` |
-| `servant.davinci.skill.sc-davinci-13` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.instant-enhancement` |
-| `servant.davinci.skill.sc-davinci-14` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.emergency-treatment-and-exile` |
-| `servant.davinci.skill.sc-davinci-15` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.davinci-focus` |
-| `servant.davinci.skill.sc-davinci-16` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.block-movement-and-exile` |
-| `servant.davinci.skill.sc-davinci-17` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.attach-power-upgrade` |
-| `servant.davinci.skill.sc-davinci-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.davinci-package` |
-| `servant.davinci.skill.sc-davinci-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.davinci-package` |
-| `servant.davinci.skill.sc-davinci-4` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.deploy-workshop-gain-mana` |
-| `servant.davinci.skill.sc-davinci-5` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.reveal-target-true-name-and-exile` |
-| `servant.davinci.skill.sc-davinci-6` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.davinci-black-key` |
-| `servant.davinci.skill.sc-davinci-7` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.card-play` |
-| `servant.davinci.skill.sc-davinci-8` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` |
-| `servant.davinci.skill.sc-davinci-9` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.davinci-package` |
+| `servant.davinci.skill.sc-davinci-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TEMPORARY_CARD_COPY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.davinci-package` |
+| `servant.davinci.skill.sc-davinci-10` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_POWER_LOCK`, `MOVE_SOURCE_CARD` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.zero-target-strength-and-exile` |
+| `servant.davinci.skill.sc-davinci-11` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `EVENT_SUPPRESSION_RULE`, `MOVE_PLAYER`, `MOVE_SOURCE_CARD` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.imaginary-submarine-and-exile` |
+| `servant.davinci.skill.sc-davinci-12` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `FREE_PLAY_PERMISSION_RULE`, `MOVE_SOURCE_CARD` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.spiritron-transfer-and-exile` |
+| `servant.davinci.skill.sc-davinci-13` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_POWER_BONUS`, `SCHEDULE_PHASE_EFFECT` | `NONE` | `NONE` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.instant-enhancement` |
+| `servant.davinci.skill.sc-davinci-14` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `CHOOSE_NUMBER`, `CHOOSE_N_CARDS` | `DRAW_CARDS`, `MOVE_SELECTED_CARDS`, `MOVE_SOURCE_CARD` | `CHOOSE_NUMBER`, `CHOOSE_N_CARDS` | `NONE` | `NONE` | `NONE` | `payload:discardIds`, `payload:drawCount` | `NONE` | `core.emergency-treatment-and-exile` |
+| `servant.davinci.skill.sc-davinci-15` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `GROWTH_COUNTER_RULE`, `MOVE_SOURCE_CARD` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.davinci-focus` |
+| `servant.davinci.skill.sc-davinci-16` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `ADD_STATUS`, `MOVE_SOURCE_CARD` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.block-movement-and-exile` |
+| `servant.davinci.skill.sc-davinci-17` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `UPGRADE_ATTACHMENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.attach-power-upgrade` |
+| `servant.davinci.skill.sc-davinci-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SHOP_AUCTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.davinci-package` |
+| `servant.davinci.skill.sc-davinci-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_POWER_BONUS`, `GAIN_MANA`, `UPGRADE_ATTACHMENT_RULE` | `NONE` | `NONE` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.davinci-package` |
+| `servant.davinci.skill.sc-davinci-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_MANA` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.deploy-workshop-gain-mana` |
+| `servant.davinci.skill.sc-davinci-5` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `MOVE_SOURCE_CARD`, `TRUE_NAME_REVEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.reveal-target-true-name-and-exile` |
+| `servant.davinci.skill.sc-davinci-6` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `MANA` | `NONE` | `MOVE_SOURCE_CARD`, `SCHEDULE_PHASE_EFFECT` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.davinci-black-key` |
+| `servant.davinci.skill.sc-davinci-7` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_POWER_BONUS` | `NONE` | `NONE` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.card-play` |
+| `servant.davinci.skill.sc-davinci-8` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ADJUST_COMMAND_SEALS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` |
+| `servant.davinci.skill.sc-davinci-9` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SHOP_AUCTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.davinci-package` |
 | `servant.deon.skill.sc-deon-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.deon-sword-dance` |
 | `servant.deon.skill.sc-deon-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.deon-fleur-de-lys` |
 | `servant.deon.skill.sc-deon-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.deon-self-suggestion` |

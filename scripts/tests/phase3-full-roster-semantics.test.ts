@@ -1329,6 +1329,17 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='master.sion.skill.s17')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'luck_reveal_defeat_rule'})])}));
   });
 
+  it('grounds the seventeen-ID Da Vinci slice from the exact clean caster/assassin development snapshot', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const slice = overlays.filter((card) => card.id.startsWith('servant.davinci.skill.'));
+    expect(slice).toHaveLength(17);
+    expect(slice.every((card) => card.source?.authority === 'DEVELOPMENT_TEXT' && card.source.document === 'Fate_Domination-开发版/batch_caster_assassin.js' && card.source.sourceFileSha256 === 'd6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0' && card.source.sourceText === card.printedText && card.source.sourceTextSha256 === card.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.davinci.skill.sc-davinci-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'temporary_card_copy_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.davinci.skill.sc-davinci-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'shop_auction_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.davinci.skill.sc-davinci-14')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'draw_cards'}),expect.objectContaining({type:'move_selected_cards'})])}));
+    expect(slice.find(c=>c.id==='servant.davinci.skill.sc-davinci-17')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'upgrade_attachment_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1382,10 +1393,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 403,
-      blockedCount: 541,
+      sourceGroundedCount: 420,
+      blockedCount: 524,
       unclassifiedCount: 0,
-      structuredAbilityCount: 681,
+      structuredAbilityCount: 698,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

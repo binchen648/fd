@@ -18077,6 +18077,627 @@
         }
       ],
       "referencePrintedTextSha256": "c77ada71896665f9ef44c7aa8f8201478c983cd33cc520141deb1c9908bd39ea"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-1",
+      "printedText": "【真名解放】\n打出后，本回合此牌复制为任意一张展示的宝具牌。其获得威力+1且持有❄属性。如果你复制的的每局游戏限一次的牌，你并不需要移除此外牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n打出后，本回合此牌复制为任意一张展示的宝具牌。其获得威力+1且持有❄属性。如果你复制的的每局游戏限一次的牌，你并不需要移除此外牌。",
+        "sourceTextSha256": "09ef5f04ef50998bd6ff2b63cb09f52ba4a946ca738a8d3bf5029d25d34492e2"
+      },
+      "abilities": [
+        {
+          "id": "davinci.1.semantic",
+          "printedClause": "【真名解放】\n打出后，本回合此牌复制为任意一张展示的宝具牌。其获得威力+1且持有❄属性。如果你复制的的每局游戏限一次的牌，你并不需要移除此外牌。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "temporary_card_copy_rule",
+              "operation": "copy_revealed_noble_phantasm_until_round_end",
+              "powerBonus": 1,
+              "addAttribute": "snow",
+              "copiedOncePerGameDoesNotRequireSourceRemoval": true
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "09ef5f04ef50998bd6ff2b63cb09f52ba4a946ca738a8d3bf5029d25d34492e2"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-10",
+      "printedText": "毛茸茸的诱惑-行动阶段：选择一位与你位于同一地点的玩家。其力量属性牌本回合威力为0。使用后移除此外牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_10",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "毛茸茸的诱惑-行动阶段：选择一位与你位于同一地点的玩家。其力量属性牌本回合威力为0。使用后移除此外牌。",
+        "sourceTextSha256": "54ea113c2d590572652344036ff090627bcc8e64629a0c468cdbb2d777b9b799"
+      },
+      "abilities": [
+        {
+          "id": "davinci.10.semantic",
+          "printedClause": "毛茸茸的诱惑-行动阶段：选择一位与你位于同一地点的玩家。其力量属性牌本回合威力为0。使用后移除此外牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "target": {
+            "type": "player",
+            "location": "controller_location",
+            "minCount": 1,
+            "maxCount": 1
+          },
+          "effects": [
+            {
+              "type": "combat_power_lock",
+              "scope": "selected_player_strength_cards",
+              "value": 0,
+              "duration": "round"
+            },
+            {
+              "type": "move_source_card",
+              "destination": "removed"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "54ea113c2d590572652344036ff090627bcc8e64629a0c468cdbb2d777b9b799"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-11",
+      "printedText": "行动阶段：直至回合结束前，无效所有【固有结界】事件牌的效果。你可移动至任意地点。使用后移除此外牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_11",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "行动阶段：直至回合结束前，无效所有【固有结界】事件牌的效果。你可移动至任意地点。使用后移除此外牌。",
+        "sourceTextSha256": "f4d485964fe8de4b915da0ab0ae5b3a4b4ed3fc5fdc8342cfa99c53cc7070351"
+      },
+      "abilities": [
+        {
+          "id": "davinci.11.semantic",
+          "printedClause": "行动阶段：直至回合结束前，无效所有【固有结界】事件牌的效果。你可移动至任意地点。使用后移除此外牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "event_suppression_rule",
+              "operation": "disable_all_reality_marble_events_until_round_end"
+            },
+            {
+              "type": "move_player",
+              "destination": "any_location"
+            },
+            {
+              "type": "move_source_card",
+              "destination": "removed"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f4d485964fe8de4b915da0ab0ae5b3a4b4ed3fc5fdc8342cfa99c53cc7070351"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-12",
+      "printedText": "行动阶段：选择一张宝具属性牌。本回合即使你拥有的魔力少于8点也可将其免费打出。使用后移除此外牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_12",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "行动阶段：选择一张宝具属性牌。本回合即使你拥有的魔力少于8点也可将其免费打出。使用后移除此外牌。",
+        "sourceTextSha256": "0b198b2279b89d17766b008506c6c9ff42fc191a7f9d8b24da99c62d5f4164d5"
+      },
+      "abilities": [
+        {
+          "id": "davinci.12.semantic",
+          "printedClause": "行动阶段：选择一张宝具属性牌。本回合即使你拥有的魔力少于8点也可将其免费打出。使用后移除此外牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "target": {
+            "type": "card",
+            "attribute": "noble_phantasm",
+            "minCount": 1,
+            "maxCount": 1
+          },
+          "effects": [
+            {
+              "type": "free_play_permission_rule",
+              "operation": "selected_np_free_and_below_eight_this_round"
+            },
+            {
+              "type": "move_source_card",
+              "destination": "removed"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0b198b2279b89d17766b008506c6c9ff42fc191a7f9d8b24da99c62d5f4164d5"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-13",
+      "printedText": "魔力放出-行动阶段：将一张你的攻击牌的基础威力翻倍。回合结束时，将此牌和被强化的牌移除。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_13",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "魔力放出-行动阶段：将一张你的攻击牌的基础威力翻倍。回合结束时，将此牌和被强化的牌移除。",
+        "sourceTextSha256": "c8a0c464d2a82af56036b5dbdc0b57485483d58a645c464b3d7867bdc99a62ee"
+      },
+      "abilities": [
+        {
+          "id": "davinci.13.semantic",
+          "printedClause": "魔力放出-行动阶段：将一张你的攻击牌的基础威力翻倍。回合结束时，将此牌和被强化的牌移除。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "target": {
+            "type": "card",
+            "relation": "controller_attack",
+            "minCount": 1,
+            "maxCount": 1
+          },
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "scope": "selected_card_base_power",
+              "amountFormula": "selected_card_base_power"
+            },
+            {
+              "type": "schedule_phase_effect",
+              "phase": "round_end",
+              "effect": {
+                "type": "remove_selected_and_source_cards"
+              }
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c8a0c464d2a82af56036b5dbdc0b57485483d58a645c464b3d7867bdc99a62ee"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-14",
+      "printedText": "行动阶段：抽至多六张牌，然后弃置任意数量的手牌。使用后移除此外牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_14",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "行动阶段：抽至多六张牌，然后弃置任意数量的手牌。使用后移除此外牌。",
+        "sourceTextSha256": "95c1c76d983994795facc6b7b48c692f3610321427b01b5f3ca8278bd46ae8c7"
+      },
+      "abilities": [
+        {
+          "id": "davinci.14.semantic",
+          "printedClause": "行动阶段：抽至多六张牌，然后弃置任意数量的手牌。使用后移除此外牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_number",
+              "min": 0,
+              "max": 6,
+              "payloadKey": "drawCount"
+            },
+            {
+              "type": "draw_cards",
+              "countBinding": "drawCount"
+            },
+            {
+              "type": "choose_cards",
+              "zone": "hand",
+              "minCount": 0,
+              "maxCount": "all",
+              "payloadKey": "discardIds"
+            },
+            {
+              "type": "move_selected_cards",
+              "sourceZone": "hand",
+              "destination": "discard",
+              "payloadKey": "discardIds"
+            },
+            {
+              "type": "move_source_card",
+              "destination": "removed"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "95c1c76d983994795facc6b7b48c692f3610321427b01b5f3ca8278bd46ae8c7"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-15",
+      "printedText": "准备一张纸，每回合结束此牌+1计数，起始为0。\n行动阶段：使你获得+X威力，X为该牌计数。使用后移除此外牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_15",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "准备一张纸，每回合结束此牌+1计数，起始为0。\n行动阶段：使你获得+X威力，X为该牌计数。使用后移除此外牌。",
+        "sourceTextSha256": "b2608574b2c207cd420aee23a30a786e227e6c33c68fda5bbd687ab1c75bc979"
+      },
+      "abilities": [
+        {
+          "id": "davinci.15.semantic",
+          "printedClause": "准备一张纸，每回合结束此牌+1计数，起始为0。\n行动阶段：使你获得+X威力，X为该牌计数。使用后移除此外牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "growth_counter_rule",
+              "operation": "increment_end_round_then_gain_counter_power_and_remove",
+              "initialValue": 0,
+              "incrementTiming": "round_end",
+              "powerFormula": "counter"
+            },
+            {
+              "type": "move_source_card",
+              "destination": "removed"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b2608574b2c207cd420aee23a30a786e227e6c33c68fda5bbd687ab1c75bc979"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-16",
+      "printedText": "耀眼的光芒-行动阶段：选择一位玩家，其本回合无法移动。使用后移除此外牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_16",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "耀眼的光芒-行动阶段：选择一位玩家，其本回合无法移动。使用后移除此外牌。",
+        "sourceTextSha256": "76b8fc108eb439b2fe6b84df32d497f2b301708b672eda8b41b4776363f70508"
+      },
+      "abilities": [
+        {
+          "id": "davinci.16.semantic",
+          "printedClause": "耀眼的光芒-行动阶段：选择一位玩家，其本回合无法移动。使用后移除此外牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "target": {
+            "type": "player",
+            "minCount": 1,
+            "maxCount": 1
+          },
+          "effects": [
+            {
+              "type": "add_status",
+              "status": "cannot_move",
+              "duration": "round",
+              "subject": "selected_player"
+            },
+            {
+              "type": "move_source_card",
+              "destination": "removed"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "76b8fc108eb439b2fe6b84df32d497f2b301708b672eda8b41b4776363f70508"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-17",
+      "printedText": "将此牌放在你的技能牌下，该技能牌基础威力+1。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_17",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "将此牌放在你的技能牌下，该技能牌基础威力+1。",
+        "sourceTextSha256": "d73d9281c0bbe1202ddc1397cf84aa7d26a1b7d5dbf176e4f0dd8b844d51e1f6"
+      },
+      "abilities": [
+        {
+          "id": "davinci.17.semantic",
+          "printedClause": "将此牌放在你的技能牌下，该技能牌基础威力+1。",
+          "kind": "triggered",
+          "target": {
+            "type": "card",
+            "relation": "controller_skill",
+            "minCount": 1,
+            "maxCount": 1
+          },
+          "effects": [
+            {
+              "type": "upgrade_attachment_rule",
+              "operation": "attach_under_skill_and_add_base_power",
+              "powerBonus": 1
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d73d9281c0bbe1202ddc1397cf84aa7d26a1b7d5dbf176e4f0dd8b844d51e1f6"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-2",
+      "printedText": "X等于16减去回合数的二倍。\n残留：每当你部署于魔术工房时，抽3张【商店货品】，选取并展示其中一张，弃置剩余两张。按照回合顺序，其他玩家可以选择支付给你2战果以获得该牌。如果没人这样做，你获得之。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "X等于16减去回合数的二倍。\n残留：每当你部署于魔术工房时，抽3张【商店货品】，选取并展示其中一张，弃置剩余两张。按照回合顺序，其他玩家可以选择支付给你2战果以获得该牌。如果没人这样做，你获得之。",
+        "sourceTextSha256": "dbed81f544fccd1c120911eaf0c3a9e90f78d38cb13ec753c431bced4d791c70"
+      },
+      "abilities": [
+        {
+          "id": "davinci.2.semantic",
+          "printedClause": "X等于16减去回合数的二倍。\n残留：每当你部署于魔术工房时，抽3张【商店货品】，选取并展示其中一张，弃置剩余两张。按照回合顺序，其他玩家可以选择支付给你2战果以获得该牌。如果没人这样做，你获得之。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "shop_auction_rule",
+              "operation": "workshop_draw_three_choose_one_auction",
+              "drawCount": 3,
+              "priceVictoryPoints": 2,
+              "priority": "round_order",
+              "fallback": "owner_gets_item"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "dbed81f544fccd1c120911eaf0c3a9e90f78d38cb13ec753c431bced4d791c70"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-3",
+      "printedText": "你拥有的魔力少于8点也可打出此牌。\n加班-当此牌关闭时，你失去6点魔力。\n残留：此牌持续激活至下回合结束。此牌从【提升等级】获得的效果翻倍。\n行动阶段：获得2点魔力或合计威力+2。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "你拥有的魔力少于8点也可打出此牌。\n加班-当此牌关闭时，你失去6点魔力。\n残留：此牌持续激活至下回合结束。此牌从【提升等级】获得的效果翻倍。\n行动阶段：获得2点魔力或合计威力+2。",
+        "sourceTextSha256": "fa8621c175b050ca61d62f99ac9978324a44d75d3660e5eaeecf2ba384827abe"
+      },
+      "abilities": [
+        {
+          "id": "davinci.3.semantic",
+          "printedClause": "你拥有的魔力少于8点也可打出此牌。\n加班-当此牌关闭时，你失去6点魔力。\n残留：此牌持续激活至下回合结束。此牌从【提升等级】获得的效果翻倍。\n行动阶段：获得2点魔力或合计威力+2。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "upgrade_attachment_rule",
+              "operation": "below_eight_play_close_penalty_residual_double_level_up",
+              "closeManaLoss": 6,
+              "duration": "through_next_round",
+              "levelUpMultiplier": 2
+            },
+            {
+              "type": "choose_effect",
+              "options": [
+                "gain_2_mana",
+                "total_power_plus_2"
+              ]
+            },
+            {
+              "type": "gain_mana",
+              "amount": 2,
+              "conditionalOption": "gain_2_mana"
+            },
+            {
+              "type": "combat_power_bonus",
+              "scope": "controller_total",
+              "amount": 2,
+              "conditionalOption": "total_power_plus_2"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "fa8621c175b050ca61d62f99ac9978324a44d75d3660e5eaeecf2ba384827abe"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-4",
+      "printedText": "当你部署于魔术工房时，获得1点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_4",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "当你部署于魔术工房时，获得1点魔力。",
+        "sourceTextSha256": "b8364e7730c71540400bb76559e2e4397ec8009f4bfc6c5c09020595c8d3789b"
+      },
+      "abilities": [
+        {
+          "id": "davinci.4.semantic",
+          "printedClause": "当你部署于魔术工房时，获得1点魔力。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "gain_mana",
+              "amount": 1,
+              "condition": "controller_deploys_at_magic_workshop"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b8364e7730c71540400bb76559e2e4397ec8009f4bfc6c5c09020595c8d3789b"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-5",
+      "printedText": "行动阶段：选择一位玩家，使其【真名解放】。使用后移除此外牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_5",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "行动阶段：选择一位玩家，使其【真名解放】。使用后移除此外牌。",
+        "sourceTextSha256": "17cd84e07deab8f00b972d6ee3551a3e43c8d2d17913c578b67cff359d05ec3b"
+      },
+      "abilities": [
+        {
+          "id": "davinci.5.semantic",
+          "printedClause": "行动阶段：选择一位玩家，使其【真名解放】。使用后移除此外牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "target": {
+            "type": "player",
+            "minCount": 1,
+            "maxCount": 1
+          },
+          "effects": [
+            {
+              "type": "true_name_reveal_rule",
+              "operation": "force_selected_player_true_name_reveal"
+            },
+            {
+              "type": "move_source_card",
+              "destination": "removed"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "17cd84e07deab8f00b972d6ee3551a3e43c8d2d17913c578b67cff359d05ec3b"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-6",
+      "printedText": "行动阶段：花费4点魔力，在战斗阶段开始时使一名交战对手【败北】。使用后移除此外牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_6",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "行动阶段：花费4点魔力，在战斗阶段开始时使一名交战对手【败北】。使用后移除此外牌。",
+        "sourceTextSha256": "8ddd579a844a8b0494ee330f1d517cbdb5f12b3dc8ca53a7f2adae7868391f2f"
+      },
+      "abilities": [
+        {
+          "id": "davinci.6.semantic",
+          "printedClause": "行动阶段：花费4点魔力，在战斗阶段开始时使一名交战对手【败北】。使用后移除此外牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "target": {
+            "type": "player",
+            "relation": "engaged_opponent",
+            "minCount": 1,
+            "maxCount": 1
+          },
+          "effects": [
+            {
+              "type": "pay_mana",
+              "amount": 4
+            },
+            {
+              "type": "schedule_phase_effect",
+              "phase": "combat_start",
+              "effect": {
+                "type": "defeat_player",
+                "subject": "selected_player"
+              }
+            },
+            {
+              "type": "move_source_card",
+              "destination": "removed"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8ddd579a844a8b0494ee330f1d517cbdb5f12b3dc8ca53a7f2adae7868391f2f"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-7",
+      "printedText": "你的基本牌威力+1。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_7",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "你的基本牌威力+1。",
+        "sourceTextSha256": "6fc6ee55389d4c2ef00a049d3a6ed610cf18d6efe6289bb5fd194ef3f0c48c3b"
+      },
+      "abilities": [
+        {
+          "id": "davinci.7.semantic",
+          "printedClause": "你的基本牌威力+1。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "scope": "controller_base_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "6fc6ee55389d4c2ef00a049d3a6ed610cf18d6efe6289bb5fd194ef3f0c48c3b"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-8",
+      "printedText": "立刻恢复一枚令咒。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_8",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "立刻恢复一枚令咒。",
+        "sourceTextSha256": "16871d5ecfafe55b19b740f6f32666780de30c65ad71a30b4222a2e5e5c8c370"
+      },
+      "abilities": [
+        {
+          "id": "davinci.8.semantic",
+          "printedClause": "立刻恢复一枚令咒。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "adjust_command_seals",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "16871d5ecfafe55b19b740f6f32666780de30c65ad71a30b4222a2e5e5c8c370"
+    },
+    {
+      "id": "servant.davinci.skill.sc-davinci-9",
+      "printedText": "当达·芬奇开始一场拍卖时，你可以移除此外牌来直接结束拍卖，获得物品。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_davinci_9",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "当达·芬奇开始一场拍卖时，你可以移除此外牌来直接结束拍卖，获得物品。",
+        "sourceTextSha256": "e786aa589d6273ed5b27cde8c28c33b8a75ff40d4bb1a480f3acce68f800c0c7"
+      },
+      "abilities": [
+        {
+          "id": "davinci.9.semantic",
+          "printedClause": "当达·芬奇开始一场拍卖时，你可以移除此外牌来直接结束拍卖，获得物品。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "shop_auction_rule",
+              "operation": "remove_source_to_end_auction_and_gain_item"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "e786aa589d6273ed5b27cde8c28c33b8a75ff40d4bb1a480f3acce68f800c0c7"
     }
   ]
 }

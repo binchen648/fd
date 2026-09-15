@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 403
+    "affectedIdentityCount": 420
   },
   "requests": [
     {
@@ -2233,6 +2233,10 @@
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.astolfo.skill.sc-astolfo-1",
         "servant.darius.skill.sc-darius-1",
+        "servant.davinci.skill.sc-davinci-10",
+        "servant.davinci.skill.sc-davinci-13",
+        "servant.davinci.skill.sc-davinci-3",
+        "servant.davinci.skill.sc-davinci-7",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-3",
@@ -4970,6 +4974,108 @@
           "sha256": "e3afc162cc4676b9e3b6ca9aad41daed4aae8e22780705a608960a8d018fc88f"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-10",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-10",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-10",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_10"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-10",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[9].text#line=1",
+          "sha256": "54ea113c2d590572652344036ff090627bcc8e64629a0c468cdbb2d777b9b799"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_13"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[12].text#line=1",
+          "sha256": "c8a0c464d2a82af56036b5dbdc0b57485483d58a645c464b3d7867bdc99a62ee"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_3"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=1",
+          "sha256": "0043c4d42c1914395d0d931537640b1994cdcb49a349c3fe4b607430491023b1"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=2",
+          "sha256": "86117969befcab1ce672d0fd2aea053a0d5990dd9f2b902ee9b9c2ace87ff2f6"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=3",
+          "sha256": "a35c7dc058bf4c87b8e43953c042228b7b08d9edb40c409d930cbb374874cd0f"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=4",
+          "sha256": "e39bc752c48ef629d7efd9368a3112fffb9c4129bda26368b2ecb74d69aeb7f1"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-7",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-7",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-7",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_7"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[6].text#line=1",
+          "sha256": "6fc6ee55389d4c2ef00a049d3a6ed610cf18d6efe6289bb5fd194ef3f0c48c3b"
+        },
+        {
           "abilityId": "servant.diarmuid.skill.sc-diarmuid-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/枪兵/英文版/迪卢木多·奥迪那.htm"
@@ -5548,10 +5654,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 1,
-          "shared_handler": 77,
-          "specific_handler": 44
+          "shared_handler": 79,
+          "specific_handler": 46
         },
-        "handlerCount": 65,
+        "handlerCount": 69,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -5998,6 +6104,14 @@
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.andersen.skill.sc-andersen-2",
         "servant.clytie.skill.sc-clytie-3",
+        "servant.davinci.skill.sc-davinci-10",
+        "servant.davinci.skill.sc-davinci-11",
+        "servant.davinci.skill.sc-davinci-12",
+        "servant.davinci.skill.sc-davinci-14",
+        "servant.davinci.skill.sc-davinci-15",
+        "servant.davinci.skill.sc-davinci-16",
+        "servant.davinci.skill.sc-davinci-5",
+        "servant.davinci.skill.sc-davinci-6",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
         "servant.iskandar.skill.sc-iskandar-2",
@@ -8291,6 +8405,180 @@
           "sha256": "7233ee75978de60937f54f3be9b46dcb05a49fb32d594ba9383b2337cba4b47f"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-10",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-10",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-10",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_10"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-10",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[9].text#line=1",
+          "sha256": "54ea113c2d590572652344036ff090627bcc8e64629a0c468cdbb2d777b9b799"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_11"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[10].text#line=1",
+          "sha256": "f4d485964fe8de4b915da0ab0ae5b3a4b4ed3fc5fdc8342cfa99c53cc7070351"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-12",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-12",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-12",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_12"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[11].text#line=1",
+          "sha256": "0b198b2279b89d17766b008506c6c9ff42fc191a7f9d8b24da99c62d5f4164d5"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_14"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[13].text#line=1",
+          "sha256": "95c1c76d983994795facc6b7b48c692f3610321427b01b5f3ca8278bd46ae8c7"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-15",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-15",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-15",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_15"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-15",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[14].text#line=1",
+          "sha256": "d46233620fbc6173a9236d1a97532a2aa4e5a0f2266d243be061c3d26ea512fc"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-15",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[14].text#line=2",
+          "sha256": "e7532e8404ed561fda8d6729625990f0395483d7df5fbf0da1f766f0721af71c"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-16",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-16",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-16",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_16"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-16",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[15].text#line=1",
+          "sha256": "76b8fc108eb439b2fe6b84df32d497f2b301708b672eda8b41b4776363f70508"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-5",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-5",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-5",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_5"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[4].text#line=1",
+          "sha256": "17cd84e07deab8f00b972d6ee3551a3e43c8d2d17913c578b67cff359d05ec3b"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_6"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[5].text#line=1",
+          "sha256": "8ddd579a844a8b0494ee330f1d517cbdb5f12b3dc8ca53a7f2adae7868391f2f"
+        },
+        {
           "abilityId": "servant.emiya.skill.sc-emiya-np",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/弓兵/英文版/卫宫.htm"
@@ -8551,9 +8839,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 58,
-          "specific_handler": 38
+          "specific_handler": 46
         },
-        "handlerCount": 55,
+        "handlerCount": 63,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -14416,6 +14704,7 @@
         "master.zouken.skill.ascension",
         "master.zouken.skill.s3",
         "master.zouken.skill.s4",
+        "servant.davinci.skill.sc-davinci-6",
         "servant.roberts.skill.sc-roberts-1",
         "servant.roberts.skill.sc-roberts-2"
       ],
@@ -15138,6 +15427,27 @@
           "sha256": "1a648249487df828988dd2ecfa5dbbbbaf632d1a84ac55302eaa31428863e1fc"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_6"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[5].text#line=1",
+          "sha256": "8ddd579a844a8b0494ee330f1d517cbdb5f12b3dc8ca53a7f2adae7868391f2f"
+        },
+        {
           "abilityId": "servant.roberts.skill.sc-roberts-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/巴沙洛缪·罗伯茨.htm"
@@ -15212,9 +15522,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 17,
-          "specific_handler": 12
+          "specific_handler": 13
         },
-        "handlerCount": 22,
+        "handlerCount": 23,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -21206,6 +21516,9 @@
         "servant.atalanta.skill.sc-atalanta-1",
         "servant.caligula.skill.sc-caligula-1",
         "servant.darius.skill.sc-darius-2",
+        "servant.davinci.skill.sc-davinci-13",
+        "servant.davinci.skill.sc-davinci-3",
+        "servant.davinci.skill.sc-davinci-7",
         "servant.drake.skill.sc-drake-3",
         "servant.edison.skill.sc-edison-3",
         "servant.emiya.skill.sc-emiya-np",
@@ -24929,6 +25242,87 @@
           "sha256": "9306d30ca4244bde6326a78944a19e633f1dd3735f5cf4d2b33c4215ac794c01"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_13"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[12].text#line=1",
+          "sha256": "c8a0c464d2a82af56036b5dbdc0b57485483d58a645c464b3d7867bdc99a62ee"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_3"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=1",
+          "sha256": "0043c4d42c1914395d0d931537640b1994cdcb49a349c3fe4b607430491023b1"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=2",
+          "sha256": "86117969befcab1ce672d0fd2aea053a0d5990dd9f2b902ee9b9c2ace87ff2f6"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=3",
+          "sha256": "a35c7dc058bf4c87b8e43953c042228b7b08d9edb40c409d930cbb374874cd0f"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=4",
+          "sha256": "e39bc752c48ef629d7efd9368a3112fffb9c4129bda26368b2ecb74d69aeb7f1"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-7",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-7",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-7",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_7"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[6].text#line=1",
+          "sha256": "6fc6ee55389d4c2ef00a049d3a6ed610cf18d6efe6289bb5fd194ef3f0c48c3b"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
@@ -25421,10 +25815,10 @@
         "routeCounts": {
           "deterministic": 1,
           "none": 1,
-          "shared_handler": 101,
-          "specific_handler": 54
+          "shared_handler": 103,
+          "specific_handler": 55
         },
-        "handlerCount": 83,
+        "handlerCount": 85,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -25467,6 +25861,7 @@
         "master.tiamat.skill.ascension",
         "master.zouken.skill.ascension",
         "master.zouken.skill.s4",
+        "servant.davinci.skill.sc-davinci-11",
         "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-3",
         "servant.gorgon.skill.sc-gorgon-3",
@@ -26362,6 +26757,27 @@
           "sha256": "1a648249487df828988dd2ecfa5dbbbbaf632d1a84ac55302eaa31428863e1fc"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_11"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[10].text#line=1",
+          "sha256": "f4d485964fe8de4b915da0ab0ae5b3a4b4ed3fc5fdc8342cfa99c53cc7070351"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
@@ -26496,9 +26912,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 20,
-          "specific_handler": 14
+          "specific_handler": 15
         },
-        "handlerCount": 25,
+        "handlerCount": 26,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -26570,6 +26986,7 @@
         "servant.atalanta.skill.sc-atalanta-2",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.davinci.skill.sc-davinci-14",
         "servant.drake.skill.sc-drake-2",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
@@ -28213,6 +28630,27 @@
           "sha256": "480a180bdb8582523510a155d61848f427da536dff7453248134a62f25aa90b9"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_14"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[13].text#line=1",
+          "sha256": "95c1c76d983994795facc6b7b48c692f3610321427b01b5f3ca8278bd46ae8c7"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
@@ -28620,9 +29058,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 51,
-          "specific_handler": 25
+          "specific_handler": 26
         },
-        "handlerCount": 34,
+        "handlerCount": 35,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -28709,6 +29147,10 @@
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.atalanta.skill.sc-atalanta-1",
         "servant.darius.skill.sc-darius-2",
+        "servant.davinci.skill.sc-davinci-10",
+        "servant.davinci.skill.sc-davinci-13",
+        "servant.davinci.skill.sc-davinci-3",
+        "servant.davinci.skill.sc-davinci-7",
         "servant.edison.skill.sc-edison-3",
         "servant.ibaraki.skill.sc-ibaraki-1",
         "servant.kama.skill.sc-kama-1",
@@ -30861,6 +31303,108 @@
           "sha256": "9306d30ca4244bde6326a78944a19e633f1dd3735f5cf4d2b33c4215ac794c01"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-10",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-10",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-10",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_10"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-10",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[9].text#line=1",
+          "sha256": "54ea113c2d590572652344036ff090627bcc8e64629a0c468cdbb2d777b9b799"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_13"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[12].text#line=1",
+          "sha256": "c8a0c464d2a82af56036b5dbdc0b57485483d58a645c464b3d7867bdc99a62ee"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_3"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=1",
+          "sha256": "0043c4d42c1914395d0d931537640b1994cdcb49a349c3fe4b607430491023b1"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=2",
+          "sha256": "86117969befcab1ce672d0fd2aea053a0d5990dd9f2b902ee9b9c2ace87ff2f6"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=3",
+          "sha256": "a35c7dc058bf4c87b8e43953c042228b7b08d9edb40c409d930cbb374874cd0f"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=4",
+          "sha256": "e39bc752c48ef629d7efd9368a3112fffb9c4129bda26368b2ecb74d69aeb7f1"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-7",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-7",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-7",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_7"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[6].text#line=1",
+          "sha256": "6fc6ee55389d4c2ef00a049d3a6ed610cf18d6efe6289bb5fd194ef3f0c48c3b"
+        },
+        {
           "abilityId": "servant.edison.skill.sc-edison-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/魔术师/英文版/托马斯·爱迪生.htm"
@@ -31094,10 +31638,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 1,
-          "shared_handler": 53,
-          "specific_handler": 27
+          "shared_handler": 55,
+          "specific_handler": 29
         },
-        "handlerCount": 48,
+        "handlerCount": 51,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -31195,6 +31739,9 @@
         "master.zouken.skill.s1",
         "master.zouken.skill.s4",
         "servant.albion.skill.sc-albion-1",
+        "servant.davinci.skill.sc-davinci-3",
+        "servant.davinci.skill.sc-davinci-4",
+        "servant.davinci.skill.sc-davinci-8",
         "servant.drake.skill.sc-drake-3",
         "servant.edison.skill.sc-edison-2",
         "servant.kama.skill.sc-kama-1",
@@ -33431,6 +33978,87 @@
           "sha256": "679fed0d35a87156418c6a298693e00215da2b793ca03b03712f43c5b316915f"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_3"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=1",
+          "sha256": "0043c4d42c1914395d0d931537640b1994cdcb49a349c3fe4b607430491023b1"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=2",
+          "sha256": "86117969befcab1ce672d0fd2aea053a0d5990dd9f2b902ee9b9c2ace87ff2f6"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=3",
+          "sha256": "a35c7dc058bf4c87b8e43953c042228b7b08d9edb40c409d930cbb374874cd0f"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=4",
+          "sha256": "e39bc752c48ef629d7efd9368a3112fffb9c4129bda26368b2ecb74d69aeb7f1"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-4",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-4",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-4",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_4"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[3].text#line=1",
+          "sha256": "b8364e7730c71540400bb76559e2e4397ec8009f4bfc6c5c09020595c8d3789b"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-8",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-8",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-8",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_8"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-8",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[7].text#line=1",
+          "sha256": "16871d5ecfafe55b19b740f6f32666780de30c65ad71a30b4222a2e5e5c8c370"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
@@ -33894,10 +34522,11 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 60,
-          "specific_handler": 41
+          "deterministic": 1,
+          "shared_handler": 61,
+          "specific_handler": 42
         },
-        "handlerCount": 64,
+        "handlerCount": 66,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -33976,6 +34605,7 @@
         "servant.atalanta.skill.sc-atalanta-2",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.davinci.skill.sc-davinci-14",
         "servant.drake.skill.sc-drake-2",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
@@ -35798,6 +36428,27 @@
           "sha256": "480a180bdb8582523510a155d61848f427da536dff7453248134a62f25aa90b9"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_14"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[13].text#line=1",
+          "sha256": "95c1c76d983994795facc6b7b48c692f3610321427b01b5f3ca8278bd46ae8c7"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
@@ -36109,9 +36760,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 50,
-          "specific_handler": 29
+          "specific_handler": 30
         },
-        "handlerCount": 41,
+        "handlerCount": 42,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -36139,6 +36790,7 @@
         "master.waver.skill.s3",
         "servant.albion.skill.sc-albion-2",
         "servant.arjuna.skill.sc-arjuna-1",
+        "servant.davinci.skill.sc-davinci-16",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.kama.skill.sc-kama-2",
         "servant.lionking.skill.sc-lionking-3",
@@ -36510,6 +37162,27 @@
           "sha256": "a579469e3ed62c2a88c2248b826c2e5fc8ce94bd7a2c07e637a8abb73f2badd0"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-16",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-16",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-16",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_16"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-16",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[15].text#line=1",
+          "sha256": "76b8fc108eb439b2fe6b84df32d497f2b301708b672eda8b41b4776363f70508"
+        },
+        {
           "abilityId": "servant.diarmuid.skill.sc-diarmuid-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/枪兵/英文版/迪卢木多·奥迪那.htm"
@@ -36665,9 +37338,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 15,
-          "specific_handler": 5
+          "specific_handler": 6
         },
-        "handlerCount": 7,
+        "handlerCount": 8,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -36739,6 +37412,7 @@
         "servant.atalanta.skill.sc-atalanta-2",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.davinci.skill.sc-davinci-14",
         "servant.drake.skill.sc-drake-2",
         "servant.emiya.skill.sc-emiya-np",
         "servant.helena.skill.sc-helena-1",
@@ -38382,6 +39056,27 @@
           "sha256": "480a180bdb8582523510a155d61848f427da536dff7453248134a62f25aa90b9"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_14"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-14",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[13].text#line=1",
+          "sha256": "95c1c76d983994795facc6b7b48c692f3610321427b01b5f3ca8278bd46ae8c7"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
@@ -38789,9 +39484,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 51,
-          "specific_handler": 25
+          "specific_handler": 26
         },
-        "handlerCount": 34,
+        "handlerCount": 35,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -45107,6 +45802,17 @@
         "master.wodime.skill.s8",
         "master.wodime.skill.s9",
         "master.zouken.skill.s3",
+        "servant.davinci.skill.sc-davinci-1",
+        "servant.davinci.skill.sc-davinci-11",
+        "servant.davinci.skill.sc-davinci-12",
+        "servant.davinci.skill.sc-davinci-13",
+        "servant.davinci.skill.sc-davinci-15",
+        "servant.davinci.skill.sc-davinci-17",
+        "servant.davinci.skill.sc-davinci-2",
+        "servant.davinci.skill.sc-davinci-3",
+        "servant.davinci.skill.sc-davinci-5",
+        "servant.davinci.skill.sc-davinci-6",
+        "servant.davinci.skill.sc-davinci-9",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.gorgon.skill.sc-gorgon-3",
         "servant.medusa.skill.sc-medusa-2",
@@ -50321,6 +51027,273 @@
           "sha256": "eebcb82e2cc75d9f64efcdee761235dbfdf49182c5a36d1a1b7dc1eb850afe10"
         },
         {
+          "abilityId": "servant.davinci.skill.sc-davinci-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_1"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[0].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[0].text#line=2",
+          "sha256": "602fa048f7993f60624df0f92a5b685de427b7264c2d2813ec2d8c5e2ad89416"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_11"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[10].text#line=1",
+          "sha256": "f4d485964fe8de4b915da0ab0ae5b3a4b4ed3fc5fdc8342cfa99c53cc7070351"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-12",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-12",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-12",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_12"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[11].text#line=1",
+          "sha256": "0b198b2279b89d17766b008506c6c9ff42fc191a7f9d8b24da99c62d5f4164d5"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_13"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-13",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[12].text#line=1",
+          "sha256": "c8a0c464d2a82af56036b5dbdc0b57485483d58a645c464b3d7867bdc99a62ee"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-15",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-15",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-15",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_15"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-15",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[14].text#line=1",
+          "sha256": "d46233620fbc6173a9236d1a97532a2aa4e5a0f2266d243be061c3d26ea512fc"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-15",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[14].text#line=2",
+          "sha256": "e7532e8404ed561fda8d6729625990f0395483d7df5fbf0da1f766f0721af71c"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-17",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-17",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-17",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_17"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-17",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[16].text#line=1",
+          "sha256": "d73d9281c0bbe1202ddc1397cf84aa7d26a1b7d5dbf176e4f0dd8b844d51e1f6"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_2"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[1].text#line=1",
+          "sha256": "8cc5b08b4ebbc586299d96896898a7b4533d663ed730a20c27e4d9e75f1581a2"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[1].text#line=2",
+          "sha256": "aa8633666e87d2db86f9f55c364127a9da2d2b09f737201fd8746ccf9a850604"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_3"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=1",
+          "sha256": "0043c4d42c1914395d0d931537640b1994cdcb49a349c3fe4b607430491023b1"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=2",
+          "sha256": "86117969befcab1ce672d0fd2aea053a0d5990dd9f2b902ee9b9c2ace87ff2f6"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=3",
+          "sha256": "a35c7dc058bf4c87b8e43953c042228b7b08d9edb40c409d930cbb374874cd0f"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[2].text#line=4",
+          "sha256": "e39bc752c48ef629d7efd9368a3112fffb9c4129bda26368b2ecb74d69aeb7f1"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-5",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-5",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-5",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_5"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[4].text#line=1",
+          "sha256": "17cd84e07deab8f00b972d6ee3551a3e43c8d2d17913c578b67cff359d05ec3b"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_6"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[5].text#line=1",
+          "sha256": "8ddd579a844a8b0494ee330f1d517cbdb5f12b3dc8ca53a7f2adae7868391f2f"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-9",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-9",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.davinci/莱昂纳多·达·芬奇"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-9",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_davinci_9"
+        },
+        {
+          "abilityId": "servant.davinci.skill.sc-davinci-9",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[104].skills[8].text#line=1",
+          "sha256": "e786aa589d6273ed5b27cde8c28c33b8a75ff40d4bb1a480f3acce68f800c0c7"
+        },
+        {
           "abilityId": "servant.diarmuid.skill.sc-diarmuid-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/枪兵/英文版/迪卢木多·奥迪那.htm"
@@ -50470,10 +51443,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 135,
-          "specific_handler": 62
+          "shared_handler": 139,
+          "specific_handler": 69
         },
-        "handlerCount": 95,
+        "handlerCount": 103,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

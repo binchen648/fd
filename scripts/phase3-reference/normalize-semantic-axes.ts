@@ -31,6 +31,7 @@ export type StructuredSourceEvidence =
       document:
         | 'Fate_Domination-开发版/data_masters.js'
         | 'Fate_Domination-开发版/data_servants.js'
+        | 'Fate_Domination-开发版/batch_caster_assassin.js'
         | 'Fate_Domination-开发版/index.html';
       locator: string;
       sourceFileSha256: string;
@@ -656,6 +657,7 @@ export function loadSourceEvidenceOverlayCards(
       const allowedDevelopmentDocuments = new Set([
         'Fate_Domination-开发版/data_masters.js',
         'Fate_Domination-开发版/data_servants.js',
+        'Fate_Domination-开发版/batch_caster_assassin.js',
         'Fate_Domination-开发版/index.html',
       ]);
       if (
