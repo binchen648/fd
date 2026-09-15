@@ -747,3 +747,12 @@ Permitted final status:
 - Reporter growth is exactly ten deployment rewards under the existing legacy-resolve label plus ten continuous formulas under the existing not-classifiable label; A performs no taxonomy/KPI promotion.
 - A checks: typecheck PASS, focused `17/17`, content validation PASS, determinism unchanged, runtime diff=0, diff check PASS. S evidence: rules `368/368`, full CI `710/710`.
 - R34 is READY; FM05 remains unaccepted until independent reviewer judgment.
+
+## P3-R34 / FM05 Fifth F4 Migration Acceptance - 2026-09-16
+
+- FM05 is `MIGRATION_ACCEPTED` for exactly 10 Territory Creation identities.
+- S candidate `3e66365a03c12b4a1d683bdae5e9350acad80455`; A synchronization `5f3e3810e6cc16fbdb03d83c38b8b9087a6587d7`.
+- Frozen canonical-authoring overlap moves `69 -> 79` (+10); exact batch `0/10 -> 10/10`; unauthorized additions/removals/skips are zero.
+- Independent R34 evidence: focused `17/17`, rules `368/368`, full CI `710/710`, content 0 blockers, determinism unchanged, runtime diff=0, diff check PASS.
+- Fresh reviewer coverage equals A material artifact except `generatedAt`: `69/101/200`, raw `22/3/127/0/48/124`, compiled identity unchanged.
+- No broad formula/Trigger/Power/Special/taxonomy promotion is implied.

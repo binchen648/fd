@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.30
+- Version: P3-TI-1.31
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3634,7 +3634,7 @@ Goal: synchronize exact R33 facts, run fresh coverage/recertification, and if an
 ## TASK P3-FM05
 
 Owner: Codex S
-Status: MIGRATION_CANDIDATE
+Status: MIGRATION_ACCEPTED
 Branch: `codex/s-p3-fm05-territory-creation`
 Base: exact P3-A-FB2-11 synchronization `fd17ba227182e5e9a14d093390bbfb3a47af1c39`
 Candidate: `3e66365a03c12b4a1d683bdae5e9350acad80455`
@@ -3650,7 +3650,7 @@ Completion status allowed:
 ## TASK P3-A-FM05-MIGRATION-SYNC
 
 Owner: Codex A
-Status: MIGRATION_SYNC_CANDIDATE
+Status: MIGRATION_SYNC_ACCEPTED
 Branch: `codex/a-p3-fm05-migration-sync`
 Base: P3-FM05 S candidate `3e66365a03c12b4a1d683bdae5e9350acad80455`
 Read: `docs/reports/2026-09-16-p3-a-fm05-migration-synchronization.md`
@@ -3664,7 +3664,7 @@ Completion status allowed:
 ## TASK P3-R34
 
 Owner: Codex R
-Status: READY
+Status: MIGRATION_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM05 lineage
 
 Goal: independently review FM05 without implementing fixes. Required checks: exact ten-ID membership; frozen F1 full-text and two clause hashes; locked Reference owner/class/static metadata; exact controlled round formula AST; accepted FB2-11 and FB2-02 structural conformance; representative round 1/4/7/8 Power and Magic Workshop deployment reward; A burn-down/material coverage integrity; no runtime changes; determinism; full validation; diff check.
@@ -3708,6 +3708,15 @@ Permitted final status:
 - Compiled product identity remains definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 cards / 14 characters / 0 blocking issues.
 - A recertification passes typecheck, focused `17/17`, content validation, deterministic generated-content verification, and diff check. S evidence supplies rules `368/368` and standard full CI `710/710`.
 - P3-R34 is READY on the exact A-synchronized lineage; FM05 is not accepted until R34 independently reviews it.
+
+## Full-Roster Dispatch State After P3-R34 / FM05
+
+- FM05 is independently `MIGRATION_ACCEPTED` for exactly ten Territory Creation identities.
+- S candidate is `3e66365a03c12b4a1d683bdae5e9350acad80455`; A material synchronization is `5f3e3810e6cc16fbdb03d83c38b8b9087a6587d7`.
+- Frozen-F1 canonical-authoring overlap moves `69/944 -> 79/944` (+10); exact batch moves `0/10 -> 10/10`; unauthorized additions/removals/skips are zero.
+- Independent R34 evidence: source/static/structure reconciliation 10/10; focused `17/17`; rules `368/368`; standard full CI `710/710`; content 0 blockers; deterministic hashes unchanged; runtime diff=0; diff check PASS.
+- Fresh reviewer coverage equals A material coverage except `generatedAt`: `69/101/200`, raw `22/3/127/0/48/124`, compiled identity unchanged.
+- This acceptance does not promote broad formula language, broad Trigger/Power semantics, Special Subsystem, or taxonomy/KPI changes.
 
 ## Prompt Templates
 
