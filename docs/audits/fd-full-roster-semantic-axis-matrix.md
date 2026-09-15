@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=627
-blockedCount=317
+sourceGroundedCount=642
+blockedCount=302
 unclassifiedCount=0
-structuredAbilityCount=905
+structuredAbilityCount=920
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 114 |
+| timing | `ACTION` | 116 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -265,13 +265,13 @@ structuredAbilityCount=905
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
 | effect | `EVENT_CARD_RULE` | 27 |
-| effect | `DRAW_CARDS` | 25 |
+| effect | `DRAW_CARDS` | 26 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
+| effect | `MOVE_PLAYER` | 21 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
-| effect | `MOVE_PLAYER` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
 | effect | `MOVE_SELECTED_CARDS` | 17 |
-| effect | `PLAY_SELECTED_CARDS` | 15 |
+| effect | `PLAY_SELECTED_CARDS` | 16 |
 | effect | `CLOSE_SOURCE_CARD` | 14 |
 | effect | `LOSTBELT_EXPANSION` | 14 |
 | effect | `DEFEAT_PLAYER` | 13 |
@@ -412,16 +412,28 @@ structuredAbilityCount=905
 | effect | `CONDEMNATION_RELEASE_POWER_RULE` | 1 |
 | effect | `CONDITIONAL_MANA_FORFEIT_RULE` | 1 |
 | effect | `CONDITIONAL_PLAY_SURCHARGE_CLOSE_RULE` | 1 |
+| effect | `CONSTANTINE_FALLEN_EMPIRE_RULE` | 1 |
+| effect | `CONSTANTINE_TRIPLE_WALLS_RULE` | 1 |
 | effect | `CONSTRAINED_ATTRIBUTE_POWER_RULE` | 1 |
 | effect | `CONTROL_RESOURCE_TRANSFORM_RULE` | 1 |
 | effect | `COOPERATIVE_SKILL_CLOSE_RULE` | 1 |
+| effect | `CORDAY_DREAM_TARGET_RULE` | 1 |
+| effect | `CORDAY_SECRET_TARGET_RULE` | 1 |
 | effect | `COSMOS_CHOICE_RULE` | 1 |
 | effect | `COUNTER_THRESHOLD_POWER_RULE` | 1 |
 | effect | `CRAFT_ESSENCE_POOL_RULE` | 1 |
 | effect | `CRIMSON_MOON_ENGAGEMENT_PULL_RULE` | 1 |
 | effect | `CURSE_BASIC_CARD_MODIFIER_RULE` | 1 |
 | effect | `CURSE_MANA_RECOVERY_RULE` | 1 |
+| effect | `CU_ALTER_CURRUID_RESIDUAL_RULE` | 1 |
+| effect | `CU_ALTER_DEFEAT_GUARD_VP_RULE` | 1 |
+| effect | `CU_ALTER_GAE_BOLG_VP_RULE` | 1 |
+| effect | `CU_GAE_BOLG_RULE` | 1 |
+| effect | `CU_GUNGNIR_REWARD_RULE` | 1 |
 | effect | `DAMAGE_RESOURCE_RULE` | 1 |
+| effect | `DANTES_ENFER_REVEAL_RULE` | 1 |
+| effect | `DANTES_HOPE_REWARD_RULE` | 1 |
+| effect | `DANTES_KING_TRANSFER_RULE` | 1 |
 | effect | `DECK_BOTTOM_MATCH_RULE` | 1 |
 | effect | `DECK_BOTTOM_RULE` | 1 |
 | effect | `DECK_RECYCLE_POWER_RULE` | 1 |
@@ -487,6 +499,7 @@ structuredAbilityCount=905
 | effect | `PLAY_SOURCE_CARD` | 1 |
 | effect | `POISON_DEFEAT_RULE` | 1 |
 | effect | `PREPARATION_LEADER_VP_RULE` | 1 |
+| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 1 |
 | effect | `PROPHECY_HAND_SUM_DEFEAT_RULE` | 1 |
 | effect | `REACTIVE_CARD_ACTION_RULE` | 1 |
 | effect | `REACTIVE_RESOURCE_RULE` | 1 |
@@ -1310,21 +1323,21 @@ structuredAbilityCount=905
 | `servant.clytie.skill.sc-clytie-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.clytie-water-nymph` |
 | `servant.clytie.skill.sc-clytie-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `servant.true-name-revealed` | `EVENT_PLAYER_IS_CONTROLLER` | `NONE` | `NONE` | `EXILE_SOURCE_CARD`, `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS`, `TRANSFER_MATCHING_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.clytie.skill.sc-clytie-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.outer-god-life` |
-| `servant.constantine.skill.sc-constantine-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
-| `servant.constantine.skill.sc-constantine-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.constantine.skill.sc-constantine-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.constantine-triple-walls` |
-| `servant.corday.skill.sc-corday-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
-| `servant.corday.skill.sc-corday-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.corday-foolish-plan` |
-| `servant.corday.skill.sc-corday-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.corday-dream` |
-| `servant.cu-alter.skill.sc-cu-alter-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.cu-alter-curruid-passive` |
-| `servant.cu-alter.skill.sc-cu-alter-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.cu-alter-curruid-permanent` |
-| `servant.cu-alter.skill.sc-cu-alter-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.cu-alter-gae-bolg` |
-| `servant.cu.skill.sc-cu-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.cu-gae-bolg` |
-| `servant.cu.skill.sc-cu-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
-| `servant.cu.skill.sc-cu-np` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.cu-gungnir-reward` |
-| `servant.dantes.skill.sc-dantes-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.dantes-king` |
-| `servant.dantes.skill.sc-dantes-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.dantes-attendre` |
-| `servant.dantes.skill.sc-dantes-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.dantes-enfer` |
+| `servant.constantine.skill.sc-constantine-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `servant.constantine.skill.sc-constantine-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CONSTANTINE_FALLEN_EMPIRE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.constantine.skill.sc-constantine-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CONSTANTINE_TRIPLE_WALLS_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.constantine-triple-walls` |
+| `servant.corday.skill.sc-corday-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
+| `servant.corday.skill.sc-corday-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CORDAY_SECRET_TARGET_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.corday-foolish-plan` |
+| `servant.corday.skill.sc-corday-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CORDAY_DREAM_TARGET_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.corday-dream` |
+| `servant.cu-alter.skill.sc-cu-alter-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CU_ALTER_DEFEAT_GUARD_VP_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.cu-alter-curruid-passive` |
+| `servant.cu-alter.skill.sc-cu-alter-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CU_ALTER_CURRUID_RESIDUAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.cu-alter-curruid-permanent` |
+| `servant.cu-alter.skill.sc-cu-alter-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CU_ALTER_GAE_BOLG_VP_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.cu-alter-gae-bolg` |
+| `servant.cu.skill.sc-cu-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CU_GAE_BOLG_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.cu-gae-bolg` |
+| `servant.cu.skill.sc-cu-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
+| `servant.cu.skill.sc-cu-np` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CU_GUNGNIR_REWARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.cu-gungnir-reward` |
+| `servant.dantes.skill.sc-dantes-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DANTES_KING_TRANSFER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.dantes-king` |
+| `servant.dantes.skill.sc-dantes-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DANTES_HOPE_REWARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.dantes-attendre` |
+| `servant.dantes.skill.sc-dantes-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DANTES_ENFER_REVEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.dantes-enfer` |
 | `servant.danzou.skill.sc-danzou-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.danzou-mechanical-illusion` |
 | `servant.danzou.skill.sc-danzou-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.danzou-synthetic-limbs` |
 | `servant.danzou.skill.sc-danzou-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
