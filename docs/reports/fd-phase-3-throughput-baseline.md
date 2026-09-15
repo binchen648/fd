@@ -559,3 +559,16 @@ Permitted final status:
 - A reviewer-only runtime probe independently observed transformed state and deployment restriction before consume, source removal plus complete state cleanup after consume, and a later ordinary battle won by the higher-power opponent rather than by stale Return Silence override.
 - B23 does not promote broad TO14 beyond accepted rows, TO15 Modifier/Power, TO16 Special, generic state transformations, generic passive lifecycle, Soul Drag as a general power contract, or Return Silence as an independently accepted TO16 row.
 - The B23 runtime/reviewer lane is released. The scoped TO14 direct-consumer sequence is complete at `13/13`; further Phase 3 work proceeds through the separately accepted full-roster F0/F1 migration workflow and ultimately F5 closure.
+
+## P3-A FB2-01 Synchronization — 2026-09-16
+
+- P3-FB2-01 fixed controller mana-cost component: `REVIEW_ACCEPTED` at exact candidate `36670ca3d57331b5354fca35deadc1e34bf5a1db`, independent P3-R18 evidence `30c1e5365eeba102853a7f20f5bad139b3953acc`.
+- Accepted scope is exactly one top-level fixed positive safe-integer controller `pay_mana` component, usable only when the parent semantic route is already independently accepted. Variable/expression, third-party, multi-node, non-mana, and effect-level optional-cost shapes remain outside the contract.
+- The implementation reuses the existing typed Resolution Data-flow `pay_mana` primitive and introduces no second payment engine. Maiya preserves its staged activation-payment -> pending-target boundary; Kayneth preserves atomic same-stage payment + source-card PLAY rollback.
+- Production identity/text audit is `0` matches. No MatchSession/client/projection/F1 authoring files changed, and no new browser Gate C was required.
+- Fresh A raw coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled evidence remains definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, `70` cards, `14` characters, and `0` blocking issues.
+- The regenerated coverage artifact changed only `generatedAt` and generic static-evidence line numbers, so this non-semantic drift is intentionally not committed.
+- Fresh independent evidence: typecheck PASS; FB2-01 + Maiya + Kayneth `22/22 PASS`; all rules regressions `240/240 PASS`; full CI `653/653 PASS`; generated-content determinism PASS.
+- For this exact sub-capability, F2 alignment and F3 runtime acceptance are satisfied. Full-roster F4 is not satisfied until an S migration batch selects exact F1 identities that also have an independently accepted parent runtime route, receives independent review, and A synchronizes burn-down.
+- This acceptance does not promote broad `GENERIC_COST_PAYMENT`, variable/X/optional/third-party/upkeep/replacement payment, command-seal/VP/discard/source-move costs, ordinary printed card costs, generic Resource Numeric, Interaction, or Card Action behavior.
+- The FB2-01 runtime/reviewer lane is released. The next legal step is an exact F1 membership scan against both the accepted fixed-cost component and already accepted parent semantic routes; cost-shape-only matches remain blocked.
