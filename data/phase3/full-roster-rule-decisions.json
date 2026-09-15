@@ -6,8 +6,8 @@
     "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
   },
   "summary": {
-    "blockedIdentityCount": 442,
-    "coveredBlockedIdentityCount": 442,
+    "blockedIdentityCount": 427,
+    "coveredBlockedIdentityCount": 427,
     "uncoveredBlockedIdentityCount": 0,
     "ruleDecisionPacketCount": 0,
     "sourceEvidencePacketCount": 1,
@@ -23,9 +23,6 @@
         "servant.achilles.skill.sc-achilles-2",
         "servant.achilles.skill.sc-achilles-3",
         "servant.albion.skill.sc-albion-3",
-        "servant.altera.skill.sc-altera-1",
-        "servant.altera.skill.sc-altera-2",
-        "servant.altera.skill.sc-altera-3",
         "servant.amakusa.skill.sc-amakusa-2",
         "servant.amakusa.skill.sc-amakusa-3",
         "servant.amor.skill.sc-amor-1",
@@ -50,12 +47,6 @@
         "servant.arjuna-archer.skill.sc-arjuna-archer-3",
         "servant.arjuna.skill.sc-arjuna-2",
         "servant.arjuna.skill.sc-arjuna-3",
-        "servant.arthur.skill.sc-arthur-1",
-        "servant.arthur.skill.sc-arthur-2",
-        "servant.arthur.skill.sc-arthur-3",
-        "servant.artoria-alt.skill.sc-artoria-alt-1",
-        "servant.artoria-alt.skill.sc-artoria-alt-2",
-        "servant.artoria-alt.skill.sc-artoria-alt-3",
         "servant.ashva.skill.sc-ashva-1",
         "servant.ashva.skill.sc-ashva-2",
         "servant.ashva.skill.sc-ashva-3",
@@ -71,9 +62,6 @@
         "servant.barghest.skill.sc-barghest-1",
         "servant.barghest.skill.sc-barghest-2",
         "servant.barghest.skill.sc-barghest-3",
-        "servant.bedivere.skill.sc-bedivere-1",
-        "servant.bedivere.skill.sc-bedivere-2",
-        "servant.bedivere.skill.sc-bedivere-3",
         "servant.benkei.skill.sc-benkei-1",
         "servant.benkei.skill.sc-benkei-2",
         "servant.benkei.skill.sc-benkei-3",
@@ -166,9 +154,6 @@
         "servant.gareth.skill.sc-gareth-1",
         "servant.gareth.skill.sc-gareth-2",
         "servant.gareth.skill.sc-gareth-3",
-        "servant.gawain.skill.sc-gawain-1",
-        "servant.gawain.skill.sc-gawain-2",
-        "servant.gawain.skill.sc-gawain-3",
         "servant.georgios.skill.sc-georgios-1",
         "servant.georgios.skill.sc-georgios-2",
         "servant.georgios.skill.sc-georgios-3",
@@ -550,78 +535,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[77].skills[2].text#line=1",
           "sha256": "4bd77425bde34cec725d4b43f8a1987b7cd0ecf74c5a175cf64a16d588e89677"
-        },
-        {
-          "abilityId": "servant.altera.skill.sc-altera-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/阿蒂拉.htm"
-        },
-        {
-          "abilityId": "servant.altera.skill.sc-altera-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.altera/阿蒂拉"
-        },
-        {
-          "abilityId": "servant.altera.skill.sc-altera-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[16].skills[0].text#line=1",
-          "sha256": "1bcc870988df713b11d7e5b248c8df0cc9386ad383dc5202c091fd212c5b8548"
-        },
-        {
-          "abilityId": "servant.altera.skill.sc-altera-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/阿蒂拉.htm"
-        },
-        {
-          "abilityId": "servant.altera.skill.sc-altera-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.altera/阿蒂拉"
-        },
-        {
-          "abilityId": "servant.altera.skill.sc-altera-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[16].skills[1].text#line=1",
-          "sha256": "2cedf0f973ec6e558aa12bcefa93ed2ac07a617abc1638a2890af6a3528b531c"
-        },
-        {
-          "abilityId": "servant.altera.skill.sc-altera-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[16].skills[1].text#line=2",
-          "sha256": "a3bf9a44f08c88cf66b474f7688f351e7c4892dcd5e383327ade631309d50639"
-        },
-        {
-          "abilityId": "servant.altera.skill.sc-altera-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[16].skills[1].text#line=3",
-          "sha256": "dadc5af1b3d8b46d57e16cd03ceacba7d00fce0b8e43e065993b1ebde50bf0bf"
-        },
-        {
-          "abilityId": "servant.altera.skill.sc-altera-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/阿蒂拉.htm"
-        },
-        {
-          "abilityId": "servant.altera.skill.sc-altera-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.altera/阿蒂拉"
-        },
-        {
-          "abilityId": "servant.altera.skill.sc-altera-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[16].skills[2].text#line=1",
-          "sha256": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2"
-        },
-        {
-          "abilityId": "servant.altera.skill.sc-altera-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[16].skills[2].text#line=2",
-          "sha256": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85"
-        },
-        {
-          "abilityId": "servant.altera.skill.sc-altera-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[16].skills[2].text#line=3",
-          "sha256": "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
         },
         {
           "abilityId": "servant.amakusa.skill.sc-amakusa-2",
@@ -1098,162 +1011,6 @@
           "sha256": "25ea95cc54ee7257b585d63c28e03d2fd3f91aa38cd1fdc28cd163219ee3e23f"
         },
         {
-          "abilityId": "servant.arthur.skill.sc-arthur-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/亚瑟·潘德拉贡[Prototype].htm"
-        },
-        {
-          "abilityId": "servant.arthur.skill.sc-arthur-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.arthur/亚瑟·潘德拉贡[Prototype]"
-        },
-        {
-          "abilityId": "servant.arthur.skill.sc-arthur-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[28].skills[0].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.arthur.skill.sc-arthur-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[28].skills[0].text#line=2",
-          "sha256": "f70698415ae565ffe802bc053d7c908dafc4a1c8348b1fe2ad632a6c957b6043"
-        },
-        {
-          "abilityId": "servant.arthur.skill.sc-arthur-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/亚瑟·潘德拉贡[Prototype].htm"
-        },
-        {
-          "abilityId": "servant.arthur.skill.sc-arthur-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.arthur/亚瑟·潘德拉贡[Prototype]"
-        },
-        {
-          "abilityId": "servant.arthur.skill.sc-arthur-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[28].skills[1].text#line=1",
-          "sha256": "5f1330f64e80caa7cf32e18ac67f5d11130e815fef166a9af167400758daf85a"
-        },
-        {
-          "abilityId": "servant.arthur.skill.sc-arthur-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[28].skills[1].text#line=2",
-          "sha256": "ba973c69c3cbd71e7e07aa3531c562130f695a96ce2ba0a77ec80af72d88ce55"
-        },
-        {
-          "abilityId": "servant.arthur.skill.sc-arthur-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/亚瑟·潘德拉贡[Prototype].htm"
-        },
-        {
-          "abilityId": "servant.arthur.skill.sc-arthur-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.arthur/亚瑟·潘德拉贡[Prototype]"
-        },
-        {
-          "abilityId": "servant.arthur.skill.sc-arthur-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[28].skills[2].text#line=1",
-          "sha256": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2"
-        },
-        {
-          "abilityId": "servant.arthur.skill.sc-arthur-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[28].skills[2].text#line=2",
-          "sha256": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85"
-        },
-        {
-          "abilityId": "servant.arthur.skill.sc-arthur-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[28].skills[2].text#line=3",
-          "sha256": "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/阿尔托莉雅·潘德拉贡[Alter.htm"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.artoria-alt/阿尔托莉雅·潘德拉贡 (Alter)"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[25].skills[0].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[25].skills[0].text#line=2",
-          "sha256": "fd8c5e0e847abf6082fd9dfc33dded13573f2d7d6ca1bdd8034bdcabdebcb192"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[25].skills[0].text#line=3",
-          "sha256": "c04c7838663f150695110bccbaa4f14b86762899b5b22c04270a3733564be736"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/阿尔托莉雅·潘德拉贡[Alter.htm"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.artoria-alt/阿尔托莉雅·潘德拉贡 (Alter)"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[25].skills[1].text#line=1",
-          "sha256": "049ba8f173d314760399a5e627c5ba7dac3c53337820e1ec4ed06471d7c49e62"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[25].skills[1].text#line=2",
-          "sha256": "b930e7b42882e432686b5ae1fe2d6c937181c29387de7eedfae8b05cd80efe13"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[25].skills[1].text#line=3",
-          "sha256": "92965b24c392cfa61922917a1790645efa4808f82a4f9c65d8215e20eb4c740e"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/阿尔托莉雅·潘德拉贡[Alter.htm"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.artoria-alt/阿尔托莉雅·潘德拉贡 (Alter)"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[25].skills[2].text#line=1",
-          "sha256": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[25].skills[2].text#line=2",
-          "sha256": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85"
-        },
-        {
-          "abilityId": "servant.artoria-alt.skill.sc-artoria-alt-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[25].skills[2].text#line=3",
-          "sha256": "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
-        },
-        {
           "abilityId": "servant.ashva.skill.sc-ashva-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/弓兵/英文版/马嘶.htm"
@@ -1576,78 +1333,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[30].skills[2].text#line=1",
           "sha256": "6b11fe445b9f7bf9f8eab0a119052f8ae3c5a7014b970cbc4ccf6d8aada07c89"
-        },
-        {
-          "abilityId": "servant.bedivere.skill.sc-bedivere-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/贝狄威尔.htm"
-        },
-        {
-          "abilityId": "servant.bedivere.skill.sc-bedivere-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.bedivere/贝狄威尔"
-        },
-        {
-          "abilityId": "servant.bedivere.skill.sc-bedivere-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[18].skills[0].text#line=1",
-          "sha256": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2"
-        },
-        {
-          "abilityId": "servant.bedivere.skill.sc-bedivere-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[18].skills[0].text#line=2",
-          "sha256": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85"
-        },
-        {
-          "abilityId": "servant.bedivere.skill.sc-bedivere-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[18].skills[0].text#line=3",
-          "sha256": "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
-        },
-        {
-          "abilityId": "servant.bedivere.skill.sc-bedivere-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/贝狄威尔.htm"
-        },
-        {
-          "abilityId": "servant.bedivere.skill.sc-bedivere-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.bedivere/贝狄威尔"
-        },
-        {
-          "abilityId": "servant.bedivere.skill.sc-bedivere-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[18].skills[1].text#line=1",
-          "sha256": "0be515f4fbb3a59e6e99857b2a023db09a63f87494595cf18e7c1890bf4dca60"
-        },
-        {
-          "abilityId": "servant.bedivere.skill.sc-bedivere-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/贝狄威尔.htm"
-        },
-        {
-          "abilityId": "servant.bedivere.skill.sc-bedivere-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.bedivere/贝狄威尔"
-        },
-        {
-          "abilityId": "servant.bedivere.skill.sc-bedivere-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[18].skills[2].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.bedivere.skill.sc-bedivere-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[18].skills[2].text#line=2",
-          "sha256": "8d4f24bebe3b19d8359ace28869a79936040bc4a78ef76c6c8dfb3a09782dbf4"
-        },
-        {
-          "abilityId": "servant.bedivere.skill.sc-bedivere-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[18].skills[2].text#line=3",
-          "sha256": "42bad1566d2bf01e85569dace76707f5313e3dda30216bbc766bffa74b8f485a"
         },
         {
           "abilityId": "servant.benkei.skill.sc-benkei-1",
@@ -3726,78 +3411,6 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[74].skills[2].text#line=2",
           "sha256": "ea22c4b9b2ce571c376cbad6ea47f12972e57818e08b7886b598913e9ca956ac"
-        },
-        {
-          "abilityId": "servant.gawain.skill.sc-gawain-1",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/高文.htm"
-        },
-        {
-          "abilityId": "servant.gawain.skill.sc-gawain-1",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.gawain/高文"
-        },
-        {
-          "abilityId": "servant.gawain.skill.sc-gawain-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[17].skills[0].text#line=1",
-          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
-        },
-        {
-          "abilityId": "servant.gawain.skill.sc-gawain-1",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[17].skills[0].text#line=2",
-          "sha256": "bb6e3fe32502a3afbf43334e2672552e87ad0acac6ffbad2e4c0e2eb2034b414"
-        },
-        {
-          "abilityId": "servant.gawain.skill.sc-gawain-2",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/高文.htm"
-        },
-        {
-          "abilityId": "servant.gawain.skill.sc-gawain-2",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.gawain/高文"
-        },
-        {
-          "abilityId": "servant.gawain.skill.sc-gawain-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[17].skills[1].text#line=1",
-          "sha256": "b602de9ee6d5d73d5668a24e8b4779a0a2b4f1dfd5a8cb9006c0039be7a3435a"
-        },
-        {
-          "abilityId": "servant.gawain.skill.sc-gawain-2",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[17].skills[1].text#line=2",
-          "sha256": "9a8c036b577ddcee9c0a8a6866bfe1215dbd8cf75fca86730c0b6d245d0de66f"
-        },
-        {
-          "abilityId": "servant.gawain.skill.sc-gawain-3",
-          "document": "FD全卡图鉴V2.0.chm",
-          "locator": "从者/剑士/英文版/高文.htm"
-        },
-        {
-          "abilityId": "servant.gawain.skill.sc-gawain-3",
-          "document": "Fate_Domination-开发版",
-          "locator": "servant.gawain/高文"
-        },
-        {
-          "abilityId": "servant.gawain.skill.sc-gawain-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[17].skills[2].text#line=1",
-          "sha256": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2"
-        },
-        {
-          "abilityId": "servant.gawain.skill.sc-gawain-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[17].skills[2].text#line=2",
-          "sha256": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85"
-        },
-        {
-          "abilityId": "servant.gawain.skill.sc-gawain-3",
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "servants[17].skills[2].text#line=3",
-          "sha256": "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
         },
         {
           "abilityId": "servant.georgios.skill.sc-georgios-1",
@@ -10315,10 +9928,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 160,
-          "specific_handler": 282
+          "shared_handler": 154,
+          "specific_handler": 273
         },
-        "handlerCount": 313,
+        "handlerCount": 304,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "These identities remain ineligible for capability inheritance or migration until source evidence closes the semantic block."
