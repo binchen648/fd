@@ -7,8 +7,8 @@
 - Fallback Policy: zero silent fallback; every canonical identity is mapped or explicitly blocked.
 
 totalIdentityCount=944
-contractMappedCount=875
-explicitBlockCount=69
+contractMappedCount=890
+explicitBlockCount=54
 capabilityCount=32
 zeroSilentFallback=true
 
@@ -32,7 +32,7 @@ zeroSilentFallback=true
 | `GENERIC_CARD_ZONE` | `generic_request` | `CARD_ZONE` | 119 | 0 | 12 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_CONDITION_EVALUATION` | `generic_request` | `CONDITION` | 217 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_COST_PAYMENT` | `generic_request` | `COST_PAYMENT` | 30 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_EVENT_DECK` | `generic_request` | `SPECIAL_SUBSYSTEM` | 40 | 0 | 591 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_EVENT_DECK` | `generic_request` | `SPECIAL_SUBSYSTEM` | 40 | 0 | 606 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_LIFECYCLE_POLICY` | `generic_request` | `LIFECYCLE` | 169 | 0 | 7 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_MODIFIER` | `generic_request` | `MODIFIER` | 161 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_MOVEMENT` | `generic_request` | `MOVEMENT` | 49 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
@@ -46,8 +46,8 @@ zeroSilentFallback=true
 | `GENERIC_VISIBILITY` | `generic_request` | `HIDDEN_INFORMATION` | 62 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `RESOURCE_NUMERIC_CORE_DIRECT_ACTION` | `existing_contract` | `RESOURCE_NUMERIC` | 0 | 1 | 123 | Mechanic Batch Gate A/B/C representative evidence |
 | `RESULT_BINDING_PHASE3A` | `existing_contract` | `RESULT_BINDING` | 0 | 1 | 81 | Golden Eater Gate A/B/C candidate |
-| `REVIEWED_SPECIAL_HANDLER` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 621 | 0 | 10 | B/R reviewed-special exception with explicit deletion/reuse criteria |
-| `REVIEWED_SPECIAL_TRANSFORM` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 4 | 0 | 627 | B/R reviewed-special exception with explicit deletion/reuse criteria |
+| `REVIEWED_SPECIAL_HANDLER` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 636 | 0 | 10 | B/R reviewed-special exception with explicit deletion/reuse criteria |
+| `REVIEWED_SPECIAL_TRANSFORM` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 4 | 0 | 642 | B/R reviewed-special exception with explicit deletion/reuse criteria |
 
 ## Identity Mapping
 
@@ -907,21 +907,21 @@ zeroSilentFallback=true
 | `servant.salieri.skill.sc-salieri-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:salieri_kyrie_rule` |
 | `servant.salieri.skill.sc-salieri-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:salieri_wildfire_rule` |
 | `servant.salieri.skill.sc-salieri-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:salieri_oblivion_correction_rule` |
-| `servant.sanson.skill.sc-sanson-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.sanson.skill.sc-sanson-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.sanson.skill.sc-sanson-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.sanzang.skill.sc-sanzang-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.sanzang.skill.sc-sanzang-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.sanzang.skill.sc-sanzang-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.sasaki.skill.sc-sasaki-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.sasaki.skill.sc-sasaki-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.sasaki.skill.sc-sasaki-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.scathach.skill.sc-scathach-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.scathach.skill.sc-scathach-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.scathach.skill.sc-scathach-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.sei.skill.sc-sei-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.sei.skill.sc-sei-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.sei.skill.sc-sei-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
+| `servant.sanson.skill.sc-sanson-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:sanson_judgment_day_rule` |
+| `servant.sanson.skill.sc-sanson-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:sanson_death_hope_rule` |
+| `servant.sanson.skill.sc-sanson-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:sanson_regicide_rule` |
+| `servant.sanzang.skill.sc-sanzang-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:sanzang_golden_cicada_rule` |
+| `servant.sanzang.skill.sc-sanzang-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:sanzang_teachings_rule` |
+| `servant.sanzang.skill.sc-sanzang-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:sanzang_five_elements_palm_rule` |
+| `servant.sasaki.skill.sc-sasaki-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:sasaki_first_strike_rule` |
+| `servant.sasaki.skill.sc-sasaki-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:sasaki_second_strike_rule` |
+| `servant.sasaki.skill.sc-sasaki-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:sasaki_third_strike_rule` |
+| `servant.scathach.skill.sc-scathach-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:scathach_wisdom_rule` |
+| `servant.scathach.skill.sc-scathach-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:scathach_piercing_spear_rule` |
+| `servant.scathach.skill.sc-scathach-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:scathach_shadow_land_gate_rule` |
+| `servant.sei.skill.sc-sei-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:sei_twilight_cloud_spring_tree_rule` |
+| `servant.sei.skill.sc-sei-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:sei_pleiades_rule` |
+| `servant.sei.skill.sc-sei-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:sei_pillow_book_rule` |
 | `servant.semiramis.skill.sc-semiramis-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.semiramis.skill.sc-semiramis-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
 | `servant.semiramis.skill.sc-semiramis-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |

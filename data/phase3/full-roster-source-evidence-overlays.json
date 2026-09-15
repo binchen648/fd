@@ -31004,6 +31004,396 @@
         }
       ],
       "referencePrintedTextSha256": "c37baa8197e6bab47f9df236ce9699e0aeba4aab581d5817ad37c0116b15801e"
+    },
+    {
+      "id": "servant.sanson.skill.sc-sanson-1",
+      "printedText": "审判日-被动/前哨阶段：3秒后，所有玩家同时选择投票一名除你以外的其他玩家或弃票（未选择也视为弃票），唯一一名受到最多投票的玩家被【控诉】直至你再度使用审判日。出现平票时，【控诉】所有未弃票的对手直至回合结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_sanson_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "审判日-被动/前哨阶段：3秒后，所有玩家同时选择投票一名除你以外的其他玩家或弃票（未选择也视为弃票），唯一一名受到最多投票的玩家被【控诉】直至你再度使用审判日。出现平票时，【控诉】所有未弃票的对手直至回合结束。",
+        "sourceTextSha256": "d6ed1570331891e2b41cded9f049e4340fdae31a11f66f77e90c0b593e4d0e5e"
+      },
+      "abilities": [
+        {
+          "id": "sanson.sc-sanson-1.semantic",
+          "printedClause": "审判日-被动/前哨阶段：3秒后，所有玩家同时选择投票一名除你以外的其他玩家或弃票（未选择也视为弃票），唯一一名受到最多投票的玩家被【控诉】直至你再度使用审判日。出现平票时，【控诉】所有未弃票的对手直至回合结束。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "sanson_judgment_day_rule",
+              "operation": "vanguard_passive_after_3_seconds_all_players_simultaneously_vote_one_other_player_or_abstain_unique_most_voted_player_becomes_accused_until_controller_uses_judgment_day_again_on_tie_all_non_abstaining_opponents_become_accused_until_round_end"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d6ed1570331891e2b41cded9f049e4340fdae31a11f66f77e90c0b593e4d0e5e"
+    },
+    {
+      "id": "servant.sanson.skill.sc-sanson-2",
+      "printedText": "【真名解放】\n战斗阶段：使与你进行战斗的一名被【控诉】的玩家【败北】，然后令其失去【控诉】。若其战败（即使其最终未与你战斗或未因此效果【败北】），你获得4点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_sanson_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n战斗阶段：使与你进行战斗的一名被【控诉】的玩家【败北】，然后令其失去【控诉】。若其战败（即使其最终未与你战斗或未因此效果【败北】），你获得4点战果。",
+        "sourceTextSha256": "dd159805ec47774415924348e98ade50a4878b567f6759495fb14848425da127"
+      },
+      "abilities": [
+        {
+          "id": "sanson.sc-sanson-2.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：使与你进行战斗的一名被【控诉】的玩家【败北】，然后令其失去【控诉】。若其战败（即使其最终未与你战斗或未因此效果【败北】），你获得4点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "sanson_death_hope_rule",
+              "operation": "true_name_reveal_combat_choose_one_engaged_accused_player_that_player_is_defeated_then_loses_accused_if_that_player_is_defeated_even_if_not_finally_engaged_or_not_defeated_by_this_effect_controller_gains_4_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "dd159805ec47774415924348e98ade50a4878b567f6759495fb14848425da127"
+    },
+    {
+      "id": "servant.sanson.skill.sc-sanson-3",
+      "printedText": "战斗阶段：在你进行的战斗中所有拥有战果超过当前剩余玩家数一半（向上取整）的玩家合计威力-3。若战果排名第一的玩家与你进行战斗，你的合计威力+3。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_sanson_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "战斗阶段：在你进行的战斗中所有拥有战果超过当前剩余玩家数一半（向上取整）的玩家合计威力-3。若战果排名第一的玩家与你进行战斗，你的合计威力+3。",
+        "sourceTextSha256": "428dbf01008c642a7eea6b070a5a88eb7bccf2c95469a05bdac22bbd4171d8da"
+      },
+      "abilities": [
+        {
+          "id": "sanson.sc-sanson-3.semantic",
+          "printedClause": "战斗阶段：在你进行的战斗中所有拥有战果超过当前剩余玩家数一半（向上取整）的玩家合计威力-3。若战果排名第一的玩家与你进行战斗，你的合计威力+3。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "sanson_regicide_rule",
+              "operation": "combat_in_controller_battle_each_player_with_vp_greater_than_half_remaining_player_count_rounded_up_gets_minus_3_total_power_if_top_ranked_vp_player_is_engaged_with_controller_controller_plus_3_total_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "428dbf01008c642a7eea6b070a5a88eb7bccf2c95469a05bdac22bbd4171d8da"
+    },
+    {
+      "id": "servant.sanzang.skill.sc-sanzang-1",
+      "printedText": "被动/行动阶段：弃置一张【幸运】，抽一张牌，然后选择下列一项：\n-获得3点魔力。\n-合计威力+2，如果你本回合赢得一场战斗，获得2点战果。\n-从新都或深山町移动至任意位置，无视交战状态。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_sanzang_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "被动/行动阶段：弃置一张【幸运】，抽一张牌，然后选择下列一项：\n-获得3点魔力。\n-合计威力+2，如果你本回合赢得一场战斗，获得2点战果。\n-从新都或深山町移动至任意位置，无视交战状态。",
+        "sourceTextSha256": "4bf2dc22226caaf0c71230dc395fe91d64f82c4e0884d96fe547df7285da5561"
+      },
+      "abilities": [
+        {
+          "id": "sanzang.sc-sanzang-1.semantic",
+          "printedClause": "被动/行动阶段：弃置一张【幸运】，抽一张牌，然后选择下列一项：\n-获得3点魔力。\n-合计威力+2，如果你本回合赢得一场战斗，获得2点战果。\n-从新都或深山町移动至任意位置，无视交战状态。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "sanzang_golden_cicada_rule",
+              "operation": "passive_action_discard_one_luck_draw_one_then_choose_gain_3_mana_or_plus_2_total_power_and_if_win_this_round_gain_2_vp_or_move_from_shinto_or_mountain_to_any_location_ignoring_engagement"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4bf2dc22226caaf0c71230dc395fe91d64f82c4e0884d96fe547df7285da5561"
+    },
+    {
+      "id": "servant.sanzang.skill.sc-sanzang-2",
+      "printedText": "【真名解放】\n高速诵经-打出时：支付3X点魔力，抽X张牌，然后将X张手牌移除游戏。每有一张因此效果被移除的【幸运】，此牌威力+4直至被关闭。\n残留：此牌持续激活两个回合。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_sanzang_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n高速诵经-打出时：支付3X点魔力，抽X张牌，然后将X张手牌移除游戏。每有一张因此效果被移除的【幸运】，此牌威力+4直至被关闭。\n残留：此牌持续激活两个回合。",
+        "sourceTextSha256": "754687f932a368dcf3aa7d41c1e5266f46a983930200a0e1c34f6915a1d9d8bc"
+      },
+      "abilities": [
+        {
+          "id": "sanzang.sc-sanzang-2.semantic",
+          "printedClause": "【真名解放】\n高速诵经-打出时：支付3X点魔力，抽X张牌，然后将X张手牌移除游戏。每有一张因此效果被移除的【幸运】，此牌威力+4直至被关闭。\n残留：此牌持续激活两个回合。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "sanzang_teachings_rule",
+              "operation": "true_name_reveal_on_play_pay_3x_mana_draw_x_then_remove_x_hand_cards_from_game_source_plus_4_power_until_closed_for_each_luck_removed_this_way_residual_source_remains_active_two_rounds"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "754687f932a368dcf3aa7d41c1e5266f46a983930200a0e1c34f6915a1d9d8bc"
+    },
+    {
+      "id": "servant.sanzang.skill.sc-sanzang-3",
+      "printedText": "【真名解放】\n行动阶段：打出一张暗置攻击并于你的战斗阶段将其展示后弃置。若该攻击为【幸运】，【五行山·释迦如来掌】获得+5威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_sanzang_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n行动阶段：打出一张暗置攻击并于你的战斗阶段将其展示后弃置。若该攻击为【幸运】，【五行山·释迦如来掌】获得+5威力。",
+        "sourceTextSha256": "0a65e9af41d39d51b9a7ab5489f922396ca03b76d3bc1f8b2c959afca115c47c"
+      },
+      "abilities": [
+        {
+          "id": "sanzang.sc-sanzang-3.semantic",
+          "printedClause": "【真名解放】\n行动阶段：打出一张暗置攻击并于你的战斗阶段将其展示后弃置。若该攻击为【幸运】，【五行山·释迦如来掌】获得+5威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "sanzang_five_elements_palm_rule",
+              "operation": "true_name_reveal_action_play_one_facedown_attack_reveal_it_during_controller_combat_then_discard_if_that_attack_is_luck_source_plus_5_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0a65e9af41d39d51b9a7ab5489f922396ca03b76d3bc1f8b2c959afca115c47c"
+    },
+    {
+      "id": "servant.sasaki.skill.sc-sasaki-1",
+      "printedText": "你拥有的魔力少于8点也可打出此牌。\n战斗阶段：关闭此牌，然后从手牌打出一张力量基础攻击。若如此，获得2点魔力且关闭一名交战玩家至多一张基础攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_sasaki_1",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "你拥有的魔力少于8点也可打出此牌。\n战斗阶段：关闭此牌，然后从手牌打出一张力量基础攻击。若如此，获得2点魔力且关闭一名交战玩家至多一张基础攻击。",
+        "sourceTextSha256": "67a6ece036e85c2afbe69a2e85a83291b9d1bd6078c74d5ced58122b06454394"
+      },
+      "abilities": [
+        {
+          "id": "sasaki.sc-sasaki-1.semantic",
+          "printedClause": "你拥有的魔力少于8点也可打出此牌。\n战斗阶段：关闭此牌，然后从手牌打出一张力量基础攻击。若如此，获得2点魔力且关闭一名交战玩家至多一张基础攻击。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "sasaki_first_strike_rule",
+              "operation": "source_may_be_played_with_less_than_8_mana_combat_close_source_then_play_one_base_strength_attack_from_hand_if_so_gain_2_mana_and_close_up_to_one_base_attack_controlled_by_one_engaged_player"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "67a6ece036e85c2afbe69a2e85a83291b9d1bd6078c74d5ced58122b06454394"
+    },
+    {
+      "id": "servant.sasaki.skill.sc-sasaki-2",
+      "printedText": "行动阶段：与你位于同一战场的对手无法使用【行动阶段】和【战斗阶段】能力。（令咒为行动阶段能力）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_sasaki_2",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "行动阶段：与你位于同一战场的对手无法使用【行动阶段】和【战斗阶段】能力。（令咒为行动阶段能力）",
+        "sourceTextSha256": "07892440c86a5ad40e21280355dcdb02e17c7648549576c7c8bcb0c1834a1b1c"
+      },
+      "abilities": [
+        {
+          "id": "sasaki.sc-sasaki-2.semantic",
+          "printedClause": "行动阶段：与你位于同一战场的对手无法使用【行动阶段】和【战斗阶段】能力。（令咒为行动阶段能力）",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "sasaki_second_strike_rule",
+              "operation": "action_opponents_at_same_battlefield_cannot_use_action_phase_or_combat_phase_abilities_command_spells_count_as_action_phase_abilities"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "07892440c86a5ad40e21280355dcdb02e17c7648549576c7c8bcb0c1834a1b1c"
+    },
+    {
+      "id": "servant.sasaki.skill.sc-sasaki-3",
+      "printedText": "你可于打出2张迅捷攻击时追加打出此牌。\n燕返-若【一之太刀】和【二之太刀】同时位于战场时，则【真名解放】并合计威力+3。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_sasaki_3",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "你可于打出2张迅捷攻击时追加打出此牌。\n燕返-若【一之太刀】和【二之太刀】同时位于战场时，则【真名解放】并合计威力+3。",
+        "sourceTextSha256": "ff5b2dea95230b5d8304ebbd4bd89a3883c65f714a2356e81f8803b361cb632c"
+      },
+      "abilities": [
+        {
+          "id": "sasaki.sc-sasaki-3.semantic",
+          "printedClause": "你可于打出2张迅捷攻击时追加打出此牌。\n燕返-若【一之太刀】和【二之太刀】同时位于战场时，则【真名解放】并合计威力+3。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "sasaki_third_strike_rule",
+              "operation": "may_additionally_play_source_when_playing_two_quick_attacks_if_first_strike_and_second_strike_are_both_on_battlefield_true_name_reveal_and_plus_3_total_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ff5b2dea95230b5d8304ebbd4bd89a3883c65f714a2356e81f8803b361cb632c"
+    },
+    {
+      "id": "servant.scathach.skill.sc-scathach-1",
+      "printedText": "打出时：选择以下一项为本回合此牌的效果：\n-战斗阶段：将所有交战对手的魔术攻击的威力变为0。\n-行动阶段：移动至任意地点。\n-战斗阶段：战力结算后，如果与你位于同一战场的对手有两名及以上，威力高于你的玩家中不包含战力不同的，使他们【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_scathach_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "打出时：选择以下一项为本回合此牌的效果：\n-战斗阶段：将所有交战对手的魔术攻击的威力变为0。\n-行动阶段：移动至任意地点。\n-战斗阶段：战力结算后，如果与你位于同一战场的对手有两名及以上，威力高于你的玩家中不包含战力不同的，使他们【败北】。",
+        "sourceTextSha256": "8fb6037ae041b4cf0dfd5d7aeb4ecfb9cc3f9932a39c8e5f07bdfc5cc0437478"
+      },
+      "abilities": [
+        {
+          "id": "scathach.sc-scathach-1.semantic",
+          "printedClause": "打出时：选择以下一项为本回合此牌的效果：\n-战斗阶段：将所有交战对手的魔术攻击的威力变为0。\n-行动阶段：移动至任意地点。\n-战斗阶段：战力结算后，如果与你位于同一战场的对手有两名及以上，威力高于你的玩家中不包含战力不同的，使他们【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "scathach_wisdom_rule",
+              "operation": "on_play_choose_one_mode_for_round_combat_set_all_engaged_opponent_magic_attack_power_to_0_or_action_move_to_any_location_or_after_combat_power_resolution_if_at_least_two_opponents_at_same_battlefield_defeat_higher_power_players_when_no_distinct_higher_power_values_exist"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8fb6037ae041b4cf0dfd5d7aeb4ecfb9cc3f9932a39c8e5f07bdfc5cc0437478"
+    },
+    {
+      "id": "servant.scathach.skill.sc-scathach-2",
+      "printedText": "【真名解放】\n战斗阶段：若仅有一名对手与你位于同一战场，令其关闭一张自己的非残留攻击。\n死兆-战斗阶段：若你获胜，你每有一名交战对手，便获得1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_scathach_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n战斗阶段：若仅有一名对手与你位于同一战场，令其关闭一张自己的非残留攻击。\n死兆-战斗阶段：若你获胜，你每有一名交战对手，便获得1点战果。",
+        "sourceTextSha256": "4a73c780db86f79227bcbab77d2a177c2dad2155261d249398b30a9876cc3acd"
+      },
+      "abilities": [
+        {
+          "id": "scathach.sc-scathach-2.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：若仅有一名对手与你位于同一战场，令其关闭一张自己的非残留攻击。\n死兆-战斗阶段：若你获胜，你每有一名交战对手，便获得1点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "scathach_piercing_spear_rule",
+              "operation": "true_name_reveal_combat_if_exactly_one_opponent_at_same_battlefield_that_opponent_closes_one_non_residual_attack_combat_if_controller_wins_gain_1_vp_per_engaged_opponent"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4a73c780db86f79227bcbab77d2a177c2dad2155261d249398b30a9876cc3acd"
+    },
+    {
+      "id": "servant.scathach.skill.sc-scathach-3",
+      "printedText": "【真名解放】 <每局游戏限一次>\n影之国-战斗阶段：将所有交战对手的魔力值降为0，使所有魔力损失少于8点的玩家【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_scathach_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】 <每局游戏限一次>\n影之国-战斗阶段：将所有交战对手的魔力值降为0，使所有魔力损失少于8点的玩家【败北】。",
+        "sourceTextSha256": "98bba515326a5b100c02e6125675aa09e9e297999e6dcc444a678ce4cfdcbc07"
+      },
+      "abilities": [
+        {
+          "id": "scathach.sc-scathach-3.semantic",
+          "printedClause": "【真名解放】 <每局游戏限一次>\n影之国-战斗阶段：将所有交战对手的魔力值降为0，使所有魔力损失少于8点的玩家【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "scathach_shadow_land_gate_rule",
+              "operation": "true_name_reveal_once_per_game_combat_set_all_engaged_opponent_mana_to_0_then_defeat_each_player_who_lost_less_than_8_mana"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "98bba515326a5b100c02e6125675aa09e9e297999e6dcc444a678ce4cfdcbc07"
+    },
+    {
+      "id": "servant.sei.skill.sc-sei-1",
+      "printedText": "若你获胜，你与清少纳言各获得2点战果。清少纳言每回合至多通过此效果获得3点战果。\n尊酒重文-打出时：此攻击获得你上回合打出的所有基础攻击基本威力之和的威力（最大为10）、属性和至多一种你选择的阶段能力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_sei_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "若你获胜，你与清少纳言各获得2点战果。清少纳言每回合至多通过此效果获得3点战果。\n尊酒重文-打出时：此攻击获得你上回合打出的所有基础攻击基本威力之和的威力（最大为10）、属性和至多一种你选择的阶段能力。",
+        "sourceTextSha256": "ae2a01a478c48e2dea1279ceb3e0c352b7ff5f07aa4273dba3df23ae6524b45b"
+      },
+      "abilities": [
+        {
+          "id": "sei.sc-sei-1.semantic",
+          "printedClause": "若你获胜，你与清少纳言各获得2点战果。清少纳言每回合至多通过此效果获得3点战果。\n尊酒重文-打出时：此攻击获得你上回合打出的所有基础攻击基本威力之和的威力（最大为10）、属性和至多一种你选择的阶段能力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "sei_twilight_cloud_spring_tree_rule",
+              "operation": "if_controller_wins_controller_and_sei_each_gain_2_vp_sei_gains_at_most_3_vp_per_round_from_this_effect_on_play_attack_gains_power_equal_sum_of_base_power_of_all_base_attacks_controller_played_previous_round_max_10_and_gains_their_attributes_and_up_to_one_chosen_phase_ability"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ae2a01a478c48e2dea1279ceb3e0c352b7ff5f07aa4273dba3df23ae6524b45b"
+    },
+    {
+      "id": "servant.sei.skill.sc-sei-2",
+      "printedText": "月是满月-行动阶段：从其他对手的技能区打出任意张【暮云春树】（你拥有的魔力少于8点也可以打出）且它们的尊酒重文更改为受相应对手上回合打出的牌影响。仅有1种或更少属性且激活的【暮云春树】获得+3威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_sei_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "月是满月-行动阶段：从其他对手的技能区打出任意张【暮云春树】（你拥有的魔力少于8点也可以打出）且它们的尊酒重文更改为受相应对手上回合打出的牌影响。仅有1种或更少属性且激活的【暮云春树】获得+3威力。",
+        "sourceTextSha256": "41829a40f33dfd08770980d37f0a66293b1bec6544ac25331b54ebfef4b4568a"
+      },
+      "abilities": [
+        {
+          "id": "sei.sc-sei-2.semantic",
+          "printedClause": "月是满月-行动阶段：从其他对手的技能区打出任意张【暮云春树】（你拥有的魔力少于8点也可以打出）且它们的尊酒重文更改为受相应对手上回合打出的牌影响。仅有1种或更少属性且激活的【暮云春树】获得+3威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "sei_pleiades_rule",
+              "operation": "action_play_any_number_of_twilight_cloud_spring_tree_from_other_opponents_skill_zones_even_below_8_mana_their_on_play_history_uses_corresponding_opponents_previous_round_cards_active_twilight_cloud_spring_tree_with_one_or_fewer_attributes_plus_3_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "41829a40f33dfd08770980d37f0a66293b1bec6544ac25331b54ebfef4b4568a"
+    },
+    {
+      "id": "servant.sei.skill.sc-sei-3",
+      "printedText": "【真名解放】\n战斗阶段：令所有未拥有【暮云春树】的你的交战对手将一张【暮云春树】的<每局游戏限一次>的复制加入其技能区。你战斗中的【暮云春树】的威力无法超过0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_sei_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n战斗阶段：令所有未拥有【暮云春树】的你的交战对手将一张【暮云春树】的<每局游戏限一次>的复制加入其技能区。你战斗中的【暮云春树】的威力无法超过0。",
+        "sourceTextSha256": "41516ae7e7dcae9880fbb4898c4a92f535b12aa4fa771fad09d123b915025add"
+      },
+      "abilities": [
+        {
+          "id": "sei.sc-sei-3.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：令所有未拥有【暮云春树】的你的交战对手将一张【暮云春树】的<每局游戏限一次>的复制加入其技能区。你战斗中的【暮云春树】的威力无法超过0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "sei_pillow_book_rule",
+              "operation": "true_name_reveal_combat_each_engaged_opponent_without_twilight_cloud_spring_tree_adds_once_per_game_copy_to_skill_zone_power_of_twilight_cloud_spring_tree_in_controller_battle_cannot_exceed_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "41516ae7e7dcae9880fbb4898c4a92f535b12aa4fa771fad09d123b915025add"
     }
   ]
 }
