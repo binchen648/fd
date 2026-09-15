@@ -1509,6 +1509,25 @@ describe('Phase 3 full-roster semantic normalization', () => {
     for(const id of ['servant.clytie.skill.sc-clytie-1','servant.clytie.skill.sc-clytie-2','servant.clytie.skill.sc-clytie-4']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'foreign_life_rule'})])}));
   });
 
+  it('grounds the fifteen-ID Constantine/Corday/Cu/Cu Alter/Dantes slice from locked development snapshots', () => {
+    const overlays=loadSourceEvidenceOverlayCards();
+    const ids=new Set([
+      'servant.constantine.skill.sc-constantine-1','servant.constantine.skill.sc-constantine-2','servant.constantine.skill.sc-constantine-3',
+      'servant.corday.skill.sc-corday-1','servant.corday.skill.sc-corday-2','servant.corday.skill.sc-corday-3',
+      'servant.cu-alter.skill.sc-cu-alter-1','servant.cu-alter.skill.sc-cu-alter-2','servant.cu-alter.skill.sc-cu-alter-3',
+      'servant.cu.skill.sc-cu-1','servant.cu.skill.sc-cu-2','servant.cu.skill.sc-cu-np',
+      'servant.dantes.skill.sc-dantes-1','servant.dantes.skill.sc-dantes-2','servant.dantes.skill.sc-dantes-3',
+    ]);
+    const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(15);
+    expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256)).toBe(true);
+    expect(slice.find(c=>c.id==='servant.constantine.skill.sc-constantine-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'draw_cards'}),expect.objectContaining({type:'play_selected_cards'})])}));
+    expect(slice.find(c=>c.id==='servant.cu.skill.sc-cu-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'move_player',destinationRule:'any_location_except_workshop'})])}));
+    expect(slice.find(c=>c.id==='servant.corday.skill.sc-corday-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'presence_concealment_assassination_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.cu-alter.skill.sc-cu-alter-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'cu_alter_curruid_residual_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.dantes.skill.sc-dantes-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'dantes_enfer_reveal_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1562,10 +1581,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 627,
-      blockedCount: 317,
+      sourceGroundedCount: 642,
+      blockedCount: 302,
       unclassifiedCount: 0,
-      structuredAbilityCount: 905,
+      structuredAbilityCount: 920,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

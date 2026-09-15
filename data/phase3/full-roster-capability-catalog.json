@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 627,
-    "explicitBlockCount": 317,
+    "contractMappedCount": 642,
+    "explicitBlockCount": 302,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 227,
-      "SPECIAL_HANDLER_CANDIDATE": 398,
+      "READY_GENERIC_EXTENSION": 229,
+      "SPECIAL_HANDLER_CANDIDATE": 411,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 317,
+      "SOURCE_EVIDENCE_REQUIRED": 302,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -215,6 +215,10 @@
         },
         {
           "abilityId": "servant.chloe.skill.sc-chloe-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.constantine.skill.sc-constantine-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -493,6 +497,10 @@
         },
         {
           "abilityId": "servant.chloe.skill.sc-chloe-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.constantine.skill.sc-constantine-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -777,6 +785,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.constantine.skill.sc-constantine-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.darius.skill.sc-darius-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1033,6 +1045,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.constantine.skill.sc-constantine-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.darius.skill.sc-darius-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -1162,6 +1178,7 @@
         "servant.boudica.skill.sc-boudica-3",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
+        "servant.constantine.skill.sc-constantine-1",
         "servant.helena.skill.sc-helena-1",
         "servant.illya.skill.sc-illya-2",
         "servant.martha.skill.sc-martha-3",
@@ -1522,6 +1539,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.constantine.skill.sc-constantine-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.darius.skill.sc-darius-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -1821,6 +1842,10 @@
         },
         {
           "abilityId": "servant.chloe.skill.sc-chloe-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.constantine.skill.sc-constantine-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2127,6 +2152,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.constantine.skill.sc-constantine-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "servant.darius.skill.sc-darius-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2426,6 +2455,10 @@
         },
         {
           "abilityId": "servant.chloe.skill.sc-chloe-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.constantine.skill.sc-constantine-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2731,6 +2764,10 @@
         },
         {
           "abilityId": "servant.chloe.skill.sc-chloe-1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.constantine.skill.sc-constantine-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3256,6 +3293,10 @@
         },
         {
           "abilityId": "servant.clytie.skill.sc-clytie-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.constantine.skill.sc-constantine-1",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3891,6 +3932,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.constantine.skill.sc-constantine-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.davinci.skill.sc-davinci-10",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -4086,6 +4131,7 @@
         "servant.avicebron.skill.sc-avicebron-1",
         "servant.boudica.skill.sc-boudica-3",
         "servant.clytie.skill.sc-clytie-3",
+        "servant.constantine.skill.sc-constantine-1",
         "servant.davinci.skill.sc-davinci-10",
         "servant.davinci.skill.sc-davinci-11",
         "servant.davinci.skill.sc-davinci-12",
@@ -5580,6 +5626,58 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.constantine.skill.sc-constantine-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.constantine.skill.sc-constantine-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.corday.skill.sc-corday-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.corday.skill.sc-corday-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.corday.skill.sc-corday-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.cu-alter.skill.sc-cu-alter-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.cu-alter.skill.sc-cu-alter-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.cu-alter.skill.sc-cu-alter-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-np",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.dantes.skill.sc-dantes-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.dantes.skill.sc-dantes-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.dantes.skill.sc-dantes-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.davinci.skill.sc-davinci-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -6469,6 +6567,7 @@
         "servant.benkei.skill.sc-benkei-1",
         "servant.bradamante.skill.sc-bradamante-1",
         "servant.brynhildr.skill.sc-brynhildr-1",
+        "servant.cu.skill.sc-cu-2",
         "servant.davinci.skill.sc-davinci-11",
         "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-3",
@@ -9261,6 +9360,19 @@
         "servant.clytie.skill.sc-clytie-1",
         "servant.clytie.skill.sc-clytie-2",
         "servant.clytie.skill.sc-clytie-4",
+        "servant.constantine.skill.sc-constantine-2",
+        "servant.constantine.skill.sc-constantine-3",
+        "servant.corday.skill.sc-corday-1",
+        "servant.corday.skill.sc-corday-2",
+        "servant.corday.skill.sc-corday-3",
+        "servant.cu-alter.skill.sc-cu-alter-1",
+        "servant.cu-alter.skill.sc-cu-alter-2",
+        "servant.cu-alter.skill.sc-cu-alter-3",
+        "servant.cu.skill.sc-cu-1",
+        "servant.cu.skill.sc-cu-np",
+        "servant.dantes.skill.sc-dantes-1",
+        "servant.dantes.skill.sc-dantes-2",
+        "servant.dantes.skill.sc-dantes-3",
         "servant.davinci.skill.sc-davinci-1",
         "servant.davinci.skill.sc-davinci-11",
         "servant.davinci.skill.sc-davinci-12",
@@ -10614,6 +10726,58 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.constantine.skill.sc-constantine-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.constantine.skill.sc-constantine-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.corday.skill.sc-corday-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.corday.skill.sc-corday-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.corday.skill.sc-corday-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.cu-alter.skill.sc-cu-alter-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.cu-alter.skill.sc-cu-alter-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.cu-alter.skill.sc-cu-alter-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.cu.skill.sc-cu-np",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.dantes.skill.sc-dantes-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.dantes.skill.sc-dantes-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.dantes.skill.sc-dantes-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.davinci.skill.sc-davinci-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -11521,6 +11685,21 @@
       "servant.clytie.skill.sc-clytie-2",
       "servant.clytie.skill.sc-clytie-3",
       "servant.clytie.skill.sc-clytie-4",
+      "servant.constantine.skill.sc-constantine-1",
+      "servant.constantine.skill.sc-constantine-2",
+      "servant.constantine.skill.sc-constantine-3",
+      "servant.corday.skill.sc-corday-1",
+      "servant.corday.skill.sc-corday-2",
+      "servant.corday.skill.sc-corday-3",
+      "servant.cu-alter.skill.sc-cu-alter-1",
+      "servant.cu-alter.skill.sc-cu-alter-2",
+      "servant.cu-alter.skill.sc-cu-alter-3",
+      "servant.cu.skill.sc-cu-1",
+      "servant.cu.skill.sc-cu-2",
+      "servant.cu.skill.sc-cu-np",
+      "servant.dantes.skill.sc-dantes-1",
+      "servant.dantes.skill.sc-dantes-2",
+      "servant.dantes.skill.sc-dantes-3",
       "servant.darius.skill.sc-darius-1",
       "servant.darius.skill.sc-darius-2",
       "servant.darius.skill.sc-darius-3",
@@ -11679,111 +11858,6 @@
       "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "servant.constantine.skill.sc-constantine-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.constantine.skill.sc-constantine-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.constantine.skill.sc-constantine-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.corday.skill.sc-corday-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.corday.skill.sc-corday-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.corday.skill.sc-corday-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.cu-alter.skill.sc-cu-alter-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.cu-alter.skill.sc-cu-alter-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.cu-alter.skill.sc-cu-alter-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.cu.skill.sc-cu-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.cu.skill.sc-cu-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.cu.skill.sc-cu-np",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.dantes.skill.sc-dantes-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.dantes.skill.sc-dantes-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.dantes.skill.sc-dantes-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.danzou.skill.sc-danzou-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -14195,6 +14269,19 @@
       "servant.clytie.skill.sc-clytie-1",
       "servant.clytie.skill.sc-clytie-2",
       "servant.clytie.skill.sc-clytie-4",
+      "servant.constantine.skill.sc-constantine-2",
+      "servant.constantine.skill.sc-constantine-3",
+      "servant.corday.skill.sc-corday-1",
+      "servant.corday.skill.sc-corday-2",
+      "servant.corday.skill.sc-corday-3",
+      "servant.cu-alter.skill.sc-cu-alter-1",
+      "servant.cu-alter.skill.sc-cu-alter-2",
+      "servant.cu-alter.skill.sc-cu-alter-3",
+      "servant.cu.skill.sc-cu-1",
+      "servant.cu.skill.sc-cu-np",
+      "servant.dantes.skill.sc-dantes-1",
+      "servant.dantes.skill.sc-dantes-2",
+      "servant.dantes.skill.sc-dantes-3",
       "servant.davinci.skill.sc-davinci-1",
       "servant.davinci.skill.sc-davinci-11",
       "servant.davinci.skill.sc-davinci-12",

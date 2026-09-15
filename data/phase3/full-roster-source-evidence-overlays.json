@@ -24384,6 +24384,412 @@
         }
       ],
       "referencePrintedTextSha256": "146c26d2ca823f92c1a758e9e23c37f6d8f88c54e3818164b153af19260d464f"
+    },
+    {
+      "id": "servant.constantine.skill.sc-constantine-1",
+      "printedText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_constantine_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+        "sourceTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+      },
+      "abilities": [
+        {
+          "id": "constantine.sc_constantine_1.semantic",
+          "printedClause": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "draw_cards",
+              "count": 1,
+              "when": "source_played_with_one_base_attack"
+            },
+            {
+              "type": "play_selected_cards",
+              "sourceZone": "hand",
+              "maxCount": 3,
+              "filter": {
+                "basePowerMax": 3
+              }
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+    },
+    {
+      "id": "servant.constantine.skill.sc-constantine-2",
+      "printedText": "尽归尘土-被动：当你即将被淘汰时，改为将此牌移除游戏并令你于下回合获得的战果翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_constantine_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "尽归尘土-被动：当你即将被淘汰时，改为将此牌移除游戏并令你于下回合获得的战果翻倍。",
+        "sourceTextSha256": "7d682491726f9ed0fde7a434ddabaf986714d56703d24653163c6e52e2f447f8"
+      },
+      "abilities": [
+        {
+          "id": "constantine.sc_constantine_2.semantic",
+          "printedClause": "尽归尘土-被动：当你即将被淘汰时，改为将此牌移除游戏并令你于下回合获得的战果翻倍。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "constantine_fallen_empire_rule",
+              "operation": "passive_when_about_to_be_eliminated_instead_remove_source_from_game_and_double_vp_gained_next_turn"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7d682491726f9ed0fde7a434ddabaf986714d56703d24653163c6e52e2f447f8"
+    },
+    {
+      "id": "servant.constantine.skill.sc-constantine-3",
+      "printedText": "【真名解放】\n信仰之墙-被动：每回合限一次，当你抽到一张基础攻击时，你可以花费3点魔力将其展示并令其威力翻倍（于在场时）。\n命定之败-战斗阶段：若你战败，获得3点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_constantine_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n信仰之墙-被动：每回合限一次，当你抽到一张基础攻击时，你可以花费3点魔力将其展示并令其威力翻倍（于在场时）。\n命定之败-战斗阶段：若你战败，获得3点战果。",
+        "sourceTextSha256": "aaa395886dc75c47ef91f7a7fc2cd6baefa88ae674d5a35038e8fb3d82eafeed"
+      },
+      "abilities": [
+        {
+          "id": "constantine.sc_constantine_3.semantic",
+          "printedClause": "【真名解放】\n信仰之墙-被动：每回合限一次，当你抽到一张基础攻击时，你可以花费3点魔力将其展示并令其威力翻倍（于在场时）。\n命定之败-战斗阶段：若你战败，获得3点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "constantine_triple_walls_rule",
+              "operation": "true_name_reveal_once_per_turn_when_draw_base_attack_may_pay_3_mana_reveal_and_double_its_power_while_in_play_combat_if_defeated_gain_3_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "aaa395886dc75c47ef91f7a7fc2cd6baefa88ae674d5a35038e8fb3d82eafeed"
+    },
+    {
+      "id": "servant.corday.skill.sc-corday-1",
+      "printedText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_corday_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+        "sourceTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+      },
+      "abilities": [
+        {
+          "id": "corday.sc_corday_1.semantic",
+          "printedClause": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "presence_concealment_assassination_rule",
+              "operation": "combat_after_power_resolution_if_controller_below_all_top_power_opponents_no_other_opponent_above_controller_and_at_least_3_participants_defeat_all_top_power_engaged_opponents"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+    },
+    {
+      "id": "servant.corday.skill.sc-corday-2",
+      "printedText": "被动/前哨阶段：若你位于魔术工房，秘密记录另一名玩家于本回合作为你的【目标】。若你赢得一场包括【目标】的战斗，获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_corday_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "被动/前哨阶段：若你位于魔术工房，秘密记录另一名玩家于本回合作为你的【目标】。若你赢得一场包括【目标】的战斗，获得2点战果。",
+        "sourceTextSha256": "dade3f1437328d06605c18d7176c18849608af81e37fe78939d5f695535ba99e"
+      },
+      "abilities": [
+        {
+          "id": "corday.sc_corday_2.semantic",
+          "printedClause": "被动/前哨阶段：若你位于魔术工房，秘密记录另一名玩家于本回合作为你的【目标】。若你赢得一场包括【目标】的战斗，获得2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "corday_secret_target_rule",
+              "operation": "passive_preparation_if_at_workshop_secretly_record_another_player_as_target_this_turn_if_win_battle_including_target_gain_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "dade3f1437328d06605c18d7176c18849608af81e37fe78939d5f695535ba99e"
+    },
+    {
+      "id": "servant.corday.skill.sc-corday-3",
+      "printedText": "【真名解放】\n行动阶段：打出手牌中任意数量的基础特殊攻击。\n战斗阶段：使与你进行战斗的一名【目标】【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_corday_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n行动阶段：打出手牌中任意数量的基础特殊攻击。\n战斗阶段：使与你进行战斗的一名【目标】【败北】。",
+        "sourceTextSha256": "722ff7b97d241ee902bd2d0c1bb6660f94a9e8a968c14dfbdad86239718efac2"
+      },
+      "abilities": [
+        {
+          "id": "corday.sc_corday_3.semantic",
+          "printedClause": "【真名解放】\n行动阶段：打出手牌中任意数量的基础特殊攻击。\n战斗阶段：使与你进行战斗的一名【目标】【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "corday_dream_target_rule",
+              "operation": "true_name_reveal_action_play_any_number_base_special_attacks_from_hand_combat_defeat_one_engaged_target"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "722ff7b97d241ee902bd2d0c1bb6660f94a9e8a968c14dfbdad86239718efac2"
+    },
+    {
+      "id": "servant.cu-alter.skill.sc-cu-alter-1",
+      "printedText": "避矢之加护-被动：当一名对手即将令你【败北】时，他需花费3点魔力。否则，你不会因该效果【败北】。被动：与你交战的对手在战斗阶段结束后失去X点战果，X为其控制的激活攻击数-1且最大为3。此效果在计算因战斗获得战果之后结算。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_cu_alter_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "避矢之加护-被动：当一名对手即将令你【败北】时，他需花费3点魔力。否则，你不会因该效果【败北】。被动：与你交战的对手在战斗阶段结束后失去X点战果，X为其控制的激活攻击数-1且最大为3。此效果在计算因战斗获得战果之后结算。",
+        "sourceTextSha256": "16396b807a17a436f358f8681d0256bce8decb0804c18bd15cb5728a35673bf6"
+      },
+      "abilities": [
+        {
+          "id": "cu-alter.sc_cu_alter_1.semantic",
+          "printedClause": "避矢之加护-被动：当一名对手即将令你【败北】时，他需花费3点魔力。否则，你不会因该效果【败北】。被动：与你交战的对手在战斗阶段结束后失去X点战果，X为其控制的激活攻击数-1且最大为3。此效果在计算因战斗获得战果之后结算。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "cu_alter_defeat_guard_vp_rule",
+              "operation": "passive_when_opponent_would_defeat_controller_that_opponent_must_pay_3_mana_or_defeat_is_prevented_after_combat_each_engaged_opponent_loses_min_3_active_attack_count_minus_1_vp_after_battle_vp_rewards"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "16396b807a17a436f358f8681d0256bce8decb0804c18bd15cb5728a35673bf6"
+    },
+    {
+      "id": "servant.cu-alter.skill.sc-cu-alter-2",
+      "printedText": "残留：你不能使用【库·丘林Alter】的宝具。你每打出一张基础攻击时，可以支付1点魔力。若如此做，此攻击获得力量属性与+1威力至回合结束。\n行动阶段：+3合计威力。战斗阶段结束后，将你的所有【噬碎死牙之兽】从游戏中移除。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_cu_alter_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "残留：你不能使用【库·丘林Alter】的宝具。你每打出一张基础攻击时，可以支付1点魔力。若如此做，此攻击获得力量属性与+1威力至回合结束。\n行动阶段：+3合计威力。战斗阶段结束后，将你的所有【噬碎死牙之兽】从游戏中移除。",
+        "sourceTextSha256": "7b9d568f2ffc4f77b81cf1548c5028ea15fe0af71181d979d75221ba57c7da00"
+      },
+      "abilities": [
+        {
+          "id": "cu-alter.sc_cu_alter_2.semantic",
+          "printedClause": "残留：你不能使用【库·丘林Alter】的宝具。你每打出一张基础攻击时，可以支付1点魔力。若如此做，此攻击获得力量属性与+1威力至回合结束。\n行动阶段：+3合计威力。战斗阶段结束后，将你的所有【噬碎死牙之兽】从游戏中移除。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "cu_alter_curruid_residual_rule",
+              "operation": "residual_cannot_use_cu_alter_noble_phantasm_when_play_base_attack_may_pay_1_mana_to_add_strength_and_plus_1_power_until_turn_end_action_plus_3_total_power_after_combat_remove_all_curruid_from_game"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7b9d568f2ffc4f77b81cf1548c5028ea15fe0af71181d979d75221ba57c7da00"
+    },
+    {
+      "id": "servant.cu-alter.skill.sc-cu-alter-3",
+      "printedText": "【真名解放】彻心之痛-战斗阶段：令一名你的交战对手失去3点战果。若其战果在失去后仍高于你，你获得2点战果和+3合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_cu_alter_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】彻心之痛-战斗阶段：令一名你的交战对手失去3点战果。若其战果在失去后仍高于你，你获得2点战果和+3合计威力。",
+        "sourceTextSha256": "de7975d264fb72d0e790db85b69bdf34ecced07d039a1a71ac27ab248c3db784"
+      },
+      "abilities": [
+        {
+          "id": "cu-alter.sc_cu_alter_3.semantic",
+          "printedClause": "【真名解放】彻心之痛-战斗阶段：令一名你的交战对手失去3点战果。若其战果在失去后仍高于你，你获得2点战果和+3合计威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "cu_alter_gae_bolg_vp_rule",
+              "operation": "true_name_reveal_combat_one_engaged_opponent_loses_3_vp_if_their_vp_remains_higher_than_controller_gain_2_vp_and_plus_3_total_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "de7975d264fb72d0e790db85b69bdf34ecced07d039a1a71ac27ab248c3db784"
+    },
+    {
+      "id": "servant.cu.skill.sc-cu-1",
+      "printedText": "【真名解放】\n打出时：此牌+2魔力消耗（可叠加）直至游戏结束。\n贯穿心脏-战斗阶段：若仅有一名对手与你位于同一战场，令其【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_cu_1",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】\n打出时：此牌+2魔力消耗（可叠加）直至游戏结束。\n贯穿心脏-战斗阶段：若仅有一名对手与你位于同一战场，令其【败北】。",
+        "sourceTextSha256": "98627e1769f0bf61d3b450b459efd6e58508a95b4cdd87b79b34bae8fb65af5a"
+      },
+      "abilities": [
+        {
+          "id": "cu.sc_cu_1.semantic",
+          "printedClause": "【真名解放】\n打出时：此牌+2魔力消耗（可叠加）直至游戏结束。\n贯穿心脏-战斗阶段：若仅有一名对手与你位于同一战场，令其【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "cu_gae_bolg_rule",
+              "operation": "true_name_reveal_on_play_permanently_add_2_mana_cost_stackable_combat_if_exactly_one_opponent_colocated_defeat_that_opponent"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "98627e1769f0bf61d3b450b459efd6e58508a95b4cdd87b79b34bae8fb65af5a"
+    },
+    {
+      "id": "servant.cu.skill.sc-cu-2",
+      "printedText": "行动阶段：移动至除魔术工房外的任意地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_cu_2",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "行动阶段：移动至除魔术工房外的任意地点。",
+        "sourceTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+      },
+      "abilities": [
+        {
+          "id": "cu.sc_cu_2.semantic",
+          "printedClause": "行动阶段：移动至除魔术工房外的任意地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "move_player",
+              "scope": "controller",
+              "destinationRule": "any_location_except_workshop"
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+    },
+    {
+      "id": "servant.cu.skill.sc-cu-np",
+      "printedText": "【真名解放】\n战斗阶段：战斗阶段结束后，每与一名对手进行了战斗便获得1点战果。若你获得胜利，每名交战对手失去该数量的战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_cu_np",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】\n战斗阶段：战斗阶段结束后，每与一名对手进行了战斗便获得1点战果。若你获得胜利，每名交战对手失去该数量的战果。",
+        "sourceTextSha256": "322216bcf691e83ddf542e8ceefead471d3e9f9377c5711330144cbde9183c03"
+      },
+      "abilities": [
+        {
+          "id": "cu.sc_cu_np.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：战斗阶段结束后，每与一名对手进行了战斗便获得1点战果。若你获得胜利，每名交战对手失去该数量的战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "cu_gungnir_reward_rule",
+              "operation": "true_name_reveal_after_combat_gain_1_vp_per_opponent_battled_if_controller_won_each_engaged_opponent_loses_that_amount_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "322216bcf691e83ddf542e8ceefead471d3e9f9377c5711330144cbde9183c03"
+    },
+    {
+      "id": "servant.dantes.skill.sc-dantes-1",
+      "printedText": "战斗阶段：若你战败，将此牌加入一位因此获胜玩家的技能区。被动/行动阶段：只有【爱德华·蒙泰斯】能使用此效果。花费4点魔力，于战斗阶段开始时使持有此牌的玩家【败北】。若如此做，【爱德华·蒙泰斯】【真名解放】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_dantes_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "战斗阶段：若你战败，将此牌加入一位因此获胜玩家的技能区。被动/行动阶段：只有【爱德华·蒙泰斯】能使用此效果。花费4点魔力，于战斗阶段开始时使持有此牌的玩家【败北】。若如此做，【爱德华·蒙泰斯】【真名解放】。",
+        "sourceTextSha256": "38d90cd0ee2aaf65d037bf47ea9febfe95cd31290ceffdc65ee10efec2a908c4"
+      },
+      "abilities": [
+        {
+          "id": "dantes.sc_dantes_1.semantic",
+          "printedClause": "战斗阶段：若你战败，将此牌加入一位因此获胜玩家的技能区。被动/行动阶段：只有【爱德华·蒙泰斯】能使用此效果。花费4点魔力，于战斗阶段开始时使持有此牌的玩家【败北】。若如此做，【爱德华·蒙泰斯】【真名解放】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "dantes_king_transfer_rule",
+              "operation": "combat_if_defeated_move_source_to_one_winner_skill_zone_passive_action_only_edward_montes_can_pay_4_mana_to_defeat_holder_at_combat_start_and_reveal_edward_true_name"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "38d90cd0ee2aaf65d037bf47ea9febfe95cd31290ceffdc65ee10efec2a908c4"
+    },
+    {
+      "id": "servant.dantes.skill.sc-dantes-2",
+      "printedText": "行动阶段：若【岩窟王】不存在于你的攻击区和技能区，花费6点魔力将其加入你的攻击。钢铁的决意-战斗阶段：令本回合的所有战败者获得1点战果。若如此做，回合结束时，战果排名最后的所有玩家获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_dantes_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "行动阶段：若【岩窟王】不存在于你的攻击区和技能区，花费6点魔力将其加入你的攻击。钢铁的决意-战斗阶段：令本回合的所有战败者获得1点战果。若如此做，回合结束时，战果排名最后的所有玩家获得2点战果。",
+        "sourceTextSha256": "576f8298c5dcdb37c0d2150a9ef55924909fe2561c402f5ea69ad03855d54be7"
+      },
+      "abilities": [
+        {
+          "id": "dantes.sc_dantes_2.semantic",
+          "printedClause": "行动阶段：若【岩窟王】不存在于你的攻击区和技能区，花费6点魔力将其加入你的攻击。钢铁的决意-战斗阶段：令本回合的所有战败者获得1点战果。若如此做，回合结束时，战果排名最后的所有玩家获得2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "dantes_hope_reward_rule",
+              "operation": "action_if_king_of_cavern_not_in_attack_or_skill_zone_pay_6_mana_add_it_to_attack_combat_all_defeated_players_gain_1_vp_then_round_end_all_last_rank_players_gain_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "576f8298c5dcdb37c0d2150a9ef55924909fe2561c402f5ea69ad03855d54be7"
+    },
+    {
+      "id": "servant.dantes.skill.sc-dantes-3",
+      "printedText": "【真名解放】行动阶段：所有玩家展示牌库顶的牌，直至其展示出一张特殊牌。若他们展示了一张【幸运】或【复仇者】，他们可以选择将其打出。弃置其余所有因此能力展示的牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_dantes_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】行动阶段：所有玩家展示牌库顶的牌，直至其展示出一张特殊牌。若他们展示了一张【幸运】或【复仇者】，他们可以选择将其打出。弃置其余所有因此能力展示的牌。",
+        "sourceTextSha256": "5a5af150f0fcbecda5440b4a1f22d19be47180a5e7c2954bab3d72ae242e5823"
+      },
+      "abilities": [
+        {
+          "id": "dantes.sc_dantes_3.semantic",
+          "printedClause": "【真名解放】行动阶段：所有玩家展示牌库顶的牌，直至其展示出一张特殊牌。若他们展示了一张【幸运】或【复仇者】，他们可以选择将其打出。弃置其余所有因此能力展示的牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "dantes_enfer_reveal_rule",
+              "operation": "true_name_reveal_action_all_players_reveal_deck_top_until_special_if_luck_or_avenger_may_play_it_discard_all_other_revealed_cards"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "5a5af150f0fcbecda5440b4a1f22d19be47180a5e7c2954bab3d72ae242e5823"
     }
   ]
 }
