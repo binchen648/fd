@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 860
+    "affectedIdentityCount": 875
   },
   "requests": [
     {
@@ -26914,7 +26914,8 @@
         "servant.jaguarman.skill.sc-jaguarman-1",
         "servant.kagetora.skill.sc-kagetora-3",
         "servant.lishuwen.skill.sc-lishuwen-3",
-        "servant.mozart.skill.sc-mozart-1"
+        "servant.mozart.skill.sc-mozart-1",
+        "servant.romulus.skill.sc-romulus-3"
       ],
       "sourceReferences": [
         {
@@ -28218,6 +28219,27 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[62].abilities[2].printedClause",
           "sha256": "1f8715720114bd77fd897009e7db293c5b861139531109b4bc0849a9abdd7451"
+        },
+        {
+          "abilityId": "servant.romulus.skill.sc-romulus-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/罗慕路斯.htm"
+        },
+        {
+          "abilityId": "servant.romulus.skill.sc-romulus-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.romulus/罗慕路斯"
+        },
+        {
+          "abilityId": "servant.romulus.skill.sc-romulus-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_romulus_3"
+        },
+        {
+          "abilityId": "servant.romulus.skill.sc-romulus-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[68].skills[2].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
         }
       ],
       "capabilityGap": "Source-grounded semantics require GENERIC_MOVEMENT, but the catalog classifies it as a generic capability request rather than an accepted current contract.",
@@ -28245,7 +28267,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 33,
+          "shared_handler": 34,
           "specific_handler": 15
         },
         "handlerCount": 28,
@@ -30556,6 +30578,8 @@
         "servant.okita.skill.sc-okita-3",
         "servant.orion.skill.sc-orion-3",
         "servant.ozymandias.skill.sc-ozymandias-2",
+        "servant.saber.skill.sc-saber-1",
+        "servant.saitou.skill.sc-saitou-1",
         "servant.sherlock.skill.sc-sherlock-2",
         "servant.siegfried.skill.sc-siegfried-3"
       ],
@@ -34068,6 +34092,66 @@
           "sha256": "6db56f1692adfadcb4a81aa840af8bdea39039a0b101aaff2bd33fda633cf0a1"
         },
         {
+          "abilityId": "servant.saber.skill.sc-saber-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/阿尔托莉雅·潘德拉贡1.htm"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.saber/阿尔托莉雅·潘德拉贡"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_saber_1"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[1].skills[0].text#line=1",
+          "sha256": "bab4b24653f4b6af35b87c7be8dc062c4a11d8d3d772ba1252310615102b9045"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[1].skills[0].text#line=2",
+          "sha256": "8375256a1b87eeb7f39aa2dd40980fd8a6b7f3f9c24604dd318a37bc5616ddd4"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/斋藤一.htm"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.saitou/斋藤一"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-1",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_saitou_1"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[31].skills[0].text#line=1",
+          "sha256": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[31].skills[0].text#line=2",
+          "sha256": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[31].skills[0].text#line=3",
+          "sha256": "dcaf950c99dfaf589dac80e3e1d6c0d65e6d97020e1943f499fcb1e204610158"
+        },
+        {
           "abilityId": "servant.sherlock.skill.sc-sherlock-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/裁定者/英文版/夏洛克·福尔摩斯.htm"
@@ -34154,7 +34238,7 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 1,
-          "shared_handler": 73,
+          "shared_handler": 75,
           "specific_handler": 49
         },
         "handlerCount": 74,
@@ -34288,6 +34372,8 @@
         "servant.nero.skill.sc-nero-1",
         "servant.nobunaga.skill.sc-nobunaga-3",
         "servant.ozymandias.skill.sc-ozymandias-2",
+        "servant.saber.skill.sc-saber-1",
+        "servant.saitou.skill.sc-saitou-1",
         "servant.sherlock.skill.sc-sherlock-2",
         "servant.spartacus.skill.sc-spartacus-2",
         "servant.stheno.skill.sc-stheno-2"
@@ -37462,6 +37548,66 @@
           "sha256": "6db56f1692adfadcb4a81aa840af8bdea39039a0b101aaff2bd33fda633cf0a1"
         },
         {
+          "abilityId": "servant.saber.skill.sc-saber-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/阿尔托莉雅·潘德拉贡1.htm"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.saber/阿尔托莉雅·潘德拉贡"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-1",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_saber_1"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[1].skills[0].text#line=1",
+          "sha256": "bab4b24653f4b6af35b87c7be8dc062c4a11d8d3d772ba1252310615102b9045"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[1].skills[0].text#line=2",
+          "sha256": "8375256a1b87eeb7f39aa2dd40980fd8a6b7f3f9c24604dd318a37bc5616ddd4"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/斋藤一.htm"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.saitou/斋藤一"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-1",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_saitou_1"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[31].skills[0].text#line=1",
+          "sha256": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[31].skills[0].text#line=2",
+          "sha256": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[31].skills[0].text#line=3",
+          "sha256": "dcaf950c99dfaf589dac80e3e1d6c0d65e6d97020e1943f499fcb1e204610158"
+        },
+        {
           "abilityId": "servant.sherlock.skill.sc-sherlock-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/裁定者/英文版/夏洛克·福尔摩斯.htm"
@@ -37575,7 +37721,7 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 1,
-          "shared_handler": 77,
+          "shared_handler": 79,
           "specific_handler": 43
         },
         "handlerCount": 71,
@@ -49309,6 +49455,18 @@
         "servant.robin.skill.sc-robin-1",
         "servant.robin.skill.sc-robin-2",
         "servant.robin.skill.sc-robin-3",
+        "servant.romulus.skill.sc-romulus-1",
+        "servant.romulus.skill.sc-romulus-2",
+        "servant.ryouma.skill.sc-ryouma-1",
+        "servant.ryouma.skill.sc-ryouma-2",
+        "servant.ryouma.skill.sc-ryouma-3",
+        "servant.saber.skill.sc-saber-2",
+        "servant.saber.skill.sc-saber-np",
+        "servant.saitou.skill.sc-saitou-2",
+        "servant.saitou.skill.sc-saitou-3",
+        "servant.salieri.skill.sc-salieri-1",
+        "servant.salieri.skill.sc-salieri-2",
+        "servant.salieri.skill.sc-salieri-3",
         "servant.sherlock.skill.sc-sherlock-1",
         "servant.sherlock.skill.sc-sherlock-2",
         "servant.sherlock.skill.sc-sherlock-3",
@@ -65314,6 +65472,318 @@
           "sha256": "09b0e1ef07c8fff79bc12a242c577473b585ff084342f1363540f82ace317f08"
         },
         {
+          "abilityId": "servant.romulus.skill.sc-romulus-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/罗慕路斯.htm"
+        },
+        {
+          "abilityId": "servant.romulus.skill.sc-romulus-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.romulus/罗慕路斯"
+        },
+        {
+          "abilityId": "servant.romulus.skill.sc-romulus-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_romulus_1"
+        },
+        {
+          "abilityId": "servant.romulus.skill.sc-romulus-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[68].skills[0].text#line=1",
+          "sha256": "ff6cdd03c3e4d80655fc046dc01153778ab43737c0e5026f0d778b3900ccf681"
+        },
+        {
+          "abilityId": "servant.romulus.skill.sc-romulus-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[68].skills[0].text#line=2",
+          "sha256": "d43dddfbd055ca7c4f0703674404f6fec3ecee8e3b72e22e46a351310c87000a"
+        },
+        {
+          "abilityId": "servant.romulus.skill.sc-romulus-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/罗慕路斯.htm"
+        },
+        {
+          "abilityId": "servant.romulus.skill.sc-romulus-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.romulus/罗慕路斯"
+        },
+        {
+          "abilityId": "servant.romulus.skill.sc-romulus-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_romulus_2"
+        },
+        {
+          "abilityId": "servant.romulus.skill.sc-romulus-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[68].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.romulus.skill.sc-romulus-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[68].skills[1].text#line=2",
+          "sha256": "c47e67ed4bc3120a5da1954c726cb1436da3ed15382333bee80e9923227a6450"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/坂本龙马.htm"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.ryouma/坂本龙马"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_ryouma_1"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[92].skills[0].text#line=1",
+          "sha256": "1aa9d9b7b2f87932c2fc7a2f884cd211434215006a66ab244e578d6790142aa8"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[92].skills[0].text#line=2",
+          "sha256": "137a9981772193f689bfda8ede5c962104c5108f9dc458c7e84b54efa0ef07de"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[92].skills[0].text#line=3",
+          "sha256": "7026f86739bce80597433e077274105837c1d68f02d66b99c3ad01eedbf2d8d2"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/坂本龙马.htm"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.ryouma/坂本龙马"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_ryouma_2"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[92].skills[1].text#line=1",
+          "sha256": "5f2adf816d50e7ccd8e1a41ed2e79643d4accc82aca11a6234c7414aaf0eed8e"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[92].skills[1].text#line=2",
+          "sha256": "c84beb4b2d84e2b62723b6c1c9b626d22df4e8046e39e3f33d1cc80814eb00ca"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/坂本龙马.htm"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.ryouma/坂本龙马"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_ryouma_3"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[92].skills[2].text#line=1",
+          "sha256": "7ff03f36f125a036d74b6395a0864931b299d0c8624c1f24ffc6a4c2ebf04a8d"
+        },
+        {
+          "abilityId": "servant.ryouma.skill.sc-ryouma-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[92].skills[2].text#line=2",
+          "sha256": "2fb5dcb6a0dc457c2107e356b1f7de60fd81b2631e43e93f2daca7580bad6705"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/阿尔托莉雅·潘德拉贡1.htm"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.saber/阿尔托莉雅·潘德拉贡"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_saber_2"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[1].skills[1].text#line=1",
+          "sha256": "81b5f6d92a76315ef18e63e45ce87f3a1f31d3ab5cd7469af16e0cbc790d982c"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[1].skills[1].text#line=2",
+          "sha256": "e554fd49874ebc9374c3fabcb490c667b3982d8216da989dfe46c09a5a4ef1b6"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-np",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/阿尔托莉雅·潘德拉贡1.htm"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-np",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.saber/阿尔托莉雅·潘德拉贡"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-np",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_saber_np"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-np",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[1].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.saber.skill.sc-saber-np",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[1].skills[2].text#line=2",
+          "sha256": "e9e780d58789dc58d89a51b75aeee8740525f95c0540b885d87888672113a6d8"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/斋藤一.htm"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.saitou/斋藤一"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-2",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_saitou_2"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[31].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[31].skills[1].text#line=2",
+          "sha256": "ad7a2c01481f4be3f7ebf7cb463e40ff3f5ba990ebde1b780d6cc2559739963c"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/斋藤一.htm"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.saitou/斋藤一"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-3",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_saitou_3"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[31].skills[2].text#line=1",
+          "sha256": "cac7ff8d7884772fe133d315152e093f5d76b5a60dc3daa57c581e6a7c2e4a97"
+        },
+        {
+          "abilityId": "servant.saitou.skill.sc-saitou-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[31].skills[2].text#line=2",
+          "sha256": "6e2027f511ff4d1c1ea97d2da5f6f7899826d24ad891fda305e9f3826a56513c"
+        },
+        {
+          "abilityId": "servant.salieri.skill.sc-salieri-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/安东尼奥·萨列里.htm"
+        },
+        {
+          "abilityId": "servant.salieri.skill.sc-salieri-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.salieri/安东尼奥·萨列里"
+        },
+        {
+          "abilityId": "servant.salieri.skill.sc-salieri-1",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_salieri_1"
+        },
+        {
+          "abilityId": "servant.salieri.skill.sc-salieri-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[163].skills[0].text#line=1",
+          "sha256": "026169167d6d9ed9acdc5b62c0c783f8f52d70fd8beea0675e7f977a9cc35721"
+        },
+        {
+          "abilityId": "servant.salieri.skill.sc-salieri-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/安东尼奥·萨列里.htm"
+        },
+        {
+          "abilityId": "servant.salieri.skill.sc-salieri-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.salieri/安东尼奥·萨列里"
+        },
+        {
+          "abilityId": "servant.salieri.skill.sc-salieri-2",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_salieri_2"
+        },
+        {
+          "abilityId": "servant.salieri.skill.sc-salieri-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[163].skills[1].text#line=1",
+          "sha256": "a75895ddcccb81287b6569065b9f93af45c550f396d50ad4c9868e12fbfcf01a"
+        },
+        {
+          "abilityId": "servant.salieri.skill.sc-salieri-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/复仇者/英文版/安东尼奥·萨列里.htm"
+        },
+        {
+          "abilityId": "servant.salieri.skill.sc-salieri-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.salieri/安东尼奥·萨列里"
+        },
+        {
+          "abilityId": "servant.salieri.skill.sc-salieri-3",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_salieri_3"
+        },
+        {
+          "abilityId": "servant.salieri.skill.sc-salieri-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[163].skills[2].text#line=1",
+          "sha256": "c37baa8197e6bab47f9df236ce9699e0aeba4aab581d5817ad37c0116b15801e"
+        },
+        {
           "abilityId": "servant.sherlock.skill.sc-sherlock-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/裁定者/英文版/夏洛克·福尔摩斯.htm"
@@ -65781,10 +66251,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 280,
-          "specific_handler": 328
+          "shared_handler": 285,
+          "specific_handler": 335
         },
-        "handlerCount": 393,
+        "handlerCount": 401,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

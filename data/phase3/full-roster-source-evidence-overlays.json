@@ -30596,6 +30596,414 @@
         }
       ],
       "referencePrintedTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+    },
+    {
+      "id": "servant.romulus.skill.sc-romulus-1",
+      "printedText": "被动：非【罗马】玩家移动至你所在的战场后变为【裁军】，他们除令咒外不可打出攻击或使用能力。\n战斗阶段：若此战斗中其他玩家全部都是【罗马】，罗慕路斯的技能获得威力+4。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_romulus_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "被动：非【罗马】玩家移动至你所在的战场后变为【裁军】，他们除令咒外不可打出攻击或使用能力。\n战斗阶段：若此战斗中其他玩家全部都是【罗马】，罗慕路斯的技能获得威力+4。",
+        "sourceTextSha256": "666d4ee1d0a17d29a33ceac9495deaca476a3dd7a4553c7e59c39e92aa23fef4"
+      },
+      "abilities": [
+        {
+          "id": "romulus.sc-romulus-1.semantic",
+          "printedClause": "被动：非【罗马】玩家移动至你所在的战场后变为【裁军】，他们除令咒外不可打出攻击或使用能力。\n战斗阶段：若此战斗中其他玩家全部都是【罗马】，罗慕路斯的技能获得威力+4。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "romulus_roman_disarm_rule",
+              "operation": "passive_after_non_roman_player_moves_to_controller_battlefield_that_player_becomes_disarmed_cannot_play_attacks_or_use_abilities_except_command_spells_combat_if_all_other_players_in_battle_are_roman_romulus_skill_cards_plus_4_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "666d4ee1d0a17d29a33ceac9495deaca476a3dd7a4553c7e59c39e92aa23fef4"
+    },
+    {
+      "id": "servant.romulus.skill.sc-romulus-2",
+      "printedText": "【真名解放】\n被动/战斗阶段：若你赢得胜利，此战斗的败者变为【罗马】直至游戏结束。当一名【罗马】赢得胜利时，你和该【罗马】各获得1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_romulus_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n被动/战斗阶段：若你赢得胜利，此战斗的败者变为【罗马】直至游戏结束。当一名【罗马】赢得胜利时，你和该【罗马】各获得1点战果。",
+        "sourceTextSha256": "6515bfe6e7a930270981e15f7bd435f964dac914671c7bef870ae81a40856a70"
+      },
+      "abilities": [
+        {
+          "id": "romulus.sc-romulus-2.semantic",
+          "printedClause": "【真名解放】\n被动/战斗阶段：若你赢得胜利，此战斗的败者变为【罗马】直至游戏结束。当一名【罗马】赢得胜利时，你和该【罗马】各获得1点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "romulus_roman_victory_rule",
+              "operation": "true_name_reveal_passive_combat_if_controller_wins_losers_become_roman_until_game_end_when_a_roman_wins_controller_and_that_roman_each_gain_1_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "6515bfe6e7a930270981e15f7bd435f964dac914671c7bef870ae81a40856a70"
+    },
+    {
+      "id": "servant.romulus.skill.sc-romulus-3",
+      "printedText": "行动阶段：移动至除魔术工房外的任意地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_romulus_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "行动阶段：移动至除魔术工房外的任意地点。",
+        "sourceTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+      },
+      "abilities": [
+        {
+          "id": "romulus.sc-romulus-3.semantic",
+          "printedClause": "行动阶段：移动至除魔术工房外的任意地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "move_player",
+              "scope": "controller",
+              "destinationRule": "any_location_except_workshop"
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+    },
+    {
+      "id": "servant.ryouma.skill.sc-ryouma-1",
+      "printedText": "【真名解放】 <每局游戏限一次>\n打出时：此牌获得+10威力至回合结束。\n残留：坂本龙马的其他力量攻击魔力消耗与威力+3。回合结束时，若你的魔力小于4点，关闭此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_ryouma_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】 <每局游戏限一次>\n打出时：此牌获得+10威力至回合结束。\n残留：坂本龙马的其他力量攻击魔力消耗与威力+3。回合结束时，若你的魔力小于4点，关闭此牌。",
+        "sourceTextSha256": "81045ec6f16785d029e33ea08801e312419f2ce01053a5581ddc9904a8e4595d"
+      },
+      "abilities": [
+        {
+          "id": "ryouma.sc-ryouma-1.semantic",
+          "printedClause": "【真名解放】 <每局游戏限一次>\n打出时：此牌获得+10威力至回合结束。\n残留：坂本龙马的其他力量攻击魔力消耗与威力+3。回合结束时，若你的魔力小于4点，关闭此牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ryouma_soaring_dragon_rule",
+              "operation": "true_name_reveal_once_per_game_on_play_source_plus_10_power_until_round_end_residual_other_strength_attacks_plus_3_mana_cost_and_plus_3_power_close_source_at_round_end_if_controller_mana_below_4"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "81045ec6f16785d029e33ea08801e312419f2ce01053a5581ddc9904a8e4595d"
+    },
+    {
+      "id": "servant.ryouma.skill.sc-ryouma-2",
+      "printedText": "与子成说-被动：若你打出了恰好两张力量攻击，你可以打出一张魔术或迅捷牌。\n船中八策-残留：当你使用一张或更多的迅捷基础攻击时，令他们获得威力+2并于回合结束时关闭此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_ryouma_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "与子成说-被动：若你打出了恰好两张力量攻击，你可以打出一张魔术或迅捷牌。\n船中八策-残留：当你使用一张或更多的迅捷基础攻击时，令他们获得威力+2并于回合结束时关闭此牌。",
+        "sourceTextSha256": "f7efd417db54bb6ac8a287639934caec8effe487197d3bec1641c403fbee65ea"
+      },
+      "abilities": [
+        {
+          "id": "ryouma.sc-ryouma-2.semantic",
+          "printedClause": "与子成说-被动：若你打出了恰好两张力量攻击，你可以打出一张魔术或迅捷牌。\n船中八策-残留：当你使用一张或更多的迅捷基础攻击时，令他们获得威力+2并于回合结束时关闭此牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ryouma_blade_restoration_rule",
+              "operation": "passive_after_controller_played_exactly_two_strength_attacks_may_play_one_magic_or_quick_card_residual_when_controller_uses_one_or_more_quick_base_attacks_those_attacks_plus_2_power_then_close_source_at_round_end"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f7efd417db54bb6ac8a287639934caec8effe487197d3bec1641c403fbee65ea"
+    },
+    {
+      "id": "servant.ryouma.skill.sc-ryouma-3",
+      "printedText": "死生契阔-被动：若你打出了恰好两张迅捷攻击，你可以打出一张力量或特殊牌。\n龙神之怒-行动阶段：支付3点魔力，抽两张牌并弃置任意数量的手牌。每张因此效果弃置的力量属性牌令此牌获得威力+2至回合结束。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_ryouma_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "死生契阔-被动：若你打出了恰好两张迅捷攻击，你可以打出一张力量或特殊牌。\n龙神之怒-行动阶段：支付3点魔力，抽两张牌并弃置任意数量的手牌。每张因此效果弃置的力量属性牌令此牌获得威力+2至回合结束。",
+        "sourceTextSha256": "0ced3e4a0b0eea37f14f6d83a287931f815192bc3e57b5a59eb8452dfc1c810a"
+      },
+      "abilities": [
+        {
+          "id": "ryouma.sc-ryouma-3.semantic",
+          "printedClause": "死生契阔-被动：若你打出了恰好两张迅捷攻击，你可以打出一张力量或特殊牌。\n龙神之怒-行动阶段：支付3点魔力，抽两张牌并弃置任意数量的手牌。每张因此效果弃置的力量属性牌令此牌获得威力+2至回合结束。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ryouma_dragon_restoration_rule",
+              "operation": "passive_after_controller_played_exactly_two_quick_attacks_may_play_one_strength_or_special_card_action_pay_3_mana_draw_2_then_discard_any_number_of_hand_cards_source_plus_2_power_until_round_end_for_each_strength_card_discarded_this_way"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0ced3e4a0b0eea37f14f6d83a287931f815192bc3e57b5a59eb8452dfc1c810a"
+    },
+    {
+      "id": "servant.saber.skill.sc-saber-1",
+      "printedText": "【宝具绽放】被动/战斗阶段：若你于本回合打出了魔耗最高的宝具攻击，获1战果。若其消耗≥4，额外获1战果。\n【魔术抗性】战斗阶段：将与你位于同战场的交战对手控制的魔法/魔术属性攻击威力设置为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_saber_1",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【宝具绽放】被动/战斗阶段：若你于本回合打出了魔耗最高的宝具攻击，获1战果。若其消耗≥4，额外获1战果。\n【魔术抗性】战斗阶段：将与你位于同战场的交战对手控制的魔法/魔术属性攻击威力设置为0。",
+        "sourceTextSha256": "0cdfc3fafc790b59414b23e58a39fd0926dd776a7df6ccba352ce65dd3c74d22"
+      },
+      "abilities": [
+        {
+          "id": "saber.sc-saber-1.semantic",
+          "printedClause": "【宝具绽放】被动/战斗阶段：若你于本回合打出了魔耗最高的宝具攻击，获1战果。若其消耗≥4，额外获1战果。\n【魔术抗性】战斗阶段：将与你位于同战场的交战对手控制的魔法/魔术属性攻击威力设置为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 1,
+              "operation": "if_played_highest_mana_cost_noble_phantasm_attack_in_controller_combat_this_round_gain_1_vp_and_if_cost_at_least_4_gain_1_additional_vp"
+            },
+            {
+              "type": "set_opponent_attribute_power",
+              "attribute": "magic",
+              "value": 0,
+              "operation": "combat_set_magic_attribute_attack_power_of_engaged_opponents_at_same_battlefield_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0cdfc3fafc790b59414b23e58a39fd0926dd776a7df6ccba352ce65dd3c74d22"
+    },
+    {
+      "id": "servant.saber.skill.sc-saber-2",
+      "printedText": "若你的真名隐藏，此牌的魔力消耗-2。\n战斗阶段：将与你进行战斗对手的力量攻击威力变为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_saber_2",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "若你的真名隐藏，此牌的魔力消耗-2。\n战斗阶段：将与你进行战斗对手的力量攻击威力变为0。",
+        "sourceTextSha256": "f4b2e0473837df1434fc07bf1bac2fec5fca4a832e87833658d99c4b9244f8d8"
+      },
+      "abilities": [
+        {
+          "id": "saber.sc-saber-2.semantic",
+          "printedClause": "若你的真名隐藏，此牌的魔力消耗-2。\n战斗阶段：将与你进行战斗对手的力量攻击威力变为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "saber_invisible_air_rule",
+              "operation": "while_true_name_hidden_source_mana_cost_minus_2_combat_set_strength_attribute_attack_power_of_opponents_battling_controller_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f4b2e0473837df1434fc07bf1bac2fec5fca4a832e87833658d99c4b9244f8d8"
+    },
+    {
+      "id": "servant.saber.skill.sc-saber-np",
+      "printedText": "【真名解放】\n战斗阶段：高潮回合时，合计威力+4。若你赢得第11回合战斗，获得游戏胜利。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_saber_np",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】\n战斗阶段：高潮回合时，合计威力+4。若你赢得第11回合战斗，获得游戏胜利。",
+        "sourceTextSha256": "4016b01c0b341a0561a5ad6455067f3996966fd075e9f21008c420d5153c6c1d"
+      },
+      "abilities": [
+        {
+          "id": "saber.sc-saber-np.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：高潮回合时，合计威力+4。若你赢得第11回合战斗，获得游戏胜利。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "saber_excalibur_climax_rule",
+              "operation": "true_name_reveal_combat_during_climax_round_controller_total_power_plus_4_if_controller_wins_round_11_combat_controller_wins_game"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4016b01c0b341a0561a5ad6455067f3996966fd075e9f21008c420d5153c6c1d"
+    },
+    {
+      "id": "servant.saitou.skill.sc-saitou-1",
+      "printedText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔法属性攻击威力设置为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_saitou_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔法属性攻击威力设置为0。",
+        "sourceTextSha256": "b2b1bc7cdbc3adce79362de44635ed871f652c60e3b5abe691a07e26458a8d05"
+      },
+      "abilities": [
+        {
+          "id": "saitou.sc-saitou-1.semantic",
+          "printedClause": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔法属性攻击威力设置为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "amount": 1,
+              "operation": "if_played_highest_mana_cost_noble_phantasm_attack_in_controller_combat_this_round_gain_1_vp_and_if_cost_at_least_4_gain_1_additional_vp"
+            },
+            {
+              "type": "set_opponent_attribute_power",
+              "attribute": "magic",
+              "value": 0,
+              "operation": "combat_set_magic_attribute_attack_power_of_engaged_opponents_at_same_battlefield_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b2b1bc7cdbc3adce79362de44635ed871f652c60e3b5abe691a07e26458a8d05"
+    },
+    {
+      "id": "servant.saitou.skill.sc-saitou-2",
+      "printedText": "【真名解放】\n行动阶段：抽2张牌并展示你的手牌。免费正面打出所有因此效果展示的基础力量和敏捷攻击，然后关闭你所有的基础力量或敏捷攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_saitou_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n行动阶段：抽2张牌并展示你的手牌。免费正面打出所有因此效果展示的基础力量和敏捷攻击，然后关闭你所有的基础力量或敏捷攻击。",
+        "sourceTextSha256": "70fa79309f3e01d4c56d853660eca881b0730d26a6704718f6b0bbc2344ca8ea"
+      },
+      "abilities": [
+        {
+          "id": "saitou.sc-saitou-2.semantic",
+          "printedClause": "【真名解放】\n行动阶段：抽2张牌并展示你的手牌。免费正面打出所有因此效果展示的基础力量和敏捷攻击，然后关闭你所有的基础力量或敏捷攻击。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "saitou_flag_sincerity_rule",
+              "operation": "true_name_reveal_action_draw_2_reveal_controller_hand_play_all_revealed_base_strength_and_quick_attacks_faceup_for_free_then_close_all_controller_base_strength_or_quick_attacks"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "70fa79309f3e01d4c56d853660eca881b0730d26a6704718f6b0bbc2344ca8ea"
+    },
+    {
+      "id": "servant.saitou.skill.sc-saitou-3",
+      "printedText": "拔刀自如-被动/战斗阶段：若你控制基础敏捷攻击，将所有未与你控制至少一张与你相同基础敏捷攻击的交战对手的敏捷攻击威力变为0。\n你可以支付3点魔力，将拔刀自如中的“敏捷”更改为“力量”，重复发动一次本效果（即使未发动过）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_saitou_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "拔刀自如-被动/战斗阶段：若你控制基础敏捷攻击，将所有未与你控制至少一张与你相同基础敏捷攻击的交战对手的敏捷攻击威力变为0。\n你可以支付3点魔力，将拔刀自如中的“敏捷”更改为“力量”，重复发动一次本效果（即使未发动过）。",
+        "sourceTextSha256": "931af470a87751e24463ae0bbf7a1635fc5c7349fcf87f94916dc0e182d48525"
+      },
+      "abilities": [
+        {
+          "id": "saitou.sc-saitou-3.semantic",
+          "printedClause": "拔刀自如-被动/战斗阶段：若你控制基础敏捷攻击，将所有未与你控制至少一张与你相同基础敏捷攻击的交战对手的敏捷攻击威力变为0。\n你可以支付3点魔力，将拔刀自如中的“敏捷”更改为“力量”，重复发动一次本效果（即使未发动过）。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "saitou_formlessness_rule",
+              "operation": "passive_combat_if_controller_controls_base_quick_attack_set_quick_attack_power_to_0_for_engaged_opponents_not_controlling_at_least_one_matching_base_quick_attack_may_pay_3_mana_change_quick_to_strength_and_repeat_once_even_if_first_mode_not_used"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "931af470a87751e24463ae0bbf7a1635fc5c7349fcf87f94916dc0e182d48525"
+    },
+    {
+      "id": "servant.salieri.skill.sc-salieri-1",
+      "printedText": "【真名解放】<每局游戏限一次>残留：当你的战果排名位于第一时，关闭此牌。所有玩家获得效果：“行动阶段：若至少存在一名战果比你多的其他玩家，获得1点战果且合计威力+2。”",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_salieri_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】<每局游戏限一次>残留：当你的战果排名位于第一时，关闭此牌。所有玩家获得效果：“行动阶段：若至少存在一名战果比你多的其他玩家，获得1点战果且合计威力+2。”",
+        "sourceTextSha256": "026169167d6d9ed9acdc5b62c0c783f8f52d70fd8beea0675e7f977a9cc35721"
+      },
+      "abilities": [
+        {
+          "id": "salieri.sc-salieri-1.semantic",
+          "printedClause": "【真名解放】<每局游戏限一次>残留：当你的战果排名位于第一时，关闭此牌。所有玩家获得效果：“行动阶段：若至少存在一名战果比你多的其他玩家，获得1点战果且合计威力+2。”",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "salieri_kyrie_rule",
+              "operation": "true_name_reveal_once_per_game_residual_close_source_when_controller_vp_rank_is_first_all_players_gain_action_if_any_other_player_has_more_vp_gain_1_vp_and_plus_2_total_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "026169167d6d9ed9acdc5b62c0c783f8f52d70fd8beea0675e7f977a9cc35721"
+    },
+    {
+      "id": "servant.salieri.skill.sc-salieri-2",
+      "printedText": "X为你当前魔力值的一半+2（最高为10，向上取整）。被动/前哨阶段：若你位于某处战场，获得8至12点魔力。战斗阶段结束时失去所有魔力，同时失去因该效果失去的魔力值一半的战果（向上取整），此效果不能被任何方式阻止。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_salieri_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "X为你当前魔力值的一半+2（最高为10，向上取整）。被动/前哨阶段：若你位于某处战场，获得8至12点魔力。战斗阶段结束时失去所有魔力，同时失去因该效果失去的魔力值一半的战果（向上取整），此效果不能被任何方式阻止。",
+        "sourceTextSha256": "a75895ddcccb81287b6569065b9f93af45c550f396d50ad4c9868e12fbfcf01a"
+      },
+      "abilities": [
+        {
+          "id": "salieri.sc-salieri-2.semantic",
+          "printedClause": "X为你当前魔力值的一半+2（最高为10，向上取整）。被动/前哨阶段：若你位于某处战场，获得8至12点魔力。战斗阶段结束时失去所有魔力，同时失去因该效果失去的魔力值一半的战果（向上取整），此效果不能被任何方式阻止。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "salieri_wildfire_rule",
+              "operation": "x_equals_half_current_mana_plus_2_rounded_up_max_10_passive_vanguard_if_controller_at_battlefield_gain_mana_to_reach_between_8_and_12_after_combat_lose_all_mana_and_lose_vp_equal_half_mana_lost_rounded_up_unpreventable"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "a75895ddcccb81287b6569065b9f93af45c550f396d50ad4c9868e12fbfcf01a"
+    },
+    {
+      "id": "servant.salieri.skill.sc-salieri-3",
+      "printedText": "被动：当其他玩家因为能力获得战果时，你可以从手牌中打出一张牌并花费其两倍的魔力消耗。若如此，抽一张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_salieri_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动：当其他玩家因为能力获得战果时，你可以从手牌中打出一张牌并花费其两倍的魔力消耗。若如此，抽一张牌。",
+        "sourceTextSha256": "c37baa8197e6bab47f9df236ce9699e0aeba4aab581d5817ad37c0116b15801e"
+      },
+      "abilities": [
+        {
+          "id": "salieri.sc-salieri-3.semantic",
+          "printedClause": "被动：当其他玩家因为能力获得战果时，你可以从手牌中打出一张牌并花费其两倍的魔力消耗。若如此，抽一张牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "salieri_oblivion_correction_rule",
+              "operation": "passive_when_another_player_gains_vp_from_ability_controller_may_play_one_hand_card_paying_twice_its_mana_cost_if_so_draw_1"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c37baa8197e6bab47f9df236ce9699e0aeba4aab581d5817ad37c0116b15801e"
     }
   ]
 }
