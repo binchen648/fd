@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=705
-blockedCount=239
+sourceGroundedCount=721
+blockedCount=223
 unclassifiedCount=0
-structuredAbilityCount=983
+structuredAbilityCount=999
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 122 |
+| timing | `ACTION` | 124 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -262,15 +262,15 @@ structuredAbilityCount=983
 | target | `CHOOSE_N_EVENTS` | 1 |
 | effect | `GAIN_VICTORY_POINTS` | 49 |
 | effect | `GAIN_MANA` | 36 |
+| effect | `DRAW_CARDS` | 30 |
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
-| effect | `DRAW_CARDS` | 28 |
 | effect | `EVENT_CARD_RULE` | 27 |
 | effect | `MOVE_PLAYER` | 25 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
+| effect | `PLAY_SELECTED_CARDS` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
-| effect | `PLAY_SELECTED_CARDS` | 18 |
 | effect | `MOVE_SELECTED_CARDS` | 17 |
 | effect | `CLOSE_SOURCE_CARD` | 14 |
 | effect | `LOSTBELT_EXPANSION` | 14 |
@@ -291,13 +291,13 @@ structuredAbilityCount=983
 | effect | `IF_CONDITION` | 7 |
 | effect | `INDEPENDENT_ACTION_RULE` | 7 |
 | effect | `MOON_HOLY_GRAIL_RULE` | 6 |
+| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 6 |
 | effect | `SET_MANA` | 6 |
 | effect | `TERRAIN_POSITION_ADJUSTMENT` | 6 |
 | effect | `TRANSFER_VICTORY_POINTS` | 6 |
 | effect | `ADD_STATUS` | 5 |
 | effect | `DUAL_SERVANT_RULE` | 5 |
 | effect | `MOVE_CARD` | 5 |
-| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 5 |
 | effect | `SECRET_GARDEN_RULE` | 5 |
 | effect | `TATARI_DETERIORATION_RULE` | 5 |
 | effect | `CLOSE_SELECTED_CARDS` | 4 |
@@ -374,6 +374,7 @@ structuredAbilityCount=983
 | effect | `SKILL_COPY_LIFECYCLE_RULE` | 2 |
 | effect | `SOURCE_CARD_POWER_FORMULA` | 2 |
 | effect | `TATARI_RULE` | 2 |
+| effect | `TEMPORARY_ATTACK_CREATION_RULE` | 2 |
 | effect | `TRANSFER_MANA` | 2 |
 | effect | `TRANSFER_MATCHING_CARDS` | 2 |
 | effect | `TRUE_NAME_HIDE_AND_ACTION_REPLAY_RULE` | 2 |
@@ -390,6 +391,7 @@ structuredAbilityCount=983
 | effect | `AVENGER_DISCARD_RECOVERY_RULE` | 1 |
 | effect | `AVENGER_DISCARD_VP_STEAL_RULE` | 1 |
 | effect | `BATTLEFIELD_PRESENCE_RESOURCE_RULE` | 1 |
+| effect | `BEAST_FORM_RULE` | 1 |
 | effect | `BEAST_RESOURCE_RULE` | 1 |
 | effect | `BETRAYAL_ASCENSION_RULE` | 1 |
 | effect | `BETRAYAL_THRESHOLD_RULE` | 1 |
@@ -442,6 +444,7 @@ structuredAbilityCount=983
 | effect | `DANTES_ENFER_REVEAL_RULE` | 1 |
 | effect | `DANTES_HOPE_REWARD_RULE` | 1 |
 | effect | `DANTES_KING_TRANSFER_RULE` | 1 |
+| effect | `DARK_FOG_EVENT_RULE` | 1 |
 | effect | `DECK_BOTTOM_MATCH_RULE` | 1 |
 | effect | `DECK_BOTTOM_RULE` | 1 |
 | effect | `DECK_RECYCLE_POWER_RULE` | 1 |
@@ -465,7 +468,9 @@ structuredAbilityCount=983
 | effect | `EVENT_POWER_COST_PROTECTION_RULE` | 1 |
 | effect | `EVENT_PRINTED_VP_ADJUSTMENT_RULE` | 1 |
 | effect | `EVENT_SUPPRESSION_RULE` | 1 |
+| effect | `FINISHING_SWORD_MEMORY_RULE` | 1 |
 | effect | `FIRST_OPPONENT_NOBLE_PHANTASM_MANA_RULE` | 1 |
+| effect | `FORCED_RETURN_DISCARD_POWER_RULE` | 1 |
 | effect | `FREE_PLAY_PERMISSION_RULE` | 1 |
 | effect | `GARETH_DISGUISE_KNIGHT_RULE` | 1 |
 | effect | `GARETH_MANA_OVERLOAD_RULE` | 1 |
@@ -506,18 +511,25 @@ structuredAbilityCount=983
 | effect | `MAGIC_ATTACK_CLOSE_REWARD_RULE` | 1 |
 | effect | `MAGIC_IMMUNITY_RULE` | 1 |
 | effect | `MANA_BURST_REFUND_RULE` | 1 |
+| effect | `MANA_THRESHOLD_VP_BURN_RULE` | 1 |
+| effect | `MANSLAYER_REACTION_RULE` | 1 |
 | effect | `MAP_ARROW_REWRITE_RULE` | 1 |
 | effect | `MARBLE_PHANTASM_DEFEAT_RULE` | 1 |
+| effect | `MARIA_THE_RIPPER_RULE` | 1 |
 | effect | `MATCHING_ATTRIBUTE_EVENT_SITUATION_PROTECTION_RULE` | 1 |
 | effect | `MILLENNIUM_CASTLE_OFFBOARD_LOCK_RULE` | 1 |
+| effect | `MIRROR_SHIELD_SACRED_LAND_RULE` | 1 |
 | effect | `MODIFY_OTHER_ATTACKS` | 1 |
 | effect | `MOON_HOLY_GRAIL_RESET_RULE` | 1 |
 | effect | `MORPH_STACK_RULE` | 1 |
+| effect | `MOTHER_DESIGNATION_RULE` | 1 |
 | effect | `MURDER_IMPULSE_THRESHOLD_RULE` | 1 |
 | effect | `MYSTIC_CODE_RULE` | 1 |
 | effect | `MYSTIC_CODE_UPGRADE_RULE` | 1 |
 | effect | `OFFBOARD_BATTLE_TAKEOVER_RULE` | 1 |
 | effect | `OPPONENT_OPTION_LOCK_RULE` | 1 |
+| effect | `ORACLE_CHOICE_RULE` | 1 |
+| effect | `ORACLE_REPEAT_RULE` | 1 |
 | effect | `ORIGIN_BULLET_RULE` | 1 |
 | effect | `OTHER_ATTACK_POWER_BONUS` | 1 |
 | effect | `PAIN_CONVERSION_REWARD_RULE` | 1 |
@@ -570,7 +582,6 @@ structuredAbilityCount=983
 | effect | `STOLEN_MANA_ATTRIBUTION_RULE` | 1 |
 | effect | `SWAP_SELECTED_EVENT_LOCATIONS` | 1 |
 | effect | `SWAP_VICTORY_POINTS` | 1 |
-| effect | `TEMPORARY_ATTACK_CREATION_RULE` | 1 |
 | effect | `TEMPORARY_CARD_COPY_RULE` | 1 |
 | effect | `TEMPORARY_COMMAND_SEAL_RULE` | 1 |
 | effect | `TEMPORARY_OPPONENT_CARD_RULE` | 1 |
@@ -584,6 +595,7 @@ structuredAbilityCount=983
 | effect | `TRIMMAU_CONFESSION_RULE` | 1 |
 | effect | `TRIMMAU_GROWTH_RULE` | 1 |
 | effect | `TRUE_NAME_HIDE_IMMUNITY_RULE` | 1 |
+| effect | `TSAR_CHOICE_RULE` | 1 |
 | effect | `TURN_ORDER_REPOSITION_RULE` | 1 |
 | effect | `UNDEAD_ARMY_HALF_CLOSE_RULE` | 1 |
 | effect | `VIY_POWER_PROTECTION_RULE` | 1 |
@@ -1476,16 +1488,16 @@ structuredAbilityCount=983
 | `servant.hijikata.skill.sc-hijikata-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HIJIKATA_CODE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hijikata-coat` |
 | `servant.hijikata.skill.sc-hijikata-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HIJIKATA_CODE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hijikata-flag` |
 | `servant.hijikata.skill.sc-hijikata-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HIJIKATA_CODE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hijikata-law` |
-| `servant.himiko.skill.sc-himiko-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.himiko-oracle-kidou` |
-| `servant.himiko.skill.sc-himiko-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.himiko-oracle-kidou` |
-| `servant.himiko.skill.sc-himiko-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.himiko-oracle-kidou` |
+| `servant.himiko.skill.sc-himiko-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ORACLE_CHOICE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.himiko-oracle-kidou` |
+| `servant.himiko.skill.sc-himiko-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MIRROR_SHIELD_SACRED_LAND_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.himiko-oracle-kidou` |
+| `servant.himiko.skill.sc-himiko-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ORACLE_REPEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.himiko-oracle-kidou` |
 | `servant.hokusai.skill.sc-hokusai-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hokusai-colors-beyond` |
 | `servant.hokusai.skill.sc-hokusai-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COLOR_MARKER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hokusai-colors-world` |
 | `servant.hokusai.skill.sc-hokusai-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PERSISTENT_POWER_AURA_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.hokusai-great-wave` |
 | `servant.hokusai.skill.sc-hokusai-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FOREIGN_LIFE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.outer-god-life` |
 | `servant.ibaraki.skill.sc-ibaraki-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `SOURCE_OWNED` | `NONE` | `NONE` | `NONE` | `NONE` | `duration:permanent` | `rule:combat_power:add` | `NONE` | `NONE` | `COMBAT_RULE_MODIFIER` | `core.structured-skill` |
-| `servant.ibaraki.skill.sc-ibaraki-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mana-threshold-vp-loss` |
-| `servant.ibaraki.skill.sc-ibaraki-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ibaraki-rashomon-grudge` |
+| `servant.ibaraki.skill.sc-ibaraki-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MANA_THRESHOLD_VP_BURN_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mana-threshold-vp-loss` |
+| `servant.ibaraki.skill.sc-ibaraki-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FORCED_RETURN_DISCARD_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ibaraki-rashomon-grudge` |
 | `servant.illya.skill.sc-illya-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CARD_CASE_ATTACHMENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.illya-card-holster` |
 | `servant.illya.skill.sc-illya-10` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DREAM_SUMMON_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.illya-caster-install` |
 | `servant.illya.skill.sc-illya-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SOURCE_CARD_POWER_BONUS` | `NONE` | `NONE` | `effect:source_card_power_bonus`, `rule:card_play_permission:allow_below_eight_mana` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
@@ -1499,18 +1511,18 @@ structuredAbilityCount=983
 | `servant.ishtar.skill.sc-ishtar-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LUCK_IDENTITY_REPLAY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ishtar-divine-authority` |
 | `servant.ishtar.skill.sc-ishtar-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `OFFBOARD_BATTLE_TAKEOVER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.ishtar-an-gal-ta-kigal-she` |
 | `servant.ishtar.skill.sc-ishtar-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `INDEPENDENT_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.independent-action` |
-| `servant.iskandar.skill.sc-iskandar-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `servant.iskandar.skill.sc-iskandar-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
 | `servant.iskandar.skill.sc-iskandar-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `AT_BATTLEFIELD`, `EVENT_COUNT_AT_LEAST`, `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_EVENT` | `ENSURE_EVENT_DECK_COUNT`, `MOVE_SELECTED_EVENTS`, `SHUFFLE_EVENT_DECK` | `CHOOSE_ONE_EVENT` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:discardedEventIds`, `payload:replacementEventIds` | `COMBAT_CONDITION` | `core.structured-skill` |
-| `servant.iskandar.skill.sc-iskandar-np` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.create-temporary-attacks` |
-| `servant.ivan.skill.sc-ivan-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ivan-black-dog` |
-| `servant.ivan.skill.sc-ivan-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ivan-beast-form` |
-| `servant.ivan.skill.sc-ivan-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
-| `servant.izou.skill.sc-izou-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.izou-shimatsuken` |
-| `servant.izou.skill.sc-izou-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.izou-man-slayer` |
-| `servant.izou.skill.sc-izou-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
-| `servant.jack.skill.sc-jack-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jack-dissociation` |
-| `servant.jack.skill.sc-jack-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jack-mist` |
-| `servant.jack.skill.sc-jack-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jack-maria` |
+| `servant.iskandar.skill.sc-iskandar-np` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TEMPORARY_ATTACK_CREATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.create-temporary-attacks` |
+| `servant.ivan.skill.sc-ivan-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TSAR_CHOICE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ivan-black-dog` |
+| `servant.ivan.skill.sc-ivan-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `BEAST_FORM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.ivan-beast-form` |
+| `servant.ivan.skill.sc-ivan-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `servant.izou.skill.sc-izou-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `FINISHING_SWORD_MEMORY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.izou-shimatsuken` |
+| `servant.izou.skill.sc-izou-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MANSLAYER_REACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.izou-man-slayer` |
+| `servant.izou.skill.sc-izou-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
+| `servant.jack.skill.sc-jack-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MOTHER_DESIGNATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jack-dissociation` |
+| `servant.jack.skill.sc-jack-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DARK_FOG_EVENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jack-mist` |
+| `servant.jack.skill.sc-jack-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MARIA_THE_RIPPER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jack-maria` |
 | `servant.jaguarman.skill.sc-jaguarman-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
 | `servant.jaguarman.skill.sc-jaguarman-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jaguarman-dark-forest` |
 | `servant.jaguarman.skill.sc-jaguarman-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.jaguarman-death-claw` |
