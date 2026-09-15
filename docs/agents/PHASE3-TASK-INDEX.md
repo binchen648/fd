@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.18
+- Version: P3-TI-1.19
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2913,7 +2913,7 @@ Completion status allowed:
 ## TASK P3-FB2-07
 
 Owner: Codex B2
-Status: READY
+Status: REVIEW_ACCEPTED
 Branch: `codex/b2-p3-fb2-07-fixed-source-removal-r1`
 Base: exact P3-FB2-07 A-owned handoff commit
 Runtime baseline before handoff: `6e062bb4c5b300aba3d49aaf6076ce042e185a2f`
@@ -2951,7 +2951,7 @@ Completion status allowed:
 ## TASK P3-R24
 
 Owner: Codex R
-Status: READY_AFTER_P3_FB2_07
+Status: REVIEW_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact FB2-07 candidate SHA
 
 Goal: independently review FB2-07 without implementing fixes and without promoting broad Card Zone or any F1 migration.
@@ -2977,6 +2977,17 @@ Completion status allowed:
 - The existing B15 typed source return only supports active face-up board source -> skill and cannot be reused as proof for setup/removal parents by destination similarity alone.
 - A separate Return-by-definition family has 10 exact effect rows but only 8 provable unique skill IDs in the source overlay; four non-overlay return IDs lack frozen effect shape, so A does not inflate that family to the F4 minimum.
 - P3-FM01 remains undispatched. FB2-07 is component-only and adds zero complete migration-ready identities by itself.
+
+
+
+## Full-Roster Dispatch State After FB2-07
+
+- FB2-07 candidate `7cfa53b1dcea1f8b0769ff247924724d20d1d626` is independently accepted by R24 `e9e6112ced21ffad738fa00025132f9c3fe9976d`.
+- Accepted scope is only the typed controller-owned executing-source removal component to `removed_from_game`; B15 source return to skill remains independently bounded and unchanged.
+- Exact F1 component alignment is 12 identities, but every identity still has another parent/special dependency. Complete migration readiness added by FB2-07 is `0`.
+- Fresh A coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled definition hash remains `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, with 70 cards, 14 characters, and 0 blocking issues.
+- Generated coverage drift is only timestamp/static source-line locations and is intentionally not committed.
+- P3-FM01 remains undispatched. Wave 2 continues with the next high-yield Card Zone / Move / Return component; no Trigger/Power wave skipping is authorized.
 
 
 ## Prompt Templates
