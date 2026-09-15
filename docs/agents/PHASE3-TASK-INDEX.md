@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.17
+- Version: P3-TI-1.18
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -2908,6 +2908,76 @@ Completion status allowed:
 - Fresh A coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled definition hash remains `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, with 70 cards, 14 characters, and 0 blocking issues.
 - Generated coverage drift is only timestamp/static source line numbers and is intentionally not committed.
 - P3-FM01 remains undispatched. Wave 2 continues with the next high-yield Card Zone / Move / Return component; no wave skipping to Trigger or Power is allowed.
+
+
+## TASK P3-FB2-07
+
+Owner: Codex B2
+Status: READY
+Branch: `codex/b2-p3-fb2-07-fixed-source-removal-r1`
+Base: exact P3-FB2-07 A-owned handoff commit
+Runtime baseline before handoff: `6e062bb4c5b300aba3d49aaf6076ce042e185a2f`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Runtime request: `runtime-capability-a600709be05b` / `GENERIC_CARD_ZONE`
+
+Goal: continue wave 2 with one reusable fixed-controller source-card removal component by extending the existing typed `move_source_card` primitive to `removed_from_game`. No parent route and no roster migration are part of B2.
+
+Frozen F1 component membership: 12 exact identities listed in `docs/reports/2026-09-16-p3-fb2-07-fixed-source-removal-handoff.md`.
+
+Required component boundary:
+- source is the executing ability source; owner/controller must equal ability controller;
+- destination exactly controller `removed_from_game`;
+- successful removal is public, inactive, and typed-event/result owned;
+- already removed, missing source, wrong owner/controller, unsupported destination, selected/third-party movement, or extra semantic sibling shapes fail closed;
+- matching component alone never grants a parent route.
+
+Preserve existing B15 `move_source_card -> skill` semantics and active-board source-state checks exactly.
+
+Must not promote:
+- generic Card Zone; `return_card_by_definition`; Card Create; Trigger Gateway; Lifecycle; Target/Interaction; Movement; Visibility; Power/Battle/Special; arbitrary source movement; F1 migration.
+
+May touch:
+- `packages/rules/src/ability/resolution-dataflow.ts`;
+- `packages/rules/src/ability/interpreter.ts` only for the component predicate;
+- one focused FB2-07 regression test and narrow existing dataflow/B15 assertions if required;
+- `docs/reports/2026-09-16-p3-fb2-07-fixed-source-removal-result.md`.
+
+Required validation: typed normalization/result/event/rollback, negative source/destination/ownership cases, B15 compatibility, identity/text-free classifier, no route promotion, typecheck, all rules regressions, determinism, full CI, identity/forbidden-file audit, diff check.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R24
+
+Owner: Codex R
+Status: READY_AFTER_P3_FB2_07
+Branch: reviewer-selected fresh worktree/branch from exact FB2-07 candidate SHA
+
+Goal: independently review FB2-07 without implementing fixes and without promoting broad Card Zone or any F1 migration.
+
+Required checks:
+- exact source-card removal component boundary and authoritative `removed_from_game` state;
+- existing B15 skill-return semantics are unchanged;
+- no source-zone/timing parent assumption is smuggled into component acceptance;
+- wrong owner/controller, already removed, invalid destination, and later-stage failure are atomic/fail-closed;
+- no parent route, identity/text routing, F1 authoring migration, KPI/taxonomy mutation, or unrelated hot-file changes;
+- fresh typecheck, focused tests, all rules regressions, determinism, full CI, static audits, and diff check.
+
+Completion status allowed:
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `REJECTED`
+
+## Full-Roster Dispatch State Before FB2-07
+
+- FB2-06 is independently accepted at candidate `3f1080a7cb4f68e7c08af91b349680a6536cd362`, R23 `0dc6619eba6f2ff67c96b6ec9c3ff736cae66740`, and A-synchronized at `6e062bb4c5b300aba3d49aaf6076ce042e185a2f`.
+- FB2-06 stacked PRs are #283/#284/#285/#286.
+- Fresh Card Zone clustering covers 121 F1 request identities. The strongest exact Move component is 12 distinct identities with `move_source_card -> removed`.
+- The existing B15 typed source return only supports active face-up board source -> skill and cannot be reused as proof for setup/removal parents by destination similarity alone.
+- A separate Return-by-definition family has 10 exact effect rows but only 8 provable unique skill IDs in the source overlay; four non-overlay return IDs lack frozen effect shape, so A does not inflate that family to the F4 minimum.
+- P3-FM01 remains undispatched. FB2-07 is component-only and adds zero complete migration-ready identities by itself.
+
 
 ## Prompt Templates
 
