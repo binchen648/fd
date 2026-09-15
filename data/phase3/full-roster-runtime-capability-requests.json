@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 599
+    "affectedIdentityCount": 614
   },
   "requests": [
     {
@@ -1263,6 +1263,7 @@
         "master.tiamat.card.life-sea",
         "master.tiamat.skill.ascension",
         "master.wodime.skill.s2",
+        "servant.boudica.skill.sc-boudica-3",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
         "servant.helena.skill.sc-helena-1",
@@ -1978,6 +1979,33 @@
           "sha256": "1c5a231f3336797f83a686443e8af271eaa24740fbf65fa35bd0d0b85f73234d"
         },
         {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/布狄卡.htm"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.boudica/布狄卡"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_boudica_3"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[89].skills[2].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[89].skills[2].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
+        },
+        {
           "abilityId": "servant.caligula.skill.sc-caligula-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/狂战士/英文版/卡利古拉.htm"
@@ -2229,7 +2257,7 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 25,
+          "shared_handler": 26,
           "specific_handler": 7
         },
         "handlerCount": 20,
@@ -6279,6 +6307,7 @@
         "servant.andersen.skill.sc-andersen-2",
         "servant.artoriac.skill.sc-artoriac-1",
         "servant.avicebron.skill.sc-avicebron-1",
+        "servant.boudica.skill.sc-boudica-3",
         "servant.clytie.skill.sc-clytie-3",
         "servant.davinci.skill.sc-davinci-10",
         "servant.davinci.skill.sc-davinci-11",
@@ -8622,6 +8651,33 @@
           "sha256": "b3ddaf2c7540882b60a720e608747d3f65b1aeb2c454176bbf257f81d646b775"
         },
         {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/布狄卡.htm"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.boudica/布狄卡"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_boudica_3"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[89].skills[2].text#line=1",
+          "sha256": "88e0daa4be5047709147c103b33305e34b428e053e34ff8c90d5065252a9bebc"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[89].skills[2].text#line=2",
+          "sha256": "cbdff481f797da49ce7639a279842cc6f0e9fda622b584bcc42103065bc2c5c8"
+        },
+        {
           "abilityId": "servant.clytie.skill.sc-clytie-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/降临者/英文版/克吕提厄·梵高.htm"
@@ -9130,7 +9186,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 61,
+          "shared_handler": 62,
           "specific_handler": 47
         },
         "handlerCount": 67,
@@ -26238,6 +26294,9 @@
         "master.zouken.skill.ascension",
         "master.zouken.skill.s4",
         "servant.artoriac.skill.sc-artoriac-4",
+        "servant.benkei.skill.sc-benkei-1",
+        "servant.bradamante.skill.sc-bradamante-1",
+        "servant.brynhildr.skill.sc-brynhildr-1",
         "servant.davinci.skill.sc-davinci-11",
         "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-3",
@@ -27163,6 +27222,69 @@
           "sha256": "d93a6daf1b93ca8ce2ed45feea2dbea4c36c175764b7dca457f4e45a5839d4df"
         },
         {
+          "abilityId": "servant.benkei.skill.sc-benkei-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/武藏坊弁庆.htm"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.benkei/武藏坊弁庆"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_benkei_1"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[70].skills[0].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/布拉达曼特.htm"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.bradamante/布拉达曼特"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_bradamante_1"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[73].skills[0].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/布伦希尔德.htm"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.brynhildr/布伦希尔德"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_brynhildr_1"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[65].skills[0].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
           "abilityId": "servant.davinci.skill.sc-davinci-11",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
@@ -27365,7 +27487,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 23,
+          "shared_handler": 26,
           "specific_handler": 15
         },
         "handlerCount": 28,
@@ -29641,6 +29763,8 @@
         "servant.barghest.skill.sc-barghest-2",
         "servant.bedivere.skill.sc-bedivere-1",
         "servant.bedivere.skill.sc-bedivere-3",
+        "servant.boudica.skill.sc-boudica-1",
+        "servant.brynhildr.skill.sc-brynhildr-3",
         "servant.charlemagne.skill.sc-charlemagne-3",
         "servant.darius.skill.sc-darius-2",
         "servant.davinci.skill.sc-davinci-10",
@@ -32185,6 +32309,72 @@
           "sha256": "42bad1566d2bf01e85569dace76707f5313e3dda30216bbc766bffa74b8f485a"
         },
         {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/布狄卡.htm"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.boudica/布狄卡"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_boudica_1"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[89].skills[0].text#line=1",
+          "sha256": "1aa9d9b7b2f87932c2fc7a2f884cd211434215006a66ab244e578d6790142aa8"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[89].skills[0].text#line=2",
+          "sha256": "35820db023b9c4b3bdeb9758e3671aa017a8736a0614314380d6ab2d949c2333"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[89].skills[0].text#line=3",
+          "sha256": "9d6f885776b66f296aa480d1ede1dec68af61667ce961d647c1a85a4a16adedc"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[89].skills[0].text#line=4",
+          "sha256": "c57f6db6cf824f57b8e4e1f28b7ff44e48cf88310c2d382e74f11f5c43b8a719"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/布伦希尔德.htm"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.brynhildr/布伦希尔德"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_brynhildr_3"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[65].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[65].skills[2].text#line=2",
+          "sha256": "f2fe69a5f1cf0976614d7279f3c649baa8d4f559aeb5011bc1639c06b93426f7"
+        },
+        {
           "abilityId": "servant.charlemagne.skill.sc-charlemagne-3",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/剑士/英文版/查理曼.htm"
@@ -33006,7 +33196,7 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "deterministic": 1,
-          "shared_handler": 69,
+          "shared_handler": 71,
           "specific_handler": 43
         },
         "handlerCount": 68,
@@ -47828,10 +48018,21 @@
         "servant.bb.skill.sc-bb-4",
         "servant.bedivere.skill.sc-bedivere-2",
         "servant.bedivere.skill.sc-bedivere-3",
+        "servant.benkei.skill.sc-benkei-2",
+        "servant.benkei.skill.sc-benkei-3",
         "servant.bikuni.skill.sc-bikuni-1",
         "servant.bikuni.skill.sc-bikuni-2",
         "servant.bikuni.skill.sc-bikuni-3",
         "servant.bikuni.skill.sc-bikuni-4",
+        "servant.billy.skill.sc-billy-1",
+        "servant.billy.skill.sc-billy-2",
+        "servant.billy.skill.sc-billy-3",
+        "servant.boudica.skill.sc-boudica-1",
+        "servant.boudica.skill.sc-boudica-2",
+        "servant.bradamante.skill.sc-bradamante-2",
+        "servant.bradamante.skill.sc-bradamante-3",
+        "servant.brynhildr.skill.sc-brynhildr-2",
+        "servant.brynhildr.skill.sc-brynhildr-3",
         "servant.charlemagne.skill.sc-charlemagne-1",
         "servant.charlemagne.skill.sc-charlemagne-2",
         "servant.chiron.skill.sc-chiron-1",
@@ -54853,6 +55054,84 @@
           "sha256": "42bad1566d2bf01e85569dace76707f5313e3dda30216bbc766bffa74b8f485a"
         },
         {
+          "abilityId": "servant.benkei.skill.sc-benkei-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/武藏坊弁庆.htm"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.benkei/武藏坊弁庆"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_benkei_2"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[70].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[70].skills[1].text#line=2",
+          "sha256": "1e1031066e9d119de3aa9b07663e428e99f60abdf6ae917aed01c7ee2820fc26"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[70].skills[1].text#line=3",
+          "sha256": "2212b6de31edfccf0d56e4cfe57ea47ddb0f74fca7906e00e04d08a02e4c7826"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[70].skills[1].text#line=4",
+          "sha256": "7ef7d727d20c6f455cd7b024112f823b9db74d81be5e16401b634eea9907dcb8"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[70].skills[1].text#line=5",
+          "sha256": "ad754a83b8e929a7fb172b89206cfde509c2a7b2c394326e42dfd0d890ae36e6"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[70].skills[1].text#line=6",
+          "sha256": "5d90119257c00d88019d43fc8e03fca9f5f8cb80c93c60e3123a5f8cd0bc0e54"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/武藏坊弁庆.htm"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.benkei/武藏坊弁庆"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_benkei_3"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[70].skills[2].text#line=1",
+          "sha256": "53b43e5daa5a96a7fd241478552a337706fc154fdd485b32d689a964d309e411"
+        },
+        {
+          "abilityId": "servant.benkei.skill.sc-benkei-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[70].skills[2].text#line=2",
+          "sha256": "fd36a2232399826fc1341ea004422543d880469686c5f586ab70aa3873683a8f"
+        },
+        {
           "abilityId": "servant.bikuni.skill.sc-bikuni-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/月之癌/英文版/八百比丘尼.htm"
@@ -54953,6 +55232,249 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "servants[177].skills[3].text#line=2",
           "sha256": "01ab9755e80761f41195eab0c4c1007ed1ecbedd0fa1ebcd10321a919f417eda"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/比利小子.htm"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.billy/比利小子"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-1",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_billy_1"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[45].skills[0].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[45].skills[0].text#line=2",
+          "sha256": "e1f53715fb141d1de119319b1fd34cc4bfc9fecb726917e27c12c70612fc8048"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/比利小子.htm"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.billy/比利小子"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-2",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_billy_2"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[45].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[45].skills[1].text#line=2",
+          "sha256": "b600823a470589bee5b6200e6f1922c14dcf32601ebc50c76f33dedb7cfcccf5"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/弓兵/英文版/比利小子.htm"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.billy/比利小子"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-3",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_billy_3"
+        },
+        {
+          "abilityId": "servant.billy.skill.sc-billy-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[45].skills[2].text#line=1",
+          "sha256": "64d7b67b6666de793d1c228a4578a9a85a9fa63f86d3b1b06b18d6dba3cad8aa"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/布狄卡.htm"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.boudica/布狄卡"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_boudica_1"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[89].skills[0].text#line=1",
+          "sha256": "1aa9d9b7b2f87932c2fc7a2f884cd211434215006a66ab244e578d6790142aa8"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[89].skills[0].text#line=2",
+          "sha256": "35820db023b9c4b3bdeb9758e3671aa017a8736a0614314380d6ab2d949c2333"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[89].skills[0].text#line=3",
+          "sha256": "9d6f885776b66f296aa480d1ede1dec68af61667ce961d647c1a85a4a16adedc"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[89].skills[0].text#line=4",
+          "sha256": "c57f6db6cf824f57b8e4e1f28b7ff44e48cf88310c2d382e74f11f5c43b8a719"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/骑兵/英文版/布狄卡.htm"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.boudica/布狄卡"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_boudica_2"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[89].skills[1].text#line=1",
+          "sha256": "342c4260e9cfd1ff724d08eb1a5e2b4993bb6e083525ad4a556b75ac7e758909"
+        },
+        {
+          "abilityId": "servant.boudica.skill.sc-boudica-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[89].skills[1].text#line=2",
+          "sha256": "0f251f69d1cee4e8b72eda47b5b3cbf63a98c4ac45cd7ec79842232dec85b919"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/布拉达曼特.htm"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.bradamante/布拉达曼特"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_bradamante_2"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[73].skills[1].text#line=1",
+          "sha256": "7e05fd32dc05d0d1e65c64195f4c83ac8625e2159cc79f69b04bfdb26fcc4513"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[73].skills[1].text#line=2",
+          "sha256": "61525fd3546816b31e06a4d448cec8967302d319f1781e068ff70b5f5fade445"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/布拉达曼特.htm"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.bradamante/布拉达曼特"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_bradamante_3"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[73].skills[2].text#line=1",
+          "sha256": "34ab4851697e4828c0a8f6d261e8e0e387e63fbd279e2d7f5d298bcec98bbcef"
+        },
+        {
+          "abilityId": "servant.bradamante.skill.sc-bradamante-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[73].skills[2].text#line=2",
+          "sha256": "742cd9d80bf86574dbc746551cee781d48ffd0d3b1c19f7ee120c5b5e9d4cedd"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/布伦希尔德.htm"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.brynhildr/布伦希尔德"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_brynhildr_2"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[65].skills[1].text#line=1",
+          "sha256": "d847edb894d5f884920b37a7299a35af6cf6b781f30dd3e1fc27ad2cadea09bd"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/布伦希尔德.htm"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.brynhildr/布伦希尔德"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_brynhildr_3"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[65].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.brynhildr.skill.sc-brynhildr-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[65].skills[2].text#line=2",
+          "sha256": "f2fe69a5f1cf0976614d7279f3c649baa8d4f559aeb5011bc1639c06b93426f7"
         },
         {
           "abilityId": "servant.charlemagne.skill.sc-charlemagne-1",
@@ -57927,10 +58449,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 207,
-          "specific_handler": 163
+          "shared_handler": 210,
+          "specific_handler": 171
         },
-        "handlerCount": 217,
+        "handlerCount": 225,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

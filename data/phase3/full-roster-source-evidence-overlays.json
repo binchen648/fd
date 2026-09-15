@@ -23632,6 +23632,420 @@
         }
       ],
       "referencePrintedTextSha256": "6b11fe445b9f7bf9f8eab0a119052f8ae3c5a7014b970cbc4ccf6d8aada07c89"
+    },
+    {
+      "id": "servant.benkei.skill.sc-benkei-1",
+      "printedText": "行动阶段：移动至除魔术工房外的任意地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_benkei_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "行动阶段：移动至除魔术工房外的任意地点。",
+        "sourceTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+      },
+      "abilities": [
+        {
+          "id": "benkei.sc_benkei_1.semantic",
+          "printedClause": "行动阶段：移动至除魔术工房外的任意地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "move_player",
+              "scope": "controller",
+              "destinationRule": "any_location_except_workshop"
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+    },
+    {
+      "id": "servant.benkei.skill.sc-benkei-2",
+      "printedText": "【真名解放】\n怨灵调伏-行动阶段：选择下列选项中的一个，对手不可使用你选择的选项直到回合结束：\n-令咒\n-宝具\n-由【颉颃胜负】复制的技能\n每项选项每局游戏仅可选择一次。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_benkei_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n怨灵调伏-行动阶段：选择下列选项中的一个，对手不可使用你选择的选项直到回合结束：\n-令咒\n-宝具\n-由【颉颃胜负】复制的技能\n每项选项每局游戏仅可选择一次。",
+        "sourceTextSha256": "4040a6a29066d4440107ca29641d57760da95e1fc187232a1510e1683041b367"
+      },
+      "abilities": [
+        {
+          "id": "benkei.sc_benkei_2.semantic",
+          "printedClause": "【真名解放】\n怨灵调伏-行动阶段：选择下列选项中的一个，对手不可使用你选择的选项直到回合结束：\n-令咒\n-宝具\n-由【颉颃胜负】复制的技能\n每项选项每局游戏仅可选择一次。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "opponent_option_lock_rule",
+              "operation": "true_name_reveal_action_choose_one_of_command_seals_noble_phantasms_or_evenly_matched_copied_skills_opponents_cannot_use_chosen_option_until_round_end_each_option_once_per_game"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4040a6a29066d4440107ca29641d57760da95e1fc187232a1510e1683041b367"
+    },
+    {
+      "id": "servant.benkei.skill.sc-benkei-3",
+      "printedText": "被动：当与你交战的对手使用了一张你未复制的技能时，你可以弃置一张手牌，将其复制并加入你的技能区并令其获得<每局游戏限一次>。复制的激活效果均更改为：“+3合计威力”并失去所有其他卡牌文字效果。\n（激活效果为：-被动/XX阶段：或 -XX阶段：）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_benkei_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "被动：当与你交战的对手使用了一张你未复制的技能时，你可以弃置一张手牌，将其复制并加入你的技能区并令其获得<每局游戏限一次>。复制的激活效果均更改为：“+3合计威力”并失去所有其他卡牌文字效果。\n（激活效果为：-被动/XX阶段：或 -XX阶段：）",
+        "sourceTextSha256": "ac7286eca7e4a793e2376d4ddcd530687cd4c1c7e09bd76c2d02c4095664bb1b"
+      },
+      "abilities": [
+        {
+          "id": "benkei.sc_benkei_3.semantic",
+          "printedClause": "被动：当与你交战的对手使用了一张你未复制的技能时，你可以弃置一张手牌，将其复制并加入你的技能区并令其获得<每局游戏限一次>。复制的激活效果均更改为：“+3合计威力”并失去所有其他卡牌文字效果。\n（激活效果为：-被动/XX阶段：或 -XX阶段：）",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "skill_copy_lifecycle_rule",
+              "operation": "when_engaged_opponent_uses_uncopied_skill_may_discard_one_hand_card_copy_to_skill_zone_once_per_game_replace_activation_effects_with_plus_3_total_power_and_remove_other_card_text"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ac7286eca7e4a793e2376d4ddcd530687cd4c1c7e09bd76c2d02c4095664bb1b"
+    },
+    {
+      "id": "servant.billy.skill.sc-billy-1",
+      "printedText": "【真名解放】\n被动/战斗阶段：关闭比利小子的技能牌，激活你控制的至多2张暗置的迅捷基础攻击。你可以花费3点魔力改为激活你所有暗置的迅捷基础攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_billy_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n被动/战斗阶段：关闭比利小子的技能牌，激活你控制的至多2张暗置的迅捷基础攻击。你可以花费3点魔力改为激活你所有暗置的迅捷基础攻击。",
+        "sourceTextSha256": "29daf3583b76276ec474c6bc3d914518fecb26398d4fc1944b183ddc100d75f6"
+      },
+      "abilities": [
+        {
+          "id": "billy.sc_billy_1.semantic",
+          "printedClause": "【真名解放】\n被动/战斗阶段：关闭比利小子的技能牌，激活你控制的至多2张暗置的迅捷基础攻击。你可以花费3点魔力改为激活你所有暗置的迅捷基础攻击。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "hidden_quick_attack_activation_rule",
+              "operation": "true_name_reveal_passive_combat_close_billy_skill_cards_activate_up_to_two_controlled_hidden_quick_base_attacks_or_pay_3_mana_to_activate_all"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "29daf3583b76276ec474c6bc3d914518fecb26398d4fc1944b183ddc100d75f6"
+    },
+    {
+      "id": "servant.billy.skill.sc-billy-2",
+      "printedText": "【真名解放】\n战斗阶段：激活你的一张暗置的基础【幸运】牌，若如此将此牌的基本威力翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_billy_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n战斗阶段：激活你的一张暗置的基础【幸运】牌，若如此将此牌的基本威力翻倍。",
+        "sourceTextSha256": "1a8f566b788d0264c28dfd11a01e397d73b74d28699796c862714be67844b156"
+      },
+      "abilities": [
+        {
+          "id": "billy.sc_billy_2.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：激活你的一张暗置的基础【幸运】牌，若如此将此牌的基本威力翻倍。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "hidden_luck_activation_double_rule",
+              "operation": "true_name_reveal_combat_activate_one_hidden_base_luck_card_then_double_source_base_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "1a8f566b788d0264c28dfd11a01e397d73b74d28699796c862714be67844b156"
+    },
+    {
+      "id": "servant.billy.skill.sc-billy-3",
+      "printedText": "行动阶段：将一张手牌暗置打出，然后抽1张牌。你可以花费1点魔力重复进行此操作，每回合合计使用此效果暗置至多6张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_billy_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "行动阶段：将一张手牌暗置打出，然后抽1张牌。你可以花费1点魔力重复进行此操作，每回合合计使用此效果暗置至多6张牌。",
+        "sourceTextSha256": "64d7b67b6666de793d1c228a4578a9a85a9fa63f86d3b1b06b18d6dba3cad8aa"
+      },
+      "abilities": [
+        {
+          "id": "billy.sc_billy_3.semantic",
+          "printedClause": "行动阶段：将一张手牌暗置打出，然后抽1张牌。你可以花费1点魔力重复进行此操作，每回合合计使用此效果暗置至多6张牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "repeat_hidden_play_draw_rule",
+              "operation": "action_play_one_hand_card_face_down_then_draw_one_may_pay_1_mana_to_repeat_up_to_six_total_hidden_plays_per_round"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "64d7b67b6666de793d1c228a4578a9a85a9fa63f86d3b1b06b18d6dba3cad8aa"
+    },
+    {
+      "id": "servant.boudica.skill.sc-boudica-1",
+      "printedText": "【真名解放】 <每局游戏限一次>\n残留：对手不能关闭你的牌。\n战斗阶段：花费2点魔力，沿着箭头移动一步。\n战斗阶段：获得5点合计威力，战斗阶段结束后关闭此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_boudica_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】 <每局游戏限一次>\n残留：对手不能关闭你的牌。\n战斗阶段：花费2点魔力，沿着箭头移动一步。\n战斗阶段：获得5点合计威力，战斗阶段结束后关闭此牌。",
+        "sourceTextSha256": "709125cc0d9b018add54a603b2261e25eafcc79ccef19bf28f43cde3801c17f7"
+      },
+      "abilities": [
+        {
+          "id": "boudica.sc_boudica_1.semantic",
+          "printedClause": "【真名解放】 <每局游戏限一次>\n残留：对手不能关闭你的牌。\n战斗阶段：花费2点魔力，沿着箭头移动一步。\n战斗阶段：获得5点合计威力，战斗阶段结束后关闭此牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "card_close_immunity_move_power_rule",
+              "operation": "true_name_reveal_once_per_game_residual_opponents_cannot_close_controller_cards_combat_pay_2_mana_move_one_arrow_step_combat_gain_5_total_power_then_close_source_after_combat"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "709125cc0d9b018add54a603b2261e25eafcc79ccef19bf28f43cde3801c17f7"
+    },
+    {
+      "id": "servant.boudica.skill.sc-boudica-2",
+      "printedText": "当你输掉一场战斗时，失去1点战果。\n被动/前哨阶段：弃置一张【幸运】，抽一张牌。本回合获得5点合计威力，若你本回合赢得战斗，每有一名回合顺位在你之后的玩家便获得1点战果，若你没有赢得战斗，失去2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_boudica_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "当你输掉一场战斗时，失去1点战果。\n被动/前哨阶段：弃置一张【幸运】，抽一张牌。本回合获得5点合计威力，若你本回合赢得战斗，每有一名回合顺位在你之后的玩家便获得1点战果，若你没有赢得战斗，失去2点战果。",
+        "sourceTextSha256": "ef349d35cbc449298017d83a48ba84a39feb7e16251fb8d788aa295d43ffaa68"
+      },
+      "abilities": [
+        {
+          "id": "boudica.sc_boudica_2.semantic",
+          "printedClause": "当你输掉一场战斗时，失去1点战果。\n被动/前哨阶段：弃置一张【幸运】，抽一张牌。本回合获得5点合计威力，若你本回合赢得战斗，每有一名回合顺位在你之后的玩家便获得1点战果，若你没有赢得战斗，失去2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "loss_luck_turn_order_vp_rule",
+              "operation": "when_controller_loses_battle_lose_1_vp_passive_outpost_discard_luck_draw_one_gain_5_total_power_this_round_if_win_gain_1_vp_per_player_later_in_turn_order_else_lose_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ef349d35cbc449298017d83a48ba84a39feb7e16251fb8d788aa295d43ffaa68"
+    },
+    {
+      "id": "servant.boudica.skill.sc-boudica-3",
+      "printedText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_boudica_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+        "sourceTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+      },
+      "abilities": [
+        {
+          "id": "boudica.sc_boudica_3.semantic",
+          "printedClause": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "draw_cards",
+              "count": 1,
+              "when": "source_played_with_one_base_attack"
+            },
+            {
+              "type": "play_selected_cards",
+              "sourceZone": "hand",
+              "maxCount": 3,
+              "filter": {
+                "basePowerMax": 3
+              }
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+    },
+    {
+      "id": "servant.bradamante.skill.sc-bradamante-1",
+      "printedText": "行动阶段：移动至除魔术工房外的任意地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_bradamante_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "行动阶段：移动至除魔术工房外的任意地点。",
+        "sourceTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+      },
+      "abilities": [
+        {
+          "id": "bradamante.sc_bradamante_1.semantic",
+          "printedClause": "行动阶段：移动至除魔术工房外的任意地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "move_player",
+              "scope": "controller",
+              "destinationRule": "any_location_except_workshop"
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+    },
+    {
+      "id": "servant.bradamante.skill.sc-bradamante-2",
+      "printedText": "诅咒守卫-被动：每回合限一次，当一名对手使用技能时，你可以询问其是否花费2点魔力。若不花费，你不受该技能及其效果影响。\n魔禁之戒-战斗阶段：支付X点魔力，关闭一张你战斗中魔力消耗为X的魔术攻击（X不可为0）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_bradamante_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "诅咒守卫-被动：每回合限一次，当一名对手使用技能时，你可以询问其是否花费2点魔力。若不花费，你不受该技能及其效果影响。\n魔禁之戒-战斗阶段：支付X点魔力，关闭一张你战斗中魔力消耗为X的魔术攻击（X不可为0）。",
+        "sourceTextSha256": "0c4fc4dace6f51bfd4afa25ece1223810bd12b7453945b5718768187ce5d8b12"
+      },
+      "abilities": [
+        {
+          "id": "bradamante.sc_bradamante_2.semantic",
+          "printedClause": "诅咒守卫-被动：每回合限一次，当一名对手使用技能时，你可以询问其是否花费2点魔力。若不花费，你不受该技能及其效果影响。\n魔禁之戒-战斗阶段：支付X点魔力，关闭一张你战斗中魔力消耗为X的魔术攻击（X不可为0）。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "skill_tax_immunity_magic_close_rule",
+              "operation": "once_per_round_when_opponent_uses_skill_ask_pay_2_mana_if_not_controller_unaffected_by_skill_and_effects_combat_pay_x_mana_close_magic_attack_in_controller_battle_with_mana_cost_x_x_nonzero"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0c4fc4dace6f51bfd4afa25ece1223810bd12b7453945b5718768187ce5d8b12"
+    },
+    {
+      "id": "servant.bradamante.skill.sc-bradamante-3",
+      "printedText": "被动/战斗阶段：你的交战对手控制的攻击若与你控制的基础攻击属性相同，该攻击威力无法被局势牌和事件牌增加。\n战斗阶段：支付4点魔力并【真名解放】，从手牌打出一张基础攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_bradamante_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "被动/战斗阶段：你的交战对手控制的攻击若与你控制的基础攻击属性相同，该攻击威力无法被局势牌和事件牌增加。\n战斗阶段：支付4点魔力并【真名解放】，从手牌打出一张基础攻击。",
+        "sourceTextSha256": "c357055c6c496c801c1a7a7ffe604ffef8665ec89d4ad14cffe06bb57c14c8a0"
+      },
+      "abilities": [
+        {
+          "id": "bradamante.sc_bradamante_3.semantic",
+          "printedClause": "被动/战斗阶段：你的交战对手控制的攻击若与你控制的基础攻击属性相同，该攻击威力无法被局势牌和事件牌增加。\n战斗阶段：支付4点魔力并【真名解放】，从手牌打出一张基础攻击。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "matching_attribute_event_situation_protection_rule",
+              "operation": "passive_combat_opponent_attacks_sharing_attribute_with_controller_base_attack_cannot_have_power_increased_by_situation_or_event_cards_combat_pay_4_mana_true_name_reveal_play_one_base_attack_from_hand"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c357055c6c496c801c1a7a7ffe604ffef8665ec89d4ad14cffe06bb57c14c8a0"
+    },
+    {
+      "id": "servant.brynhildr.skill.sc-brynhildr-1",
+      "printedText": "行动阶段：移动至除魔术工房外的任意地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_brynhildr_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "行动阶段：移动至除魔术工房外的任意地点。",
+        "sourceTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+      },
+      "abilities": [
+        {
+          "id": "brynhildr.sc_brynhildr_1.semantic",
+          "printedClause": "行动阶段：移动至除魔术工房外的任意地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "move_player",
+              "scope": "controller",
+              "destinationRule": "any_location_except_workshop"
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+    },
+    {
+      "id": "servant.brynhildr.skill.sc-brynhildr-2",
+      "printedText": "自我催眠-被动/前哨阶段：若布伦希尔德处于【爱意】状态，消耗一枚令咒使用。她会与你选择的一名从者坠入【爱意】，直到你再次使用此效果。当【爱人】赢得战斗时，你获得1点战果，若你与其同时赢得战斗，则你获得3点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_brynhildr_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "自我催眠-被动/前哨阶段：若布伦希尔德处于【爱意】状态，消耗一枚令咒使用。她会与你选择的一名从者坠入【爱意】，直到你再次使用此效果。当【爱人】赢得战斗时，你获得1点战果，若你与其同时赢得战斗，则你获得3点战果。",
+        "sourceTextSha256": "d847edb894d5f884920b37a7299a35af6cf6b781f30dd3e1fc27ad2cadea09bd"
+      },
+      "abilities": [
+        {
+          "id": "brynhildr.sc_brynhildr_2.semantic",
+          "printedClause": "自我催眠-被动/前哨阶段：若布伦希尔德处于【爱意】状态，消耗一枚令咒使用。她会与你选择的一名从者坠入【爱意】，直到你再次使用此效果。当【爱人】赢得战斗时，你获得1点战果，若你与其同时赢得战斗，则你获得3点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "love_bond_vp_rule",
+              "operation": "passive_outpost_if_brynhildr_in_love_pay_one_command_seal_choose_servant_as_mutual_lover_until_effect_used_again_when_lover_wins_gain_1_vp_if_controller_also_wins_gain_3_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d847edb894d5f884920b37a7299a35af6cf6b781f30dd3e1fc27ad2cadea09bd"
+    },
+    {
+      "id": "servant.brynhildr.skill.sc-brynhildr-3",
+      "printedText": "【真名解放】\n被动：当你与【爱人】位于同一战场时，直到回合结束此牌失去迅捷属性然后得到力量属性，基础威力和魔力消耗翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_brynhildr_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n被动：当你与【爱人】位于同一战场时，直到回合结束此牌失去迅捷属性然后得到力量属性，基础威力和魔力消耗翻倍。",
+        "sourceTextSha256": "96b2dc0f0e475bd6f4a394db7ced937711a32189e5c5fd7db160757027bfc2a4"
+      },
+      "abilities": [
+        {
+          "id": "brynhildr.sc_brynhildr_3.semantic",
+          "printedClause": "【真名解放】\n被动：当你与【爱人】位于同一战场时，直到回合结束此牌失去迅捷属性然后得到力量属性，基础威力和魔力消耗翻倍。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "love_attribute_cost_power_transform_rule",
+              "operation": "true_name_reveal_passive_when_controller_and_lover_same_battlefield_until_round_end_source_loses_quick_gains_strength_and_doubles_base_power_and_mana_cost"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "96b2dc0f0e475bd6f4a394db7ced937711a32189e5c5fd7db160757027bfc2a4"
     }
   ]
 }
