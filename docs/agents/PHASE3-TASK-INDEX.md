@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.28
+- Version: P3-TI-1.29
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3384,6 +3384,88 @@ Permitted final status:
 - TO15 Modifier/Power remains spec-only with `Runtime authorization: none`. Existing Artoria Alter legacy/canonical content proves the intended structured modifier shape and existing ongoing/Power infrastructure can evaluate it, but that historical execution does not itself authorize broad Power.
 - P3-FB2-10 therefore dispatches only the exact Magic Resistance modifier shape. It must route/fail-close structurally before generic fallback and reuse existing `this_round` ongoing + `calculateCardPower` infrastructure.
 - If and only if R29 accepts FB2-10 and fresh A reconciliation confirms the same ten F1 rows retain no additional dependency, A may dispatch P3-FM03 at exact batch size 10.
+
+
+## TASK P3-A-FB2-10-SYNC
+
+Owner: Codex A
+Status: SYNCHRONIZED
+Base: R29 `37fcdaf6d3367a4efb9dcfaf8a1a532fb4354ae9`
+Read: `docs/reports/2026-09-16-p3-a-fb2-10-saber-magic-resistance-synchronization.md`
+
+Fresh coverage is KPI-stable and regenerated artifact drift is generatedAt/static-line-only, so the artifact remains uncommitted. Frozen-F1 reconciliation is exact 10/10 and all selected rows are dependency-complete under R12/B18 + R13/B19 + R29/FB2-10. P3-FM03 is dispatched READY at exact batch size 10.
+
+## TASK P3-FM03
+
+Owner: Codex S
+Status: READY
+Branch: `codex/s-p3-fm03-saber-magic-resistance`
+Base: exact P3-A-FB2-10 synchronization commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Read: `docs/reports/2026-09-16-p3-fm03-saber-magic-resistance-migration-handoff.md`
+
+Goal: migrate exactly the ten dependency-complete Saber-family Magic Resistance identities below into canonical authoring using the independently accepted B18/B19/FB2-10 contracts. Do not modify runtime.
+
+Exact batch:
+- `servant.altera.skill.sc-altera-3`
+- `servant.arthur.skill.sc-arthur-3`
+- `servant.bedivere.skill.sc-bedivere-1`
+- `servant.charlemagne.skill.sc-charlemagne-3`
+- `servant.gawain.skill.sc-gawain-3`
+- `servant.lakshmibai.skill.sc-lakshmibai-3`
+- `servant.mordred.skill.sc-mordred-3`
+- `servant.musashi.skill.sc-musashi-3`
+- `servant.saber.skill.sc-saber-1`
+- `servant.saitou.skill.sc-saitou-1`
+
+Required accepted dependencies:
+- B18/R12 exact base Noble Bloom optional post-result controller VP +1;
+- B19/R13 exact threshold Noble Bloom optional extra controller VP +1 when highest tracked Noble Phantasm cost is at least 4;
+- FB2-10/R29 exact combat Magic Resistance modifier route;
+- final skill-zone rule uses 8 mana, not historical Reference requirement=3.
+
+May touch only selected `data/authoring/` servant archive records/files, exact-batch migration tests/fixtures, and the FM03 migration report. Must not modify runtime hot files, coverage/taxonomy definitions, F1 frozen artifacts, or unrelated authoring.
+
+Completion status allowed:
+- `MIGRATION_CANDIDATE`
+- `MIGRATION_NEEDS_REVISION`
+
+## TASK P3-A-FM03-SYNC
+
+Owner: Codex A
+Status: READY_AFTER_P3_FM03
+Branch: `codex/a-p3-fm03-evidence-sync`
+Base: exact P3-FM03 S candidate SHA
+
+Goal: independently recompute frozen-F1 authoring burn-down, exact ten-member batch reconciliation, fresh material coverage, generated-content identity, and unrelated drift. A must not repair S authoring.
+
+Completion status allowed:
+- `MIGRATION_SYNC_CANDIDATE`
+- `MIGRATION_SYNC_NEEDS_REVISION`
+
+## TASK P3-R30
+
+Owner: Codex R
+Status: READY_AFTER_P3_A_FM03_SYNC
+Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM03 lineage
+
+Goal: independently review FM03 without implementing fixes. Required checks: exact ten-ID membership; per-card F1 source/printed-text preservation; accepted B18/B19/FB2-10 structural conformance; locked static metadata/final 8-mana skill-zone rule; no runtime changes; representative end-to-end Power/VP behavior; A burn-down integrity; determinism; full required validation; diff check.
+
+Permitted final status:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `REJECTED`
+
+## Full-Roster Dispatch State After P3-A-FB2-10-SYNC
+
+- R29 independently accepts only the exact FB2-10 Magic Resistance Power sub-contract; broad TO15 Power/Modifier remains unaccepted.
+- Fresh frozen-F1 reconciliation is `10/10 PASS`: every selected identity is `CONTRACT_MAPPED`, `READY_GENERIC_EXTENSION`, `blockedBy=[]`, requires exactly `GENERIC_POWER + GENERIC_RESOURCE_NUMERIC`, uses Reference handler `core.saber-magic-resistance`, and has the same normalized two-operation source overlay.
+- B18/R12 and B19/R13 independently cover the two Noble Bloom Resource siblings; R29/FB2-10 covers the only missing Magic Resistance Power sibling.
+- Current frozen-F1 canonical-authoring overlap remains `49/944`; none of the ten FM03 identities currently has canonical authoring (`0/10`).
+- Locked Reference metadata is uniform for all ten selected cards: `cost=3`, `basePower=3`, `typeLabel=特殊`, historical `requirement=3`. Final rule 9.4 still requires 8 mana from the skill zone.
+- Source/printed text is not globally identical: F1 preserves three source-hash variants (`8a6da48...`, `b2b1bc7c...`, `0cdfc3fa...`) and S must preserve the per-card text exactly rather than normalize wording.
+- Fresh coverage remains archives `39`, cards `71`, abilities `130`, raw `new=12 / legacyExecute=3 / legacyResolve=87 / dual=0 / notClassifiable=28 / taxonomyWarnings=104`, compiled definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 compiled cards / 14 characters / 0 blocking issues. Regenerated artifact drift is only generatedAt/static source-line movement and is intentionally not committed.
+- P3-FM03 is therefore READY at the normal F4 minimum batch size 10.
 
 ## Prompt Templates
 
