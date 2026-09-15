@@ -32122,6 +32122,542 @@
       "referencePrintedTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
     },
     {
+      "id": "servant.tesla.skill.sc-tesla-1",
+      "printedText": "残留：与你位于同一地点的其他玩家花费2点或更多的魔力时，你获得2点魔力。每当你获得魔力超过上限时，合计威力+5，然后于战斗阶段结束时关闭此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_tesla_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "残留：与你位于同一地点的其他玩家花费2点或更多的魔力时，你获得2点魔力。每当你获得魔力超过上限时，合计威力+5，然后于战斗阶段结束时关闭此牌。",
+        "sourceTextSha256": "194e48dddeeca6572784bf75bf20031e29c74f5158eb3cfbcfa2c6413b4d0e62"
+      },
+      "abilities": [
+        {
+          "id": "tesla.sc-tesla-1.semantic",
+          "printedClause": "残留：与你位于同一地点的其他玩家花费2点或更多的魔力时，你获得2点魔力。每当你获得魔力超过上限时，合计威力+5，然后于战斗阶段结束时关闭此牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "tesla_lightning_hand_rule",
+              "operation": "residual_when_other_player_same_location_spends_at_least_2_mana_controller_gains_2_mana_whenever_controller_gains_mana_beyond_cap_gain_5_total_power_then_close_source_at_battle_phase_end"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "194e48dddeeca6572784bf75bf20031e29c74f5158eb3cfbcfa2c6413b4d0e62"
+    },
+    {
+      "id": "servant.tesla.skill.sc-tesla-2",
+      "printedText": "【真名解放】\n过载-被动：当一名位于你所在战场的对手获得的魔力超过其上限时，令其【败北】。\n打出时：失去你的所有魔力，本回合你每失去一点魔力便+1合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_tesla_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n过载-被动：当一名位于你所在战场的对手获得的魔力超过其上限时，令其【败北】。\n打出时：失去你的所有魔力，本回合你每失去一点魔力便+1合计威力。",
+        "sourceTextSha256": "9cf778b4ccd6aba23d1262e8e5e1b7d36bd3a4588891f1b3259703d4f672ec12"
+      },
+      "abilities": [
+        {
+          "id": "tesla.sc-tesla-2.semantic",
+          "printedClause": "【真名解放】\n过载-被动：当一名位于你所在战场的对手获得的魔力超过其上限时，令其【败北】。\n打出时：失去你的所有魔力，本回合你每失去一点魔力便+1合计威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "tesla_lightning_descent_rule",
+              "operation": "true_name_passive_when_opponent_same_battlefield_gains_mana_beyond_cap_defeat_them_on_play_lose_all_controller_mana_and_gain_1_total_power_this_round_per_mana_lost"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "9cf778b4ccd6aba23d1262e8e5e1b7d36bd3a4588891f1b3259703d4f672ec12"
+    },
+    {
+      "id": "servant.tesla.skill.sc-tesla-3",
+      "printedText": "【真名解放】\n打出时：与你位于同一地点的对手获得2点魔力。\n战斗阶段：与你位于同一地点的对手获得2点魔力，此效果具有强制性。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_tesla_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n打出时：与你位于同一地点的对手获得2点魔力。\n战斗阶段：与你位于同一地点的对手获得2点魔力，此效果具有强制性。",
+        "sourceTextSha256": "b20d1e984e508c838673d2b5bd596be6ff7620e93dd9bc694e3ca8f6468478f9"
+      },
+      "abilities": [
+        {
+          "id": "tesla.sc-tesla-3.semantic",
+          "printedClause": "【真名解放】\n打出时：与你位于同一地点的对手获得2点魔力。\n战斗阶段：与你位于同一地点的对手获得2点魔力，此效果具有强制性。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "tesla_forced_overcharge_rule",
+              "operation": "true_name_on_play_each_opponent_same_location_gains_2_mana_battle_each_opponent_same_location_forced_gain_2_mana"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b20d1e984e508c838673d2b5bd596be6ff7620e93dd9bc694e3ca8f6468478f9"
+    },
+    {
+      "id": "servant.tezcat.skill.sc-tezcat-1",
+      "printedText": "此牌需追加打出。\n山之心脏-所有与此牌一同打出的其他攻击获得+1威力并+2魔力消耗（包括一同打出时）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_tezcat_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "此牌需追加打出。\n山之心脏-所有与此牌一同打出的其他攻击获得+1威力并+2魔力消耗（包括一同打出时）。",
+        "sourceTextSha256": "69566ebbd04ffd3e6b5357acee33ff7ef555c1c107606b1c2c939bd1837b203d"
+      },
+      "abilities": [
+        {
+          "id": "tezcat.sc-tezcat-1.semantic",
+          "printedClause": "此牌需追加打出。\n山之心脏-所有与此牌一同打出的其他攻击获得+1威力并+2魔力消耗（包括一同打出时）。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "tezcat_jaguar_king_rule",
+              "operation": "must_be_additional_play_all_other_attacks_played_together_gain_1_power_and_plus2_mana_cost_including_during_joint_play"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "69566ebbd04ffd3e6b5357acee33ff7ef555c1c107606b1c2c939bd1837b203d"
+    },
+    {
+      "id": "servant.tezcat.skill.sc-tezcat-2",
+      "printedText": "斗争的魅力-行动阶段：与你位于同一战场的所有玩家可以按回合顺位依次打出一张攻击，以此效果打出了攻击的玩家若战败，失去2点战果。每回合限一次，若有对手因此效果失去了战果，你获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_tezcat_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "斗争的魅力-行动阶段：与你位于同一战场的所有玩家可以按回合顺位依次打出一张攻击，以此效果打出了攻击的玩家若战败，失去2点战果。每回合限一次，若有对手因此效果失去了战果，你获得2点战果。",
+        "sourceTextSha256": "817df99f3e9e3a329710d9905f4ff3a01a3a1762c2017bab03feb3558fd6a1b6"
+      },
+      "abilities": [
+        {
+          "id": "tezcat.sc-tezcat-2.semantic",
+          "printedClause": "斗争的魅力-行动阶段：与你位于同一战场的所有玩家可以按回合顺位依次打出一张攻击，以此效果打出了攻击的玩家若战败，失去2点战果。每回合限一次，若有对手因此效果失去了战果，你获得2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "tezcat_warrior_office_rule",
+              "operation": "action_all_players_same_battlefield_may_in_turn_order_play_one_attack_players_who_play_and_lose_battle_lose_2_vp_once_per_round_if_opponent_loses_vp_this_way_controller_gains_2_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "817df99f3e9e3a329710d9905f4ff3a01a3a1762c2017bab03feb3558fd6a1b6"
+    },
+    {
+      "id": "servant.tezcat.skill.sc-tezcat-3",
+      "printedText": "【真名解放】 <每局游戏限一次>\n你需花费一枚令咒来打出此牌。\n黑色太阳-战斗阶段：令你的所有交战对手【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_tezcat_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】 <每局游戏限一次>\n你需花费一枚令咒来打出此牌。\n黑色太阳-战斗阶段：令你的所有交战对手【败北】。",
+        "sourceTextSha256": "8c66374e7ddf5e075ab12dd522fbd40769a573b52a0771ffa75a6d2425cdeda8"
+      },
+      "abilities": [
+        {
+          "id": "tezcat.sc-tezcat-3.semantic",
+          "printedClause": "【真名解放】 <每局游戏限一次>\n你需花费一枚令咒来打出此牌。\n黑色太阳-战斗阶段：令你的所有交战对手【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "tezcat_first_sun_rule",
+              "operation": "true_name_once_per_game_requires_spend_one_command_spell_to_play_battle_defeat_all_engaged_opponents"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "8c66374e7ddf5e075ab12dd522fbd40769a573b52a0771ffa75a6d2425cdeda8"
+    },
+    {
+      "id": "servant.tomoe.skill.sc-tomoe-1",
+      "printedText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_tomoe_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+        "sourceTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+      },
+      "abilities": [
+        {
+          "id": "tomoe.sc-tomoe-1.semantic",
+          "printedClause": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "independent_action_rule",
+              "operation": "usable_only_when_controller_action_order_is_in_first_floor_half_of_current_round_action_gain_3_vp_if_controller_loses_combat_this_round_lose_5_vp_unpreventably"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+    },
+    {
+      "id": "servant.tomoe.skill.sc-tomoe-2",
+      "printedText": "无间业火-行动阶段：下个回合，所有对手部署于此战场前可以花费至多5点战果，所有基础地利数高于其支付战果数的地利位置视为已被占据，无法部署。\n战斗阶段：将你的地利翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_tomoe_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "无间业火-行动阶段：下个回合，所有对手部署于此战场前可以花费至多5点战果，所有基础地利数高于其支付战果数的地利位置视为已被占据，无法部署。\n战斗阶段：将你的地利翻倍。",
+        "sourceTextSha256": "4b746e37c62f0eb6dbb5a3b0ad935339f9296ea2040831f217fc5fc0822fcf5f"
+      },
+      "abilities": [
+        {
+          "id": "tomoe.sc-tomoe-2.semantic",
+          "printedClause": "无间业火-行动阶段：下个回合，所有对手部署于此战场前可以花费至多5点战果，所有基础地利数高于其支付战果数的地利位置视为已被占据，无法部署。\n战斗阶段：将你的地利翻倍。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "tomoe_demonic_nature_rule",
+              "operation": "action_next_round_before_opponents_deploy_here_they_may_spend_up_to_5_vp_locations_with_base_terrain_above_vp_spent_count_as_occupied_and_cannot_deploy_battle_double_controller_terrain"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4b746e37c62f0eb6dbb5a3b0ad935339f9296ea2040831f217fc5fc0822fcf5f"
+    },
+    {
+      "id": "servant.tomoe.skill.sc-tomoe-3",
+      "printedText": "【真名解放】\n炽焰之雨-战斗阶段：令同一战场所有未拥有地利的对手-5合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_tomoe_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n炽焰之雨-战斗阶段：令同一战场所有未拥有地利的对手-5合计威力。",
+        "sourceTextSha256": "0ff5aa45afff8deb80e77d9954d910e256ea2faace70ff48c64a275570803d35"
+      },
+      "abilities": [
+        {
+          "id": "tomoe.sc-tomoe-3.semantic",
+          "printedClause": "【真名解放】\n炽焰之雨-战斗阶段：令同一战场所有未拥有地利的对手-5合计威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "tomoe_blazing_rain_rule",
+              "operation": "true_name_battle_all_opponents_same_battlefield_without_terrain_lose_5_total_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0ff5aa45afff8deb80e77d9954d910e256ea2faace70ff48c64a275570803d35"
+    },
+    {
+      "id": "servant.tristan.skill.sc-tristan-1",
+      "printedText": "【真名解放】\n悲叹共鸣-战斗阶段：关闭你战斗中除此牌外的，所有与另一张攻击具有相同基本威力的非残留攻击。若没有，更改为弃置你牌库顶的三张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_tristan_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n悲叹共鸣-战斗阶段：关闭你战斗中除此牌外的，所有与另一张攻击具有相同基本威力的非残留攻击。若没有，更改为弃置你牌库顶的三张牌。",
+        "sourceTextSha256": "778a206e13d82a0be79c92273404968006c7e1a393ce88212f876160a42487e3"
+      },
+      "abilities": [
+        {
+          "id": "tristan.sc-tristan-1.semantic",
+          "printedClause": "【真名解放】\n悲叹共鸣-战斗阶段：关闭你战斗中除此牌外的，所有与另一张攻击具有相同基本威力的非残留攻击。若没有，更改为弃置你牌库顶的三张牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "tristan_lament_rule",
+              "operation": "true_name_battle_close_all_other_non_residual_attacks_in_controller_battle_that_share_base_power_with_another_attack_if_none_discard_top_3_controller_deck_cards"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "778a206e13d82a0be79c92273404968006c7e1a393ce88212f876160a42487e3"
+    },
+    {
+      "id": "servant.tristan.skill.sc-tristan-2",
+      "printedText": "打出时：将你弃牌堆内任意数量的牌洗回牌库。\nX为你以此效果洗回的牌的数量+2直至此牌关闭。\n记忆渐熄-残留：你进行战斗的战斗阶段需花费X点魔力，否则关闭此牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_tristan_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "打出时：将你弃牌堆内任意数量的牌洗回牌库。\nX为你以此效果洗回的牌的数量+2直至此牌关闭。\n记忆渐熄-残留：你进行战斗的战斗阶段需花费X点魔力，否则关闭此牌。",
+        "sourceTextSha256": "f9746f59500104bdf2fe8c0db78dc60f514629e372e92c4ed82f211578264ade"
+      },
+      "abilities": [
+        {
+          "id": "tristan.sc-tristan-2.semantic",
+          "printedClause": "打出时：将你弃牌堆内任意数量的牌洗回牌库。\nX为你以此效果洗回的牌的数量+2直至此牌关闭。\n记忆渐熄-残留：你进行战斗的战斗阶段需花费X点魔力，否则关闭此牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "tristan_love_rule",
+              "operation": "on_play_shuffle_any_number_of_controller_discard_cards_into_deck_x_equals_count_plus_2_until_source_closes_residual_each_battle_phase_when_controller_battles_pay_x_mana_or_close_source"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f9746f59500104bdf2fe8c0db78dc60f514629e372e92c4ed82f211578264ade"
+    },
+    {
+      "id": "servant.tristan.skill.sc-tristan-3",
+      "printedText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_tristan_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+        "sourceTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+      },
+      "abilities": [
+        {
+          "id": "tristan.sc-tristan-3.semantic",
+          "printedClause": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "independent_action_rule",
+              "operation": "usable_only_when_controller_action_order_is_in_first_floor_half_of_current_round_action_gain_3_vp_if_controller_loses_combat_this_round_lose_5_vp_unpreventably"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5"
+    },
+    {
+      "id": "servant.ushiwakamaru.skill.sc-ushiwakamaru-1",
+      "printedText": "【真名解放】\n战斗阶段：你可以于战斗阶段使用牛若丸的行动阶段能力。（仍遵循每种能力每回合仅可使用一次的限制。）\n唯一/战斗阶段：再次使用一项攻击上的行动阶段或战斗阶段能力（由该能力使用，不计入原能力次数限制）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_ushiwakamaru_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n战斗阶段：你可以于战斗阶段使用牛若丸的行动阶段能力。（仍遵循每种能力每回合仅可使用一次的限制。）\n唯一/战斗阶段：再次使用一项攻击上的行动阶段或战斗阶段能力（由该能力使用，不计入原能力次数限制）。",
+        "sourceTextSha256": "1abe7f64ee84099ea56ec0affece666647869535b3853091cd0f0002081ae506"
+      },
+      "abilities": [
+        {
+          "id": "ushiwakamaru.sc-ushiwakamaru-1.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：你可以于战斗阶段使用牛若丸的行动阶段能力。（仍遵循每种能力每回合仅可使用一次的限制。）\n唯一/战斗阶段：再次使用一项攻击上的行动阶段或战斗阶段能力（由该能力使用，不计入原能力次数限制）。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ushiwakamaru_icicle_cutter_rule",
+              "operation": "true_name_battle_controller_may_use_own_action_phase_abilities_during_battle_still_once_each_per_round_unique_battle_repeat_one_action_or_battle_ability_on_an_attack_by_that_ability_without_consuming_original_use_limit"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "1abe7f64ee84099ea56ec0affece666647869535b3853091cd0f0002081ae506"
+    },
+    {
+      "id": "servant.ushiwakamaru.skill.sc-ushiwakamaru-2",
+      "printedText": "【真名解放】\n行动阶段：和一名其他玩家比较合计威力大小（不计算未触发的战斗阶段的能力加成）。若你高于对手，将两人重新部署在对方的位置。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_ushiwakamaru_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n行动阶段：和一名其他玩家比较合计威力大小（不计算未触发的战斗阶段的能力加成）。若你高于对手，将两人重新部署在对方的位置。",
+        "sourceTextSha256": "e4b6eba748dd03f9652507ce3b9e58014b15705aa6807e5b5f1731f83382ccc2"
+      },
+      "abilities": [
+        {
+          "id": "ushiwakamaru.sc-ushiwakamaru-2.semantic",
+          "printedClause": "【真名解放】\n行动阶段：和一名其他玩家比较合计威力大小（不计算未触发的战斗阶段的能力加成）。若你高于对手，将两人重新部署在对方的位置。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "ushiwakamaru_eight_boat_leap_rule",
+              "operation": "true_name_action_compare_total_power_with_one_other_player_excluding_untriggered_battle_phase_bonuses_if_controller_higher_redeploy_each_to_the_others_location"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "e4b6eba748dd03f9652507ce3b9e58014b15705aa6807e5b5f1731f83382ccc2"
+    },
+    {
+      "id": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
+      "printedText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_ushiwakamaru_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+        "sourceTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+      },
+      "abilities": [
+        {
+          "id": "ushiwakamaru.sc-ushiwakamaru-3.semantic",
+          "printedClause": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "draw_cards",
+              "count": 1,
+              "when": "source_played_with_one_base_attack"
+            },
+            {
+              "type": "play_selected_cards",
+              "sourceZone": "hand",
+              "maxCount": 3,
+              "filter": {
+                "basePowerMax": 3
+              }
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "0514b5cce67642f6c5215fe348f433ce3638806be3af558ac845d39310a3d2b1"
+    },
+    {
+      "id": "servant.valkyrie.skill.sc-valkyrie-1",
+      "printedText": "【真名解放】 <每局游戏限一次>\n被动/前哨阶段：从任意处（包括游戏外）将3张【指挥官】加入手牌或攻击。（不触发“打出时”效果）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_valkyrie_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】 <每局游戏限一次>\n被动/前哨阶段：从任意处（包括游戏外）将3张【指挥官】加入手牌或攻击。（不触发“打出时”效果）",
+        "sourceTextSha256": "b1f463698acde98d90a4ad4b7f30974de67d7fa0624eafe28d4bdef81e6fe4b0"
+      },
+      "abilities": [
+        {
+          "id": "valkyrie.sc-valkyrie-1.semantic",
+          "printedClause": "【真名解放】 <每局游戏限一次>\n被动/前哨阶段：从任意处（包括游戏外）将3张【指挥官】加入手牌或攻击。（不触发“打出时”效果）",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "valkyrie_maiden_descent_rule",
+              "operation": "true_name_once_per_game_passive_precombat_from_anywhere_including_outside_game_add_3_commander_cards_to_hand_or_attack_without_triggering_on_play"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b1f463698acde98d90a4ad4b7f30974de67d7fa0624eafe28d4bdef81e6fe4b0"
+    },
+    {
+      "id": "servant.valkyrie.skill.sc-valkyrie-2",
+      "printedText": "行动阶段：沿着箭头移动至下一地点。\n战斗阶段：沿着箭头移动至下一地点。\n钢铁之盾-被动/战斗阶段：支付此牌的魔力消耗，将一张你激活的【指挥官】加入手牌，并将此牌加入攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_valkyrie_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "行动阶段：沿着箭头移动至下一地点。\n战斗阶段：沿着箭头移动至下一地点。\n钢铁之盾-被动/战斗阶段：支付此牌的魔力消耗，将一张你激活的【指挥官】加入手牌，并将此牌加入攻击。",
+        "sourceTextSha256": "5b76df1094bc354aab158f8bef4f471604cb60cc2ffa2fb520d2e9be2f2b8c10"
+      },
+      "abilities": [
+        {
+          "id": "valkyrie.sc-valkyrie-2.semantic",
+          "printedClause": "行动阶段：沿着箭头移动至下一地点。\n战斗阶段：沿着箭头移动至下一地点。\n钢铁之盾-被动/战斗阶段：支付此牌的魔力消耗，将一张你激活的【指挥官】加入手牌，并将此牌加入攻击。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "valkyrie_swan_dress_rule",
+              "operation": "action_move_one_step_along_arrow_battle_move_one_step_along_arrow_passive_battle_pay_source_mana_cost_return_one_active_commander_to_hand_and_add_source_to_attack"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "5b76df1094bc354aab158f8bef4f471604cb60cc2ffa2fb520d2e9be2f2b8c10"
+    },
+    {
+      "id": "servant.vlad.skill.sc-vlad-1",
+      "printedText": "被动/行动阶段：花费1点魔力，将你的地利变为2倍。\n被动/战斗阶段：花费1点魔力，移动进入此战场的玩家合计威力-4。若你赢得本次战斗，下回合开始时，你部署于此战场。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_vlad_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "被动/行动阶段：花费1点魔力，将你的地利变为2倍。\n被动/战斗阶段：花费1点魔力，移动进入此战场的玩家合计威力-4。若你赢得本次战斗，下回合开始时，你部署于此战场。",
+        "sourceTextSha256": "43564c30fa5217ad312918f66b8b2766071e383e126e54ef90e24e1850a8e1b0"
+      },
+      "abilities": [
+        {
+          "id": "vlad.sc-vlad-1.semantic",
+          "printedClause": "被动/行动阶段：花费1点魔力，将你的地利变为2倍。\n被动/战斗阶段：花费1点魔力，移动进入此战场的玩家合计威力-4。若你赢得本次战斗，下回合开始时，你部署于此战场。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "vlad_protector_rule",
+              "operation": "passive_action_pay_1_mana_double_controller_terrain_passive_battle_pay_1_mana_players_moving_into_this_battlefield_lose_4_total_power_if_controller_wins_deploy_here_at_start_next_round"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "43564c30fa5217ad312918f66b8b2766071e383e126e54ef90e24e1850a8e1b0"
+    },
+    {
+      "id": "servant.vlad.skill.sc-vlad-2",
+      "printedText": "【真名解放】\n行动阶段：从手牌中打出一张牌。若你持有地利，可以额外花费2点魔力再打出一张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_vlad_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n行动阶段：从手牌中打出一张牌。若你持有地利，可以额外花费2点魔力再打出一张牌。",
+        "sourceTextSha256": "b69c32e2b7fdc33eb2964237c1c350301568b1b90f2ec71cbcf19a1d85620151"
+      },
+      "abilities": [
+        {
+          "id": "vlad.sc-vlad-2.semantic",
+          "printedClause": "【真名解放】\n行动阶段：从手牌中打出一张牌。若你持有地利，可以额外花费2点魔力再打出一张牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "vlad_kazikli_bey_rule",
+              "operation": "true_name_action_play_one_card_from_hand_if_controller_has_terrain_may_pay_2_additional_mana_to_play_one_additional_card"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b69c32e2b7fdc33eb2964237c1c350301568b1b90f2ec71cbcf19a1d85620151"
+    },
+    {
+      "id": "servant.vlad.skill.sc-vlad-3",
+      "printedText": "行动阶段：移动至除魔术工房外的任意地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_vlad_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "行动阶段：移动至除魔术工房外的任意地点。",
+        "sourceTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+      },
+      "abilities": [
+        {
+          "id": "vlad.sc-vlad-3.semantic",
+          "printedClause": "行动阶段：移动至除魔术工房外的任意地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "move_player",
+              "scope": "controller",
+              "destinationRule": "any_location_except_workshop"
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+    },
+    {
       "id": "servant.voyager.skill.sc-voyager-1",
       "printedText": "群星低吟-被动：当一名玩家进入侦查，将两张游戏外的【降临者】加入其手牌。\n行动阶段：所有玩家可以展示他们手牌中的【降临者】。若如此做，其获得2点战果。",
       "source": {
@@ -32224,6 +32760,84 @@
         }
       ],
       "referencePrintedTextSha256": "d0ba9965338bcd719d3631256f57144ff71363113069c44dfb4225af5296d0bd"
+    },
+    {
+      "id": "servant.xiangyu.skill.sc-xiangyu-1",
+      "printedText": "被动：战斗阶段结束后，你失去一半【反应】（向上取整）。被动/行动阶段：使用此效果后，每名对手的回合结束时，其每满足以下条件，你便获得1枚【反应】：\n1.每打出一张技能\n2.每使用一枚令咒\n3.移动至你所在的战场\n你可于你的战斗阶段花费【反应】使用【霸王之武】的效果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_xiangyu_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动：战斗阶段结束后，你失去一半【反应】（向上取整）。被动/行动阶段：使用此效果后，每名对手的回合结束时，其每满足以下条件，你便获得1枚【反应】：\n1.每打出一张技能\n2.每使用一枚令咒\n3.移动至你所在的战场\n你可于你的战斗阶段花费【反应】使用【霸王之武】的效果。",
+        "sourceTextSha256": "d6f86af9505d672295c58a643771094a35b0c0e4106bcd435a2e545621be7113"
+      },
+      "abilities": [
+        {
+          "id": "xiangyu.sc-xiangyu-1.semantic",
+          "printedClause": "被动：战斗阶段结束后，你失去一半【反应】（向上取整）。被动/行动阶段：使用此效果后，每名对手的回合结束时，其每满足以下条件，你便获得1枚【反应】：\n1.每打出一张技能\n2.每使用一枚令咒\n3.移动至你所在的战场\n你可于你的战斗阶段花费【反应】使用【霸王之武】的效果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "xiangyu_tactical_body_rule",
+              "operation": "passive_after_battle_phase_lose_half_reaction_rounded_up_passive_action_after_activation_at_each_opponent_turn_end_gain_1_reaction_per_skill_played_command_spell_used_and_move_into_controller_battlefield_battle_may_spend_reaction_for_overlord_martial_effects"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "d6f86af9505d672295c58a643771094a35b0c0e4106bcd435a2e545621be7113"
+    },
+    {
+      "id": "servant.xiangyu.skill.sc-xiangyu-2",
+      "printedText": "支付【反应】启动任意种效果：\n1反应：逆着箭头移动一步。\n2反应：沿着箭头移动一步。\n4反应：打出牌库顶的牌（支付魔力）。\n7反应：免费打出1张手牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_xiangyu_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "支付【反应】启动任意种效果：\n1反应：逆着箭头移动一步。\n2反应：沿着箭头移动一步。\n4反应：打出牌库顶的牌（支付魔力）。\n7反应：免费打出1张手牌。",
+        "sourceTextSha256": "de1ce75ae0f05239ae79ec4bd5b24c445e6ca82666a4cfda34c671298ab5077e"
+      },
+      "abilities": [
+        {
+          "id": "xiangyu.sc-xiangyu-2.semantic",
+          "printedClause": "支付【反应】启动任意种效果：\n1反应：逆着箭头移动一步。\n2反应：沿着箭头移动一步。\n4反应：打出牌库顶的牌（支付魔力）。\n7反应：免费打出1张手牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "xiangyu_overlord_martial_rule",
+              "operation": "spend_reaction_to_activate_any_number_of_options_1_move_one_step_against_arrow_2_move_one_step_along_arrow_4_play_top_deck_card_paying_mana_7_play_one_hand_card_free"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "de1ce75ae0f05239ae79ec4bd5b24c445e6ca82666a4cfda34c671298ab5077e"
+    },
+    {
+      "id": "servant.xiangyu.skill.sc-xiangyu-3",
+      "printedText": "【真名解放】被动/行动阶段：花费1点魔力，获得2个【反应】。战斗阶段：若你于本回合移动了合计至少3个地点，将此牌的基本威力翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_xiangyu_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】被动/行动阶段：花费1点魔力，获得2个【反应】。战斗阶段：若你于本回合移动了合计至少3个地点，将此牌的基本威力翻倍。",
+        "sourceTextSha256": "1b69a4b5e520127031cb1864fb7a248644004e3ac41bd4b1b4a136e6b61fb8ab"
+      },
+      "abilities": [
+        {
+          "id": "xiangyu.sc-xiangyu-3.semantic",
+          "printedClause": "【真名解放】被动/行动阶段：花费1点魔力，获得2个【反应】。战斗阶段：若你于本回合移动了合计至少3个地点，将此牌的基本威力翻倍。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "xiangyu_conquering_might_rule",
+              "operation": "true_name_passive_action_pay_1_mana_gain_2_reaction_battle_if_controller_moved_at_least_3_locations_this_round_double_source_base_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "1b69a4b5e520127031cb1864fb7a248644004e3ac41bd4b1b4a136e6b61fb8ab"
     }
   ]
 }

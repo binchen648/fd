@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 921,
-    "explicitBlockCount": 23,
+    "contractMappedCount": 944,
+    "explicitBlockCount": 0,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 252,
-      "SPECIAL_HANDLER_CANDIDATE": 667,
+      "READY_GENERIC_EXTENSION": 254,
+      "SPECIAL_HANDLER_CANDIDATE": 688,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 23,
+      "SOURCE_EVIDENCE_REQUIRED": 0,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -339,6 +339,10 @@
         },
         {
           "abilityId": "servant.teach.skill.sc-teach-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -660,6 +664,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.tiamat.card.life-sea",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
@@ -946,6 +954,10 @@
         },
         {
           "abilityId": "servant.teach.skill.sc-teach-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
       ]
@@ -1281,6 +1293,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.tiamat.card.life-sea",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
@@ -1355,7 +1371,8 @@
         "servant.okita.skill.sc-okita-1",
         "servant.parvati.skill.sc-parvati-3",
         "servant.roberts.skill.sc-roberts-3",
-        "servant.teach.skill.sc-teach-3"
+        "servant.teach.skill.sc-teach-3",
+        "servant.ushiwakamaru.skill.sc-ushiwakamaru-3"
       ],
       "partialAbilities": [],
       "skippedAbilities": [
@@ -1833,6 +1850,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.tiamat.card.life-sea",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         }
@@ -2176,6 +2197,10 @@
         },
         {
           "abilityId": "servant.teach.skill.sc-teach-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2526,6 +2551,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.tiamat.card.life-sea",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         }
@@ -2869,6 +2898,10 @@
         },
         {
           "abilityId": "servant.teach.skill.sc-teach-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3218,6 +3251,10 @@
         },
         {
           "abilityId": "servant.teach.skill.sc-teach-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -3787,6 +3824,10 @@
         },
         {
           "abilityId": "servant.teach.skill.sc-teach-3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         }
       ]
@@ -4465,6 +4506,10 @@
         {
           "abilityId": "servant.teach.skill.sc-teach-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         }
       ]
     },
@@ -4612,7 +4657,8 @@
         "servant.okita.skill.sc-okita-1",
         "servant.roberts.skill.sc-roberts-2",
         "servant.roberts.skill.sc-roberts-3",
-        "servant.teach.skill.sc-teach-3"
+        "servant.teach.skill.sc-teach-3",
+        "servant.ushiwakamaru.skill.sc-ushiwakamaru-3"
       ],
       "partialAbilities": [],
       "skippedAbilities": [
@@ -7552,7 +7598,79 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.tesla.skill.sc-tesla-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tesla.skill.sc-tesla-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tesla.skill.sc-tesla-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tezcat.skill.sc-tezcat-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tezcat.skill.sc-tezcat-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tezcat.skill.sc-tezcat-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tomoe.skill.sc-tomoe-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tomoe.skill.sc-tomoe-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tomoe.skill.sc-tomoe-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tristan.skill.sc-tristan-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tristan.skill.sc-tristan-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tristan.skill.sc-tristan-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.valkyrie.skill.sc-valkyrie-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.valkyrie.skill.sc-valkyrie-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.valkyrie.skill.sc-valkyrie-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.vlad.skill.sc-vlad-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.vlad.skill.sc-vlad-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -7569,6 +7687,18 @@
         },
         {
           "abilityId": "servant.voyager.skill.sc-voyager-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.xiangyu.skill.sc-xiangyu-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.xiangyu.skill.sc-xiangyu-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.xiangyu.skill.sc-xiangyu-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -8067,7 +8197,8 @@
         "servant.kagetora.skill.sc-kagetora-3",
         "servant.lishuwen.skill.sc-lishuwen-3",
         "servant.mozart.skill.sc-mozart-1",
-        "servant.romulus.skill.sc-romulus-3"
+        "servant.romulus.skill.sc-romulus-3",
+        "servant.vlad.skill.sc-vlad-3"
       ],
       "partialAbilities": [],
       "skippedAbilities": []
@@ -11250,11 +11381,32 @@
         "servant.tamamo.skill.sc-tamamo-3",
         "servant.teach.skill.sc-teach-1",
         "servant.teach.skill.sc-teach-2",
+        "servant.tesla.skill.sc-tesla-1",
+        "servant.tesla.skill.sc-tesla-2",
+        "servant.tesla.skill.sc-tesla-3",
+        "servant.tezcat.skill.sc-tezcat-1",
+        "servant.tezcat.skill.sc-tezcat-2",
+        "servant.tezcat.skill.sc-tezcat-3",
+        "servant.tomoe.skill.sc-tomoe-1",
+        "servant.tomoe.skill.sc-tomoe-2",
+        "servant.tomoe.skill.sc-tomoe-3",
+        "servant.tristan.skill.sc-tristan-1",
+        "servant.tristan.skill.sc-tristan-2",
+        "servant.tristan.skill.sc-tristan-3",
+        "servant.ushiwakamaru.skill.sc-ushiwakamaru-1",
+        "servant.ushiwakamaru.skill.sc-ushiwakamaru-2",
+        "servant.valkyrie.skill.sc-valkyrie-1",
+        "servant.valkyrie.skill.sc-valkyrie-2",
         "servant.valkyrie.skill.sc-valkyrie-3",
+        "servant.vlad.skill.sc-vlad-1",
+        "servant.vlad.skill.sc-vlad-2",
         "servant.voyager.skill.sc-voyager-1",
         "servant.voyager.skill.sc-voyager-2",
         "servant.voyager.skill.sc-voyager-3",
-        "servant.voyager.skill.sc-voyager-4"
+        "servant.voyager.skill.sc-voyager-4",
+        "servant.xiangyu.skill.sc-xiangyu-1",
+        "servant.xiangyu.skill.sc-xiangyu-2",
+        "servant.xiangyu.skill.sc-xiangyu-3"
       ],
       "partialAbilities": [],
       "skippedAbilities": [
@@ -13989,7 +14141,79 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.tesla.skill.sc-tesla-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tesla.skill.sc-tesla-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tesla.skill.sc-tesla-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tezcat.skill.sc-tezcat-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tezcat.skill.sc-tezcat-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tezcat.skill.sc-tezcat-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tomoe.skill.sc-tomoe-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tomoe.skill.sc-tomoe-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tomoe.skill.sc-tomoe-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tristan.skill.sc-tristan-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tristan.skill.sc-tristan-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.tristan.skill.sc-tristan-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.valkyrie.skill.sc-valkyrie-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.valkyrie.skill.sc-valkyrie-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.valkyrie.skill.sc-valkyrie-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.vlad.skill.sc-vlad-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.vlad.skill.sc-vlad-2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -14006,6 +14230,18 @@
         },
         {
           "abilityId": "servant.voyager.skill.sc-voyager-4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.xiangyu.skill.sc-xiangyu-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.xiangyu.skill.sc-xiangyu-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.xiangyu.skill.sc-xiangyu-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -14933,175 +15169,36 @@
       "servant.teach.skill.sc-teach-1",
       "servant.teach.skill.sc-teach-2",
       "servant.teach.skill.sc-teach-3",
+      "servant.tesla.skill.sc-tesla-1",
+      "servant.tesla.skill.sc-tesla-2",
+      "servant.tesla.skill.sc-tesla-3",
+      "servant.tezcat.skill.sc-tezcat-1",
+      "servant.tezcat.skill.sc-tezcat-2",
+      "servant.tezcat.skill.sc-tezcat-3",
+      "servant.tomoe.skill.sc-tomoe-1",
+      "servant.tomoe.skill.sc-tomoe-2",
+      "servant.tomoe.skill.sc-tomoe-3",
+      "servant.tristan.skill.sc-tristan-1",
+      "servant.tristan.skill.sc-tristan-2",
+      "servant.tristan.skill.sc-tristan-3",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-2",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
+      "servant.valkyrie.skill.sc-valkyrie-1",
+      "servant.valkyrie.skill.sc-valkyrie-2",
       "servant.valkyrie.skill.sc-valkyrie-3",
+      "servant.vlad.skill.sc-vlad-1",
+      "servant.vlad.skill.sc-vlad-2",
+      "servant.vlad.skill.sc-vlad-3",
       "servant.voyager.skill.sc-voyager-1",
       "servant.voyager.skill.sc-voyager-2",
       "servant.voyager.skill.sc-voyager-3",
-      "servant.voyager.skill.sc-voyager-4"
+      "servant.voyager.skill.sc-voyager-4",
+      "servant.xiangyu.skill.sc-xiangyu-1",
+      "servant.xiangyu.skill.sc-xiangyu-2",
+      "servant.xiangyu.skill.sc-xiangyu-3"
     ],
-    "blockedAbilities": [
-      {
-        "abilityId": "servant.tesla.skill.sc-tesla-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.tesla.skill.sc-tesla-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.tesla.skill.sc-tesla-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.tezcat.skill.sc-tezcat-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.tezcat.skill.sc-tezcat-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.tezcat.skill.sc-tezcat-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.tomoe.skill.sc-tomoe-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.tomoe.skill.sc-tomoe-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.tomoe.skill.sc-tomoe-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.tristan.skill.sc-tristan-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.tristan.skill.sc-tristan-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.tristan.skill.sc-tristan-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.valkyrie.skill.sc-valkyrie-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.valkyrie.skill.sc-valkyrie-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.vlad.skill.sc-vlad-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.vlad.skill.sc-vlad-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.vlad.skill.sc-vlad-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.xiangyu.skill.sc-xiangyu-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.xiangyu.skill.sc-xiangyu-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.xiangyu.skill.sc-xiangyu-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      }
-    ],
+    "blockedAbilities": [],
     "specialCandidates": [
       "master.akasha.skill.ascension",
       "master.akasha.skill.s1a",
@@ -15765,11 +15862,32 @@
       "servant.tamamo.skill.sc-tamamo-3",
       "servant.teach.skill.sc-teach-1",
       "servant.teach.skill.sc-teach-2",
+      "servant.tesla.skill.sc-tesla-1",
+      "servant.tesla.skill.sc-tesla-2",
+      "servant.tesla.skill.sc-tesla-3",
+      "servant.tezcat.skill.sc-tezcat-1",
+      "servant.tezcat.skill.sc-tezcat-2",
+      "servant.tezcat.skill.sc-tezcat-3",
+      "servant.tomoe.skill.sc-tomoe-1",
+      "servant.tomoe.skill.sc-tomoe-2",
+      "servant.tomoe.skill.sc-tomoe-3",
+      "servant.tristan.skill.sc-tristan-1",
+      "servant.tristan.skill.sc-tristan-2",
+      "servant.tristan.skill.sc-tristan-3",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-2",
+      "servant.valkyrie.skill.sc-valkyrie-1",
+      "servant.valkyrie.skill.sc-valkyrie-2",
       "servant.valkyrie.skill.sc-valkyrie-3",
+      "servant.vlad.skill.sc-vlad-1",
+      "servant.vlad.skill.sc-vlad-2",
       "servant.voyager.skill.sc-voyager-1",
       "servant.voyager.skill.sc-voyager-2",
       "servant.voyager.skill.sc-voyager-3",
-      "servant.voyager.skill.sc-voyager-4"
+      "servant.voyager.skill.sc-voyager-4",
+      "servant.xiangyu.skill.sc-xiangyu-1",
+      "servant.xiangyu.skill.sc-xiangyu-2",
+      "servant.xiangyu.skill.sc-xiangyu-3"
     ]
   }
 }

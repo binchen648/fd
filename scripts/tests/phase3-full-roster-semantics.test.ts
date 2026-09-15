@@ -1699,6 +1699,15 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.spartacus.skill.sc-spartacus-1')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'spartacus_rebellion_rule'})])}));
     expect(slice.find(c=>c.id==='servant.tamamo.skill.sc-tamamo-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'tamamo_transcendence_rule'})])}));
   });
+  it('grounds the final twenty-three Tesla/Tezcat/Tomoe/Tristan/Ushiwakamaru/Valkyrie/Vlad/Xiangyu identities from locked development snapshots', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.tesla.skill.sc-tesla-1","servant.tesla.skill.sc-tesla-2","servant.tesla.skill.sc-tesla-3","servant.tezcat.skill.sc-tezcat-1","servant.tezcat.skill.sc-tezcat-2","servant.tezcat.skill.sc-tezcat-3","servant.tomoe.skill.sc-tomoe-1","servant.tomoe.skill.sc-tomoe-2","servant.tomoe.skill.sc-tomoe-3","servant.tristan.skill.sc-tristan-1","servant.tristan.skill.sc-tristan-2","servant.tristan.skill.sc-tristan-3","servant.ushiwakamaru.skill.sc-ushiwakamaru-1","servant.ushiwakamaru.skill.sc-ushiwakamaru-2","servant.ushiwakamaru.skill.sc-ushiwakamaru-3","servant.valkyrie.skill.sc-valkyrie-1","servant.valkyrie.skill.sc-valkyrie-2","servant.vlad.skill.sc-vlad-1","servant.vlad.skill.sc-vlad-2","servant.vlad.skill.sc-vlad-3","servant.xiangyu.skill.sc-xiangyu-1","servant.xiangyu.skill.sc-xiangyu-2","servant.xiangyu.skill.sc-xiangyu-3"]); const slice=overlays.filter(c=>ids.has(c.id));
+    expect(slice).toHaveLength(23); expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256 && c.source.sourceFileSha256.length===64)).toBe(true);
+    for(const id of ['servant.tomoe.skill.sc-tomoe-1','servant.tristan.skill.sc-tristan-3']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'independent_action_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.ushiwakamaru.skill.sc-ushiwakamaru-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'draw_cards',count:1}),expect.objectContaining({type:'play_selected_cards',maxCount:3})])}));
+    expect(slice.find(c=>c.id==='servant.vlad.skill.sc-vlad-3')?.abilities).toContainEqual(expect.objectContaining({activation:{phase:'action'},effects:expect.arrayContaining([expect.objectContaining({type:'move_player',destinationRule:'any_location_except_workshop'})])}));
+    expect(slice.find(c=>c.id==='servant.tesla.skill.sc-tesla-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'tesla_lightning_descent_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.xiangyu.skill.sc-xiangyu-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'xiangyu_overlord_martial_rule'})])}));
+  });
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1752,10 +1761,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 921,
-      blockedCount: 23,
+      sourceGroundedCount: 944,
+      blockedCount: 0,
       unclassifiedCount: 0,
-      structuredAbilityCount: 1199,
+      structuredAbilityCount: 1222,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

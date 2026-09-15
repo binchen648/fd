@@ -7,8 +7,8 @@
 - Fallback Policy: zero silent fallback; every canonical identity is mapped or explicitly blocked.
 
 totalIdentityCount=944
-contractMappedCount=921
-explicitBlockCount=23
+contractMappedCount=944
+explicitBlockCount=0
 capabilityCount=32
 zeroSilentFallback=true
 
@@ -16,26 +16,26 @@ zeroSilentFallback=true
 
 | Capability | Category | Family | Eligible | Partial | Skipped | Acceptance Vehicle |
 |---|---|---|---:|---:|---:|---|
-| `CARD_ACTION_ACTIVATE` | `generic_request` | `CARD_ACTION_SEMANTICS` | 10 | 0 | 68 | new Phase 3 capability request + Gate A/B/C representative |
-| `CARD_ACTION_ADD_TO_ATTACK` | `generic_request` | `CARD_ACTION_SEMANTICS` | 8 | 0 | 70 | new Phase 3 capability request + Gate A/B/C representative |
-| `CARD_ACTION_CLOSE` | `generic_request` | `CARD_ACTION_SEMANTICS` | 19 | 0 | 59 | new Phase 3 capability request + Gate A/B/C representative |
-| `CARD_ACTION_CREATE_AND_ACTIVATE` | `generic_request` | `CARD_ACTION_SEMANTICS` | 2 | 0 | 76 | new Phase 3 capability request + Gate A/B/C representative |
-| `CARD_ACTION_PLAY` | `generic_request` | `CARD_ACTION_SEMANTICS` | 45 | 0 | 33 | new Phase 3 capability request + Gate A/B/C representative |
-| `CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 0 | 78 | Olga first-loss Gate A/B/C candidate |
-| `CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 1 | 77 | Maiya Gate A/B/C candidate |
-| `CARD_ACTION_SEMANTICS_MINIMAL_CLOSE` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 1 | 78 | Artoria Alter Gate A/B/C candidate |
-| `CARD_ACTION_SEMANTICS_MINIMAL_PLAY` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 1 | 0 | 77 | Time Alter Gate A/B/C candidate |
-| `CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 0 | 78 | Volumen Gate A/B/C candidate |
-| `CARD_ZONE_CORE_DIRECT_ACTION` | `existing_contract` | `CARD_ZONE` | 1 | 0 | 131 | Mechanic Batch Gate A/B/C representative evidence |
+| `CARD_ACTION_ACTIVATE` | `generic_request` | `CARD_ACTION_SEMANTICS` | 10 | 0 | 69 | new Phase 3 capability request + Gate A/B/C representative |
+| `CARD_ACTION_ADD_TO_ATTACK` | `generic_request` | `CARD_ACTION_SEMANTICS` | 8 | 0 | 71 | new Phase 3 capability request + Gate A/B/C representative |
+| `CARD_ACTION_CLOSE` | `generic_request` | `CARD_ACTION_SEMANTICS` | 19 | 0 | 60 | new Phase 3 capability request + Gate A/B/C representative |
+| `CARD_ACTION_CREATE_AND_ACTIVATE` | `generic_request` | `CARD_ACTION_SEMANTICS` | 2 | 0 | 77 | new Phase 3 capability request + Gate A/B/C representative |
+| `CARD_ACTION_PLAY` | `generic_request` | `CARD_ACTION_SEMANTICS` | 46 | 0 | 33 | new Phase 3 capability request + Gate A/B/C representative |
+| `CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 0 | 79 | Olga first-loss Gate A/B/C candidate |
+| `CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 1 | 78 | Maiya Gate A/B/C candidate |
+| `CARD_ACTION_SEMANTICS_MINIMAL_CLOSE` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 1 | 79 | Artoria Alter Gate A/B/C candidate |
+| `CARD_ACTION_SEMANTICS_MINIMAL_PLAY` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 1 | 0 | 78 | Time Alter Gate A/B/C candidate |
+| `CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE` | `existing_contract` | `CARD_ACTION_SEMANTICS` | 0 | 0 | 79 | Volumen Gate A/B/C candidate |
+| `CARD_ZONE_CORE_DIRECT_ACTION` | `existing_contract` | `CARD_ZONE` | 1 | 0 | 132 | Mechanic Batch Gate A/B/C representative evidence |
 | `GENERIC_BATTLE_INTEGRATION` | `generic_request` | `BATTLE_RESULT` | 129 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_CARD_CREATE` | `generic_request` | `CARD_ZONE` | 13 | 0 | 119 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_CARD_ZONE` | `generic_request` | `CARD_ZONE` | 120 | 0 | 12 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_CARD_CREATE` | `generic_request` | `CARD_ZONE` | 13 | 0 | 120 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_CARD_ZONE` | `generic_request` | `CARD_ZONE` | 121 | 0 | 12 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_CONDITION_EVALUATION` | `generic_request` | `CONDITION` | 217 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_COST_PAYMENT` | `generic_request` | `COST_PAYMENT` | 30 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_EVENT_DECK` | `generic_request` | `SPECIAL_SUBSYSTEM` | 40 | 0 | 634 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_EVENT_DECK` | `generic_request` | `SPECIAL_SUBSYSTEM` | 40 | 0 | 655 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_LIFECYCLE_POLICY` | `generic_request` | `LIFECYCLE` | 169 | 0 | 7 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_MODIFIER` | `generic_request` | `MODIFIER` | 161 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
-| `GENERIC_MOVEMENT` | `generic_request` | `MOVEMENT` | 49 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
+| `GENERIC_MOVEMENT` | `generic_request` | `MOVEMENT` | 50 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_PENDING_INTERACTION` | `generic_request` | `INTERACTION` | 78 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_POWER` | `generic_request` | `POWER` | 125 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `GENERIC_RESOURCE_NUMERIC` | `generic_request` | `RESOURCE_NUMERIC` | 125 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
@@ -46,8 +46,8 @@ zeroSilentFallback=true
 | `GENERIC_VISIBILITY` | `generic_request` | `HIDDEN_INFORMATION` | 62 | 0 | 0 | new Phase 3 capability request + Gate A/B/C representative |
 | `RESOURCE_NUMERIC_CORE_DIRECT_ACTION` | `existing_contract` | `RESOURCE_NUMERIC` | 0 | 1 | 125 | Mechanic Batch Gate A/B/C representative evidence |
 | `RESULT_BINDING_PHASE3A` | `existing_contract` | `RESULT_BINDING` | 0 | 1 | 81 | Golden Eater Gate A/B/C candidate |
-| `REVIEWED_SPECIAL_HANDLER` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 664 | 0 | 10 | B/R reviewed-special exception with explicit deletion/reuse criteria |
-| `REVIEWED_SPECIAL_TRANSFORM` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 4 | 0 | 670 | B/R reviewed-special exception with explicit deletion/reuse criteria |
+| `REVIEWED_SPECIAL_HANDLER` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 685 | 0 | 10 | B/R reviewed-special exception with explicit deletion/reuse criteria |
+| `REVIEWED_SPECIAL_TRANSFORM` | `reviewed_special` | `SPECIAL_SUBSYSTEM` | 4 | 0 | 691 | B/R reviewed-special exception with explicit deletion/reuse criteria |
 
 ## Identity Mapping
 
@@ -968,32 +968,32 @@ zeroSilentFallback=true
 | `servant.teach.skill.sc-teach-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:teach_gentleman_love_rule` |
 | `servant.teach.skill.sc-teach-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:teach_queen_anne_rule` |
 | `servant.teach.skill.sc-teach-3` | `READY_GENERIC_EXTENSION` | `none` | `shared_handler` | `CARD_ACTION_SEMANTICS`, `CARD_ZONE` | `CARD_ACTION_PLAY`, `GENERIC_CARD_ZONE` | `NONE` | `NONE` | `NONE` |
-| `servant.tesla.skill.sc-tesla-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.tesla.skill.sc-tesla-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.tesla.skill.sc-tesla-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.tezcat.skill.sc-tezcat-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.tezcat.skill.sc-tezcat-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.tezcat.skill.sc-tezcat-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.tomoe.skill.sc-tomoe-1` | `SOURCE_EVIDENCE_REQUIRED` | `dual` | `shared_handler` | `NONE` | `NONE` | `NONE` | `RESOURCE_NUMERIC_CORE_DIRECT_ACTION` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.tomoe.skill.sc-tomoe-2` | `SOURCE_EVIDENCE_REQUIRED` | `legacy` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.tomoe.skill.sc-tomoe-3` | `SOURCE_EVIDENCE_REQUIRED` | `legacy` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.tristan.skill.sc-tristan-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.tristan.skill.sc-tristan-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.tristan.skill.sc-tristan-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.ushiwakamaru.skill.sc-ushiwakamaru-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.ushiwakamaru.skill.sc-ushiwakamaru-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.ushiwakamaru.skill.sc-ushiwakamaru-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.valkyrie.skill.sc-valkyrie-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.valkyrie.skill.sc-valkyrie-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
+| `servant.tesla.skill.sc-tesla-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:tesla_lightning_hand_rule` |
+| `servant.tesla.skill.sc-tesla-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:tesla_lightning_descent_rule` |
+| `servant.tesla.skill.sc-tesla-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:tesla_forced_overcharge_rule` |
+| `servant.tezcat.skill.sc-tezcat-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:tezcat_jaguar_king_rule` |
+| `servant.tezcat.skill.sc-tezcat-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:tezcat_warrior_office_rule` |
+| `servant.tezcat.skill.sc-tezcat-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:tezcat_first_sun_rule` |
+| `servant.tomoe.skill.sc-tomoe-1` | `SPECIAL_HANDLER_CANDIDATE` | `dual` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `RESOURCE_NUMERIC_CORE_DIRECT_ACTION` | `SPECIAL_EFFECT:independent_action_rule` |
+| `servant.tomoe.skill.sc-tomoe-2` | `SPECIAL_HANDLER_CANDIDATE` | `legacy` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:tomoe_demonic_nature_rule` |
+| `servant.tomoe.skill.sc-tomoe-3` | `SPECIAL_HANDLER_CANDIDATE` | `legacy` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:tomoe_blazing_rain_rule` |
+| `servant.tristan.skill.sc-tristan-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:tristan_lament_rule` |
+| `servant.tristan.skill.sc-tristan-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:tristan_love_rule` |
+| `servant.tristan.skill.sc-tristan-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:independent_action_rule` |
+| `servant.ushiwakamaru.skill.sc-ushiwakamaru-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:ushiwakamaru_icicle_cutter_rule` |
+| `servant.ushiwakamaru.skill.sc-ushiwakamaru-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:ushiwakamaru_eight_boat_leap_rule` |
+| `servant.ushiwakamaru.skill.sc-ushiwakamaru-3` | `READY_GENERIC_EXTENSION` | `none` | `shared_handler` | `CARD_ACTION_SEMANTICS`, `CARD_ZONE` | `CARD_ACTION_PLAY`, `GENERIC_CARD_ZONE` | `NONE` | `NONE` | `NONE` |
+| `servant.valkyrie.skill.sc-valkyrie-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:valkyrie_maiden_descent_rule` |
+| `servant.valkyrie.skill.sc-valkyrie-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:valkyrie_swan_dress_rule` |
 | `servant.valkyrie.skill.sc-valkyrie-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `CONDITION`, `HIDDEN_INFORMATION`, `SPECIAL_SUBSYSTEM` | `GENERIC_CONDITION_EVALUATION`, `GENERIC_VISIBILITY`, `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:retrigger_card_play_effects` |
-| `servant.vlad.skill.sc-vlad-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.vlad.skill.sc-vlad-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.vlad.skill.sc-vlad-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `shared_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
+| `servant.vlad.skill.sc-vlad-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:vlad_protector_rule` |
+| `servant.vlad.skill.sc-vlad-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:vlad_kazikli_bey_rule` |
+| `servant.vlad.skill.sc-vlad-3` | `READY_GENERIC_EXTENSION` | `none` | `shared_handler` | `MOVEMENT` | `GENERIC_MOVEMENT` | `NONE` | `NONE` | `NONE` |
 | `servant.voyager.skill.sc-voyager-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:visitor_card_rule` |
 | `servant.voyager.skill.sc-voyager-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:visitor_card_rule` |
 | `servant.voyager.skill.sc-voyager-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:visitor_card_rule` |
 | `servant.voyager.skill.sc-voyager-4` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `shared_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:foreign_life_rule` |
-| `servant.xiangyu.skill.sc-xiangyu-1` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.xiangyu.skill.sc-xiangyu-2` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
-| `servant.xiangyu.skill.sc-xiangyu-3` | `SOURCE_EVIDENCE_REQUIRED` | `none` | `specific_handler` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMANTIC_SOURCE_REQUIRED` |
+| `servant.xiangyu.skill.sc-xiangyu-1` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:xiangyu_tactical_body_rule` |
+| `servant.xiangyu.skill.sc-xiangyu-2` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:xiangyu_overlord_martial_rule` |
+| `servant.xiangyu.skill.sc-xiangyu-3` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `specific_handler` | `SPECIAL_SUBSYSTEM` | `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:xiangyu_conquering_might_rule` |
 | `master.tiamat.card.life-sea` | `SPECIAL_HANDLER_CANDIDATE` | `none` | `none` | `CARD_ACTION_SEMANTICS`, `LIFECYCLE`, `MODIFIER`, `SPECIAL_SUBSYSTEM` | `CARD_ACTION_CLOSE`, `CARD_ACTION_PLAY`, `GENERIC_LIFECYCLE_POLICY`, `GENERIC_MODIFIER`, `REVIEWED_SPECIAL_HANDLER` | `NONE` | `NONE` | `SPECIAL_EFFECT:beast_resource_rule` |
