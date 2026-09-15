@@ -1111,7 +1111,7 @@ function createPrivateOptionalHandPlayInteraction(s: GameState, ctx: EffectConte
   };
 }
 
-const directResourcePrimitiveTypes = new Set(['adjust_mana', 'adjust_command_seals', 'adjust_victory_points']);
+const directResourcePrimitiveTypes = new Set(['adjust_mana', 'adjust_victory_points']);
 const fixedControllerResourcePrimitiveTypes = new Set(['adjust_mana', 'adjust_victory_points']);
 
 export function isFixedControllerResourceAdjustmentComponent(effect: AuthoringAbility['effects'][number]): boolean {
@@ -1119,6 +1119,14 @@ export function isFixedControllerResourceAdjustmentComponent(effect: AuthoringAb
   if (effect.player !== undefined && effect.player !== 'controller') return false;
   if (!Number.isSafeInteger(effect.amount)) return false;
   return Object.keys(effect).every((key) => ['type', 'player', 'amount'].includes(key));
+}
+
+export function isFixedControllerCommandSealAdjustmentComponent(effect: AuthoringAbility['effects'][number]): boolean {
+  if (str(effect.type) !== 'adjust_command_seals') return false;
+  if (effect.player !== undefined && effect.player !== 'controller') return false;
+  if (!Number.isSafeInteger(effect.amount) || Number(effect.amount) === 0) return false;
+  if (effect.directive !== undefined && (typeof effect.directive !== 'string' || effect.directive.length === 0)) return false;
+  return Object.keys(effect).every((key) => ['type', 'player', 'amount', 'directive'].includes(key));
 }
 
 function isDeploymentResourceRewardCandidate(a: AuthoringAbility): boolean {
@@ -1165,9 +1173,7 @@ export function isBattleLossResourceTriggerSemantic(a: AuthoringAbility): boolea
   if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
   if (a.effects.length !== 1) return false;
   const effect = a.effects[0]!;
-  return effect.type === 'adjust_command_seals' &&
-    (effect.player === undefined || effect.player === 'controller') &&
-    Number.isSafeInteger(effect.amount);
+  return isFixedControllerCommandSealAdjustmentComponent(effect);
 }
 
 function isBattleLossUnpreventableVpTriggerCandidate(a: AuthoringAbility): boolean {
@@ -1549,7 +1555,9 @@ export function isResourceNumericDirectActionSemantic(a: AuthoringAbility): bool
     a.cost.length === 0 &&
     a.creates.length === 0 &&
     a.effects.length > 0 &&
-    a.effects.every((effect) => directResourcePrimitiveTypes.has(str(effect.type)));
+    a.effects.every((effect) =>
+      directResourcePrimitiveTypes.has(str(effect.type)) ||
+      isFixedControllerCommandSealAdjustmentComponent(effect));
 }
 
 export function isCardZoneCoreDirectActionSemantic(a: AuthoringAbility): boolean {
