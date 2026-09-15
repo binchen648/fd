@@ -10910,6 +10910,1055 @@
           ]
         }
       ]
+    },
+    {
+      "id": "master.zouken.skill.s1",
+      "printedText": "游戏开始时，将你的魔力设置为10点且你的魔力上限为16点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_zouken.skills[s1]#line=19",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，将你的魔力设置为10点且你的魔力上限为16点。",
+        "sourceTextSha256": "2d006d8244b028397a5c341b2a37dd634616152d15afcd708aea3163e2b88945"
+      },
+      "referencePrintedTextSha256": "2d006d8244b028397a5c341b2a37dd634616152d15afcd708aea3163e2b88945",
+      "abilities": [
+        {
+          "id": "zouken.cavern-dead.starting-mana",
+          "printedClause": "游戏开始时，将你的魔力设置为10点且你的魔力上限为16点。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_mana",
+              "subject": "controller",
+              "amount": 10
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "mana_capacity",
+              "operation": "set",
+              "subject": "controller",
+              "value": 16
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.zouken.skill.s2",
+      "printedText": "你是大圣杯的【创造者】并怀揣【五百年的执念】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_zouken.skills[s2]#line=19",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你是大圣杯的【创造者】并怀揣【五百年的执念】。",
+        "sourceTextSha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17f3e3"
+      },
+      "referencePrintedTextSha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17f3e3",
+      "abilities": [
+        {
+          "id": "zouken.living-corpse.grant-founder-obsession",
+          "printedClause": "你是大圣杯的【创造者】并怀揣【五百年的执念】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.zouken.skill.s3",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            },
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.zouken.skill.s4",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.zouken.skill.s3",
+      "printedText": "你没有令咒。每当你获得令咒时，改为获得4点魔力；当你因其他能力需要花费令咒时，改为花费4点魔力。\n行动阶段：花费2X魔力，获得X点合计威力，若你于本回合赢得战斗，获得X点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_zouken.skills[s3]#line=19",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你没有令咒。每当你获得令咒时，改为获得4点魔力；当你因其他能力需要花费令咒时，改为花费4点魔力。\n行动阶段：花费2X魔力，获得X点合计威力，若你于本回合赢得战斗，获得X点战果。",
+        "sourceTextSha256": "cea95dc5010d588158e85f29d23cbbfa92f4a3211825312a12d0f641b7648b44"
+      },
+      "referencePrintedTextSha256": "cea95dc5010d588158e85f29d23cbbfa92f4a3211825312a12d0f641b7648b44",
+      "abilities": [
+        {
+          "id": "zouken.founder.command-seal-substitution",
+          "printedClause": "你没有令咒。每当你获得令咒时，改为获得4点魔力；当你因其他能力需要花费令咒时，改为花费4点魔力。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "command_seal_capacity",
+              "operation": "set",
+              "value": 0,
+              "subject": "controller"
+            },
+            {
+              "rule": "command_seal_transaction",
+              "operation": "replace_with_mana",
+              "manaPerSeal": 4,
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "zouken.founder.power-and-reward",
+          "printedClause": "行动阶段：花费2X魔力，获得X点合计威力，若你于本回合赢得战斗，获得X点战果。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_number",
+              "min": 0,
+              "maxFormula": "floor(controller_mana / 2)",
+              "payloadKey": "x"
+            },
+            {
+              "type": "pay_mana",
+              "subject": "controller",
+              "amountFormula": "2 * x",
+              "bindingField": "x"
+            },
+            {
+              "type": "combat_power_bonus",
+              "subject": "controller",
+              "amountBinding": "x",
+              "duration": "this_round"
+            },
+            {
+              "type": "linked_player_battle_reward",
+              "operation": "on_controller_win_gain_victory_points",
+              "subject": "controller",
+              "amountBinding": "x",
+              "duration": "this_round"
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.zouken.skill.s4",
+      "printedText": "回合结束时，若你本回合获得的魔力少于3点，失去2点战果。\n刻印虫-战斗阶段：战斗阶段结束后，如果你赢得一场战斗，从该战斗的一名败者处吸取至多3点魔力；若该战斗没有其他玩家或你位于侦查，你获得3点魔力。\n虫之身-战斗阶段：花费7点魔力，移动至一处地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_zouken.skills[s4]#line=19",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "回合结束时，若你本回合获得的魔力少于3点，失去2点战果。\n刻印虫-战斗阶段：战斗阶段结束后，如果你赢得一场战斗，从该战斗的一名败者处吸取至多3点魔力；若该战斗没有其他玩家或你位于侦查，你获得3点魔力。\n虫之身-战斗阶段：花费7点魔力，移动至一处地点。",
+        "sourceTextSha256": "3b66cc0b2d7c1e95bdd02b34e62de54f5383e53b20a736b69cb023f3388f2f49"
+      },
+      "referencePrintedTextSha256": "3b66cc0b2d7c1e95bdd02b34e62de54f5383e53b20a736b69cb023f3388f2f49",
+      "abilities": [
+        {
+          "id": "zouken.obsession.low-mana-penalty",
+          "printedClause": "回合结束时，若你本回合获得的魔力少于3点，失去2点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ending"
+            },
+            {
+              "type": "controller_round_mana_gain_below",
+              "amount": 3
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "subject": "controller",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "zouken.obsession.blood-worms-drain",
+          "printedClause": "刻印虫-战斗阶段：战斗阶段结束后，如果你赢得一场战斗，从该战斗的一名败者处吸取至多3点魔力；若该战斗没有其他玩家或你位于侦查，你获得3点魔力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "controller_won_combat"
+            },
+            {
+              "type": "controller_not_at_recon"
+            },
+            {
+              "type": "combat_has_other_players"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_players",
+              "scope": "losers_in_controller_combat",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "bloodWormTargetIds"
+            },
+            {
+              "type": "choose_number",
+              "min": 0,
+              "max": 3,
+              "maxFormula": "min(3, selected_player_mana)",
+              "payloadKey": "manaAmount"
+            },
+            {
+              "type": "transfer_mana",
+              "fromBinding": "bloodWormTargetIds:first",
+              "to": "controller",
+              "amountBinding": "manaAmount"
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "round",
+            "maxUses": 1,
+            "ability": "blood-worms"
+          }
+        },
+        {
+          "id": "zouken.obsession.blood-worms-fallback",
+          "printedClause": "若该战斗没有其他玩家或你位于侦查，你获得3点魔力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "conditions": [
+            {
+              "type": "controller_at_recon_or_combat_has_no_other_player"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_mana",
+              "subject": "controller",
+              "amount": 3
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "round",
+            "maxUses": 1,
+            "ability": "blood-worms"
+          }
+        },
+        {
+          "id": "zouken.obsession.bug-form",
+          "printedClause": "虫之身-战斗阶段：花费7点魔力，移动至一处地点。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "cost": {
+            "type": "mana",
+            "amount": 7
+          },
+          "effects": [
+            {
+              "type": "pay_mana",
+              "subject": "controller",
+              "amount": 7
+            },
+            {
+              "type": "move_player",
+              "subject": "controller",
+              "destination": "any_location"
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "round",
+            "maxUses": 1,
+            "ability": "bug-form"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.zouken.skill.s5",
+      "printedText": "局势牌无法禁止你使用宝具。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_zouken.skills[s5]#line=19",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "局势牌无法禁止你使用宝具。",
+        "sourceTextSha256": "1bfe9fda4911dd95b0e6ef1462140b1d7e20cdacdd03df524fae374509bc668f"
+      },
+      "referencePrintedTextSha256": "1bfe9fda4911dd95b0e6ef1462140b1d7e20cdacdd03df524fae374509bc668f",
+      "abilities": [
+        {
+          "id": "zouken.clan-head.noble-phantasm-waiver",
+          "printedClause": "局势牌无法禁止你使用宝具。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "noble_phantasm_situation_restriction",
+              "operation": "ignore",
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.zouken.skill.ascension",
+      "printedText": "当你移动时，可以无视交战状态。移除【刻印虫】\"如果你赢得一场战斗\"的触发条件。\n行动阶段：花费6点魔力，使与你处于同一战场的对手失去一枚令咒。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_zouken.ascensionSkill#line=19",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你移动时，可以无视交战状态。移除【刻印虫】\"如果你赢得一场战斗\"的触发条件。\n行动阶段：花费6点魔力，使与你处于同一战场的对手失去一枚令咒。",
+        "sourceTextSha256": "6bec5e2443f416546ea830907c255e87b2ad2d9cad9ddb12dfd8436c0b0ee7b7"
+      },
+      "referencePrintedTextSha256": "6bec5e2443f416546ea830907c255e87b2ad2d9cad9ddb12dfd8436c0b0ee7b7",
+      "abilities": [
+        {
+          "id": "zouken.mastermind.engagement-freedom",
+          "printedClause": "当你移动时，可以无视交战状态。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "movement_engagement_restriction",
+              "operation": "ignore",
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "zouken.mastermind.blood-worm-upgrade",
+          "printedClause": "移除【刻印虫】\"如果你赢得一场战斗\"的触发条件。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "linked_ability_condition",
+              "operation": "remove",
+              "linkedAbilityId": "zouken.obsession.blood-worms-drain",
+              "condition": "controller_won_combat"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        },
+        {
+          "id": "zouken.mastermind.strip-seals",
+          "printedClause": "行动阶段：花费6点魔力，使与你处于同一战场的对手失去一枚令咒。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "cost": {
+            "type": "mana",
+            "amount": 6
+          },
+          "effects": [
+            {
+              "type": "pay_mana",
+              "subject": "controller",
+              "amount": 6
+            },
+            {
+              "type": "adjust_command_seals",
+              "subject": "opponents_same_battlefield",
+              "amount": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.caren.skill.s1",
+      "printedText": "游戏开始时，你拥有【被虐灵媒体质】。当你的魔力第一次减至1或更低时，失去【被虐灵媒体质】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caren.skills[s1]#line=128",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，你拥有【被虐灵媒体质】。当你的魔力第一次减至1或更低时，失去【被虐灵媒体质】。",
+        "sourceTextSha256": "a925a26a4a38dd987256cd96ca5c0e545bf21d9d7aece72feaa138e395097e73"
+      },
+      "referencePrintedTextSha256": "a925a26a4a38dd987256cd96ca5c0e545bf21d9d7aece72feaa138e395097e73",
+      "abilities": [
+        {
+          "id": "caren.spirit-medium.grant-masochism",
+          "printedClause": "游戏开始时，你拥有【被虐灵媒体质】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.caren.skill.s2",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            }
+          ]
+        },
+        {
+          "id": "caren.spirit-medium.lose-masochism",
+          "printedClause": "当你的魔力第一次减至1或更低时，失去【被虐灵媒体质】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.mana.changed"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_mana_first_crosses_at_or_below",
+              "threshold": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "sourceZone": "master-skills",
+              "destination": "removed",
+              "owner": "controller",
+              "definitionId": "master.caren.skill.s2",
+              "count": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.caren.skill.s1a",
+      "printedText": "当你第一次真名解放时，获得【抹大拉的圣骸布】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caren.skills[s1a]#line=128",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你第一次真名解放时，获得【抹大拉的圣骸布】。",
+        "sourceTextSha256": "de0c69198efc20b037d6a7757f6dff6aa17a4bfccc5c3faff9181629ced19191"
+      },
+      "referencePrintedTextSha256": "de0c69198efc20b037d6a7757f6dff6aa17a4bfccc5c3faff9181629ced19191",
+      "abilities": [
+        {
+          "id": "caren.executor.gain-magdalene",
+          "printedClause": "当你第一次真名解放时，获得【抹大拉的圣骸布】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "servant.true-name-revealed"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_is_controller_first_true_name_reveal"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.caren.skill.s3",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.caren.skill.s2",
+      "printedText": "当一名与你位于同一地点的对手因从者能力、令咒或升华技获得战果时，令其获得的战果减半（向下取整），然后你失去被减少的战果数的魔力。你每因此失去1点魔力，获得1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caren.skills[s2]#line=128",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当一名与你位于同一地点的对手因从者能力、令咒或升华技获得战果时，令其获得的战果减半（向下取整），然后你失去被减少的战果数的魔力。你每因此失去1点魔力，获得1点战果。",
+        "sourceTextSha256": "b8e2bc6b351e75098f36fac199ad4ade05ff9da34796a31260cf15f455d3263f"
+      },
+      "referencePrintedTextSha256": "b8e2bc6b351e75098f36fac199ad4ade05ff9da34796a31260cf15f455d3263f",
+      "abilities": [
+        {
+          "id": "caren.masochism.vp-replacement",
+          "printedClause": "当一名与你位于同一地点的对手因从者能力、令咒或升华技获得战果时，令其获得的战果减半（向下取整），然后你失去被减少的战果数的魔力。你每因此失去1点魔力，获得1点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.victory-points.changed"
+            },
+            {
+              "type": "event_player_is_opponent"
+            },
+            {
+              "type": "event_location_equals_controller"
+            },
+            {
+              "type": "event_victory_point_gain_source_is_servant_command_seal_or_ascension"
+            }
+          ],
+          "effects": [
+            {
+              "type": "reactive_resource_rule",
+              "operation": "halve_opponent_vp_gain_floor_then_convert_prevented_to_controller_mana_loss_and_actual_loss_to_vp",
+              "subject": "controller"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.caren.skill.s3",
+      "printedText": "行动阶段：选择一名与你交战的对手，他无法于自己的回合内移动且合计威力-1至-5（由你选择）。若其本回合战败，将此牌移除游戏。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caren.skills[s3]#line=128",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "行动阶段：选择一名与你交战的对手，他无法于自己的回合内移动且合计威力-1至-5（由你选择）。若其本回合战败，将此牌移除游戏。",
+        "sourceTextSha256": "62fc140c0225f2d8c757c76b12382c29eca478f210f434bd1fba0a37e7112698"
+      },
+      "referencePrintedTextSha256": "62fc140c0225f2d8c757c76b12382c29eca478f210f434bd1fba0a37e7112698",
+      "abilities": [
+        {
+          "id": "caren.magdalene.bind-opponent",
+          "printedClause": "行动阶段：选择一名与你交战的对手，他无法于自己的回合内移动且合计威力-1至-5（由你选择）。若其本回合战败，将此牌移除游戏。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_players",
+              "scope": "engaged_opponents",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "targetIds"
+            },
+            {
+              "type": "choose_number",
+              "min": 1,
+              "max": 5,
+              "payloadKey": "penalty"
+            },
+            {
+              "type": "bound_opponent_rule",
+              "operation": "block_own_turn_movement_and_reduce_total_power",
+              "targetBinding": "targetIds:first",
+              "powerPenaltyBinding": "penalty",
+              "removeSourceIfTargetLosesThisRound": true
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.caren.skill.ascension",
+      "printedText": "（将此牌加入你的技能区）\n被动：当此牌加入你的技能区时，获得【抹大拉的圣骸布】。\n爱之印-当任意一名对手获得胜利时，其获得3点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_caren.ascensionSkill#line=128",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（将此牌加入你的技能区）\n被动：当此牌加入你的技能区时，获得【抹大拉的圣骸布】。\n爱之印-当任意一名对手获得胜利时，其获得3点战果。",
+        "sourceTextSha256": "8831f53355b1b84bbe8620ea5a12f0fc44f7e925669f669e3f7db5fc001a0425"
+      },
+      "referencePrintedTextSha256": "8831f53355b1b84bbe8620ea5a12f0fc44f7e925669f669e3f7db5fc001a0425",
+      "abilities": [
+        {
+          "id": "caren.valentinus.grant-magdalene",
+          "printedClause": "被动：当此牌加入你的技能区时，获得【抹大拉的圣骸布】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "return_card_by_definition",
+              "target": "controller",
+              "definitionId": "master.caren.skill.s3",
+              "destination": "master-skills",
+              "createIfMissing": true,
+              "face": "up",
+              "active": false
+            }
+          ]
+        },
+        {
+          "id": "caren.valentinus.mark-of-eros",
+          "printedClause": "爱之印-当任意一名对手获得胜利时，其获得3点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_has_opponent_winner"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "subject": "event_opponent_winners",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.miyu.skill.s1",
+      "printedText": "美游的从者是【魔法蓝宝石】。游戏开始时，从未被抽取的从者中抽取3名并选择他们的3个技能构筑你的技能区。【魔法蓝宝石】额外获得被抽取的从者的名称和职阶。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_miyu.skills[s1]#line=398",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "美游的从者是【魔法蓝宝石】。游戏开始时，从未被抽取的从者中抽取3名并选择他们的3个技能构筑你的技能区。【魔法蓝宝石】额外获得被抽取的从者的名称和职阶。",
+        "sourceTextSha256": "1aef43ee7ded86be0c82e81b5d947e7bb06763e59c2943c830b02276503c6288"
+      },
+      "referencePrintedTextSha256": "1aef43ee7ded86be0c82e81b5d947e7bb06763e59c2943c830b02276503c6288",
+      "abilities": [
+        {
+          "id": "miyu.sapphire.setup-draft",
+          "printedClause": "美游的从者是【魔法蓝宝石】。游戏开始时，从未被抽取的从者中抽取3名并选择他们的3个技能构筑你的技能区。【魔法蓝宝石】额外获得被抽取的从者的名称和职阶。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "roster_skill_draft_rule",
+              "operation": "replace_servant_with_sapphire_draw_three_unused_servants_choose_three_skills_and_gain_aliases",
+              "drawServants": 3,
+              "chooseSkills": 3,
+              "subject": "controller"
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.miyu.skill.s2",
+      "printedText": "被动/前哨阶段：弃置此牌，抽2张牌。\n被动/前哨阶段：将此牌与游戏开始时你所抽取从者的牌堆中的牌或游戏外的【梦幻召唤】交换。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_miyu.skills[s2]#line=398",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "被动/前哨阶段：弃置此牌，抽2张牌。\n被动/前哨阶段：将此牌与游戏开始时你所抽取从者的牌堆中的牌或游戏外的【梦幻召唤】交换。",
+        "sourceTextSha256": "1966bc8e169a028465a4e4d19c2d7876499fb67076dde68e53ee2ebc05ae06a2"
+      },
+      "referencePrintedTextSha256": "1966bc8e169a028465a4e4d19c2d7876499fb67076dde68e53ee2ebc05ae06a2",
+      "abilities": [
+        {
+          "id": "miyu.card-selection.draw",
+          "printedClause": "被动/前哨阶段：弃置此牌，抽2张牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "move_source_card",
+              "source": "master-skills",
+              "destination": "discard"
+            },
+            {
+              "type": "draw_cards",
+              "target": "controller",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "id": "miyu.card-selection.exchange",
+          "printedClause": "被动/前哨阶段：将此牌与游戏开始时你所抽取从者的牌堆中的牌或游戏外的【梦幻召唤】交换。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "roster_skill_draft_rule",
+              "operation": "exchange_card_selection_with_setup_servant_deck_card_or_outside_game_install",
+              "sourceCard": "self"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.miyu.skill.s3",
+      "printedText": "【梦幻召唤-剑士】特殊0耗0需3威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。战斗阶段：将同一战场所有对手的魔术属性威力变为0。\n【梦幻召唤-枪兵】特殊0耗0需4威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：移动到【魔术工房】以外的任何地点。\n【梦幻召唤-弓兵】力量/迅捷/魔术0耗0需4威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：将你的地利翻倍。\n【梦幻召唤-骑兵】特殊0耗0需0威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：从手牌中打出至多3张基本威力3及以下的牌。\n【梦幻召唤-魔术师】魔术0耗0需2威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。残留：当你打出另一张非基础攻击时关闭此牌。令那张牌获得获得威力+2或费用-3。\n【梦幻召唤-暗杀者】迅捷0耗0需2威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。战斗阶段：与你交战的对手本回合每使用过一张技能牌，便偷取他们的1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_miyu.skills[s3]#line=398",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "【梦幻召唤-剑士】特殊0耗0需3威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。战斗阶段：将同一战场所有对手的魔术属性威力变为0。\n【梦幻召唤-枪兵】特殊0耗0需4威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：移动到【魔术工房】以外的任何地点。\n【梦幻召唤-弓兵】力量/迅捷/魔术0耗0需4威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：将你的地利翻倍。\n【梦幻召唤-骑兵】特殊0耗0需0威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：从手牌中打出至多3张基本威力3及以下的牌。\n【梦幻召唤-魔术师】魔术0耗0需2威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。残留：当你打出另一张非基础攻击时关闭此牌。令那张牌获得获得威力+2或费用-3。\n【梦幻召唤-暗杀者】迅捷0耗0需2威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。战斗阶段：与你交战的对手本回合每使用过一张技能牌，便偷取他们的1点战果。",
+        "sourceTextSha256": "76b9e511167a8a848fc0664ada31df11bf37587c087ca265ef43850599e2b1d9"
+      },
+      "referencePrintedTextSha256": "76b9e511167a8a848fc0664ada31df11bf37587c087ca265ef43850599e2b1d9",
+      "abilities": [
+        {
+          "id": "miyu.install.package",
+          "printedClause": "【梦幻召唤-剑士】特殊0耗0需3威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。战斗阶段：将同一战场所有对手的魔术属性威力变为0。\n【梦幻召唤-枪兵】特殊0耗0需4威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：移动到【魔术工房】以外的任何地点。\n【梦幻召唤-弓兵】力量/迅捷/魔术0耗0需4威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：将你的地利翻倍。\n【梦幻召唤-骑兵】特殊0耗0需0威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：从手牌中打出至多3张基本威力3及以下的牌。\n【梦幻召唤-魔术师】魔术0耗0需2威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。残留：当你打出另一张非基础攻击时关闭此牌。令那张牌获得获得威力+2或费用-3。\n【梦幻召唤-暗杀者】迅捷0耗0需2威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。战斗阶段：与你交战的对手本回合每使用过一张技能牌，便偷取他们的1点战果。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "dream_summon_rule",
+              "operation": "six_install_cards_execute_printed_abilities",
+              "forms": [
+                "saber",
+                "lancer",
+                "archer",
+                "rider",
+                "caster",
+                "assassin"
+              ],
+              "perRoundInstallLimit": 1,
+              "eachFormGameLimit": 1
+            }
+          ],
+          "lifecycle": {
+            "duration": "game"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.miyu.skill.ascension",
+      "printedText": "解锁此牌后立刻将美游所有的【梦幻召唤】从游戏外加入手牌。\n前哨阶段：弃置1张牌，抽2张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_miyu.ascensionSkill#line=398",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "解锁此牌后立刻将美游所有的【梦幻召唤】从游戏外加入手牌。\n前哨阶段：弃置1张牌，抽2张牌。",
+        "sourceTextSha256": "a093522ba78f6cbb8efccdb5ef1dbe7bc21997ae08baa2f65bcad08078b5413c"
+      },
+      "referencePrintedTextSha256": "a093522ba78f6cbb8efccdb5ef1dbe7bc21997ae08baa2f65bcad08078b5413c",
+      "abilities": [
+        {
+          "id": "miyu.multiple-choice.gain-installs",
+          "printedClause": "解锁此牌后立刻将美游所有的【梦幻召唤】从游戏外加入手牌。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "skill.unlocked"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "sourceZone": "outside_game",
+              "destination": "hand",
+              "owner": "controller",
+              "filter": {
+                "family": "miyu_dream_summon"
+              },
+              "match": "all"
+            }
+          ]
+        },
+        {
+          "id": "miyu.multiple-choice.draw",
+          "printedClause": "前哨阶段：弃置1张牌，抽2张牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "cost": {
+            "type": "discard",
+            "amount": 1
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "hand",
+              "owner": "controller",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "discardIds"
+            },
+            {
+              "type": "move_selected_cards",
+              "payloadKey": "discardIds",
+              "destination": "discard"
+            },
+            {
+              "type": "draw_cards",
+              "target": "controller",
+              "count": 2
+            }
+          ],
+          "limit": {
+            "scope": "controller",
+            "period": "round",
+            "maxUses": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.shirou-meal.skill.s1",
+      "printedText": "行动阶段：若你位于地利位置，你所在地点的事件牌和激活的局势牌上每具有一种非特殊或宝具的属性，你便获得一份相应的【食物】。（每种属性每回合仅提供一份食物——力量-肉，迅捷-蔬菜，魔术-鱼）\n【食物】用于制作【卫宫家今天的饭】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shirou_meal.skills[s1]#line=39",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "行动阶段：若你位于地利位置，你所在地点的事件牌和激活的局势牌上每具有一种非特殊或宝具的属性，你便获得一份相应的【食物】。（每种属性每回合仅提供一份食物——力量-肉，迅捷-蔬菜，魔术-鱼）\n【食物】用于制作【卫宫家今天的饭】。",
+        "sourceTextSha256": "9a33f996647137c97274018377fe7b2134ddfaad01c6de0ad53a1a06bc868c60"
+      },
+      "referencePrintedTextSha256": "9a33f996647137c97274018377fe7b2134ddfaad01c6de0ad53a1a06bc868c60",
+      "abilities": [
+        {
+          "id": "shirou-meal.procurement.food",
+          "printedClause": "行动阶段：若你位于地利位置，你所在地点的事件牌和激活的局势牌上每具有一种非特殊或宝具的属性，你便获得一份相应的【食物】。（每种属性每回合仅提供一份食物——力量-肉，迅捷-蔬菜，魔术-鱼）\n【食物】用于制作【卫宫家今天的饭】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "conditions": [
+            {
+              "type": "controller_has_terrain_position"
+            }
+          ],
+          "effects": [
+            {
+              "type": "food_resource_rule",
+              "operation": "gain_food_from_current_location_event_and_active_situation_attributes",
+              "attributeMap": {
+                "strength": "meat",
+                "agility": "vegetable",
+                "magic": "fish"
+              },
+              "exclude": [
+                "special",
+                "noble_phantasm"
+              ],
+              "perAttributePerRound": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shirou-meal.skill.s2",
+      "printedText": "饕餮-当你因效果以外将弃牌堆洗回牌库时失去3点战果。\n行动阶段：弃置3份【食物】，下次洗牌你不会因饕餮失去战果。若你弃置了3种相同的【食物】，+6合计威力。若你弃置了3种不同的【食物】，获得4点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shirou_meal.skills[s2]#line=39",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "饕餮-当你因效果以外将弃牌堆洗回牌库时失去3点战果。\n行动阶段：弃置3份【食物】，下次洗牌你不会因饕餮失去战果。若你弃置了3种相同的【食物】，+6合计威力。若你弃置了3种不同的【食物】，获得4点魔力。",
+        "sourceTextSha256": "93230b239f319ddf624888a3a27df7baa44ed8c1f2ca4e256180f1b1308461d5"
+      },
+      "referencePrintedTextSha256": "93230b239f319ddf624888a3a27df7baa44ed8c1f2ca4e256180f1b1308461d5",
+      "abilities": [
+        {
+          "id": "shirou-meal.menu.glutton",
+          "printedClause": "饕餮-当你因效果以外将弃牌堆洗回牌库时失去3点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.deck-shuffled"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_shuffle_is_automatic_discard_recycle"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "subject": "controller",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "shirou-meal.menu.prepare",
+          "printedClause": "行动阶段：弃置3份【食物】，下次洗牌你不会因饕餮失去战果。若你弃置了3种相同的【食物】，+6合计威力。若你弃置了3种不同的【食物】，获得4点魔力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "food_resource_rule",
+              "operation": "spend_three_food_prepare_meal",
+              "count": 3,
+              "suppressNextGlutton": true,
+              "sameTypeTotalPowerBonus": 6,
+              "differentTypesManaGain": 4
+            }
+          ],
+          "lifecycle": {
+            "duration": "until_next_shuffle_or_round_end_power_bonus"
+          }
+        }
+      ]
+    },
+    {
+      "id": "master.shirou-meal.skill.ascension",
+      "printedText": "（此牌加入你的技能区）\n此牌需弃置一份【食物】来打出。\n被动：你每有一份【食物】，你对应属性的基础攻击便+1威力。\n回合结束时，弃置你牌堆顶的一张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shirou_meal.ascensionSkill#line=39",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（此牌加入你的技能区）\n此牌需弃置一份【食物】来打出。\n被动：你每有一份【食物】，你对应属性的基础攻击便+1威力。\n回合结束时，弃置你牌堆顶的一张牌。",
+        "sourceTextSha256": "d6ee97759a33c9a1be797c2bb2ad6d7f70c79a05abf7d03537928066eedeffcb"
+      },
+      "referencePrintedTextSha256": "d6ee97759a33c9a1be797c2bb2ad6d7f70c79a05abf7d03537928066eedeffcb",
+      "abilities": [
+        {
+          "id": "shirou-meal.ascension.food-play-cost",
+          "printedClause": "此牌需弃置一份【食物】来打出。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "food_resource_rule",
+              "operation": "require_discard_food_to_play_source",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "id": "shirou-meal.ascension.food-basic-power",
+          "printedClause": "被动：你每有一份【食物】，你对应属性的基础攻击便+1威力。",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "food_resource_rule",
+              "operation": "corresponding_basic_attack_power_per_food",
+              "attributeMap": {
+                "meat": "strength",
+                "vegetable": "agility",
+                "fish": "magic"
+              },
+              "powerPerFood": 1
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_source_relevant"
+          }
+        },
+        {
+          "id": "shirou-meal.ascension.end-round-discard",
+          "printedClause": "回合结束时，弃置你牌堆顶的一张牌。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ending"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "sourceZone": "deck",
+              "destination": "discard",
+              "owner": "controller",
+              "selection": {
+                "order": "top",
+                "count": 1
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 252,
-    "explicitBlockCount": 692,
+    "contractMappedCount": 270,
+    "explicitBlockCount": 674,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 162,
-      "SPECIAL_HANDLER_CANDIDATE": 88,
+      "READY_GENERIC_EXTENSION": 171,
+      "SPECIAL_HANDLER_CANDIDATE": 97,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 692,
+      "SOURCE_EVIDENCE_REQUIRED": 674,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -2202,6 +2202,18 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.caren.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.caren.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.caren.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.celenike.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2338,6 +2350,14 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.miyu.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.miyu.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.ophelia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2366,6 +2386,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.shirou-meal.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.sieg.skill.s1a",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -2391,6 +2415,10 @@
         },
         {
           "abilityId": "master.wodime.skill.s1a",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.zouken.skill.s2",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -2484,6 +2512,7 @@
         "master.bazett.skill.s1c",
         "master.bazett.skill.s1d",
         "master.bazett.skill.s5",
+        "master.caren.skill.ascension",
         "master.celenike.skill.s1",
         "master.chaos.skill.s2",
         "master.chaos.skill.s6",
@@ -2546,6 +2575,8 @@
         "master.wodime.skill.s7",
         "master.wodime.skill.s8",
         "master.wodime.skill.s9",
+        "master.zouken.skill.s3",
+        "master.zouken.skill.s4",
         "servant.albion.skill.sc-albion-1",
         "servant.andersen.skill.sc-andersen-2",
         "servant.arjuna.skill.sc-arjuna-1",
@@ -2638,6 +2669,18 @@
         },
         {
           "abilityId": "master.bazett.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.caren.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.caren.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.caren.skill.s1a",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -2773,6 +2816,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.miyu.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.miyu.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.ophelia.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -2801,6 +2852,10 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.shirou-meal.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.sieg.skill.s1a",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -2818,6 +2873,10 @@
         },
         {
           "abilityId": "master.waver.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.zouken.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -2910,6 +2969,9 @@
         "master.artoira.skill.ascension",
         "master.artoira.skill.s1",
         "master.bazett.skill.s4",
+        "master.caren.skill.ascension",
+        "master.caren.skill.s1",
+        "master.caren.skill.s1a",
         "master.celenike.skill.ascension",
         "master.chaos.skill.ascension",
         "master.chaos.skill.s1",
@@ -2944,6 +3006,8 @@
         "master.leonardo.skill.ascension",
         "master.maiya.skill.ascension",
         "master.maiya.skill.s1",
+        "master.miyu.skill.ascension",
+        "master.miyu.skill.s2",
         "master.ophelia.skill.ascension",
         "master.rin.skill.ascension",
         "master.rin.skill.s3",
@@ -2951,11 +3015,13 @@
         "master.sakura.skill.ascension",
         "master.shirou-emiya.skill.ascension",
         "master.shirou-emiya.skill.s2",
+        "master.shirou-meal.skill.ascension",
         "master.sieg.skill.s1a",
         "master.taiga.skill.ascension",
         "master.twice.skill.s1",
         "master.waver.skill.s2",
         "master.waver.skill.s3",
+        "master.zouken.skill.s2",
         "servant.albion.skill.sc-albion-1",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.andersen.skill.sc-andersen-2",
@@ -3045,6 +3111,10 @@
         "master.bazett.skill.s2",
         "master.bazett.skill.s3",
         "master.bazett.skill.s5",
+        "master.caren.skill.ascension",
+        "master.caren.skill.s1",
+        "master.caren.skill.s1a",
+        "master.caren.skill.s2",
         "master.celenike.skill.s1",
         "master.celenike.skill.s1a",
         "master.chaos.skill.s1",
@@ -3106,6 +3176,7 @@
         "master.maiya.skill.ascension",
         "master.maiya.skill.s1",
         "master.maiya.skill.s2",
+        "master.miyu.skill.ascension",
         "master.ophelia.skill.ascension",
         "master.ophelia.skill.s1",
         "master.ophelia.skill.s1b",
@@ -3128,6 +3199,8 @@
         "master.shinji.skill.s4",
         "master.shirou-emiya.skill.ascension",
         "master.shirou-emiya.skill.s3",
+        "master.shirou-meal.skill.s1",
+        "master.shirou-meal.skill.s2",
         "master.sieg.skill.ascension",
         "master.sieg.skill.s1",
         "master.sion.skill.s13",
@@ -3140,6 +3213,7 @@
         "master.wodime.skill.s7",
         "master.wodime.skill.s8",
         "master.wodime.skill.s9",
+        "master.zouken.skill.s4",
         "servant.albion.skill.sc-albion-1",
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
@@ -3239,6 +3313,9 @@
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s1b",
         "master.sion.skill.s13",
+        "master.zouken.skill.ascension",
+        "master.zouken.skill.s3",
+        "master.zouken.skill.s4",
         "servant.roberts.skill.sc-roberts-1",
         "servant.roberts.skill.sc-roberts-2"
       ],
@@ -3358,6 +3435,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.caren.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.caren.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.chaos.skill.s8",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3466,6 +3551,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.miyu.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.miyu.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.miyu.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.rin.skill.s1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -3487,6 +3584,18 @@
         },
         {
           "abilityId": "master.shirou-emiya.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shirou-meal.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shirou-meal.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shirou-meal.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -3519,6 +3628,10 @@
         },
         {
           "abilityId": "master.wodime.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.zouken.skill.s3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -3582,6 +3695,7 @@
         "master.bazett.skill.s1b",
         "master.bazett.skill.s1c",
         "master.bazett.skill.s2",
+        "master.caren.skill.s3",
         "master.chaos.skill.s1",
         "master.chaos.skill.s11",
         "master.chaos.skill.s4",
@@ -3633,6 +3747,9 @@
         "master.leonardo.skill.s1a",
         "master.maiya.skill.s1",
         "master.maiya.skill.s2",
+        "master.miyu.skill.ascension",
+        "master.miyu.skill.s1",
+        "master.miyu.skill.s3",
         "master.ophelia.skill.s2",
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s1b",
@@ -3648,6 +3765,8 @@
         "master.shirou-emiya.skill.ascension",
         "master.shirou-emiya.skill.s1",
         "master.shirou-emiya.skill.s3",
+        "master.shirou-meal.skill.ascension",
+        "master.shirou-meal.skill.s2",
         "master.sieg.skill.ascension",
         "master.sieg.skill.s1",
         "master.sieg.skill.s1a",
@@ -3657,6 +3776,11 @@
         "master.waver.skill.ascension",
         "master.waver.skill.s1",
         "master.waver.skill.s3",
+        "master.zouken.skill.ascension",
+        "master.zouken.skill.s1",
+        "master.zouken.skill.s3",
+        "master.zouken.skill.s4",
+        "master.zouken.skill.s5",
         "servant.andersen.skill.sc-andersen-2",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.atalanta.skill.sc-atalanta-1",
@@ -3831,6 +3955,10 @@
         "master.wodime.skill.s2",
         "master.wodime.skill.s3",
         "master.wodime.skill.s7",
+        "master.zouken.skill.ascension",
+        "master.zouken.skill.s1",
+        "master.zouken.skill.s3",
+        "master.zouken.skill.s5",
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.andersen.skill.sc-andersen-2",
@@ -3904,6 +4032,8 @@
         "master.peperoncino.skill.s1b",
         "master.peperoncino.skill.s4",
         "master.ryuunosuke.skill.s1",
+        "master.zouken.skill.ascension",
+        "master.zouken.skill.s4",
         "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-3",
         "servant.gorgon.skill.sc-gorgon-3",
@@ -3943,6 +4073,7 @@
         "master.arcueid.skill.s1a",
         "master.arcueid.skill.s2",
         "master.artoira.skill.s1",
+        "master.caren.skill.s3",
         "master.celenike.skill.ascension",
         "master.chaos.skill.s1",
         "master.chaos.skill.s12",
@@ -3968,6 +4099,7 @@
         "master.kiritsugu.skill.ascension",
         "master.kiritsugu.skill.s2",
         "master.kiritsugu.skill.s3",
+        "master.miyu.skill.ascension",
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
@@ -3976,6 +4108,8 @@
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "master.waver.skill.s3",
+        "master.zouken.skill.s3",
+        "master.zouken.skill.s4",
         "servant.albion.skill.sc-albion-1",
         "servant.astolfo.skill.sc-astolfo-1",
         "servant.atalanta.skill.sc-atalanta-2",
@@ -4077,6 +4211,7 @@
         "master.twice.skill.ascension",
         "master.wodime.skill.s2",
         "master.wodime.skill.s3",
+        "master.zouken.skill.s3",
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.arjuna.skill.sc-arjuna-1",
@@ -4127,6 +4262,7 @@
         "master.bazett.skill.s3",
         "master.bazett.skill.s4",
         "master.bazett.skill.s5",
+        "master.caren.skill.ascension",
         "master.celenike.skill.s1",
         "master.celenike.skill.s1a",
         "master.chaos.skill.s3",
@@ -4167,11 +4303,15 @@
         "master.shinji.skill.s3",
         "master.shinji.skill.s4",
         "master.shirou-emiya.skill.s3",
+        "master.shirou-meal.skill.s2",
         "master.sieg.skill.ascension",
         "master.sieg.skill.s1a",
         "master.taiga.skill.s1",
         "master.taiga.skill.s1a",
         "master.wodime.skill.s3",
+        "master.zouken.skill.ascension",
+        "master.zouken.skill.s1",
+        "master.zouken.skill.s4",
         "servant.albion.skill.sc-albion-1",
         "servant.drake.skill.sc-drake-3",
         "servant.edison.skill.sc-edison-2",
@@ -4222,6 +4362,7 @@
         "master.araya.skill.s1a",
         "master.arcueid.skill.s2",
         "master.artoira.skill.s1",
+        "master.caren.skill.s3",
         "master.celenike.skill.ascension",
         "master.chaos.skill.s1",
         "master.chaos.skill.s12",
@@ -4252,6 +4393,7 @@
         "master.kiritsugu.skill.s2",
         "master.kiritsugu.skill.s3",
         "master.maiya.skill.ascension",
+        "master.miyu.skill.ascension",
         "master.ophelia.skill.ascension",
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s3",
@@ -4261,6 +4403,8 @@
         "master.ryuunosuke.skill.s2",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
+        "master.zouken.skill.s3",
+        "master.zouken.skill.s4",
         "servant.astolfo.skill.sc-astolfo-1",
         "servant.atalanta.skill.sc-atalanta-2",
         "servant.caligula.skill.sc-caligula-1",
@@ -4359,6 +4503,10 @@
         },
         {
           "abilityId": "master.bazett.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.caren.skill.s3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -4546,6 +4694,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.miyu.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.miyu.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.miyu.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.ophelia.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -4606,6 +4766,14 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.shirou-meal.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shirou-meal.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.sieg.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -4635,6 +4803,26 @@
         },
         {
           "abilityId": "master.waver.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.zouken.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.zouken.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.zouken.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.zouken.skill.s4",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.zouken.skill.s5",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -4774,6 +4962,7 @@
         "master.arcueid.skill.s1a",
         "master.arcueid.skill.s2",
         "master.artoira.skill.s1",
+        "master.caren.skill.s3",
         "master.celenike.skill.ascension",
         "master.chaos.skill.s1",
         "master.chaos.skill.s12",
@@ -4799,6 +4988,7 @@
         "master.kiritsugu.skill.ascension",
         "master.kiritsugu.skill.s2",
         "master.kiritsugu.skill.s3",
+        "master.miyu.skill.ascension",
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
@@ -4807,6 +4997,8 @@
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "master.waver.skill.s3",
+        "master.zouken.skill.s3",
+        "master.zouken.skill.s4",
         "servant.albion.skill.sc-albion-1",
         "servant.astolfo.skill.sc-astolfo-1",
         "servant.atalanta.skill.sc-atalanta-2",
@@ -4876,6 +5068,10 @@
         "master.bazett.skill.s2",
         "master.bazett.skill.s3",
         "master.bazett.skill.s5",
+        "master.caren.skill.ascension",
+        "master.caren.skill.s1",
+        "master.caren.skill.s1a",
+        "master.caren.skill.s2",
         "master.celenike.skill.s1",
         "master.celenike.skill.s1a",
         "master.chaos.skill.s1",
@@ -4932,6 +5128,8 @@
         "master.leonardo.skill.ascension",
         "master.maiya.skill.ascension",
         "master.maiya.skill.s1",
+        "master.miyu.skill.ascension",
+        "master.miyu.skill.s1",
         "master.ophelia.skill.ascension",
         "master.ophelia.skill.s1",
         "master.ophelia.skill.s4",
@@ -4953,6 +5151,8 @@
         "master.shirou-emiya.skill.ascension",
         "master.shirou-emiya.skill.s2",
         "master.shirou-emiya.skill.s3",
+        "master.shirou-meal.skill.ascension",
+        "master.shirou-meal.skill.s2",
         "master.taiga.skill.s1",
         "master.taiga.skill.s1a",
         "master.wodime.skill.ascension",
@@ -4961,6 +5161,9 @@
         "master.wodime.skill.s7",
         "master.wodime.skill.s8",
         "master.wodime.skill.s9",
+        "master.zouken.skill.s1",
+        "master.zouken.skill.s2",
+        "master.zouken.skill.s4",
         "servant.albion.skill.sc-albion-1",
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
@@ -5018,6 +5221,9 @@
         "master.amakusa.skill.s1a",
         "master.arcueid.skill.s1",
         "master.artoira.skill.s1",
+        "master.caren.skill.ascension",
+        "master.caren.skill.s1",
+        "master.caren.skill.s1a",
         "master.celenike.skill.ascension",
         "master.ciel.skill.s1a",
         "master.ciel.skill.s1b",
@@ -5033,6 +5239,7 @@
         "master.shirou-emiya.skill.ascension",
         "master.waver.skill.s1",
         "master.waver.skill.s3",
+        "master.zouken.skill.s2",
         "servant.albion.skill.sc-albion-1",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.arjuna.skill.sc-arjuna-1",
@@ -5146,6 +5353,10 @@
         },
         {
           "abilityId": "master.bazett.skill.s5",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.caren.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -5309,6 +5520,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.shirou-meal.skill.s2",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.sieg.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -5326,6 +5541,18 @@
         },
         {
           "abilityId": "master.wodime.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.zouken.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.zouken.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.zouken.skill.s4",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -5450,6 +5677,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.caren.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.celenike.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -5570,6 +5801,10 @@
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
+          "abilityId": "master.miyu.skill.ascension",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
           "abilityId": "master.ophelia.skill.ascension",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
@@ -5603,6 +5838,14 @@
         },
         {
           "abilityId": "master.twice.skill.s1",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.zouken.skill.s3",
+          "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
+        },
+        {
+          "abilityId": "master.zouken.skill.s4",
           "reason": "NO_EXACT_ACCEPTED_CURRENT_ROUTE_OR_INVALIDATING_AXIS"
         },
         {
@@ -5712,6 +5955,8 @@
         "master.bazett.skill.s3",
         "master.bazett.skill.s4",
         "master.bazett.skill.s5",
+        "master.caren.skill.s2",
+        "master.caren.skill.s3",
         "master.chaos.skill.s8",
         "master.ciel.skill.ascension",
         "master.dan.skill.ascension",
@@ -5746,6 +5991,9 @@
         "master.kirei.skill.ascension",
         "master.kiritsugu.skill.s4",
         "master.kuzuki.skill.ascension",
+        "master.miyu.skill.s1",
+        "master.miyu.skill.s2",
+        "master.miyu.skill.s3",
         "master.ophelia.skill.ascension",
         "master.ophelia.skill.s1",
         "master.ophelia.skill.s3",
@@ -5765,6 +6013,9 @@
         "master.shinji.skill.ascension",
         "master.shinji.skill.s4",
         "master.shirou-emiya.skill.s3",
+        "master.shirou-meal.skill.ascension",
+        "master.shirou-meal.skill.s1",
+        "master.shirou-meal.skill.s2",
         "master.sieg.skill.s2",
         "master.taiga.skill.ascension",
         "master.tokiomi.skill.s2",
@@ -5780,6 +6031,7 @@
         "master.wodime.skill.s7",
         "master.wodime.skill.s8",
         "master.wodime.skill.s9",
+        "master.zouken.skill.s3",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.gorgon.skill.sc-gorgon-3",
         "servant.medusa.skill.sc-medusa-2",
@@ -5908,6 +6160,14 @@
         },
         {
           "abilityId": "master.bazett.skill.s5",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.caren.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.caren.skill.s3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -6047,6 +6307,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.miyu.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.miyu.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.miyu.skill.s3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.ophelia.skill.ascension",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -6123,6 +6395,18 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "master.shirou-meal.skill.ascension",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shirou-meal.skill.s1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.shirou-meal.skill.s2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "master.sieg.skill.s2",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -6184,6 +6468,10 @@
         },
         {
           "abilityId": "master.wodime.skill.s9",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "master.zouken.skill.s3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -6257,6 +6545,11 @@
       "master.bazett.skill.s3",
       "master.bazett.skill.s4",
       "master.bazett.skill.s5",
+      "master.caren.skill.ascension",
+      "master.caren.skill.s1",
+      "master.caren.skill.s1a",
+      "master.caren.skill.s2",
+      "master.caren.skill.s3",
       "master.celenike.skill.ascension",
       "master.celenike.skill.s1",
       "master.celenike.skill.s1a",
@@ -6361,6 +6654,10 @@
       "master.maiya.skill.ascension",
       "master.maiya.skill.s1",
       "master.maiya.skill.s2",
+      "master.miyu.skill.ascension",
+      "master.miyu.skill.s1",
+      "master.miyu.skill.s2",
+      "master.miyu.skill.s3",
       "master.ophelia.skill.ascension",
       "master.ophelia.skill.s1",
       "master.ophelia.skill.s1a",
@@ -6400,6 +6697,9 @@
       "master.shirou-emiya.skill.s1",
       "master.shirou-emiya.skill.s2",
       "master.shirou-emiya.skill.s3",
+      "master.shirou-meal.skill.ascension",
+      "master.shirou-meal.skill.s1",
+      "master.shirou-meal.skill.s2",
       "master.sieg.skill.ascension",
       "master.sieg.skill.s1",
       "master.sieg.skill.s1a",
@@ -6428,6 +6728,12 @@
       "master.wodime.skill.s7",
       "master.wodime.skill.s8",
       "master.wodime.skill.s9",
+      "master.zouken.skill.ascension",
+      "master.zouken.skill.s1",
+      "master.zouken.skill.s2",
+      "master.zouken.skill.s3",
+      "master.zouken.skill.s4",
+      "master.zouken.skill.s5",
       "servant.albion.skill.sc-albion-1",
       "servant.albion.skill.sc-albion-2",
       "servant.amakusa.skill.sc-amakusa-1",
@@ -6585,41 +6891,6 @@
       },
       {
         "abilityId": "master.alice.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.caren.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.caren.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.caren.skill.s1a",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.caren.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.caren.skill.s3",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -6955,34 +7226,6 @@
         ]
       },
       {
-        "abilityId": "master.miyu.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.miyu.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.miyu.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.miyu.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "master.rani.skill.ascension",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -7242,27 +7485,6 @@
         ]
       },
       {
-        "abilityId": "master.shirou-meal.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shirou-meal.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.shirou-meal.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
         "abilityId": "master.shishigou.skill.ascension",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
@@ -7496,48 +7718,6 @@
       },
       {
         "abilityId": "master.wallachia.skill.s8",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.zouken.skill.ascension",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.zouken.skill.s1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.zouken.skill.s2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.zouken.skill.s3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.zouken.skill.s4",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "master.zouken.skill.s5",
         "route": "SOURCE_EVIDENCE_REQUIRED",
         "blockedBy": [
           "SEMANTIC_SOURCE_REQUIRED"
@@ -11344,6 +11524,8 @@
       "master.bazett.skill.s3",
       "master.bazett.skill.s4",
       "master.bazett.skill.s5",
+      "master.caren.skill.s2",
+      "master.caren.skill.s3",
       "master.chaos.skill.s8",
       "master.ciel.skill.ascension",
       "master.dan.skill.ascension",
@@ -11380,6 +11562,9 @@
       "master.kiritsugu.skill.s1",
       "master.kiritsugu.skill.s4",
       "master.kuzuki.skill.ascension",
+      "master.miyu.skill.s1",
+      "master.miyu.skill.s2",
+      "master.miyu.skill.s3",
       "master.ophelia.skill.ascension",
       "master.ophelia.skill.s1",
       "master.ophelia.skill.s3",
@@ -11399,6 +11584,9 @@
       "master.shinji.skill.ascension",
       "master.shinji.skill.s4",
       "master.shirou-emiya.skill.s3",
+      "master.shirou-meal.skill.ascension",
+      "master.shirou-meal.skill.s1",
+      "master.shirou-meal.skill.s2",
       "master.sieg.skill.s2",
       "master.taiga.skill.ascension",
       "master.tokiomi.skill.s2",
@@ -11414,6 +11602,7 @@
       "master.wodime.skill.s7",
       "master.wodime.skill.s8",
       "master.wodime.skill.s9",
+      "master.zouken.skill.s3",
       "servant.andersen.skill.sc-andersen-2",
       "servant.diarmuid.skill.sc-diarmuid-1",
       "servant.gorgon.skill.sc-gorgon-3",

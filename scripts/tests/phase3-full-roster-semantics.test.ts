@@ -1182,6 +1182,34 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find((c) => c.id === 'master.maiya.skill.s1')?.abilities).toContainEqual(expect.objectContaining({id:'military.attach-support-shot'}));
     expect(slice.find((c) => c.id === 'master.ryuunosuke.skill.ascension')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'event_battlefield_penalty'})])}));
   });
+  it('grounds the eighteen-ID Zouken/Caren/Miyu/Shirou Meal slice with explicit cross-subsystem boundaries', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.zouken.skill.s1','master.zouken.skill.s2','master.zouken.skill.s3','master.zouken.skill.s4','master.zouken.skill.s5','master.zouken.skill.ascension',
+      'master.caren.skill.s1','master.caren.skill.s1a','master.caren.skill.s2','master.caren.skill.s3','master.caren.skill.ascension',
+      'master.miyu.skill.s1','master.miyu.skill.s2','master.miyu.skill.s3','master.miyu.skill.ascension',
+      'master.shirou-meal.skill.s1','master.shirou-meal.skill.s2','master.shirou-meal.skill.ascension',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(18);
+    expect(slice.every((card) =>
+      card.source?.authority === 'DEVELOPMENT_TEXT' &&
+      card.source.sourceText === card.printedText &&
+      card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+      createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256 &&
+      card.source.sourceTextSha256 === card.referencePrintedTextSha256
+    )).toBe(true);
+    expect(slice.find((c) => c.id === 'master.zouken.skill.s3')?.abilities).toEqual(expect.arrayContaining([
+      expect.objectContaining({ruleModifiers: expect.arrayContaining([expect.objectContaining({rule:'command_seal_transaction',operation:'replace_with_mana',manaPerSeal:4})])}),
+      expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'linked_player_battle_reward'})])}),
+    ]));
+    expect(slice.find((c) => c.id === 'master.caren.skill.s2')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'reactive_resource_rule'})])}));
+    expect(slice.find((c) => c.id === 'master.caren.skill.s3')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'bound_opponent_rule'})])}));
+    expect(slice.find((c) => c.id === 'master.miyu.skill.s1')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'roster_skill_draft_rule'})])}));
+    expect(slice.find((c) => c.id === 'master.miyu.skill.s3')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'dream_summon_rule'})])}));
+    expect(slice.find((c) => c.id === 'master.shirou-meal.skill.s1')?.abilities).toContainEqual(expect.objectContaining({effects: expect.arrayContaining([expect.objectContaining({type:'food_resource_rule',operation:'gain_food_from_current_location_event_and_active_situation_attributes'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1235,10 +1263,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 252,
-      blockedCount: 692,
+      sourceGroundedCount: 270,
+      blockedCount: 674,
       unclassifiedCount: 0,
-      structuredAbilityCount: 461,
+      structuredAbilityCount: 492,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(
