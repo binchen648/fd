@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.31
+- Version: P3-TI-1.33
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3717,6 +3717,44 @@ Permitted final status:
 - Independent R34 evidence: source/static/structure reconciliation 10/10; focused `17/17`; rules `368/368`; standard full CI `710/710`; content 0 blockers; deterministic hashes unchanged; runtime diff=0; diff check PASS.
 - Fresh reviewer coverage equals A material coverage except `generatedAt`: `69/101/200`, raw `22/3/127/0/48/124`, compiled identity unchanged.
 - This acceptance does not promote broad formula language, broad Trigger/Power semantics, Special Subsystem, or taxonomy/KPI changes.
+
+## TASK P3-FB2-12
+
+Owner: Codex B2
+Status: READY
+Branch: `codex/b2-p3-fb2-12-presence-concealment-r1`
+Base: exact P3-FB2-12 A-owned handoff commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Read: `docs/reports/2026-09-16-p3-fb2-12-presence-concealment-handoff.md`
+
+Goal: add exactly one identity-free post-Power/pre-scoring Presence Concealment response semantic. Use a trusted frozen battle Power snapshot, derive all highest-Power opponents when the controller is strict second in a 3+ participant battle, apply only battle-local defeat with existing defeat-ignore authority, and rebuild the same canonical battle result before scoring. Do not migrate authoring.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R35
+
+Owner: Codex R
+Status: BLOCKED_ON_FB2_12
+Branch: reviewer-selected fresh worktree/branch from exact FB2-12 candidate SHA
+
+Goal: independently review the exact FB2-12 Presence Concealment pre-scoring contract without implementing fixes or promoting broad Trigger/defeat/battle rewriting. Required checks are the handoff's exact classifier, trusted snapshot provenance, strict-second condition, tied-highest derived targets, optional decline, once-per-round ownership, defeat-ignore behavior, frozen-Power recomputation, scoring barrier, turn-order sequencing, replay idempotence, no identity/text routing, no global defeated/elimination state, all rules/determinism/full CI/diff check, plus independent reconciliation of the exact twelve-member future FM06 family.
+
+Permitted final status:
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `REVIEW_BLOCKED`
+
+## Full-Roster Dispatch State After P3-R34 / Before P3-FB2-12
+
+- FM01-FM05 are independently migration-accepted; frozen canonical-authoring overlap is `79/944`, leaving `865/944` absent.
+- Fresh identical-source scan finds Presence Concealment as the largest normal-F4 family at exactly 12 absent identities; Alter Ego is next at 9 and remains below the normal F4 minimum.
+- All twelve Presence rows are `CONTRACT_MAPPED`, `blockedBy=[]`, use Reference handler `core.presence-concealment`, and carry only semantic axis `PRESENCE_CONCEALMENT_ASSASSINATION_RULE`. Current canonical authoring is `0/12`.
+- Frozen source text SHA is `29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f`; the F1 overlay has no separate clause-source hashes for this family.
+- Locked Reference skill metadata is uniform: Swift type, cost 3, historical requirement 3, base Power 4. Owner class is source-defined; Kiritsugu is Reference class Master while the other selected owners are Assassin.
+- Reference semantics occur after Power is frozen but before winner/scoring settlement. Current product runtime scores before its post-battle Trigger Gateway, so an exact pre-scoring response bridge is the sole runtime gap.
+- Current response windows, stable event dedupe, per-round usage, active-source checks, priority-seat turn ordering, frozen participant breakdowns, and Basic Luck defeat-ignore authority are reusable. The historical statusEffects battle-phase module is not a current product path and must not be revived.
+- P3-FB2-12 is therefore dispatched only for this exact post-Power/pre-scoring assassination semantic. FM06 authoring remains blocked until R35 acceptance plus fresh A synchronization.
 
 ## Prompt Templates
 
