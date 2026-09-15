@@ -1146,6 +1146,15 @@ export function isFixedControllerDrawCardsComponent(effect: AuthoringAbility['ef
   return Object.keys(effect).every((key) => ['type', 'player', 'count'].includes(key));
 }
 
+export function isFixedControllerSourceRemovalComponent(effect: AuthoringAbility['effects'][number]): boolean {
+  if (str(effect.type) !== 'move_source_card') return false;
+  const destination = node(effect.to);
+  if (str(destination.zone) !== 'removed_from_game') return false;
+  if (destination.owner !== undefined && destination.owner !== 'controller') return false;
+  if (!Object.keys(destination).every((key) => ['zone', 'owner'].includes(key))) return false;
+  return Object.keys(effect).every((key) => ['type', 'to'].includes(key));
+}
+
 function isDeploymentResourceRewardCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'forced_trigger' &&
     str(a.activation.trigger) === 'after_player_deployed_to_battlefield' &&

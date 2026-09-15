@@ -93,7 +93,7 @@ export interface MoveAllRemainingResult {
 export interface MoveSourceCardResult {
   cardInstanceId: string;
   fromZone: string;
-  toZone: 'skill';
+  toZone: 'skill' | 'removed_from_game';
   movedCount: number;
 }
 
@@ -318,7 +318,7 @@ export type ConditionExpression =
 export type ResolutionEffectNode =
   | { id: string; type: 'remove_advantage_position'; target: TargetExpression; bind?: string }
   | { id: string; type: 'move_all_remaining'; owner: 'controller'; from: string; to: string; bind?: string }
-  | { id: string; type: 'move_source_card'; to: 'skill'; bind?: string }
+  | { id: string; type: 'move_source_card'; to: 'skill' | 'removed_from_game'; bind?: string }
   | { id: string; type: 'reveal_servant_package'; bind?: string }
   | { id: string; type: 'draw_cards'; player: 'controller'; count: ValueExpression; bind?: string }
   | { id: string; type: 'play_selected_cards'; target: string; face: 'face_down' | 'face_up'; bind?: string }
@@ -671,11 +671,11 @@ function validateEffectReferences(
       }
       break;
     case 'move_source_card':
-      if (effect.to !== 'skill') {
+      if (effect.to !== 'skill' && effect.to !== 'removed_from_game') {
         issues.push({
           code: 'invalid_resolution_node',
           path,
-          message: 'Only source-card return to controller skill is supported.',
+          message: 'Only source-card movement to controller skill or removed_from_game is supported.',
         });
       }
       break;
@@ -1057,25 +1057,29 @@ function moveSourceCard(
   transaction: AbilityResolutionTransaction,
   effect: Extract<ResolutionEffectNode, { type: 'move_source_card' }>,
 ): KnownEffectResult {
-  if (effect.to !== 'skill') {
-    throw new ResolutionRuntimeError('unsupported_source_destination', 'Only source-card return to controller skill is supported.');
+  if (effect.to !== 'skill' && effect.to !== 'removed_from_game') {
+    throw new ResolutionRuntimeError('unsupported_source_destination', 'Unsupported source-card destination.');
   }
   const source = transaction.workingState.cards.find((candidate) => candidate.instanceId === transaction.context.sourceCardId);
   if (!source) throw new ResolutionRuntimeError('missing_source_card', 'Source card is missing.');
   if (source.ownerPlayerId !== transaction.context.controllerId || source.controllerPlayerId !== transaction.context.controllerId) {
     throw new ResolutionRuntimeError('invalid_source_controller', 'Source card is not owned and controlled by the ability controller.');
   }
-  if (!['field', 'attack_area'].includes(source.zone)) {
-    throw new ResolutionRuntimeError('invalid_source_zone', 'Source card must be active on the board.');
-  }
-  const sourceState = transaction.workingState.abilityRuntime?.cardState[source.instanceId];
-  if (!sourceState?.active || sourceState.faceDown) {
-    throw new ResolutionRuntimeError('inactive_source', 'Source card must be active and face up.');
+  if (effect.to === 'skill') {
+    if (!['field', 'attack_area'].includes(source.zone)) {
+      throw new ResolutionRuntimeError('invalid_source_zone', 'Source card must be active on the board.');
+    }
+    const sourceState = transaction.workingState.abilityRuntime?.cardState[source.instanceId];
+    if (!sourceState?.active || sourceState.faceDown) {
+      throw new ResolutionRuntimeError('inactive_source', 'Source card must be active and face up.');
+    }
+  } else if (source.zone === 'removed_from_game') {
+    throw new ResolutionRuntimeError('invalid_source_zone', 'Source card is already removed from game.');
   }
   const fromZone = source.zone;
   moveCardInstance(transaction, source.instanceId, effect.to);
   source.controllerPlayerId = transaction.context.controllerId;
-  source.visibility = { scope: 'owner_only', ownerPlayerId: source.ownerPlayerId };
+  if (effect.to === 'skill') source.visibility = { scope: 'owner_only', ownerPlayerId: source.ownerPlayerId };
   if (transaction.workingState.abilityRuntime?.cardState[source.instanceId]) {
     transaction.workingState.abilityRuntime.cardState[source.instanceId]!.active = false;
   }
@@ -1755,7 +1759,7 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
       return {
         id,
         type,
-        to: zoneField(current.to, `${path}.to`, issues) === 'skill' ? 'skill' : reportSourceSkillDestination(path, issues),
+        to: sourceCardDestination(current.to, `${path}.to`, issues),
         ...coerceBind(current.bind),
       };
     case 'reveal_information':
@@ -2012,6 +2016,18 @@ function reportControllerPlayer(path: string, issues: DataFlowIssue[]): 'control
 function reportControllerOwner(path: string, issues: DataFlowIssue[]): 'controller' {
   invalidNode(`${path}.owner`, 'Only controller-owned card-zone effects are supported.', issues);
   return 'controller';
+}
+
+
+function sourceCardDestination(value: unknown, path: string, issues: DataFlowIssue[]): 'skill' | 'removed_from_game' {
+  const destination = value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
+  if (destination?.owner !== undefined && destination.owner !== 'controller') {
+    invalidNode(`${path}.owner`, 'Only controller-owned source-card movement is supported.', issues);
+  }
+  const zone = zoneField(value, path, issues);
+  if (zone === 'skill' || zone === 'removed_from_game') return zone;
+  invalidNode(path, 'Only source-card movement to controller skill or removed_from_game is supported.', issues);
+  return 'skill';
 }
 
 function reportSourceSkillDestination(path: string, issues: DataFlowIssue[]): 'skill' {
