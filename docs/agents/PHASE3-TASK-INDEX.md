@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.23
+- Version: P3-TI-1.24
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3146,7 +3146,7 @@ Completion status allowed:
 ## TASK P3-FB2-09
 
 Owner: Codex B2
-Status: READY
+Status: REVIEW_ACCEPTED
 Branch: `codex/b2-p3-fb2-09-any-location-except-workshop-movement-r1`
 Base: exact P3-FB2-09 A-owned handoff commit
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
@@ -3191,7 +3191,7 @@ B2 must not migrate these 12 F1 rows. Migration remains S-owned after independen
 ## TASK P3-R27
 
 Owner: Codex R
-Status: READY_AFTER_P3_FB2_09
+Status: REVIEW_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact FB2-09 candidate SHA
 
 Goal: independently review the exact FB2-09 Movement sub-contract without implementing fixes and without promoting broad Movement.
