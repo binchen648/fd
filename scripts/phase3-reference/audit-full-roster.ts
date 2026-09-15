@@ -192,6 +192,7 @@ function compareRaw(snapshot: ReferenceAuditSnapshot, inventory: any, gaps: Auto
         'Fate_Domination-开发版/batch_caster_assassin.js',
         'Fate_Domination-开发版/batch_berserker_extra.js',
         'Fate_Domination-开发版/batch_lancer_rider.js',
+        'Fate_Domination-开发版/batch_saber_archer.js',
         'Fate_Domination-开发版/index.html',
       ]);
       const sourceText = typeof source.sourceText === 'string' ? source.sourceText : '';
