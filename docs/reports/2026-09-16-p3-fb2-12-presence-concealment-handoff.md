@@ -10,13 +10,13 @@ Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 
 Fresh post-FM05 scan leaves `865 / 944` frozen F1 identities absent from canonical authoring. The largest remaining identical-text family at normal F4 size is exactly twelve Presence Concealment cards; the next repeated family is Alter Ego at nine and therefore below the normal F4 minimum.
 
-All twelve Presence rows are `CONTRACT_MAPPED`, `blockedBy=[]`, share Reference handler `core.presence-concealment`, and normalize to the single semantic axis `PRESENCE_CONCEALMENT_ASSASSINATION_RULE`. Current canonical authoring contains `0/12`.
+All twelve Presence rows are top-level `CONTRACT_MAPPED` with inventory `blockedBy=[]`, share Reference handler `core.presence-concealment`, and normalize to the single semantic axis `PRESENCE_CONCEALMENT_ASSASSINATION_RULE`. The runtime-dispatch layer still carries `phase3.blockedBy=[SPECIAL_EFFECT:presence_concealment_assassination_rule]`, which is exactly the gap assigned to FB2-12. Current canonical authoring contains `0/12`.
 
 Frozen F1 source text SHA for all twelve is:
 
 `29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f`
 
-The F1 overlay does not carry separate per-line clause-source hashes for this family. Review must therefore lock the complete source text/hash and must not invent clause hashes.
+The F1 source-evidence overlay does not separately materialize per-line clause hashes, but the frozen F1 inventory does preserve the mechanically split clause sources. All twelve members share the same four clause SHAs, in printed order: `ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb`, `1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25`, `0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217`, `1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871`. Review must lock both the complete source-text SHA and these inventory clause-source SHAs.
 
 ## Locked Reference semantics
 
@@ -113,7 +113,7 @@ These are evidence membership only. B2 must not migrate authoring:
 - `servant.semiramis.skill.sc-semiramis-1`
 - `servant.stheno.skill.sc-stheno-1`
 
-Locked Reference card metadata is uniform for all twelve selected skill cards: type `??`, cost `3`, historical requirement `3`, base Power `4`. Owner metadata must remain source-defined; notably `servant.kiritsugu` has Reference owner class `Master`, while the other selected owners are Assassin.
+Locked Reference card metadata is uniform for all twelve selected skill cards: type `迅捷`, cost `3`, historical requirement `3`, base Power `4`. Owner metadata must remain source-defined; notably `servant.kiritsugu` has Reference owner class `Master`, while the other selected owners are Assassin.
 
 Future migration must use the final canonical skill-zone 8-mana rule; Reference requirement 3 remains historical evidence metadata, consistent with prior F4 skill migrations.
 

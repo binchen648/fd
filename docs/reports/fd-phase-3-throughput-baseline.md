@@ -764,3 +764,5 @@ Permitted final status:
 - Runtime gap is timing-specific: current battle scoring occurs before post-battle Trigger Gateway, while locked Presence semantics require an optional response after frozen Power and before winner/scoring settlement.
 - FB2-12 is limited to one trusted pre-scoring response contract, battle-local defeat of derived highest opponents under the strict-second condition, and same-calculator recomputation from frozen breakdowns. No global defeated state, elimination, Target Selection, broad Trigger, second battle calculator, identity/text routing, or authoring migration.
 - Future FM06 remains exact 12 and blocked pending R35 + A synchronization.
+
+- 2026-09-16 P3-FB2-12 handoff: FM05 accepted baseline 79/944; exact Presence Concealment family 12/12 frozen-identical and 0/12 canonical. Next runtime gap is an optional trusted post-power/pre-scoring strict-second response; Sion EX excluded.
