@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.29
+- Version: P3-TI-1.30
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3634,10 +3634,45 @@ Goal: synchronize exact R33 facts, run fresh coverage/recertification, and if an
 ## TASK P3-FM05
 
 Owner: Codex S
-Status: READY
+Status: MIGRATION_CANDIDATE
 Branch: `codex/s-p3-fm05-territory-creation`
+Base: exact P3-A-FB2-11 synchronization `fd17ba227182e5e9a14d093390bbfb3a47af1c39`
+Candidate: `3e66365a03c12b4a1d683bdae5e9350acad80455`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Read: `docs/reports/2026-09-16-p3-fm05-territory-creation-migration.md`
 
-Prospective exact batch: the ten identical-text Territory Creation cards frozen in the FB2-11 handoff. Migration may start only after R33 accepts and A synchronizes the complete FB2-02 + FB2-11 dependency coverage.
+Goal: migrate exactly the ten R33-reconciled Territory Creation identities using accepted FB2-11 round-number formula metric plus FB2-02 deployment reward. No runtime changes.
+
+Completion status allowed:
+- `MIGRATION_CANDIDATE`
+- `MIGRATION_NEEDS_REVISION`
+
+## TASK P3-A-FM05-MIGRATION-SYNC
+
+Owner: Codex A
+Status: MIGRATION_SYNC_CANDIDATE
+Branch: `codex/a-p3-fm05-migration-sync`
+Base: P3-FM05 S candidate `3e66365a03c12b4a1d683bdae5e9350acad80455`
+Read: `docs/reports/2026-09-16-p3-a-fm05-migration-synchronization.md`
+
+Goal: independently recompute frozen-F1 burn-down, exact ten-member batch membership, material coverage, generated-content identity, and unrelated drift. A must not repair S authoring.
+
+Completion status allowed:
+- `MIGRATION_SYNC_CANDIDATE`
+- `MIGRATION_SYNC_NEEDS_REVISION`
+
+## TASK P3-R34
+
+Owner: Codex R
+Status: READY
+Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM05 lineage
+
+Goal: independently review FM05 without implementing fixes. Required checks: exact ten-ID membership; frozen F1 full-text and two clause hashes; locked Reference owner/class/static metadata; exact controlled round formula AST; accepted FB2-11 and FB2-02 structural conformance; representative round 1/4/7/8 Power and Magic Workshop deployment reward; A burn-down/material coverage integrity; no runtime changes; determinism; full validation; diff check.
+
+Permitted final status:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `REJECTED`
 
 ## Full-Roster Dispatch State After P3-R32 / Before P3-FB2-11
 
@@ -3663,6 +3698,16 @@ Prospective exact batch: the ten identical-text Territory Creation cards frozen 
 - Frozen canonical-authoring overlap remains `69/944`; exact Territory Creation family remains `0/10` canonical and is dependency-complete under FB2-11 + FB2-02.
 - P3-FM05 is READY at exact batch size 10. S must not include Medea/Gilles or any other Reference family member outside the frozen identical-text group.
 - Actual Territory Power is frozen F1 `X=16-(round*2)` expressed by controlled AST; Reference static Power 2 is evidence metadata only. Final skill-zone rule is 8 mana.
+
+## Full-Roster Dispatch State After P3-A-FM05-MIGRATION-SYNC
+
+- P3-FM05 S candidate is `3e66365a03c12b4a1d683bdae5e9350acad80455`; exact batch membership is 10/10 and runtime hot-file changes are zero.
+- Frozen-F1 canonical-authoring overlap moves `69/944 -> 79/944` (+10); selected batch moves `0/10 -> 10/10`; unauthorized additions, removals, and skips are zero.
+- Fresh A material coverage is archives `69`, cards `101`, abilities `200`, raw `new=22 / legacyExecute=3 / legacyResolve=127 / dual=0 / notClassifiable=48 / taxonomyWarnings=124`.
+- The ten deployment rewards retain the reporter's current legacy-resolve label; the ten controlled continuous formulas retain the reporter's current not-classifiable label. No KPI/taxonomy redefinition is performed.
+- Compiled product identity remains definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 cards / 14 characters / 0 blocking issues.
+- A recertification passes typecheck, focused `17/17`, content validation, deterministic generated-content verification, and diff check. S evidence supplies rules `368/368` and standard full CI `710/710`.
+- P3-R34 is READY on the exact A-synchronized lineage; FM05 is not accepted until R34 independently reviews it.
 
 ## Prompt Templates
 

@@ -738,3 +738,12 @@ Permitted final status:
 - Coverage remains `59/91/180`, raw `22/3/117/0/38/124`; only timestamp + seven interpreter static-line shifts differ, so runtime-only regenerated artifact is not committed.
 - Frozen overlap remains `69/944`; Territory Creation is exact `0/10` canonical and dependency-complete under accepted FB2-11 + FB2-02.
 - P3-FM05 is READY at exact batch size 10 with dynamic Power `16 + (-2 * game.round_number)` and deployment reward +1 mana/+2 VP at magic workshop.
+
+## P3-A FM05 Migration Synchronization - 2026-09-16
+
+- Fifth F4 S candidate: `3e66365a03c12b4a1d683bdae5e9350acad80455`; exact selected membership 10, newly canonical 10, skipped/extra/removed 0, runtime hot-file changes 0.
+- Frozen 944-ID canonical-authoring overlap moves `69 -> 79` (+10); exact Territory Creation batch moves `0/10 -> 10/10`.
+- Fresh material coverage: `69/101/200`, raw `new=22 / legacyExecute=3 / legacyResolve=127 / dual=0 / notClassifiable=48 / taxonomyWarnings=124`; compiled product identity unchanged.
+- Reporter growth is exactly ten deployment rewards under the existing legacy-resolve label plus ten continuous formulas under the existing not-classifiable label; A performs no taxonomy/KPI promotion.
+- A checks: typecheck PASS, focused `17/17`, content validation PASS, determinism unchanged, runtime diff=0, diff check PASS. S evidence: rules `368/368`, full CI `710/710`.
+- R34 is READY; FM05 remains unaccepted until independent reviewer judgment.
