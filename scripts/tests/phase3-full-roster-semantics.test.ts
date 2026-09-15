@@ -1622,6 +1622,15 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(slice.find(c=>c.id==='servant.lubu.skill.sc-lubu-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'noble_weapon_power_transform_rule'})])}));
   });
 
+  it('grounds the fifteen-ID Mandricardo/Maxwell/MechaEli/Medb/Medea/Medusa slice from locked development snapshots', () => {
+    const overlays=loadSourceEvidenceOverlayCards(); const ids=new Set(["servant.mandricardo.skill.sc-mandricardo-1","servant.mandricardo.skill.sc-mandricardo-2","servant.mandricardo.skill.sc-mandricardo-3","servant.maxwell.skill.sc-maxwell-1","servant.maxwell.skill.sc-maxwell-2","servant.maxwell.skill.sc-maxwell-3","servant.mechaeli.skill.sc-mechaeli-1","servant.mechaeli.skill.sc-mechaeli-3","servant.medb.skill.sc-medb-1","servant.medb.skill.sc-medb-2","servant.medb.skill.sc-medb-3","servant.medea.skill.sc-medea-1","servant.medea.skill.sc-medea-2","servant.medea.skill.sc-medea-np","servant.medusa.skill.sc-medusa-1"]); const slice=overlays.filter(c=>ids.has(c.id)); expect(slice).toHaveLength(15);
+    expect(slice.every(c=>c.source?.authority==='DEVELOPMENT_TEXT' && c.source.sourceText===c.printedText && c.source.sourceTextSha256===c.referencePrintedTextSha256 && c.source.sourceFileSha256.length===64)).toBe(true);
+    for(const id of ['servant.mandricardo.skill.sc-mandricardo-3','servant.medb.skill.sc-medb-1','servant.medusa.skill.sc-medusa-1']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'draw_cards'}),expect.objectContaining({type:'play_selected_cards'})])}));
+    expect(slice.find(c=>c.id==='servant.mandricardo.skill.sc-mandricardo-2')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'noop'})])}));
+    for(const id of ['servant.maxwell.skill.sc-maxwell-1','servant.medea.skill.sc-medea-2']) expect(slice.find(c=>c.id===id)?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'territory_construction_scaling_rule'})])}));
+    expect(slice.find(c=>c.id==='servant.medb.skill.sc-medb-3')?.abilities).toContainEqual(expect.objectContaining({effects:expect.arrayContaining([expect.objectContaining({type:'medb_submission_deployment_rule'})])}));
+  });
+
   it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
     const inventory = makeInventory();
     const entry = inventory.staticSkills[0];
@@ -1675,10 +1684,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 783,
-      blockedCount: 161,
+      sourceGroundedCount: 798,
+      blockedCount: 146,
       unclassifiedCount: 0,
-      structuredAbilityCount: 1061,
+      structuredAbilityCount: 1076,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

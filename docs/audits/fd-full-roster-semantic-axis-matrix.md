@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=783
-blockedCount=161
+sourceGroundedCount=798
+blockedCount=146
 unclassifiedCount=0
-structuredAbilityCount=1061
+structuredAbilityCount=1076
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 126 |
+| timing | `ACTION` | 129 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -262,14 +262,14 @@ structuredAbilityCount=1061
 | target | `CHOOSE_N_EVENTS` | 1 |
 | effect | `GAIN_VICTORY_POINTS` | 49 |
 | effect | `GAIN_MANA` | 36 |
-| effect | `DRAW_CARDS` | 30 |
+| effect | `DRAW_CARDS` | 33 |
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
 | effect | `EVENT_CARD_RULE` | 27 |
 | effect | `MOVE_PLAYER` | 27 |
+| effect | `PLAY_SELECTED_CARDS` | 23 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
-| effect | `PLAY_SELECTED_CARDS` | 20 |
 | effect | `RETURN_CARD_BY_DEFINITION` | 19 |
 | effect | `MOVE_SELECTED_CARDS` | 17 |
 | effect | `CLOSE_SOURCE_CARD` | 14 |
@@ -300,6 +300,7 @@ structuredAbilityCount=1061
 | effect | `MOVE_CARD` | 5 |
 | effect | `SECRET_GARDEN_RULE` | 5 |
 | effect | `TATARI_DETERIORATION_RULE` | 5 |
+| effect | `TERRITORY_CONSTRUCTION_SCALING_RULE` | 5 |
 | effect | `CLOSE_SELECTED_CARDS` | 4 |
 | effect | `GOLEM_RULE` | 4 |
 | effect | `GROWTH_COUNTER_RULE` | 4 |
@@ -335,7 +336,6 @@ structuredAbilityCount=1061
 | effect | `PILGRIMAGE_LUCK_RULE` | 3 |
 | effect | `REINCARNATION_RULE` | 3 |
 | effect | `TERRAIN_EFFECT_MULTIPLIER_RULE` | 3 |
-| effect | `TERRITORY_CONSTRUCTION_SCALING_RULE` | 3 |
 | effect | `TRAINING_EXPERIENCE_RULE` | 3 |
 | effect | `TWELVE_LABORS_RULE` | 3 |
 | effect | `VISITOR_CARD_RULE` | 3 |
@@ -391,6 +391,7 @@ structuredAbilityCount=1061
 | effect | `ACTIVATE_SELECTED_CARDS` | 1 |
 | effect | `ADD_PLAYER_FLAG_NUMBER` | 1 |
 | effect | `ALTERNATE_VP_COST_MOUNT_RULE` | 1 |
+| effect | `ALTER_EGO_REVERSE_ATTRIBUTE_RULE` | 1 |
 | effect | `ASTRONOMICAL_SPHERE_RULE` | 1 |
 | effect | `ATTACK_COPY_TRANSFORM_RULE` | 1 |
 | effect | `ATTACK_COUNT_MASS_DEFEAT_RULE` | 1 |
@@ -556,12 +557,20 @@ structuredAbilityCount=1061
 | effect | `MAGIC_IMMUNITY_RULE` | 1 |
 | effect | `MANA_BURST_REFUND_RULE` | 1 |
 | effect | `MANA_THRESHOLD_VP_BURN_RULE` | 1 |
+| effect | `MANDRICARDO_WOODEN_SWORD_INHERITANCE_RULE` | 1 |
 | effect | `MANSLAYER_REACTION_RULE` | 1 |
 | effect | `MAP_ARROW_REWRITE_RULE` | 1 |
 | effect | `MARBLE_PHANTASM_DEFEAT_RULE` | 1 |
 | effect | `MARIA_THE_RIPPER_RULE` | 1 |
 | effect | `MATCHING_ATTRIBUTE_EVENT_SITUATION_PROTECTION_RULE` | 1 |
 | effect | `MATCHING_ATTRIBUTE_HIDDEN_ATTACK_DEFEAT_RULE` | 1 |
+| effect | `MAXWELL_MANA_GAIN_REPLACEMENT_RULE` | 1 |
+| effect | `MAXWELL_PARADOX_DEFEAT_RULE` | 1 |
+| effect | `MECHAELI_ROCKET_PUNCH_RULE` | 1 |
+| effect | `MEDB_INTOXICATION_VP_RULE` | 1 |
+| effect | `MEDB_SUBMISSION_DEPLOYMENT_RULE` | 1 |
+| effect | `MEDEA_RULE_BREAKER_COMMAND_SPELL_RULE` | 1 |
+| effect | `MEDEA_RULE_BREAKER_RECOVERY_RULE` | 1 |
 | effect | `MILLENNIUM_CASTLE_OFFBOARD_LOCK_RULE` | 1 |
 | effect | `MIRROR_SHIELD_SACRED_LAND_RULE` | 1 |
 | effect | `MODIFY_OTHER_ATTACKS` | 1 |
@@ -572,6 +581,7 @@ structuredAbilityCount=1061
 | effect | `MYSTIC_CODE_RULE` | 1 |
 | effect | `MYSTIC_CODE_UPGRADE_RULE` | 1 |
 | effect | `NOBLE_WEAPON_POWER_TRANSFORM_RULE` | 1 |
+| effect | `NOOP` | 1 |
 | effect | `NO_BATTLE_VP_LOSS_RESIDUAL_EXTENSION_RULE` | 1 |
 | effect | `OFFBOARD_BATTLE_TAKEOVER_RULE` | 1 |
 | effect | `OPPONENT_OPTION_LOCK_RULE` | 1 |
@@ -1657,9 +1667,9 @@ structuredAbilityCount=1061
 | `servant.lubu.skill.sc-lubu-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NO_BATTLE_VP_LOSS_RESIDUAL_EXTENSION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.lubu-restless-soul` |
 | `servant.lubu.skill.sc-lubu-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VP_SOURCE_MULTIPLIER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.rule-marker` |
 | `servant.lubu.skill.sc-lubu-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NOBLE_WEAPON_POWER_TRANSFORM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lubu-god-force` |
-| `servant.mandricardo.skill.sc-mandricardo-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mandricardo-instant-strike` |
-| `servant.mandricardo.skill.sc-mandricardo-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mandricardo-instant-strike` |
-| `servant.mandricardo.skill.sc-mandricardo-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `servant.mandricardo.skill.sc-mandricardo-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MANDRICARDO_WOODEN_SWORD_INHERITANCE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mandricardo-instant-strike` |
+| `servant.mandricardo.skill.sc-mandricardo-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NOOP` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mandricardo-instant-strike` |
+| `servant.mandricardo.skill.sc-mandricardo-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
 | `servant.martha.skill.sc-martha-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `RULER_SEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.martha-divine-obedience` |
 | `servant.martha.skill.sc-martha-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DEFERRED_DEPLOYMENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.martha-tarasque` |
 | `servant.martha.skill.sc-martha-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
@@ -1668,19 +1678,19 @@ structuredAbilityCount=1061
 | `servant.mash.skill.sc-mash-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GUARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.opponent-attack-power-modifier` |
 | `servant.mash.skill.sc-mash-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GUARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mash-ortenaus` |
 | `servant.mash.skill.sc-mash-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GUARD_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.rule-marker` |
-| `servant.maxwell.skill.sc-maxwell-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
-| `servant.maxwell.skill.sc-maxwell-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.maxwell.skill.sc-maxwell-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mana-gain-replacement-residual` |
-| `servant.mechaeli.skill.sc-mechaeli-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-later-seat-opponent` |
+| `servant.maxwell.skill.sc-maxwell-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TERRITORY_CONSTRUCTION_SCALING_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
+| `servant.maxwell.skill.sc-maxwell-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MAXWELL_PARADOX_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.maxwell.skill.sc-maxwell-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MAXWELL_MANA_GAIN_REPLACEMENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mana-gain-replacement-residual` |
+| `servant.mechaeli.skill.sc-mechaeli-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MECHAELI_ROCKET_PUNCH_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-later-seat-opponent` |
 | `servant.mechaeli.skill.sc-mechaeli-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved`, `player.entered-location` | `EVENT_LOCATION_EQUALS_CONTROLLER`, `EVENT_PLAYER_IS_OPPONENT`, `EVENT_PLAYER_WON_COMBAT`, `SOURCE_ACTIVE`, `TARGET_COUNT_EQUALS` | `NONE` | `NONE` | `COMBAT_POWER_BONUS`, `GAIN_VICTORY_POINTS` | `NONE` | `NONE` | `effect:combat_power_bonus` | `NONE` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EFFECT`, `COMBAT_EVENT` | `core.structured-skill` |
-| `servant.mechaeli.skill.sc-mechaeli-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
-| `servant.medb.skill.sc-medb-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
-| `servant.medb.skill.sc-medb-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.medb-red-mead` |
-| `servant.medb.skill.sc-medb-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.medb-chariot` |
-| `servant.medea.skill.sc-medea-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.medea.skill.sc-medea-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
-| `servant.medea.skill.sc-medea-np` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.medusa.skill.sc-medusa-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `servant.mechaeli.skill.sc-mechaeli-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ALTER_EGO_REVERSE_ATTRIBUTE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
+| `servant.medb.skill.sc-medb-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
+| `servant.medb.skill.sc-medb-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MEDB_INTOXICATION_VP_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.medb-red-mead` |
+| `servant.medb.skill.sc-medb-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MEDB_SUBMISSION_DEPLOYMENT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.medb-chariot` |
+| `servant.medea.skill.sc-medea-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MEDEA_RULE_BREAKER_RECOVERY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.medea.skill.sc-medea-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TERRITORY_CONSTRUCTION_SCALING_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
+| `servant.medea.skill.sc-medea-np` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MEDEA_RULE_BREAKER_COMMAND_SPELL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.medusa.skill.sc-medusa-1` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `DRAW_CARDS`, `PLAY_SELECTED_CARDS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |
 | `servant.medusa.skill.sc-medusa-2` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SOURCE_ACTIVE` | `NONE` | `NONE` | `DEFEAT_PLAYER` | `NONE` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.medusa.skill.sc-medusa-np` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `SOURCE_OWNED` | `NONE` | `CHOOSE_ONE_LOCATION` | `NONE` | `CHOOSE_ONE_LOCATION` | `NONE` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `payload:targetLocationId` | `NONE` | `core.structured-skill` |
 | `servant.meltryllis.skill.sc-meltryllis-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.meltryllis-melt-virus` |
