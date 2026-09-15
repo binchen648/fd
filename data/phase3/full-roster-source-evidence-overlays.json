@@ -31394,6 +31394,408 @@
         }
       ],
       "referencePrintedTextSha256": "41516ae7e7dcae9880fbb4898c4a92f535b12aa4fa771fad09d123b915025add"
+    },
+    {
+      "id": "servant.semiramis.skill.sc-semiramis-1",
+      "printedText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_semiramis_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+        "sourceTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+      },
+      "abilities": [
+        {
+          "id": "semiramis.sc-semiramis-1.semantic",
+          "printedClause": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "presence_concealment_assassination_rule",
+              "operation": "combat_after_power_resolution_if_controller_below_all_top_power_opponents_no_other_opponent_above_controller_and_at_least_3_participants_defeat_all_top_power_engaged_opponents"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+    },
+    {
+      "id": "servant.semiramis.skill.sc-semiramis-2",
+      "printedText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_semiramis_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+        "sourceTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+      },
+      "abilities": [
+        {
+          "id": "semiramis.sc-semiramis-2.semantic",
+          "printedClause": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "gain_mana",
+              "amount": 1,
+              "condition": "controller_deploys_at_magic_workshop"
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 2,
+              "condition": "controller_deploys_at_magic_workshop"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+    },
+    {
+      "id": "servant.semiramis.skill.sc-semiramis-3",
+      "printedText": "【真名解放】\n只有在【阵地作成】激活时才可使用此牌。\n毒龙-战斗阶段：使所有与你处于同一战场，且前哨阶段部署于此的对手【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_semiramis_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n只有在【阵地作成】激活时才可使用此牌。\n毒龙-战斗阶段：使所有与你处于同一战场，且前哨阶段部署于此的对手【败北】。",
+        "sourceTextSha256": "9a15366de9ce3d61eb8ae0b16deaf87989ed936f2a63f5da69312437f79be5fe"
+      },
+      "abilities": [
+        {
+          "id": "semiramis.sc-semiramis-3.semantic",
+          "printedClause": "【真名解放】\n只有在【阵地作成】激活时才可使用此牌。\n毒龙-战斗阶段：使所有与你处于同一战场，且前哨阶段部署于此的对手【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "semiramis_poison_dragon_rule",
+              "operation": "true_name_reveal_source_may_be_used_only_while_territory_construction_is_active_combat_defeat_all_opponents_at_same_battlefield_who_deployed_there_during_vanguard_phase"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "9a15366de9ce3d61eb8ae0b16deaf87989ed936f2a63f5da69312437f79be5fe"
+    },
+    {
+      "id": "servant.shakespeare.skill.sc-shakespeare-1",
+      "printedText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_shakespeare_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+        "sourceTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+      },
+      "abilities": [
+        {
+          "id": "shakespeare.sc-shakespeare-1.semantic",
+          "printedClause": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "kind": "triggered",
+          "effects": [
+            {
+              "type": "gain_mana",
+              "amount": 1,
+              "condition": "controller_deploys_at_magic_workshop"
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 2,
+              "condition": "controller_deploys_at_magic_workshop"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+    },
+    {
+      "id": "servant.shakespeare.skill.sc-shakespeare-2",
+      "printedText": "角色颠倒-被动/行动阶段：如果莎士比亚是你的从者，解锁你的【升华技】。\n被动：你可以追加打出【开演之时已至，此处应有雷鸣般的喝彩】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_shakespeare_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "角色颠倒-被动/行动阶段：如果莎士比亚是你的从者，解锁你的【升华技】。\n被动：你可以追加打出【开演之时已至，此处应有雷鸣般的喝彩】。",
+        "sourceTextSha256": "6ba9761e7e3ad1c80710f4d5f36ecad330c5c9becf9915a0b13b186b45e530c4"
+      },
+      "abilities": [
+        {
+          "id": "shakespeare.sc-shakespeare-2.semantic",
+          "printedClause": "角色颠倒-被动/行动阶段：如果莎士比亚是你的从者，解锁你的【升华技】。\n被动：你可以追加打出【开演之时已至，此处应有雷鸣般的喝彩】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "shakespeare_enchant_rule",
+              "operation": "passive_action_if_shakespeare_is_controller_servant_unlock_controller_ascension_skill_passive_source_noble_phantasm_may_be_additionally_played"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "6ba9761e7e3ad1c80710f4d5f36ecad330c5c9becf9915a0b13b186b45e530c4"
+    },
+    {
+      "id": "servant.shakespeare.skill.sc-shakespeare-3",
+      "printedText": "【真名解放】\n悲剧创作-战斗阶段：使一名本回合未使用过令咒的交战玩家【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_shakespeare_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n悲剧创作-战斗阶段：使一名本回合未使用过令咒的交战玩家【败北】。",
+        "sourceTextSha256": "b316c39bc944575ca381fbbcede91129283294c810ad5399f686ebb8c30d0a57"
+      },
+      "abilities": [
+        {
+          "id": "shakespeare.sc-shakespeare-3.semantic",
+          "printedClause": "【真名解放】\n悲剧创作-战斗阶段：使一名本回合未使用过令咒的交战玩家【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "shakespeare_tragedy_rule",
+              "operation": "true_name_reveal_combat_defeat_one_engaged_player_who_has_not_used_a_command_spell_this_round"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b316c39bc944575ca381fbbcede91129283294c810ad5399f686ebb8c30d0a57"
+    },
+    {
+      "id": "servant.shuten.skill.sc-shuten-1",
+      "printedText": "被动/准备阶段：花费2点魔力，将此牌放置于一处战场直至回合结束。位于此地点的其他玩家的手牌及技能消耗+2，战斗阶段结束时所有位于此地点的玩家获得1点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_shuten_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "被动/准备阶段：花费2点魔力，将此牌放置于一处战场直至回合结束。位于此地点的其他玩家的手牌及技能消耗+2，战斗阶段结束时所有位于此地点的玩家获得1点战果。",
+        "sourceTextSha256": "74c6f2f5fc7c82e91f05977325dab28e161edec274ca9cddeb02f009e9514f80"
+      },
+      "abilities": [
+        {
+          "id": "shuten.sc-shuten-1.semantic",
+          "printedClause": "被动/准备阶段：花费2点魔力，将此牌放置于一处战场直至回合结束。位于此地点的其他玩家的手牌及技能消耗+2，战斗阶段结束时所有位于此地点的玩家获得1点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "shuten_debaucherous_banquet_rule",
+              "operation": "passive_preparation_pay_2_mana_place_source_at_one_battlefield_until_round_end_other_players_there_hand_and_skill_costs_plus_2_after_combat_all_players_there_gain_1_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "74c6f2f5fc7c82e91f05977325dab28e161edec274ca9cddeb02f009e9514f80"
+    },
+    {
+      "id": "servant.shuten.skill.sc-shuten-2",
+      "printedText": "此牌需追加打出且你拥有的魔力少于8点也可打出此牌。\n诡妄-战斗阶段开始时，你战斗中所有激活的基础攻击获得<每局游戏限一次>。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_shuten_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "此牌需追加打出且你拥有的魔力少于8点也可打出此牌。\n诡妄-战斗阶段开始时，你战斗中所有激活的基础攻击获得<每局游戏限一次>。",
+        "sourceTextSha256": "1c9c1ada003b307410a06fd8a8c2efe99b84cdf26a7e763686e78e134be0e6af"
+      },
+      "abilities": [
+        {
+          "id": "shuten.sc-shuten-2.semantic",
+          "printedClause": "此牌需追加打出且你拥有的魔力少于8点也可打出此牌。\n诡妄-战斗阶段开始时，你战斗中所有激活的基础攻击获得<每局游戏限一次>。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "shuten_noxious_sake_rule",
+              "operation": "source_must_be_additionally_played_and_may_be_played_below_8_mana_at_combat_start_all_active_base_attacks_in_controller_battle_gain_once_per_game"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "1c9c1ada003b307410a06fd8a8c2efe99b84cdf26a7e763686e78e134be0e6af"
+    },
+    {
+      "id": "servant.shuten.skill.sc-shuten-3",
+      "printedText": "【真名解放】\n战斗阶段：将一名交战对手牌堆顶的X张牌移除游戏，X为其游戏开始时牌库数量的四分之一（向上取整）。这之后，若其牌库为空，令其【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_shuten_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n战斗阶段：将一名交战对手牌堆顶的X张牌移除游戏，X为其游戏开始时牌库数量的四分之一（向上取整）。这之后，若其牌库为空，令其【败北】。",
+        "sourceTextSha256": "4a735aec97ca557a6a7ffcd0298d7241e2fc88599d0fcb39dae3a6df9a93903d"
+      },
+      "abilities": [
+        {
+          "id": "shuten.sc-shuten-3.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：将一名交战对手牌堆顶的X张牌移除游戏，X为其游戏开始时牌库数量的四分之一（向上取整）。这之后，若其牌库为空，令其【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "shuten_bone_collector_rule",
+              "operation": "true_name_reveal_combat_remove_top_x_cards_of_one_engaged_opponent_deck_from_game_x_is_quarter_of_starting_deck_size_rounded_up_then_if_deck_empty_defeat_that_opponent"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4a735aec97ca557a6a7ffcd0298d7241e2fc88599d0fcb39dae3a6df9a93903d"
+    },
+    {
+      "id": "servant.sitonai.skill.sc-sitonai-1",
+      "printedText": "反转：如果你赢得战斗，获得4点战果。\n被动/行动阶段：如果你激活的攻击中只包含了一张力量及一张魔术属性，则你可以支付3点魔力将此卡加入到你的攻击中。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_sitonai_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "反转：如果你赢得战斗，获得4点战果。\n被动/行动阶段：如果你激活的攻击中只包含了一张力量及一张魔术属性，则你可以支付3点魔力将此卡加入到你的攻击中。",
+        "sourceTextSha256": "7cd759f14080e7677bb4434b0ba51af374d55ea6b462b199c46e37cf485831e9"
+      },
+      "abilities": [
+        {
+          "id": "sitonai.sc-sitonai-1.semantic",
+          "printedClause": "反转：如果你赢得战斗，获得4点战果。\n被动/行动阶段：如果你激活的攻击中只包含了一张力量及一张魔术属性，则你可以支付3点魔力将此卡加入到你的攻击中。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "sitonai_combination_attack_rule",
+              "operation": "reverse_if_controller_wins_gain_4_vp_passive_action_if_active_attacks_contain_only_one_strength_and_one_magic_attribute_attack_may_pay_3_mana_to_add_source_to_attack"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7cd759f14080e7677bb4434b0ba51af374d55ea6b462b199c46e37cf485831e9"
+    },
+    {
+      "id": "servant.sitonai.skill.sc-sitonai-2",
+      "printedText": "【真名解放】\n行动阶段：直至下回合结束，所有玩家不能抽牌。\n反转：和获得魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_sitonai_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n行动阶段：直至下回合结束，所有玩家不能抽牌。\n反转：和获得魔力。",
+        "sourceTextSha256": "ba2cf44d72e2d50d781ac8ea04e1222816f2b5f40bec909b5e340395b7450fe3"
+      },
+      "abilities": [
+        {
+          "id": "sitonai.sc-sitonai-2.semantic",
+          "printedClause": "【真名解放】\n行动阶段：直至下回合结束，所有玩家不能抽牌。\n反转：和获得魔力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "sitonai_pohjola_fimbul_rule",
+              "operation": "true_name_reveal_action_until_end_of_next_round_all_players_cannot_draw_cards_reverse_and_gain_mana"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ba2cf44d72e2d50d781ac8ea04e1222816f2b5f40bec909b5e340395b7450fe3"
+    },
+    {
+      "id": "servant.sitonai.skill.sc-sitonai-3",
+      "printedText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_sitonai_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+        "sourceTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+      },
+      "abilities": [
+        {
+          "id": "sitonai.sc-sitonai-3.semantic",
+          "printedClause": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "reverse_effect_rule",
+              "operation": "persistent_when_controller_places_card_into_play_may_close_source_to_grant_reverse_effect_or_if_none_after_play_toggle_strength_quick_magic_attributes_to_any_combination"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+    },
+    {
+      "id": "servant.skadi.skill.sc-skadi-1",
+      "printedText": "被动/前哨阶段：花费1点魔力，抽一张牌，然后将2张手牌洗回牌库。\n被动/行动阶段：花费3点魔力，分别选择你本回合打出的2张基础攻击的一种属性，根据其属性组合获得【原初之卢恩】的相应效果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_skadi_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "被动/前哨阶段：花费1点魔力，抽一张牌，然后将2张手牌洗回牌库。\n被动/行动阶段：花费3点魔力，分别选择你本回合打出的2张基础攻击的一种属性，根据其属性组合获得【原初之卢恩】的相应效果。",
+        "sourceTextSha256": "f780c294394bdfbb1bd43b279516a59919ead046e5f79a46fc6c2dabde45267f"
+      },
+      "abilities": [
+        {
+          "id": "skadi.sc-skadi-1.semantic",
+          "printedClause": "被动/前哨阶段：花费1点魔力，抽一张牌，然后将2张手牌洗回牌库。\n被动/行动阶段：花费3点魔力，分别选择你本回合打出的2张基础攻击的一种属性，根据其属性组合获得【原初之卢恩】的相应效果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "skadi_wisdom_rule",
+              "operation": "passive_vanguard_pay_1_mana_draw_1_then_shuffle_2_hand_cards_into_deck_passive_action_pay_3_mana_choose_one_attribute_from_each_of_two_base_attacks_played_this_round_and_gain_corresponding_primordial_rune_effect_for_attribute_combination"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f780c294394bdfbb1bd43b279516a59919ead046e5f79a46fc6c2dabde45267f"
+    },
+    {
+      "id": "servant.skadi.skill.sc-skadi-2",
+      "printedText": "迅捷属性-远行 - 移动至任意地点。 迅捷和魔法属性-飓风 - 打出一张攻击。\n迅捷和特殊属性-死棘 - 战斗阶段：如果与你同一战场的有且仅有一名交战对手，使其【败北】。\n魔术属性-冰冻 - 你所在地点的其他玩家失去2点魔力。\n魔术和特殊属性-秘仪 - 将你的地利变为3倍。 启明 - 获得4点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_skadi_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "迅捷属性-远行 - 移动至任意地点。 迅捷和魔法属性-飓风 - 打出一张攻击。\n迅捷和特殊属性-死棘 - 战斗阶段：如果与你同一战场的有且仅有一名交战对手，使其【败北】。\n魔术属性-冰冻 - 你所在地点的其他玩家失去2点魔力。\n魔术和特殊属性-秘仪 - 将你的地利变为3倍。 启明 - 获得4点战果。",
+        "sourceTextSha256": "62f8009a960b3515e5b1bc87e654670531bfdd704fa2a152ed3b063f6ea1365e"
+      },
+      "abilities": [
+        {
+          "id": "skadi.sc-skadi-2.semantic",
+          "printedClause": "迅捷属性-远行 - 移动至任意地点。 迅捷和魔法属性-飓风 - 打出一张攻击。\n迅捷和特殊属性-死棘 - 战斗阶段：如果与你同一战场的有且仅有一名交战对手，使其【败北】。\n魔术属性-冰冻 - 你所在地点的其他玩家失去2点魔力。\n魔术和特殊属性-秘仪 - 将你的地利变为3倍。 启明 - 获得4点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "skadi_runes_rule",
+              "operation": "primordial_rune_modes_quick_move_anywhere_quick_magic_play_attack_quick_special_combat_if_exactly_one_engaged_opponent_defeat_them_magic_other_players_at_location_lose_2_mana_magic_special_triple_terrain_enlightenment_gain_4_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "62f8009a960b3515e5b1bc87e654670531bfdd704fa2a152ed3b063f6ea1365e"
+    },
+    {
+      "id": "servant.skadi.skill.sc-skadi-3",
+      "printedText": "【真名解放】\n影之国-残留：位于你所在地点的对手无法获得魔力。\n前哨阶段：选择一种属性。在你的战斗中，所有具有你选择属性的基础攻击的基本威力翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_skadi_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n影之国-残留：位于你所在地点的对手无法获得魔力。\n前哨阶段：选择一种属性。在你的战斗中，所有具有你选择属性的基础攻击的基本威力翻倍。",
+        "sourceTextSha256": "b0f1bf8599ab570f2d9b27424d30a9e89ae8972c4f4bdd91178e37c36d4dc1da"
+      },
+      "abilities": [
+        {
+          "id": "skadi.sc-skadi-3.semantic",
+          "printedClause": "【真名解放】\n影之国-残留：位于你所在地点的对手无法获得魔力。\n前哨阶段：选择一种属性。在你的战斗中，所有具有你选择属性的基础攻击的基本威力翻倍。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "skadi_castle_rule",
+              "operation": "true_name_reveal_residual_opponents_at_controller_location_cannot_gain_mana_vanguard_choose_attribute_in_controller_battle_double_base_power_of_all_base_attacks_with_chosen_attribute"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b0f1bf8599ab570f2d9b27424d30a9e89ae8972c4f4bdd91178e37c36d4dc1da"
     }
   ]
 }

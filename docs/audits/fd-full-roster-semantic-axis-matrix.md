@@ -6,10 +6,10 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=890
-blockedCount=54
+sourceGroundedCount=905
+blockedCount=39
 unclassifiedCount=0
-structuredAbilityCount=1168
+structuredAbilityCount=1183
 
 ## Axis Value Counts
 
@@ -260,8 +260,8 @@ structuredAbilityCount=1168
 | target | `CHOOSE_EACH_PLAYER_OPTION` | 2 |
 | target | `CHOOSE_EACH_PLAYER_CARDS` | 1 |
 | target | `CHOOSE_N_EVENTS` | 1 |
-| effect | `GAIN_VICTORY_POINTS` | 51 |
-| effect | `GAIN_MANA` | 36 |
+| effect | `GAIN_VICTORY_POINTS` | 53 |
+| effect | `GAIN_MANA` | 38 |
 | effect | `DRAW_CARDS` | 35 |
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
@@ -277,11 +277,11 @@ structuredAbilityCount=1168
 | effect | `SET_OPPONENT_ATTRIBUTE_POWER` | 14 |
 | effect | `DEFEAT_PLAYER` | 13 |
 | effect | `FOREIGN_LIFE_RULE` | 13 |
-| effect | `REVERSE_EFFECT_RULE` | 12 |
+| effect | `REVERSE_EFFECT_RULE` | 13 |
 | effect | `SET_PLAYER_FLAG` | 12 |
+| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 11 |
 | effect | `ACTIVATE_CARD_BY_ID` | 10 |
 | effect | `LOSE_MANA` | 10 |
-| effect | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | 10 |
 | effect | `ADJUST_COMMAND_SEALS` | 9 |
 | effect | `CYCLE_STATE_TRANSITION` | 9 |
 | effect | `DREAM_SUMMON_RULE` | 9 |
@@ -703,14 +703,25 @@ structuredAbilityCount=1168
 | effect | `SEI_PLEIADES_RULE` | 1 |
 | effect | `SEI_TWILIGHT_CLOUD_SPRING_TREE_RULE` | 1 |
 | effect | `SELF_PLAY_COST_RULE` | 1 |
+| effect | `SEMIRAMIS_POISON_DRAGON_RULE` | 1 |
 | effect | `SEQUESTER_RANDOM_INACTIVE_SERVANT_SKILL` | 1 |
 | effect | `SERENITY_DANCE_RULE` | 1 |
 | effect | `SET_COMBAT_POWER` | 1 |
 | effect | `SET_SOURCE_CARD_COST_FOR_TRANSACTION` | 1 |
+| effect | `SHAKESPEARE_ENCHANT_RULE` | 1 |
+| effect | `SHAKESPEARE_TRAGEDY_RULE` | 1 |
 | effect | `SHARED_VICTORY_LINK` | 1 |
 | effect | `SHUFFLE_EVENT_DECK` | 1 |
+| effect | `SHUTEN_BONE_COLLECTOR_RULE` | 1 |
+| effect | `SHUTEN_DEBAUCHEROUS_BANQUET_RULE` | 1 |
+| effect | `SHUTEN_NOXIOUS_SAKE_RULE` | 1 |
 | effect | `SIREN_ACTION_OVERRIDE_RULE` | 1 |
+| effect | `SITONAI_COMBINATION_ATTACK_RULE` | 1 |
+| effect | `SITONAI_POHJOLA_FIMBUL_RULE` | 1 |
 | effect | `SITUATION_RAGE_RULE` | 1 |
+| effect | `SKADI_CASTLE_RULE` | 1 |
+| effect | `SKADI_RUNES_RULE` | 1 |
+| effect | `SKADI_WISDOM_RULE` | 1 |
 | effect | `SKILL_SACRIFICE_SCALING_RULE` | 1 |
 | effect | `SKILL_TAX_IMMUNITY_MAGIC_CLOSE_RULE` | 1 |
 | effect | `SKIP_DEPLOYMENT_RECOVERY_RULE` | 1 |
@@ -1904,12 +1915,12 @@ structuredAbilityCount=1168
 | `servant.sei.skill.sc-sei-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SEI_TWILIGHT_CLOUD_SPRING_TREE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sei-nostalgia` |
 | `servant.sei.skill.sc-sei-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SEI_PLEIADES_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sei-nostalgia` |
 | `servant.sei.skill.sc-sei-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SEI_PILLOW_BOOK_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sei-nostalgia` |
-| `servant.semiramis.skill.sc-semiramis-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
-| `servant.semiramis.skill.sc-semiramis-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
-| `servant.semiramis.skill.sc-semiramis-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.shakespeare.skill.sc-shakespeare-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
-| `servant.shakespeare.skill.sc-shakespeare-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.unlock-owner-ascension` |
-| `servant.shakespeare.skill.sc-shakespeare-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.semiramis.skill.sc-semiramis-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `PRESENCE_CONCEALMENT_ASSASSINATION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.presence-concealment` |
+| `servant.semiramis.skill.sc-semiramis-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_MANA`, `GAIN_VICTORY_POINTS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
+| `servant.semiramis.skill.sc-semiramis-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SEMIRAMIS_POISON_DRAGON_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.shakespeare.skill.sc-shakespeare-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_MANA`, `GAIN_VICTORY_POINTS` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.territory-creation` |
+| `servant.shakespeare.skill.sc-shakespeare-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SHAKESPEARE_ENCHANT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.unlock-owner-ascension` |
+| `servant.shakespeare.skill.sc-shakespeare-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SHAKESPEARE_TRAGEDY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
 | `servant.sherlock.skill.sc-sherlock-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DEDUCTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sherlock-elementary` |
 | `servant.sherlock.skill.sc-sherlock-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DEDUCTION_RULE`, `GAIN_MANA`, `SOURCE_CARD_POWER_FORMULA` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sherlock-empty-house` |
 | `servant.sherlock.skill.sc-sherlock-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DEDUCTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sherlock-retroduction` |
@@ -1917,21 +1928,21 @@ structuredAbilityCount=1168
 | `servant.sherlock.skill.sc-sherlock-5` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DEDUCTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.rule-marker` |
 | `servant.sherlock.skill.sc-sherlock-6` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DEDUCTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.rule-marker` |
 | `servant.sherlock.skill.sc-sherlock-7` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DEDUCTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.rule-marker` |
-| `servant.shuten.skill.sc-shuten-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.shuten-debaucherous-banquet` |
-| `servant.shuten.skill.sc-shuten-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.shuten-noxious-sake` |
-| `servant.shuten.skill.sc-shuten-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.shuten-bone-collector` |
+| `servant.shuten.skill.sc-shuten-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SHUTEN_DEBAUCHEROUS_BANQUET_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.shuten-debaucherous-banquet` |
+| `servant.shuten.skill.sc-shuten-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SHUTEN_NOXIOUS_SAKE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.shuten-noxious-sake` |
+| `servant.shuten.skill.sc-shuten-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SHUTEN_BONE_COLLECTOR_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.shuten-bone-collector` |
 | `servant.siegfried.skill.sc-siegfried-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TRUE_NAME_HIDE_IMMUNITY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.siegfried-invisibility-cloak` |
 | `servant.siegfried.skill.sc-siegfried-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `player.moved` | `AT_BATTLEFIELD`, `EVENT_LOCATION_EQUALS_CONTROLLER`, `EVENT_PLAYER_IS_OPPONENT`, `SOURCE_ACTIVE`, `TRUE_NAME_REVEALED` | `NONE` | `NONE` | `CLOSE_SOURCE_CARD` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_CONDITION` | `core.structured-skill` |
 | `servant.siegfried.skill.sc-siegfried-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVEALED_HAND_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.reveal-hand-power-bonus` |
 | `servant.sigurd.skill.sc-sigurd-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CURSE_MANA_RECOVERY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sigurd-gram-ii` |
 | `servant.sigurd.skill.sc-sigurd-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `CURSE_BASIC_CARD_MODIFIER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sigurd-bolverk-gram` |
 | `servant.sigurd.skill.sc-sigurd-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ATTRIBUTE_CHAIN_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.sitonai.skill.sc-sitonai-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sitonai-combination-attack` |
-| `servant.sitonai.skill.sc-sitonai-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sitonai-pohjola-fimbul` |
-| `servant.sitonai.skill.sc-sitonai-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
-| `servant.skadi.skill.sc-skadi-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.skadi-wisdom` |
-| `servant.skadi.skill.sc-skadi-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.skadi-runes` |
-| `servant.skadi.skill.sc-skadi-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.skadi-castle` |
+| `servant.sitonai.skill.sc-sitonai-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SITONAI_COMBINATION_ATTACK_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sitonai-combination-attack` |
+| `servant.sitonai.skill.sc-sitonai-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SITONAI_POHJOLA_FIMBUL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.sitonai-pohjola-fimbul` |
+| `servant.sitonai.skill.sc-sitonai-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REVERSE_EFFECT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.alter-ego-transform` |
+| `servant.skadi.skill.sc-skadi-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SKADI_WISDOM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.skadi-wisdom` |
+| `servant.skadi.skill.sc-skadi-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SKADI_RUNES_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.skadi-runes` |
+| `servant.skadi.skill.sc-skadi-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `SKADI_CASTLE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.skadi-castle` |
 | `servant.spartacus.skill.sc-spartacus-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.combat-power-from-command-seal-users` |
 | `servant.spartacus.skill.sc-spartacus-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `combat.resolved` | `EVENT_LOCATION_EQUALS_CONTROLLER`, `SOURCE_ACTIVE` | `NONE` | `CHOOSE_ONE_PLAYER` | `GAIN_VICTORY_POINTS` | `CHOOSE_ONE_PLAYER` | `duration:while_active` | `NONE` | `NONE` | `NONE` | `COMBAT_EVENT` | `core.structured-skill` |
 | `servant.spartacus.skill.sc-spartacus-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.spartacus-free-spirit` |
