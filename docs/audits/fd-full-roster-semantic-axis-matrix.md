@@ -6,16 +6,16 @@
 - Interaction Policy: interaction is derived only from explicit structured interaction fields/effects, never timing or printed wording.
 
 totalIdentityCount=944
-sourceGroundedCount=767
-blockedCount=177
+sourceGroundedCount=783
+blockedCount=161
 unclassifiedCount=0
-structuredAbilityCount=1045
+structuredAbilityCount=1061
 
 ## Axis Value Counts
 
 | Axis | Value | Identity Count |
 |---|---|---:|
-| timing | `ACTION` | 125 |
+| timing | `ACTION` | 126 |
 | timing | `COMBAT` | 41 |
 | timing | `OUTPOST` | 28 |
 | timing | `PREPARATION` | 7 |
@@ -266,7 +266,7 @@ structuredAbilityCount=1045
 | effect | `MOVE_SOURCE_CARD` | 30 |
 | effect | `COMBAT_POWER_BONUS` | 29 |
 | effect | `EVENT_CARD_RULE` | 27 |
-| effect | `MOVE_PLAYER` | 26 |
+| effect | `MOVE_PLAYER` | 27 |
 | effect | `LOSE_VICTORY_POINTS` | 22 |
 | effect | `MOVE_MATCHING_CARDS` | 20 |
 | effect | `PLAY_SELECTED_CARDS` | 20 |
@@ -379,6 +379,7 @@ structuredAbilityCount=1045
 | effect | `SOURCE_CARD_POWER_FORMULA` | 2 |
 | effect | `TATARI_RULE` | 2 |
 | effect | `TEMPORARY_ATTACK_CREATION_RULE` | 2 |
+| effect | `TEMPORARY_CARD_COPY_RULE` | 2 |
 | effect | `TRANSFER_MANA` | 2 |
 | effect | `TRANSFER_MATCHING_CARDS` | 2 |
 | effect | `TRUE_NAME_HIDE_AND_ACTION_REPLAY_RULE` | 2 |
@@ -389,10 +390,13 @@ structuredAbilityCount=1045
 | effect | `ACHILLES_HEEL_GALE_RULE` | 1 |
 | effect | `ACTIVATE_SELECTED_CARDS` | 1 |
 | effect | `ADD_PLAYER_FLAG_NUMBER` | 1 |
+| effect | `ALTERNATE_VP_COST_MOUNT_RULE` | 1 |
 | effect | `ASTRONOMICAL_SPHERE_RULE` | 1 |
+| effect | `ATTACK_COPY_TRANSFORM_RULE` | 1 |
 | effect | `ATTACK_COUNT_MASS_DEFEAT_RULE` | 1 |
 | effect | `ATTACK_PLAY_COUNT_RULE` | 1 |
 | effect | `ATTRIBUTE_ATTACK_CLOSE_CHOICE_RULE` | 1 |
+| effect | `AVENGER_DISCARD_CLOSE_OR_DEFEAT_RULE` | 1 |
 | effect | `AVENGER_DISCARD_RECOVERY_RULE` | 1 |
 | effect | `AVENGER_DISCARD_VP_STEAL_RULE` | 1 |
 | effect | `AVENGER_MOVEMENT_VP_RULE` | 1 |
@@ -451,9 +455,11 @@ structuredAbilityCount=1045
 | effect | `DANTES_HOPE_REWARD_RULE` | 1 |
 | effect | `DANTES_KING_TRANSFER_RULE` | 1 |
 | effect | `DARK_FOG_EVENT_RULE` | 1 |
+| effect | `DEATH_ENTANGLE_FORCED_MOVE_RULE` | 1 |
 | effect | `DECK_BOTTOM_MATCH_RULE` | 1 |
 | effect | `DECK_BOTTOM_RULE` | 1 |
 | effect | `DECK_RECYCLE_POWER_RULE` | 1 |
+| effect | `DEFERRED_ATTACK_STAT_POWER_RULE` | 1 |
 | effect | `DELAYED_ATTACK_EVENT_REPLACEMENT_RULE` | 1 |
 | effect | `DELAYED_SITUATION_REACTIVATION_RULE` | 1 |
 | effect | `DETECTIVE_ACCUSATION_RULE` | 1 |
@@ -491,8 +497,10 @@ structuredAbilityCount=1045
 | effect | `HAND_DISCARD_SUM_DEFEAT_RULE` | 1 |
 | effect | `HEAVENS_HOLE_RULE` | 1 |
 | effect | `HERO_DUEL_FIELD_RULE` | 1 |
+| effect | `HIDDEN_ATTACK_ACTIVATION_PHALANX_RULE` | 1 |
 | effect | `HIDDEN_DOUBLE_ATTACK_RULE` | 1 |
 | effect | `HIDDEN_DRAW_REMOVAL_RULE` | 1 |
+| effect | `HIDDEN_JIN_STAGING_RULE` | 1 |
 | effect | `HIDDEN_LUCK_ACTIVATION_DOUBLE_RULE` | 1 |
 | effect | `HIDDEN_QUICK_ATTACK_ACTIVATION_RULE` | 1 |
 | effect | `HIDDEN_TRUE_NAME_VP_DOUBLE_DEFEAT_RULE` | 1 |
@@ -532,7 +540,9 @@ structuredAbilityCount=1045
 | effect | `KRIEMHILD_WIDOW_RULE` | 1 |
 | effect | `LADYAVALON_IDEAL_REALM_RULE` | 1 |
 | effect | `LADYAVALON_PRETENDER_RULE` | 1 |
+| effect | `LANCELOT_IDENTITY_REVEAL_RULE` | 1 |
 | effect | `LINKED_PLAYER_MANA_CONTRIBUTION` | 1 |
+| effect | `LIONKING_LUCK_PROTECTION_RULE` | 1 |
 | effect | `LOCATION_MERGE_RULE` | 1 |
 | effect | `LOSE_VICTORY_POINTS_PER_MATCHING_CARDS` | 1 |
 | effect | `LOSS_LUCK_TURN_ORDER_VP_RULE` | 1 |
@@ -551,6 +561,7 @@ structuredAbilityCount=1045
 | effect | `MARBLE_PHANTASM_DEFEAT_RULE` | 1 |
 | effect | `MARIA_THE_RIPPER_RULE` | 1 |
 | effect | `MATCHING_ATTRIBUTE_EVENT_SITUATION_PROTECTION_RULE` | 1 |
+| effect | `MATCHING_ATTRIBUTE_HIDDEN_ATTACK_DEFEAT_RULE` | 1 |
 | effect | `MILLENNIUM_CASTLE_OFFBOARD_LOCK_RULE` | 1 |
 | effect | `MIRROR_SHIELD_SACRED_LAND_RULE` | 1 |
 | effect | `MODIFY_OTHER_ATTACKS` | 1 |
@@ -560,6 +571,8 @@ structuredAbilityCount=1045
 | effect | `MURDER_IMPULSE_THRESHOLD_RULE` | 1 |
 | effect | `MYSTIC_CODE_RULE` | 1 |
 | effect | `MYSTIC_CODE_UPGRADE_RULE` | 1 |
+| effect | `NOBLE_WEAPON_POWER_TRANSFORM_RULE` | 1 |
+| effect | `NO_BATTLE_VP_LOSS_RESIDUAL_EXTENSION_RULE` | 1 |
 | effect | `OFFBOARD_BATTLE_TAKEOVER_RULE` | 1 |
 | effect | `OPPONENT_OPTION_LOCK_RULE` | 1 |
 | effect | `ORACLE_CHOICE_RULE` | 1 |
@@ -576,6 +589,7 @@ structuredAbilityCount=1045
 | effect | `PRETENDER_IDENTITY_X_RULE` | 1 |
 | effect | `PROPHECY_HAND_SUM_DEFEAT_RULE` | 1 |
 | effect | `REACTIVE_CARD_ACTION_RULE` | 1 |
+| effect | `REACTIVE_PURSUIT_PLAY_RULE` | 1 |
 | effect | `REACTIVE_RESOURCE_RULE` | 1 |
 | effect | `RED_VERMILION_RULE` | 1 |
 | effect | `REMOVED_CARD_MEMORY_POWER_RULE` | 1 |
@@ -617,7 +631,6 @@ structuredAbilityCount=1045
 | effect | `STOLEN_MANA_ATTRIBUTION_RULE` | 1 |
 | effect | `SWAP_SELECTED_EVENT_LOCATIONS` | 1 |
 | effect | `SWAP_VICTORY_POINTS` | 1 |
-| effect | `TEMPORARY_CARD_COPY_RULE` | 1 |
 | effect | `TEMPORARY_COMMAND_SEAL_RULE` | 1 |
 | effect | `TEMPORARY_OPPONENT_CARD_RULE` | 1 |
 | effect | `TERRAIN_COST_SITUATION_BURN_RULE` | 1 |
@@ -633,6 +646,7 @@ structuredAbilityCount=1045
 | effect | `TURN_ORDER_REPOSITION_RULE` | 1 |
 | effect | `UNDEAD_ARMY_HALF_CLOSE_RULE` | 1 |
 | effect | `VIY_POWER_PROTECTION_RULE` | 1 |
+| effect | `VP_SOURCE_MULTIPLIER_RULE` | 1 |
 | effect | `WEAK_CONSTITUTION_RULE` | 1 |
 | effect | `WINNER_PREDICTION_RULE` | 1 |
 | effect | `WORLD_RESET_EVENT_RULE` | 1 |
@@ -925,7 +939,7 @@ structuredAbilityCount=1045
 | binding | `result:targetPlayer` | 1 |
 | battle | `COMBAT_CONDITION` | 80 |
 | battle | `COMBAT_EVENT` | 65 |
-| battle | `COMBAT_EFFECT` | 37 |
+| battle | `COMBAT_EFFECT` | 38 |
 | battle | `COMBAT_RULE_MODIFIER` | 17 |
 
 ## Identity-Level Matrix
@@ -1625,24 +1639,24 @@ structuredAbilityCount=1045
 | `servant.lakshmibai.skill.sc-lakshmibai-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REACTIVE_CARD_ACTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lakshmibai-package` |
 | `servant.lakshmibai.skill.sc-lakshmibai-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `GAIN_VICTORY_POINTS`, `SET_OPPONENT_ATTRIBUTE_POWER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.saber-magic-resistance` |
 | `servant.lakshmibai.skill.sc-lakshmibai-4` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DEFEAT_OVERRIDE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lakshmibai-package` |
-| `servant.lance.skill.sc-lance-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lancelot-eternal-arms-mastery` |
-| `servant.lance.skill.sc-lance-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-rule-flags` |
-| `servant.lance.skill.sc-lance-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lancelot-for-someones-glory` |
+| `servant.lance.skill.sc-lance-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ATTACK_COPY_TRANSFORM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lancelot-eternal-arms-mastery` |
+| `servant.lance.skill.sc-lance-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LANCELOT_IDENTITY_REVEAL_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.game-start-rule-flags` |
+| `servant.lance.skill.sc-lance-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `TEMPORARY_CARD_COPY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lancelot-for-someones-glory` |
 | `servant.leonidas.skill.sc-leonidas-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `player.moved` | `EVENT_PLAYER_IS_CONTROLLER`, `SOURCE_ACTIVE` | `NONE` | `NONE` | `CLOSE_SOURCE_CARD` | `NONE` | `duration:while_active` | `rule:face_up_cards_per_round:set` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.leonidas.skill.sc-leonidas-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
-| `servant.leonidas.skill.sc-leonidas-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.leonidas-pride` |
-| `servant.lionking.skill.sc-lionking-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lionking-divine-command` |
-| `servant.lionking.skill.sc-lionking-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lionking-dun-stallion` |
+| `servant.leonidas.skill.sc-leonidas-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DEFERRED_ATTACK_STAT_POWER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.structured-skill` |
+| `servant.leonidas.skill.sc-leonidas-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HIDDEN_ATTACK_ACTIVATION_PHALANX_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.leonidas-pride` |
+| `servant.lionking.skill.sc-lionking-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `LIONKING_LUCK_PROTECTION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lionking-divine-command` |
+| `servant.lionking.skill.sc-lionking-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `ALTERNATE_VP_COST_MOUNT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lionking-dun-stallion` |
 | `servant.lionking.skill.sc-lionking-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `card.played`, `combat.resolved` | `EVENT_DEFINITION_IS_SELF`, `EVENT_FACE_IS`, `EVENT_LOCATION_EQUALS_CONTROLLER`, `EVENT_PLAYER_IS_CONTROLLER`, `EVENT_PLAYER_WON_COMBAT`, `PLAYER_FLAG_NUMBER_AT_LEAST`, `SOURCE_ACTIVE` | `NONE` | `NONE` | `ADD_PLAYER_FLAG_NUMBER`, `IF_CONDITION`, `INFO_NOTE`, `MOVE_MATCHING_EVENTS` | `NONE` | `cleanup:remain_active`, `duration:while_active`, `starts:immediate` | `NONE` | `REVEALS_TRUE_NAME`, `revealScope:servant_package`, `revealTiming:on_use_declared` | `NONE` | `COMBAT_CONDITION`, `COMBAT_EVENT` | `core.structured-skill` |
-| `servant.lishuwen.skill.sc-lishuwen-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lishuwen-sphere-boundary` |
-| `servant.lishuwen.skill.sc-lishuwen-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lishuwen-no-second-strike` |
-| `servant.lishuwen.skill.sc-lishuwen-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
-| `servant.lobo.skill.sc-lobo-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lobo-frostes-henker` |
-| `servant.lobo.skill.sc-lobo-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lobo-ghastly-howl` |
-| `servant.lobo.skill.sc-lobo-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lobo-oblivion-correction` |
-| `servant.lubu.skill.sc-lubu-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lubu-restless-soul` |
-| `servant.lubu.skill.sc-lubu-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.rule-marker` |
-| `servant.lubu.skill.sc-lubu-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lubu-god-force` |
+| `servant.lishuwen.skill.sc-lishuwen-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `HIDDEN_JIN_STAGING_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lishuwen-sphere-boundary` |
+| `servant.lishuwen.skill.sc-lishuwen-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `MATCHING_ATTRIBUTE_HIDDEN_ATTACK_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lishuwen-no-second-strike` |
+| `servant.lishuwen.skill.sc-lishuwen-3` | `SOURCE_GROUNDED` | `NONE` | `ACTION` | `NONE` | `NONE` | `NONE` | `NONE` | `MOVE_PLAYER` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.move-to-non-workshop` |
+| `servant.lobo.skill.sc-lobo-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `AVENGER_DISCARD_CLOSE_OR_DEFEAT_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lobo-frostes-henker` |
+| `servant.lobo.skill.sc-lobo-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `DEATH_ENTANGLE_FORCED_MOVE_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lobo-ghastly-howl` |
+| `servant.lobo.skill.sc-lobo-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `REACTIVE_PURSUIT_PLAY_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lobo-oblivion-correction` |
+| `servant.lubu.skill.sc-lubu-1` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NO_BATTLE_VP_LOSS_RESIDUAL_EXTENSION_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `COMBAT_EFFECT` | `core.lubu-restless-soul` |
+| `servant.lubu.skill.sc-lubu-2` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `VP_SOURCE_MULTIPLIER_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.rule-marker` |
+| `servant.lubu.skill.sc-lubu-3` | `SOURCE_GROUNDED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NOBLE_WEAPON_POWER_TRANSFORM_RULE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.lubu-god-force` |
 | `servant.mandricardo.skill.sc-mandricardo-1` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mandricardo-instant-strike` |
 | `servant.mandricardo.skill.sc-mandricardo-2` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.mandricardo-instant-strike` |
 | `servant.mandricardo.skill.sc-mandricardo-3` | `BLOCKED` | `SEMANTIC_SOURCE_REQUIRED` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `NONE` | `core.riding` |

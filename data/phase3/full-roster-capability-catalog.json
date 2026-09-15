@@ -8,8 +8,8 @@
   },
   "summary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 767,
-    "explicitBlockCount": 177,
+    "contractMappedCount": 783,
+    "explicitBlockCount": 161,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -24,10 +24,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 2,
-      "READY_GENERIC_EXTENSION": 239,
-      "SPECIAL_HANDLER_CANDIDATE": 526,
+      "READY_GENERIC_EXTENSION": 240,
+      "SPECIAL_HANDLER_CANDIDATE": 541,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 177,
+      "SOURCE_EVIDENCE_REQUIRED": 161,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
@@ -3688,6 +3688,7 @@
         "servant.kiritsugu.skill.sc-kiritsugu-2",
         "servant.kiritsugu.skill.sc-kiritsugu-3",
         "servant.lionking.skill.sc-lionking-3",
+        "servant.lubu.skill.sc-lubu-1",
         "servant.mechaeli.skill.sc-mechaeli-2",
         "servant.merlin.skill.sc-merlin-3",
         "servant.mozart.skill.sc-mozart-2",
@@ -6538,6 +6539,66 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.lance.skill.sc-lance-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.martha.skill.sc-martha-1",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
@@ -7223,6 +7284,7 @@
         "servant.illya.skill.sc-illya-7",
         "servant.jaguarman.skill.sc-jaguarman-1",
         "servant.kagetora.skill.sc-kagetora-3",
+        "servant.lishuwen.skill.sc-lishuwen-3",
         "servant.mozart.skill.sc-mozart-1"
       ],
       "partialAbilities": [],
@@ -7466,6 +7528,8 @@
         "servant.kama.skill.sc-kama-1",
         "servant.karna.skill.sc-karna-1",
         "servant.lakshmibai.skill.sc-lakshmibai-3",
+        "servant.leonidas.skill.sc-leonidas-2",
+        "servant.lubu.skill.sc-lubu-3",
         "servant.mechaeli.skill.sc-mechaeli-2",
         "servant.mephisto.skill.sc-mephisto-2",
         "servant.molay.skill.sc-molay-1",
@@ -10196,6 +10260,21 @@
         "servant.lakshmibai.skill.sc-lakshmibai-1",
         "servant.lakshmibai.skill.sc-lakshmibai-2",
         "servant.lakshmibai.skill.sc-lakshmibai-4",
+        "servant.lance.skill.sc-lance-1",
+        "servant.lance.skill.sc-lance-2",
+        "servant.lance.skill.sc-lance-3",
+        "servant.leonidas.skill.sc-leonidas-2",
+        "servant.leonidas.skill.sc-leonidas-3",
+        "servant.lionking.skill.sc-lionking-1",
+        "servant.lionking.skill.sc-lionking-2",
+        "servant.lishuwen.skill.sc-lishuwen-1",
+        "servant.lishuwen.skill.sc-lishuwen-2",
+        "servant.lobo.skill.sc-lobo-1",
+        "servant.lobo.skill.sc-lobo-2",
+        "servant.lobo.skill.sc-lobo-3",
+        "servant.lubu.skill.sc-lubu-1",
+        "servant.lubu.skill.sc-lubu-2",
+        "servant.lubu.skill.sc-lubu-3",
         "servant.martha.skill.sc-martha-1",
         "servant.martha.skill.sc-martha-2",
         "servant.martha.skill.sc-martha-4",
@@ -12234,7 +12313,67 @@
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
+          "abilityId": "servant.lance.skill.sc-lance-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lance.skill.sc-lance-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.leonidas.skill.sc-leonidas-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lionking.skill.sc-lionking-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
           "abilityId": "servant.lionking.skill.sc-lionking-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lishuwen.skill.sc-lishuwen-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lobo.skill.sc-lobo-3",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-1",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-2",
+          "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
+        },
+        {
+          "abilityId": "servant.lubu.skill.sc-lubu-3",
           "reason": "DIFFERENT_CAPABILITY_WITHIN_MECHANIC_FAMILY"
         },
         {
@@ -13136,8 +13275,24 @@
       "servant.lakshmibai.skill.sc-lakshmibai-2",
       "servant.lakshmibai.skill.sc-lakshmibai-3",
       "servant.lakshmibai.skill.sc-lakshmibai-4",
+      "servant.lance.skill.sc-lance-1",
+      "servant.lance.skill.sc-lance-2",
+      "servant.lance.skill.sc-lance-3",
       "servant.leonidas.skill.sc-leonidas-1",
+      "servant.leonidas.skill.sc-leonidas-2",
+      "servant.leonidas.skill.sc-leonidas-3",
+      "servant.lionking.skill.sc-lionking-1",
+      "servant.lionking.skill.sc-lionking-2",
       "servant.lionking.skill.sc-lionking-3",
+      "servant.lishuwen.skill.sc-lishuwen-1",
+      "servant.lishuwen.skill.sc-lishuwen-2",
+      "servant.lishuwen.skill.sc-lishuwen-3",
+      "servant.lobo.skill.sc-lobo-1",
+      "servant.lobo.skill.sc-lobo-2",
+      "servant.lobo.skill.sc-lobo-3",
+      "servant.lubu.skill.sc-lubu-1",
+      "servant.lubu.skill.sc-lubu-2",
+      "servant.lubu.skill.sc-lubu-3",
       "servant.martha.skill.sc-martha-1",
       "servant.martha.skill.sc-martha-2",
       "servant.martha.skill.sc-martha-3",
@@ -13211,118 +13366,6 @@
       "servant.voyager.skill.sc-voyager-4"
     ],
     "blockedAbilities": [
-      {
-        "abilityId": "servant.lance.skill.sc-lance-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.lance.skill.sc-lance-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.lance.skill.sc-lance-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.leonidas.skill.sc-leonidas-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.leonidas.skill.sc-leonidas-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.lionking.skill.sc-lionking-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.lionking.skill.sc-lionking-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.lishuwen.skill.sc-lishuwen-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.lishuwen.skill.sc-lishuwen-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.lishuwen.skill.sc-lishuwen-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.lobo.skill.sc-lobo-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.lobo.skill.sc-lobo-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.lobo.skill.sc-lobo-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.lubu.skill.sc-lubu-1",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.lubu.skill.sc-lubu-2",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
-      {
-        "abilityId": "servant.lubu.skill.sc-lubu-3",
-        "route": "SOURCE_EVIDENCE_REQUIRED",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ]
-      },
       {
         "abilityId": "servant.mandricardo.skill.sc-mandricardo-1",
         "route": "SOURCE_EVIDENCE_REQUIRED",
@@ -14930,6 +14973,21 @@
       "servant.lakshmibai.skill.sc-lakshmibai-1",
       "servant.lakshmibai.skill.sc-lakshmibai-2",
       "servant.lakshmibai.skill.sc-lakshmibai-4",
+      "servant.lance.skill.sc-lance-1",
+      "servant.lance.skill.sc-lance-2",
+      "servant.lance.skill.sc-lance-3",
+      "servant.leonidas.skill.sc-leonidas-2",
+      "servant.leonidas.skill.sc-leonidas-3",
+      "servant.lionking.skill.sc-lionking-1",
+      "servant.lionking.skill.sc-lionking-2",
+      "servant.lishuwen.skill.sc-lishuwen-1",
+      "servant.lishuwen.skill.sc-lishuwen-2",
+      "servant.lobo.skill.sc-lobo-1",
+      "servant.lobo.skill.sc-lobo-2",
+      "servant.lobo.skill.sc-lobo-3",
+      "servant.lubu.skill.sc-lubu-1",
+      "servant.lubu.skill.sc-lubu-2",
+      "servant.lubu.skill.sc-lubu-3",
       "servant.martha.skill.sc-martha-1",
       "servant.martha.skill.sc-martha-2",
       "servant.martha.skill.sc-martha-4",

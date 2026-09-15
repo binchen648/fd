@@ -28114,6 +28114,426 @@
         }
       ],
       "referencePrintedTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58"
+    },
+    {
+      "id": "servant.lance.skill.sc-lance-1",
+      "printedText": "战斗阶段：如果你并未【败北】或你打出【幸运】来防止此效果，本牌变为任意一张与你同战场的激活的非残留力量或迅捷属性的攻击。若你选择的攻击为自己控制的卡牌，此复制威力+3。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_lance_1",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "战斗阶段：如果你并未【败北】或你打出【幸运】来防止此效果，本牌变为任意一张与你同战场的激活的非残留力量或迅捷属性的攻击。若你选择的攻击为自己控制的卡牌，此复制威力+3。",
+        "sourceTextSha256": "559715e52164d3ca34724ff06f10c889f13ca4e10a3febc700b39ba2f65573fc"
+      },
+      "abilities": [
+        {
+          "id": "lance.sc_lance_1.semantic",
+          "printedClause": "战斗阶段：如果你并未【败北】或你打出【幸运】来防止此效果，本牌变为任意一张与你同战场的激活的非残留力量或迅捷属性的攻击。若你选择的攻击为自己控制的卡牌，此复制威力+3。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "attack_copy_transform_rule",
+              "operation": "combat_if_not_defeated_or_play_luck_to_prevent_transform_source_into_any_active_non_residual_strength_or_quick_attack_at_same_battlefield_if_copying_own_card_copy_power_plus_3"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "559715e52164d3ca34724ff06f10c889f13ca4e10a3febc700b39ba2f65573fc"
+    },
+    {
+      "id": "servant.lance.skill.sc-lance-2",
+      "printedText": "被动：你拥有的魔力少于8点也可打出从者技能牌。被动：如果御主令咒变为0枚时，【真名解放】，你的从者真名不能通过其他方法解放。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_lance_2",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "被动：你拥有的魔力少于8点也可打出从者技能牌。被动：如果御主令咒变为0枚时，【真名解放】，你的从者真名不能通过其他方法解放。",
+        "sourceTextSha256": "255af7b7f92499888f524f1b13d4517e03a2b55a8452995090610acaeb5e56cb"
+      },
+      "abilities": [
+        {
+          "id": "lance.sc_lance_2.semantic",
+          "printedClause": "被动：你拥有的魔力少于8点也可打出从者技能牌。被动：如果御主令咒变为0枚时，【真名解放】，你的从者真名不能通过其他方法解放。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "lancelot_identity_reveal_rule",
+              "operation": "passive_may_play_servant_skills_below_8_mana_when_master_command_spells_reach_0_true_name_reveal_and_true_name_cannot_be_revealed_otherwise"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "255af7b7f92499888f524f1b13d4517e03a2b55a8452995090610acaeb5e56cb"
+    },
+    {
+      "id": "servant.lance.skill.sc-lance-3",
+      "printedText": "行动阶段: 花费一枚令咒。直到回合结束前，此牌变为一张已被展示的非<一局游戏限一次>的技能或攻击的复制。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_lance_3",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "行动阶段: 花费一枚令咒。直到回合结束前，此牌变为一张已被展示的非<一局游戏限一次>的技能或攻击的复制。",
+        "sourceTextSha256": "facd277252452e9727d0afda95919f891d13d75e75562460e61e5810e2f4b65a"
+      },
+      "abilities": [
+        {
+          "id": "lance.sc_lance_3.semantic",
+          "printedClause": "行动阶段: 花费一枚令咒。直到回合结束前，此牌变为一张已被展示的非<一局游戏限一次>的技能或攻击的复制。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "temporary_card_copy_rule",
+              "operation": "action_spend_1_command_spell_until_round_end_copy_one_revealed_skill_or_attack_without_once_per_game_limit"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "facd277252452e9727d0afda95919f891d13d75e75562460e61e5810e2f4b65a"
+    },
+    {
+      "id": "servant.leonidas.skill.sc-leonidas-2",
+      "printedText": "【真名解放】\n战斗阶段：选择一张此战斗中对手的攻击，于下回合获得该牌的攻击数值的合计威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_leonidas_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n战斗阶段：选择一张此战斗中对手的攻击，于下回合获得该牌的攻击数值的合计威力。",
+        "sourceTextSha256": "03c51016d2bd837c673d5fd3c56e4021e0a4599163debef7c58b10c79aa34b4d"
+      },
+      "abilities": [
+        {
+          "id": "leonidas.sc_leonidas_2.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：选择一张此战斗中对手的攻击，于下回合获得该牌的攻击数值的合计威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "deferred_attack_stat_power_rule",
+              "operation": "true_name_reveal_combat_choose_one_opponent_attack_in_this_battle_next_round_gain_total_power_equal_to_that_cards_attack_values"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "03c51016d2bd837c673d5fd3c56e4021e0a4599163debef7c58b10c79aa34b4d"
+    },
+    {
+      "id": "servant.leonidas.skill.sc-leonidas-3",
+      "printedText": "被动：你的【战士的雄叫】可以被暗置打出。\n战斗阶段：花费一张你控制的暗置攻击三倍消耗的魔力将其激活，你可以使用它的行动阶段能力。\n方阵-战斗阶段：若有对手于本回合移动至你所在的战场，你获得3点基础地利（在翻倍等效果之前计算）。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_leonidas_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "被动：你的【战士的雄叫】可以被暗置打出。\n战斗阶段：花费一张你控制的暗置攻击三倍消耗的魔力将其激活，你可以使用它的行动阶段能力。\n方阵-战斗阶段：若有对手于本回合移动至你所在的战场，你获得3点基础地利（在翻倍等效果之前计算）。",
+        "sourceTextSha256": "7cb3c0cbbb9ff052b75fdaf605f160b95f5e25d786cc913427bfe8a3280dc7ae"
+      },
+      "abilities": [
+        {
+          "id": "leonidas.sc_leonidas_3.semantic",
+          "printedClause": "被动：你的【战士的雄叫】可以被暗置打出。\n战斗阶段：花费一张你控制的暗置攻击三倍消耗的魔力将其激活，你可以使用它的行动阶段能力。\n方阵-战斗阶段：若有对手于本回合移动至你所在的战场，你获得3点基础地利（在翻倍等效果之前计算）。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "hidden_attack_activation_phalanx_rule",
+              "operation": "passive_warriors_shout_may_be_played_face_down_combat_pay_triple_cost_of_controlled_face_down_attack_to_activate_and_may_use_action_effect_phalanx_if_opponent_moved_to_battlefield_this_round_gain_3_base_terrain_before_multipliers"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7cb3c0cbbb9ff052b75fdaf605f160b95f5e25d786cc913427bfe8a3280dc7ae"
+    },
+    {
+      "id": "servant.lionking.skill.sc-lionking-1",
+      "printedText": "被动：战力结算时，你的【幸运】视为拥有所有属性且它们的威力不能被减少。\n止境的加护-被动/前哨阶段：获得1点魔力和+3合计威力，本回合你无法获得战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_lionking_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "被动：战力结算时，你的【幸运】视为拥有所有属性且它们的威力不能被减少。\n止境的加护-被动/前哨阶段：获得1点魔力和+3合计威力，本回合你无法获得战果。",
+        "sourceTextSha256": "7360a1a1547901a4f7c2b5eaecf14ee35253be6eb91743c150400ec142304523"
+      },
+      "abilities": [
+        {
+          "id": "lionking.sc_lionking_1.semantic",
+          "printedClause": "被动：战力结算时，你的【幸运】视为拥有所有属性且它们的威力不能被减少。\n止境的加护-被动/前哨阶段：获得1点魔力和+3合计威力，本回合你无法获得战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "lionking_luck_protection_rule",
+              "operation": "passive_at_power_resolution_controller_luck_has_all_attributes_and_power_cannot_be_reduced_passive_outpost_gain_1_mana_and_3_total_power_this_round_cannot_gain_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7360a1a1547901a4f7c2b5eaecf14ee35253be6eb91743c150400ec142304523"
+    },
+    {
+      "id": "servant.lionking.skill.sc-lionking-2",
+      "printedText": "你可以改为花费2点战果来打出此牌。\n战斗续行-行动阶段：移动至一处战场。\n骑乘-行动阶段：从手牌中追加打出至多3张基本威力3及以下的牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_lionking_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "你可以改为花费2点战果来打出此牌。\n战斗续行-行动阶段：移动至一处战场。\n骑乘-行动阶段：从手牌中追加打出至多3张基本威力3及以下的牌。",
+        "sourceTextSha256": "909debf6ccfd51ef79d7f2c0f53f18e64ed7ba1b44990e321752d871116f1404"
+      },
+      "abilities": [
+        {
+          "id": "lionking.sc_lionking_2.semantic",
+          "printedClause": "你可以改为花费2点战果来打出此牌。\n战斗续行-行动阶段：移动至一处战场。\n骑乘-行动阶段：从手牌中追加打出至多3张基本威力3及以下的牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "alternate_vp_cost_mount_rule",
+              "operation": "may_pay_2_vp_instead_of_mana_to_play_action_move_to_one_battlefield_action_additionally_play_up_to_3_hand_cards_with_base_power_3_or_less"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "909debf6ccfd51ef79d7f2c0f53f18e64ed7ba1b44990e321752d871116f1404"
+    },
+    {
+      "id": "servant.lishuwen.skill.sc-lishuwen-1",
+      "printedText": "暗劲-被动/行动阶段：花费3点魔力，激活该效果并隐藏你的技能区。当你于行动阶段打出牌时，你可以改为将其暗置作为劲置于一旁（不需花费）。你的战斗阶段，将所有劲分别明置或暗置打出，你可以使用它们的行动阶段能力。\n暗劲持续至你战败。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_lishuwen_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "暗劲-被动/行动阶段：花费3点魔力，激活该效果并隐藏你的技能区。当你于行动阶段打出牌时，你可以改为将其暗置作为劲置于一旁（不需花费）。你的战斗阶段，将所有劲分别明置或暗置打出，你可以使用它们的行动阶段能力。\n暗劲持续至你战败。",
+        "sourceTextSha256": "936e4aaf5696a5ef423ec29d52796667cdb3b4db59a56f2457c9a2d08a3b219e"
+      },
+      "abilities": [
+        {
+          "id": "lishuwen.sc_lishuwen_1.semantic",
+          "printedClause": "暗劲-被动/行动阶段：花费3点魔力，激活该效果并隐藏你的技能区。当你于行动阶段打出牌时，你可以改为将其暗置作为劲置于一旁（不需花费）。你的战斗阶段，将所有劲分别明置或暗置打出，你可以使用它们的行动阶段能力。\n暗劲持续至你战败。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "hidden_jin_staging_rule",
+              "operation": "passive_action_pay_3_mana_activate_and_hide_skill_zone_action_cards_may_be_set_as_free_jin_aside_combat_play_all_jin_face_up_or_down_and_may_use_action_effects_state_last_until_defeat"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "936e4aaf5696a5ef423ec29d52796667cdb3b4db59a56f2457c9a2d08a3b219e"
+    },
+    {
+      "id": "servant.lishuwen.skill.sc-lishuwen-2",
+      "printedText": "【真名解放】\n一击制敌-战斗阶段：移除一张你的，与一名交战对手控制的攻击具有相同属性的暗置攻击并令其【败北】。若如此做，此牌威力翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_lishuwen_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n一击制敌-战斗阶段：移除一张你的，与一名交战对手控制的攻击具有相同属性的暗置攻击并令其【败北】。若如此做，此牌威力翻倍。",
+        "sourceTextSha256": "9fb6e9f9f56bd4f287deebdca277154117d10bd7bcb5c4fc5b9e2100bf8911fd"
+      },
+      "abilities": [
+        {
+          "id": "lishuwen.sc_lishuwen_2.semantic",
+          "printedClause": "【真名解放】\n一击制敌-战斗阶段：移除一张你的，与一名交战对手控制的攻击具有相同属性的暗置攻击并令其【败北】。若如此做，此牌威力翻倍。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "matching_attribute_hidden_attack_defeat_rule",
+              "operation": "true_name_reveal_combat_remove_one_controller_face_down_attack_sharing_attribute_with_engaged_opponent_attack_defeat_that_opponent_and_double_source_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "9fb6e9f9f56bd4f287deebdca277154117d10bd7bcb5c4fc5b9e2100bf8911fd"
+    },
+    {
+      "id": "servant.lishuwen.skill.sc-lishuwen-3",
+      "printedText": "行动阶段：移动至除魔术工房外的任意地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_lishuwen_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "行动阶段：移动至除魔术工房外的任意地点。",
+        "sourceTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+      },
+      "abilities": [
+        {
+          "id": "lishuwen.sc_lishuwen_3.semantic",
+          "printedClause": "行动阶段：移动至除魔术工房外的任意地点。",
+          "kind": "mixed",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "move_player",
+              "scope": "controller",
+              "destinationRule": "any_location_except_workshop"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+    },
+    {
+      "id": "servant.lobo.skill.sc-lobo-1",
+      "printedText": "【真名解放】身披死亡之物-战斗阶段：若你控制【恶嚎】，你可以从手牌或攻击区弃置至多2张你的【复仇者】，每弃置一张，你便可以关闭一张你战斗中的【幸运】或令你战斗中的一名玩家【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_lobo_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】身披死亡之物-战斗阶段：若你控制【恶嚎】，你可以从手牌或攻击区弃置至多2张你的【复仇者】，每弃置一张，你便可以关闭一张你战斗中的【幸运】或令你战斗中的一名玩家【败北】。",
+        "sourceTextSha256": "f723471a5d4b710f8eb9bdaf382dabcfd1cd91977a3c9f84707e7319d2d0f394"
+      },
+      "abilities": [
+        {
+          "id": "lobo.sc_lobo_1.semantic",
+          "printedClause": "【真名解放】身披死亡之物-战斗阶段：若你控制【恶嚎】，你可以从手牌或攻击区弃置至多2张你的【复仇者】，每弃置一张，你便可以关闭一张你战斗中的【幸运】或令你战斗中的一名玩家【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "avenger_discard_close_or_defeat_rule",
+              "operation": "true_name_reveal_combat_if_control_howl_may_discard_up_to_2_own_avenger_from_hand_or_attack_zone_per_discard_choose_close_one_luck_in_battle_or_defeat_one_engaged_player"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "f723471a5d4b710f8eb9bdaf382dabcfd1cd91977a3c9f84707e7319d2d0f394"
+    },
+    {
+      "id": "servant.lobo.skill.sc-lobo-2",
+      "printedText": "被动：被【死缠】的玩家战败时，他失去3点战果。\n被动/行动阶段：花费1点魔力，然后选择一处战场，所有位于此处的对手按回合顺位依次选择移动至一处相邻的地点或被【死缠】至本回合结束。若有对手因此效果进行了移动，将此牌加入攻击。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_lobo_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动：被【死缠】的玩家战败时，他失去3点战果。\n被动/行动阶段：花费1点魔力，然后选择一处战场，所有位于此处的对手按回合顺位依次选择移动至一处相邻的地点或被【死缠】至本回合结束。若有对手因此效果进行了移动，将此牌加入攻击。",
+        "sourceTextSha256": "53994a1a31009e45e5bc7bcb1f6ed8313d2be2180b3a2c2c61db56874c4b8054"
+      },
+      "abilities": [
+        {
+          "id": "lobo.sc_lobo_2.semantic",
+          "printedClause": "被动：被【死缠】的玩家战败时，他失去3点战果。\n被动/行动阶段：花费1点魔力，然后选择一处战场，所有位于此处的对手按回合顺位依次选择移动至一处相邻的地点或被【死缠】至本回合结束。若有对手因此效果进行了移动，将此牌加入攻击。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "death_entangle_forced_move_rule",
+              "operation": "passive_death_entangled_player_loses_3_vp_on_defeat_passive_action_pay_1_mana_choose_battlefield_each_opponent_there_in_turn_order_moves_adjacent_or_becomes_death_entangled_until_round_end_if_any_moved_add_source_to_attack"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "53994a1a31009e45e5bc7bcb1f6ed8313d2be2180b3a2c2c61db56874c4b8054"
+    },
+    {
+      "id": "servant.lobo.skill.sc-lobo-3",
+      "printedText": "被动：当一名对手移动后，你可以向其移动一步，以此法进行的移动可以忽略目的地的人数上限。若你以此法进行了移动，你可以打出一张威力不超过3的攻击，若你打出的是【疾行】，你可以立即使用它的行动阶段能力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_lobo_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动：当一名对手移动后，你可以向其移动一步，以此法进行的移动可以忽略目的地的人数上限。若你以此法进行了移动，你可以打出一张威力不超过3的攻击，若你打出的是【疾行】，你可以立即使用它的行动阶段能力。",
+        "sourceTextSha256": "6e8083c1015af33ac393f592235864807b89f51eef323b93567f4226993a3f12"
+      },
+      "abilities": [
+        {
+          "id": "lobo.sc_lobo_3.semantic",
+          "printedClause": "被动：当一名对手移动后，你可以向其移动一步，以此法进行的移动可以忽略目的地的人数上限。若你以此法进行了移动，你可以打出一张威力不超过3的攻击，若你打出的是【疾行】，你可以立即使用它的行动阶段能力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "reactive_pursuit_play_rule",
+              "operation": "passive_after_opponent_moves_may_move_one_step_toward_them_ignoring_destination_capacity_if_moved_may_play_attack_power_3_or_less_if_sprint_may_immediately_use_action_effect"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "6e8083c1015af33ac393f592235864807b89f51eef323b93567f4226993a3f12"
+    },
+    {
+      "id": "servant.lubu.skill.sc-lubu-1",
+      "printedText": "被动：若你本回合没有与任何对手战斗，则你失去X点战果，你可以持续激活X张本回合激活的基础攻击至下回合结束。（X至少为1。）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_lubu_1",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "被动：若你本回合没有与任何对手战斗，则你失去X点战果，你可以持续激活X张本回合激活的基础攻击至下回合结束。（X至少为1。）",
+        "sourceTextSha256": "4bbc6cce429b082d6af67f99783d28626ddd03ba5fca01843293e101ef507e4f"
+      },
+      "abilities": [
+        {
+          "id": "lubu.sc_lubu_1.semantic",
+          "printedClause": "被动：若你本回合没有与任何对手战斗，则你失去X点战果，你可以持续激活X张本回合激活的基础攻击至下回合结束。（X至少为1。）",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "no_battle_vp_loss_residual_extension_rule",
+              "operation": "passive_if_controller_fought_no_opponent_this_round_lose_x_vp_and_may_keep_x_base_attacks_activated_this_round_active_until_next_round_end_x_at_least_1"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4bbc6cce429b082d6af67f99783d28626ddd03ba5fca01843293e101ef507e4f"
+    },
+    {
+      "id": "servant.lubu.skill.sc-lubu-2",
+      "printedText": "反叛-你从事件牌获得战果为0，因令咒和竞争获得的战果翻倍。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_lubu_2",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "反叛-你从事件牌获得战果为0，因令咒和竞争获得的战果翻倍。",
+        "sourceTextSha256": "e7f8646b1eb894a5c45e37086427df728eec1ddcd5fcf10d0cd4a08838cec94c"
+      },
+      "abilities": [
+        {
+          "id": "lubu.sc_lubu_2.semantic",
+          "printedClause": "反叛-你从事件牌获得战果为0，因令咒和竞争获得的战果翻倍。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "vp_source_multiplier_rule",
+              "operation": "event_card_vp_gain_becomes_0_command_spell_and_competition_vp_gain_doubled"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "e7f8646b1eb894a5c45e37086427df728eec1ddcd5fcf10d0cd4a08838cec94c"
+    },
+    {
+      "id": "servant.lubu.skill.sc-lubu-3",
+      "printedText": "【真名解放】被动/行动阶段：花费你激活的1张非基础攻击的魔力使其基本威力翻倍并变为<每局游戏限一次>。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_lubu_3",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "【真名解放】被动/行动阶段：花费你激活的1张非基础攻击的魔力使其基本威力翻倍并变为<每局游戏限一次>。",
+        "sourceTextSha256": "6dd00c99ea5541f4def01d6e6658874c041bbfa65f136c2abf6170524cdf9a83"
+      },
+      "abilities": [
+        {
+          "id": "lubu.sc_lubu_3.semantic",
+          "printedClause": "【真名解放】被动/行动阶段：花费你激活的1张非基础攻击的魔力使其基本威力翻倍并变为<每局游戏限一次>。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "noble_weapon_power_transform_rule",
+              "operation": "true_name_reveal_passive_action_spend_mana_equal_to_one_activated_non_base_attack_cost_double_its_base_power_and_make_it_once_per_game"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "6dd00c99ea5541f4def01d6e6658874c041bbfa65f136c2abf6170524cdf9a83"
     }
   ]
 }
