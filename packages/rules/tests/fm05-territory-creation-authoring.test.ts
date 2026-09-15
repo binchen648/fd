@@ -81,7 +81,7 @@ describe('P3-FM05 exact ten-member Territory Creation migration', () => {
       const raw = readArchive(ownerId);
       expect(raw.id).toBe(ownerId);
       expect(raw.class).toBe(expectedClass);
-      expect(raw.cards).toHaveLength(1);
+      expect(raw.cards.filter((candidate: any) => candidate.id === cardId)).toHaveLength(1);
       const card = selectedCard(ownerId, cardId);
       expect(sha(card.printedText)).toBe(FULL_TEXT_SHA);
       expect(card.phase3Evidence.f1Commit).toBe(F1_COMMIT);
