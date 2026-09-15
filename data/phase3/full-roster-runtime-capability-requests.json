@@ -9,7 +9,7 @@
     "runtimeRequestCount": 24,
     "genericCapabilityRequestCount": 22,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 642
+    "affectedIdentityCount": 657
   },
   "requests": [
     {
@@ -26355,6 +26355,8 @@
         "servant.brynhildr.skill.sc-brynhildr-1",
         "servant.cu.skill.sc-cu-2",
         "servant.davinci.skill.sc-davinci-11",
+        "servant.diarmuid.skill.sc-diarmuid-3",
+        "servant.donquixote.skill.sc-donquixote-3",
         "servant.drake.skill.sc-drake-2",
         "servant.edison.skill.sc-edison-3",
         "servant.gorgon.skill.sc-gorgon-3",
@@ -27384,6 +27386,48 @@
           "sha256": "f4d485964fe8de4b915da0ab0ae5b3a4b4ed3fc5fdc8342cfa99c53cc7070351"
         },
         {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/迪卢木多·奥迪那.htm"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.diarmuid/迪卢木多·奥迪那"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_diarmuid_3"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[6].skills[2].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/堂吉诃德.htm"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.donquixote/堂吉诃德"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-3",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_donquixote_3"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[71].skills[2].text#line=1",
+          "sha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+        },
+        {
           "abilityId": "servant.drake.skill.sc-drake-2",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/骑兵/英文版/弗朗西斯·德雷克.htm"
@@ -27565,7 +27609,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 27,
+          "shared_handler": 29,
           "specific_handler": 15
         },
         "handlerCount": 28,
@@ -48142,6 +48186,10 @@
         "servant.dantes.skill.sc-dantes-1",
         "servant.dantes.skill.sc-dantes-2",
         "servant.dantes.skill.sc-dantes-3",
+        "servant.danzou.skill.sc-danzou-1",
+        "servant.danzou.skill.sc-danzou-2",
+        "servant.danzou.skill.sc-danzou-3",
+        "servant.darius.skill.sc-darius-4",
         "servant.davinci.skill.sc-davinci-1",
         "servant.davinci.skill.sc-davinci-11",
         "servant.davinci.skill.sc-davinci-12",
@@ -48157,6 +48205,15 @@
         "servant.deon.skill.sc-deon-2",
         "servant.deon.skill.sc-deon-3",
         "servant.diarmuid.skill.sc-diarmuid-1",
+        "servant.diarmuid.skill.sc-diarmuid-2",
+        "servant.dioscuri.skill.sc-dioscuri-1",
+        "servant.dioscuri.skill.sc-dioscuri-2",
+        "servant.dioscuri.skill.sc-dioscuri-3",
+        "servant.donquixote.skill.sc-donquixote-1",
+        "servant.donquixote.skill.sc-donquixote-2",
+        "servant.douman.skill.sc-douman-1",
+        "servant.douman.skill.sc-douman-2",
+        "servant.douman.skill.sc-douman-3",
         "servant.emiya-alt.skill.sc-emiya-alt-1",
         "servant.emiya-alt.skill.sc-emiya-alt-2",
         "servant.emiya-alt.skill.sc-emiya-alt-3",
@@ -56430,6 +56487,126 @@
           "sha256": "5a5af150f0fcbecda5440b4a1f22d19be47180a5e7c2954bab3d72ae242e5823"
         },
         {
+          "abilityId": "servant.danzou.skill.sc-danzou-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/加藤段藏.htm"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.danzou/加藤段藏"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_danzou_1"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[136].skills[0].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[136].skills[0].text#line=2",
+          "sha256": "c1e8534b9abb8aa710bda0cace752e05b5e559ecae9a3fc819489a8b76717e34"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[136].skills[0].text#line=3",
+          "sha256": "1135f2d4c966a8c745f4e4d0ac2b042327f38292dc757e6d0253697e0d30db1d"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/加藤段藏.htm"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.danzou/加藤段藏"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_danzou_2"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[136].skills[1].text#line=1",
+          "sha256": "c5e78590887cbe1659c7764053324e170b3ad9446fc5a8820f0134a2f197464c"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[136].skills[1].text#line=2",
+          "sha256": "32a840c45f182cf6b08dc4bad03661f11fa1221a848c8e1c4266777df4219a6e"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/暗匿者/英文版/加藤段藏.htm"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.danzou/加藤段藏"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_danzou_3"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[136].skills[2].text#line=1",
+          "sha256": "ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[136].skills[2].text#line=2",
+          "sha256": "1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[136].skills[2].text#line=3",
+          "sha256": "0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217"
+        },
+        {
+          "abilityId": "servant.danzou.skill.sc-danzou-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[136].skills[2].text#line=4",
+          "sha256": "1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871"
+        },
+        {
+          "abilityId": "servant.darius.skill.sc-darius-4",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/狂战士/英文版/大流士三世.htm"
+        },
+        {
+          "abilityId": "servant.darius.skill.sc-darius-4",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.darius/大流士三世"
+        },
+        {
+          "abilityId": "servant.darius.skill.sc-darius-4",
+          "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+          "locator": "sc_darius_4"
+        },
+        {
+          "abilityId": "servant.darius.skill.sc-darius-4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[150].skills[3].text#line=1",
+          "sha256": "bf13eb6e32a5443b49070de1ed27b71b247d29a9a44e712595cd7792bafd7ff6"
+        },
+        {
           "abilityId": "servant.davinci.skill.sc-davinci-1",
           "document": "FD全卡图鉴V2.0.chm",
           "locator": "从者/魔术师/英文版/莱昂纳多·达·芬奇2.htm"
@@ -56809,6 +56986,273 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[69].abilities[1].printedClause",
           "sha256": "37fdf0a0cfb88b19565890779e408dcc631813aec8854cd8b226449f6ea97042"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/迪卢木多·奥迪那.htm"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.diarmuid/迪卢木多·奥迪那"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-2",
+          "document": "Fate_Domination-开发版/data_servants.js",
+          "locator": "sc_diarmuid_2"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[6].skills[1].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[6].skills[1].text#line=2",
+          "sha256": "987af1b562175252b5e8bc061c4dc43a173b2ad5287d900717be0dce30dd4efb"
+        },
+        {
+          "abilityId": "servant.diarmuid.skill.sc-diarmuid-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[6].skills[1].text#line=3",
+          "sha256": "5bd86d1591bc112bf292b688cd492dbb2ee1a4646ae0c46f116392e52cd29d58"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/狄俄斯库里.htm"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.dioscuri/狄俄斯库里"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-1",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_dioscuri_1"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[32].skills[0].text#line=1",
+          "sha256": "d36c531e40555e9a54854f404b82ce0c89ca8776324ce8fc7b3037d5018252f2"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[32].skills[0].text#line=2",
+          "sha256": "9683e261ce5a6048edf33a94871e27f522ebb1d7ca73ccc7ad691138aa721643"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[32].skills[0].text#line=3",
+          "sha256": "c11d41fd344fcf43e4891c3f73c5681253ea6d33cc80ec455d953f96b674d2a8"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[32].skills[0].text#line=4",
+          "sha256": "77f47a063012a9043dc1266318c888468c7bfe6f5c900de078a2ec5c1618e1ca"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/狄俄斯库里.htm"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.dioscuri/狄俄斯库里"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-2",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_dioscuri_2"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[32].skills[1].text#line=1",
+          "sha256": "1c0b4de2d173c6832a720205142fd14d52485c65568e8469189acb9fd862a1cb"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[32].skills[1].text#line=2",
+          "sha256": "86d091e8c9cbb6733ed74dab3cb89c2147fadc69989d3ed6f0b459c37ab74ef8"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[32].skills[1].text#line=3",
+          "sha256": "d42edb37d621833361d3e0d44afc06a100e47d8c6b3af07c7b4ead84e22c0823"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/剑士/英文版/狄俄斯库里.htm"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.dioscuri/狄俄斯库里"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-3",
+          "document": "Fate_Domination-开发版/batch_saber_archer.js",
+          "locator": "sc_dioscuri_3"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[32].skills[2].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[32].skills[2].text#line=2",
+          "sha256": "c0d128658d902e8867e552f8dacbdd2f93d2a8969491eef227b3cf11a98c7090"
+        },
+        {
+          "abilityId": "servant.dioscuri.skill.sc-dioscuri-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[32].skills[2].text#line=3",
+          "sha256": "c6bfa2c22c973bf448e41844e7622741012052205f109bd5c56cd4c9bf5ca062"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/堂吉诃德.htm"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.donquixote/堂吉诃德"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-1",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_donquixote_1"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[71].skills[0].text#line=1",
+          "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[71].skills[0].text#line=2",
+          "sha256": "369bd3fd9e43a084018c63772534968cd5b83deb53dc900dddcddf264ad71ba8"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[71].skills[0].text#line=3",
+          "sha256": "7a545430010ef410c0981da7c3b2b5496dd0a2f7c63b16d72a763165f7532503"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/枪兵/英文版/堂吉诃德.htm"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.donquixote/堂吉诃德"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-2",
+          "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+          "locator": "sc_donquixote_2"
+        },
+        {
+          "abilityId": "servant.donquixote.skill.sc-donquixote-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[71].skills[1].text#line=1",
+          "sha256": "5b46298beac8cd978bc2542ba4c7647d8c04f2f4262ff6fd4162de2394e8b40e"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-1",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/他人格/英文版/芦屋道满.htm"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-1",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.douman/芦屋道满"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-1",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_douman_1"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[107].skills[0].text#line=1",
+          "sha256": "caa0a1cf5093a3e57b4cb15acf624ae736eede8b8ae39a227dd1619ca469b975"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[107].skills[0].text#line=2",
+          "sha256": "883f36cdb6695d637ca368a29bd811998c3744916f76fda58db01609bf8126ad"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-2",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/他人格/英文版/芦屋道满.htm"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-2",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.douman/芦屋道满"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-2",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_douman_2"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[107].skills[1].text#line=1",
+          "sha256": "a545d48f45ae70ed3f36f8d1dea0e696fe7f51b2217fbc90da1e83cfd822bdf8"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[107].skills[1].text#line=2",
+          "sha256": "af0d70adca9e4fc3e2ad92034db5e2897a06d64b312d02f4c9d80b59dae74973"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-3",
+          "document": "FD全卡图鉴V2.0.chm",
+          "locator": "从者/他人格/英文版/芦屋道满.htm"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-3",
+          "document": "Fate_Domination-开发版",
+          "locator": "servant.douman/芦屋道满"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-3",
+          "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+          "locator": "sc_douman_3"
+        },
+        {
+          "abilityId": "servant.douman.skill.sc-douman-3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "servants[107].skills[2].text#line=1",
+          "sha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
         },
         {
           "abilityId": "servant.emiya-alt.skill.sc-emiya-alt-1",
@@ -59255,10 +59699,10 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "none": 1,
-          "shared_handler": 213,
-          "specific_handler": 194
+          "shared_handler": 218,
+          "specific_handler": 202
         },
-        "handlerCount": 249,
+        "handlerCount": 257,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

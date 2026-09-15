@@ -24790,6 +24790,404 @@
         }
       ],
       "referencePrintedTextSha256": "5a5af150f0fcbecda5440b4a1f22d19be47180a5e7c2954bab3d72ae242e5823"
+    },
+    {
+      "id": "servant.danzou.skill.sc-danzou-1",
+      "printedText": "【真名解放】\n真空刀刃-行动阶段：展示并弃置至多5张你的手牌。\n战斗阶段：令一名未控制威力高于你以真空刀刃弃置的牌的基本威力之和的攻击的交战玩家【败北】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_danzou_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "【真名解放】\n真空刀刃-行动阶段：展示并弃置至多5张你的手牌。\n战斗阶段：令一名未控制威力高于你以真空刀刃弃置的牌的基本威力之和的攻击的交战玩家【败北】。",
+        "sourceTextSha256": "ea6ebe172951450161acafb212074b3a9c7f3ea1d70e01a662e05dc30a10ebdc"
+      },
+      "abilities": [
+        {
+          "id": "danzou.sc-danzou-1.semantic",
+          "printedClause": "【真名解放】\n真空刀刃-行动阶段：展示并弃置至多5张你的手牌。\n战斗阶段：令一名未控制威力高于你以真空刀刃弃置的牌的基本威力之和的攻击的交战玩家【败北】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "hand_discard_sum_defeat_rule",
+              "operation": "action_reveal_and_discard_up_to_5_hand_cards_then_combat_defeat_one_engaged_player_without_attack_power_above_sum_of_discarded_base_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "ea6ebe172951450161acafb212074b3a9c7f3ea1d70e01a662e05dc30a10ebdc"
+    },
+    {
+      "id": "servant.danzou.skill.sc-danzou-2",
+      "printedText": "超频-被动/行动阶段：【真名解放】。若你原本真名隐藏，你可以追加打出任意张加藤段藏的技能牌（你拥有的魔力少于8点也可打出）。\n战术重构-战斗阶段：若你获胜，隐藏真名并抽4张牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_danzou_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "超频-被动/行动阶段：【真名解放】。若你原本真名隐藏，你可以追加打出任意张加藤段藏的技能牌（你拥有的魔力少于8点也可打出）。\n战术重构-战斗阶段：若你获胜，隐藏真名并抽4张牌。",
+        "sourceTextSha256": "77078354128464a3235acc7d35cf49491225a6d7eb1dd2ee3548469917ea47fe"
+      },
+      "abilities": [
+        {
+          "id": "danzou.sc-danzou-2.semantic",
+          "printedClause": "超频-被动/行动阶段：【真名解放】。若你原本真名隐藏，你可以追加打出任意张加藤段藏的技能牌（你拥有的魔力少于8点也可打出）。\n战术重构-战斗阶段：若你获胜，隐藏真名并抽4张牌。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "true_name_hide_and_action_replay_rule",
+              "operation": "action_true_name_reveal_if_was_hidden_may_play_any_number_own_skill_cards_even_below_8_mana_then_if_combat_win_hide_true_name_and_draw_4"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "77078354128464a3235acc7d35cf49491225a6d7eb1dd2ee3548469917ea47fe"
+    },
+    {
+      "id": "servant.danzou.skill.sc-danzou-3",
+      "printedText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_danzou_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+        "sourceTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+      },
+      "abilities": [
+        {
+          "id": "danzou.sc-danzou-3.semantic",
+          "printedClause": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "presence_concealment_assassination_rule",
+              "operation": "combat_after_power_resolution_if_controller_below_all_top_power_opponents_no_other_opponent_above_controller_and_at_least_3_participants_defeat_all_top_power_engaged_opponents"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f"
+    },
+    {
+      "id": "servant.darius.skill.sc-darius-4",
+      "printedText": "残留-唯一：战斗阶段结束后，若你处于交战状态，关闭你一半数量的【不死兵】（向上取整）",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_berserker_extra.js",
+        "locator": "sc_darius_4",
+        "sourceFileSha256": "6bf26e40ff08ff632ac5dcee88a9cda4684e60ca71c39adadbb239d1f3723fdc",
+        "sourceText": "残留-唯一：战斗阶段结束后，若你处于交战状态，关闭你一半数量的【不死兵】（向上取整）",
+        "sourceTextSha256": "bf13eb6e32a5443b49070de1ed27b71b247d29a9a44e712595cd7792bafd7ff6"
+      },
+      "abilities": [
+        {
+          "id": "darius.sc-darius-4.semantic",
+          "printedClause": "残留-唯一：战斗阶段结束后，若你处于交战状态，关闭你一半数量的【不死兵】（向上取整）",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "undead_army_half_close_rule",
+              "operation": "persistent_unique_after_combat_if_engaged_close_half_of_controller_undead_army_rounded_up"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "bf13eb6e32a5443b49070de1ed27b71b247d29a9a44e712595cd7792bafd7ff6"
+    },
+    {
+      "id": "servant.diarmuid.skill.sc-diarmuid-2",
+      "printedText": "【真名解放】\n战斗阶段：花费6点魔力，关闭此牌并将【必灭的黄蔷薇】加入攻击。\n战斗阶段：将此战场所有对手的宝具威力变为0。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_diarmuid_2",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "【真名解放】\n战斗阶段：花费6点魔力，关闭此牌并将【必灭的黄蔷薇】加入攻击。\n战斗阶段：将此战场所有对手的宝具威力变为0。",
+        "sourceTextSha256": "06512fe81c1eb2a346fd6d05e12b26b113aa257701bc92533a0cacfa02d7401d"
+      },
+      "abilities": [
+        {
+          "id": "diarmuid.sc-diarmuid-2.semantic",
+          "printedClause": "【真名解放】\n战斗阶段：花费6点魔力，关闭此牌并将【必灭的黄蔷薇】加入攻击。\n战斗阶段：将此战场所有对手的宝具威力变为0。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "noble_phantasm_suppression_rule",
+              "operation": "combat_pay_6_mana_close_source_add_yellow_rose_to_attack_and_set_all_opponents_noble_phantasm_power_at_battlefield_to_0"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "06512fe81c1eb2a346fd6d05e12b26b113aa257701bc92533a0cacfa02d7401d"
+    },
+    {
+      "id": "servant.diarmuid.skill.sc-diarmuid-3",
+      "printedText": "行动阶段：移动至除魔术工房外的任意地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_servants.js",
+        "locator": "sc_diarmuid_3",
+        "sourceFileSha256": "6da31ebdf36561c550dfe9725963a71496705050e90a8b5a87464f501ee43ae3",
+        "sourceText": "行动阶段：移动至除魔术工房外的任意地点。",
+        "sourceTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+      },
+      "abilities": [
+        {
+          "id": "diarmuid.sc-diarmuid-3.semantic",
+          "printedClause": "行动阶段：移动至除魔术工房外的任意地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "move_player",
+              "scope": "controller",
+              "destinationRule": "any_location_except_workshop"
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+    },
+    {
+      "id": "servant.dioscuri.skill.sc-dioscuri-1",
+      "printedText": "被动：你的基础力量攻击和【幸运】属于波鲁克斯。\n狄俄斯库里里的其他攻击属于卡斯托耳。\n当你于常规打牌打出两张狄俄斯库里里的正面朝上攻击时，一张必须属于波鲁克斯，另一张必须属于卡斯托耳。\n波鲁克斯和卡斯托耳的攻击受到两倍的力量修正。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_dioscuri_1",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "被动：你的基础力量攻击和【幸运】属于波鲁克斯。\n狄俄斯库里里的其他攻击属于卡斯托耳。\n当你于常规打牌打出两张狄俄斯库里里的正面朝上攻击时，一张必须属于波鲁克斯，另一张必须属于卡斯托耳。\n波鲁克斯和卡斯托耳的攻击受到两倍的力量修正。",
+        "sourceTextSha256": "4a7566cd19e92ff32beec08cf99c4672e77f809788bee6404bd306dbe4ee22d4"
+      },
+      "abilities": [
+        {
+          "id": "dioscuri.sc-dioscuri-1.semantic",
+          "printedClause": "被动：你的基础力量攻击和【幸运】属于波鲁克斯。\n狄俄斯库里里的其他攻击属于卡斯托耳。\n当你于常规打牌打出两张狄俄斯库里里的正面朝上攻击时，一张必须属于波鲁克斯，另一张必须属于卡斯托耳。\n波鲁克斯和卡斯托耳的攻击受到两倍的力量修正。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "dual_servant_rule",
+              "operation": "base_power_attacks_and_luck_belong_to_pollux_other_dioscuri_attacks_to_castor_normal_two_faceup_play_requires_one_each_and_both_receive_double_power_modifiers"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "4a7566cd19e92ff32beec08cf99c4672e77f809788bee6404bd306dbe4ee22d4"
+    },
+    {
+      "id": "servant.dioscuri.skill.sc-dioscuri-2",
+      "printedText": "炽烈燃烧-被动/行动阶段：打出一张卡斯托耳的攻击。\n卡斯托耳的基础攻击获得<每局游戏限一次>。\n被动/行动阶段：【真名解放】。弃置2张牌，从你的牌库中选择一张牌加入手牌。你可以花费4点魔力，改为从你的弃牌堆中选择。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_dioscuri_2",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "炽烈燃烧-被动/行动阶段：打出一张卡斯托耳的攻击。\n卡斯托耳的基础攻击获得<每局游戏限一次>。\n被动/行动阶段：【真名解放】。弃置2张牌，从你的牌库中选择一张牌加入手牌。你可以花费4点魔力，改为从你的弃牌堆中选择。",
+        "sourceTextSha256": "c46180ae4ec4d0aa4fef1f75128ae5d3a444d01c60c786a0eeef125071846727"
+      },
+      "abilities": [
+        {
+          "id": "dioscuri.sc-dioscuri-2.semantic",
+          "printedClause": "炽烈燃烧-被动/行动阶段：打出一张卡斯托耳的攻击。\n卡斯托耳的基础攻击获得<每局游戏限一次>。\n被动/行动阶段：【真名解放】。弃置2张牌，从你的牌库中选择一张牌加入手牌。你可以花费4点魔力，改为从你的弃牌堆中选择。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "dual_servant_rule",
+              "operation": "action_play_one_castor_attack_castor_base_attacks_gain_once_per_game_then_true_name_reveal_discard_2_search_deck_one_card_to_hand_or_pay_4_to_search_discard_instead"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "c46180ae4ec4d0aa4fef1f75128ae5d3a444d01c60c786a0eeef125071846727"
+    },
+    {
+      "id": "servant.dioscuri.skill.sc-dioscuri-3",
+      "printedText": "【真名解放】\n坚定铁拳-被动/行动阶段：弃置一张波鲁克斯的攻击。波鲁克斯的攻击+1威力。\n双子座之颂-战斗阶段：狄俄斯库里里的其他攻击+2威力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_saber_archer.js",
+        "locator": "sc_dioscuri_3",
+        "sourceFileSha256": "b2d01ee53abbd6cade232d5ea8252ea74bd7fe1fc22619116a19c1148b234ea4",
+        "sourceText": "【真名解放】\n坚定铁拳-被动/行动阶段：弃置一张波鲁克斯的攻击。波鲁克斯的攻击+1威力。\n双子座之颂-战斗阶段：狄俄斯库里里的其他攻击+2威力。",
+        "sourceTextSha256": "95fd0285e43ead2462169b0df2b5f963a60a8453ea7e989b72a05ab3e3fee54e"
+      },
+      "abilities": [
+        {
+          "id": "dioscuri.sc-dioscuri-3.semantic",
+          "printedClause": "【真名解放】\n坚定铁拳-被动/行动阶段：弃置一张波鲁克斯的攻击。波鲁克斯的攻击+1威力。\n双子座之颂-战斗阶段：狄俄斯库里里的其他攻击+2威力。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "dual_servant_rule",
+              "operation": "action_true_name_reveal_discard_one_pollux_attack_pollux_attacks_gain_1_power_then_combat_other_dioscuri_attacks_gain_2_power"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "95fd0285e43ead2462169b0df2b5f963a60a8453ea7e989b72a05ab3e3fee54e"
+    },
+    {
+      "id": "servant.donquixote.skill.sc-donquixote-1",
+      "printedText": "【真名解放】\n愚者之勇-若你战败，此牌魔力消耗与威力+3直至游戏结束（至多+12）。\n向风车的冲锋-行动阶段：若你独自位于一处战场，获得该战场的竞争战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_donquixote_1",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "【真名解放】\n愚者之勇-若你战败，此牌魔力消耗与威力+3直至游戏结束（至多+12）。\n向风车的冲锋-行动阶段：若你独自位于一处战场，获得该战场的竞争战果。",
+        "sourceTextSha256": "2243656a60c4d0cdabfd00a1bafbaa796142cf449760be088b6516b3586d1908"
+      },
+      "abilities": [
+        {
+          "id": "donquixote.sc-donquixote-1.semantic",
+          "printedClause": "【真名解放】\n愚者之勇-若你战败，此牌魔力消耗与威力+3直至游戏结束（至多+12）。\n向风车的冲锋-行动阶段：若你独自位于一处战场，获得该战场的竞争战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "growth_counter_rule",
+              "operation": "true_name_reveal_each_defeat_permanently_increases_source_mana_cost_and_power_by_3_up_to_12_then_action_if_alone_at_battlefield_gain_its_competition_vp"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "2243656a60c4d0cdabfd00a1bafbaa796142cf449760be088b6516b3586d1908"
+    },
+    {
+      "id": "servant.donquixote.skill.sc-donquixote-2",
+      "printedText": "被动：当你赢得一场战斗时，该战斗中每张印刷战果数小于等于2的事件牌令你额外获得2点战果；每张印刷战果数大于等于4的事件牌令你少获得2点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_donquixote_2",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "被动：当你赢得一场战斗时，该战斗中每张印刷战果数小于等于2的事件牌令你额外获得2点战果；每张印刷战果数大于等于4的事件牌令你少获得2点战果。",
+        "sourceTextSha256": "5b46298beac8cd978bc2542ba4c7647d8c04f2f4262ff6fd4162de2394e8b40e"
+      },
+      "abilities": [
+        {
+          "id": "donquixote.sc-donquixote-2.semantic",
+          "printedClause": "被动：当你赢得一场战斗时，该战斗中每张印刷战果数小于等于2的事件牌令你额外获得2点战果；每张印刷战果数大于等于4的事件牌令你少获得2点战果。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "event_printed_vp_adjustment_rule",
+              "operation": "on_combat_win_each_event_with_printed_vp_at_most_2_adds_2_vp_and_each_event_with_printed_vp_at_least_4_reduces_gain_by_2"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "5b46298beac8cd978bc2542ba4c7647d8c04f2f4262ff6fd4162de2394e8b40e"
+    },
+    {
+      "id": "servant.donquixote.skill.sc-donquixote-3",
+      "printedText": "行动阶段：移动至除魔术工房外的任意地点。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_lancer_rider.js",
+        "locator": "sc_donquixote_3",
+        "sourceFileSha256": "4123b4e5f01a099eb7e0bb04a3aaf5366bdcd6aa6f4eb02d6dd498b6b65a7f0f",
+        "sourceText": "行动阶段：移动至除魔术工房外的任意地点。",
+        "sourceTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+      },
+      "abilities": [
+        {
+          "id": "donquixote.sc-donquixote-3.semantic",
+          "printedClause": "行动阶段：移动至除魔术工房外的任意地点。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "move_player",
+              "scope": "controller",
+              "destinationRule": "any_location_except_workshop"
+            }
+          ],
+          "activation": {
+            "phase": "action"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "5d3fd4e656083f54831c208f2e7b3c9a4ffd5977776e3a3b5214c868596ca1c0"
+    },
+    {
+      "id": "servant.douman.skill.sc-douman-1",
+      "printedText": "行动阶段：【诅咒】当前地点的对手直至他们赢得一场争夺战。\n反转：【真名解放】你的合计威力+12-2X，X为未被诅咒的对手数。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_douman_1",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "行动阶段：【诅咒】当前地点的对手直至他们赢得一场争夺战。\n反转：【真名解放】你的合计威力+12-2X，X为未被诅咒的对手数。",
+        "sourceTextSha256": "0f1205fa172011ec90976d42df639de6dc53c33acbed580ce4e7d24bda55c29f"
+      },
+      "abilities": [
+        {
+          "id": "douman.sc-douman-1.semantic",
+          "printedClause": "行动阶段：【诅咒】当前地点的对手直至他们赢得一场争夺战。\n反转：【真名解放】你的合计威力+12-2X，X为未被诅咒的对手数。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "reverse_effect_rule",
+              "operation": "action_curse_opponents_at_current_location_until_they_win_contested_battle_reverse_true_name_reveal_total_power_plus_12_minus_2_times_uncursed_opponents"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0f1205fa172011ec90976d42df639de6dc53c33acbed580ce4e7d24bda55c29f"
+    },
+    {
+      "id": "servant.douman.skill.sc-douman-2",
+      "printedText": "行动阶段：本回合中，每有一位对手战败，你便获得1点战果。若被【诅咒】的玩家本回合不进行战斗，则其在回合结束时失去3点战果。\n反转/行动阶段：所有玩家本回合不会失去【诅咒】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_douman_2",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "行动阶段：本回合中，每有一位对手战败，你便获得1点战果。若被【诅咒】的玩家本回合不进行战斗，则其在回合结束时失去3点战果。\n反转/行动阶段：所有玩家本回合不会失去【诅咒】。",
+        "sourceTextSha256": "62b9ef6d355c14f1b04b43f3d0d5efeee5d3a93489da53bc8a9a4744b839658b"
+      },
+      "abilities": [
+        {
+          "id": "douman.sc-douman-2.semantic",
+          "printedClause": "行动阶段：本回合中，每有一位对手战败，你便获得1点战果。若被【诅咒】的玩家本回合不进行战斗，则其在回合结束时失去3点战果。\n反转/行动阶段：所有玩家本回合不会失去【诅咒】。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "reverse_effect_rule",
+              "operation": "action_this_round_gain_1_vp_per_opponent_defeated_and_cursed_noncombatants_lose_3_vp_at_round_end_reverse_action_all_players_keep_curse_this_round"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "62b9ef6d355c14f1b04b43f3d0d5efeee5d3a93489da53bc8a9a4744b839658b"
+    },
+    {
+      "id": "servant.douman.skill.sc-douman-3",
+      "printedText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/batch_caster_assassin.js",
+        "locator": "sc_douman_3",
+        "sourceFileSha256": "d6f1b5d4173f437d6592904a73def7006065d8e8ac8ed333e1cbec733f3a5bc0",
+        "sourceText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+        "sourceTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+      },
+      "abilities": [
+        {
+          "id": "douman.sc-douman-3.semantic",
+          "printedClause": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+          "kind": "mixed",
+          "effects": [
+            {
+              "type": "reverse_effect_rule",
+              "operation": "persistent_when_controller_places_card_in_play_may_close_alterego_to_grant_its_reverse_effect_or_if_none_choose_any_combination_of_power_quick_magic_attributes_after_play"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
     }
   ]
 }
