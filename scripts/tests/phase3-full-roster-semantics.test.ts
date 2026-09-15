@@ -1036,6 +1036,39 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(rejected.blocks).toContain('SEMANTIC_SOURCE_CONFLICT');
   });
 
+  it('grounds the ten-ID Rin and Shinji slice with exact development snapshots and explicit play/replacement semantics', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = new Set([
+      'master.rin.skill.s1', 'master.rin.skill.s2', 'master.rin.skill.s3', 'master.rin.skill.s4', 'master.rin.skill.ascension',
+      'master.shinji.skill.s1', 'master.shinji.skill.s2', 'master.shinji.skill.s3', 'master.shinji.skill.s4', 'master.shinji.skill.ascension',
+    ]);
+    const slice = overlays.filter((card) => ids.has(card.id));
+    expect(slice).toHaveLength(10);
+    expect(slice.every((card) =>
+      card.source?.authority === 'DEVELOPMENT_TEXT' &&
+      card.source.document === 'Fate_Domination-开发版/data_masters.js' &&
+      card.source.sourceFileSha256 === 'c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825' &&
+      createHash('sha256').update(card.source.sourceText, 'utf8').digest('hex') === card.source.sourceTextSha256
+    )).toBe(true);
+
+    const rinGem = slice.find((card) => card.id === 'master.rin.skill.s3');
+    expect(rinGem?.abilities[0].effects).toEqual(expect.arrayContaining([
+      expect.objectContaining({ type: 'choose_one' }),
+    ]));
+    expect(JSON.stringify(rinGem)).toContain('play_card_by_definition_from_outside_game');
+    expect(JSON.stringify(rinGem)).toContain('selectedHandCardIds.count');
+    expect(rinGem?.abilities[0].limit).toMatchObject({ cadence: 'once_per_game', scope: 'per_gem_instance' });
+
+    const shinjiBook = slice.find((card) => card.id === 'master.shinji.skill.s4');
+    expect(JSON.stringify(shinjiBook)).toContain('servant_ownership_rule');
+    expect(JSON.stringify(shinjiBook)).toContain('master_identity_rule');
+    expect(JSON.stringify(shinjiBook)).toContain('preserveVictoryPoints');
+
+    const core = slice.find((card) => card.id === 'master.shinji.skill.ascension');
+    expect(JSON.stringify(core)).toContain('controller_first_servant_is');
+    expect(JSON.stringify(core)).toContain('event_victory_points_gained');
+  });
+
   it('keeps the checked-in full-roster JSON and Markdown matrix count-identical with zero unclassified identities', () => {
     const inventory = JSON.parse(
       readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8'),
@@ -1057,10 +1090,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 157,
-      blockedCount: 787,
+      sourceGroundedCount: 167,
+      blockedCount: 777,
       unclassifiedCount: 0,
-      structuredAbilityCount: 294,
+      structuredAbilityCount: 315,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

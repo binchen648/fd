@@ -9,7 +9,7 @@
     "runtimeRequestCount": 23,
     "genericCapabilityRequestCount": 21,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 157
+    "affectedIdentityCount": 167
   },
   "requests": [
     {
@@ -609,6 +609,7 @@
         "master.goredolf.skill.s1a",
         "master.hinako.skill.s2",
         "master.hinako.skill.s4",
+        "master.rin.skill.s3",
         "master.sion.skill.s13",
         "master.wodime.skill.s2",
         "servant.caligula.skill.sc-caligula-1",
@@ -881,6 +882,51 @@
           "sha256": "00348bc72491f5dd1b17c8795903541c14f36c86e84a5cf6117b56475b34255e"
         },
         {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s3#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s3"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=2",
+          "sha256": "5cb8cc0584c3947a3417c6e47fa2e82bad23f108beecb56b6e52fe7a73d2a8c0"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=3",
+          "sha256": "0ac25f48c2d3c654c7d4c432e74bcc7c18ab04afe95074548a7d206dcf41c805"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=4",
+          "sha256": "afb92f89d19eed9a2a768220f7b8e8c953acc68d7a3bc2ba7f16fb94b501e95e"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=5",
+          "sha256": "9d13e552ca4191717d6bdfbc7533d2af9a78fb7b2039ee415f8cd9d8bdc0ca18"
+        },
+        {
           "abilityId": "master.sion.skill.s13",
           "document": "Fate_Domination-开发版",
           "locator": "master.sion/紫苑·艾尔特纳姆"
@@ -1093,9 +1139,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 11,
-          "specific_handler": 4
+          "specific_handler": 5
         },
-        "handlerCount": 8,
+        "handlerCount": 9,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -1153,6 +1199,9 @@
         "master.peperoncino.skill.s2",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.ascension",
+        "master.rin.skill.s2",
+        "master.shinji.skill.s3",
         "master.twice.skill.ascension",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s2",
@@ -2513,6 +2562,81 @@
           "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.ascension#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/ascension"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=1",
+          "sha256": "764186a6e18e6809aae2fac1606962feda161ba0f7e5a91e9d5a2a4575f2d0f2"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=2",
+          "sha256": "d420cb5378f198e4b8460b1dd55466d5d2211e0af1da676d4cb8d078618979dd"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=3",
+          "sha256": "dc979913ab90f001064390c0a94568676b98316a1b3d38739f1851df9833c384"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s2#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s2"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[1].text#line=1",
+          "sha256": "dfb0c1309e905d358d459460f23cf6993f48565fc08ca77bd3cf87b43634aa28"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.s3#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/s3"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[2].text#line=1",
+          "sha256": "ab192089e51de200b3818017d6c94a671644b18b06b78762e67468111a9ab768"
+        },
+        {
           "abilityId": "master.twice.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.twice/特维斯·I·皮斯曼"
@@ -3397,9 +3521,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 58,
-          "specific_handler": 21
+          "specific_handler": 24
         },
-        "handlerCount": 29,
+        "handlerCount": 32,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -3597,6 +3721,11 @@
         "master.hinako.skill.s1a",
         "master.kadoc.skill.ascension",
         "master.ophelia.skill.ascension",
+        "master.rin.skill.ascension",
+        "master.rin.skill.s3",
+        "master.rin.skill.s4",
+        "master.shinji.skill.ascension",
+        "master.shinji.skill.s2",
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
         "servant.amakusa.skill.sc-amakusa-1",
@@ -4149,6 +4278,153 @@
           "sha256": "0b36c27da8e8e4204cd27b87970303af4fa64c020ac7870418f38c89943ec84c"
         },
         {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.ascension#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/ascension"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=1",
+          "sha256": "764186a6e18e6809aae2fac1606962feda161ba0f7e5a91e9d5a2a4575f2d0f2"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=2",
+          "sha256": "d420cb5378f198e4b8460b1dd55466d5d2211e0af1da676d4cb8d078618979dd"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=3",
+          "sha256": "dc979913ab90f001064390c0a94568676b98316a1b3d38739f1851df9833c384"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s3#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s3"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=2",
+          "sha256": "5cb8cc0584c3947a3417c6e47fa2e82bad23f108beecb56b6e52fe7a73d2a8c0"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=3",
+          "sha256": "0ac25f48c2d3c654c7d4c432e74bcc7c18ab04afe95074548a7d206dcf41c805"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=4",
+          "sha256": "afb92f89d19eed9a2a768220f7b8e8c953acc68d7a3bc2ba7f16fb94b501e95e"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=5",
+          "sha256": "9d13e552ca4191717d6bdfbc7533d2af9a78fb7b2039ee415f8cd9d8bdc0ca18"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s4#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s4"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[3].text#line=1",
+          "sha256": "0920b9a2a1323b9d495e68e604dca664d584583a02e1d034181569b54fac9ad2"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[3].text#line=2",
+          "sha256": "7ee407d9af9e4bd2db96350d8afbeb62dc33997fc27af041c37bcf0df4e84516"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.ascension#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/ascension"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[4].text#line=1",
+          "sha256": "807f73bce3a525bb284717c080adb54fe809def1d4ac8d599b3903faa1850707"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.s2#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/s2"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[1].text#line=1",
+          "sha256": "65930c3e1c3105fa047b5e61c1aea90ccca535edf590fad93cb1e6f1b8b74b92"
+        },
+        {
           "abilityId": "master.twice.skill.s1",
           "document": "Fate_Domination-开发版",
           "locator": "master.twice/特维斯·I·皮斯曼"
@@ -4519,10 +4795,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 28,
-          "specific_handler": 7
+          "shared_handler": 31,
+          "specific_handler": 9
         },
-        "handlerCount": 11,
+        "handlerCount": 15,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -4589,6 +4865,13 @@
         "master.peperoncino.skill.s2",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.ascension",
+        "master.rin.skill.s2",
+        "master.rin.skill.s4",
+        "master.shinji.skill.ascension",
+        "master.shinji.skill.s1",
+        "master.shinji.skill.s3",
+        "master.shinji.skill.s4",
         "master.sion.skill.s13",
         "master.twice.skill.ascension",
         "master.twice.skill.s1",
@@ -6179,6 +6462,177 @@
           "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.ascension#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/ascension"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=1",
+          "sha256": "764186a6e18e6809aae2fac1606962feda161ba0f7e5a91e9d5a2a4575f2d0f2"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=2",
+          "sha256": "d420cb5378f198e4b8460b1dd55466d5d2211e0af1da676d4cb8d078618979dd"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=3",
+          "sha256": "dc979913ab90f001064390c0a94568676b98316a1b3d38739f1851df9833c384"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s2#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s2"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[1].text#line=1",
+          "sha256": "dfb0c1309e905d358d459460f23cf6993f48565fc08ca77bd3cf87b43634aa28"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s4#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s4"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[3].text#line=1",
+          "sha256": "0920b9a2a1323b9d495e68e604dca664d584583a02e1d034181569b54fac9ad2"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[3].text#line=2",
+          "sha256": "7ee407d9af9e4bd2db96350d8afbeb62dc33997fc27af041c37bcf0df4e84516"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.ascension#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/ascension"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[4].text#line=1",
+          "sha256": "807f73bce3a525bb284717c080adb54fe809def1d4ac8d599b3903faa1850707"
+        },
+        {
+          "abilityId": "master.shinji.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.s1#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/s1"
+        },
+        {
+          "abilityId": "master.shinji.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[0].text#line=1",
+          "sha256": "135c32f6a2c99d178870dfe25a15126672b1e30448eab864a1f5fe1a78f3eaa4"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.s3#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/s3"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[2].text#line=1",
+          "sha256": "ab192089e51de200b3818017d6c94a671644b18b06b78762e67468111a9ab768"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.s4#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/s4"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[3].text#line=1",
+          "sha256": "f2137f50ea381cd89ddf810e42b10d2cd1eadc9d3a5fc4b0c2071db2cb965427"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[3].text#line=2",
+          "sha256": "7050c5acdb9c773fe60d03b17b54a2a96c965c573ff82d9003aaab73398f392c"
+        },
+        {
           "abilityId": "master.sion.skill.s13",
           "document": "Fate_Domination-开发版",
           "locator": "master.sion/紫苑·艾尔特纳姆"
@@ -7767,10 +8221,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 93,
-          "specific_handler": 24
+          "shared_handler": 96,
+          "specific_handler": 28
         },
-        "handlerCount": 31,
+        "handlerCount": 37,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -9240,6 +9694,8 @@
         "master.peperoncino.skill.s1b",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.s3",
+        "master.rin.skill.s4",
         "servant.andersen.skill.sc-andersen-2",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.atalanta.skill.sc-atalanta-1",
@@ -10037,6 +10493,78 @@
           "document": "src/content/generated/legacy-content.json",
           "locator": "masters[57].skills[5].text#line=7",
           "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s3#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s3"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=2",
+          "sha256": "5cb8cc0584c3947a3417c6e47fa2e82bad23f108beecb56b6e52fe7a73d2a8c0"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=3",
+          "sha256": "0ac25f48c2d3c654c7d4c432e74bcc7c18ab04afe95074548a7d206dcf41c805"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=4",
+          "sha256": "afb92f89d19eed9a2a768220f7b8e8c953acc68d7a3bc2ba7f16fb94b501e95e"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=5",
+          "sha256": "9d13e552ca4191717d6bdfbc7533d2af9a78fb7b2039ee415f8cd9d8bdc0ca18"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s4#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s4"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[3].text#line=1",
+          "sha256": "0920b9a2a1323b9d495e68e604dca664d584583a02e1d034181569b54fac9ad2"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[3].text#line=2",
+          "sha256": "7ee407d9af9e4bd2db96350d8afbeb62dc33997fc27af041c37bcf0df4e84516"
         },
         {
           "abilityId": "servant.andersen.skill.sc-andersen-2",
@@ -10859,10 +11387,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 46,
-          "specific_handler": 12
+          "shared_handler": 47,
+          "specific_handler": 13
         },
-        "handlerCount": 18,
+        "handlerCount": 20,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -10919,6 +11447,12 @@
         "master.peperoncino.skill.s1b",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.ascension",
+        "master.rin.skill.s1",
+        "master.rin.skill.s2",
+        "master.rin.skill.s3",
+        "master.rin.skill.s4",
+        "master.shinji.skill.ascension",
         "master.twice.skill.ascension",
         "master.wodime.skill.s2",
         "master.wodime.skill.s3",
@@ -12252,6 +12786,174 @@
           "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.ascension#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/ascension"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=1",
+          "sha256": "764186a6e18e6809aae2fac1606962feda161ba0f7e5a91e9d5a2a4575f2d0f2"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=2",
+          "sha256": "d420cb5378f198e4b8460b1dd55466d5d2211e0af1da676d4cb8d078618979dd"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=3",
+          "sha256": "dc979913ab90f001064390c0a94568676b98316a1b3d38739f1851df9833c384"
+        },
+        {
+          "abilityId": "master.rin.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s1#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s1"
+        },
+        {
+          "abilityId": "master.rin.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[0].text#line=1",
+          "sha256": "1ad529117c79a886e5780e3f5faae6504631e0c268a435b672fc1fdce7bf4829"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s2#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s2"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[1].text#line=1",
+          "sha256": "dfb0c1309e905d358d459460f23cf6993f48565fc08ca77bd3cf87b43634aa28"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s3#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s3"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=2",
+          "sha256": "5cb8cc0584c3947a3417c6e47fa2e82bad23f108beecb56b6e52fe7a73d2a8c0"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=3",
+          "sha256": "0ac25f48c2d3c654c7d4c432e74bcc7c18ab04afe95074548a7d206dcf41c805"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=4",
+          "sha256": "afb92f89d19eed9a2a768220f7b8e8c953acc68d7a3bc2ba7f16fb94b501e95e"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=5",
+          "sha256": "9d13e552ca4191717d6bdfbc7533d2af9a78fb7b2039ee415f8cd9d8bdc0ca18"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s4#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s4"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[3].text#line=1",
+          "sha256": "0920b9a2a1323b9d495e68e604dca664d584583a02e1d034181569b54fac9ad2"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[3].text#line=2",
+          "sha256": "7ee407d9af9e4bd2db96350d8afbeb62dc33997fc27af041c37bcf0df4e84516"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.ascension#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/ascension"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[4].text#line=1",
+          "sha256": "807f73bce3a525bb284717c080adb54fe809def1d4ac8d599b3903faa1850707"
+        },
+        {
           "abilityId": "master.twice.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.twice/特维斯·I·皮斯曼"
@@ -13015,10 +13717,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 54,
-          "specific_handler": 18
+          "shared_handler": 56,
+          "specific_handler": 22
         },
-        "handlerCount": 28,
+        "handlerCount": 34,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -13704,6 +14406,7 @@
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.s3",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
@@ -14370,6 +15073,51 @@
           "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s3#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s3"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=2",
+          "sha256": "5cb8cc0584c3947a3417c6e47fa2e82bad23f108beecb56b6e52fe7a73d2a8c0"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=3",
+          "sha256": "0ac25f48c2d3c654c7d4c432e74bcc7c18ab04afe95074548a7d206dcf41c805"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=4",
+          "sha256": "afb92f89d19eed9a2a768220f7b8e8c953acc68d7a3bc2ba7f16fb94b501e95e"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=5",
+          "sha256": "9d13e552ca4191717d6bdfbc7533d2af9a78fb7b2039ee415f8cd9d8bdc0ca18"
+        },
+        {
           "abilityId": "master.sion.skill.s13",
           "document": "Fate_Domination-开发版",
           "locator": "master.sion/紫苑·艾尔特纳姆"
@@ -14942,9 +15690,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 36,
-          "specific_handler": 9
+          "specific_handler": 10
         },
-        "handlerCount": 12,
+        "handlerCount": 13,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -16367,6 +17115,13 @@
         "master.kadoc.skill.s4",
         "master.kadoc.skill.s5",
         "master.peperoncino.skill.ascension",
+        "master.rin.skill.ascension",
+        "master.rin.skill.s2",
+        "master.rin.skill.s3",
+        "master.shinji.skill.ascension",
+        "master.shinji.skill.s1",
+        "master.shinji.skill.s3",
+        "master.shinji.skill.s4",
         "master.wodime.skill.s3",
         "servant.albion.skill.sc-albion-1",
         "servant.drake.skill.sc-drake-3",
@@ -17078,6 +17833,195 @@
           "sha256": "3169c4807a37eca0621ade6110f81d0cc6dc9ff43383ac883853f207e67a5abd"
         },
         {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.ascension#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/ascension"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=1",
+          "sha256": "764186a6e18e6809aae2fac1606962feda161ba0f7e5a91e9d5a2a4575f2d0f2"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=2",
+          "sha256": "d420cb5378f198e4b8460b1dd55466d5d2211e0af1da676d4cb8d078618979dd"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=3",
+          "sha256": "dc979913ab90f001064390c0a94568676b98316a1b3d38739f1851df9833c384"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s2#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s2"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[1].text#line=1",
+          "sha256": "dfb0c1309e905d358d459460f23cf6993f48565fc08ca77bd3cf87b43634aa28"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s3#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s3"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=2",
+          "sha256": "5cb8cc0584c3947a3417c6e47fa2e82bad23f108beecb56b6e52fe7a73d2a8c0"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=3",
+          "sha256": "0ac25f48c2d3c654c7d4c432e74bcc7c18ab04afe95074548a7d206dcf41c805"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=4",
+          "sha256": "afb92f89d19eed9a2a768220f7b8e8c953acc68d7a3bc2ba7f16fb94b501e95e"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=5",
+          "sha256": "9d13e552ca4191717d6bdfbc7533d2af9a78fb7b2039ee415f8cd9d8bdc0ca18"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.ascension#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/ascension"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[4].text#line=1",
+          "sha256": "807f73bce3a525bb284717c080adb54fe809def1d4ac8d599b3903faa1850707"
+        },
+        {
+          "abilityId": "master.shinji.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.s1#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/s1"
+        },
+        {
+          "abilityId": "master.shinji.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[0].text#line=1",
+          "sha256": "135c32f6a2c99d178870dfe25a15126672b1e30448eab864a1f5fe1a78f3eaa4"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.s3#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/s3"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[2].text#line=1",
+          "sha256": "ab192089e51de200b3818017d6c94a671644b18b06b78762e67468111a9ab768"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.s4#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/s4"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[3].text#line=1",
+          "sha256": "f2137f50ea381cd89ddf810e42b10d2cd1eadc9d3a5fc4b0c2071db2cb965427"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[3].text#line=2",
+          "sha256": "7050c5acdb9c773fe60d03b17b54a2a96c965c573ff82d9003aaab73398f392c"
+        },
+        {
           "abilityId": "master.wodime.skill.s3",
           "document": "Fate_Domination-开发版",
           "locator": "master.wodime/基尔什塔利亚·沃戴姆"
@@ -17595,10 +18539,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 34,
-          "specific_handler": 10
+          "shared_handler": 36,
+          "specific_handler": 15
         },
-        "handlerCount": 17,
+        "handlerCount": 23,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -17631,6 +18575,7 @@
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.s3",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.astolfo.skill.sc-astolfo-1",
@@ -18259,6 +19204,51 @@
           "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s3#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s3"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=2",
+          "sha256": "5cb8cc0584c3947a3417c6e47fa2e82bad23f108beecb56b6e52fe7a73d2a8c0"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=3",
+          "sha256": "0ac25f48c2d3c654c7d4c432e74bcc7c18ab04afe95074548a7d206dcf41c805"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=4",
+          "sha256": "afb92f89d19eed9a2a768220f7b8e8c953acc68d7a3bc2ba7f16fb94b501e95e"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=5",
+          "sha256": "9d13e552ca4191717d6bdfbc7533d2af9a78fb7b2039ee415f8cd9d8bdc0ca18"
+        },
+        {
           "abilityId": "master.sion.skill.s13",
           "document": "Fate_Domination-开发版",
           "locator": "master.sion/紫苑·艾尔特纳姆"
@@ -18708,9 +19698,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 29,
-          "specific_handler": 10
+          "specific_handler": 11
         },
-        "handlerCount": 13,
+        "handlerCount": 14,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -18731,6 +19721,8 @@
         "master.chaos.skill.s17",
         "master.ciel.skill.s3",
         "master.fiore.skill.ascension",
+        "master.rin.skill.s1",
+        "master.shinji.skill.ascension",
         "servant.albion.skill.sc-albion-2",
         "servant.arjuna.skill.sc-arjuna-1",
         "servant.diarmuid.skill.sc-diarmuid-1",
@@ -18963,6 +19955,48 @@
           "sha256": "908300b35760858ecff4666f9dcca06c837bfbb59b4c701b51b280471f7cde4e"
         },
         {
+          "abilityId": "master.rin.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s1#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s1"
+        },
+        {
+          "abilityId": "master.rin.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[0].text#line=1",
+          "sha256": "1ad529117c79a886e5780e3f5faae6504631e0c268a435b672fc1fdce7bf4829"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.ascension#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/ascension"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[4].text#line=1",
+          "sha256": "807f73bce3a525bb284717c080adb54fe809def1d4ac8d599b3903faa1850707"
+        },
+        {
           "abilityId": "servant.albion.skill.sc-albion-2",
           "document": "Fate_Domination-开发版",
           "locator": "servant.albion/阿尔比恩之骸"
@@ -19177,10 +20211,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 14,
-          "specific_handler": 1
+          "shared_handler": 15,
+          "specific_handler": 2
         },
-        "handlerCount": 3,
+        "handlerCount": 5,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -19214,6 +20248,7 @@
         "master.peperoncino.skill.ascension",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.s3",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
@@ -19880,6 +20915,51 @@
           "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s3#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s3"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=1",
+          "sha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=2",
+          "sha256": "5cb8cc0584c3947a3417c6e47fa2e82bad23f108beecb56b6e52fe7a73d2a8c0"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=3",
+          "sha256": "0ac25f48c2d3c654c7d4c432e74bcc7c18ab04afe95074548a7d206dcf41c805"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=4",
+          "sha256": "afb92f89d19eed9a2a768220f7b8e8c953acc68d7a3bc2ba7f16fb94b501e95e"
+        },
+        {
+          "abilityId": "master.rin.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[2].text#line=5",
+          "sha256": "9d13e552ca4191717d6bdfbc7533d2af9a78fb7b2039ee415f8cd9d8bdc0ca18"
+        },
+        {
           "abilityId": "master.sion.skill.s13",
           "document": "Fate_Domination-开发版",
           "locator": "master.sion/紫苑·艾尔特纳姆"
@@ -20452,9 +21532,9 @@
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
           "shared_handler": 36,
-          "specific_handler": 9
+          "specific_handler": 10
         },
-        "handlerCount": 12,
+        "handlerCount": 13,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -20518,6 +21598,15 @@
         "master.peperoncino.skill.s2",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.rin.skill.ascension",
+        "master.rin.skill.s1",
+        "master.rin.skill.s2",
+        "master.rin.skill.s4",
+        "master.shinji.skill.ascension",
+        "master.shinji.skill.s1",
+        "master.shinji.skill.s2",
+        "master.shinji.skill.s3",
+        "master.shinji.skill.s4",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s1",
         "master.wodime.skill.s4",
@@ -22001,6 +23090,219 @@
           "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.ascension#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/ascension"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=1",
+          "sha256": "764186a6e18e6809aae2fac1606962feda161ba0f7e5a91e9d5a2a4575f2d0f2"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=2",
+          "sha256": "d420cb5378f198e4b8460b1dd55466d5d2211e0af1da676d4cb8d078618979dd"
+        },
+        {
+          "abilityId": "master.rin.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[4].text#line=3",
+          "sha256": "dc979913ab90f001064390c0a94568676b98316a1b3d38739f1851df9833c384"
+        },
+        {
+          "abilityId": "master.rin.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s1#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s1"
+        },
+        {
+          "abilityId": "master.rin.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[0].text#line=1",
+          "sha256": "1ad529117c79a886e5780e3f5faae6504631e0c268a435b672fc1fdce7bf4829"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s2#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s2"
+        },
+        {
+          "abilityId": "master.rin.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[1].text#line=1",
+          "sha256": "dfb0c1309e905d358d459460f23cf6993f48565fc08ca77bd3cf87b43634aa28"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.rin/远坂凛"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_rin.s4#line=8"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.rin/s4"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[3].text#line=1",
+          "sha256": "0920b9a2a1323b9d495e68e604dca664d584583a02e1d034181569b54fac9ad2"
+        },
+        {
+          "abilityId": "master.rin.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[3].skills[3].text#line=2",
+          "sha256": "7ee407d9af9e4bd2db96350d8afbeb62dc33997fc27af041c37bcf0df4e84516"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.ascension#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/ascension"
+        },
+        {
+          "abilityId": "master.shinji.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[4].text#line=1",
+          "sha256": "807f73bce3a525bb284717c080adb54fe809def1d4ac8d599b3903faa1850707"
+        },
+        {
+          "abilityId": "master.shinji.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.s1",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.s1#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/s1"
+        },
+        {
+          "abilityId": "master.shinji.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[0].text#line=1",
+          "sha256": "135c32f6a2c99d178870dfe25a15126672b1e30448eab864a1f5fe1a78f3eaa4"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.s2#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/s2"
+        },
+        {
+          "abilityId": "master.shinji.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[1].text#line=1",
+          "sha256": "65930c3e1c3105fa047b5e61c1aea90ccca535edf590fad93cb1e6f1b8b74b92"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.s3#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/s3"
+        },
+        {
+          "abilityId": "master.shinji.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[2].text#line=1",
+          "sha256": "ab192089e51de200b3818017d6c94a671644b18b06b78762e67468111a9ab768"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.s4#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/s4"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[3].text#line=1",
+          "sha256": "f2137f50ea381cd89ddf810e42b10d2cd1eadc9d3a5fc4b0c2071db2cb965427"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[3].text#line=2",
+          "sha256": "7050c5acdb9c773fe60d03b17b54a2a96c965c573ff82d9003aaab73398f392c"
+        },
+        {
           "abilityId": "master.wodime.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.wodime/基尔什塔利亚·沃戴姆"
@@ -22875,10 +24177,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 60,
-          "specific_handler": 22
+          "shared_handler": 64,
+          "specific_handler": 27
         },
-        "handlerCount": 28,
+        "handlerCount": 35,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -23896,6 +25198,7 @@
         "master.peperoncino.skill.s2",
         "master.peperoncino.skill.s3",
         "master.peperoncino.skill.s4",
+        "master.shinji.skill.s4",
         "master.wodime.skill.ascension",
         "master.wodime.skill.s1",
         "master.wodime.skill.s1a",
@@ -25040,6 +26343,33 @@
           "sha256": "8c7f4b2fe9d134d5be6d2de619c3f3ef97ead1116a00f0edcf949cd1826d006c"
         },
         {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.shinji/间桐慎二"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_shinji.s4#line=13"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.shinji/s4"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[3].text#line=1",
+          "sha256": "f2137f50ea381cd89ddf810e42b10d2cd1eadc9d3a5fc4b0c2071db2cb965427"
+        },
+        {
+          "abilityId": "master.shinji.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[8].skills[3].text#line=2",
+          "sha256": "7050c5acdb9c773fe60d03b17b54a2a96c965c573ff82d9003aaab73398f392c"
+        },
+        {
           "abilityId": "master.wodime.skill.ascension",
           "document": "Fate_Domination-开发版",
           "locator": "master.wodime/基尔什塔利亚·沃戴姆"
@@ -25467,10 +26797,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 36,
+          "shared_handler": 37,
           "specific_handler": 19
         },
-        "handlerCount": 28,
+        "handlerCount": 29,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

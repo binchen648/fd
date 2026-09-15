@@ -5188,6 +5188,727 @@
           ]
         }
       ]
+    },
+    {
+      "id": "master.rin.skill.s1",
+      "printedText": "游戏开始时，你获得10枚【宝石】。高潮阶段时你可以在【宝石】上选择相同的选项，每个选项至多3次(共计9次)。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_rin.s1#line=8",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "游戏开始时，你获得10枚【宝石】。高潮阶段时你可以在【宝石】上选择相同的选项，每个选项至多3次(共计9次)。",
+        "sourceTextSha256": "1ad529117c79a886e5780e3f5faae6504631e0c268a435b672fc1fdce7bf4829"
+      },
+      "referencePrintedTextSha256": "1ad529117c79a886e5780e3f5faae6504631e0c268a435b672fc1fdce7bf4829",
+      "abilities": [
+        {
+          "id": "rin.gem-magic.setup",
+          "printedClause": "游戏开始时，你获得10枚【宝石】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "add_player_flag_number",
+              "flag": "rin.gem_count",
+              "amount": 10
+            }
+          ]
+        },
+        {
+          "id": "rin.gem-magic.climax-repeat",
+          "printedClause": "高潮阶段时你可以在【宝石】上选择相同的选项，每个选项至多3次(共计9次)。",
+          "kind": "passive",
+          "activation": {
+            "phase": "climax"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "branch_choice_limit",
+              "operation": "allow_repeat_with_quota",
+              "context": "rin.gem_options",
+              "perOptionMax": 3,
+              "totalMax": 9,
+              "allowSameOption": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.rin.skill.s2",
+      "printedText": "你必须于第一回合使用一枚令咒。否则于该回合结束失去一枚令咒。若你以该令咒获得了魔力，战斗阶段结束后，你失去4点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_rin.s2#line=8",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "你必须于第一回合使用一枚令咒。否则于该回合结束失去一枚令咒。若你以该令咒获得了魔力，战斗阶段结束后，你失去4点魔力。",
+        "sourceTextSha256": "dfb0c1309e905d358d459460f23cf6993f48565fc08ca77bd3cf87b43634aa28"
+      },
+      "referencePrintedTextSha256": "dfb0c1309e905d358d459460f23cf6993f48565fc08ca77bd3cf87b43634aa28",
+      "abilities": [
+        {
+          "id": "rin.absolute-obedience.round-one-requirement",
+          "printedClause": "你必须于第一回合使用一枚令咒。",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "command_seal_usage_requirement",
+              "operation": "must_use_during_round",
+              "round": 1,
+              "minCount": 1
+            }
+          ]
+        },
+        {
+          "id": "rin.absolute-obedience.round-one-penalty",
+          "printedClause": "否则于该回合结束失去一枚令咒。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            },
+            {
+              "type": "round_number_is",
+              "round": 1
+            },
+            {
+              "type": "controller_command_seal_uses_this_round_is",
+              "amount": 0
+            }
+          ],
+          "effects": [
+            {
+              "type": "adjust_command_seals",
+              "operation": "lose",
+              "amount": 1,
+              "scope": "controller"
+            }
+          ]
+        },
+        {
+          "id": "rin.absolute-obedience.mana-repayment",
+          "printedClause": "若你以该令咒获得了魔力，战斗阶段结束后，你失去4点魔力。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.ending"
+            },
+            {
+              "type": "round_number_is",
+              "round": 1
+            },
+            {
+              "type": "controller_gained_mana_via_round_one_command_seal"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_mana",
+              "amount": 4,
+              "subject": "controller"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.rin.skill.s3",
+      "printedText": "<每局游戏限一次>\n行动阶段：选择一项本回合没有选择过的选项：\n-获得1点魔力。\n-打出一张游戏外的【阴炁弹】。\n-弃置1-3张牌，然后抽取相同数量的牌。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_rin.s3#line=8",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "<每局游戏限一次>\n行动阶段：选择一项本回合没有选择过的选项：\n-获得1点魔力。\n-打出一张游戏外的【阴炁弹】。\n-弃置1-3张牌，然后抽取相同数量的牌。",
+        "sourceTextSha256": "4f24f7a576f91a8301a0e71fc33eda3642e97d5026ce20d2661a12faaefaf0a2"
+      },
+      "referencePrintedTextSha256": "4f24f7a576f91a8301a0e71fc33eda3642e97d5026ce20d2661a12faaefaf0a2",
+      "abilities": [
+        {
+          "id": "rin.gem.action",
+          "printedClause": "<每局游戏限一次>\n行动阶段：选择一项本回合没有选择过的选项：获得1点魔力；打出一张游戏外的【阴炁弹】；弃置1-3张牌，然后抽取相同数量的牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "limit": {
+            "cadence": "once_per_game",
+            "scope": "per_gem_instance"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "branch_choice_permission",
+              "operation": "disallow_repeat_within_round",
+              "context": "rin.gem_options"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_one",
+              "choices": [
+                {
+                  "id": "gain_mana",
+                  "effects": [
+                    {
+                      "type": "gain_mana",
+                      "amount": 1,
+                      "subject": "controller"
+                    }
+                  ]
+                },
+                {
+                  "id": "play_yin_qi_bullet",
+                  "effects": [
+                    {
+                      "type": "play_card_by_definition_from_outside_game",
+                      "definitionId": "master.rin.skill.s4",
+                      "controller": "controller",
+                      "destination": "attack"
+                    }
+                  ]
+                },
+                {
+                  "id": "cycle_hand",
+                  "effects": [
+                    {
+                      "type": "choose_cards",
+                      "zone": "hand",
+                      "owner": "controller",
+                      "minCount": 1,
+                      "maxCount": 3,
+                      "payloadKey": "selectedHandCardIds"
+                    },
+                    {
+                      "type": "move_selected_cards",
+                      "payloadKey": "selectedHandCardIds",
+                      "destination": "discard"
+                    },
+                    {
+                      "type": "draw_cards",
+                      "deck": "controller",
+                      "amountFormula": "selectedHandCardIds.count"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.rin.skill.s4",
+      "printedText": "魔术属性，0耗1威。<每局游戏限一次>\n(<每局游戏限一次>的卡牌，关闭后将被移除游戏。对于其他卡牌的效果而言，它们便是游戏外的。)",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_rin.s4#line=8",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "魔术属性，0耗1威。<每局游戏限一次>\n(<每局游戏限一次>的卡牌，关闭后将被移除游戏。对于其他卡牌的效果而言，它们便是游戏外的。)",
+        "sourceTextSha256": "a84c9ab4c4aa5f34dd3fc62f197bb0499c4a3691e7d73bcf57403255749da54b"
+      },
+      "referencePrintedTextSha256": "a84c9ab4c4aa5f34dd3fc62f197bb0499c4a3691e7d73bcf57403255749da54b",
+      "abilities": [
+        {
+          "id": "rin.yin-qi-bullet.once-per-game",
+          "printedClause": "魔术属性，0耗1威。<每局游戏限一次>",
+          "kind": "passive",
+          "limit": "once_per_game",
+          "ruleModifiers": [
+            {
+              "rule": "printed_attack_profile",
+              "attribute": "magic",
+              "manaCost": 0,
+              "power": 1
+            }
+          ]
+        },
+        {
+          "id": "rin.yin-qi-bullet.close-removal",
+          "printedClause": "<每局游戏限一次>的卡牌，关闭后将被移除游戏。对于其他卡牌的效果而言，它们便是游戏外的。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "card.closed"
+            },
+            {
+              "type": "event_card_is_source"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "removed_from_game"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "removed_card_reference_semantics",
+              "operation": "treat_as_outside_game_for_other_card_effects"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.rin.skill.ascension",
+      "printedText": "（升华技，将此牌加入你的技能区）\n被动：你的魔术基础牌和【阴炁弹】的威力+2。\n行动阶段：获得本回合所有玩家花费的魔力。战斗结束后，将此牌移除游戏。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_rin.ascension#line=8",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "（升华技，将此牌加入你的技能区）\n被动：你的魔术基础牌和【阴炁弹】的威力+2。\n行动阶段：获得本回合所有玩家花费的魔力。战斗结束后，将此牌移除游戏。",
+        "sourceTextSha256": "5438833af1b6d4eeec6661a65af38257f2c067e0a3e651d7f0ad1306ffd64376"
+      },
+      "referencePrintedTextSha256": "5438833af1b6d4eeec6661a65af38257f2c067e0a3e651d7f0ad1306ffd64376",
+      "abilities": [
+        {
+          "id": "rin.kaleidostick.setup",
+          "printedClause": "（升华技，将此牌加入你的技能区）",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "skill",
+              "reason": "ascension_setup"
+            }
+          ]
+        },
+        {
+          "id": "rin.kaleidostick.magic-power",
+          "printedClause": "被动：你的魔术基础牌和【阴炁弹】的威力+2。",
+          "kind": "passive",
+          "powerModifiers": [
+            {
+              "type": "attack_power_bonus",
+              "amount": 2,
+              "target": {
+                "controller": "controller",
+                "anyOf": [
+                  {
+                    "category": "basic",
+                    "attribute": "magic"
+                  },
+                  {
+                    "definitionId": "master.rin.skill.s4"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "rin.kaleidostick.mana-reclaim",
+          "printedClause": "行动阶段：获得本回合所有玩家花费的魔力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "gain_mana",
+              "subject": "controller",
+              "amountFormula": "all_players_mana_spent_this_round"
+            }
+          ]
+        },
+        {
+          "id": "rin.kaleidostick.remove-after-combat",
+          "printedClause": "战斗结束后，将此牌移除游戏。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.ending"
+            },
+            {
+              "type": "source_card_is_in_attack"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_source_card",
+              "destination": "removed_from_game"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shinji.skill.s1",
+      "printedText": "进入深山町时，获得1点魔力。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shinji.s1#line=13",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "进入深山町时，获得1点魔力。",
+        "sourceTextSha256": "135c32f6a2c99d178870dfe25a15126672b1e30448eab864a1f5fe1a78f3eaa4"
+      },
+      "referencePrintedTextSha256": "135c32f6a2c99d178870dfe25a15126672b1e30448eab864a1f5fe1a78f3eaa4",
+      "abilities": [
+        {
+          "id": "shinji.absorb-mana.enter-miyama",
+          "printedClause": "进入深山町时，获得1点魔力。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.entered-location"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_location_is",
+              "location": "miyama_town"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_mana",
+              "amount": 1,
+              "subject": "controller"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shinji.skill.s2",
+      "printedText": "开局获得【伪臣之书】。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shinji.s2#line=13",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "开局获得【伪臣之书】。",
+        "sourceTextSha256": "65930c3e1c3105fa047b5e61c1aea90ccca535edf590fad93cb1e6f1b8b74b92"
+      },
+      "referencePrintedTextSha256": "65930c3e1c3105fa047b5e61c1aea90ccca535edf590fad93cb1e6f1b8b74b92",
+      "abilities": [
+        {
+          "id": "shinji.useless-man.fake-attendant-book",
+          "printedClause": "开局获得【伪臣之书】。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "game.started"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "source": "outside_game",
+              "destination": "skill",
+              "owner": "controller",
+              "match": {
+                "definitionId": "master.shinji.skill.s4"
+              },
+              "maxCount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shinji.skill.s3",
+      "printedText": "当你战败时，失去一枚令咒。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shinji.s3#line=13",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当你战败时，失去一枚令咒。",
+        "sourceTextSha256": "ab192089e51de200b3818017d6c94a671644b18b06b78762e67468111a9ab768"
+      },
+      "referencePrintedTextSha256": "ab192089e51de200b3818017d6c94a671644b18b06b78762e67468111a9ab768",
+      "abilities": [
+        {
+          "id": "shinji.jester.defeat-seal-loss",
+          "printedClause": "当你战败时，失去一枚令咒。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "adjust_command_seals",
+              "operation": "lose",
+              "amount": 1,
+              "scope": "controller"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shinji.skill.s4",
+      "printedText": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。\n当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shinji.s4#line=13",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。\n当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+        "sourceTextSha256": "4239b282b8e4158a51f73a0d433af66a0978b37f9a76c1c785e07e00fef11407"
+      },
+      "referencePrintedTextSha256": "4239b282b8e4158a51f73a0d433af66a0978b37f9a76c1c785e07e00fef11407",
+      "abilities": [
+        {
+          "id": "shinji.fake-attendant-book.sakura-present",
+          "printedClause": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            },
+            {
+              "type": "controller_lost_all_command_seals_first_time_this_game"
+            },
+            {
+              "type": "master_identity_present",
+              "masterId": "master.sakura"
+            }
+          ],
+          "effects": [
+            {
+              "type": "servant_ownership_rule",
+              "operation": "replace_controller_servant_with_random_unused"
+            },
+            {
+              "type": "adjust_command_seals",
+              "operation": "set_to",
+              "amount": 3,
+              "scope": "controller"
+            }
+          ]
+        },
+        {
+          "id": "shinji.fake-attendant-book.sakura-absent",
+          "printedClause": "当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            },
+            {
+              "type": "controller_lost_all_command_seals_first_time_this_game"
+            },
+            {
+              "type": "master_identity_not_present",
+              "masterId": "master.sakura"
+            }
+          ],
+          "effects": [
+            {
+              "type": "master_identity_rule",
+              "operation": "replace_controller_master",
+              "masterId": "master.sakura",
+              "preserveVictoryPoints": true
+            },
+            {
+              "type": "set_mana",
+              "subject": "controller",
+              "amountFormula": "replacement_master_initial_mana"
+            },
+            {
+              "type": "adjust_command_seals",
+              "operation": "set_to",
+              "amount": 2,
+              "scope": "controller"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master.shinji.skill.ascension",
+      "printedText": "此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。若莎士比亚是你的第一名从者，你位于深山町时合计威力+12，当你获得X点战果时，所有位于深山町的对手失去X点战果；若莎士比亚并非你的第一名从者，你获得8点战果。",
+      "source": {
+        "authority": "DEVELOPMENT_TEXT",
+        "document": "Fate_Domination-开发版/data_masters.js",
+        "locator": "m_shinji.ascension#line=13",
+        "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+        "sourceText": "此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。若莎士比亚是你的第一名从者，你位于深山町时合计威力+12，当你获得X点战果时，所有位于深山町的对手失去X点战果；若莎士比亚并非你的第一名从者，你获得8点战果。",
+        "sourceTextSha256": "807f73bce3a525bb284717c080adb54fe809def1d4ac8d599b3903faa1850707"
+      },
+      "referencePrintedTextSha256": "807f73bce3a525bb284717c080adb54fe809def1d4ac8d599b3903faa1850707",
+      "abilities": [
+        {
+          "id": "shinji.holy-grail-core.activate-first-servant",
+          "printedClause": "此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。若莎士比亚是你的第一名从者……",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            },
+            {
+              "type": "round_number_at_least",
+              "round": 8
+            },
+            {
+              "type": "controller_servant_is",
+              "servantId": "servant.shakespeare"
+            },
+            {
+              "type": "controller_first_servant_is",
+              "servantId": "servant.shakespeare"
+            },
+            {
+              "type": "player_flag_is",
+              "flag": "shinji.holy_grail_core_active",
+              "value": false
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "owner": "controller",
+              "source": "any_controller_zone",
+              "destination": "removed_from_game",
+              "match": {
+                "definitionId": "master.shinji.skill.s4"
+              },
+              "maxCount": 1
+            },
+            {
+              "type": "set_player_flag",
+              "flag": "shinji.holy_grail_core_active",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "shinji.holy-grail-core.activate-later-servant",
+          "printedClause": "若莎士比亚并非你的第一名从者，你获得8点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "round.ended"
+            },
+            {
+              "type": "round_number_at_least",
+              "round": 8
+            },
+            {
+              "type": "controller_servant_is",
+              "servantId": "servant.shakespeare"
+            },
+            {
+              "type": "controller_first_servant_is_not",
+              "servantId": "servant.shakespeare"
+            },
+            {
+              "type": "player_flag_is",
+              "flag": "shinji.holy_grail_core_active",
+              "value": false
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "owner": "controller",
+              "source": "any_controller_zone",
+              "destination": "removed_from_game",
+              "match": {
+                "definitionId": "master.shinji.skill.s4"
+              },
+              "maxCount": 1
+            },
+            {
+              "type": "set_player_flag",
+              "flag": "shinji.holy_grail_core_active",
+              "value": true
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 8,
+              "subject": "controller"
+            }
+          ]
+        },
+        {
+          "id": "shinji.holy-grail-core.miyama-power",
+          "printedClause": "若莎士比亚是你的第一名从者，你位于深山町时合计威力+12。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "player_flag_is",
+              "flag": "shinji.holy_grail_core_active",
+              "value": true
+            },
+            {
+              "type": "controller_first_servant_is",
+              "servantId": "servant.shakespeare"
+            },
+            {
+              "type": "controller_location_is",
+              "location": "miyama_town"
+            }
+          ],
+          "powerModifiers": [
+            {
+              "type": "total_power_bonus",
+              "amount": 12,
+              "subject": "controller"
+            }
+          ]
+        },
+        {
+          "id": "shinji.holy-grail-core.vp-drain",
+          "printedClause": "当你获得X点战果时，所有位于深山町的对手失去X点战果。",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "victory_points.gained"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "player_flag_is",
+              "flag": "shinji.holy_grail_core_active",
+              "value": true
+            },
+            {
+              "type": "controller_first_servant_is",
+              "servantId": "servant.shakespeare"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "subject": "opponents_at_location",
+              "location": "miyama_town",
+              "amountFormula": "event_victory_points_gained"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
