@@ -1,16 +1,16 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-16T00:46:10.369Z",
-  "sourceFingerprint": "da58018bfea23bfea721ecf5909ebef468e164d02c51eb37bad3ecd3030aef80",
+  "generatedAt": "2026-09-16T02:09:23.106Z",
+  "sourceFingerprint": "abb66bfa2123751462d6039ab2d8fb1d50e1c29baaaef7b32e725cea92b51453",
   "counts": {
-    "totalArchives": 90,
-    "totalCards": 123,
-    "totalAbilities": 222,
+    "totalArchives": 98,
+    "totalCards": 133,
+    "totalAbilities": 232,
     "abilityKindCounts": {
       "CONDITIONAL_REVEAL": 1,
       "CONTINUOUS_FORMULA": 11,
       "DECLARATION_REVEAL": 9,
-      "FORCED_TRIGGER": 50,
+      "FORCED_TRIGGER": 60,
       "OPTIONAL_TRIGGER": 48,
       "PASSIVE": 18,
       "PHASE_ACTION": 79,
@@ -42,12 +42,12 @@
       "after_controller_wins_battle": 3,
       "after_player_deployed_to_battlefield": 11,
       "before_situation_or_event_resolves": 1,
-      "game_start": 4,
+      "game_start": 14,
       "on_card_played": 39,
       "on_use_declared": 9
     },
     "requirementCounts": {
-      "BATTLE_STATE": 101,
+      "BATTLE_STATE": 103,
       "LOCATION": 42,
       "MANA": 2,
       "SOURCE_ACTIVE": 119
@@ -60,7 +60,7 @@
     },
     "costCounts": {
       "COMMAND_SEAL_OR_RESOURCE": 1,
-      "DISCARD_OR_CLOSE": 18,
+      "DISCARD_OR_CLOSE": 19,
       "MANA": 7
     },
     "interactionCounts": {
@@ -110,7 +110,7 @@
       "limit:window:trigger_window": 3
     },
     "hiddenInformationCounts": {
-      "HIDDEN_OR_PRIVATE": 34,
+      "HIDDEN_OR_PRIVATE": 36,
       "PRIVATE_LOOK": 2,
       "REVEAL": 11,
       "ZONE_VISIBILITY": 1
@@ -119,13 +119,191 @@
       "RESULT_VAR": 2
     },
     "battleIntegrationCounts": {
-      "BATTLE_INTEGRATION": 101
+      "BATTLE_INTEGRATION": 103
     },
     "specialSubsystemCounts": {
       "SPECIAL_SUBSYSTEM": 17
     }
   },
   "semanticAxes": [
+    {
+      "archiveId": "master.bazett",
+      "cardId": "master.bazett.skill.s1b",
+      "abilityId": "bazett.day1.dazed",
+      "abilityKey": "master.bazett.skill.s1b::bazett.day1.dazed",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
+      "archiveId": "master.caules",
+      "cardId": "master.caules.skill.s1a",
+      "abilityId": "master.caules.skill.s1a.game-start-rules",
+      "abilityKey": "master.caules.skill.s1a::master.caules.skill.s1a.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
+      "archiveId": "master.fiore",
+      "cardId": "master.fiore.skill.s2",
+      "abilityId": "master.fiore.skill.s2.game-start-rules",
+      "abilityKey": "master.fiore.skill.s2::master.fiore.skill.s2.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
+      "archiveId": "master.fiore",
+      "cardId": "master.fiore.skill.s3",
+      "abilityId": "master.fiore.skill.s3.game-start-rules",
+      "abilityKey": "master.fiore.skill.s3::master.fiore.skill.s3.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
+      "archiveId": "master.fiore",
+      "cardId": "master.fiore.skill.s4",
+      "abilityId": "master.fiore.skill.s4.game-start-rules",
+      "abilityKey": "master.fiore.skill.s4::master.fiore.skill.s4.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
     {
       "archiveId": "master.gatou",
       "cardId": "master.gatou.skill.seeker",
@@ -331,6 +509,40 @@
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "master.irisviel",
+      "cardId": "master.irisviel.skill.s1",
+      "abilityId": "irisviel.proxy-master.command-seal-window",
+      "abilityKey": "master.irisviel.skill.s1::irisviel.proxy-master.command-seal-window",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
     },
     {
       "archiveId": "master.irisviel",
@@ -1418,6 +1630,44 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "master.peperoncino",
+      "cardId": "master.peperoncino.skill.s1a",
+      "abilityId": "master.peperoncino.skill.s1a.game-start-rules",
+      "abilityKey": "master.peperoncino.skill.s1a::master.peperoncino.skill.s1a.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
       "archiveId": "master.shinji",
       "cardId": "master.shinji.skill.drain-command",
       "abilityId": "drain-command.enter-miyama",
@@ -1568,6 +1818,40 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "master.sieg",
+      "cardId": "master.sieg.skill.s1",
+      "abilityId": "master.sieg.skill.s1.game-start-rules",
+      "abilityKey": "master.sieg.skill.s1::master.sieg.skill.s1.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
       "archiveId": "master.sion",
       "cardId": "master.sion.skill.s12",
       "abilityId": "s12.alter-ego-transform",
@@ -1611,6 +1895,76 @@
       "taxonomyWarnings": [],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+      ]
+    },
+    {
+      "archiveId": "master.waver",
+      "cardId": "master.waver.skill.s1",
+      "abilityId": "master.waver.skill.s1.game-start-rules",
+      "abilityKey": "master.waver.skill.s1::master.waver.skill.s1.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
+      "archiveId": "master.zouken",
+      "cardId": "master.zouken.skill.s5",
+      "abilityId": "master.zouken.skill.s5.game-start-rules",
+      "abilityKey": "master.zouken.skill.s5::master.zouken.skill.s5.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
       ]
     },
     {
@@ -9457,8 +9811,8 @@
       "delta": 0
     },
     "notClassifiable": {
-      "before": 75,
-      "after": 70,
+      "before": 85,
+      "after": 80,
       "delta": -5
     },
     "pilotAllowlistEntries": {
@@ -9469,211 +9823,217 @@
     "cardSpecificRuntimeHandlers": [
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 66,
+        "line": 67,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 66,
+        "line": 67,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 66,
+        "line": 67,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 73,
+        "line": 74,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 73,
+        "line": 74,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 73,
+        "line": 74,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 87,
+        "line": 88,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 87,
+        "line": 88,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 87,
+        "line": 88,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 87,
+        "line": 88,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 558,
+        "line": 341,
+        "id": "master_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 575,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 645,
+        "line": 683,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 959,
+        "line": 997,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 966,
+        "line": 1004,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1033,
+        "line": 1071,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1377,
+        "line": 1420,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 2598,
+        "line": 2649,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/resolution-dataflow.ts",
-        "line": 1203,
+        "line": 1204,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/resolution-dataflow.ts",
-        "line": 1846,
+        "line": 1852,
         "id": "servant_package",
-        "confidence": "STATIC_LITERAL"
-      },
-      {
-        "file": "packages/rules/src/match-session.ts",
-        "line": 173,
-        "id": "master",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
         "line": 174,
-        "id": "servant",
-        "confidence": "STATIC_LITERAL"
-      },
-      {
-        "file": "packages/rules/src/match-session.ts",
-        "line": 277,
         "id": "master",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1403,
+        "line": 175,
+        "id": "servant",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/match-session.ts",
+        "line": 278,
+        "id": "master",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/match-session.ts",
+        "line": 1417,
         "id": "master_main",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1404,
+        "line": 1418,
         "id": "servant_identity",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1406,
+        "line": 1420,
         "id": "servant_deck",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1407,
+        "line": 1421,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1407,
+        "line": 1421,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1408,
+        "line": 1422,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1408,
+        "line": 1422,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 235,
+        "line": 236,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 244,
+        "line": 245,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 244,
+        "line": 245,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 244,
+        "line": 245,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 353,
+        "line": 354,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 371,
+        "line": 372,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       }
@@ -9701,8 +10061,8 @@
       "delta": 0
     },
     "unsupportedNodes": {
-      "before": 75,
-      "after": 75,
+      "before": 85,
+      "after": 85,
       "delta": 0
     },
     "kpiNote": "KPI tracks routing/legacy consumers and unsupported nodes, not raw ability count."
@@ -9734,6 +10094,7 @@
       "draw_from_independent_deck": 1,
       "false_attendant_book_replacement": 1,
       "hide_servant_true_name": 1,
+      "install_rule_override": 10,
       "look_at_deck_top": 1,
       "look_at_match_deck_bottoms": 1,
       "move_all_remaining": 2,
@@ -9779,6 +10140,7 @@
       "defeat_highest_power_opponents": 12,
       "deployment_rule_override": 1,
       "hide_servant_true_name": 1,
+      "install_rule_override": 10,
       "opponents_random_discard": 2,
       "power_bonus": 2,
       "transfer_vp_to_owner": 1,
@@ -10548,6 +10910,42 @@
   },
   "unclassifiedItems": [
     {
+      "archiveId": "master.bazett",
+      "cardId": "master.bazett.skill.s1b",
+      "abilityId": "bazett.day1.dazed",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "master.caules",
+      "cardId": "master.caules.skill.s1a",
+      "abilityId": "master.caules.skill.s1a.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "master.fiore",
+      "cardId": "master.fiore.skill.s2",
+      "abilityId": "master.fiore.skill.s2.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "master.fiore",
+      "cardId": "master.fiore.skill.s3",
+      "abilityId": "master.fiore.skill.s3.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "master.fiore",
+      "cardId": "master.fiore.skill.s4",
+      "abilityId": "master.fiore.skill.s4.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "master.irisviel",
+      "cardId": "master.irisviel.skill.s1",
+      "abilityId": "irisviel.proxy-master.command-seal-window",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
       "archiveId": "master.kayneth",
       "cardId": "master.kayneth.skill.pride",
       "abilityId": "pride.must-deploy",
@@ -10572,10 +10970,34 @@
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
+      "archiveId": "master.peperoncino",
+      "cardId": "master.peperoncino.skill.s1a",
+      "abilityId": "master.peperoncino.skill.s1a.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "master.sieg",
+      "cardId": "master.sieg.skill.s1",
+      "abilityId": "master.sieg.skill.s1.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
       "archiveId": "master.sion",
       "cardId": "master.sion.skill.s12",
       "abilityId": "s12.alter-ego-transform",
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+    },
+    {
+      "archiveId": "master.waver",
+      "cardId": "master.waver.skill.s1",
+      "abilityId": "master.waver.skill.s1.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "master.zouken",
+      "cardId": "master.zouken.skill.s5",
+      "abilityId": "master.zouken.skill.s5.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
     },
     {
       "archiveId": "servant.achilles",
