@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.36
+- Version: P3-TI-1.37
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3790,58 +3790,53 @@ Permitted final status:
 ## TASK P3-FB2-13
 
 Owner: Codex B2
-Status: READY
+Status: REVIEW_ACCEPTED
 Branch: `codex/b2-p3-fb2-13-alter-ego-transform-r1`
-Base: exact P3-FB2-13 A handoff commit
+Base: `61d9f0c92e0af7598e237b71fb90ad83c13c88c1`
+Candidate: `18f2733eb0551f368e78a5f67ad9a32b96193d5b`
+Review: P3-R37 `dc96afa3253dcf86a13e13ea29c8b99fb895df49`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
-Read: `docs/reports/2026-09-16-p3-fb2-13-alter-ego-transform-handoff.md`
+Read: `docs/reports/2026-09-16-p3-fb2-13-alter-ego-transform-handoff.md`, `docs/reports/2026-09-16-p3-fb2-13-alter-ego-transform-result.md`, and `docs/reports/2026-09-16-p3-r37-fb2-13-alter-ego-transform-review.md`
 
-Goal: implement exactly the identity-free `core.alter-ego-transform` runtime contract frozen by A: trusted just-played own face-up attack target, authored reversal or replacement mutable-attribute subset, instance-scoped reverse/attribute state observable by later rules and cleared on close, regular close-source variant, and Sion-shaped fixed-3-mana/no-close/once-per-round variant. Reuse existing response, choice, fixed-mana and close-source authorities. Do not migrate authoring.
-
-Completion status allowed:
-- `IMPLEMENTATION_COMPLETE_CANDIDATE`
-- `IMPLEMENTATION_NEEDS_REVISION`
+Accepted boundary: identity-free trusted `on_card_played` target binding; physical reversed/effective-attribute instance state; regular transform + close; Sion-shaped fixed-3-mana/no-close/once-per-round EX; server-owned attribute choice; fail-closed continuation revalidation; and transform cleanup on board exit. No identity/text routing, broad Trigger/transform promotion, or authoring migration is accepted by implication.
 
 ## TASK P3-R37
 
 Owner: Codex R
-Status: BLOCKED_ON_FB2_13
-Branch: reviewer-selected fresh worktree/branch from exact FB2-13 candidate SHA
+Status: REVIEW_ACCEPTED
+Branch: `codex/r-p3-fb2-13-alter-ego-transform-review`
+Candidate: `18f2733eb0551f368e78a5f67ad9a32b96193d5b`
+Review SHA: `dc96afa3253dcf86a13e13ea29c8b99fb895df49`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
-Read: the FB2-13 A handoff, B2 result report, and exact candidate diff.
+Read: `docs/reports/2026-09-16-p3-r37-fb2-13-alter-ego-transform-review.md`
 
-Goal: independently review FB2-13 without implementing fixes. Verify the two structural variants, trusted event-bound target provenance, non-write-only reverse/effective-attribute state, attribute-choice atomicity, fixed cost / close-source semantics, cleanup, no identity/text routing, no broad transform/Trigger promotion, focused/rules/content/determinism/full CI/diff check, and independently reconcile the exact ten-member future FM07 handler family.
-
-Permitted final status:
-- `GATE_A_B_CANDIDATE_ACCEPTED`
-- `REVIEW_BLOCKED`
+Verdict: `GATE_A_B_CANDIDATE_ACCEPTED`. Independent evidence: focused/high-risk `101/101`, rules `385/385`, full CI `727/727`, content 0 blockers, deterministic hashes unchanged, fresh coverage `80/113/212` with raw `22/3/127/0/60/124`, exact future FM07 family reconciled at 10/10 and current canonical 0/10.
 
 ## TASK P3-FM07
 
 Owner: Codex S
-Status: BLOCKED_ON_FB2_13_R37_A_SYNC
+Status: READY
 Branch: `codex/s-p3-fm07-alter-ego-transform`
-Base: future exact P3-FB2-13 A synchronization commit
+Base: exact P3-FB2-13 A synchronization commit
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-16-p3-a-fb2-13-synchronization.md`, `docs/reports/2026-09-16-p3-r37-fb2-13-alter-ego-transform-review.md`, and the frozen F1 source evidence for the ten exact IDs.
 
-Conditional goal after R37 + A sync only: migrate exactly the ten F1 identities whose locked Reference handler is `core.alter-ego-transform`, preserving the nine-card regular text family plus the distinct Sion EX text/static metadata as separate structural variants. Do not combine any other Alter Ego or reverse-capable card merely to change batch size. Do not modify runtime.
+Goal: migrate exactly the ten F1 identities whose locked Reference handler is `core.alter-ego-transform`: the nine-card regular text family plus distinct `master.sion.skill.s12` EX metadata as separate structural variants. Preserve frozen text/evidence and locked Reference static/owner metadata. Use only the accepted FB2-13 structural routes. Do not combine other Alter Ego/reverse-capable cards, do not modify runtime, and do not broaden Trigger/transform semantics.
 
-Completion status allowed after unblock:
+Completion status allowed:
 - `MIGRATION_COMPLETE_CANDIDATE`
 - `MIGRATION_BLOCKED`
 
-## Full-Roster Dispatch State After P3-R36 / Before P3-FB2-13
+## Full-Roster Dispatch State After P3-R37 / FM07 Dispatch
 
-- FM01-FM06 are independently migration-accepted; accepted canonical overlap is `91/944`, leaving `853/944` outside accepted canonical authoring.
-- FM06 R36 acceptance is `e8bc73ede18c14d97158aa8677ae3498fa829935`; fresh reviewer coverage is `80 archives / 113 cards / 212 abilities`, raw `22/3/127/0/60/124`, and full CI `720/720`.
-- Fresh post-FM06 scan finds no identical printed-text family at normal F4 minimum 10. The largest identical-text family is nine regular Alter Ego cards.
-- Locked Reference maps exactly ten still-absent identities to the same `core.alter-ego-transform` handler: those nine regular cards plus `master.sion.skill.s12` (他人格 EX). Sion is a distinct text/static variant, not an identical-text tenth member.
-- Reference handler inspection proves both variants use the same target-validation and transform core; regular closes source after success, while the EX variant pays fixed 3 mana, keeps source active, and is once per round.
-- Current rebuilt runtime lacks generic physical-card `reversed` / `attributeOverrides` state and an effective-attribute resolver, so FM07 is not migration-ready yet.
-- P3-FB2-13 is READY to close exactly that runtime gap; P3-R37 and FM07 remain downstream gates. No `101/944` credit may be taken before the complete B2 -> R37 -> A sync -> S -> A -> migration review chain succeeds.
+- FM01-FM06 remain independently migration-accepted; accepted canonical overlap remains `91/944`, leaving `853/944` outside accepted canonical authoring. FB2-13 runtime acceptance itself adds no migration credit.
+- FB2-13 candidate `18f2733eb0551f368e78a5f67ad9a32b96193d5b` is independently accepted by R37 at `dc96afa3253dcf86a13e13ea29c8b99fb895df49`.
+- Fresh A recertification is typecheck PASS, FB2-13 focused `7/7`, content 0 blockers, deterministic hashes unchanged, coverage `80/113/212`, raw `22/3/127/0/60/124`, compiled product hash unchanged.
+- R37 independently reconciles the locked Reference handler family at exactly ten still-absent F1 identities: nine regular cards with source-text SHA `b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf` plus Sion EX with SHA `43c84de7cf6532ee6b561d8cfa35ddbdeac52850f6105684b23a82121636a892`; current canonical presence is `0/10` and there is no eleventh member.
+- P3-FM07 is READY at exact batch size 10. Material overlap may reach `101/944` only after S materializes the batch; accepted overlap may reach `101/944` only after the complete S -> A synchronization -> independent migration review chain accepts it.
 
 ## Prompt Templates
 
