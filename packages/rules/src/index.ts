@@ -27,5 +27,6 @@ export * from './match-room-protocol';
 export * from './ability/types';
 export * from './ability/loader';
 export * from './ability/interpreter';
+export * from './ability/card-instance-state';
 export * from './ability/report';
 export * from './ability/resolution-dataflow';

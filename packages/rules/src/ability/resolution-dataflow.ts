@@ -1,6 +1,7 @@
 import type { GameState, PlayerState } from '../schema/game';
 import type { LocationId } from '../schema/location';
 import type { PlayerId, SafeEvent } from './types';
+import { clearTransientCardTransformState } from './card-instance-state';
 
 export type EffectExecutionStatus = 'applied' | 'no_op';
 export type BindingFieldType = 'number' | 'player_ids' | 'boolean' | 'status';
@@ -1485,6 +1486,7 @@ function closeSourceCard(
     state.active = false;
     state.faceDown = false;
   }
+  clearTransientCardTransformState(transaction.workingState, source.instanceId);
   const fromZone = source.zone;
   source.zone = 'skill';
   source.visibility = { scope: 'owner_only', ownerPlayerId: source.ownerPlayerId };
@@ -1774,6 +1776,7 @@ function moveCardInstance(transaction: AbilityResolutionTransaction, cardInstanc
     : { scope: 'owner_only', ownerPlayerId: found.ownerPlayerId };
   if (!['field', 'attack_area'].includes(zone) && transaction.workingState.abilityRuntime?.cardState[cardInstanceId]) {
     transaction.workingState.abilityRuntime.cardState[cardInstanceId]!.active = false;
+    clearTransientCardTransformState(transaction.workingState, cardInstanceId);
   }
 }
 
