@@ -233,8 +233,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
           issue('ruleModifiers.lifecycle', 'Independent modifier lifecycles require a separate ongoing handler', id);
         }
       }
-      const requested = execution.hostOps ?? execution.allowedOperations ?? hostOperations;
-      const allowed = Array.isArray(requested) ? hostOperations.filter(op => requested.includes(op)) : [];
+      const requested = execution.hostOps ?? execution.allowedOperations;
+      const installsRuleOverride = nodes(a.effects).some(effect => effect.type === 'install_rule_override');
+      const defaultAllowed = mode === 'automatic' && installsRuleOverride ? [] : [...hostOperations];
+      const allowed = Array.isArray(requested) ? hostOperations.filter(op => requested.includes(op)) : defaultAllowed;
       if (Array.isArray(requested) && requested.some(op => !hostOperations.includes(op as typeof hostOperations[number]))) issue('execution.hostOps', 'Operation outside the host allowlist', id);
       if (mode !== 'automatic') issue('execution.mode', str(execution.reason) || mode, id, mode as ExecutionMode);
       const candidateAbility: AuthoringAbility = { id, kind: str(a.kind), printedClause: str(a.printedClause), activation,

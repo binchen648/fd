@@ -475,7 +475,6 @@ export class MatchSession {
     this.pairings = built.pairings;
     this.rawCards = built.rawCards;
     this.record('session_start', '7-player authoring match session started', { seed: this.seed, pairings: this.pairings.map((p) => ({ playerId: p.playerId, master: p.master.id, servant: p.servant.id })) });
-    processAbilityEvent(this.state, { id: 'match-session-game-start', type: 'game_start' });
     this.consumeAppliedDirectives();
     this.checkpoint('game start');
   }
@@ -958,6 +957,7 @@ export class MatchSession {
       }
     }
     initializeAbilityRuntime(state, pack, { seed: this.seed });
+    processAbilityEvent(state, { id: 'match-session-game-start', type: 'game_start' });
     this.startRound(1, state);
     return { state, pairings, rawCards };
   }
