@@ -775,3 +775,10 @@ Permitted final status:
 - Coverage remains `80/113/212`, raw `22/3/127/0/60/124`; regenerated artifact drift is timestamp/static-line-only and is intentionally uncommitted.
 - Locked Reference + frozen F1 reconcile exactly 10 absent `core.alter-ego-transform` identities: nine regular cards share SHA `b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf`, Sion EX uses SHA `43c84de7cf6532ee6b561d8cfa35ddbdeac52850f6105684b23a82121636a892`; current canonical `0/10`.
 - FM07 is READY at exact size 10. Accepted overlap remains `91/944` until independent migration acceptance; no early `101/944` credit is taken.
+## P3-A FM07 Migration Synchronization - 2026-09-16
+
+- S candidate `9c32957b13bc3964932b9a134702c1487069e059` adds exactly the authorized 10 Alter Ego identities with runtime diff `0`.
+- A independently recomputes complete frozen-F1 material overlap `91/944 -> 101/944`, exact additions `10`, removals `0`, remaining `843`.
+- Fresh material coverage is `90/123/222`, raw `22/3/127/0/70/124`; the ten new `NOT_CLASSIFIABLE` rows are the expected coverage-taxonomy limitation for accepted `transform_event_source_card` authoring.
+- Fresh A focused `18/18`, content 0 blockers and determinism pass; S migration evidence `56/56`, rules `385/385`, full CI `727/727` are green.
+- R38 is READY. Accepted overlap remains `91/944` pending independent migration acceptance.

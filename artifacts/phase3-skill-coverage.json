@@ -1,24 +1,24 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-15T23:46:57.533Z",
-  "sourceFingerprint": "8bbbca216337b427509dd0dd133ef4515ede49c443937115ff9372259cd23ec4",
+  "generatedAt": "2026-09-16T00:46:10.369Z",
+  "sourceFingerprint": "da58018bfea23bfea721ecf5909ebef468e164d02c51eb37bad3ecd3030aef80",
   "counts": {
-    "totalArchives": 80,
-    "totalCards": 113,
-    "totalAbilities": 212,
+    "totalArchives": 90,
+    "totalCards": 123,
+    "totalAbilities": 222,
     "abilityKindCounts": {
       "CONDITIONAL_REVEAL": 1,
       "CONTINUOUS_FORMULA": 11,
       "DECLARATION_REVEAL": 9,
       "FORCED_TRIGGER": 50,
-      "OPTIONAL_TRIGGER": 38,
+      "OPTIONAL_TRIGGER": 48,
       "PASSIVE": 18,
       "PHASE_ACTION": 79,
       "RESIDUAL": 5,
       "RESPONSE": 1
     },
     "timingCounts": {
-      "ACTION": 56,
+      "ACTION": 66,
       "ADVANCE": 2,
       "COMBAT": 56,
       "CONTROLLER_ACTION_WINDOW": 59,
@@ -43,14 +43,14 @@
       "after_player_deployed_to_battlefield": 11,
       "before_situation_or_event_resolves": 1,
       "game_start": 4,
-      "on_card_played": 29,
+      "on_card_played": 39,
       "on_use_declared": 9
     },
     "requirementCounts": {
       "BATTLE_STATE": 101,
       "LOCATION": 42,
       "MANA": 2,
-      "SOURCE_ACTIVE": 109
+      "SOURCE_ACTIVE": 119
     },
     "targetCounts": {
       "BRANCH_CHOICE": 1,
@@ -60,8 +60,8 @@
     },
     "costCounts": {
       "COMMAND_SEAL_OR_RESOURCE": 1,
-      "DISCARD_OR_CLOSE": 9,
-      "MANA": 6
+      "DISCARD_OR_CLOSE": 18,
+      "MANA": 7
     },
     "interactionCounts": {
       "BRANCH_CHOICE": 1,
@@ -69,7 +69,7 @@
       "CHOOSE_N_CARDS": 19,
       "CHOOSE_ONE_PLAYER": 1,
       "RESPONSE": 1,
-      "YES_NO": 38
+      "YES_NO": 48
     },
     "strictPendingInteractionCounts": {
       "BRANCH_CHOICE": 1,
@@ -78,7 +78,7 @@
       "CHOOSE_ONE_PLAYER": 1
     },
     "effectPrimitiveFamilyCounts": {
-      "CARD_ACTION_SEMANTICS": 20,
+      "CARD_ACTION_SEMANTICS": 29,
       "CARD_ZONE": 29,
       "MOVEMENT": 16,
       "RESOURCE_NUMERIC": 67,
@@ -101,12 +101,12 @@
       "lifecycle:starts:immediate": 4,
       "limit:conflictPolicy:only_one_effect_may_activate_per_window": 3,
       "limit:groupId:artoriac-pilgrim-unique-on-win": 3,
-      "limit:scope:this_card": 16,
+      "limit:scope:this_card": 17,
       "limit:scope:unique_keyword_group": 3,
       "limit:type:per_game": 3,
-      "limit:type:per_round": 13,
+      "limit:type:per_round": 14,
       "limit:type:unique": 3,
-      "limit:uses:1": 16,
+      "limit:uses:1": 17,
       "limit:window:trigger_window": 3
     },
     "hiddenInformationCounts": {
@@ -1566,6 +1566,52 @@
       "semanticRoutes": [],
       "taxonomyWarnings": [],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "master.sion",
+      "cardId": "master.sion.skill.s12",
+      "abilityId": "s12.alter-ego-transform",
+      "abilityKey": "master.sion.skill.s12::s12.alter-ego-transform",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "ACTION"
+      ],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "MANA"
+      ],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "transform_event_source_card"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [
+        "limit:scope:this_card",
+        "limit:type:per_round",
+        "limit:uses:1"
+      ],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+      ]
     },
     {
       "archiveId": "servant.achilles",
@@ -4214,6 +4260,51 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.douman",
+      "cardId": "servant.douman.skill.sc-douman-3",
+      "abilityId": "sc-douman-3.alter-ego-transform",
+      "abilityKey": "servant.douman.skill.sc-douman-3::sc-douman-3.alter-ego-transform",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "ACTION"
+      ],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "close_source_card",
+        "transform_event_source_card"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+      ]
+    },
+    {
       "archiveId": "servant.drake",
       "cardId": "servant.drake.skill.sc-drake-1",
       "abilityId": "sc-drake-1.draw",
@@ -6518,6 +6609,51 @@
       ]
     },
     {
+      "archiveId": "servant.koyanskaya",
+      "cardId": "servant.koyanskaya.skill.sc-koyanskaya-1",
+      "abilityId": "sc-koyanskaya-1.alter-ego-transform",
+      "abilityKey": "servant.koyanskaya.skill.sc-koyanskaya-1::sc-koyanskaya-1.alter-ego-transform",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "ACTION"
+      ],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "close_source_card",
+        "transform_event_source_card"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+      ]
+    },
+    {
       "archiveId": "servant.ladyavalon",
       "cardId": "servant.ladyavalon.skill.sc-ladyavalon-3",
       "abilityId": "sc-ladyavalon-3.round-power",
@@ -7003,6 +7139,51 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.mechaeli",
+      "cardId": "servant.mechaeli.skill.sc-mechaeli-3",
+      "abilityId": "sc-mechaeli-3.alter-ego-transform",
+      "abilityKey": "servant.mechaeli.skill.sc-mechaeli-3::sc-mechaeli-3.alter-ego-transform",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "ACTION"
+      ],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "close_source_card",
+        "transform_event_source_card"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+      ]
+    },
+    {
       "archiveId": "servant.medb",
       "cardId": "servant.medb.skill.sc-medb-1",
       "abilityId": "sc-medb-1.draw",
@@ -7167,6 +7348,51 @@
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.meltryllis",
+      "cardId": "servant.meltryllis.skill.sc-meltryllis-3",
+      "abilityId": "sc-meltryllis-3.alter-ego-transform",
+      "abilityKey": "servant.meltryllis.skill.sc-meltryllis-3::sc-meltryllis-3.alter-ego-transform",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "ACTION"
+      ],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "close_source_card",
+        "transform_event_source_card"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+      ]
     },
     {
       "archiveId": "servant.mephisto",
@@ -7440,6 +7666,51 @@
       "semanticRoutes": [],
       "taxonomyWarnings": [],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.muramasa",
+      "cardId": "servant.muramasa.skill.sc-muramasa-3",
+      "abilityId": "sc-muramasa-3.alter-ego-transform",
+      "abilityKey": "servant.muramasa.skill.sc-muramasa-3::sc-muramasa-3.alter-ego-transform",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "ACTION"
+      ],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "close_source_card",
+        "transform_event_source_card"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+      ]
     },
     {
       "archiveId": "servant.musashi",
@@ -7731,6 +8002,96 @@
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.okita-alt",
+      "cardId": "servant.okita-alt.skill.sc-okita-alt-1",
+      "abilityId": "sc-okita-alt-1.alter-ego-transform",
+      "abilityKey": "servant.okita-alt.skill.sc-okita-alt-1::sc-okita-alt-1.alter-ego-transform",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "ACTION"
+      ],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "close_source_card",
+        "transform_event_source_card"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+      ]
+    },
+    {
+      "archiveId": "servant.passionlip",
+      "cardId": "servant.passionlip.skill.sc-passionlip-1",
+      "abilityId": "sc-passionlip-1.alter-ego-transform",
+      "abilityKey": "servant.passionlip.skill.sc-passionlip-1::sc-passionlip-1.alter-ego-transform",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "ACTION"
+      ],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "close_source_card",
+        "transform_event_source_card"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+      ]
     },
     {
       "archiveId": "servant.roberts",
@@ -8388,6 +8749,51 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.sitonai",
+      "cardId": "servant.sitonai.skill.sc-sitonai-3",
+      "abilityId": "sc-sitonai-3.alter-ego-transform",
+      "abilityKey": "servant.sitonai.skill.sc-sitonai-3::sc-sitonai-3.alter-ego-transform",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "ACTION"
+      ],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "close_source_card",
+        "transform_event_source_card"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+      ]
+    },
+    {
       "archiveId": "servant.stheno",
       "cardId": "servant.stheno.skill.sc-stheno-1",
       "abilityId": "sc-stheno-1.presence-concealment",
@@ -8430,6 +8836,51 @@
       "taxonomyWarnings": [],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:defeat_highest_power_opponents"
+      ]
+    },
+    {
+      "archiveId": "servant.taisui",
+      "cardId": "servant.taisui.skill.sc-taisui-1",
+      "abilityId": "sc-taisui-1.alter-ego-transform",
+      "abilityKey": "servant.taisui.skill.sc-taisui-1::sc-taisui-1.alter-ego-transform",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "ACTION"
+      ],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "close_source_card",
+        "transform_event_source_card"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
       ]
     },
     {
@@ -9006,8 +9457,8 @@
       "delta": 0
     },
     "notClassifiable": {
-      "before": 65,
-      "after": 60,
+      "before": 75,
+      "after": 70,
       "delta": -5
     },
     "pilotAllowlistEntries": {
@@ -9018,211 +9469,211 @@
     "cardSpecificRuntimeHandlers": [
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 65,
+        "line": 66,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 65,
+        "line": 66,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 65,
+        "line": 66,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 72,
+        "line": 73,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 72,
+        "line": 73,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 72,
+        "line": 73,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 86,
+        "line": 87,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 86,
+        "line": 87,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 86,
+        "line": 87,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 86,
+        "line": 87,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 557,
+        "line": 558,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 638,
+        "line": 645,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 950,
+        "line": 959,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 957,
+        "line": 966,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1024,
+        "line": 1033,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1368,
+        "line": 1377,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 2449,
+        "line": 2598,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/resolution-dataflow.ts",
-        "line": 1202,
+        "line": 1203,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/resolution-dataflow.ts",
-        "line": 1843,
+        "line": 1846,
         "id": "servant_package",
-        "confidence": "STATIC_LITERAL"
-      },
-      {
-        "file": "packages/rules/src/match-session.ts",
-        "line": 172,
-        "id": "master",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
         "line": 173,
-        "id": "servant",
-        "confidence": "STATIC_LITERAL"
-      },
-      {
-        "file": "packages/rules/src/match-session.ts",
-        "line": 276,
         "id": "master",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1400,
-        "id": "master_main",
+        "line": 174,
+        "id": "servant",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1401,
-        "id": "servant_identity",
+        "line": 277,
+        "id": "master",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
         "line": 1403,
+        "id": "master_main",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/match-session.ts",
+        "line": 1404,
+        "id": "servant_identity",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/match-session.ts",
+        "line": 1406,
         "id": "servant_deck",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1404,
+        "line": 1407,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1404,
+        "line": 1407,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1405,
+        "line": 1408,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1405,
+        "line": 1408,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 234,
+        "line": 235,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 243,
+        "line": 244,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 243,
+        "line": 244,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 243,
+        "line": 244,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 352,
+        "line": 353,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 370,
+        "line": 371,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       }
@@ -9250,8 +9701,8 @@
       "delta": 0
     },
     "unsupportedNodes": {
-      "before": 65,
-      "after": 65,
+      "before": 75,
+      "after": 75,
       "delta": 0
     },
     "kpiNote": "KPI tracks routing/legacy consumers and unsupported nodes, not raw ability count."
@@ -9269,7 +9720,7 @@
       "card_not_on_board": 1,
       "choice_is": 1,
       "claim_and_discard_location_events": 1,
-      "close_source_card": 1,
+      "close_source_card": 10,
       "controller_alone_at_battlefield": 1,
       "controller_at_battlefield": 1,
       "controller_at_location_kind": 1,
@@ -9307,10 +9758,11 @@
       "swap_revealed_with_deck_bottom": 1,
       "terrain_multiplier": 2,
       "transfer_vp_to_owner": 1,
+      "transform_event_source_card": 10,
       "transform_to_return_silence_on_loss": 1
     },
     "primitiveFamilyCounts": {
-      "CARD_ACTION_SEMANTICS": 20,
+      "CARD_ACTION_SEMANTICS": 29,
       "CARD_ZONE": 29,
       "MOVEMENT": 16,
       "RESOURCE_NUMERIC": 67,
@@ -9329,7 +9781,8 @@
       "hide_servant_true_name": 1,
       "opponents_random_discard": 2,
       "power_bonus": 2,
-      "transfer_vp_to_owner": 1
+      "transfer_vp_to_owner": 1,
+      "transform_event_source_card": 10
     }
   },
   "gateEvidenceMetadata": {
@@ -10119,6 +10572,12 @@
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
+      "archiveId": "master.sion",
+      "cardId": "master.sion.skill.s12",
+      "abilityId": "s12.alter-ego-transform",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+    },
+    {
       "archiveId": "servant.achilles",
       "cardId": "servant.achilles.skill.sc-achilles-1",
       "abilityId": "sc-achilles-1.gale-advance",
@@ -10255,6 +10714,12 @@
       "cardId": "servant.danzou.skill.sc-danzou-3",
       "abilityId": "sc-danzou-3.presence-concealment",
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:defeat_highest_power_opponents"
+    },
+    {
+      "archiveId": "servant.douman",
+      "cardId": "servant.douman.skill.sc-douman-3",
+      "abilityId": "sc-douman-3.alter-ego-transform",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
     },
     {
       "archiveId": "servant.drake",
@@ -10407,6 +10872,12 @@
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:defeat_highest_power_opponents"
     },
     {
+      "archiveId": "servant.koyanskaya",
+      "cardId": "servant.koyanskaya.skill.sc-koyanskaya-1",
+      "abilityId": "sc-koyanskaya-1.alter-ego-transform",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+    },
+    {
       "archiveId": "servant.ladyavalon",
       "cardId": "servant.ladyavalon.skill.sc-ladyavalon-3",
       "abilityId": "sc-ladyavalon-3.round-power",
@@ -10423,6 +10894,18 @@
       "cardId": "servant.maxwell.skill.sc-maxwell-1",
       "abilityId": "sc-maxwell-1.round-power",
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.mechaeli",
+      "cardId": "servant.mechaeli.skill.sc-mechaeli-3",
+      "abilityId": "sc-mechaeli-3.alter-ego-transform",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+    },
+    {
+      "archiveId": "servant.meltryllis",
+      "cardId": "servant.meltryllis.skill.sc-meltryllis-3",
+      "abilityId": "sc-meltryllis-3.alter-ego-transform",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
     },
     {
       "archiveId": "servant.mephisto",
@@ -10443,10 +10926,28 @@
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
+      "archiveId": "servant.muramasa",
+      "cardId": "servant.muramasa.skill.sc-muramasa-3",
+      "abilityId": "sc-muramasa-3.alter-ego-transform",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+    },
+    {
       "archiveId": "servant.musashi",
       "cardId": "servant.musashi.skill.sc-musashi-3",
       "abilityId": "sc-musashi-3.magic-resistance",
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.okita-alt",
+      "cardId": "servant.okita-alt.skill.sc-okita-alt-1",
+      "abilityId": "sc-okita-alt-1.alter-ego-transform",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+    },
+    {
+      "archiveId": "servant.passionlip",
+      "cardId": "servant.passionlip.skill.sc-passionlip-1",
+      "abilityId": "sc-passionlip-1.alter-ego-transform",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
     },
     {
       "archiveId": "servant.saber",
@@ -10479,10 +10980,22 @@
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
+      "archiveId": "servant.sitonai",
+      "cardId": "servant.sitonai.skill.sc-sitonai-3",
+      "abilityId": "sc-sitonai-3.alter-ego-transform",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+    },
+    {
       "archiveId": "servant.stheno",
       "cardId": "servant.stheno.skill.sc-stheno-1",
       "abilityId": "sc-stheno-1.presence-concealment",
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:defeat_highest_power_opponents"
+    },
+    {
+      "archiveId": "servant.taisui",
+      "cardId": "servant.taisui.skill.sc-taisui-1",
+      "abilityId": "sc-taisui-1.alter-ego-transform",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
     }
   ],
   "compiledDefinitions": {
