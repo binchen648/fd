@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.39
+- Version: P3-TI-1.40
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3874,57 +3874,53 @@ Permitted final status:
 ## TASK P3-FB2-14
 
 Owner: Codex B2
-Status: READY
+Status: REVIEW_ACCEPTED
 Branch: `codex/b2-p3-fb2-14-game-start-rule-overrides-r1`
-Base: exact P3-FB2-14 A handoff commit
+Base: `50602c9355794c9c0c7fe4d79b75f7936d912c17`
+Candidate: `86afe51311ff2b6cd05ea403044e8e226b0cde7d`
+Review: P3-R39 `62d355513d7fff66c4f3752f891f8ec326cf70f3`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
-Read: `docs/reports/2026-09-16-p3-fb2-14-game-start-rule-overrides-handoff.md`
+Read: `docs/reports/2026-09-16-p3-fb2-14-game-start-rule-overrides-handoff.md`, `docs/reports/2026-09-16-p3-fb2-14-game-start-rule-overrides-result.md`, and `docs/reports/2026-09-16-p3-r39-fb2-14-game-start-rule-overrides-review.md`
 
-Goal: implement exactly the identity-free, typed `game_start` persistent RuleOverride family frozen by A. Use existing `RuleOverrideState`, existing `game_start` event authority, and generic consumer entry points. No arbitrary flag bag, identity/text routing, Leonardo/Ophelia, Wodime, broad Visibility/Modifier/Lifecycle promotion, or authoring migration.
-
-Completion status allowed:
-- `IMPLEMENTATION_COMPLETE_CANDIDATE`
-- `IMPLEMENTATION_NEEDS_REVISION`
+Accepted boundary: identity-free typed `game_start` RuleOverride installation for the exact A-frozen whitelist; exact fail-closed classifier including loader-normalized empty response defaults; typed authoritative persistence/idempotency; generic combat, master-skill Power, command-spell timing, attack allowance, Situation restriction, movement, visibility and positive-mana consumers; deterministic positive-mana ledger with Situation/round/storage ordering; hidden-event privacy correction and viewer-scoped opponent discard inspection. No arbitrary flag bag, identity/name/printed-text routing, Leonardo/Ophelia/Wodime semantics, broad taxonomy promotion, or authoring migration is accepted by implication.
 
 ## TASK P3-R39
 
 Owner: Codex R
-Status: BLOCKED_ON_FB2_14
-Branch: reviewer-selected fresh worktree/branch from exact FB2-14 candidate SHA
+Status: REVIEW_ACCEPTED
+Branch: `codex/r-p3-fb2-14-game-start-rule-overrides-review`
+Candidate: `86afe51311ff2b6cd05ea403044e8e226b0cde7d`
+Review SHA: `62d355513d7fff66c4f3752f891f8ec326cf70f3`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
-Read: FB2-14 A handoff, B2 result report, and exact candidate diff.
+Read: `docs/reports/2026-09-16-p3-r39-fb2-14-game-start-rule-overrides-review.md`
 
-Goal: independently review FB2-14 without implementing fixes. Verify exact whitelisted setup classifier, typed RuleOverride state, all generic consumers, mana-gain ledger correctness, hidden-event privacy correction, viewer-scoped opponent discard visibility, no identity/text routing, no broad flag bag, no authoring diff, and focused/rules/content/determinism/full CI/coverage/diff check. Reconcile future FM08 exact 10 independently.
-
-Permitted final status:
-- `GATE_A_B_CANDIDATE_ACCEPTED`
-- `REVIEW_BLOCKED`
+Verdict: `GATE_A_B_CANDIDATE_ACCEPTED`. Independent evidence: fresh offline install with 0 vulnerabilities; focused/high-risk `60/60`; rules regression + core `394/394`; full CI `736/736`; content 0 blockers; deterministic generated-content hashes unchanged; fresh coverage `90/123/222` with raw `22/3/127/0/70/124`; authoring diff 0; future FM08 identity/name runtime routing 0; frozen-F1 `core.game-start-rule-flags` independently reconciled as 17 handler-linked rows, 12 block-free generic rows, 5 special rows, and exactly 10 self-contained migration-ready rows after independent Leonardo/Ophelia exclusion.
 
 ## TASK P3-FM08
 
 Owner: Codex S
-Status: BLOCKED_ON_FB2_14_R39_A_SYNC
+Status: READY
 Branch: `codex/s-p3-fm08-game-start-rule-overrides`
-Base: future exact P3-FB2-14 A synchronization commit
+Base: exact P3-FB2-14 A synchronization commit
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
-Read after unblock: FB2-14 handoff/review/A-sync reports.
+Read: `docs/reports/2026-09-16-p3-a-fb2-14-synchronization.md`, `docs/reports/2026-09-16-p3-r39-fb2-14-game-start-rule-overrides-review.md`, and the frozen F1 source evidence for the exact ten IDs.
 
-Conditional goal after R39 + fresh A sync only: migrate exactly the ten selected IDs frozen by FB2-14 A handoff: Bazett s1b, Caules s1a, Fiore s2/s3/s4, Irisviel s1, Peperoncino s1a, Sieg s1, Waver s1, Zouken s5. Leonardo s1a and Ophelia s1a are excluded. Do not modify runtime.
+Goal: migrate exactly these ten frozen F1 identities using only the accepted FB2-14 structural routes: `master.bazett.skill.s1b`, `master.caules.skill.s1a`, `master.fiore.skill.s2`, `master.fiore.skill.s3`, `master.fiore.skill.s4`, `master.irisviel.skill.s1`, `master.peperoncino.skill.s1a`, `master.sieg.skill.s1`, `master.waver.skill.s1`, `master.zouken.skill.s5`. Preserve frozen text/evidence and locked Reference owner/static metadata. Leonardo s1a and Ophelia s1a are explicitly excluded. Do not modify runtime, taxonomy/KPI logic, or unrelated authoring.
 
-Completion status allowed after unblock:
+Completion status allowed:
 - `MIGRATION_COMPLETE_CANDIDATE`
 - `MIGRATION_BLOCKED`
 
-## Full-Roster Dispatch State After P3-R38 / P3-FB2-14 Dispatch
+## Full-Roster Dispatch State After P3-R39 / FM08 Dispatch
 
-- FM01-FM07 are independently migration-accepted; accepted canonical overlap is `101/944`, leaving `843/944` outside accepted canonical authoring.
-- R38 acceptance is `f7666f48f7eb00baeadb63f24fb56fc39991f372`; fresh reviewer coverage is `90/123/222`, raw `22/3/127/0/70/124`, full CI `727/727`.
-- Fresh post-FM07 scan finds no identical-text family >=10 and no block-free generic capability group >=10.
-- `core.game-start-rule-flags` has twelve block-free absent rows. A freezes an exact ten-member executable subset and explicitly excludes Leonardo s1a (missing authoritative event-mana consumer for the full F1 semantics) and Ophelia s1a (write-only use-count modifier for a not-yet-canonical dependent skill).
-- P3-FB2-14 is READY. P3-R39 and FM08 remain downstream gates. Runtime acceptance alone does not change accepted overlap; no `111/944` credit may be taken before migration acceptance.
+- FM01-FM07 remain independently migration-accepted; accepted canonical overlap stays `101/944`, leaving `843/944` outside accepted canonical authoring. FB2-14 runtime acceptance itself adds no migration credit.
+- FB2-14 candidate `86afe51311ff2b6cd05ea403044e8e226b0cde7d` is independently accepted by R39 at `62d355513d7fff66c4f3752f891f8ec326cf70f3`.
+- Fresh A recertification is offline install 0 vulnerabilities, typecheck PASS, FB2-14 focused `9/9`, content 0 blockers, deterministic hashes unchanged, coverage `90/123/222`, raw `22/3/127/0/70/124`, compiled product hash unchanged.
+- R39 independently recomputed frozen F1 rather than reusing the A/B2 list: `core.game-start-rule-flags` has 17 handler-linked identities, 12 block-free `READY_GENERIC_EXTENSION`, 5 special/blocked rows; Leonardo s1a lacks the full authoritative event reward consumer and Ophelia s1a only parameterizes a separate not-yet-canonical dependent skill, leaving the exact same 10 self-contained executable rows.
+- P3-FM08 is READY at exact batch size 10. Material overlap may become `111/944` only after S materializes the batch; accepted overlap remains `101/944` until the complete S -> A synchronization -> independent migration review chain accepts it.
 
 ## Prompt Templates
 
