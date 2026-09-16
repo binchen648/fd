@@ -769,3 +769,9 @@ Permitted final status:
 - 2026-09-16 P3-R35 / A sync: FB2-12 Presence Concealment pre-scoring response independently accepted; FM06 exact 12 is READY from canonical overlap 79/944. Fresh runtime coverage remains 69/101/200 and 22/3/127/0/48/124; no migration credit taken yet.
 - 2026-09-16 P3-A FM06 material sync: exact 12 Presence Concealment cards materialized; material overlap 91/944, accepted overlap still 79/944 pending R36. Coverage 80/113/212, raw 22/3/127/0/60/124, runtime diff 0, focused 20/20.
 - 2026-09-16 P3-R36 accepted FM06 at 91/944. Post-FM06 A scan found no identical-text 10+ family; next candidate is exact 10-member Reference handler core.alter-ego-transform (9 regular + distinct Sion EX), blocked on FB2-13 generic reverse/attribute-transform runtime.
+## P3-A FB2-13 Synchronization / FM07 Dispatch - 2026-09-16
+
+- R37 independently accepts FB2-13 candidate `18f2733eb0551f368e78a5f67ad9a32b96193d5b` at review `dc96afa3253dcf86a13e13ea29c8b99fb895df49`; fresh A focused `7/7`, content 0 blockers, determinism unchanged.
+- Coverage remains `80/113/212`, raw `22/3/127/0/60/124`; regenerated artifact drift is timestamp/static-line-only and is intentionally uncommitted.
+- Locked Reference + frozen F1 reconcile exactly 10 absent `core.alter-ego-transform` identities: nine regular cards share SHA `b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf`, Sion EX uses SHA `43c84de7cf6532ee6b561d8cfa35ddbdeac52850f6105684b23a82121636a892`; current canonical `0/10`.
+- FM07 is READY at exact size 10. Accepted overlap remains `91/944` until independent migration acceptance; no early `101/944` credit is taken.
