@@ -782,3 +782,11 @@ Permitted final status:
 - Fresh material coverage is `90/123/222`, raw `22/3/127/0/70/124`; the ten new `NOT_CLASSIFIABLE` rows are the expected coverage-taxonomy limitation for accepted `transform_event_source_card` authoring.
 - Fresh A focused `18/18`, content 0 blockers and determinism pass; S migration evidence `56/56`, rules `385/385`, full CI `727/727` are green.
 - R38 is READY. Accepted overlap remains `91/944` pending independent migration acceptance.
+
+## P3-A FB2-14 Dispatch / FM08 Planning - 2026-09-16
+
+- R38 independently accepts FM07 at accepted canonical overlap `101/944`; remaining gap `843/944`, fresh coverage `90/123/222`, raw `22/3/127/0/70/124`, full CI `727/727`.
+- Post-FM07 scan has no identical-text family >=10 and no block-free generic-capability batch >=10.
+- Next runtime seam is the exact ten-member self-contained subset of locked Reference `core.game-start-rule-flags`; all selected IDs are F1 block-free and current canonical `0/10`.
+- Leonardo s1a is excluded because F1 requires both event VP and event mana bonuses while current runtime lacks one authoritative event-mana reward consumer; Ophelia s1a is excluded because it only parameterizes a separate not-yet-canonical skill.
+- FB2-14 must use typed existing `RuleOverrideState`, one exact whitelisted game-start setup contract, generic consumer entry points, and no arbitrary playerFlags/identity/text routing. Future FM08 remains blocked pending R39 + fresh A sync.
