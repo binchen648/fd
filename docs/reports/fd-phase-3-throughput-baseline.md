@@ -798,3 +798,12 @@ Permitted final status:
 - R39 independently recomputed frozen F1 `core.game-start-rule-flags`: 17 handler-linked identities, 12 block-free generic rows, 5 special/blocked rows. Leonardo s1a and Ophelia s1a remain excluded for missing/dependent consumers, leaving exactly 10 self-contained executable identities.
 - FM08 is READY at exact size 10: Bazett s1b, Caules s1a, Fiore s2/s3/s4, Irisviel s1, Peperoncino s1a, Sieg s1, Waver s1, Zouken s5. Runtime, taxonomy/KPI logic, Leonardo/Ophelia, and unrelated authoring are out of scope.
 - Material overlap may reach `111/944` after S materializes the batch; accepted overlap stays `101/944` until independent FM08 migration acceptance.
+
+## P3-A FM08 Migration Synchronization - 2026-09-16
+
+- S candidate `8d87dfc6fd9032e45b893425c74ede0de9920fff` adds exactly the authorized ten game-start RuleOverride identities in eight full-roster archive slices, with runtime/taxonomy diff `0`.
+- A independently recomputes the frozen denominator as `943 static + 1 dynamic = 944`; current unique canonical overlap is `111/944`, duplicate frozen IDs `0`, remaining `833`.
+- All ten printed-text hashes and locked Reference passive `0/0/null` static metadata reconcile; existing playtest Irisviel authoring remains unchanged while canonical s1 is isolated in `master.irisviel.fm08.json`.
+- Fresh material coverage is `98/133/232`, raw `22/3/127/0/80/124`; A does not change taxonomy to manufacture route credit.
+- Fresh A offline install/typecheck, FM08+FB2 focused `14/14`, content 0 blockers and determinism are green; S rules/core `394/394` and full CI `736/736` are green.
+- R40 is READY. Accepted overlap remains `101/944` pending independent FM08 migration acceptance.

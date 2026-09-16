@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.40
+- Version: P3-TI-1.41
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3901,26 +3901,59 @@ Verdict: `GATE_A_B_CANDIDATE_ACCEPTED`. Independent evidence: fresh offline inst
 ## TASK P3-FM08
 
 Owner: Codex S
-Status: READY
+Status: MIGRATION_SYNC_CANDIDATE
 Branch: `codex/s-p3-fm08-game-start-rule-overrides`
-Base: exact P3-FB2-14 A synchronization commit
+Base: exact P3-FB2-14 A synchronization `d52941c86cb06e69fa76c14bb1936a733748753f`
+Candidate: `8d87dfc6fd9032e45b893425c74ede0de9920fff`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
-Read: `docs/reports/2026-09-16-p3-a-fb2-14-synchronization.md`, `docs/reports/2026-09-16-p3-r39-fb2-14-game-start-rule-overrides-review.md`, and the frozen F1 source evidence for the exact ten IDs.
+Read: `docs/reports/2026-09-16-p3-fm08-game-start-rule-overrides-migration-result.md`
 
-Goal: migrate exactly these ten frozen F1 identities using only the accepted FB2-14 structural routes: `master.bazett.skill.s1b`, `master.caules.skill.s1a`, `master.fiore.skill.s2`, `master.fiore.skill.s3`, `master.fiore.skill.s4`, `master.irisviel.skill.s1`, `master.peperoncino.skill.s1a`, `master.sieg.skill.s1`, `master.waver.skill.s1`, `master.zouken.skill.s5`. Preserve frozen text/evidence and locked Reference owner/static metadata. Leonardo s1a and Ophelia s1a are explicitly excluded. Do not modify runtime, taxonomy/KPI logic, or unrelated authoring.
+Goal: migrate exactly the ten frozen F1 identities using only the accepted FB2-14 structural routes: `master.bazett.skill.s1b`, `master.caules.skill.s1a`, `master.fiore.skill.s2`, `master.fiore.skill.s3`, `master.fiore.skill.s4`, `master.irisviel.skill.s1`, `master.peperoncino.skill.s1a`, `master.sieg.skill.s1`, `master.waver.skill.s1`, `master.zouken.skill.s5`. Preserve frozen text/evidence and locked Reference owner/static metadata. Leonardo s1a and Ophelia s1a are explicitly excluded. Do not modify runtime, taxonomy/KPI logic, or unrelated authoring.
+
+S evidence: exact 10 canonical identities in 8 archive slices, no runtime/taxonomy diff, real migrated game-start installation `10/10`, FM08+FB2 focused `14/14`, rules/core `394/394`, full CI `736/736`, content 0 blockers, determinism unchanged, material overlap `101/944 -> 111/944`.
+
+## TASK P3-A-FM08-MIGRATION-SYNC
+
+Owner: Codex A
+Status: MIGRATION_SYNC_CANDIDATE
+Branch: `codex/a-p3-fm08-migration-sync`
+Base: exact P3-FM08 S candidate `8d87dfc6fd9032e45b893425c74ede0de9920fff`
+Read: `docs/reports/2026-09-16-p3-a-fm08-migration-synchronization.md`
+
+Goal: independently recompute the frozen 944 denominator, exact ten-member FM08 addition set, F1 text hashes, locked Reference static metadata, Irisviel playtest-isolation integrity, material coverage, deterministic playtest identity, and unrelated/runtime drift. A must not repair S authoring.
 
 Completion status allowed:
-- `MIGRATION_COMPLETE_CANDIDATE`
-- `MIGRATION_BLOCKED`
+- `MIGRATION_SYNC_CANDIDATE`
+- `MIGRATION_SYNC_NEEDS_REVISION`
 
-## Full-Roster Dispatch State After P3-R39 / FM08 Dispatch
+## TASK P3-R40
 
-- FM01-FM07 remain independently migration-accepted; accepted canonical overlap stays `101/944`, leaving `843/944` outside accepted canonical authoring. FB2-14 runtime acceptance itself adds no migration credit.
-- FB2-14 candidate `86afe51311ff2b6cd05ea403044e8e226b0cde7d` is independently accepted by R39 at `62d355513d7fff66c4f3752f891f8ec326cf70f3`.
-- Fresh A recertification is offline install 0 vulnerabilities, typecheck PASS, FB2-14 focused `9/9`, content 0 blockers, deterministic hashes unchanged, coverage `90/123/222`, raw `22/3/127/0/70/124`, compiled product hash unchanged.
-- R39 independently recomputed frozen F1 rather than reusing the A/B2 list: `core.game-start-rule-flags` has 17 handler-linked identities, 12 block-free `READY_GENERIC_EXTENSION`, 5 special/blocked rows; Leonardo s1a lacks the full authoritative event reward consumer and Ophelia s1a only parameterizes a separate not-yet-canonical dependent skill, leaving the exact same 10 self-contained executable rows.
-- P3-FM08 is READY at exact batch size 10. Material overlap may become `111/944` only after S materializes the batch; accepted overlap remains `101/944` until the complete S -> A synchronization -> independent migration review chain accepts it.
+Owner: Codex R
+Status: READY
+Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM08 lineage
+Candidate S SHA: `8d87dfc6fd9032e45b893425c74ede0de9920fff`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-16-p3-a-fm08-migration-synchronization.md`, `docs/reports/2026-09-16-p3-fm08-game-start-rule-overrides-migration-result.md`, and `docs/reports/2026-09-16-p3-r39-fb2-14-game-start-rule-overrides-review.md`
+
+Goal: independently review the exact ten-member FM08 migration without implementing fixes. Required checks: frozen-F1 ten-member denominator and exclusions; exactly ten unique canonical additions and zero removals; all ten whole-text hashes and locked passive `0/0/null` Reference metadata; Fiore s4 dual-rule mapping; Irisviel canonical s1 isolated without mutating the existing playtest archive; exact FB2-14 classifier conformance and trusted `game_start` installation; no runtime/taxonomy/unrelated-authoring diff; material coverage `98/133/232`; unchanged playtest determinism; focused/rules/content/full-CI/diff check.
+
+Permitted final status:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `REJECTED`
+
+## Full-Roster Dispatch State After P3-A-FM08-MIGRATION-SYNC
+
+- FM01-FM07 remain independently migration-accepted at accepted overlap `101/944`.
+- FM08 S candidate `8d87dfc6fd9032e45b893425c74ede0de9920fff` adds exactly ten unique frozen identities and no removals: material canonical overlap is `111/944`, leaving `833/944` outside canonical authoring.
+- A independently recomputed the frozen denominator as `943 static + 1 dynamic = 944`, current unique canonical overlap `111`, duplicates `0`; subtracting the exact ten FM08 additions reproduces the pre-FM08 material/accepted baseline `101/944`.
+- A independently re-hashed all ten current texts and rechecked locked Reference static metadata; all ten are `Master` skill cards with Reference `被动 / cost 0 / basePower 0 / legacyRequirement null`, with Fiore s4 preserving its two-line whole-text identity.
+- The existing playtest `master.irisviel.json` is unchanged; canonical `master.irisviel.skill.s1` is isolated in `master.irisviel.fm08.json`, so deterministic generated playtest hashes remain unchanged.
+- Fresh A coverage is `98 archives / 133 cards / 232 abilities`, raw `22/3/127/0/80/124`; A does not alter taxonomy to manufacture route credit.
+- Fresh A offline install, typecheck, FM08+FB2 focused `14/14`, content validation and determinism are green. S rules/core `394/394` and standard full CI `736/736` are green. Runtime production diff is `0` files.
+- P3-R40 is READY. Accepted overlap remains `101/944` until R40 independently accepts FM08; only then may accepted overlap advance to `111/944`.
 
 ## Prompt Templates
 
