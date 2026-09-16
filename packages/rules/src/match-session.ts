@@ -22,6 +22,7 @@ import type { CompiledPlaytestContentLibrary } from '@fd/content';
 import { resolveBattlefield } from './core/combat-resolver';
 import { applyBattleScoring } from './core/scoring-resolver';
 import { canOccupyLocation, getEnabledLocations } from './core/map-engine';
+import { canViewFaceDownEvents, canViewOpponentDiscard, grantMana } from './core/rule-overrides';
 import { createSeededGameState } from './tools/seeded-state';
 
 import contentLibrary from '../../../data/generated/fd-playtest-v1.content-library.json';
@@ -1023,7 +1024,12 @@ export class MatchSession {
     delete targetState.currentSituationModifiers;
     if (resolvedSituation.battleModifiers) targetState.currentSituationModifiers = resolvedSituation.battleModifiers;
     for (const player of targetState.players) {
-      if (player.status === 'active') player.mana += resolvedSituation.mana;
+      if (player.status === 'active') {
+        grantMana(targetState, player.id, resolvedSituation.mana, {
+          source: 'situation',
+          isClimaxSituation: Boolean(resolvedSituation.isClimax),
+        });
+      }
     }
     this.record('situation_applied', resolvedSituation.id, {
       name: resolvedSituation.name,
@@ -1186,17 +1192,17 @@ export class MatchSession {
     const slotIndex = workshopPlayers.findIndex((candidate) => candidate.id === playerId);
     const manaReward = workshopDeploymentManaSlots[slotIndex] ?? 0;
     if (!manaReward) return;
-    const player = this.state.players.find((candidate) => candidate.id === playerId)!;
-    const cap = this.state.abilityRuntime?.manaCaps[playerId] ?? 12;
-    const before = player.mana;
-    player.mana = Math.min(cap, player.mana + manaReward);
-    this.record('workshop_deployment_mana_awarded', `${playerId}:magic_workshop mana +${player.mana - before}`, {
+    const result = grantMana(this.state, playerId, manaReward, { source: 'deployment' });
+    this.record('workshop_deployment_mana_awarded', `${playerId}:magic_workshop mana +${result.actualAmount}`, {
       playerId,
       locationId,
       slotIndex,
       printedManaReward: manaReward,
-      manaBefore: before,
-      manaAfter: player.mana,
+      manaBefore: result.before,
+      manaAfter: result.after,
+      requestedManaReward: result.requestedAmount,
+      appliedManaReward: result.actualAmount,
+      overflowManaReward: result.overflowAmount,
     });
   }
 
@@ -1399,6 +1405,14 @@ export class MatchSession {
     const ascensionCardIds = (pairing?.master.excludedCards ?? [])
       .map((card) => card.id);
     const own = (zoneName: string) => (card: GameState['cards'][number]) => card.ownerPlayerId === playerId && card.zone === zoneName;
+    const mayViewHiddenEvents = canViewFaceDownEvents(s, playerId);
+    const visibleEventPlacementIds = s.eventPlacements
+      .filter((event) => event.visibility.scope !== 'hidden_until_trigger' || mayViewHiddenEvents)
+      .map((event) => event.eventCardId);
+    const mayViewOpponentDiscards = canViewOpponentDiscard(s, playerId);
+    const opponentDiscardIds = mayViewOpponentDiscards
+      ? s.cards.filter((card) => card.ownerPlayerId !== playerId && card.zone === 'discard').map((card) => card.instanceId)
+      : [];
     return [
       zone(s, 'master_main', '御主主卡', (card) => card.definitionId === s.players.find((player) => player.id === playerId)?.masterCardId),
       zone(s, 'servant_identity', '从者身份', (card) => card.definitionId === s.players.find((player) => player.id === playerId)?.servantCardId, 'host_adjudicated'),
@@ -1412,9 +1426,10 @@ export class MatchSession {
       zone(s, 'attack_area', '攻击区', (card) => own('attack_area')(card) || (card.ownerPlayerId === playerId && card.zone === 'attack_area')),
       zone(s, 'battlefield', '战斗参与区', (card) => ['field', 'attack_area'].includes(card.zone) && card.ownerPlayerId === playerId && ['miyama_town', 'shinto'].includes(s.players.find((player) => player.id === card.controllerPlayerId)?.locationId ?? '')),
       zone(s, 'discard', '弃牌', own('discard')),
+      ...(mayViewOpponentDiscards ? [{ id: 'opponent_discard', label: '对手弃牌', cardIds: opponentDiscardIds, count: opponentDiscardIds.length, status: opponentDiscardIds.length ? 'enabled' as const : 'empty' as const }] : []),
       zone(s, 'removed_from_game', '移除', own('removed_from_game')),
       { id: 'event_deck', label: '事件牌库', cardIds: s.eventDeck ?? [], count: (s.eventDeck ?? []).length, status: 'enabled' },
-      { id: 'event_placements', label: '事件放置', cardIds: s.eventPlacements.map((event) => event.eventCardId), count: s.eventPlacements.length, status: s.eventPlacements.length ? 'enabled' : 'empty' },
+      { id: 'event_placements', label: '事件放置', cardIds: visibleEventPlacementIds, count: s.eventPlacements.length, status: s.eventPlacements.length ? 'enabled' : 'empty' },
       { id: 'event_discard', label: '事件弃牌', cardIds: (s.eventDiscardPile ?? []).map((event) => event.eventCardId), count: s.eventDiscardPile?.length ?? 0, status: s.eventDiscardPile?.length ? 'enabled' : 'empty' },
       { id: 'situation_deck', label: '局势牌库', cardIds: s.situationDeck ?? [], count: (s.situationDeck ?? []).length, status: 'enabled' },
       { id: 'current_situation', label: '当前局势', cardIds: s.currentSituationCardId ? [s.currentSituationCardId] : [], count: s.currentSituationCardId ? 1 : 0, status: s.currentSituationCardId ? 'enabled' : 'empty' },

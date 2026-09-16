@@ -165,6 +165,20 @@ export interface RuleOverrideState {
   engagedPlayerIds?: string[];
   ignoreEngagementForMovementPlayerIds?: string[];
   mustDeployToBattlefieldPlayerIds?: string[];
+
+  /** Typed Phase-3 game-start persistent rule overrides. Never an arbitrary string flag bag. */
+  logicalDayByPlayer?: Record<string, number>;
+  firstLogicalDayTotalPowerAdjustmentByPlayer?: Record<string, number>;
+  nonClimaxSituationManaGainCapByPlayer?: Record<string, number>;
+  movementLockedOwnActionCombatPlayerIds?: string[];
+  roundTotalManaGainCapByPlayer?: Record<string, { regular: number; climax: number }>;
+  lowerVpBattleTotalPowerAdjustmentByPlayer?: Record<string, number>;
+  masterSkillPowerLockIfSituationForbidsByPlayer?: Record<string, { attribute: string; value: number }>;
+  commandSpellPhaseOverrideByPlayer?: Record<string, PhaseName>;
+  viewOpponentDiscardPlayerIds?: string[];
+  extraAttackPlayAllowanceByManaByPlayer?: Record<string, { threshold: number; amount: number }>;
+  viewFaceDownEventsPlayerIds?: string[];
+  ignoreSituationPlayForbidAttributesByPlayer?: Record<string, string[]>;
 }
 
 export interface GameState {

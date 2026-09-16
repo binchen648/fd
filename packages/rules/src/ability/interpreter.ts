@@ -6,6 +6,7 @@ import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID, evaluateCardSourceValidity } fro
 import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
+import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, situationForbidsAttribute } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
 import {
   DataFlowValidationError,
@@ -116,7 +117,7 @@ function extraAttackPlayAllowance(s: GameState, playerId: string): number {
 }
 function attackPlayAllowance(s: GameState, playerId: string): number {
   const normalAttackCount = runtime(s).playRulesVersion === 'legacy-v0' ? 1 : 2;
-  return normalAttackCount + extraAttackPlayAllowance(s, playerId);
+  return normalAttackCount + extraAttackPlayAllowance(s, playerId) + persistentExtraAttackAllowance(s, playerId);
 }
 function attackPlayLimitReached(s: GameState, playerId: string, sourceId: string, ignoreStaged = false): boolean {
   if (!entersAttackArea(s, sourceId)) return false;
@@ -182,6 +183,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
+    manaGainedThisRound: { round: s.round.roundNumber, byPlayer: {} },
     playRulesVersion: options.playRulesVersion ?? 'explicit-v1',
     playCounters: { round: s.round.roundNumber, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} } };
 }
@@ -335,6 +337,10 @@ function modifierControllerApplies(s: GameState, modifierControllerId: string, s
 export function calculateCardPower(s: GameState, sourceId: string): { value: number; lines: CalculationLine[] } {
   if (runtime(s).cardState[sourceId]?.faceDown) return { value: 0, lines: [{ label: '暗置攻击无伤害结算', value: 0 }] };
   const source = card(s, sourceId); const d = definition(s, sourceId);
+  const persistentLock = s.ruleOverrides?.masterSkillPowerLockIfSituationForbidsByPlayer?.[source.controllerPlayerId];
+  if (d?.cardType === 'master_skill' && persistentLock && situationForbidsAttribute(s, persistentLock.attribute)) {
+    return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
+  }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
   for (const modifier of ((source as unknown as { powerModifiers?: Array<Record<string, unknown>> }).powerModifiers ?? [])) {
     const value = Number(modifier.value ?? 0);
@@ -382,6 +388,16 @@ function lockedBattlefieldIdsForMovement(s: GameState, playerId: string): Set<st
   }
   return locked;
 }
+function abilityExplicitlyIgnoresCardMovementRestrictions(a: AuthoringAbility): boolean {
+  return a.ruleModifiers.some((modifier) =>
+    modifier.operation === 'ignore' && modifier.rule === 'enter_or_leave_current_battlefield');
+}
+function persistentMovementLockBlocksTarget(s: GameState, ctx: EffectContext, target: RuleNode): boolean {
+  if (!movementLockedByPersistentRule(s, ctx.controllerId)) return false;
+  const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  const isMovementTarget = a.effects.some((effect) => effect.type === 'move_player' && str(effect.to) === str(target.id));
+  return isMovementTarget && !abilityExplicitlyIgnoresCardMovementRestrictions(a);
+}
 function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[] {
   if (nodes(target.conditions).some(c => !condition(s, ctx, c))) return [];
   if (target.type === 'choice') {
@@ -407,6 +423,7 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
       .map(candidate => candidate.id);
   }
   if (target.type === 'location') {
+    if (persistentMovementLockBlocksTarget(s, ctx, target)) return [];
     if (nodes(target.constraints).some(c => c.type === 'any_enabled_location')) {
       const from = player(s, ctx.controllerId).locationId;
       const enabled = getEnabledLocations(s.map, s.locationConfig);
@@ -566,6 +583,7 @@ function ongoingCardPlayForbidRules(s: GameState, playerId: string, sourceId: st
     ? (s as unknown as { modeState: { cardPlayForbids: Array<{ sourceId?: string; sourceType?: string; locationId?: string; attribute?: string; rule?: string }> } }).modeState.cardPlayForbids.flatMap((entry) => {
         if (entry.locationId && entry.locationId !== targetPlayer.locationId) return [];
         if (!entry.attribute || !Array.isArray(d.cardFace.attributes) || !d.cardFace.attributes.includes(entry.attribute)) return [];
+        if (entry.sourceType === 'situation' && ignoresSituationPlayForbid(s, playerId, entry.attribute)) return [];
         return [entry.rule ?? (entry.sourceType === 'situation' ? 'situation_play_forbid' : 'play_card_attribute')];
       })
     : [];
@@ -581,6 +599,8 @@ function effectiveActivationPhase(s: GameState, sourceId: string, a: AuthoringAb
   const basePhase = str(a.activation.phase);
   if (definition(s, sourceId)?.cardType !== 'command_spell' || basePhase !== 'action') return basePhase;
   const controllerId = card(s, sourceId).controllerPlayerId;
+  const persistentPhase = commandSpellPhaseOverride(s, controllerId);
+  if (persistentPhase) return persistentPhase;
   const usesAdvanceCommandSpells = s.cards.some((candidate) =>
     candidate.controllerPlayerId === controllerId &&
     ['skill', 'field', 'attack_area'].includes(candidate.zone) &&
@@ -601,6 +621,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) return false;
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
+  if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
@@ -629,6 +650,23 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   }
   return a.conditions.every(c => condition(s, context(s, sourceId, a.id, event), c));
 }
+function isGameStartRuleOverrideCandidate(a: AuthoringAbility): boolean {
+  return a.effects.some((effect) => effect.type === 'install_rule_override');
+}
+export function isGameStartRuleOverrideSemantic(a: AuthoringAbility): boolean {
+  if (!isGameStartRuleOverrideCandidate(a) || a.kind !== 'forced_trigger' || a.execution.mode !== 'automatic') return false;
+  if (str(a.activation.trigger) !== 'game_start' || Object.keys(a.activation).some((key) => key !== 'trigger')) return false;
+  if (a.conditions.length || a.targets.length || a.cost.length || a.creates.length || a.ruleModifiers.length) return false;
+  const responseKeys = Object.keys(a.responseWindow);
+  if (responseKeys.some((key) => !['order', 'passBehavior'].includes(key)) ||
+    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window') ||
+    Object.keys(a.limit).length || Object.keys(a.visibility).length || Object.keys(a.lifecycle).length) return false;
+  if (!a.effects.length || !a.effects.every((effect) => isExactGameStartRuleOverrideEffect(effect))) return false;
+  const rules = a.effects.map((effect) => str(effect.rule));
+  return new Set(rules).size === rules.length;
+}
+
 function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean {
   return Object.values(runtime(s).pack.cards).some((source) =>
     source.abilities.some((ability) =>
@@ -1059,8 +1097,13 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     }
     case 'adjust_mana': {
       const amount = numeric(s, ctx, effect.amount);
-      if (amount > 0 && !r.manaGainBlocked.includes(p.id)) p.mana = Math.min(r.manaCaps[p.id] ?? 12, p.mana + amount);
+      if (amount > 0) grantMana(s, p.id, amount, { source: 'generic' });
       else if (amount < 0) p.mana = Math.max(0, p.mana + amount); break;
+    }
+    case 'install_rule_override': {
+      if (!isExactGameStartRuleOverrideEffect(effect)) reject('resolution_failed', 'Unsupported persistent RuleOverride shape');
+      installGameStartRuleOverride(s, ctx.controllerId, effect);
+      break;
     }
     case 'adjust_command_seals': {
       const current = Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3);
@@ -2267,6 +2310,10 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isGameStartRuleOverrideSemantic(a)) {
+    for (const effect of effects) resolveEffect(s, ctx, effect);
+    return;
+  }
   if (isAnyLocationExceptWorkshopMovementSemantic(a)) {
     const pending = findPendingTarget(s, ctx, a, effects);
     if (pending) { runtime(s).pendingDecision = pending; return; }
@@ -2383,6 +2430,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) {
     reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
+  }
+  if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
+    reject('resolution_failed', 'Unsupported persistent RuleOverride semantic shape');
   }
   if (isAlterEgoTransformCandidate(a)) {
     if (!isAlterEgoTransformSemantic(a)) reject('resolution_failed', 'Unsupported Alter Ego transform semantic shape');
@@ -2574,6 +2624,7 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
   if (round > s.round.roundNumber) {
     runtime(copy).movementDistanceThisRound = {};
     runtime(copy).battlefieldsPassedOrStayedThisRound = {};
+    runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
   }
   copy.round.activePhase = next; copy.round.roundNumber = round; cleanupOngoing(copy);

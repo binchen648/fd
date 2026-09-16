@@ -1,4 +1,5 @@
 import type { GameState, PlayerState } from "../schema/game";
+import { grantMana } from "../core/rule-overrides";
 
 export interface PreparationPhaseContext {
   playerDrawLimits: Map<string, number>;
@@ -123,20 +124,13 @@ function activateSituationCardAndAwardMana(state: GameState): GameState {
   // 注：具体数值由卡牌定义提供
   const situationManaReward = 2; // 默认值，实际应从卡牌定义读取
 
-  // 向所有活跃玩家奖励魔力
-  let nextState = state;
-  for (const player of state.players.filter((p) => p.status === "active")) {
-    nextState = {
-      ...nextState,
-      players: nextState.players.map((p) =>
-        p.id === player.id
-          ? { ...p, mana: p.mana + situationManaReward }
-          : p
-      ),
-    };
+  // 向所有活跃玩家奖励魔力；统一通过正魔力授予入口记录每回合预算。
+  const nextState = structuredClone(state);
+  for (const player of nextState.players.filter((p) => p.status === "active")) {
+    grantMana(nextState, player.id, situationManaReward, { source: 'situation' });
   }
 
-  nextState = {
+  return {
     ...nextState,
     log: nextState.log.concat({
       type: "situation_activated",
@@ -147,8 +141,6 @@ function activateSituationCardAndAwardMana(state: GameState): GameState {
       },
     }),
   };
-
-  return nextState;
 }
 
 /**
