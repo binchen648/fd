@@ -654,7 +654,8 @@ function isGameStartRuleOverrideCandidate(a: AuthoringAbility): boolean {
   return a.effects.some((effect) => effect.type === 'install_rule_override');
 }
 export function isGameStartRuleOverrideSemantic(a: AuthoringAbility): boolean {
-  if (!isGameStartRuleOverrideCandidate(a) || a.kind !== 'forced_trigger' || a.execution.mode !== 'automatic') return false;
+  if (!isGameStartRuleOverrideCandidate(a) || a.kind !== 'forced_trigger' || a.execution.mode !== 'automatic' ||
+    !Array.isArray(a.execution.allowedOperations) || a.execution.allowedOperations.length) return false;
   if (str(a.activation.trigger) !== 'game_start' || Object.keys(a.activation).some((key) => key !== 'trigger')) return false;
   if (a.conditions.length || a.targets.length || a.cost.length || a.creates.length || a.ruleModifiers.length) return false;
   const responseKeys = Object.keys(a.responseWindow);

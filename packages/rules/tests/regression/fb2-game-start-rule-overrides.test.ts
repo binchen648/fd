@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import contentLibrary from '../../../../data/generated/fd-playtest-v1.content-library.json';
 import * as rules from '../../src/index';
 import type { AuthoringAbility, RuleNode } from '../../src/ability/types';
 import type { GameState } from '../../src/schema/game';
@@ -39,7 +40,7 @@ function setupAbility(effects: RuleNode[] = exactEffects): AuthoringAbility {
     activation: { trigger: 'game_start' },
     conditions: [], targets: [], cost: [], creates: [], ruleModifiers: [], lifecycle: {}, responseWindow: {}, limit: {}, visibility: {},
     effects: structuredClone(effects),
-    execution: { mode: 'automatic' },
+    execution: { mode: 'automatic', allowedOperations: [] },
   };
 }
 
@@ -143,6 +144,63 @@ describe('P3-FB2-14 identity-free game-start RuleOverride runtime', () => {
     expect(rules.isGameStartRuleOverrideSemantic(malformed)).toBe(false);
     const duplicate = setupAbility([exactEffects[0]!, exactEffects[0]!]);
     expect(rules.isGameStartRuleOverrideSemantic(duplicate)).toBe(false);
+
+    const absentOperationsArchive = archive();
+    const absentExecution = absentOperationsArchive.cards[0]!.abilities[0]!.execution as Record<string, unknown>;
+    delete absentExecution.allowedOperations;
+    const absentOperations = rules.loadAuthoringJson(absentOperationsArchive).cards[SETUP_DEF]!.abilities[0]!;
+    expect(absentOperations.execution.allowedOperations).toEqual([]);
+    expect(rules.isGameStartRuleOverrideSemantic(absentOperations)).toBe(true);
+
+    for (const operationsKey of ['hostOps', 'allowedOperations'] as const) {
+      const authorityArchive = archive();
+      authorityArchive.cards[0]!.abilities[0]!.execution = {
+        mode: 'automatic',
+        [operationsKey]: ['adjust-mana'],
+      } as never;
+      const withAuthority = rules.loadAuthoringJson(authorityArchive).cards[SETUP_DEF]!.abilities[0]!;
+      expect(withAuthority.execution.allowedOperations).toEqual(['adjust-mana']);
+      expect(rules.isGameStartRuleOverrideSemantic(withAuthority)).toBe(false);
+    }
+  });
+
+  it('installs game-start overrides before MatchSession applies the first-round Situation mana grant', () => {
+    const library = contentLibrary as unknown as {
+      rules: { cards: Record<string, { abilities: AuthoringAbility[] }> };
+    };
+    const setupCard = library.rules.cards['master.kayneth.skill.double-master']!;
+    const originalAbilities = setupCard.abilities;
+    setupCard.abilities = [
+      ...originalAbilities,
+      setupAbility([exactEffects[1]!, exactEffects[3]!]),
+    ];
+
+    let session: ReturnType<typeof createMatchSession>;
+    try {
+      session = createMatchSession({ seed: 1, humanPlayerId: 'p1' });
+    } finally {
+      setupCard.abilities = originalAbilities;
+    }
+
+    const kayneth = session.pairings.find((pairing) => pairing.master.id === 'master.kayneth')!;
+    const controller = session.state.players.find((player) => player.id === kayneth.playerId)!;
+    expect(session.state.currentSituationCardId).toBe('situation.turning_point');
+    expect(controller.mana).toBe(5);
+    expect(session.state.abilityRuntime!.manaGainedThisRound.byPlayer[controller.id]).toBe(1);
+    expect(rules.grantMana(session.state, controller.id, 2, { source: 'generic' })).toMatchObject({
+      requestedAmount: 2,
+      actualAmount: 1,
+      overflowAmount: 1,
+      before: 5,
+      after: 6,
+    });
+    expect(session.state.abilityRuntime!.manaGainedThisRound.byPlayer[controller.id]).toBe(2);
+    expect(session.state.abilityRuntime!.processedEvents.filter((id) => id === 'match-session-game-start')).toHaveLength(1);
+
+    const restored = restoreMatchSession(session.serializeSession());
+    expect(restored.state.players.find((player) => player.id === controller.id)?.mana).toBe(6);
+    expect(restored.state.abilityRuntime!.manaGainedThisRound.byPlayer[controller.id]).toBe(2);
+    expect(restored.state.abilityRuntime!.processedEvents.filter((id) => id === 'match-session-game-start')).toHaveLength(1);
   });
 
   it('installs all typed overrides on game_start exactly once and duplicate event replay is idempotent', () => {
