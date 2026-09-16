@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.38
+- Version: P3-TI-1.39
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3817,7 +3817,7 @@ Verdict: `GATE_A_B_CANDIDATE_ACCEPTED`. Independent evidence: focused/high-risk 
 ## TASK P3-FM07
 
 Owner: Codex S
-Status: MIGRATION_SYNC_CANDIDATE
+Status: MIGRATION_ACCEPTED
 Branch: `codex/s-p3-fm07-alter-ego-transform`
 Base: exact P3-FB2-13 A synchronization `2fec63dbd6533f435e851c471d3bf00fa75695e2`
 Candidate: `9c32957b13bc3964932b9a134702c1487069e059`
@@ -3832,7 +3832,7 @@ S evidence: exact 10 authoring additions, no removals/runtime diff, FM01-FM07 + 
 ## TASK P3-A-FM07-MIGRATION-SYNC
 
 Owner: Codex A
-Status: MIGRATION_SYNC_CANDIDATE
+Status: MIGRATION_SYNC_ACCEPTED
 Branch: `codex/a-p3-fm07-migration-sync`
 Base: exact P3-FM07 S candidate `9c32957b13bc3964932b9a134702c1487069e059`
 Read: `docs/reports/2026-09-16-p3-a-fm07-migration-synchronization.md`
@@ -3846,7 +3846,7 @@ Completion status allowed:
 ## TASK P3-R38
 
 Owner: Codex R
-Status: READY
+Status: MIGRATION_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM07 lineage
 Candidate S SHA: `9c32957b13bc3964932b9a134702c1487069e059`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
@@ -3870,6 +3870,61 @@ Permitted final status:
 - Fresh A typecheck, FM07/FB2-13/FM06 focused `18/18`, content validation and determinism are green. S rules `385/385` and standard full CI `727/727` are green.
 - Runtime production diff from the pre-FM07 accepted A-sync is `0` files.
 - P3-R38 is READY. Accepted overlap remains `91/944` until R38 independently accepts FM07; only then may accepted overlap advance to `101/944`.
+
+## TASK P3-FB2-14
+
+Owner: Codex B2
+Status: READY
+Branch: `codex/b2-p3-fb2-14-game-start-rule-overrides-r1`
+Base: exact P3-FB2-14 A handoff commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-16-p3-fb2-14-game-start-rule-overrides-handoff.md`
+
+Goal: implement exactly the identity-free, typed `game_start` persistent RuleOverride family frozen by A. Use existing `RuleOverrideState`, existing `game_start` event authority, and generic consumer entry points. No arbitrary flag bag, identity/text routing, Leonardo/Ophelia, Wodime, broad Visibility/Modifier/Lifecycle promotion, or authoring migration.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R39
+
+Owner: Codex R
+Status: BLOCKED_ON_FB2_14
+Branch: reviewer-selected fresh worktree/branch from exact FB2-14 candidate SHA
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: FB2-14 A handoff, B2 result report, and exact candidate diff.
+
+Goal: independently review FB2-14 without implementing fixes. Verify exact whitelisted setup classifier, typed RuleOverride state, all generic consumers, mana-gain ledger correctness, hidden-event privacy correction, viewer-scoped opponent discard visibility, no identity/text routing, no broad flag bag, no authoring diff, and focused/rules/content/determinism/full CI/coverage/diff check. Reconcile future FM08 exact 10 independently.
+
+Permitted final status:
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `REVIEW_BLOCKED`
+
+## TASK P3-FM08
+
+Owner: Codex S
+Status: BLOCKED_ON_FB2_14_R39_A_SYNC
+Branch: `codex/s-p3-fm08-game-start-rule-overrides`
+Base: future exact P3-FB2-14 A synchronization commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read after unblock: FB2-14 handoff/review/A-sync reports.
+
+Conditional goal after R39 + fresh A sync only: migrate exactly the ten selected IDs frozen by FB2-14 A handoff: Bazett s1b, Caules s1a, Fiore s2/s3/s4, Irisviel s1, Peperoncino s1a, Sieg s1, Waver s1, Zouken s5. Leonardo s1a and Ophelia s1a are excluded. Do not modify runtime.
+
+Completion status allowed after unblock:
+- `MIGRATION_COMPLETE_CANDIDATE`
+- `MIGRATION_BLOCKED`
+
+## Full-Roster Dispatch State After P3-R38 / P3-FB2-14 Dispatch
+
+- FM01-FM07 are independently migration-accepted; accepted canonical overlap is `101/944`, leaving `843/944` outside accepted canonical authoring.
+- R38 acceptance is `f7666f48f7eb00baeadb63f24fb56fc39991f372`; fresh reviewer coverage is `90/123/222`, raw `22/3/127/0/70/124`, full CI `727/727`.
+- Fresh post-FM07 scan finds no identical-text family >=10 and no block-free generic capability group >=10.
+- `core.game-start-rule-flags` has twelve block-free absent rows. A freezes an exact ten-member executable subset and explicitly excludes Leonardo s1a (missing authoritative event-mana consumer for the full F1 semantics) and Ophelia s1a (write-only use-count modifier for a not-yet-canonical dependent skill).
+- P3-FB2-14 is READY. P3-R39 and FM08 remain downstream gates. Runtime acceptance alone does not change accepted overlap; no `111/944` credit may be taken before migration acceptance.
 
 ## Prompt Templates
 
