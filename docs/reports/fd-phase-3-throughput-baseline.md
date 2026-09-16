@@ -790,3 +790,11 @@ Permitted final status:
 - Next runtime seam is the exact ten-member self-contained subset of locked Reference `core.game-start-rule-flags`; all selected IDs are F1 block-free and current canonical `0/10`.
 - Leonardo s1a is excluded because F1 requires both event VP and event mana bonuses while current runtime lacks one authoritative event-mana reward consumer; Ophelia s1a is excluded because it only parameterizes a separate not-yet-canonical skill.
 - FB2-14 must use typed existing `RuleOverrideState`, one exact whitelisted game-start setup contract, generic consumer entry points, and no arbitrary playerFlags/identity/text routing. Future FM08 remains blocked pending R39 + fresh A sync.
+
+## P3-A FB2-14 Synchronization / FM08 Dispatch - 2026-09-16
+
+- FB2-14 candidate `86afe51311ff2b6cd05ea403044e8e226b0cde7d` is independently accepted by R39 at `62d355513d7fff66c4f3752f891f8ec326cf70f3`; accepted canonical overlap remains `101/944` because runtime acceptance earns no migration credit.
+- Fresh A recertification: offline install 0 vulnerabilities, typecheck PASS, focused `9/9`, content 0 blockers, determinism unchanged, coverage `90/123/222`, raw `22/3/127/0/70/124`, compiled definition hash unchanged.
+- R39 independently recomputed frozen F1 `core.game-start-rule-flags`: 17 handler-linked identities, 12 block-free generic rows, 5 special/blocked rows. Leonardo s1a and Ophelia s1a remain excluded for missing/dependent consumers, leaving exactly 10 self-contained executable identities.
+- FM08 is READY at exact size 10: Bazett s1b, Caules s1a, Fiore s2/s3/s4, Irisviel s1, Peperoncino s1a, Sieg s1, Waver s1, Zouken s5. Runtime, taxonomy/KPI logic, Leonardo/Ophelia, and unrelated authoring are out of scope.
+- Material overlap may reach `111/944` after S materializes the batch; accepted overlap stays `101/944` until independent FM08 migration acceptance.
