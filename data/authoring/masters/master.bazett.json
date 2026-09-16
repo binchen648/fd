@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.bazett",
+  "name": "巴泽特·弗拉加·马克雷米兹",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus accepted FB2-14/R39; locked Reference is used only for owner/static metadata."
+  },
+  "cards": [
+    {
+      "id": "master.bazett.skill.s1b",
+      "aliases": ["s1b"],
+      "legacyId": "s1b",
+      "name": "第一天",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.bazett" },
+      "printedText": "彷徨-你-2合计威力。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "bazett.day1.dazed",
+          "kind": "forced_trigger",
+          "printedClause": "彷徨-你-2合计威力。",
+          "activation": { "trigger": "game_start" },
+          "conditions": [], "targets": [], "cost": [], "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+          "effects": [{ "type": "install_rule_override", "player": "controller", "rule": "first_logical_day_total_power_adjustment", "value": -2 }],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/巴泽特·弗拉加·马克雷米兹.png", "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹" },
+          { "kind": "legacy", "document": "legacy-content.json", "locator": "master/master.bazett/s1b" }
+        ],
+        "f1ClauseSources": [{ "document": "src/content/generated/legacy-content.json", "locator": "masters[16].skills[2].text#line=1", "sha256": "9847f0953309d542a783f1553153ccbf2bf08a3c008674caadd067ef2b9e7071" }],
+        "sourceTextSha256": "9847f0953309d542a783f1553153ccbf2bf08a3c008674caadd067ef2b9e7071",
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "s1b", "cost": 0, "basePower": 0, "legacyRequirement": null, "typeLabel": "被动" },
+        "acceptedContracts": { "gameStartRuleOverrides": "P3-R39/FB2-14" }
+      }
+    }
+  ]
+}
