@@ -13,6 +13,7 @@ import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
 import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
+import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 
 export interface CombatParticipantInput {
   playerId: string;
@@ -392,10 +393,8 @@ export function deriveBattleParticipantsFromState(
       const participant = {
         playerId: player.id,
         totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower,
-        attackTags: definitions.flatMap((entry) => entry.tags).concat(authoredAttacks.flatMap(card => {
-          const attributes = state.abilityRuntime!.pack.cards[card.definitionId]!.cardFace.attributes;
-          return Array.isArray(attributes) ? attributes.filter((v): v is string => typeof v === 'string') : [];
-        })),
+        attackTags: definitions.flatMap((entry) => entry.tags).concat(authoredAttacks.flatMap(card =>
+          getEffectiveCardAttributes(state, card.instanceId))),
         externalSkillEffects,
       };
       return terrainSlotIndex === undefined ? participant : { ...participant, terrainSlotIndex };
@@ -601,6 +600,7 @@ export function resolveBattlefield(
     const source = nextState.cards.find((card) => card.instanceId === sourceCardId);
     if (source) source.zone = "removed_from_game";
     if (nextState.abilityRuntime?.cardState[sourceCardId]) nextState.abilityRuntime.cardState[sourceCardId]!.active = false;
+    clearTransientCardTransformState(nextState, sourceCardId);
     if (nextState.abilityRuntime?.transformedReturnSilenceSourceCardIds) {
       nextState.abilityRuntime.transformedReturnSilenceSourceCardIds = nextState.abilityRuntime.transformedReturnSilenceSourceCardIds
         .filter((id) => id !== sourceCardId);

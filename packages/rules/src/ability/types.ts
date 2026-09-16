@@ -115,11 +115,18 @@ export interface EffectContext {
   variables: Record<string, number>; selections: Record<string, string[]>;
   event?: AbilityEvent;
 }
-export interface PendingInteractionMetadata {
+export interface PrivateOptionalHandPlayInteractionMetadata {
   kind: 'private_optional_hand_play_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
   sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
   constraints: { kind: 'target'; targetKind: 'card'; min: number; max: number; distinct: true };
 }
+export interface AlterEgoAttributeChoiceInteractionMetadata {
+  kind: 'alter_ego_attribute_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  triggerEventId: string; targetCardInstanceId: string; variant: 'regular' | 'ex';
+  constraints: { kind: 'target'; targetKind: 'attribute'; min: 0; max: 3; distinct: true };
+}
+export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -181,9 +188,13 @@ export interface SafeEvent {
   toZone?: string;
   movedCount?: number;
 }
+export interface CardRuntimeState {
+  active: boolean; faceDown: boolean; playedRound: number;
+  reversed?: boolean; attributeOverrides?: string[];
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
-  cardState: Record<string, { active: boolean; faceDown: boolean; playedRound: number }>;
+  cardState: Record<string, CardRuntimeState>;
   ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
   pendingDelayedActivations?: PendingDelayedActivation[];
   /** Server-owned pre-scoring battle-local defeat requests staged by the exact Presence Concealment response. */
@@ -227,7 +238,7 @@ export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variabl
 export interface AbilityPlayerView {
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];
   players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
-  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean }[];
+  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[] }[];
   stagedAttacks?: { playerId: PlayerId; cards: PlayCardAction[] }[];
   pendingDecision?: {
     id: string; candidates: string[]; min: number; max: number;

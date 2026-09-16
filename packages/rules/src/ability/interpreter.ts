@@ -5,6 +5,7 @@ import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID, evaluateCardSourceValidity } from '../core/card-source-state';
 import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
+import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { node, nodes, str } from './loader';
 import {
   DataFlowValidationError,
@@ -221,7 +222,7 @@ function constraint(s: GameState, ctx: EffectContext, candidate: CardInstance, c
       d.cardFace.basePower !== undefined && evaluateFormula(d.cardFace.basePower, s, ctx.controllerId, candidate.instanceId).value <= Number(c.value);
     case 'has_card_id': return candidate.definitionId === c.cardId;
     case 'not_card_id': return candidate.definitionId !== c.cardId;
-    case 'has_attribute': return Array.isArray(d?.cardFace.attributes) && d.cardFace.attributes.includes(c.attribute);
+    case 'has_attribute': return getEffectiveCardAttributes(s, candidate.instanceId).includes(str(c.attribute));
     case 'not_source_card': return candidate.instanceId !== ctx.sourceCardId;
     case 'played_this_round': return runtime(s).cardState[candidate.instanceId]?.playedRound === s.round.roundNumber;
     case 'not_card_type': return !!d && d.cardType !== c.cardType;
@@ -485,14 +486,14 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
       c.controllerId === ctx.controllerId && c.cardType === 'basic_attack' && !c.faceDown) ?? false;
     case 'event_played_card_has_attribute': return ctx.event?.playedCards?.some((played) => {
       if (played.instanceId === ctx.sourceCardId || played.controllerId !== ctx.controllerId || played.faceDown) return false;
-      const playedDefinition = runtime(s).pack.cards[card(s, played.instanceId).definitionId];
-      return Array.isArray(playedDefinition?.cardFace.attributes) && playedDefinition.cardFace.attributes.includes(c.attribute);
+      return getEffectiveCardAttributes(s, played.instanceId).includes(str(c.attribute));
     }) ?? false;
     case 'controller_mana_at_least': case 'min_mana': return p.mana >= Number(c.value);
     case 'source_card_in_zone': return card(s, ctx.sourceCardId).zone === c.zone || (c.zone === 'field' && card(s, ctx.sourceCardId).zone === 'attack_area');
     case 'card_not_on_board': return !s.cards.some(candidate => candidate.definitionId === c.cardId && candidate.zone === 'field');
     case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? p.locationId === 'recon' : false;
     case 'controller_servant_revealed': return runtime(s).revealedServants.includes(ctx.controllerId);
+    case 'source_reversed': return runtime(s).cardState[ctx.sourceCardId]?.reversed === true;
     case 'can_adjust_mana': return !runtime(s).manaGainBlocked.includes(p.id) && p.mana < (runtime(s).manaCaps[p.id] ?? 12);
     case 'controller_strict_second_battle_power': return controllerIsStrictSecondBattlePower(ctx.event, p.id);
     case 'controller_won_battle': return ctx.event?.battleResult?.winners.includes(p.id) ?? false;
@@ -599,6 +600,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) return false;
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) return false;
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
+  if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
@@ -620,6 +622,11 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isFixedControllerAdvanceDrawActionSemantic(a) &&
     !hasAvailableManaForFixedCosts(s, context(s, sourceId, a.id, event), a)) return false;
   if (isCloseSourceCardOnPlayedTrigger(a) && closeSourceStateError(s, sourceId, card(s, sourceId).controllerPlayerId)) return false;
+  if (isAlterEgoTransformSemantic(a)) {
+    const ctx = context(s, sourceId, a.id, event);
+    if (!alterEgoTriggerTarget(s, sourceId, event)) return false;
+    if (classifyAlterEgoTransformVariant(a) === 'ex' && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
+  }
   return a.conditions.every(c => condition(s, context(s, sourceId, a.id, event), c));
 }
 function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean {
@@ -748,7 +755,8 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
         !sourcePlayBasicAttackDrawEventScopeMatches(event, c.instanceId, c.controllerPlayerId)) continue;
       if (!matches || !canActivate(s, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
       if (['on_card_played', 'on_use_declared'].includes(event.type) && event.sourceCardId !== c.instanceId &&
-        !a.conditions.some((condition) => condition.type === 'event_played_card_has_attribute')) continue;
+        !a.conditions.some((condition) => condition.type === 'event_played_card_has_attribute') &&
+        !isAlterEgoTransformSemantic(a)) continue;
       if (event.type.startsWith('after_controller_') && event.playerId !== c.controllerPlayerId) continue;
       found.push({ cardInstanceId: c.instanceId, abilityId: a.id, controllerId: c.controllerPlayerId });
     }
@@ -763,6 +771,7 @@ function moveCard(s: GameState, id: string, zone: string): number {
   c.visibility = zone === 'field' || zone === 'attack_area' || zone === 'removed_from_game' ? { scope: 'public' } : { scope: 'owner_only', ownerPlayerId: c.ownerPlayerId };
   if (!['field', 'attack_area'].includes(zone)) {
     if (runtime(s).cardState[id]) runtime(s).cardState[id]!.active = false;
+    clearTransientCardTransformState(s, id);
     clearReturnSilenceTransformForSource(s, id);
   }
   return moved;
@@ -1394,6 +1403,140 @@ export function isSharedVictoryVpTriggerSemantic(a: AuthoringAbility): boolean {
     effect.amount === 2 && Number.isSafeInteger(effect.amount);
 }
 
+const ALTER_EGO_MUTABLE_ATTRIBUTES = ['力量', '迅捷', '魔术'] as const;
+export type AlterEgoTransformVariant = 'regular' | 'ex';
+
+function isExactAlterEgoTransformEffect(effect: RuleNode | undefined): boolean {
+  return !!effect && str(effect.type) === 'transform_event_source_card' && Object.keys(effect).every((key) => key === 'type');
+}
+function isExactCloseSourceEffect(effect: RuleNode | undefined): boolean {
+  return !!effect && str(effect.type) === 'close_source_card' && Object.keys(effect).every((key) => key === 'type');
+}
+function isAlterEgoTransformCandidate(a: AuthoringAbility): boolean {
+  return a.effects.some((effect) => str(effect.type) === 'transform_event_source_card');
+}
+export function classifyAlterEgoTransformVariant(a: AuthoringAbility): AlterEgoTransformVariant | undefined {
+  if (!isAlterEgoTransformCandidate(a)) return undefined;
+  const activationKeys = Object.keys(a.activation);
+  const responseKeys = Object.keys(a.responseWindow);
+  if (a.kind !== 'optional_trigger' || str(a.activation.phase) !== 'action' ||
+    str(a.activation.trigger) !== 'on_card_played' || str(a.activation.requiresSourceState) !== 'active' ||
+    activationKeys.some((key) => !['phase', 'trigger', 'requiresSourceState'].includes(key)) ||
+    a.conditions.length !== 0 || a.targets.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0 ||
+    Object.keys(a.lifecycle).length !== 0 || Object.keys(a.visibility).length !== 0 ||
+    str(a.responseWindow.opens) !== 'on_card_played' || str(a.responseWindow.order) !== 'turn_order' ||
+    str(a.responseWindow.passBehavior) !== 'decline_this_window' ||
+    responseKeys.some((key) => !['opens', 'order', 'passBehavior'].includes(key)) ||
+    !isExactAlterEgoTransformEffect(a.effects[0])) return undefined;
+
+  if (a.effects.length === 2 && isExactCloseSourceEffect(a.effects[1]) && a.cost.length === 0 && Object.keys(a.limit).length === 0) return 'regular';
+  const limitKeys = Object.keys(a.limit);
+  if (a.effects.length === 1 && isFixedControllerManaCostComponent(a) && Number(a.cost[0]?.amount) === 3 &&
+    str(a.limit.type) === 'per_round' && Number(a.limit.uses) === 1 && str(a.limit.scope) === 'this_card' &&
+    limitKeys.every((key) => ['type', 'uses', 'scope'].includes(key))) return 'ex';
+  return undefined;
+}
+export function isAlterEgoTransformSemantic(a: AuthoringAbility): boolean {
+  return classifyAlterEgoTransformVariant(a) !== undefined;
+}
+
+function alterEgoTriggerTarget(s: GameState, sourceCardId: string, event: AbilityEvent | undefined): CardInstance | undefined {
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceCardId);
+  if (!source || !event || event.type !== 'on_card_played' || event.playerId !== source.controllerPlayerId ||
+    !event.sourceCardId || event.sourceCardId === sourceCardId) return undefined;
+  const played = event.playedCards?.find((candidate) =>
+    candidate.instanceId === event.sourceCardId && candidate.controllerId === source.controllerPlayerId && !candidate.faceDown);
+  if (!played) return undefined;
+  const target = s.cards.find((candidate) => candidate.instanceId === event.sourceCardId);
+  const targetState = target ? runtime(s).cardState[target.instanceId] : undefined;
+  if (!target || target.controllerPlayerId !== source.controllerPlayerId || target.zone !== 'attack_area' ||
+    !targetState?.active || targetState.faceDown || targetState.playedRound !== s.round.roundNumber ||
+    !runtime(s).pack.cards[target.definitionId]) return undefined;
+  return target;
+}
+
+function alterEgoSourceSettlementError(s: GameState, ctx: EffectContext, a: AuthoringAbility): string | undefined {
+  const variant = classifyAlterEgoTransformVariant(a);
+  if (!variant) return 'Unsupported Alter Ego transform semantic shape.';
+  if (!active(s, ctx.sourceCardId)) return 'Alter Ego source must remain active and face up.';
+  if (!alterEgoTriggerTarget(s, ctx.sourceCardId, ctx.event)) return 'Trusted just-played Alter Ego target is no longer valid.';
+  if (variant === 'ex') {
+    if (abilityLimitReached(s, ctx.sourceCardId, a)) return 'Alter Ego EX was already used this round.';
+    if (!hasAvailableManaForFixedCosts(s, ctx, a)) return 'Insufficient mana for Alter Ego EX.';
+  } else {
+    const closeError = closeSourceStateError(s, ctx.sourceCardId, ctx.controllerId);
+    if (closeError) return closeError;
+  }
+  return undefined;
+}
+
+function applyAlterEgoTransform(s: GameState, ctx: EffectContext, a: AuthoringAbility, attributes?: string[]): void {
+  const variant = classifyAlterEgoTransformVariant(a);
+  const settlementError = alterEgoSourceSettlementError(s, ctx, a);
+  if (!variant || settlementError) reject('resolution_failed', settlementError ?? 'Unsupported Alter Ego transform semantic shape.');
+  let target = alterEgoTriggerTarget(s, ctx.sourceCardId, ctx.event)!;
+  let targetDefinition = runtime(s).pack.cards[target.definitionId]!;
+  const hasReversalEffect = targetDefinition.cardFace.hasReversalEffect === true;
+  if (hasReversalEffect) {
+    if (attributes !== undefined && attributes.length !== 0) reject('illegal_target', 'Reversal targets do not accept attribute selections.');
+  } else if (!Array.isArray(attributes) || attributes.length > 3 || new Set(attributes).size !== attributes.length ||
+    attributes.some((attribute) => !(ALTER_EGO_MUTABLE_ATTRIBUTES as readonly string[]).includes(attribute))) {
+    reject('illegal_target', 'Alter Ego attributes must be a distinct subset of the mutable attribute domain.');
+  }
+
+  if (variant === 'ex') {
+    executeFixedControllerManaCost(s, ctx, a);
+    const usageKey = `${ctx.sourceCardId}:${a.id}:round:${s.round.roundNumber}`;
+    runtime(s).abilityUsage[usageKey] = (runtime(s).abilityUsage[usageKey] ?? 0) + 1;
+    // Resolution data-flow replaces the working state atomically; reacquire the authoritative physical target after payment.
+    target = alterEgoTriggerTarget(s, ctx.sourceCardId, ctx.event)!;
+    targetDefinition = runtime(s).pack.cards[target.definitionId]!;
+  }
+  const targetState = runtime(s).cardState[target.instanceId]!;
+  if (hasReversalEffect) {
+    targetState.reversed = true;
+    delete targetState.attributeOverrides;
+    if (targetDefinition.cardFace.revealsTrueNameOnReverse === true) reveal(s, ctx.controllerId);
+  } else {
+    targetState.attributeOverrides = [...attributes!];
+    delete targetState.reversed;
+  }
+  runtime(s).events.push({
+    type: hasReversalEffect ? 'card_reversed' : 'card_attributes_overridden',
+    playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: target.instanceId,
+  });
+  if (variant === 'regular') executeResolutionEffects(s, ctx, [a.effects[1]!]);
+}
+
+function stageAlterEgoAttributeChoice(s: GameState, ctx: EffectContext, a: AuthoringAbility, target: CardInstance): void {
+  const variant = classifyAlterEgoTransformVariant(a);
+  if (!variant) reject('resolution_failed', 'Unsupported Alter Ego transform semantic shape.');
+  const id = nextId(s, 'interaction');
+  const targetNode: RuleNode = {
+    id: 'alter_ego_attributes', type: 'choice',
+    options: ALTER_EGO_MUTABLE_ATTRIBUTES.map((attribute) => ({ id: attribute })), count: { min: 0, max: 3 },
+  };
+  runtime(s).pendingDecision = {
+    id, controllerId: ctx.controllerId, target: targetNode, candidates: [...ALTER_EGO_MUTABLE_ATTRIBUTES], min: 0, max: 3,
+    context: structuredClone(ctx), remainingEffects: [],
+    interaction: {
+      kind: 'alter_ego_attribute_choice_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`, triggerEventId: ctx.event!.id, targetCardInstanceId: target.instanceId, variant,
+      constraints: { kind: 'target', targetKind: 'attribute', min: 0, max: 3, distinct: true },
+    },
+  };
+}
+
+function resolveAlterEgoTransformResponse(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  const settlementError = alterEgoSourceSettlementError(s, ctx, a);
+  if (settlementError) reject('resolution_failed', settlementError);
+  const target = alterEgoTriggerTarget(s, ctx.sourceCardId, ctx.event)!;
+  const targetDefinition = runtime(s).pack.cards[target.definitionId]!;
+  if (targetDefinition.cardFace.hasReversalEffect === true) applyAlterEgoTransform(s, ctx, a);
+  else stageAlterEgoAttributeChoice(s, ctx, a, target);
+}
+
 function isPresenceConcealmentAssassinationCandidate(a: AuthoringAbility): boolean {
   return (a.kind === 'optional_trigger' && str(a.activation.trigger) === 'after_battle_power_calculated') ||
     a.effects.some((effect) => str(effect.type) === 'defeat_highest_power_opponents');
@@ -1969,7 +2112,8 @@ function usesAcceptedFixedControllerManaCostComponent(a: AuthoringAbility): bool
   if (!isFixedControllerManaCostComponent(a)) return false;
   return isPlaySourceCardWithCostResponseRouteCandidate(a) ||
     isAddToAttackRouteCandidate(a) ||
-    isFixedControllerAdvanceDrawActionSemantic(a);
+    isFixedControllerAdvanceDrawActionSemantic(a) ||
+    classifyAlterEgoTransformVariant(a) === 'ex';
 }
 
 function hasFixedManaCost(costs: RuleNode[], amount: number): boolean {
@@ -2240,6 +2384,11 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) {
     reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
   }
+  if (isAlterEgoTransformCandidate(a)) {
+    if (!isAlterEgoTransformSemantic(a)) reject('resolution_failed', 'Unsupported Alter Ego transform semantic shape');
+    resolveAlterEgoTransformResponse(s, ctx, a);
+    return;
+  }
   if (isBattleLossStateTransformCandidate(a)) {
     if (!isBattleLossStateTransformSemantic(a)) reject('resolution_failed', 'Unsupported battle-loss state-transform semantic shape');
     settleBattleLossStateTransform(s, ctx);
@@ -2484,9 +2633,12 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
     if (!own && !isPublic && !['field', 'attack_area'].includes(c.zone)) continue;
     const hidden = !own && (!isPublic || runtime(s).cardState[c.instanceId]?.faceDown);
     // Opaque battlefield slot ids do not reveal definition ids embedded in legacy instance ids.
+    const physicalState = runtime(s).cardState[c.instanceId];
     view.cards.push({ instanceId: hidden ? `hidden-field-${s.cards.indexOf(c)}` : c.instanceId,
       ...(!hidden && (own || isPublic) ? { definitionId: c.definitionId } : {}), ownerPlayerId: c.ownerPlayerId, zone: c.zone,
-      ...(runtime(s).cardState[c.instanceId]?.faceDown ? { faceDown: true } : {}) });
+      ...(physicalState?.faceDown ? { faceDown: true } : {}),
+      ...(!hidden && physicalState?.reversed ? { reversed: true } : {}),
+      ...(!hidden && physicalState?.attributeOverrides !== undefined ? { attributeOverrides: [...physicalState.attributeOverrides] } : {}) });
   }
   const d = r.pendingDecision;
   if (d) {
@@ -2555,6 +2707,27 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       if (d.interaction) {
         const meta = d.interaction;
         const a = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
+        if (meta.kind === 'alter_ego_attribute_choice_v1') {
+          const variant = classifyAlterEgoTransformVariant(a);
+          const target = alterEgoTriggerTarget(s, d.context.sourceCardId, d.context.event);
+          const currentAllowed = candidates(s, d.context, d.target);
+          if (meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+            meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== runtime(s).revision ||
+            meta.sourceCardInstanceId !== d.context.sourceCardId || meta.abilityId !== d.context.abilityId ||
+            meta.triggerEventId !== d.context.event?.id || meta.targetCardInstanceId !== target?.instanceId || meta.variant !== variant ||
+            meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'attribute' || meta.constraints.min !== 0 ||
+            meta.constraints.max !== 3 || meta.constraints.distinct !== true || d.min !== 0 || d.max !== 3 ||
+            d.candidates.length !== ALTER_EGO_MUTABLE_ATTRIBUTES.length ||
+            ALTER_EGO_MUTABLE_ATTRIBUTES.some((attribute) => !d.candidates.includes(attribute)) ||
+            !Array.isArray(selected) || selected.length < d.min || selected.length > d.max ||
+            new Set(selected).size !== selected.length || selected.some((id) => !d.candidates.includes(id) || !currentAllowed.includes(id))) {
+            reject('resolution_failed', 'Corrupt or stale Alter Ego attribute interaction state');
+          }
+          d.context.selections[str(d.target.id)] = [...selected];
+          delete r.pendingDecision;
+          applyAlterEgoTransform(s, d.context, a, selected);
+          break;
+        }
         if (meta.kind !== 'private_optional_hand_play_v1' || meta.template !== 'target' || meta.visibility !== 'owner_only' ||
           meta.cancelPolicy !== 'forbidden' || meta.continuationRef !== `${d.id}:continuation` ||
           meta.createdRevision !== runtime(s).revision || meta.sourceCardInstanceId !== d.context.sourceCardId ||
