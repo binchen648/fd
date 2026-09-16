@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.35
+- Version: P3-TI-1.36
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3752,10 +3752,12 @@ Permitted final status:
 ## TASK P3-FM06
 
 Owner: Codex S
-Status: MIGRATION_SYNC_CANDIDATE
+Status: MIGRATION_ACCEPTED
 Branch: `codex/s-p3-fm06-presence-concealment`
 Base: exact P3-FB2-12 A synchronization `35aa5ef063fe6d8c6c611f70f0696bf111a80657`
 Candidate: `ebc1ca575fcef0e3894b13ec10613801e4227970`
+A sync: `34f891a7739e86b835bc78e65aa58fdf5f4e955a`
+Review: P3-R36 `e8bc73ede18c14d97158aa8677ae3498fa829935`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 Read: `docs/reports/2026-09-16-p3-a-fb2-12-synchronization.md` and `docs/reports/2026-09-16-p3-fb2-12-presence-concealment-handoff.md`
@@ -3769,9 +3771,11 @@ Completion status allowed:
 ## TASK P3-R36
 
 Owner: Codex R
-Status: READY
-Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM06 lineage
+Status: MIGRATION_ACCEPTED
+Branch: `codex/r-p3-fm06-presence-concealment-review`
 Candidate S SHA: `ebc1ca575fcef0e3894b13ec10613801e4227970`
+A sync SHA: `34f891a7739e86b835bc78e65aa58fdf5f4e955a`
+Review SHA: `e8bc73ede18c14d97158aa8677ae3498fa829935`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 Read: `docs/reports/2026-09-16-p3-a-fm06-migration-synchronization.md`, `docs/reports/2026-09-16-p3-fm06-presence-concealment-migration.md`, and `docs/reports/2026-09-16-p3-r35-fb2-12-presence-concealment-review.md`
@@ -3783,15 +3787,61 @@ Permitted final status:
 - `MIGRATION_NEEDS_REVISION`
 - `REJECTED`
 
-## Full-Roster Dispatch State After P3-A-FM06 / Before P3-R36
+## TASK P3-FB2-13
 
-- FM01-FM05 remain independently migration-accepted at accepted overlap `79/944`.
-- FM06 S candidate `ebc1ca575fcef0e3894b13ec10613801e4227970` materializes exactly 12 Presence Concealment identities; material canonical overlap is now `91/944`, while accepted overlap remains `79/944` until R36.
-- Frozen F1 explicitly contains `943` static identities plus dynamic `master.tiamat.card.life-sea`, for the authoritative total denominator `944`; after FM06 materialization, total absent is `853` (`852` absent static identities plus the dynamic identity).
-- A independently recomputed exact additions `12`, removals `0`, unauthorized additions `0`, and verified Semiramis FM05 skill2 object equality against the pre-FM06 base.
-- Fresh material coverage is `80 archives / 113 cards / 212 abilities`, raw `22/3/127/0/60/124`, source fingerprint `8bbbca216337b427509dd0dd133ef4515ede49c443937115ff9372259cd23ec4`, compiled definition hash unchanged.
-- FM06 changes no `packages/rules/src` production file. Fresh A recertification is typecheck PASS, focused `20/20`, content 0 blockers, deterministic hashes unchanged; S evidence is rules `388/388` and standard full CI `720/720`.
-- P3-R36 is READY and must independently decide migration acceptance on the exact A-synchronized lineage. No `91/944` accepted-overlap credit is final until R36 accepts.
+Owner: Codex B2
+Status: READY
+Branch: `codex/b2-p3-fb2-13-alter-ego-transform-r1`
+Base: exact P3-FB2-13 A handoff commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-16-p3-fb2-13-alter-ego-transform-handoff.md`
+
+Goal: implement exactly the identity-free `core.alter-ego-transform` runtime contract frozen by A: trusted just-played own face-up attack target, authored reversal or replacement mutable-attribute subset, instance-scoped reverse/attribute state observable by later rules and cleared on close, regular close-source variant, and Sion-shaped fixed-3-mana/no-close/once-per-round variant. Reuse existing response, choice, fixed-mana and close-source authorities. Do not migrate authoring.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## TASK P3-R37
+
+Owner: Codex R
+Status: BLOCKED_ON_FB2_13
+Branch: reviewer-selected fresh worktree/branch from exact FB2-13 candidate SHA
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: the FB2-13 A handoff, B2 result report, and exact candidate diff.
+
+Goal: independently review FB2-13 without implementing fixes. Verify the two structural variants, trusted event-bound target provenance, non-write-only reverse/effective-attribute state, attribute-choice atomicity, fixed cost / close-source semantics, cleanup, no identity/text routing, no broad transform/Trigger promotion, focused/rules/content/determinism/full CI/diff check, and independently reconcile the exact ten-member future FM07 handler family.
+
+Permitted final status:
+- `GATE_A_B_CANDIDATE_ACCEPTED`
+- `REVIEW_BLOCKED`
+
+## TASK P3-FM07
+
+Owner: Codex S
+Status: BLOCKED_ON_FB2_13_R37_A_SYNC
+Branch: `codex/s-p3-fm07-alter-ego-transform`
+Base: future exact P3-FB2-13 A synchronization commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+
+Conditional goal after R37 + A sync only: migrate exactly the ten F1 identities whose locked Reference handler is `core.alter-ego-transform`, preserving the nine-card regular text family plus the distinct Sion EX text/static metadata as separate structural variants. Do not combine any other Alter Ego or reverse-capable card merely to change batch size. Do not modify runtime.
+
+Completion status allowed after unblock:
+- `MIGRATION_COMPLETE_CANDIDATE`
+- `MIGRATION_BLOCKED`
+
+## Full-Roster Dispatch State After P3-R36 / Before P3-FB2-13
+
+- FM01-FM06 are independently migration-accepted; accepted canonical overlap is `91/944`, leaving `853/944` outside accepted canonical authoring.
+- FM06 R36 acceptance is `e8bc73ede18c14d97158aa8677ae3498fa829935`; fresh reviewer coverage is `80 archives / 113 cards / 212 abilities`, raw `22/3/127/0/60/124`, and full CI `720/720`.
+- Fresh post-FM06 scan finds no identical printed-text family at normal F4 minimum 10. The largest identical-text family is nine regular Alter Ego cards.
+- Locked Reference maps exactly ten still-absent identities to the same `core.alter-ego-transform` handler: those nine regular cards plus `master.sion.skill.s12` (他人格 EX). Sion is a distinct text/static variant, not an identical-text tenth member.
+- Reference handler inspection proves both variants use the same target-validation and transform core; regular closes source after success, while the EX variant pays fixed 3 mana, keeps source active, and is once per round.
+- Current rebuilt runtime lacks generic physical-card `reversed` / `attributeOverrides` state and an effective-attribute resolver, so FM07 is not migration-ready yet.
+- P3-FB2-13 is READY to close exactly that runtime gap; P3-R37 and FM07 remain downstream gates. No `101/944` credit may be taken before the complete B2 -> R37 -> A sync -> S -> A -> migration review chain succeeds.
 
 ## Prompt Templates
 
