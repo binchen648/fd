@@ -3985,19 +3985,60 @@ Result: R40 `MIGRATION_ACCEPTED` is synchronized on the corrected recovery linea
 ## TASK P3-FB2-15-RECOVERY
 
 Owner: Codex B2
-Status: READY_FOR_B2_RECOVERY
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 Base: integrated current-main baseline `553779e8ffcc926ae4763ee86a2ea937e090c128`
+Dispatch: `8376bece0e84a510aa8324f17d98c2f2deabaa07`
+Candidate: `23a666913a3050ad55d781e3f5b3a1518add4c3e`
+Review: P3-R41-RECOVERY `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
-Read: `docs/reports/2026-09-17-p3-fb2-15-recovery-game-start-skill-provisioning-handoff.md`
+Read: `docs/reports/2026-09-17-p3-fb2-15-recovery-game-start-skill-provisioning-handoff.md`, `docs/reports/2026-09-17-p3-fb2-15-recovery-game-start-skill-provisioning-result.md`
 
-Goal: rebuild only the typed, identity-free, idempotent game-start skill-provisioning contract needed by the future exact ten-member `core.game-start-add-skill` FM09 family. Compiler and runtime must share one exact structural classifier; all targets must already be registered same-owner automatic master-skill definitions; malformed/unknown/wrong-owner/non-game-start declarations fail closed; multi-target provisioning is transactional and replay/restore safe. No authoring migration, identity/text/Reference-handler routing, taxonomy/KPI changes, or broad Card Zone/Card Create/Trigger acceptance.
+Result: the typed, identity-free, idempotent game-start skill-provisioning contract is rebuilt on the integrated `111/944` lineage. Compiler and runtime share one exact structural classifier; validated deferral occurs only after full source/target checks; malformed/non-game-start/invalid ownership/invalid target declarations fail closed; multi-target runtime mutation is preflighted and replay/restore safe. No authoring migration, identity/text/Reference-handler routing, taxonomy/KPI change, or broad Card Zone/Card Create/Trigger acceptance is taken.
+
+FB2-15 takes zero migration credit. Current-main accepted overlap remains `111/944`.
+
+## TASK P3-R41-RECOVERY
+
+Owner: Codex R
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Target: `23a666913a3050ad55d781e3f5b3a1518add4c3e`
+Reviewer checkout: fresh detached reviewer worktree at exact target, independently rechecked clean by A
+Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Blocking findings: none
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+
+R41 independently reviewed lineage, the shared typed classifier, compiler deferral validation, malformed/non-game-start state-loss routes, source/target authorization, production initialization, one-/multi-target atomicity, replay/restore idempotency, retained target state, deterministic creation provenance, B10 compatibility, FB2-14 isolation, exact future FM09 membership/exclusions, zero migration credit, and candidate/reviewer cleanliness. Independent evidence is focused `93/93`, rules/core+regression `403/403`, full CI `798/798`, typecheck/client build/content/determinism/Reference verification PASS, coverage `98/133/232` raw `22/3/127/0/80/124`, automation audit `127/3/80/20`, and diff check PASS.
+
+## TASK P3-A-R41-FB2-15-RECOVERY-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r41-fb2-15-recovery-sync`
+Base: exact accepted FB2-15 candidate `23a666913a3050ad55d781e3f5b3a1518add4c3e`
+Read: `docs/reports/2026-09-17-p3-a-r41-fb2-15-recovery-synchronization.md`
+
+Result: fresh R41 acceptance is synchronized without changing runtime or taking migration credit. Fresh exact-ID scanning finds FM09 source presence `0/10`, explicit exclusion presence `0/3`, and provisioning target registration `0/12` in current canonical authoring. Accepted overlap remains `111/944`, leaving `833/944`.
+
+## TASK P3-FM09-RECOVERY
+
+Owner: Codex S
+Status: `READY_FOR_S_RECOVERY`
+Base: exact P3-A-R41-FB2-15-RECOVERY-SYNC commit carrying this task block
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-17-p3-fb2-15-recovery-game-start-skill-provisioning-handoff.md`, `docs/reports/2026-09-17-p3-a-r41-fb2-15-recovery-synchronization.md`
+
+Goal: perform a fresh S recovery attempt for only the exact ten locked-Reference `core.game-start-add-skill` source identities named in the FB2-15 recovery handoff. Use frozen F1 semantics and locked Reference static metadata. No runtime changes. Preserve the three explicit exclusions `master.fiore.skill.s1`, `master.sion.skill.ascension`, and `master.tokiomi.skill.s2`.
+
+Dependency rule: the accepted FB2-15 compiler requires each provisioning target to already be a registered same-owner automatic `master_skill`. Fresh A scan finds all twelve target definitions absent. S must not create placeholders, weaken compiler validation, silently add the eleven extra frozen target identities, treat the derived Shirou target as a frozen source identity, or expand the exact-ten batch merely to make compilation pass. If the target-registration precondition remains unsatisfied, return `MIGRATION_BLOCKED`.
 
 Completion status allowed:
-- `IMPLEMENTATION_COMPLETE_CANDIDATE`
-- `IMPLEMENTATION_NEEDS_REVISION`
+- `MIGRATION_COMPLETE_CANDIDATE`
+- `MIGRATION_BLOCKED`
 
-Current-main accepted overlap remains `111/944`; FB2-15 takes zero migration credit.
+No accepted overlap advances at dispatch time; current-main credit remains `111/944`.
 
 ## Prompt Templates
 
