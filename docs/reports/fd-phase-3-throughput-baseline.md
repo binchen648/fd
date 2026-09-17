@@ -915,3 +915,9 @@ Permitted final status:
 - FB2-19 is accepted only as generic zero-credit support-only/rules-only registration infrastructure. Accepted overlap remains `111/944` (`11.76%`), leaving `833/944`.
 - P3-FB2-17-R2-RECOVERY is dispatched from the exact post-R44-R2 A synchronization lineage for exactly one non-frozen derived support card. It must use `authoringMasterSupportFiles`, preserve 7-player roster/fixture and outside-game placement, and may not modify `packages/` or migrate frozen Shirou s2.
 - P3-FM09 remains `MIGRATION_BLOCKED`; eleven frozen provisioning targets remain unresolved. No `121/944`, FM10, or Ciel credit/dispatch is authorized.
+## P3-A FB2-17-R2 Recovery Blocker Synchronization / R3 Dispatch - 2026-09-18
+
+- Fresh R2 blocker `d020adc97f53b16371109b5aaa1ecd77bab6be0b` independently reproduces a single scope-external gate failure: the product correctly changes from 70 to 71 executable cards, while `executable-card-pack.test.ts` still asserts 70.
+- R2 product evidence is otherwise green: content validate/compile/determinism pass; 7 playable masters and 14 characters remain; no Shirou character/fallback/deck is generated; outside-game and required-additional contracts survive; all eleven frozen FM09 targets remain absent.
+- A dispatches P3-FB2-17-R3-RECOVERY with only one extra authorization beyond R2: update the exact aggregate test expectation `70 -> 71`. No loader/compiler/runtime semantic change is authorized.
+- Accepted overlap remains `111/944`; FM09 remains dependency-blocked.

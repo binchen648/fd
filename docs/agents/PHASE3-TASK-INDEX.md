@@ -4214,28 +4214,37 @@ Result: synchronize R44-R2 acceptance without product/runtime changes or frozen 
 ## TASK P3-FB2-17-R2-RECOVERY
 
 Owner: Codex S
+Status: `SUPPORT_DEFINITION_BLOCKED`
+Base: `2756ffe13d4bc181b4a00032afd1d9475064fc00`
+Blocker commit: `d020adc97f53b16371109b5aaa1ecd77bab6be0b`
+Read: `docs/reports/2026-09-18-p3-fb2-17-r2-recovery-shirou-derived-card-support-definition-result.md`
+
+Result: support-only product semantics pass, but the focused gate is `93 PASS / 1 FAIL` because the aggregate executable-card test still hard-codes 70 while the one authorized support card correctly makes 71. No experimental product change is committed.
+
+## TASK P3-A-FB2-17-R2-RECOVERY-BLOCKER-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-17-r2-blocker-sync-recovery`
+Base: exact R2 blocker `d020adc97f53b16371109b5aaa1ecd77bab6be0b`
+Read: `docs/reports/2026-09-18-p3-a-fb2-17-r2-recovery-blocker-synchronization.md`
+
+Result: classify the sole failure as a stale aggregate test baseline and dispatch a fresh R3 retry with only the exact 70 -> 71 assertion update newly authorized.
+
+## TASK P3-FB2-17-R3-RECOVERY
+
+Owner: Codex S
 Status: `READY_FOR_S_RECOVERY`
-Base: exact P3-A-R44-FB2-19-RECOVERY-SYNC commit carrying this task block
-F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
-Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
-Accepted dependencies: FB2-18 `cb81559033db6b96b1f26cf7d9bd15686db5d4fb`; FB2-19 revised `211ba4994acaf063834c28bef9525366b88ae463`
-Read: `docs/reports/2026-09-18-p3-fb2-17-r2-recovery-shirou-derived-card-support-definition-handoff.md`
+Base: exact P3-A-FB2-17-R2-RECOVERY-BLOCKER-SYNC commit carrying this task block
+Read: `docs/reports/2026-09-18-p3-fb2-17-r3-recovery-shirou-derived-card-support-definition-handoff.md`
 
-Goal: materialize exactly one non-frozen derived support definition `card.derived.master.shirou-emiya.ganjiang-moye` through the accepted support-only channel, preserving outside-game placement, required-additional semantics, 7-player roster/fixture, and normal archive ordering.
-
-May touch only the exact archive, pack registration, normal deterministic content-library/evidence-report outputs if changed, and the R2 result report. No `packages/`, runtime/compiler, scripts, frozen skill, taxonomy/KPI, Reference, UI/server, or unrelated generated output may change. If a required test baseline outside this scope blocks the retry, return `SUPPORT_DEFINITION_BLOCKED` rather than widening scope.
-
-Completion status:
-- `SUPPORT_DEFINITION_COMPLETE_CANDIDATE`
-- `SUPPORT_DEFINITION_BLOCKED`
-
-This task takes zero frozen migration credit. Accepted overlap remains `111/944`.
-
-## Full-Roster Dispatch State After Fresh R44-R2 Acceptance Synchronization
+Goal: retry the exact one-card non-frozen support definition and make only the authorized aggregate count baseline update `70 -> 71`. Zero migration credit; no runtime/compiler semantic change.
+## Full-Roster Dispatch State After Fresh FB2-17-R2 Blocker Synchronization
 
 - FB2-18/R43 and revised FB2-19/R44-R2 are freshly accepted zero-credit dependencies.
 - Revised FB2-19 candidate is `211ba4994acaf063834c28bef9525366b88ae463`; R44-R1's compiler discriminator blocker is closed.
-- P3-FB2-17-R2-RECOVERY is READY as the only next support-definition retry.
+- Fresh FB2-17-R2 blocker `d020adc97f53b16371109b5aaa1ecd77bab6be0b` proves the support product is semantically valid and the only failing gate is the stale aggregate executable-card count baseline.
+- P3-FB2-17-R3-RECOVERY is READY as the only next retry, with exact test count `70 -> 71` newly authorized.
 - R2 must not edit `packages/` even if a stale count/test baseline is discovered; a scope-external blocker must be reported rather than repaired in S.
 - P3-FM09 remains `MIGRATION_BLOCKED`; the other eleven frozen provisioning targets remain unresolved independently.
 - Accepted overlap remains `111/944`, leaving `833/944`; no FM10 or Ciel task is dispatched.
