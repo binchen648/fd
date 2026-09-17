@@ -48,6 +48,98 @@ describe('ExecutableCardPack compiler', () => {
     expect(() => assertExecutableCardPack(changedClassification, input)).toThrow(/hash mismatch/);
   });
 
+  it('defers game-start provisioned master skills from initial state placement', () => {
+    const input = sourceInput();
+    const baseline = compileExecutableCardPack(input);
+    const archive = input.rules.archives.find((candidate) =>
+      candidate.id.startsWith('master.') &&
+      candidate.cards.filter((card) => card.cardType === 'master_skill' && baseline.cards[card.id]?.initialZone === 'skill').length >= 2);
+    expect(archive).toBeDefined();
+    const [source, target] = archive!.cards.filter((card) =>
+      card.cardType === 'master_skill' && baseline.cards[card.id]?.initialZone === 'skill');
+    expect(source).toBeDefined();
+    expect(target).toBeDefined();
+    source!.abilities = [{
+      id: 'fixture.game-start-provision', kind: 'forced_trigger', printedClause: 'fixture',
+      activation: { trigger: 'game_start' }, conditions: [], targets: [], cost: [], creates: [], ruleModifiers: [],
+      lifecycle: {}, responseWindow: {}, limit: {}, visibility: {},
+      effects: [{ type: 'provision_skill_cards', player: 'controller', targetDefinitionIds: [target!.id] }],
+      execution: { mode: 'automatic', allowedOperations: [] },
+    } as any];
+
+    const executable = compileExecutableCardPack(input);
+    expect(executable.cards[source!.id]!.initialZone).toBe('skill');
+    expect(executable.cards[target!.id]!.initialZone).toBeUndefined();
+  });
+
+  it.each([
+    ['non-game-start trigger', (ability: any) => { ability.activation = { trigger: 'while_active' }; }],
+    ['duplicate target ids', (ability: any, targetId: string) => { ability.effects[0].targetDefinitionIds = [targetId, targetId]; }],
+    ['extra effect field', (ability: any) => { ability.effects[0].reason = 'unsupported-extra-shape'; }],
+    ['extra effect', (ability: any) => { ability.effects.push({ type: 'noop' }); }],
+  ])('rejects malformed provisioning envelope before it can defer initial skills: %s', (_name, mutate) => {
+    const input = sourceInput();
+    const baseline = compileExecutableCardPack(input);
+    const archive = input.rules.archives.find((candidate) =>
+      candidate.id.startsWith('master.') &&
+      candidate.cards.filter((card) => card.cardType === 'master_skill' && baseline.cards[card.id]?.initialZone === 'skill').length >= 2)!;
+    const [source, target] = archive.cards.filter((card) =>
+      card.cardType === 'master_skill' && baseline.cards[card.id]?.initialZone === 'skill');
+    const ability: any = {
+      id: 'fixture.invalid-game-start-provision', kind: 'forced_trigger', printedClause: 'fixture',
+      activation: { trigger: 'game_start' }, conditions: [], targets: [], cost: [], creates: [], ruleModifiers: [],
+      lifecycle: {}, responseWindow: {}, limit: {}, visibility: {},
+      effects: [{ type: 'provision_skill_cards', player: 'controller', targetDefinitionIds: [target!.id] }],
+      execution: { mode: 'automatic', allowedOperations: [] },
+    };
+    mutate(ability, target!.id);
+    source!.abilities = [ability];
+
+    expect(() => compileExecutableCardPack(input)).toThrow(/Unsupported game-start skill provisioning shape/);
+  });
+
+  it('rejects a structurally valid provisioning envelope from a command-spell source', () => {
+    const input = sourceInput();
+    const baseline = compileExecutableCardPack(input);
+    const archive = input.rules.archives.find((candidate) => candidate.id.startsWith('master.') &&
+      candidate.cards.some((card) => card.cardType === 'command_spell') &&
+      candidate.cards.some((card) => card.cardType === 'master_skill' && baseline.cards[card.id]?.initialZone === 'skill'))!;
+    const source = archive.cards.find((card) => card.cardType === 'command_spell')!;
+    const target = archive.cards.find((card) => card.cardType === 'master_skill' && baseline.cards[card.id]?.initialZone === 'skill')!;
+    source.abilities = [{
+      id: 'fixture.command-spell-provision', kind: 'forced_trigger', printedClause: 'fixture',
+      activation: { trigger: 'game_start' }, conditions: [], targets: [], cost: [], creates: [], ruleModifiers: [],
+      lifecycle: {}, responseWindow: {}, limit: {}, visibility: {},
+      effects: [{ type: 'provision_skill_cards', player: 'controller', targetDefinitionIds: [target.id] }],
+      execution: { mode: 'automatic', allowedOperations: [] },
+    } as any];
+
+    expect(() => compileExecutableCardPack(input)).toThrow(/source must be an owned master_skill/);
+  });
+
+  it('rejects cross-owner and self provisioning targets before initial-zone deferral', () => {
+    const makeInput = (selfTarget: boolean) => {
+      const input = sourceInput();
+      const baseline = compileExecutableCardPack(input);
+      const sourceArchive = input.rules.archives.find((candidate) => candidate.id.startsWith('master.') &&
+        candidate.cards.filter((card) => card.cardType === 'master_skill' && baseline.cards[card.id]?.initialZone === 'skill').length >= 1)!;
+      const source = sourceArchive.cards.find((card) => card.cardType === 'master_skill' && baseline.cards[card.id]?.initialZone === 'skill')!;
+      const otherTarget = input.rules.archives.find((candidate) => candidate.id.startsWith('master.') && candidate.id !== sourceArchive.id)!
+        .cards.find((card) => card.cardType === 'master_skill' && baseline.cards[card.id]?.initialZone === 'skill')!;
+      source.abilities = [{
+        id: 'fixture.invalid-target-provision', kind: 'forced_trigger', printedClause: 'fixture',
+        activation: { trigger: 'game_start' }, conditions: [], targets: [], cost: [], creates: [], ruleModifiers: [],
+        lifecycle: {}, responseWindow: {}, limit: {}, visibility: {},
+        effects: [{ type: 'provision_skill_cards', player: 'controller', targetDefinitionIds: [selfTarget ? source.id : otherTarget.id] }],
+        execution: { mode: 'automatic', allowedOperations: [] },
+      } as any];
+      return input;
+    };
+
+    expect(() => compileExecutableCardPack(makeInput(false))).toThrow(/Invalid game-start skill provisioning target/);
+    expect(() => compileExecutableCardPack(makeInput(true))).toThrow(/Invalid game-start skill provisioning target/);
+  });
+
   it.each([
     ['requirement', (input: ReturnType<typeof sourceInput>) => {
       input.rules.archives[7]!.cards[0]!.playRequirements![0]!.value = 9;
