@@ -4234,20 +4234,50 @@ Result: classify the sole failure as a stale aggregate test baseline and dispatc
 ## TASK P3-FB2-17-R3-RECOVERY
 
 Owner: Codex S
-Status: `READY_FOR_S_RECOVERY`
-Base: exact P3-A-FB2-17-R2-RECOVERY-BLOCKER-SYNC commit carrying this task block
-Read: `docs/reports/2026-09-18-p3-fb2-17-r3-recovery-shirou-derived-card-support-definition-handoff.md`
+Status: `SUPPORT_DEFINITION_COMPLETE_CANDIDATE`
+Branch: `codex/s-p3-fb2-17-r3-recovery-current`
+Base: `1ef5262abb7d6c55edef8d98e2bc127b631f5d0b`
+Candidate: `1c3149ba5f33ad3092a57da4a12d7bbe96f43823`
+PR: `#354`
+Read: `docs/reports/2026-09-18-p3-fb2-17-r3-recovery-shirou-derived-card-support-definition-handoff.md`, `docs/reports/2026-09-18-p3-fb2-17-r3-recovery-shirou-derived-card-support-definition-result.md`
 
-Goal: retry the exact one-card non-frozen support definition and make only the authorized aggregate count baseline update `70 -> 71`. Zero migration credit; no runtime/compiler semantic change.
-## Full-Roster Dispatch State After Fresh FB2-17-R2 Blocker Synchronization
+Result: exactly one non-frozen Shirou derived support definition is materialized through the accepted support-only channel. The only package change is the authorized aggregate executable-card count `70 -> 71`. Full S gates are green; no frozen migration credit is taken.
 
-- FB2-18/R43 and revised FB2-19/R44-R2 are freshly accepted zero-credit dependencies.
-- Revised FB2-19 candidate is `211ba4994acaf063834c28bef9525366b88ae463`; R44-R1's compiler discriminator blocker is closed.
-- Fresh FB2-17-R2 blocker `d020adc97f53b16371109b5aaa1ecd77bab6be0b` proves the support product is semantically valid and the only failing gate is the stale aggregate executable-card count baseline.
-- P3-FB2-17-R3-RECOVERY is READY as the only next retry, with exact test count `70 -> 71` newly authorized.
-- R2 must not edit `packages/` even if a stale count/test baseline is discovered; a scope-external blocker must be reported rather than repaired in S.
-- P3-FM09 remains `MIGRATION_BLOCKED`; the other eleven frozen provisioning targets remain unresolved independently.
-- Accepted overlap remains `111/944`, leaving `833/944`; no FM10 or Ciel task is dispatched.
+## TASK P3-A-FB2-17-R3-RECOVERY-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-17-r3-material-sync-recovery`
+Base: exact S candidate `1c3149ba5f33ad3092a57da4a12d7bbe96f43823`
+Read: `docs/reports/2026-09-18-p3-a-fb2-17-r3-recovery-material-synchronization.md`
+
+Result: independent mechanical material synchronization only. A verifies exact lineage/scope, focused `94/94`, content validate/compile/determinism, full CI `835/835`, Reference verification, and clean pre-sync worktree. A grants no semantic acceptance and no migration credit.
+
+## TASK P3-R45-RECOVERY
+
+Owner: Codex R
+Status: `READY`
+Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FB2-17-R3 recovery lineage
+Implementation Base: `1ef5262abb7d6c55edef8d98e2bc127b631f5d0b`
+Candidate S SHA: `1c3149ba5f33ad3092a57da4a12d7bbe96f43823`
+A synchronization: exact documentation-only P3-A-FB2-17-R3-RECOVERY-SYNC commit carrying this task block
+PR: `#354`
+Read: `docs/reports/2026-09-18-p3-fb2-17-r3-recovery-shirou-derived-card-support-definition-handoff.md`, `docs/reports/2026-09-18-p3-fb2-17-r3-recovery-shirou-derived-card-support-definition-result.md`, `docs/reports/2026-09-18-p3-a-fb2-17-r3-recovery-material-synchronization.md`
+
+Goal: fresh independent review only. Verify exact source/provenance, the single support-only archive/card, dedicated support-channel registration, no eighth playable master/character/fallback/deck/setup surface, explicit outside-game/no-initialZone behavior, exact 8-mana gate and FB2-16 append-only marker, exact `70 -> 71` aggregate baseline change without weakened structural assertions, all eleven frozen FM09 targets absent, deterministic generated scope, no runtime/identity/text special case, exact Base/Candidate/A lineage, required tests, zero-credit accounting, and final cleanliness. Do not implement fixes in reviewer worktree.
+
+Permitted verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## Full-Roster Dispatch State After P3-A FB2-17-R3 Recovery Material Synchronization
+
+- S candidate `1c3149ba5f33ad3092a57da4a12d7bbe96f43823` over Base `1ef5262abb7d6c55edef8d98e2bc127b631f5d0b` materializes only the authorized non-frozen derived support definition and the exact stale aggregate count update `70 -> 71`.
+- Fresh A mechanical evidence is green: exact scope/diff, typecheck, focused `94/94`, content `7 masters / 7 servants / 20 events / 0 blockers`, deterministic generated verification, full CI `835/835`, and locked Reference verification.
+- Material coverage is `99/134/233`, compiled `71/14/0`; these counters include the non-frozen support definition and do not change accepted frozen overlap.
+- P3-R45-RECOVERY is READY and is the only semantic acceptance authority for this support candidate.
+- Accepted frozen overlap remains `111/944 = 11.76%`, leaving `833/944`.
+- P3-FM09 remains `MIGRATION_BLOCKED` because the other eleven frozen provisioning targets remain unresolved. No `121/944`, FM10, or Ciel credit is taken.
 
 ## Prompt Templates
 

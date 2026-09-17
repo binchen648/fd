@@ -921,3 +921,10 @@ Permitted final status:
 - R2 product evidence is otherwise green: content validate/compile/determinism pass; 7 playable masters and 14 characters remain; no Shirou character/fallback/deck is generated; outside-game and required-additional contracts survive; all eleven frozen FM09 targets remain absent.
 - A dispatches P3-FB2-17-R3-RECOVERY with only one extra authorization beyond R2: update the exact aggregate test expectation `70 -> 71`. No loader/compiler/runtime semantic change is authorized.
 - Accepted overlap remains `111/944`; FM09 remains dependency-blocked.
+## P3-A FB2-17-R3 Recovery Material Synchronization / R45 Dispatch - 2026-09-18
+
+- Fresh R3 candidate `1c3149ba5f33ad3092a57da4a12d7bbe96f43823`, based directly on A dispatch `1ef5262abb7d6c55edef8d98e2bc127b631f5d0b`, returns `SUPPORT_DEFINITION_COMPLETE_CANDIDATE` with exact five-file scope.
+- The product adds exactly one non-frozen support archive/card, keeps 7 playable masters / 14 executable characters, emits no Shirou character/fallback/deck, preserves outside-game/no-initialZone and the exact 8-mana + append-only contracts, and changes only the authorized aggregate test baseline `70 -> 71`.
+- Fresh A independently verifies typecheck, focused `94/94`, content validation/compile/determinism, full CI `835/835`, Reference verification, exact scope/diff, and clean pre-sync worktree. A grants no semantic acceptance.
+- Material coverage becomes `99 archives / 134 cards / 233 abilities`, compiled `71 cards / 14 characters / 0 blockers`; this is non-frozen material growth, not denominator credit.
+- P3-R45-RECOVERY is READY. Accepted frozen overlap remains `111/944`; FM09 remains blocked on the other eleven frozen provisioning targets.
