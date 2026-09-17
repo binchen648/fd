@@ -878,3 +878,12 @@ Permitted final status:
 - P3-FB2-17-RECOVERY is dispatched as the narrow zero-credit support-definition attempt for exactly the derived Shirou card. It may not migrate `master.shirou-emiya.skill.s2`, add any frozen target, change runtime/compiler code, weaken FB2-15 validation, or introduce identity/name/text/Reference-handler routing.
 - If current representation cannot register that card outside game without incorrect initial placement, or deterministic generation requires an out-of-scope generated artifact, S must return `SUPPORT_DEFINITION_BLOCKED` rather than widening scope.
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or Ciel task is authorized.
+
+## P3-A FB2-17 Recovery Blocker Synchronization / FB2-18 Dispatch - 2026-09-17
+
+- Fresh FB2-17 recovery blocker `310e6546fa2457b6bf11b91e547d25eb39751e99`, directly based on A sync `b934ea69390b159176ad295116ccc8d9fe0506c7`, returns `SUPPORT_DEFINITION_BLOCKED` and commits only its blocker report.
+- The support proposal itself is source-grounded and compatible with accepted FB2-16; the blockers are representation/registration/generator-contract boundaries, not card semantics.
+- Current representation gives a standalone owned `master_skill` `initialZone: skill`, contradicting the required outside-game start. Current `authoringMasterFiles` also widens the playable roster and creates a fallback command spell, while official deterministic generation additionally changes the evidence report.
+- Fresh A dispatches only the narrowest first prerequisite: P3-FB2-18-RECOVERY adds an identity-free `initialPlacement: outside_game` representation preserved by loader/compiler and producing no `initialZone`. It may not create/move cards, modify provisioning runtime, solve support-only registration, or touch authoring/generated product files.
+- Support-only registration and generated-output reconciliation remain separate later dependencies. P3-FM09 remains `MIGRATION_BLOCKED`; no FM10/Ciel dispatch is authorized.
+- FB2-17/18 take zero frozen-migration credit. Accepted overlap remains `111/944` (`11.76%`), leaving `833/944`.
