@@ -867,3 +867,14 @@ Permitted final status:
 - Locked Reference independently confirms Shirou derived target `card.derived.master.shirou-emiya.ganjiang-moye` with the printed required-additional rule, while `basic.luck`'s foreign explicit `append_only_rule` and Sieg's accepted extra-regular-play allowance provide concrete exclusion boundaries.
 - P3-FB2-16-RECOVERY is dispatched only for an identity-free shared structural marker used by compiler and runtime. It may not materialize Shirou/Frozen identities, retry FM09, absorb optional/conditional/effect-play semantics, or broaden PLAY/ACTIVATE acceptance.
 - Fresh R42 and fresh A synchronization remain mandatory before any support-definition dependency is dispatched. FM09 remains `MIGRATION_BLOCKED`; accepted overlap remains `111/944` (`11.76%`).
+
+## P3-A R42 / FB2-16 Recovery Synchronization and FB2-17 Dispatch - 2026-09-17
+
+- Fresh R42 independently accepts FB2-16 recovery candidate `bc45b2032ec344d2c743d8b32e3a3d05aa8b67ca`, based on `ff0c9cb853d9b72273736d41ca85d8d1f08614fa`, with verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE` and no blocking finding.
+- Reviewer validation is typecheck PASS, focused `65/65`, full CI `807/807`, rules core+regression `411/411`, client build/content validation/generated determinism/locked Reference verification PASS, unchanged coverage `98/133/232` with raw `22/3/127/0/80/124`, unchanged automation audit, and clean exact candidate/reviewer worktrees.
+- FB2-16 remains runtime/compiler dependency closure only and takes zero frozen-migration credit. Accepted current-main overlap stays `111/944` (`11.76%`), leaving `833/944`.
+- Fresh exact-ID scanning on the accepted candidate finds all twelve FM09 provisioning targets absent from canonical authoring and generated product definitions. Eleven are separate frozen static identities; `card.derived.master.shirou-emiya.ganjiang-moye` is outside the frozen 944 denominator.
+- F1 still provides the Shirou s2 game-start provisioning relationship; locked Reference still supplies the derived card stable ID/static metadata; R42 supplies only the required-additional execution shape.
+- P3-FB2-17-RECOVERY is dispatched as the narrow zero-credit support-definition attempt for exactly the derived Shirou card. It may not migrate `master.shirou-emiya.skill.s2`, add any frozen target, change runtime/compiler code, weaken FB2-15 validation, or introduce identity/name/text/Reference-handler routing.
+- If current representation cannot register that card outside game without incorrect initial placement, or deterministic generation requires an out-of-scope generated artifact, S must return `SUPPORT_DEFINITION_BLOCKED` rather than widening scope.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or Ciel task is authorized.
