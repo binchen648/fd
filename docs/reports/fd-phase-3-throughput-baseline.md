@@ -781,4 +781,56 @@ Permitted final status:
 - A independently recomputes complete frozen-F1 material overlap `91/944 -> 101/944`, exact additions `10`, removals `0`, remaining `843`.
 - Fresh material coverage is `90/123/222`, raw `22/3/127/0/70/124`; the ten new `NOT_CLASSIFIABLE` rows are the expected coverage-taxonomy limitation for accepted `transform_event_source_card` authoring.
 - Fresh A focused `18/18`, content 0 blockers and determinism pass; S migration evidence `56/56`, rules `385/385`, full CI `727/727` are green.
-- A synchronization `1d04b43094a3797413069182a994426eab28f816` is accepted evidence for the exact `91/944 -> 101/944` material burn-down, and P3-R38 review `f7666f48f7eb00baeadb63f24fb56fc39991f372` independently returns `MIGRATION_ACCEPTED`. Accepted overlap is therefore `101/944`; this final dispatch state stops at FM07/R38 and does not dispatch or accept FB2-14 or FM08.
+- A synchronization `1d04b43094a3797413069182a994426eab28f816` is accepted evidence for the exact `91/944 -> 101/944` material burn-down, and P3-R38 review `f7666f48f7eb00baeadb63f24fb56fc39991f372` independently returns `MIGRATION_ACCEPTED`. Accepted overlap is therefore `101/944`.
+
+## P3-A FB2-14 Dispatch / FM08 Planning - 2026-09-16
+
+- R38 independently accepts FM07 at accepted canonical overlap `101/944`; remaining gap `843/944`, fresh coverage `90/123/222`, raw `22/3/127/0/70/124`, full CI `727/727`.
+- Post-FM07 scan has no identical-text family >=10 and no block-free generic-capability batch >=10.
+- Next runtime seam is the exact ten-member self-contained subset of locked Reference `core.game-start-rule-flags`; all selected IDs are F1 block-free and current canonical `0/10`.
+- Leonardo s1a is excluded because F1 requires both event VP and event mana bonuses while current runtime lacks one authoritative event-mana reward consumer; Ophelia s1a is excluded because it only parameterizes a separate not-yet-canonical skill.
+- FB2-14 must use typed existing `RuleOverrideState`, one exact whitelisted game-start setup contract, generic consumer entry points, and no arbitrary playerFlags/identity/text routing. Future FM08 remains blocked pending R39 + fresh A sync.
+
+## P3-A FB2-14 r3 Recovery Synchronization - 2026-09-17
+
+- The old FB2-14 r1 acceptance chain is superseded for recovery provenance: PR #341 accepted r1 `86afe51311ff2b6cd05ea403044e8e226b0cde7d`, while the later r2 work demonstrated that acceptance missed first-round Situation-mana ordering and raw execution fail-closed defects. The dependent #342-#345 acceptance chain is therefore not used as evidence for this recovery.
+- The traceable recovery lineage is `3879203870bb05ad9619c03c60c69ed9e1941080` (r2) -> `68b173d480df7a7b0e83cdc403e73616c3216b2f` (fresh R39 `REVIEW_BLOCKED`) -> `0831d9fea7c0ffedde634333f27564ea3c1dc65a` (B2 r3 recovery) -> `45e1cc6ff25fe6da838b8d7fca382d0504275aa7` (fresh R39 `GATE_A_B_CANDIDATE_ACCEPTED`).
+- Fresh R39 independently verifies the recovered raw `execution` fail-closed boundary: unknown execution keys, simultaneous `hostOps`/`allowedOperations`, malformed authority values, and nonempty authority declarations fail closed before normalization can erase provenance. No blocking finding remains on exact recovery candidate `0831d9f`.
+- Fresh R39 validation is green: focused FB2-14 + MatchSession `37/37`, rules regression/core `396/396`, standard full CI `738/738`, typecheck/content/determinism/coverage/audit/diff PASS; coverage is `90 archives / 123 cards / 222 abilities`, raw `22/3/127/0/70/124`, with `0` blocking content issues.
+- Frozen F1 still contains exactly twelve block-free `core.game-start-rule-flags` rows. The authorized FM08 subset remains exactly ten: Bazett s1b, Caules s1a, Fiore s2/s3/s4, Irisviel s1, Peperoncino s1a, Sieg s1, Waver s1, and Zouken s5. Leonardo s1a and Ophelia s1a remain excluded for capability-completeness reasons.
+- FM08 is `READY_ON_RECOVERY_LINEAGE` after this A synchronization. A new/recovery S migration must start from this synchronization lineage and must not reuse the old #343/#344/#345 acceptance chain as provenance.
+- FB2-14 is runtime infrastructure only and adds zero frozen canonical identities. Strict accepted overlap remains `101/944`; no `111/944` credit exists until a new FM08 S candidate, fresh A material synchronization, and fresh independent migration review all succeed.
+- Global repository integration remains `BASELINE_REBASE_REQUIRED`. At recovery A-sync start, `origin/main...45e1cc6` was `33` commits main-only and `215` commits recovery-line-only with merge-base `fba31b5a725e6c0b8ba54793be8b6726bfc31040`. These local Phase 3 recovery judgments are not current-main acceptance until an explicit integration/rebase/merge path is completed.
+- Reviewer-identity governance also remains unresolved at GitHub level. The fresh reviewer used a separate worktree and fresh Codex thread (`01a0adef-d6a7-79a3-9300-5fc381af9daa`), which provides process-separated local review evidence, but it does not establish a distinct GitHub account or human reviewer identity and does not replace missing GitHub review/status evidence.
+
+## P3-A FM08 Recovery Migration Synchronization - 2026-09-17
+
+- Fresh S recovery candidate `81ccb7e7e5d0f2cf5ad7da1eda3279c20a604c1a` is based directly on FB2-14 recovery A sync `ff2742e51d46ee862071abffe4e23a61652dbdc1`; old #343-#345 acceptance provenance is not reused.
+- The candidate adds exactly eight master authoring archives carrying the authorized ten FM08 identities, one focused regression, and one S recovery report; removals `0`, production runtime source diff `0`, Leonardo/Ophelia absent.
+- A independently reconciles all ten frozen F1 rows and locked Reference metadata: block-free `core.game-start-rule-flags`, exact owners/legacy IDs/text hashes, passive static metadata normalized to `cost=0/basePower=0`, legacy requirement `null`.
+- Candidate material overlap is `111/944`, not `112/944`: frozen denominator is `943 static + 1 dynamic`, but the sole dynamic identity `master.tiamat.card.life-sea` remains absent from canonical authoring and receives no numerator credit. Remaining material gap is `833/944`; duplicate frozen IDs `0`.
+- Fresh material coverage is `98 archives / 133 cards / 232 abilities`, raw `22/3/127/0/80/124`; compiled product remains `70 cards / 14 characters / 0 blockers`, definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`.
+- Fresh A evidence: focused FM08 + FB2-14 `16/16`, rules/core `396/396`, standard full CI `738/738`, typecheck/content/determinism PASS, automation audit `127/3/80` with `20` promotion findings, runtime source diff `0`, diff check PASS.
+- P3-R40-RECOVERY is READY. Strict accepted overlap remains `101/944`; only fresh independent migration acceptance may advance local recovery-line accepted overlap to `111/944`.
+- Global integration remains `BASELINE_REBASE_REQUIRED`: at A sync, `origin/main...81ccb7e` is `33` main-only / `217` recovery-line-only commits with merge-base `fba31b5a725e6c0b8ba54793be8b6726bfc31040`. Local recovery acceptance is not current-main acceptance.
+- GitHub reviewer-identity governance remains unresolved; process-separated local Codex review does not substitute for distinct GitHub review/status evidence.
+
+## P3-R40 / A Recovery Acceptance Synchronization - 2026-09-17
+
+- Fresh process-separated R40 thread `01a0ae49-2abe-7690-b3c7-71e6be1f8cc5` reviews exact A synchronization `bf496c772bda7eb9899fcfa51d825929951012b7` and returns `MIGRATION_ACCEPTED`; report-only commit is `8ed6b85f80f9b8a2069f523bb53fb58c7935f22d`.
+- R40 independently reconstructs the corrected lineage and exact ten-member FM08 set from frozen F1 plus locked Reference rather than relying on old #343-#345 claims.
+- Independent validation: focused `16/16`, rules/core `396/396`, standard full CI `738/738`, typecheck/content/determinism PASS, coverage `98/133/232`, raw `22/3/127/0/80/124`, compiled product unchanged, runtime/taxonomy/KPI drift `0`.
+- Fresh denominator accounting is exact: `943 static + 1 dynamic = 944`; `111` unique frozen identities are actually materialized; dynamic `master.tiamat.card.life-sea` remains absent; duplicate IDs `0`; remaining accepted gap `833/944`.
+- Local recovery-line accepted overlap therefore advances `101/944 -> 111/944` (`11.76%`) by exactly `+10`. This does not retroactively validate the superseded #342-#345 chain.
+- `BASELINE_REBASE_REQUIRED` remains open. At R40 report commit, `origin/main...8ed6b85` is `33` main-only / `219` recovery-line-only commits with merge-base `fba31b5a725e6c0b8ba54793be8b6726bfc31040`. `111/944` is local recovery-line acceptance, not current-main acceptance.
+- GitHub reviewer-identity governance also remains open: separate local worktree/thread proves process separation only, not a distinct GitHub account, human reviewer identity, or GitHub review/status record.
+- FM09 may resume only from the corrected post-R40 A synchronization lineage. Earlier FM09/Ciel work based on the invalid pre-recovery `111/944` chain is not acceptance provenance and must be reconstructed/re-gated before further credit.
+
+## P3 Integration PR2 Candidate - 2026-09-17
+
+- Current `origin/main` after PR #347 is `bf6b1a1589a374dd4040dad07896e9ee841f3057` at accepted current-main overlap `101/944`.
+- PR2 branch `codex/integration-p3-baseline-111` applies exactly the accepted recovery delta `f7666f48f7eb00baeadb63f24fb56fc39991f372 -> d72814a7f01ecba1eecd62960b60137e7500ed15` onto that main baseline. The delta is exactly 38 files and preserves the PR1 dead-helper CI fix plus all main full-roster/reference assets.
+- Recovery evidence accepts FM08 at `111/944` with exact `+10`, leaving `833/944`; current main remains `101/944` until PR2 is merged. After merge, current-main accepted overlap may advance to `111/944`.
+- The earlier `BASELINE_REBASE_REQUIRED` statements above remain historical snapshots of the pre-integration recovery lineage. The technical rebase/integration requirement is resolved by this PR2 candidate; merge into current main is still pending.
+- FB2-15 recovery is intentionally excluded: commit `e0c08f852d40c930c2e41456471f54bf3590dc17` is not an ancestor of `d72814a7f01ecba1eecd62960b60137e7500ed15`, and its recovery handoff is absent from this candidate.
+- The next legal post-integration sequence is FB2-15 recovery -> fresh R41 -> fresh A synchronization -> FM09 recovery. Earlier FM09/Ciel work has no acceptance provenance on this corrected integrated baseline; do not jump directly to Ciel.

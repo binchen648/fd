@@ -2,6 +2,7 @@ import type { GameState } from "../schema/game";
 import type { LocationId, MapDefinition, MatchLocationConfig } from "../schema/location";
 
 import { canOccupyLocation, getLocationById } from "./map-engine";
+import { movementLockedByPersistentRule } from "./rule-overrides";
 
 const STARTING_LOCATION_BY_SEAT: Record<number, LocationId> = {
   1: "miyama_town",
@@ -22,6 +23,8 @@ export interface MovePlayerInput {
   playerId: string;
   to: LocationId;
   movementKind: "normal" | "effect";
+  /** Explicit trusted exception for an already-authorized effect that ignores card movement restrictions. */
+  ignoreCardMovementRestrictions?: boolean;
 }
 
 export interface MovePlayerResult extends MovementResult {
@@ -33,6 +36,7 @@ export interface MovePlayerResult extends MovementResult {
     | "no_location"
     | "not_in_action_phase"
     | "engaged"
+    | "movement_locked"
     | "invalid_path"
     | "insufficient_mana"
     | "destination_blocked";
@@ -92,6 +96,9 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
     return failure(state, "not_in_action_phase");
   }
 
+  if (movementLockedByPersistentRule(state, player.id) && input.ignoreCardMovementRestrictions !== true) {
+    return failure(state, "movement_locked");
+  }
   if (input.movementKind === "normal" && isPlayerEngaged(state, player.id)) {
     return failure(state, "engaged");
   }

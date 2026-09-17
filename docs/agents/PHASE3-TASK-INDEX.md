@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.38
+- Version: P3-TI-1.39
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -3874,7 +3874,113 @@ Permitted final status:
 - Accepted-lineage coverage is `90 archives / 123 cards / 222 abilities`, raw `22/3/127/0/70/124`; the `+10 notClassifiable` rows are exactly the new `transform_event_source_card` material rows and no taxonomy change is used to manufacture route credit.
 - R38 independently revalidated typecheck, FM01-FM07 migration + FB2-13 focused `56/56`, rules regression/core `385/385`, standard full CI `727/727`, content validation with `0` blockers, generated-content determinism, coverage integrity, and `git diff --check`.
 - Runtime production diff from the pre-FM07 accepted A-sync is `0` files.
-- Final dispatch state for this accepted baseline stops at FM07/R38. This state does not dispatch or accept FB2-14 or FM08.
+- PR1 integration checkpoint stops at FM07/R38 with accepted overlap `101/944`. The FB2-14/FM08 recovery and PR2 integration sections below supersede this checkpoint for subsequent work.
+
+## TASK P3-FB2-14
+
+Owner: Codex B2
+Status: REVIEW_ACCEPTED_RECOVERY
+Branch: `codex/b2-p3-fb2-14-game-start-rule-overrides-r3-recovery`
+Original A handoff base: `50602c9355794c9c0c7fe4d79b75f7936d912c17`
+Blocked r2: `3879203870bb05ad9619c03c60c69ed9e1941080`
+Traceable R39 blocker report: `68b173d480df7a7b0e83cdc403e73616c3216b2f`
+Recovery candidate: `0831d9fea7c0ffedde634333f27564ea3c1dc65a`
+Accepted R39 recovery review: `45e1cc6ff25fe6da838b8d7fca382d0504275aa7`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: original A handoff, `2026-09-17-p3-r39-fb2-14-r2-recovery-review.md`, `2026-09-17-p3-fb2-14-game-start-rule-overrides-r3-recovery-result.md`, and `2026-09-17-p3-r39-fb2-14-r3-recovery-review.md`.
+
+Accepted boundary: the identity-free typed `game_start` RuleOverride contract plus the recovered raw-execution fail-closed boundary. Unknown raw execution metadata, simultaneous authority fields, malformed/nonempty authority fields, and any rejected raw shape may not normalize back into the accepted semantic classifier. No authoring migration or FM08 identity routing is accepted by this task.
+
+The old r1 R39 acceptance and dependent #342-#345 acceptance chain are not used as provenance for this recovery.
+
+## TASK P3-R39
+
+Owner: Codex R
+Status: GATE_A_B_CANDIDATE_ACCEPTED
+Branch: `codex/r-p3-fb2-14-r3-review-r39-recovery`
+Target: `0831d9fea7c0ffedde634333f27564ea3c1dc65a`
+Report commit: `45e1cc6ff25fe6da838b8d7fca382d0504275aa7`
+Prior blocker report: `68b173d480df7a7b0e83cdc403e73616c3216b2f`
+Reviewer thread: `01a0adef-d6a7-79a3-9300-5fc381af9daa`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+
+Fresh recovery review independently reran typecheck, content validation, deterministic generated-content verification, focused FB2-14 + MatchSession `37/37`, rules regression/core `396/396`, standard full CI `738/738`, coverage, automation audit, lineage/scope checks, and the exact ten-member FM08 reconciliation. Verdict: `GATE_A_B_CANDIDATE_ACCEPTED`; no blocking finding remains on the exact recovery candidate.
+
+This is process-separated local Codex reviewer evidence. It does not by itself prove a different GitHub account/human reviewer identity; that repository-governance issue remains separately visible below.
+
+## TASK P3-FM08
+
+Owner: Codex S
+Status: MIGRATION_ACCEPTED
+Branch: `codex/s-p3-fm08-game-start-rule-overrides-recovery`
+Base: fresh FB2-14 recovery A synchronization `ff2742e51d46ee862071abffe4e23a61652dbdc1`
+Candidate: `81ccb7e7e5d0f2cf5ad7da1eda3279c20a604c1a`
+A sync: `bf496c772bda7eb9899fcfa51d825929951012b7`
+Review: P3-R40-RECOVERY `8ed6b85f80f9b8a2069f523bb53fb58c7935f22d`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-17-p3-fm08-game-start-rule-overrides-recovery-migration-result.md`
+
+Result: exactly the ten selected IDs are materialized on the corrected recovery lineage as eight authoring archives plus one focused regression and one S report. R40 independently accepts the exact A-synchronized recovery lineage at `111/944`, with duplicate frozen IDs `0`, removals `0`, runtime source diff `0`, and Leonardo s1a / Ophelia s1a excluded. Current-main credit is controlled by the PR2 integration gate below.
+
+Completion status allowed:
+- `MIGRATION_COMPLETE_CANDIDATE`
+- `MIGRATION_BLOCKED`
+
+## TASK P3-A-FM08-RECOVERY-SYNC
+
+Owner: Codex A
+Status: MIGRATION_SYNC_ACCEPTED
+Branch: `codex/a-p3-fm08-recovery-material-sync`
+Base: exact FM08 S recovery candidate `81ccb7e7e5d0f2cf5ad7da1eda3279c20a604c1a`
+Synchronization SHA: `bf496c772bda7eb9899fcfa51d825929951012b7`
+Read: `docs/reports/2026-09-17-p3-a-fm08-recovery-migration-synchronization.md`
+
+Goal: independently synchronize the corrected FM08 material lineage without repairing S authoring. Recompute exact-ten membership, frozen F1/Reference integrity, material overlap, deterministic generated output, coverage/audit state, runtime diff, and unrelated drift.
+
+A result: exact-ten reconciliation PASS; material overlap `111/944`; dynamic Tiamat identity remains absent and receives no numerator credit; fresh coverage `98/133/232`, raw `22/3/127/0/80/124`; focused `16/16`, rules/core `396/396`, full CI `738/738`, content/determinism PASS, runtime source diff `0`. R40 independently accepts this exact synchronization; current-main credit still requires the PR2 integration merge gate below.
+
+## TASK P3-R40-RECOVERY
+
+Owner: Codex R
+Status: MIGRATION_ACCEPTED
+Branch: `codex/r-p3-fm08-recovery-r40`
+Target A synchronization: `bf496c772bda7eb9899fcfa51d825929951012b7`
+Review report commit: `8ed6b85f80f9b8a2069f523bb53fb58c7935f22d`
+Fresh Codex thread: `01a0ae49-2abe-7690-b3c7-71e6be1f8cc5`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-17-p3-r40-fm08-recovery-migration-review.md`
+
+Result: fresh process-separated R40 accepts the exact ten-member FM08 recovery migration. Independent evidence is focused `16/16`, rules/core `396/396`, standard full CI `738/738`, content 0 blockers, determinism PASS, exact material overlap `111/944`, duplicate frozen IDs `0`, runtime/taxonomy/KPI drift `0`. The dynamic Tiamat identity remains absent and receives no numerator credit. Recovery-line accepted overlap advances `101/944 -> 111/944`; PR2 replays that accepted delta onto current main base `bf6b1a1589a374dd4040dad07896e9ee841f3057`, while current-main credit remains `101/944` until PR2 is merged.
+
+Permitted final status:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_REVIEW_BLOCKED`
+
+## TASK P3-A-R40-RECOVERY-SYNC
+
+Owner: Codex A
+Status: SYNCHRONIZED
+Branch: `codex/a-p3-r40-fm08-recovery-acceptance-sync`
+Base: fresh R40 report commit `8ed6b85f80f9b8a2069f523bb53fb58c7935f22d`
+Read: `docs/reports/2026-09-17-p3-a-r40-fm08-recovery-acceptance-synchronization.md`
+
+Result: R40 `MIGRATION_ACCEPTED` is synchronized on the corrected recovery lineage. Recovery-line accepted overlap is `111/944` (`11.76%`), remaining `833/944`. PR2 resolves the technical baseline rebase by applying the exact `f7666f48f7eb00baeadb63f24fb56fc39991f372 -> d72814a7f01ecba1eecd62960b60137e7500ed15` delta onto current main base `bf6b1a1589a374dd4040dad07896e9ee841f3057`; merge remains required before current-main credit advances. FM09 is not yet ready: after PR2 merge, the next legal gate is FB2-15 recovery, then fresh R41 and A synchronization, then FM09 recovery. Earlier FM09/Ciel work on the invalid pre-recovery `111/944` lineage is not acceptance provenance.
+
+## Full-Roster Dispatch State After FM08 Recovery Acceptance / PR2 Integration Candidate
+
+- FM01-FM08 have accepted recovery evidence at `111/944` (`11.76%`), leaving `833/944` outside accepted canonical authoring. Current `origin/main` remains the PR1 checkpoint at `101/944` until this PR2 integration candidate is merged.
+- PR2 branch `codex/integration-p3-baseline-111` is based on current main `bf6b1a1589a374dd4040dad07896e9ee841f3057` and applies exactly the accepted `f7666f48f7eb00baeadb63f24fb56fc39991f372 -> d72814a7f01ecba1eecd62960b60137e7500ed15` recovery delta.
+- The accepted FM08 recovery chain is `ff2742e -> 81ccb7e -> bf496c7 -> 8ed6b85`; the old #342-#345 acceptance chain remains superseded and is not acceptance provenance.
+- Fresh R40 independently accepts exactly the authorized ten `core.game-start-rule-flags` identities, with Leonardo s1a and Ophelia s1a still excluded.
+- Fresh accepted material coverage is `98/133/232`, raw `22/3/127/0/80/124`; duplicate frozen IDs `0`; dynamic `master.tiamat.card.life-sea` remains absent and receives no numerator credit.
+- R40 evidence is focused `16/16`, rules/core `396/396`, full CI `738/738`, typecheck/content/determinism PASS, compiled product unchanged, runtime/taxonomy/KPI drift `0`.
+- `BASELINE_REBASE_REQUIRED` is technically resolved in this candidate by explicit integration onto current main; it closes for current-main accounting after PR2 is merged. After merge, accepted current-main overlap may advance to `111/944`.
+- FB2-15 recovery is intentionally not included in PR2. The next legal post-integration sequence is FB2-15 recovery -> fresh R41 -> fresh A synchronization -> FM09 recovery. Earlier FM09/Ciel work may inform reconstruction but is not acceptance provenance, and work must not jump directly to Ciel.
+- R39/R40 are the governing fresh process-separated independent review evidence for this accepted recovery lineage; PR2 does not add a separate GitHub-account identity requirement.
 
 ## Prompt Templates
 
