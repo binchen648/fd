@@ -826,11 +826,17 @@ Permitted final status:
 - GitHub reviewer-identity governance also remains open: separate local worktree/thread proves process separation only, not a distinct GitHub account, human reviewer identity, or GitHub review/status record.
 - FM09 may resume only from the corrected post-R40 A synchronization lineage. Earlier FM09/Ciel work based on the invalid pre-recovery `111/944` chain is not acceptance provenance and must be reconstructed/re-gated before further credit.
 
-## P3 Integration PR2 Candidate - 2026-09-17
+## P3 Integration PR2 Merge Closure - 2026-09-17
 
-- Current `origin/main` after PR #347 is `bf6b1a1589a374dd4040dad07896e9ee841f3057` at accepted current-main overlap `101/944`.
-- PR2 branch `codex/integration-p3-baseline-111` applies exactly the accepted recovery delta `f7666f48f7eb00baeadb63f24fb56fc39991f372 -> d72814a7f01ecba1eecd62960b60137e7500ed15` onto that main baseline. The delta is exactly 38 files and preserves the PR1 dead-helper CI fix plus all main full-roster/reference assets.
-- Recovery evidence accepts FM08 at `111/944` with exact `+10`, leaving `833/944`; current main remains `101/944` until PR2 is merged. After merge, current-main accepted overlap may advance to `111/944`.
-- The earlier `BASELINE_REBASE_REQUIRED` statements above remain historical snapshots of the pre-integration recovery lineage. The technical rebase/integration requirement is resolved by this PR2 candidate; merge into current main is still pending.
-- FB2-15 recovery is intentionally excluded: commit `e0c08f852d40c930c2e41456471f54bf3590dc17` is not an ancestor of `d72814a7f01ecba1eecd62960b60137e7500ed15`, and its recovery handoff is absent from this candidate.
-- The next legal post-integration sequence is FB2-15 recovery -> fresh R41 -> fresh A synchronization -> FM09 recovery. Earlier FM09/Ciel work has no acceptance provenance on this corrected integrated baseline; do not jump directly to Ciel.
+- PR #348 merged the accepted recovery delta onto current main as `553779e8ffcc926ae4763ee86a2ea937e090c128`; current-main accepted overlap is now `111/944` (`11.76%`), leaving `833/944`.
+- The merged tree preserves the exact accepted `f7666f48f7eb00baeadb63f24fb56fc39991f372 -> d72814a7f01ecba1eecd62960b60137e7500ed15` recovery delta, the PR1 client-build compatibility fix, and all main full-roster/reference assets.
+- `BASELINE_REBASE_REQUIRED` is closed for current-main accounting. R39/R40 remain the governing fresh process-separated independent review evidence for the accepted recovery lineage; no separate GitHub-account identity gate is introduced for PR2.
+- FB2-15 was intentionally excluded from PR2. The next legal sequence is FB2-15 recovery -> fresh R41 -> fresh A synchronization -> FM09 recovery; earlier FM09/Ciel work remains non-provenance.
+
+## P3-A FB2-15 Recovery Dispatch - 2026-09-17
+
+- Recovery dispatch now starts from integrated current main `553779e8ffcc926ae4763ee86a2ea937e090c128`; accepted current-main overlap remains `111/944` (`11.76%`).
+- Accepted recovery provenance remains post-R40 synchronization `aec3e11ffdaa6eec76e339793af421573bf94df8` with dispatch correction `d72814a7f01ecba1eecd62960b60137e7500ed15`.
+- FB2-15 is runtime infrastructure only and takes zero migration credit.
+- The future FM09 source family remains exactly ten locked-Reference `core.game-start-add-skill` identities; the required runtime seam is typed, identity-free, game-start-only, idempotent provisioning of already-registered same-owner automatic master-skill targets with transactional fail-closed behavior.
+- Old downstream FB2-15/R41 acceptance is not provenance. A new B2 candidate, fresh R41 process-separated review, and fresh A synchronization are required before FM09 may be rescanned on this integrated lineage.

@@ -3968,19 +3968,36 @@ Branch: `codex/a-p3-r40-fm08-recovery-acceptance-sync`
 Base: fresh R40 report commit `8ed6b85f80f9b8a2069f523bb53fb58c7935f22d`
 Read: `docs/reports/2026-09-17-p3-a-r40-fm08-recovery-acceptance-synchronization.md`
 
-Result: R40 `MIGRATION_ACCEPTED` is synchronized on the corrected recovery lineage. Recovery-line accepted overlap is `111/944` (`11.76%`), remaining `833/944`. PR2 resolves the technical baseline rebase by applying the exact `f7666f48f7eb00baeadb63f24fb56fc39991f372 -> d72814a7f01ecba1eecd62960b60137e7500ed15` delta onto current main base `bf6b1a1589a374dd4040dad07896e9ee841f3057`; merge remains required before current-main credit advances. FM09 is not yet ready: after PR2 merge, the next legal gate is FB2-15 recovery, then fresh R41 and A synchronization, then FM09 recovery. Earlier FM09/Ciel work on the invalid pre-recovery `111/944` lineage is not acceptance provenance.
+Result: R40 `MIGRATION_ACCEPTED` is synchronized on the corrected recovery lineage, and PR #348 has now merged the accepted `f7666f48f7eb00baeadb63f24fb56fc39991f372 -> d72814a7f01ecba1eecd62960b60137e7500ed15` delta into current main as `553779e8ffcc926ae4763ee86a2ea937e090c128`. Current-main accepted overlap is therefore `111/944` (`11.76%`), remaining `833/944`. FM09 is not yet ready: the next legal gate is FB2-15 recovery, then fresh R41 and A synchronization, then FM09 recovery. Earlier FM09/Ciel work on the invalid pre-recovery `111/944` lineage is not acceptance provenance.
 
-## Full-Roster Dispatch State After FM08 Recovery Acceptance / PR2 Integration Candidate
+## Full-Roster Dispatch State After FM08 Recovery Acceptance / PR2 Merge
 
-- FM01-FM08 have accepted recovery evidence at `111/944` (`11.76%`), leaving `833/944` outside accepted canonical authoring. Current `origin/main` remains the PR1 checkpoint at `101/944` until this PR2 integration candidate is merged.
-- PR2 branch `codex/integration-p3-baseline-111` is based on current main `bf6b1a1589a374dd4040dad07896e9ee841f3057` and applies exactly the accepted `f7666f48f7eb00baeadb63f24fb56fc39991f372 -> d72814a7f01ecba1eecd62960b60137e7500ed15` recovery delta.
+- FM01-FM08 are accepted on current main at `111/944` (`11.76%`), leaving `833/944` outside accepted canonical authoring. Current `origin/main` is `553779e8ffcc926ae4763ee86a2ea937e090c128`.
+- PR #348 merged the exact accepted `f7666f48f7eb00baeadb63f24fb56fc39991f372 -> d72814a7f01ecba1eecd62960b60137e7500ed15` recovery delta while preserving the PR1 client-build compatibility fix and all main full-roster/reference assets.
 - The accepted FM08 recovery chain is `ff2742e -> 81ccb7e -> bf496c7 -> 8ed6b85`; the old #342-#345 acceptance chain remains superseded and is not acceptance provenance.
 - Fresh R40 independently accepts exactly the authorized ten `core.game-start-rule-flags` identities, with Leonardo s1a and Ophelia s1a still excluded.
 - Fresh accepted material coverage is `98/133/232`, raw `22/3/127/0/80/124`; duplicate frozen IDs `0`; dynamic `master.tiamat.card.life-sea` remains absent and receives no numerator credit.
 - R40 evidence is focused `16/16`, rules/core `396/396`, full CI `738/738`, typecheck/content/determinism PASS, compiled product unchanged, runtime/taxonomy/KPI drift `0`.
-- `BASELINE_REBASE_REQUIRED` is technically resolved in this candidate by explicit integration onto current main; it closes for current-main accounting after PR2 is merged. After merge, accepted current-main overlap may advance to `111/944`.
-- FB2-15 recovery is intentionally not included in PR2. The next legal post-integration sequence is FB2-15 recovery -> fresh R41 -> fresh A synchronization -> FM09 recovery. Earlier FM09/Ciel work may inform reconstruction but is not acceptance provenance, and work must not jump directly to Ciel.
-- R39/R40 are the governing fresh process-separated independent review evidence for this accepted recovery lineage; PR2 does not add a separate GitHub-account identity requirement.
+- `BASELINE_REBASE_REQUIRED` is closed for current-main accounting.
+- FB2-15 recovery is now the next legal task. It must be followed by fresh R41 and fresh A synchronization before FM09 recovery. Earlier FM09/Ciel work may inform reconstruction but is not acceptance provenance, and work must not jump directly to Ciel.
+- R39/R40 remain the governing fresh process-separated independent review evidence for the accepted recovery lineage; PR2 adds no separate GitHub-account identity requirement.
+
+## TASK P3-FB2-15-RECOVERY
+
+Owner: Codex B2
+Status: READY_FOR_B2_RECOVERY
+Base: integrated current-main baseline `553779e8ffcc926ae4763ee86a2ea937e090c128`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-17-p3-fb2-15-recovery-game-start-skill-provisioning-handoff.md`
+
+Goal: rebuild only the typed, identity-free, idempotent game-start skill-provisioning contract needed by the future exact ten-member `core.game-start-add-skill` FM09 family. Compiler and runtime must share one exact structural classifier; all targets must already be registered same-owner automatic master-skill definitions; malformed/unknown/wrong-owner/non-game-start declarations fail closed; multi-target provisioning is transactional and replay/restore safe. No authoring migration, identity/text/Reference-handler routing, taxonomy/KPI changes, or broad Card Zone/Card Create/Trigger acceptance.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+Current-main accepted overlap remains `111/944`; FB2-15 takes zero migration credit.
 
 ## Prompt Templates
 
