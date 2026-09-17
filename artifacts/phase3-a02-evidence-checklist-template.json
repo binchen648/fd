@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "fd-phase3-a02-evidence-checklist-template-v1",
+  "owner": "Codex A",
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
+  "promotionNotice": "This template does not promote Gate A/B/C, Phase 3, or Release status.",
+  "targetSlices": [
+    "P3-B05:PLAY_SOURCE_RESPONSE",
+    "P3-B06:ADD_TO_ATTACK",
+    "P3-B07:ACTIVATE",
+    "P3-B08:CLOSE",
+    "P3-B09:CREATE_AND_ACTIVATE"
+  ],
+  "requiredSliceHeader": [
+    "taskId",
+    "branch",
+    "mechanicFamily",
+    "contract",
+    "representativeCardId",
+    "representativeAbilityId",
+    "status=IMPLEMENTATION_COMPLETE_CANDIDATE",
+    "independentReviewerRequired"
+  ],
+  "contractBoundary": [
+    "exactEligibleShape",
+    "skippedAbilitiesWithReasons",
+    "nonInheritedEvidence",
+    "inheritanceInvalidators",
+    "retainedLegacyPaths"
+  ],
+  "componentEvidence": [
+    "typedPrimitiveRegistered",
+    "resultSchemaFields",
+    "compilerFailClosed",
+    "unsupportedShapeNoLegacyFallback",
+    "runtimeCorruptionFailClosed",
+    "transactionRollbackWhenApplicable",
+    "semanticShapeRoutingNotCardOrAbilityId"
+  ],
+  "componentNegativeRows": [
+    "wrongKind",
+    "wrongTriggerOrPhase",
+    "wrongWindow",
+    "missingOrWrongCost",
+    "missingReference",
+    "wrongTargetOrSourceZone",
+    "unsupportedEffectCompanion",
+    "unknownPrimitive",
+    "badBindingFieldOrExpression"
+  ],
+  "scenarioEvidence": [
+    "canonicalJsonCompilesToExecutablePack",
+    "representativeAbilityOnlyLegalWhenPreconditionsHold",
+    "serverRevalidationRejectsCorruption",
+    "stateMutationMatchesContract",
+    "traceIncludesSourceAbilityResultAndAffectedEntity",
+    "migratedExactShapeDoesNotExecuteLegacyOwner",
+    "adjacentSkippedShapesRemainSkipped"
+  ],
+  "browserServerEvidence": [
+    "setupBoundaryDeclared",
+    "firstBrowserVisibleOfferOrServerProjection",
+    "webSocketCommandPathIfClientDriven",
+    "expectedRevisionIfMutatingCommand",
+    "serverRevalidationPoint",
+    "finalProjectionAssertion",
+    "postReconnectProjectionAssertion",
+    "staleOrDuplicateReplayRejection",
+    "exactEvidenceBoundaryAndNonInheritance"
+  ],
+  "eventDrivenContractRules": [
+    "producerEventAndConsumerEventAreSeparate",
+    "doNotClaimClientActivationCommandForServerDrivenMutation",
+    "proveNoImmediateMutationWhenCanonicalTimingIsDelayed"
+  ],
+  "reviewerDecisionInputs": [
+    "implementationReport",
+    "focusedRegressionTestCommandAndResult",
+    "browserServerTestCommandAndResultWhenApplicable",
+    "inventoryCommandAndResult",
+    "coverageCommandAndResult",
+    "automationAuditCommandAndResult",
+    "changedFiles",
+    "legacyNewDualCounts",
+    "knownRetainedLegacyPaths",
+    "secondaryRuntimePaths",
+    "areasNotVerified"
+  ],
+  "allowedReviewerOutcomes": [
+    "PLAN_NEEDS_REVISION",
+    "IMPLEMENTATION_NEEDS_REVISION",
+    "SCENARIO_VERIFIED",
+    "scoped_E2E_VERIFIED"
+  ],
+  "forbiddenImplementerClaims": [
+    "B promotes its own Gate status",
+    "one card-action contract inherits another contract's browser evidence",
+    "passing tests imply release acceptance",
+    "legacy fallback is counted as migrated runtime"
+  ]
+}

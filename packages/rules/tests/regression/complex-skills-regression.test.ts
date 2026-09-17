@@ -1144,7 +1144,7 @@ describe('complex master and session regressions', () => {
     const book = add(state, 'master.shinji.skill.false-attendant-book', 'skill');
 
     state.players[0]!.mana = 4;
-    rules.processAbilityEvent(state, { id: 'shinji-enter-miyama', type: 'after_controller_enters_location', playerId: 'p1' });
+    rules.processAbilityEvent(state, { id: 'shinji-enter-miyama', type: 'after_controller_enters_location', playerId: 'p1', locationId: 'miyama_town' });
     expect(state.players[0]!.mana).toBe(5);
     expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({
       type: 'effect_resolved',
@@ -1336,12 +1336,16 @@ describe('complex master and session regressions', () => {
       sourceCardId: seeker,
       abilityId: 'seeker.meditation',
     });
-    rules.processAbilityEvent(state, { id: 'gatou-battle-ended', type: 'after_battle_ended', playerId: 'p1' });
-    expectDirective(state, 'gatou_battle_end_mobile_players_reward', {
-      controllerId: 'p1',
-      sourceCardId: seeker,
-      abilityId: 'seeker.battle-end-reward',
+    const gatouManaBeforeTerminal = state.players[0]!.mana;
+    rules.processAbilityEvent(state, {
+      id: 'gatou-battle-ended', type: 'after_battle_ended', battlePhaseResolutionId: 'battle-phase:1',
+      battleParticipantIds: ['p1', 'p2'], battleOutcomes: [{ battlefieldId: state.players[0]!.locationId!, winnerPlayerIds: ['p2'] }],
     });
+    expect(state.players[0]!.mana).toBe(gatouManaBeforeTerminal);
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({
+      type: 'battle_end_mobile_players_reward_settled', sourceCardId: seeker, abilityId: 'seeker.battle-end-reward',
+      requestedDelta: 0, delta: 0, qualifyingPlayerIds: [],
+    }));
 
     expect(activate(state, commandSpell, 'command-spell.gain-mana').ok).toBe(true);
     expect(state.players[0]!.mana).toBe(8);
@@ -1421,18 +1425,35 @@ describe('complex master and session regressions', () => {
       abilityId: 'astronomical-science.has-chaldeas',
     }));
 
-    rules.processAbilityEvent(state, { id: 'olga-first-loss', type: 'after_controller_first_loses_battle', playerId: 'p1' });
-    expect(state.cards.find((card) => card.instanceId === trismegistus)).toMatchObject({
-      zone: 'field',
-      visibility: { scope: 'public' },
+    rules.processAbilityEvent(state, {
+      id: 'olga-first-loss',
+      type: 'after_controller_first_loses_battle',
+      playerId: 'p1',
+      battlefieldId: 'miyama_town',
+      lossOrdinal: 1,
     });
-    expectDirective(state, 'activate_card_by_id', {
+    expect(state.cards.find((card) => card.instanceId === trismegistus)).toMatchObject({
+      zone: 'skill',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'p1' },
+    });
+    expect(state.abilityRuntime!.pendingDelayedActivations).toContainEqual(expect.objectContaining({
       controllerId: 'p1',
       sourceCardId: astronomy,
       abilityId: 'astronomical-science.first-loss',
       definitionId: 'master.olga-marie.skill.trismegistus-grief',
-      activated: 1,
+    }));
+
+    rules.advanceAbilityPhase(state, 'round_end', state.round.roundNumber);
+    expect(state.cards.find((card) => card.instanceId === trismegistus)).toMatchObject({
+      zone: 'field',
+      visibility: { scope: 'public' },
     });
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({
+      type: 'card_activated',
+      sourceCardId: astronomy,
+      abilityId: 'astronomical-science.first-loss',
+    }));
+    state.round.activePhase = 'action';
 
     rules.processAbilityEvent(state, { id: 'olga-passives', type: 'while_active' });
     expect((state as unknown as { modeState?: { lookedMatchDeckBottoms?: Record<string, unknown> } }).modeState?.lookedMatchDeckBottoms).toMatchObject({
@@ -1445,7 +1466,8 @@ describe('complex master and session regressions', () => {
       abilityId: 'trismegistus.soul-drag',
       controllerId: 'p1',
     }));
-    expect((state as unknown as { modeState?: { returnSilencePlayers?: string[] } }).modeState?.returnSilencePlayers).toContain('p1');
+    expect(state.abilityRuntime!.transformedReturnSilenceSourceCardIds ?? []).not.toContain(trismegistus);
+    expect(state.ruleOverrides?.mustDeployToBattlefieldPlayerIds ?? []).not.toContain('p1');
 
     state.currentSituationCardId = 'situation.current';
     state.situationDeck = ['situation.top', 'situation.bottom'];

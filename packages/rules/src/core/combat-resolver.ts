@@ -13,6 +13,7 @@ import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
 import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
+import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 
 export interface CombatParticipantInput {
   playerId: string;
@@ -215,18 +216,17 @@ function hasRemoteOperationBonus(state: GameState, playerId: string, battlefield
   return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, "basic.preparation");
 }
 
-function returnSilencePlayerIds(state: GameState): string[] {
-  const players = modeState(state).returnSilencePlayers;
-  return Array.isArray(players) ? players.filter((id): id is string => typeof id === "string") : [];
-}
-
-function findReturnSilenceSourceCard(state: GameState, playerId: string): string | undefined {
-  return state.cards.find((card) =>
-    card.controllerPlayerId === playerId &&
-    ["field", "attack_area"].includes(card.zone) &&
-    state.abilityRuntime?.pack.cards[card.definitionId]?.abilities.some((ability) =>
-      ability.effects.some((effect) => effect.type === "return_silence_battle_start")) &&
-    state.abilityRuntime.cardState[card.instanceId]?.active)?.instanceId;
+function returnSilenceSources(state: GameState): Array<{ sourceCardId: string; playerId: string }> {
+  const runtime = state.abilityRuntime;
+  if (!runtime) return [];
+  return (runtime.transformedReturnSilenceSourceCardIds ?? []).flatMap((sourceCardId) => {
+    const card = state.cards.find((candidate) => candidate.instanceId === sourceCardId);
+    const sourceState = runtime.cardState[sourceCardId];
+    if (!card || !["field", "attack_area"].includes(card.zone) || sourceState?.active !== true || sourceState.faceDown) return [];
+    const hasReturnSilenceSemantic = runtime.pack.cards[card.definitionId]?.abilities.some((ability) =>
+      ability.effects.some((effect) => effect.type === "return_silence_battle_start"));
+    return hasReturnSilenceSemantic ? [{ sourceCardId, playerId: card.controllerPlayerId }] : [];
+  });
 }
 
 function isLegacyCombatCard(state: GameState, card: GameState["cards"][number]): boolean {
@@ -393,10 +393,8 @@ export function deriveBattleParticipantsFromState(
       const participant = {
         playerId: player.id,
         totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower,
-        attackTags: definitions.flatMap((entry) => entry.tags).concat(authoredAttacks.flatMap(card => {
-          const attributes = state.abilityRuntime!.pack.cards[card.definitionId]!.cardFace.attributes;
-          return Array.isArray(attributes) ? attributes.filter((v): v is string => typeof v === 'string') : [];
-        })),
+        attackTags: definitions.flatMap((entry) => entry.tags).concat(authoredAttacks.flatMap(card =>
+          getEffectiveCardAttributes(state, card.instanceId))),
         externalSkillEffects,
       };
       return terrainSlotIndex === undefined ? participant : { ...participant, terrainSlotIndex };
@@ -446,34 +444,28 @@ function splitVpPoolPerWinner(pool: number, winnerCount: number): number {
   return winnerCount > 0 && pool > 0 ? Math.ceil(pool / winnerCount) : 0;
 }
 
-function buildBattleResult(
+function buildBattleResultFromRanked(
   state: GameState,
-  input: CombatResolutionInput,
+  battlefieldId: CombatResolutionInput["battlefieldId"],
+  ranked: BattleParticipantBreakdown[],
+  presenceConcealmentDefeatedPlayerIds: string[] = [],
 ): GameState["battleResults"][number] | null {
-  if (!input.participants?.length) {
-    return null;
-  }
-
-  const location = getLocationById(state.map, state.locationConfig, input.battlefieldId);
-  const ranked = [...input.participants]
-    .map((participant) => buildParticipantBreakdown(state, input.battlefieldId, participant))
-    .sort((left, right) => right.effectivePower - left.effectivePower);
-  const excludedPlayerIds = ranked
-    .filter((participant) => cannotWinBattleThisRound(state, participant.playerId))
-    .map((participant) => participant.playerId);
+  if (!ranked.length) return null;
+  const location = getLocationById(state.map, state.locationConfig, battlefieldId);
+  const excludedPlayerIds = [...new Set([
+    ...ranked.filter((participant) => cannotWinBattleThisRound(state, participant.playerId)).map((participant) => participant.playerId),
+    ...presenceConcealmentDefeatedPlayerIds.filter((playerId) => ranked.some((participant) => participant.playerId === playerId)),
+  ])];
   const eligible = ranked.filter((participant) => !excludedPlayerIds.includes(participant.playerId));
   const highestEligiblePower = eligible[0]?.effectivePower;
-
-  if (highestEligiblePower === undefined) {
-    return null;
-  }
+  if (highestEligiblePower === undefined) return null;
 
   const winners = eligible.filter((participant) => participant.effectivePower === highestEligiblePower);
   const winnerPlayerIds = winners.map((participant) => participant.playerId);
   const tied = winnerPlayerIds.length > 1;
   const runnerUp = eligible.find((participant) => participant.effectivePower < highestEligiblePower);
   const margin = tied ? 0 : highestEligiblePower - (runnerUp?.effectivePower ?? 0);
-  const eventVpPool = getBattleVpReward(state, input.battlefieldId, location);
+  const eventVpPool = getBattleVpReward(state, battlefieldId, location);
   const hasCompetitionReward = ranked.length > 1 &&
     location?.rewardHooks.includes("competition_rewards") === true &&
     typeof location.vpRewardRules?.competition === "number";
@@ -485,44 +477,33 @@ function buildBattleResult(
   const vpReward = Math.min(splitVpPoolPerWinner(eventVpPool, winnerPlayerIds.length), baseVpPerWinner);
   const competitionVpPerWinner = Math.max(0, baseVpPerWinner - vpReward);
   const locationVpPerWinner = splitVpPoolPerWinner(locationVpPool, winnerPlayerIds.length);
-
   const defaultVpAdjustments = buildDefaultVpAdjustments(
-    location,
-    input.battlefieldId,
-    winnerPlayerIds,
-    competitionVpPerWinner,
-    locationVpPerWinner,
+    location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner,
   );
   const remoteOperationVpAdjustment = winnerPlayerIds
-    .filter((playerId) => hasRemoteOperationBonus(state, playerId, input.battlefieldId))
+    .filter((playerId) => hasRemoteOperationBonus(state, playerId, battlefieldId))
     .map((playerId) => ({
-        playerId,
-        delta: 2,
-        source: "battle_vp" as const,
-        label: "basic.preparation.win_bonus",
-      }));
+      playerId, delta: 2, source: "battle_vp" as const, label: "basic.preparation.win_bonus",
+    }));
   const vpAdjustments = [...(defaultVpAdjustments ?? []), ...remoteOperationVpAdjustment];
+  const lossEffectSuppressedPlayerIds = ranked
+    .filter((participant) => !winnerPlayerIds.includes(participant.playerId))
+    .filter((participant) => ignoresBattleLossEffects(state, participant.playerId, battlefieldId))
+    .map((participant) => participant.playerId);
 
   return {
-    battlefieldId: input.battlefieldId,
-    winnerPlayerIds,
-    tied,
+    battlefieldId, winnerPlayerIds, tied,
     ...(excludedPlayerIds.length ? { excludedPlayerIds } : {}),
+    ...(presenceConcealmentDefeatedPlayerIds.length ? { presenceConcealmentDefeatedPlayerIds: [...new Set(presenceConcealmentDefeatedPlayerIds)] } : {}),
+    ...(lossEffectSuppressedPlayerIds.length ? { lossEffectSuppressedPlayerIds } : {}),
     winnerPlayerId: winnerPlayerIds.length === 1 ? winnerPlayerIds[0]! : null,
-    margin,
-    vpReward,
-    baseVpPerWinner,
-    eventVpPool,
-    competitionVpPool,
+    margin, vpReward, baseVpPerWinner, eventVpPool, competitionVpPool,
     ...(vpAdjustments.length ? { vpAdjustments } : {}),
     militaryAdjustments: ranked.map((participant) => {
       const delta = winnerPlayerIds.includes(participant.playerId)
         ? margin
-        : ignoresBattleLossEffects(state, participant.playerId, input.battlefieldId) ? 0 : -margin;
-      return {
-        playerId: participant.playerId,
-        delta: Object.is(delta, -0) ? 0 : delta,
-      };
+        : ignoresBattleLossEffects(state, participant.playerId, battlefieldId) ? 0 : -margin;
+      return { playerId: participant.playerId, delta: Object.is(delta, -0) ? 0 : delta };
     }),
     participantBreakdowns: ranked,
   };
@@ -574,10 +555,10 @@ export function resolveBattlefield(
   });
 
   const participants = input.participants ?? deriveBattleParticipantsFromState(state, input.battlefieldId);
-  const returnSilenceController = returnSilencePlayerIds(state).find((playerId) =>
+  const returnSilenceSource = returnSilenceSources(state).find(({ playerId }) =>
     state.players.some((player) => player.id === playerId && player.status === "active" && player.locationId === input.battlefieldId));
-  if (returnSilenceController && participants.length > 1) {
-    const sourceCardId = findReturnSilenceSourceCard(state, returnSilenceController);
+  if (returnSilenceSource && participants.length > 1) {
+    const { playerId: returnSilenceController, sourceCardId } = returnSilenceSource;
     const ranked = [...participants]
       .map((participant) => buildParticipantBreakdown(state, input.battlefieldId, participant))
       .sort((left, right) => right.effectivePower - left.effectivePower);
@@ -605,24 +586,80 @@ export function resolveBattlefield(
         payload: { winnerPlayerIds: [returnSilenceController], tied: false, winnerPlayerId: returnSilenceController, loserIds, sourceCardId },
       }),
     };
-    if (sourceCardId) {
-      const source = nextState.cards.find((card) => card.instanceId === sourceCardId);
-      if (source) source.zone = "removed_from_game";
-      if (nextState.abilityRuntime?.cardState[sourceCardId]) nextState.abilityRuntime.cardState[sourceCardId]!.active = false;
+    const source = nextState.cards.find((card) => card.instanceId === sourceCardId);
+    if (source) source.zone = "removed_from_game";
+    if (nextState.abilityRuntime?.cardState[sourceCardId]) nextState.abilityRuntime.cardState[sourceCardId]!.active = false;
+    clearTransientCardTransformState(nextState, sourceCardId);
+    if (nextState.abilityRuntime?.transformedReturnSilenceSourceCardIds) {
+      nextState.abilityRuntime.transformedReturnSilenceSourceCardIds = nextState.abilityRuntime.transformedReturnSilenceSourceCardIds
+        .filter((id) => id !== sourceCardId);
     }
-    if (nextState.abilityRuntime) {
-      processAbilityEvent(nextState, { id: abilityEventId, type: 'after_battle_result_determined',
-        battleResult: { winners: [returnSilenceController], loserIds } });
+    const hasOtherLiveTransformedSource = returnSilenceSources(nextState)
+      .some((candidate) => candidate.playerId === returnSilenceController);
+    if (!hasOtherLiveTransformedSource && nextState.ruleOverrides?.mustDeployToBattlefieldPlayerIds) {
+      nextState.ruleOverrides.mustDeployToBattlefieldPlayerIds = nextState.ruleOverrides.mustDeployToBattlefieldPlayerIds
+        .filter((id) => id !== returnSilenceController);
+    }
+    if (nextState.abilityRuntime && !nextState.abilityRuntime.processedEvents.includes(abilityEventId)) {
+      nextState.abilityRuntime.processedEvents.push(abilityEventId);
     }
     return { nextState, appliedLogEntries: [`return_silence:${input.battlefieldId}`] };
   }
-  const battleResult = buildBattleResult(state, {
-    ...input,
-    participants,
-  });
+  const ranked = [...participants]
+    .map((participant) => buildParticipantBreakdown(state, input.battlefieldId, participant))
+    .sort((left, right) => right.effectivePower - left.effectivePower);
+  const resultId = `battle-result:${state.round.roundNumber}:${input.battlefieldId}`;
+  const powerEventId = `battle-power:${state.round.roundNumber}:${input.battlefieldId}`;
+  let settlementState = state;
+
+  if (settlementState.abilityRuntime && !settlementState.abilityRuntime.processedEvents.includes(powerEventId)) {
+    const eventState = structuredClone(settlementState);
+    eventState.eventPlacements = nextPlacements;
+    processAbilityEvent(eventState, {
+      id: powerEventId,
+      type: 'after_battle_power_calculated',
+      battleId: abilityEventId,
+      resultId,
+      battlefieldId: input.battlefieldId,
+      battleParticipantIds: ranked.map((participant) => participant.playerId),
+      battleParticipantPowers: Object.fromEntries(ranked.map((participant) => [participant.playerId, participant.effectivePower])),
+    });
+    settlementState = eventState;
+  }
+
+  if (settlementState.abilityRuntime && (
+    settlementState.abilityRuntime.pendingDecision ||
+    settlementState.abilityRuntime.responseWindows.length ||
+    settlementState.abilityRuntime.hostRequests.length
+  )) {
+    return {
+      nextState: settlementState,
+      appliedLogEntries: [`battle_power_response_pending:${input.battlefieldId}`],
+    };
+  }
+
+  const currentParticipantIds = ranked.map((participant) => participant.playerId);
+  const currentParticipantPowers = Object.fromEntries(ranked.map((participant) => [participant.playerId, participant.effectivePower]));
+  const allPendingPresence = settlementState.abilityRuntime?.pendingPresenceConcealmentDefeats ?? [];
+  const matchingPendingPresence = allPendingPresence.filter((entry) =>
+    entry.resultId === resultId && entry.battlefieldId === input.battlefieldId);
+  for (const entry of matchingPendingPresence) {
+    if (entry.participantIds.length !== currentParticipantIds.length ||
+      entry.participantIds.some((playerId, index) => currentParticipantIds[index] !== playerId) ||
+      currentParticipantIds.some((playerId) => entry.participantPowers[playerId] !== currentParticipantPowers[playerId])) {
+      throw new Error('Presence Concealment frozen battle Power snapshot changed before settlement');
+    }
+  }
+  const presenceTargets = [...new Set(matchingPendingPresence.flatMap((entry) => entry.targetPlayerIds))];
+  const ignoredPresenceTargets = presenceTargets.filter((playerId) =>
+    ignoresBattleLossEffects(settlementState, playerId, input.battlefieldId));
+  const defeatedPresenceTargets = presenceTargets.filter((playerId) => !ignoredPresenceTargets.includes(playerId));
+
+  const battleResult = buildBattleResultFromRanked(
+    settlementState, input.battlefieldId, ranked, defeatedPresenceTargets);
   const nextBattleResults = battleResult
-    ? state.battleResults.concat(battleResult)
-    : state.battleResults;
+    ? settlementState.battleResults.concat(battleResult)
+    : settlementState.battleResults;
   const logEntry = battleResult
     ? ({
         type: "battle_resolved",
@@ -631,6 +668,7 @@ export function resolveBattlefield(
           winnerPlayerIds: battleResult.winnerPlayerIds,
           tied: battleResult.tied,
           excludedPlayerIds: battleResult.excludedPlayerIds,
+          presenceConcealmentDefeatedPlayerIds: battleResult.presenceConcealmentDefeatedPlayerIds,
           winnerPlayerId: battleResult.winnerPlayerId,
           margin: battleResult.margin,
           participantBreakdowns: battleResult.participantBreakdowns,
@@ -646,12 +684,32 @@ export function resolveBattlefield(
       } satisfies GameState["log"][number]);
 
   const nextState: GameState = {
-      ...state,
+      ...settlementState,
       eventPlacements: nextPlacements,
       battleResults: nextBattleResults,
-      log: state.log.concat(logEntry),
+      log: settlementState.log.concat(logEntry),
   };
-  if (state.abilityRuntime && battleResult) {
+  if (nextState.abilityRuntime && matchingPendingPresence.length) {
+    const consumed = new Set(matchingPendingPresence.map((entry) =>
+      `${entry.triggerEventId}:${entry.sourceCardId}:${entry.abilityId}`));
+    nextState.abilityRuntime.pendingPresenceConcealmentDefeats = allPendingPresence.filter((entry) =>
+      !consumed.has(`${entry.triggerEventId}:${entry.sourceCardId}:${entry.abilityId}`));
+  }
+  for (const playerId of defeatedPresenceTargets) {
+    nextState.log.push({
+      type: 'presence_concealment_defeat_applied',
+      message: `${input.battlefieldId}:${playerId}`,
+      payload: { playerId, battlefieldId: input.battlefieldId, resultId },
+    });
+  }
+  for (const playerId of ignoredPresenceTargets) {
+    nextState.log.push({
+      type: 'presence_concealment_defeat_ignored',
+      message: `${input.battlefieldId}:${playerId}`,
+      payload: { playerId, battlefieldId: input.battlefieldId, resultId, sourceCardDefinitionId: 'basic.luck' },
+    });
+  }
+  if (settlementState.abilityRuntime && battleResult) {
     const winners = battleResult.winnerPlayerIds;
     const immuneLosers = participants
       .filter((participant) => !winners.includes(participant.playerId))
@@ -664,8 +722,10 @@ export function resolveBattlefield(
         payload: { playerId, battlefieldId: input.battlefieldId, sourceCardDefinitionId: "basic.luck" },
       });
     }
-    processAbilityEvent(nextState, { id: abilityEventId, type: 'after_battle_result_determined',
-      battleResult: { winners, loserIds: participants.map(p => p.playerId).filter(id => !winners.includes(id) && !immuneLosers.includes(id)) } });
+    const runtime = nextState.abilityRuntime;
+    if (runtime && !runtime.processedEvents.includes(abilityEventId)) {
+      runtime.processedEvents.push(abilityEventId);
+    }
   }
   return {
     nextState,

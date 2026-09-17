@@ -4,11 +4,6 @@ import path from "node:path";
 const roots = ["data/authoring/masters", "data/authoring/servants"];
 const directResourceTypes = new Set(["adjust_mana", "adjust_command_seals", "adjust_victory_points"]);
 const allResourceTypes = new Set([...directResourceTypes, "pay_mana"]);
-const allowedEligibleAbilities = new Set([
-  "master.gatou.command-spell::command-spell.gain-mana",
-  "master.olga-marie.command-spell::command-spell.gain-mana",
-  "servant.tomoe.skill.sc-tomoe-1::sc-tomoe-1.independent-action",
-]);
 
 const files = roots.flatMap((root) =>
   fs
@@ -25,15 +20,18 @@ for (const file of files) {
     for (const ability of card.abilities ?? []) {
       const effects = (ability.effects ?? []).map((effect) => effect.type).filter(Boolean);
       if (!effects.some((effect) => allResourceTypes.has(effect))) continue;
-      const key = `${card.id}::${ability.id}`;
+      const dependencies = classifyDependencies(ability, effects);
+      const eligible = isStrictDirectActionResourceAbility(ability);
       rows.push({
         archive: archive.id,
         card: card.id,
         ability: ability.id,
         kind: ability.kind ?? "",
         effects,
-        eligible: allowedEligibleAbilities.has(key) && isStrictDirectActionResourceAbility(ability),
-        skipReason: allowedEligibleAbilities.has(key) && isStrictDirectActionResourceAbility(ability)
+        dependencies,
+        migrationClass: eligible ? "eligible" : dependencies.includes("SPECIAL") ? "special" : "blocked",
+        eligible,
+        skipReason: eligible
           ? ""
           : skipReason(ability, effects),
       });
@@ -43,34 +41,58 @@ for (const file of files) {
 
 const eligible = rows.filter((row) => row.eligible);
 const skipped = rows.filter((row) => !row.eligible);
+const blocked = rows.filter((row) => row.migrationClass === "blocked");
+const special = rows.filter((row) => row.migrationClass === "special");
 
 console.log("RESOURCE_NUMERIC_CORE_DIRECT_ACTION inventory");
 console.log(`sourceFiles=${files.length}`);
 console.log(`resourceNumericAbilities=${rows.length}`);
 console.log(`eligible=${eligible.length}`);
+console.log(`migrated=${eligible.length}`);
+console.log(`blocked=${blocked.length}`);
+console.log(`special=${special.length}`);
 console.log(`skipped=${skipped.length}`);
 console.log("");
 
 console.log("Eligible abilities");
 for (const row of eligible) {
-  console.log(`${row.archive}\t${row.card}\t${row.ability}\t${row.effects.join(",")}`);
+  console.log(`${row.archive}\t${row.card}\t${row.ability}\t${row.effects.join(",")}\t${row.dependencies.join(",")}`);
 }
 console.log("");
 
-console.log("Skipped abilities");
+console.log("Blocked/special abilities");
 for (const row of skipped) {
-  console.log(`${row.archive}\t${row.card}\t${row.ability}\t${row.effects.join(",")}\t${row.skipReason}`);
+  console.log(`${row.archive}\t${row.card}\t${row.ability}\t${row.effects.join(",")}\t${row.migrationClass}\t${row.dependencies.join(",")}\t${row.skipReason}`);
 }
 console.log("");
 
 console.log("Before/after metrics");
-console.log("legacyResourceConsumerCount.before=3");
+console.log(`legacyResourceConsumerCount.before=${eligible.length}`);
 console.log("legacyResourceConsumerCount.after=0");
 console.log("newRuntimeSemanticRoutedCount.before=0");
 console.log(`newRuntimeSemanticRoutedCount.after=${eligible.length}`);
-console.log("dualCompatibleCount.before=1");
+console.log("dualCompatibleCount.before=NOT_CLASSIFIABLE");
 console.log("dualCompatibleCount.after=0");
 console.log(`remainingSkippedCount.after=${skipped.length}`);
+
+function classifyDependencies(ability, effects) {
+  const raw = JSON.stringify(ability);
+  const dependencies = [];
+  if (isStrictDirectActionResourceAbility(ability)) dependencies.push("DIRECT_RESOURCE");
+  if (ability.kind && ability.kind !== "phase_action") dependencies.push("RESOURCE_WITH_TRIGGER");
+  if (ability.activation?.trigger) dependencies.push("RESOURCE_WITH_TRIGGER");
+  if ((ability.targets ?? []).length > 0 || /"branch"|choice|response|optional|YES_NO|选择|可以/.test(raw)) dependencies.push("RESOURCE_WITH_INTERACTION");
+  if (/battle|combat|wins_battle|loses_battle|battle_result|defeat|战斗|获胜|战败|败北|胜者|交战/.test(raw)) dependencies.push("RESOURCE_WITH_BATTLE");
+  if (/hidden|private|look|reveal|暗置|隐藏|查看|展示/.test(raw)) dependencies.push("RESOURCE_WITH_HIDDEN");
+  if (/resultVar|binding_field|bind/.test(raw)) dependencies.push("RESOURCE_WITH_RESULT_BINDING");
+  if ((ability.creates ?? []).length > 0 || Object.keys(ability.lifecycle ?? {}).length > 0 || /duration|cleanup|limit|once|per_game|残留|每局|持续/.test(raw)) {
+    dependencies.push("RESOURCE_WITH_LIFECYCLE");
+  }
+  if (effects.some((effect) => !allResourceTypes.has(effect)) || /record_master_directive|independent_deck|replacement|terrain_multiplier|transfer_vp/.test(raw)) {
+    dependencies.push("SPECIAL");
+  }
+  return [...new Set(dependencies.length ? dependencies : ["DIRECT_RESOURCE"])];
+}
 
 function isStrictDirectActionResourceAbility(ability) {
   const effects = ability.effects ?? [];

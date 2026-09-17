@@ -11,6 +11,7 @@
 import type { GameState } from '../schema/game';
 import type { RuleNode } from './types';
 import { node, str } from './loader';
+import { clearTransientCardTransformState } from './card-instance-state';
 
 function modeState(state: GameState): Record<string, any> {
   (state as any).modeState = (state as any).modeState || {};
@@ -494,13 +495,20 @@ export function resolveExtendedEffect(
       break;
     }
     case 'transform_to_return_silence_on_loss': {
-      const store = modeState(state);
-      store.returnSilencePlayers = [...new Set([...(store.returnSilencePlayers ?? []), controllerId])];
+      const runtime = state.abilityRuntime;
+      const sourceId = sourceCardId(context);
+      const source = state.cards.find((card) => card.instanceId === sourceId);
+      const sourceState = runtime?.cardState[sourceId];
+      if (!runtime || !source || !['field', 'attack_area'].includes(source.zone) || sourceState?.active !== true || sourceState.faceDown) break;
+      runtime.transformedReturnSilenceSourceCardIds = [...new Set([
+        ...(runtime.transformedReturnSilenceSourceCardIds ?? []),
+        sourceId,
+      ])];
       break;
     }
     case 'return_silence_battle_start': {
-      const store = modeState(state);
-      store.returnSilencePlayers = [...new Set([...(store.returnSilencePlayers ?? []), controllerId])];
+      const sourceId = sourceCardId(context);
+      if (!state.abilityRuntime?.transformedReturnSilenceSourceCardIds?.includes(sourceId)) break;
       state.ruleOverrides = state.ruleOverrides || {};
       state.ruleOverrides.mustDeployToBattlefieldPlayerIds = [...new Set([
         ...(state.ruleOverrides.mustDeployToBattlefieldPlayerIds ?? []),
@@ -591,6 +599,7 @@ export function resolveExtendedEffect(
       if (targetCard) {
         targetCard.zone = 'skill';
         targetCard.visibility = { scope: 'owner_only', ownerPlayerId: controllerId };
+        clearTransientCardTransformState(state, targetCard.instanceId);
       }
       break;
     }
@@ -602,6 +611,8 @@ export function resolveExtendedEffect(
         if (sourceCard) {
           sourceCard.zone = 'skill';
           (sourceCard as any).active = false;
+          if (state.abilityRuntime?.cardState[sourceCard.instanceId]) state.abilityRuntime.cardState[sourceCard.instanceId]!.active = false;
+          clearTransientCardTransformState(state, sourceCard.instanceId);
         }
       }
       break;

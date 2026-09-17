@@ -5,9 +5,12 @@ import {
   processAbilityEvent,
   projectAbilityState,
 } from './ability/interpreter';
+import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
+import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
 import type {
   AbilityCommand,
+  AbilityEvent,
   AbilityPlayerView,
   DispatchResult,
   ExecutableCardDefinition,
@@ -92,6 +95,7 @@ export interface MatchInteractionWindow {
   title: string;
   controllerId: string;
   sourceCardInstanceId?: string;
+  abilityId?: string;
   sourceLabel?: string;
   min?: number;
   max?: number;
@@ -99,6 +103,10 @@ export interface MatchInteractionWindow {
   variableCosts?: Array<{ name: string; min: number; max: number }>;
   candidates?: Array<{ id: string; label: string; kind: 'card' | 'player' | 'location' | 'option'; zone?: string }>;
   legalActions: LegalAction[];
+  template?: 'target';
+  createdRevision?: number;
+  visibility?: 'owner_only';
+  cancelPolicy?: 'forbidden';
 }
 
 export interface MatchZoneProjection {
@@ -407,6 +415,11 @@ function projectInteractionWindows(state: GameState, viewerId: string): MatchInt
       max: view.pendingDecision.max,
       candidates: view.pendingDecision.candidates.map((id) => labelCandidate(state, id)),
       legalActions: view.legalActions.filter((action) => action.type === 'choose_target'),
+      ...(view.pendingDecision.template ? {
+        template: view.pendingDecision.template, createdRevision: view.pendingDecision.createdRevision,
+        visibility: view.pendingDecision.visibility, cancelPolicy: view.pendingDecision.cancelPolicy,
+        sourceCardInstanceId: view.pendingDecision.sourceCardInstanceId, abilityId: view.pendingDecision.abilityId,
+      } : {}),
     });
   }
   if (view.responseWindow) {
@@ -480,9 +493,19 @@ export class MatchSession {
 
   dispatchPlayerAction(playerId: string, command: AbilityCommand): DispatchResult {
     if (command.type === 'deploy_player') return this.dispatchDeployPlayer(playerId, command.locationId as LocationId);
+    const privateInteractionMutation = command.type === 'choose_target' &&
+      this.state.abilityRuntime?.pendingDecision?.interaction?.visibility === 'owner_only';
     const result = dispatchAbilityCommand(this.state, playerId, command);
+    if (!result.ok && privateInteractionMutation) return result;
     this.rejection = result.rejection;
-    this.record(result.ok ? 'dispatch_ok' : 'dispatch_rejected', `${playerId}:${command.type}`, { command: command as Record<string, unknown>, rejection: result.rejection });
+    const sharedCommand = privateInteractionMutation
+      ? { type: 'choose_target', privateSelection: 'redacted' }
+      : command as Record<string, unknown>;
+    this.record(result.ok ? 'dispatch_ok' : 'dispatch_rejected', `${playerId}:${command.type}`, {
+      command: sharedCommand,
+      ...(result.events.length ? { events: result.events as unknown as Record<string, unknown>[] } : {}),
+      rejection: result.rejection,
+    });
     this.consumeAppliedDirectives();
     this.checkpoint(`${playerId}:${command.type}`);
     return result;
@@ -589,7 +612,7 @@ export class MatchSession {
     const deployedLocation = getEnabledLocations(this.state.map, this.state.locationConfig).find((location) => location.id === locationId);
     if (deployedLocation?.tags.includes('battlefield')) {
       this.assignTerrainOnDeployment(playerId, locationId);
-      processAbilityEvent(this.state, { id: `deploy:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_battlefield', playerId });
+      processAbilityEvent(this.state, { id: `deploy:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_battlefield', playerId, locationId });
     }
     this.consumeAppliedDirectives();
     this.advanceToNextDecision();
@@ -1113,6 +1136,7 @@ export class MatchSession {
       if (this.state.abilityRuntime?.cardState[card.instanceId]) {
         this.state.abilityRuntime.cardState[card.instanceId]!.active = false;
       }
+      clearTransientCardTransformState(this.state, card.instanceId);
       this.record('attached_card_returned', `${card.instanceId}:skill`, { attachment });
     }
     modeStateOf(this.state).supportShotAttachments = remaining;
@@ -1132,6 +1156,7 @@ export class MatchSession {
       if (this.state.abilityRuntime?.cardState[card.instanceId]) {
         this.state.abilityRuntime.cardState[card.instanceId]!.active = false;
       }
+      clearTransientCardTransformState(this.state, card.instanceId);
       this.record('attack_area_card_discarded', `${card.instanceId}:discard`, {
         cardInstanceId: card.instanceId,
         definitionId: card.definitionId,
@@ -1193,10 +1218,151 @@ export class MatchSession {
     this.checkpoint(`round ${round} start`, targetState);
   }
 
+  private battleLoserIds(battle: GameState['battleResults'][number]): string[] {
+    const suppressed = new Set(battle.lossEffectSuppressedPlayerIds ?? []);
+    if ((battle.participantBreakdowns?.length ?? 0) > 0) {
+      return battle.participantBreakdowns!
+        .map((participant) => participant.playerId)
+        .filter((playerId) => !battle.winnerPlayerIds.includes(playerId) && !suppressed.has(playerId));
+    }
+    // Compatibility for older/synthetic battle fixtures without participant breakdowns.
+    return battle.militaryAdjustments
+      .filter((adjustment) => adjustment.delta < 0 && !suppressed.has(adjustment.playerId))
+      .map((adjustment) => adjustment.playerId);
+  }
+
+  private queuePostScoringBattleEvents(
+    battles: GameState['battleResults'],
+    freshScoringLogs: GameState['log'],
+  ): void {
+    const runtime = this.state.abilityRuntime;
+    if (!runtime) return;
+    const round = this.state.round.roundNumber;
+    const battlePhaseResolutionId = `battle-phase:${round}`;
+    const scoredBattlefieldIds = freshScoringLogs
+      .filter((entry) => entry.type === 'battle_scored')
+      .map((entry) => String(entry.payload?.battlefieldId ?? ''))
+      .filter(Boolean);
+    const expectedBattlefieldIds = battles.map((battle) => battle.battlefieldId);
+    if (expectedBattlefieldIds.some((battlefieldId) => !scoredBattlefieldIds.includes(battlefieldId))) {
+      throw new Error('Post-scoring battle barrier requires every resolved battlefield scoring receipt');
+    }
+
+    const historyBeforePhase = structuredClone(this.battleHistory);
+    const pending = runtime.pendingPostBattleEvents ??= [];
+    const resultIds: string[] = [];
+    const battleIds: string[] = [];
+    const battleParticipantIds: string[] = [];
+    for (const [index, battle] of battles.entries()) {
+      const battleOrdinal = historyBeforePhase.length + index + 1;
+      const battleId = `${battlePhaseResolutionId}:battle:${battle.battlefieldId}:${battleOrdinal}`;
+      const resultId = `${battleId}:result`;
+      battleIds.push(battleId);
+      resultIds.push(resultId);
+      const loserIds = this.battleLoserIds(battle);
+      const participants = [...new Set([...battle.winnerPlayerIds, ...loserIds])];
+      const terminalParticipants = battle.participantBreakdowns?.map((participant) => participant.playerId) ?? participants;
+      battleParticipantIds.push(...terminalParticipants);
+      const resultEvent: AbilityEvent = {
+        id: resultId,
+        type: 'after_battle_result_determined',
+        battlePhaseResolutionId,
+        battleId,
+        resultId,
+        battleParticipantIds: participants,
+        battlefieldId: battle.battlefieldId,
+        battleResult: { winners: [...battle.winnerPlayerIds], loserIds },
+      };
+      if (!runtime.processedEvents.includes(resultId) && !pending.some((event) => event.id === resultId)) {
+        pending.push(resultEvent);
+      }
+
+      for (const playerId of loserIds) {
+        const priorLosses = historyBeforePhase
+          .concat(battles.slice(0, index))
+          .filter((priorBattle) => this.battleLoserIds(priorBattle).includes(playerId)).length;
+        if (priorLosses !== 0) continue;
+        const firstLossEvent: AbilityEvent = {
+          id: `${resultId}:first-loss:${playerId}`,
+          type: 'after_controller_first_loses_battle',
+          battlePhaseResolutionId,
+          battleId,
+          resultId,
+          battleParticipantIds: participants,
+          playerId,
+          battlefieldId: battle.battlefieldId,
+          lossOrdinal: 1,
+        };
+        if (!runtime.processedEvents.includes(firstLossEvent.id) && !pending.some((event) => event.id === firstLossEvent.id)) {
+          pending.push(firstLossEvent);
+        }
+      }
+      this.battleHistory.push(structuredClone(battle));
+    }
+
+    if (battles.length > 0) {
+      this.record('battle_post_scoring_barrier_open', battlePhaseResolutionId, {
+        battlePhaseResolutionId,
+        scoredBattlefieldIds,
+        resultIds,
+      });
+    }
+    stageBattleTerminalEvent(this.state, {
+      battlePhaseResolutionId,
+      battleIds,
+      resultIds,
+      scoringReceiptIds: battles.map((battle) => `${battlePhaseResolutionId}:score:${battle.battlefieldId}`),
+      battleParticipantIds: [...new Set(battleParticipantIds)],
+      battleOutcomes: battles.map((battle) => ({ battlefieldId: battle.battlefieldId, winnerPlayerIds: [...battle.winnerPlayerIds] })),
+    });
+  }
+
+  private flushPostScoringBattleEvents(): void {
+    if (!this.state.abilityRuntime) return;
+    this.state.abilityRuntime.pendingPostBattleEvents ??= [];
+    while ((this.state.abilityRuntime?.pendingPostBattleEvents?.length ?? 0) > 0) {
+      const runtime = this.state.abilityRuntime!;
+      if (runtime.pendingDecision || runtime.responseWindows.length || runtime.hostRequests.length) return;
+      const event = structuredClone(runtime.pendingPostBattleEvents![0]!);
+      processAbilityEvent(this.state, event);
+      this.state.abilityRuntime!.pendingPostBattleEvents!.shift();
+      this.record(
+        event.type === 'after_controller_first_loses_battle'
+          ? 'battle_first_loss_event_dispatched'
+          : 'battle_result_event_dispatched',
+        event.id,
+        {
+          battlePhaseResolutionId: event.battlePhaseResolutionId,
+          battleId: event.battleId,
+          resultId: event.resultId,
+          battlefieldId: event.battlefieldId,
+          ...(event.playerId ? { playerId: event.playerId } : {}),
+        },
+      );
+      this.autoResolveNonInteractiveWindows();
+    }
+    const terminal = flushBattleTerminalEvent(this.state);
+    if (terminal) {
+      this.record('battle_terminal_event_dispatched', terminal.id, {
+        battlePhaseResolutionId: terminal.battlePhaseResolutionId,
+        battleIds: terminal.battleIds,
+        resultIds: terminal.resultIds,
+        scoringReceiptIds: terminal.scoringReceiptIds,
+        battleParticipantIds: terminal.battleParticipantIds,
+      });
+      this.autoResolveNonInteractiveWindows();
+    }
+  }
+
   private resolveBattlePhase(): void {
     if (this.state.round.activePhase !== 'battle') {
       advanceAbilityPhase(this.state, 'battle', this.state.round.roundNumber);
     }
+    this.flushPostScoringBattleEvents();
+    if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length ||
+      this.state.abilityRuntime?.hostRequests.length || this.state.abilityRuntime?.pendingPostBattleEvents?.length) return;
+
+    const resolvedBattles: GameState['battleResults'] = [];
     const battlefields = getEnabledLocations(this.state.map, this.state.locationConfig)
       .filter((location) => !((modeStateOf(this.state).closedLocations as string[] | undefined) ?? []).includes(location.id))
       .filter((location) => location.tags.includes('battlefield') || location.rewardHooks.includes('battle_rewards'));
@@ -1206,13 +1372,19 @@ export class MatchSession {
       Object.assign(this.state, resolveBattlefield(this.state, { battlefieldId: battlefield.id, revealHiddenEvents: true }).nextState);
       if (this.state.battleResults.length > before) {
         const battle = this.state.battleResults[this.state.battleResults.length - 1]!;
-        this.battleHistory.push(structuredClone(battle));
+        resolvedBattles.push(structuredClone(battle));
         this.record('battle_resolved', battlefield.id, battle as unknown as Record<string, unknown>);
       }
       this.autoResolveNonInteractiveWindows();
     }
     if (!this.state.abilityRuntime?.pendingDecision && !this.state.abilityRuntime?.responseWindows.length) {
+      const scoringLogStart = this.state.log.length;
       Object.assign(this.state, applyBattleScoring(this.state).nextState);
+      const freshScoringLogs = this.state.log.slice(scoringLogStart);
+      this.queuePostScoringBattleEvents(resolvedBattles, freshScoringLogs);
+      this.flushPostScoringBattleEvents();
+      if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length ||
+        this.state.abilityRuntime?.hostRequests.length || this.state.abilityRuntime?.pendingPostBattleEvents?.length) return;
       advanceAbilityPhase(this.state, 'cleanup', this.state.round.roundNumber);
       this.discardRoundSituationAndEvents();
       advanceAbilityPhase(this.state, 'round_end', this.state.round.roundNumber);

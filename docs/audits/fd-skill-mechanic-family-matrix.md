@@ -80,7 +80,7 @@ LIFECYCLE 49 abilities / 36 cards
 MODIFIER 24 abilities / 17 cards
 MOVEMENT 21 abilities / 18 cards
 POWER 18 abilities / 16 cards
-RESOURCE_NUMERIC 18 abilities / 12 cards
+RESOURCE_NUMERIC 17 abilities / 12 cards
 RESULT_BINDING 2 abilities / 2 cards
 SPECIAL_SUBSYSTEM 18 abilities / 13 cards
 TARGET_SELECTION 11 abilities / 11 cards
@@ -91,7 +91,7 @@ TRIGGER 58 abilities / 34 cards
 
 | Mechanic Family | Ability Count | Cards Affected | Existing Primitives / Owners | Missing Primitives | Legacy Runtime Dependency | New Runtime Coverage | Semantic Complexity | Interaction Complexity | Result-Binding Dependency | Lifecycle Dependency | Gate Status |
 |---|---:|---:|---|---|---|---|---|---|---|---|---|
-| `RESOURCE_NUMERIC` | 18 | 12 | `adjust_mana`, `pay_mana`, `adjust_command_seals`, `adjust_victory_points`; mixed Resolution Data-flow and legacy interpreter | numeric expression contract, clamp/underflow contract, semantic-form routing, event envelope | High outside pilots | Partial: Golden Eater, Conversion Magic, command spell Gate B | Medium | Low for direct action; high when trigger/battle-owned | Medium for actual affected counts | Low for direct action | `IMPLEMENTED_UNVERIFIED` / family not verified |
+| `RESOURCE_NUMERIC` | 17 | 12 | `adjust_mana`, `pay_mana`, `adjust_command_seals`, `adjust_victory_points`; mixed Resolution Data-flow and legacy interpreter | numeric expression contract, clamp/underflow contract, semantic-form routing, event envelope | High outside pilots | Partial: Golden Eater, Conversion Magic, command spell Gate C candidate, Tomoe Gate B candidate | Medium | Low for direct action; high when trigger/battle-owned | Medium for actual affected counts | Low for direct action | `IMPLEMENTED_UNVERIFIED` / family not verified; command spell Gate C candidate pending independent review |
 | `CARD_ZONE` | 14 | 13 | `move_card`, `draw_cards`, `move_all_remaining`, `play_selected_cards`; `playBatch` hook | typed draw/shuffle/create/look/move-all result envelopes, destination policy, face-down ownership | High | Partial pilots only | Medium-High | Medium | High | Medium | `IMPLEMENTED_UNVERIFIED` / family not verified |
 | `CARD_ACTION_SEMANTICS` | 13 | 10 | shared playBatch, ruleModifiers, legacy play rules | separate contracts for `PLAY`, `PLAY_SOURCE_CARD_WITH_COST_RESPONSE`, `ADD_TO_ATTACK`, `CREATE_AND_ACTIVATE`, `ACTIVATE`, and `CLOSE` | High | Time Alter, Volumen, Maiya, Olga, and Artoria Alter scoped implementation candidates only | High | High | Medium | Medium | `IMPLEMENTED_UNVERIFIED` representatives / family not verified |
 | `TARGET_SELECTION` | 11 | 11 | pending target owner, candidate validation, Golden Eater private targets | closed target constraint registry, semantic candidate routing, private projection contract | High | Golden Eater and Time Alter representatives | High | High | High | Medium | `IMPLEMENTED_UNVERIFIED` representatives only |
@@ -105,7 +105,7 @@ TRIGGER 58 abilities / 34 cards
 | `LIFECYCLE` | 49 | 36 | ongoing effects, cleanup, source state, modeState, per-game limits | single lifecycle owner, source-close, duration, cleanup ordering | Very High | Artoria Caster `选王剑` candidate | Very High | Medium | Medium | Required | `IMPLEMENTED_UNVERIFIED` representative only |
 | `HISTORY_USAGE` | 16 | 15 | limits, movement metrics, played-round metrics, modeState | typed history query/update primitives, replay-safe counters | High | fragments only | High | Medium | Medium | High | `NOT_VERIFIED` family |
 | `HIDDEN_INFORMATION` | 21 | 16 | reveal, visibility, private targets, projections | closed reveal/look/hide projection contract, owner-only reconnect | High | Time Alter face-down and Golden Eater private target representatives | High | High | Medium | Medium | `IMPLEMENTED_UNVERIFIED` representatives only |
-| `BATTLE_RESULT` | 39 | 28 | battle resolver, scoring resolver, defeat/status fragments | battle result envelope, winner set, defeated exclusion, scoring consumption, trigger feed | High | Golden Flow 2 candidate, independent review pending | Very High | Medium | High | High | `IMPLEMENTED_UNVERIFIED` / not Phase 3 first batch |
+| `BATTLE_RESULT` | 39 | 28 | battle resolver, scoring resolver, defeat/status fragments | battle result envelope, winner set, defeated exclusion, scoring consumption, trigger feed | High | Golden Flow 2 `E2E_VERIFIED`; TO-14 `SPEC_ACCEPTED` at review `58bcb40` | Very High | Medium | High | High | `SPEC_ACCEPTED` / runtime family not migrated |
 | `SPECIAL_SUBSYSTEM` | 18 | 13 | extended directives, independent deck, replacement, swap, identity handlers | subsystem-specific primitive contracts and deletion criteria | Very High | Mostly legacy | Very High | High | High | High | `NOT_VERIFIED` family |
 
 ## RESOURCE_NUMERIC Ability Membership
@@ -177,15 +177,15 @@ The Card Action family must not collapse canonical action semantics into one pri
 
 Original selection rationale:
 
-- strict full family count is 18 abilities / 12 cards, not 45 / 35;
+- strict full family count is 17 abilities / 12 cards, not 45 / 35;
 - the first batch only claims the direct-action subset, not trigger, battle, movement, card-zone, or result-binding hybrids;
 - it can remove ability-id routing for `command-spell.gain-mana`;
-- it has immediate command spell Gate C value because that pilot currently lacks browser evidence;
+- it has command spell browser/WS/reconnect/stale Gate C candidate evidence, pending independent review;
 - it prepares later Card/Zone, Cost/Payment, Result Binding, Battle Result, and Power work without binding them into this slice.
 
 Gate C inheritance rule:
 
-`RESOURCE_NUMERIC_CORE_DIRECT_ACTION` can inherit command spell/Tomoe representative Gate C only for visible direct-action abilities whose accepted executable semantic form mutates mana, command seals, or VP and does not introduce another runtime family. Inheritance is not allowed when the ability introduces any of:
+`RESOURCE_NUMERIC_CORE_DIRECT_ACTION` has command spell Gate C candidate evidence in `e2e/fd-command-spell-resource-core.spec.ts`, pending independent review. If promoted, inheritance may apply only to visible direct-action abilities whose accepted executable semantic form mutates mana, command seals, or VP and does not introduce another runtime family. Inheritance is not allowed when the ability introduces any of:
 
 - trigger timing;
 - battle result, battle winner, battle loss, or defeat dependency;
@@ -194,16 +194,16 @@ Gate C inheritance rule:
 - card movement, card-zone result binding, play/add/activate/close semantics;
 - source lifecycle, cleanup, modifier, or power-layer dependency.
 
-Implementation-candidate status, 2026-09-08:
+Implementation-candidate status, 2026-09-09:
 
 - Inventory source: `docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs`.
 - Eligible direct-action resource abilities from `data/authoring`: 3.
-- Skipped resource abilities: 15, each with explicit skip reason in the script output.
+- Skipped resource abilities: 14, each with explicit skip reason in the script output.
 - Migrated representatives: Gatou `command-spell.gain-mana`, Olga `command-spell.gain-mana`, Tomoe `sc-tomoe-1.independent-action`.
 - Direct-action legacy resource consumers: 3 before, 0 after.
 - New-runtime semantic-routed direct resource consumers: 0 before, 3 after.
 - Dual-compatible migrated consumers: 1 before, 0 after.
-- Command spell Gate C implementer evidence exists in `e2e/fd-command-spell-resource-core.spec.ts`.
+- Command spell Gate C implementer evidence exists in `e2e/fd-command-spell-resource-core.spec.ts`; independent review is required before promotion.
 - Status claim remains `IMPLEMENTATION_COMPLETE_CANDIDATE`; independent review is required before any `COMPONENT_VERIFIED`, `SCENARIO_VERIFIED`, or `E2E_VERIFIED` promotion.
 
 Resource event envelope requirement:

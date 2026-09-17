@@ -25,8 +25,8 @@ describe("game loop battle and cleanup phases", () => {
     const result = stepGameLoop(state);
 
     expect(result.transition.to).toBe("cleanup");
-    expect(result.nextState.battleResults).toHaveLength(1);
-    expect(result.nextState.battleResults[0]).toMatchObject({
+    expect(result.nextState.battleResults).toHaveLength(0);
+    expect(result.nextState.log.findLast((entry) => entry.type === "battle_scored")?.payload).toMatchObject({
       battlefieldId: "miyama_town",
       winnerPlayerId: "p2",
       margin: 1,
@@ -121,7 +121,7 @@ describe("game loop battle and cleanup phases", () => {
     const result = stepGameLoop(state);
 
     expect(result.transition.to).toBe("cleanup");
-    expect(result.nextState.battleResults[0]).toMatchObject({
+    expect(result.nextState.log.findLast((entry) => entry.type === "battle_scored")?.payload).toMatchObject({
       battlefieldId: "miyama_town",
       winnerPlayerId: "p1",
       margin: 1,
@@ -178,7 +178,7 @@ describe("game loop battle and cleanup phases", () => {
     const result = stepGameLoop(state);
 
     expect(result.transition.to).toBe("cleanup");
-    expect(result.nextState.battleResults[0]).toMatchObject({
+    expect(result.nextState.log.findLast((entry) => entry.type === "battle_scored")?.payload).toMatchObject({
       battlefieldId: "miyama_town",
       winnerPlayerId: "p1",
       margin: 1,
@@ -219,7 +219,7 @@ describe("game loop battle and cleanup phases", () => {
     const result = stepGameLoop(state);
 
     expect(result.transition.to).toBe("cleanup");
-    expect(result.nextState.battleResults[0]).toMatchObject({
+    expect(result.nextState.log.findLast((entry) => entry.type === "battle_scored")?.payload).toMatchObject({
       battlefieldId: "miyama_town",
       winnerPlayerId: "p2",
       margin: 1,
@@ -257,7 +257,7 @@ describe("game loop battle and cleanup phases", () => {
     const result = stepGameLoop(state);
 
     expect(result.transition.to).toBe("cleanup");
-    expect(result.nextState.battleResults[0]).toMatchObject({
+    expect(result.nextState.log.findLast((entry) => entry.type === "battle_scored")?.payload).toMatchObject({
       battlefieldId: "miyama_town",
       winnerPlayerId: "p2",
       margin: 3,
@@ -304,8 +304,8 @@ describe("game loop battle and cleanup phases", () => {
     const result = stepGameLoop(declaredState);
 
     expect(result.transition.to).toBe("cleanup");
-    expect(result.nextState.battleResults).toHaveLength(1);
-    expect(result.nextState.battleResults[0]).toMatchObject({
+    expect(result.nextState.battleResults).toHaveLength(0);
+    expect(result.nextState.log.findLast((entry) => entry.type === "battle_scored")?.payload).toMatchObject({
       battlefieldId: "miyama_town",
       winnerPlayerId: "p2",
       margin: 1,
@@ -353,7 +353,7 @@ describe("game loop battle and cleanup phases", () => {
     const result = stepGameLoop(state);
 
     expect(result.transition.to).toBe("cleanup");
-    expect(result.nextState.battleResults[0]).toMatchObject({
+    expect(result.nextState.log.findLast((entry) => entry.type === "battle_scored")?.payload).toMatchObject({
       battlefieldId: "miyama_town",
       winnerPlayerId: "p2",
       margin: 1,
@@ -393,7 +393,7 @@ describe("game loop battle and cleanup phases", () => {
     const result = stepGameLoop(declaredState);
 
     expect(result.transition.to).toBe("cleanup");
-    expect(result.nextState.battleResults[0]).toMatchObject({
+    expect(result.nextState.log.findLast((entry) => entry.type === "battle_scored")?.payload).toMatchObject({
       battlefieldId: "shinto",
       winnerPlayerId: "p4",
       margin: 1,

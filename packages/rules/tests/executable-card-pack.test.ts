@@ -96,11 +96,72 @@ describe('ExecutableCardPack compiler', () => {
     ['missing target reference', (input: ReturnType<typeof sourceInput>) => {
       input.rules.archives[7]!.cards[0]!.abilities![2]!.effects![0]!.target = 'missing_target';
     }, /references missing target/],
+    ['invalid direct resource amount', (input: ReturnType<typeof sourceInput>) => {
+      input.rules.archives.flatMap((archive) => archive.cards).find((card) => card.cardType === 'command_spell')!.abilities![0]!.effects![0]!.amount = 'four';
+    }, /Executable compilation rejected unsupported semantics[\s\S]*Expected a numeric amount or controlled AST/],
+    ['unsupported direct resource target', (input: ReturnType<typeof sourceInput>) => {
+      input.rules.archives.flatMap((archive) => archive.cards).find((card) => card.cardType === 'command_spell')!.abilities![0]!.effects![0]!.player = 'opponent';
+    }, /Executable compilation rejected unsupported semantics[\s\S]*Only controller resource\/movement effects are supported/],
+    ['unsupported card-zone move owner', (input: ReturnType<typeof sourceInput>) => {
+      const conversion = input.rules.archives.find((archive) => archive.id === 'master.irisviel')!
+        .cards.find((card) => card.id === 'master.irisviel.skill.conversion-magic')!
+        .abilities!.find((ability) => ability.id === 'conversion-magic.preparation')!;
+      conversion.effects![0]!.owner = 'opponent';
+    }, /Executable compilation rejected unsupported semantics[\s\S]*Only controller ownership is supported/],
+    ['unsupported card-zone move destination', (input: ReturnType<typeof sourceInput>) => {
+      const conversion = input.rules.archives.find((archive) => archive.id === 'master.irisviel')!
+        .cards.find((card) => card.id === 'master.irisviel.skill.conversion-magic')!
+        .abilities!.find((ability) => ability.id === 'conversion-magic.preparation')!;
+      conversion.effects![0]!.to = { zone: 'attack_area' };
+    }, /Resolution data-flow validation failed[\s\S]*Only controller hand to discard move_all_remaining is supported/],
+    ['unsupported card-zone draw player', (input: ReturnType<typeof sourceInput>) => {
+      const timeAlter = input.rules.archives.find((archive) => archive.id === 'master.kiritsugu')!
+        .cards.find((card) => card.id === 'master.kiritsugu.skill.time-alter')!
+        .abilities!.find((ability) => ability.id === 'time-alter.action')!;
+      timeAlter.effects![1]!.player = 'opponent';
+    }, /Executable compilation rejected unsupported semantics[\s\S]*Only controller resource\/movement effects are supported/],
+    ['unsupported add-to-attack return marker', (input: ReturnType<typeof sourceInput>) => {
+      const support = input.rules.archives.find((archive) => archive.id === 'master.maiya')!
+        .cards.find((card) => card.id === 'master.maiya.skill.military')!
+        .abilities!.find((ability) => ability.id === 'military.attach-support-shot')!;
+      support.effects![0]!.returnAtRoundEnd = false;
+    }, /Resolution data-flow validation failed[\s\S]*Only return-at-round-end Maiya cannot-win support attachments are supported/],
+    ['unsupported source-card response face-down play', (input: ReturnType<typeof sourceInput>) => {
+      const volumen = input.rules.archives.find((archive) => archive.id === 'master.kayneth')!
+        .cards.find((card) => card.id === 'master.kayneth.deck.volumen-hydrargyrum')!
+        .abilities!.find((ability) => ability.id === 'volumen.extra-play')!;
+      volumen.effects![0]!.face = 'face_down';
+    }, /Resolution data-flow validation failed[\s\S]*Only face-up source-card response play is supported/],
   ])('fails closed for %s', (_name, mutate, expected) => {
     const input = sourceInput();
     mutate(input);
 
     expect(() => compileExecutableCardPack(input)).toThrow(expected);
+  });
+
+  it.each([
+    ['private target visibility drift', (ability: any) => { ability.targets[0].visibility = 'public'; }],
+    ['optional target max drift', (ability: any) => { ability.targets[0].count.max = 2; }],
+    ['hand scope drift', (ability: any) => { ability.targets[0].scope.zone = 'discard'; }],
+    ['base-power constraint drift', (ability: any) => { ability.targets[0].constraints[0].value = 4; }],
+    ['continuation effect drift', (ability: any) => { ability.effects[0].type = 'draw_cards'; ability.effects[0].count = 1; delete ability.effects[0].target; }],
+  ])('fails closed for TO13 private optional interaction %s', (_name, mutate) => {
+    const input = sourceInput();
+    const archive = input.rules.archives.find((candidate) => candidate.id === 'servant.drake')!;
+    const card = archive.cards.find((candidate) => candidate.id === 'servant.drake.skill.sc-drake-1')!;
+    const ability = card.abilities!.find((candidate) => candidate.id === 'sc-drake-1.mount-summon')!;
+    mutate(ability);
+    expect(() => compileExecutableCardPack(input)).toThrow(/Unsupported private optional hand-play interaction semantic shape/);
+  });
+
+  it('fails closed for an unsupported lifecycle source-validity policy through the executable compiler path', () => {
+    const input = sourceInput();
+    const archive = input.rules.archives.find((candidate) => candidate.id === 'servant.artoriac')!;
+    const card = archive.cards.find((candidate) => candidate.id === 'servant.artoriac.skill.sc-artoriac-3')!;
+    const ability = card.abilities!.find((candidate) => candidate.id === 'sc-artoriac-3.discard-public-and-power-formula')!;
+    (ability.lifecycle!.sourceValidity as { policyId: string }).policyId = 'unknown-source-state-policy';
+
+    expect(() => compileExecutableCardPack(input)).toThrow(/Unsupported Card Zone source-validity policy/);
   });
 
   it('accepts Phase 3A resolution data-flow nodes through the executable compiler path', () => {

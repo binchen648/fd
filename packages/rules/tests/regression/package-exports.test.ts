@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { createReplayLog, replayFromLog, simulateSeededMatch } from "../../src/index";
+import { collectTriggeredAbilities, createReplayLog, replayFromLog, simulateSeededMatch } from "../../src/index";
 
 describe("rules package exports", () => {
   it("exports seeded simulation and replay helpers", () => {
     expect(typeof simulateSeededMatch).toBe("function");
     expect(typeof createReplayLog).toBe("function");
     expect(typeof replayFromLog).toBe("function");
+    expect(typeof collectTriggeredAbilities).toBe("function");
   });
 
   it("exports the Phase 3A resolution data-flow subpath", async () => {

@@ -246,8 +246,12 @@ function handleClientMessage(hub: MatchRoomHub, roomId: string, clientId: string
     hub.startMatch(roomId, clientId);
     return;
   }
+  if (message.type === 'client:end_turn') {
+    hub.endTurn(roomId, clientId, message.expectedRevision);
+    return;
+  }
   if (message.type === 'client:dispatch_command') {
-    hub.dispatchCommand(roomId, clientId, message.command);
+    hub.dispatchCommand(roomId, clientId, message.command, message.expectedRevision);
     return;
   }
   if (message.type === 'client:consume_directive') {

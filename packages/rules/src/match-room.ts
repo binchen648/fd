@@ -183,8 +183,10 @@ export class MatchRoom {
     const seat = this.seats.find((candidate) => candidate.clientId === clientId);
     if (!seat) throw new Error('Client does not control a seat');
     const result = this.session.dispatchPlayerCommand(seat.playerId, command);
-    this.session.runUntilHumanInputOrRoundEnd();
-    if (this.session.stopReason === 'match_complete') this.status = 'ended';
+    if (result.ok) {
+      this.session.runUntilHumanInputOrRoundEnd();
+      if (this.session.stopReason === 'match_complete') this.status = 'ended';
+    }
     return result;
   }
 

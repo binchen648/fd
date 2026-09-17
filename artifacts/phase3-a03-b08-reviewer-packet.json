@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-packet-v1",
+  "generatedAt": "2026-09-10T00:00:00.000Z",
+  "owner": "Codex A",
+  "sourceTask": "P3-A03",
+  "reviewedRuntimeTask": "P3-B08",
+  "reviewedBranch": "codex/b-p3-b08-close",
+  "reviewedCommit": "e938bbb",
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
+  "promotionNotice": "This packet does not promote Gate A/B/C, Phase 3, or Release status.",
+  "runtimeSliceUnderReview": {
+    "statusClaimedByB": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+    "mechanicFamily": "CARD_ACTION_SEMANTICS",
+    "contract": "CLOSE",
+    "representative": "servant.artoria-alt.skill.sc-artoria-alt-2#sc-artoria-alt-2.angra-mainyu-embrace",
+    "semanticRoute": "CARD_ACTION_SEMANTICS_MINIMAL:CLOSE",
+    "typedPrimitive": "close_source_card",
+    "typedResultField": "closedCount"
+  },
+  "freshChecks": [
+    {
+      "command": "npm run phase3:review-packet -- --task P3-B08 --batch CARD_ACTION_SEMANTICS_CLOSE --out artifacts/phase3-review-packet-p3-b08.json",
+      "result": "PASS",
+      "summary": {
+        "hotRuntimeFilesTouched": "YES",
+        "affectedSemanticAbilities": 9,
+        "remainingLegacyResolveEffect": 52,
+        "notClassifiable": 28
+      }
+    },
+    {
+      "command": "npm run phase3:automation-audit",
+      "result": "PASS",
+      "summary": {
+        "legacyResolveEffect": 52,
+        "legacyExecuteAbility": 3,
+        "notClassifiable": 28,
+        "promotionFindings": 3
+      }
+    },
+    {
+      "command": "node docs/audits/fd-card-action-close-inventory.mjs",
+      "result": "PASS",
+      "summary": {
+        "sourceFiles": 14,
+        "cardActionSemanticAbilities": 7,
+        "eligible": 1,
+        "skipped": 6
+      }
+    },
+    {
+      "command": "npm run phase3:coverage",
+      "result": "PASS",
+      "summary": {
+        "archives": 14,
+        "cards": 46,
+        "abilities": 92,
+        "compiledPack": "fd-playtest-v1@1",
+        "definitionHash": "f4aeaddb88f3018efed31ca74a8a0c91a614c9a61752237952285b017de4d192",
+        "compiledCards": 70,
+        "compiledCharacters": 14,
+        "blockingIssues": 0,
+        "newRuntimeSemanticRouted": 9,
+        "legacyExecuteAbility": 3,
+        "legacyResolveEffect": 52,
+        "dualRuntime": 0,
+        "pilotAllowlist": 0,
+        "notClassifiable": 28,
+        "taxonomyWarnings": 79
+      }
+    },
+    {
+      "command": "npx vitest run packages/rules/tests/regression/card-action-close.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/executable-card-pack.test.ts scripts/tests/phase3-coverage.test.ts",
+      "result": "PASS",
+      "summary": {
+        "testFiles": 4,
+        "tests": 75
+      }
+    }
+  ],
+  "hotRuntimeFilesTouched": [
+    "packages/rules/src/ability/executable-card-pack.ts",
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/resolution-dataflow.ts",
+    "packages/rules/src/ability/types.ts",
+    "packages/rules/src/match-session.ts"
+  ],
+  "reviewerFocus": [
+    "exact semantic routing, not ability-id pilot routing",
+    "compiler fail-closed for non-exact close_source_card variants",
+    "runtime fail-closed for missing/off-board/inactive/face-down/wrong-controller source state",
+    "source card has compiled definition at close time",
+    "visible 宝具 played-card condition is actually consumed",
+    "non-noble play does not close the source",
+    "stale WS replay cannot close or move the source twice",
+    "B08 does not claim targeted close, close-then-activate, temporary dissolve, non-skill close destination, once-per-game removal, broad cleanup ordering, or CREATE_AND_ACTIVATE"
+  ],
+  "aConclusion": "Fresh automation evidence is ready for independent review; Codex A does not promote B08."
+}

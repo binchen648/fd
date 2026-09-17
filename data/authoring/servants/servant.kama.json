@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.kama",
+  "name": "伽摩",
+  "class": "Assassin",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus each card's accepted Phase-3 contract; locked Reference is used only for owner/static metadata."
+  },
+  "cards": [
+    {
+      "id": "servant.kama.skill.sc-kama-3",
+      "aliases": [
+        "sc_kama_3"
+      ],
+      "legacyId": "sc_kama_3",
+      "name": "气息遮断（Assassin Class）",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.kama"
+      },
+      "printedText": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+      "cardFace": {
+        "typeLabel": "迅捷",
+        "attributes": [
+          "迅捷"
+        ],
+        "cost": 3,
+        "basePower": 4
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-kama-3.presence-concealment",
+          "kind": "optional_trigger",
+          "printedClause": "刺杀-战斗阶段：战力结算后，如果你满足以下条件，令战力最高的所有交战对手【败北】：\n1.你的战力低于战力最高的所有交战对手。\n2.没有除战力最高的交战对手外其他战力高于你的交战对手。\n3.此战斗有3名及以上的参与者。",
+          "activation": {
+            "phase": "combat",
+            "trigger": "after_battle_power_calculated",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "controller_strict_second_battle_power"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "defeat_highest_power_opponents"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "opens": "post_power_response",
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {
+            "type": "per_round",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "伽摩.htm",
+            "locator": "从者/暗匿者/英文版/伽摩.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/伽摩.png",
+            "locator": "servant.kama/伽摩"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[133].skills[2].text#line=1",
+            "sha256": "ee2d737d979d2141319a55ff72d275847a90be89e5173c3f5030e2083d4dc4cb"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[133].skills[2].text#line=2",
+            "sha256": "1e518f04fe63700d7a456ca83de546eb681dd9993f483be7598e5bdac7830b25"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[133].skills[2].text#line=3",
+            "sha256": "0484d7c0b9f4cef66623fdfe67831240d883b04f3203f2acc7e2d6151c2a8217"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[133].skills[2].text#line=4",
+            "sha256": "1f105508aace520b9a8b6703d50633c174f754856c10c4040b05570cfca0b871"
+          }
+        ],
+        "sourceTextSha256": "29b3f6c71d8bc5eb6f004d930e5b753f44ee766fb2e47ea6b9f0d89f5fa9643f",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_kama_3",
+          "cost": 3,
+          "basePower": 4,
+          "legacyRequirement": 3,
+          "typeLabel": "迅捷"
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is retained as evidence metadata only."
+        },
+        "acceptedContracts": {
+          "presenceConcealment": "P3-R35/FB2-12"
+        }
+      }
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import type { PhaseName } from '../schema/game';
+﻿import type { PhaseName } from '../schema/game';
 
 export type PlayerId = string;
 /** Raw JSON nodes are inspected by the loader, never evaluated as executable text. */
@@ -72,6 +72,20 @@ export interface BattleResultData { winners: PlayerId[]; loserIds: PlayerId[] }
 export interface BattleResult extends BattleResultData { didWin(playerId: PlayerId): boolean; isSoleWinner(playerId: PlayerId): boolean }
 export interface AbilityEvent {
   id: string; type: string; playerId?: PlayerId; sourceCardId?: string; battleResult?: BattleResultData;
+  /** Server-owned battle identity facts for battle-derived trigger events. */
+  battlePhaseResolutionId?: string;
+  battleId?: string;
+  resultId?: string;
+  battleIds?: string[];
+  resultIds?: string[];
+  scoringReceiptIds?: string[];
+  battleParticipantIds?: PlayerId[];
+  /** Trusted frozen effective-Power snapshot for the exact pre-scoring battle response gateway. */
+  battleParticipantPowers?: Record<PlayerId, number>;
+  /** Frozen phase-terminal battle outcome facts used by exact terminal consumers. */
+  battleOutcomes?: Array<{ battlefieldId: string; winnerPlayerIds: PlayerId[] }>;
+  battlefieldId?: string;
+  lossOrdinal?: number;
   /** Trusted backend snapshot of the simultaneous play batch, never a client-supplied condition. */
   playedCards?: { instanceId: string; controllerId: string; cardType: string; faceDown: boolean }[];
   revealedKind?: 'situation' | 'event';
@@ -90,15 +104,45 @@ export interface OngoingEffect {
   id: string; sourceCardId: string; abilityId: string; controllerId: PlayerId;
   starts: 'immediate'; duration: string; startRound: number; expiresAtRound?: number;
   cleanup: string; ruleModifiers: RuleModifier[]; publicZones: string[]; sourceMustRemainActive?: boolean;
+  policyKey?: string; sourceDefinitionIdAtInstall?: string; sourceValidityPolicyId?: string; installedRevision?: number;
+}
+export interface LifecycleTransition {
+  transitionId: string; lifecycleId: string; kind: 'install' | 'source_invalidated';
+  causationId: string; createdRevision: number; roundId: number;
 }
 export interface EffectContext {
   controllerId: PlayerId; sourceCardId: string; abilityId: string;
   variables: Record<string, number>; selections: Record<string, string[]>;
   event?: AbilityEvent;
 }
+export interface PrivateOptionalHandPlayInteractionMetadata {
+  kind: 'private_optional_hand_play_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  constraints: { kind: 'target'; targetKind: 'card'; min: number; max: number; distinct: true };
+}
+export interface AlterEgoAttributeChoiceInteractionMetadata {
+  kind: 'alter_ego_attribute_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  triggerEventId: string; targetCardInstanceId: string; variant: 'regular' | 'ex';
+  constraints: { kind: 'target'; targetKind: 'attribute'; min: 0; max: 3; distinct: true };
+}
+export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
+  interaction?: PendingInteractionMetadata;
+}
+export interface PendingPresenceConcealmentDefeat {
+  controllerId: PlayerId; sourceCardId: string; abilityId: string; triggerEventId: string;
+  resultId: string; battlefieldId: string; participantIds: PlayerId[]; participantPowers: Record<PlayerId, number>; targetPlayerIds: PlayerId[];
+}
+export interface PendingDelayedActivation {
+  controllerId: PlayerId;
+  sourceCardId: string;
+  abilityId: string;
+  definitionId: string;
+  triggerEventId: string;
+  round: number;
 }
 export type AbilityInteractionKind =
   'phase_activation' |
@@ -115,11 +159,52 @@ export interface AbilityInteractionClassification {
   commandType?: 'activate_ability' | 'resolve_response';
   reason?: string;
 }
-export interface SafeEvent { type: string; playerId?: PlayerId; sourceCardId?: string; abilityId?: string; unpreventable?: boolean; visibility?: PlayerId }
+export interface SafeEvent {
+  type: string;
+  playerId?: PlayerId;
+  sourceCardId?: string;
+  abilityId?: string;
+  unpreventable?: boolean;
+  visibility?: PlayerId;
+  sourceAbilityId?: string;
+  controllerId?: PlayerId;
+  resource?: 'mana' | 'command_seals' | 'victory_points';
+  delta?: number;
+  before?: number;
+  after?: number;
+  requestedDelta?: number;
+  qualifyingPlayerIds?: PlayerId[];
+  battlePhaseResolutionId?: string;
+  battleId?: string;
+  battlefieldId?: string;
+  rewardBranch?: 'mana' | 'victory_points';
+  resultId?: string;
+  triggerEventId?: string;
+  fromState?: string;
+  toState?: string;
+  revision?: number;
+  cardInstanceId?: string;
+  fromZone?: string;
+  toZone?: string;
+  movedCount?: number;
+}
+export interface CardRuntimeState {
+  active: boolean; faceDown: boolean; playedRound: number;
+  reversed?: boolean; attributeOverrides?: string[];
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
-  cardState: Record<string, { active: boolean; faceDown: boolean; playedRound: number }>;
-  ongoingEffects: OngoingEffect[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
+  cardState: Record<string, CardRuntimeState>;
+  ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
+  pendingDelayedActivations?: PendingDelayedActivation[];
+  /** Server-owned pre-scoring battle-local defeat requests staged by the exact Presence Concealment response. */
+  pendingPresenceConcealmentDefeats?: PendingPresenceConcealmentDefeat[];
+  /** Server-owned post-scoring battle events waiting for Trigger Gateway settlement. */
+  pendingPostBattleEvents?: AbilityEvent[];
+  /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */
+  pendingBattleTerminalEvent?: AbilityEvent;
+  /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */
+  transformedReturnSilenceSourceCardIds?: string[];
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];
@@ -152,10 +237,14 @@ export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variabl
   { type: 'pass'; windowId: string } | DeployPlayerAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction;
 export interface AbilityPlayerView {
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];
-  players: { id: PlayerId; seat: number; mana: number; vp: number; locationId?: string; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
-  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean }[];
+  players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
+  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[] }[];
   stagedAttacks?: { playerId: PlayerId; cards: PlayCardAction[] }[];
-  pendingDecision?: { id: string; candidates: string[]; min: number; max: number };
+  pendingDecision?: {
+    id: string; candidates: string[]; min: number; max: number;
+    template?: 'target'; sourceCardInstanceId?: string; abilityId?: string; createdRevision?: number;
+    visibility?: 'owner_only'; cancelPolicy?: 'forbidden';
+  };
   responseWindow?: { id: string; kind: string; opens: string };
   waitingLabel?: string;
   /** Owner-only diagnostics. Clients must not use these reasons as rule authority. */

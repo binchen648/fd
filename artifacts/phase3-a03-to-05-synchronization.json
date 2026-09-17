@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "fd-phase3-review-sync-v1",
+  "generatedAt": "2026-09-13T14:04:41.727Z",
+  "owner": "Codex A",
+  "sourceTask": "P3-A03",
+  "specificationTask": "P3-TO-05",
+  "specificationBranch": "codex/b-p3-to-05-interaction-template-contract-v2",
+  "specificationCommit": "8e3588c",
+  "taxonomyBaselineCommit": "146213f",
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
+  "reviewOutcome": {
+    "decision": "SPEC_ACCEPTED",
+    "recordedFrom": "user-provided independent review decision",
+    "gatePromotionPerformed": false
+  },
+  "denominators": {
+    "strictDomainTriggerAbilities": 37,
+    "explicitInteractionAbilities": 18,
+    "strictPendingInteractionAbilities": 11
+  },
+  "coverage": {
+    "newRuntimeSemanticRouted": 12,
+    "legacyResolveEffect": 49,
+    "legacyExecuteAbility": 3,
+    "dualRuntime": 0,
+    "notClassifiable": 28
+  },
+  "runtimeMutationAttributedToTask": false,
+  "knownEvidenceGaps": [
+    "Golden Eater remains NOT_CLASSIFIABLE until separately authorized classifier alignment",
+    "fd-phase-3-throughput-optimization-plan.md and fd-phase-3-taxonomy-remediation-result.md retain the historical interaction denominator 20 outside P3-A03 allowed paths"
+  ],
+  "nextTask": {
+    "id": "P3-TO-03",
+    "name": "Domain Event Trigger Gateway",
+    "status": "READY_SPEC_OWNER",
+    "runtimeAuthorized": false
+  }
+}

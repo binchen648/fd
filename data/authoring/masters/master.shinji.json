@@ -33,7 +33,7 @@
           "id": "drain-command.enter-miyama",
           "kind": "forced_trigger",
           "printedClause": "进入深山町时，获得1点魔力。",
-          "activation": { "trigger": "after_controller_enters_location" },
+          "activation": { "trigger": "after_controller_enters_location", "eventLocationId": "miyama_town" },
           "effects": [{ "type": "adjust_mana", "amount": 1 }],
           "execution": { "mode": "automatic" }
         }

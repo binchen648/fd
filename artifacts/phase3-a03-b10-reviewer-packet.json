@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-packet-v1",
+  "generatedAt": "2026-09-12T00:00:00.000Z",
+  "owner": "Codex A",
+  "sourceTask": "P3-A03",
+  "reviewedRuntimeTask": "P3-B10",
+  "reviewedBranch": "codex/b-p3-b10-setup-create-to-skill",
+  "reviewedCommit": "bb32fc2",
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
+  "promotionNotice": "This packet does not promote Gate A/B/C, Phase 3, or Release status.",
+  "runtimeSliceUnderReview": {
+    "statusClaimedByB": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+    "mechanicFamily": "SETUP_CARD_CREATION_MINIMAL",
+    "contract": "CREATE_TO_SKILL",
+    "eligible": 3,
+    "migrated": 3,
+    "skipped": 3,
+    "typedPrimitive": "create_card",
+    "typedResultFields": [
+      "createdInstanceIds",
+      "createdCount"
+    ]
+  },
+  "freshChecks": [
+    {
+      "command": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/setup-create-to-skill.test.ts packages/rules/tests/executable-card-pack.test.ts",
+      "result": "PASS",
+      "summary": "3 files / 63 tests"
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "npm run test:ci",
+      "result": "PASS",
+      "summary": "86 files / 528 tests"
+    },
+    {
+      "command": "npm run phase3:coverage",
+      "result": "PASS",
+      "summary": {
+        "blockingIssues": 0,
+        "newRuntimeSemanticRouted": 9,
+        "legacyResolveEffect": 52,
+        "dualRuntime": 0,
+        "notClassifiable": 28
+      }
+    },
+    {
+      "command": "npm run phase3:review-packet -- --task P3-B10 --batch SETUP_CARD_CREATION_MINIMAL_CREATE_TO_SKILL --out artifacts/phase3-review-packet-p3-b10.json",
+      "result": "PASS",
+      "summary": {
+        "hotRuntimeFilesTouched": "YES",
+        "affectedSemanticAbilities": 9,
+        "remainingLegacyResolveEffect": 52,
+        "notClassifiable": 28
+      }
+    },
+    {
+      "command": "npm run phase3:automation-audit",
+      "result": "PASS",
+      "summary": {
+        "promotionFindings": 3
+      }
+    }
+  ],
+  "matchSessionDiagnostic": {
+    "formalEvent": "match-session-game-start",
+    "newInstancesCreated": 3,
+    "resolutionGeneratedInstanceIds": true,
+    "cardCreatedEvents": 3
+  },
+  "reviewFindings": [
+    {
+      "severity": "BLOCKING_REVIEW_FINDING",
+      "owner": "Codex B",
+      "code": "CARD_SPECIFIC_SEMANTIC_EXCLUSION",
+      "locations": [
+        "packages/rules/src/ability/executable-card-pack.ts:408",
+        "packages/rules/src/ability/interpreter.ts:1037"
+      ],
+      "evidence": "Exact game_start create-to-skill shape routes false for card.luck and true for an arbitrary renamed card id.",
+      "requiredCorrection": "Remove card.luck identity checks and prove route classification depends only on semantic shape."
+    },
+    {
+      "severity": "BLOCKING_REVIEW_FINDING",
+      "owner": "Codex B",
+      "code": "EXISTING_CARD_PROVENANCE_ADOPTION",
+      "locations": [
+        "packages/rules/src/ability/resolution-dataflow.ts:979",
+        "packages/rules/src/ability/resolution-dataflow.ts:989"
+      ],
+      "evidence": "A different game_start event id rewrites generatedBy on an existing ungenerated same-definition skill card; same-event replay is already stopped by processedEvents.",
+      "requiredCorrection": "Fail closed on an existing ungenerated card or provide a separately justified compatibility contract and tests."
+    }
+  ],
+  "automationClassificationGap": {
+    "code": "AUTOMATION_CLASSIFICATION_GAP",
+    "owner": "Codex A",
+    "currentGlobalCounts": {
+      "newRuntimeSemanticRouted": 9,
+      "legacyResolveEffect": 52,
+      "dualRuntime": 0
+    },
+    "runtimeLocalClaim": {
+      "legacyCreateToSkill": "3 -> 0",
+      "newSetupCreateToSkill": "0 -> 3",
+      "dual": "0 -> 0"
+    },
+    "nextAction": "Update coverage classifier and tests after the exact runtime shape is accepted or corrected."
+  },
+  "areasNotVerified": [
+    "browser setup flow",
+    "independent Gate A/B/C promotion",
+    "canonical validity of provenance adoption",
+    "global coverage burn-down after A classifier alignment"
+  ]
+}

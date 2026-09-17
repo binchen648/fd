@@ -7,6 +7,7 @@ import {
   ResolutionRuntimeError,
   executeResolution,
   listResolutionPrimitiveTypes,
+  normalizeResolutionDataFlowNodes,
   resultSchemas,
   validateResolutionDataFlow,
   type ResolutionEffectNode,
@@ -37,7 +38,28 @@ function baseState(): TerrainState {
       movementLinks: [],
     },
     locationConfig: { disabledLocationIds: [] },
-    cards: [],
+    cards: [{
+      instanceId: 'synthetic-source',
+      definitionId: 'synthetic-source-card',
+      ownerPlayerId: 'P1',
+      controllerPlayerId: 'P1',
+      zone: 'hand',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'P1' },
+    }, {
+      instanceId: 'support-shot',
+      definitionId: 'master.maiya.deck.support-shot',
+      ownerPlayerId: 'P1',
+      controllerPlayerId: 'P1',
+      zone: 'skill',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'P1' },
+    }, {
+      instanceId: 'activation-target',
+      definitionId: 'fixture.skill.delayed',
+      ownerPlayerId: 'P1',
+      controllerPlayerId: 'P1',
+      zone: 'skill',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'P1' },
+    }],
     eventPlacements: [],
     battleResults: [],
     effectStack: [],
@@ -84,12 +106,60 @@ function expectDataFlowIssue(effects: ResolutionEffectNode[], code: DataFlowVali
   throw new Error(`Expected ${code}`);
 }
 
+function expectRawDataFlowIssue(effects: unknown[], code: DataFlowValidationError['issues'][number]['code']): void {
+  expect(() => normalizeResolutionDataFlowNodes(effects)).toThrow(DataFlowValidationError);
+  try {
+    normalizeResolutionDataFlowNodes(effects);
+  } catch (error) {
+    expect(error).toBeInstanceOf(DataFlowValidationError);
+    expect((error as DataFlowValidationError).issues.map((issue) => issue.code)).toContain(code);
+    return;
+  }
+  throw new Error(`Expected ${code}`);
+}
+
 function producerFor(effectType: keyof typeof resultSchemas, binding: string): ResolutionEffectNode {
   switch (effectType) {
     case 'remove_advantage_position':
       return { id: `produce-${binding}`, type: 'remove_advantage_position', target: { expr: 'same_battlefield_opponents' }, bind: binding };
+    case 'move_all_remaining':
+      return { id: `produce-${binding}`, type: 'move_all_remaining', owner: 'controller', from: 'hand', to: 'discard', bind: binding };
+    case 'move_source_card':
+      return { id: `produce-${binding}`, type: 'move_source_card', to: 'skill', bind: binding };
+    case 'move_player':
+      return { id: `produce-${binding}`, type: 'move_player', player: 'controller', to: 'movement_destination', bind: binding };
+    case 'reveal_servant_package':
+      return { id: `produce-${binding}`, type: 'reveal_servant_package', bind: binding };
+    case 'draw_cards':
+      return { id: `produce-${binding}`, type: 'draw_cards', player: 'controller', count: 0, bind: binding };
+    case 'play_selected_cards':
+      return { id: `produce-${binding}`, type: 'play_selected_cards', target: 'selected_cards', face: 'face_down', bind: binding };
+    case 'play_source_card':
+      return { id: `produce-${binding}`, type: 'play_source_card', face: 'face_up', bind: binding };
+    case 'attach_card_to_player_attack':
+      return {
+        id: `produce-${binding}`,
+        type: 'attach_card_to_player_attack',
+        cardId: 'master.maiya.deck.support-shot',
+        target: 'supported_player',
+        returnAtRoundEnd: true,
+        controllerCannotWinStatus: 'maiya_cannot_win_battle_this_round',
+        bind: binding,
+      };
+    case 'activate_card_by_id':
+      return { id: `produce-${binding}`, type: 'activate_card_by_id', definitionId: 'fixture.skill.delayed', bind: binding };
+    case 'close_source_card':
+      return { id: `produce-${binding}`, type: 'close_source_card', bind: binding };
     case 'adjust_victory_points':
       return { id: `produce-${binding}`, type: 'adjust_victory_points', player: 'controller', amount: 1, bind: binding };
+    case 'adjust_mana':
+      return { id: `produce-${binding}`, type: 'adjust_mana', player: 'controller', amount: 1, bind: binding };
+    case 'set_mana':
+      return { id: `produce-${binding}`, type: 'set_mana', player: 'controller', amount: 1, bind: binding };
+    case 'pay_mana':
+      return { id: `produce-${binding}`, type: 'pay_mana', player: 'controller', amount: 0, bind: binding };
+    case 'adjust_command_seals':
+      return { id: `produce-${binding}`, type: 'adjust_command_seals', player: 'controller', amount: 0, bind: binding };
     case 'noop':
       return { id: `produce-${binding}`, type: 'noop', reason: binding, bind: binding };
     case 'fail_invariant':
@@ -130,6 +200,10 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
   it('routes synthetic executable nodes through registered primitives', () => {
     expect(listResolutionPrimitiveTypes()).toEqual(expect.arrayContaining([
       'remove_advantage_position',
+      'adjust_mana',
+      'set_mana',
+      'pay_mana',
+      'adjust_command_seals',
       'adjust_victory_points',
       'noop',
       'fail_invariant',
@@ -159,8 +233,130 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
     });
     expect(result.results[1]).toMatchObject({
       effectType: 'adjust_victory_points',
-      payload: { playerId: 'P1', amount: 2 },
+      payload: { playerId: 'P1', before: 0, after: 2, amount: 2 },
     });
+  });
+
+  it('applies typed resource numeric primitives with before/after result envelopes', () => {
+    const state = baseState() as GameState & { players: Array<GameState['players'][number] & { commandSpells?: number }> };
+    state.players[0]!.mana = 9;
+    state.players[0]!.commandSpells = 3;
+
+    const result = executeResolution({
+      state,
+      controllerId: 'P1',
+      sourceCardId: 'synthetic-source',
+      abilityId: 'resource-core',
+      effects: [
+        { id: 'gain-mana', type: 'adjust_mana', player: 'controller', amount: 4, bind: 'manaGain' },
+        { id: 'pay-mana', type: 'pay_mana', player: 'controller', amount: 2, bind: 'manaPayment' },
+        { id: 'spend-seal', type: 'adjust_command_seals', player: 'controller', amount: -1, directive: 'spend_command_spell', bind: 'sealSpend' },
+        { id: 'gain-vp', type: 'adjust_victory_points', player: 'controller', amount: 3, bind: 'vpGain' },
+      ],
+    });
+
+    expect(result.nextState.players[0]).toMatchObject({ mana: 10, vp: 3, commandSpells: 2 });
+    expect(result.results.map((entry) => entry.effectType)).toEqual([
+      'adjust_mana',
+      'pay_mana',
+      'adjust_command_seals',
+      'adjust_victory_points',
+    ]);
+    expect(result.results[0]).toMatchObject({
+      status: 'applied',
+      payload: { requestedAmount: 4, actualAmount: 3, before: 9, after: 12 },
+    });
+    expect(result.results[1]).toMatchObject({
+      payload: { requestedAmount: 2, actualAmount: 2, before: 12, after: 10 },
+    });
+    expect(result.results[2]).toMatchObject({
+      payload: { requestedAmount: -1, actualAmount: -1, before: 3, after: 2, directive: 'spend_command_spell' },
+    });
+    expect(result.emittedEvents).toContainEqual(expect.objectContaining({
+      type: 'mana_adjusted',
+      sourceAbilityId: 'resource-core',
+      controllerId: 'P1',
+      resource: 'mana',
+      delta: 3,
+      before: 9,
+      after: 12,
+      resultId: expect.stringContaining('gain-mana.mana_adjusted'),
+    }));
+  });
+
+  it('fails closed when command seal adjustment would underflow', () => {
+    const state = baseState() as GameState & { players: Array<GameState['players'][number] & { commandSpells?: number }> };
+    state.players[0]!.commandSpells = 0;
+
+    expect(() => executeResolution({
+      state,
+      controllerId: 'P1',
+      sourceCardId: 'synthetic-source',
+      abilityId: 'resource-core',
+      effects: [{ id: 'spend-seal', type: 'adjust_command_seals', player: 'controller', amount: -1 }],
+    })).toThrow(ResolutionRuntimeError);
+    expect(state.players[0]!.commandSpells).toBe(0);
+  });
+
+  it('draws from recycled discard when the controller deck is empty', () => {
+    const state = baseState();
+    state.abilityRuntime = {
+      pack: { cards: {} },
+      revision: 0,
+      sequence: 0,
+      randomState: 20260909,
+      cardState: {},
+      ongoingEffects: [],
+      responseWindows: [],
+      usedAbilities: {},
+      processedEvents: [],
+      revealedServants: [],
+      events: [],
+      calculations: [],
+      preventEffects: false,
+      manaCaps: {},
+      manaGainBlocked: [],
+      hostRequests: [],
+      roomMode: 'standard',
+      abilityUsage: {},
+      noblePhantasmCostsThisRound: {},
+      consecutivePlayRounds: {},
+      movementDistanceThisRound: {},
+      battlefieldsPassedOrStayedThisRound: {},
+      playRulesVersion: 'explicit-v1',
+      playCounters: { round: 1, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} },
+    };
+    state.cards = [{
+      instanceId: 'discarded-card',
+      definitionId: 'basic.strength.1',
+      ownerPlayerId: 'P1',
+      controllerPlayerId: 'P1',
+      zone: 'discard',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'P1' },
+    }];
+
+    const result = executeResolution({
+      state,
+      controllerId: 'P1',
+      sourceCardId: 'synthetic-source',
+      abilityId: 'draw-core',
+      effects: [{ id: 'draw-one', type: 'draw_cards', player: 'controller', count: 1 }],
+    });
+
+    expect(result.nextState.cards[0]).toMatchObject({ instanceId: 'discarded-card', zone: 'hand' });
+    expect(result.results[0]).toMatchObject({
+      effectType: 'draw_cards',
+      payload: { requestedCount: 1, actualCount: 1, movedCardIds: ['discarded-card'] },
+    });
+  });
+
+  it('fails closed for unsupported payments and invalid resource amounts', () => {
+    expectRawDataFlowIssue([
+      { id: 'fractional-mana', type: 'adjust_mana', player: 'controller', amount: 1.5 },
+    ], 'invalid_resolution_node');
+    expectRawDataFlowIssue([
+      { id: 'bad-mana', type: 'adjust_mana', player: 'controller', amount: { op: 'add', args: [1, 2] } },
+    ], 'invalid_resolution_node');
   });
 
   it('keeps exposed result schema fields consumable by runtime evaluators', () => {
@@ -173,12 +369,46 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
         ];
 
         expect(() => validateResolutionDataFlow(effects)).not.toThrow();
+        const state = baseState();
+        if (effectType === 'close_source_card' || effectType === 'move_source_card') {
+          const source = state.cards.find((card) => card.instanceId === 'synthetic-source')!;
+          source.definitionId = 'fixture.skill.source';
+          source.zone = effectType === 'move_source_card' ? 'attack_area' : 'field';
+          source.visibility = { scope: 'public' };
+        }
+        if (effectType === 'move_source_card' || effectType === 'reveal_servant_package') {
+          state.abilityRuntime = {
+            pack: { cards: {} }, revision: 0, sequence: 0, randomState: 20260909,
+            cardState: { 'synthetic-source': { active: true, faceDown: false, playedRound: 1 } },
+            ongoingEffects: [], responseWindows: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
+            events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [],
+            roomMode: 'standard', abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
+            movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {}, playRulesVersion: 'explicit-v1',
+            playCounters: { round: 1, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} },
+          };
+        }
         expect(() => executeResolution({
-          state: baseState(),
+          state,
           controllerId: 'P1',
           sourceCardId: 'synthetic-source',
           abilityId: 'synthetic-ability',
           effects,
+          selections: { selected_cards: [], supported_player: ['P2'], movement_destination: ['shinto'] },
+          hooks: {
+            movePlayer: ({ state, playerId, toLocationId }) => {
+              const moving = state.players.find((player) => player.id === playerId)!;
+              const fromLocationId = moving.locationId ?? 'miyama_town';
+              moving.locationId = toLocationId as LocationId;
+              return { fromLocationId, toLocationId, movedCount: 1, emittedEventIds: [] };
+            },
+            playSelectedCards: ({ cardInstanceIds }) => ({ playedCount: cardInstanceIds.length }),
+            playSourceCard: ({ state, sourceCardId }) => {
+              const source = state.cards.find((card) => card.instanceId === sourceCardId)!;
+              source.zone = 'attack_area';
+              source.visibility = { scope: 'public' };
+              return { playedCount: 1, destinationZone: 'attack_area' };
+            },
+          },
         })).not.toThrow();
       }
     }
@@ -232,6 +462,26 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
         type: 'adjust_victory_points',
         player: 'controller',
         amount: { expr: 'binding_field', binding: 'removedAdvantages', field: 'targetCount', valueType: 'number' },
+      },
+    ], 'invalid_result_field');
+  });
+
+  it('fails closed for invalid add-to-attack result fields', () => {
+    expectDataFlowIssue([
+      {
+        id: 'effect-a',
+        type: 'attach_card_to_player_attack',
+        cardId: 'master.maiya.deck.support-shot',
+        target: 'supported_player',
+        returnAtRoundEnd: true,
+        controllerCannotWinStatus: 'maiya_cannot_win_battle_this_round',
+        bind: 'supportAttachment',
+      },
+      {
+        id: 'effect-b',
+        type: 'adjust_victory_points',
+        player: 'controller',
+        amount: { expr: 'binding_field', binding: 'supportAttachment', field: 'attachedTotal', valueType: 'number' },
       },
     ], 'invalid_result_field');
   });
