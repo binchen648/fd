@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.sieg",
+  "name": "齐格",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus accepted FB2-14/R39; locked Reference is used only for owner/static metadata."
+  },
+  "cards": [
+    {
+      "id": "master.sieg.skill.s1",
+      "aliases": [
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "过载炉心",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sieg"
+      },
+      "printedText": "若你拥有11点及以上的魔力，你可以于常规出牌时追加打出一张牌。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "master.sieg.skill.s1.game-start-rules",
+          "kind": "forced_trigger",
+          "printedClause": "若你拥有11点及以上的魔力，你可以于常规出牌时追加打出一张牌。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "install_rule_override",
+              "player": "controller",
+              "rule": "extra_attack_play_allowance_if_mana_at_least",
+              "threshold": 11,
+              "amount": 1
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/齐格.png",
+            "locator": "master.sieg/齐格"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.sieg/s1"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[46].skills[0].text#line=1",
+            "sha256": "215e0d96a9ee5e00825eb43ceda139f008e0047c9b0195e733f96eaf89d0c089"
+          }
+        ],
+        "sourceTextSha256": "215e0d96a9ee5e00825eb43ceda139f008e0047c9b0195e733f96eaf89d0c089",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s1",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "gameStartRuleOverrides": "P3-R39/FB2-14"
+        }
+      }
+    }
+  ]
+}

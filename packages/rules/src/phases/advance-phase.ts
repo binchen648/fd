@@ -1,4 +1,5 @@
 import type { GameState, PlayerState, LocationId } from "../schema/game";
+import { grantMana } from "../core/rule-overrides";
 
 export interface AdvancePhaseContext {
   deploymentOrder: string[];
@@ -96,23 +97,19 @@ function awardManaForWorkshopDeployment(
     ? WORKSHOP_MANA_VALUES[positionIndex]
     : 0;
 
-  nextState = {
-    ...state,
-    players: state.players.map((p) =>
-      p.id === playerId
-        ? { ...p, mana: p.mana + manaReward }
-        : p
-    ),
-    log: state.log.concat({
-      type: "workshop_deployment_mana_awarded",
-      message: `player:${playerId}:workshop:mana:+${manaReward}`,
-      payload: {
-        playerId,
-        manaReward,
-        positionIndex,
-      },
-    }),
-  };
+  const nextState = structuredClone(state);
+  const result = grantMana(nextState, playerId, manaReward, { source: 'deployment' });
+  nextState.log = state.log.concat({
+    type: "workshop_deployment_mana_awarded",
+    message: `player:${playerId}:workshop:mana:+${result.actualAmount}`,
+    payload: {
+      playerId,
+      manaReward,
+      appliedManaReward: result.actualAmount,
+      overflowManaReward: result.overflowAmount,
+      positionIndex,
+    },
+  });
 
   return nextState;
 }

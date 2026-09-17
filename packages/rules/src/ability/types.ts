@@ -218,6 +218,8 @@ export interface AbilityRuntime {
   consecutivePlayRounds: Record<string, number>;
   movementDistanceThisRound: Record<PlayerId, number>;
   battlefieldsPassedOrStayedThisRound: Record<PlayerId, number>;
+  /** Successful positive mana gained in the current authoritative round. */
+  manaGainedThisRound: { round: number; byPlayer: Record<PlayerId, number> };
   playRulesVersion: PlayRulesVersion;
   playCounters: RoundPlayCounters;
 }
