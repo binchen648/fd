@@ -4051,6 +4051,56 @@ Result: FM09 remains dependency-blocked. Fresh A classifies the eleven frozen ta
 
 Current-main accepted overlap remains `111/944` (`11.76%`), leaving `833/944`. Next coordinator work is explicit dependency / reviewed-special-handler planning before any implementation dispatch.
 
+## TASK P3-FB2-16-RECOVERY
+
+Owner: Codex B2
+Status: `READY_FOR_B2_RECOVERY`
+Base: exact dependency-planning commit carrying this task block, descended from P3-A-FM09-RECOVERY-BLOCKER-SYNC `5b50f1ad0b6054c84dd1bb2d65ddfba7fbfd81ea`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-17-p3-fb2-16-recovery-required-additional-play-handoff.md`
+
+Goal: implement only the identity-free **required additional-play marker** needed for cards whose own rule requires them to accompany a regular-play batch. Compiler and runtime must share one exact structural predicate. A required-additional card remains illegal standalone, is classified for regular attack/attack-area play even when stored as `master_skill`, may join an otherwise legal regular batch, pays in the same atomic batch, and does not consume the normal regular attack allowance.
+
+Explicitly preserve separation from foreign `append_only_rule` shapes, effect-play routes, optional/conditional additional-play permissions, explicit extra-regular-play allowances such as Sieg, and card-specific special handlers. No authoring migration, support-definition materialization, FM09 retry, taxonomy/KPI promotion, or identity/text/Reference-handler routing.
+
+May touch:
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/executable-card-pack.ts` only for exact required-marker play classification
+- one small shared required-additional-play structural helper under `packages/rules/src/ability/`
+- one focused FB2-16 regression test and the executable-pack regression only if needed
+- `data/generated/fd-playtest-v1.content-library.json` only if deterministically changed by the allowed executable classification
+- FB2-16 recovery result report
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+FB2-16 takes zero migration credit. Accepted overlap remains `111/944`.
+
+## TASK P3-R42-RECOVERY
+
+Owner: Codex R
+Status: `BLOCKED_ON_P3-FB2-16-RECOVERY`
+Branch: fresh reviewer-selected worktree from the exact FB2-16 recovery candidate
+Read: `docs/reports/2026-09-17-p3-fb2-16-recovery-required-additional-play-handoff.md`
+
+Goal: independently review FB2-16 without implementing fixes. Recheck exact structural marker isolation, compiler/runtime shared predicate, standalone rejection, regular-batch-only eligibility, attack quota/counter separation, aggregate payment/rollback, staged flow, event evidence, foreign-marker/effect-play isolation, compatibility with normal play/Maiya/Sieg/FB2-14/FB2-15, identity-free production routing, generated determinism, and final cleanliness.
+
+Permitted final verdict:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+No support-definition task, FM09 retry, or Ciel task may start before fresh R42 acceptance and fresh A synchronization.
+
+## Full-Roster Dispatch State After P3-FB2-16 Recovery Handoff
+
+- FM09 remains `MIGRATION_BLOCKED`; no source material is accepted or credited.
+- Fresh current-line planning confirms the required-additional-play gap using canonical Maiya Support Shot, current compiled product classification, current `playFailure`/`playBatch`/staged paths, final rulebook §9.4/§9.6, and locked Reference Shirou derived-card evidence.
+- `basic.luck`'s foreign `append_only_rule` and Sieg's explicit extra regular-play allowance remain outside this narrow contract.
+- Historical downstream FB2-16 implementation/review is technical evidence only and carries no acceptance authority.
+- Accepted overlap remains `111/944`, leaving `833/944`.
+
 ## Prompt Templates
 
 Codex A startup prompt:
