@@ -4024,21 +4024,32 @@ Result: fresh R41 acceptance is synchronized without changing runtime or taking 
 ## TASK P3-FM09-RECOVERY
 
 Owner: Codex S
-Status: `READY_FOR_S_RECOVERY`
-Base: exact P3-A-R41-FB2-15-RECOVERY-SYNC commit carrying this task block
+Status: `MIGRATION_BLOCKED`
+Base: exact P3-A-R41-FB2-15-RECOVERY-SYNC `fa89d867977056968ec98019129487f80ed839df`
+Blocker: `9c6e38b33de1f1d6f090e9c644d0ab66dbbee4e7`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
-Read: `docs/reports/2026-09-17-p3-fb2-15-recovery-game-start-skill-provisioning-handoff.md`, `docs/reports/2026-09-17-p3-a-r41-fb2-15-recovery-synchronization.md`
+Read: `docs/reports/2026-09-17-p3-fb2-15-recovery-game-start-skill-provisioning-handoff.md`, `docs/reports/2026-09-17-p3-a-r41-fb2-15-recovery-synchronization.md`, `docs/reports/2026-09-17-p3-fm09-recovery-game-start-skill-provisioning-blocked.md`, `docs/reports/2026-09-17-p3-a-fm09-recovery-blocker-synchronization.md`
 
-Goal: perform a fresh S recovery attempt for only the exact ten locked-Reference `core.game-start-add-skill` source identities named in the FB2-15 recovery handoff. Use frozen F1 semantics and locked Reference static metadata. No runtime changes. Preserve the three explicit exclusions `master.fiore.skill.s1`, `master.sion.skill.ascension`, and `master.tokiomi.skill.s2`.
+Result: fresh S reconstructed the exact ten source proposal in memory and independently verified F1/Reference/hash provenance `10/10`, loader validity `10/10`, and accepted game-start provisioning semantics `10/10`. Product executable compilation then correctly failed closed because required target `master.bazett.skill.s2` is not registered. Current canonical target registration remains `0/12`; eleven targets are separate frozen static identities and one is a derived Shirou card.
 
-Dependency rule: the accepted FB2-15 compiler requires each provisioning target to already be a registered same-owner automatic `master_skill`. Fresh A scan finds all twelve target definitions absent. S must not create placeholders, weaken compiler validation, silently add the eleven extra frozen target identities, treat the derived Shirou target as a frozen source identity, or expand the exact-ten batch merely to make compilation pass. If the target-registration precondition remains unsatisfied, return `MIGRATION_BLOCKED`.
+S committed no FM09 source authoring and changed no runtime/taxonomy/KPI/Reference/generated material. The exact-ten source family and three exclusions remain unchanged. Placeholder targets, compiler weakening, target-family scope expansion, and denominator corruption remain prohibited.
 
-Completion status allowed:
+Completion status allowed on a future retry:
 - `MIGRATION_COMPLETE_CANDIDATE`
 - `MIGRATION_BLOCKED`
 
-No accepted overlap advances at dispatch time; current-main credit remains `111/944`.
+## TASK P3-A-FM09-RECOVERY-BLOCKER-SYNC
+
+Owner: Codex A
+Status: `BLOCKER_SYNCHRONIZED`
+Branch: `codex/a-p3-fm09-recovery-blocker-sync`
+Base: fresh S blocker `9c6e38b33de1f1d6f090e9c644d0ab66dbbee4e7`
+Read: `docs/reports/2026-09-17-p3-a-fm09-recovery-blocker-synchronization.md`
+
+Result: FM09 remains dependency-blocked. Fresh A classifies the eleven frozen targets across at least nine distinct handler boundaries, so they are not one homogeneous support-definition batch and may not be silently folded into FM09. No P3-FM10, broad FB2-16 implementation, or direct Ciel task is dispatched by this synchronization. Historical downstream work is planning evidence only, not acceptance provenance.
+
+Current-main accepted overlap remains `111/944` (`11.76%`), leaving `833/944`. Next coordinator work is explicit dependency / reviewed-special-handler planning before any implementation dispatch.
 
 ## Prompt Templates
 
