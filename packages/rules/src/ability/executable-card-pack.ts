@@ -352,10 +352,6 @@ function isBattleEndSourceReturnRouteCandidate(ability: AuthoringAbility): boole
     str(ability.effects[0]?.target) === 'this_card';
 }
 
-function isCardZoneCoreDirectActionSemantic(ability: AuthoringAbility): boolean {
-  return isMoveAllRemainingManaBindingSemantic(ability);
-}
-
 function isCardZoneCoreDirectActionRouteCandidate(ability: AuthoringAbility): boolean {
   if (ability.kind !== 'phase_action' || str(ability.activation.phase) !== 'advance' || str(ability.activation.opens) !== 'controller_action_window') return false;
   if (ability.targets.length || ability.cost.length || ability.creates.length || ability.effects.length !== 2) return false;
@@ -416,19 +412,6 @@ function isAddToAttackStructuralCandidate(ability: AuthoringAbility): boolean {
     typeof effect?.target === 'string' &&
     hasFixedManaCost(ability.cost, 2) &&
     hasSingleNonControllerPlayerTarget(ability.targets, str(effect.target));
-}
-
-function isMoveAllRemainingManaBindingSemantic(ability: AuthoringAbility): boolean {
-  if (ability.kind !== 'phase_action' || str(ability.activation.phase) !== 'advance' || str(ability.activation.opens) !== 'controller_action_window') return false;
-  if (ability.targets.length || ability.cost.length || ability.creates.length || ability.effects.length !== 2) return false;
-  const [move, mana] = ability.effects;
-  const binding = str(move?.resultVar ?? move?.bind);
-  return str(move?.type) === 'move_all_remaining' &&
-    str(move?.from) === 'hand' &&
-    str(node(move?.to).zone) === 'discard' &&
-    !!binding &&
-    str(mana?.type) === 'adjust_mana' &&
-    referencesMovedCountBinding(mana?.amount, binding);
 }
 
 function hasSingleControllerHandAttackTarget(targets: RuleNode[], targetId: string): boolean {

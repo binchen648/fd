@@ -509,17 +509,6 @@ function buildBattleResultFromRanked(
   };
 }
 
-function buildBattleResult(
-  state: GameState,
-  input: CombatResolutionInput,
-): GameState["battleResults"][number] | null {
-  if (!input.participants?.length) return null;
-  const ranked = [...input.participants]
-    .map((participant) => buildParticipantBreakdown(state, input.battlefieldId, participant))
-    .sort((left, right) => right.effectivePower - left.effectivePower);
-  return buildBattleResultFromRanked(state, input.battlefieldId, ranked);
-}
-
 export function resolveBattlefield(
   state: GameState,
   input: CombatResolutionInput,
