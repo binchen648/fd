@@ -928,3 +928,10 @@ Permitted final status:
 - Fresh A independently verifies typecheck, focused `94/94`, content validation/compile/determinism, full CI `835/835`, Reference verification, exact scope/diff, and clean pre-sync worktree. A grants no semantic acceptance.
 - Material coverage becomes `99 archives / 134 cards / 233 abilities`, compiled `71 cards / 14 characters / 0 blockers`; this is non-frozen material growth, not denominator credit.
 - P3-R45-RECOVERY is READY. Accepted frozen overlap remains `111/944`; FM09 remains blocked on the other eleven frozen provisioning targets.
+## P3-A R45 / FB2-17-R3 Recovery Acceptance Synchronization - 2026-09-18
+
+- Fresh R45 independently accepts S candidate `1c3149ba5f33ad3092a57da4a12d7bbe96f43823` over Base `1ef5262abb7d6c55edef8d98e2bc127b631f5d0b`; A material synchronization is `7fc8df7210f2d64b21820171faeaa3d4dcac33cc`.
+- R45 independently reproduces focused `94/94`, full CI `835/835`, rules core+regression `420/420`, client/content/determinism/Reference PASS, coverage `99/134/233` with compiled `71/14/0`, buckets `22/3/128/0/80/126`, and audit `128/3/80/20`.
+- The accepted dependency is exactly one non-frozen Shirou derived support definition. It preserves seven playable masters and fourteen characters and creates no Shirou playable character/fallback/deck/setup surface.
+- Frozen accepted overlap remains `111/944` (`11.76%`), leaving `833/944`; all eleven frozen FM09 target definitions remain absent.
+- The next legal step is fresh target-dependency planning across those eleven identities. P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or broad Ciel migration is dispatched.
