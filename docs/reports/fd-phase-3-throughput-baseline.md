@@ -774,11 +774,11 @@ Permitted final status:
 - R37 independently accepts FB2-13 candidate `18f2733eb0551f368e78a5f67ad9a32b96193d5b` at review `dc96afa3253dcf86a13e13ea29c8b99fb895df49`; fresh A focused `7/7`, content 0 blockers, determinism unchanged.
 - Coverage remains `80/113/212`, raw `22/3/127/0/60/124`; regenerated artifact drift is timestamp/static-line-only and is intentionally uncommitted.
 - Locked Reference + frozen F1 reconcile exactly 10 absent `core.alter-ego-transform` identities: nine regular cards share SHA `b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf`, Sion EX uses SHA `43c84de7cf6532ee6b561d8cfa35ddbdeac52850f6105684b23a82121636a892`; current canonical `0/10`.
-- FM07 is READY at exact size 10. Accepted overlap remains `91/944` until independent migration acceptance; no early `101/944` credit is taken.
+- FM07 is independently `MIGRATION_ACCEPTED` by P3-R38 review `f7666f48f7eb00baeadb63f24fb56fc39991f372` for the exact ten-member Alter Ego family. Accepted overlap is `101/944`, leaving `843/944` outside independently accepted canonical authoring.
 ## P3-A FM07 Migration Synchronization - 2026-09-16
 
 - S candidate `9c32957b13bc3964932b9a134702c1487069e059` adds exactly the authorized 10 Alter Ego identities with runtime diff `0`.
 - A independently recomputes complete frozen-F1 material overlap `91/944 -> 101/944`, exact additions `10`, removals `0`, remaining `843`.
 - Fresh material coverage is `90/123/222`, raw `22/3/127/0/70/124`; the ten new `NOT_CLASSIFIABLE` rows are the expected coverage-taxonomy limitation for accepted `transform_event_source_card` authoring.
 - Fresh A focused `18/18`, content 0 blockers and determinism pass; S migration evidence `56/56`, rules `385/385`, full CI `727/727` are green.
-- R38 is READY. Accepted overlap remains `91/944` pending independent migration acceptance.
+- A synchronization `1d04b43094a3797413069182a994426eab28f816` is accepted evidence for the exact `91/944 -> 101/944` material burn-down, and P3-R38 review `f7666f48f7eb00baeadb63f24fb56fc39991f372` independently returns `MIGRATION_ACCEPTED`. Accepted overlap is therefore `101/944`; this final dispatch state stops at FM07/R38 and does not dispatch or accept FB2-14 or FM08.

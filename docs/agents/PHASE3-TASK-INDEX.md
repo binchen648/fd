@@ -3817,10 +3817,12 @@ Verdict: `GATE_A_B_CANDIDATE_ACCEPTED`. Independent evidence: focused/high-risk 
 ## TASK P3-FM07
 
 Owner: Codex S
-Status: MIGRATION_SYNC_CANDIDATE
+Status: MIGRATION_ACCEPTED
 Branch: `codex/s-p3-fm07-alter-ego-transform`
 Base: exact P3-FB2-13 A synchronization `2fec63dbd6533f435e851c471d3bf00fa75695e2`
 Candidate: `9c32957b13bc3964932b9a134702c1487069e059`
+A sync: `1d04b43094a3797413069182a994426eab28f816`
+Review: P3-R38 `f7666f48f7eb00baeadb63f24fb56fc39991f372`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 Read: `docs/reports/2026-09-16-p3-fm07-alter-ego-transform-migration.md`
@@ -3832,9 +3834,10 @@ S evidence: exact 10 authoring additions, no removals/runtime diff, FM01-FM07 + 
 ## TASK P3-A-FM07-MIGRATION-SYNC
 
 Owner: Codex A
-Status: MIGRATION_SYNC_CANDIDATE
+Status: MIGRATION_SYNC_ACCEPTED
 Branch: `codex/a-p3-fm07-migration-sync`
 Base: exact P3-FM07 S candidate `9c32957b13bc3964932b9a134702c1487069e059`
+Synchronization SHA: `1d04b43094a3797413069182a994426eab28f816`
 Read: `docs/reports/2026-09-16-p3-a-fm07-migration-synchronization.md`
 
 Goal: independently recompute frozen-F1 burn-down, exact ten-member batch membership, per-card F1/Reference integrity, fresh material coverage, generated-content identity, and unrelated drift. A must not repair S authoring.
@@ -3846,9 +3849,11 @@ Completion status allowed:
 ## TASK P3-R38
 
 Owner: Codex R
-Status: READY
+Status: MIGRATION_ACCEPTED
 Branch: reviewer-selected fresh worktree/branch from exact A-synchronized FM07 lineage
 Candidate S SHA: `9c32957b13bc3964932b9a134702c1487069e059`
+A sync SHA: `1d04b43094a3797413069182a994426eab28f816`
+Review SHA: `f7666f48f7eb00baeadb63f24fb56fc39991f372`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 Read: `docs/reports/2026-09-16-p3-a-fm07-migration-synchronization.md`, `docs/reports/2026-09-16-p3-fm07-alter-ego-transform-migration.md`, and `docs/reports/2026-09-16-p3-r37-fb2-13-alter-ego-transform-review.md`
@@ -3860,16 +3865,16 @@ Permitted final status:
 - `MIGRATION_NEEDS_REVISION`
 - `REJECTED`
 
-## Full-Roster Dispatch State After P3-A-FM07-MIGRATION-SYNC
+## Full-Roster Dispatch State After P3-R38 / FM07
 
-- FM01-FM06 remain independently migration-accepted at accepted overlap `91/944`.
-- FM07 S candidate `9c32957b13bc3964932b9a134702c1487069e059` adds exactly ten canonical identities and no removals: material overlap is now `101/944`, leaving `843/944` outside canonical authoring.
-- A independently recomputed the complete frozen denominator as `943 static + 1 dynamic = 944`; the exact new set equals the authorized ten-member `core.alter-ego-transform` family.
-- A independently rechecked all ten frozen hashes and locked static metadata; the nine servant cards keep regular SHA `b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf`, while Sion EX keeps SHA `43c84de7cf6532ee6b561d8cfa35ddbdeac52850f6105684b23a82121636a892`.
-- Fresh A coverage is `90 archives / 123 cards / 222 abilities`, raw `22/3/127/0/70/124`; the `+10 notClassifiable` rows are exactly the new `transform_event_source_card` material rows and A does not alter taxonomy to manufacture route credit.
-- Fresh A typecheck, FM07/FB2-13/FM06 focused `18/18`, content validation and determinism are green. S rules `385/385` and standard full CI `727/727` are green.
+- FM01-FM07 are independently migration-accepted. Accepted canonical overlap is `101/944`, leaving `843/944` identities outside independently accepted canonical authoring.
+- FM07 S candidate `9c32957b13bc3964932b9a134702c1487069e059` adds exactly ten canonical identities and no removals; A synchronization `1d04b43094a3797413069182a994426eab28f816` independently confirms the exact `91/944 -> 101/944` burn-down.
+- R38 review `f7666f48f7eb00baeadb63f24fb56fc39991f372` is `MIGRATION_ACCEPTED` with no blocking finding. The complete frozen denominator remains `943 static + 1 dynamic = 944`, and the exact new set is the authorized ten-member `core.alter-ego-transform` family.
+- A and R38 independently rechecked all ten frozen hashes and locked static metadata; the nine servant cards keep regular SHA `b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf`, while Sion EX keeps SHA `43c84de7cf6532ee6b561d8cfa35ddbdeac52850f6105684b23a82121636a892`.
+- Accepted-lineage coverage is `90 archives / 123 cards / 222 abilities`, raw `22/3/127/0/70/124`; the `+10 notClassifiable` rows are exactly the new `transform_event_source_card` material rows and no taxonomy change is used to manufacture route credit.
+- R38 independently revalidated typecheck, FM01-FM07 migration + FB2-13 focused `56/56`, rules regression/core `385/385`, standard full CI `727/727`, content validation with `0` blockers, generated-content determinism, coverage integrity, and `git diff --check`.
 - Runtime production diff from the pre-FM07 accepted A-sync is `0` files.
-- P3-R38 is READY. Accepted overlap remains `91/944` until R38 independently accepts FM07; only then may accepted overlap advance to `101/944`.
+- Final dispatch state for this accepted baseline stops at FM07/R38. This state does not dispatch or accept FB2-14 or FM08.
 
 ## Prompt Templates
 
