@@ -156,6 +156,15 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
     scan(raw.playRequirements, 'playRequirements');
     if (face.cost !== undefined && (typeof face.cost !== 'number' || !Number.isFinite(face.cost) || face.cost < 0)) issue('cardFace.cost', 'Expected a nonnegative printed mana cost');
     const timing = node(raw.playTiming);
+    const initialPlacement = raw.initialPlacement;
+    if (initialPlacement !== undefined) {
+      if (typeof initialPlacement !== 'string' || initialPlacement !== 'outside_game') {
+        issue('initialPlacement', 'Only outside_game initial placement is supported');
+      }
+      if (str(raw.cardType) !== 'master_skill' || !str(root.id).startsWith('master.')) {
+        issue('initialPlacement', 'Outside-game initial placement is supported only for an owned master_skill');
+      }
+    }
     if (node(raw.verification).implementationStatus && node(raw.verification).implementationStatus !== 'complete') issue('verification.implementationStatus', 'Archive explicitly marks this card as unfinished');
     if (timing.phase !== 'action' || timing.window !== 'controller_play_card_window') issue('playTiming', 'Unsupported card play window');
     const seen = new Set<string>();
@@ -275,6 +284,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
     });
     cards[cardId] = { id: cardId, name: str(raw.name), cardType: str(raw.cardType), cardFace: face,
       playTiming: timing, playRequirements: nodes(raw.playRequirements), abilities,
+      ...(initialPlacement === 'outside_game' && str(raw.cardType) === 'master_skill' && str(root.id).startsWith('master.')
+        ? { initialPlacement: 'outside_game' as const }
+        : {}),
       mode: report.some(r => r.cardId === cardId && !r.abilityId) ? 'unsupported' : 'automatic' };
   }
   const publicCards = nodes(root.cards).map(c => ({ id: str(c.id), name: str(c.name), printedText: str(c.printedText), cardFace: node(c.cardFace) }));
