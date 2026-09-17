@@ -158,6 +158,9 @@ function validateSemanticSurvival(rawCard: Record<string, unknown>, compiledCard
   for (const field of ['cardFace', 'playTiming', 'playRequirements'] as const) {
     assertSemanticSubset(rawCard[field] ?? (field === 'playRequirements' ? [] : {}), compiledCard[field], `${path}.${field}`);
   }
+  if (rawCard.initialPlacement !== undefined) {
+    assertSemanticSubset(rawCard.initialPlacement, compiledCard.initialPlacement, `${path}.initialPlacement`);
+  }
   const rawAbilities = nodes(rawCard.abilities);
   if (rawAbilities.length !== compiledCard.abilities.length) throw new Error(`Semantic loss at ${path}.abilities`);
   rawAbilities.forEach((rawAbility, abilityIndex) => {
@@ -484,6 +487,13 @@ function validatedGameStartSkillProvisioningDeferrals(cards: Record<string, Exec
 
 function deferredCardIds(cards: Record<string, ExecutableCardDefinition>): Set<string> {
   const deferred = new Set<string>();
+  for (const card of Object.values(cards)) {
+    if (card.initialPlacement !== 'outside_game') continue;
+    if (card.cardType !== 'master_skill' || !card.ownerId?.startsWith('master.')) {
+      throw new Error(`Outside-game initial placement requires an owned master_skill: ${card.id}`);
+    }
+    deferred.add(card.id);
+  }
   const visit = (value: unknown): void => {
     if (Array.isArray(value)) return value.forEach(visit);
     if (!value || typeof value !== 'object') return;
