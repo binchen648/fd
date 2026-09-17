@@ -4104,11 +4104,12 @@ Result: fresh R42 acceptance is synchronized without runtime changes or frozen m
 ## TASK P3-FB2-17-RECOVERY
 
 Owner: Codex S
-Status: `READY_FOR_S_RECOVERY`
-Base: exact P3-A-R42-FB2-16-RECOVERY-SYNC commit carrying this task block
+Status: `SUPPORT_DEFINITION_BLOCKED`
+Base: exact P3-A-R42-FB2-16-RECOVERY-SYNC `b934ea69390b159176ad295116ccc8d9fe0506c7`
+Blocker: `310e6546fa2457b6bf11b91e547d25eb39751e99`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
-Read: `docs/reports/2026-09-17-p3-fb2-17-recovery-shirou-derived-card-support-definition-handoff.md`
+Read: `docs/reports/2026-09-17-p3-fb2-17-recovery-shirou-derived-card-support-definition-handoff.md`, `docs/reports/2026-09-17-p3-fb2-17-recovery-shirou-derived-card-support-definition-result.md`, `docs/reports/2026-09-17-p3-a-fb2-17-recovery-blocker-synchronization.md`
 
 Goal: materialize exactly one non-frozen support definition, `card.derived.master.shirou-emiya.ganjiang-moye`, so future `master.shirou-emiya.skill.s2` provisioning can resolve an already-registered same-owner automatic `master_skill`. Use frozen F1 only for the game-start relationship, locked Reference only for stable identity/static metadata, and fresh R42 only for the exact required-additional marker semantic. No frozen source migration and no runtime changes.
 
@@ -4126,14 +4127,65 @@ Completion status allowed:
 
 FB2-17 recovery takes zero frozen-migration credit. FM09 remains blocked and accepted overlap remains `111/944`.
 
-## Full-Roster Dispatch State After P3-R42 / P3-A-FB2-16 Recovery Synchronization
+## TASK P3-A-FB2-17-RECOVERY-BLOCKER-SYNC
 
-- FB2-16/R42 is accepted only as runtime/compiler dependency closure and earns zero migration credit.
-- All twelve FM09 provisioning targets remain absent from canonical authoring and generated product definitions at dispatch time.
-- The eleven frozen targets remain separate unresolved frozen identities; FB2-17 does not authorize any of them.
-- The Shirou derived target is outside the frozen denominator and is the narrowest legal support-definition dependency. P3-FB2-17-RECOVERY is READY.
+Owner: Codex A
+Status: `BLOCKER_SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-17-recovery-blocker-sync`
+Base: fresh S blocker `310e6546fa2457b6bf11b91e547d25eb39751e99`
+Read: `docs/reports/2026-09-17-p3-a-fb2-17-recovery-blocker-synchronization.md`
+
+Result: FB2-17 remains support-definition blocked. Fresh probe evidence separates the blockers into outside-game initial placement, support-only registration, and generated-output authorization. A dispatches only the first, narrowest representation seam.
+
+## TASK P3-FB2-18-RECOVERY
+
+Owner: Codex B2
+Status: `READY_FOR_B2_RECOVERY`
+Base: exact P3-A-FB2-17-RECOVERY-BLOCKER-SYNC commit carrying this task block
+Read: `docs/reports/2026-09-17-p3-fb2-18-recovery-outside-game-initial-placement-handoff.md`
+
+Goal: add only the identity-free card-level `initialPlacement: "outside_game"` representation for an owned `master_skill`, preserve it through authoring loading, and compile the definition without assigning `initialZone`. This field does not create/move cards and must not modify FB2-15 provisioning execution.
+
+May touch only:
+- `packages/rules/src/ability/types.ts`,
+- `packages/rules/src/ability/loader.ts`,
+- `packages/rules/src/ability/executable-card-pack.ts`,
+- one focused FB2-18 regression test,
+- `packages/rules/tests/executable-card-pack.test.ts` only if needed,
+- one FB2-18 recovery result report.
+
+No authoring/pack/generated/MatchSession/interpreter/support-only registration/taxonomy/frozen migration/Reference changes.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `IMPLEMENTATION_BLOCKED`
+
+FB2-18 recovery takes zero migration credit. Accepted overlap remains `111/944`.
+
+## TASK P3-R43-RECOVERY
+
+Owner: Codex R
+Status: `BLOCKED_ON_P3-FB2-18-RECOVERY`
+Branch: fresh reviewer-selected worktree from the exact FB2-18 recovery candidate
+Read: `docs/reports/2026-09-17-p3-fb2-18-recovery-outside-game-initial-placement-handoff.md`
+
+Goal: independently review FB2-18 without fixes. Recheck exact field validation, authoring-loader preservation, executable no-initialZone behavior, unchanged default master-skill placement, identity-free routing, no runtime movement semantics, FB2-15/FB2-16 compatibility, full validation, scope, and final cleanliness.
+
+Permitted final verdict:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+No FB2-17 retry, support-only registration task, FM09 retry, or Ciel task may start before fresh R43 acceptance and fresh A synchronization.
+
+## Full-Roster Dispatch State After P3-A FB2-17 Recovery Blocker Synchronization
+
+- FB2-17 recovery is `SUPPORT_DEFINITION_BLOCKED`; no Shirou product material is accepted.
+- The first fresh blocker is missing generic outside-game initial placement for a registered owned `master_skill`; P3-FB2-18-RECOVERY is READY for that seam only.
+- Support-only/rules-only registration and generated-output authorization remain known later dependencies but are not dispatched yet.
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or Ciel task is dispatched.
 - Accepted overlap remains `111/944`, leaving `833/944`.
+
 
 
 ## Prompt Templates

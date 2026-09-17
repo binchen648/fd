@@ -878,3 +878,12 @@ Permitted final status:
 - P3-FB2-17-RECOVERY is dispatched as the narrow zero-credit support-definition attempt for exactly the derived Shirou card. It may not migrate `master.shirou-emiya.skill.s2`, add any frozen target, change runtime/compiler code, weaken FB2-15 validation, or introduce identity/name/text/Reference-handler routing.
 - If current representation cannot register that card outside game without incorrect initial placement, or deterministic generation requires an out-of-scope generated artifact, S must return `SUPPORT_DEFINITION_BLOCKED` rather than widening scope.
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or Ciel task is authorized.
+
+## P3-A FB2-17 Recovery Blocker Synchronization / FB2-18 Dispatch - 2026-09-17
+
+- Fresh S blocker `310e6546fa2457b6bf11b91e547d25eb39751e99`, directly based on A synchronization `b934ea69390b159176ad295116ccc8d9fe0506c7`, returns `SUPPORT_DEFINITION_BLOCKED` without committing Shirou authoring, pack registration, runtime, generated product material, or any frozen identity.
+- Same-base detached probe confirms the proposed derived card is source-grounded, compiles as the accepted required-additional `attack/attack_area` card with the exact 8-mana gate, and leaves FB2-15 `7/7` plus FB2-16 `8/8` regressions green.
+- Current representation incorrectly gives that registered standalone `master_skill` `initialZone: skill`, contradicting F1's game-start from-outside-game relationship.
+- Ordinary `authoringMasterFiles` registration also turns the support archive into an eighth playable master and synthesizes fallback `master.shirou-emiya.command-spell`; normal generation changes both content-library and evidence-report. Those are separate later dependency/output-contract issues, not permission to widen FB2-17.
+- P3-FB2-18-RECOVERY is dispatched only for identity-free card-level `initialPlacement: "outside_game"` preservation and executable no-`initialZone` compilation. It may not register Shirou, add a support-only manifest path, change interpreter/MatchSession/provisioning execution, or migrate any frozen identity.
+- Fresh R43 and fresh A synchronization are required before any FB2-17 retry. Accepted overlap remains `111/944` (`11.76%`), leaving `833/944`; FM09 remains `MIGRATION_BLOCKED` and no Ciel task is authorized.
