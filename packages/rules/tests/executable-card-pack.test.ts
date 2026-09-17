@@ -48,6 +48,38 @@ describe('ExecutableCardPack compiler', () => {
     expect(() => assertExecutableCardPack(changedClassification, input)).toThrow(/hash mismatch/);
   });
 
+  it('classifies exact required-additional master skills as attack-area cards through the shared marker contract', () => {
+    const input = sourceInput();
+    const executable = compileExecutableCardPack(input);
+    expect(executable.cards['master.maiya.deck.support-shot']).toMatchObject({
+      cardType: 'master_skill',
+      playKind: 'attack',
+      destinationZone: 'attack_area',
+    });
+
+    const unmarkedInput = sourceInput();
+    const support = unmarkedInput.rules.archives.find((archive) => archive.id === 'master.maiya')!
+      .cards.find((card) => card.id === 'master.maiya.deck.support-shot')!;
+    support.abilities = support.abilities!.filter((ability) =>
+      !ability.effects?.some((effect) => effect.type === 'append_only_rule' && effect.rule === undefined));
+    const unmarked = compileExecutableCardPack(unmarkedInput);
+    expect(unmarked.cards['master.maiya.deck.support-shot']).toMatchObject({
+      playKind: 'support',
+      destinationZone: 'field',
+    });
+
+    const nearMatchInput = sourceInput();
+    const nearMatch = nearMatchInput.rules.archives.find((archive) => archive.id === 'master.maiya')!
+      .cards.find((card) => card.id === 'master.maiya.deck.support-shot')!
+      .abilities!.find((ability) => ability.effects?.some((effect) => effect.type === 'append_only_rule'))!;
+    nearMatch.responseWindow = { priority: 'turn_order' };
+    const nearMatchCompiled = compileExecutableCardPack(nearMatchInput);
+    expect(nearMatchCompiled.cards['master.maiya.deck.support-shot']).toMatchObject({
+      playKind: 'support',
+      destinationZone: 'field',
+    });
+  });
+
   it('defers game-start provisioned master skills from initial state placement', () => {
     const input = sourceInput();
     const baseline = compileExecutableCardPack(input);
