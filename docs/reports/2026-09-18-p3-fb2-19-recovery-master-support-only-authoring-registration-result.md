@@ -62,9 +62,9 @@ Focused run covers:
 - FB2-16 required-additional compatibility;
 - FB2-18 outside-game placement compatibility.
 
-Result: **5 files / 91 tests PASS**.
+Result after the R44-R1 revision: **5 files / 94 tests PASS**.
 
-The generic loader tests verify a support archive enters rules-only material while the playable master roster and fixture seats remain unchanged. Compiler tests verify exactly one support card is added, no support owner character/fallback/deck appears, the support card has no `initialZone`, and existing servant archive source-map indices remain stable.
+The generic loader tests verify a support archive enters rules-only material while the playable master roster and fixture seats remain unchanged. Compiler tests verify exactly one support card is added, no support owner character/fallback/deck appears, the support card has no `initialZone`, and existing servant archive source-map indices remain stable. They also independently reject a support-shaped archive when the support discriminator is missing, replaced by `master_skill_card_archive`, or changed to a near-match value.
 
 ## Full validation
 
@@ -73,7 +73,7 @@ The generic loader tests verify a support archive enters rules-only material whi
 - Client production build from `apps/client`: PASS; only the existing Vite `node:crypto` browser-externalization warning remains.
 - First `npm.cmd run test:ci`: one 5-second timeout in `scripts/tests/phase3-full-roster-inventory.test.ts`; no assertion or semantic failure.
 - Isolated rerun of that file: **12/12 PASS**, with the previously timed-out case completing in ~340ms.
-- Official `npm.cmd run test:ci` rerun unchanged: **129 files / 832 tests PASS**.
+- Revised `npm.cmd run test:ci`: **129 files / 835 tests PASS**.
 - Rules core + regression: **69 files / 420 tests PASS**.
 - `npm.cmd run content:validate`: **7 masters / 7 servants / 20 events / 0 blocking issues**.
 - `npm.cmd run verify:generated-content`: PASS; production generated hashes remain unchanged:
@@ -85,9 +85,23 @@ The generic loader tests verify a support archive enters rules-only material whi
 - Automation audit remains `legacyResolveEffect=127`, `legacyExecuteAbility=3`, `notClassifiable=80`, `promotionFindings=20`.
 - `git diff --check`: PASS.
 
-The first full-CI timeout is treated as local performance jitter because the same test passed immediately in isolation and the unchanged official full suite subsequently passed completely. No timeout or test-source change was made.
+The pre-R44 candidate had one 5-second `phase3-full-roster-inventory.test.ts` timeout that passed immediately in isolation and on an unchanged full-suite rerun. The R44-R1 revision full-CI run completed **835/835** without that timeout. No timeout or unrelated test-source change was made.
 
 Coverage/audit command-generated artifact rewrites were restored to the checked-in base after recording their outputs.
+
+## R44-R1 revision
+
+Fresh independent R44 review of candidate `94f1c3554d627df608666e5477d4554b0725ccad` returned `IMPLEMENTATION_NEEDS_REVISION` for one blocking compiler-boundary gap. `assertMasterSupportArchive()` validated only archives whose discriminator already exactly matched `master_support_definition_archive`; an otherwise support-shaped archive with a missing discriminator, `master_skill_card_archive`, or a near-match discriminator could therefore fall through the ordinary playable-master path and create character/fallback-command-spell surface.
+
+The revision adds one identity-free structural guard in the executable compiler. An archive whose non-empty card set consists entirely of `master_skill` cards with exact `initialPlacement: "outside_game"`, and which has neither deck nor playable `publicInformation` surface, is a support-only structural shape. Such an archive must use the exact `master_support_definition_archive` discriminator; otherwise compilation fails closed before ordinary master compilation. Exact support archives continue through the existing stricter owner/card/deck/public-information validation.
+
+Three adversarial compiler regressions now cover the exact R44-R1 finding:
+
+- missing support discriminator;
+- normal-master discriminator on an otherwise support-only shape;
+- near-match support discriminator.
+
+All three now fail closed at the executable compiler boundary. The revision does not change the content-loader contract, valid support behavior, ordinary playable-master behavior, FB2-15/16/18 runtime contracts, authoring/product data, generated output, coverage, or migration accounting.
 
 ## Scope and accounting
 

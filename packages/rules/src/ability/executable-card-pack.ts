@@ -49,8 +49,22 @@ function isMasterSupportArchive(archive: RuleArchive): boolean {
   return archive.archiveType === MASTER_SUPPORT_ARCHIVE_TYPE;
 }
 
+function hasMasterSupportArchiveShape(archive: RuleArchive): boolean {
+  return Array.isArray(archive.cards) &&
+    archive.cards.length > 0 &&
+    archive.cards.every((card) =>
+      card.cardType === 'master_skill' && card.initialPlacement === 'outside_game') &&
+    !Object.prototype.hasOwnProperty.call(archive, 'deck') &&
+    !Object.prototype.hasOwnProperty.call(archive, 'publicInformation');
+}
+
 function assertMasterSupportArchive(archive: RuleArchive): void {
-  if (!isMasterSupportArchive(archive)) return;
+  if (!isMasterSupportArchive(archive)) {
+    if (hasMasterSupportArchiveShape(archive)) {
+      throw new Error(`Master support-shaped archive requires archiveType=${MASTER_SUPPORT_ARCHIVE_TYPE}: ${archive.id}`);
+    }
+    return;
+  }
   if (!archive.id.startsWith('master.')) {
     throw new Error(`Master support archive id must start with master.: ${archive.id}`);
   }

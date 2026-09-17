@@ -94,6 +94,9 @@ describe('ExecutableCardPack compiler', () => {
   });
 
   it.each([
+    ['missing support discriminator', (archive: any) => { delete archive.archiveType; }, /support-shaped archive requires archiveType=master_support_definition_archive/],
+    ['normal-master discriminator on support shape', (archive: any) => { archive.archiveType = 'master_skill_card_archive'; }, /support-shaped archive requires archiveType=master_support_definition_archive/],
+    ['near-match support discriminator', (archive: any) => { archive.archiveType = 'master_support_definition_archive_x'; }, /support-shaped archive requires archiveType=master_support_definition_archive/],
     ['wrong owner family', (archive: any) => { archive.id = 'servant.support-owner'; }, /id must start with master\./],
     ['empty archive', (archive: any) => { archive.cards = []; }, /must contain at least one card/],
     ['non-master-skill card', (archive: any) => { archive.cards[0].cardType = 'command_spell'; }, /only master_skill cards/],
