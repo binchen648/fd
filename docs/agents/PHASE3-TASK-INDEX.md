@@ -4158,36 +4158,70 @@ Result: fresh R43 acceptance is synchronized without product-code changes or fro
 ## TASK P3-FB2-17-R1-RECOVERY
 
 Owner: Codex S
-Status: `READY_FOR_S_RECOVERY`
-Base: exact P3-A-R43-FB2-18-RECOVERY-SYNC commit carrying this task block
+Status: `SUPPORT_DEFINITION_BLOCKED`
+Base: exact P3-A-R43-FB2-18-RECOVERY-SYNC `79c4f65ba8d3d9f50785ce290f9f755a19794c26`
+Blocker commit: `7e0356146766486180bcd959ee4e90dcfe193be5`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 Accepted dependency: FB2-18 candidate `cb81559033db6b96b1f26cf7d9bd15686db5d4fb`, freshly accepted by R43
-Read: `docs/reports/2026-09-18-p3-fb2-17-r1-recovery-shirou-derived-card-support-definition-handoff.md`
+Read: `docs/reports/2026-09-18-p3-fb2-17-r1-recovery-shirou-derived-card-support-definition-handoff.md`, `docs/reports/2026-09-18-p3-fb2-17-r1-recovery-shirou-derived-card-support-definition-result.md`
 
-Goal: fresh retry for exactly `card.derived.master.shirou-emiya.ganjiang-moye` using `initialPlacement: "outside_game"`, the current 8-mana gate, and the exact accepted required-additional marker. Do not migrate Shirou s2 or any frozen identity.
+Result: outside-game placement now works, but ordinary `authoringMasterFiles` registration still promotes the support-only Shirou archive into an eighth playable master, creates executable character/presentation surface, synthesizes fallback command spell, and shifts the stable archive boundary. No product change is accepted by this blocker.
+
+## TASK P3-A-FB2-17-R1-RECOVERY-BLOCKER-SYNC
+
+Owner: Codex A
+Status: `BLOCKER_SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-17-r1-recovery-blocker-sync-current`
+Base: fresh S blocker `7e0356146766486180bcd959ee4e90dcfe193be5`
+Read: `docs/reports/2026-09-18-p3-a-fb2-17-r1-recovery-blocker-synchronization.md`
+
+Result: synchronize only the fresh support-only registration blocker and dispatch the narrowest generic dependency. No support definition, frozen identity, runtime behavior, or migration credit is accepted by this A task.
+
+## TASK P3-FB2-19-RECOVERY
+
+Owner: Codex B2
+Status: `READY_FOR_B2_RECOVERY`
+Base: exact P3-A-FB2-17-R1-RECOVERY-BLOCKER-SYNC commit carrying this task block
+Read: `docs/reports/2026-09-18-p3-fb2-19-recovery-master-support-only-authoring-registration-handoff.md`
+
+Goal: add one identity-free master support-only / rules-only authoring registration seam so support archives enter canonical `authoringArchives` / `rules.archives` and executable card definitions without entering the selectable/presentation master roster and without executable character/fallback-command-spell generation.
 
 May touch only:
-- `data/authoring/masters/master.shirou-emiya.json`,
-- `data/packs/fd-playtest-v1/pack.json`,
-- `data/generated/fd-playtest-v1.content-library.json`,
-- `data/generated/fd-playtest-v1.evidence-report.json`,
-- `docs/reports/2026-09-18-p3-fb2-17-r1-recovery-shirou-derived-card-support-definition-result.md`.
+- `packages/content/src/playtest-pack-loader.ts`,
+- `packages/rules/src/ability/executable-card-pack.ts`,
+- `packages/content/src/__tests__/playtest-pack-loader.test.ts`,
+- `packages/rules/tests/executable-card-pack.test.ts` and/or one focused FB2-19 regression test,
+- `docs/reports/2026-09-18-p3-fb2-19-recovery-master-support-only-authoring-registration-result.md`.
 
-No rules/runtime/compiler/scripts/taxonomy/KPI/other authoring/frozen identity/Reference/fixture changes. If the only current manifest path still promotes the support archive into a playable eighth master, adds public master presentation material, synthesizes a fallback command spell, or perturbs the stable archive boundary, return `SUPPORT_DEFINITION_BLOCKED`; do not widen scope or edit tests to normalize it.
+No production authoring/pack/generated data, MatchSession, interpreter, taxonomy/KPI, frozen migration, or Reference changes. No Shirou/card identity/name/text routing. Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `IMPLEMENTATION_BLOCKED`
 
-Completion status allowed:
-- `SUPPORT_DEFINITION_COMPLETE_CANDIDATE`
-- `SUPPORT_DEFINITION_BLOCKED`
+FB2-19 takes zero migration credit. Accepted overlap remains `111/944`.
 
-## Full-Roster Dispatch State After Fresh P3-R43 Acceptance
+## TASK P3-R44-RECOVERY
 
-- FB2-18/R43 is freshly accepted as zero-credit representation/compiler dependency closure. Accepted frozen overlap remains `111/944`, leaving `833/944`.
-- The original FB2-17 initial-placement blocker is closed: an owned support `master_skill` can now be registered with exact `initialPlacement: "outside_game"` and no executable `initialZone`.
-- P3-FB2-17-R1-RECOVERY is READY as a fresh retry from this exact A synchronization lineage. It explicitly authorizes normal deterministic content-library and evidence-report outputs already proven necessary.
-- Support-only/rules-only registration is not assumed solved. If ordinary master registration still creates an eighth playable master/fallback command spell, the retry must stop blocked and A may then dispatch a separate generic registration dependency.
-- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or Ciel task is dispatched.
-- Accepted overlap remains `111/944`, leaving `833/944`.
+Owner: Codex R
+Status: `BLOCKED_ON_P3-FB2-19-RECOVERY`
+Branch: fresh reviewer-selected worktree from the exact FB2-19 recovery candidate
+Read: `docs/reports/2026-09-18-p3-fb2-19-recovery-master-support-only-authoring-registration-handoff.md`
+
+Goal: independently review FB2-19 without fixes. Recheck exact support-archive discriminator and manifest channel, fail-closed malformed/wrong-channel behavior, rules-only assembly, unchanged playable/presentation roster, executable card-only registration, no character/fallback/deck generation, normal archive ordering, FB2-15/16/18 compatibility, identity-free routing, unchanged production generated content, zero-credit accounting, exact scope, full validation, and final cleanliness.
+
+Permitted final verdict:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## Full-Roster Dispatch State After Fresh P3-FB2-17-R1 Blocker Synchronization
+
+- FB2-18/R43 remains freshly accepted and successfully closes explicit outside-game card placement.
+- Fresh FB2-17-R1 blocker `7e0356146766486180bcd959ee4e90dcfe193be5` proves the remaining blocker is only the generic pack/executable support-only registration envelope.
+- P3-FB2-19-RECOVERY is READY for that narrow zero-credit infrastructure seam. It must not add any production identity or special-case Shirou.
+- FB2-17-R2 must wait for FB2-19 candidate, fresh R44 acceptance, and post-review A synchronization.
+- P3-FM09 remains `MIGRATION_BLOCKED`; the other eleven frozen provisioning targets remain unresolved independently.
+- Accepted overlap remains `111/944`, leaving `833/944`; no FM10 or Ciel task is dispatched.
 
 
 ## Prompt Templates
