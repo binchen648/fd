@@ -4,6 +4,7 @@
 - Phase: Phase 3 / RESOURCE_NUMERIC_CORE_DIRECT_ACTION
 - Claim: IMPLEMENTATION_COMPLETE_CANDIDATE
 - Independent Review: Required before COMPONENT_VERIFIED / SCENARIO_VERIFIED / E2E_VERIFIED promotion.
+- Superseded: Current repository fact is recorded in `docs/reports/2026-09-09-resource-numeric-core-result.md`. This 2026-09-08 report must not be used as Gate C evidence for the current checkout.
 
 ## Scope
 
@@ -36,9 +37,9 @@ Result:
 
 ```text
 sourceFiles=14
-resourceNumericAbilities=18
+resourceNumericAbilities=17
 eligible=3
-skipped=15
+skipped=14
 ```
 
 Eligible abilities:
@@ -76,7 +77,7 @@ servant.tomoe       sc-tomoe-1.penalty-on-defeat                   out_of_scope:
 | Direct-action legacy resource consumers | 3 | 0 |
 | New-runtime semantic-routed direct resource consumers | 0 | 3 |
 | Dual-compatible migrated consumers | 1 | 0 |
-| Remaining skipped resource abilities | 15 | 15 |
+| Remaining skipped resource abilities | 14 | 14 |
 
 ## Routing
 
@@ -150,24 +151,11 @@ Implemented tests cover real compiled content through `MatchSession.dispatchPlay
 
 Test file:
 
-- `packages/rules/tests/regression/phase-3a-core-primitives.test.ts`
+- `packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts`
 
 ## Gate C Evidence
 
-Command spell only:
-
-- browser opens restored room
-- browser clicks the real `command-spell.gain-mana` prompt
-- WebSocket frame includes `expectedRevision`
-- server revalidates and mutates state
-- projection shows mana after mutation and command-spell directive
-- projection logs expose resource event envelopes
-- reconnect preserves state and event evidence
-- stale replay is rejected and does not duplicate resource mutation
-
-Test file:
-
-- `e2e/fd-command-spell-resource-core.spec.ts`
+Current checkout status is superseded by `docs/reports/2026-09-09-resource-numeric-core-result.md`: Resource/Numeric command-spell Gate C candidate evidence now exists in `e2e/fd-command-spell-resource-core.spec.ts`, pending independent review.
 
 ## Tests Run
 
@@ -178,22 +166,18 @@ npm run typecheck
 Result: PASS.
 
 ```powershell
-npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/phase-3a-core-primitives.test.ts
+npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts
 ```
 
-Result: PASS, 2 files / 26 tests.
+Result: Superseded current focused suite passes with Resource/Numeric direct-action regression included.
 
 ```powershell
 npm run test:ci
 ```
 
-Result: PASS, 84 files / 476 tests.
+Result: Superseded by 2026-09-09 verification record.
 
-```powershell
-npx playwright test -c playwright.config.ts e2e/fd-command-spell-resource-core.spec.ts
-```
-
-Result: PASS, 1 browser test.
+Resource/Numeric Gate C browser test: NOT RUN / NOT PRESENT in current checkout.
 
 ```powershell
 npm run content:validate
@@ -205,7 +189,7 @@ Result: PASS, 7 masters / 7 servants / 20 events / 0 blocking issues.
 node docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs
 ```
 
-Result: PASS, 18 resource numeric abilities, 3 eligible, 15 skipped.
+Result: Superseded current inventory reports 17 resource numeric abilities, 3 eligible, 14 skipped.
 
 ## Known Legacy Paths Retained
 

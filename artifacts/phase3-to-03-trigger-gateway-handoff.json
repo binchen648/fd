@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "fd-phase3-spec-handoff-v1",
+  "generatedAt": "2026-09-13T14:04:41.727Z",
+  "task": "P3-TO-03",
+  "name": "Domain Event Trigger Gateway",
+  "owner": "Codex B",
+  "lane": "SPECIFICATION_ONLY",
+  "status": "SPEC_ACCEPTED",
+  "maximumCompletionClaim": "SPEC_REVIEW_READY",
+  "runtimeAuthorized": false,
+  "denominators": {
+    "strictDomainTriggerAbilities": 37,
+    "eventTypes": 13
+  },
+  "requiredPolicies": [
+    "typed_event_envelope",
+    "source_and_causation_identity",
+    "deterministic_ordering",
+    "forced_optional_split",
+    "processed_event_idempotency",
+    "server_revalidation",
+    "interaction_template_handoff",
+    "projection_and_reconnect",
+    "terminal_cleanup",
+    "fail_closed_invalid_event",
+    "cancellation_ownership",
+    "cleanup_ownership"
+  ],
+  "forbidden": [
+    "runtime changes",
+    "card-specific trigger cases",
+    "Gate promotion",
+    "classifying phase or continuous hooks as domain events"
+  ],
+  "acceptedSpec": {
+    "branch": "codex/b-p3-to-03-trigger-gateway-contract-r2",
+    "commit": "ac70c33cb943d99d02f1f7077d80b36337014439",
+    "reviewBranch": "codex/r-p3-to-03-trigger-gateway-r2-review",
+    "reviewCommit": "6ce17aab18ea20cec7e5fcfc6efb4fc5f6384f6e",
+    "reviewDecision": "SPEC_ACCEPTED",
+    "runtimeAuthorized": false,
+    "gatePromotionPerformed": false
+  }
+}

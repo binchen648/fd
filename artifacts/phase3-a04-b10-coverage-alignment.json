@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "fd-phase3-coverage-sync-v1",
+  "generatedAt": "2026-09-12T04:44:50.397Z",
+  "owner": "Codex A",
+  "sourceTask": "P3-A04",
+  "runtimeTask": "P3-B10",
+  "runtimeBranch": "codex/b-p3-b10-setup-create-to-skill",
+  "reviewedRuntimeCommit": "9fba6d9",
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
+  "promotionNotice": "This artifact does not promote Gate A/B/C, Phase 3, or Release status.",
+  "reviewOutcome": {
+    "accepted": true,
+    "supersedesReviewedCommit": "bb32fc2",
+    "closedFindings": [
+      "CARD_SPECIFIC_SEMANTIC_EXCLUSION",
+      "EXISTING_CARD_PROVENANCE_ADOPTION"
+    ]
+  },
+  "alignedContracts": [
+    "CARD_ACTION_SEMANTICS_MINIMAL:ADD_TO_ATTACK",
+    "CARD_ACTION_SEMANTICS_MINIMAL:ACTIVATE",
+    "CARD_ACTION_SEMANTICS_MINIMAL:CLOSE",
+    "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL"
+  ],
+  "b10Contract": {
+    "eligible": 3,
+    "migrated": 3,
+    "skippedArtoriaCasterLuck": 3,
+    "classificationUsesCardOrAbilityId": false
+  },
+  "combinedCoverage": {
+    "sourceFingerprint": "4efa585d747b2f765d8248601c77daa12d247e6bfaa775a9d033afcd6b881854",
+    "compiledPack": {
+      "packId": "fd-playtest-v1",
+      "version": 1,
+      "definitionHash": "f4aeaddb88f3018efed31ca74a8a0c91a614c9a61752237952285b017de4d192",
+      "compiledCards": 70,
+      "compiledCharacters": 14,
+      "blockingIssues": 0
+    },
+    "before": {
+      "newRuntimeSemanticRouted": 9,
+      "legacyResolveEffect": 52,
+      "dualRuntime": 0
+    },
+    "after": {
+      "newRuntimeSemanticRouted": 12,
+      "legacyExecuteAbility": 3,
+      "legacyResolveEffect": 49,
+      "dualRuntime": 0,
+      "notClassifiable": 28,
+      "pilotAllowlist": 0
+    },
+    "semanticRouteCounts": {
+      "CARD_ACTION_SEMANTICS_MINIMAL:ACTIVATE": 1,
+      "CARD_ACTION_SEMANTICS_MINIMAL:ADD_TO_ATTACK": 1,
+      "CARD_ACTION_SEMANTICS_MINIMAL:CLOSE": 1,
+      "CARD_ACTION_SEMANTICS_MINIMAL:PLAY": 1,
+      "CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE": 1,
+      "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA": 1,
+      "RESOURCE_NUMERIC_CORE_DIRECT_ACTION": 3,
+      "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL": 3
+    }
+  },
+  "currentCheckoutGeneratedArtifacts": {
+    "newRuntimeSemanticRouted": 12,
+    "legacyResolveEffect": 49,
+    "dualRuntime": 0,
+    "compiledBlockingIssues": 10,
+    "promotionFindings": 14,
+    "note": "The A automation branch does not merge reviewed B10 runtime commit 9fba6d9; zero blocking issues applies only to the reviewed-runtime integration baseline."
+  },
+  "checks": [
+    {
+      "command": "npx vitest run scripts/tests/phase3-coverage.test.ts",
+      "result": "PASS",
+      "summary": "A checkout and reviewed-runtime integration baseline: 1 file / 20 tests"
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "PASS",
+      "summary": "A checkout"
+    },
+    {
+      "command": "npm run phase3:coverage",
+      "result": "PASS",
+      "summary": "current A checkout: new=12 legacyResolveEffect=49 dual=0 blockingIssues=10; reviewed-runtime integration: blockingIssues=0"
+    },
+    {
+      "command": "npm run phase3:automation-audit",
+      "result": "PASS",
+      "summary": "current A checkout promotionFindings=14"
+    }
+  ],
+  "knownLegacyPaths": {
+    "legacyResolveEffect": 49,
+    "legacyExecuteAbility": 3,
+    "notClassifiable": 28
+  },
+  "areasNotVerified": [
+    "Gate A/B/C promotion",
+    "browser setup flow",
+    "remaining legacy consumer correctness",
+    "Artoria Caster post-battle Luck contract"
+  ]
+}

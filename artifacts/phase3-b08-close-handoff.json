@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "fd-phase3-agent-handoff-v1",
+  "generatedAt": "2026-09-10T00:00:00.000Z",
+  "from": "Codex A",
+  "to": "Codex B",
+  "sourceTask": "P3-A03",
+  "targetTask": "P3-B08",
+  "targetBranch": "codex/b-p3-b08-close",
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
+  "promotionNotice": "This handoff does not promote Gate A/B/C, Phase 3, or Release status.",
+  "targetScope": {
+    "mechanicFamily": "CARD_ACTION_SEMANTICS",
+    "contract": "CLOSE",
+    "representative": "servant.artoria-alt.skill.sc-artoria-alt-2#sc-artoria-alt-2.angra-mainyu-embrace",
+    "description": "Exact Artoria Alter residual on-card-play source-close contract."
+  },
+  "baselineForB": {
+    "instruction": "Use the accepted post-P3-B07 checkout as the numeric before baseline. Regenerate phase3:coverage in B08 before reporting before/after.",
+    "reviewerReportedPostB07": {
+      "newRuntimeSemanticRouted": 9,
+      "legacyResolveEffect": 52,
+      "dualRuntime": 0
+    }
+  },
+  "inventory": {
+    "command": "node docs/audits/fd-card-action-close-inventory.mjs",
+    "sourceFiles": 14,
+    "cardActionSemanticAbilities": 7,
+    "eligibleCount": 1,
+    "skippedCount": 6,
+    "eligible": [
+      {
+        "archiveId": "servant.artoria-alt",
+        "cardId": "servant.artoria-alt.skill.sc-artoria-alt-2",
+        "abilityId": "sc-artoria-alt-2.angra-mainyu-embrace",
+        "kind": "residual",
+        "activation": {
+          "trigger": "on_card_played"
+        },
+        "conditions": [
+          {
+            "type": "source_card_in_zone",
+            "zone": "field"
+          },
+          {
+            "type": "event_played_card_has_attribute",
+            "attribute": "宝具"
+          }
+        ],
+        "targets": [],
+        "cost": [],
+        "creates": [],
+        "effects": [
+          {
+            "type": "close_source_card"
+          }
+        ],
+        "semanticRoute": "CARD_ACTION_SEMANTICS_MINIMAL:CLOSE"
+      }
+    ],
+    "skipped": [
+      {
+        "archiveId": "master.kayneth",
+        "cardId": "master.kayneth.deck.volumen-hydrargyrum",
+        "abilityId": "volumen.extra-play",
+        "effects": [
+          "play_source_card"
+        ],
+        "skipReason": "out_of_scope:play_source_card_response_semantics"
+      },
+      {
+        "archiveId": "master.kiritsugu",
+        "cardId": "master.kiritsugu.skill.time-alter",
+        "abilityId": "time-alter.action",
+        "effects": [
+          "play_selected_cards",
+          "draw_cards"
+        ],
+        "skipReason": "out_of_scope:play_semantics"
+      },
+      {
+        "archiveId": "master.maiya",
+        "cardId": "master.maiya.skill.military",
+        "abilityId": "military.attach-support-shot",
+        "effects": [
+          "attach_card_to_player_attack"
+        ],
+        "skipReason": "out_of_scope:add_to_attack_semantics"
+      },
+      {
+        "archiveId": "master.maiya",
+        "cardId": "master.maiya.deck.support-shot",
+        "abilityId": "support-shot.append-only",
+        "effects": [
+          "append_only_rule"
+        ],
+        "skipReason": "out_of_scope:append_only_rule_marker"
+      },
+      {
+        "archiveId": "master.olga-marie",
+        "cardId": "master.olga-marie.skill.astronomical-science",
+        "abilityId": "astronomical-science.first-loss",
+        "effects": [
+          "activate_card_by_id"
+        ],
+        "skipReason": "out_of_scope:activate_semantics"
+      },
+      {
+        "archiveId": "servant.drake",
+        "cardId": "servant.drake.skill.sc-drake-1",
+        "abilityId": "sc-drake-1.mount-summon",
+        "effects": [
+          "play_selected_cards"
+        ],
+        "skipReason": "out_of_scope:play_semantics"
+      }
+    ]
+  },
+  "exactShapeRequirements": [
+    "residual ability",
+    "activation.trigger=on_card_played",
+    "no targets",
+    "no cost",
+    "no creates",
+    "exactly one close_source_card effect",
+    "condition source_card_in_zone(field)",
+    "condition event_played_card_has_attribute(宝具)",
+    "lifecycle duration, if present, limited to while_card_active",
+    "lifecycle cleanup, if present, limited to when_card_leaves_active_area",
+    "source card exists",
+    "source card is controlled by ability controller",
+    "source card is active face-up in an allowed active zone",
+    "source card has a compiled definition",
+    "triggering played card is visible to the source-close check and has 宝具"
+  ],
+  "gateCInvalidatedBy": [
+    "trigger other than exact residual on_card_played",
+    "triggering played-card requirement other than visible 宝具",
+    "targeted close",
+    "close then activate",
+    "source card not active",
+    "source card not face-up",
+    "source card off-board",
+    "source wrong-controller",
+    "source missing compiled definition",
+    "hidden/private or face-down source identity",
+    "variable_payment",
+    "pending_payment",
+    "create_card before close",
+    "activate_card after close",
+    "temporary-card dissolve",
+    "non-skill close destination matrix",
+    "once-per-game residual removal",
+    "broader cleanup ordering",
+    "modifier_power_follow_up",
+    "battle_result_dependency",
+    "PLAY",
+    "PLAY_SOURCE_RESPONSE",
+    "ADD_TO_ATTACK",
+    "ACTIVATE",
+    "CREATE_AND_ACTIVATE",
+    "roster-wide JSON migration"
+  ],
+  "bChecklist": [
+    "Prove routing by exact semantic form, not ability id.",
+    "Prove close_source_card is a typed primitive with closedCount result schema.",
+    "Prove exact classifier positives and negatives for wrong kind, wrong trigger, missing source-zone condition, missing played-card attribute condition, target additions, costs, creates, and extra effects.",
+    "Prove source-card lookup fails closed for missing, off-board, inactive, face-down, wrong-controller, and missing compiled definition.",
+    "Prove non-noble play does not close the source.",
+    "Prove visible noble play closes exactly one active source card and emits traceable source_card_closed plus effect_resolved(close_source_card) evidence.",
+    "Prove stale replay does not close or move the source twice.",
+    "Keep Kiritsugu targeted close-and-activate, temporary dissolve, non-skill destination close, and broad cleanup ordering outside B08.",
+    "Report before/after legacy route counts against accepted post-P3-B07 baseline."
+  ]
+}

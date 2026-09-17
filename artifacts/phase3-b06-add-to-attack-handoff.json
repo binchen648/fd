@@ -1,0 +1,189 @@
+{
+  "schemaVersion": "fd-phase3-agent-handoff-v1",
+  "generatedAt": "2026-09-10T00:00:00.000Z",
+  "from": "Codex A",
+  "to": "Codex B",
+  "sourceTask": "P3-A02",
+  "targetTask": "P3-B06",
+  "targetBranch": "codex/b-p3-b06-add-to-attack",
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
+  "promotionNotice": "This handoff does not promote Gate A/B/C, Phase 3, or Release status.",
+  "targetScope": {
+    "mechanicFamily": "CARD_ACTION_SEMANTICS",
+    "contract": "ADD_TO_ATTACK",
+    "representative": "master.maiya.skill.military#military.attach-support-shot",
+    "description": "Exact support-shot append-to-attack contract with fixed mana cost, non-controller target, round-end return marker, and cannot-win status marker."
+  },
+  "baselineForB": {
+    "instruction": "Use the accepted post-P3-B05 checkout as the numeric before baseline. Regenerate phase3:coverage in B06 before reporting before/after.",
+    "provisionalA02Baseline": {
+      "totalAbilities": 92,
+      "newRuntimeSemanticRouted": 8,
+      "legacyExecuteAbility": 3,
+      "legacyResolveEffect": 53,
+      "dualRuntime": 0,
+      "pilotAllowlist": 0,
+      "notClassifiable": 28,
+      "compiledDefinitionHash": "1bccc97dd813d9b48208ff6223db40f11a995ca123a513e78e7e444d9bdafe2f"
+    }
+  },
+  "inventory": {
+    "command": "node docs/audits/fd-card-action-add-to-attack-inventory.mjs",
+    "sourceFiles": 14,
+    "cardActionSemanticAbilities": 7,
+    "eligibleCount": 1,
+    "skippedCount": 6,
+    "eligible": [
+      {
+        "archiveId": "master.maiya",
+        "cardId": "master.maiya.skill.military",
+        "abilityId": "military.attach-support-shot",
+        "kind": "phase_action",
+        "activation": {
+          "phase": "advance",
+          "opens": "controller_action_window"
+        },
+        "conditions": [
+          "not(controller_at_battlefield)"
+        ],
+        "targets": [
+          {
+            "id": "supported_player",
+            "type": "player",
+            "constraints": [
+              "not_controller"
+            ],
+            "count": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        ],
+        "cost": [
+          {
+            "type": "pay_mana",
+            "amount": 2
+          }
+        ],
+        "effects": [
+          {
+            "type": "attach_card_to_player_attack",
+            "cardId": "master.maiya.deck.support-shot",
+            "target": "supported_player",
+            "returnAtRoundEnd": true,
+            "controllerCannotWinStatus": "maiya_cannot_win_battle_this_round"
+          }
+        ],
+        "semanticRoute": "CARD_ACTION_SEMANTICS_MINIMAL:ADD_TO_ATTACK"
+      }
+    ],
+    "skipped": [
+      {
+        "archiveId": "master.kayneth",
+        "cardId": "master.kayneth.deck.volumen-hydrargyrum",
+        "abilityId": "volumen.extra-play",
+        "effects": [
+          "play_source_card"
+        ],
+        "skipReason": "out_of_scope:play_semantics"
+      },
+      {
+        "archiveId": "master.kiritsugu",
+        "cardId": "master.kiritsugu.skill.time-alter",
+        "abilityId": "time-alter.action",
+        "effects": [
+          "play_selected_cards",
+          "draw_cards"
+        ],
+        "skipReason": "out_of_scope:play_semantics"
+      },
+      {
+        "archiveId": "master.maiya",
+        "cardId": "master.maiya.deck.support-shot",
+        "abilityId": "support-shot.append-only",
+        "effects": [
+          "append_only_rule"
+        ],
+        "skipReason": "out_of_scope:append_only_rule_marker"
+      },
+      {
+        "archiveId": "master.olga-marie",
+        "cardId": "master.olga-marie.skill.astronomical-science",
+        "abilityId": "astronomical-science.first-loss",
+        "effects": [
+          "activate_card_by_id"
+        ],
+        "skipReason": "out_of_scope:activate_semantics"
+      },
+      {
+        "archiveId": "servant.artoria-alt",
+        "cardId": "servant.artoria-alt.skill.sc-artoria-alt-2",
+        "abilityId": "sc-artoria-alt-2.angra-mainyu-embrace",
+        "effects": [
+          "close_source_card"
+        ],
+        "skipReason": "out_of_scope:close_semantics"
+      },
+      {
+        "archiveId": "servant.drake",
+        "cardId": "servant.drake.skill.sc-drake-1",
+        "abilityId": "sc-drake-1.mount-summon",
+        "effects": [
+          "play_selected_cards"
+        ],
+        "skipReason": "out_of_scope:play_semantics"
+      }
+    ]
+  },
+  "exactShapeRequirements": [
+    "phase_action",
+    "activation.phase=advance",
+    "activation.opens=controller_action_window",
+    "condition includes not(controller_at_battlefield)",
+    "one player target with not_controller constraint and count 1..1",
+    "fixed pay_mana(2)",
+    "no creates",
+    "exactly one attach_card_to_player_attack effect",
+    "effect.cardId=master.maiya.deck.support-shot",
+    "effect.target=supported_player",
+    "effect.returnAtRoundEnd=true",
+    "effect.controllerCannotWinStatus=maiya_cannot_win_battle_this_round",
+    "support-shot source exists in controller skill zone at server revalidation"
+  ],
+  "gateCInvalidatedBy": [
+    "normal hand-card play",
+    "response-window source-card play",
+    "play_selected_cards",
+    "play_source_card",
+    "append_only_rule",
+    "variable_payment",
+    "pending_payment",
+    "target shape other than one non-controller player",
+    "hidden_private_choice",
+    "missing support-shot identity",
+    "support-shot not in controller skill zone",
+    "self target",
+    "ordinary play counter consumption",
+    "missing returnAtRoundEnd",
+    "source close",
+    "modifier_power_calculation",
+    "battle result dependency beyond cannot-win status marker",
+    "lifecycle semantics beyond round-end return",
+    "CREATE_AND_ACTIVATE",
+    "ACTIVATE",
+    "CLOSE",
+    "roster-wide JSON migration"
+  ],
+  "bChecklist": [
+    "Prove routing by exact semantic form, not ability id.",
+    "Prove fixed pay_mana(2) fail-closed for missing, wrong, variable, or pending cost.",
+    "Prove controller at battlefield cannot activate and does not pay mana.",
+    "Prove missing support-shot fails closed before spending mana.",
+    "Prove target revalidation rejects self-target and unavailable players.",
+    "Prove stale replay does not duplicate attachment, mana payment, cannot-win status, or trace side effects.",
+    "Prove normal PLAY counters are not consumed by this append-to-attack contract unless future canonical text explicitly requires it.",
+    "Keep support-shot append_only_rule and support-shot.suppress out of B06 runtime migration.",
+    "Keep Time Alter under PLAY, Volumen under PLAY_SOURCE_RESPONSE, and Drake skipped.",
+    "Report before/after legacy route counts against accepted post-P3-B05 baseline."
+  ]
+}

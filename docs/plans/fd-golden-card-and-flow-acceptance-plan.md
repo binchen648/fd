@@ -3,12 +3,12 @@
 - Document Role: SUBPLAN
 - Status: ACTIVE
 - Implementation Status: GOLDEN_FLOW_1_IMPLEMENTATION_COMPLETE_CANDIDATE / GOLDEN_FLOW_2_IMPLEMENTATION_COMPLETE_CANDIDATE / GOLDEN_EATER_GATE_C_IMPLEMENTATION_COMPLETE_CANDIDATE / OTHER_FLOWS_CONTRACTS_DEFINED
-- Acceptance Status: No Golden Flow or Golden Card is `E2E_VERIFIED`; Golden Flow 1, Golden Flow 2, and the complete Golden Eater candidate have implementer-supplied Gate C evidence pending independent review.
+- Acceptance Status: Golden Flow 2 representative Combat + Power + Winner + VP slice is independently `E2E_VERIFIED` at review `9db8a7236d8dae4d00e3e543e2094c5ea15a5ff2`; Golden Flow 1 and the complete Golden Eater candidate remain pending independent review.
 - Parent: `docs/plans/fd-card-engine-stabilization-plan.md`
 - Depends On: `docs/rules/FD-Game-Rules-Final.md`; `docs/plans/fd-rules-conformance-and-acceptance.md`; `docs/audits/fd-rule-conformance-matrix.md`; `docs/audits/fd-rule-interaction-matrix.md`
 - Consumed By: implementers and independent reviewers selecting Golden Card / Golden Flow slices
 - Supersedes: none
-- Last Verified: 2026-09-07
+- Last Verified: 2026-09-14
 
 - Date: 2026-09-07
 - Acceptance baseline: `docs/plans/fd-rules-conformance-and-acceptance.md`
@@ -97,8 +97,8 @@ Current slice status:
 - Gate B scenario evidence exists via `packages/rules/tests/regression/battle-winner-conformance.test.ts` and `packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts` for tied eligible winners, defeated high-power exclusion, solo battlefield, VP source split, recon VP, event trace, scoring consumption, and replay summary.
 - Production path evidence exists via `packages/rules/tests/match-session.test.ts`, proving `MatchSession -> resolveBattlePhase -> resolveBattlefield -> applyBattleScoring -> projectToClientState`.
 - Server command-chain/reconnect evidence exists via `apps/server/src/match-server.test.ts`: the test installs a deterministic battle-pre state, then resolves through `client:end_turn -> expectedRevision check -> MatchRoom.endClientTurn -> MatchSession.passPriority -> resolveBattlePhase`.
-- Browser Gate C candidate evidence exists via `e2e/fd-golden-flow-2-combat-power-winner-vp.spec.ts`: it restores only battle-pre state, clicks the real remote end-turn UI, verifies settlement projection, sends a stale revision command, and reconnects P2.
-- Independent Reviewer promotion is still required before `E2E_VERIFIED`.
+- Browser Gate C evidence exists via `e2e/fd-golden-flow-2-combat-power-winner-vp.spec.ts`: it restores only battle-pre state, clicks the real remote end-turn UI, verifies settlement projection, sends a stale revision command, and reconnects/reloads without duplicate scoring.
+- Independent Reviewer R2 accepted the representative Golden Flow 2 slice as `E2E_VERIFIED`; see `docs/reports/2026-09-14-golden-flow-2-independent-review-r2.md` (`9db8a7236d8dae4d00e3e543e2094c5ea15a5ff2`).
 
 Initial state:
 
@@ -334,4 +334,4 @@ Design documents and reports are not verification evidence by themselves.
 
 Before broad roster migration, continue `CARD_ACTION_SEMANTICS_MINIMAL` one contract at a time. The next recommended slice is `CREATE_AND_ACTIVATE`, but only after inventory proves one exact representative and skip reasons for all create/activate hybrids; it must stay separate from Drake's hidden/power/lifecycle `play_selected_cards`, targeted close, `ACTIVATE`, and broader cleanup ordering.
 
-Golden Flow 1, Golden Flow 2, Golden Eater, Time Alter, Conversion Magic, and Artoria Caster `选王剑` remain candidate evidence pending independent review. They should inform representative mechanic acceptance, but none of them authorizes Phase 3 PASS, Roster Migration PASS, or Release Ready.
+Golden Flow 2 is independently accepted as a representative `E2E_VERIFIED` flow. Golden Flow 1, Golden Eater, Time Alter, Conversion Magic, and Artoria Caster `选王剑` remain candidate evidence pending their own independent review. Golden Flow 2 acceptance informs representative battle/scoring prerequisites only; it does not authorize Phase 3 PASS, Roster Migration PASS, or Release Ready.

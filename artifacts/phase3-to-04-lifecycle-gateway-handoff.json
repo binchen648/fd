@@ -1,0 +1,54 @@
+﻿{
+    "schemaVersion":  "fd-phase3-spec-handoff-v1",
+    "generatedAt":  "2026-09-14",
+    "task":  "P3-TO-04",
+    "name":  "Lifecycle Policy Gateway",
+    "owner":  "Codex B",
+    "lane":  "SPECIFICATION_ONLY",
+    "status":  "SPEC_ACCEPTED",
+    "maximumCompletionClaim":  "SPEC_REVIEW_READY",
+    "runtimeAuthorized":  false,
+    "denominators":  {
+                         "explicitLifecycleAbilities":  11
+                     },
+    "requiredPolicies":  [
+                             "stable_source_identity",
+                             "active_closed_source_validity",
+                             "duration_start_and_expiration",
+                             "round_count_and_while_active_duration",
+                             "source_leave_active_area_cleanup",
+                             "remain_active_policy",
+                             "per_round_per_game_reset",
+                             "unique_group_conflict_policy",
+                             "cleanup_destination_and_ownership",
+                             "trigger_interaction_boundary",
+                             "projection_reconnect_persistence",
+                             "fail_closed_stale_or_unsupported_lifecycle"
+                         ],
+    "forbidden":  [
+                      "runtime changes",
+                      "card-specific cleanup cases",
+                      "Gate promotion",
+                      "absorbing Trigger, Battle, Hidden, Modifier, or Card Action semantics into Lifecycle"
+                  ],
+    "dependencies":  {
+                         "triggerGateway":  {
+                                                "status":  "SPEC_ACCEPTED",
+                                                "specCommit":  "ac70c33cb943d99d02f1f7077d80b36337014439",
+                                                "reviewCommit":  "6ce17aab18ea20cec7e5fcfc6efb4fc5f6384f6e"
+                                            },
+                         "interactionGateway":  {
+                                                    "status":  "SPEC_ACCEPTED_REACHABLE_SYNC",
+                                                    "syncCommit":  "7aab428"
+                                                }
+                     },
+    "acceptedSpec":  {
+                         "branch":  "codex/b-p3-to-04-lifecycle-gateway-contract-r1",
+                         "commit":  "b46cfa4439c27112d14066e2239e7524f5a1e137",
+                         "reviewBranch":  "codex/r-p3-to-04-lifecycle-gateway-r1-review",
+                         "reviewCommit":  "d1e13d84b31bcbb57a6326ce9ea803fa877c651c",
+                         "reviewDecision":  "SPEC_ACCEPTED",
+                         "runtimeAuthorized":  false,
+                         "gatePromotionPerformed":  false
+                     }
+}

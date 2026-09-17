@@ -57,9 +57,18 @@ export class MatchRoomHub {
     return room.getProjection(clientId);
   }
 
-  dispatchCommand(roomId: string, clientId: string, command: AbilityCommand): { result: DispatchResult; projection: MatchRoomProjection } {
+  dispatchCommand(roomId: string, clientId: string, command: AbilityCommand, expectedRevision?: number): { result: DispatchResult; projection: MatchRoomProjection } {
     const room = this.getRoom(roomId);
+    this.assertExpectedRevision(room, clientId, expectedRevision, true);
     const result = room.dispatchClientCommand(clientId, command);
+    if (result.ok) this.bump(roomId, 'command_dispatched');
+    return { result, projection: room.getProjection(clientId) };
+  }
+
+  endTurn(roomId: string, clientId: string, expectedRevision?: number): { result: DispatchResult; projection: MatchRoomProjection } {
+    const room = this.getRoom(roomId);
+    this.assertExpectedRevision(room, clientId, expectedRevision);
+    const result = room.endClientTurn(clientId);
     this.bump(roomId, 'command_dispatched');
     return { result, projection: room.getProjection(clientId) };
   }
@@ -122,6 +131,17 @@ export class MatchRoomHub {
     const version = (this.roomVersions.get(roomId) ?? 0) + 1;
     this.roomVersions.set(roomId, version);
     return { roomId, version, type };
+  }
+
+  private assertExpectedRevision(room: MatchRoom, clientId: string, expectedRevision?: number, required = false): void {
+    if (expectedRevision === undefined) {
+      if (required) throw new Error('missing_expected_revision: interaction command requires expectedRevision');
+      return;
+    }
+    const actualRevision = room.getProjection(clientId).match?.view.revision;
+    if (actualRevision !== expectedRevision) {
+      throw new Error(`Stale command revision: expected ${expectedRevision}, current ${actualRevision ?? 'unavailable'}`);
+    }
   }
 }
 

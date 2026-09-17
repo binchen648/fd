@@ -1,0 +1,775 @@
+{
+  "schemaVersion": "fd-phase3-review-packet-v1",
+  "generatedAt": "2026-09-09T05:15:37.335Z",
+  "task": "P3-B01",
+  "batch": "PHASE_3_COVERAGE_AND_EVIDENCE_AUTOMATION",
+  "reviewerAuthorityNotice": "Implementation packet only. It does not promote Gate A/B/C, Phase 3, or Release status.",
+  "changedSemanticPrimitives": [
+    "CARD_ACTION_SEMANTICS_MINIMAL:ACTIVATE:1",
+    "CARD_ACTION_SEMANTICS_MINIMAL:CLOSE:1",
+    "CARD_ACTION_SEMANTICS_MINIMAL:PLAY:1",
+    "CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE:1",
+    "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA:1",
+    "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW:1",
+    "RESOURCE_NUMERIC_CORE_DIRECT_ACTION:3"
+  ],
+  "affectedAbilities": [
+    {
+      "archiveId": "master.gatou",
+      "cardId": "master.gatou.command-spell",
+      "abilityId": "command-spell.gain-mana",
+      "semanticRoutes": [
+        "RESOURCE_NUMERIC_CORE_DIRECT_ACTION"
+      ],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
+    },
+    {
+      "archiveId": "master.irisviel",
+      "cardId": "master.irisviel.skill.conversion-magic",
+      "abilityId": "conversion-magic.preparation",
+      "semanticRoutes": [
+        "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA"
+      ],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
+    },
+    {
+      "archiveId": "master.kayneth",
+      "cardId": "master.kayneth.deck.volumen-hydrargyrum",
+      "abilityId": "volumen.extra-play",
+      "semanticRoutes": [
+        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE"
+      ],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
+    },
+    {
+      "archiveId": "master.kiritsugu",
+      "cardId": "master.kiritsugu.skill.time-alter",
+      "abilityId": "time-alter.action",
+      "semanticRoutes": [
+        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY",
+        "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW"
+      ],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
+    },
+    {
+      "archiveId": "master.olga-marie",
+      "cardId": "master.olga-marie.skill.astronomical-science",
+      "abilityId": "astronomical-science.first-loss",
+      "semanticRoutes": [
+        "CARD_ACTION_SEMANTICS_MINIMAL:ACTIVATE"
+      ],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
+    },
+    {
+      "archiveId": "master.olga-marie",
+      "cardId": "master.olga-marie.command-spell",
+      "abilityId": "command-spell.gain-mana",
+      "semanticRoutes": [
+        "RESOURCE_NUMERIC_CORE_DIRECT_ACTION"
+      ],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
+    },
+    {
+      "archiveId": "servant.artoria-alt",
+      "cardId": "servant.artoria-alt.skill.sc-artoria-alt-2",
+      "abilityId": "sc-artoria-alt-2.angra-mainyu-embrace",
+      "semanticRoutes": [
+        "CARD_ACTION_SEMANTICS_MINIMAL:CLOSE"
+      ],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
+    },
+    {
+      "archiveId": "servant.tomoe",
+      "cardId": "servant.tomoe.skill.sc-tomoe-1",
+      "abilityId": "sc-tomoe-1.independent-action",
+      "semanticRoutes": [
+        "RESOURCE_NUMERIC_CORE_DIRECT_ACTION"
+      ],
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED"
+    }
+  ],
+  "runtimeRoutingBeforeAfter": {
+    "semanticRouteCounts": {
+      "CARD_ACTION_SEMANTICS_MINIMAL:ACTIVATE": 1,
+      "CARD_ACTION_SEMANTICS_MINIMAL:CLOSE": 1,
+      "CARD_ACTION_SEMANTICS_MINIMAL:PLAY": 1,
+      "CARD_ACTION_SEMANTICS_MINIMAL:PLAY_SOURCE_CARD_WITH_COST_RESPONSE": 1,
+      "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA": 1,
+      "CARD_ZONE_CORE_DIRECT_ACTION:PLAY_SELECTED_CARDS_PLUS_DRAW": 1,
+      "RESOURCE_NUMERIC_CORE_DIRECT_ACTION": 3
+    },
+    "newRuntimeConsumers": {
+      "before": 0,
+      "after": 9,
+      "delta": 9
+    },
+    "legacyExecuteAbilityConsumers": {
+      "before": 3,
+      "after": 3,
+      "delta": 0
+    },
+    "legacyResolveEffectConsumers": {
+      "before": 58,
+      "after": 58,
+      "delta": 0
+    },
+    "dualRuntimeConsumers": {
+      "before": 0,
+      "after": 0,
+      "delta": 0
+    },
+    "notClassifiable": {
+      "before": 33,
+      "after": 22,
+      "delta": -11
+    },
+    "pilotAllowlistEntries": {
+      "before": 0,
+      "after": 0,
+      "delta": 0
+    },
+    "cardSpecificRuntimeHandlers": [
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 63,
+        "id": "servant_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 63,
+        "id": "servant_deck_card",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 63,
+        "id": "servant_attack",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 70,
+        "id": "servant_deck_card",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 70,
+        "id": "servant_attack",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 70,
+        "id": "master_deck_card",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 84,
+        "id": "servant_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 84,
+        "id": "servant_deck_card",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 84,
+        "id": "servant_attack",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 84,
+        "id": "master_deck_card",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 509,
+        "id": "servant_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 563,
+        "id": "servant_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 759,
+        "id": "servant_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 766,
+        "id": "servant_package_revealed",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 816,
+        "id": "servant_package",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 1141,
+        "id": "servant_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/match-session.ts",
+        "line": 165,
+        "id": "master",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/match-session.ts",
+        "line": 166,
+        "id": "servant",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/match-session.ts",
+        "line": 269,
+        "id": "master",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/match-session.ts",
+        "line": 1235,
+        "id": "master_main",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/match-session.ts",
+        "line": 1236,
+        "id": "servant_identity",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/match-session.ts",
+        "line": 1238,
+        "id": "servant_deck",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/match-session.ts",
+        "line": 1239,
+        "id": "master_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/match-session.ts",
+        "line": 1239,
+        "id": "master_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/match-session.ts",
+        "line": 1240,
+        "id": "servant_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/match-session.ts",
+        "line": 1240,
+        "id": "servant_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/core/combat-resolver.ts",
+        "line": 235,
+        "id": "servant_attack",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/core/combat-resolver.ts",
+        "line": 244,
+        "id": "servant_deck_card",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/core/combat-resolver.ts",
+        "line": 244,
+        "id": "servant_attack",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/core/combat-resolver.ts",
+        "line": 244,
+        "id": "master_deck_card",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/core/combat-resolver.ts",
+        "line": 353,
+        "id": "servant_attack",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/core/combat-resolver.ts",
+        "line": 371,
+        "id": "servant_skill",
+        "confidence": "STATIC_LITERAL"
+      }
+    ]
+  },
+  "legacyBurnDown": {
+    "legacyExecuteAbilityConsumers": {
+      "before": 3,
+      "after": 3,
+      "delta": 0
+    },
+    "legacyResolveEffectConsumers": {
+      "before": 58,
+      "after": 58,
+      "delta": 0
+    },
+    "dualRuntimeConsumers": {
+      "before": 0,
+      "after": 0,
+      "delta": 0
+    },
+    "pilotAllowlistEntries": {
+      "before": 0,
+      "after": 0,
+      "delta": 0
+    },
+    "unsupportedNodes": {
+      "before": 33,
+      "after": 33,
+      "delta": 0
+    },
+    "kpiNote": "KPI tracks routing/legacy consumers and unsupported nodes, not raw ability count."
+  },
+  "suggestedTestCommands": [
+    "npx vitest run scripts/tests/phase3-coverage.test.ts",
+    "npm run phase3:coverage",
+    "npm run phase3:review-packet -- --task P3-B01",
+    "npm run typecheck"
+  ],
+  "negativeEvidence": {
+    "taxonomyDriftProtections": [
+      "phase/timing values such as phase_action are not Domain Event Trigger counts",
+      "ability kinds such as passive are not Lifecycle Policy counts",
+      "on_card_played is not Interaction unless the ability asks for additional player input",
+      "target references do not imply PendingInteraction without declared targets",
+      "unknown primitive/runtime routing is preserved as NOT_CLASSIFIABLE"
+    ],
+    "unclassifiedItems": [
+      {
+        "archiveId": "master.kayneth",
+        "cardId": "master.kayneth.skill.pride",
+        "abilityId": "pride.must-deploy",
+        "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:deployment_rule_override"
+      },
+      {
+        "archiveId": "master.kayneth",
+        "cardId": "master.kayneth.deck.volumen-hydrargyrum",
+        "abilityId": "volumen.slash",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "master.maiya",
+        "cardId": "master.maiya.deck.support-shot",
+        "abilityId": "support-shot.suppress",
+        "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transfer_vp_to_owner"
+      },
+      {
+        "archiveId": "master.olga-marie",
+        "cardId": "master.olga-marie.skill.chaldeas",
+        "abilityId": "chaldeas.peek-bottoms",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.achilles",
+        "cardId": "servant.achilles.skill.sc-achilles-1",
+        "abilityId": "sc-achilles-1.gale-advance",
+        "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:opponents_random_discard"
+      },
+      {
+        "archiveId": "servant.achilles",
+        "cardId": "servant.achilles.skill.sc-achilles-2",
+        "abilityId": "sc-achilles-2.blue-sky",
+        "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:choice_is"
+      },
+      {
+        "archiveId": "servant.achilles",
+        "cardId": "servant.achilles.skill.sc-achilles-2",
+        "abilityId": "sc-achilles-2.blue-sky",
+        "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:hide_servant_true_name"
+      },
+      {
+        "archiveId": "servant.achilles",
+        "cardId": "servant.achilles.skill.sc-achilles-2",
+        "abilityId": "sc-achilles-2.blue-sky",
+        "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:opponents_random_discard"
+      },
+      {
+        "archiveId": "servant.achilles",
+        "cardId": "servant.achilles.skill.sc-achilles-3",
+        "abilityId": "sc-achilles-3.hero-duel",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.artoria-alt",
+        "cardId": "servant.artoria-alt.skill.sc-artoria-alt-1",
+        "abilityId": "sc-artoria-alt-1.ignore-situation-restrictions",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.artoria-alt",
+        "cardId": "servant.artoria-alt.skill.sc-artoria-alt-1",
+        "abilityId": "sc-artoria-alt-1.chain-of-wind-king",
+        "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:power_bonus"
+      },
+      {
+        "archiveId": "servant.artoria-alt",
+        "cardId": "servant.artoria-alt.skill.sc-artoria-alt-2",
+        "abilityId": "sc-artoria-alt-2.low-mana-play-override",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.artoria-alt",
+        "cardId": "servant.artoria-alt.skill.sc-artoria-alt-2",
+        "abilityId": "sc-artoria-alt-2.forbid-noble-phantasm-when-low-mana",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.artoria-alt",
+        "cardId": "servant.artoria-alt.skill.sc-artoria-alt-3",
+        "abilityId": "sc-artoria-alt-3.magic-resistance",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.artoriac",
+        "cardId": "servant.artoriac.skill.sc-artoriac-1",
+        "abilityId": "sc-artoriac-1.residual-special-power-bonus",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.artoriac",
+        "cardId": "servant.artoriac.skill.sc-artoriac-3",
+        "abilityId": "sc-artoriac-3.discard-public-and-power-formula",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.artoriac",
+        "cardId": "servant.artoriac.skill.sc-artoriac-3",
+        "abilityId": "sc-artoriac-3.shuffle-discard-on-victory",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.artoriac",
+        "cardId": "servant.artoriac.skill.sc-artoriac-5",
+        "abilityId": "sc-artoriac-5.gain-mana-or-vp",
+        "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:can_adjust_mana"
+      },
+      {
+        "archiveId": "servant.drake",
+        "cardId": "servant.drake.skill.sc-drake-2",
+        "abilityId": "sc-drake-2.reward-and-move",
+        "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:claim_and_discard_location_events"
+      },
+      {
+        "archiveId": "servant.drake",
+        "cardId": "servant.drake.skill.sc-drake-2",
+        "abilityId": "sc-drake-2.reward-and-move",
+        "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:controller_alone_at_battlefield"
+      },
+      {
+        "archiveId": "servant.drake",
+        "cardId": "servant.drake.skill.sc-drake-2",
+        "abilityId": "sc-drake-2.reward-and-move",
+        "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:controller_at_location_kind"
+      },
+      {
+        "archiveId": "servant.drake",
+        "cardId": "servant.drake.skill.sc-drake-3",
+        "abilityId": "sc-drake-3.movement-power",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.drake",
+        "cardId": "servant.drake.skill.sc-drake-3",
+        "abilityId": "sc-drake-3.reverse-dash",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.ereshkigal",
+        "cardId": "servant.ereshkigal.skill.sc-ereshkigal-2",
+        "abilityId": "sc-ereshkigal-2.self-exempt",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.ereshkigal",
+        "cardId": "servant.ereshkigal.skill.sc-ereshkigal-3",
+        "abilityId": "sc-ereshkigal-3.blooming-netherworld",
+        "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:card_not_on_board"
+      },
+      {
+        "archiveId": "servant.ereshkigal",
+        "cardId": "servant.ereshkigal.skill.sc-ereshkigal-3",
+        "abilityId": "sc-ereshkigal-3.blooming-netherworld",
+        "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:power_bonus"
+      },
+      {
+        "archiveId": "servant.kintoki",
+        "cardId": "servant.kintoki.skill.sc-kintoki-1",
+        "abilityId": "sc-kintoki-1.ignore-skill-zone-mana-requirement",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.kintoki",
+        "cardId": "servant.kintoki.skill.sc-kintoki-1",
+        "abilityId": "sc-kintoki-1.ignore-situation-play-forbid",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.kintoki",
+        "cardId": "servant.kintoki.skill.sc-kintoki-1",
+        "abilityId": "sc-kintoki-1.once-per-game",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.kintoki",
+        "cardId": "servant.kintoki.skill.sc-kintoki-2",
+        "abilityId": "sc-kintoki-2.ignore-skill-zone-mana-requirement",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.kintoki",
+        "cardId": "servant.kintoki.skill.sc-kintoki-2",
+        "abilityId": "sc-kintoki-2.ignore-situation-play-forbid",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.kintoki",
+        "cardId": "servant.kintoki.skill.sc-kintoki-2",
+        "abilityId": "sc-kintoki-2.once-per-game",
+        "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+      },
+      {
+        "archiveId": "servant.kintoki",
+        "cardId": "servant.kintoki.skill.sc-kintoki-3",
+        "abilityId": "sc-kintoki-3.golden-eater",
+        "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:controller_at_battlefield"
+      }
+    ]
+  },
+  "remainingLegacy": {
+    "legacyExecuteAbilityConsumers": 3,
+    "legacyResolveEffectConsumers": 58,
+    "dualRuntimeConsumers": 0,
+    "notClassifiable": 22
+  },
+  "unclassifiedItems": [
+    {
+      "archiveId": "master.kayneth",
+      "cardId": "master.kayneth.skill.pride",
+      "abilityId": "pride.must-deploy",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:deployment_rule_override"
+    },
+    {
+      "archiveId": "master.kayneth",
+      "cardId": "master.kayneth.deck.volumen-hydrargyrum",
+      "abilityId": "volumen.slash",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "master.maiya",
+      "cardId": "master.maiya.deck.support-shot",
+      "abilityId": "support-shot.suppress",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transfer_vp_to_owner"
+    },
+    {
+      "archiveId": "master.olga-marie",
+      "cardId": "master.olga-marie.skill.chaldeas",
+      "abilityId": "chaldeas.peek-bottoms",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.achilles",
+      "cardId": "servant.achilles.skill.sc-achilles-1",
+      "abilityId": "sc-achilles-1.gale-advance",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:opponents_random_discard"
+    },
+    {
+      "archiveId": "servant.achilles",
+      "cardId": "servant.achilles.skill.sc-achilles-2",
+      "abilityId": "sc-achilles-2.blue-sky",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:choice_is"
+    },
+    {
+      "archiveId": "servant.achilles",
+      "cardId": "servant.achilles.skill.sc-achilles-2",
+      "abilityId": "sc-achilles-2.blue-sky",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:hide_servant_true_name"
+    },
+    {
+      "archiveId": "servant.achilles",
+      "cardId": "servant.achilles.skill.sc-achilles-2",
+      "abilityId": "sc-achilles-2.blue-sky",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:opponents_random_discard"
+    },
+    {
+      "archiveId": "servant.achilles",
+      "cardId": "servant.achilles.skill.sc-achilles-3",
+      "abilityId": "sc-achilles-3.hero-duel",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.artoria-alt",
+      "cardId": "servant.artoria-alt.skill.sc-artoria-alt-1",
+      "abilityId": "sc-artoria-alt-1.ignore-situation-restrictions",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.artoria-alt",
+      "cardId": "servant.artoria-alt.skill.sc-artoria-alt-1",
+      "abilityId": "sc-artoria-alt-1.chain-of-wind-king",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:power_bonus"
+    },
+    {
+      "archiveId": "servant.artoria-alt",
+      "cardId": "servant.artoria-alt.skill.sc-artoria-alt-2",
+      "abilityId": "sc-artoria-alt-2.low-mana-play-override",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.artoria-alt",
+      "cardId": "servant.artoria-alt.skill.sc-artoria-alt-2",
+      "abilityId": "sc-artoria-alt-2.forbid-noble-phantasm-when-low-mana",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.artoria-alt",
+      "cardId": "servant.artoria-alt.skill.sc-artoria-alt-3",
+      "abilityId": "sc-artoria-alt-3.magic-resistance",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.artoriac",
+      "cardId": "servant.artoriac.skill.sc-artoriac-1",
+      "abilityId": "sc-artoriac-1.residual-special-power-bonus",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.artoriac",
+      "cardId": "servant.artoriac.skill.sc-artoriac-3",
+      "abilityId": "sc-artoriac-3.discard-public-and-power-formula",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.artoriac",
+      "cardId": "servant.artoriac.skill.sc-artoriac-3",
+      "abilityId": "sc-artoriac-3.shuffle-discard-on-victory",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.artoriac",
+      "cardId": "servant.artoriac.skill.sc-artoriac-5",
+      "abilityId": "sc-artoriac-5.gain-mana-or-vp",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:can_adjust_mana"
+    },
+    {
+      "archiveId": "servant.drake",
+      "cardId": "servant.drake.skill.sc-drake-2",
+      "abilityId": "sc-drake-2.reward-and-move",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:claim_and_discard_location_events"
+    },
+    {
+      "archiveId": "servant.drake",
+      "cardId": "servant.drake.skill.sc-drake-2",
+      "abilityId": "sc-drake-2.reward-and-move",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:controller_alone_at_battlefield"
+    },
+    {
+      "archiveId": "servant.drake",
+      "cardId": "servant.drake.skill.sc-drake-2",
+      "abilityId": "sc-drake-2.reward-and-move",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:controller_at_location_kind"
+    },
+    {
+      "archiveId": "servant.drake",
+      "cardId": "servant.drake.skill.sc-drake-3",
+      "abilityId": "sc-drake-3.movement-power",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.drake",
+      "cardId": "servant.drake.skill.sc-drake-3",
+      "abilityId": "sc-drake-3.reverse-dash",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.ereshkigal",
+      "cardId": "servant.ereshkigal.skill.sc-ereshkigal-2",
+      "abilityId": "sc-ereshkigal-2.self-exempt",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.ereshkigal",
+      "cardId": "servant.ereshkigal.skill.sc-ereshkigal-3",
+      "abilityId": "sc-ereshkigal-3.blooming-netherworld",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:card_not_on_board"
+    },
+    {
+      "archiveId": "servant.ereshkigal",
+      "cardId": "servant.ereshkigal.skill.sc-ereshkigal-3",
+      "abilityId": "sc-ereshkigal-3.blooming-netherworld",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:power_bonus"
+    },
+    {
+      "archiveId": "servant.kintoki",
+      "cardId": "servant.kintoki.skill.sc-kintoki-1",
+      "abilityId": "sc-kintoki-1.ignore-skill-zone-mana-requirement",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.kintoki",
+      "cardId": "servant.kintoki.skill.sc-kintoki-1",
+      "abilityId": "sc-kintoki-1.ignore-situation-play-forbid",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.kintoki",
+      "cardId": "servant.kintoki.skill.sc-kintoki-1",
+      "abilityId": "sc-kintoki-1.once-per-game",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.kintoki",
+      "cardId": "servant.kintoki.skill.sc-kintoki-2",
+      "abilityId": "sc-kintoki-2.ignore-skill-zone-mana-requirement",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.kintoki",
+      "cardId": "servant.kintoki.skill.sc-kintoki-2",
+      "abilityId": "sc-kintoki-2.ignore-situation-play-forbid",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.kintoki",
+      "cardId": "servant.kintoki.skill.sc-kintoki-2",
+      "abilityId": "sc-kintoki-2.once-per-game",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.kintoki",
+      "cardId": "servant.kintoki.skill.sc-kintoki-3",
+      "abilityId": "sc-kintoki-3.golden-eater",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:controller_at_battlefield"
+    }
+  ]
+}

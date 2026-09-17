@@ -1,11 +1,34 @@
 import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, RuleNode, AdapterReportEntry } from './types';
 import { hostOperations } from './types';
+import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state';
+import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
 }
 export function nodes(value: unknown): RuleNode[] { return Array.isArray(value) ? value.map(node) : []; }
 export function str(value: unknown): string { return typeof value === 'string' ? value : ''; }
+function isAcceptedMagicResistanceIndependentModifierLifecycle(rawAbility: RuleNode, modifier: RuleNode): boolean {
+  if (str(rawAbility.kind) !== 'phase_action') return false;
+  const activation = node(rawAbility.activation);
+  if (str(activation.phase) !== 'combat' || str(activation.opens) !== 'controller_combat_action_window' ||
+    str(activation.requiresSourceState) !== 'active' ||
+    !Object.keys(activation).every((key) => ['phase', 'opens', 'requiresSourceState'].includes(key))) return false;
+  if (nodes(rawAbility.conditions).length !== 0 || nodes(rawAbility.targets).length !== 0 ||
+    (Array.isArray(rawAbility.cost) ? nodes(rawAbility.cost).length !== 0 : rawAbility.cost !== undefined) ||
+    nodes(rawAbility.effects).length !== 0 || nodes(rawAbility.creates).length !== 0 || nodes(rawAbility.ruleModifiers).length !== 1 ||
+    Object.keys(node(rawAbility.lifecycle)).length !== 0 || Object.keys(node(rawAbility.responseWindow)).length !== 0 ||
+    Object.keys(node(rawAbility.limit)).length !== 0 || Object.keys(node(rawAbility.visibility)).length !== 0) return false;
+  const scope = node(modifier.scope); const constraints = nodes(scope.constraints); const lifecycle = node(modifier.lifecycle);
+  return str(modifier.type) === 'combat_power_modifier' && modifier.operation === 'set' && modifier.rule === 'attack.currentPower' &&
+    Number(modifier.value) === 0 && Number.isFinite(Number(modifier.value)) &&
+    str(scope.controller) === 'engaged_opponents_same_battlefield' && str(scope.object) === 'attack_card' &&
+    Object.keys(scope).every((key) => ['controller', 'object', 'constraints'].includes(key)) &&
+    constraints.length === 1 && str(constraints[0]!.type) === 'has_attribute' && str(constraints[0]!.attribute) === '魔术' &&
+    Object.keys(constraints[0]!).every((key) => ['type', 'attribute'].includes(key)) &&
+    str(lifecycle.duration) === 'this_round' && Object.keys(lifecycle).every((key) => key === 'duration') &&
+    Object.keys(modifier).every((key) => ['id', 'printedClause', 'type', 'operation', 'rule', 'scope', 'value', 'lifecycle'].includes(key));
+}
 const supportedTypes = new Set([
   'controller_alone_at_battlefield', 'claim_and_discard_location_events', 'any_enabled_location',
   'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'base_power_at_most',
@@ -14,7 +37,7 @@ const supportedTypes = new Set([
   'create_card', 'pay_mana', 'move_source_card', 'integer', 'lte', 'gt', 'exists_target', 'played_this_round',
   'or', 'and', 'not', 'not_card_type', 'is_attack', 'has_attribute', 'not_source_card', 'has_card_id',
   'source_card_in_zone', 'controller_at_location_kind', 'reachable_along_arrows', 'can_adjust_mana',
-  'event_played_card_has_attribute',
+  'event_played_card_has_attribute', 'source_reversed', 'transform_event_source_card',
   'controller_won_battle', 'controller_sole_winner', 'controller_mana_at_least', 'min_mana',
   // New types for 5 servants
   'opponents_random_discard', 'lock_battlefield', 'exclude_from_terrain_and_external_effects',
@@ -25,6 +48,7 @@ const supportedTypes = new Set([
   'controller_at_battlefield_with_exactly_one_opponent',
   'reverse_situation_event_power_modifiers', 'reverse_situation_and_event_power_modifiers',
   'controller_played_highest_cost_noble_phantasm_in_battle_this_round',
+  'controller_strict_second_battle_power', 'defeat_highest_power_opponents',
   'highest_cost_noble_phantasm_cost_at_least', 'selected_count_at_least',
   'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'not_card_id',
   // Master authoring adapters
@@ -46,7 +70,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   'after_battle_ended', 'after_player_deployed_to_battlefield', 'when_play_requirements_checked',
   // Master triggers
   'game_start', 'after_controller_enters_location', 'after_controller_loses_all_command_seals',
-  'round_end', 'after_controller_first_loses_battle',
+  'round_end', 'after_controller_first_loses_battle', 'after_battle_power_calculated',
   'before_situation_or_event_resolves', 'when_movement_options_requested',
 ]);
 const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
@@ -97,7 +121,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       for (const key of Object.keys(n)) if (!mechanicKeys.has(key)) issue(`${path}.${key}`, 'Unmapped mechanic field', abilityId);
       if (n.type && !supportedTypes.has(str(n.type))) issue(`${path}.type`, `Unmapped type: ${str(n.type)}`, abilityId);
       if (n.op && !formulaOps.has(str(n.op))) issue(`${path}.op`, `Unmapped formula: ${str(n.op)}`, abilityId);
-      const serverMetric = ['controller.availableMana', 'consecutive_play_rounds',
+      const serverMetric = ['controller.availableMana', 'consecutive_play_rounds', 'game.round_number',
         'controller.movement_distance_this_round',
         'controller.battlefields_passed_or_stayed_this_round'].includes(str(n.var ?? n.name));
       if ((n.var !== undefined || n.op === 'var') && !serverMetric &&
@@ -125,6 +149,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
     };
     const face = node(raw.cardFace);
     scan(face.cost, 'cardFace.cost'); scan(face.basePower, 'cardFace.basePower'); scan(face.requirements, 'cardFace.requirements');
+    if (face.hasReversalEffect !== undefined && typeof face.hasReversalEffect !== 'boolean') issue('cardFace.hasReversalEffect', 'Expected boolean reversal metadata');
+    if (face.revealsTrueNameOnReverse !== undefined && typeof face.revealsTrueNameOnReverse !== 'boolean') issue('cardFace.revealsTrueNameOnReverse', 'Expected boolean reverse reveal metadata');
+    if (face.revealsTrueNameOnReverse === true && face.hasReversalEffect !== true) issue('cardFace.revealsTrueNameOnReverse', 'Reverse reveal requires an authored reversal effect');
     if (typeof face.basePower === 'string') issue('cardFace.basePower', 'String expressions are forbidden; provide a formula AST');
     scan(raw.playRequirements, 'playRequirements');
     if (face.cost !== undefined && (typeof face.cost !== 'number' || !Number.isFinite(face.cost) || face.cost < 0)) issue('cardFace.cost', 'Expected a nonnegative printed mana cost');
@@ -143,6 +170,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (activation.trigger && !triggers.has(str(activation.trigger))) issue('activation.trigger', 'Unmapped trigger', id);
       if (activation.phase && !['preparation', 'advance', 'action', 'combat'].includes(str(activation.phase))) issue('activation.phase', 'Unmapped phase', id);
       if (activation.requiresSourceState && activation.requiresSourceState !== 'active') issue('activation.requiresSourceState', 'Unmapped source state', id);
+      if (activation.eventLocationId !== undefined && (!str(activation.eventLocationId) || !['after_controller_enters_location', 'after_player_deployed_to_battlefield'].includes(str(activation.trigger)))) issue('activation.eventLocationId', 'Event location requires a supported location-bearing trigger', id);
       if (a.kind === 'phase_action' && !['controller_action_window', 'controller_combat_action_window'].includes(str(activation.opens))) issue('activation.opens', 'Unsupported phase action window', id);
       if (activation.step) issue('activation.step', 'Subphase step mapping is not implemented', id);
       if (!['phase_action', 'passive', 'residual', 'declaration_reveal', 'conditional_reveal', 'forced_trigger', 'optional_trigger', 'response', 'continuous_formula'].includes(str(a.kind))) issue('kind', 'Unmapped ability kind', id);
@@ -151,6 +179,16 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (lifecycle.duration && !['round_count', 'while_card_active', 'while_active', 'this_round'].includes(str(lifecycle.duration))) issue('lifecycle.duration', 'Unmapped lifecycle', id);
       if (lifecycle.duration === 'round_count' && (!Number.isInteger(lifecycle.rounds) || Number(lifecycle.rounds) < 1)) issue('lifecycle.rounds', 'Expected positive round count', id);
       if (lifecycle.cleanup && !['expire_after_duration', 'when_card_leaves_active_area', 'remain_active', 'close_at_round_end', 'discard_at_round_end', 'remove_from_game'].includes(str(lifecycle.cleanup))) issue('lifecycle.cleanup', 'Unmapped cleanup', id);
+      if (lifecycle.sourceValidity !== undefined) {
+        const sourceValidity = node(lifecycle.sourceValidity);
+        if (sourceValidity.kind !== 'accepted_source_state_policy' || sourceValidity.owner !== 'card_zone_source_state' ||
+          sourceValidity.policyId !== ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID) {
+          issue('lifecycle.sourceValidity', 'Unsupported Card Zone source-validity policy', id);
+        }
+        if (lifecycle.duration !== 'while_card_active' || !['when_card_leaves_active_area', 'remain_active'].includes(str(lifecycle.cleanup))) {
+          issue('lifecycle.sourceValidity', 'Source-validity policy requires while_card_active with a supported source cleanup policy', id);
+        }
+      }
       const response = node(a.responseWindow);
       if (['optional_trigger', 'response'].includes(str(a.kind)) && !str(response.opens)) issue('responseWindow.opens', 'Explicit response window is required', id);
       if ((response.order && response.order !== 'turn_order') || (response.priority && response.priority !== 'turn_order')) issue('responseWindow.order', 'Only turn_order is supported', id);
@@ -190,23 +228,31 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         scan(m.value, 'ruleModifiers.value', id); scan(node(m.scope).constraints, 'ruleModifiers.scope.constraints', id);
         if (node(m.scope).object && !['source_card', 'this_card', 'attack_card', 'this_effect', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield', 'all_players'].includes(str(node(m.scope).object))) issue('ruleModifiers.scope.object', 'Unmapped modifier scope', id);
         if (node(m.scope).controller && !['self', 'controller', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield'].includes(str(node(m.scope).controller))) issue('ruleModifiers.scope.controller', 'Unmapped modifier controller', id);
-        if (m.lifecycle && a.lifecycle && JSON.stringify(m.lifecycle) !== JSON.stringify(a.lifecycle)) issue('ruleModifiers.lifecycle', 'Independent modifier lifecycles require a separate ongoing handler', id);
+        if (m.lifecycle && a.lifecycle && JSON.stringify(m.lifecycle) !== JSON.stringify(a.lifecycle) &&
+          !isAcceptedMagicResistanceIndependentModifierLifecycle(a, m)) {
+          issue('ruleModifiers.lifecycle', 'Independent modifier lifecycles require a separate ongoing handler', id);
+        }
       }
       const requested = execution.hostOps ?? execution.allowedOperations ?? hostOperations;
       const allowed = Array.isArray(requested) ? hostOperations.filter(op => requested.includes(op)) : [];
       if (Array.isArray(requested) && requested.some(op => !hostOperations.includes(op as typeof hostOperations[number]))) issue('execution.hostOps', 'Operation outside the host allowlist', id);
       if (mode !== 'automatic') issue('execution.mode', str(execution.reason) || mode, id, mode as ExecutionMode);
-      const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
-      const visibility = node(a.visibility);
-      if (Array.isArray(a.markers) && a.markers.includes('真名解放') && !visibility.revealTiming) {
-        visibility.revealsTrueName = true; visibility.revealTiming = 'on_use_declared'; visibility.revealScope = 'servant_package';
-      }
-      return { id, kind: str(a.kind), printedClause: str(a.printedClause), activation,
+      const candidateAbility: AuthoringAbility = { id, kind: str(a.kind), printedClause: str(a.printedClause), activation,
         conditions: nodes(a.conditions), targets: nodes(a.targets), effects: nodes(a.effects),
         cost: Array.isArray(a.cost) ? nodes(a.cost) : a.cost ? [node(a.cost)] : [],
         ruleModifiers: nodes(a.ruleModifiers), creates: nodes(a.creates), lifecycle,
         responseWindow: { ...response, order: 'turn_order', passBehavior: 'decline_this_window' },
-        limit, visibility, execution: { mode: failure ? 'unsupported' : mode as ExecutionMode, allowedOperations: allowed } };
+        limit, visibility: node(a.visibility), execution: { mode: mode as ExecutionMode, allowedOperations: allowed } };
+      if (isPrivateOptionalHandPlayInteractionCandidate(candidateAbility) && !isPrivateOptionalHandPlayInteractionSemantic(candidateAbility)) {
+        issue('interaction.gateway', 'Unsupported private optional hand-play interaction semantic shape', id);
+      }
+      const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
+      const visibility = candidateAbility.visibility;
+      if (Array.isArray(a.markers) && a.markers.includes('真名解放') && !visibility.revealTiming) {
+        visibility.revealsTrueName = true; visibility.revealTiming = 'on_use_declared'; visibility.revealScope = 'servant_package';
+      }
+      return { ...candidateAbility, visibility,
+        execution: { mode: failure ? 'unsupported' : mode as ExecutionMode, allowedOperations: allowed } };
     });
     cards[cardId] = { id: cardId, name: str(raw.name), cardType: str(raw.cardType), cardFace: face,
       playTiming: timing, playRequirements: nodes(raw.playRequirements), abilities,

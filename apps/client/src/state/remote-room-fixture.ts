@@ -78,7 +78,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
         location: player.locationId ? locationLabels[player.locationId] ?? player.locationId : '未部署',
         vp: player.vp,
         mana: player.mana,
-        commandSpells: 3,
+        commandSpells: player.commandSpells ?? 3,
         isSelf: player.id === viewerId,
         publicMasterCardId: undefined,
         publicMasterSkillIds: [],
@@ -116,6 +116,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
       label: action.type === 'stage_attack_card' ? '加入待确认攻击'
         : action.type === 'confirm_staged_attack' ? '确认打出攻击区'
           : action.type === 'cancel_staged_attack' ? '取消待确认攻击'
+            : action.type === 'activate_ability' ? `发动能力 ${action.abilityId}`
             : action.type,
       sourceCardInstanceId: 'cardInstanceId' in action ? action.cardInstanceId : undefined,
       targetId: 'candidates' in action ? action.candidates[0] : undefined,
@@ -147,6 +148,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
         label: action.type === 'stage_attack_card' ? '加入待确认攻击'
           : action.type === 'confirm_staged_attack' ? '确认打出攻击区'
             : action.type === 'cancel_staged_attack' ? '取消待确认攻击'
+              : action.type === 'activate_ability' ? `发动能力 ${action.abilityId}`
               : action.type,
         targetId: 'candidates' in action ? action.candidates[0] : undefined,
         targetCandidates: 'candidates' in action ? action.candidates : undefined,

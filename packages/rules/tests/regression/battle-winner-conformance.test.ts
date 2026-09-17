@@ -112,14 +112,30 @@ describe("Battle Winner conformance Gate B", () => {
       competitionVpPool: 3,
     });
 
-    expect(resolved.players.find((player) => player.id === "p1")?.vp).toBe(2);
+    // Battlefield resolution is now read-only with respect to post-result trigger settlement.
+    expect(resolved.players.find((player) => player.id === "p1")?.vp).toBe(0);
     expect(resolved.players.find((player) => player.id === "p2")?.vp).toBe(0);
     expect(resolved.players.find((player) => player.id === "p3")?.vp).toBe(0);
 
     const scored = rules.applyBattleScoring(resolved).nextState;
+    expect(scored.players.find((player) => player.id === "p1")).toMatchObject({ vp: 2, militaryResult: 0 });
+    expect(scored.players.find((player) => player.id === "p2")).toMatchObject({ vp: 2, militaryResult: 0 });
+    expect(scored.players.find((player) => player.id === "p3")).toMatchObject({ vp: 0, militaryResult: 0 });
+
+    rules.processAbilityEvent(scored, {
+      id: "battle-phase:4:battle:shinto:1:result",
+      type: "after_battle_result_determined",
+      battlePhaseResolutionId: "battle-phase:4",
+      battleId: "battle-phase:4:battle:shinto:1",
+      resultId: "battle-phase:4:battle:shinto:1:result",
+      battleParticipantIds: ["p1", "p2", "p3"],
+      battlefieldId: "shinto",
+      battleResult: { winners: ["p1", "p2"], loserIds: ["p3"] },
+    });
     expect(scored.players.find((player) => player.id === "p1")).toMatchObject({ vp: 4, militaryResult: 0 });
     expect(scored.players.find((player) => player.id === "p2")).toMatchObject({ vp: 2, militaryResult: 0 });
     expect(scored.players.find((player) => player.id === "p3")).toMatchObject({ vp: 0, militaryResult: 0 });
+    expect(scored.abilityRuntime!.processedEvents).toContain("battle-phase:4:battle:shinto:1:result:lose:p3");
 
     const p1Breakdown = scored.scoringBreakdown.find((entry) => entry.playerId === "p1")!;
     const p2Breakdown = scored.scoringBreakdown.find((entry) => entry.playerId === "p2")!;

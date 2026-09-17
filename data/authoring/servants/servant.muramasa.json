@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.muramasa",
+  "name": "千子村正",
+  "class": "Alterego",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus accepted FB2-13/R37; locked Reference is used only for owner/static metadata."
+  },
+  "cards": [
+    {
+      "id": "servant.muramasa.skill.sc-muramasa-3",
+      "aliases": [
+        "sc_muramasa_3"
+      ],
+      "legacyId": "sc_muramasa_3",
+      "name": "他人格（Alter Ego Class）",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.muramasa"
+      },
+      "printedText": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 2,
+        "basePower": 3
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-muramasa-3.alter-ego-transform",
+          "kind": "optional_trigger",
+          "printedClause": "残留：当你将一张牌放置入场时，你可以关闭【他人格】以使其获得其反转效果。若其不含有反转效果，你可以任意令其在打出后获得或失去力量/迅捷/魔术属性来达成任意组合。",
+          "activation": {
+            "phase": "action",
+            "trigger": "on_card_played",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "transform_event_source_card"
+            },
+            {
+              "type": "close_source_card"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "opens": "on_card_played",
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "千子村正.htm",
+            "locator": "从者/他人格/英文版/千子村正.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/千子村正.png",
+            "locator": "servant.muramasa/千子村正"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[23].skills[2].text#line=1",
+            "sha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf"
+          }
+        ],
+        "sourceTextSha256": "b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_muramasa_3",
+          "cost": 2,
+          "basePower": 3,
+          "legacyRequirement": 2,
+          "typeLabel": "被动"
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is retained as evidence metadata only; the final skill-zone play threshold is 8 mana."
+        },
+        "acceptedContracts": {
+          "alterEgoTransform": "P3-R37/FB2-13"
+        }
+      }
+    }
+  ]
+}
