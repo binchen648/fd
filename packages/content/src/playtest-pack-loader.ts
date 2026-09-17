@@ -37,6 +37,7 @@ export interface PlaytestPackManifest {
   masterCardFiles: string[];
   authoringServantFiles?: string[];
   authoringMasterFiles?: string[];
+  authoringMasterSupportFiles?: string[];
   eventSetFiles: string[];
   eventCardFiles: string[];
 }
@@ -161,6 +162,44 @@ export interface AuthoringArchive {
   deck?: Array<{ cardId: string; count?: number }>;
   cards: AuthoringCard[];
   [key: string]: unknown;
+}
+
+const MASTER_SUPPORT_ARCHIVE_TYPE = 'master_support_definition_archive';
+
+function isMasterSupportArchive(archive: AuthoringArchive): boolean {
+  return archive.archiveType === MASTER_SUPPORT_ARCHIVE_TYPE;
+}
+
+function assertMasterSupportArchive(archive: AuthoringArchive): void {
+  if (!isMasterSupportArchive(archive)) {
+    throw new Error(`Master support archive requires archiveType=${MASTER_SUPPORT_ARCHIVE_TYPE}: ${archive.id || '<missing-id>'}`);
+  }
+  if (typeof archive.id !== 'string' || !archive.id.startsWith('master.')) {
+    throw new Error(`Master support archive id must start with master.: ${String(archive.id)}`);
+  }
+  if (!Array.isArray(archive.cards) || archive.cards.length === 0) {
+    throw new Error(`Master support archive must contain at least one card: ${archive.id}`);
+  }
+  if (Object.prototype.hasOwnProperty.call(archive, 'deck')) {
+    throw new Error(`Master support archive cannot define a deck: ${archive.id}`);
+  }
+  if (Object.prototype.hasOwnProperty.call(archive, 'publicInformation')) {
+    throw new Error(`Master support archive cannot define playable master publicInformation: ${archive.id}`);
+  }
+  for (const card of archive.cards) {
+    if (card.cardType !== 'master_skill') {
+      throw new Error(`Master support archive may contain only master_skill cards: ${archive.id}:${card.id}`);
+    }
+    if (card.initialPlacement !== 'outside_game') {
+      throw new Error(`Master support archive card requires initialPlacement=outside_game: ${archive.id}:${card.id}`);
+    }
+  }
+}
+
+function assertNormalAuthoringArchive(archive: AuthoringArchive): void {
+  if (isMasterSupportArchive(archive)) {
+    throw new Error(`Master support archive must be registered through authoringMasterSupportFiles: ${archive.id}`);
+  }
 }
 
 function readJson<T>(path: string): T {
@@ -451,6 +490,11 @@ export function loadPlaytestContentPack(
     .map((path) => readWorkspaceJson<AuthoringArchive>(options.workspaceRoot, path));
   const authoringMasterArchives = (manifest.authoringMasterFiles ?? [])
     .map((path) => readWorkspaceJson<AuthoringArchive>(options.workspaceRoot, path));
+  const authoringMasterSupportArchives = (manifest.authoringMasterSupportFiles ?? [])
+    .map((path) => readWorkspaceJson<AuthoringArchive>(options.workspaceRoot, path));
+  authoringServantArchives.forEach(assertNormalAuthoringArchive);
+  authoringMasterArchives.forEach(assertNormalAuthoringArchive);
+  authoringMasterSupportArchives.forEach(assertMasterSupportArchive);
   const authoringServants = authoringServantArchives
     .map((archive) => convertAuthoringServant(archive, options.workspaceRoot));
   const authoringMasters = authoringMasterArchives
@@ -470,7 +514,7 @@ export function loadPlaytestContentPack(
     name: manifest.name,
     version: manifest.version,
     manifest,
-    authoringArchives: [...authoringMasterArchives, ...authoringServantArchives],
+    authoringArchives: [...authoringMasterArchives, ...authoringServantArchives, ...authoringMasterSupportArchives],
     dictionaries: {
       basicAttacks: readWorkspaceJson<BasicAttackDictionary>(
         options.workspaceRoot,

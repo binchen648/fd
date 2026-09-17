@@ -40,7 +40,38 @@ export interface ExecutableCardPack {
 }
 
 type CompileInput = CompiledPlaytestContentLibrary;
+type RuleArchive = CompileInput['rules']['archives'][number];
 type ContentIdentityInput = Pick<CompiledPlaytestContentLibrary, 'pack' | 'dictionaries' | 'masters' | 'servants' | 'cards' | 'eventSets'>;
+
+const MASTER_SUPPORT_ARCHIVE_TYPE = 'master_support_definition_archive';
+
+function isMasterSupportArchive(archive: RuleArchive): boolean {
+  return archive.archiveType === MASTER_SUPPORT_ARCHIVE_TYPE;
+}
+
+function assertMasterSupportArchive(archive: RuleArchive): void {
+  if (!isMasterSupportArchive(archive)) return;
+  if (!archive.id.startsWith('master.')) {
+    throw new Error(`Master support archive id must start with master.: ${archive.id}`);
+  }
+  if (!Array.isArray(archive.cards) || archive.cards.length === 0) {
+    throw new Error(`Master support archive must contain at least one card: ${archive.id}`);
+  }
+  if (Object.prototype.hasOwnProperty.call(archive, 'deck')) {
+    throw new Error(`Master support archive cannot define a deck: ${archive.id}`);
+  }
+  if (Object.prototype.hasOwnProperty.call(archive, 'publicInformation')) {
+    throw new Error(`Master support archive cannot define playable master publicInformation: ${archive.id}`);
+  }
+  for (const card of archive.cards) {
+    if (card.cardType !== 'master_skill') {
+      throw new Error(`Master support archive may contain only master_skill cards: ${archive.id}:${card.id}`);
+    }
+    if (card.initialPlacement !== 'outside_game') {
+      throw new Error(`Master support archive card requires initialPlacement=outside_game: ${archive.id}:${card.id}`);
+    }
+  }
+}
 
 const basicAttributes = {
   b: { id: 'strength', label: '力量' },
@@ -526,6 +557,7 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
   archives.forEach((archive, archiveIndex) => {
     if (archiveIds.has(archive.id)) throw new Error(`Duplicate archive definition: ${archive.id}`);
     archiveIds.add(archive.id);
+    assertMasterSupportArchive(archive);
     const compiled = loadAuthoringJson(archive);
     if (compiled.report.length) {
       const detail = compiled.report.map((issue) => `${issue.cardId}:${issue.abilityId ?? 'card'}:${issue.path}: ${issue.reason}`).join('\n');
@@ -548,20 +580,22 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
         };
       });
     });
-    const excludedCards = nodes(archive.excludedCards).map((card) => ({
-      id: str(card.id),
-      name: str(card.name),
-      ...(str(card.reason) ? { reason: str(card.reason) } : {}),
-    }));
-    characters[archive.id] = {
-      id: archive.id,
-      name: archive.name,
-      ...(archive.class ? { class: archive.class } : {}),
-      kind: archive.id.startsWith('master.') ? 'master' : 'servant',
-      cardIds: archive.cards.map((card) => card.id),
-      publicInformation: node(structuredClone(archive.publicInformation ?? {})),
-      ...(excludedCards.length ? { excludedCards } : {}),
-    };
+    if (!isMasterSupportArchive(archive)) {
+      const excludedCards = nodes(archive.excludedCards).map((card) => ({
+        id: str(card.id),
+        name: str(card.name),
+        ...(str(card.reason) ? { reason: str(card.reason) } : {}),
+      }));
+      characters[archive.id] = {
+        id: archive.id,
+        name: archive.name,
+        ...(archive.class ? { class: archive.class } : {}),
+        kind: archive.id.startsWith('master.') ? 'master' : 'servant',
+        cardIds: archive.cards.map((card) => card.id),
+        publicInformation: node(structuredClone(archive.publicInformation ?? {})),
+        ...(excludedCards.length ? { excludedCards } : {}),
+      };
+    }
   });
 
   for (const definition of basicAttackDefinitions(input.dictionaries.basicAttacks)) {
@@ -569,7 +603,7 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
     cards[definition.id] = executableDefinition(definition);
   }
 
-  for (const archive of archives.filter((candidate) => candidate.id.startsWith('master.'))) {
+  for (const archive of archives.filter((candidate) => candidate.id.startsWith('master.') && !isMasterSupportArchive(candidate))) {
     if (archive.cards.some((card) => card.cardType === 'command_spell')) continue;
     const definition = defaultCommandSpellCard(archive.id);
     if (cards[definition.id]) throw new Error(`Duplicate generated card definition: ${definition.id}`);
