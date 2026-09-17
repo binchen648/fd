@@ -906,3 +906,12 @@ Permitted final status:
 - Fresh A dispatches P3-FB2-19-RECOVERY only for an identity-free master support-only / rules-only authoring registration seam. It may add a dedicated manifest channel and exact support-archive discriminator, but may not add production identities, production pack/generated files, runtime behavior, or Shirou/card-specific routing.
 - A valid support archive must enter `rules.archives` / executable card registration while staying out of the playable/presentation master roster, executable character generation, fallback command-spell generation, and deck/fixture setup.
 - FB2-19 takes zero frozen-migration credit. FB2-17-R2 waits for FB2-19 candidate + fresh R44 + A synchronization. P3-FM09 remains `MIGRATION_BLOCKED`; accepted overlap remains `111/944`, leaving `833/944`.
+
+## P3-A R44-R2 / FB2-19 Recovery Acceptance Synchronization and FB2-17-R2 Dispatch - 2026-09-18
+
+- Initial FB2-19 recovery candidate `94f1c3554d627df608666e5477d4554b0725ccad` was correctly returned by fresh R44-R1 as `IMPLEMENTATION_NEEDS_REVISION` for one executable-compiler fail-closed gap: support-shaped archives with missing/normal-master/near-match discriminators could fall through to playable-master generation.
+- B2 revised only the compiler structural guard, three adversarial regressions, and result evidence. Revised candidate `211ba4994acaf063834c28bef9525366b88ae463` is the direct child of the initial candidate and Base-to-revised-candidate scope remains the same five FB2-19 files.
+- Fresh R44-R2 independently re-attacks the discriminator cases and returns `IMPLEMENTATION_ACCEPTED_CANDIDATE` with no blocking finding. Validation is focused `94/94`, full CI `835/835`, core+regression `420/420`, client/content/determinism/Reference PASS, unchanged coverage `98/133/232` with raw `22/3/127/0/80/124`, automation audit `127/3/80/20`, and clean reviewer/candidate worktrees.
+- FB2-19 is accepted only as generic zero-credit support-only/rules-only registration infrastructure. Accepted overlap remains `111/944` (`11.76%`), leaving `833/944`.
+- P3-FB2-17-R2-RECOVERY is dispatched from the exact post-R44-R2 A synchronization lineage for exactly one non-frozen derived support card. It must use `authoringMasterSupportFiles`, preserve 7-player roster/fixture and outside-game placement, and may not modify `packages/` or migrate frozen Shirou s2.
+- P3-FM09 remains `MIGRATION_BLOCKED`; eleven frozen provisioning targets remain unresolved. No `121/944`, FM10, or Ciel credit/dispatch is authorized.

@@ -4181,48 +4181,64 @@ Result: synchronize only the fresh support-only registration blocker and dispatc
 ## TASK P3-FB2-19-RECOVERY
 
 Owner: Codex B2
-Status: `READY_FOR_B2_RECOVERY`
-Base: exact P3-A-FB2-17-R1-RECOVERY-BLOCKER-SYNC commit carrying this task block
-Read: `docs/reports/2026-09-18-p3-fb2-19-recovery-master-support-only-authoring-registration-handoff.md`
+Status: `REVIEW_ACCEPTED`
+Base: exact P3-A-FB2-17-R1-RECOVERY-BLOCKER-SYNC `6e288560ea5419db5aa896ad940b5b556e29b8bd`
+Initial candidate: `94f1c3554d627df608666e5477d4554b0725ccad`
+Revised candidate: `211ba4994acaf063834c28bef9525366b88ae463`
+Read: `docs/reports/2026-09-18-p3-fb2-19-recovery-master-support-only-authoring-registration-handoff.md`, `docs/reports/2026-09-18-p3-fb2-19-recovery-master-support-only-authoring-registration-result.md`
 
-Goal: add one identity-free master support-only / rules-only authoring registration seam so support archives enter canonical `authoringArchives` / `rules.archives` and executable card definitions without entering the selectable/presentation master roster and without executable character/fallback-command-spell generation.
-
-May touch only:
-- `packages/content/src/playtest-pack-loader.ts`,
-- `packages/rules/src/ability/executable-card-pack.ts`,
-- `packages/content/src/__tests__/playtest-pack-loader.test.ts`,
-- `packages/rules/tests/executable-card-pack.test.ts` and/or one focused FB2-19 regression test,
-- `docs/reports/2026-09-18-p3-fb2-19-recovery-master-support-only-authoring-registration-result.md`.
-
-No production authoring/pack/generated data, MatchSession, interpreter, taxonomy/KPI, frozen migration, or Reference changes. No Shirou/card identity/name/text routing. Completion status allowed:
-- `IMPLEMENTATION_COMPLETE_CANDIDATE`
-- `IMPLEMENTATION_NEEDS_REVISION`
-- `IMPLEMENTATION_BLOCKED`
-
-FB2-19 takes zero migration credit. Accepted overlap remains `111/944`.
-
+Result: identity-free master support-only / rules-only authoring registration is implemented and freshly accepted after one R44 revision. Exact support archives enter rules/executable card definitions without playable master character/fallback/deck surface. Malformed support-shaped archives with missing, normal-master, or near-match discriminator now fail closed at the compiler boundary. Zero migration credit.
 ## TASK P3-R44-RECOVERY
 
 Owner: Codex R
-Status: `BLOCKED_ON_P3-FB2-19-RECOVERY`
-Branch: fresh reviewer-selected worktree from the exact FB2-19 recovery candidate
-Read: `docs/reports/2026-09-18-p3-fb2-19-recovery-master-support-only-authoring-registration-handoff.md`
+Status: `REVIEW_ACCEPTED`
+Implementation Base: `6e288560ea5419db5aa896ad940b5b556e29b8bd`
+Initial Candidate: `94f1c3554d627df608666e5477d4554b0725ccad`
+Revised Candidate: `211ba4994acaf063834c28bef9525366b88ae463`
+Read: `docs/reports/2026-09-18-p3-fb2-19-recovery-master-support-only-authoring-registration-handoff.md`, `docs/reports/2026-09-18-p3-fb2-19-recovery-master-support-only-authoring-registration-result.md`
+Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Blocking findings: none after R44-R2.
 
-Goal: independently review FB2-19 without fixes. Recheck exact support-archive discriminator and manifest channel, fail-closed malformed/wrong-channel behavior, rules-only assembly, unchanged playable/presentation roster, executable card-only registration, no character/fallback/deck generation, normal archive ordering, FB2-15/16/18 compatibility, identity-free routing, unchanged production generated content, zero-credit accounting, exact scope, full validation, and final cleanliness.
+R44-R1 returned `IMPLEMENTATION_NEEDS_REVISION` for one compiler fail-closed discriminator gap. B2 revised the candidate at `211ba4994acaf063834c28bef9525366b88ae463`. Fresh R44-R2 independently re-ran the adversarial discriminator probes and full validation and accepted the revised candidate. Evidence includes focused `94/94`, full CI `835/835`, core+regression `420/420`, client/content/determinism/Reference PASS, unchanged coverage/audit, and clean reviewer/candidate worktrees.
 
-Permitted final verdict:
-- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
-- `IMPLEMENTATION_NEEDS_REVISION`
+## TASK P3-A-R44-FB2-19-RECOVERY-SYNC
 
-## Full-Roster Dispatch State After Fresh P3-FB2-17-R1 Blocker Synchronization
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r44-fb2-19-acceptance-sync-recovery`
+Base: exact fresh R44-R2 accepted candidate `211ba4994acaf063834c28bef9525366b88ae463`
+Read: `docs/reports/2026-09-18-p3-a-r44-fb2-19-recovery-acceptance-synchronization.md`
 
-- FB2-18/R43 remains freshly accepted and successfully closes explicit outside-game card placement.
-- Fresh FB2-17-R1 blocker `7e0356146766486180bcd959ee4e90dcfe193be5` proves the remaining blocker is only the generic pack/executable support-only registration envelope.
-- P3-FB2-19-RECOVERY is READY for that narrow zero-credit infrastructure seam. It must not add any production identity or special-case Shirou.
-- FB2-17-R2 must wait for FB2-19 candidate, fresh R44 acceptance, and post-review A synchronization.
+Result: synchronize R44-R2 acceptance without product/runtime changes or frozen migration credit and dispatch only fresh FB2-17-R2 support-definition retry.
+
+## TASK P3-FB2-17-R2-RECOVERY
+
+Owner: Codex S
+Status: `READY_FOR_S_RECOVERY`
+Base: exact P3-A-R44-FB2-19-RECOVERY-SYNC commit carrying this task block
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Accepted dependencies: FB2-18 `cb81559033db6b96b1f26cf7d9bd15686db5d4fb`; FB2-19 revised `211ba4994acaf063834c28bef9525366b88ae463`
+Read: `docs/reports/2026-09-18-p3-fb2-17-r2-recovery-shirou-derived-card-support-definition-handoff.md`
+
+Goal: materialize exactly one non-frozen derived support definition `card.derived.master.shirou-emiya.ganjiang-moye` through the accepted support-only channel, preserving outside-game placement, required-additional semantics, 7-player roster/fixture, and normal archive ordering.
+
+May touch only the exact archive, pack registration, normal deterministic content-library/evidence-report outputs if changed, and the R2 result report. No `packages/`, runtime/compiler, scripts, frozen skill, taxonomy/KPI, Reference, UI/server, or unrelated generated output may change. If a required test baseline outside this scope blocks the retry, return `SUPPORT_DEFINITION_BLOCKED` rather than widening scope.
+
+Completion status:
+- `SUPPORT_DEFINITION_COMPLETE_CANDIDATE`
+- `SUPPORT_DEFINITION_BLOCKED`
+
+This task takes zero frozen migration credit. Accepted overlap remains `111/944`.
+
+## Full-Roster Dispatch State After Fresh R44-R2 Acceptance Synchronization
+
+- FB2-18/R43 and revised FB2-19/R44-R2 are freshly accepted zero-credit dependencies.
+- Revised FB2-19 candidate is `211ba4994acaf063834c28bef9525366b88ae463`; R44-R1's compiler discriminator blocker is closed.
+- P3-FB2-17-R2-RECOVERY is READY as the only next support-definition retry.
+- R2 must not edit `packages/` even if a stale count/test baseline is discovered; a scope-external blocker must be reported rather than repaired in S.
 - P3-FM09 remains `MIGRATION_BLOCKED`; the other eleven frozen provisioning targets remain unresolved independently.
 - Accepted overlap remains `111/944`, leaving `833/944`; no FM10 or Ciel task is dispatched.
-
 
 ## Prompt Templates
 
