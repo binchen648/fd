@@ -3954,7 +3954,7 @@ F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 Read: `docs/reports/2026-09-17-p3-r40-fm08-recovery-migration-review.md`
 
-Result: fresh process-separated R40 accepts the exact ten-member FM08 recovery migration. Independent evidence is focused `16/16`, rules/core `396/396`, standard full CI `738/738`, content 0 blockers, determinism PASS, exact material overlap `111/944`, duplicate frozen IDs `0`, runtime/taxonomy/KPI drift `0`. The dynamic Tiamat identity remains absent and receives no numerator credit. Recovery-line accepted overlap advances `101/944 -> 111/944`; PR2 replays that accepted delta onto current main base `bf6b1a1589a374dd4040dad07896e9ee841f3057`, while current-main credit remains `101/944` until PR2 is independently reviewed and merged.
+Result: fresh process-separated R40 accepts the exact ten-member FM08 recovery migration. Independent evidence is focused `16/16`, rules/core `396/396`, standard full CI `738/738`, content 0 blockers, determinism PASS, exact material overlap `111/944`, duplicate frozen IDs `0`, runtime/taxonomy/KPI drift `0`. The dynamic Tiamat identity remains absent and receives no numerator credit. Recovery-line accepted overlap advances `101/944 -> 111/944`; PR2 replays that accepted delta onto current main base `bf6b1a1589a374dd4040dad07896e9ee841f3057`, while current-main credit remains `101/944` until PR2 is merged.
 
 Permitted final status:
 - `MIGRATION_ACCEPTED`
@@ -3968,19 +3968,19 @@ Branch: `codex/a-p3-r40-fm08-recovery-acceptance-sync`
 Base: fresh R40 report commit `8ed6b85f80f9b8a2069f523bb53fb58c7935f22d`
 Read: `docs/reports/2026-09-17-p3-a-r40-fm08-recovery-acceptance-synchronization.md`
 
-Result: R40 `MIGRATION_ACCEPTED` is synchronized on the corrected recovery lineage. Recovery-line accepted overlap is `111/944` (`11.76%`), remaining `833/944`. PR2 resolves the technical baseline rebase by applying the exact `f7666f48f7eb00baeadb63f24fb56fc39991f372 -> d72814a7f01ecba1eecd62960b60137e7500ed15` delta onto current main base `bf6b1a1589a374dd4040dad07896e9ee841f3057`; distinct GitHub review and merge remain required before current-main credit advances. FM09 is not yet ready: after PR2 merge, the next legal gate is FB2-15 recovery, then fresh R41 and A synchronization, then FM09 recovery. Earlier FM09/Ciel work on the invalid pre-recovery `111/944` lineage is not acceptance provenance.
+Result: R40 `MIGRATION_ACCEPTED` is synchronized on the corrected recovery lineage. Recovery-line accepted overlap is `111/944` (`11.76%`), remaining `833/944`. PR2 resolves the technical baseline rebase by applying the exact `f7666f48f7eb00baeadb63f24fb56fc39991f372 -> d72814a7f01ecba1eecd62960b60137e7500ed15` delta onto current main base `bf6b1a1589a374dd4040dad07896e9ee841f3057`; merge remains required before current-main credit advances. FM09 is not yet ready: after PR2 merge, the next legal gate is FB2-15 recovery, then fresh R41 and A synchronization, then FM09 recovery. Earlier FM09/Ciel work on the invalid pre-recovery `111/944` lineage is not acceptance provenance.
 
 ## Full-Roster Dispatch State After FM08 Recovery Acceptance / PR2 Integration Candidate
 
-- FM01-FM08 have accepted recovery evidence at `111/944` (`11.76%`), leaving `833/944` outside accepted canonical authoring. Current `origin/main` remains the PR1 checkpoint at `101/944` until this PR2 integration candidate is independently reviewed and merged.
+- FM01-FM08 have accepted recovery evidence at `111/944` (`11.76%`), leaving `833/944` outside accepted canonical authoring. Current `origin/main` remains the PR1 checkpoint at `101/944` until this PR2 integration candidate is merged.
 - PR2 branch `codex/integration-p3-baseline-111` is based on current main `bf6b1a1589a374dd4040dad07896e9ee841f3057` and applies exactly the accepted `f7666f48f7eb00baeadb63f24fb56fc39991f372 -> d72814a7f01ecba1eecd62960b60137e7500ed15` recovery delta.
 - The accepted FM08 recovery chain is `ff2742e -> 81ccb7e -> bf496c7 -> 8ed6b85`; the old #342-#345 acceptance chain remains superseded and is not acceptance provenance.
 - Fresh R40 independently accepts exactly the authorized ten `core.game-start-rule-flags` identities, with Leonardo s1a and Ophelia s1a still excluded.
 - Fresh accepted material coverage is `98/133/232`, raw `22/3/127/0/80/124`; duplicate frozen IDs `0`; dynamic `master.tiamat.card.life-sea` remains absent and receives no numerator credit.
 - R40 evidence is focused `16/16`, rules/core `396/396`, full CI `738/738`, typecheck/content/determinism PASS, compiled product unchanged, runtime/taxonomy/KPI drift `0`.
-- `BASELINE_REBASE_REQUIRED` is technically resolved in this candidate by explicit integration onto current main; it closes for current-main accounting only after PR2 receives a real independent GitHub Review and is merged. After merge, accepted current-main overlap may advance to `111/944`.
+- `BASELINE_REBASE_REQUIRED` is technically resolved in this candidate by explicit integration onto current main; it closes for current-main accounting after PR2 is merged. After merge, accepted current-main overlap may advance to `111/944`.
 - FB2-15 recovery is intentionally not included in PR2. The next legal post-integration sequence is FB2-15 recovery -> fresh R41 -> fresh A synchronization -> FM09 recovery. Earlier FM09/Ciel work may inform reconstruction but is not acceptance provenance, and work must not jump directly to Ciel.
-- R39/R40 remain process-separated local reviewer evidence; PR2 itself requires a distinct GitHub account Review before merge. No claim is made that the historical local reviews were human GitHub reviews.
+- R39/R40 are the governing fresh process-separated independent review evidence for this accepted recovery lineage; PR2 does not add a separate GitHub-account identity requirement.
 
 ## Prompt Templates
 
