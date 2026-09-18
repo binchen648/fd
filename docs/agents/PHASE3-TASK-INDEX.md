@@ -4957,3 +4957,15 @@ Read: `docs/reports/2026-09-19-p3-a-r61-fb2-28-acceptance-synchronization.md`
 Result: record fresh R61 `IMPLEMENTATION_ACCEPTED_CANDIDATE` for FB2-28. R60's battlefield-location round-trip blocker is closed; A independently reproduces `111 archives / 150 cards / 150 unique / 127/944 overlap / 0 duplicates`. FB2-28 is zero-credit infrastructure, so formal recovery accepted remains `127/944` with `817` remaining.
 
 Next coordinator action is private read-only dependency recomputation for the twelve `event_card_rule` single-gap rows. No downstream migration is credited or dispatched by this synchronization. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
+
+## TASK P3-A-R61-LOSTBELT-OBJECTIVE-EVENT-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r61-lostbelt-objective-event-dispatch`
+Base: exact R61 FB2-28 acceptance sync `1c33320b468825dd7e37b5ede6645bb29e5ee333`
+Read: `docs/reports/2026-09-19-p3-a-r61-lostbelt-objective-event-migration-dispatch.md`
+
+Result: private post-FB2-28 readiness recomputation identifies exactly four dependency-complete homogeneous `core.lostbelt-objective` event definitions: Kadoc s3 and Ophelia s5/s6/s7. Dispatch one fresh S migration for exactly those four identities. The other eight event-card-rule upper-bound consumers remain outside this batch because additional semantics are still unresolved.
+
+Dispatch itself earns zero frozen credit. Formal accepted remains `127/944`; exact four-card Candidate material may become `131/944` only after S implementation, fresh R `MIGRATION_ACCEPTED`, and later A synchronization.
