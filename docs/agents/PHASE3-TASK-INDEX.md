@@ -4957,3 +4957,22 @@ Read: `docs/reports/2026-09-19-p3-a-r61-fb2-28-acceptance-synchronization.md`
 Result: record fresh R61 `IMPLEMENTATION_ACCEPTED_CANDIDATE` for FB2-28. R60's battlefield-location round-trip blocker is closed; A independently reproduces `111 archives / 150 cards / 150 unique / 127/944 overlap / 0 duplicates`. FB2-28 is zero-credit infrastructure, so formal recovery accepted remains `127/944` with `817` remaining.
 
 Next coordinator action is private read-only dependency recomputation for the twelve `event_card_rule` single-gap rows. No downstream migration is credited or dispatched by this synchronization. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
+
+## TASK P3-S-R61-LOSTBELT-OBJECTIVE-EVENT-MIGRATION-BLOCKED
+
+Owner: Codex S
+Status: `MIGRATION_BLOCKED`
+Dispatch: `5d6a9982c0fead6c28fa73446f68ccf31562048c`
+Blocked evidence: `c735b235af3ab273a8daabffeae71db81809250a`
+
+Result: fresh S proved rules-only event static battle metadata is retained in `eventRules` but is not compiled into `eventCatalog.battleModifiers`. Kadoc s3 is representable, but Ophelia s5/s6/s7 are not; S correctly declined a partial one-card migration. Zero frozen credit; formal accepted remains `127/944`.
+
+## TASK P3-A-FB2-29-EVENT-STATIC-BATTLE-METADATA-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-29-event-static-metadata-dispatch`
+Base: exact R61 acceptance synchronization `1c33320b468825dd7e37b5ede6645bb29e5ee333`
+Read: `docs/reports/2026-09-19-p3-a-fb2-29-event-static-battle-metadata-dispatch.md`
+
+Goal: add only an identity-free rules-only event static battle-metadata authoring/compiler contract that produces existing `eventCatalog.battleModifiers`. No consumer migration and no runtime handler/subsystem expansion. FB2-29 is zero-credit infrastructure; formal accepted remains `127/944`, remaining `817`.
