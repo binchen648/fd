@@ -4453,7 +4453,7 @@ Result: fresh current-lineage comparison of all ten unresolved FM09 provisioning
 ## TASK P3-FB2-23-RECOVERY
 
 Owner: Codex B2
-Status: `READY_FOR_B2_RECOVERY`
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 Base: exact P3-A-FM09-REMAINING10-DEPENDENCY-PLANNING commit
 Read: `docs/reports/2026-09-18-p3-fb2-23-recovery-same-battlefield-private-hand-return-interaction-handoff.md`
 
@@ -4462,14 +4462,30 @@ Goal: add only the identity-free same-battlefield player → controller-private 
 ## TASK P3-R48-RECOVERY
 
 Owner: Codex R
-Status: `BLOCKED_ON_P3-FB2-23-RECOVERY`
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Implementation Base: `077dac0d8f9ca7956554e3cb45511f8edf659156`
+Rejected R48-R1 Candidate: `92d72e6fc2faa820febb507da1d622d36c45134e`
+Accepted revised Candidate: `1cfd6000f5627a282e2549d23e5a176ba983384f`
+PR: `#358`
+Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Blocking findings: none.
 
-Goal: fresh independent read-only review of the eventual exact FB2-23 Candidate. Do not inherit historical acceptance. Findings first; no fixes or downstream Ryougi content during review.
+Fresh R48-R2 independently verified closure of the R48-R1 exact-envelope fail-open blocker, all original privacy/settlement/stale-state semantics, exact six-file scope, zero-credit accounting, deterministic product outputs, official full validation, and final reviewer/Candidate cleanliness.
 
-## Full-Roster Dispatch State After Remaining-10 Planning
+## TASK P3-A-R48-FB2-23-RECOVERY-SYNC
 
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r48-fb2-23-acceptance-sync-recovery`
+Base: exact accepted revised Candidate `1cfd6000f5627a282e2549d23e5a176ba983384f`
+Read: `docs/reports/2026-09-18-p3-a-r48-fb2-23-recovery-acceptance-synchronization.md`
+
+Result: record fresh R48-R2 acceptance of FB2-23 as generic zero-credit infrastructure. Recovery-line accepted frozen overlap remains `112/944` (`11.86%`), leaving `832/944`; integrated main remains `111/944`. The next eligible coordinator action is a fresh single-target Ryougi s3 feasibility/migration dispatch using the accepted interaction seam.
+
+## Full-Roster Dispatch State After R48 Acceptance Synchronization
+
+- FB2-23 is independently accepted generic infrastructure on the recovery lineage and earns zero frozen credit.
 - Recovery-line accepted overlap remains `112/944` (`11.86%`), leaving `832/944`; integrated main remains `111/944`.
 - Ten FM09 provisioning frozen targets remain absent.
-- FB2-23 is the only dispatched next dependency and is zero-credit infrastructure.
-- Ryougi s3 content waits for FB2-23 + fresh R48 + A acceptance synchronization.
+- `master.shiki-ryougi.skill.s3` is now eligible for a fresh single-target feasibility/migration pass; it is not yet accepted or materialized by this synchronization.
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched and no stacked PR is merged/retargeted.

@@ -987,3 +987,11 @@ Permitted final status:
 - Ryougi s3 is the narrowest: required-additional play is already accepted, and the isolated remaining gap is one same-battlefield private hand inspection / optional return-one-to-owner-deck interaction.
 - P3-FB2-23-RECOVERY is dispatched as identity-free zero-credit infrastructure only. It may not add Ryougi or other content, modify MatchSession source, broaden hidden-card visibility, or change frozen accounting.
 - Recovery-line accepted overlap remains `112/944`; P3-FM09 remains `MIGRATION_BLOCKED`, R48 is required before any Ryougi s3 content attempt, and no FM10/merge/retarget is authorized.
+
+## P3-A R48-R2 / FB2-23 Recovery Acceptance Synchronization - 2026-09-18
+
+- Fresh R48-R2 independently accepts revised FB2-23 Candidate `1cfd6000f5627a282e2549d23e5a176ba983384f` over exact planning Base `077dac0d8f9ca7956554e3cb45511f8edf659156`; rejected R48-R1 Candidate `92d72e6...` is historical evidence only and is not in the revised Candidate ancestry.
+- R48-R2 closes the exact-envelope fail-open blocker and independently revalidates privacy, settlement, stale/forged rejection, replay, serialization, exact six-file scope, identity-free routing, and zero product/accounting drift.
+- Fresh official validation is focused `17/17`, full CI `860/860` across 132 files, rules core+regression `445/445`, client/content/determinism/Reference/coverage/audit PASS, and diff check PASS; the fixed-5s eleven-round test completes at about 4328 ms.
+- FB2-23 earns zero frozen migration credit. Recovery-line accepted overlap remains **`112/944` (`11.86%`)**, leaving `832/944`; integrated main remains `111/944`.
+- The accepted interaction seam removes the isolated runtime prerequisite for `master.shiki-ryougi.skill.s3`. The next legal action is fresh single-target Ryougi s3 feasibility/migration planning; P3-FM09 remains `MIGRATION_BLOCKED`, and no FM10/merge/retarget occurs here.
