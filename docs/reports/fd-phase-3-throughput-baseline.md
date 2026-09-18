@@ -1003,3 +1003,13 @@ Permitted final status:
 - Fresh uncommitted feasibility probe uses only accepted generic contracts and passes typecheck/content validate+compile/determinism and FB2-23 runtime; the only expected test delta is executable aggregate `72 -> 73`, after which focused interaction+compiler is `60/60`.
 - Probe product is `101 archives / 136 cards / 237 abilities`, compiled `73/14/0`, buckets `22/3/131/0/81/130`, audit `131/3/81/20`, material overlap `113/944` with exactly one target addition.
 - P3-FB2-24-RECOVERY is dispatched for only Ryougi s3. Accepted overlap stays `112/944` until fresh R49 and post-review A synchronization; P3-FM09 remains blocked and no FM10/merge/retarget is authorized.
+
+## P3-A R49 / FB2-24 Ryougi S3 Recovery Acceptance Synchronization - 2026-09-18
+
+- Fresh R49 independently returns `MIGRATION_ACCEPTED` for corrected Candidate `8ff45c944ba810edfbfa93d17462d4c3cb6a4e16` over exact Base `7e2925ed37f89b60dac2c2b13c68081af6e33fbe`, with no blocking semantic, provenance, scope, accounting, determinism, performance, privacy, or cleanliness finding.
+- R49 independently verifies Final Rules 9.4 skill-zone threshold `8` rather than legacy Reference `requirement: 1`, including runtime probes at 7 versus 8 mana; exact F1 clause hashes; support-only/outside-game product shape; FB2-16 append-only and FB2-23 same-battlefield private-hand semantics; stale/forged/replay/serialization fail-closed behavior; and zero production rules-source diff.
+- Fresh official validation is focused `66/66`, unchanged full CI `866/866` across 133 files, rules core+regression `451/451` across 73 files, client/content/determinism/Reference/coverage/audit PASS, and diff check PASS; the eleven-round MatchSession case completes at about 4663 ms in fresh review.
+- Corrected deterministic hashes are library `03582e22b830c59ccfe03379159dd5e50aef19fd7bae3561469c000e56618a79`, fixture `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, evidence `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`.
+- Material is `101 archives / 136 cards / 237 abilities`, compiled `73/14/0`, buckets `22/3/131/0/81/130`, audit `131/3/81/20`.
+- Recovery-line frozen accepted overlap advances from `112/944` to **`113/944` (`11.97%`)**, leaving `831/944`; the exact accepted addition is only `master.shiki-ryougi.skill.s3`, with zero removals and zero duplicate canonical authoring IDs.
+- Integrated `origin/main` remains `553779e8ffcc926ae4763ee86a2ea937e090c128`, so integrated-main accepted overlap remains `111/944`. Nine FM09 provisioning targets remain absent; P3-FM09 remains `MIGRATION_BLOCKED`; PR #359 is not merged or retargeted here.

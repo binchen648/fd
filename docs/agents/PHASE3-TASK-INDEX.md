@@ -4502,15 +4502,40 @@ Result: fresh F1-grounded feasibility found no remaining runtime prerequisite fo
 ## TASK P3-FB2-24-RECOVERY
 
 Owner: Codex B2
-Status: `READY_FOR_B2_RECOVERY`
-Base: exact P3-A-RYOUGI-S3-RECOVERY-FEASIBILITY dispatch commit
-Read: `docs/reports/2026-09-18-p3-fb2-24-recovery-ryougi-s3-support-definition-handoff.md`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Base: `7e2925ed37f89b60dac2c2b13c68081af6e33fbe`
+Candidate: `8ff45c944ba810edfbfa93d17462d4c3cb6a4e16`
+PR: `#359` stacked on exact Base
+Target: exactly `master.shiki-ryougi.skill.s3`
+Read: `docs/reports/2026-09-18-p3-fb2-24-recovery-ryougi-s3-support-definition-handoff.md`, `docs/reports/2026-09-18-p3-fb2-24-recovery-ryougi-s3-support-definition-result.md`
 
-Goal: add exactly frozen support definition `master.shiki-ryougi.skill.s3` and no other frozen identity, using only already-accepted generic semantics. Candidate material may be `113/944`; accepted remains `112/944` until fresh R49 + post-review A.
+Result: corrected pre-R49 Candidate materializes exactly one frozen Ryougi s3 support definition with the Final Rules 9.4 skill-zone threshold `8`, accepted FB2-16 append-only semantics, and accepted FB2-23 private-hand interaction. Candidate material overlap is `113/944`; no `packages/rules/src/**` change is present.
 
 ## TASK P3-R49-RECOVERY
 
 Owner: Codex R
-Status: `BLOCKED_ON_P3-FB2-24-RECOVERY`
+Status: `MIGRATION_ACCEPTED`
+Implementation Base: `7e2925ed37f89b60dac2c2b13c68081af6e33fbe`
+Candidate S/B2 SHA: `8ff45c944ba810edfbfa93d17462d4c3cb6a4e16`
+PR: `#359`
+Verdict: `MIGRATION_ACCEPTED`
+Blocking findings: none.
 
-Goal: fresh independent review of exact FB2-24 Ryougi s3 Candidate. Findings first, read-only, no fixes, no post-review A, no FM09/FM10/merge.
+Fresh R49 independently accepts exactly frozen identity `master.shiki-ryougi.skill.s3`, including the Final Rules 9.4 8-mana skill-zone gate, exact F1 provenance, support-only/outside-game shape, FB2-16/FB2-23 behavior, privacy/stale/replay boundaries, exact six-file scope, `112/944 -> 113/944` material accounting, deterministic outputs, full official validation, and final reviewer/Candidate cleanliness.
+
+## TASK P3-A-R49-FB2-24-RECOVERY-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r49-fb2-24-acceptance-sync-recovery`
+Base: exact accepted Candidate `8ff45c944ba810edfbfa93d17462d4c3cb6a4e16`
+Read: `docs/reports/2026-09-18-p3-a-r49-fb2-24-ryougi-s3-recovery-acceptance-synchronization.md`
+
+Result: record fresh R49 `MIGRATION_ACCEPTED` for exactly `master.shiki-ryougi.skill.s3`. Recovery-line accepted overlap is now `113/944` (`11.97%`), leaving `831/944`. Integrated `origin/main` remains at `553779e...` and therefore remains `111/944` until later coordinated integration.
+
+## Full-Roster Dispatch State After R49 Acceptance Synchronization
+
+- Recovery-line accepted overlap is `113/944`; the exact newly accepted identity is only `master.shiki-ryougi.skill.s3`.
+- Nine FM09 provisioning frozen targets remain absent.
+- Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`; PR #359 remains stacked and unmerged.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched by this synchronization.
