@@ -78,6 +78,6 @@ Coverage/audit artifact files changed only because the probe ran the reporting c
 
 ## Accounting and dispatch decision
 
-Ciel s2 is one frozen F1 identity. A clean S/B2 Candidate may therefore demonstrate material overlap `112/944`, but independently accepted overlap must remain `111/944` through Candidate creation and A material synchronization. Only fresh R47 may promote the recovery-line accepted overlap to `112/944`.
+Ciel s2 is one frozen F1 identity. A clean S Candidate may therefore demonstrate material overlap `112/944`, but independently accepted overlap must remain `111/944` through Candidate creation and A material synchronization. Only fresh R47 may promote the recovery-line accepted overlap to `112/944`.
 
 No further generic prerequisite is required. Dispatch `P3-FB2-22-RECOVERY` as an exact one-target support-definition migration. P3-FM09 remains blocked on the other ten frozen provisioning targets and on its source-family migration; no FM10 is dispatched.

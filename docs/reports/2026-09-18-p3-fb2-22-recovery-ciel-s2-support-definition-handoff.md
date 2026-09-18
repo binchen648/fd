@@ -2,7 +2,7 @@
 
 Date: 2026-09-18
 From: Codex A
-To: Codex S/B2
+To: Codex S
 Status: `READY`
 Target: exactly one frozen identity, `master.ciel.skill.s2`
 Accepted overlap at dispatch: `111/944`
@@ -78,7 +78,7 @@ Candidate may change exactly these six files:
 3. `data/generated/fd-playtest-v1.content-library.json` — official deterministic compiler output;
 4. `packages/rules/tests/executable-card-pack.test.ts` — only the canonical executable-card aggregate `71 -> 72`; no weakened/deleted assertions;
 5. `packages/rules/tests/regression/fb2-ciel-s2-support-definition.test.ts` — focused target behavior/product regression;
-6. `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-result.md` — S/B2 result.
+6. `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-result.md` — S result.
 
 Forbidden Candidate changes include all `packages/rules/src/**`, MatchSession/runtime/compiler/loader/interpreter/terrain code, other authoring archives, frozen inventory, Reference/F1 files, taxonomy/KPI implementation, coverage/audit artifacts, fixture, evidence report, UI/server files, or another frozen target.
 
@@ -148,6 +148,6 @@ Coverage/audit commands may rewrite their artifact files locally. Restore those 
 
 ## Credit gate
 
-The S/B2 Candidate may state **material overlap `112/944`** because exactly one frozen F1 identity is newly materialized. It must also state **accepted overlap remains `111/944`** until A performs independent material synchronization and fresh R47 returns migration acceptance.
+The S Candidate may state **material overlap `112/944`** because exactly one frozen F1 identity is newly materialized. It must also state **accepted overlap remains `111/944`** until A performs independent material synchronization and fresh R47 returns migration acceptance.
 
 After Candidate completion, stop product implementation. Codex A must mechanically synchronize the exact Candidate before R47. Do not start another frozen target, FM09, FM10, or merge any stacked PR.

@@ -1,7 +1,7 @@
-﻿# P3-FB2-24 Recovery — Ryougi S3 Support Definition Result
+# P3-FB2-24 Recovery — Ryougi S3 Support Definition Result
 
 Date: 2026-09-18
-Role: Codex B2
+Role: Codex S
 Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Base: `7e2925ed37f89b60dac2c2b13c68081af6e33fbe`
 Target: exactly `master.shiki-ryougi.skill.s3`
@@ -67,7 +67,7 @@ Focused Ryougi + FB2-23 + executable compiler: `3 files / 66 tests PASS`.
 
 ## Validation
 
-Fresh B2 validation:
+Fresh S validation:
 
 - `npm ci --offline`: PASS, 239 packages, 0 vulnerabilities;
 - typecheck: PASS;
@@ -120,7 +120,7 @@ Fresh mechanical F1 intersection:
 
 The other nine unresolved FM09 provisioning frozen targets remain absent from authoring/generated material.
 
-This is **material only**. During B2 and R49 review, accepted recovery overlap remains `112/944`; integrated-main accepted overlap remains `111/944`. Only fresh independent R49 acceptance followed by post-review A synchronization may record accepted recovery overlap `113/944`.
+This is **material only**. During S and R49 review, accepted recovery overlap remains `112/944`; integrated-main accepted overlap remains `111/944`. Only fresh independent R49 acceptance followed by post-review A synchronization may record accepted recovery overlap `113/944`.
 
 ## Exact Candidate scope
 
