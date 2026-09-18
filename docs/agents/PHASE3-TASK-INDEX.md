@@ -4820,3 +4820,42 @@ Result: record fresh R56 `MIGRATION_ACCEPTED` for exactly `master.ciel.skill.s1a
 - Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / mechanically accepted `111/944`; PR #366 remains OPEN, unmerged, and unretargeted.
 - Historical P3-FM09 remains `MIGRATION_BLOCKED`; this three-source migration does not retroactively accept or unblock the historical exact-ten attempt, and no FM10 is dispatched.
 - Next coordinator work is a throughput-oriented readiness overlay over the remaining `823` frozen identities, prioritizing the largest honest homogeneous READY family; no further frozen credit is pre-authorized.
+
+## TASK P3-A-FB2-27-RULER-SEAL-SUBSYSTEM-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-27-ruler-seal-dispatch`
+Base: exact post-R56 acceptance synchronization `2772ac9904c2e99c19cb73f7b60147a329fb27a4`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-19-p3-a-fb2-27-ruler-seal-subsystem-dispatch.md`
+
+Result: fresh throughput overlay over the remaining `823` identities finds no honest direct `10+` homogeneous READY migration batch. The selected next prerequisite is the identity-free Ruler seal relationship subsystem: a narrower special subsystem than the larger Wodime/Wallachia families, intended to close one coherent runtime boundary and unlock exactly six frozen Ruler-family consumers. Dispatch grants zero frozen credit; accepted remains `121/944`.
+
+## TASK P3-FB2-27-RULER-SEAL-SUBSYSTEM
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A dispatch commit descended directly from `2772ac9904c2e99c19cb73f7b60147a329fb27a4`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Affected future consumers: exactly `servant.amakusa.skill.sc-amakusa-3`, `servant.amor.skill.sc-amor-1`, `servant.jeanne.skill.sc-jeanne-1`, `servant.morgan.skill.sc-morgan-3`, `servant.oberon.skill.sc-oberon-3`, `servant.oberon.skill.sc-oberon-4`
+Read: `docs/reports/2026-09-19-p3-a-fb2-27-ruler-seal-subsystem-dispatch.md` plus startup prompt and collaboration contract.
+
+Goal: implement only the identity-free Ruler seal issuer→bound-player relationship subsystem, its game-long least-bound selection history, single-use seal ownership, structural move / round movement-lock / free-play+delayed-reward branches, replay idempotency, and explicit no-copy/no-steal structural marker. No production authoring, pack/generated product, unrelated special subsystem, identity/text/Reference-handler routing, or migration credit is authorized.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `IMPLEMENTATION_BLOCKED`
+
+FB2-27 earns zero frozen migration credit and requires fresh independent R review plus later A capability synchronization before any Ruler authoring migration.
+
+## Full-Roster Dispatch State After FB2-27 Dispatch
+
+- Recovery-line accepted overlap remains `121/944` (`12.82%`), leaving `823/944`.
+- FB2-27 is zero-credit runtime capability work.
+- If accepted and synchronized, a later S task may attempt exactly six Ruler-family identities; no migration credit is pre-authorized.
+- Historical P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
+- Existing stacked PRs remain unmerged and unretargeted.
