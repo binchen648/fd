@@ -4648,3 +4648,32 @@ Targets: exactly `master.iliya.skill.s1`, `master.taiga.skill.s1`
 Read: `docs/agents/PHASE3-FULL-ROSTER-STARTUP-PROMPT.md`, `docs/agents/PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`, `docs/reports/2026-09-18-p3-a-fb2-25-consumer-migration-dispatch.md`.
 
 Goal: materialize exactly the two block-free initial-Mana skills as standalone `master_skill_card_archive` authoring, reusing only accepted FB2-05 + FB2-25/R51 semantics. Do not modify runtime, pack/generated product, or add other master skills. Candidate material may be `117/944`; accepted overlap remains `115/944` pending fresh R.
+
+## TASK P3-R52-FB2-25-INITIAL-MANA-CONSUMER-MIGRATION
+
+Owner: Codex R
+Status: `MIGRATION_ACCEPTED`
+Implementation Base: `bfa9087ab77223e40525fe36214509b1f2cdf9ff`
+Candidate S SHA: `0de67e5b5c4f403f04fa54868c6db09b980c90f8`
+PR: `#363`
+Verdict: `MIGRATION_ACCEPTED`
+Blocking findings: none.
+
+Fresh R52 independently reconstructs exactly `master.iliya.skill.s1` and `master.taiga.skill.s1` from F1/Reference, verifies exact four-file scope and zero runtime/product hot-file diff, proves trusted `game_start` controller Mana assignment `4 -> 6/3`, fail-closed near-match behavior, product isolation, and exact `115/944 -> 117/944` material accounting. All official gates pass and reviewer/Candidate/Reference finish clean.
+
+## TASK P3-A-R52-INITIAL-MANA-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r52-initial-mana-acceptance-sync`
+Base: exact accepted Candidate `0de67e5b5c4f403f04fa54868c6db09b980c90f8`
+Read: `docs/reports/2026-09-18-p3-a-r52-initial-mana-acceptance-synchronization.md`
+
+Result: record fresh R52 `MIGRATION_ACCEPTED` for exactly `master.iliya.skill.s1` and `master.taiga.skill.s1`. A independently reproduces Base `115/944` and Candidate `117/944`, exact two additions, zero removals, and zero duplicate frozen canonical IDs. Recovery-line accepted overlap is now `117/944` (`12.39%`), leaving `827/944`; integrated `origin/main` remains `111/944`.
+
+## Full-Roster Dispatch State After R52 Acceptance Synchronization
+
+- Recovery-line accepted overlap is `117/944` (`12.39%`); exact R52 additions are Iliya s1 and Taiga s1.
+- Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`; PR #363 remains OPEN and unmerged.
+- P3-FM09 remains `MIGRATION_BLOCKED` with the same nine provisioning targets; this initial-Mana batch is not FM10.
+- Next coordinator work is a fresh readiness overlay over the remaining `827` identities against accepted `117/944`; no further frozen credit is pre-authorized.

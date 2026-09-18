@@ -1049,3 +1049,12 @@ Permitted final status:
 - A temporary raw-authoring probe with explicit empty host authority loads both cards with zero report, classifies under accepted FB2-25, and executes trusted game_start as 4->6 and 4->3 while leaving the other player unchanged.
 - The authorized container is the accepted FM08/R40 standalone `master_skill_card_archive` pattern. The two archives must not be added to the playtest pack and must not use outside-game support registration.
 - S is dispatched for exactly these two identities with no runtime/product hot-file change. Candidate material may become `117/944`; recovery accepted remains **`115/944`** until fresh independent migration review and A synchronization.
+
+## P3-A R52 / FB2-25 Initial-Mana Consumer Migration Acceptance Synchronization - 2026-09-18
+
+- Fresh R52 returns `MIGRATION_ACCEPTED` for exact Candidate `0de67e5b5c4f403f04fa54868c6db09b980c90f8` over Base `bfa9087ab77223e40525fe36214509b1f2cdf9ff`, with no blocking semantic, provenance, scope, accounting, product-isolation, determinism, or cleanliness finding.
+- Exact accepted frozen additions are only `master.iliya.skill.s1` and `master.taiga.skill.s1`; both are source-grounded `game.started -> SET_MANA(controller, literal)` consumers fully inside accepted FB2-05 + FB2-25/R51 semantics. Zouken s1 remains excluded due additional game-duration Mana-capacity semantics.
+- Candidate scope is exactly two standalone master-skill authoring archives, one focused regression, and one S result report, with zero `packages/rules/src/**`, pack, generated, app, script, or artifact diff. Runtime probes prove `4 -> 6/3`, controller isolation, typed evidence, no-op/replay behavior, and fail-closed near-match handling.
+- Fresh official validation is focused `21/21`, full CI `880/880` across 136 files, rules core+regression `456/456` across 74 files, client/content/determinism/Reference PASS, coverage/audit PASS, and diff check PASS. Product remains `73 cards / 14 characters / 0 blockers` with unchanged deterministic hashes.
+- A independently reproduces frozen material `115/944 -> 117/944`, exactly two additions, zero removals, zero duplicate canonical IDs. Recovery-line accepted overlap is now **`117/944` (`12.39%`)**, leaving **`827/944`**; integrated main remains `111/944`.
+- P3-FM09 remains `MIGRATION_BLOCKED` with the same nine provisioning targets. PR #363 remains open/unmerged; the next coordinator action is a fresh readiness overlay over the remaining `827` identities rather than a synthetic FM10 dispatch.
