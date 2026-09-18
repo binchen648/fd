@@ -28,7 +28,8 @@
     "data/authoring/masters/master.olga-marie.json"
   ],
   "authoringMasterSupportFiles": [
-    "data/authoring/masters/master.shirou-emiya.json"
+    "data/authoring/masters/master.shirou-emiya.json",
+    "data/authoring/masters/master.ciel.json"
   ],
   "eventSetFiles": [
     "data/packs/fd-playtest-v1/events/waxing-moon-ritual.json"
