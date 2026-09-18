@@ -1040,3 +1040,12 @@ Permitted final status:
 - Fresh validation is focused `29/29`, full CI `875/875` across 135 files, rules core+regression `456/456` across 74 files, client/content/determinism/Reference/coverage/audit PASS, and diff check PASS.
 - Frozen material remains **`115/944` (`12.18%`)**, leaving `829/944`; FB2-25 earns zero migration credit. Integrated main remains `111/944`.
 - Exact F1 rows fully inside this new envelope are only `master.iliya.skill.s1` and `master.taiga.skill.s1`. This is planning evidence, not migration credit; fresh feasibility/source-grounding is required before S migration.
+
+
+## P3-A FB2-25 Consumer Migration Dispatch - Iliya S1 + Taiga S1 - 2026-09-18
+
+- Fresh post-R51 feasibility confirms exactly two F1 rows fully fit the accepted composed parent semantic: `master.iliya.skill.s1` (initial Mana 6) and `master.taiga.skill.s1` (initial Mana 3). Zouken s1 remains excluded due its additional Mana-capacity modifier.
+- F1 full-text hashes are `681da5ea...` and `ab00e7ec...`; locked Reference confirms owner/name, legacy s1, passive type, normalized 0/0 static values, and null legacy requirement.
+- A temporary raw-authoring probe with explicit empty host authority loads both cards with zero report, classifies under accepted FB2-25, and executes trusted game_start as 4->6 and 4->3 while leaving the other player unchanged.
+- The authorized container is the accepted FM08/R40 standalone `master_skill_card_archive` pattern. The two archives must not be added to the playtest pack and must not use outside-game support registration.
+- S is dispatched for exactly these two identities with no runtime/product hot-file change. Candidate material may become `117/944`; recovery accepted remains **`115/944`** until fresh independent migration review and A synchronization.

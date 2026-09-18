@@ -4634,3 +4634,17 @@ Base: exact accepted B2 Candidate `101cb0d4e3fbd105cfadafda26585b3825616fe1`
 Read: `docs/reports/2026-09-18-p3-a-r51-fb2-25-acceptance-synchronization.md`
 
 Result: accept FB2-25 as zero-credit runtime infrastructure. Recovery-line accepted overlap remains `115/944` (`12.18%`), leaving `829/944`; integrated main remains `111/944`. Exact future F1 consumers within the accepted envelope are Iliya s1 and Taiga s1, but both still require a fresh S feasibility/source-grounding dispatch before migration.
+
+
+## TASK P3-FB2-25-INITIAL-MANA-CONSUMER-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact post-R51 A synchronization plus this dispatch commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Accepted runtime: FB2-25 / R51 Candidate `101cb0d4e3fbd105cfadafda26585b3825616fe1`
+Targets: exactly `master.iliya.skill.s1`, `master.taiga.skill.s1`
+Read: `docs/agents/PHASE3-FULL-ROSTER-STARTUP-PROMPT.md`, `docs/agents/PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`, `docs/reports/2026-09-18-p3-a-fb2-25-consumer-migration-dispatch.md`.
+
+Goal: materialize exactly the two block-free initial-Mana skills as standalone `master_skill_card_archive` authoring, reusing only accepted FB2-05 + FB2-25/R51 semantics. Do not modify runtime, pack/generated product, or add other master skills. Candidate material may be `117/944`; accepted overlap remains `115/944` pending fresh R.
