@@ -189,3 +189,31 @@ If and only if a fresh independent R accepts this infrastructure Candidate and A
 That later migration could mechanically produce `118/944 -> 121/944` Candidate material only if those three are the exact additions with zero removals/duplicates. This B2 Candidate itself does not authorize or claim that migration.
 
 Historical P3-FM09 exact-ten recovery remains blocked for its unresolved dependencies. No FM10, merge, or retarget is performed by this task.
+
+## R54 revision — malformed mixed-shape fallthrough
+
+Fresh independent R54 returned `IMPLEMENTATION_NEEDS_REVISION` after reproducing a fail-closed bypass: a mixed master-rule shape with a missing, ordinary-master, or near-match discriminator could avoid the structural guard when the same archive also carried forbidden `deck` or `publicInformation`, then fall through to the ordinary playable-master path.
+
+The B2 revision is intentionally narrow. `hasMasterRuleArchiveShape(...)` at both content-loader and executable-compiler boundaries now identifies the mixed structural shape independently of forbidden playable surfaces. Exact rule-archive validation still owns the explicit rejection of `deck` and `publicInformation`; malformed discriminator variants therefore fail closed before they can synthesize a playable master, overview surface, fallback command spell, or deck.
+
+Regression coverage now locks the reviewer-reported cross-product at both boundaries:
+
+- missing / `master_skill_card_archive` / `master_rule_definition_archive_x` discriminator plus `deck`;
+- missing / `master_skill_card_archive` / `master_rule_definition_archive_x` discriminator plus `publicInformation`.
+
+Fresh post-revision validation:
+
+- `npm run typecheck`: PASS.
+- focused loader/compiler + FB2-15 + FB2-26 regression: **4 files / 122 tests PASS**.
+- official `npm run test:ci`: **137 files / 925 tests PASS**; the existing eleven-round MatchSession case passed at ~4435 ms.
+- rules `src + core + regression`: **79 files / 470 tests PASS**.
+- `npm run content:validate`: PASS, `7 masters / 7 servants / 20 events / 0 blocking issues`.
+- `npm run content:compile`: PASS, same product roster.
+- generated determinism remains unchanged: library `03582e22b830c59ccfe03379159dd5e50aef19fd7bae3561469c000e56618a79`, fixture `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, evidence `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`.
+- locked Reference verification: PASS at exact `b2f9fa15fba07c63530bbf4612b03b8b704755f9`, clean.
+- client production build: PASS with only the pre-existing Vite `node:crypto` browser-externalization warning.
+- Phase 3 coverage remains `106 archives / 141 cards / 246 abilities`, compiled `73 cards / 14 characters / 0 blockers`, routing `22/3/135/0/86/131`.
+- automation audit remains `135/3/86/20`.
+- frozen accounting remains zero-credit at `118/944`, with no authoring additions/removals or duplicate canonical ids.
+
+This revision does not widen FB2-26 scope, change production authoring/product data, modify interpreter/MatchSession semantics, merge or retarget PR #365, or authorize the downstream three-card S migration. A fresh independent reviewer must re-review the revised Candidate.

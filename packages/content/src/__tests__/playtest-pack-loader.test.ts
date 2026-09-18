@@ -301,6 +301,12 @@ describe('playtest pack loader', () => {
     ['missing discriminator', (archive: Record<string, any>) => { delete archive.archiveType; }],
     ['normal-master discriminator', (archive: Record<string, any>) => { archive.archiveType = 'master_skill_card_archive'; }],
     ['near-match discriminator', (archive: Record<string, any>) => { archive.archiveType = 'master_rule_definition_archive_x'; }],
+    ['missing discriminator + deck', (archive: Record<string, any>) => { delete archive.archiveType; archive.deck = []; }],
+    ['normal-master discriminator + deck', (archive: Record<string, any>) => { archive.archiveType = 'master_skill_card_archive'; archive.deck = []; }],
+    ['near-match discriminator + deck', (archive: Record<string, any>) => { archive.archiveType = 'master_rule_definition_archive_x'; archive.deck = []; }],
+    ['missing discriminator + publicInformation', (archive: Record<string, any>) => { delete archive.archiveType; archive.publicInformation = { initialMana: 4 }; }],
+    ['normal-master discriminator + publicInformation', (archive: Record<string, any>) => { archive.archiveType = 'master_skill_card_archive'; archive.publicInformation = { initialMana: 4 }; }],
+    ['near-match discriminator + publicInformation', (archive: Record<string, any>) => { archive.archiveType = 'master_rule_definition_archive_x'; archive.publicInformation = { initialMana: 4 }; }],
   ])('rejects mixed rule-shaped archives that try to fall through the normal master channel: %s', (_name, mutate) => {
     const workspace = createMinimalWorkspace(false);
     try {

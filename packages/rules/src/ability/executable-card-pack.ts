@@ -69,8 +69,6 @@ function hasMasterSupportArchiveShape(archive: RuleArchive): boolean {
 
 function hasMasterRuleArchiveShape(archive: RuleArchive): boolean {
   if (!Array.isArray(archive.cards) || archive.cards.length < 2 ||
-    Object.prototype.hasOwnProperty.call(archive, 'deck') ||
-    Object.prototype.hasOwnProperty.call(archive, 'publicInformation') ||
     !archive.cards.every((card) => card.cardType === 'master_skill' &&
       (card.initialPlacement === undefined || card.initialPlacement === 'outside_game'))) return false;
   return archive.cards.some((card) => card.initialPlacement === 'outside_game') &&
