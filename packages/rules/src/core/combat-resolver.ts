@@ -15,6 +15,7 @@ import { getLocationById } from "./map-engine";
 import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { logicalDayForPlayer } from './rule-overrides';
+import { assignedTerrainSlotIndex, hasRemoteOperationBonus, terrainBonusAt } from './terrain-advantage';
 
 export interface CombatParticipantInput {
   playerId: string;
@@ -155,17 +156,11 @@ function getTerrainBreakdowns(
   battlefieldId: CombatResolutionInput["battlefieldId"],
   participant: CombatParticipantInput,
 ): BattleModifierBreakdown[] {
-  const location = getLocationById(state.map, state.locationConfig, battlefieldId);
-  if (!location?.terrainBonuses?.length || participant.terrainSlotIndex === undefined) {
+  if (participant.terrainSlotIndex === undefined) {
     return [];
   }
-  if (isTerrainSuppressedByAuthoredDuel(state, battlefieldId, participant.playerId)) {
-    return [];
-  }
-
-  const baseValue = location.terrainBonuses[participant.terrainSlotIndex];
-  const value = typeof baseValue === "number" ? baseValue * terrainMultiplierForPlayer(state, participant.playerId) : baseValue;
-  if (typeof value !== "number") {
+  const value = terrainBonusAt(state, battlefieldId, participant.playerId, participant.terrainSlotIndex);
+  if (value === undefined) {
     return [];
   }
 
@@ -174,17 +169,6 @@ function getTerrainBreakdowns(
 
 function modeState(state: GameState): Record<string, unknown> {
   return (state as unknown as { modeState?: Record<string, unknown> }).modeState ?? {};
-}
-
-function assignedTerrainSlotIndex(state: GameState, battlefieldId: CombatResolutionInput["battlefieldId"], playerId: string): number | undefined {
-  const assignments = modeState(state).terrainAssignments;
-  if (!assignments || typeof assignments !== "object") return undefined;
-  const assigned = (assignments as Partial<Record<string, string[]>>)[battlefieldId];
-  if (!Array.isArray(assigned)) return undefined;
-  const index = assigned.indexOf(playerId);
-  if (index < 0) return undefined;
-  const location = getLocationById(state.map, state.locationConfig, battlefieldId);
-  return index < (location?.terrainBonuses?.length ?? 0) ? index : undefined;
 }
 
 function cannotWinBattleThisRound(state: GameState, playerId: string): boolean {
@@ -211,10 +195,6 @@ function hasActiveBasicCardAtBattlefield(
 
 function ignoresBattleLossEffects(state: GameState, playerId: string, battlefieldId: CombatResolutionInput["battlefieldId"]): boolean {
   return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, "basic.luck");
-}
-
-function hasRemoteOperationBonus(state: GameState, playerId: string, battlefieldId: CombatResolutionInput["battlefieldId"]): boolean {
-  return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, "basic.preparation");
 }
 
 function returnSilenceSources(state: GameState): Array<{ sourceCardId: string; playerId: string }> {
@@ -248,44 +228,6 @@ function isAuthoredLegacyAttack(state: GameState, card: GameState["cards"][numbe
 
 function isCombatCardZone(state: GameState, card: GameState["cards"][number]): boolean {
   return card.zone === "attack_area" || isLegacyCombatCard(state, card);
-}
-
-function terrainMultiplierForPlayer(state: GameState, playerId: string): number {
-  const entries = modeState(state).terrainMultipliers;
-  const authoredMultiplier = !Array.isArray(entries) ? 1 : entries.reduce((multiplier, entry) => {
-    if (!entry || typeof entry !== "object") return multiplier;
-    const candidate = entry as { playerId?: string; multiplier?: number };
-    return candidate.playerId === playerId && typeof candidate.multiplier === "number"
-      ? multiplier * candidate.multiplier
-      : multiplier;
-  }, 1);
-  const currentBattlefieldId = state.players.find((player) => player.id === playerId)?.locationId;
-  return currentBattlefieldId && hasRemoteOperationBonus(state, playerId, currentBattlefieldId as CombatResolutionInput["battlefieldId"])
-    ? authoredMultiplier * 2
-    : authoredMultiplier;
-}
-
-function isTerrainSuppressedByAuthoredDuel(
-  state: GameState,
-  battlefieldId: CombatResolutionInput["battlefieldId"],
-  playerId: string,
-): boolean {
-  const runtime = state.abilityRuntime;
-  if (!runtime) return false;
-  for (const ongoing of runtime.ongoingEffects) {
-    const sourceCard = state.cards.find((card) => card.instanceId === ongoing.sourceCardId);
-    const controller = state.players.find((player) => player.id === ongoing.controllerId);
-    if (!sourceCard || !["field", "attack_area"].includes(sourceCard.zone) || !runtime.cardState[sourceCard.instanceId]?.active) continue;
-    if (controller?.locationId !== battlefieldId) continue;
-    const blocksTerrain = ongoing.ruleModifiers.some((modifier) =>
-      modifier.definition.operation === "ignore" &&
-      modifier.definition.rule === "terrain_and_external_servant_or_npc_effects");
-    if (!blocksTerrain) continue;
-    if (playerId === ongoing.controllerId) return true;
-    const player = state.players.find((candidate) => candidate.id === playerId);
-    if (player?.locationId === battlefieldId) return true;
-  }
-  return false;
 }
 
 function reverseSituationAndEventIfNeeded(

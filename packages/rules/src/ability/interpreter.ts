@@ -10,6 +10,7 @@ import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, insta
 import { node, nodes, str } from './loader';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
+import { currentDeploymentBonus } from '../core/terrain-advantage';
 export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import {
   DataFlowValidationError,
@@ -275,6 +276,7 @@ export function evaluateFormula(input: unknown, s: GameState, controllerId: stri
       const name = str(n.var ?? n.name);
       // Check standard variables first
       if (name === 'controller.availableMana') return player(s, controllerId).mana;
+      if (name === 'controller.deployment_bonus') return currentDeploymentBonus(s, controllerId);
       if (name === 'game.round_number') return s.round.roundNumber;
       if (name === 'consecutive_play_rounds') {
         const r = runtime(s);
