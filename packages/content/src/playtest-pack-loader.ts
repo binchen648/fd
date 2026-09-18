@@ -267,6 +267,37 @@ function assertMasterRuleArchive(archive: AuthoringArchive): void {
   }
 }
 
+
+const EVENT_RULE_BATTLE_ATTRIBUTES = new Set(['strength', 'agility', 'magecraft', 'special', 'noble_phantasm']);
+const EVENT_RULE_BATTLE_CONDITIONS = new Set(['has_attribute', 'lacks_attribute', 'has_repeated_attribute']);
+
+function assertEventRuleBattleModifiers(face: Record<string, unknown>, archiveId: string, cardId: string): void {
+  const modifiers = face.battleModifiers;
+  if (modifiers === undefined) return;
+  if (!Array.isArray(modifiers) || modifiers.length === 0) {
+    throw new Error(`Event rule card battleModifiers must be a nonempty array when declared: ${archiveId}:${cardId}`);
+  }
+  for (const [index, modifier] of modifiers.entries()) {
+    if (!modifier || typeof modifier !== 'object' || Array.isArray(modifier)) {
+      throw new Error(`Event rule battle modifier must be an object: ${archiveId}:${cardId}:${index}`);
+    }
+    const entry = modifier as Record<string, unknown>;
+    const keys = Object.keys(entry).sort().join('|');
+    if (keys !== 'attribute|condition|value') {
+      throw new Error(`Event rule battle modifier must contain exactly attribute, condition, and value: ${archiveId}:${cardId}:${index}`);
+    }
+    if (typeof entry.attribute !== 'string' || !EVENT_RULE_BATTLE_ATTRIBUTES.has(entry.attribute)) {
+      throw new Error(`Event rule battle modifier attribute is unsupported: ${archiveId}:${cardId}:${index}`);
+    }
+    if (typeof entry.condition !== 'string' || !EVENT_RULE_BATTLE_CONDITIONS.has(entry.condition)) {
+      throw new Error(`Event rule battle modifier condition is unsupported: ${archiveId}:${cardId}:${index}`);
+    }
+    if (!Number.isSafeInteger(entry.value) || Number(entry.value) === 0) {
+      throw new Error(`Event rule battle modifier value must be a nonzero safe integer: ${archiveId}:${cardId}:${index}`);
+    }
+  }
+}
+
 function assertEventRuleArchive(archive: AuthoringArchive): void {
   if (!isEventRuleArchive(archive)) {
     throw new Error(`Event rule archive requires archiveType=${EVENT_RULE_ARCHIVE_TYPE}: ${archive.id || '<missing-id>'}`);
@@ -297,6 +328,7 @@ function assertEventRuleArchive(archive: AuthoringArchive): void {
     if (face.printedReward !== undefined && (!Number.isSafeInteger(face.printedReward) || Number(face.printedReward) < 0)) {
       throw new Error(`Event rule card printedReward must be a nonnegative integer: ${archive.id}:${card.id}`);
     }
+    assertEventRuleBattleModifiers(face, archive.id, card.id);
     for (const ability of card.abilities ?? []) {
       const activation = ability.activation && typeof ability.activation === 'object'
         ? ability.activation as Record<string, unknown>

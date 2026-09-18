@@ -234,6 +234,24 @@ describe('ExecutableCardPack compiler', () => {
     expect(() => assertExecutableCardPack(executable, input)).not.toThrow();
   });
 
+  it('compiles rules-only event static battle metadata into authoritative catalog modifiers', () => {
+    const input = sourceInput();
+    input.rules.archives.push(eventRuleArchive((archive) => {
+      archive.cards[0].cardFace.battleModifiers = [
+        { attribute: 'strength', condition: 'has_attribute', value: 4 },
+        { attribute: 'agility', condition: 'has_attribute', value: -2 },
+      ];
+    }));
+
+    const executable = compileExecutableCardPack(input);
+    expect(executable.eventCatalog?.['master.synthetic-event.skill.objective']?.battleModifiers).toEqual([
+      { sourceId: 'master.synthetic-event.skill.objective', targetTag: '\u529b\u91cf', value: 4, condition: 'has_attribute' },
+      { sourceId: 'master.synthetic-event.skill.objective', targetTag: '\u654f\u6377', value: -2, condition: 'has_attribute' },
+    ]);
+    expect(executable.cards['master.synthetic-event.skill.objective']).toBeUndefined();
+    expect(() => assertExecutableCardPack(executable, input)).not.toThrow();
+  });
+
   it.each([
     ['missing discriminator', (archive: any) => { delete archive.archiveType; }, /Event rule-shaped archive requires archiveType=event_rule_definition_archive/],
     ['master-rule discriminator', (archive: any) => { archive.archiveType = 'master_rule_definition_archive'; }, /Event rule-shaped archive requires archiveType=event_rule_definition_archive/],
@@ -247,6 +265,17 @@ describe('ExecutableCardPack compiler', () => {
     ['playable public information', (archive: any) => { archive.publicInformation = { initialMana: 4 }; }, /cannot define playable publicInformation/],
     ['empty event tag', (archive: any) => { archive.cards[0].cardFace.eventTags = ['']; }, /eventTags must be an array of nonempty strings/],
     ['negative printed reward', (archive: any) => { archive.cards[0].cardFace.printedReward = -1; }, /printedReward must be a nonnegative integer/],
+    ['empty battle modifiers', (archive: any) => { archive.cards[0].cardFace.battleModifiers = []; }, /battleModifiers must be a nonempty array/],
+    ['non-array battle modifiers', (archive: any) => { archive.cards[0].cardFace.battleModifiers = {}; }, /battleModifiers must be a nonempty array/],
+    ['unknown battle attribute', (archive: any) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'luck', condition: 'has_attribute', value: 4 }]; }, /attribute is unsupported/],
+    ['non-string battle attribute', (archive: any) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: ['strength'], condition: 'has_attribute', value: 4 }]; }, /attribute is unsupported/],
+    ['non-string battle condition', (archive: any) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'strength', condition: ['has_attribute'], value: 4 }]; }, /condition is unsupported/],
+    ['missing battle condition', (archive: any) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'strength', value: 4 }]; }, /exactly attribute, condition, and value/],
+    ['unknown battle condition', (archive: any) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'strength', condition: 'identity_match', value: 4 }]; }, /condition is unsupported/],
+    ['zero battle modifier', (archive: any) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'strength', condition: 'has_attribute', value: 0 }]; }, /nonzero safe integer/],
+    ['fractional battle modifier', (archive: any) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'strength', condition: 'has_attribute', value: 1.5 }]; }, /nonzero safe integer/],
+    ['non-finite battle modifier', (archive: any) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'strength', condition: 'has_attribute', value: Number.NaN }]; }, /nonzero safe integer/],
+    ['spoofed battle source id', (archive: any) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'strength', condition: 'has_attribute', value: 4, sourceId: 'other' }]; }, /exactly attribute, condition, and value/],
     ['missing event trigger', (archive: any) => { archive.cards[0].abilities = [{ id: 'bad', activation: { eventController: 'event_player' } }]; }, /event rule ability trigger is required/i],
     ['missing event controller', (archive: any) => { archive.cards[0].abilities = [{ id: 'bad', activation: { trigger: 'round_end' } }]; }, /event rule ability eventController is required/i],
     ['invalid event controller', (archive: any) => { archive.cards[0].abilities = [{ id: 'bad', activation: { trigger: 'round_end', eventController: 'identity_owner' } }]; }, /eventController is unsupported/],

@@ -162,6 +162,57 @@ function assertMasterRuleArchive(archive: RuleArchive): void {
   }
 }
 
+
+const EVENT_RULE_BATTLE_ATTRIBUTE_TAGS: Record<string, string> = {
+  strength: '\u529b\u91cf',
+  agility: '\u654f\u6377',
+  magecraft: '\u9b54\u672f',
+  special: '\u7279\u6b8a',
+  noble_phantasm: '\u5b9d\u5177',
+};
+const EVENT_RULE_BATTLE_CONDITIONS = new Set(['has_attribute', 'lacks_attribute', 'has_repeated_attribute']);
+
+function eventRuleBattleModifiers(face: Record<string, unknown>, archiveId: string, cardId: string): NonNullable<EventCatalogEntry['battleModifiers']> {
+  const modifiers = face.battleModifiers;
+  if (modifiers === undefined) return [];
+  if (!Array.isArray(modifiers) || modifiers.length === 0) {
+    throw new Error(`Event rule card battleModifiers must be a nonempty array when declared: ${archiveId}:${cardId}`);
+  }
+  return modifiers.map((modifier, index) => {
+    if (!modifier || typeof modifier !== 'object' || Array.isArray(modifier)) {
+      throw new Error(`Event rule battle modifier must be an object: ${archiveId}:${cardId}:${index}`);
+    }
+    const entry = modifier as Record<string, unknown>;
+    const keys = Object.keys(entry).sort().join('|');
+    if (keys !== 'attribute|condition|value') {
+      throw new Error(`Event rule battle modifier must contain exactly attribute, condition, and value: ${archiveId}:${cardId}:${index}`);
+    }
+    if (typeof entry.attribute !== 'string') {
+      throw new Error(`Event rule battle modifier attribute is unsupported: ${archiveId}:${cardId}:${index}`);
+    }
+    const targetTag = EVENT_RULE_BATTLE_ATTRIBUTE_TAGS[entry.attribute];
+    if (!targetTag) {
+      throw new Error(`Event rule battle modifier attribute is unsupported: ${archiveId}:${cardId}:${index}`);
+    }
+    if (typeof entry.condition !== 'string') {
+      throw new Error(`Event rule battle modifier condition is unsupported: ${archiveId}:${cardId}:${index}`);
+    }
+    const condition = entry.condition;
+    if (!EVENT_RULE_BATTLE_CONDITIONS.has(condition)) {
+      throw new Error(`Event rule battle modifier condition is unsupported: ${archiveId}:${cardId}:${index}`);
+    }
+    if (!Number.isSafeInteger(entry.value) || Number(entry.value) === 0) {
+      throw new Error(`Event rule battle modifier value must be a nonzero safe integer: ${archiveId}:${cardId}:${index}`);
+    }
+    return {
+      sourceId: cardId,
+      targetTag,
+      value: Number(entry.value),
+      condition: condition as 'has_attribute' | 'lacks_attribute' | 'has_repeated_attribute',
+    };
+  });
+}
+
 function assertEventRuleArchive(archive: RuleArchive): void {
   if (!isEventRuleArchive(archive)) {
     if (hasEventRuleArchiveShape(archive)) {
@@ -195,6 +246,7 @@ function assertEventRuleArchive(archive: RuleArchive): void {
     if (face.printedReward !== undefined && (!Number.isSafeInteger(face.printedReward) || Number(face.printedReward) < 0)) {
       throw new Error(`Event rule card printedReward must be a nonnegative integer: ${archive.id}:${card.id}`);
     }
+    eventRuleBattleModifiers(face, archive.id, card.id);
     for (const ability of card.abilities ?? []) {
       const activation = ability.activation && typeof ability.activation === 'object'
         ? ability.activation as Record<string, unknown>
@@ -754,6 +806,7 @@ function eventCatalogFromContent(input: CompileInput, eventRules: Record<string,
     const face = node(card.cardFace);
     const tags = Array.isArray(face.eventTags) ? face.eventTags.filter((value): value is string => typeof value === 'string') : [];
     const eventSetIds = Array.isArray(face.eventSetIds) ? face.eventSetIds.filter((value): value is string => typeof value === 'string') : [];
+    const battleModifiers = eventRuleBattleModifiers(face, 'eventRules', card.id);
     result[card.id] = {
       id: card.id,
       name: card.name,
@@ -761,6 +814,7 @@ function eventCatalogFromContent(input: CompileInput, eventRules: Record<string,
       eventSetIds: [...new Set(eventSetIds)].sort(),
       ...(Number.isFinite(face.printedReward) ? { printedReward: Number(face.printedReward) } : {}),
       ...(Array.isArray(face.applicableLocations) ? { applicableLocations: face.applicableLocations.filter((value): value is string => typeof value === 'string') } : {}),
+      ...(battleModifiers.length ? { battleModifiers } : {}),
     };
   }
   return result;
