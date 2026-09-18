@@ -4946,3 +4946,14 @@ Affected future consumers: exactly Hisui Detective s1, Kadoc ascension/s3/s4/s5,
 Goal: add only a rules-only event-definition representation, generic event-card zone/lifecycle operations, and an authoritative event-placement executable source context sufficient to close `event_card_rule` without identity/name/text/Reference-handler routing. Do not implement Lostbelt expansion, Wodime state, prophecy, deduction, defeat-player, foreign-life, production consumer authoring, or migration credit.
 
 FB2-28 earns zero frozen migration credit. Formal recovery accepted remains `127/944` and historical P3-FM09 remains `MIGRATION_BLOCKED`.
+## TASK P3-A-R61-FB2-28-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r61-fb2-28-acceptance-sync`
+Base: exact accepted Revision Candidate `69f2fb09ca951957148f965df459bb3063323800`
+Read: `docs/reports/2026-09-19-p3-a-r61-fb2-28-acceptance-synchronization.md`
+
+Result: record fresh R61 `IMPLEMENTATION_ACCEPTED_CANDIDATE` for FB2-28. R60's battlefield-location round-trip blocker is closed; A independently reproduces `111 archives / 150 cards / 150 unique / 127/944 overlap / 0 duplicates`. FB2-28 is zero-credit infrastructure, so formal recovery accepted remains `127/944` with `817` remaining.
+
+Next coordinator action is private read-only dependency recomputation for the twelve `event_card_rule` single-gap rows. No downstream migration is credited or dispatched by this synchronization. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
