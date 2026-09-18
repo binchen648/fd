@@ -4922,3 +4922,27 @@ Result: record fresh R59 `MIGRATION_ACCEPTED` for exactly Amakusa s3, Amor s1, J
 - PR #368 remains OPEN, unmerged, and unretargeted; integrated `origin/main` remains mechanically `111/944`.
 - Historical P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
 - Next coordinator action is a read-only A readiness partition of all remaining `817` identities into direct READY, one-capability-away, and heavy multi-mechanic groups before any new dispatch.
+## TASK P3-A-FB2-28-EVENT-RULE-BRIDGE-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-28-event-rule-bridge-dispatch`
+Base: exact post-R59 acceptance synchronization `f80da896018f6d3cf1c2e4667d95f9c6f1ff4b14`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-19-p3-a-fb2-28-event-rule-executable-bridge-dispatch.md`
+
+Result: private read-only feasibility over the remaining `817` identities finds exactly `12` single-gap rows whose sole frozen blocker is `SPECIAL_EFFECT:event_card_rule`. Current runtime already owns event deck/discard/placement/visibility/VP/static-modifier lifecycle but lacks a rules-only executable event-definition/source bridge. Dispatch FB2-28 to implement only this identity-free event-card lifecycle and executable-rule boundary. The `12` is an unlock-yield upper bound, not one mixed migration batch and not migration credit.
+
+## TASK P3-FB2-28-EVENT-RULE-EXECUTABLE-BRIDGE
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A dispatch commit descended directly from `f80da896018f6d3cf1c2e4667d95f9c6f1ff4b14`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Affected future consumers: exactly Hisui Detective s1, Kadoc ascension/s3/s4/s5, Kiara s4, Ophelia ascension/s4/s5/s6/s7, and Wodime s6 as enumerated in the dispatch report.
+
+Goal: add only a rules-only event-definition representation, generic event-card zone/lifecycle operations, and an authoritative event-placement executable source context sufficient to close `event_card_rule` without identity/name/text/Reference-handler routing. Do not implement Lostbelt expansion, Wodime state, prophecy, deduction, defeat-player, foreign-life, production consumer authoring, or migration credit.
+
+FB2-28 earns zero frozen migration credit. Formal recovery accepted remains `127/944` and historical P3-FM09 remains `MIGRATION_BLOCKED`.
