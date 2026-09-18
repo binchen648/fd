@@ -9060,6 +9060,123 @@
         "playKind": "support",
         "destinationZone": "field"
       },
+      "master.shiki-ryougi.skill.s3": {
+        "id": "master.shiki-ryougi.skill.s3",
+        "name": "死・紧握",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "魔术",
+          "cost": 1,
+          "basePower": 0,
+          "attributes": [
+            "魔术"
+          ]
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
+        "abilities": [
+          {
+            "id": "required-additional-play",
+            "kind": "passive",
+            "printedClause": "此牌需追加打出。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "append_only_rule"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
+            "id": "same-battlefield-private-hand-return",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：查看一名与你位于同一战场的玩家的手牌，你可将其中一张牌洗回其所有者的牌库。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window",
+              "requiresSourceState": "active"
+            },
+            "conditions": [],
+            "targets": [
+              {
+                "id": "selected_player",
+                "type": "player",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "constraints": [
+                  {
+                    "type": "same_battlefield_as_controller"
+                  }
+                ]
+              }
+            ],
+            "effects": [
+              {
+                "type": "inspect_target_hand_optional_return_one_to_owner_deck",
+                "target": "selected_player"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.shiki-ryougi",
+        "playKind": "attack",
+        "destinationZone": "attack_area"
+      },
       "basic.strength.1": {
         "id": "basic.strength.1",
         "name": "力量攻击 1",
@@ -10639,11 +10756,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "5c6cb2925e65415ca288e8f024e8dcd078c2828f86458f3262bfe1ec32591cf6",
+    "definitionHash": "a87a095141bbb878c3c069b89ac7c13600c587c96cf2743f2b9823257bd47657",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "5c6cb2925e65415ca288e8f024e8dcd078c2828f86458f3262bfe1ec32591cf6"
+      "definitionHash": "a87a095141bbb878c3c069b89ac7c13600c587c96cf2743f2b9823257bd47657"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -11598,6 +11715,26 @@
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[15].cards[0].abilities[1]"
+      },
+      "master.shiki-ryougi.skill.s3": {
+        "archiveId": "master.shiki-ryougi",
+        "archiveIndex": 16,
+        "cardIndex": 0,
+        "path": "archives[16].cards[0]"
+      },
+      "master.shiki-ryougi.skill.s3#required-additional-play": {
+        "archiveId": "master.shiki-ryougi",
+        "archiveIndex": 16,
+        "cardIndex": 0,
+        "abilityIndex": 0,
+        "path": "archives[16].cards[0].abilities[0]"
+      },
+      "master.shiki-ryougi.skill.s3#same-battlefield-private-hand-return": {
+        "archiveId": "master.shiki-ryougi",
+        "archiveIndex": 16,
+        "cardIndex": 0,
+        "abilityIndex": 1,
+        "path": "archives[16].cards[0].abilities[1]"
       }
     }
   }
