@@ -406,6 +406,29 @@ describe('playtest pack loader', () => {
     }
   });
 
+  it('accepts structured rules-only event battle modifiers without widening product surfaces', () => {
+    const workspace = createMinimalWorkspace(false);
+    try {
+      const ruleArchive = addEventRuleArchive(workspace, (archive) => {
+        archive.cards[0].cardFace.battleModifiers = [
+          { attribute: 'strength', condition: 'has_attribute', value: 4 },
+          { attribute: 'agility', condition: 'has_attribute', value: -2 },
+        ];
+      });
+      const loaded = loadPlaytestContentPack(workspace.packPath, { workspaceRoot: workspace.root });
+      const compiled = compileLoadedPlaytestPack(loaded);
+      expect(((loaded.authoringArchives.find((archive) => archive.id === ruleArchive.id)?.cards[0]?.cardFace ?? {}) as Record<string, unknown>).battleModifiers).toEqual([
+        { attribute: 'strength', condition: 'has_attribute', value: 4 },
+        { attribute: 'agility', condition: 'has_attribute', value: -2 },
+      ]);
+      expect(loaded.cards.some((card) => card.id === ruleArchive.cards[0].id)).toBe(false);
+      expect(compiled.library.cards.some((card) => card.id === ruleArchive.cards[0].id)).toBe(false);
+      expect(compiled.library.eventSets).toEqual([]);
+    } finally {
+      rmSync(workspace.root, { recursive: true, force: true });
+    }
+  });
+
   it.each([
     ['missing discriminator', (archive: Record<string, any>) => { delete archive.archiveType; }, /requires archiveType=event_rule_definition_archive/],
     ['master-rule discriminator', (archive: Record<string, any>) => { archive.archiveType = 'master_rule_definition_archive'; }, /requires archiveType=event_rule_definition_archive/],
@@ -417,6 +440,17 @@ describe('playtest pack loader', () => {
     ['playable public information', (archive: Record<string, any>) => { archive.publicInformation = { initialMana: 4 }; }, /cannot define playable publicInformation/],
     ['empty event tag', (archive: Record<string, any>) => { archive.cards[0].cardFace.eventTags = ['']; }, /eventTags must be an array of nonempty strings/],
     ['negative printed reward', (archive: Record<string, any>) => { archive.cards[0].cardFace.printedReward = -1; }, /printedReward must be a nonnegative integer/],
+    ['empty battle modifiers', (archive: Record<string, any>) => { archive.cards[0].cardFace.battleModifiers = []; }, /battleModifiers must be a nonempty array/],
+    ['non-array battle modifiers', (archive: Record<string, any>) => { archive.cards[0].cardFace.battleModifiers = {}; }, /battleModifiers must be a nonempty array/],
+    ['unknown battle attribute', (archive: Record<string, any>) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'luck', condition: 'has_attribute', value: 4 }]; }, /attribute is unsupported/],
+    ['non-string battle attribute', (archive: Record<string, any>) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: ['strength'], condition: 'has_attribute', value: 4 }]; }, /attribute is unsupported/],
+    ['non-string battle condition', (archive: Record<string, any>) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'strength', condition: ['has_attribute'], value: 4 }]; }, /condition is unsupported/],
+    ['missing battle condition', (archive: Record<string, any>) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'strength', value: 4 }]; }, /exactly attribute, condition, and value/],
+    ['unknown battle condition', (archive: Record<string, any>) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'strength', condition: 'identity_match', value: 4 }]; }, /condition is unsupported/],
+    ['zero battle modifier', (archive: Record<string, any>) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'strength', condition: 'has_attribute', value: 0 }]; }, /nonzero safe integer/],
+    ['fractional battle modifier', (archive: Record<string, any>) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'strength', condition: 'has_attribute', value: 1.5 }]; }, /nonzero safe integer/],
+    ['non-finite battle modifier', (archive: Record<string, any>) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'strength', condition: 'has_attribute', value: Number.POSITIVE_INFINITY }]; }, /nonzero safe integer/],
+    ['spoofed battle source id', (archive: Record<string, any>) => { archive.cards[0].cardFace.battleModifiers = [{ attribute: 'strength', condition: 'has_attribute', value: 4, sourceId: 'other' }]; }, /exactly attribute, condition, and value/],
     ['missing event trigger', (archive: Record<string, any>) => { archive.cards[0].abilities = [{ id: 'bad', activation: { eventController: 'event_player' } }]; }, /event rule ability trigger is required/i],
     ['missing event controller', (archive: Record<string, any>) => { archive.cards[0].abilities = [{ id: 'bad', activation: { trigger: 'round_end' } }]; }, /event rule ability eventController is required/i],
     ['invalid event controller', (archive: Record<string, any>) => { archive.cards[0].abilities = [{ id: 'bad', activation: { trigger: 'round_end', eventController: 'identity_owner' } }]; }, /eventController is unsupported/],
