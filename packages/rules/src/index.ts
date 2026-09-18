@@ -32,3 +32,5 @@ export * from './ability/card-instance-state';
 export * from './ability/ruler-seal';
 export * from './ability/report';
 export * from './ability/resolution-dataflow';
+
+export * from './ability/event-rule';

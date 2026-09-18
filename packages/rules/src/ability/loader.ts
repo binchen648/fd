@@ -71,6 +71,9 @@ const supportedTypes = new Set([
   'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override', 'provision_skill_cards',
   // FB2-27 Ruler seal relationship subsystem
   'grant_ruler_seals', 'ruler_copy_steal_guard', 'use_ruler_seal', 'least_ruler_binding_count', 'bound_by_controller_ruler_seal',
+  // FB2-28 event-rule executable bridge
+  'event_location_is_source_event_battlefield', 'combat_occurs_at_source_event_battlefield', 'move_source_event',
+  'event_has_tag', 'event_in_set', 'move_event_card',
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -100,6 +103,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase', 'targetDefinitionIds',
   // FB2-27 Ruler seal structural fields
   'policy', 'option', 'moveDestinations', 'rewardVp',
+  // FB2-28 event-rule source semantics
+  'eventController', 'locationId', 'locationRef', 'ruleControllerPlayerId', 'zones', 'tag', 'eventSetId',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -153,6 +158,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (n.type === 'base_power_at_most' && (typeof n.value !== 'number' || !Number.isFinite(n.value))) issue(`${path}.value`, 'Base power bound must be finite', abilityId);
       if (['move_card', 'move_source_card', 'move_all_remaining', 'create_card'].includes(str(n.type)) &&
         !['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game'].includes(str(node(n.to).zone))) issue(`${path}.to.zone`, 'Unsupported or missing destination zone', abilityId);
+      if (['move_source_event', 'move_event_card'].includes(str(n.type)) && !['event_deck', 'event_discard', 'event_outside_game', 'event_battlefield'].includes(str(node(n.to).zone))) {
+        issue(`${path}.to.zone`, 'Unsupported or missing event destination zone', abilityId);
+      }
       if (n.optionalCost && str(node(n.optionalCost).type) !== 'pay_mana') issue(`${path}.optionalCost`, 'Only optional mana payment is supported', abilityId);
       if (n.type === 'look_at_deck_top' && (n.resultZone !== 'looked_cards' || n.count === undefined)) issue(`${path}.resultZone`, 'Deck look requires a count and looked_cards temporary zone', abilityId);
       if (n.type === 'set_zone_visibility' && (n.visibility !== 'public' || n.zone !== 'discard')) issue(`${path}.visibility`, 'Only continuous public discard visibility is supported', abilityId);
@@ -178,7 +186,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
     }
     if (node(raw.verification).implementationStatus && node(raw.verification).implementationStatus !== 'complete') issue('verification.implementationStatus', 'Archive explicitly marks this card as unfinished');
-    if (timing.phase !== 'action' || timing.window !== 'controller_play_card_window') issue('playTiming', 'Unsupported card play window');
+    if (str(raw.cardType) !== 'event' && (timing.phase !== 'action' || timing.window !== 'controller_play_card_window')) issue('playTiming', 'Unsupported card play window');
     const seen = new Set<string>();
     const abilities = nodes(raw.abilities).map((a): AuthoringAbility => {
       const id = str(a.id); if (!id || seen.has(id)) throw new Error('Invalid or duplicate ability id'); seen.add(id);
@@ -191,6 +199,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (activation.trigger && !triggers.has(str(activation.trigger))) issue('activation.trigger', 'Unmapped trigger', id);
       if (activation.phase && !['preparation', 'advance', 'action', 'combat'].includes(str(activation.phase))) issue('activation.phase', 'Unmapped phase', id);
       if (activation.requiresSourceState && activation.requiresSourceState !== 'active') issue('activation.requiresSourceState', 'Unmapped source state', id);
+      if (activation.eventController !== undefined && !['placement_controller', 'event_player'].includes(str(activation.eventController))) {
+        issue('activation.eventController', 'Unsupported event-rule controller source', id);
+      }
       if (activation.eventLocationId !== undefined && (!str(activation.eventLocationId) || !['after_controller_enters_location', 'after_player_deployed_to_battlefield'].includes(str(activation.trigger)))) issue('activation.eventLocationId', 'Event location requires a supported location-bearing trigger', id);
       if (a.kind === 'phase_action' && !['controller_action_window', 'controller_combat_action_window'].includes(str(activation.opens))) issue('activation.opens', 'Unsupported phase action window', id);
       if (activation.step) issue('activation.step', 'Subphase step mapping is not implemented', id);
@@ -223,9 +234,15 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (effect.type === 'play_selected_cards' && !nodes(a.targets).some(t => t.id === effect.target && t.type === 'card_instance' && node(t.scope).zone === 'hand')) {
           issue('effects.target', 'Effect play requires a declared hand-card target', id);
         }
+        if (effect.type === 'move_event_card' && !nodes(a.targets).some(t => t.id === effect.target && t.type === 'event_card')) {
+          issue('effects.target', 'Event movement requires a declared event-card target', id);
+        }
+        if (effect.type === 'move_source_event' && str(raw.cardType) !== 'event') {
+          issue('effects.type', 'move_source_event is valid only on an event rule definition', id);
+        }
       }
       for (const target of nodes(a.targets)) {
-        if (!['card_instance', 'location', 'choice', 'player'].includes(str(target.type))) issue('targets.type', 'Unmapped target type', id);
+        if (!['card_instance', 'location', 'choice', 'player', 'event_card'].includes(str(target.type))) issue('targets.type', 'Unmapped target type', id);
         if (target.type !== 'choice') {
           scan(target.constraints, 'targets.constraints', id);
           if (target.type === 'location' && nodes(target.constraints).some(c => c.type === 'any_enabled_location') &&
@@ -234,6 +251,18 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
           }
           const scope = node(target.scope);
           if (target.type === 'card_instance' && !['battle_area', 'attack_area', 'looked_cards', 'hand', 'deck', 'removed_from_game', 'discard', 'skill'].includes(str(scope.zone))) issue('targets.scope.zone', 'Unmapped target zone', id);
+          if (target.type === 'event_card') {
+            const rawZones = scope.zones;
+            const zones = Array.isArray(rawZones) ? rawZones.map((zone) => str(zone)) : [];
+            if (!zones.length || zones.some((zone) => !['event_deck', 'event_discard', 'event_outside_game', 'event_battlefield'].includes(zone))) {
+              issue('targets.scope.zones', 'Event-card target requires one or more supported event zones', id);
+            }
+            for (const eventConstraint of nodes(target.constraints)) {
+              if (eventConstraint.type === 'event_has_tag' && !str(eventConstraint.tag)) issue('targets.constraints.tag', 'Event tag constraint requires a nonempty tag', id);
+              else if (eventConstraint.type === 'event_in_set' && !str(eventConstraint.eventSetId)) issue('targets.constraints.eventSetId', 'Event-set constraint requires a nonempty eventSetId', id);
+              else if (!['event_has_tag', 'event_in_set'].includes(str(eventConstraint.type))) issue('targets.constraints', 'Unsupported event-card constraint', id);
+            }
+          }
           if (scope.owner && !['controller', 'any'].includes(str(scope.owner))) issue('targets.scope.owner', 'Only controller or any ownership is supported', id);
           if (scope.controller && !['self', 'any'].includes(str(scope.controller))) issue('targets.scope.controller', 'Only self or any controller targets are supported', id);
         }

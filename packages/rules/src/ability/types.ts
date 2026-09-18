@@ -47,8 +47,21 @@ export interface ServantPackage {
   skillCards: { id: string; name: string; printedText: string; cardFace: RuleNode }[];
   knownCardDefinitions: { id: string; name: string; printedText: string; cardFace: RuleNode }[];
 }
+export interface EventCatalogEntry {
+  id: string;
+  name?: string;
+  tags: string[];
+  eventSetIds: string[];
+  printedReward?: number;
+  applicableLocations?: string[];
+  battleModifiers?: Array<{ sourceId: string; targetTag: string; value: number; condition?: 'has_attribute' | 'lacks_attribute' | 'has_repeated_attribute' }>;
+  forbiddenAttributes?: string[];
+  returnsToEventDeck?: boolean;
+}
 export interface AbilityDefinitionPack {
   cards: Record<string, AuthoringCard>;
+  eventRules?: Record<string, AuthoringCard>;
+  eventCatalog?: Record<string, EventCatalogEntry>;
   schemaVersion?: string;
   characters?: Record<string, ExecutableCharacterDefinition>;
   servantPackage?: ServantPackage;
@@ -115,6 +128,8 @@ export interface EffectContext {
   controllerId: PlayerId; sourceCardId: string; abilityId: string;
   variables: Record<string, number>; selections: Record<string, string[]>;
   event?: AbilityEvent;
+  /** Present only when sourceCardId is a server-owned EventPlacement ruleInstanceId. */
+  eventSource?: { ruleInstanceId: string; definitionId: string; locationId: string };
 }
 export interface PrivateOptionalHandPlayInteractionMetadata {
   kind: 'private_optional_hand_play_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
@@ -235,6 +250,8 @@ export interface AbilityRuntime {
   /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */
   transformedReturnSilenceSourceCardIds?: string[];
   /** FB2-27 identity-free Ruler issuer -> bound-player relationship state. */
+  /** Monotonic invalidation counter for server-issued event-zone selection tokens. */
+  eventRuleZoneRevision: number;
   rulerSealBindings: RulerSealBinding[];
   /** Game-long bind counts scoped by issuer; spending a seal never decrements this history. */
   rulerSealBindingHistory: Record<PlayerId, Record<PlayerId, number>>;

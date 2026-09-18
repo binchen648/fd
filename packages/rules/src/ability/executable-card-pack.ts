@@ -17,6 +17,7 @@ import type {
   AuthoringCard,
   ExecutableCardDefinition,
   ExecutableCharacterDefinition,
+  EventCatalogEntry,
   RuleNode,
 } from './types';
 
@@ -33,6 +34,8 @@ export interface ExecutableCardPack {
   definitionHash: string;
   contentIdentity: { packId: string; version: number; definitionHash: string };
   cards: Record<string, ExecutableCardDefinition>;
+  eventRules?: Record<string, AuthoringCard>;
+  eventCatalog?: Record<string, EventCatalogEntry>;
   characters: Record<string, ExecutableCharacterDefinition>;
   decks: Record<string, string[]>;
   fallbackCommandSpells: Record<string, string>;
@@ -45,6 +48,7 @@ type ContentIdentityInput = Pick<CompiledPlaytestContentLibrary, 'pack' | 'dicti
 
 const MASTER_SUPPORT_ARCHIVE_TYPE = 'master_support_definition_archive';
 const MASTER_RULE_ARCHIVE_TYPE = 'master_rule_definition_archive';
+const EVENT_RULE_ARCHIVE_TYPE = 'event_rule_definition_archive';
 
 function isMasterSupportArchive(archive: RuleArchive): boolean {
   return archive.archiveType === MASTER_SUPPORT_ARCHIVE_TYPE;
@@ -54,8 +58,16 @@ function isMasterRuleArchive(archive: RuleArchive): boolean {
   return archive.archiveType === MASTER_RULE_ARCHIVE_TYPE;
 }
 
+function isEventRuleArchive(archive: RuleArchive): boolean {
+  return archive.archiveType === EVENT_RULE_ARCHIVE_TYPE;
+}
+
 function isRulesOnlyMasterArchive(archive: RuleArchive): boolean {
   return isMasterSupportArchive(archive) || isMasterRuleArchive(archive);
+}
+
+function isRulesOnlyArchive(archive: RuleArchive): boolean {
+  return isRulesOnlyMasterArchive(archive) || isEventRuleArchive(archive);
 }
 
 function hasMasterSupportArchiveShape(archive: RuleArchive): boolean {
@@ -73,6 +85,11 @@ function hasMasterRuleArchiveShape(archive: RuleArchive): boolean {
       (card.initialPlacement === undefined || card.initialPlacement === 'outside_game'))) return false;
   return archive.cards.some((card) => card.initialPlacement === 'outside_game') &&
     archive.cards.some((card) => card.initialPlacement === undefined);
+}
+
+function hasEventRuleArchiveShape(archive: RuleArchive): boolean {
+  return Array.isArray(archive.cards) && archive.cards.length > 0 &&
+    archive.cards.some((card) => card.cardType === 'event');
 }
 
 function assertMasterSupportArchive(archive: RuleArchive): void {
@@ -145,6 +162,57 @@ function assertMasterRuleArchive(archive: RuleArchive): void {
   }
 }
 
+function assertEventRuleArchive(archive: RuleArchive): void {
+  if (!isEventRuleArchive(archive)) {
+    if (hasEventRuleArchiveShape(archive)) {
+      throw new Error(`Event rule-shaped archive requires archiveType=${EVENT_RULE_ARCHIVE_TYPE}: ${archive.id}`);
+    }
+    return;
+  }
+  if (!Array.isArray(archive.cards) || archive.cards.length === 0) {
+    throw new Error(`Event rule archive must contain at least one card: ${archive.id}`);
+  }
+  if (Object.prototype.hasOwnProperty.call(archive, 'deck')) {
+    throw new Error(`Event rule archive cannot define a deck: ${archive.id}`);
+  }
+  if (Object.prototype.hasOwnProperty.call(archive, 'publicInformation')) {
+    throw new Error(`Event rule archive cannot define playable publicInformation: ${archive.id}`);
+  }
+  for (const card of archive.cards) {
+    if (card.cardType !== 'event') {
+      throw new Error(`Event rule archive may contain only event cards: ${archive.id}:${card.id}`);
+    }
+    if (card.initialPlacement !== undefined) {
+      throw new Error(`Event rule archive card cannot define player-card initialPlacement: ${archive.id}:${card.id}`);
+    }
+    const face = (card.cardFace ?? {}) as Record<string, unknown>;
+    for (const field of ['eventTags', 'eventSetIds', 'applicableLocations'] as const) {
+      const value = face[field];
+      if (value !== undefined && (!Array.isArray(value) || value.some((entry) => typeof entry !== 'string' || !entry.trim()))) {
+        throw new Error(`Event rule card ${field} must be an array of nonempty strings: ${archive.id}:${card.id}`);
+      }
+    }
+    if (face.printedReward !== undefined && (!Number.isSafeInteger(face.printedReward) || Number(face.printedReward) < 0)) {
+      throw new Error(`Event rule card printedReward must be a nonnegative integer: ${archive.id}:${card.id}`);
+    }
+    for (const ability of card.abilities ?? []) {
+      const activation = ability.activation && typeof ability.activation === 'object'
+        ? ability.activation as Record<string, unknown>
+        : {};
+      const eventController = activation.eventController;
+      if (typeof activation.trigger !== 'string' || !activation.trigger.trim()) {
+        throw new Error(`Event rule ability trigger is required: ${archive.id}:${card.id}`);
+      }
+      if (eventController === undefined) {
+        throw new Error(`Event rule ability eventController is required: ${archive.id}:${card.id}`);
+      }
+      if (!['placement_controller', 'event_player'].includes(String(eventController))) {
+        throw new Error(`Event rule ability eventController is unsupported: ${archive.id}:${card.id}`);
+      }
+    }
+  }
+}
+
 const basicAttributes = {
   b: { id: 'strength', label: '力量' },
   q: { id: 'agility', label: '敏捷' },
@@ -172,7 +240,7 @@ function hashDefinitions(value: unknown): string {
   return sha256Hex(JSON.stringify(canonicalize(value)));
 }
 
-function identityPayload(content: ContentIdentityInput, executable: Pick<ExecutableCardPack, 'schemaVersion' | 'cards' | 'characters' | 'decks' | 'fallbackCommandSpells'>): unknown {
+function identityPayload(content: ContentIdentityInput, executable: Pick<ExecutableCardPack, 'schemaVersion' | 'cards' | 'eventRules' | 'eventCatalog' | 'characters' | 'decks' | 'fallbackCommandSpells'>): unknown {
   return {
     schemaVersion: executable.schemaVersion,
     pack: content.pack,
@@ -184,6 +252,8 @@ function identityPayload(content: ContentIdentityInput, executable: Pick<Executa
       eventSets: content.eventSets,
     },
     cards: executable.cards,
+    ...(executable.eventRules && Object.keys(executable.eventRules).length ? { eventRules: executable.eventRules } : {}),
+    ...(executable.eventCatalog && Object.keys(executable.eventCatalog).length ? { eventCatalog: executable.eventCatalog } : {}),
     characters: executable.characters,
     decks: executable.decks,
     fallbackCommandSpells: executable.fallbackCommandSpells,
@@ -212,6 +282,8 @@ export function assertExecutableCardPack(value: unknown, content: ContentIdentit
   const actualHash = hashDefinitions(identityPayload(content, {
     schemaVersion: executable.schemaVersion,
     cards: executable.cards,
+    ...(executable.eventRules && Object.keys(executable.eventRules).length ? { eventRules: executable.eventRules } : {}),
+    ...(executable.eventCatalog && Object.keys(executable.eventCatalog).length ? { eventCatalog: executable.eventCatalog } : {}),
     characters: executable.characters,
     decks: executable.decks,
     fallbackCommandSpells: executable.fallbackCommandSpells,
@@ -616,10 +688,89 @@ function deferredCardIds(cards: Record<string, ExecutableCardDefinition>): Set<s
   return deferred;
 }
 
+function containsEventBridgeSyntax(value: unknown): boolean {
+  if (Array.isArray(value)) return value.some(containsEventBridgeSyntax);
+  if (!value || typeof value !== 'object') return false;
+  const current = value as Record<string, unknown>;
+  const type = str(current.type);
+  if (['event_card', 'event_has_tag', 'event_in_set', 'move_event_card', 'move_source_event',
+    'event_location_is_source_event_battlefield', 'combat_occurs_at_source_event_battlefield'].includes(type)) return true;
+  if (current.eventController !== undefined) return true;
+  return Object.values(current).some(containsEventBridgeSyntax);
+}
+
+function eventStaticMetadata(card: CompileInput['cards'][number]): Pick<EventCatalogEntry, 'battleModifiers' | 'forbiddenAttributes' | 'returnsToEventDeck'> {
+  const attributeTags: Record<string, string> = {
+    strength: '力量', agility: '敏捷', magecraft: '魔术', magic: '魔术', special: '特殊', noble_phantasm: '宝具',
+  };
+  const battleModifiers: NonNullable<EventCatalogEntry['battleModifiers']> = [];
+  const forbiddenAttributes: string[] = [];
+  let returnsToEventDeck = false;
+  for (const effect of card.effects ?? []) {
+    const type = String(effect.type ?? '');
+    const targetTag = attributeTags[String(effect.attribute ?? '')];
+    const amount = Number(effect.amount ?? 0);
+    if (type === 'attribute_power_bonus' && !effect.condition && targetTag && amount) {
+      battleModifiers.push({ sourceId: card.id, targetTag, value: amount, condition: 'has_attribute' });
+    }
+    if (type === 'non_attribute_power_modifier' && targetTag && amount) {
+      battleModifiers.push({ sourceId: card.id, targetTag, value: amount, condition: 'lacks_attribute' });
+    }
+    if (type === 'forbid_basic_attack_attribute_use' && targetTag && !forbiddenAttributes.includes(targetTag)) {
+      forbiddenAttributes.push(targetTag);
+    }
+    if (type === 'return_to_event_deck_instead_of_discard_or_removal') returnsToEventDeck = true;
+  }
+  return {
+    ...(battleModifiers.length ? { battleModifiers } : {}),
+    ...(forbiddenAttributes.length ? { forbiddenAttributes } : {}),
+    ...(returnsToEventDeck ? { returnsToEventDeck: true } : {}),
+  };
+}
+
+function eventCatalogFromContent(input: CompileInput, eventRules: Record<string, AuthoringCard>): Record<string, EventCatalogEntry> {
+  const result: Record<string, EventCatalogEntry> = Object.create(null) as Record<string, EventCatalogEntry>;
+  const setIdsByCard = new Map<string, string[]>();
+  for (const set of input.eventSets) {
+    for (const cardId of set.cardIds) {
+      const ids = setIdsByCard.get(cardId) ?? [];
+      if (!ids.includes(set.id)) ids.push(set.id);
+      setIdsByCard.set(cardId, ids);
+    }
+  }
+  for (const card of input.cards.filter((candidate) => candidate.cardType === 'event')) {
+    const eventSetIds = [...new Set([...(card.relatedEventSetIds ?? []), ...(setIdsByCard.get(card.id) ?? [])])].sort();
+    result[card.id] = {
+      id: card.id,
+      name: card.name,
+      tags: [...new Set(card.traits ?? [])].sort(),
+      eventSetIds,
+      ...(card.printedReward !== undefined ? { printedReward: card.printedReward } : {}),
+      ...(card.applicableLocations ? { applicableLocations: [...card.applicableLocations] } : {}),
+      ...eventStaticMetadata(card),
+    };
+  }
+  for (const card of Object.values(eventRules)) {
+    const face = node(card.cardFace);
+    const tags = Array.isArray(face.eventTags) ? face.eventTags.filter((value): value is string => typeof value === 'string') : [];
+    const eventSetIds = Array.isArray(face.eventSetIds) ? face.eventSetIds.filter((value): value is string => typeof value === 'string') : [];
+    result[card.id] = {
+      id: card.id,
+      name: card.name,
+      tags: [...new Set(tags)].sort(),
+      eventSetIds: [...new Set(eventSetIds)].sort(),
+      ...(Number.isFinite(face.printedReward) ? { printedReward: Number(face.printedReward) } : {}),
+      ...(Array.isArray(face.applicableLocations) ? { applicableLocations: face.applicableLocations.filter((value): value is string => typeof value === 'string') } : {}),
+    };
+  }
+  return result;
+}
+
 export function compileExecutableCardPack(input: CompileInput): ExecutableCardPack {
   if (input.rules.schemaVersion !== 'fd-card-rule-content-v1') throw new Error('Expected fd-card-rule-content-v1 source');
   const archives = structuredClone(input.rules.archives);
   const cards: Record<string, ExecutableCardDefinition> = Object.create(null) as Record<string, ExecutableCardDefinition>;
+  const eventRules: Record<string, AuthoringCard> = Object.create(null) as Record<string, AuthoringCard>;
   const characters: Record<string, ExecutableCharacterDefinition> = {};
   const decks: Record<string, string[]> = {};
   const fallbackCommandSpells: Record<string, string> = {};
@@ -629,6 +780,7 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
   archives.forEach((archive, archiveIndex) => {
     if (archiveIds.has(archive.id)) throw new Error(`Duplicate archive definition: ${archive.id}`);
     archiveIds.add(archive.id);
+    assertEventRuleArchive(archive);
     assertMasterSupportArchive(archive);
     assertMasterRuleArchive(archive);
     const compiled = loadAuthoringJson(archive);
@@ -637,11 +789,12 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
       throw new Error(`Executable compilation rejected unsupported semantics:\n${detail}`);
     }
     archive.cards.forEach((rawCard, cardIndex) => {
-      if (cards[rawCard.id]) throw new Error(`Duplicate card definition: ${rawCard.id}`);
+      if (cards[rawCard.id] || eventRules[rawCard.id]) throw new Error(`Duplicate card definition: ${rawCard.id}`);
       const card = compiled.cards[rawCard.id];
       if (!card) throw new Error(`Missing compiled card definition: ${rawCard.id}`);
       validateSemanticSurvival(rawCard, card, `archives[${archiveIndex}].cards[${cardIndex}]`);
-      cards[card.id] = executableDefinition(card, archive.id);
+      if (isEventRuleArchive(archive)) eventRules[card.id] = card;
+      else cards[card.id] = executableDefinition(card, archive.id);
       sourceMap[card.id] = { archiveId: archive.id, archiveIndex, cardIndex, path: `archives[${archiveIndex}].cards[${cardIndex}]` };
       card.abilities.forEach((ability, abilityIndex) => {
         sourceMap[`${card.id}#${ability.id}`] = {
@@ -653,7 +806,7 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
         };
       });
     });
-    if (!isRulesOnlyMasterArchive(archive)) {
+    if (!isRulesOnlyArchive(archive)) {
       const excludedCards = nodes(archive.excludedCards).map((card) => ({
         id: str(card.id),
         name: str(card.name),
@@ -672,21 +825,21 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
   });
 
   for (const definition of basicAttackDefinitions(input.dictionaries.basicAttacks)) {
-    if (cards[definition.id]) throw new Error(`Duplicate generated card definition: ${definition.id}`);
+    if (cards[definition.id] || eventRules[definition.id]) throw new Error(`Duplicate generated card definition: ${definition.id}`);
     cards[definition.id] = executableDefinition(definition);
   }
 
-  for (const archive of archives.filter((candidate) => candidate.id.startsWith('master.') && !isRulesOnlyMasterArchive(candidate))) {
+  for (const archive of archives.filter((candidate) => candidate.id.startsWith('master.') && !isRulesOnlyArchive(candidate))) {
     if (archive.cards.some((card) => card.cardType === 'command_spell')) continue;
     const definition = defaultCommandSpellCard(archive.id);
-    if (cards[definition.id]) throw new Error(`Duplicate generated card definition: ${definition.id}`);
+    if (cards[definition.id] || eventRules[definition.id]) throw new Error(`Duplicate generated card definition: ${definition.id}`);
     cards[definition.id] = executableDefinition(definition, archive.id);
     fallbackCommandSpells[archive.id] = definition.id;
   }
 
   validatePresentationReferences(input, cards);
 
-  for (const archive of archives.filter((candidate) => candidate.id.startsWith('servant.'))) {
+  for (const archive of archives.filter((candidate) => candidate.id.startsWith('servant.') && !isRulesOnlyArchive(candidate))) {
     const skillCount = archive.cards.filter((card) => card.cardType === 'servant_skill').length;
     if (skillCount !== 3) throw new Error(`${archive.id} must define exactly 3 servant skill cards; found ${skillCount}`);
     const deck = (archive.deck ?? []).flatMap((entry) => {
@@ -706,9 +859,14 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
     validateAbilityResolutionDataFlow(card);
   }
 
+  const eventBridgeUsed = Object.keys(eventRules).length > 0 || Object.values(cards).some((card) => containsEventBridgeSyntax(card.abilities));
+  const eventCatalog = eventBridgeUsed ? eventCatalogFromContent(input, eventRules) : undefined;
+
   const executableWithoutHash = {
     schemaVersion: 'fd-executable-card-pack-v1',
     cards,
+    ...(Object.keys(eventRules).length ? { eventRules } : {}),
+    ...(eventCatalog && Object.keys(eventCatalog).length ? { eventCatalog } : {}),
     characters,
     decks,
     fallbackCommandSpells,

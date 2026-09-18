@@ -18,6 +18,7 @@ import {
   isRulerSealUseCandidate, isRulerSealUseSemantic, unspentRulerSealBindings,
 } from './ruler-seal';
 import { currentDeploymentBonus } from '../core/terrain-advantage';
+import { eventRulePlacementByInstance, initializeEventRulePlacements, listEventRuleCandidates, moveEventRuleCandidate, moveEventRuleCandidates, type EventRuleZone } from './event-rule';
 export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import {
   DataFlowValidationError,
@@ -63,7 +64,12 @@ function player(s: GameState, id: string) {
 function card(s: GameState, id: string): CardInstance {
   const c = s.cards.find(c => c.instanceId === id); if (!c) reject('illegal_action', 'Card is not available'); return c;
 }
-function definition(s: GameState, id: string): AuthoringCard | undefined { return runtime(s).pack.cards[card(s, id).definitionId]; }
+function definition(s: GameState, id: string): AuthoringCard | undefined {
+  const physical = s.cards.find((candidate) => candidate.instanceId === id);
+  if (physical) return runtime(s).pack.cards[physical.definitionId];
+  const eventPlacement = eventRulePlacementByInstance(s, id);
+  return eventPlacement ? runtime(s).pack.eventRules?.[eventPlacement.eventCardId] : undefined;
+}
 function abilityDefinition(s: GameState, source: string, abilityId: string): AuthoringAbility {
   const a = definition(s, source)?.abilities.find(a => a.id === abilityId);
   if (!a) reject('illegal_action', 'Ability is not available'); return a;
@@ -191,13 +197,25 @@ function sameBattlefield(s: GameState, a: string | undefined, b: string | undefi
   return !!a && a === b && isBattlefield(s, a);
 }
 function context(s: GameState, sourceCardId: string, abilityId: string, event?: AbilityEvent): EffectContext {
-  return { sourceCardId, abilityId, controllerId: card(s, sourceCardId).controllerPlayerId, variables: {}, selections: {}, ...(event ? { event } : {}) };
+  const physical = s.cards.find((candidate) => candidate.instanceId === sourceCardId);
+  if (physical) return { sourceCardId, abilityId, controllerId: physical.controllerPlayerId, variables: {}, selections: {}, ...(event ? { event } : {}) };
+  const placement = eventRulePlacementByInstance(s, sourceCardId);
+  if (!placement) reject('illegal_action', 'Ability source is not available');
+  const ability = abilityDefinition(s, sourceCardId, abilityId);
+  const controllerSource = str(ability.activation.eventController);
+  const controllerId = controllerSource === 'placement_controller' ? placement.ruleControllerPlayerId :
+    controllerSource === 'event_player' ? event?.playerId : undefined;
+  if (!controllerId || !s.players.some((candidate) => candidate.id === controllerId)) {
+    reject('invalid_event', 'Event rule requires a valid structural controller context');
+  }
+  return { sourceCardId, abilityId, controllerId, variables: {}, selections: {}, ...(event ? { event } : {}),
+    eventSource: { ruleInstanceId: sourceCardId, definitionId: placement.eventCardId, locationId: placement.locationId } };
 }
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
     cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
-    rulerSealBindings: [], rulerSealBindingHistory: {}, pendingRulerSealRewards: [],
+    eventRuleZoneRevision: 0, rulerSealBindings: [], rulerSealBindingHistory: {}, pendingRulerSealRewards: [],
     usedAbilities: {}, processedEvents: [], revealedServants: [],
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
@@ -205,6 +223,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
     manaGainedThisRound: { round: s.round.roundNumber, byPlayer: {} },
     playRulesVersion: options.playRulesVersion ?? 'explicit-v1',
     playCounters: { round: s.round.roundNumber, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} } };
+  initializeEventRulePlacements(s, pack);
 }
 export function createBattleResult(data: BattleResultData): BattleResult {
   const winners = [...new Set(data.winners)]; const loserIds = [...new Set(data.loserIds)];
@@ -425,6 +444,20 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
     const options = Array.isArray(target.options) ? target.options : [];
     return options.map((opt: any) => opt.id || '');
   }
+  if (target.type === 'event_card') {
+    const rawZones = node(target.scope).zones;
+    const zones = (Array.isArray(rawZones) ? rawZones : []).map((zone: unknown) => str(zone)) as EventRuleZone[];
+    if (!zones.length || zones.some((zone) => !['event_deck', 'event_discard', 'event_outside_game', 'event_battlefield'].includes(zone))) {
+      reject('unsupported', 'Event-card selection requires supported event zones');
+    }
+    return listEventRuleCandidates(s, runtime(s).pack, zones)
+      .filter((candidate) => nodes(target.constraints).every((entry) => {
+        if (entry.type === 'event_has_tag') return candidate.tags.includes(str(entry.tag));
+        if (entry.type === 'event_in_set') return candidate.eventSetIds.includes(str(entry.eventSetId));
+        return reject('unsupported', `Unsupported event-card constraint: ${str(entry.type)}`);
+      }))
+      .map((candidate) => candidate.token);
+  }
   if (target.type === 'player') {
     return s.players.filter(candidate =>
       candidate.status === 'active' &&
@@ -519,6 +552,10 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
       if (cardDef && hasPlayRuleException(cardDef, 'skill_zone_mana_at_least')) return true;
       return card(s, ctx.sourceCardId).zone !== 'skill' || p.mana >= Number(c.value);
     }
+    case 'event_location_is_source_event_battlefield': return !!ctx.eventSource &&
+      (ctx.event?.locationId ?? ctx.event?.battlefieldId) === ctx.eventSource.locationId;
+    case 'combat_occurs_at_source_event_battlefield': return !!ctx.eventSource &&
+      (ctx.event?.battlefieldId ?? ctx.event?.locationId) === ctx.eventSource.locationId;
     case 'controller_at_battlefield': return isBattlefield(s, p.locationId);
     case 'controller_at_battlefield_with_exactly_one_opponent': return isBattlefield(s, p.locationId) &&
       s.players.filter(other => other.id !== p.id && other.status === 'active' && sameBattlefield(s, p.locationId, other.locationId)).length === 1;
@@ -884,6 +921,38 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
   const ordered = [...turnSeats.slice(Math.max(0, start)), ...turnSeats.slice(0, Math.max(0, start))];
   return found.sort((a, b) => ordered.findIndex(p => p.id === a.controllerId) - ordered.findIndex(p => p.id === b.controllerId));
 }
+function collectTriggeredEventRuleAbilities(s: GameState, event: AbilityEvent): Array<{ ruleInstanceId: string; abilityId: string; controllerId: string }> {
+  const found: Array<{ ruleInstanceId: string; abilityId: string; controllerId: string }> = [];
+  for (const placement of s.eventPlacements) {
+    if (!placement.ruleInstanceId) continue;
+    const eventDefinition = runtime(s).pack.eventRules?.[placement.eventCardId];
+    if (!eventDefinition) continue;
+    for (const ability of eventDefinition.abilities) {
+      if (ability.activation.trigger !== event.type) continue;
+      const interaction = classifyAbilityInteraction(ability);
+      if (!['automatic_trigger', 'automatic_rule'].includes(interaction.kind)) {
+        reject('unsupported', 'Executable event rules currently require an automatic trigger/rule interaction');
+      }
+      const ctx = context(s, placement.ruleInstanceId, ability.id, event);
+      if (event.type.startsWith('after_controller_') && event.playerId !== ctx.controllerId) continue;
+      if (!ability.conditions.every((entry) => condition(s, ctx, entry))) continue;
+      found.push({ ruleInstanceId: placement.ruleInstanceId, abilityId: ability.id, controllerId: ctx.controllerId });
+    }
+  }
+  return found.sort((a, b) => a.ruleInstanceId.localeCompare(b.ruleInstanceId) || a.abilityId.localeCompare(b.abilityId));
+}
+
+function executeEventRuleAbility(s: GameState, sourceId: string, abilityId: string, event: AbilityEvent): void {
+  const ability = abilityDefinition(s, sourceId, abilityId);
+  if (ability.execution.mode !== 'automatic') reject(ability.execution.mode, 'Event rule requires automatic execution');
+  if (ability.cost.length || ability.targets.length || ability.creates.length || ability.ruleModifiers.length || Object.keys(ability.lifecycle).length) {
+    reject('unsupported', 'FB2-28 event-rule bridge currently accepts trigger/condition/effect rules without card-interaction or ongoing lifecycle fields');
+  }
+  const ctx = context(s, sourceId, abilityId, event);
+  if (!ability.conditions.every((entry) => condition(s, ctx, entry))) return;
+  for (const effect of ability.effects) resolveEffect(s, ctx, effect);
+}
+
 function moveCard(s: GameState, id: string, zone: string): number {
   if (!['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game', 'looked_cards'].includes(zone)) reject('unsupported', 'Unmapped destination zone');
   const c = card(s, id); const moved = c.zone === zone ? 0 : 1; c.zone = zone;
@@ -1121,6 +1190,41 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       r.calculations.push({ controllerId: p.id, lines: [{ label: '当前战场事件牌战果合计', value: total }] });
       s.eventDiscardPile = [...(s.eventDiscardPile ?? []), ...placements];
       s.eventPlacements = s.eventPlacements.filter(e => e.locationId !== p.locationId);
+      break;
+    }
+    case 'move_source_event': {
+      if (!ctx.eventSource || ctx.eventSource.ruleInstanceId !== ctx.sourceCardId) reject('invalid_event', 'move_source_event requires an event-rule source');
+      const to = node(effect.to);
+      const destination = str(to.zone) as EventRuleZone;
+      const token = listEventRuleCandidates(s, r.pack, ['event_battlefield'])
+        .find((candidate) => candidate.ruleInstanceId === ctx.eventSource!.ruleInstanceId)?.token;
+      if (!token) reject('invalid_event', 'Event-rule source placement is no longer active');
+      let locationId = str(to.locationId);
+      const locationRef = str(to.locationRef);
+      if (locationRef) locationId = ctx.selections[locationRef]?.[0] ?? '';
+      if (!locationId && str(to.location) === 'controller') locationId = player(s, ctx.controllerId).locationId ?? '';
+      moveEventRuleCandidate(s, r.pack, token, destination, {
+        ...(locationId ? { locationId } : {}),
+        ...(['self', 'controller'].includes(str(to.controller)) ? { ruleControllerPlayerId: ctx.controllerId } : {}),
+        ...(['public', 'hidden_until_trigger'].includes(str(to.visibility)) ? { visibility: str(to.visibility) as 'public' | 'hidden_until_trigger' } : {}),
+      });
+      break;
+    }
+    case 'move_event_card': {
+      const selected = ctx.selections[str(effect.target)] ?? [];
+      if (!selected.length) reject('invalid_target', 'move_event_card requires one or more selected events');
+      const to = node(effect.to);
+      const destination = str(to.zone) as EventRuleZone;
+      let locationId = str(to.locationId);
+      const locationRef = str(to.locationRef);
+      if (locationRef) locationId = ctx.selections[locationRef]?.[0] ?? '';
+      if (!locationId && str(to.location) === 'controller') locationId = player(s, ctx.controllerId).locationId ?? '';
+      const assignController = ['self', 'controller'].includes(str(to.controller));
+      moveEventRuleCandidates(s, r.pack, selected, destination, {
+        ...(locationId ? { locationId } : {}),
+        ...(assignController ? { ruleControllerPlayerId: ctx.controllerId } : {}),
+        ...(['public', 'hidden_until_trigger'].includes(str(to.visibility)) ? { visibility: str(to.visibility) as 'public' | 'hidden_until_trigger' } : {}),
+      });
       break;
     }
     case 'draw_cards': {
@@ -2830,6 +2934,9 @@ function processEvent(s: GameState, event: AbilityEvent): void {
       }
       w.choices.push(t);
     } else executeAbility(s, context(s, t.cardInstanceId, t.abilityId, event));
+  }
+  for (const triggeredEventRule of collectTriggeredEventRuleAbilities(s, event)) {
+    executeEventRuleAbility(s, triggeredEventRule.ruleInstanceId, triggeredEventRule.abilityId, event);
   }
   if (event.type === 'after_battle_result_determined' && event.battleResult) {
     const battleResult = createBattleResult(event.battleResult);
