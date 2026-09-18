@@ -1,8 +1,8 @@
 # P3-FB2-24 Recovery — Ryougi S3 Support Definition Handoff
 
 Date: 2026-09-18
-To: Codex B2
-Status: `READY_FOR_B2_RECOVERY`
+To: Codex S
+Status: `READY_FOR_S_RECOVERY`
 Base: exact feasibility/dispatch commit created from `e8c312986d9d01c9e28e3e70309c925f6f6a5f4b`
 Target: exactly `master.shiki-ryougi.skill.s3`
 

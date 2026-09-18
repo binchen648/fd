@@ -8,7 +8,7 @@ Credit: material only; no accepted frozen migration credit before fresh R47
 ## Exact identity
 
 - Implementation Base / dispatch: `52ea97e9371f5a2353b58ad948b232434c68abd8`.
-- S/B2 Candidate: `35a2a59fd4bf77bdbbfac37031556617af94c47f`.
+- S Candidate: `35a2a59fd4bf77bdbbfac37031556617af94c47f`.
 - Candidate branch: `codex/b-p3-fb2-22-recovery-ciel-s2-current`.
 - Candidate PR: `#356`, stacked on exact Base branch/OID.
 - A branch: `codex/a-p3-fb2-22-ciel-s2-material-sync-current`.

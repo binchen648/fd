@@ -9,7 +9,7 @@ Credit: `+1` frozen F1 identity accepted on the recovery lineage
 
 - Integrated main ancestor: `553779e8ffcc926ae4763ee86a2ea937e090c128`.
 - Implementation Base / dispatch: `52ea97e9371f5a2353b58ad948b232434c68abd8`.
-- S/B2 Candidate: `35a2a59fd4bf77bdbbfac37031556617af94c47f`.
+- S Candidate: `35a2a59fd4bf77bdbbfac37031556617af94c47f`.
 - A material synchronization: `cc0d86ffb15dafd4847448f572025c9054616083`.
 - R47 verdict: `MIGRATION_ACCEPTED`; blocking findings none.
 - Fresh reviewer worktree: `E:\Codex\FD\fd-r47-review-fresh-20260918-1008`.

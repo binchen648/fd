@@ -1,7 +1,7 @@
 # P3-FB2-22 Recovery — Ciel S2 Support Definition Result
 
 Date: 2026-09-18
-Role: Codex S/B2
+Role: Codex S
 Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Target: exactly `master.ciel.skill.s2`
 Frozen credit status: material only; no accepted credit pending A material sync + fresh R47
@@ -135,6 +135,6 @@ No `packages/rules/src/**`, MatchSession, fixture, evidence report, coverage/aud
 
 ## Next gate
 
-This is an S/B2 material Candidate only. Codex A must create a fresh mechanical material synchronization from the exact committed Candidate. Only after that synchronization may a fresh independent R47 review the exact Base, Candidate, A sync, provenance, behavior, product surface, material accounting, and final cleanliness.
+This is an S material Candidate only. Codex A must create a fresh mechanical material synchronization from the exact committed Candidate. Only after that synchronization may a fresh independent R47 review the exact Base, Candidate, A sync, provenance, behavior, product surface, material accounting, and final cleanliness.
 
 Do not start another provisioning target, FM09, FM10, or merge a stacked PR from this result.

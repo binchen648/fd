@@ -4329,7 +4329,7 @@ Result: synchronize fresh R46 acceptance without product changes or frozen migra
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
 ## TASK P3-FB2-22-RECOVERY
 
-Owner: Codex S/B2
+Owner: Codex S
 Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Base: `52ea97e9371f5a2353b58ad948b232434c68abd8`
 Candidate: `35a2a59fd4bf77bdbbfac37031556617af94c47f`
@@ -4406,7 +4406,7 @@ Result: independent mechanical synchronization reproduces exact six-file scope, 
 Owner: Codex R
 Status: `MIGRATION_ACCEPTED`
 Implementation Base: `52ea97e9371f5a2353b58ad948b232434c68abd8`
-Candidate S/B2 SHA: `35a2a59fd4bf77bdbbfac37031556617af94c47f`
+Candidate S SHA: `35a2a59fd4bf77bdbbfac37031556617af94c47f`
 A material synchronization: `cc0d86ffb15dafd4847448f572025c9054616083`
 PR: `#356`
 Read: `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-handoff.md`, `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-result.md`, `docs/reports/2026-09-18-p3-a-fb2-22-ciel-s2-material-synchronization.md`
@@ -4501,7 +4501,7 @@ Result: fresh F1-grounded feasibility found no remaining runtime prerequisite fo
 
 ## TASK P3-FB2-24-RECOVERY
 
-Owner: Codex B2
+Owner: Codex S
 Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Base: `7e2925ed37f89b60dac2c2b13c68081af6e33fbe`
 Candidate: `8ff45c944ba810edfbfa93d17462d4c3cb6a4e16`
@@ -4516,7 +4516,7 @@ Result: corrected pre-R49 Candidate materializes exactly one frozen Ryougi s3 su
 Owner: Codex R
 Status: `MIGRATION_ACCEPTED`
 Implementation Base: `7e2925ed37f89b60dac2c2b13c68081af6e33fbe`
-Candidate S/B2 SHA: `8ff45c944ba810edfbfa93d17462d4c3cb6a4e16`
+Candidate S SHA: `8ff45c944ba810edfbfa93d17462d4c3cb6a4e16`
 PR: `#359`
 Verdict: `MIGRATION_ACCEPTED`
 Blocking findings: none.
@@ -4539,3 +4539,12 @@ Result: record fresh R49 `MIGRATION_ACCEPTED` for exactly `master.shiki-ryougi.s
 - Nine FM09 provisioning frozen targets remain absent.
 - Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`; PR #359 remains stacked and unmerged.
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched by this synchronization.
+
+## TASK P3-A-R49-PROCESS-HYGIENE
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Base: exact post-R49 acceptance synchronization `ffe5afdcaa07cacdfac061010a542f0b4fb43ae8`
+Read: `docs/reports/2026-09-18-p3-a-r49-process-hygiene.md`
+
+Result: correct historical role metadata for the pure S migrations FB2-22 and FB2-24, normalize recovery PR contract metadata, mark superseded/rejected PRs as historical only, and correct PR #359 to its final R49-reviewed Candidate. No product/runtime change or frozen accounting change; recovery-line accepted remains `113/944` and integrated main remains `111/944`.
