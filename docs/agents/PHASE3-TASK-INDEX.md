@@ -4677,3 +4677,16 @@ Result: record fresh R52 `MIGRATION_ACCEPTED` for exactly `master.iliya.skill.s1
 - Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`; PR #363 remains OPEN and unmerged.
 - P3-FM09 remains `MIGRATION_BLOCKED` with the same nine provisioning targets; this initial-Mana batch is not FM10.
 - Next coordinator work is a fresh readiness overlay over the remaining `827` identities against accepted `117/944`; no further frozen credit is pre-authorized.
+
+## TASK P3-FM03-MHX-EXTENSION-RECOVERY
+
+Owner: Codex S
+Status: `READY`
+Base: exact post-R52 acceptance synchronization plus this dispatch commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Accepted contracts: P3-R12/B18 + P3-R13/B19 + P3-R29/FB2-10 + P3-R30/FM03
+Target: exactly `servant.mhx.skill.sc-mhx-3`
+Read: `docs/reports/2026-09-18-p3-a-mhx-fm03-extension-dispatch.md` plus the full-roster startup prompt and collaboration contract.
+
+Result: fresh `117/944` readiness overlay finds zero mixed exact F1 classification-signature groups but one source-complete accepted-family extension. MHX s3 has byte-identical printed text and all three clause hashes to accepted FM03 members, the same locked `core.saber-magic-resistance` family/static card shape, and an A in-memory production-loader/runtime probe proves exact accepted three-ability behavior with no runtime change. Dispatch takes zero credit; accepted remains `117/944`. Candidate material may be `118/944` pending fresh R.

@@ -1058,3 +1058,11 @@ Permitted final status:
 - Fresh official validation is focused `21/21`, full CI `880/880` across 136 files, rules core+regression `456/456` across 74 files, client/content/determinism/Reference PASS, coverage/audit PASS, and diff check PASS. Product remains `73 cards / 14 characters / 0 blockers` with unchanged deterministic hashes.
 - A independently reproduces frozen material `115/944 -> 117/944`, exactly two additions, zero removals, zero duplicate canonical IDs. Recovery-line accepted overlap is now **`117/944` (`12.39%`)**, leaving **`827/944`**; integrated main remains `111/944`.
 - P3-FM09 remains `MIGRATION_BLOCKED` with the same nine provisioning targets. PR #363 remains open/unmerged; the next coordinator action is a fresh readiness overlay over the remaining `827` identities rather than a synthetic FM10 dispatch.
+
+## P3-A Post-R52 Readiness Overlay / MHX FM03 Extension Dispatch - 2026-09-18
+
+- Accepted recovery baseline is `117/944` (`12.39%`), leaving `827/944`; integrated main remains `111/944`.
+- Exact F1 signature refresh finds zero remaining mixed accepted/missing groups. A secondary source-complete family reconciliation finds exactly one clean direct extension: `servant.mhx.skill.sc-mhx-3`.
+- MHX s3 is F1-labeled special only by normalization classification, but its full printed SHA `8a6da48...`, all three clause hashes, Reference handler `core.saber-magic-resistance`, and locked `3/3` special-card metadata match accepted FM03 evidence. A's in-memory probe loads blocker-free, matches all three accepted classifiers/structures, executes Magic Resistance correctly, and resolves Noble Bloom as two independent +1 VP responses.
+- P3-FM03-MHX-EXTENSION-RECOVERY is dispatched to Codex S for exactly MHX s3, with no runtime/pack/generated/product changes authorized. Candidate material may become `118/944`; accepted remains **`117/944`** until fresh R and later A acceptance synchronization.
+- P3-FM09 remains blocked on the same nine targets; this work is not FM10.
