@@ -4330,13 +4330,15 @@ Result: synchronize fresh R46 acceptance without product changes or frozen migra
 ## TASK P3-FB2-22-RECOVERY
 
 Owner: Codex S/B2
-Status: `READY`
-Base: `abc57f240e083b9a345a5e2cbfe9bda011de9ea3`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Base: `52ea97e9371f5a2353b58ad948b232434c68abd8`
+Candidate: `35a2a59fd4bf77bdbbfac37031556617af94c47f`
+PR: `#356` stacked on exact Base
 Target: exactly `master.ciel.skill.s2`
-Read: `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-handoff.md`
+Read: `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-handoff.md`, `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-result.md`
 Fresh feasibility: `docs/reports/2026-09-18-p3-a-ciel-s2-recovery-feasibility.md`
 
-Goal: materialize exactly one frozen Ciel s2 support definition through the accepted outside-game + support-only registration channel, reusing only accepted generic semantics including R46-accepted `controller.deployment_bonus`. No rules/runtime/compiler source changes are authorized. Candidate material overlap may become `112/944`; accepted overlap stays `111/944` pending A material synchronization plus fresh R47.
+Result: exactly one frozen Ciel s2 support definition is materialized through the accepted outside-game + support-only channel, reusing only accepted generic semantics including R46-accepted `controller.deployment_bonus`. Candidate material overlap is `112/944`; accepted overlap remains `111/944` pending fresh R47. No rules/runtime/compiler source changes are present.
 
 ## Full-Roster Dispatch State After Ciel S2 Feasibility
 
@@ -4388,3 +4390,33 @@ Do not merge independent card-action contracts for acceptance.
 Return findings first, then Gate judgment.
 Final status must be one of the statuses allowed by your TASK block.
 ```
+
+## TASK P3-A-FB2-22-RECOVERY-MATERIAL-SYNC
+
+Owner: Codex A
+Status: `MATERIAL_SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-22-ciel-s2-material-sync-current`
+Base: exact Candidate `35a2a59fd4bf77bdbbfac37031556617af94c47f`
+Read: `docs/reports/2026-09-18-p3-a-fb2-22-ciel-s2-material-synchronization.md`
+
+Result: independent mechanical synchronization reproduces exact six-file scope, the single frozen addition, `111/944 -> 112/944` material overlap, clean support-only product surface, deterministic generated output, and all official gates. A grants no semantic acceptance and no accepted overlap credit.
+
+## TASK P3-R47-RECOVERY
+
+Owner: Codex R
+Status: `READY`
+Implementation Base: `52ea97e9371f5a2353b58ad948b232434c68abd8`
+Candidate S/B2 SHA: `35a2a59fd4bf77bdbbfac37031556617af94c47f`
+A synchronization: this docs-only material synchronization commit; exact SHA is supplied at reviewer startup
+PR: `#356`
+Read: `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-handoff.md`, `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-result.md`, `docs/reports/2026-09-18-p3-a-fb2-22-ciel-s2-material-synchronization.md`
+
+Goal: fresh independent read-only review of exactly one frozen Ciel s2 support-definition Candidate. Findings first. Do not implement fixes, change PR topology, merge, start another target, FM09, or FM10. Accepted overlap remains `111/944` during review; only a later post-R47 A acceptance synchronization may record `112/944` accepted recovery-line progress.
+
+## Full-Roster Dispatch State After FB2-22 Material Synchronization
+
+- Ciel s2 Candidate material is exactly `112/944`, adding only `master.ciel.skill.s2`; accepted overlap remains `111/944`.
+- Ten other frozen FM09 provisioning target definitions remain absent.
+- P3-R47-RECOVERY is the only next gate.
+- PR #356 remains stacked and must not be merged during review.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.

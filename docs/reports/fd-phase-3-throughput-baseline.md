@@ -960,3 +960,13 @@ Permitted final status:
 - Generated product adds only one Ciel rules card plus card/two-ability sourceMap entries. Playable masters/servants remain 7/7, executable characters 14, no Ciel character/fallback/deck/fixture surface appears, and the other ten frozen provisioning targets remain absent.
 - Predicted Candidate material is `100 archives / 135 cards / 235 abilities`, compiled `72/14/0`, buckets `22/3/130/0/80/127`, audit `130/3/80/20`; generated content-library hash `2ffde7a8...`, fixture/evidence hashes unchanged.
 - P3-FB2-22-RECOVERY is dispatched for exactly `master.ciel.skill.s2`. Candidate material overlap may be `112/944`; accepted overlap remains `111/944` until independent A material synchronization and fresh R47 acceptance.
+
+## P3-A FB2-22 Ciel S2 Recovery Material Synchronization / R47 Dispatch - 2026-09-18
+
+- Fresh Candidate `35a2a59fd4bf77bdbbfac37031556617af94c47f`, directly based on dispatch `52ea97e9371f5a2353b58ad948b232434c68abd8`, materializes exactly frozen target `master.ciel.skill.s2` with exact six-file scope and no `packages/rules/src/**` change.
+- Fresh A independently reproduces `111/944 -> 112/944` material overlap with exactly one frozen addition, zero removals, zero duplicate card ids, and all other ten frozen FM09 provisioning targets absent.
+- Product surface remains 7 playable masters / 7 servants / 72 executable cards / 14 characters / 7 decks / 0 blockers, with no Ciel character, fallback command spell, deck, fixture, evidence, or public master surface.
+- Independent A verification passes `npm ci --offline`, typecheck, focused `66/66`, content `7/7/20/0`, deterministic generation, unchanged official full CI `849/849`, rules core+regression `434/434`, client build, locked Reference verification, coverage, automation audit, and diff check.
+- Deterministic hashes are content library `2ffde7a8cf54611332456fe91b812ab6d36d98800f5b8d53f57394d65c05e572`, fixture `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, evidence `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`.
+- Material counters are `100/135/235`, compiled `72/14/0`, buckets `22/3/130/0/80/127`, audit `130/3/80/20`; reporting artifact rewrites are restored before synchronization commit.
+- P3-R47-RECOVERY is READY for a fresh independent review. Accepted frozen overlap remains `111/944` throughout A synchronization and R47 review; no merge, FM09, FM10, or second target is authorized.
