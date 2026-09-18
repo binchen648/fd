@@ -1,15 +1,107 @@
 {
   "schemaVersion": "fd-card-authoring-v1",
-  "archiveType": "master_support_definition_archive",
+  "archiveType": "master_rule_definition_archive",
   "id": "master.shiki-ryougi",
   "name": "两仪式",
   "class": "Master",
   "sourcePolicy": {
     "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
     "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-    "note": "Accepted F1 source evidence is authoritative for identity, printed clauses, and semantics. Locked Reference supplies only stable identity/static metadata and source locator; no Reference handler or runtime routing is inherited."
+    "note": "Frozen F1 is authoritative for source/target identity, printed clauses, and semantics. Accepted FB2-15 provides identity-free game-start provisioning; accepted R55/FB2-26 provides rules-only mixed-master registration. Locked Reference supplies stable identity/static metadata only; no identity-specific runtime routing is inherited."
   },
   "cards": [
+    {
+      "id": "master.shiki-ryougi.skill.s1a",
+      "aliases": [
+        "s1a"
+      ],
+      "legacyId": "s1a",
+      "name": "欠损",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.shiki-ryougi"
+      },
+      "printedText": "游戏开始时，将【死・紧握】加入你的技能区。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "s1a.game-start-skill-provisioning",
+          "kind": "forced_trigger",
+          "printedClause": "游戏开始时，将【死・紧握】加入你的技能区。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "provision_skill_cards",
+              "player": "controller",
+              "targetDefinitionIds": [
+                "master.shiki-ryougi.skill.s3"
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/两仪式.png",
+            "locator": "master.shiki-ryougi/两仪式"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.shiki-ryougi/s1a"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "master.shiki-ryougi.skill.s1a",
+            "sha256": "d1e84428f5798f573fd01ed7f061e937925424f2fbab89c4a43ad6af7782d98f"
+          }
+        ],
+        "sourceTextSha256": "d1e84428f5798f573fd01ed7f061e937925424f2fbab89c4a43ad6af7782d98f",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s1a",
+          "cost": null,
+          "basePower": null,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "gameStartSkillProvisioning": "P3-R41/FB2-15",
+          "nonPlayableMasterRuleArchive": "P3-R55/FB2-26"
+        }
+      }
+    },
     {
       "id": "master.shiki-ryougi.skill.s3",
       "aliases": [

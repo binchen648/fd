@@ -8877,41 +8877,36 @@
         "destinationZone": "attack_area",
         "initialZone": "skill"
       },
-      "card.derived.master.shirou-emiya.ganjiang-moye": {
-        "id": "card.derived.master.shirou-emiya.ganjiang-moye",
-        "name": "干将·莫邪",
+      "master.ciel.skill.s1a": {
+        "id": "master.ciel.skill.s1a",
+        "name": "埋葬机关的修女",
         "cardType": "master_skill",
         "cardFace": {
-          "cost": 1,
-          "basePower": 5,
-          "attributes": [
-            "力量",
-            "宝具"
-          ]
+          "typeLabel": "被动",
+          "attributes": []
         },
         "playTiming": {
           "phase": "action",
           "window": "controller_play_card_window"
         },
-        "playRequirements": [
-          {
-            "type": "skill_zone_mana_at_least",
-            "value": 8
-          }
-        ],
+        "playRequirements": [],
         "abilities": [
           {
-            "id": "ganjiang-moye.append-only",
-            "kind": "passive",
-            "printedClause": "投影-此牌需追加打出。",
+            "id": "s1a.game-start-skill-provisioning",
+            "kind": "forced_trigger",
+            "printedClause": "将【火葬式典】加入你的技能区。",
             "activation": {
-              "trigger": "while_active"
+              "trigger": "game_start"
             },
             "conditions": [],
             "targets": [],
             "effects": [
               {
-                "type": "append_only_rule"
+                "type": "provision_skill_cards",
+                "player": "controller",
+                "targetDefinitionIds": [
+                  "master.ciel.skill.s2"
+                ]
               }
             ],
             "cost": [],
@@ -8926,21 +8921,15 @@
             "visibility": {},
             "execution": {
               "mode": "automatic",
-              "allowedOperations": [
-                "adjust-mana",
-                "adjust-victory-points",
-                "move-card",
-                "create-status",
-                "skip-ability"
-              ]
+              "allowedOperations": []
             }
           }
         ],
-        "initialPlacement": "outside_game",
         "mode": "automatic",
-        "ownerId": "master.shirou-emiya",
-        "playKind": "attack",
-        "destinationZone": "attack_area"
+        "ownerId": "master.ciel",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
       },
       "master.ciel.skill.s2": {
         "id": "master.ciel.skill.s2",
@@ -9060,6 +9049,60 @@
         "playKind": "support",
         "destinationZone": "field"
       },
+      "master.shiki-ryougi.skill.s1a": {
+        "id": "master.shiki-ryougi.skill.s1a",
+        "name": "欠损",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "被动",
+          "attributes": []
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "s1a.game-start-skill-provisioning",
+            "kind": "forced_trigger",
+            "printedClause": "游戏开始时，将【死・紧握】加入你的技能区。",
+            "activation": {
+              "trigger": "game_start"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "provision_skill_cards",
+                "player": "controller",
+                "targetDefinitionIds": [
+                  "master.shiki-ryougi.skill.s3"
+                ]
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.shiki-ryougi",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
       "master.shiki-ryougi.skill.s3": {
         "id": "master.shiki-ryougi.skill.s3",
         "name": "死・紧握",
@@ -9174,6 +9217,125 @@
         "initialPlacement": "outside_game",
         "mode": "automatic",
         "ownerId": "master.shiki-ryougi",
+        "playKind": "attack",
+        "destinationZone": "attack_area"
+      },
+      "master.shirou-emiya.skill.s2": {
+        "id": "master.shirou-emiya.skill.s2",
+        "name": "投影",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "被动",
+          "attributes": []
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "s2.game-start-skill-provisioning",
+            "kind": "forced_trigger",
+            "printedClause": "将【干将·莫邪】加入你的技能区。",
+            "activation": {
+              "trigger": "game_start"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "provision_skill_cards",
+                "player": "controller",
+                "targetDefinitionIds": [
+                  "card.derived.master.shirou-emiya.ganjiang-moye"
+                ]
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.shirou-emiya",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye": {
+        "id": "card.derived.master.shirou-emiya.ganjiang-moye",
+        "name": "干将·莫邪",
+        "cardType": "master_skill",
+        "cardFace": {
+          "cost": 1,
+          "basePower": 5,
+          "attributes": [
+            "力量",
+            "宝具"
+          ]
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
+        "abilities": [
+          {
+            "id": "ganjiang-moye.append-only",
+            "kind": "passive",
+            "printedClause": "投影-此牌需追加打出。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "append_only_rule"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.shirou-emiya",
         "playKind": "attack",
         "destinationZone": "attack_area"
       },
@@ -10756,11 +10918,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "a87a095141bbb878c3c069b89ac7c13600c587c96cf2743f2b9823257bd47657",
+    "definitionHash": "7f5f8b8aa6f0abbe060b611189d4c104481486aa50435f4b73a8be7c7890bde1",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "a87a095141bbb878c3c069b89ac7c13600c587c96cf2743f2b9823257bd47657"
+      "definitionHash": "7f5f8b8aa6f0abbe060b611189d4c104481486aa50435f4b73a8be7c7890bde1"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -11683,14 +11845,14 @@
         "abilityIndex": 1,
         "path": "archives[13].cards[2].abilities[1]"
       },
-      "card.derived.master.shirou-emiya.ganjiang-moye": {
-        "archiveId": "master.shirou-emiya",
+      "master.ciel.skill.s1a": {
+        "archiveId": "master.ciel",
         "archiveIndex": 14,
         "cardIndex": 0,
         "path": "archives[14].cards[0]"
       },
-      "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
-        "archiveId": "master.shirou-emiya",
+      "master.ciel.skill.s1a#s1a.game-start-skill-provisioning": {
+        "archiveId": "master.ciel",
         "archiveIndex": 14,
         "cardIndex": 0,
         "abilityIndex": 0,
@@ -11698,43 +11860,82 @@
       },
       "master.ciel.skill.s2": {
         "archiveId": "master.ciel",
+        "archiveIndex": 14,
+        "cardIndex": 1,
+        "path": "archives[14].cards[1]"
+      },
+      "master.ciel.skill.s2#exorcism-uncontested-win": {
+        "archiveId": "master.ciel",
+        "archiveIndex": 14,
+        "cardIndex": 1,
+        "abilityIndex": 0,
+        "path": "archives[14].cards[1].abilities[0]"
+      },
+      "master.ciel.skill.s2#clerical-convenience": {
+        "archiveId": "master.ciel",
+        "archiveIndex": 14,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[14].cards[1].abilities[1]"
+      },
+      "master.shiki-ryougi.skill.s1a": {
+        "archiveId": "master.shiki-ryougi",
         "archiveIndex": 15,
         "cardIndex": 0,
         "path": "archives[15].cards[0]"
       },
-      "master.ciel.skill.s2#exorcism-uncontested-win": {
-        "archiveId": "master.ciel",
+      "master.shiki-ryougi.skill.s1a#s1a.game-start-skill-provisioning": {
+        "archiveId": "master.shiki-ryougi",
         "archiveIndex": 15,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[15].cards[0].abilities[0]"
       },
-      "master.ciel.skill.s2#clerical-convenience": {
-        "archiveId": "master.ciel",
-        "archiveIndex": 15,
-        "cardIndex": 0,
-        "abilityIndex": 1,
-        "path": "archives[15].cards[0].abilities[1]"
-      },
       "master.shiki-ryougi.skill.s3": {
         "archiveId": "master.shiki-ryougi",
+        "archiveIndex": 15,
+        "cardIndex": 1,
+        "path": "archives[15].cards[1]"
+      },
+      "master.shiki-ryougi.skill.s3#required-additional-play": {
+        "archiveId": "master.shiki-ryougi",
+        "archiveIndex": 15,
+        "cardIndex": 1,
+        "abilityIndex": 0,
+        "path": "archives[15].cards[1].abilities[0]"
+      },
+      "master.shiki-ryougi.skill.s3#same-battlefield-private-hand-return": {
+        "archiveId": "master.shiki-ryougi",
+        "archiveIndex": 15,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[15].cards[1].abilities[1]"
+      },
+      "master.shirou-emiya.skill.s2": {
+        "archiveId": "master.shirou-emiya",
         "archiveIndex": 16,
         "cardIndex": 0,
         "path": "archives[16].cards[0]"
       },
-      "master.shiki-ryougi.skill.s3#required-additional-play": {
-        "archiveId": "master.shiki-ryougi",
+      "master.shirou-emiya.skill.s2#s2.game-start-skill-provisioning": {
+        "archiveId": "master.shirou-emiya",
         "archiveIndex": 16,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[16].cards[0].abilities[0]"
       },
-      "master.shiki-ryougi.skill.s3#same-battlefield-private-hand-return": {
-        "archiveId": "master.shiki-ryougi",
+      "card.derived.master.shirou-emiya.ganjiang-moye": {
+        "archiveId": "master.shirou-emiya",
         "archiveIndex": 16,
-        "cardIndex": 0,
-        "abilityIndex": 1,
-        "path": "archives[16].cards[0].abilities[1]"
+        "cardIndex": 1,
+        "path": "archives[16].cards[1]"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 16,
+        "cardIndex": 1,
+        "abilityIndex": 0,
+        "path": "archives[16].cards[1].abilities[0]"
       }
     }
   }
