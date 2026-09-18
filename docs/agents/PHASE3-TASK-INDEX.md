@@ -4489,3 +4489,28 @@ Result: record fresh R48-R2 acceptance of FB2-23 as generic zero-credit infrastr
 - Ten FM09 provisioning frozen targets remain absent.
 - `master.shiki-ryougi.skill.s3` is now eligible for a fresh single-target feasibility/migration pass; it is not yet accepted or materialized by this synchronization.
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched and no stacked PR is merged/retargeted.
+
+## TASK P3-A-RYOUGI-S3-RECOVERY-FEASIBILITY
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Base: exact post-R48 acceptance synchronization `e8c312986d9d01c9e28e3e70309c925f6f6a5f4b`
+Read: `docs/reports/2026-09-18-p3-a-ryougi-s3-recovery-feasibility.md`
+
+Result: fresh F1-grounded feasibility found no remaining runtime prerequisite for exactly `master.shiki-ryougi.skill.s3`. A temporary probe compiles and executes using accepted append-only, support-only/outside-game and FB2-23 interaction semantics; only aggregate executable count `72 -> 73` changes. Probe material is exactly `113/944`; accepted overlap remains `112/944`.
+
+## TASK P3-FB2-24-RECOVERY
+
+Owner: Codex B2
+Status: `READY_FOR_B2_RECOVERY`
+Base: exact P3-A-RYOUGI-S3-RECOVERY-FEASIBILITY dispatch commit
+Read: `docs/reports/2026-09-18-p3-fb2-24-recovery-ryougi-s3-support-definition-handoff.md`
+
+Goal: add exactly frozen support definition `master.shiki-ryougi.skill.s3` and no other frozen identity, using only already-accepted generic semantics. Candidate material may be `113/944`; accepted remains `112/944` until fresh R49 + post-review A.
+
+## TASK P3-R49-RECOVERY
+
+Owner: Codex R
+Status: `BLOCKED_ON_P3-FB2-24-RECOVERY`
+
+Goal: fresh independent review of exact FB2-24 Ryougi s3 Candidate. Findings first, read-only, no fixes, no post-review A, no FM09/FM10/merge.

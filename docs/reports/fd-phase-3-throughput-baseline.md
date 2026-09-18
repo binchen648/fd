@@ -995,3 +995,11 @@ Permitted final status:
 - Fresh official validation is focused `17/17`, full CI `860/860` across 132 files, rules core+regression `445/445`, client/content/determinism/Reference/coverage/audit PASS, and diff check PASS; the fixed-5s eleven-round test completes at about 4328 ms.
 - FB2-23 earns zero frozen migration credit. Recovery-line accepted overlap remains **`112/944` (`11.86%`)**, leaving `832/944`; integrated main remains `111/944`.
 - The accepted interaction seam removes the isolated runtime prerequisite for `master.shiki-ryougi.skill.s3`. The next legal action is fresh single-target Ryougi s3 feasibility/migration planning; P3-FM09 remains `MIGRATION_BLOCKED`, and no FM10/merge/retarget occurs here.
+
+## P3-A Ryougi S3 Recovery Feasibility / FB2-24 Dispatch - 2026-09-18
+
+- Exact post-R48 accepted base is `e8c312986d9d01c9e28e3e70309c925f6f6a5f4b`; recovery accepted overlap remains `112/944`.
+- Fresh F1 grounding confirms exactly `master.shiki-ryougi.skill.s3` / `死・紧握`: append-only plus one action-phase same-battlefield private hand inspection / optional return-one interaction. Locked Reference supplies only static metadata.
+- Fresh uncommitted feasibility probe uses only accepted generic contracts and passes typecheck/content validate+compile/determinism and FB2-23 runtime; the only expected test delta is executable aggregate `72 -> 73`, after which focused interaction+compiler is `60/60`.
+- Probe product is `101 archives / 136 cards / 237 abilities`, compiled `73/14/0`, buckets `22/3/131/0/81/130`, audit `131/3/81/20`, material overlap `113/944` with exactly one target addition.
+- P3-FB2-24-RECOVERY is dispatched for only Ryougi s3. Accepted overlap stays `112/944` until fresh R49 and post-review A synchronization; P3-FM09 remains blocked and no FM10/merge/retarget is authorized.
