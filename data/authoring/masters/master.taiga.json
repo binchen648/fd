@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.taiga",
+  "name": "藤村大河",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Accepted F1 source evidence is authoritative for identity, printed text, and semantics. Locked Reference supplies only stable owner/static metadata; runtime semantics come only from accepted FB2-05 and FB2-25/R51 generic contracts."
+  },
+  "cards": [
+    {
+      "id": "master.taiga.skill.s1",
+      "aliases": [
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "带着她的头号帮手",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.taiga"
+      },
+      "printedText": "你的魔力初始值为3。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "taiga.helper.initial-mana",
+          "kind": "forced_trigger",
+          "printedClause": "你的魔力初始值为3。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "set_mana",
+              "player": "controller",
+              "amount": 3
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/藤村大河.png",
+            "locator": "master.taiga/藤村大河"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.taiga/s1"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[30].skills[0].text#line=1",
+            "sha256": "ab00e7ecf418b26b1a697eaede5ef229bfa9ad00707630efd97fd9c1b5352951"
+          }
+        ],
+        "sourceTextSha256": "ab00e7ecf418b26b1a697eaede5ef229bfa9ad00707630efd97fd9c1b5352951",
+        "semanticSource": {
+          "document": "Fate_Domination-开发版/data_masters.js",
+          "locator": "m_taiga.skills[s1]#line=136",
+          "sourceFileSha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825"
+        },
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s1",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "fixedControllerSetMana": "P3-R22/FB2-05",
+          "gameStartFixedSetMana": "P3-R51/FB2-25"
+        }
+      }
+    }
+  ]
+}
