@@ -951,3 +951,12 @@ Permitted final status:
 - Fresh Base/Candidate timing comparison shows the fixed 5-second eleven-round test is parallel-suite fragile but provides no evidence of Candidate production regression; isolated timings overlap while Candidate unchanged official CI passes.
 - FB2-21 takes zero frozen migration credit. Accepted overlap remains `111/944` (`11.76%`), leaving `833/944`.
 - The previously isolated Ciel s2 terrain/deployment-bonus prerequisite is now closed. Ciel still requires a fresh single-target feasibility/source-grounding pass before implementation; P3-FM09 remains `MIGRATION_BLOCKED`, no FM10 is dispatched, and PR #355 is not merged here.
+
+## P3-A Ciel S2 Recovery Feasibility / FB2-22 Dispatch - 2026-09-18
+
+- Post-R46 fresh feasibility closes `master.ciel.skill.s2` as an exact single frozen support-definition migration; no further generic runtime prerequisite was found.
+- F1 `59f145...` remains semantic/provenance authority; locked Reference `b2f9fa...` is restricted to stable static metadata/source locator. Historical Ciel commit `d019e50...` is technical evidence only.
+- Detached probe on exact `abc57f2...` passes typecheck, content validate/compile, Ciel behavior `3/3`, and after probe-only aggregate `71 -> 72`, Ciel+combat+compiler `62/62`.
+- Generated product adds only one Ciel rules card plus card/two-ability sourceMap entries. Playable masters/servants remain 7/7, executable characters 14, no Ciel character/fallback/deck/fixture surface appears, and the other ten frozen provisioning targets remain absent.
+- Predicted Candidate material is `100 archives / 135 cards / 235 abilities`, compiled `72/14/0`, buckets `22/3/130/0/80/127`, audit `130/3/80/20`; generated content-library hash `2ffde7a8...`, fixture/evidence hashes unchanged.
+- P3-FB2-22-RECOVERY is dispatched for exactly `master.ciel.skill.s2`. Candidate material overlap may be `112/944`; accepted overlap remains `111/944` until independent A material synchronization and fresh R47 acceptance.

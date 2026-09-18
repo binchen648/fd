@@ -4327,6 +4327,25 @@ Result: synchronize fresh R46 acceptance without product changes or frozen migra
 - The isolated generic metric prerequisite previously identified for Ciel s2 is closed. This A synchronization does not migrate Ciel and does not yet dispatch an implementation candidate.
 - Next coordinator work is fresh current-lineage Ciel s2 feasibility/source grounding, including exact F1 provenance, locked-Reference static metadata, and revalidation that all non-metric semantics already map to accepted generic routes.
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
+## TASK P3-FB2-22-RECOVERY
+
+Owner: Codex S/B2
+Status: `READY`
+Base: `abc57f240e083b9a345a5e2cbfe9bda011de9ea3`
+Target: exactly `master.ciel.skill.s2`
+Read: `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-handoff.md`
+Fresh feasibility: `docs/reports/2026-09-18-p3-a-ciel-s2-recovery-feasibility.md`
+
+Goal: materialize exactly one frozen Ciel s2 support definition through the accepted outside-game + support-only registration channel, reusing only accepted generic semantics including R46-accepted `controller.deployment_bonus`. No rules/runtime/compiler source changes are authorized. Candidate material overlap may become `112/944`; accepted overlap stays `111/944` pending A material synchronization plus fresh R47.
+
+## Full-Roster Dispatch State After Ciel S2 Feasibility
+
+- R46-accepted FB2-21 closes the last generic prerequisite found for Ciel s2.
+- `master.ciel.skill.s2` is now READY as an exact one-target recovery migration from Base `abc57f2...`.
+- Ten other frozen FM09 provisioning target definitions remain absent and are outside this dispatch.
+- Accepted overlap remains `111/944` at dispatch. A one-target Candidate may prove material `112/944`, but only fresh R47 may grant that additional accepted identity.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched and no stacked PR is merged by this task.
+
 ## Prompt Templates
 
 Codex A startup prompt:
