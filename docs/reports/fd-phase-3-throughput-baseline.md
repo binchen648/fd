@@ -979,3 +979,11 @@ Permitted final status:
 - Material counters remain `100 archives / 135 cards / 235 abilities`, compiled `72/14/0`, buckets `22/3/130/0/80/127`, audit `130/3/80/20`.
 - Integrated `origin/main` remains `553779e8ffcc926ae4763ee86a2ea937e090c128`, so the integrated-main accepted overlap is still `111/944` until a later coordinated integration of the stacked accepted lineage.
 - Ten FM09 provisioning target definitions remain unresolved. The next legal step is fresh dependency/feasibility planning across those ten targets; P3-FM09 remains `MIGRATION_BLOCKED`, no FM10 is dispatched, and PR #356 is not merged or retargeted here.
+## P3-A Remaining-10 FM09 Dependency Planning / FB2-23 Dispatch - 2026-09-18
+
+- Post-R47 accepted recovery lineage is `112/944`; integrated main remains `111/944` because the accepted stacked Ciel migration is not yet integrated.
+- Fresh current-lineage comparison rechecks all ten unresolved FM09 provisioning targets rather than inheriting historical order.
+- Bazett s2 still needs opponent/event-player card-play scope plus exact defeat targeting; Caules s2/s3, Nanaya s2, Ryougi s2, Tohno s2 and Zouken s3/s4 each retain multiple semantic gaps; Fujino s3 has an absent frozen s2 transitive dependency.
+- Ryougi s3 is the narrowest: required-additional play is already accepted, and the isolated remaining gap is one same-battlefield private hand inspection / optional return-one-to-owner-deck interaction.
+- P3-FB2-23-RECOVERY is dispatched as identity-free zero-credit infrastructure only. It may not add Ryougi or other content, modify MatchSession source, broaden hidden-card visibility, or change frozen accounting.
+- Recovery-line accepted overlap remains `112/944`; P3-FM09 remains `MIGRATION_BLOCKED`, R48 is required before any Ryougi s3 content attempt, and no FM10/merge/retarget is authorized.

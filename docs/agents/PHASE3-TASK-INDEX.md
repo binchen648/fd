@@ -4440,3 +4440,36 @@ Result: record fresh R47 `MIGRATION_ACCEPTED` for exactly `master.ciel.skill.s2`
 - Ten other FM09 provisioning target definitions remain absent and unresolved.
 - Next coordinator work is fresh current-lineage dependency/feasibility planning across those ten identities; historical ordering is not authority.
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched and no stacked PR is merged by this task.
+## TASK P3-A-FM09-REMAINING10-DEPENDENCY-PLANNING
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fm09-remaining10-planning`
+Base: exact post-R47 acceptance synchronization `ee0c4a6d7bd771d7ca54c3ffc662225499c86c61`
+Read: `docs/reports/2026-09-18-p3-a-fm09-remaining10-dependency-planning.md`
+
+Result: fresh current-lineage comparison of all ten unresolved FM09 provisioning targets selects the same-battlefield private hand inspection / optional return-one interaction required by `master.shiki-ryougi.skill.s3` as the narrowest isolated generic prerequisite. Planning adds no frozen material; recovery-line accepted overlap stays `112/944`.
+
+## TASK P3-FB2-23-RECOVERY
+
+Owner: Codex B2
+Status: `READY_FOR_B2_RECOVERY`
+Base: exact P3-A-FM09-REMAINING10-DEPENDENCY-PLANNING commit
+Read: `docs/reports/2026-09-18-p3-fb2-23-recovery-same-battlefield-private-hand-return-interaction-handoff.md`
+
+Goal: add only the identity-free same-battlefield player → controller-private selected-player hand snapshot → optional `0..1` return-to-owner-deck-and-shuffle interaction seam. No production identity/content, MatchSession source, frozen migration, or Ryougi-specific routing is authorized. Zero migration credit.
+
+## TASK P3-R48-RECOVERY
+
+Owner: Codex R
+Status: `BLOCKED_ON_P3-FB2-23-RECOVERY`
+
+Goal: fresh independent read-only review of the eventual exact FB2-23 Candidate. Do not inherit historical acceptance. Findings first; no fixes or downstream Ryougi content during review.
+
+## Full-Roster Dispatch State After Remaining-10 Planning
+
+- Recovery-line accepted overlap remains `112/944` (`11.86%`), leaving `832/944`; integrated main remains `111/944`.
+- Ten FM09 provisioning frozen targets remain absent.
+- FB2-23 is the only dispatched next dependency and is zero-credit infrastructure.
+- Ryougi s3 content waits for FB2-23 + fresh R48 + A acceptance synchronization.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched and no stacked PR is merged/retargeted.
