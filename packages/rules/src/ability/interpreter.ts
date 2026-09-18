@@ -3,7 +3,10 @@ import type { CardInstance } from '../schema/card';
 import type { LocationId } from '../schema/location';
 import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID, evaluateCardSourceValidity } from '../core/card-source-state';
-import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
+import {
+  isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic,
+  isSameBattlefieldPrivateHandReturnInteractionCandidate, isSameBattlefieldPrivateHandReturnInteractionSemantic,
+} from './interaction-gateway';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, situationForbidsAttribute } from '../core/rule-overrides';
@@ -422,6 +425,10 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
       nodes(target.constraints).every(c => {
         if (c.type === 'not_controller') return candidate.id !== ctx.controllerId;
         if (c.type === 'at_battlefield') return isBattlefield(s, candidate.locationId);
+        if (c.type === 'same_battlefield_as_controller') {
+          const controllerLocationId = player(s, ctx.controllerId).locationId;
+          return isBattlefield(s, controllerLocationId) && candidate.locationId === controllerLocationId;
+        }
         if (c.type === 'existing_attack_controlled_by_target') {
           return s.cards.some(card =>
             card.controllerPlayerId === candidate.id &&
@@ -1262,6 +1269,36 @@ function findPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility
       context: structuredClone(ctx), remainingEffects: effects };
   }
   return undefined;
+}
+
+function createSameBattlefieldPrivateHandReturnInteraction(s: GameState, ctx: EffectContext, a: AuthoringAbility): PendingDecision {
+  if (!isSameBattlefieldPrivateHandReturnInteractionSemantic(a)) reject('resolution_failed', 'Unsupported same-battlefield private hand-return interaction semantic shape');
+  const playerTarget = a.targets[0]!;
+  const playerTargetId = str(playerTarget.id);
+  const selectedPlayerIds = ctx.selections[playerTargetId] ?? [];
+  if (selectedPlayerIds.length !== 1) reject('resolution_failed', 'Private hand inspection requires exactly one selected player');
+  const selectedPlayerId = selectedPlayerIds[0]!;
+  const selectedPlayer = s.players.find((candidate) => candidate.id === selectedPlayerId && candidate.status === 'active');
+  const controllerLocationId = player(s, ctx.controllerId).locationId;
+  if (!selectedPlayer || !isBattlefield(s, controllerLocationId) || selectedPlayer.locationId !== controllerLocationId) {
+    reject('illegal_target', 'Selected player is no longer at the controller battlefield');
+  }
+  const snapshot = s.cards.filter((candidate) => candidate.ownerPlayerId === selectedPlayerId && candidate.zone === 'hand').map((candidate) => candidate.instanceId);
+  const id = nextId(s, 'interaction');
+  const target: RuleNode = {
+    id: 'inspected_hand_card', type: 'card_instance', scope: { zone: 'hand', owner: 'any', controller: 'any' },
+    count: { min: 0, max: 1 }, visibility: 'private_to_controller',
+  };
+  return {
+    id, controllerId: ctx.controllerId, target, candidates: [...snapshot], min: 0, max: 1,
+    context: structuredClone(ctx), remainingEffects: [],
+    interaction: {
+      kind: 'same_battlefield_private_hand_return_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`, playerTargetId, selectedPlayerId,
+      constraints: { kind: 'target', targetKind: 'card', min: 0, max: 1, distinct: true },
+    },
+  };
 }
 
 function createPrivateOptionalHandPlayInteraction(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): PendingDecision {
@@ -2402,6 +2439,18 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isOptionalBattleResultVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported optional battle-result VP semantic shape');
   if (isBattleEndSourceReturnCandidate(a)) reject('resolution_failed', 'Unsupported battle-end source-return semantic shape');
   if (isBattleEndMobilePlayersRewardCandidate(a)) reject('resolution_failed', 'Unsupported battle-end mobile-player reward semantic shape');
+  if (isSameBattlefieldPrivateHandReturnInteractionCandidate(a)) {
+    if (!isSameBattlefieldPrivateHandReturnInteractionSemantic(a)) reject('resolution_failed', 'Unsupported same-battlefield private hand-return interaction semantic shape');
+    const playerTargetId = str(a.targets[0]?.id);
+    if (!Object.prototype.hasOwnProperty.call(ctx.selections, playerTargetId)) {
+      const pending = findPendingTarget(s, ctx, a, effects);
+      if (!pending) reject('resolution_failed', 'Private hand inspection requires a player selection');
+      runtime(s).pendingDecision = pending;
+      return;
+    }
+    runtime(s).pendingDecision = createSameBattlefieldPrivateHandReturnInteraction(s, ctx, a);
+    return;
+  }
   if (isPrivateOptionalHandPlayInteractionCandidate(a)) {
     if (!isPrivateOptionalHandPlayInteractionSemantic(a)) reject('resolution_failed', 'Unsupported private optional hand-play interaction semantic shape');
     const interactionTargetId = str(a.targets[0]?.id);
@@ -2745,22 +2794,26 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
         const reasonCode = playFailure(s, viewerId, c.instanceId, faceDown);
         return { cardInstanceId: c.instanceId, faceDown, ...classification, ...(reasonCode ? { reasonCode } : {}) };
       })) } : {}) };
+  const d = r.pendingDecision;
+  const privatelyInspectedCardIds = new Set(
+    d?.interaction?.kind === 'same_battlefield_private_hand_return_v1' && d.controllerId === viewerId ? d.candidates : [],
+  );
   for (const c of s.cards) {
     if (c.zone === 'deck') continue;
     const privateZone = ['hand', 'skill', 'looked_cards'].includes(c.zone);
     const isPublic = !privateZone && (c.visibility.scope === 'public' || ongoing.some(o => o.controllerId === c.ownerPlayerId && o.publicZones.includes(c.zone)));
     const own = c.ownerPlayerId === viewerId;
-    if (!own && !isPublic && !['field', 'attack_area'].includes(c.zone)) continue;
-    const hidden = !own && (!isPublic || runtime(s).cardState[c.instanceId]?.faceDown);
+    const privatelyInspected = privatelyInspectedCardIds.has(c.instanceId) && c.zone === 'hand';
+    if (!own && !privatelyInspected && !isPublic && !['field', 'attack_area'].includes(c.zone)) continue;
+    const hidden = !own && !privatelyInspected && (!isPublic || runtime(s).cardState[c.instanceId]?.faceDown);
     // Opaque battlefield slot ids do not reveal definition ids embedded in legacy instance ids.
     const physicalState = runtime(s).cardState[c.instanceId];
     view.cards.push({ instanceId: hidden ? `hidden-field-${s.cards.indexOf(c)}` : c.instanceId,
-      ...(!hidden && (own || isPublic) ? { definitionId: c.definitionId } : {}), ownerPlayerId: c.ownerPlayerId, zone: c.zone,
+      ...(!hidden && (own || privatelyInspected || isPublic) ? { definitionId: c.definitionId } : {}), ownerPlayerId: c.ownerPlayerId, zone: c.zone,
       ...(physicalState?.faceDown ? { faceDown: true } : {}),
       ...(!hidden && physicalState?.reversed ? { reversed: true } : {}),
       ...(!hidden && physicalState?.attributeOverrides !== undefined ? { attributeOverrides: [...physicalState.attributeOverrides] } : {}) });
   }
-  const d = r.pendingDecision;
   if (d) {
     if (d.controllerId === viewerId) {
       const projectedCandidates = d.interaction ? d.candidates : candidates(s, d.context, d.target);
@@ -2849,6 +2902,49 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           d.context.selections[str(d.target.id)] = [...selected];
           delete r.pendingDecision;
           applyAlterEgoTransform(s, d.context, a, selected);
+          break;
+        }
+        if (meta.kind === 'same_battlefield_private_hand_return_v1') {
+          const source = s.cards.find((candidate) => candidate.instanceId === d.context.sourceCardId);
+          const exactSyntheticTarget = d.target.id === 'inspected_hand_card' && d.target.type === 'card_instance' &&
+            node(d.target.scope).zone === 'hand' && node(d.target.scope).owner === 'any' && node(d.target.scope).controller === 'any' &&
+            Number(node(d.target.count).min) === 0 && Number(node(d.target.count).max) === 1 && d.target.visibility === 'private_to_controller';
+          if (!isSameBattlefieldPrivateHandReturnInteractionSemantic(a) || d.context.controllerId !== d.controllerId ||
+            !source || source.controllerPlayerId !== d.controllerId || !active(s, source.instanceId) || !exactSyntheticTarget ||
+            meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+            meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== runtime(s).revision ||
+            meta.sourceCardInstanceId !== d.context.sourceCardId || meta.abilityId !== d.context.abilityId ||
+            meta.playerTargetId !== str(a.targets[0]?.id) || d.context.selections[meta.playerTargetId]?.length !== 1 ||
+            d.context.selections[meta.playerTargetId]?.[0] !== meta.selectedPlayerId ||
+            meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' || meta.constraints.min !== 0 ||
+            meta.constraints.max !== 1 || meta.constraints.distinct !== true || d.min !== 0 || d.max !== 1 ||
+            new Set(d.candidates).size !== d.candidates.length || d.candidates.some((id) => {
+              const candidate = s.cards.find((card) => card.instanceId === id);
+              return !candidate || candidate.ownerPlayerId !== meta.selectedPlayerId || candidate.zone !== 'hand';
+            })) {
+            reject('resolution_failed', 'Corrupt private hand-return interaction state');
+          }
+          const selectedPlayer = s.players.find((candidate) => candidate.id === meta.selectedPlayerId && candidate.status === 'active');
+          const controllerLocationId = player(s, d.context.controllerId).locationId;
+          if (!selectedPlayer || !isBattlefield(s, controllerLocationId) || selectedPlayer.locationId !== controllerLocationId) {
+            reject('illegal_target', 'Selected player is no longer at the controller battlefield');
+          }
+          const currentAllowed = s.cards.filter((candidate) =>
+            candidate.ownerPlayerId === meta.selectedPlayerId && candidate.zone === 'hand').map((candidate) => candidate.instanceId);
+          if (!Array.isArray(selected) || selected.length < d.min || selected.length > d.max ||
+            new Set(selected).size !== selected.length || selected.some((id) => !d.candidates.includes(id) || !currentAllowed.includes(id))) {
+            reject('illegal_target', 'Selected private hand card is not legal');
+          }
+          delete r.pendingDecision;
+          if (selected.length === 1) {
+            const selectedCard = card(s, selected[0]!);
+            if (selectedCard.ownerPlayerId !== meta.selectedPlayerId || selectedCard.zone !== 'hand') {
+              reject('illegal_target', 'Selected private hand card no longer belongs to the selected player hand');
+            }
+            moveCard(s, selectedCard.instanceId, 'deck');
+            shuffle(s, meta.selectedPlayerId);
+            r.events.push({ type: 'deck_shuffled', playerId: meta.selectedPlayerId, sourceCardId: d.context.sourceCardId, abilityId: d.context.abilityId });
+          }
           break;
         }
         if (meta.kind !== 'private_optional_hand_play_v1' || meta.template !== 'target' || meta.visibility !== 'owner_only' ||

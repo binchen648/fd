@@ -1,7 +1,10 @@
 import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, RuleNode, AdapterReportEntry } from './types';
 import { hostOperations } from './types';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state';
-import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
+import {
+  isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic,
+  isSameBattlefieldPrivateHandReturnInteractionCandidate, isSameBattlefieldPrivateHandReturnInteractionSemantic,
+} from './interaction-gateway';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -59,6 +62,7 @@ const supportedTypes = new Set([
   'look_at_match_deck_bottoms', 'swap_revealed_with_deck_bottom',
   'soul_drag_power_bonus', 'transform_to_return_silence_on_loss', 'return_silence_battle_start',
   'false_attendant_book_replacement', 'existing_attack_controlled_by_target', 'not_controller', 'at_battlefield',
+  'same_battlefield_as_controller', 'inspect_target_hand_optional_return_one_to_owner_deck',
   // Phase 3A resolution/data-flow infrastructure
   'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override', 'provision_skill_cards',
 ]);
@@ -273,6 +277,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         limit, visibility: node(a.visibility), execution: { mode: mode as ExecutionMode, allowedOperations: allowed } };
       if (isPrivateOptionalHandPlayInteractionCandidate(candidateAbility) && !isPrivateOptionalHandPlayInteractionSemantic(candidateAbility)) {
         issue('interaction.gateway', 'Unsupported private optional hand-play interaction semantic shape', id);
+      }
+      if (isSameBattlefieldPrivateHandReturnInteractionCandidate(candidateAbility) && !isSameBattlefieldPrivateHandReturnInteractionSemantic(candidateAbility)) {
+        issue('interaction.gateway', 'Unsupported same-battlefield private hand-return interaction semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;
