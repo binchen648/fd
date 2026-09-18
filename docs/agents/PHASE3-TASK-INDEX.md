@@ -4879,3 +4879,17 @@ Result: record fresh R58 `IMPLEMENTATION_ACCEPTED_CANDIDATE` for corrected FB2-2
 - PR #367 remains OPEN, unmerged, and unretargeted; integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / mechanically `111/944`.
 - Exactly six Ruler-family consumers are now eligible for a fresh separate S dispatch: Amakusa s3, Amor s1, Jeanne s1, Morgan s3, Oberon s3, Oberon s4. No migration credit is granted until fresh S/R/A completion.
 - Historical P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
+
+
+## TASK P3-RULER-CONSUMER-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact post-R58 A acceptance synchronization plus this dispatch commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Accepted dependency: R58 / FB2-27 Revision `e30e7efef3cf9fc111236599441e5a869f4bc81a`
+Targets: exactly Amakusa s3, Amor s1, Jeanne s1, Morgan s3, Oberon s3 and Oberon s4
+Read: `docs/reports/2026-09-19-p3-a-ruler-consumer-migration-dispatch.md` plus startup prompt and collaboration contract.
+
+Goal: migrate exactly six frozen Ruler-family definitions using the accepted FB2-27 identity-free structural contracts. Expected production authoring is five standalone servant-skill archives, with Oberon s3+s4 in one archive; no pack registration, generated product change, runtime change, unrelated Ruler card, FM09/FM10 state change, merge, or retarget is authorized. Candidate material may reach `127/944`; formal accepted remains `121/944` pending fresh R and later A synchronization.
