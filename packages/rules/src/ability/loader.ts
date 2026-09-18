@@ -5,6 +5,10 @@ import {
   isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic,
   isSameBattlefieldPrivateHandReturnInteractionCandidate, isSameBattlefieldPrivateHandReturnInteractionSemantic,
 } from './interaction-gateway';
+import {
+  isRulerSealBindingCandidate, isRulerSealBindingSemantic,
+  isRulerSealUseCandidate, isRulerSealUseSemantic,
+} from './ruler-seal';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -65,6 +69,8 @@ const supportedTypes = new Set([
   'same_battlefield_as_controller', 'inspect_target_hand_optional_return_one_to_owner_deck',
   // Phase 3A resolution/data-flow infrastructure
   'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override', 'provision_skill_cards',
+  // FB2-27 Ruler seal relationship subsystem
+  'grant_ruler_seals', 'ruler_copy_steal_guard', 'use_ruler_seal', 'least_ruler_binding_count', 'bound_by_controller_ruler_seal',
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -92,6 +98,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'returnAtRoundEnd', 'preserveVictoryPoints', 'sakuraMasterId', 'fallbackServantPool',
   // Phase 3A resolution/data-flow infrastructure
   'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase', 'targetDefinitionIds',
+  // FB2-27 Ruler seal structural fields
+  'policy', 'option', 'moveDestinations', 'rewardVp',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -280,6 +288,12 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (isSameBattlefieldPrivateHandReturnInteractionCandidate(candidateAbility) && !isSameBattlefieldPrivateHandReturnInteractionSemantic(candidateAbility)) {
         issue('interaction.gateway', 'Unsupported same-battlefield private hand-return interaction semantic shape', id);
+      }
+      if (isRulerSealBindingCandidate(candidateAbility) && !isRulerSealBindingSemantic(candidateAbility)) {
+        issue('rulerSeal.gateway', 'Unsupported Ruler seal binding semantic shape', id);
+      }
+      if (isRulerSealUseCandidate(candidateAbility) && !isRulerSealUseSemantic(candidateAbility)) {
+        issue('rulerSeal.gateway', 'Unsupported Ruler seal use semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

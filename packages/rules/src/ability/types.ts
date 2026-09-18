@@ -133,8 +133,21 @@ export interface SameBattlefieldPrivateHandReturnInteractionMetadata {
   playerTargetId: string; selectedPlayerId: PlayerId;
   constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: 1; distinct: true };
 }
+export interface RulerSealMoveInteractionMetadata {
+  kind: 'ruler_seal_move_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  sealId: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; destinations: string[];
+  constraints: { kind: 'target'; targetKind: 'location'; min: 1; max: 1; distinct: true };
+}
+export interface RulerSealFreePlayInteractionMetadata {
+  kind: 'ruler_seal_free_play_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  sealId: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; rewardVp: number;
+  constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: 1; distinct: true };
+}
 export type PendingInteractionMetadata =
-  PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata | SameBattlefieldPrivateHandReturnInteractionMetadata;
+  PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata | SameBattlefieldPrivateHandReturnInteractionMetadata |
+  RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -200,6 +213,14 @@ export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number;
   reversed?: boolean; attributeOverrides?: string[];
 }
+export interface RulerSealBinding {
+  id: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; sourceCardId: string; abilityId: string;
+  grantedRound: number; spent: boolean; spentRound?: number;
+}
+export interface PendingRulerSealReward {
+  sealId: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; sourceCardId: string; abilityId: string;
+  round: number; rewardVp: number;
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
@@ -213,6 +234,12 @@ export interface AbilityRuntime {
   pendingBattleTerminalEvent?: AbilityEvent;
   /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */
   transformedReturnSilenceSourceCardIds?: string[];
+  /** FB2-27 identity-free Ruler issuer -> bound-player relationship state. */
+  rulerSealBindings: RulerSealBinding[];
+  /** Game-long bind counts scoped by issuer; spending a seal never decrements this history. */
+  rulerSealBindingHistory: Record<PlayerId, Record<PlayerId, number>>;
+  /** One-shot delayed rewards armed by the free-play Ruler seal branch. */
+  pendingRulerSealRewards: PendingRulerSealReward[];
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];
