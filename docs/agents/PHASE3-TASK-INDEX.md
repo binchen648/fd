@@ -4859,3 +4859,23 @@ FB2-27 earns zero frozen migration credit and requires fresh independent R revie
 - If accepted and synchronized, a later S task may attempt exactly six Ruler-family identities; no migration credit is pre-authorized.
 - Historical P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
 - Existing stacked PRs remain unmerged and unretargeted.
+
+
+## TASK P3-A-R58-FB2-27-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r58-fb2-27-acceptance-sync`
+Base: exact R58-accepted Revision Candidate `e30e7efef3cf9fc111236599441e5a869f4bc81a`
+Prior rejected Candidate: `f315f2e412399f3aca7971adf7ccd1812437e63f` / R57 `IMPLEMENTATION_NEEDS_REVISION`
+Read: `docs/reports/2026-09-19-p3-a-r58-fb2-27-acceptance-synchronization.md`
+
+Result: record fresh R58 `IMPLEMENTATION_ACCEPTED_CANDIDATE` for corrected FB2-27. The R57 unordered-pair blocker is closed: ordered Reference least-bound semantics accept p2->p3/p4 and reject p3->p2 mutation-free. A independently reproduces `121/944` from 144 unique authoring cards with zero duplicate frozen IDs. FB2-27 remains zero-credit runtime capability infrastructure.
+
+## Full-Roster Dispatch State After R58 / FB2-27 Acceptance Synchronization
+
+- Recovery-line accepted overlap remains `121/944` (`12.82%`), leaving `823/944`.
+- R57 rejected `f315f2e...`; R58 independently accepted corrected Revision `e30e7efe...`.
+- PR #367 remains OPEN, unmerged, and unretargeted; integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / mechanically `111/944`.
+- Exactly six Ruler-family consumers are now eligible for a fresh separate S dispatch: Amakusa s3, Amor s1, Jeanne s1, Morgan s3, Oberon s3, Oberon s4. No migration credit is granted until fresh S/R/A completion.
+- Historical P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
