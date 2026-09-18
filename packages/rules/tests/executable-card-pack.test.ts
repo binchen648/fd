@@ -40,6 +40,37 @@ function masterSupportArchive(mutate?: (archive: any) => void): any {
   return archive;
 }
 
+function masterRuleArchive(mutate?: (archive: any) => void): any {
+  const archive: any = {
+    schemaVersion: 'fd-card-authoring-v1',
+    archiveType: 'master_rule_definition_archive',
+    id: 'master.rule-owner',
+    name: 'Rule Owner',
+    cards: [
+      {
+        id: 'master.rule-owner.skill.source', name: 'Rule Source', cardType: 'master_skill',
+        owner: { type: 'master', id: 'master.rule-owner' }, printedText: 'provision target',
+        cardFace: { typeLabel: '被动', attributes: [] }, playTiming: { phase: 'action', window: 'controller_play_card_window' },
+        playRequirements: [], abilities: [{
+          id: 'source.game-start-provision', kind: 'forced_trigger', printedClause: 'provision target',
+          activation: { trigger: 'game_start' }, conditions: [], targets: [], cost: [], creates: [], ruleModifiers: [],
+          lifecycle: {}, responseWindow: {}, limit: {}, visibility: {},
+          effects: [{ type: 'provision_skill_cards', player: 'controller', targetDefinitionIds: ['master.rule-owner.skill.target'] }],
+          execution: { mode: 'automatic', allowedOperations: [] },
+        }],
+      },
+      {
+        id: 'master.rule-owner.skill.target', name: 'Rule Target', cardType: 'master_skill',
+        owner: { type: 'master', id: 'master.rule-owner' }, initialPlacement: 'outside_game', printedText: 'target',
+        cardFace: { cost: 1, basePower: 1 }, playTiming: { phase: 'action', window: 'controller_play_card_window' },
+        playRequirements: [], abilities: [],
+      },
+    ],
+  };
+  mutate?.(archive);
+  return archive;
+}
+
 describe('ExecutableCardPack compiler', () => {
   it('normalizes one canonical runtime definition and explicit deck per source archive', () => {
     const input = sourceInput();
@@ -106,6 +137,48 @@ describe('ExecutableCardPack compiler', () => {
   ])('fails closed for malformed executable master support archive: %s', (_name, mutate, expected) => {
     const input = sourceInput();
     input.rules.archives.push(masterSupportArchive(mutate));
+    expect(() => compileExecutableCardPack(input)).toThrow(expected);
+  });
+
+  it('compiles mixed master rule archives without playable character, fallback spell, or deck surface', () => {
+    const input = sourceInput();
+    const baseline = compileExecutableCardPack(input);
+    const baselineArchiveIds = input.rules.archives.map((archive) => archive.id);
+    input.rules.archives.push(masterRuleArchive());
+
+    const executable = compileExecutableCardPack(input);
+    expect(input.rules.archives.slice(0, baselineArchiveIds.length).map((archive) => archive.id)).toEqual(baselineArchiveIds);
+    expect(Object.keys(executable.cards)).toHaveLength(Object.keys(baseline.cards).length + 2);
+    expect(executable.cards['master.rule-owner.skill.source']).toMatchObject({
+      ownerId: 'master.rule-owner', cardType: 'master_skill', initialZone: 'skill',
+    });
+    expect(executable.cards['master.rule-owner.skill.target']).toMatchObject({
+      ownerId: 'master.rule-owner', cardType: 'master_skill', initialPlacement: 'outside_game',
+    });
+    expect(executable.cards['master.rule-owner.skill.target']!.initialZone).toBeUndefined();
+    expect(executable.characters['master.rule-owner']).toBeUndefined();
+    expect(executable.fallbackCommandSpells['master.rule-owner']).toBeUndefined();
+    expect(executable.cards['master.rule-owner.command-spell']).toBeUndefined();
+    expect(executable.decks['master.rule-owner']).toBeUndefined();
+    expect(() => assertExecutableCardPack(executable, input)).not.toThrow();
+  });
+
+  it.each([
+    ['missing rule discriminator', (archive: any) => { delete archive.archiveType; }, /rule-shaped archive requires archiveType=master_rule_definition_archive/],
+    ['normal-master discriminator on rule shape', (archive: any) => { archive.archiveType = 'master_skill_card_archive'; }, /rule-shaped archive requires archiveType=master_rule_definition_archive/],
+    ['near-match rule discriminator', (archive: any) => { archive.archiveType = 'master_rule_definition_archive_x'; }, /rule-shaped archive requires archiveType=master_rule_definition_archive/],
+    ['support discriminator on mixed shape', (archive: any) => { archive.archiveType = 'master_support_definition_archive'; }, /requires initialPlacement=outside_game/],
+    ['wrong owner family', (archive: any) => { archive.id = 'servant.rule-owner'; }, /id must start with master\./],
+    ['one-card archive', (archive: any) => { archive.cards = [archive.cards[0]]; }, /at least two cards/],
+    ['non-master-skill card', (archive: any) => { archive.cards[0].cardType = 'command_spell'; }, /only master_skill cards/],
+    ['missing outside-game card', (archive: any) => { delete archive.cards[1].initialPlacement; }, /requires at least one initialPlacement=outside_game/],
+    ['all-outside-game support shape', (archive: any) => { archive.cards[0].initialPlacement = 'outside_game'; }, /support-shaped archive requires archiveType=master_support_definition_archive/],
+    ['mismatched card owner', (archive: any) => { archive.cards[0].owner.id = 'master.other'; }, /card owner must match archive id/],
+    ['deck surface', (archive: any) => { archive.deck = []; }, /cannot define a deck/],
+    ['playable public information', (archive: any) => { archive.publicInformation = { initialMana: 4 }; }, /cannot define playable master publicInformation/],
+  ])('fails closed for malformed executable mixed master rule archive: %s', (_name, mutate, expected) => {
+    const input = sourceInput();
+    input.rules.archives.push(masterRuleArchive(mutate));
     expect(() => compileExecutableCardPack(input)).toThrow(expected);
   });
 
