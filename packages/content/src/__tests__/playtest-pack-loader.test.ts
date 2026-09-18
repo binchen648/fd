@@ -44,6 +44,7 @@ function createMinimalWorkspace(
     authoringServantFiles: [],
     authoringMasterFiles: ['data/authoring/masters/master.test.json'],
     authoringMasterSupportFiles: [],
+    authoringMasterRuleFiles: [],
     eventSetFiles: [],
     eventCardFiles: [],
   });
@@ -126,6 +127,59 @@ function addMasterSupportArchive(
   return archive;
 }
 
+function addMasterRuleArchive(
+  workspace: { root: string; packPath: string },
+  mutate?: (archive: Record<string, any>) => void,
+  registerAs: 'rule' | 'support' | 'master' = 'rule',
+): Record<string, any> {
+  const archive: Record<string, any> = {
+    schemaVersion: 'fd-card-authoring-v1',
+    archiveType: 'master_rule_definition_archive',
+    id: 'master.rule-owner',
+    name: 'Rule Owner',
+    cards: [
+      {
+        id: 'master.rule-owner.skill.source',
+        name: 'Rule Source',
+        cardType: 'master_skill',
+        owner: { type: 'master', id: 'master.rule-owner' },
+        printedText: 'provision target',
+        cardFace: { typeLabel: '被动', attributes: [] },
+        playTiming: { phase: 'action', window: 'controller_play_card_window' },
+        playRequirements: [],
+        abilities: [{
+          id: 'source.game-start-provision', kind: 'forced_trigger', printedClause: 'provision target',
+          activation: { trigger: 'game_start' }, conditions: [], targets: [], cost: [], creates: [], ruleModifiers: [],
+          lifecycle: {}, responseWindow: {}, limit: {}, visibility: {},
+          effects: [{ type: 'provision_skill_cards', player: 'controller', targetDefinitionIds: ['master.rule-owner.skill.target'] }],
+          execution: { mode: 'automatic', allowedOperations: [] },
+        }],
+      },
+      {
+        id: 'master.rule-owner.skill.target',
+        name: 'Rule Target',
+        cardType: 'master_skill',
+        owner: { type: 'master', id: 'master.rule-owner' },
+        initialPlacement: 'outside_game',
+        printedText: 'outside game target',
+        cardFace: { cost: 1, basePower: 1 },
+        playTiming: { phase: 'action', window: 'controller_play_card_window' },
+        playRequirements: [],
+        abilities: [],
+      },
+    ],
+  };
+  mutate?.(archive);
+  const relativePath = 'data/authoring/rules/master.rule-owner.json';
+  writeJson(join(workspace.root, relativePath), archive);
+  const manifest = JSON.parse(readFileSync(workspace.packPath, 'utf8')) as Record<string, any>;
+  if (registerAs === 'rule') manifest.authoringMasterRuleFiles = [relativePath];
+  else if (registerAs === 'support') manifest.authoringMasterSupportFiles = [relativePath];
+  else manifest.authoringMasterFiles = [...(manifest.authoringMasterFiles ?? []), relativePath];
+  writeJson(workspace.packPath, manifest);
+  return archive;
+}
+
 describe('playtest pack loader', () => {
   it('loads the complete approved roster with no blocking issues', () => {
     const loaded = loadPlaytestContentPack(packPath, { workspaceRoot });
@@ -194,6 +248,101 @@ describe('playtest pack loader', () => {
         .toThrow(/must be registered through authoringMasterSupportFiles/);
     } finally {
       rmSync(workspace.root, { recursive: true, force: true });
+    }
+  });
+
+  it('loads mixed master rule archives into rules only without widening the playable roster', () => {
+    const workspace = createMinimalWorkspace(false);
+    try {
+      const ruleArchive = addMasterRuleArchive(workspace);
+      const loaded = loadPlaytestContentPack(workspace.packPath, { workspaceRoot: workspace.root });
+      const compiled = compileLoadedPlaytestPack(loaded);
+
+      expect(loaded.masters.map((master) => master.id)).toEqual(['master.test']);
+      expect(loaded.cards.some((card) => ruleArchive.cards.some((ruleCard: any) => ruleCard.id === card.id))).toBe(false);
+      expect(loaded.authoringArchives.map((archive) => archive.id)).toEqual(['master.test', ruleArchive.id]);
+      expect(compiled.library.masters.map((master) => master.id)).toEqual(['master.test']);
+      expect(compiled.library.cards.some((card) => ruleArchive.cards.some((ruleCard: any) => ruleCard.id === card.id))).toBe(false);
+      expect(compiled.library.rules.archives[1]).toMatchObject({
+        archiveType: 'master_rule_definition_archive',
+        id: ruleArchive.id,
+      });
+      expect(compiled.fixture.seats.every((seat) => seat.masterId !== ruleArchive.id)).toBe(true);
+    } finally {
+      rmSync(workspace.root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ['missing discriminator', (archive: Record<string, any>) => { delete archive.archiveType; }, /requires archiveType=master_rule_definition_archive/],
+    ['support discriminator', (archive: Record<string, any>) => { archive.archiveType = 'master_support_definition_archive'; }, /requires archiveType=master_rule_definition_archive/],
+    ['normal-master discriminator', (archive: Record<string, any>) => { archive.archiveType = 'master_skill_card_archive'; }, /requires archiveType=master_rule_definition_archive/],
+    ['near-match discriminator', (archive: Record<string, any>) => { archive.archiveType = 'master_rule_definition_archive_x'; }, /requires archiveType=master_rule_definition_archive/],
+    ['wrong owner family', (archive: Record<string, any>) => { archive.id = 'servant.rule-owner'; }, /id must start with master\./],
+    ['one-card archive', (archive: Record<string, any>) => { archive.cards = [archive.cards[0]]; }, /at least two cards/],
+    ['non-master-skill card', (archive: Record<string, any>) => { archive.cards[0].cardType = 'command_spell'; }, /only master_skill cards/],
+    ['missing outside-game card', (archive: Record<string, any>) => { delete archive.cards[1].initialPlacement; }, /requires at least one initialPlacement=outside_game/],
+    ['missing ordinary card', (archive: Record<string, any>) => { archive.cards[0].initialPlacement = 'outside_game'; }, /requires at least one ordinary non-deferred master_skill/],
+    ['mismatched card owner', (archive: Record<string, any>) => { archive.cards[0].owner.id = 'master.other'; }, /card owner must match archive id/],
+    ['unsupported placement', (archive: Record<string, any>) => { archive.cards[0].initialPlacement = 'skill'; }, /unsupported initialPlacement/],
+    ['deck surface', (archive: Record<string, any>) => { archive.deck = []; }, /cannot define a deck/],
+    ['playable public information', (archive: Record<string, any>) => { archive.publicInformation = { initialMana: 4 }; }, /cannot define playable master publicInformation/],
+  ])('fails closed for malformed mixed master rule archive: %s', (_name, mutate, expected) => {
+    const workspace = createMinimalWorkspace(false);
+    try {
+      addMasterRuleArchive(workspace, mutate);
+      expect(() => loadPlaytestContentPack(workspace.packPath, { workspaceRoot: workspace.root })).toThrow(expected);
+    } finally {
+      rmSync(workspace.root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ['missing discriminator', (archive: Record<string, any>) => { delete archive.archiveType; }],
+    ['normal-master discriminator', (archive: Record<string, any>) => { archive.archiveType = 'master_skill_card_archive'; }],
+    ['near-match discriminator', (archive: Record<string, any>) => { archive.archiveType = 'master_rule_definition_archive_x'; }],
+    ['missing discriminator + deck', (archive: Record<string, any>) => { delete archive.archiveType; archive.deck = []; }],
+    ['normal-master discriminator + deck', (archive: Record<string, any>) => { archive.archiveType = 'master_skill_card_archive'; archive.deck = []; }],
+    ['near-match discriminator + deck', (archive: Record<string, any>) => { archive.archiveType = 'master_rule_definition_archive_x'; archive.deck = []; }],
+    ['missing discriminator + publicInformation', (archive: Record<string, any>) => { delete archive.archiveType; archive.publicInformation = { initialMana: 4 }; }],
+    ['normal-master discriminator + publicInformation', (archive: Record<string, any>) => { archive.archiveType = 'master_skill_card_archive'; archive.publicInformation = { initialMana: 4 }; }],
+    ['near-match discriminator + publicInformation', (archive: Record<string, any>) => { archive.archiveType = 'master_rule_definition_archive_x'; archive.publicInformation = { initialMana: 4 }; }],
+  ])('rejects mixed rule-shaped archives that try to fall through the normal master channel: %s', (_name, mutate) => {
+    const workspace = createMinimalWorkspace(false);
+    try {
+      addMasterRuleArchive(workspace, mutate, 'master');
+      expect(() => loadPlaytestContentPack(workspace.packPath, { workspaceRoot: workspace.root }))
+        .toThrow(/Master rule-shaped archive requires archiveType=master_rule_definition_archive and authoringMasterRuleFiles registration/);
+    } finally {
+      rmSync(workspace.root, { recursive: true, force: true });
+    }
+  });
+
+  it('keeps master rule and support channels exact and separate from the normal master channel', () => {
+    const normalWorkspace = createMinimalWorkspace(false);
+    const supportWorkspace = createMinimalWorkspace(false);
+    const supportThroughRuleWorkspace = createMinimalWorkspace(false);
+    try {
+      addMasterRuleArchive(normalWorkspace, undefined, 'master');
+      expect(() => loadPlaytestContentPack(normalWorkspace.packPath, { workspaceRoot: normalWorkspace.root }))
+        .toThrow(/must be registered through authoringMasterRuleFiles/);
+
+      addMasterRuleArchive(supportWorkspace, undefined, 'support');
+      expect(() => loadPlaytestContentPack(supportWorkspace.packPath, { workspaceRoot: supportWorkspace.root }))
+        .toThrow(/requires archiveType=master_support_definition_archive/);
+
+      const support = addMasterSupportArchive(supportThroughRuleWorkspace);
+      const manifest = JSON.parse(readFileSync(supportThroughRuleWorkspace.packPath, 'utf8')) as Record<string, any>;
+      manifest.authoringMasterRuleFiles = manifest.authoringMasterSupportFiles;
+      manifest.authoringMasterSupportFiles = [];
+      writeJson(supportThroughRuleWorkspace.packPath, manifest);
+      expect(() => loadPlaytestContentPack(supportThroughRuleWorkspace.packPath, { workspaceRoot: supportThroughRuleWorkspace.root }))
+        .toThrow(/requires archiveType=master_rule_definition_archive/);
+      expect(support.archiveType).toBe('master_support_definition_archive');
+    } finally {
+      rmSync(normalWorkspace.root, { recursive: true, force: true });
+      rmSync(supportWorkspace.root, { recursive: true, force: true });
+      rmSync(supportThroughRuleWorkspace.root, { recursive: true, force: true });
     }
   });
 
