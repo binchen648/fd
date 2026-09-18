@@ -44,13 +44,14 @@ function setup() {
 }
 
 describe('P3-FB2-24 recovery Ryougi s3 support definition', () => {
-  it('keeps exact frozen provenance, static metadata, and support-only shape', () => {
+  it('keeps exact frozen provenance and target semantics inside the accepted mixed rules-only archive', () => {
     const raw = archive();
-    expect(raw).toMatchObject({ schemaVersion: 'fd-card-authoring-v1', archiveType: 'master_support_definition_archive', id: 'master.shiki-ryougi', name: '两仪式', sourcePolicy: { phase3EvidenceCommit: F1_COMMIT, referenceMetadataCommit: REFERENCE_COMMIT } });
+    expect(raw).toMatchObject({ schemaVersion: 'fd-card-authoring-v1', archiveType: 'master_rule_definition_archive', id: 'master.shiki-ryougi', name: '两仪式', sourcePolicy: { phase3EvidenceCommit: F1_COMMIT, referenceMetadataCommit: REFERENCE_COMMIT } });
     expect(raw).not.toHaveProperty('publicInformation');
     expect(raw).not.toHaveProperty('deck');
-    expect(raw.cards).toHaveLength(1);
-    const card = raw.cards[0];
+    expect(raw.cards).toHaveLength(2);
+    const card = raw.cards.find((candidate: any) => candidate.id === SOURCE);
+    expect(card).toBeTruthy();
     expect(card).toMatchObject({ id: SOURCE, name: '死・紧握', owner: { type: 'master', id: 'master.shiki-ryougi' }, cardType: 'master_skill', initialPlacement: 'outside_game', cardFace: { typeLabel: '魔术', cost: 1, basePower: 0, attributes: ['魔术'] }, playRequirements: [{ type: 'skill_zone_mana_at_least', value: 8 }] });
     expect(card.phase3Evidence.referenceStaticMetadata).toEqual({ commit: REFERENCE_COMMIT, legacySkillId: 's3', cost: 1, basePower: 0, legacyRequirement: 1, typeLabel: '魔术' });
     expect(card.phase3Evidence.canonicalSkillZoneManaRequirement).toMatchObject({ value: 8, authority: 'final_rules_9.4' });
@@ -70,9 +71,10 @@ describe('P3-FB2-24 recovery Ryougi s3 support definition', () => {
     expect(isSameBattlefieldPrivateHandReturnInteractionSemantic(action)).toBe(true);
   });
 
-  it('registers only as master support input in the product pack', () => {
+  it('registers only through the accepted mixed master rule channel in the product pack', () => {
     const pack = JSON.parse(readFileSync('data/packs/fd-playtest-v1/pack.json', 'utf8'));
-    expect(pack.authoringMasterSupportFiles).toContain('data/authoring/masters/master.shiki-ryougi.json');
+    expect(pack.authoringMasterRuleFiles).toContain('data/authoring/masters/master.shiki-ryougi.json');
+    expect(pack.authoringMasterSupportFiles).not.toContain('data/authoring/masters/master.shiki-ryougi.json');
     expect(pack.authoringMasterFiles).not.toContain('data/authoring/masters/master.shiki-ryougi.json');
   });
 

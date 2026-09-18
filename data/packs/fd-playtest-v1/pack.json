@@ -27,11 +27,7 @@
     "data/authoring/masters/master.irisviel.json",
     "data/authoring/masters/master.olga-marie.json"
   ],
-  "authoringMasterSupportFiles": [
-    "data/authoring/masters/master.shirou-emiya.json",
-    "data/authoring/masters/master.ciel.json",
-    "data/authoring/masters/master.shiki-ryougi.json"
-  ],
+  "authoringMasterSupportFiles": [],
   "eventSetFiles": [
     "data/packs/fd-playtest-v1/events/waxing-moon-ritual.json"
   ],
@@ -54,5 +50,10 @@
     "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/gentle-hometown.json",
     "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/growth.json",
     "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/keian-ceremony.json"
+  ],
+  "authoringMasterRuleFiles": [
+    "data/authoring/masters/master.ciel.json",
+    "data/authoring/masters/master.shiki-ryougi.json",
+    "data/authoring/masters/master.shirou-emiya.json"
   ]
 }

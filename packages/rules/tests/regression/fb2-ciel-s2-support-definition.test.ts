@@ -46,18 +46,19 @@ function addCiel(state: GameState): string {
 }
 
 describe('P3-FB2-22 recovery Ciel s2 support definition', () => {
-  it('keeps exact frozen provenance, static metadata, and support-only archive shape', () => {
+  it('keeps exact frozen provenance and target semantics inside the accepted mixed rules-only archive', () => {
     const raw = archive();
     expect(raw).toMatchObject({
       schemaVersion: 'fd-card-authoring-v1',
-      archiveType: 'master_support_definition_archive',
+      archiveType: 'master_rule_definition_archive',
       id: 'master.ciel',
       sourcePolicy: { phase3EvidenceCommit: F1_COMMIT, referenceMetadataCommit: REFERENCE_COMMIT },
     });
     expect(raw).not.toHaveProperty('publicInformation');
     expect(raw).not.toHaveProperty('deck');
-    expect(raw.cards).toHaveLength(1);
-    const card = raw.cards[0];
+    expect(raw.cards).toHaveLength(2);
+    const card = raw.cards.find((candidate: any) => candidate.id === 'master.ciel.skill.s2');
+    expect(card).toBeTruthy();
     expect(card).toMatchObject({
       id: 'master.ciel.skill.s2',
       owner: { type: 'master', id: 'master.ciel' },
