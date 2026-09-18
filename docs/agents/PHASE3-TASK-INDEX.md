@@ -4893,3 +4893,32 @@ Targets: exactly Amakusa s3, Amor s1, Jeanne s1, Morgan s3, Oberon s3 and Oberon
 Read: `docs/reports/2026-09-19-p3-a-ruler-consumer-migration-dispatch.md` plus startup prompt and collaboration contract.
 
 Goal: migrate exactly six frozen Ruler-family definitions using the accepted FB2-27 identity-free structural contracts. Expected production authoring is five standalone servant-skill archives, with Oberon s3+s4 in one archive; no pack registration, generated product change, runtime change, unrelated Ruler card, FM09/FM10 state change, merge, or retarget is authorized. Candidate material may reach `127/944`; formal accepted remains `121/944` pending fresh R and later A synchronization.
+
+## TASK P3-R59-RULER-CONSUMER-MIGRATION-REVIEW
+
+Owner: Codex R
+Status: `MIGRATION_ACCEPTED`
+Implementation Base: `18c39c838fe84e26b4739a75efcd3f3efb8bb499`
+Candidate S SHA: `d4c0fce05255b1bf1956f1fd8079763bad05d602`
+PR: `#368`
+Verdict: `MIGRATION_ACCEPTED`
+Blocking findings: none.
+
+Fresh R59 independently verifies the exact six-card Ruler migration, authoritative F1 text/hashes, exact R58/FB2-27 structural reuse, ordered least-bound semantics, issuer-scoped seal behavior, movement/free-play/reward branches, standalone archive/product isolation, and mechanical `121/944 -> 127/944` accounting with zero removals and zero duplicates. Official gates and final cleanliness pass.
+
+## TASK P3-A-R59-RULER-CONSUMER-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r59-ruler-consumer-acceptance-sync`
+Base: exact accepted Candidate `d4c0fce05255b1bf1956f1fd8079763bad05d602`
+Read: `docs/reports/2026-09-19-p3-a-r59-ruler-consumer-acceptance-synchronization.md`
+
+Result: record fresh R59 `MIGRATION_ACCEPTED` for exactly Amakusa s3, Amor s1, Jeanne s1, Morgan s3, Oberon s3, and Oberon s4. A independently reproduces exact Base `121/944` and Candidate `127/944`, six additions, zero removals, and zero duplicate frozen canonical IDs.
+
+## Full-Roster Dispatch State After R59 Acceptance Synchronization
+
+- Formal recovery-line accepted overlap is now **`127/944` (`13.45%`)**, leaving **`817`** frozen identities.
+- PR #368 remains OPEN, unmerged, and unretargeted; integrated `origin/main` remains mechanically `111/944`.
+- Historical P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
+- Next coordinator action is a read-only A readiness partition of all remaining `817` identities into direct READY, one-capability-away, and heavy multi-mechanic groups before any new dispatch.
