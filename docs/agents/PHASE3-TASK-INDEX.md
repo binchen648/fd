@@ -4548,3 +4548,24 @@ Base: exact post-R49 acceptance synchronization `ffe5afdcaa07cacdfac061010a542f0
 Read: `docs/reports/2026-09-18-p3-a-r49-process-hygiene.md`
 
 Result: correct historical role metadata for the pure S migrations FB2-22 and FB2-24, normalize recovery PR contract metadata, mark superseded/rejected PRs as historical only, and correct PR #359 to its final R49-reviewed Candidate. No product/runtime change or frozen accounting change; recovery-line accepted remains `113/944` and integrated main remains `111/944`.
+
+## TASK P3-A-FM05-TERRITORY-VARIANT-EXTENSION-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Base: exact post-R49 process-hygiene `3b2d6bc6ac2eb6bfc7058a238d140995d0711e77`
+Read: `docs/reports/2026-09-18-p3-a-fm05-territory-variant-extension-dispatch.md`
+
+Result: full-944 semantic-signature delta refresh finds exactly one accepted/missing mixed signature: the R34-accepted Territory Creation semantic with two missing typography variants, `servant.gilles.skill.sc-gilles-2` and `servant.medea.skill.sc-medea-2`. Dispatch exactly these two to Codex S as an FM05 family extension with no runtime changes. Dispatch takes zero credit; accepted overlap remains `113/944`.
+
+## TASK P3-FM05-TERRITORY-VARIANT-EXTENSION-RECOVERY
+
+Owner: Codex S
+Status: `READY`
+Base: exact P3-A-FM05-TERRITORY-VARIANT-EXTENSION-DISPATCH commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Targets: exactly `servant.gilles.skill.sc-gilles-2`, `servant.medea.skill.sc-medea-2`
+Read: `docs/agents/PHASE3-FULL-ROSTER-STARTUP-PROMPT.md`, `docs/agents/PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`, `docs/reports/2026-09-18-p3-a-fm05-territory-variant-extension-dispatch.md`, `docs/reports/2026-09-16-p3-fm05-territory-creation-migration-handoff.md`, `docs/reports/2026-09-16-p3-r34-fm05-territory-creation-migration-review.md`
+
+Goal: materialize exactly the two missing Territory Creation typography variants using only already accepted R33/R19/R34 semantics. No runtime/compiler hot-file changes. Candidate material must be exactly `115/944`; accepted overlap remains `113/944` until fresh independent R and post-review A synchronization. This is an FM05 extension, not FM10; P3-FM09 remains `MIGRATION_BLOCKED`.
