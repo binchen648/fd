@@ -127,7 +127,14 @@ export interface AlterEgoAttributeChoiceInteractionMetadata {
   triggerEventId: string; targetCardInstanceId: string; variant: 'regular' | 'ex';
   constraints: { kind: 'target'; targetKind: 'attribute'; min: 0; max: 3; distinct: true };
 }
-export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata;
+export interface SameBattlefieldPrivateHandReturnInteractionMetadata {
+  kind: 'same_battlefield_private_hand_return_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  playerTargetId: string; selectedPlayerId: PlayerId;
+  constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: 1; distinct: true };
+}
+export type PendingInteractionMetadata =
+  PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata | SameBattlefieldPrivateHandReturnInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
