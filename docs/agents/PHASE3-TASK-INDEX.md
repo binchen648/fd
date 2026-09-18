@@ -4777,3 +4777,17 @@ Result: record fresh R55 `IMPLEMENTATION_ACCEPTED_CANDIDATE` for the corrected F
 - Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`.
 - FB2-26 now permits a fresh separate S dispatch attempt for exactly `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, and `master.shirou-emiya.skill.s2`; no migration credit is granted until fresh S/R/A completion.
 - Historical P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched by this synchronization.
+
+
+## TASK P3-FB2-26-CONSUMER-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact post-R55 A synchronization plus this dispatch commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Accepted dependencies: P3-R41/FB2-15, P3-R43/FB2-18, P3-R44-R2/FB2-19, P3-R45, P3-R47, P3-R49, P3-R55/FB2-26
+Targets: exactly `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, `master.shirou-emiya.skill.s2`
+Read: `docs/reports/2026-09-19-p3-a-fb2-26-consumer-migration-dispatch.md` plus startup prompt and collaboration contract.
+
+Goal: migrate exactly the three source-grounded `core.game-start-add-skill` source identities by converting their existing support-only owner archives into the accepted mixed rules-only archive representation, preserving already accepted outside-game targets, and moving exactly those owner files from `authoringMasterSupportFiles` to `authoringMasterRuleFiles`. Reuse FB2-15 unchanged; no runtime modification or unrelated migration is authorized. Candidate material may be `121/944`; formal accepted remains `118/944` pending fresh R migration review and later A synchronization.
