@@ -640,6 +640,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
+  if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
@@ -1343,6 +1344,23 @@ export function isFixedControllerManaSetComponent(effect: AuthoringAbility['effe
   if (effect.player !== undefined && effect.player !== 'controller') return false;
   if (!Number.isSafeInteger(effect.amount) || Number(effect.amount) < 0) return false;
   return Object.keys(effect).every((key) => ['type', 'player', 'amount'].includes(key));
+}
+
+function isGameStartFixedControllerManaSetCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'forced_trigger' && a.effects.some((effect) => str(effect.type) === 'set_mana');
+}
+
+export function isGameStartFixedControllerManaSetSemantic(a: AuthoringAbility): boolean {
+  if (!isGameStartFixedControllerManaSetCandidate(a) || a.execution.mode !== 'automatic' ||
+    !Array.isArray(a.execution.allowedOperations) || a.execution.allowedOperations.length !== 0) return false;
+  if (str(a.activation.trigger) !== 'game_start' || Object.keys(a.activation).some((key) => key !== 'trigger')) return false;
+  if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
+  const responseKeys = Object.keys(a.responseWindow);
+  if (responseKeys.some((key) => !['order', 'passBehavior'].includes(key)) ||
+    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window') ||
+    Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0) return false;
+  return a.effects.length === 1 && isFixedControllerManaSetComponent(a.effects[0]!);
 }
 
 export function isFixedControllerDrawCardsComponent(effect: AuthoringAbility['effects'][number]): boolean {
@@ -2401,7 +2419,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
-  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isDeploymentResourceRewardSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a) || isSourcePlayBasicAttackDrawTriggerSemantic(a)) {
+  if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isGameStartFixedControllerManaSetSemantic(a) || isDeploymentResourceRewardSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a) || isSourcePlayBasicAttackDrawTriggerSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
     cleanupOngoing(s);
@@ -2430,6 +2448,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isAnyLocationExceptWorkshopMovementCandidate(a)) reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
   if (isMagicResistancePowerModifierCandidate(a)) reject('resolution_failed', 'Unsupported magic-resistance power modifier semantic shape');
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
+  if (isGameStartFixedControllerManaSetCandidate(a)) reject('resolution_failed', 'Unsupported game-start fixed set-mana semantic shape');
   if (isSourcePlayBasicAttackDrawTriggerCandidate(a)) reject('resolution_failed', 'Unsupported source-play basic-attack draw trigger semantic shape');
   if (isDeploymentResourceRewardCandidate(a)) reject('resolution_failed', 'Unsupported deployment resource reward semantic shape');
   if (isBattleLossResourceTriggerCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss resource semantic shape');
@@ -2547,6 +2566,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
     reject('resolution_failed', 'Unsupported persistent RuleOverride semantic shape');
+  }
+  if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) {
+    reject('resolution_failed', 'Unsupported game-start fixed set-mana semantic shape');
   }
   if (isGameStartSkillProvisioningCandidate(a)) {
     provisionGameStartSkillCards(s, ctx, a);
