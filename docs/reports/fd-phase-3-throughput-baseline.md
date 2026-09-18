@@ -935,3 +935,10 @@ Permitted final status:
 - The accepted dependency is exactly one non-frozen Shirou derived support definition. It preserves seven playable masters and fourteen characters and creates no Shirou playable character/fallback/deck/setup surface.
 - Frozen accepted overlap remains `111/944` (`11.76%`), leaving `833/944`; all eleven frozen FM09 target definitions remain absent.
 - The next legal step is fresh target-dependency planning across those eleven identities. P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or broad Ciel migration is dispatched.
+## P3-A Remaining FM09 Target Dependency Planning / FB2-21 Dispatch - 2026-09-18
+
+- Post-R45 base `575650f7be3dc9a3a61d5191d0a44829b6daf8ba` closes the non-frozen Shirou derived dependency while frozen accepted overlap remains `111/944`.
+- Fresh comparison of the eleven absent frozen target definitions does not inherit historical ordering. Caules s2 has at least deployment-trigger plus turn-scoped defeat-ignore gaps; Caules s3 lacks generic per-game attribute declaration and attribute-filtered power-zero behavior; Fujino s3 has an absent transitive s2 definition; Ryougi s3 needs a new cross-player private-hand interaction contract.
+- Ciel s2's existing generic routes cover low-mana play exception, combat conditions, location condition, fixed mana gain and VP adjustment. The isolated missing value is the controller's effective authored terrain/deployment bonus.
+- P3-FB2-21-RECOVERY is dispatched only to extract current combat terrain truth into a shared identity-free helper and expose exact controlled metric `controller.deployment_bonus`. It takes zero migration credit and adds no Ciel identity/content.
+- Ciel s2 waits for FB2-21 candidate + fresh R46 + post-review A synchronization. P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.

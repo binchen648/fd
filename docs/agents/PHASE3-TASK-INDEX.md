@@ -4279,18 +4279,45 @@ Result: synchronize fresh R45 acceptance without product changes or frozen migra
 ## TASK P3-A-FM09-TARGET-DEPENDENCY-PLANNING
 
 Owner: Codex A
-Status: `READY`
-Base: exact P3-A-R45-FB2-17-R3-RECOVERY-SYNC commit carrying this task block
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fm09-target-dependency-planning`
+Base: exact post-R45 acceptance synchronization `575650f7be3dc9a3a61d5191d0a44829b6daf8ba`
+Read: `docs/reports/2026-09-18-p3-a-fm09-remaining-target-dependency-planning.md`
 
-Goal: freshly classify the remaining eleven frozen FM09 provisioning target definitions against F1/Reference provenance and current accepted runtime/representation seams, then dispatch only the narrowest next dependency. Historical downstream target work is planning evidence only.
+Result: fresh classification selects a shared identity-free terrain/deployment-bonus metric as the narrowest next prerequisite. No frozen target is migrated by planning.
 
-## Full-Roster Dispatch State After Fresh R45 Acceptance Synchronization
+## TASK P3-FB2-21-RECOVERY
 
-- FB2-17-R3 / R45 closes the non-frozen Shirou derived target dependency.
-- Material coverage is `99/134/233`, compiled `71/14/0`; frozen accepted overlap remains `111/944` because the Shirou derived card is outside the frozen denominator.
-- Eleven frozen FM09 provisioning targets remain absent and unresolved.
-- P3-A-FM09-TARGET-DEPENDENCY-PLANNING is READY; it must freshly select the next narrow dependency rather than inherit historical ordering.
-- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or broad Ciel task is dispatched.
+Owner: Codex B2
+Status: `READY_FOR_B2_RECOVERY`
+Base: exact P3-A-FM09-TARGET-DEPENDENCY-PLANNING commit carrying this task block
+Read: `docs/reports/2026-09-18-p3-fb2-21-recovery-terrain-deployment-bonus-metric-handoff.md`
+
+Goal: extract current combat terrain/deployment-bonus truth into one shared identity-free helper and expose exact controlled numeric variable `controller.deployment_bonus`. Combat must consume the same helper. No authoring/generated/Ciel/frozen migration scope.
+
+May touch only the focused core/helper/loader/interpreter/tests/result-report files listed in the handoff. Zero migration credit.
+
+## TASK P3-R46-RECOVERY
+
+Owner: Codex R
+Status: `BLOCKED_ON_P3-FB2-21-RECOVERY`
+Branch: fresh reviewer-selected worktree from exact FB2-21 candidate
+Read: `docs/reports/2026-09-18-p3-fb2-21-recovery-terrain-deployment-bonus-metric-handoff.md`
+
+Goal: fresh independent review only. Recheck shared-helper single-source-of-truth behavior, multiplier/remote/suppression semantics, exact controlled metric validation/evaluation, identity-free routing, no mutation, unchanged combat behavior, exact scope, full gates and cleanliness. Do not implement fixes.
+
+Permitted verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## Full-Roster Dispatch State After Fresh FM09 Target Dependency Planning
+
+- Shirou derived support dependency is freshly accepted and remains zero-credit.
+- Eleven frozen FM09 targets remain absent; accepted overlap remains `111/944`.
+- Fresh comparison shows Ciel s2 has one isolated generic missing value while other near-term candidates require multiple gaps, transitive frozen definitions, or new private-interaction contracts.
+- P3-FB2-21-RECOVERY is READY for only the shared terrain/deployment-bonus metric seam; it does not migrate Ciel.
+- Ciel s2 may be attempted only after FB2-21 fresh R acceptance and A synchronization.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
 ## Prompt Templates
 
 Codex A startup prompt:
