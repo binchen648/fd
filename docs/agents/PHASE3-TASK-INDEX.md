@@ -4404,14 +4404,16 @@ Result: independent mechanical synchronization reproduces exact six-file scope, 
 ## TASK P3-R47-RECOVERY
 
 Owner: Codex R
-Status: `READY`
+Status: `MIGRATION_ACCEPTED`
 Implementation Base: `52ea97e9371f5a2353b58ad948b232434c68abd8`
 Candidate S/B2 SHA: `35a2a59fd4bf77bdbbfac37031556617af94c47f`
-A synchronization: this docs-only material synchronization commit; exact SHA is supplied at reviewer startup
+A material synchronization: `cc0d86ffb15dafd4847448f572025c9054616083`
 PR: `#356`
 Read: `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-handoff.md`, `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-result.md`, `docs/reports/2026-09-18-p3-a-fb2-22-ciel-s2-material-synchronization.md`
+Verdict: `MIGRATION_ACCEPTED`
+Blocking findings: none.
 
-Goal: fresh independent read-only review of exactly one frozen Ciel s2 support-definition Candidate. Findings first. Do not implement fixes, change PR topology, merge, start another target, FM09, or FM10. Accepted overlap remains `111/944` during review; only a later post-R47 A acceptance synchronization may record `112/944` accepted recovery-line progress.
+Fresh R47 independently accepts exactly frozen identity `master.ciel.skill.s2`, reproducing exact provenance, behavior, six-file scope, `111/944 -> 112/944` material accounting, deterministic outputs, full official validation, and final reviewer/Candidate cleanliness. R47 itself does not mutate acceptance documents; the following A synchronization records the accepted credit.
 
 ## Full-Roster Dispatch State After FB2-22 Material Synchronization
 
@@ -4420,3 +4422,21 @@ Goal: fresh independent read-only review of exactly one frozen Ciel s2 support-d
 - P3-R47-RECOVERY is the only next gate.
 - PR #356 remains stacked and must not be merged during review.
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
+## TASK P3-A-R47-FB2-22-RECOVERY-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r47-fb2-22-ciel-s2-acceptance-sync-recovery`
+Base: exact A material synchronization `cc0d86ffb15dafd4847448f572025c9054616083`
+Read: `docs/reports/2026-09-18-p3-a-r47-fb2-22-ciel-s2-recovery-acceptance-synchronization.md`
+
+Result: record fresh R47 `MIGRATION_ACCEPTED` for exactly `master.ciel.skill.s2`. Recovery-line accepted overlap is now `112/944` (`11.86%`), leaving `832/944`. Integrated `origin/main` remains at `553779e...` and therefore is not yet credited with this stacked migration.
+
+## Full-Roster Dispatch State After R47 Acceptance Synchronization
+
+- `master.ciel.skill.s2` is independently migration-accepted on the recovery lineage.
+- Recovery-line accepted overlap is `112/944` (`11.86%`), leaving `832/944`.
+- Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128`; its currently integrated accepted overlap remains `111/944` until coordinated integration.
+- Ten other FM09 provisioning target definitions remain absent and unresolved.
+- Next coordinator work is fresh current-lineage dependency/feasibility planning across those ten identities; historical ordering is not authority.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched and no stacked PR is merged by this task.

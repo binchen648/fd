@@ -970,3 +970,12 @@ Permitted final status:
 - Deterministic hashes are content library `2ffde7a8cf54611332456fe91b812ab6d36d98800f5b8d53f57394d65c05e572`, fixture `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, evidence `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`.
 - Material counters are `100/135/235`, compiled `72/14/0`, buckets `22/3/130/0/80/127`, audit `130/3/80/20`; reporting artifact rewrites are restored before synchronization commit.
 - P3-R47-RECOVERY is READY for a fresh independent review. Accepted frozen overlap remains `111/944` throughout A synchronization and R47 review; no merge, FM09, FM10, or second target is authorized.
+## P3-A R47 / FB2-22 Ciel S2 Recovery Acceptance Synchronization - 2026-09-18
+
+- Fresh R47 independently returns `MIGRATION_ACCEPTED` for exact frozen identity `master.ciel.skill.s2` over Base `52ea97e...`, Candidate `35a2a59...`, and A material synchronization `cc0d86f...`, with no blocking semantic, provenance, scope, accounting, determinism, performance, or cleanliness finding.
+- R47 independently reproduces exact F1/Reference provenance, support-only/outside-game registration, Ciel behavior, shared terrain metric semantics, seven-master product isolation, exact one-ID frozen addition, deterministic hashes, and clean reviewer/Candidate worktrees.
+- Fresh official validation is focused `73/73` across the requested Ciel/combat/executable/terrain set, full CI `849/849`, rules core+regression `434/434`, client/content/determinism/Reference PASS, coverage/audit PASS, and diff check PASS.
+- Recovery-line frozen accepted overlap advances from `111/944` to **`112/944` (`11.86%`)**, leaving `832/944`; the exact accepted addition is only `master.ciel.skill.s2`.
+- Material counters remain `100 archives / 135 cards / 235 abilities`, compiled `72/14/0`, buckets `22/3/130/0/80/127`, audit `130/3/80/20`.
+- Integrated `origin/main` remains `553779e8ffcc926ae4763ee86a2ea937e090c128`, so the integrated-main accepted overlap is still `111/944` until a later coordinated integration of the stacked accepted lineage.
+- Ten FM09 provisioning target definitions remain unresolved. The next legal step is fresh dependency/feasibility planning across those ten targets; P3-FM09 remains `MIGRATION_BLOCKED`, no FM10 is dispatched, and PR #356 is not merged or retargeted here.
