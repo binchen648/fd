@@ -4957,3 +4957,15 @@ Read: `docs/reports/2026-09-19-p3-a-r61-fb2-28-acceptance-synchronization.md`
 Result: record fresh R61 `IMPLEMENTATION_ACCEPTED_CANDIDATE` for FB2-28. R60's battlefield-location round-trip blocker is closed; A independently reproduces `111 archives / 150 cards / 150 unique / 127/944 overlap / 0 duplicates`. FB2-28 is zero-credit infrastructure, so formal recovery accepted remains `127/944` with `817` remaining.
 
 Next coordinator action is private read-only dependency recomputation for the twelve `event_card_rule` single-gap rows. No downstream migration is credited or dispatched by this synchronization. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
+
+## TASK P3-A-FB2-29-OUTER-GOD-LIFE-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-29-outer-god-life-dispatch`
+Base: exact R61 FB2-28 acceptance sync `1c33320b468825dd7e37b5ede6645bb29e5ee333`
+Read: `docs/reports/2026-09-19-p3-a-fb2-29-outer-god-life-dispatch.md`
+
+Result: dispatch one narrow B2 structural family for the five homogeneous `core.outer-god-life` identities. Required behavior is source-owner relational, identity-free, current-round +6 total-power sharing with dedupe, battle-terminal return of the same physical source to the source servant owner's discard, and a structural reusable `outer_god_life` category marker. No downstream migration credit is taken.
+
+Formal accepted remains `127/944`, `817` remaining. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
