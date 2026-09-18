@@ -4600,3 +4600,14 @@ Result: record fresh R50 `MIGRATION_ACCEPTED` for exactly `servant.gilles.skill.
 - Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`; PR #361 remains stacked and unmerged.
 - P3-FM09 remains `MIGRATION_BLOCKED` with the same nine provisioning targets; this FM05 extension is not FM10.
 - Next coordinator work is a fresh full-roster readiness refresh over the remaining `829` frozen identities against the accepted `115/944` recovery baseline; no further credit is pre-authorized.
+
+## TASK P3-FB2-25-GAME-START-FIXED-SET-MANA
+
+Owner: Codex B2
+Status: `READY`
+Base: exact post-R50 acceptance synchronization `fa27e9b132990a6fde164b8806443c533383375f` plus this A dispatch commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-18-p3-a-fb2-25-game-start-fixed-set-mana-dispatch.md`, FB2-05/R22 acceptance, FB2-14/R39 and FB2-15/R41 game-start acceptance evidence.
+
+Goal: add only the identity-free fail-closed `game_start + fixed controller literal set_mana` parent semantic. Exact future F1 consumers are Iliya s1 and Taiga s1; B2 must not add either identity or any authoring migration. Zero frozen credit; recovery accepted remains `115/944`.

@@ -1023,3 +1023,10 @@ Permitted final status:
 - Material reporting is `103 archives / 138 cards / 241 abilities`, compiled `73/14/0`, buckets `22/3/133/0/83/130`, audit `133/3/83/20`.
 - Recovery-line frozen accepted overlap advances from `113/944` to **`115/944` (`12.18%`)**, leaving `829/944`. Integrated `origin/main` remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`.
 - P3-FM09 remains `MIGRATION_BLOCKED` with its same nine provisioning targets. This accepted FM05 extension is not FM10; PR #361 is not merged or retargeted here. The next coordinator action is a fresh full-roster readiness refresh over the remaining `829` identities.
+
+## P3-A FB2-25 Game-Start Fixed Set-Mana Dispatch - 2026-09-18
+
+- Post-R50 recovery accepted baseline is `115/944`, leaving `829/944`; integrated main remains `111/944`.
+- Full readiness refresh finds no additional direct migration with an already accepted complete semantic signature. Okita remains excluded from Riding because its repeat-play semantics differ; Leonardo/Ophelia retain their documented FM08 completeness gaps.
+- The narrow reusable next gap is exactly `game.started -> SET_MANA` for two block-free F1 rows: `master.iliya.skill.s1` (6) and `master.taiga.skill.s1` (3). Zouken s1 is excluded because it additionally changes Mana capacity.
+- FB2-25 is dispatched as zero-credit B2 infrastructure: identity-free exact parent classifier/guard composing trusted `game_start` with accepted FB2-05 fixed-controller literal `set_mana`. No authoring migration, broad Trigger promotion, or FM10 dispatch is authorized.
