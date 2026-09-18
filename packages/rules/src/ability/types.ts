@@ -236,6 +236,9 @@ export interface PendingRulerSealReward {
   sealId: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; sourceCardId: string; abilityId: string;
   round: number; rewardVp: number;
 }
+export interface PendingSourceCardReturn {
+  sourceCardId: string; abilityId: string; recipientPlayerId: PlayerId; round: number;
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
@@ -257,6 +260,10 @@ export interface AbilityRuntime {
   rulerSealBindingHistory: Record<PlayerId, Record<PlayerId, number>>;
   /** One-shot delayed rewards armed by the free-play Ruler seal branch. */
   pendingRulerSealRewards: PendingRulerSealReward[];
+  /** Current-round identity-free total-power adjustments keyed by recipient. */
+  roundTotalPowerAdjustments: { round: number; byPlayer: Record<PlayerId, number> };
+  /** Physical source cards scheduled to return to a structural source-servant owner at battle terminal. */
+  pendingSourceCardReturns: PendingSourceCardReturn[];
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];

@@ -34,3 +34,4 @@ export * from './ability/report';
 export * from './ability/resolution-dataflow';
 
 export * from './ability/event-rule';
+export * from './ability/outer-god-life';

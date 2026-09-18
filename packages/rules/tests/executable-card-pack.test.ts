@@ -210,6 +210,15 @@ describe('ExecutableCardPack compiler', () => {
     expect(() => compileExecutableCardPack(input)).toThrow(expected);
   });
 
+  it('preserves the structural outer_god_life semantic category into executable definitions', () => {
+    const input = sourceInput();
+    const source = input.rules.archives.flatMap((archive) => archive.cards).find((card) => card.id === 'servant.artoriac.skill.sc-artoriac-1')!;
+    source.cardFace.semanticCategory = 'outer_god_life';
+    const executable = compileExecutableCardPack(input);
+    expect(executable.cards[source.id]!.cardFace.semanticCategory).toBe('outer_god_life');
+    expect(() => assertExecutableCardPack(executable, input)).not.toThrow();
+  });
+
   it('compiles event rule archives into a separate executable eventRules map without player-product surfaces', () => {
     const input = sourceInput();
     const baseline = compileExecutableCardPack(input);
