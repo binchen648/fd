@@ -1,0 +1,156 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_support_definition_archive",
+  "id": "master.shiki-ryougi",
+  "name": "两仪式",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Accepted F1 source evidence is authoritative for identity, printed clauses, and semantics. Locked Reference supplies only stable identity/static metadata and source locator; no Reference handler or runtime routing is inherited."
+  },
+  "cards": [
+    {
+      "id": "master.shiki-ryougi.skill.s3",
+      "aliases": [
+        "s3"
+      ],
+      "legacyId": "s3",
+      "name": "死・紧握",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.shiki-ryougi"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "此牌需追加打出。\n行动阶段：查看一名与你位于同一战场的玩家的手牌，你可将其中一张牌洗回其所有者的牌库。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "cost": 1,
+        "basePower": 0,
+        "attributes": [
+          "魔术"
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "required-additional-play",
+          "kind": "passive",
+          "printedClause": "此牌需追加打出。",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "effects": [
+            {
+              "type": "append_only_rule"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "same-battlefield-private-hand-return",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：查看一名与你位于同一战场的玩家的手牌，你可将其中一张牌洗回其所有者的牌库。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "selected_player",
+              "type": "player",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "same_battlefield_as_controller"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "inspect_target_hand_optional_return_one_to_owner_deck",
+              "target": "selected_player"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/两仪式.png",
+            "locator": "master.shiki-ryougi/两仪式"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.shiki-ryougi/s3"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[64].skills[4].text#line=1",
+            "sha256": "b8948b29606c56ee673f234c17afe98448ae3986ee1a6155b5b827e23096a239"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[64].skills[4].text#line=2",
+            "sha256": "c3554f0f6f966f69aa14816bcba99bb291db64c13b4ca8f345a74fd4619c95c4"
+          }
+        ],
+        "sourceTextSha256": "49bfaa05b153321ecdc5a317f257a228d8f9f16c5afcf337b69ea526bad90110",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s3",
+          "cost": 1,
+          "basePower": 0,
+          "legacyRequirement": 1,
+          "typeLabel": "魔术"
+        },
+        "acceptedContracts": {
+          "requiredAdditionalPlay": "P3-R42/FB2-16",
+          "outsideGameInitialPlacement": "P3-R43/FB2-18",
+          "masterSupportOnlyRegistration": "P3-R44/FB2-19",
+          "sameBattlefieldPrivateHandReturn": "P3-R48-R2/FB2-23"
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is retained as evidence metadata only; the final skill-zone play threshold is 8 mana."
+        }
+      }
+    }
+  ]
+}

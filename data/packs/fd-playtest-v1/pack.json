@@ -29,7 +29,8 @@
   ],
   "authoringMasterSupportFiles": [
     "data/authoring/masters/master.shirou-emiya.json",
-    "data/authoring/masters/master.ciel.json"
+    "data/authoring/masters/master.ciel.json",
+    "data/authoring/masters/master.shiki-ryougi.json"
   ],
   "eventSetFiles": [
     "data/packs/fd-playtest-v1/events/waxing-moon-ritual.json"
