@@ -4757,3 +4757,23 @@ FB2-26 earns zero frozen migration credit and requires a fresh independent R rev
 - If FB2-26 is freshly accepted and synchronized, a separate S task may attempt exactly three ready FB2-15 consumers: `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, and `master.shirou-emiya.skill.s2`. Mechanical Candidate material would be `121/944`; formal accepted remains `118/944` until fresh migration review and A acceptance synchronization.
 - The historical P3-FM09 exact-ten recovery attempt remains blocked; nine unresolved provisioning target identities remain unchanged, and the other source identities receive no credit.
 - No FM10 is dispatched, and no existing stacked PR is merged or retargeted by this A task.
+
+## TASK P3-A-R55-FB2-26-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r55-fb2-26-acceptance-sync`
+Base: exact R55-accepted Revision Candidate `e4c703bf3755a5a9e865ca05f0ad93118b70f0e2`
+Prior rejected Candidate: `206cf5b96497bf9709cc230a3da66b8bfff2f6c6` / R54 `IMPLEMENTATION_NEEDS_REVISION`
+Read: `docs/reports/2026-09-19-p3-a-r55-fb2-26-acceptance-synchronization.md`
+
+Result: record fresh R55 `IMPLEMENTATION_ACCEPTED_CANDIDATE` for the corrected FB2-26 mixed rules-only master archive representation. A independently reproduces Base and Revision at `118/944`, with 141 authoring cards on both sides, zero frozen additions/removals, zero duplicate frozen canonical IDs, and zero `data/authoring/**` / `data/phase3/**` diff. FB2-26 is accepted as zero-credit capability infrastructure only.
+
+## Full-Roster Dispatch State After R55 / FB2-26 Acceptance Synchronization
+
+- Recovery-line accepted overlap remains `118/944` (`12.50%`), leaving `826/944`.
+- R54 rejected `206cf5b...`; R55 independently accepted corrected Revision `e4c703b...`.
+- PR #365 remains OPEN, unmerged, and unretargeted.
+- Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`.
+- FB2-26 now permits a fresh separate S dispatch attempt for exactly `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, and `master.shirou-emiya.skill.s2`; no migration credit is granted until fresh S/R/A completion.
+- Historical P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched by this synchronization.
