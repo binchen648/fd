@@ -4289,34 +4289,43 @@ Result: fresh classification selects a shared identity-free terrain/deployment-b
 ## TASK P3-FB2-21-RECOVERY
 
 Owner: Codex B2
-Status: `READY_FOR_B2_RECOVERY`
-Base: exact P3-A-FM09-TARGET-DEPENDENCY-PLANNING commit carrying this task block
-Read: `docs/reports/2026-09-18-p3-fb2-21-recovery-terrain-deployment-bonus-metric-handoff.md`
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Base: `98ce9b0c3967c598f9fb7d2736f418e15dcc5d30`
+Candidate: `92f2aa1b084b9ac9c2ee8f2f353cdfa13611f04a`
+PR: `#355` stacked on exact Base
+Read: `docs/reports/2026-09-18-p3-fb2-21-recovery-terrain-deployment-bonus-metric-result.md`
 
-Goal: extract current combat terrain/deployment-bonus truth into one shared identity-free helper and expose exact controlled numeric variable `controller.deployment_bonus`. Combat must consume the same helper. No authoring/generated/Ciel/frozen migration scope.
-
-May touch only the focused core/helper/loader/interpreter/tests/result-report files listed in the handoff. Zero migration credit.
+Result: accepted zero-credit identity-free shared terrain/deployment-bonus metric infrastructure. Combat and exact controlled variable `controller.deployment_bonus` consume the same terrain truth. No authoring/generated/Ciel/frozen migration scope.
 
 ## TASK P3-R46-RECOVERY
 
 Owner: Codex R
-Status: `BLOCKED_ON_P3-FB2-21-RECOVERY`
-Branch: fresh reviewer-selected worktree from exact FB2-21 candidate
-Read: `docs/reports/2026-09-18-p3-fb2-21-recovery-terrain-deployment-bonus-metric-handoff.md`
+Status: `REVIEW_ACCEPTED`
+Implementation Base: `98ce9b0c3967c598f9fb7d2736f418e15dcc5d30`
+Candidate B2 SHA: `92f2aa1b084b9ac9c2ee8f2f353cdfa13611f04a`
+Read: `docs/reports/2026-09-18-p3-r46-fb2-21-recovery-terrain-deployment-bonus-metric-review.md`
+Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Blocking findings: none.
 
-Goal: fresh independent review only. Recheck shared-helper single-source-of-truth behavior, multiplier/remote/suppression semantics, exact controlled metric validation/evaluation, identity-free routing, no mutation, unchanged combat behavior, exact scope, full gates and cleanliness. Do not implement fixes.
+Fresh R46 independently verifies shared-helper single-source-of-truth behavior, exact controller metric routing, multiplier/Preparation/suppression semantics, explicit combat slot compatibility, non-battlefield/missing/invalid zero behavior, no mutation, identity-free scope, generated/accounting stability, official gates, performance evidence, and final cleanliness.
 
-Permitted verdicts:
-- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
-- `IMPLEMENTATION_NEEDS_REVISION`
+## TASK P3-A-R46-FB2-21-RECOVERY-SYNC
 
-## Full-Roster Dispatch State After Fresh FM09 Target Dependency Planning
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r46-fb2-21-acceptance-sync-recovery`
+Base: exact FB2-21 Candidate `92f2aa1b084b9ac9c2ee8f2f353cdfa13611f04a`
+Read: `docs/reports/2026-09-18-p3-a-r46-fb2-21-recovery-acceptance-synchronization.md`
 
-- Shirou derived support dependency is freshly accepted and remains zero-credit.
-- Eleven frozen FM09 targets remain absent; accepted overlap remains `111/944`.
-- Fresh comparison shows Ciel s2 has one isolated generic missing value while other near-term candidates require multiple gaps, transitive frozen definitions, or new private-interaction contracts.
-- P3-FB2-21-RECOVERY is READY for only the shared terrain/deployment-bonus metric seam; it does not migrate Ciel.
-- Ciel s2 may be attempted only after FB2-21 fresh R acceptance and A synchronization.
+Result: synchronize fresh R46 acceptance without product changes or frozen migration credit. The shared terrain/deployment-bonus metric prerequisite is closed; Ciel s2 is eligible only for a fresh single-target feasibility/source-grounding pass after this synchronization.
+
+## Full-Roster Dispatch State After R46 Acceptance Synchronization
+
+- Shirou derived support dependency remains accepted and zero-credit.
+- FB2-21 shared terrain/deployment-bonus metric infrastructure is accepted and zero-credit.
+- Eleven frozen FM09 target definitions remain absent; accepted overlap remains `111/944`.
+- The isolated generic metric prerequisite previously identified for Ciel s2 is closed. This A synchronization does not migrate Ciel and does not yet dispatch an implementation candidate.
+- Next coordinator work is fresh current-lineage Ciel s2 feasibility/source grounding, including exact F1 provenance, locked-Reference static metadata, and revalidation that all non-metric semantics already map to accepted generic routes.
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
 ## Prompt Templates
 

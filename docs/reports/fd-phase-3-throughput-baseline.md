@@ -942,3 +942,12 @@ Permitted final status:
 - Ciel s2's existing generic routes cover low-mana play exception, combat conditions, location condition, fixed mana gain and VP adjustment. The isolated missing value is the controller's effective authored terrain/deployment bonus.
 - P3-FB2-21-RECOVERY is dispatched only to extract current combat terrain truth into a shared identity-free helper and expose exact controlled metric `controller.deployment_bonus`. It takes zero migration credit and adds no Ciel identity/content.
 - Ciel s2 waits for FB2-21 candidate + fresh R46 + post-review A synchronization. P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
+
+## P3-A R46 / FB2-21 Recovery Acceptance Synchronization - 2026-09-18
+
+- Fresh R46 independently accepts FB2-21 candidate `92f2aa1b084b9ac9c2ee8f2f353cdfa13611f04a` over Base `98ce9b0c3967c598f9fb7d2736f418e15dcc5d30`, with no blocking semantic, scope, or performance finding.
+- R46 confirms one shared identity-free terrain/deployment-bonus truth for combat and exact controlled metric `controller.deployment_bonus`, with near-match fail-closed validation, controller-based evaluation, multiplier/Preparation/suppression correctness, explicit combat-slot compatibility, zero behavior outside battlefield/missing/invalid assignment, and pure reads.
+- Fresh official validation is focused `17/17`, full CI `842/842` across 130 files, rules core+regression `427/427`, client/content/determinism/Reference PASS, unchanged coverage `99/134/233` with compiled `71/14/0`, buckets `22/3/128/0/80/126`, and audit `128/3/80/20`.
+- Fresh Base/Candidate timing comparison shows the fixed 5-second eleven-round test is parallel-suite fragile but provides no evidence of Candidate production regression; isolated timings overlap while Candidate unchanged official CI passes.
+- FB2-21 takes zero frozen migration credit. Accepted overlap remains `111/944` (`11.76%`), leaving `833/944`.
+- The previously isolated Ciel s2 terrain/deployment-bonus prerequisite is now closed. Ciel still requires a fresh single-target feasibility/source-grounding pass before implementation; P3-FM09 remains `MIGRATION_BLOCKED`, no FM10 is dispatched, and PR #355 is not merged here.
