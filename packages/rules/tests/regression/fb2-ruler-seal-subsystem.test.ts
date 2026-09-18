@@ -174,6 +174,14 @@ describe('P3-FB2-27 Ruler seal relationship subsystem', () => {
     const pending = activate(state, 'p1', PARENT_INSTANCE, PARENT_ABILITY);
     expect(pending.candidates).toEqual(expect.arrayContaining(['p2', 'p3', 'p4']));
 
+    expect(rules.legalRulerSealBindingPairs(state, 'p1')).toEqual(expect.arrayContaining([['p2', 'p3'], ['p2', 'p4']]));
+    expect(rules.legalRulerSealBindingPairs(state, 'p1')).not.toContainEqual(['p3', 'p2']);
+    const reversedBefore = structuredClone(state);
+    const reversed = choose(state, 'p1', ['p3', 'p2']);
+    expect(reversed.ok).toBe(false);
+    expect(reversed.rejection?.code).toBe('illegal_target');
+    expect(state).toEqual(reversedBefore);
+
     const before = structuredClone(state);
     const rejected = choose(state, 'p1', ['p3', 'p4']);
     expect(rejected.ok).toBe(false);

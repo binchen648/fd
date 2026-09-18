@@ -159,3 +159,15 @@ Therefore FB2-27 earns **zero frozen migration credit**. Formal recovery accepte
 If and only if fresh independent R accepts this B2 Candidate and later A capability synchronization records that acceptance, a separate S task may attempt the exact six Ruler-family consumers named in the A dispatch. This Candidate itself does not claim `127/944`.
 
 Historical P3-FM09 remains `MIGRATION_BLOCKED`. No FM10 is started or unblocked by FB2-27.
+
+## R57 ordered-selection revision
+
+Fresh independent R57 rejected Candidate `f315f2e412399f3aca7971adf7ccd1812437e63f` for one semantic blocker: the two-player least-bound selection had been normalized into an unordered pair, so an illegal reverse submission such as `p3 -> p2` could be accepted when only `p2 -> p3` was legal under the locked Reference's sequential rule.
+
+The revision changes only the ordered-pair validation and its regression evidence:
+
+- `legalRulerSealBindingPairs(...)` now preserves `[first, second]` order instead of sorting/deduplicating the pair;
+- `isLeastBoundSelection(...)` compares the submitted two-player sequence in its original order;
+- the regression for issuer history `{ p2: 0, p3: 1, p4: 1 }` proves `p2 -> p3` / `p2 -> p4` are legal while reverse `p3 -> p2` is rejected as `illegal_target` mutation-free.
+
+No other runtime contract was broadened or changed. Final post-revision validation: typecheck PASS; focused FB2-27 `1 file / 12 tests PASS`; rules `80 files / 482 tests PASS`; official CI `139 files / 942 tests PASS`; content `7 masters / 7 servants / 20 events / 0 blocking issues`; deterministic hashes unchanged; locked Reference verification PASS; client production build PASS; Phase 3 coverage unchanged at `106/144/249`, compiled `76/14/0`, routing `22/3/135/0/89/131`; automation audit unchanged `135/3/89/20`; frozen migration credit remains zero at `121/944`, `823` remaining.

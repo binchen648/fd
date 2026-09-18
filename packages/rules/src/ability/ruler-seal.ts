@@ -84,18 +84,17 @@ export function legalRulerSealBindingPairs(state: GameState, issuerPlayerId: Pla
   if (opponents.length < 2) return [];
   const counts = new Map(opponents.map((player) => [player.id, rulerSealBindingCount(state, issuerPlayerId, player.id)]));
   const firstMinimum = Math.min(...counts.values());
-  const pairs = new Map<string, [PlayerId, PlayerId]>();
+  const pairs: Array<[PlayerId, PlayerId]> = [];
   for (const first of opponents.filter((player) => counts.get(player.id) === firstMinimum)) {
     const simulated = new Map(counts);
     simulated.set(first.id, (simulated.get(first.id) ?? 0) + 1);
     const secondMinimum = Math.min(...simulated.values());
     for (const second of opponents) {
       if (second.id === first.id || simulated.get(second.id) !== secondMinimum) continue;
-      const ordered = [first.id, second.id].sort() as [PlayerId, PlayerId];
-      pairs.set(ordered.join('\u0000'), ordered);
+      pairs.push([first.id, second.id]);
     }
   }
-  return [...pairs.values()];
+  return pairs;
 }
 
 export function eligibleLeastBoundPlayerIds(state: GameState, issuerPlayerId: PlayerId, slots = 2): PlayerId[] {
@@ -105,8 +104,8 @@ export function eligibleLeastBoundPlayerIds(state: GameState, issuerPlayerId: Pl
 
 export function isLeastBoundSelection(state: GameState, issuerPlayerId: PlayerId, selectedPlayerIds: PlayerId[], slots = 2): boolean {
   if (slots !== 2 || selectedPlayerIds.length !== 2 || new Set(selectedPlayerIds).size !== 2) return false;
-  const selected = [...selectedPlayerIds].sort();
-  return legalRulerSealBindingPairs(state, issuerPlayerId).some((pair) => pair[0] === selected[0] && pair[1] === selected[1]);
+  return legalRulerSealBindingPairs(state, issuerPlayerId).some((pair) =>
+    pair[0] === selectedPlayerIds[0] && pair[1] === selectedPlayerIds[1]);
 }
 
 export function unspentRulerSealBindings(state: GameState, issuerPlayerId: PlayerId, boundPlayerId?: PlayerId): RulerSealBinding[] {
