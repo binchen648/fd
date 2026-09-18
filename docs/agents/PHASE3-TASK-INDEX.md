@@ -4690,3 +4690,32 @@ Target: exactly `servant.mhx.skill.sc-mhx-3`
 Read: `docs/reports/2026-09-18-p3-a-mhx-fm03-extension-dispatch.md` plus the full-roster startup prompt and collaboration contract.
 
 Result: fresh `117/944` readiness overlay finds zero mixed exact F1 classification-signature groups but one source-complete accepted-family extension. MHX s3 has byte-identical printed text and all three clause hashes to accepted FM03 members, the same locked `core.saber-magic-resistance` family/static card shape, and an A in-memory production-loader/runtime probe proves exact accepted three-ability behavior with no runtime change. Dispatch takes zero credit; accepted remains `117/944`. Candidate material may be `118/944` pending fresh R.
+
+## TASK P3-R53-FM03-MHX-EXTENSION-REVIEW
+
+Owner: Codex R
+Status: `MIGRATION_ACCEPTED`
+Implementation Base: `362c799c9c3b92a1e2af3f1e4597d5cfcba532ac`
+Candidate S SHA: `edfe2ee2e21b484d2b01824f6117d364d1af835b`
+PR: `#364`
+Verdict: `MIGRATION_ACCEPTED`
+Blocking findings: none.
+
+Fresh R53 independently proves the MHX s3 F1 special label is classification drift rather than semantic divergence, verifies exact three-file scope and zero runtime/product drift, exercises all three accepted FM03 abilities through production runtime, confirms product isolation and deterministic hashes, and mechanically reproduces `117/944 -> 118/944` material accounting with one exact addition, zero removals, and zero duplicates.
+
+## TASK P3-A-R53-MHX-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r53-mhx-acceptance-sync`
+Base: exact accepted Candidate `edfe2ee2e21b484d2b01824f6117d364d1af835b`
+Read: `docs/reports/2026-09-18-p3-a-r53-mhx-acceptance-synchronization.md`
+
+Result: record fresh R53 `MIGRATION_ACCEPTED` for exactly `servant.mhx.skill.sc-mhx-3`. A independently reproduces Base `117/944` and Candidate `118/944`, exact one addition, zero removals, and zero duplicate frozen canonical IDs. Recovery-line accepted overlap is now `118/944` (`12.50%`), leaving `826/944`; integrated `origin/main` remains `111/944`.
+
+## Full-Roster Dispatch State After R53 Acceptance Synchronization
+
+- Recovery-line accepted overlap is `118/944` (`12.50%`); exact R53 addition is `servant.mhx.skill.sc-mhx-3`.
+- Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`; PR #364 remains OPEN and unmerged.
+- P3-FM09 remains `MIGRATION_BLOCKED` with the same nine provisioning targets; this FM03 extension is not FM10.
+- Next coordinator work is a throughput-oriented readiness overlay over the remaining `826` identities, prioritizing evidence-backed larger homogeneous batches rather than singleton cleanup; no further frozen credit is pre-authorized.
