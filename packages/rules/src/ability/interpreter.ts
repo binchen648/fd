@@ -9,10 +9,14 @@ import {
 } from './interaction-gateway';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
-import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, situationForbidsAttribute } from '../core/rule-overrides';
+import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, rulerSealMovementLocked, situationForbidsAttribute } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
+import {
+  eligibleLeastBoundPlayerIds, isLeastBoundSelection, isRulerSealBindingCandidate, isRulerSealBindingSemantic,
+  isRulerSealUseCandidate, isRulerSealUseSemantic, unspentRulerSealBindings,
+} from './ruler-seal';
 import { currentDeploymentBonus } from '../core/terrain-advantage';
 export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import {
@@ -192,7 +196,9 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
+    cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
+    rulerSealBindings: [], rulerSealBindingHistory: {}, pendingRulerSealRewards: [],
+    usedAbilities: {}, processedEvents: [], revealedServants: [],
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
@@ -407,7 +413,7 @@ function abilityExplicitlyIgnoresCardMovementRestrictions(a: AuthoringAbility): 
     modifier.operation === 'ignore' && modifier.rule === 'enter_or_leave_current_battlefield');
 }
 function persistentMovementLockBlocksTarget(s: GameState, ctx: EffectContext, target: RuleNode): boolean {
-  if (!movementLockedByPersistentRule(s, ctx.controllerId)) return false;
+  if (!movementLockedByPersistentRule(s, ctx.controllerId) && !rulerSealMovementLocked(s, ctx.controllerId)) return false;
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   const isMovementTarget = a.effects.some((effect) => effect.type === 'move_player' && str(effect.to) === str(target.id));
   return isMovementTarget && !abilityExplicitlyIgnoresCardMovementRestrictions(a);
@@ -424,6 +430,8 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
       candidate.status === 'active' &&
       nodes(target.constraints).every(c => {
         if (c.type === 'not_controller') return candidate.id !== ctx.controllerId;
+        if (c.type === 'least_ruler_binding_count') return eligibleLeastBoundPlayerIds(s, ctx.controllerId, 2).includes(candidate.id);
+        if (c.type === 'bound_by_controller_ruler_seal') return unspentRulerSealBindings(s, ctx.controllerId, candidate.id).length > 0;
         if (c.type === 'at_battlefield') return isBattlefield(s, candidate.locationId);
         if (c.type === 'same_battlefield_as_controller') {
           const controllerLocationId = player(s, ctx.controllerId).locationId;
@@ -651,9 +659,10 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
   if (isBattleLossResourceTriggerSemantic(a) &&
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
-  if (!isCommandSpellCard(s, sourceId) && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
+  if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, sourceId) && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
   if (abilityLimitReached(s, sourceId, a)) return false;
-  if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isAnyLocationExceptWorkshopMovementSemantic(a)) &&
+  if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isAnyLocationExceptWorkshopMovementSemantic(a) ||
+    isRulerSealBindingSemantic(a) || isRulerSealUseSemantic(a)) &&
     !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
   if (isPlaySourceCardWithCostResponseRouteCandidate(a)) {
     const ctx = context(s, sourceId, a.id, event);
@@ -740,7 +749,7 @@ function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean
       isActivateCardByIdTrigger(ability) &&
       ability.effects.some((effect) => effect.type === 'activate_card_by_id' && effect.definitionId === definitionId)));
 }
-function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false): string | undefined {
+function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false): string | undefined {
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (d.mode !== 'automatic') return d.mode;
   if (c.controllerPlayerId !== p || !['hand', 'skill'].includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
@@ -759,7 +768,7 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
     str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && hasPlayRuleException(d, 'skill_zone_mana_at_least')));
   if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
   
-  if (!faceDown && player(s, p).mana < Number(d.cardFace.cost ?? 0)) return 'insufficient_mana';
+  if (!ignoreManaCost && !faceDown && player(s, p).mana < Number(d.cardFace.cost ?? 0)) return 'insufficient_mana';
   const unconfirmed = d.abilities.find(a => ['unsupported', 'text_unconfirmed'].includes(a.execution.mode));
   if (unconfirmed) return unconfirmed.execution.mode;
   if (!faceDown) {
@@ -1319,6 +1328,81 @@ function createPrivateOptionalHandPlayInteraction(s: GameState, ctx: EffectConte
       constraints: { kind: 'target', targetKind: 'card', min, max, distinct: true },
     },
   };
+}
+
+function rulerFreePlayCandidates(s: GameState, boundPlayerId: string): string[] {
+  return s.cards.filter((candidate) => candidate.controllerPlayerId === boundPlayerId && candidate.zone === 'hand' &&
+    !playFailure(s, boundPlayerId, candidate.instanceId, false, true, true, true, false, true)).map((candidate) => candidate.instanceId);
+}
+
+function grantRulerSealBindings(s: GameState, ctx: EffectContext): void {
+  const selected = ctx.selections.bound_players ?? [];
+  if (!isLeastBoundSelection(s, ctx.controllerId, selected, 2)) reject('illegal_target', 'Ruler binding must select exactly the two least-bound eligible players');
+  const r = runtime(s);
+  for (const boundPlayerId of selected) {
+    const id = nextId(s, 'ruler-seal');
+    r.rulerSealBindings.push({ id, issuerPlayerId: ctx.controllerId, boundPlayerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, grantedRound: s.round.roundNumber, spent: false });
+    const issuerHistory = r.rulerSealBindingHistory[ctx.controllerId] ??= {};
+    issuerHistory[boundPlayerId] = (issuerHistory[boundPlayerId] ?? 0) + 1;
+    r.events.push({ type: 'ruler_seal_granted', playerId: boundPlayerId, controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+  }
+}
+
+function settleRulerSealUse(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  const option = ctx.selections.ruler_seal_option ?? []; const bound = ctx.selections.bound_player ?? [];
+  if (option.length !== 1 || bound.length !== 1) reject('resolution_failed', 'Ruler seal use requires one option and one bound player');
+  const boundPlayerId = bound[0]!; const branch = option[0]!;
+  const binding = unspentRulerSealBindings(s, ctx.controllerId, boundPlayerId)[0];
+  if (!binding) reject('illegal_target', 'No unspent Ruler seal exists for this issuer and bound player');
+  const effect = a.effects[0]!; const destinations = Array.isArray(effect.moveDestinations) ? effect.moveDestinations.filter((entry): entry is string => typeof entry === 'string') : [];
+  const r = runtime(s);
+  if (branch === 'move') {
+    if (rulerSealMovementLocked(s, boundPlayerId)) reject('movement_locked', 'Bound player cannot move this round');
+    const enabled = getEnabledLocations(s.map, s.locationConfig).map((location) => location.id);
+    const legalDestinations = destinations.filter((id) => enabled.includes(id as LocationId));
+    if (legalDestinations.length !== 2) reject('resolution_failed', 'Ruler seal move destinations are unavailable');
+    binding.spent = true; binding.spentRound = s.round.roundNumber;
+    const id = nextId(s, 'ruler-seal-move');
+    r.pendingDecision = {
+      id, controllerId: ctx.controllerId, target: { id: 'ruler_seal_destination', type: 'choice', count: { min: 1, max: 1 }, options: legalDestinations.map((destination) => ({ id: destination })) },
+      candidates: legalDestinations, min: 1, max: 1, context: structuredClone(ctx), remainingEffects: [],
+      interaction: { kind: 'ruler_seal_move_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+        sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: r.revision + 1, continuationRef: `${id}:continuation`,
+        sealId: binding.id, issuerPlayerId: ctx.controllerId, boundPlayerId, destinations: legalDestinations,
+        constraints: { kind: 'target', targetKind: 'location', min: 1, max: 1, distinct: true } },
+    };
+  } else if (branch === 'lock_movement') {
+    binding.spent = true; binding.spentRound = s.round.roundNumber;
+    installRulerSealMovementLock(s, boundPlayerId);
+  } else if (branch === 'free_play_reward') {
+    binding.spent = true; binding.spentRound = s.round.roundNumber;
+    const rewardVp = Number(effect.rewardVp);
+    if (rewardVp !== 2) reject('resolution_failed', 'Ruler seal reward must be exactly 2 VP');
+    if (r.pendingRulerSealRewards.some((entry) => entry.sealId === binding.id)) reject('resolution_failed', 'Ruler seal reward already armed');
+    r.pendingRulerSealRewards.push({ sealId: binding.id, issuerPlayerId: ctx.controllerId, boundPlayerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, round: s.round.roundNumber, rewardVp });
+    const id = nextId(s, 'ruler-seal-free-play'); const snapshot = rulerFreePlayCandidates(s, boundPlayerId);
+    r.pendingDecision = { id, controllerId: boundPlayerId, target: { id: 'ruler_free_play_card', type: 'card_instance', scope: { zone: 'hand', controller: 'self' }, count: { min: 0, max: 1 }, visibility: 'private_to_controller' },
+      candidates: snapshot, min: 0, max: 1, context: structuredClone(ctx), remainingEffects: [],
+      interaction: { kind: 'ruler_seal_free_play_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+        sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: r.revision + 1, continuationRef: `${id}:continuation`,
+        sealId: binding.id, issuerPlayerId: ctx.controllerId, boundPlayerId, rewardVp, constraints: { kind: 'target', targetKind: 'card', min: 0, max: 1, distinct: true } },
+    };
+  } else reject('resolution_failed', 'Unsupported Ruler seal option');
+  r.events.push({ type: 'ruler_seal_spent', playerId: boundPlayerId, controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+}
+
+function settlePendingRulerSealRewards(s: GameState, event: AbilityEvent): void {
+  if (event.type !== 'after_battle_result_determined' || !event.battleResult) return;
+  const r = runtime(s); const participants = new Set(event.battleParticipantIds ?? [...event.battleResult.winners, ...event.battleResult.loserIds]);
+  const remaining = [];
+  for (const reward of r.pendingRulerSealRewards) {
+    if (reward.round !== s.round.roundNumber || !participants.has(reward.boundPlayerId)) { remaining.push(reward); continue; }
+    if (event.battleResult.winners.includes(reward.boundPlayerId)) {
+      const recipient = player(s, reward.issuerPlayerId); const before = recipient.vp; recipient.vp += reward.rewardVp;
+      r.events.push({ type: 'victory_points_adjusted', playerId: reward.issuerPlayerId, sourceCardId: reward.sourceCardId, abilityId: reward.abilityId, delta: reward.rewardVp, before, after: recipient.vp, triggerEventId: event.id });
+    }
+  }
+  r.pendingRulerSealRewards = remaining;
 }
 
 const directResourcePrimitiveTypes = new Set(['adjust_mana', 'adjust_victory_points']);
@@ -2402,6 +2486,18 @@ function executeFixedControllerManaCost(s: GameState, ctx: EffectContext, a: Aut
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (isRulerSealBindingCandidate(a)) {
+    if (!isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    grantRulerSealBindings(s, ctx); return;
+  }
+  if (isRulerSealUseCandidate(a)) {
+    if (!isRulerSealUseSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal use semantic shape');
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    settleRulerSealUse(s, ctx, a); return;
+  }
   if (isBattleEndMobilePlayersRewardSemantic(a)) {
     settleBattleEndMobilePlayersReward(s, ctx);
     installOngoing(s, ctx, a);
@@ -2552,6 +2648,8 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
+  if (isRulerSealBindingCandidate(a) && !isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
+  if (isRulerSealUseCandidate(a) && !isRulerSealUseSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal use semantic shape');
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) {
     reject('resolution_failed', 'Unsupported fixed controller advance-draw semantic shape');
   }
@@ -2656,7 +2754,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (names.length) runtime(s).calculations.push({ controllerId: p.id, lines: names.map(name => ({ label: name, value: ctx.variables[name]! })) });
   for (const cost of a.cost.filter(c => c.type === 'move_source_card')) moveCard(s, ctx.sourceCardId, str(node(cost.to).zone));
   if (a.visibility.revealTiming === 'on_use_declared') reveal(s, p.id);
-  if (!isCommandSpellCard(s, ctx.sourceCardId) && classifyAbilityInteraction(a).kind === 'phase_activation') runtime(s).usedAbilities[`${ctx.sourceCardId}:${a.id}`] = s.round.roundNumber;
+  if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, ctx.sourceCardId) && classifyAbilityInteraction(a).kind === 'phase_activation') runtime(s).usedAbilities[`${ctx.sourceCardId}:${a.id}`] = s.round.roundNumber;
   
   // Update usage count
   if (limitType === 'per_game' || limitType === 'per_round') {
@@ -2709,6 +2807,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s); if (r.processedEvents.includes(event.id)) return;
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
+  settlePendingRulerSealRewards(s, event);
   if (event.type === 'round_end') consumeDelayedActivations(s, event);
   const triggered = collectTriggeredAbilities(s, event);
   for (const t of triggered) {
@@ -2764,6 +2863,7 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
   if (round > s.round.roundNumber) {
     runtime(copy).movementDistanceThisRound = {};
     runtime(copy).battlefieldsPassedOrStayedThisRound = {};
+    runtime(copy).pendingRulerSealRewards = runtime(copy).pendingRulerSealRewards.filter((reward) => reward.round >= round);
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
   }
@@ -2905,6 +3005,46 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       if (d.interaction) {
         const meta = d.interaction;
         const a = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
+        if (meta.kind === 'ruler_seal_move_v1') {
+          const a = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId); const binding = r.rulerSealBindings.find((entry) => entry.id === meta.sealId);
+          const currentEnabled = getEnabledLocations(s.map, s.locationConfig).map((location) => location.id);
+          if (!isRulerSealUseSemantic(a) || d.controllerId !== meta.issuerPlayerId || d.context.controllerId !== meta.issuerPlayerId ||
+            meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' || meta.continuationRef !== `${d.id}:continuation` ||
+            meta.createdRevision !== r.revision || meta.sourceCardInstanceId !== d.context.sourceCardId || meta.abilityId !== d.context.abilityId ||
+            !binding || !binding.spent || binding.issuerPlayerId !== meta.issuerPlayerId || binding.boundPlayerId !== meta.boundPlayerId ||
+            meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'location' || meta.constraints.min !== 1 || meta.constraints.max !== 1 || !meta.constraints.distinct ||
+            meta.destinations.length !== 2 || new Set(meta.destinations).size !== 2 || d.min !== 1 || d.max !== 1 ||
+            !Array.isArray(selected) || selected.length !== 1 || !meta.destinations.includes(selected[0]!) || !currentEnabled.includes(selected[0]! as LocationId)) {
+            reject('resolution_failed', 'Corrupt or stale Ruler seal move interaction state');
+          }
+          if (movementLockedByPersistentRule(s, meta.boundPlayerId) || rulerSealMovementLocked(s, meta.boundPlayerId)) reject('movement_locked', 'Bound player cannot move this round');
+          const targetPlayer = player(s, meta.boundPlayerId); const from = targetPlayer.locationId; const to = selected[0]! as LocationId;
+          if (!from || from === to) reject('illegal_target', 'Ruler seal movement requires a different current location');
+          const movementLockedLocations = lockedBattlefieldIdsForMovement(s, meta.boundPlayerId);
+          if (movementLockedLocations.has(from) || movementLockedLocations.has(to)) reject('movement_locked', 'Card movement restriction blocks the Ruler seal move');
+          const occupyingPlayerIds = s.players.filter((candidate) => candidate.id !== meta.boundPlayerId && candidate.status === 'active' && candidate.locationId === to).map((candidate) => candidate.id);
+          if (!canOccupyLocation({ map: s.map, config: s.locationConfig, locationId: to, movingPlayerId: meta.boundPlayerId, occupyingPlayerIds,
+            ...(s.ruleOverrides ? { ruleOverrides: s.ruleOverrides } : {}) })) reject('illegal_target', 'Ruler seal movement destination is not occupiable');
+          delete r.pendingDecision; targetPlayer.locationId = to; recordMovementForAbilityRuntime(s, meta.boundPlayerId, from, to);
+          processEvent(s, { id: nextId(s, 'ruler-seal-enter-location'), type: 'after_controller_enters_location', playerId: meta.boundPlayerId, locationId: to });
+          break;
+        }
+        if (meta.kind === 'ruler_seal_free_play_v1') {
+          const a = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId); const binding = r.rulerSealBindings.find((entry) => entry.id === meta.sealId);
+          const currentAllowed = rulerFreePlayCandidates(s, meta.boundPlayerId);
+          if (!isRulerSealUseSemantic(a) || d.controllerId !== meta.boundPlayerId || d.context.controllerId !== meta.issuerPlayerId ||
+            meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' || meta.continuationRef !== `${d.id}:continuation` ||
+            meta.createdRevision !== r.revision || meta.sourceCardInstanceId !== d.context.sourceCardId || meta.abilityId !== d.context.abilityId ||
+            !binding || !binding.spent || binding.issuerPlayerId !== meta.issuerPlayerId || binding.boundPlayerId !== meta.boundPlayerId || meta.rewardVp !== 2 ||
+            meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' || meta.constraints.min !== 0 || meta.constraints.max !== 1 || !meta.constraints.distinct ||
+            d.min !== 0 || d.max !== 1 || !Array.isArray(selected) || selected.length > 1 || new Set(selected).size !== selected.length ||
+            selected.some((id) => !d.candidates.includes(id) || !currentAllowed.includes(id))) {
+            reject('resolution_failed', 'Corrupt or stale Ruler seal free-play interaction state');
+          }
+          delete r.pendingDecision;
+          if (selected.length === 1) playBatch(s, meta.boundPlayerId, [{ type: 'play_card', cardInstanceId: selected[0]! }], 'effect', true);
+          break;
+        }
         if (meta.kind === 'alter_ego_attribute_choice_v1') {
           const variant = classifyAlterEgoTransformVariant(a);
           const target = alterEgoTriggerTarget(s, d.context.sourceCardId, d.context.event);
@@ -3003,7 +3143,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
   cleanupOngoing(s); checkFormulaTriggers(s);
 }
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
-function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular'): void {
+function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false): void {
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
   const requiredAdditionalIds = new Set(choices
     .filter(c => isRequiredAdditionalPlayCard(s, c.cardInstanceId))
@@ -3019,9 +3159,9 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   let cost = 0;
   for (const c of choices) {
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
-    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional);
+    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost);
     if (failure) reject(failure, 'Card cannot be played in this batch');
-    if (!c.faceDown) cost += Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0);
+    if (!waiveManaCost && !c.faceDown) cost += Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0);
   }
   if (cost > player(s, playerId).mana) reject('insufficient_mana', 'Cannot pay aggregate batch cost');
   const playedCards = choices.map(c => ({ instanceId: c.cardInstanceId, controllerId: playerId,

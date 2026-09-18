@@ -22,7 +22,7 @@ import type { CompiledPlaytestContentLibrary } from '@fd/content';
 import { resolveBattlefield } from './core/combat-resolver';
 import { applyBattleScoring } from './core/scoring-resolver';
 import { canOccupyLocation, getEnabledLocations } from './core/map-engine';
-import { canViewFaceDownEvents, canViewOpponentDiscard, grantMana } from './core/rule-overrides';
+import { canViewFaceDownEvents, canViewOpponentDiscard, grantMana, rulerSealMovementLocked } from './core/rule-overrides';
 import { createSeededGameState } from './tools/seeded-state';
 
 import contentLibrary from '../../../data/generated/fd-playtest-v1.content-library.json';
@@ -517,7 +517,7 @@ export class MatchSession {
 
   legalDeploymentActions(playerId: string): LegalAction[] {
     const player = this.state.players.find((candidate) => candidate.id === playerId && candidate.status === 'active');
-    if (!player || this.state.round.activePhase !== 'advance' || this.priorityPlayer()?.id !== playerId || player.locationId) return [];
+    if (!player || this.state.round.activePhase !== 'advance' || this.priorityPlayer()?.id !== playerId || player.locationId || rulerSealMovementLocked(this.state, playerId)) return [];
     const closedLocations = new Set((modeStateOf(this.state).closedLocations as LocationId[] | undefined) ?? []);
     const legalLocations = getEnabledLocations(this.state.map, this.state.locationConfig)
       .filter((location) => !closedLocations.has(location.id))

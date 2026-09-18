@@ -179,6 +179,8 @@ export interface RuleOverrideState {
   extraAttackPlayAllowanceByManaByPlayer?: Record<string, { threshold: number; amount: number }>;
   viewFaceDownEventsPlayerIds?: string[];
   ignoreSituationPlayForbidAttributesByPlayer?: Record<string, string[]>;
+  /** Current-round movement lock installed by a consumed Ruler Seal command. */
+  rulerSealMovementLockRoundByPlayer?: Record<string, number>;
 }
 
 export interface GameState {

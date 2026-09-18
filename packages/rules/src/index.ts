@@ -29,5 +29,6 @@ export * from './ability/types';
 export * from './ability/loader';
 export * from './ability/interpreter';
 export * from './ability/card-instance-state';
+export * from './ability/ruler-seal';
 export * from './ability/report';
 export * from './ability/resolution-dataflow';
