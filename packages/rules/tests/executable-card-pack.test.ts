@@ -71,6 +71,28 @@ function masterRuleArchive(mutate?: (archive: any) => void): any {
   return archive;
 }
 
+
+function eventRuleArchive(mutate?: (archive: any) => void): any {
+  const archive: any = {
+    schemaVersion: 'fd-card-authoring-v1',
+    archiveType: 'event_rule_definition_archive',
+    id: 'master.synthetic-event-rules',
+    name: 'Synthetic Event Rules',
+    cards: [{
+      id: 'master.synthetic-event.skill.objective',
+      name: 'Synthetic Objective',
+      cardType: 'event',
+      printedText: 'event rule only',
+      cardFace: { cost: 0, basePower: 0 },
+      playTiming: { phase: 'action', window: 'controller_play_card_window' },
+      playRequirements: [],
+      abilities: [],
+    }],
+  };
+  mutate?.(archive);
+  return archive;
+}
+
 describe('ExecutableCardPack compiler', () => {
   it('normalizes one canonical runtime definition and explicit deck per source archive', () => {
     const input = sourceInput();
@@ -185,6 +207,54 @@ describe('ExecutableCardPack compiler', () => {
   ])('fails closed for malformed executable mixed master rule archive: %s', (_name, mutate, expected) => {
     const input = sourceInput();
     input.rules.archives.push(masterRuleArchive(mutate));
+    expect(() => compileExecutableCardPack(input)).toThrow(expected);
+  });
+
+  it('compiles event rule archives into a separate executable eventRules map without player-product surfaces', () => {
+    const input = sourceInput();
+    const baseline = compileExecutableCardPack(input);
+    input.rules.archives.push(eventRuleArchive());
+
+    const executable = compileExecutableCardPack(input);
+    expect(Object.keys(executable.cards)).toHaveLength(Object.keys(baseline.cards).length);
+    expect(executable.cards['master.synthetic-event.skill.objective']).toBeUndefined();
+    expect(executable.eventRules['master.synthetic-event.skill.objective']).toMatchObject({
+      id: 'master.synthetic-event.skill.objective', cardType: 'event', mode: 'automatic',
+    });
+    expect(executable.eventCatalog?.['event.waxing_moon_ritual.akasaka']).toMatchObject({
+      id: 'event.waxing_moon_ritual.akasaka', eventSetIds: ['event-set.waxing_moon_ritual'],
+    });
+    expect(executable.eventCatalog?.['master.synthetic-event.skill.objective']).toMatchObject({
+      id: 'master.synthetic-event.skill.objective', tags: [], eventSetIds: [],
+    });
+    expect(executable.characters['master.synthetic-event-rules']).toBeUndefined();
+    expect(executable.fallbackCommandSpells['master.synthetic-event-rules']).toBeUndefined();
+    expect(executable.decks['master.synthetic-event-rules']).toBeUndefined();
+    expect(executable.sourceMap['master.synthetic-event.skill.objective']).toMatchObject({ archiveId: 'master.synthetic-event-rules' });
+    expect(() => assertExecutableCardPack(executable, input)).not.toThrow();
+  });
+
+  it.each([
+    ['missing discriminator', (archive: any) => { delete archive.archiveType; }, /Event rule-shaped archive requires archiveType=event_rule_definition_archive/],
+    ['master-rule discriminator', (archive: any) => { archive.archiveType = 'master_rule_definition_archive'; }, /Event rule-shaped archive requires archiveType=event_rule_definition_archive/],
+    ['near-match discriminator', (archive: any) => { archive.archiveType = 'event_rule_definition_archive_x'; }, /Event rule-shaped archive requires archiveType=event_rule_definition_archive/],
+    ['missing discriminator + deck', (archive: any) => { delete archive.archiveType; archive.deck = []; }, /Event rule-shaped archive requires archiveType=event_rule_definition_archive/],
+    ['near-match discriminator + publicInformation', (archive: any) => { archive.archiveType = 'event_rule_definition_archive_x'; archive.publicInformation = { initialMana: 4 }; }, /Event rule-shaped archive requires archiveType=event_rule_definition_archive/],
+    ['empty archive', (archive: any) => { archive.cards = []; }, /at least one card/],
+    ['non-event card', (archive: any) => { archive.cards[0].cardType = 'master_skill'; }, /only event cards/],
+    ['player initial placement', (archive: any) => { archive.cards[0].initialPlacement = 'outside_game'; }, /cannot define player-card initialPlacement/],
+    ['deck surface', (archive: any) => { archive.deck = []; }, /cannot define a deck/],
+    ['playable public information', (archive: any) => { archive.publicInformation = { initialMana: 4 }; }, /cannot define playable publicInformation/],
+    ['empty event tag', (archive: any) => { archive.cards[0].cardFace.eventTags = ['']; }, /eventTags must be an array of nonempty strings/],
+    ['negative printed reward', (archive: any) => { archive.cards[0].cardFace.printedReward = -1; }, /printedReward must be a nonnegative integer/],
+    ['missing event trigger', (archive: any) => { archive.cards[0].abilities = [{ id: 'bad', activation: { eventController: 'event_player' } }]; }, /event rule ability trigger is required/i],
+    ['missing event controller', (archive: any) => { archive.cards[0].abilities = [{ id: 'bad', activation: { trigger: 'round_end' } }]; }, /event rule ability eventController is required/i],
+    ['invalid event controller', (archive: any) => { archive.cards[0].abilities = [{ id: 'bad', activation: { trigger: 'round_end', eventController: 'identity_owner' } }]; }, /eventController is unsupported/],
+    ['mixed event/non-event + missing discriminator', (archive: any) => { delete archive.archiveType; archive.cards.push({ ...archive.cards[0], id: 'master.synthetic.skill', cardType: 'master_skill' }); }, /Event rule-shaped archive requires archiveType=event_rule_definition_archive/],
+    ['mixed event/non-event + near-match + deck', (archive: any) => { archive.archiveType = 'event_rule_definition_archive_x'; archive.deck = []; archive.cards.push({ ...archive.cards[0], id: 'master.synthetic.skill', cardType: 'master_skill' }); }, /Event rule-shaped archive requires archiveType=event_rule_definition_archive/],
+  ])('fails closed for malformed executable event rule archive: %s', (_name, mutate, expected) => {
+    const input = sourceInput();
+    input.rules.archives.push(eventRuleArchive(mutate));
     expect(() => compileExecutableCardPack(input)).toThrow(expected);
   });
 

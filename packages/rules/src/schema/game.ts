@@ -46,7 +46,21 @@ export interface GameLogEntry {
 export interface EventPlacementState {
   locationId: LocationId;
   eventCardId: string;
+  /** Stable server-owned source identity when this physical placement carries an executable event rule. */
+  ruleInstanceId?: string;
+  /** Optional explicit issuer/controller for owned event rules; neutral events leave this absent. */
+  ruleControllerPlayerId?: string;
   /** Authoritative printed VP from the content layer; missing is unknown, never zero. */
+  victoryPoints?: number;
+  visibility: VisibilityState;
+  battleModifiers?: CombatModifierRule[];
+}
+
+export interface EventDiscardState {
+  eventCardId: string;
+  locationId?: LocationId;
+  ruleInstanceId?: string;
+  ruleControllerPlayerId?: string;
   victoryPoints?: number;
   visibility: VisibilityState;
   battleModifiers?: CombatModifierRule[];
@@ -192,6 +206,8 @@ export interface GameState {
   locationConfig: MatchLocationConfig;
   cards: CardInstance[];
   eventDeck?: string[];
+  /** Explicit physical event definitions currently outside the game. Duplicates represent multiple copies. */
+  eventOutsideGame?: string[];
   situationDeck?: string[];
   situationDiscardPile?: string[];
   burnedSituationCardIds?: string[];
@@ -199,7 +215,7 @@ export interface GameState {
   currentSituationModifiers?: CombatModifierRule[];
   eventPlacements: EventPlacementState[];
   /** Physical events removed by an ability, retained for later deck recycling. */
-  eventDiscardPile?: EventPlacementState[];
+  eventDiscardPile?: EventDiscardState[];
   battleDeclarations?: BattleDeclarationState[];
   battleSkillEffects?: ExternalSkillEffect[];
   battleResults: BattleResultState[];
