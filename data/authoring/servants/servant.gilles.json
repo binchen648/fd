@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.gilles",
+  "name": "吉尔·德·雷",
+  "class": "Caster",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus accepted FB2-11/R33, FB2-02/R19, and R34/FM05 Territory Creation contracts; locked Reference is used only for owner/static metadata."
+  },
+  "cards": [
+    {
+      "id": "servant.gilles.skill.sc-gilles-2",
+      "aliases": [
+        "sc_gilles_2"
+      ],
+      "legacyId": "sc_gilles_2",
+      "name": "阵地建造",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.gilles"
+      },
+      "printedText": "X为16 - (当前回合数 × 2)\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 0,
+        "basePower": {
+          "printedExpression": "X",
+          "formula": {
+            "op": "add",
+            "args": [
+              16,
+              {
+                "op": "multiply",
+                "args": [
+                  -2,
+                  {
+                    "var": "game.round_number"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-gilles-2.round-power",
+          "kind": "continuous_formula",
+          "printedClause": "X为16 - (当前回合数 × 2)",
+          "activation": {
+            "trigger": "on_card_played",
+            "requiresSourceState": "active"
+          },
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-gilles-2.deployment-reward",
+          "kind": "forced_trigger",
+          "printedClause": "残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "activation": {
+            "trigger": "after_player_deployed_to_battlefield",
+            "eventLocationId": "magic_workshop"
+          },
+          "effects": [
+            {
+              "type": "adjust_mana",
+              "player": "controller",
+              "amount": 1
+            },
+            {
+              "type": "adjust_victory_points",
+              "player": "controller",
+              "amount": 2
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "吉尔·德·雷.htm",
+            "locator": "从者/魔术师/英文版/吉尔·德·雷.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/吉尔·德·雷.png",
+            "locator": "servant.gilles/吉尔·德·雷"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[9].skills[1].text#line=1",
+            "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[9].skills[1].text#line=2",
+            "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+          }
+        ],
+        "sourceTextSha256": "33c9377158b49fad67a503f1368f81efa65b97cff870c2331c8ca4ee69937446",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_gilles_2",
+          "cost": 0,
+          "basePower": 2,
+          "legacyRequirement": 0,
+          "typeLabel": "魔术"
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is retained as evidence metadata only."
+        },
+        "acceptedContracts": {
+          "roundPower": "P3-R33/FB2-11",
+          "deploymentReward": "P3-R19/FB2-02",
+          "familyPrecedent": "P3-R34/FM05"
+        }
+      }
+    }
+  ]
+}
