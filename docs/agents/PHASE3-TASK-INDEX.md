@@ -4791,3 +4791,32 @@ Targets: exactly `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, `mast
 Read: `docs/reports/2026-09-19-p3-a-fb2-26-consumer-migration-dispatch.md` plus startup prompt and collaboration contract.
 
 Goal: migrate exactly the three source-grounded `core.game-start-add-skill` source identities by converting their existing support-only owner archives into the accepted mixed rules-only archive representation, preserving already accepted outside-game targets, and moving exactly those owner files from `authoringMasterSupportFiles` to `authoringMasterRuleFiles`. Reuse FB2-15 unchanged; no runtime modification or unrelated migration is authorized. Candidate material may be `121/944`; formal accepted remains `118/944` pending fresh R migration review and later A synchronization.
+
+## TASK P3-R56-FB2-26-CONSUMER-MIGRATION-REVIEW
+
+Owner: Codex R
+Status: `MIGRATION_ACCEPTED`
+Implementation Base: `ddbbf36726d44eedcc808f5f6b4ab7d5e48d8e6e`
+Candidate S SHA: `beb472cd2c8e02d8d06bca5a6159865d16391aa5`
+PR: `#366`
+Verdict: `MIGRATION_ACCEPTED`
+Blocking findings: none.
+
+Fresh R56 independently verifies exact ten-file authorized scope, F1 text/hashes and source-to-target mappings, unchanged accepted targets, real FB2-15 production runtime plus replay idempotency, R55/FB2-26 mixed rules-only product isolation, deterministic generated-content changes, and exact mechanical `118/944 -> 121/944` accounting with only `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, and `master.shirou-emiya.skill.s2` added, zero removals, and zero duplicates. All official gates pass and reviewer/Candidate/Reference finish clean.
+
+## TASK P3-A-R56-FB2-26-CONSUMER-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r56-fb2-26-consumer-acceptance-sync`
+Base: exact accepted Candidate `beb472cd2c8e02d8d06bca5a6159865d16391aa5`
+Read: `docs/reports/2026-09-19-p3-a-r56-fb2-26-consumer-acceptance-synchronization.md`
+
+Result: record fresh R56 `MIGRATION_ACCEPTED` for exactly `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, and `master.shirou-emiya.skill.s2`. A independently reproduces Base `118/944` and Candidate `121/944`, exact three additions, zero removals, and zero duplicate frozen canonical IDs. Recovery-line accepted overlap is now `121/944` (`12.82%`), leaving `823/944`; integrated `origin/main` remains `111/944`.
+
+## Full-Roster Dispatch State After R56 Acceptance Synchronization
+
+- Recovery-line accepted overlap is `121/944` (`12.82%`); exact R56 additions are Ciel s1a, Ryougi s1a, and Shirou s2.
+- Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / mechanically accepted `111/944`; PR #366 remains OPEN, unmerged, and unretargeted.
+- Historical P3-FM09 remains `MIGRATION_BLOCKED`; this three-source migration does not retroactively accept or unblock the historical exact-ten attempt, and no FM10 is dispatched.
+- Next coordinator work is a throughput-oriented readiness overlay over the remaining `823` frozen identities, prioritizing the largest honest homogeneous READY family; no further frozen credit is pre-authorized.
