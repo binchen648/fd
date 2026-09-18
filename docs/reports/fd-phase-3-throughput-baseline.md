@@ -1030,3 +1030,13 @@ Permitted final status:
 - Full readiness refresh finds no additional direct migration with an already accepted complete semantic signature. Okita remains excluded from Riding because its repeat-play semantics differ; Leonardo/Ophelia retain their documented FM08 completeness gaps.
 - The narrow reusable next gap is exactly `game.started -> SET_MANA` for two block-free F1 rows: `master.iliya.skill.s1` (6) and `master.taiga.skill.s1` (3). Zouken s1 is excluded because it additionally changes Mana capacity.
 - FB2-25 is dispatched as zero-credit B2 infrastructure: identity-free exact parent classifier/guard composing trusted `game_start` with accepted FB2-05 fixed-controller literal `set_mana`. No authoring migration, broad Trigger promotion, or FM10 dispatch is authorized.
+
+
+## P3-A R51 / FB2-25 Game-Start Fixed Set-Mana Acceptance Synchronization - 2026-09-18
+
+- Fresh R51 independently accepts B2 Candidate `101cb0d4e3fbd105cfadafda26585b3825616fe1` over exact A dispatch Base `c04e42ea8d002e974f8965218f915d642fe26ea5`, with no blocking semantic, scope, identity-routing, transaction, determinism, or cleanliness finding.
+- Accepted scope is one identity-free fail-closed composed parent semantic: exact automatic `forced_trigger + game_start + one fixed-controller literal set_mana`, with all other semantic axes empty/default. Near matches fail closed.
+- Reviewer probes confirm exact assignment 3/6, typed resource evidence, controller isolation, same-value no-op, replay idempotency, and over-cap transactional rollback. Production rules contain no Iliya/Taiga/name/text routing.
+- Fresh validation is focused `29/29`, full CI `875/875` across 135 files, rules core+regression `456/456` across 74 files, client/content/determinism/Reference/coverage/audit PASS, and diff check PASS.
+- Frozen material remains **`115/944` (`12.18%`)**, leaving `829/944`; FB2-25 earns zero migration credit. Integrated main remains `111/944`.
+- Exact F1 rows fully inside this new envelope are only `master.iliya.skill.s1` and `master.taiga.skill.s1`. This is planning evidence, not migration credit; fresh feasibility/source-grounding is required before S migration.

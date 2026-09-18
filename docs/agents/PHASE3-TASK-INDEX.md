@@ -4611,3 +4611,26 @@ Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 Read: `docs/reports/2026-09-18-p3-a-fb2-25-game-start-fixed-set-mana-dispatch.md`, FB2-05/R22 acceptance, FB2-14/R39 and FB2-15/R41 game-start acceptance evidence.
 
 Goal: add only the identity-free fail-closed `game_start + fixed controller literal set_mana` parent semantic. Exact future F1 consumers are Iliya s1 and Taiga s1; B2 must not add either identity or any authoring migration. Zero frozen credit; recovery accepted remains `115/944`.
+
+
+## TASK P3-R51-FB2-25-GAME-START-FIXED-SET-MANA
+
+Owner: Codex R
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Implementation Base: `c04e42ea8d002e974f8965218f915d642fe26ea5`
+Candidate B2 SHA: `101cb0d4e3fbd105cfadafda26585b3825616fe1`
+PR: `#362`
+Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Blocking findings: none.
+
+Fresh R51 independently accepts the identity-free exact `game_start + fixed-controller literal set_mana` parent semantic, verifies adversarial fail-closed behavior, runtime assignment/idempotency/rollback, identity-free production routing, exact three-file scope, and full gates. Frozen material remains `115/944`; no migration credit is granted.
+
+## TASK P3-A-R51-FB2-25-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r51-fb2-25-acceptance-sync`
+Base: exact accepted B2 Candidate `101cb0d4e3fbd105cfadafda26585b3825616fe1`
+Read: `docs/reports/2026-09-18-p3-a-r51-fb2-25-acceptance-synchronization.md`
+
+Result: accept FB2-25 as zero-credit runtime infrastructure. Recovery-line accepted overlap remains `115/944` (`12.18%`), leaving `829/944`; integrated main remains `111/944`. Exact future F1 consumers within the accepted envelope are Iliya s1 and Taiga s1, but both still require a fresh S feasibility/source-grounding dispatch before migration.
