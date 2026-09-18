@@ -4719,3 +4719,41 @@ Result: record fresh R53 `MIGRATION_ACCEPTED` for exactly `servant.mhx.skill.sc-
 - Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`; PR #364 remains OPEN and unmerged.
 - P3-FM09 remains `MIGRATION_BLOCKED` with the same nine provisioning targets; this FM03 extension is not FM10.
 - Next coordinator work is a throughput-oriented readiness overlay over the remaining `826` identities, prioritizing evidence-backed larger homogeneous batches rather than singleton cleanup; no further frozen credit is pre-authorized.
+
+## TASK P3-A-FB2-26-NONPLAYABLE-MASTER-RULE-ARCHIVE-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Base: exact post-R53 acceptance synchronization `cb6f1312d505ff8e3c9cca84bd8840866df0fa8d`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-18-p3-a-fb2-26-nonplayable-master-rule-archive-dispatch.md`
+
+Result: throughput-oriented readiness analysis finds exactly three FB2-15 provisioning source identities whose targets are already independently accepted: `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, and `master.shirou-emiya.skill.s2`. Their execution semantic is already accepted; the remaining blocker is representation because the same owner archives are exact FB2-19 support-only archives whose cards must all be `outside_game`. Dispatch one zero-credit generic rules-only mixed-master archive seam rather than creating duplicate owner archives, widening the support-only contract, or promoting these owners into the playable product roster. Accepted overlap remains `118/944`.
+
+## TASK P3-FB2-26-NONPLAYABLE-MASTER-RULE-ARCHIVE
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A dispatch commit descended directly from `cb6f1312d505ff8e3c9cca84bd8840866df0fa8d`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Accepted dependencies: P3-R41/FB2-15, P3-R43/FB2-18, P3-R44-R2/FB2-19
+Read: `docs/reports/2026-09-18-p3-a-fb2-26-nonplayable-master-rule-archive-dispatch.md` plus the full-roster startup prompt and collaboration contract.
+
+Goal: add only the identity-free `authoringMasterRuleFiles` / `master_rule_definition_archive` channel for a non-playable master owner whose rules-only archive contains both an ordinary non-deferred `master_skill` and an exact `outside_game` `master_skill`. The archive must compile source/target rules with the same owner while emitting no playable master character, overview/presentation card, fallback command spell, deck, or fixture seat. Preserve the exact existing support-only and ordinary playable-master channels; malformed mixed shapes must fail closed. No production authoring/pack/generated change and no interpreter/MatchSession change is authorized.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `IMPLEMENTATION_BLOCKED`
+
+FB2-26 earns zero frozen migration credit and requires a fresh independent R review plus later A capability synchronization before any consumer migration.
+
+## Full-Roster Dispatch State After FB2-26 Dispatch
+
+- Recovery-line accepted overlap remains `118/944` (`12.50%`), leaving `826/944`; integrated main remains `111/944`.
+- No frozen identity is credited by FB2-26.
+- If FB2-26 is freshly accepted and synchronized, a separate S task may attempt exactly three ready FB2-15 consumers: `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, and `master.shirou-emiya.skill.s2`. Mechanical Candidate material would be `121/944`; formal accepted remains `118/944` until fresh migration review and A acceptance synchronization.
+- The historical P3-FM09 exact-ten recovery attempt remains blocked; nine unresolved provisioning target identities remain unchanged, and the other source identities receive no credit.
+- No FM10 is dispatched, and no existing stacked PR is merged or retargeted by this A task.
