@@ -1013,3 +1013,13 @@ Permitted final status:
 - Material is `101 archives / 136 cards / 237 abilities`, compiled `73/14/0`, buckets `22/3/131/0/81/130`, audit `131/3/81/20`.
 - Recovery-line frozen accepted overlap advances from `112/944` to **`113/944` (`11.97%`)**, leaving `831/944`; the exact accepted addition is only `master.shiki-ryougi.skill.s3`, with zero removals and zero duplicate canonical authoring IDs.
 - Integrated `origin/main` remains `553779e8ffcc926ae4763ee86a2ea937e090c128`, so integrated-main accepted overlap remains `111/944`. Nine FM09 provisioning targets remain absent; P3-FM09 remains `MIGRATION_BLOCKED`; PR #359 is not merged or retargeted here.
+
+## P3-A R50 / FM05 Territory Variant Extension Acceptance Synchronization - 2026-09-18
+
+- Fresh R50 independently accepts Candidate `7f83a0cfba2cd7f781ab0c0491c9ed2607db02d6` over exact A dispatch Base `40eaf45a64ecca0ddb6efe62a8bed35652420707`, with no blocking semantic, provenance, scope, accounting, determinism, performance, or cleanliness finding.
+- Exact accepted frozen additions are only `servant.gilles.skill.sc-gilles-2` and `servant.medea.skill.sc-medea-2`; Base/Candidate material overlap is `113/944 -> 115/944`, with zero removals and zero duplicate canonical authoring IDs.
+- Both cards independently reproduce the accepted Territory Creation core: controlled round formula `16 - 2*round`, Magic Workshop controller deployment reward `+1 mana / +2 VP`, action/controller timing, and Final Rules 9.4 skill-zone threshold `8`. No runtime/compiler/product hot-file route is added.
+- Fresh official validation is focused `9/9`, unchanged Candidate full CI `870/870` across 134 files after explicit timing investigation, rules core+regression `451/451` across 73 files, client/content/determinism/Reference/coverage/audit PASS, and diff check PASS.
+- Material reporting is `103 archives / 138 cards / 241 abilities`, compiled `73/14/0`, buckets `22/3/133/0/83/130`, audit `133/3/83/20`.
+- Recovery-line frozen accepted overlap advances from `113/944` to **`115/944` (`12.18%`)**, leaving `829/944`. Integrated `origin/main` remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`.
+- P3-FM09 remains `MIGRATION_BLOCKED` with its same nine provisioning targets. This accepted FM05 extension is not FM10; PR #361 is not merged or retargeted here. The next coordinator action is a fresh full-roster readiness refresh over the remaining `829` identities.

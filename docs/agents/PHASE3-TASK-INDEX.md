@@ -4561,11 +4561,42 @@ Result: full-944 semantic-signature delta refresh finds exactly one accepted/mis
 ## TASK P3-FM05-TERRITORY-VARIANT-EXTENSION-RECOVERY
 
 Owner: Codex S
-Status: `READY`
-Base: exact P3-A-FM05-TERRITORY-VARIANT-EXTENSION-DISPATCH commit
+Status: `MIGRATION_COMPLETE_CANDIDATE`
+Base: exact A dispatch `40eaf45a64ecca0ddb6efe62a8bed35652420707`
+Candidate: `7f83a0cfba2cd7f781ab0c0491c9ed2607db02d6`
+PR: `#361` stacked on exact Base
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 Targets: exactly `servant.gilles.skill.sc-gilles-2`, `servant.medea.skill.sc-medea-2`
-Read: `docs/agents/PHASE3-FULL-ROSTER-STARTUP-PROMPT.md`, `docs/agents/PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`, `docs/reports/2026-09-18-p3-a-fm05-territory-variant-extension-dispatch.md`, `docs/reports/2026-09-16-p3-fm05-territory-creation-migration-handoff.md`, `docs/reports/2026-09-16-p3-r34-fm05-territory-creation-migration-review.md`
+Read: `docs/agents/PHASE3-FULL-ROSTER-STARTUP-PROMPT.md`, `docs/agents/PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`, `docs/reports/2026-09-18-p3-a-fm05-territory-variant-extension-dispatch.md`, `docs/reports/2026-09-18-p3-fm05-territory-variant-extension-result.md`
 
-Goal: materialize exactly the two missing Territory Creation typography variants using only already accepted R33/R19/R34 semantics. No runtime/compiler hot-file changes. Candidate material must be exactly `115/944`; accepted overlap remains `113/944` until fresh independent R and post-review A synchronization. This is an FM05 extension, not FM10; P3-FM09 remains `MIGRATION_BLOCKED`.
+Result: Candidate materializes exactly the two missing Territory Creation typography variants using only accepted R33/R19/R34 semantics, with zero runtime/compiler/product hot-file diff. Candidate material overlap is exactly `115/944`; accepted overlap remains `113/944` until fresh R50 and post-review A synchronization.
+
+## TASK P3-R50-FM05-TERRITORY-VARIANT-EXTENSION
+
+Owner: Codex R
+Status: `MIGRATION_ACCEPTED`
+Implementation Base: `40eaf45a64ecca0ddb6efe62a8bed35652420707`
+Candidate S SHA: `7f83a0cfba2cd7f781ab0c0491c9ed2607db02d6`
+PR: `#361`
+Verdict: `MIGRATION_ACCEPTED`
+Blocking findings: none.
+
+Fresh R50 independently reconstructs the two frozen Territory Creation variants from F1/Reference, verifies exact four-file scope and zero runtime/product diff, probes both formula and deployment behavior, reproduces `113/944 -> 115/944` material accounting, and passes the official gates. The initial single fixed-5s full-CI timeout is investigated with unchanged Base/Candidate timing controls; Candidate subsequently passes unchanged full CI `134 files / 870 tests` and R50 finds no Candidate-specific performance regression.
+
+## TASK P3-A-R50-FM05-TERRITORY-VARIANT-EXTENSION-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r50-fm05-variant-acceptance-sync`
+Base: exact accepted Candidate `7f83a0cfba2cd7f781ab0c0491c9ed2607db02d6`
+Read: `docs/reports/2026-09-18-p3-a-r50-fm05-territory-variant-extension-acceptance-synchronization.md`
+
+Result: record fresh R50 `MIGRATION_ACCEPTED` for exactly `servant.gilles.skill.sc-gilles-2` and `servant.medea.skill.sc-medea-2`. Recovery-line accepted overlap is now `115/944` (`12.18%`), leaving `829/944`. Integrated `origin/main` remains `553779e...` / accepted `111/944`.
+
+## Full-Roster Dispatch State After R50 Acceptance Synchronization
+
+- Recovery-line accepted overlap is `115/944`; the exact newly accepted identities are Gilles s2 and Medea s2 Territory Creation variants.
+- Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`; PR #361 remains stacked and unmerged.
+- P3-FM09 remains `MIGRATION_BLOCKED` with the same nine provisioning targets; this FM05 extension is not FM10.
+- Next coordinator work is a fresh full-roster readiness refresh over the remaining `829` frozen identities against the accepted `115/944` recovery baseline; no further credit is pre-authorized.
