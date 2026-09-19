@@ -5323,3 +5323,14 @@ Read: `docs/reports/2026-09-20-p3-a-r80-kayneth-migration-acceptance-synchroniza
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #386 exact Candidate `9b64699d449ed69739ed7bdfbd56172c0d165698`, backed by canonical evidence `https://github.com/binchen648/fd/pull/386#issuecomment-5745840642`. Exact frozen addition is `master.kayneth.skill.s3`; independent Base-to-Candidate frozen overlap is `135/944` to `136/944`, with zero removals and zero duplicates.
 
 Formal project migration advances exactly one identity to **`140/944`**, with **`804`** remaining. PR #386 remains OPEN, unmerged, and unretargeted. PR #381 / Ibaraki remains pending independent migration review and receives no credit here. Next action is immediate migration-closure-first re-overlay from the synchronized formal baseline.
+## TASK P3-A-FB2-38-CURRENT-ROUND-COMBAT-LOSS-CONDITION-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-38-current-round-combat-loss-condition-dispatch`
+Base: exact R80 Kayneth migration acceptance sync `4ebbc438f13cb2ea3a9271332ce256f256dc2738`
+Read: `docs/reports/2026-09-20-p3-a-fb2-38-current-round-combat-loss-condition-dispatch.md`
+
+Result: closure-first overlay selects the nearest one-seam, no-missing-material target. Dispatch one narrow identity-free exact `{ type: player_flag_number_not_current_round, key: combatLossRound }` condition evaluated from authoritative `after_battle_ended` battle-phase provenance. Do not add generic player-flag state or consumer routing.
+
+FB2-38 earns zero migration credit. Formal migration remains **`140/944`**, with **`804`** remaining. On fresh R acceptance plus A synchronization, immediately re-overlay the intended closure target and dispatch S if the normalized whole card is zero-issue.
