@@ -407,7 +407,7 @@ function hasWinningFullRewardEachModifier(state: GameState, winnerPlayerIds: str
     const sourceState = runtime.cardState[source.instanceId];
     if (sourceState?.active !== true || sourceState.faceDown === true) return false;
     const definition = runtime.pack.cards[source.definitionId];
-    return definition?.abilities.some((ability) => isAcceptedStaticCombatRewardDistributionAbility(ability as unknown as Record<string, unknown>)) === true;
+    return definition?.abilities.some((ability) => isAcceptedStaticCombatRewardDistributionAbility(ability as unknown as Record<string, unknown>, 'compiled')) === true;
   });
 }
 

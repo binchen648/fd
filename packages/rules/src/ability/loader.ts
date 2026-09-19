@@ -38,13 +38,22 @@ function isAcceptedMagicResistanceIndependentModifierLifecycle(rawAbility: RuleN
     Object.keys(modifier).every((key) => ['id', 'printedClause', 'type', 'operation', 'rule', 'scope', 'value', 'lifecycle'].includes(key));
 }
 
-export function isAcceptedStaticCombatRewardDistributionAbility(rawAbility: RuleNode): boolean {
+export function isAcceptedStaticCombatRewardDistributionAbility(
+  rawAbility: RuleNode,
+  form: 'authoring' | 'compiled' = 'authoring',
+): boolean {
   if (str(rawAbility.kind) !== 'passive') return false;
+  const responseWindow = node(rawAbility.responseWindow);
+  const responseKeys = Object.keys(responseWindow);
+  const responseAccepted = form === 'authoring'
+    ? responseKeys.length === 0
+    : responseWindow.order === 'turn_order' && responseWindow.passBehavior === 'decline_this_window' &&
+      responseKeys.length === 2 && responseKeys.every((key) => ['order', 'passBehavior'].includes(key));
   if (Object.keys(node(rawAbility.activation)).length !== 0 ||
     nodes(rawAbility.conditions).length !== 0 || nodes(rawAbility.targets).length !== 0 ||
     (Array.isArray(rawAbility.cost) ? nodes(rawAbility.cost).length !== 0 : rawAbility.cost !== undefined) ||
     nodes(rawAbility.effects).length !== 0 || nodes(rawAbility.creates).length !== 0 ||
-    Object.keys(node(rawAbility.lifecycle)).length !== 0 || Object.keys(node(rawAbility.responseWindow)).length !== 0 ||
+    Object.keys(node(rawAbility.lifecycle)).length !== 0 || !responseAccepted ||
     Object.keys(node(rawAbility.limit)).length !== 0 || Object.keys(node(rawAbility.visibility)).length !== 0 ||
     (Array.isArray(rawAbility.markers) && rawAbility.markers.length !== 0) || rawAbility.copies !== undefined || rawAbility.transforms !== undefined) return false;
   const modifiers = nodes(rawAbility.ruleModifiers);
@@ -58,8 +67,18 @@ export function isAcceptedStaticCombatRewardDistributionAbility(rawAbility: Rule
   const execution = node(rawAbility.execution);
   if (str(execution.mode || 'automatic') !== 'automatic' ||
     !Object.keys(execution).every((key) => ['mode', 'hostOps', 'allowedOperations'].includes(key))) return false;
-  for (const key of ['hostOps', 'allowedOperations']) {
-    if (execution[key] !== undefined && (!Array.isArray(execution[key]) || (execution[key] as unknown[]).length !== 0)) return false;
+  if (form === 'authoring') {
+    for (const key of ['hostOps', 'allowedOperations']) {
+      if (execution[key] !== undefined && (!Array.isArray(execution[key]) || (execution[key] as unknown[]).length !== 0)) return false;
+    }
+  } else {
+    if (execution.hostOps !== undefined) return false;
+    if (!Array.isArray(execution.allowedOperations)) return false;
+    const allowed = execution.allowedOperations as unknown[];
+    const isExplicitEmpty = allowed.length === 0;
+    const isLoaderDefault = allowed.length === hostOperations.length &&
+      hostOperations.every((operation, index) => allowed[index] === operation);
+    if (!isExplicitEmpty && !isLoaderDefault) return false;
   }
   return true;
 }

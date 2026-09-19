@@ -57,9 +57,14 @@ function setup(options: {
   const cards: AbilityDefinitionPack['cards'] = {};
   const addModifierSource = (controllerId: string, suffix: string, ability = rewardAbility()) => {
     const definitionId = `skill.reward-${suffix}`;
+    const compiledAbility = {
+      ...ability,
+      responseWindow: { order: 'turn_order', passBehavior: 'decline_this_window' },
+      execution: { mode: 'automatic', allowedOperations: ability.execution.allowedOperations },
+    } as AuthoringAbility;
     cards[definitionId] = {
       id: definitionId, name: 'reward source', cardType: 'master_skill', cardFace: { cost: 0, basePower: 0, attributes: [] },
-      playTiming: {}, playRequirements: [], abilities: [ability], mode: 'automatic', playKind: 'support', destinationZone: 'field',
+      playTiming: {}, playRequirements: [], abilities: [compiledAbility], mode: 'automatic', playKind: 'support', destinationZone: 'field',
     } as any;
     state.cards.push({
       instanceId: `source-${suffix}`, definitionId, ownerPlayerId: controllerId, controllerPlayerId: controllerId,
@@ -127,6 +132,50 @@ describe('P3-FB2-34 combat reward distribution', () => {
       expect(loaded.report.length).toBeGreaterThan(0);
       expect(loaded.cards['skill.reward-source']!.abilities[0]!.execution.mode).toBe('unsupported');
     }
+  });
+
+  it('preserves the exact semantic through loadAuthoringJson into the compiled runtime pack', () => {
+    const raw = archive() as any;
+    raw.cards[0].abilities[0].execution = { mode: 'automatic' };
+    const loaded = rules.loadAuthoringJson(raw);
+    expect(loaded.report).toEqual([]);
+    const compiledAbility = loaded.cards['skill.reward-source']!.abilities[0]!;
+    expect(compiledAbility.responseWindow).toEqual({ order: 'turn_order', passBehavior: 'decline_this_window' });
+    expect(compiledAbility.execution.allowedOperations).toEqual(rules.hostOperations);
+    expect(rules.isAcceptedStaticCombatRewardDistributionAbility(compiledAbility as any, 'compiled')).toBe(true);
+
+    const state = createSeededGameState({ activeSeats: [1, 2, 3] });
+    state.round.activePhase = 'battle';
+    for (const player of state.players) {
+      if (['p1', 'p2', 'p3'].includes(player.id)) player.locationId = 'miyama_town';
+    }
+    const location = state.map.locations.find((entry) => entry.id === 'miyama_town');
+    if (!location) throw new Error('missing miyama_town');
+    location.vpRewardRules = { ...(location.vpRewardRules ?? {}), battle: 1, competition: 2, location: 6 };
+    state.eventPlacements = [{
+      eventCardId: 'event.synthetic.reward', locationId: 'miyama_town', victoryPoints: 4,
+      visibility: { scope: 'public' },
+    }];
+    state.cards = [{
+      instanceId: 'compiled-source', definitionId: 'skill.reward-source', ownerPlayerId: 'p1', controllerPlayerId: 'p1',
+      zone: 'field', visibility: { scope: 'public' },
+    }];
+    rules.initializeAbilityRuntime(state, loaded, { seed: 20260920 });
+    state.abilityRuntime!.cardState['compiled-source'] = { active: true, faceDown: false, playedRound: 1 };
+
+    const battle = rules.resolveBattlefield(state, {
+      battlefieldId: 'miyama_town',
+      participants: [
+        { playerId: 'p1', totalPower: 10 },
+        { playerId: 'p2', totalPower: 10 },
+        { playerId: 'p3', totalPower: 5 },
+      ],
+    }).nextState.battleResults.at(-1)!;
+    expect(battle).toMatchObject({ vpReward: 4, baseVpPerWinner: 6, eventVpPool: 4, competitionVpPool: 2 });
+    expect(battle.vpAdjustments).toEqual(expect.arrayContaining([
+      expect.objectContaining({ playerId: 'p1', delta: 2, source: 'competition_vp' }),
+      expect.objectContaining({ playerId: 'p2', delta: 6, source: 'location_vp' }),
+    ]));
   });
 
   it('replaces winner-count splitting with full event, competition, and location rewards', () => {

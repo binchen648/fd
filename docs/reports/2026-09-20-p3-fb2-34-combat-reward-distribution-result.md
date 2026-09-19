@@ -52,7 +52,7 @@ When active, only reward distribution changes:
 
 ## Focused evidence
 
-`packages/rules/tests/fb2-34-combat-reward-distribution.test.ts` adds 6 focused tests covering:
+`packages/rules/tests/fb2-34-combat-reward-distribution.test.ts` adds 7 focused tests covering:
 
 1. exact loader acceptance and malformed/extended parent/modifier rejection, including lifecycle/effect-installation near-matches;
 2. two-winner default split versus full event/competition/location reward for each winner;
@@ -60,6 +60,7 @@ When active, only reward distribution changes:
 4. sole-winner neutrality;
 5. duplicate equivalent modifier idempotency plus unchanged single Remote Operation bonus;
 6. runtime fail-closed behavior for a malformed shape injected outside the loader.
+7. real `loadAuthoringJson(...) -> initializeAbilityRuntime(...) -> resolveBattlefield(...)` preservation of the exact semantic across loader normalization, including canonical default `responseWindow` and execution authority.
 
 The positive scoring probe also confirms winner IDs, military adjustments, and participant breakdowns are unchanged by the modifier.
 
@@ -70,9 +71,9 @@ Dependencies were materialized in this exact worktree with `npm.cmd ci --ignore-
 Fresh gates:
 
 - `npm.cmd run typecheck`: PASS before focused Vitest.
-- focused FB2-34: `1 file / 6 tests PASS`.
-- rules core + regression + focused: `79 files / 488 tests PASS`.
-- official `npm.cmd run test:ci`: `148 files / 1038 tests PASS`.
+- focused FB2-34: `1 file / 7 tests PASS`.
+- rules core + regression + focused: `79 files / 489 tests PASS`.
+- official `npm.cmd run test:ci`: `148 files / 1039 tests PASS`.
 - `npm.cmd run content:validate`: PASS — `7 masters / 7 servants / 20 events / 0 blocking issues`.
 - `npm.cmd run verify:generated-content`: PASS with unchanged hashes:
   - content library `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`
@@ -81,6 +82,21 @@ Fresh gates:
 - Locked Reference verification: PASS at exact `b2f9fa15fba07c63530bbf4612b03b8b704755f9` with clean checkout.
 - client production build: PASS; only the existing Vite `node:crypto` browser-externalization warning was emitted.
 - `git diff --check`: PASS.
+
+## R revision closure
+
+Fresh independent R review of Candidate `996e7a7c5b294f4d6208ca7ec473d0ef6adccf27` returned `IMPLEMENTATION_NEEDS_REVISION`; canonical evidence is `https://github.com/binchen648/fd/pull/378#issuecomment-5743867820`. The sole blocker was that the raw authoring classifier required an empty `responseWindow`, while `loadAuthoringJson()` canonicalizes compiled abilities with `{ order: "turn_order", passBehavior: "decline_this_window" }`, making the runtime scoring classifier miss content that the loader itself had accepted.
+
+The revision is intentionally limited to that finding:
+
+- raw authoring admission remains unchanged and still requires the exact empty/default parent envelope;
+- the shared classifier now has explicit `authoring` and `compiled` forms rather than silently broadening one shape;
+- compiled form accepts only the loader's canonical default response-window pair;
+- compiled execution authority accepts only either the explicit empty list or the loader's exact full default host-operation list, and rejects arbitrary subsets/extra host authority;
+- combat scoring requests the `compiled` form;
+- the focused suite now constructs the exact raw archive through `loadAuthoringJson`, initializes runtime from the compiled pack, and proves tied winners receive full event/competition/location reward pools.
+
+No lifecycle, installation, Napoleon, consumer authoring, migration accounting, winner selection, Power, defeat, or unrelated modifier scope was added by the revision.
 
 ## Locked Reference / scope audit
 
