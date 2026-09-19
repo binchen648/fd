@@ -5025,3 +5025,19 @@ Completion status allowed:
 - `IMPLEMENTATION_BLOCKED`
 
 Formal recovery accepted remains `136/944`; FB2-31 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization.
+
+## TASK P3-A-R70-FB2-31-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r70-fb2-31-acceptance-sync`
+Base: exact accepted Candidate `8d68f64aff1b37e4739ebc922ea4d7192714864c`
+Read: `docs/reports/2026-09-19-p3-a-r70-fb2-31-acceptance-synchronization.md`
+
+Result: record fresh R70 `IMPLEMENTATION_ACCEPTED_CANDIDATE` for FB2-31 from canonical PR #375 evidence `https://github.com/binchen648/fd/pull/375#issuecomment-5742361142`. A independently reproduces exact Base `26042ddf24284d2ecbe053ee70cb447c28f03cc2`, exact Candidate `8d68f64aff1b37e4739ebc922ea4d7192714864c`, one-commit ancestry, four-path authorized diff, clean Locked Reference, and zero frozen migration delta.
+
+Accepted capability is limited to the exact type-only identity-free conditions `event_player_is_controller` and `event_player_is_opponent`, with trusted known-player lookup, fail-closed missing/unknown actor behavior, read-only evaluation, and no trigger widening.
+
+Formal recovery accepted remains **`136/944`**, with **`808`** remaining. FB2-31 earns zero migration credit. PR #375 remains OPEN, unmerged, and unretargeted. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
+
+Next coordinator action is a fresh dependency overlay over the remaining source-grounded generic-extension rows; dispatch only an honestly complete homogeneous S family, otherwise select the next narrow B2 seam.
