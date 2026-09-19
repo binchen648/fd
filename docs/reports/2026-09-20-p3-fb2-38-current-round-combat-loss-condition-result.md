@@ -1,7 +1,7 @@
 # P3-FB2-38 Current-Round Combat-Loss Absence Condition Result
 
 Role: Codex B2
-Status: `IMPLEMENTED_CANDIDATE`
+Status: `IMPLEMENTED_REVISED_CANDIDATE`
 Date: 2026-09-20
 
 ## Dispatch binding
@@ -12,6 +12,14 @@ Date: 2026-09-20
 - Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 
 FB2-38 is runtime capability infrastructure only and earns zero migration credit.
+
+## Reviewer revision binding
+
+- Initial Candidate: `a9657b1203728295fa7f945428b1a7b91e15dfd7`
+- Fresh R verdict: `IMPLEMENTATION_NEEDS_REVISION`
+- Canonical reviewer evidence: `https://github.com/binchen648/fd/pull/387#issuecomment-5745968595`
+- Blocking finding: the initial implementation reconstructed terminal provenance from live `state.battleResults`, but production scoring clears that array before `after_battle_ended`; MatchSession also uses history-aware battle ordinals that cannot be reconstructed from a phase-local index.
+- Revision scope: preserve per-battle participant IDs in the already-authoritative frozen terminal snapshot, consume that snapshot directly, and add post-scoring plus later-round MatchSession regressions. No persistent player flag or generic flag interpreter was added.
 
 ## Implemented structural seam
 
@@ -26,16 +34,21 @@ Behavior:
 - classifier accepts exactly the two-key shape above;
 - loader admits it only in ability-condition placement and fail-closes wrong key/type/extra fields/non-condition placement;
 - runtime evaluates only an exact current-round authoritative `after_battle_ended` terminal event;
-- event `battleIds`, `resultIds`, scoring receipts, participant union, and frozen battle outcomes are revalidated against current `state.battleResults`;
-- controller loss means the controller appears in a result's `participantBreakdowns` and is absent from that result's `winnerPlayerIds`;
+- the scoring-preclear battle snapshot now freezes per-battle participant IDs together with each battlefield's winner IDs into terminal provenance;
+- the condition validates terminal `battleIds`, `resultIds`, scoring receipts, participant union, and per-battle frozen outcomes internally, without reading cleared live `state.battleResults` and without reconstructing battle ordinals;
+- controller loss means the controller appears in a frozen outcome's participant IDs and is absent from that outcome's winner IDs;
 - non-participation in another battlefield is not loss;
 - shared winner membership is non-loss;
 - `lossEffectSuppressedPlayerIds` does not erase an actual non-winner outcome, matching Locked Reference combat-loss-round semantics;
 - no persistent `combatLossRound` state or generic player-flag interpreter was added.
 
-Production paths changed:
+Production paths changed across the full Candidate:
 
 - `packages/rules/src/ability/current-round-combat-loss-condition.ts`
+- `packages/rules/src/ability/battle-terminal.ts`
+- `packages/rules/src/ability/types.ts`
+- `packages/rules/src/core/game-loop.ts`
+- `packages/rules/src/match-session.ts`
 - `packages/rules/src/ability/interpreter.ts`
 - `packages/rules/src/ability/loader.ts`
 - `packages/rules/src/index.ts`
@@ -62,9 +75,9 @@ At the Candidate worktree:
 
 - `npm.cmd ci --ignore-scripts --offline`: PASS, 239 packages, 0 vulnerabilities;
 - `npm.cmd run typecheck`: PASS;
-- focused FB2-38: **1 file / 7 tests PASS**;
-- rules `src/__tests__ + core + regression + focused`: **83 files / 501 tests PASS**;
-- official `npm.cmd run test:ci -- --maxWorkers=2`: **156 files / 1094 tests PASS**;
+- focused FB2-38: **1 file / 9 tests PASS**, including post-scoring live-result clearing and later-round MatchSession terminal ordinal coverage;
+- rules `src/__tests__ + core + regression + focused`: **83 files / 503 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2`: **156 files / 1096 tests PASS**;
 - eleven-round MatchSession case: PASS, about 1.78 s in official CI;
 - content validation: **7 masters / 7 servants / 20 events / 0 blocking issues**;
 - generated determinism: PASS with unchanged hashes:

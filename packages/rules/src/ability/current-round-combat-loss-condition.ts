@@ -4,10 +4,6 @@ import type { AbilityEvent, PlayerId, RuleNode } from './types';
 const CONDITION_TYPE = 'player_flag_number_not_current_round';
 const COMBAT_LOSS_ROUND_KEY = 'combatLossRound';
 
-function exactStringArray(actual: unknown, expected: string[]): boolean {
-  return Array.isArray(actual) && actual.length === expected.length && actual.every((value, index) => value === expected[index]);
-}
-
 function exactStringSet(actual: unknown, expected: string[]): boolean {
   if (!Array.isArray(actual) || actual.some((value) => typeof value !== 'string')) return false;
   return actual.length === expected.length && new Set(actual).size === actual.length && actual.every((value) => expected.includes(value));
@@ -27,26 +23,36 @@ export function currentRoundCombatLossAbsent(
   if (!event || event.type !== 'after_battle_ended' || event.id !== `${phaseId}:after_battle_ended` ||
       event.battlePhaseResolutionId !== phaseId) return false;
 
-  const results = state.battleResults;
-  const expectedBattleIds = results.map((result, index) => `${phaseId}:battle:${result.battlefieldId}:${index + 1}`);
-  const expectedResultIds = expectedBattleIds.map((battleId) => `${battleId}:result`);
-  const expectedScoringReceiptIds = results.map((result) => `${phaseId}:score:${result.battlefieldId}`);
-  const expectedParticipants = [...new Set(results.flatMap((result) => result.participantBreakdowns.map((participant) => participant.playerId)))];
+  const battleIds = event.battleIds;
+  const resultIds = event.resultIds;
+  const scoringReceiptIds = event.scoringReceiptIds;
+  const outcomes = event.battleOutcomes;
+  if (!Array.isArray(battleIds) || !Array.isArray(resultIds) || !Array.isArray(scoringReceiptIds) ||
+      !Array.isArray(outcomes) || battleIds.length !== outcomes.length || resultIds.length !== outcomes.length ||
+      scoringReceiptIds.length !== outcomes.length || new Set(battleIds).size !== battleIds.length ||
+      new Set(resultIds).size !== resultIds.length || new Set(scoringReceiptIds).size !== scoringReceiptIds.length) return false;
 
-  if (!exactStringArray(event.battleIds, expectedBattleIds) ||
-      !exactStringArray(event.resultIds, expectedResultIds) ||
-      !exactStringArray(event.scoringReceiptIds, expectedScoringReceiptIds) ||
-      !exactStringSet(event.battleParticipantIds, expectedParticipants) ||
-      !Array.isArray(event.battleOutcomes) || event.battleOutcomes.length !== results.length) return false;
-
-  for (let index = 0; index < results.length; index += 1) {
-    const result = results[index]!;
-    const outcome = event.battleOutcomes[index];
-    if (!outcome || outcome.battlefieldId !== result.battlefieldId ||
-        !exactStringSet(outcome.winnerPlayerIds, [...new Set(result.winnerPlayerIds)])) return false;
+  const representedParticipants: PlayerId[] = [];
+  for (let index = 0; index < outcomes.length; index += 1) {
+    const outcome = outcomes[index];
+    const battleId = battleIds[index];
+    const participants = outcome?.participantPlayerIds;
+    const winners = outcome?.winnerPlayerIds;
+    if (!outcome || typeof outcome.battlefieldId !== 'string' || !battleId ||
+        !battleId.startsWith(`${phaseId}:battle:${outcome.battlefieldId}:`) ||
+        resultIds[index] !== `${battleId}:result` ||
+        scoringReceiptIds[index] !== `${phaseId}:score:${outcome.battlefieldId}` ||
+        !Array.isArray(participants) || participants.some((value) => typeof value !== 'string') ||
+        new Set(participants).size !== participants.length ||
+        !Array.isArray(winners) || winners.some((value) => typeof value !== 'string') ||
+        new Set(winners).size !== winners.length || winners.some((winnerId) => !participants.includes(winnerId))) return false;
+    representedParticipants.push(...participants);
   }
 
-  return !results.some((result) =>
-    result.participantBreakdowns.some((participant) => participant.playerId === controllerId) &&
-    !result.winnerPlayerIds.includes(controllerId));
+  if (!exactStringSet(event.battleParticipantIds, [...new Set(representedParticipants)])) return false;
+
+  return !outcomes.some((outcome) => {
+    const participants = outcome.participantPlayerIds;
+    return Array.isArray(participants) && participants.includes(controllerId) && !outcome.winnerPlayerIds.includes(controllerId);
+  });
 }

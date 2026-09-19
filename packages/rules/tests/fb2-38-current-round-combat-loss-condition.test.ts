@@ -37,16 +37,23 @@ function result(battlefieldId: string, participants: string[], winners: string[]
   } as any;
 }
 
-function terminalEvent(state: ReturnType<typeof setup>): AbilityEvent {
+function terminalEvent(
+  state: ReturnType<typeof setup>,
+  results: ReturnType<typeof setup>['battleResults'] = state.battleResults,
+  battleOrdinalOffset = 0,
+): AbilityEvent {
   const phaseId = `battle-phase:${state.round.roundNumber}`;
-  const results = state.battleResults;
-  const battleIds = results.map((r, i) => `${phaseId}:battle:${r.battlefieldId}:${i + 1}`);
+  const battleIds = results.map((r, i) => `${phaseId}:battle:${r.battlefieldId}:${battleOrdinalOffset + i + 1}`);
   return {
     id: `${phaseId}:after_battle_ended`, type: 'after_battle_ended', battlePhaseResolutionId: phaseId,
     battleIds, resultIds: battleIds.map((id) => `${id}:result`),
     scoringReceiptIds: results.map((r) => `${phaseId}:score:${r.battlefieldId}`),
     battleParticipantIds: [...new Set(results.flatMap((r) => r.participantBreakdowns.map((p) => p.playerId)))],
-    battleOutcomes: results.map((r) => ({ battlefieldId: r.battlefieldId, winnerPlayerIds: [...r.winnerPlayerIds] })),
+    battleOutcomes: results.map((r) => ({
+      battlefieldId: r.battlefieldId,
+      participantPlayerIds: [...new Set(r.participantBreakdowns.map((p) => p.playerId))],
+      winnerPlayerIds: [...new Set(r.winnerPlayerIds)],
+    })),
   };
 }
 
@@ -111,6 +118,50 @@ describe('P3-FB2-38 current-round combat-loss absence condition', () => {
     expect(trigger(state)).toEqual([]);
   });
 
+  it('uses frozen terminal provenance after production scoring clears live battle results', () => {
+    const winState = setup();
+    const winSnapshot = [
+      result('miyama_town', ['p1', 'p2'], ['p1']),
+      result('shinto', ['p3', 'p4'], ['p3']),
+    ];
+    winState.battleResults = structuredClone(winSnapshot);
+    const winTerminal = terminalEvent(winState, winSnapshot);
+    const scoredWinState = rules.applyBattleScoring(winState).nextState;
+    expect(scoredWinState.battleResults).toEqual([]);
+    expect(rules.collectTriggeredAbilities(scoredWinState, winTerminal)).toEqual([
+      { cardInstanceId: 'source', abilityId: 'terminal-loss-check', controllerId: 'p1' },
+    ]);
+
+    const lossState = setup();
+    const lossSnapshot = [result('miyama_town', ['p1', 'p2'], ['p2'])];
+    lossState.battleResults = structuredClone(lossSnapshot);
+    const lossTerminal = terminalEvent(lossState, lossSnapshot);
+    const scoredLossState = rules.applyBattleScoring(lossState).nextState;
+    expect(scoredLossState.battleResults).toEqual([]);
+    expect(rules.collectTriggeredAbilities(scoredLossState, lossTerminal)).toEqual([]);
+  });
+
+  it('accepts later-round MatchSession terminal provenance without reconstructing phase-local ordinals', () => {
+    const session = rules.createMatchSession({
+      seed: 20260920,
+      humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'],
+    });
+    session.state.round.roundNumber = 3;
+    session.state.battleResults = [];
+    session.battleHistory = [result('shinto', ['p3', 'p4'], ['p3'])];
+    const currentBattle = result('miyama_town', ['p1', 'p2'], ['p1']);
+    (session as any).queuePostScoringBattleEvents(
+      [currentBattle],
+      [{ type: 'battle_scored', message: 'synthetic receipt', payload: { battlefieldId: 'miyama_town' } }],
+    );
+    const terminal = session.state.abilityRuntime!.pendingBattleTerminalEvent!;
+    expect(terminal.battleIds).toEqual(['battle-phase:3:battle:miyama_town:2']);
+    expect(terminal.battleOutcomes).toEqual([{
+      battlefieldId: 'miyama_town', participantPlayerIds: ['p1', 'p2'], winnerPlayerIds: ['p1'],
+    }]);
+    expect(rules.currentRoundCombatLossAbsent(session.state, 'p1', terminal)).toBe(true);
+  });
+
   it('fails closed for stale, malformed, non-terminal, or runtime near-match contexts', () => {
     const state = setup();
     state.battleResults = [result('miyama_town', ['p1', 'p2'], ['p1'])];
@@ -118,6 +169,11 @@ describe('P3-FB2-38 current-round combat-loss absence condition', () => {
     expect(trigger(state, { ...good, battlePhaseResolutionId: 'battle-phase:999' })).toEqual([]);
     expect(trigger(state, { ...good, resultIds: [] })).toEqual([]);
     expect(trigger(state, { ...good, type: 'after_battle_result_determined' })).toEqual([]);
+    expect(trigger(state, {
+      ...good,
+      battleOutcomes: good.battleOutcomes!.map((outcome) => ({ ...outcome, participantPlayerIds: undefined })),
+    })).toEqual([]);
+    expect(trigger(state, { ...good, battleParticipantIds: ['p1'] })).toEqual([]);
 
     const malformed = setup({ ...exact(), extra: true });
     malformed.battleResults = [result('miyama_town', ['p1', 'p2'], ['p1'])];

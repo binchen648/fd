@@ -1321,7 +1321,12 @@ export class MatchSession {
       resultIds,
       scoringReceiptIds: battles.map((battle) => `${battlePhaseResolutionId}:score:${battle.battlefieldId}`),
       battleParticipantIds: [...new Set(battleParticipantIds)],
-      battleOutcomes: battles.map((battle) => ({ battlefieldId: battle.battlefieldId, winnerPlayerIds: [...battle.winnerPlayerIds] })),
+      battleOutcomes: battles.map((battle) => ({
+        battlefieldId: battle.battlefieldId,
+        participantPlayerIds: battle.participantBreakdowns?.map((participant) => participant.playerId) ??
+          [...new Set([...battle.winnerPlayerIds, ...this.battleLoserIds(battle)])],
+        winnerPlayerIds: [...battle.winnerPlayerIds],
+      })),
     });
   }
 
