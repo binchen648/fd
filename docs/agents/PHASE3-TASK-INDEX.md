@@ -5154,3 +5154,14 @@ Result: record formal Reviewer verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE` for e
 Accepted capability is limited to the exact identity-free static passive `combat_reward_distribution: replace/full_reward_each` envelope, including the corrected loader-to-compiled-runtime semantic preservation. FB2-34 earns zero migration credit; formal accepted remains **`136/944`**, with **`808`** remaining. PR #378 remains OPEN, unmerged, and unretargeted.
 
 Next coordinator action is mandatory migration-closure-first re-overlay for `servant.stheno.skill.sc-stheno-2`; if no new blocker is found, dispatch S immediately before any unrelated B2 seam.
+
+## TASK P3-S-R73-STHENO-CONSUMER-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact A R73 Stheno migration dispatch commit
+Read: `docs/reports/2026-09-20-p3-a-r73-stheno-consumer-migration-dispatch.md`
+
+Goal: migrate exactly `servant.stheno.skill.sc-stheno-2` as one standalone servant-skill archive using only already accepted structural semantics: true-name marker metadata, FB2-34 static `combat_reward_distribution: replace/full_reward_each`, and `forced_trigger + after_controller_wins_battle + adjust_victory_points(controller,+1)`. No runtime-source widening, no additional consumer, no pack/generated registration.
+
+Project formal migration accounting remains `136/944` until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A performs acceptance synchronization. This lineage material should move only `132 -> 133`.
