@@ -4997,3 +4997,31 @@ Completion status allowed:
 - `IMPLEMENTATION_BLOCKED`
 
 Formal recovery accepted remains `136/944`; FB2-30 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization.
+
+## TASK P3-A-FB2-31-EVENT-PLAYER-RELATION-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-31-event-player-relation-dispatch`
+Base: exact R69 / FB2-30 acceptance synchronization `75123154585aac49f4c1571a3ac23ac4f9279dca`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-19-p3-a-fb2-31-event-player-relation-dispatch.md`
+
+Result: dispatch one identity-free generic condition seam for trusted event actor relation: exact `event_player_is_controller` and `event_player_is_opponent` nodes. The remaining source-grounded inventory has 12 / 6 corresponding ability occurrences respectively. This task does not accept any parent trigger/effect route or consumer migration and earns zero frozen credit.
+
+## TASK P3-FB2-31-EVENT-PLAYER-RELATION
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A FB2-31 dispatch commit
+Read: `docs/reports/2026-09-19-p3-a-fb2-31-event-player-relation-dispatch.md`
+
+Goal: implement only exact-shape, identity-free event-player controller/opponent condition evaluation over trusted `AbilityEvent.playerId`; fail closed on missing/unknown actor; do not broaden activation triggers, migrate consumers, change taxonomy/KPI, merge, or retarget.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `IMPLEMENTATION_BLOCKED`
+
+Formal recovery accepted remains `136/944`; FB2-31 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization.
