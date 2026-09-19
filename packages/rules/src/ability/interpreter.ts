@@ -1585,8 +1585,17 @@ export function isControllerMasterSkillDefinitionReturnComponent(effect: Authori
     ['type', 'target', 'definitionId', 'linkedSkillId', 'destination', 'createIfMissing', 'face', 'active'].includes(key));
 }
 
+function containsControllerMasterSkillDefinitionReturnCandidate(value: unknown): boolean {
+  if (Array.isArray(value)) return value.some(containsControllerMasterSkillDefinitionReturnCandidate);
+  if (!value || typeof value !== 'object') return false;
+  const current = node(value);
+  if (str(current.type) === 'return_card_by_definition') return true;
+  return Object.values(current).some(containsControllerMasterSkillDefinitionReturnCandidate);
+}
+
 function hasControllerMasterSkillDefinitionReturnCandidate(a: AuthoringAbility): boolean {
-  return a.effects.some((effect) => str(effect.type) === 'return_card_by_definition');
+  return containsControllerMasterSkillDefinitionReturnCandidate(a.effects) ||
+    containsControllerMasterSkillDefinitionReturnCandidate(a.creates);
 }
 
 function resolveControllerMasterSkillDefinitionReturn(s: GameState, ctx: EffectContext, effect: RuleNode): void {
@@ -1594,8 +1603,10 @@ function resolveControllerMasterSkillDefinitionReturn(s: GameState, ctx: EffectC
     reject('resolution_failed', 'Unsupported controller master-skill definition-return component shape');
   }
   const r = runtime(s); const controller = player(s, ctx.controllerId); const source = card(s, ctx.sourceCardId);
-  if (source.ownerPlayerId !== controller.id || source.controllerPlayerId !== controller.id) {
-    reject('invalid_source', 'Definition-return source must be owned and controlled by the controller');
+  const sourceDefinition = r.pack.cards[source.definitionId] as ExecutableCardDefinition | undefined;
+  if (source.ownerPlayerId !== controller.id || source.controllerPlayerId !== controller.id || source.zone !== 'skill' ||
+    !sourceDefinition || sourceDefinition.cardType !== 'master_skill' || sourceDefinition.ownerId !== controller.masterCardId) {
+    reject('invalid_source', 'Definition-return source must be a current controller-owned master_skill in the skill zone');
   }
   const targetDefinitionId = str(effect.definitionId) || str(effect.linkedSkillId);
   const targetDefinition = r.pack.cards[targetDefinitionId] as ExecutableCardDefinition | undefined;

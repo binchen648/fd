@@ -109,11 +109,68 @@ describe('P3-FB2-30 controller master-skill definition return component', () => 
     expect(malformed.state).toEqual(malformedBefore);
   });
 
+  it('rejects stale or invalid source context transactionally before target mutation', () => {
+    const cases: Array<{ label: string; mutate: (state: ReturnType<typeof setup>['state']) => void }> = [
+      {
+        label: 'wrong source definition owner',
+        mutate: (state) => { (state.abilityRuntime!.pack.cards['skill.source'] as ExecutableCardDefinition).ownerId = 'master.other'; },
+      },
+      {
+        label: 'wrong source definition type',
+        mutate: (state) => { (state.abilityRuntime!.pack.cards['skill.source'] as ExecutableCardDefinition).cardType = 'servant_skill'; },
+      },
+      {
+        label: 'stale source zone',
+        mutate: (state) => { state.cards.find((entry) => entry.instanceId === 'source')!.zone = 'discard'; },
+      },
+    ];
+
+    for (const testCase of cases) {
+      const { state } = setup();
+      testCase.mutate(state);
+      const before = structuredClone(state);
+      expect(() => rules.resolveEffect(state, context(), validEffect), testCase.label).toThrow(/current controller-owned master_skill in the skill zone/i);
+      expect(state, testCase.label).toEqual(before);
+      expect(state.cards.filter((entry) => entry.definitionId === 'skill.returned'), testCase.label).toHaveLength(0);
+    }
+  });
+
   it('does not expose an unsupported parent route merely because the component exists', () => {
     const { state } = setup(validEffect, 'phase_action');
     state.round.activePhase = 'action';
     expect(rules.getLegalActions(state, 'p1')).not.toContainEqual(expect.objectContaining({ type: 'activate_ability', cardInstanceId: 'source', abilityId: 'restore' }));
     expect(() => rules.executeAbility(state, context())).toThrow(/independently accepted parent route/i);
+  });
+
+  it('recursively blocks nested and creates placements from trigger discovery and direct execution', () => {
+    const placements: Array<{ label: string; effects: RuleNode[]; creates: RuleNode[] }> = [
+      {
+        label: 'branch descendant',
+        effects: [{ type: 'branch', branches: [{ else: [validEffect] }] }],
+        creates: [],
+      },
+      {
+        label: 'creates container',
+        effects: [],
+        creates: [validEffect],
+      },
+    ];
+
+    for (const placement of placements) {
+      const { state } = setup();
+      const sourceDefinition = state.abilityRuntime!.pack.cards['skill.source'] as ExecutableCardDefinition;
+      const authored = sourceDefinition.abilities[0]!;
+      authored.kind = 'forced_trigger';
+      authored.activation = { trigger: 'game_start' };
+      authored.effects = placement.effects;
+      authored.creates = placement.creates;
+
+      expect(rules.collectTriggeredAbilities(state, { id: `probe-${placement.label}`, type: 'game_start' }), placement.label).toEqual([]);
+      const before = structuredClone(state);
+      expect(() => rules.executeAbility(state, context()), placement.label).toThrow(/independently accepted parent route/i);
+      expect(state, placement.label).toEqual(before);
+      expect(state.cards.filter((entry) => entry.definitionId === 'skill.returned'), placement.label).toHaveLength(0);
+    }
   });
 
   it('loader accepts the exact shape and rejects malformed sibling shapes', () => {
