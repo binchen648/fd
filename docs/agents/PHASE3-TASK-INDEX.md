@@ -5299,3 +5299,15 @@ Read: `docs/reports/2026-09-20-p3-a-r79-fb2-37-acceptance-synchronization.md`
 Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #385 exact Candidate `36ed05d64c5f6c18b947789d018f461283f533e3`, backed by canonical evidence `https://github.com/binchen648/fd/pull/385#issuecomment-5745681302`. Earlier Candidate `a87e05db6c7ab48163f51fb237d2cfc374b1087d` remains revision-only evidence. Accepted capability is the exact identity-free structural `deployment_destinations / replace` seam with runtime gating on the accepted containing ability.
 
 FB2-37 earns zero migration credit; formal migration remains **`139/944`**, with **`805`** remaining. PR #385 remains OPEN, unmerged, and unretargeted. Next action is immediate Kayneth s3 closure re-overlay and fresh S dispatch if no additional blocker appears.
+
+## TASK P3-A-R79-KAYNETH-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r79-kayneth-consumer-migration-dispatch`
+Base: exact R79 FB2-37 acceptance sync `0be87fd9bb48e596845ac7ece9d03f2d8bfd074d`
+Read: `docs/reports/2026-09-20-p3-a-r79-kayneth-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `master.kayneth.skill.s3`, now S-ready on accepted FB2-37. Append the canonical card to the existing Kayneth archive while preserving legacy product card `master.kayneth.skill.pride`; no runtime production source, product pack/generated registration, or second consumer identity.
+
+Base frozen overlap is **`135/944`** and Candidate must be exactly `136/944`, exact +1 with zero removals/duplicates. Formal migration remains **`139/944`**, with **`805`** remaining until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
