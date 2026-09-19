@@ -5217,3 +5217,15 @@ Read: `docs/reports/2026-09-20-p3-a-fb2-36-skill-use-forbid-selectors-dispatch.m
 Result: dispatch one narrow identity-free B2 seam for exact `skill_use / forbid` play-permission selectors: (a) same-location players filtered by `notInAttack + trueNameRelease` under source-bound `while_active`, and (b) same-location opponents filtered by master/servant skill-zone + face-down state for `this_round`. Do not add generic `activate_ability` forbids, definition-ID selectors, consumer identities, or migration credit.
 
 Formal migration remains **`137/944`**, remaining **`807`**. PR #381 / Ibaraki remains pending migration review and is not part of this exact Base. After fresh B2 acceptance + A capability sync, immediately re-overlay and prefer newly S-ready consumers over unrelated infrastructure.
+
+## TASK P3-A-R76-FB2-36-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r76-fb2-36-acceptance-sync`
+Base: exact accepted Candidate `22731b5be697825bd6bfbc09faea3c333eb629b6`
+Read: `docs/reports/2026-09-20-p3-a-r76-fb2-36-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #382 exact Candidate `22731b5be697825bd6bfbc09faea3c333eb629b6`, backed by canonical evidence `https://github.com/binchen648/fd/pull/382#issuecomment-5745209825`. Accepted capability is limited to the two exact identity-free structural `skill_use / forbid` selectors and authoritative play-eligibility enforcement described by FB2-36.
+
+FB2-36 earns zero migration credit; formal migration remains **`137/944`**, with **`807`** remaining. PR #382 remains OPEN, unmerged, and unretargeted. Next action is immediate migration-closure-first re-overlay and S dispatch of the nearest homogeneous consumer target before unrelated runtime work.
