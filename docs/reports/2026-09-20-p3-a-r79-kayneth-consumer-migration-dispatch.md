@@ -60,8 +60,8 @@ A whole-card in-memory probe on exact FB2-37 Candidate returned `report: []`, au
 
 Fresh S must:
 
-1. Append canonical `master.kayneth.skill.s3` to the existing `data/authoring/masters/master.kayneth.json` archive.
-2. Preserve all pre-existing Kayneth archive material, including `master.kayneth.skill.pride`; do not rename/delete/replace the legacy product card.
+1. Create isolated standalone `data/authoring/masters/master.kayneth.p3-s3.json` containing canonical `master.kayneth.skill.s3`, following the existing `master.irisviel.fm08.json` split-archive precedent.
+2. Leave the registered `data/authoring/masters/master.kayneth.json` byte-for-byte unchanged, including `master.kayneth.skill.pride`; do not rename/delete/replace the legacy product card.
 3. Add focused migration tests proving F1/Reference evidence, zero-issue automatic loader compilation, exact FB2-37 classifier semantics, authoritative deployment behavior, fail-close boundaries, and absence from pack/generated product output.
 4. Add one S result report.
 5. Do not modify runtime production source, generated product, pack registration, or another consumer identity.
@@ -77,4 +77,17 @@ Candidate must be exactly **`136/944`**, with:
 - zero frozen duplicates
 - no other frozen additions
 
-Formal project accounting remains **`139/944`** until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A performs acceptance synchronization. Only then may formal accounting advance to `140/944`.
+Formal project accounting remains **`139/944`** until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A performs acceptance synchronization. Only then may formal accounting advance to 140/944.
+
+## Corrected container constraint
+
+Fresh S regression probing found that `data/packs/fd-playtest-v1/pack.json` already registers `data/authoring/masters/master.kayneth.json`. Appending canonical s3 there changes the freshly compiled playtest definition hash and strong-master product assertions, which violates this migration's no-product-mutation boundary.
+
+Repository precedent `data/authoring/masters/master.irisviel.fm08.json` already isolates canonical full-roster migration material from a registered legacy/product archive for exactly this reason. Therefore the authoritative container instruction is corrected to:
+
+- create isolated `data/authoring/masters/master.kayneth.p3-s3.json` with root id `master.kayneth` and exactly canonical `master.kayneth.skill.s3`;
+- leave registered `data/authoring/masters/master.kayneth.json` byte-for-byte unchanged;
+- do not register the new standalone archive in the playtest pack/generated product;
+- preserve the same exact semantic/evidence/accounting contract: Base overlap `135/944`, Candidate `136/944`, exact +1 only.
+
+This correction changes only migration container placement. FB2-37 capability semantics and formal accounting are unchanged.

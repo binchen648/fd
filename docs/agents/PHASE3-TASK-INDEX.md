@@ -5308,6 +5308,6 @@ Branch: `codex/a-p3-r79-kayneth-consumer-migration-dispatch`
 Base: exact R79 FB2-37 acceptance sync `0be87fd9bb48e596845ac7ece9d03f2d8bfd074d`
 Read: `docs/reports/2026-09-20-p3-a-r79-kayneth-consumer-migration-dispatch.md`
 
-Result: dispatch exactly one frozen identity, `master.kayneth.skill.s3`, now S-ready on accepted FB2-37. Append the canonical card to the existing Kayneth archive while preserving legacy product card `master.kayneth.skill.pride`; no runtime production source, product pack/generated registration, or second consumer identity.
+Result: dispatch exactly one frozen identity, `master.kayneth.skill.s3`, now S-ready on accepted FB2-37. **Corrected container:** create isolated `data/authoring/masters/master.kayneth.p3-s3.json` following the Irisviel split-archive precedent; registered `master.kayneth.json` (including legacy `master.kayneth.skill.pride`) must remain byte-for-byte unchanged. No runtime production source, product pack/generated registration, or second consumer identity.
 
 Base frozen overlap is **`135/944`** and Candidate must be exactly `136/944`, exact +1 with zero removals/duplicates. Formal migration remains **`139/944`**, with **`805`** remaining until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
