@@ -5241,3 +5241,15 @@ Read: `docs/reports/2026-09-20-p3-a-r76-nursery-consumer-migration-dispatch.md`
 Result: migration-closure-first overlay dispatches exactly one homogeneous frozen identity, `servant.nursery.skill.sc-nursery-2`, now S-ready on formally accepted FB2-36. Author exactly one new standalone Nursery archive card plus focused migration evidence; no runtime production source change and no second consumer identity.
 
 Formal migration remains **`137/944`**, remaining **`807`** until fresh R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A synchronizes it. PR #381 / Ibaraki remains pending independently and is not part of this Base.
+
+## TASK P3-A-R77-NURSERY-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r77-nursery-migration-acceptance-sync`
+Base: exact accepted Candidate `ad3633676a2daca846d1982490253ca1e0ba8a05`
+Read: `docs/reports/2026-09-20-p3-a-r77-nursery-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #383 exact Candidate `ad3633676a2daca846d1982490253ca1e0ba8a05`, backed by canonical evidence `https://github.com/binchen648/fd/pull/383#issuecomment-5745315752`. Exact frozen addition is `servant.nursery.skill.sc-nursery-2`; independent Base→Candidate frozen overlap is `133/944 → 134/944`, with zero removals and zero duplicates.
+
+Formal project migration advances exactly one identity to **`138/944`**, with **`806`** remaining. PR #383 remains OPEN, unmerged, and unretargeted. PR #381 / Ibaraki remains pending independent migration review and receives no credit here. Next action is immediate closure-first re-overlay of the next S-ready consumer unlocked by accepted FB2-36.
