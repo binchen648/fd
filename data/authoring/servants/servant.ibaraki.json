@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.ibaraki",
+  "name": "茨木童子",
+  "class": "Berserker",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus accepted Phase-3 contracts; locked Reference is used only for static card metadata and source-grounded authoring evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.ibaraki.skill.sc-ibaraki-1",
+      "aliases": ["sc_ibaraki_1"],
+      "legacyId": "sc_ibaraki_1",
+      "name": "大江之鬼闹",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.ibaraki" },
+      "printedText": "熯天炽地-被动/行动阶段：你的战斗中，本回合打出的激活攻击魔力消耗总和最高的玩家+6合计威力。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "great-river-ogre-rampage",
+          "kind": "passive",
+          "printedClause": "熯天炽地-被动/行动阶段：你的战斗中，本回合打出的激活攻击魔力消耗总和最高的玩家+6合计威力。",
+          "activation": {},
+          "conditions": [{ "type": "source_owned" }],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [
+            {
+              "id": "highest-round-active-paid-cost-plus-six",
+              "operation": "add",
+              "rule": "combat_power",
+              "scope": {
+                "subject": "players_at_source_battlefield",
+                "where": [{ "type": "round_active_attack_paid_cost_sum_is_highest" }]
+              },
+              "value": { "type": "constant", "value": 6 },
+              "lifecycle": { "duration": "permanent" },
+              "priority": { "tier": "card_text", "specificity": "specific" },
+              "conflictPolicy": "higher_priority_wins"
+            }
+          ],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "茨木童子.htm",
+            "locator": "从者/狂战士/英文版/茨木童子.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/茨木童子.png",
+            "locator": "servant.ibaraki/茨木童子"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[38].abilities[0].printedClause",
+            "sha256": "1ed4b6ca04b7bec829e082e897fa5d5a1a23d3cc7215d2a8865261218e24f14d"
+          }
+        ],
+        "sourceTextSha256": "1ed4b6ca04b7bec829e082e897fa5d5a1a23d3cc7215d2a8865261218e24f14d",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_ibaraki_1",
+          "class": "Berserker",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": 0,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "roundActiveAttackPaidCostCombatPower": "P3-R75/FB2-35"
+        }
+      }
+    }
+  ]
+}
