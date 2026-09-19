@@ -19,6 +19,8 @@ export function currentRoundCombatLossAbsent(
   controllerId: PlayerId,
   event: AbilityEvent | undefined,
 ): boolean {
+  const knownPlayerIds = new Set(state.players.map((player) => player.id));
+  if (!knownPlayerIds.has(controllerId)) return false;
   const phaseId = `battle-phase:${state.round.roundNumber}`;
   if (!event || event.type !== 'after_battle_ended' || event.id !== `${phaseId}:after_battle_ended` ||
       event.battlePhaseResolutionId !== phaseId) return false;
@@ -46,14 +48,16 @@ export function currentRoundCombatLossAbsent(
         !battleId.startsWith(battleIdPrefix) || !battleOrdinal || !/^[1-9]\d*$/.test(battleOrdinal) ||
         resultIds[index] !== `${battleId}:result` ||
         scoringReceiptIds[index] !== `${phaseId}:score:${outcome.battlefieldId}` ||
-        !Array.isArray(participants) || participants.some((value) => typeof value !== 'string') ||
+        !Array.isArray(participants) || participants.some((value) => typeof value !== 'string' || value.length === 0 || !knownPlayerIds.has(value)) ||
         new Set(participants).size !== participants.length ||
-        !Array.isArray(winners) || winners.some((value) => typeof value !== 'string') ||
+        !Array.isArray(winners) || winners.some((value) => typeof value !== 'string' || value.length === 0 || !knownPlayerIds.has(value)) ||
         new Set(winners).size !== winners.length || winners.some((winnerId) => !participants.includes(winnerId))) return false;
     representedParticipants.push(...participants);
   }
 
-  if (!exactStringSet(event.battleParticipantIds, [...new Set(representedParticipants)])) return false;
+  if (!Array.isArray(event.battleParticipantIds) ||
+      event.battleParticipantIds.some((value) => typeof value !== 'string' || value.length === 0 || !knownPlayerIds.has(value)) ||
+      !exactStringSet(event.battleParticipantIds, [...new Set(representedParticipants)])) return false;
 
   return !outcomes.some((outcome) => {
     const participants = outcome.participantPlayerIds;

@@ -174,6 +174,23 @@ describe('P3-FB2-38 current-round combat-loss absence condition', () => {
       battleOutcomes: good.battleOutcomes!.map((outcome) => ({ ...outcome, participantPlayerIds: undefined })),
     })).toEqual([]);
     expect(trigger(state, { ...good, battleParticipantIds: ['p1'] })).toEqual([]);
+    for (const [participantPlayerIds, winnerPlayerIds] of [
+      [['ghost', 'p2'], ['p2']],
+      [['ghost', 'p2'], ['ghost']],
+      [['', 'p2'], ['p2']],
+    ] as const) {
+      const malformedRosterProvenance = {
+        ...good,
+        battleParticipantIds: [...participantPlayerIds],
+        battleOutcomes: good.battleOutcomes!.map((outcome) => ({
+          ...outcome,
+          participantPlayerIds: [...participantPlayerIds],
+          winnerPlayerIds: [...winnerPlayerIds],
+        })),
+      } as AbilityEvent;
+      expect(() => trigger(state, malformedRosterProvenance)).not.toThrow();
+      expect(trigger(state, malformedRosterProvenance)).toEqual([]);
+    }
     for (const key of ['battleIds', 'resultIds', 'scoringReceiptIds'] as const) {
       const malformedIds = { ...good, [key]: [123] } as unknown as AbilityEvent;
       expect(() => trigger(state, malformedIds)).not.toThrow();
