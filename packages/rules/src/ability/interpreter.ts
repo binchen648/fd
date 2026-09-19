@@ -21,6 +21,7 @@ import { currentDeploymentBonus } from '../core/terrain-advantage';
 import { eventRulePlacementByInstance, initializeEventRulePlacements, listEventRuleCandidates, moveEventRuleCandidate, moveEventRuleCandidates, type EventRuleZone } from './event-rule';
 import { applyOuterGodLifeUse, isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, settlePendingSourceCardReturns } from './outer-god-life';
 import { classifyAcceptedSkillUseForbidModifier, definitionHasStructuralTrueNameRelease, isAcceptedStaticWhileActiveSkillUseForbidAbility } from './skill-use-forbid';
+import { currentRoundCombatLossAbsent, isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import {
   DataFlowValidationError,
@@ -638,6 +639,10 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'source_owned': return sourceStateCondition(s, ctx, c);
     case 'event_player_won_combat':
     case 'event_player_lost_combat': return eventCombatOutcomeCondition(s, ctx, c);
+    case 'player_flag_number_not_current_round': {
+      if (!isAcceptedCurrentRoundCombatLossAbsenceCondition(c)) return reject('unsupported', 'Unsupported current-round combat-loss absence condition shape');
+      return currentRoundCombatLossAbsent(s, ctx.controllerId, ctx.event);
+    }
     case 'controller_seat_in_first_half': {
       const activePlayers = s.players.filter(candidate => candidate.status === 'active').sort((a, b) => a.seat - b.seat);
       const firstHalfCount = Math.floor(activePlayers.length / 2);
