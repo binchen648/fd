@@ -77,6 +77,8 @@ const supportedTypes = new Set([
   'event_has_tag', 'event_in_set', 'move_event_card',
   // FB2-31 event-player relation conditions
   'event_player_is_controller', 'event_player_is_opponent',
+  // FB2-32 source-state conditions
+  'source_active', 'source_owned',
   // FB2-29 source-owner relational power/return primitives
   'adjust_round_total_power', 'schedule_source_card_return',
 ]);
@@ -173,6 +175,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (['event_player_is_controller', 'event_player_is_opponent'].includes(str(n.type)) &&
         !Object.keys(n).every((key) => key === 'type')) {
         issue(path, 'Event-player relation condition must contain only type', abilityId);
+      }
+      if (['source_active', 'source_owned'].includes(str(n.type)) &&
+        !Object.keys(n).every((key) => key === 'type')) {
+        issue(path, 'Source-state condition must contain only type', abilityId);
       }
       if (n.type === 'base_power_at_most' && (typeof n.value !== 'number' || !Number.isFinite(n.value))) issue(`${path}.value`, 'Base power bound must be finite', abilityId);
       if (['move_card', 'move_source_card', 'move_all_remaining', 'create_card'].includes(str(n.type)) &&

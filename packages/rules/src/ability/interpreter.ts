@@ -558,6 +558,19 @@ function eventPlayerRelationCondition(s: GameState, ctx: EffectContext, c: RuleN
     : eventPlayerId !== ctx.controllerId;
 }
 
+export function isSourceStateCondition(c: RuleNode): boolean {
+  return ['source_active', 'source_owned'].includes(str(c.type)) &&
+    Object.keys(c).every((key) => key === 'type');
+}
+
+function sourceStateCondition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
+  if (!isSourceStateCondition(c)) reject('unsupported', 'Unsupported source-state condition shape');
+  const source = card(s, ctx.sourceCardId);
+  return c.type === 'source_active'
+    ? active(s, source.instanceId)
+    : source.ownerPlayerId === ctx.controllerId;
+}
+
 function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (!c || typeof c !== 'object') reject('unsupported', 'Unsupported condition');
   if (c.negated === true) return !condition(s, ctx, { ...c, negated: undefined });
@@ -597,6 +610,8 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'controller_sole_winner': return ctx.event?.battleResult?.winners.length === 1 && ctx.event.battleResult.winners[0] === p.id;
     case 'event_player_is_controller':
     case 'event_player_is_opponent': return eventPlayerRelationCondition(s, ctx, c);
+    case 'source_active':
+    case 'source_owned': return sourceStateCondition(s, ctx, c);
     case 'controller_seat_in_first_half': {
       const activePlayers = s.players.filter(candidate => candidate.status === 'active').sort((a, b) => a.seat - b.seat);
       const firstHalfCount = Math.floor(activePlayers.length / 2);
