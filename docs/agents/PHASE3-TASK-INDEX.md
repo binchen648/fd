@@ -5165,3 +5165,17 @@ Read: `docs/reports/2026-09-20-p3-a-r73-stheno-consumer-migration-dispatch.md`
 Goal: migrate exactly `servant.stheno.skill.sc-stheno-2` as one standalone servant-skill archive using only already accepted structural semantics: true-name marker metadata, FB2-34 static `combat_reward_distribution: replace/full_reward_each`, and `forced_trigger + after_controller_wins_battle + adjust_victory_points(controller,+1)`. No runtime-source widening, no additional consumer, no pack/generated registration.
 
 Project formal migration accounting remains `136/944` until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A performs acceptance synchronization. This lineage material should move only `132 -> 133`.
+
+## TASK P3-A-R74-STHENO-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r74-stheno-migration-acceptance-sync`
+Base: exact accepted S Candidate `6b2a5860ebaac9adea0b6f945a611f01f21a7eeb`
+Read: `docs/reports/2026-09-20-p3-a-r74-stheno-migration-acceptance-synchronization.md`
+
+Result: record formal fresh R `MIGRATION_ACCEPTED` for PR #379 exact Candidate `6b2a5860ebaac9adea0b6f945a611f01f21a7eeb`, backed by canonical evidence `https://github.com/binchen648/fd/pull/379#issuecomment-5744243085`. The accepted migration adds exactly one frozen consumer, `servant.stheno.skill.sc-stheno-2`, preserves existing `sc-stheno-1`, changes no runtime source or product registration, and has zero removals / zero duplicates.
+
+Formal project migration accounting advances from **`136/944`** to **`137/944`**, with **`807`** remaining. PR #379 remains OPEN, unmerged, and unretargeted. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
+
+Next coordinator action is a fresh migration-closure-first dependency overlay from `137/944`; prefer a fully S-ready homogeneous family, otherwise close only the nearest 1-2 narrow B2 blockers and immediately return to S migration.
