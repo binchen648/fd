@@ -1,4 +1,4 @@
-﻿# P3-FB2-30 Independent Review
+# P3-FB2-30 Independent Review
 
 - Date: 2026-09-19
 - Review job: `mu8cqxky-h5g9wah`
@@ -7,7 +7,7 @@
 - Candidate branch: `codex/b2-p3-fb2-30-card-definition-return`
 - Exact Base: `e3c49b3f80248a58d0cb7a8b1e22e946627a2b39`
 - Exact Candidate: `491adc1e965b9eb7179fa7bced64371ae27542c1`
-- Formal verdict: `IMPLEMENTATION_NEEDS_REVISION`
+- Formal verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - Candidate modified by reviewer: no
 - Merge / retarget performed: no
 
@@ -74,58 +74,50 @@ All checks below were executed against detached exact Candidate `491adc1e965b9eb
 - Candidate production identity audit: PASS.
 - Candidate detached verification worktree after checks: clean.
 
-## Blocking finding: current revision regresses the required official CI gate
+## Official CI gate investigation
 
-The exact Candidate was run through the official command `npm run test:ci` twice on the same reviewer host/dependency tree.
+The first reviewer pass observed two full-suite Candidate failures on the fixed-5000 ms test `packages/rules/tests/match-session.test.ts > MatchSession semi-auto runtime > runs eleven rounds or pauses with an explicit handled reason` (about 5.22-5.27 s), while Base and pre-revision controls happened to pass in that earlier sample. That initially looked Candidate-specific and produced an interim `IMPLEMENTATION_NEEDS_REVISION` report.
 
-Both runs failed only:
+A superseding matched rerun was performed before finalizing this review, using a non-sparse detached worktree at exact Candidate `491adc1e965b9eb7179fa7bced64371ae27542c1`, materialized with `npm ci --offline` and `npm run typecheck` before the official suite.
 
-`packages/rules/tests/match-session.test.ts > MatchSession semi-auto runtime > runs eleven rounds or pauses with an explicit handled reason`
+Candidate official-CI observations in the superseding run:
 
-The test has a fixed 5000 ms timeout. The two Candidate full-suite runs timed out at approximately 5.22-5.27 seconds. Each run therefore ended at:
+- first full run: PASS, `144/144` files and `1011/1011` tests; the 11-round smoke completed in `4093 ms`;
+- repeat 1: PASS, `144/144`; smoke `4249 ms`;
+- repeat 2: PASS, `144/144`; smoke `4104 ms`;
+- repeat 3: only the same smoke timed out, `5262 ms`, leaving `143/144` files and `1010/1011` tests.
 
-- 143/144 test files passing;
-- 1010/1011 tests passing.
+Matched controls were then rerun on the same host:
 
-The new FB2-30 file itself passed in both full-suite runs. The timed-out 11-round smoke also passes when executed alone in the Candidate worktree (~1.998 seconds), so the failure is load-sensitive rather than a deterministic semantic assertion failure.
+- exact Base `e3c49b3f80248a58d0cb7a8b1e22e946627a2b39`: the same smoke timed out at `5113 ms`, leaving `142/143` files and `1002/1003` tests;
+- pre-revision Candidate `bba1658526e1980f1280e1baa6bce640778e9a11`: PASS, `144/144` files; smoke `4422 ms`.
 
-### Matched controls
+This supersedes the earlier Candidate-specific attribution. The 5000 ms smoke is demonstrably load-sensitive on exact Base as well as Candidate, while exact Candidate also has multiple fresh complete official-suite passes. Therefore the intermittent timeout is recorded as a baseline/test-host stability issue, not a defect attributable to FB2-30 and not a blocker for this implementation review.
 
-To distinguish machine noise from a Candidate regression, the same official command was run under the same host and shared dependency tree on two detached controls.
+## Additional fresh verification after the matched rerun
 
-Exact Base `e3c49b3f80248a58d0cb7a8b1e22e946627a2b39`:
+Against the same complete detached exact Candidate worktree:
 
-- 143/143 files PASS;
-- 1003/1003 tests PASS;
-- the same 11-round smoke completes in 4.751 seconds.
+- `npm ci --offline`: PASS, 239 packages installed, 0 vulnerabilities;
+- `npm run typecheck`: PASS;
+- official `npm run test:ci`: multiple full PASS runs at `144/144` files / `1011/1011` tests, with the load-sensitive timeout investigation documented above;
+- `npm run content:validate`: PASS, `7 masters / 7 servants / 20 events / 0 blocking issues`;
+- `npm run verify:generated-content`: PASS with hashes `866a5b...`, `fb6938...`, `b1bb89...`;
+- `npm run phase3:reference:verify -- --reference-root <locked-reference-worktree>`: PASS against exact Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- `npm run build --workspace @fd/client`: PASS; only the known Vite `node:crypto` browser-externalization warning appeared;
+- `git diff --check Base..Candidate`: PASS;
+- final detached Candidate worktree: clean.
 
-Pre-revision Candidate `bba1658526e1980f1280e1baa6bce640778e9a11`:
-
-- 144/144 files PASS;
-- 1009/1009 tests PASS;
-- the same 11-round smoke completes in 4.687 seconds.
-
-Thus the required official CI gate is green on both matched controls and fails reproducibly only after revision `491adc1`.
-
-Revision `491adc1` adds a recursive arbitrary-object walk of ability `effects` / `creates` and calls that scan from the global `canActivate` path. That is a plausible source of the measurable full-match cost. The formal finding does not require proving that micro-causal attribution: the exact Candidate itself reproducibly fails the dispatch-required official CI gate while exact Base and the immediately preceding Candidate pass under matched conditions.
-
-## Required revision
-
-Preserve the recursive fail-closed parent-route semantics that closed the previous bypass, while removing the measurable global hot-path penalty. A suitable implementation can compile, precompute, or cache whether an ability contains this component rather than recursively walking arbitrary effect graphs on every `canActivate` call.
-
-A replacement Candidate must show:
-
-- full official `npm run test:ci` green under the normal gate;
-- the focused FB2-30 negative coverage still green;
-- no reopening of source-context validation or nested/`creates` parent-route bypasses;
-- no migration, capability-credit synchronization, merge, or retarget as part of this implementation review.
+The earlier reviewer-only adversarial probe remains relevant: 10 additional direct-import cases passed, including transactional no-mutation rejection for missing/wrong target definitions. Together with the Candidate's 8 focused tests, the fresh focused evidence is `18/18` passing.
 
 ## Verdict
 
-`IMPLEMENTATION_NEEDS_REVISION`
+`IMPLEMENTATION_ACCEPTED_CANDIDATE`
 
-The component semantics and both prior correctness/security findings are closed, but the exact Candidate cannot be accepted while it reproducibly fails a required official CI gate relative to matched Base and pre-revision controls.
+The exact Candidate satisfies the recovered FB2-30 implementation contract: it is identity-free, keeps parent Trigger/Condition routing gated, fails closed before mutation for invalid/stale source and target contexts, preserves canonical physical-instance behavior, and introduces no consumer migration or frozen-credit change. Both prior correctness findings are closed. The intermittent 5 s smoke timeout is not treated as Candidate-specific because exact Base reproduces the same failure and Candidate has multiple complete official-suite passes.
 
-## Evidence publication fallback
+This verdict accepts only the implementation Candidate for the narrow zero-credit FB2-30 capability. It does not merge, retarget, accept any F1 consumer migration, or change formal recovery accounting.
 
-The reviewer first attempted to publish this evidence as both a top-level GitHub PR comment and a PR review on #374. The GitHub integration returned HTTP 403 `Resource not accessible by integration` for both write paths. Per the review-job fallback contract, the evidence is therefore stored as this repository reviewer report on a separate review-evidence branch. The Candidate branch and Candidate SHA were not modified.
+## Evidence publication
+
+This reviewer evidence is stored on the separate review-evidence branch rooted directly on Candidate. The Candidate branch and Candidate SHA were not modified. A prior attempt to write a PR comment/review returned GitHub HTTP 403 `Resource not accessible by integration`; the repository reviewer-report path is therefore the durable evidence channel for this review job.
