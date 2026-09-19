@@ -9,6 +9,7 @@ const SOURCE_INSTANCE = 'fixture.fb2-35.source.instance';
 const P1_ATTACK = 'fixture.fb2-35.p1-attack';
 const P2_ATTACK = 'fixture.fb2-35.p2-attack';
 const P3_ATTACK = 'fixture.fb2-35.p3-attack';
+const SUPPORT = 'fixture.fb2-35.support';
 
 function modifier(overrides: Record<string, unknown> = {}) {
   return {
@@ -59,6 +60,19 @@ function archive(ability: any = sourceAbility()) {
       attack(P1_ATTACK, 3, 1),
       attack(P2_ATTACK, 2, 4),
       attack(P3_ATTACK, 0, 2),
+      {
+        id: SUPPORT, name: 'support', cardType: 'event',
+        cardFace: { cost: 9, basePower: 0, attributes: [] },
+        playTiming: { phase: 'action', window: 'controller_play_card_window' },
+        playRequirements: [],
+        abilities: [{
+          id: 'support.move-self', kind: 'residual', printedClause: 'fixture',
+          activation: { trigger: 'on_card_played' }, conditions: [], targets: [],
+          effects: [{ type: 'move_card', target: 'this_card', to: { zone: 'attack_area' } }],
+          cost: [], creates: [], lifecycle: {}, responseWindow: {}, limit: {}, visibility: {}, ruleModifiers: [],
+          execution: { mode: 'automatic', allowedOperations: [] },
+        }],
+      },
     ],
   } as any;
 }
@@ -212,6 +226,21 @@ describe('P3-FB2-35 round active-attack paid-cost combat-power seam', () => {
     expect(power(battle(away), 'p2')).toBe(4);
   });
 
+
+  it('excludes a paid non-attack support moved into attack_area from the paid-cost ranking', () => {
+    const state = setup();
+    add(state, 'p1-support', SUPPORT, 'p1');
+    play(state, 'p1', 'p1-support');
+    expect(state.cards.find((card) => card.instanceId === 'p1-support')?.zone).toBe('attack_area');
+    expect(state.abilityRuntime!.cardState['p1-support']).toMatchObject({
+      active: true, faceDown: false, playedRound: state.round.roundNumber, paidManaOnPlay: 9,
+    });
+    play(state, 'p2', 'p2-attack');
+    const result = battle(state);
+    expect(power(result, 'p1')).toBe(0);
+    expect(power(result, 'p2')).toBe(10);
+    expect(result.winnerPlayerIds).toEqual(['p2']);
+  });
   it('keeps the different Twice-style controller-only combat-power shape unsupported', () => {
     const twiceLike = sourceAbility({
       conditions: [],
