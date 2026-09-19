@@ -5205,3 +5205,14 @@ Result: record formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #380 ex
 Accepted capability is limited to identity-free authoritative actual-paid-on-play provenance plus the exact permanent `source_owned` / current-round active authored-attack paid-cost-highest participant `combat_power:add(+6)` envelope. FB2-35 earns zero migration credit; formal accepted remains **`137/944`**, with **`807`** remaining. PR #380 remains OPEN, unmerged, and unretargeted.
 
 Next coordinator action is mandatory immediate re-overlay for `servant.ibaraki.skill.sc-ibaraki-1`; if no new blocker is found, dispatch S before any unrelated B2 seam.
+
+## TASK P3-S-R75-IBARAKI-CONSUMER-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact A R75 Ibaraki migration dispatch commit
+Read: `docs/reports/2026-09-20-p3-a-r75-ibaraki-consumer-migration-dispatch.md`
+
+Goal: migrate exactly `servant.ibaraki.skill.sc-ibaraki-1` as one standalone servant-skill archive using only already accepted structural semantics: exact type-only `source_owned` plus FB2-35 permanent `combat_power:add(+6)` for players at the source battlefield tied for highest current-round active authored-attack actual paid-mana sum. No runtime-source widening, no second consumer, no pack/generated registration.
+
+Project formal migration accounting remains `137/944` until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A performs acceptance synchronization. Branch-local frozen authoring overlap should move only `133 -> 134`.
