@@ -5179,3 +5179,15 @@ Result: record formal fresh R `MIGRATION_ACCEPTED` for PR #379 exact Candidate `
 Formal project migration accounting advances from **`136/944`** to **`137/944`**, with **`807`** remaining. PR #379 remains OPEN, unmerged, and unretargeted. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
 
 Next coordinator action is a fresh migration-closure-first dependency overlay from `137/944`; prefer a fully S-ready homogeneous family, otherwise close only the nearest 1-2 narrow B2 blockers and immediately return to S migration.
+
+## TASK P3-A-FB2-35-ROUND-ACTIVE-ATTACK-PAID-COST-COMBAT-POWER-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-fb2-35-round-active-attack-paid-cost-combat-power-dispatch`
+Base: exact R74 Stheno migration acceptance sync `e93c3b03d82a3a579473a4da67124319ba9975ec`
+Read: `docs/reports/2026-09-20-p3-a-fb2-35-round-active-attack-paid-cost-combat-power-dispatch.md`
+
+Result: migration-closure-first overlay selects `servant.ibaraki.skill.sc-ibaraki-1` as the nearest closure target. Dispatch one narrow identity-free B2 seam for the exact permanent passive `combat_power:add(+6)` shape over `players_at_source_battlefield` whose current-round active-attack **actual paid mana** sum is tied highest. Add generic per-card authoritative paid-on-play provenance only as needed for that metric; do not substitute printed cost, do not support the different Twice shape, and do not migrate Ibaraki in B2.
+
+Formal migration remains **`137/944`**, remaining **`807`**. FB2-35 is zero-credit infrastructure. On fresh R acceptance plus A capability synchronization, immediately re-overlay and prefer Ibaraki S migration over any unrelated B2 seam.
