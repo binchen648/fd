@@ -5041,3 +5041,26 @@ Accepted capability is limited to the exact type-only identity-free conditions `
 Formal recovery accepted remains **`136/944`**, with **`808`** remaining. FB2-31 earns zero migration credit. PR #375 remains OPEN, unmerged, and unretargeted. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
 
 Next coordinator action is a fresh dependency overlay over the remaining source-grounded generic-extension rows; dispatch only an honestly complete homogeneous S family, otherwise select the next narrow B2 seam.
+
+## TASK P3-A-FB2-32-SOURCE-STATE-CONDITIONS-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-32-source-state-conditions-dispatch`
+Base: exact R70 FB2-31 acceptance synchronization `189d221cb7f11693edec8985e1b69af775896bf4`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-19-p3-a-fb2-32-source-state-conditions-dispatch.md`
+
+Result: fresh readiness overlay finds no homogeneous consumer family made fully S-ready solely by FB2-31. Dispatch the next narrow identity-free condition seam: exact type-only `source_active` and `source_owned`. They appear across 30 and 28 READY_GENERIC_EXTENSION identities respectively, while Locked Reference authoring shows only type-only structural occurrences. FB2-32 earns zero migration credit.
+
+## TASK P3-FB2-32-SOURCE-STATE-CONDITIONS
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A FB2-32 dispatch commit
+Read: `docs/reports/2026-09-19-p3-a-fb2-32-source-state-conditions-dispatch.md`
+
+Goal: implement only identity-free exact-shape source-state conditions over the authoritative physical source card and current controller. `source_active` uses existing shared runtime active-state semantics; `source_owned` checks physical source owner == controller. Fail closed on malformed/stale source context. Do not broaden triggers/effects, migrate consumers, change KPI/taxonomy, merge, or retarget.
+
+Formal recovery accepted remains `136/944`; FB2-32 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization.
