@@ -115,6 +115,8 @@ describe('P3-FB2-35 round active-attack paid-cost combat-power seam', () => {
     const nearMatches = [
       sourceAbility({ conditions: [{ type: 'source_active' }] }),
       sourceAbility({ ruleModifiers: [modifier({ value: { type: 'constant', value: 12 } })] }),
+      sourceAbility({ ruleModifiers: [modifier({ value: { type: 'constant', value: '6' } })] }),
+      sourceAbility({ ruleModifiers: [modifier({ value: { type: 'constant', value: [6] } })] }),
       sourceAbility({ ruleModifiers: [modifier({ scope: { subject: 'controller' } })] }),
       sourceAbility({ ruleModifiers: [modifier({ lifecycle: { duration: 'this_round' } })] }),
       sourceAbility({ effects: [{ type: 'noop', reason: 'extra' }] }),

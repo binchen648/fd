@@ -112,7 +112,7 @@ export function isAcceptedRoundActiveAttackPaidCostCombatPowerAbility(
     str(scope.subject) !== 'players_at_source_battlefield' || where.length !== 1 ||
     str(where[0]?.type) !== 'round_active_attack_paid_cost_sum_is_highest' ||
     !Object.keys(where[0]!).every((key) => key === 'type') ||
-    str(value.type) !== 'constant' || Number(value.value) !== 6 || !Number.isSafeInteger(Number(value.value)) ||
+    str(value.type) !== 'constant' || typeof value.value !== 'number' || value.value !== 6 || !Number.isSafeInteger(value.value) ||
     str(lifecycle.duration) !== 'permanent' || str(priority.tier) !== 'card_text' || str(priority.specificity) !== 'specific' ||
     str(modifier.conflictPolicy) !== 'higher_priority_wins') return false;
   if (!Object.keys(scope).every((key) => ['subject', 'where'].includes(key)) ||
