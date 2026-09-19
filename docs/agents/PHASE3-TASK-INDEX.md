@@ -5140,3 +5140,17 @@ Read: `docs/reports/2026-09-20-p3-a-fb2-34-combat-reward-distribution-dispatch.m
 Goal: implement only the exact identity-free static passive `combat_reward_distribution: replace/full_reward_each` battle-scoring modifier over authoritative active source cards. Full-reward mode changes only split distribution of event/competition/location VP pools when a modifier controller is a winner; it must not change winner selection, battle Power, defeat/military settlement, individually assigned bonuses, lifecycle, or other modifier families. Near-matches fail closed. Do not migrate Stheno in B2.
 
 Formal recovery accepted remains `136/944`; FB2-34 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization. On acceptance, A must immediately re-overlay and prefer Stheno S migration over another unrelated B2 seam.
+
+## TASK P3-A-R73-FB2-34-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r73-fb2-34-acceptance-sync`
+Base: exact accepted Candidate `99032d4458352ecdee26dd8964b46ce4e094c0f3`
+Read: `docs/reports/2026-09-20-p3-a-r73-fb2-34-acceptance-synchronization.md`
+
+Result: record formal Reviewer verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE` for exact PR #378 Candidate `99032d4458352ecdee26dd8964b46ce4e094c0f3`, with canonical evidence `https://github.com/binchen648/fd/pull/378#issuecomment-5744013376`. Later accepted comment `5744094298` is redundant evidence only and creates no additional acceptance event or credit. The prior Candidate `996e7a7c5b294f4d6208ca7ec473d0ef6adccf27` remains terminal `IMPLEMENTATION_NEEDS_REVISION` and is not re-reviewed.
+
+Accepted capability is limited to the exact identity-free static passive `combat_reward_distribution: replace/full_reward_each` envelope, including the corrected loader-to-compiled-runtime semantic preservation. FB2-34 earns zero migration credit; formal accepted remains **`136/944`**, with **`808`** remaining. PR #378 remains OPEN, unmerged, and unretargeted.
+
+Next coordinator action is mandatory migration-closure-first re-overlay for `servant.stheno.skill.sc-stheno-2`; if no new blocker is found, dispatch S immediately before any unrelated B2 seam.
