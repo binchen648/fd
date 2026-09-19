@@ -28,7 +28,9 @@ export function currentRoundCombatLossAbsent(
   const scoringReceiptIds = event.scoringReceiptIds;
   const outcomes = event.battleOutcomes;
   if (!Array.isArray(battleIds) || !Array.isArray(resultIds) || !Array.isArray(scoringReceiptIds) ||
-      !Array.isArray(outcomes) || battleIds.length !== outcomes.length || resultIds.length !== outcomes.length ||
+      !Array.isArray(outcomes) || battleIds.some((value) => typeof value !== 'string') ||
+      resultIds.some((value) => typeof value !== 'string') || scoringReceiptIds.some((value) => typeof value !== 'string') ||
+      battleIds.length !== outcomes.length || resultIds.length !== outcomes.length ||
       scoringReceiptIds.length !== outcomes.length || new Set(battleIds).size !== battleIds.length ||
       new Set(resultIds).size !== resultIds.length || new Set(scoringReceiptIds).size !== scoringReceiptIds.length) return false;
 

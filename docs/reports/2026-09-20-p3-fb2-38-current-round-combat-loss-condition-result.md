@@ -96,3 +96,23 @@ Formal migration remains **`140/944`**, with **`804`** remaining. FB2-38 earns *
 PR #381 / Ibaraki remains pending independent migration review and is not credited here.
 
 After fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, immediately re-overlay the intended closure consumer and dispatch fresh S migration before unrelated B2 work.
+
+## Second reviewer revision binding
+
+- Superseded Candidate: `29c0dd121d4732e57921d50ec8cdf2314d7a4803`
+- Fresh R verdict: `IMPLEMENTATION_NEEDS_REVISION`
+- Canonical reviewer evidence: `https://github.com/binchen648/fd/pull/387#issuecomment-5746041760`
+- Blocking finding: malformed terminal provenance with a truthy non-string `battleIds` member reached `.startsWith(...)` and threw instead of failing closed.
+- Minimal revision: explicitly require string elements in `battleIds`, `resultIds`, and `scoringReceiptIds` before terminal ID validation; add regression coverage proving `[123]` in each neighboring ID array returns no trigger and does not throw.
+- No semantic scope expansion, consumer authoring, persistent player flag, merge, retarget, or migration credit is included.
+
+Validation after this revision:
+
+- `npm.cmd run typecheck`: PASS;
+- focused FB2-38: **1 file / 9 tests PASS**;
+- rules `src/__tests__ + core + regression + focused`: **83 files / 503 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2`: **156 files / 1096 tests PASS**;
+- content validation: **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated determinism, exact Locked Reference verification, client production build, and `git diff --check`: PASS;
+- revision-only production hardcode audit: CLEAN;
+- formal migration remains **`140/944`**, with **`804`** remaining; FB2-38 remains zero-credit runtime capability infrastructure.

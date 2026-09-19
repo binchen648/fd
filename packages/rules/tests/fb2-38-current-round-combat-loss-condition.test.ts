@@ -174,6 +174,11 @@ describe('P3-FB2-38 current-round combat-loss absence condition', () => {
       battleOutcomes: good.battleOutcomes!.map((outcome) => ({ ...outcome, participantPlayerIds: undefined })),
     })).toEqual([]);
     expect(trigger(state, { ...good, battleParticipantIds: ['p1'] })).toEqual([]);
+    for (const key of ['battleIds', 'resultIds', 'scoringReceiptIds'] as const) {
+      const malformedIds = { ...good, [key]: [123] } as unknown as AbilityEvent;
+      expect(() => trigger(state, malformedIds)).not.toThrow();
+      expect(trigger(state, malformedIds)).toEqual([]);
+    }
 
     const malformed = setup({ ...exact(), extra: true });
     malformed.battleResults = [result('miyama_town', ['p1', 'p2'], ['p1'])];
