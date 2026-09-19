@@ -5064,3 +5064,18 @@ Read: `docs/reports/2026-09-19-p3-a-fb2-32-source-state-conditions-dispatch.md`
 Goal: implement only identity-free exact-shape source-state conditions over the authoritative physical source card and current controller. `source_active` uses existing shared runtime active-state semantics; `source_owned` checks physical source owner == controller. Fail closed on malformed/stale source context. Do not broaden triggers/effects, migrate consumers, change KPI/taxonomy, merge, or retarget.
 
 Formal recovery accepted remains `136/944`; FB2-32 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization.
+
+
+## TASK P3-A-R71-FB2-32-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r71-fb2-32-acceptance-sync`
+Base: exact accepted Candidate `ae80ed7fb759a35964bcf5d9f581dc4e52d49d49`
+Read: `docs/reports/2026-09-19-p3-a-r71-fb2-32-acceptance-synchronization.md`
+
+Result: record formal Reviewer transport verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE` for exact PR #376 Candidate `ae80ed7fb759a35964bcf5d9f581dc4e52d49d49`, backed by independent reviewer evidence commit `f1da3b4d0976cd80dbe4a3569bb9a216cf7dc441`. The persisted reviewer report uses the older accepted label `GATE_A_B_CANDIDATE_ACCEPTED`; transport normalization maps that same PR/Candidate/evidenceRef to the workflow token without re-review. Both prior blockers are independently re-probed closed: source-state nodes are condition-route-only, and nonphysical source context benignly fails false instead of throwing.
+
+Accepted capability remains only exact type-only `source_active` and `source_owned` generic conditions. FB2-32 earns zero migration credit; formal accepted remains **`136/944`**, with **`808`** remaining. PR #376 remains OPEN, unmerged, and unretargeted. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
+
+Next coordinator action is a fresh dependency overlay over remaining source-grounded generic-extension rows; dispatch S only for a fully complete homogeneous family, otherwise choose the next narrow B2 seam.
