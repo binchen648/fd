@@ -5191,3 +5191,17 @@ Read: `docs/reports/2026-09-20-p3-a-fb2-35-round-active-attack-paid-cost-combat-
 Result: migration-closure-first overlay selects `servant.ibaraki.skill.sc-ibaraki-1` as the nearest closure target. Dispatch one narrow identity-free B2 seam for the exact permanent passive `combat_power:add(+6)` shape over `players_at_source_battlefield` whose current-round active-attack **actual paid mana** sum is tied highest. Add generic per-card authoritative paid-on-play provenance only as needed for that metric; do not substitute printed cost, do not support the different Twice shape, and do not migrate Ibaraki in B2.
 
 Formal migration remains **`137/944`**, remaining **`807`**. FB2-35 is zero-credit infrastructure. On fresh R acceptance plus A capability synchronization, immediately re-overlay and prefer Ibaraki S migration over any unrelated B2 seam.
+
+## TASK P3-A-R75-FB2-35-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r75-fb2-35-acceptance-sync`
+Base: exact accepted Candidate `70df7d3782b553e9f4c222289ebb6c66c619e1e0`
+Read: `docs/reports/2026-09-20-p3-a-r75-fb2-35-acceptance-synchronization.md`
+
+Result: record formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #380 exact Candidate `70df7d3782b553e9f4c222289ebb6c66c619e1e0`, backed by canonical evidence `https://github.com/binchen648/fd/pull/380#issuecomment-5744753519`. Earlier revision verdicts for historical Candidates are terminal evidence only and do not trigger rework or duplicate review.
+
+Accepted capability is limited to identity-free authoritative actual-paid-on-play provenance plus the exact permanent `source_owned` / current-round active authored-attack paid-cost-highest participant `combat_power:add(+6)` envelope. FB2-35 earns zero migration credit; formal accepted remains **`137/944`**, with **`807`** remaining. PR #380 remains OPEN, unmerged, and unretargeted.
+
+Next coordinator action is mandatory immediate re-overlay for `servant.ibaraki.skill.sc-ibaraki-1`; if no new blocker is found, dispatch S before any unrelated B2 seam.
