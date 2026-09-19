@@ -5103,3 +5103,17 @@ Read: `docs/reports/2026-09-19-p3-a-fb2-33-event-combat-outcome-dispatch.md`
 Goal: implement only condition-route, exact-shape, identity-free event-player combat outcome evaluation over trusted `AbilityEvent.playerId` and `battleResult`. Missing/unknown/malformed/contradictory context fails closed. Do not broaden activation triggers/effects, migrate consumers, change taxonomy/KPI, merge, or retarget.
 
 Formal recovery accepted remains `136/944`; FB2-33 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization.
+
+## TASK P3-A-R72-FB2-33-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r72-fb2-33-acceptance-sync`
+Base: exact accepted Candidate `5ccef0d682ce0673926e349eda1732419fc0792c`
+Read: `docs/reports/2026-09-20-p3-a-r72-fb2-33-acceptance-synchronization.md`
+
+Result: record formal Reviewer verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE` for exact PR #377 Candidate `5ccef0d682ce0673926e349eda1732419fc0792c`, with canonical evidence `https://github.com/binchen648/fd/pull/377#issuecomment-5743426456`. Additional repeated reviews of the same PR/Candidate are redundant evidence only and do not create new acceptance events.
+
+Accepted capability remains only exact type-only identity-free `event_player_won_combat` and `event_player_lost_combat` generic conditions over trusted `AbilityEvent.playerId` plus `battleResult`. FB2-33 earns zero migration credit; formal accepted remains **`136/944`**, with **`808`** remaining. PR #377 remains OPEN, unmerged, and unretargeted. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
+
+Next coordinator action is a fresh dependency overlay over remaining source-grounded generic-extension rows; dispatch S only for a fully complete homogeneous family, otherwise choose the next narrow B2 seam.
