@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.molay",
+  "name": "雅克·德·莫莱",
+  "class": "Saber",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen F1 printed evidence plus accepted P3-R67/FB2-29 Outer-God-Life structural runtime semantics are authoritative. Locked Reference supplies static owner/card metadata only; Reference handler IDs are not runtime routing."
+  },
+  "cards": [
+    {
+      "id": "servant.molay.skill.sc-molay-4",
+      "aliases": [
+        "sc_molay_4"
+      ],
+      "legacyId": "sc_molay_4",
+      "name": "领域外生命",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.molay"
+      },
+      "printedText": "【真名解放】\n你和降临者各获得合计威力+6。将此牌加入降临者的弃牌堆。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 1,
+        "basePower": 0,
+        "semanticCategory": "outer_god_life"
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-molay-4.outer-god-life",
+          "kind": "phase_action",
+          "printedClause": "【真名解放】\n你和降临者各获得合计威力+6。将此牌加入降临者的弃牌堆。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "adjust_round_total_power",
+              "recipients": [
+                "controller",
+                "source_servant_owner"
+              ],
+              "amount": 6,
+              "dedupe": true
+            },
+            {
+              "type": "schedule_source_card_return",
+              "recipient": "source_servant_owner"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[27].skills[3].text#line=1",
+            "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[27].skills[3].text#line=2",
+            "sha256": "9dfd8a774540b789ab2a1fe8e9fe7481b493a083ba9a4c24b69b5192132cc62e"
+          }
+        ],
+        "sourceTextSha256": "9aa41b08e14ff5d692af6b91a7f653b0626c3419b3a847611da5fa2a750cf97f",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_molay_4",
+          "cost": 1,
+          "basePower": 0,
+          "legacyRequirement": 1,
+          "typeLabel": "特殊"
+        },
+        "acceptedContracts": {
+          "outerGodLifeSubsystem": "P3-R67/FB2-29"
+        }
+      }
+    }
+  ]
+}
