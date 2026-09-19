@@ -311,6 +311,7 @@ describe('P3-FB2-27 Ruler seal relationship subsystem', () => {
     expect(choose(state, 'p2', [FREE_INSTANCE]).ok).toBe(true);
     expect(state.players[1]!.mana).toBe(0);
     expect(state.cards.find((card) => card.instanceId === FREE_INSTANCE)!.zone).toBe('attack_area');
+    expect(state.abilityRuntime!.cardState[FREE_INSTANCE]).toMatchObject({ paidManaOnPlay: 0 });
 
     const battle = { id: 'ruler-battle-win', type: 'after_battle_result_determined', battleParticipantIds: ['p2', 'p3'], battleResult: { winners: ['p2'], loserIds: ['p3'] } } as any;
     rules.processAbilityEvent(state, battle);

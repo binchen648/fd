@@ -12,8 +12,8 @@ import type { LocationDefinition } from "../schema/location";
 import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
-import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
-import { isAcceptedStaticCombatRewardDistributionAbility } from '../ability/loader';
+import { calculateCardPower, classifyCardPlay, processAbilityEvent } from '../ability/interpreter';
+import { isAcceptedRoundActiveAttackPaidCostCombatPowerAbility, isAcceptedStaticCombatRewardDistributionAbility } from '../ability/loader';
 import { roundTotalPowerAdjustment } from '../ability/outer-god-life';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { logicalDayForPlayer } from './rule-overrides';
@@ -336,6 +336,7 @@ export function deriveBattleParticipantsFromState(
 
       const terrainSlotIndex = assignedTerrainSlotIndex(state, battlefieldId, player.id);
       let persistentPowerAdjustment = roundTotalPowerAdjustment(state, player.id);
+      persistentPowerAdjustment += roundActiveAttackPaidCostCombatPowerAdjustment(state, battlefieldId, player.id);
       if (logicalDayForPlayer(state, player.id) === 1) {
         persistentPowerAdjustment += state.ruleOverrides?.firstLogicalDayTotalPowerAdjustmentByPlayer?.[player.id] ?? 0;
       }
@@ -396,6 +397,48 @@ function buildDefaultVpAdjustments(
 
 function splitVpPoolPerWinner(pool: number, winnerCount: number): number {
   return winnerCount > 0 && pool > 0 ? Math.ceil(pool / winnerCount) : 0;
+}
+
+function currentRoundActiveAttackPaidCost(state: GameState, playerId: string): { hasAttack: boolean; total: number } {
+  const runtime = state.abilityRuntime;
+  if (!runtime) return { hasAttack: false, total: 0 };
+  let hasAttack = false;
+  let total = 0;
+  for (const attack of state.cards) {
+    if (attack.controllerPlayerId !== playerId || attack.zone !== 'attack_area') continue;
+    const sourceState = runtime.cardState[attack.instanceId];
+    if (!sourceState || sourceState.active !== true || sourceState.faceDown === true || sourceState.playedRound !== state.round.roundNumber) continue;
+    const definition = runtime.pack.cards[attack.definitionId];
+    const playClassification = classifyCardPlay(definition);
+    if (!definition || playClassification.playKind !== 'attack' || playClassification.destinationZone !== 'attack_area') continue;
+    const paid = sourceState.paidManaOnPlay;
+    if (!Number.isSafeInteger(paid) || paid! < 0) continue;
+    hasAttack = true;
+    total += paid!;
+  }
+  return { hasAttack, total };
+}
+
+function roundActiveAttackPaidCostCombatPowerAdjustment(state: GameState, battlefieldId: string, playerId: string): number {
+  const runtime = state.abilityRuntime;
+  if (!runtime) return 0;
+  const battlefieldPlayers = state.players.filter((candidate) => candidate.status === 'active' && candidate.locationId === battlefieldId);
+  if (!battlefieldPlayers.some((candidate) => candidate.id === playerId)) return 0;
+  const paid = battlefieldPlayers.map((candidate) => ({ playerId: candidate.id, ...currentRoundActiveAttackPaidCost(state, candidate.id) }))
+    .filter((entry) => entry.hasAttack);
+  if (!paid.length) return 0;
+  const highest = Math.max(...paid.map((entry) => entry.total));
+  if (!paid.some((entry) => entry.playerId === playerId && entry.total === highest)) return 0;
+  const sources = state.cards.filter((source) => {
+    if (source.ownerPlayerId !== source.controllerPlayerId) return false;
+    const sourceController = state.players.find((candidate) => candidate.id === source.controllerPlayerId);
+    if (!sourceController || sourceController.status !== 'active' || sourceController.locationId !== battlefieldId) return false;
+    const definition = runtime.pack.cards[source.definitionId];
+    return definition?.abilities.some((ability) =>
+      isAcceptedRoundActiveAttackPaidCostCombatPowerAbility(ability as unknown as Record<string, unknown>, 'compiled')) === true;
+  });
+  // The accepted seam is one exact modifier source; ambiguous duplicate sources fail closed rather than stack implicitly.
+  return sources.length === 1 ? 6 : 0;
 }
 
 function hasWinningFullRewardEachModifier(state: GameState, winnerPlayerIds: string[]): boolean {

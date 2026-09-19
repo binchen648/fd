@@ -3397,11 +3397,15 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     reject('attack_play_limit_reached', 'Attack play limit reached for this round');
   }
   let cost = 0;
+  const paidManaByCard = new Map<string, number>();
   for (const c of choices) {
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
     const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost);
     if (failure) reject(failure, 'Card cannot be played in this batch');
-    if (!waiveManaCost && !c.faceDown) cost += Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0);
+    const paidMana = !waiveManaCost && !c.faceDown ? Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0) : 0;
+    if (!Number.isSafeInteger(paidMana) || paidMana < 0) reject('invalid_cost', 'Card paid mana provenance must be a nonnegative safe integer');
+    paidManaByCard.set(c.cardInstanceId, paidMana);
+    cost += paidMana;
   }
   if (cost > player(s, playerId).mana) reject('insufficient_mana', 'Cannot pay aggregate batch cost');
   const playedCards = choices.map(c => ({ instanceId: c.cardInstanceId, controllerId: playerId,
@@ -3411,7 +3415,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     moveCard(s, c.cardInstanceId, cardPlayClassification(s, c.cardInstanceId).destinationZone);
     const limit = perGamePlayLimit(definition(s, c.cardInstanceId)!);
     if (limit) runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] = (runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] ?? 0) + 1;
-    runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber };
+    runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber, paidManaOnPlay: paidManaByCard.get(c.cardInstanceId)! };
     if (c.faceDown) card(s, c.cardInstanceId).visibility = { scope: 'owner_only', ownerPlayerId: playerId };
     
     // Track noble phantasm costs for cards with 宝具 attribute
