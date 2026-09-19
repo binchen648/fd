@@ -5287,3 +5287,15 @@ Read: `docs/reports/2026-09-20-p3-a-fb2-37-deployment-destinations-dispatch.md`
 Result: closure-first overlay selects `master.kayneth.skill.s3` as the nearest one-seam target. Dispatch one narrow identity-free exact `deployment_destinations / replace` structural modifier over controller deployment to a lower-VP opponent who is the sole active occupant of an otherwise legal battlefield. Preserve the existing generic legacy product effect route only for compatibility; remove identity-bearing production helper naming and do not migrate any consumer in B2.
 
 FB2-37 earns zero migration credit. Formal migration remains **`139/944`**, with **`805`** remaining. On fresh R acceptance plus A synchronization, immediately dispatch Kayneth s3 S migration before unrelated runtime work.
+
+## TASK P3-A-R79-FB2-37-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r79-fb2-37-acceptance-sync`
+Base: exact accepted Candidate `36ed05d64c5f6c18b947789d018f461283f533e3`
+Read: `docs/reports/2026-09-20-p3-a-r79-fb2-37-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #385 exact Candidate `36ed05d64c5f6c18b947789d018f461283f533e3`, backed by canonical evidence `https://github.com/binchen648/fd/pull/385#issuecomment-5745681302`. Earlier Candidate `a87e05db6c7ab48163f51fb237d2cfc374b1087d` remains revision-only evidence. Accepted capability is the exact identity-free structural `deployment_destinations / replace` seam with runtime gating on the accepted containing ability.
+
+FB2-37 earns zero migration credit; formal migration remains **`139/944`**, with **`805`** remaining. PR #385 remains OPEN, unmerged, and unretargeted. Next action is immediate Kayneth s3 closure re-overlay and fresh S dispatch if no additional blocker appears.
