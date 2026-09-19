@@ -20,6 +20,7 @@ import {
 import { currentDeploymentBonus } from '../core/terrain-advantage';
 import { eventRulePlacementByInstance, initializeEventRulePlacements, listEventRuleCandidates, moveEventRuleCandidate, moveEventRuleCandidates, type EventRuleZone } from './event-rule';
 import { applyOuterGodLifeUse, isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, settlePendingSourceCardReturns } from './outer-god-life';
+import { classifyAcceptedSkillUseForbidModifier, definitionHasStructuralTrueNameRelease, isAcceptedStaticWhileActiveSkillUseForbidAbility } from './skill-use-forbid';
 export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import {
   DataFlowValidationError,
@@ -683,15 +684,46 @@ function perGamePlayLimit(d: AuthoringCard): { key: string; uses: number } | und
   const limiter = d.abilities.find(a => a.execution.mode === 'automatic' && node(a.limit).type === 'per_game' && node(a.limit).scope === 'this_card');
   return limiter ? { key: limiter.id, uses: Number(node(limiter.limit).uses ?? 1) } : undefined;
 }
+function acceptedSkillUseForbidApplies(s: GameState, modifierControllerId: string, modifierSourceId: string, targetPlayerId: string, targetSourceId: string, modifier: RuleNode): boolean {
+  const variant = classifyAcceptedSkillUseForbidModifier(modifier);
+  if (!variant) return false;
+  const source = s.cards.find((candidate) => candidate.instanceId === modifierSourceId);
+  const target = s.cards.find((candidate) => candidate.instanceId === targetSourceId);
+  const targetDefinition = definition(s, targetSourceId);
+  if (!source || !target || !targetDefinition || !['master_skill', 'servant_skill'].includes(targetDefinition.cardType)) return false;
+  if (source.controllerPlayerId !== modifierControllerId) return false;
+  const sourceLocation = player(s, source.controllerPlayerId).locationId;
+  const targetLocation = player(s, targetPlayerId).locationId;
+  if (!sourceLocation || targetLocation !== sourceLocation) return false;
+  if (variant === 'same_location_true_name_off_attack') {
+    return target.zone !== 'attack_area' && definitionHasStructuralTrueNameRelease(targetDefinition);
+  }
+  return targetPlayerId !== modifierControllerId && target.zone === 'skill' && runtime(s).cardState[targetSourceId]?.faceDown === true;
+}
+function staticWhileActiveSkillUseForbidRules(s: GameState, playerId: string, sourceId: string): string[] {
+  const rules: string[] = [];
+  for (const source of s.cards) {
+    if (!active(s, source.instanceId)) continue;
+    const sourceDefinition = definition(s, source.instanceId);
+    if (!sourceDefinition) continue;
+    for (const ability of sourceDefinition.abilities) {
+      if (!isAcceptedStaticWhileActiveSkillUseForbidAbility(ability)) continue;
+      const modifier = ability.ruleModifiers[0]!;
+      if (acceptedSkillUseForbidApplies(s, source.controllerPlayerId, source.instanceId, playerId, sourceId, modifier)) rules.push('skill_use');
+    }
+  }
+  return rules;
+}
 function ongoingCardPlayForbidRules(s: GameState, playerId: string, sourceId: string): string[] {
   const d = definition(s, sourceId); if (!d) return ['missing_definition'];
   const targetPlayer = player(s, playerId);
-  const ongoingRules = liveOngoing(s).flatMap(o => o.ruleModifiers).flatMap(({ controllerId, definition: m }) => {
+  const ongoingRules = liveOngoing(s).flatMap(o => o.ruleModifiers).flatMap(({ controllerId, sourceCardId, definition: m }) => {
     const controller = player(s, controllerId); const scope = node(m.scope);
     const appliesToSameBattlefieldOpponent = ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(scope.subject)) ||
       ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(scope.object));
     if (appliesToSameBattlefieldOpponent && (controllerId === playerId || !sameBattlefield(s, controller.locationId, targetPlayer.locationId))) return [];
     if (m.operation !== 'forbid') return [];
+    if (m.rule === 'skill_use' && acceptedSkillUseForbidApplies(s, controllerId, sourceCardId, playerId, sourceId, m)) return ['skill_use'];
     if (m.rule === 'situation_restrictions' || m.rule === 'situation_play_forbid') return [str(m.rule)];
     if (m.rule === 'use_skill_card') return d.cardType === 'servant_skill' ? [str(m.rule)] : [];
     if (m.rule === 'play_card_attribute') {
@@ -708,7 +740,7 @@ function ongoingCardPlayForbidRules(s: GameState, playerId: string, sourceId: st
         return [entry.rule ?? (entry.sourceType === 'situation' ? 'situation_play_forbid' : 'play_card_attribute')];
       })
     : [];
-  return ongoingRules.concat(matchRules);
+  return staticWhileActiveSkillUseForbidRules(s, playerId, sourceId).concat(ongoingRules, matchRules);
 }
 function abilityLimitReached(s: GameState, sourceId: string, a: AuthoringAbility): boolean {
   const limitType = str(a.limit?.type);
