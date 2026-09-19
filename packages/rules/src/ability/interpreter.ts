@@ -544,6 +544,20 @@ function highestPowerOpponents(event: AbilityEvent, controllerId: string): strin
   return opponents.filter((playerId) => snapshot.powers[playerId] === highest);
 }
 
+export function isEventPlayerRelationCondition(c: RuleNode): boolean {
+  return ['event_player_is_controller', 'event_player_is_opponent'].includes(str(c.type)) &&
+    Object.keys(c).every((key) => key === 'type');
+}
+
+function eventPlayerRelationCondition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
+  if (!isEventPlayerRelationCondition(c)) reject('unsupported', 'Unsupported event-player relation condition shape');
+  const eventPlayerId = ctx.event?.playerId;
+  if (!eventPlayerId || !s.players.some((candidate) => candidate.id === eventPlayerId)) return false;
+  return c.type === 'event_player_is_controller'
+    ? eventPlayerId === ctx.controllerId
+    : eventPlayerId !== ctx.controllerId;
+}
+
 function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (!c || typeof c !== 'object') reject('unsupported', 'Unsupported condition');
   if (c.negated === true) return !condition(s, ctx, { ...c, negated: undefined });
@@ -581,6 +595,8 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'controller_won_battle': return ctx.event?.battleResult?.winners.includes(p.id) ?? false;
     case 'controller_loses_battle': return !(ctx.event?.battleResult?.winners.includes(p.id) ?? true);
     case 'controller_sole_winner': return ctx.event?.battleResult?.winners.length === 1 && ctx.event.battleResult.winners[0] === p.id;
+    case 'event_player_is_controller':
+    case 'event_player_is_opponent': return eventPlayerRelationCondition(s, ctx, c);
     case 'controller_seat_in_first_half': {
       const activePlayers = s.players.filter(candidate => candidate.status === 'active').sort((a, b) => a.seat - b.seat);
       const firstHalfCount = Math.floor(activePlayers.length / 2);
