@@ -11,6 +11,7 @@ import {
 } from './ruler-seal';
 import { isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, OUTER_GOD_LIFE_CATEGORY } from './outer-god-life';
 import { classifyAcceptedSkillUseForbidModifier } from './skill-use-forbid';
+import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './deployment-destinations';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -404,18 +405,23 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       const acceptedStaticCombatRewardDistribution = isAcceptedStaticCombatRewardDistributionAbility(a);
       const acceptedPaidCostCombatPower = isAcceptedRoundActiveAttackPaidCostCombatPowerAbility(a);
+      const acceptedDeploymentDestinationReplacement = isAcceptedLowerVpLoneBattlefieldDeploymentAbility(a);
       for (const m of nodes(a.ruleModifiers)) {
         const acceptedRewardModifier = acceptedStaticCombatRewardDistribution && m === nodes(a.ruleModifiers)[0];
         const acceptedPaidCostModifier = acceptedPaidCostCombatPower && m === nodes(a.ruleModifiers)[0];
+        const acceptedDeploymentModifier = acceptedDeploymentDestinationReplacement && m === nodes(a.ruleModifiers)[0];
         const acceptedSkillUseForbid = classifyAcceptedSkillUseForbidModifier(m);
         const operationSupported = ['add', 'set', 'ignore', 'lock', 'exclude', 'forbid'].includes(str(m.operation)) ||
-          (acceptedRewardModifier && m.operation === 'replace');
+          (acceptedRewardModifier && m.operation === 'replace') ||
+          (acceptedDeploymentModifier && m.operation === 'replace');
         const ruleSupported = ['attack.currentPower', 'card.currentPower', 'effect_prevention', 'battlefield', 'terrain_and_external_effects', 'use_skill_card', 'play_card_attribute', 'enter_or_leave_current_battlefield', 'terrain_and_external_effects_for_controller_and_opponents', 'terrain_and_external_servant_or_npc_effects', 'situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least', 'netherworld_protection'].includes(str(m.rule)) ||
           (acceptedRewardModifier && m.rule === 'combat_reward_distribution') ||
           (acceptedPaidCostModifier && m.rule === 'combat_power') ||
+          (acceptedDeploymentModifier && m.rule === 'deployment_destinations') ||
           (acceptedSkillUseForbid !== undefined && m.rule === 'skill_use');
         if (!operationSupported || !ruleSupported) issue('ruleModifiers', 'Unmapped rule or operation', id);
         if (m.rule === 'skill_use' && acceptedSkillUseForbid === undefined) issue('ruleModifiers', 'Unsupported skill-use forbid selector shape', id);
+        if (m.rule === 'deployment_destinations' && !acceptedDeploymentModifier) issue('ruleModifiers', 'Unsupported deployment-destination replacement shape', id);
         if (m.rule === 'combat_reward_distribution' && !acceptedRewardModifier) issue('ruleModifiers', 'Unsupported combat reward distribution modifier shape', id);
         if (m.rule === 'effect_prevention' && (m.operation !== 'ignore' || node(m.priority).tier !== 'explicit_exception')) issue('ruleModifiers.priority', 'Prevention exception requires explicit_exception', id);
         const ruleIsPlayException = m.operation === 'ignore' && ['situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least'].includes(str(m.rule));
@@ -426,7 +432,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (node(m.scope).object && !['source_card', 'this_card', 'attack_card', 'this_effect', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield', 'all_players'].includes(str(node(m.scope).object))) issue('ruleModifiers.scope.object', 'Unmapped modifier scope', id);
         if (node(m.scope).controller && !['self', 'controller', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield'].includes(str(node(m.scope).controller))) issue('ruleModifiers.scope.controller', 'Unmapped modifier controller', id);
         if (m.lifecycle && a.lifecycle && JSON.stringify(m.lifecycle) !== JSON.stringify(a.lifecycle) &&
-          !isAcceptedMagicResistanceIndependentModifierLifecycle(a, m) && !acceptedPaidCostModifier) {
+          !isAcceptedMagicResistanceIndependentModifierLifecycle(a, m) && !acceptedPaidCostModifier && !acceptedDeploymentModifier) {
           issue('ruleModifiers.lifecycle', 'Independent modifier lifecycles require a separate ongoing handler', id);
         }
       }

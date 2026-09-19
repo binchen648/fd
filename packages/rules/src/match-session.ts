@@ -7,6 +7,7 @@ import {
 } from './ability/interpreter';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
+import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './ability/deployment-destinations';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
 import type {
   AbilityCommand,
@@ -537,26 +538,27 @@ export class MatchSession {
           ...(this.state.ruleOverrides ? { ruleOverrides: this.state.ruleOverrides } : {}),
         });
       });
-    const prideLocations = this.kaynethPrideDeploymentLocations(playerId, legalLocations.map((location) => location.id));
+    const replacementLocations = this.structuralDeploymentReplacementLocations(playerId, legalLocations.map((location) => location.id));
     const mustBattlefield = this.state.ruleOverrides?.mustDeployToBattlefieldPlayerIds?.includes(playerId);
     const filteredLocations = mustBattlefield ? legalLocations.filter((location) => location.tags.includes('battlefield')) : legalLocations;
-    return (prideLocations.length
-      ? filteredLocations.filter((location) => prideLocations.includes(location.id))
+    return (replacementLocations.length
+      ? filteredLocations.filter((location) => replacementLocations.includes(location.id))
       : filteredLocations)
       .map((location) => ({ type: 'deploy_player' as const, locationId: location.id }));
   }
 
-  private kaynethPrideDeploymentLocations(playerId: string, legalLocationIds: LocationId[]): LocationId[] {
+  private structuralDeploymentReplacementLocations(playerId: string, legalLocationIds: LocationId[]): LocationId[] {
     const player = this.state.players.find((candidate) => candidate.id === playerId);
     if (!player) return [];
-    const hasPride = this.state.cards.some((card) =>
+    const hasReplacement = this.state.cards.some((card) =>
       card.controllerPlayerId === playerId &&
       ['skill', 'field'].includes(card.zone) &&
       (this.state.abilityRuntime?.pack.cards[card.definitionId]?.abilities ?? []).some((ability) =>
+        (card.ownerPlayerId === playerId && isAcceptedLowerVpLoneBattlefieldDeploymentAbility(ability)) ||
         ability.effects.some((effect) =>
           effect.type === 'deployment_rule_override' &&
           effect.rule === 'must_deploy_to_lower_vp_lone_battlefield')));
-    if (!hasPride) return [];
+    if (!hasReplacement) return [];
     const enabledBattlefields = getEnabledLocations(this.state.map, this.state.locationConfig)
       .filter((location) => location.tags.includes('battlefield'))
       .map((location) => location.id);
