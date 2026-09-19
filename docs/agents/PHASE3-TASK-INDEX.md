@@ -4969,3 +4969,31 @@ Read: `docs/reports/2026-09-19-p3-a-fb2-29-outer-god-life-dispatch.md`
 Result: dispatch one narrow B2 structural family for the five homogeneous `core.outer-god-life` identities. Required behavior is source-owner relational, identity-free, current-round +6 total-power sharing with dedupe, battle-terminal return of the same physical source to the source servant owner's discard, and a structural reusable `outer_god_life` category marker. No downstream migration credit is taken.
 
 Formal accepted remains `127/944`, `817` remaining. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
+
+## TASK P3-A-FB2-30-MASTER-SKILL-DEFINITION-RETURN-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-30-card-definition-return-dispatch`
+Base: exact R68 acceptance synchronization `6718244a7e939afb57687dc8a1ac99ab03302c04`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-19-p3-a-fb2-30-master-skill-definition-return-dispatch.md`
+
+Result: after excluding the exact formal `136/944` union, `63` block-free `READY_GENERIC_EXTENSION` identities remain. Dispatch one narrow identity-free Card Zone component for controller-owned master-skill definition return/materialization. Arcueid s1 and Ciel s1b are the immediate source-grounded upper-bound consumers, but their different parent triggers/conditions are not accepted or migrated by FB2-30. B2 earns zero frozen credit.
+
+## TASK P3-FB2-30-MASTER-SKILL-DEFINITION-RETURN
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A FB2-30 dispatch commit
+Read: `docs/reports/2026-09-19-p3-a-fb2-30-master-skill-definition-return-dispatch.md`
+
+Goal: implement only the exact structural `return_card_by_definition` component for a controller-owned `master_skill`, returning one existing physical instance to runtime `skill` or creating exactly one when missing. Fail closed on malformed shape, wrong owner/type, missing definition, or duplicate physical targets. Do not add parent trigger/condition routes, migrate F1 authoring, change KPI/taxonomy, merge, or retarget.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `IMPLEMENTATION_BLOCKED`
+
+Formal recovery accepted remains `136/944`; FB2-30 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization.
