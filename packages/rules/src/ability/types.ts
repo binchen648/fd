@@ -226,6 +226,8 @@ export interface SafeEvent {
 }
 export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number;
+  /** Actual mana charged for this physical card by its latest authoritative play. */
+  paidManaOnPlay?: number;
   reversed?: boolean; attributeOverrides?: string[];
 }
 export interface RulerSealBinding {
