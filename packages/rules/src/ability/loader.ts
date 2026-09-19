@@ -37,6 +37,33 @@ function isAcceptedMagicResistanceIndependentModifierLifecycle(rawAbility: RuleN
     str(lifecycle.duration) === 'this_round' && Object.keys(lifecycle).every((key) => key === 'duration') &&
     Object.keys(modifier).every((key) => ['id', 'printedClause', 'type', 'operation', 'rule', 'scope', 'value', 'lifecycle'].includes(key));
 }
+
+export function isAcceptedStaticCombatRewardDistributionAbility(rawAbility: RuleNode): boolean {
+  if (str(rawAbility.kind) !== 'passive') return false;
+  if (Object.keys(node(rawAbility.activation)).length !== 0 ||
+    nodes(rawAbility.conditions).length !== 0 || nodes(rawAbility.targets).length !== 0 ||
+    (Array.isArray(rawAbility.cost) ? nodes(rawAbility.cost).length !== 0 : rawAbility.cost !== undefined) ||
+    nodes(rawAbility.effects).length !== 0 || nodes(rawAbility.creates).length !== 0 ||
+    Object.keys(node(rawAbility.lifecycle)).length !== 0 || Object.keys(node(rawAbility.responseWindow)).length !== 0 ||
+    Object.keys(node(rawAbility.limit)).length !== 0 || Object.keys(node(rawAbility.visibility)).length !== 0 ||
+    (Array.isArray(rawAbility.markers) && rawAbility.markers.length !== 0) || rawAbility.copies !== undefined || rawAbility.transforms !== undefined) return false;
+  const modifiers = nodes(rawAbility.ruleModifiers);
+  if (modifiers.length !== 1) return false;
+  const modifier = modifiers[0]!;
+  const scope = node(modifier.scope);
+  if (modifier.operation !== 'replace' || modifier.rule !== 'combat_reward_distribution' ||
+    str(scope.subject) !== 'controller' || scope.whenControllerWins !== true || str(scope.mode) !== 'full_reward_each') return false;
+  if (!Object.keys(scope).every((key) => ['subject', 'whenControllerWins', 'mode'].includes(key))) return false;
+  if (!Object.keys(modifier).every((key) => ['id', 'printedClause', 'operation', 'rule', 'scope'].includes(key))) return false;
+  const execution = node(rawAbility.execution);
+  if (str(execution.mode || 'automatic') !== 'automatic' ||
+    !Object.keys(execution).every((key) => ['mode', 'hostOps', 'allowedOperations'].includes(key))) return false;
+  for (const key of ['hostOps', 'allowedOperations']) {
+    if (execution[key] !== undefined && (!Array.isArray(execution[key]) || (execution[key] as unknown[]).length !== 0)) return false;
+  }
+  return true;
+}
+
 const supportedTypes = new Set([
   'controller_alone_at_battlefield', 'claim_and_discard_location_events', 'any_enabled_location',
   'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'base_power_at_most',
@@ -301,12 +328,19 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         const count = node(target.count); const min = Number(count.min ?? 1); const max = Number(count.max ?? 1);
         if (!Number.isInteger(min) || !Number.isInteger(max) || min < 0 || min > max) issue('targets.count', 'Invalid target cardinality', id);
       }
+      const acceptedStaticCombatRewardDistribution = isAcceptedStaticCombatRewardDistributionAbility(a);
       for (const m of nodes(a.ruleModifiers)) {
-        if (!['add', 'set', 'ignore', 'lock', 'exclude', 'forbid'].includes(str(m.operation)) || !['attack.currentPower', 'card.currentPower', 'effect_prevention', 'battlefield', 'terrain_and_external_effects', 'use_skill_card', 'play_card_attribute', 'enter_or_leave_current_battlefield', 'terrain_and_external_effects_for_controller_and_opponents', 'terrain_and_external_servant_or_npc_effects', 'situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least', 'netherworld_protection'].includes(str(m.rule))) issue('ruleModifiers', 'Unmapped rule or operation', id);
+        const acceptedRewardModifier = acceptedStaticCombatRewardDistribution && m === nodes(a.ruleModifiers)[0];
+        const operationSupported = ['add', 'set', 'ignore', 'lock', 'exclude', 'forbid'].includes(str(m.operation)) ||
+          (acceptedRewardModifier && m.operation === 'replace');
+        const ruleSupported = ['attack.currentPower', 'card.currentPower', 'effect_prevention', 'battlefield', 'terrain_and_external_effects', 'use_skill_card', 'play_card_attribute', 'enter_or_leave_current_battlefield', 'terrain_and_external_effects_for_controller_and_opponents', 'terrain_and_external_servant_or_npc_effects', 'situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least', 'netherworld_protection'].includes(str(m.rule)) ||
+          (acceptedRewardModifier && m.rule === 'combat_reward_distribution');
+        if (!operationSupported || !ruleSupported) issue('ruleModifiers', 'Unmapped rule or operation', id);
+        if (m.rule === 'combat_reward_distribution' && !acceptedRewardModifier) issue('ruleModifiers', 'Unsupported combat reward distribution modifier shape', id);
         if (m.rule === 'effect_prevention' && (m.operation !== 'ignore' || node(m.priority).tier !== 'explicit_exception')) issue('ruleModifiers.priority', 'Prevention exception requires explicit_exception', id);
         const ruleIsPlayException = m.operation === 'ignore' && ['situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least'].includes(str(m.rule));
         const ruleIsStaticException = m.operation === 'ignore' && m.rule === 'netherworld_protection';
-        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
+        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !acceptedRewardModifier && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
         scan(m.value, 'ruleModifiers.value', id); scan(node(m.scope).constraints, 'ruleModifiers.scope.constraints', id);
         if (node(m.scope).object && !['source_card', 'this_card', 'attack_card', 'this_effect', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield', 'all_players'].includes(str(node(m.scope).object))) issue('ruleModifiers.scope.object', 'Unmapped modifier scope', id);
         if (node(m.scope).controller && !['self', 'controller', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield'].includes(str(node(m.scope).controller))) issue('ruleModifiers.scope.controller', 'Unmapped modifier controller', id);

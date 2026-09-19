@@ -13,6 +13,7 @@ import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
 import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
+import { isAcceptedStaticCombatRewardDistributionAbility } from '../ability/loader';
 import { roundTotalPowerAdjustment } from '../ability/outer-god-life';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { logicalDayForPlayer } from './rule-overrides';
@@ -397,6 +398,19 @@ function splitVpPoolPerWinner(pool: number, winnerCount: number): number {
   return winnerCount > 0 && pool > 0 ? Math.ceil(pool / winnerCount) : 0;
 }
 
+function hasWinningFullRewardEachModifier(state: GameState, winnerPlayerIds: string[]): boolean {
+  const runtime = state.abilityRuntime;
+  if (!runtime || winnerPlayerIds.length === 0) return false;
+  const winners = new Set(winnerPlayerIds);
+  return state.cards.some((source) => {
+    if (!winners.has(source.controllerPlayerId) || !['field', 'attack_area'].includes(source.zone)) return false;
+    const sourceState = runtime.cardState[source.instanceId];
+    if (sourceState?.active !== true || sourceState.faceDown === true) return false;
+    const definition = runtime.pack.cards[source.definitionId];
+    return definition?.abilities.some((ability) => isAcceptedStaticCombatRewardDistributionAbility(ability as unknown as Record<string, unknown>)) === true;
+  });
+}
+
 function buildBattleResultFromRanked(
   state: GameState,
   battlefieldId: CombatResolutionInput["battlefieldId"],
@@ -426,10 +440,19 @@ function buildBattleResultFromRanked(
   const hasLocationReward = location?.rewardHooks.includes("location_rewards") === true &&
     typeof location.vpRewardRules?.location === "number";
   const locationVpPool = hasLocationReward ? location!.vpRewardRules!.location! : 0;
-  const baseVpPerWinner = splitVpPoolPerWinner(eventVpPool + competitionVpPool, winnerPlayerIds.length);
-  const vpReward = Math.min(splitVpPoolPerWinner(eventVpPool, winnerPlayerIds.length), baseVpPerWinner);
-  const competitionVpPerWinner = Math.max(0, baseVpPerWinner - vpReward);
-  const locationVpPerWinner = splitVpPoolPerWinner(locationVpPool, winnerPlayerIds.length);
+  const fullRewardEach = hasWinningFullRewardEachModifier(state, winnerPlayerIds);
+  const baseVpPerWinner = fullRewardEach
+    ? eventVpPool + competitionVpPool
+    : splitVpPoolPerWinner(eventVpPool + competitionVpPool, winnerPlayerIds.length);
+  const vpReward = fullRewardEach
+    ? eventVpPool
+    : Math.min(splitVpPoolPerWinner(eventVpPool, winnerPlayerIds.length), baseVpPerWinner);
+  const competitionVpPerWinner = fullRewardEach
+    ? competitionVpPool
+    : Math.max(0, baseVpPerWinner - vpReward);
+  const locationVpPerWinner = fullRewardEach
+    ? locationVpPool
+    : splitVpPoolPerWinner(locationVpPool, winnerPlayerIds.length);
   const defaultVpAdjustments = buildDefaultVpAdjustments(
     location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner,
   );
