@@ -691,6 +691,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
   if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) return false;
+  if (hasControllerMasterSkillDefinitionReturnCandidate(a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
@@ -1230,6 +1231,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       });
       break;
     }
+    case 'return_card_by_definition': resolveControllerMasterSkillDefinitionReturn(s, ctx, effect); break;
     case 'draw_cards': {
       const count = numeric(s, ctx, effect.count);
       if (!Number.isSafeInteger(count) || count < 0) reject('invalid_count', 'Invalid draw count');
@@ -1570,6 +1572,57 @@ export function isFixedControllerSourceRemovalComponent(effect: AuthoringAbility
   if (destination.owner !== undefined && destination.owner !== 'controller') return false;
   if (!Object.keys(destination).every((key) => ['zone', 'owner'].includes(key))) return false;
   return Object.keys(effect).every((key) => ['type', 'to'].includes(key));
+}
+
+export function isControllerMasterSkillDefinitionReturnComponent(effect: AuthoringAbility['effects'][number]): boolean {
+  if (str(effect.type) !== 'return_card_by_definition') return false;
+  const definitionId = str(effect.definitionId);
+  const linkedSkillId = str(effect.linkedSkillId);
+  if (Boolean(definitionId) === Boolean(linkedSkillId)) return false;
+  if (effect.target !== 'controller' || effect.destination !== 'master-skills' || effect.createIfMissing !== true ||
+    effect.face !== 'up' || effect.active !== false) return false;
+  return Object.keys(effect).every((key) =>
+    ['type', 'target', 'definitionId', 'linkedSkillId', 'destination', 'createIfMissing', 'face', 'active'].includes(key));
+}
+
+function hasControllerMasterSkillDefinitionReturnCandidate(a: AuthoringAbility): boolean {
+  return a.effects.some((effect) => str(effect.type) === 'return_card_by_definition');
+}
+
+function resolveControllerMasterSkillDefinitionReturn(s: GameState, ctx: EffectContext, effect: RuleNode): void {
+  if (!isControllerMasterSkillDefinitionReturnComponent(effect)) {
+    reject('resolution_failed', 'Unsupported controller master-skill definition-return component shape');
+  }
+  const r = runtime(s); const controller = player(s, ctx.controllerId); const source = card(s, ctx.sourceCardId);
+  if (source.ownerPlayerId !== controller.id || source.controllerPlayerId !== controller.id) {
+    reject('invalid_source', 'Definition-return source must be owned and controlled by the controller');
+  }
+  const targetDefinitionId = str(effect.definitionId) || str(effect.linkedSkillId);
+  const targetDefinition = r.pack.cards[targetDefinitionId] as ExecutableCardDefinition | undefined;
+  if (!targetDefinition || targetDefinition.cardType !== 'master_skill' || targetDefinition.ownerId !== controller.masterCardId) {
+    reject('invalid_target', 'Definition-return target must be a controller-owned master_skill definition');
+  }
+  const physical = s.cards.filter((candidate) => candidate.definitionId === targetDefinitionId && candidate.ownerPlayerId === controller.id);
+  if (physical.length > 1) reject('invalid_target', 'Definition-return target has duplicate controller-owned physical instances');
+  if (physical.length === 1) {
+    const target = physical[0]!;
+    const fromZone = target.zone;
+    target.ownerPlayerId = controller.id;
+    target.controllerPlayerId = controller.id;
+    target.zone = 'skill';
+    target.visibility = { scope: 'owner_only', ownerPlayerId: controller.id };
+    clearTransientCardTransformState(s, target.instanceId);
+    r.cardState[target.instanceId] = { ...(r.cardState[target.instanceId] ?? { active: false, faceDown: false, playedRound: s.round.roundNumber }), active: false, faceDown: false };
+    r.events.push({ type: 'card_returned_by_definition', playerId: controller.id, sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId, cardInstanceId: target.instanceId, fromZone, toZone: 'skill', movedCount: fromZone === 'skill' ? 0 : 1 });
+    return;
+  }
+  const instanceId = nextId(s, 'definition-return');
+  s.cards.push({ instanceId, definitionId: targetDefinitionId, ownerPlayerId: controller.id, controllerPlayerId: controller.id,
+    zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: controller.id }, generatedBy: ctx.sourceCardId });
+  r.cardState[instanceId] = { active: false, faceDown: false, playedRound: s.round.roundNumber };
+  r.events.push({ type: 'card_created', playerId: controller.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+    cardInstanceId: instanceId, toZone: 'skill', movedCount: 1 });
 }
 
 function isSourcePlayBasicAttackDrawTriggerCandidate(a: AuthoringAbility): boolean {
@@ -2763,6 +2816,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (isRulerSealBindingCandidate(a) && !isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
   if (isRulerSealUseCandidate(a) && !isRulerSealUseSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal use semantic shape');
   if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) reject('resolution_failed', 'Unsupported Outer-God-Life relational semantic shape');
+  if (hasControllerMasterSkillDefinitionReturnCandidate(a)) reject('resolution_failed', 'Definition-return component requires an independently accepted parent route');
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) {
     reject('resolution_failed', 'Unsupported fixed controller advance-draw semantic shape');
   }

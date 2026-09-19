@@ -434,7 +434,7 @@ function validateCardReferences(value: unknown, cards: Record<string, AuthoringC
   }
   if (!value || typeof value !== 'object') return;
   for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
-    if ((key === 'cardId' || key === 'definitionId') && typeof child === 'string' && !cards[child]) {
+    if ((key === 'cardId' || key === 'definitionId' || key === 'linkedSkillId') && typeof child === 'string' && !cards[child]) {
       throw new Error(`${path}.${key} references missing card ${child}`);
     }
     validateCardReferences(child, cards, `${path}.${key}`);
