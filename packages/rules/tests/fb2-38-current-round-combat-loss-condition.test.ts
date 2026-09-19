@@ -179,6 +179,19 @@ describe('P3-FB2-38 current-round combat-loss absence condition', () => {
       expect(() => trigger(state, malformedIds)).not.toThrow();
       expect(trigger(state, malformedIds)).toEqual([]);
     }
+    const validBattleId = good.battleIds![0]!;
+    const ordinalStart = validBattleId.lastIndexOf(':') + 1;
+    const battleIdPrefix = validBattleId.slice(0, ordinalStart);
+    for (const malformedOrdinal of ['not-an-ordinal', '0', '-1', '1:extra']) {
+      const malformedBattleId = `${battleIdPrefix}${malformedOrdinal}`;
+      const malformedTerminal = {
+        ...good,
+        battleIds: [malformedBattleId],
+        resultIds: [`${malformedBattleId}:result`],
+      };
+      expect(() => trigger(state, malformedTerminal)).not.toThrow();
+      expect(trigger(state, malformedTerminal)).toEqual([]);
+    }
 
     const malformed = setup({ ...exact(), extra: true });
     malformed.battleResults = [result('miyama_town', ['p1', 'p2'], ['p1'])];

@@ -40,8 +40,10 @@ export function currentRoundCombatLossAbsent(
     const battleId = battleIds[index];
     const participants = outcome?.participantPlayerIds;
     const winners = outcome?.winnerPlayerIds;
+    const battleIdPrefix = `${phaseId}:battle:${outcome?.battlefieldId}:`;
+    const battleOrdinal = battleId?.slice(battleIdPrefix.length);
     if (!outcome || typeof outcome.battlefieldId !== 'string' || !battleId ||
-        !battleId.startsWith(`${phaseId}:battle:${outcome.battlefieldId}:`) ||
+        !battleId.startsWith(battleIdPrefix) || !battleOrdinal || !/^[1-9]\d*$/.test(battleOrdinal) ||
         resultIds[index] !== `${battleId}:result` ||
         scoringReceiptIds[index] !== `${phaseId}:score:${outcome.battlefieldId}` ||
         !Array.isArray(participants) || participants.some((value) => typeof value !== 'string') ||
