@@ -79,6 +79,8 @@ const supportedTypes = new Set([
   'event_player_is_controller', 'event_player_is_opponent',
   // FB2-32 source-state conditions
   'source_active', 'source_owned',
+  // FB2-33 event combat outcome conditions
+  'event_player_won_combat', 'event_player_lost_combat',
   // FB2-29 source-owner relational power/return primitives
   'adjust_round_total_power', 'schedule_source_card_return',
 ]);
@@ -179,6 +181,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (['source_active', 'source_owned'].includes(str(n.type))) {
         if (!path.startsWith('conditions')) issue(path, 'Source-state condition is supported only under ability conditions', abilityId);
         if (!Object.keys(n).every((key) => key === 'type')) issue(path, 'Source-state condition must contain only type', abilityId);
+      }
+      if (['event_player_won_combat', 'event_player_lost_combat'].includes(str(n.type))) {
+        if (!path.startsWith('conditions')) issue(path, 'Event combat outcome condition is supported only under ability conditions', abilityId);
+        if (!Object.keys(n).every((key) => key === 'type')) issue(path, 'Event combat outcome condition must contain only type', abilityId);
       }
       if (n.type === 'base_power_at_most' && (typeof n.value !== 'number' || !Number.isFinite(n.value))) issue(`${path}.value`, 'Base power bound must be finite', abilityId);
       if (['move_card', 'move_source_card', 'move_all_remaining', 'create_card'].includes(str(n.type)) &&

@@ -572,6 +572,28 @@ function sourceStateCondition(s: GameState, ctx: EffectContext, c: RuleNode): bo
     : source.ownerPlayerId === ctx.controllerId;
 }
 
+export function isEventCombatOutcomeCondition(c: RuleNode): boolean {
+  return ['event_player_won_combat', 'event_player_lost_combat'].includes(str(c.type)) &&
+    Object.keys(c).every((key) => key === 'type');
+}
+
+function eventCombatOutcomeCondition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
+  if (!isEventCombatOutcomeCondition(c)) reject('unsupported', 'Unsupported event combat outcome condition shape');
+  const eventPlayerId = ctx.event?.playerId;
+  const result = ctx.event?.battleResult;
+  if (!eventPlayerId || !s.players.some((candidate) => candidate.id === eventPlayerId) || !result ||
+    !Array.isArray(result.winners) || !Array.isArray(result.loserIds)) return false;
+  const knownPlayerIds = new Set(s.players.map((candidate) => candidate.id));
+  const winners = result.winners;
+  const losers = result.loserIds;
+  if ([...winners, ...losers].some((playerId) => !knownPlayerIds.has(playerId)) ||
+    new Set(winners).size !== winners.length || new Set(losers).size !== losers.length ||
+    winners.some((playerId) => losers.includes(playerId))) return false;
+  return c.type === 'event_player_won_combat'
+    ? winners.includes(eventPlayerId)
+    : losers.includes(eventPlayerId);
+}
+
 function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (!c || typeof c !== 'object') reject('unsupported', 'Unsupported condition');
   if (c.negated === true) return !condition(s, ctx, { ...c, negated: undefined });
@@ -613,6 +635,8 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'event_player_is_opponent': return eventPlayerRelationCondition(s, ctx, c);
     case 'source_active':
     case 'source_owned': return sourceStateCondition(s, ctx, c);
+    case 'event_player_won_combat':
+    case 'event_player_lost_combat': return eventCombatOutcomeCondition(s, ctx, c);
     case 'controller_seat_in_first_half': {
       const activePlayers = s.players.filter(candidate => candidate.status === 'active').sort((a, b) => a.seat - b.seat);
       const firstHalfCount = Math.floor(activePlayers.length / 2);
