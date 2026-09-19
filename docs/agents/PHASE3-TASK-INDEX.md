@@ -5276,3 +5276,14 @@ Read: `docs/reports/2026-09-20-p3-a-r78-helena-migration-acceptance-synchronizat
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #384 exact Candidate `ca8a4de1815c360ecc242f0563bf30e5e80eea5d`, backed by canonical evidence `https://github.com/binchen648/fd/pull/384#issuecomment-5745483145`. Exact frozen addition is `servant.helena.skill.sc-helena-3`; independent Base-to-Candidate frozen overlap is `134/944` to `135/944`, with zero removals and zero duplicates.
 
 Formal project migration advances exactly one identity to **`139/944`**, with **`805`** remaining. PR #384 remains OPEN, unmerged, and unretargeted. PR #381 / Ibaraki remains pending independent migration review and receives no credit here. Next action is immediate migration-closure-first re-overlay from the synchronized formal baseline.
+## TASK P3-A-FB2-37-DEPLOYMENT-DESTINATIONS-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-37-deployment-destinations-dispatch`
+Base: exact R78 Helena migration acceptance sync `cebd96a34845c109b87ddb0d6563628cd906305d`
+Read: `docs/reports/2026-09-20-p3-a-fb2-37-deployment-destinations-dispatch.md`
+
+Result: closure-first overlay selects `master.kayneth.skill.s3` as the nearest one-seam target. Dispatch one narrow identity-free exact `deployment_destinations / replace` structural modifier over controller deployment to a lower-VP opponent who is the sole active occupant of an otherwise legal battlefield. Preserve the existing generic legacy product effect route only for compatibility; remove identity-bearing production helper naming and do not migrate any consumer in B2.
+
+FB2-37 earns zero migration credit. Formal migration remains **`139/944`**, with **`805`** remaining. On fresh R acceptance plus A synchronization, immediately dispatch Kayneth s3 S migration before unrelated runtime work.
