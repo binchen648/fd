@@ -5311,3 +5311,15 @@ Read: `docs/reports/2026-09-20-p3-a-r79-kayneth-consumer-migration-dispatch.md`
 Result: dispatch exactly one frozen identity, `master.kayneth.skill.s3`, now S-ready on accepted FB2-37. **Corrected container:** create isolated `data/authoring/masters/master.kayneth.p3-s3.json` following the Irisviel split-archive precedent; registered `master.kayneth.json` (including legacy `master.kayneth.skill.pride`) must remain byte-for-byte unchanged. No runtime production source, product pack/generated registration, or second consumer identity.
 
 Base frozen overlap is **`135/944`** and Candidate must be exactly `136/944`, exact +1 with zero removals/duplicates. Formal migration remains **`139/944`**, with **`805`** remaining until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+
+## TASK P3-A-R80-KAYNETH-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r80-kayneth-migration-acceptance-sync`
+Base: exact accepted Candidate `9b64699d449ed69739ed7bdfbd56172c0d165698`
+Read: `docs/reports/2026-09-20-p3-a-r80-kayneth-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #386 exact Candidate `9b64699d449ed69739ed7bdfbd56172c0d165698`, backed by canonical evidence `https://github.com/binchen648/fd/pull/386#issuecomment-5745840642`. Exact frozen addition is `master.kayneth.skill.s3`; independent Base-to-Candidate frozen overlap is `135/944` to `136/944`, with zero removals and zero duplicates.
+
+Formal project migration advances exactly one identity to **`140/944`**, with **`804`** remaining. PR #386 remains OPEN, unmerged, and unretargeted. PR #381 / Ibaraki remains pending independent migration review and receives no credit here. Next action is immediate migration-closure-first re-overlay from the synchronized formal baseline.
