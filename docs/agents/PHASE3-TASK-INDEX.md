@@ -5205,3 +5205,15 @@ Result: record formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #380 ex
 Accepted capability is limited to identity-free authoritative actual-paid-on-play provenance plus the exact permanent `source_owned` / current-round active authored-attack paid-cost-highest participant `combat_power:add(+6)` envelope. FB2-35 earns zero migration credit; formal accepted remains **`137/944`**, with **`807`** remaining. PR #380 remains OPEN, unmerged, and unretargeted.
 
 Next coordinator action is mandatory immediate re-overlay for `servant.ibaraki.skill.sc-ibaraki-1`; if no new blocker is found, dispatch S before any unrelated B2 seam.
+
+## TASK P3-A-FB2-36-SKILL-USE-FORBID-SELECTORS-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-36-skill-use-forbid-selectors-dispatch`
+Base: `ef5c93db818a1f6ab3bf830a182e4f0281fec964`
+Read: `docs/reports/2026-09-20-p3-a-fb2-36-skill-use-forbid-selectors-dispatch.md`
+
+Result: dispatch one narrow identity-free B2 seam for exact `skill_use / forbid` play-permission selectors: (a) same-location players filtered by `notInAttack + trueNameRelease` under source-bound `while_active`, and (b) same-location opponents filtered by master/servant skill-zone + face-down state for `this_round`. Do not add generic `activate_ability` forbids, definition-ID selectors, consumer identities, or migration credit.
+
+Formal migration remains **`137/944`**, remaining **`807`**. PR #381 / Ibaraki remains pending migration review and is not part of this exact Base. After fresh B2 acceptance + A capability sync, immediately re-overlay and prefer newly S-ready consumers over unrelated infrastructure.
