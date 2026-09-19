@@ -5079,3 +5079,27 @@ Result: record formal Reviewer transport verdict `IMPLEMENTATION_ACCEPTED_CANDID
 Accepted capability remains only exact type-only `source_active` and `source_owned` generic conditions. FB2-32 earns zero migration credit; formal accepted remains **`136/944`**, with **`808`** remaining. PR #376 remains OPEN, unmerged, and unretargeted. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
 
 Next coordinator action is a fresh dependency overlay over remaining source-grounded generic-extension rows; dispatch S only for a fully complete homogeneous family, otherwise choose the next narrow B2 seam.
+
+
+## TASK P3-A-FB2-33-EVENT-COMBAT-OUTCOME-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-33-event-combat-outcome-dispatch`
+Base: exact R71 FB2-32 acceptance synchronization `8ca5037864fb11d98fe4a17d4ca8c9089bab2609`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-19-p3-a-fb2-33-event-combat-outcome-dispatch.md`
+
+Result: fresh post-R71 overlay yields no complete homogeneous S family. Dispatch one narrow identity-free condition seam for exact type-only `event_player_won_combat` and `event_player_lost_combat`, grounded only in trusted `AbilityEvent.playerId` plus `battleResult.winners/loserIds`. Locked Reference has 13 type-only occurrences across the pair. FB2-33 earns zero migration credit.
+
+## TASK P3-FB2-33-EVENT-COMBAT-OUTCOME
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A FB2-33 dispatch commit
+Read: `docs/reports/2026-09-19-p3-a-fb2-33-event-combat-outcome-dispatch.md`
+
+Goal: implement only condition-route, exact-shape, identity-free event-player combat outcome evaluation over trusted `AbilityEvent.playerId` and `battleResult`. Missing/unknown/malformed/contradictory context fails closed. Do not broaden activation triggers/effects, migrate consumers, change taxonomy/KPI, merge, or retarget.
+
+Formal recovery accepted remains `136/944`; FB2-33 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization.
