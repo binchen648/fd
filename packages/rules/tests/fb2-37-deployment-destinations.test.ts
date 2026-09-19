@@ -45,9 +45,9 @@ function archive(a: any = ability()) {
   } as any;
 }
 
-function installStructuralSource(zone: string = 'skill') {
-  const pack = rules.loadAuthoringJson(archive());
-  expect(pack.report).toEqual([]);
+function installStructuralSource(zone: string = 'skill', sourceAbility: any = ability(), expectAccepted = true) {
+  const pack = rules.loadAuthoringJson(archive(sourceAbility));
+  if (expectAccepted) expect(pack.report).toEqual([]);
   const session = createMatchSession({ seed: 20260920, humanPlayerId: 'p1' });
   const actor = session.state.players[0]!;
   const opponent = session.state.players[1]!;
@@ -100,6 +100,25 @@ describe('P3-FB2-37 exact deployment-destination replacement', () => {
     const rejected = rules.loadAuthoringJson(archive(ability(near)));
     expect(rejected.report.some((entry) => entry.status === 'unsupported')).toBe(true);
     expect(rejected.cards[SOURCE]!.abilities[0]!.execution.mode).toBe('unsupported');
+  });
+
+  it('fails closed at runtime when an exact modifier is nested in an unsupported ability envelope', () => {
+    const nearMatches = [
+      { ...ability(), conditions: [] },
+      { ...ability(), conditions: [{ type: 'source_active' }] },
+    ];
+
+    for (const near of nearMatches) {
+      const { session, actor } = installStructuralSource('skill', near, false);
+      const compiled = session.state.abilityRuntime!.pack.cards[SOURCE]!.abilities[0]!;
+      expect(compiled.execution.mode).toBe('unsupported');
+      expect(rules.isAcceptedLowerVpLoneBattlefieldDeploymentAbility(compiled as any)).toBe(false);
+      const actions = session.legalDeploymentActions(actor.id);
+      expect(actions.length).toBeGreaterThan(1);
+      expect(actions).toContainEqual({ type: 'deploy_player', locationId: 'magic_workshop' });
+      const dispatched = session.dispatchPlayerCommand(actor.id, { type: 'deploy_player', locationId: 'magic_workshop' });
+      expect(dispatched.ok).toBe(true);
+    }
   });
 
   it('replaces legal deployment choices with exactly the current lower-VP lone battlefield', () => {

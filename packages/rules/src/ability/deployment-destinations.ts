@@ -31,18 +31,24 @@ export function isAcceptedLowerVpLoneBattlefieldDeploymentModifier(modifier: Rul
     exactKeys(modifier, ['id', 'printedClause', 'operation', 'rule', 'scope', 'lifecycle', 'priority', 'conflictPolicy']);
 }
 
-export function isAcceptedLowerVpLoneBattlefieldDeploymentAbility(ability: RuleNode): boolean {
+export function isAcceptedLowerVpLoneBattlefieldDeploymentAbility(value: unknown): boolean {
+  const ability = object(value);
   const activation = object(ability.activation);
   const conditions = objects(ability.conditions);
   const modifiers = objects(ability.ruleModifiers);
   const execution = object(ability.execution);
+  const responseWindow = object(ability.responseWindow);
+  const acceptedResponseWindow = Object.keys(responseWindow).length === 0 || (
+    text(responseWindow.order) === 'turn_order' &&
+    text(responseWindow.passBehavior) === 'decline_this_window' &&
+    exactKeys(responseWindow, ['order', 'passBehavior']));
   return text(ability.kind) === 'passive' &&
     Object.keys(activation).length === 0 &&
     conditions.length === 1 && text(conditions[0]?.type) === 'source_owned' && exactKeys(conditions[0]!, ['type']) &&
     objects(ability.targets).length === 0 && objects(ability.effects).length === 0 &&
     objects(ability.cost).length === 0 && objects(ability.creates).length === 0 &&
     modifiers.length === 1 && isAcceptedLowerVpLoneBattlefieldDeploymentModifier(modifiers[0]!) &&
-    Object.keys(object(ability.lifecycle)).length === 0 && Object.keys(object(ability.responseWindow)).length === 0 &&
+    Object.keys(object(ability.lifecycle)).length === 0 && acceptedResponseWindow &&
     Object.keys(object(ability.limit)).length === 0 && Object.keys(object(ability.visibility)).length === 0 &&
     text(execution.mode || 'automatic') === 'automatic' &&
     exactKeys(execution, ['mode', 'hostOps', 'allowedOperations']);

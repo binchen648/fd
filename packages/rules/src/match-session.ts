@@ -7,7 +7,7 @@ import {
 } from './ability/interpreter';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
-import { isAcceptedLowerVpLoneBattlefieldDeploymentModifier } from './ability/deployment-destinations';
+import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './ability/deployment-destinations';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
 import type {
   AbilityCommand,
@@ -554,8 +554,7 @@ export class MatchSession {
       card.controllerPlayerId === playerId &&
       ['skill', 'field'].includes(card.zone) &&
       (this.state.abilityRuntime?.pack.cards[card.definitionId]?.abilities ?? []).some((ability) =>
-        (card.ownerPlayerId === playerId && ability.ruleModifiers.some((modifier) =>
-          isAcceptedLowerVpLoneBattlefieldDeploymentModifier(modifier))) ||
+        (card.ownerPlayerId === playerId && isAcceptedLowerVpLoneBattlefieldDeploymentAbility(ability)) ||
         ability.effects.some((effect) =>
           effect.type === 'deployment_rule_override' &&
           effect.rule === 'must_deploy_to_lower_vp_lone_battlefield')));
