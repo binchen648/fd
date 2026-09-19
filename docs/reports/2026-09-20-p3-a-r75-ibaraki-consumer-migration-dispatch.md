@@ -115,7 +115,8 @@ Fresh S must prove at minimum:
 - participants with no qualifying attack do not qualify by zero;
 - free/paid-zero qualifying attacks remain real zero candidates;
 - support/non-attack cards moved into `attack_area` are excluded;
-- source not owned / inactive / face-down / controller outside battlefield fails closed as applicable;
+- source ownership failure (`ownerPlayerId !== controllerPlayerId`) or source controller outside the resolving battlefield fails closed;
+- do **not** invent a `source_active` / source face-state requirement: locked Reference has only exact `source_owned`, and the accepted FB2-35 passive is valid from the owned servant skill source even when no source `cardState` exists. Inactive/face-down gating applies to qualifying attack cards, not to this modifier source;
 - individual card power is unchanged;
 - no identity/name/text/hash/Reference-handler branches in production runtime and zero `packages/rules/src/**` diff;
 - no pack/generated product drift;
