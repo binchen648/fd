@@ -1,0 +1,208 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "event_rule_definition_archive",
+  "id": "event-rule.lostbelt-objectives.kadoc-ophelia",
+  "name": "Lostbelt Objective Event Definitions — Kadoc / Ophelia",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus accepted P3-R61/FB2-28 and P3-R63/FB2-29. Locked Reference is used only for static Lostbelt event metadata."
+  },
+  "cards": [
+    {
+      "id": "master.kadoc.skill.s3",
+      "aliases": ["s3"],
+      "legacyId": "s3",
+      "name": "冻土",
+      "cardType": "event",
+      "printedText": "【俄罗斯事件牌】战果1，数量5。\n部署于此战场的玩家立即失去2点魔力。进入此战场的玩家失去2点魔力。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "eventTags": ["lostbelt-objective", "lostbelt-group:russia", "lostbelt-effect:frozen-wastes"],
+        "printedReward": 1
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "kadoc.s3.deploy-mana-tax",
+          "kind": "forced_trigger",
+          "printedClause": "部署于此战场的玩家立即失去2点魔力。",
+          "activation": { "trigger": "after_player_deployed_to_battlefield", "eventController": "event_player" },
+          "conditions": [{ "type": "event_location_is_source_event_battlefield" }],
+          "targets": [],
+          "cost": [],
+          "effects": [{ "type": "adjust_mana", "player": "controller", "amount": -2 }],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "kadoc.s3.enter-mana-tax",
+          "kind": "forced_trigger",
+          "printedClause": "进入此战场的玩家失去2点魔力。",
+          "activation": { "trigger": "after_controller_enters_location", "eventController": "event_player" },
+          "conditions": [{ "type": "event_location_is_source_event_battlefield" }],
+          "targets": [],
+          "cost": [],
+          "effects": [{ "type": "adjust_mana", "player": "controller", "amount": -2 }],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/卡多克·泽姆露普斯.png", "locator": "master.kadoc/卡多克·泽姆露普斯" },
+          { "kind": "legacy", "document": "legacy-content.json", "locator": "master/master.kadoc/s3" }
+        ],
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "masters[54].skills[3].text#line=1", "sha256": "79b43e85325b94864cb8006cc67f7635a9bb4313ef3d3d8ac740fd6ba897c3a5" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "masters[54].skills[3].text#line=2", "sha256": "d8cd9a53abcbde4a35dd65a15be52b21f172a8dbb1d85aa9c206c75a9bf56fde" }
+        ],
+        "sourceTextSha256": "7f4096a58df09a1825d0c53beb69855d7ab8a1ebb6107ea5829cb63f5d7259c8",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "poolId": "lostbelt:russia",
+          "eventPrefix": "event.lostbelt.russia.frozen-wastes",
+          "quantity": 5,
+          "victoryPoints": 1
+        },
+        "acceptedContracts": { "eventRuleBridge": "P3-R61/FB2-28", "eventStaticBattleMetadata": "P3-R63/FB2-29" }
+      }
+    },
+    {
+      "id": "master.ophelia.skill.s5",
+      "aliases": ["s5"],
+      "legacyId": "s5",
+      "name": "苏尔特领域",
+      "cardType": "event",
+      "printedText": "【北欧事件牌】战果4，数量2。\n力量属性于此战场威力+4。迅捷属性于此战场威力-2。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "eventTags": ["lostbelt-objective", "lostbelt-group:scandinavia", "lostbelt-effect:surtrs-domain"],
+        "printedReward": 4,
+        "battleModifiers": [
+          { "attribute": "strength", "condition": "has_attribute", "value": 4 },
+          { "attribute": "agility", "condition": "has_attribute", "value": -2 }
+        ]
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/奥菲莉娅·法姆索罗涅.png", "locator": "master.ophelia/奥菲莉娅·法姆索罗涅" },
+          { "kind": "legacy", "document": "legacy-content.json", "locator": "master/master.ophelia/s5" }
+        ],
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "masters[55].skills[6].text#line=1", "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "masters[55].skills[6].text#line=2", "sha256": "e7f59257ade03c3ed3f68c1496641747d3f09d8bb61adb9328332ec9f3d2e8d2" }
+        ],
+        "sourceTextSha256": "72132a0e0a1700a58297838ad872a5c4eeb6f62f21855d0432cc427be5fa2343",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "poolId": "lostbelt:scandinavia",
+          "eventPrefix": "event.lostbelt.scandinavia.surtrs-domain",
+          "quantity": 2,
+          "victoryPoints": 4
+        },
+        "acceptedContracts": { "eventRuleBridge": "P3-R61/FB2-28", "eventStaticBattleMetadata": "P3-R63/FB2-29" }
+      }
+    },
+    {
+      "id": "master.ophelia.skill.s6",
+      "aliases": ["s6"],
+      "legacyId": "s6",
+      "name": "女武神领域",
+      "cardType": "event",
+      "printedText": "【北欧事件牌】战果4，数量2。\n迅捷属性于此战场威力+4。魔术属性于此战场威力-2。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "eventTags": ["lostbelt-objective", "lostbelt-group:scandinavia", "lostbelt-effect:envoys-domain"],
+        "printedReward": 4,
+        "battleModifiers": [
+          { "attribute": "agility", "condition": "has_attribute", "value": 4 },
+          { "attribute": "magecraft", "condition": "has_attribute", "value": -2 }
+        ]
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/奥菲莉娅·法姆索罗涅.png", "locator": "master.ophelia/奥菲莉娅·法姆索罗涅" },
+          { "kind": "legacy", "document": "legacy-content.json", "locator": "master/master.ophelia/s6" }
+        ],
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "masters[55].skills[7].text#line=1", "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "masters[55].skills[7].text#line=2", "sha256": "4bf3d381fcba33b51a514e391d8181866821932309cb582e8de3b85f6aaf30d6" }
+        ],
+        "sourceTextSha256": "321b2706f9b0fd3761bb1086ff16699d199901738418e0292cccfefdba8dbbb2",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "poolId": "lostbelt:scandinavia",
+          "eventPrefix": "event.lostbelt.scandinavia.envoys-domain",
+          "quantity": 2,
+          "victoryPoints": 4
+        },
+        "acceptedContracts": { "eventRuleBridge": "P3-R61/FB2-28", "eventStaticBattleMetadata": "P3-R63/FB2-29" }
+      }
+    },
+    {
+      "id": "master.ophelia.skill.s7",
+      "aliases": ["s7"],
+      "legacyId": "s7",
+      "name": "斯卡蒂领域",
+      "cardType": "event",
+      "printedText": "【北欧事件牌】战果4，数量2。\n魔术属性于此战场威力+4。力量属性于此战场威力-2。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "eventTags": ["lostbelt-objective", "lostbelt-group:scandinavia", "lostbelt-effect:skadis-domain"],
+        "printedReward": 4,
+        "battleModifiers": [
+          { "attribute": "magecraft", "condition": "has_attribute", "value": 4 },
+          { "attribute": "strength", "condition": "has_attribute", "value": -2 }
+        ]
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/奥菲莉娅·法姆索罗涅.png", "locator": "master.ophelia/奥菲莉娅·法姆索罗涅" },
+          { "kind": "legacy", "document": "legacy-content.json", "locator": "master/master.ophelia/s7" }
+        ],
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "masters[55].skills[8].text#line=1", "sha256": "0f2245e361a2aa3a68160131f937db89ee46d70af9d4e4bbe44e80e38ec651f2" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "masters[55].skills[8].text#line=2", "sha256": "5d7d47df8b72504df2b48c6e9de637165ab2272cf9f983957f3101a756759678" }
+        ],
+        "sourceTextSha256": "f1356fe8da0d2d55f4d97b21781f488e96b91eb42f97203c9985e6838e56ea4b",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "poolId": "lostbelt:scandinavia",
+          "eventPrefix": "event.lostbelt.scandinavia.skadis-domain",
+          "quantity": 2,
+          "victoryPoints": 4
+        },
+        "acceptedContracts": { "eventRuleBridge": "P3-R61/FB2-28", "eventStaticBattleMetadata": "P3-R63/FB2-29" }
+      }
+    }
+  ]
+}
