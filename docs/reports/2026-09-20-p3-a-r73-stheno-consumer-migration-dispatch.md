@@ -1,4 +1,4 @@
-﻿# P3-A R73 Stheno Consumer Migration Dispatch
+# P3-A R73 Stheno Consumer Migration Dispatch
 
 Role: Codex A
 Status: `READY`
@@ -88,7 +88,8 @@ This is a semantic normalization onto accepted Battle Trigger + Resource Numeric
 
 Expected minimal migration material:
 
-- one new standalone archive `data/authoring/servants/servant.stheno.json`;
+- append exactly one new card, `servant.stheno.skill.sc-stheno-2`, to the already existing standalone archive `data/authoring/servants/servant.stheno.json`;
+- preserve the pre-existing `servant.stheno.skill.sc-stheno-1` card unchanged;
 - one focused migration test;
 - one S result report.
 
@@ -108,7 +109,8 @@ Do not merge or retarget any PR.
 
 Fresh S must prove at minimum:
 
-- exact one F1 identity, no second frozen identity;
+- exact one F1 identity added, no second frozen identity;
+- existing `servant.stheno.skill.sc-stheno-1` remains present and semantically unchanged;
 - exact F1 full-text hash and three clause hashes;
 - exact static owner/class/card-face metadata from Locked Reference;
 - whole real archive loads with zero authoring issues and automatic mode;
