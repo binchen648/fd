@@ -13,6 +13,7 @@ import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
 import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
+import { roundTotalPowerAdjustment } from '../ability/outer-god-life';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { logicalDayForPlayer } from './rule-overrides';
 import { assignedTerrainSlotIndex, hasRemoteOperationBonus, terrainBonusAt } from './terrain-advantage';
@@ -333,7 +334,7 @@ export function deriveBattleParticipantsFromState(
       const authoredPower = authoredAttacks.reduce((sum, card) => sum + calculateCardPower(state, card.instanceId).value, 0);
 
       const terrainSlotIndex = assignedTerrainSlotIndex(state, battlefieldId, player.id);
-      let persistentPowerAdjustment = 0;
+      let persistentPowerAdjustment = roundTotalPowerAdjustment(state, player.id);
       if (logicalDayForPlayer(state, player.id) === 1) {
         persistentPowerAdjustment += state.ruleOverrides?.firstLogicalDayTotalPowerAdjustmentByPlayer?.[player.id] ?? 0;
       }

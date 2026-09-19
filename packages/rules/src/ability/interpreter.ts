@@ -19,6 +19,7 @@ import {
 } from './ruler-seal';
 import { currentDeploymentBonus } from '../core/terrain-advantage';
 import { eventRulePlacementByInstance, initializeEventRulePlacements, listEventRuleCandidates, moveEventRuleCandidate, moveEventRuleCandidates, type EventRuleZone } from './event-rule';
+import { applyOuterGodLifeUse, isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, settlePendingSourceCardReturns } from './outer-god-life';
 export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import {
   DataFlowValidationError,
@@ -216,6 +217,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
     cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
     eventRuleZoneRevision: 0, rulerSealBindings: [], rulerSealBindingHistory: {}, pendingRulerSealRewards: [],
+    roundTotalPowerAdjustments: { round: s.round.roundNumber, byPlayer: {} }, pendingSourceCardReturns: [],
     usedAbilities: {}, processedEvents: [], revealedServants: [],
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
@@ -688,6 +690,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
+  if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
@@ -2602,6 +2605,11 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     if (pending) { runtime(s).pendingDecision = pending; return; }
     settleRulerSealUse(s, ctx, a); return;
   }
+  if (isOuterGodLifeAbilityCandidate(a)) {
+    if (!isOuterGodLifeAbilitySemantic(a)) reject('resolution_failed', 'Unsupported Outer-God-Life relational semantic shape');
+    try { applyOuterGodLifeUse(s, ctx, a); } catch (error) { reject('resolution_failed', error instanceof Error ? error.message : 'Outer-God-Life resolution failed'); }
+    return;
+  }
   if (isBattleEndMobilePlayersRewardSemantic(a)) {
     settleBattleEndMobilePlayersReward(s, ctx);
     installOngoing(s, ctx, a);
@@ -2754,6 +2762,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
   if (isRulerSealBindingCandidate(a) && !isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
   if (isRulerSealUseCandidate(a) && !isRulerSealUseSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal use semantic shape');
+  if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) reject('resolution_failed', 'Unsupported Outer-God-Life relational semantic shape');
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) {
     reject('resolution_failed', 'Unsupported fixed controller advance-draw semantic shape');
   }
@@ -2912,6 +2921,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
   settlePendingRulerSealRewards(s, event);
+  try { settlePendingSourceCardReturns(s, event); } catch (error) { reject('resolution_failed', error instanceof Error ? error.message : 'Source-card return failed'); }
   if (event.type === 'round_end') consumeDelayedActivations(s, event);
   const triggered = collectTriggeredAbilities(s, event);
   for (const t of triggered) {
@@ -2971,6 +2981,8 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
     runtime(copy).movementDistanceThisRound = {};
     runtime(copy).battlefieldsPassedOrStayedThisRound = {};
     runtime(copy).pendingRulerSealRewards = runtime(copy).pendingRulerSealRewards.filter((reward) => reward.round >= round);
+    runtime(copy).roundTotalPowerAdjustments = { round, byPlayer: {} };
+    runtime(copy).pendingSourceCardReturns = runtime(copy).pendingSourceCardReturns.filter((entry) => entry.round >= round);
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
   }

@@ -9,6 +9,7 @@ import {
   isRulerSealBindingCandidate, isRulerSealBindingSemantic,
   isRulerSealUseCandidate, isRulerSealUseSemantic,
 } from './ruler-seal';
+import { isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, OUTER_GOD_LIFE_CATEGORY } from './outer-god-life';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -74,6 +75,8 @@ const supportedTypes = new Set([
   // FB2-28 event-rule executable bridge
   'event_location_is_source_event_battlefield', 'combat_occurs_at_source_event_battlefield', 'move_source_event',
   'event_has_tag', 'event_in_set', 'move_event_card',
+  // FB2-29 source-owner relational power/return primitives
+  'adjust_round_total_power', 'schedule_source_card_return',
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -105,6 +108,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'policy', 'option', 'moveDestinations', 'rewardVp',
   // FB2-28 event-rule source semantics
   'eventController', 'locationId', 'locationRef', 'ruleControllerPlayerId', 'zones', 'tag', 'eventSetId',
+  // FB2-29 exact relational fields
+  'recipients', 'recipient', 'dedupe',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -172,6 +177,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
     if (face.hasReversalEffect !== undefined && typeof face.hasReversalEffect !== 'boolean') issue('cardFace.hasReversalEffect', 'Expected boolean reversal metadata');
     if (face.revealsTrueNameOnReverse !== undefined && typeof face.revealsTrueNameOnReverse !== 'boolean') issue('cardFace.revealsTrueNameOnReverse', 'Expected boolean reverse reveal metadata');
     if (face.revealsTrueNameOnReverse === true && face.hasReversalEffect !== true) issue('cardFace.revealsTrueNameOnReverse', 'Reverse reveal requires an authored reversal effect');
+    if (face.semanticCategory !== undefined && face.semanticCategory !== OUTER_GOD_LIFE_CATEGORY) issue('cardFace.semanticCategory', 'Unsupported semantic card category');
     if (typeof face.basePower === 'string') issue('cardFace.basePower', 'String expressions are forbidden; provide a formula AST');
     scan(raw.playRequirements, 'playRequirements');
     if (face.cost !== undefined && (typeof face.cost !== 'number' || !Number.isFinite(face.cost) || face.cost < 0)) issue('cardFace.cost', 'Expected a nonnegative printed mana cost');
@@ -324,6 +330,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (isRulerSealUseCandidate(candidateAbility) && !isRulerSealUseSemantic(candidateAbility)) {
         issue('rulerSeal.gateway', 'Unsupported Ruler seal use semantic shape', id);
       }
+      if (isOuterGodLifeAbilityCandidate(candidateAbility) && !isOuterGodLifeAbilitySemantic(candidateAbility)) {
+        issue('outerGodLife.gateway', 'Unsupported Outer-God-Life relational semantic shape', id);
+      }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;
       if (Array.isArray(a.markers) && a.markers.includes('真名解放') && !visibility.revealTiming) {
@@ -332,6 +341,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       return { ...candidateAbility, visibility,
         execution: { mode: failure ? 'unsupported' : mode as ExecutionMode, allowedOperations: allowed } };
     });
+    if (abilities.some(isOuterGodLifeAbilityCandidate) && face.semanticCategory !== OUTER_GOD_LIFE_CATEGORY) {
+      issue('cardFace.semanticCategory', 'Outer-God-Life relational abilities require semanticCategory=outer_god_life');
+    }
     cards[cardId] = { id: cardId, name: str(raw.name), cardType: str(raw.cardType), cardFace: face,
       playTiming: timing, playRequirements: nodes(raw.playRequirements), abilities,
       ...(initialPlacement === 'outside_game' && str(raw.cardType) === 'master_skill' && str(root.id).startsWith('master.')
