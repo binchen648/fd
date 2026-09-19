@@ -24,7 +24,7 @@ Semantics:
 - `source_active` reuses the existing authoritative shared active-state helper: the physical source must be in `field|attack_area`, runtime-active, and face up;
 - `source_owned` compares only the physical source `ownerPlayerId` with the current ability controller;
 - malformed nodes with any payload beyond `type` reject rather than being silently interpreted;
-- stale/missing physical source context fails closed through the existing authoritative card lookup before any mutation;
+- missing/nonphysical source context is a benign condition non-match (`false`), including event-rule source instances that have no physical card;
 - evaluation is read-only and emits no domain event;
 - no activation trigger, effect, target, interaction, lifecycle, or modifier route was added.
 
@@ -47,9 +47,9 @@ Production diff identity audit found no canonical consumer id, owner/name, F1 ha
 
 - dependency materialization: `npm ci --ignore-scripts` PASS, `239` packages installed; npm reports existing dependency advisories (`10 vulnerabilities`) with no lockfile change;
 - typecheck: PASS;
-- focused FB2-32: `1 file / 6 tests PASS`;
-- core + regression + focused selection: `79 files / 488 tests PASS`;
-- official CI: `146 files / 1023 tests PASS`;
+- focused FB2-32 after reviewer revision: `1 file / 8 tests PASS`;
+- core + regression + focused selection after reviewer revision: `79 files / 490 tests PASS`;
+- official CI after reviewer revision: `146 files / 1025 tests PASS`;
 - content validation: `7 masters / 7 servants / 20 events / 0 blocking issues`;
 - generated-content determinism: PASS with unchanged hashes:
   - content library `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`;
@@ -60,6 +60,15 @@ Production diff identity audit found no canonical consumer id, owner/name, F1 ha
 - `git diff --check`: PASS;
 - production identity/hash/handler scan: PASS;
 - tracked worktree scope is limited to the two runtime/compiler files, one focused test, and this result report.
+
+## Reviewer revision
+
+Fresh R on initial Candidate `c89eac0357b2427aa9682a95f644f3e1442281bc` returned `IMPLEMENTATION_NEEDS_REVISION` at `https://github.com/binchen648/fd/pull/376#issuecomment-5742601244` with exactly two blockers. This revision closes only those findings:
+
+1. loader acceptance is now position-aware for these two condition nodes: `source_active` / `source_owned` outside the top-level ability `conditions` route produce an unsupported report entry and disable the ability;
+2. runtime condition evaluation now returns `false` when `ctx.sourceCardId` has no authoritative physical card, so valid event-rule source contexts do not throw `Card is not available`.
+
+Focused regression evidence directly covers both reviewer probes: condition-as-effect is rejected/disabled, and a placement-backed event-rule source with `source_owned` completes without throwing or applying its guarded effect. No other capability or consumer route is added.
 
 ## Boundary
 

@@ -176,9 +176,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         !Object.keys(n).every((key) => key === 'type')) {
         issue(path, 'Event-player relation condition must contain only type', abilityId);
       }
-      if (['source_active', 'source_owned'].includes(str(n.type)) &&
-        !Object.keys(n).every((key) => key === 'type')) {
-        issue(path, 'Source-state condition must contain only type', abilityId);
+      if (['source_active', 'source_owned'].includes(str(n.type))) {
+        if (!path.startsWith('conditions')) issue(path, 'Source-state condition is supported only under ability conditions', abilityId);
+        if (!Object.keys(n).every((key) => key === 'type')) issue(path, 'Source-state condition must contain only type', abilityId);
       }
       if (n.type === 'base_power_at_most' && (typeof n.value !== 'number' || !Number.isFinite(n.value))) issue(`${path}.value`, 'Base power bound must be finite', abilityId);
       if (['move_card', 'move_source_card', 'move_all_remaining', 'create_card'].includes(str(n.type)) &&

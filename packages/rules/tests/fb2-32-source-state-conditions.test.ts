@@ -104,6 +104,47 @@ describe('P3-FB2-32 source-state conditions', () => {
     ]));
   });
 
+  it('rejects source-state condition nodes outside the ability conditions route', () => {
+    const authored = archive({ type: 'source_owned' }) as any;
+    authored.cards[0].abilities[0].conditions = [];
+    authored.cards[0].abilities[0].effects = [{ type: 'source_active' }];
+    const loaded = rules.loadAuthoringJson(authored);
+    expect(loaded.report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ reason: 'Source-state condition is supported only under ability conditions' }),
+    ]));
+    expect(loaded.cards['skill.source']!.abilities[0]!.execution.mode).toBe('unsupported');
+  });
+
+  it('fails closed without throwing when an event-rule source has no physical card', () => {
+    const state = createSeededGameState({ activeSeats: [1, 2] });
+    state.cards = [];
+    state.eventPlacements = [{
+      locationId: 'miyama_town', eventCardId: 'event.synthetic.source-state', ruleControllerPlayerId: 'p1',
+      visibility: { scope: 'public' },
+    }];
+    const eventAbility = sourceStateAbility({ type: 'source_owned' });
+    eventAbility.activation = { trigger: 'after_controller_enters_location', eventController: 'placement_controller' };
+    eventAbility.effects = [{ type: 'adjust_victory_points', player: 'controller', amount: 2 }];
+    const pack: AbilityDefinitionPack = {
+      cards: {},
+      eventRules: {
+        'event.synthetic.source-state': {
+          id: 'event.synthetic.source-state', name: 'synthetic event source', cardType: 'event',
+          cardFace: {}, playTiming: {}, playRequirements: [], abilities: [eventAbility], mode: 'automatic',
+        },
+      },
+      eventCatalog: {
+        'event.synthetic.source-state': { id: 'event.synthetic.source-state', tags: [], eventSetIds: [], printedReward: 0 },
+      },
+    };
+    rules.initializeAbilityRuntime(state, pack, { seed: 20260919 });
+    const beforeVp = state.players[0]!.vp;
+    expect(() => rules.processAbilityEvent(state, {
+      id: 'event-rule-source-state', type: 'after_controller_enters_location', playerId: 'p1', locationId: 'miyama_town',
+    })).not.toThrow();
+    expect(state.players[0]!.vp).toBe(beforeVp);
+  });
+
   it('does not make an unaccepted trigger loadable merely because the condition is accepted', () => {
     const report = rules.loadAuthoringJson(archive({ type: 'source_active' }, 'future_unaccepted_trigger')).report;
     expect(report).toEqual(expect.arrayContaining([expect.objectContaining({ reason: 'Unmapped trigger' })]));

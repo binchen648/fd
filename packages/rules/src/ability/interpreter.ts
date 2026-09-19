@@ -565,7 +565,8 @@ export function isSourceStateCondition(c: RuleNode): boolean {
 
 function sourceStateCondition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (!isSourceStateCondition(c)) reject('unsupported', 'Unsupported source-state condition shape');
-  const source = card(s, ctx.sourceCardId);
+  const source = s.cards.find((candidate) => candidate.instanceId === ctx.sourceCardId);
+  if (!source) return false;
   return c.type === 'source_active'
     ? active(s, source.instanceId)
     : source.ownerPlayerId === ctx.controllerId;
