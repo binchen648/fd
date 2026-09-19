@@ -5117,3 +5117,26 @@ Result: record formal Reviewer verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE` for e
 Accepted capability remains only exact type-only identity-free `event_player_won_combat` and `event_player_lost_combat` generic conditions over trusted `AbilityEvent.playerId` plus `battleResult`. FB2-33 earns zero migration credit; formal accepted remains **`136/944`**, with **`808`** remaining. PR #377 remains OPEN, unmerged, and unretargeted. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
 
 Next coordinator action is a fresh dependency overlay over remaining source-grounded generic-extension rows; dispatch S only for a fully complete homogeneous family, otherwise choose the next narrow B2 seam.
+
+## TASK P3-A-FB2-34-COMBAT-REWARD-DISTRIBUTION-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-34-combat-reward-distribution-dispatch`
+Base: exact R72 FB2-33 acceptance synchronization `c6f9cede9423c29725daf93a59dcbf79d6bf1a08`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-20-p3-a-fb2-34-combat-reward-distribution-dispatch.md`
+
+Result: migration-closure-first overlay identifies `servant.stheno.skill.sc-stheno-2` as the nearest honest closure target after FB2-33. Its only remaining formal capability gap is the exact static passive `combat_reward_distribution` replacement (`subject=controller`, `whenControllerWins=true`, `mode=full_reward_each`). Locked Reference has two occurrences of this modifier core, but the Napoleon occurrence is lifecycle/effect-installed and remains out of scope. FB2-34 earns zero migration credit.
+
+## TASK P3-FB2-34-COMBAT-REWARD-DISTRIBUTION
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A FB2-34 dispatch commit
+Read: `docs/reports/2026-09-20-p3-a-fb2-34-combat-reward-distribution-dispatch.md`
+
+Goal: implement only the exact identity-free static passive `combat_reward_distribution: replace/full_reward_each` battle-scoring modifier over authoritative active source cards. Full-reward mode changes only split distribution of event/competition/location VP pools when a modifier controller is a winner; it must not change winner selection, battle Power, defeat/military settlement, individually assigned bonuses, lifecycle, or other modifier families. Near-matches fail closed. Do not migrate Stheno in B2.
+
+Formal recovery accepted remains `136/944`; FB2-34 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization. On acceptance, A must immediately re-overlay and prefer Stheno S migration over another unrelated B2 seam.
