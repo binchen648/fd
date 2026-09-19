@@ -5265,3 +5265,14 @@ Read: `docs/reports/2026-09-20-p3-a-r77-helena-consumer-migration-dispatch.md`
 Result: migration-closure-first dispatches exactly one frozen identity, `servant.helena.skill.sc-helena-3`, S-ready on formally accepted FB2-36. Author exactly one standalone Helena archive card plus focused migration evidence; no runtime production source change and no second consumer identity.
 
 Formal migration remains **`138/944`**, remaining **`806`** until fresh R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A synchronizes it. PR #381 / Ibaraki remains pending independently and is not part of this Base.
+## TASK P3-A-R78-HELENA-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r78-helena-migration-acceptance-sync`
+Base: exact accepted Candidate `ca8a4de1815c360ecc242f0563bf30e5e80eea5d`
+Read: `docs/reports/2026-09-20-p3-a-r78-helena-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #384 exact Candidate `ca8a4de1815c360ecc242f0563bf30e5e80eea5d`, backed by canonical evidence `https://github.com/binchen648/fd/pull/384#issuecomment-5745483145`. Exact frozen addition is `servant.helena.skill.sc-helena-3`; independent Base-to-Candidate frozen overlap is `134/944` to `135/944`, with zero removals and zero duplicates.
+
+Formal project migration advances exactly one identity to **`139/944`**, with **`805`** remaining. PR #384 remains OPEN, unmerged, and unretargeted. PR #381 / Ibaraki remains pending independent migration review and receives no credit here. Next action is immediate migration-closure-first re-overlay from the synchronized formal baseline.
