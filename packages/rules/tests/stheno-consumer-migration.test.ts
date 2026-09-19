@@ -181,4 +181,3 @@ describe('P3 S R73 Stheno consumer migration', () => {
     expect(generated).not.toContain(ID);
   });
 });
-
