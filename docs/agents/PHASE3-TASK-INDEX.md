@@ -5229,3 +5229,15 @@ Read: `docs/reports/2026-09-20-p3-a-r76-fb2-36-acceptance-synchronization.md`
 Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #382 exact Candidate `22731b5be697825bd6bfbc09faea3c333eb629b6`, backed by canonical evidence `https://github.com/binchen648/fd/pull/382#issuecomment-5745209825`. Accepted capability is limited to the two exact identity-free structural `skill_use / forbid` selectors and authoritative play-eligibility enforcement described by FB2-36.
 
 FB2-36 earns zero migration credit; formal migration remains **`137/944`**, with **`807`** remaining. PR #382 remains OPEN, unmerged, and unretargeted. Next action is immediate migration-closure-first re-overlay and S dispatch of the nearest homogeneous consumer target before unrelated runtime work.
+
+## TASK P3-A-R76-NURSERY-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r76-nursery-consumer-migration-dispatch`
+Base: `7bec7b8bf24150602f3c0b04edf53130de19c72e`
+Read: `docs/reports/2026-09-20-p3-a-r76-nursery-consumer-migration-dispatch.md`
+
+Result: migration-closure-first overlay dispatches exactly one homogeneous frozen identity, `servant.nursery.skill.sc-nursery-2`, now S-ready on formally accepted FB2-36. Author exactly one new standalone Nursery archive card plus focused migration evidence; no runtime production source change and no second consumer identity.
+
+Formal migration remains **`137/944`**, remaining **`807`** until fresh R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A synchronizes it. PR #381 / Ibaraki remains pending independently and is not part of this Base.
