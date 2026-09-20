@@ -21,7 +21,13 @@ export function currentRoundCombatLossAbsent(
   event: AbilityEvent | undefined,
 ): boolean {
   const knownPlayerIds = new Set(state.players.map((player) => player.id));
+  const closedLocations = new Set(
+    ((state as unknown as { modeState?: { closedLocations?: unknown } }).modeState?.closedLocations instanceof Array
+      ? (state as unknown as { modeState: { closedLocations: unknown[] } }).modeState.closedLocations
+      : []).filter((locationId): locationId is string => typeof locationId === 'string'),
+  );
   const knownBattlefieldIds = new Set<string>(getEnabledLocations(state.map, state.locationConfig)
+    .filter((location) => !closedLocations.has(location.id))
     .filter((location) => location.tags.includes('battlefield') || location.rewardHooks.includes('battle_rewards'))
     .map((location) => location.id));
   if (!knownPlayerIds.has(controllerId)) return false;

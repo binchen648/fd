@@ -116,3 +116,21 @@ Validation after this revision:
 - generated determinism, exact Locked Reference verification, client production build, and `git diff --check`: PASS;
 - revision-only production hardcode audit: CLEAN;
 - formal migration remains **`140/944`**, with **`804`** remaining; FB2-38 remains zero-credit runtime capability infrastructure.
+## Latest reviewer revision binding
+
+- Superseded Candidate: `14f0c6a990d236498703d502bab1b4e38f018887`
+- Fresh R verdict: `IMPLEMENTATION_NEEDS_REVISION`
+- Canonical reviewer evidence: `https://github.com/binchen648/fd/pull/387#issuecomment-5746344635`
+- Blocking finding: a battle-capable location that is currently excluded by MatchSession `modeState.closedLocations` was still accepted as authoritative current-phase terminal provenance.
+- Minimal revision: derive the accepted current battle-eligible set from enabled battle-capable locations minus current `closedLocations`, matching the authoritative MatchSession producer; add a real `collectTriggeredAbilities` regression proving a known-but-currently-closed battlefield returns no trigger without throwing.
+- Previously fixed post-scoring frozen provenance, history-aware battle ordinals, malformed ID grammar, current-roster identity validation, and unknown/non-battle battlefield validation remain unchanged.
+
+Validation after this revision:
+
+- `npm.cmd run typecheck`: PASS;
+- focused FB2-38: **1 file / 9 tests PASS**;
+- rules `src/__tests__ + core + regression + focused`: **83 files / 503 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2`: **156 files / 1096 tests PASS**;
+- content validation: **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated determinism, exact Locked Reference verification, client production build, and revision `git diff --check`: PASS;
+- formal migration remains **`140/944`**, with **`804`** remaining; FB2-38 remains zero-credit runtime capability infrastructure.

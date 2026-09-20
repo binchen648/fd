@@ -191,6 +191,13 @@ describe('P3-FB2-38 current-round combat-loss absence condition', () => {
       expect(() => trigger(state, malformedRosterProvenance)).not.toThrow();
       expect(trigger(state, malformedRosterProvenance)).toEqual([]);
     }
+    (state as unknown as { modeState?: { closedLocations?: string[] } }).modeState = { closedLocations: ['shinto'] };
+    const closedBattleSnapshot = [result('shinto', ['p1', 'p2'], ['p1'])];
+    const closedBattlefieldProvenance = terminalEvent(state, closedBattleSnapshot);
+    expect(() => trigger(state, closedBattlefieldProvenance)).not.toThrow();
+    expect(trigger(state, closedBattlefieldProvenance)).toEqual([]);
+    (state as unknown as { modeState?: { closedLocations?: string[] } }).modeState = { closedLocations: [] };
+
     for (const malformedBattlefieldId of ['', 'ghost_battlefield', 'magic_workshop']) {
       const malformedBattleId = `battle-phase:${state.round.roundNumber}:battle:${malformedBattlefieldId}:1`;
       const malformedBattlefieldProvenance = {
