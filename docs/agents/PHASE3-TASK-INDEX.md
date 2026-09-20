@@ -5572,3 +5572,16 @@ Read: `docs/reports/2026-09-20-p3-a-r90-siegfried-s2-consumer-migration-dispatch
 Result: dispatch exactly one frozen identity, `servant.siegfried.skill.sc-siegfried-2` (`恶龙之血铠`), now mechanically `S_READY_NOW` after accepted FB2-43. Whole-card read-only re-overlay on exact reviewed runtime returns loader `report=[]`, automatic execution, structural true-name release, real opponent movement to the controller battlefield closes the source, and self/elsewhere/unrevealed/non-battlefield/inactive negatives fail closed. No additional runtime seam is required.
 
 Base frozen overlap is **`140/944`**, duplicates `0`; Candidate must be exactly **`141/944`**, exact +1 Siegfried s2 with zero removals/duplicates and no second frozen identity. Formal migration remains **`145/944`**, remaining **`799`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+
+
+## TASK P3-A-R91-SIEGFRIED-S2-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r91-siegfried-s2-migration-acceptance-sync`
+Base: exact accepted Candidate `edb92db571085b8059f203a504a9a39eb2d70e7e`
+Read: `docs/reports/2026-09-20-p3-a-r91-siegfried-s2-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #399 exact Candidate `edb92db571085b8059f203a504a9a39eb2d70e7e`, backed by canonical evidence `https://github.com/binchen648/fd/pull/399#issuecomment-5749092823`. Exact frozen addition is `servant.siegfried.skill.sc-siegfried-2`; independent Base-to-Candidate frozen overlap is `140/944` to `141/944`, exact +1 with zero removals and zero duplicate frozen ids. Existing accepted FB2-43 supplies the final identity-free event-location equality seam and no production runtime/product registration changed.
+
+Formal project migration advances exactly one identity to **`146/944`**, with **`798`** remaining. PR #399 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
