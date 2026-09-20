@@ -5548,3 +5548,15 @@ Base: `64b4bb7a8b1379dd858c746e77f503b271950ec1`
 Read: `docs/reports/2026-09-20-p3-a-fb2-43-event-location-equals-controller-dispatch.md`
 
 Result: migration-credit-first delta proof keeps the current `S_READY_NOW` queue zero at **`145/944`** after Darius s2: FB2-42's only newly admitted frozen modifier occurrence was Darius s2 itself, now migrated, and its S branch added no runtime capability. Targeted closure probing selects `servant.siegfried.skill.sc-siegfried-2`; every normalized whole-card contract is already accepted except exact type-only `event_location_equals_controller`. Dispatch only that identity-free movement-event relation condition. FB2-43 earns zero migration credit; formal state remains **`145/944`**, **`799` remaining**.
+
+## TASK P3-A-R90-FB2-43-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r90-fb2-43-acceptance-sync`
+Base: exact accepted Candidate `19ff09ed65e34f241d332250e1cc1370071ecf75`
+Read: `docs/reports/2026-09-20-p3-a-r90-fb2-43-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #396 exact Candidate `19ff09ed65e34f241d332250e1cc1370071ecf75`, backed by canonical evidence `https://github.com/binchen648/fd/pull/396#issuecomment-5748914327`. Accepted capability is the narrow identity-free exact type-only `event_location_equals_controller` condition for authoritative `after_controller_enters_location`, with fail-closed current-controller location equality and narrowly bounded opponent-event admission only when composed with accepted `event_player_is_opponent`.
+
+FB2-43 earns zero migration credit; formal migration remains **`145/944`**, with **`799`** remaining. PR #396 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.siegfried.skill.sc-siegfried-2`; dispatch singleton S only if it is mechanically zero-gap.
