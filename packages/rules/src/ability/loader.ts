@@ -19,6 +19,11 @@ import { isAcceptedCurrentRoundCombatWinAbsenceCondition } from './current-round
 import { isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import { isAcceptedPreBattleDefeatAbility, isPreBattleDefeatCandidate } from './pre-battle-defeat';
 import {
+  BATTLE_LOSS_VP_WINNER_REWARD_EFFECT,
+  isAcceptedBattleLossVpWinnerRewardAbility,
+  isBattleLossVpWinnerRewardCandidate,
+} from './battle-loss-vp-winner-reward';
+import {
   isGameStartPlayerStatusAssignmentCandidate,
   isGameStartPlayerStatusAssignmentSemantic,
 } from './game-start-player-status-assignment';
@@ -197,6 +202,8 @@ const supportedTypes = new Set([
   'event_location_equals_controller',
   // FB2-45 exact action-phase pre-battle defeat selector/effect tokens; gated by whole-ability classifier below.
   'defeat_player', 'no_attack_played_this_round_with_attribute',
+  // FB2-46 exact battle-loss VP -> same-result winners transaction; gated by whole-ability classifier below.
+  BATTLE_LOSS_VP_WINNER_REWARD_EFFECT,
   // FB2-29 source-owner relational power/return primitives
   'adjust_round_total_power', 'schedule_source_card_return',
   // FB2-39 exact game-start player-status assignment
@@ -214,6 +221,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   'before_situation_or_event_resolves', 'when_movement_options_requested',
 ]);
 const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
+  'lossAmount', 'winnerRewardAmount',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
   'var', 'op', 'args', 'left', 'right', 'formula', 'formulaRef', 'printedExpression', 'constraints', 'value', 'min', 'max',
   'targetRef', 'resultVar', 'optionalCost', 'uses', 'conditions', 'locationKind', 'maxSteps', 'cardType', 'face', 'attribute', 'sourceCard',
@@ -541,6 +549,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'authoring')) {
         issue('preBattleDefeat.gateway', 'Unsupported pre-battle defeat semantic shape', id);
+      }
+      if (isBattleLossVpWinnerRewardCandidate(a) && !isAcceptedBattleLossVpWinnerRewardAbility(a, 'authoring')) {
+        issue('battleLossVpWinnerReward.gateway', 'Unsupported battle-loss VP winner-reward semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

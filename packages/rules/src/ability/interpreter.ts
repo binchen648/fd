@@ -27,6 +27,12 @@ import { currentRoundCombatLossAbsent, isAcceptedCurrentRoundCombatLossAbsenceCo
 import { eventLocationEqualsController, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import { isAcceptedPreBattleDefeatAbility, isPreBattleDefeatCandidate, preBattleDefeatAttribute } from './pre-battle-defeat';
 import {
+  battleLossVpWinnerRewardAmounts,
+  isAcceptedBattleLossVpWinnerRewardAbility,
+  isBattleLossVpWinnerRewardCandidate,
+  trustedBattleLossVpWinnerRewardFacts,
+} from './battle-loss-vp-winner-reward';
+import {
   currentRoundCombatWinAbsent,
   isAcceptedCurrentRoundCombatWinAbsenceCondition,
   recordCurrentRoundCombatWinsFromBattleResult,
@@ -815,6 +821,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) return false;
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'compiled')) return false;
+  if (isBattleLossVpWinnerRewardCandidate(a) && !isAcceptedBattleLossVpWinnerRewardAbility(a, 'compiled')) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
@@ -1333,6 +1340,54 @@ function stagePreBattleDefeat(s: GameState, ctx: EffectContext, a: AuthoringAbil
     round: s.round.roundNumber, battlefieldId: controller.locationId, controllerId: ctx.controllerId,
     sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, targetPlayerIds,
   });
+}
+
+function settleBattleLossVpWinnerReward(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAcceptedBattleLossVpWinnerRewardAbility(a, 'compiled')) {
+    reject('resolution_failed', 'Unsupported battle-loss VP winner-reward semantic shape');
+  }
+  const amounts = battleLossVpWinnerRewardAmounts(a);
+  const facts = trustedBattleLossVpWinnerRewardFacts(s, ctx.controllerId, ctx.event);
+  if (!amounts || !facts) reject('invalid_event', 'Battle-loss VP winner reward requires trusted same-battle result provenance');
+
+  const r = runtime(s);
+  if (r.preventEffects) {
+    r.events.push({ type: 'effect_prevented', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+    return;
+  }
+
+  const controller = player(s, ctx.controllerId);
+  if (!Number.isSafeInteger(controller.vp) || controller.vp < 0) reject('invalid_state', 'Controller VP must be a nonnegative safe integer');
+  const controllerBefore = controller.vp;
+  const controllerAfter = Math.max(0, controllerBefore - amounts.lossAmount);
+  const actualLoss = controllerBefore - controllerAfter;
+
+  const winnerBalances = facts.winnerPlayerIds.map((winnerPlayerId) => {
+    const winner = player(s, winnerPlayerId);
+    if (!Number.isSafeInteger(winner.vp) || winner.vp < 0) reject('invalid_state', 'Winner VP must be a nonnegative safe integer');
+    const after = actualLoss > 0 ? winner.vp + amounts.winnerRewardAmount : winner.vp;
+    if (!Number.isSafeInteger(after)) reject('invalid_state', 'Winner VP reward would exceed safe integer range');
+    return { winner, before: winner.vp, after };
+  });
+
+  controller.vp = controllerAfter;
+  r.events.push({
+    type: 'victory_points_adjusted', playerId: controller.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+    resource: 'victory_points', delta: actualLoss === 0 ? 0 : -actualLoss, requestedDelta: -amounts.lossAmount, before: controllerBefore, after: controllerAfter,
+    triggerEventId: ctx.event!.id, battlePhaseResolutionId: facts.battlePhaseResolutionId, battleId: facts.battleId,
+    battlefieldId: facts.battlefieldId, resultId: facts.resultId,
+  });
+  if (actualLoss === 0) return;
+
+  for (const { winner, before, after } of winnerBalances) {
+    winner.vp = after;
+    r.events.push({
+      type: 'victory_points_adjusted', playerId: winner.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+      resource: 'victory_points', delta: amounts.winnerRewardAmount, requestedDelta: amounts.winnerRewardAmount,
+      before, after, triggerEventId: ctx.event!.id, battlePhaseResolutionId: facts.battlePhaseResolutionId,
+      battleId: facts.battleId, battlefieldId: facts.battlefieldId, resultId: facts.resultId,
+    });
+  }
 }
 
 function checkFormulaTriggers(s: GameState): void {
@@ -2867,6 +2922,12 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isAcceptedBattleLossVpWinnerRewardAbility(a, 'compiled')) {
+    settleBattleLossVpWinnerReward(s, ctx, a);
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
   if (isBattleLossUnpreventableVpTriggerSemantic(a)) {
     const beforeEvents = runtime(s).events.length;
     executeResolutionEffects(s, ctx, effects);
@@ -3136,6 +3197,9 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   }
   if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported pre-battle defeat semantic shape');
+  }
+  if (isBattleLossVpWinnerRewardCandidate(a) && !isAcceptedBattleLossVpWinnerRewardAbility(a, 'compiled')) {
+    reject('resolution_failed', 'Unsupported battle-loss VP winner-reward semantic shape');
   }
   if (isAcceptedPreBattleDefeatAbility(a, 'compiled')) {
     const controller = player(s, ctx.controllerId);
