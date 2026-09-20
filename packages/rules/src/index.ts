@@ -41,3 +41,4 @@ export * from './ability/deployment-destinations';
 export * from './ability/current-round-combat-loss-condition';
 export * from './ability/current-round-combat-win-condition';
 export * from './ability/game-start-player-status-assignment';
+export * from './ability/event-location-equals-controller';
