@@ -5346,3 +5346,15 @@ Read: `docs/reports/2026-09-20-p3-a-r81-fb2-38-acceptance-synchronization.md`
 Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #387 exact Candidate `886313bea6d70f5b271aceeb5787dfe475c4b635`, backed by canonical evidence `https://github.com/binchen648/fd/pull/387#issuecomment-5746633189`. Earlier revision verdicts bind historical Candidates only. Accepted capability is the exact identity-free current-battle-phase terminal combat-loss-absence condition dispatched by FB2-38.
 
 FB2-38 earns zero migration credit; formal migration remains **`140/944`**, with **`804`** remaining. PR #387 remains OPEN, unmerged, and unretargeted. Next action is immediate Darius s1 whole-card re-overlay and S dispatch if zero-issue.
+
+## TASK P3-A-R81-DARIUS-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r81-darius-consumer-migration-dispatch`
+Base: exact R81 FB2-38 acceptance sync `1a57ee8443611e6c32fab4fee9ed8afd7e98c3d1`
+Read: `docs/reports/2026-09-20-p3-a-r81-darius-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.darius.skill.sc-darius-1`, now S-ready on formally accepted FB2-38. Whole-card normalization is zero-issue: standard action play envelope with explicit mana threshold 0; residual `after_battle_ended`; exact `source_active` plus FB2-38 combat-loss-absence condition; `close_source_card`; `while_active/immediate/remain_active`. No runtime production source or second consumer identity.
+
+Base branch-local frozen overlap is **`136/944`** and Candidate must be exactly **`137/944`**, exact +1 with zero removals/duplicates. Formal migration remains **`140/944`**, remaining **`804`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
