@@ -897,3 +897,21 @@ Permitted final status:
 - P3-FB2-17-R1-RECOVERY is dispatched as a fresh support-definition retry from the exact post-R43 A synchronization lineage. The retry authorizes the legitimate deterministic content-library and evidence-report outputs already exposed by the first blocker.
 - The retry still forbids rules/runtime/compiler changes. If ordinary master registration continues to create an eighth playable master, public master presentation material, fallback command spell, or archive-boundary drift, `SUPPORT_DEFINITION_BLOCKED` remains the correct result and the next dependency must be a separate identity-free support-only registration seam.
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or Ciel task is authorized.
+
+## P3-A FB2-17-R1 Recovery Blocker Synchronization / FB2-19 Dispatch - 2026-09-18
+
+- Fresh FB2-17-R1 blocker `7e0356146766486180bcd959ee4e90dcfe193be5`, directly based on post-R43 A sync `79c4f65ba8d3d9f50785ce290f9f755a19794c26`, returns `SUPPORT_DEFINITION_BLOCKED` and commits only its blocker report.
+- FB2-18 has successfully closed the original outside-game placement issue: the derived support proposal now compiles with exact `initialPlacement: "outside_game"` and no `initialZone`.
+- The remaining blocker is generic registration scope. Ordinary `authoringMasterFiles` still changes playable masters `7 -> 8`, creates executable `master.shirou-emiya`, synthesizes `master.shirou-emiya.command-spell`, and shifts the stable archive boundary. Focused structural gate is `51 PASS / 9 FAIL`, while FB2-18 remains `9/9 PASS`.
+- Fresh A dispatches P3-FB2-19-RECOVERY only for an identity-free master support-only / rules-only authoring registration seam. It may add a dedicated manifest channel and exact support-archive discriminator, but may not add production identities, production pack/generated files, runtime behavior, or Shirou/card-specific routing.
+- A valid support archive must enter `rules.archives` / executable card registration while staying out of the playable/presentation master roster, executable character generation, fallback command-spell generation, and deck/fixture setup.
+- FB2-19 takes zero frozen-migration credit. FB2-17-R2 waits for FB2-19 candidate + fresh R44 + A synchronization. P3-FM09 remains `MIGRATION_BLOCKED`; accepted overlap remains `111/944`, leaving `833/944`.
+
+## P3-A R44-R2 / FB2-19 Recovery Acceptance Synchronization and FB2-17-R2 Dispatch - 2026-09-18
+
+- Initial FB2-19 recovery candidate `94f1c3554d627df608666e5477d4554b0725ccad` was correctly returned by fresh R44-R1 as `IMPLEMENTATION_NEEDS_REVISION` for one executable-compiler fail-closed gap: support-shaped archives with missing/normal-master/near-match discriminators could fall through to playable-master generation.
+- B2 revised only the compiler structural guard, three adversarial regressions, and result evidence. Revised candidate `211ba4994acaf063834c28bef9525366b88ae463` is the direct child of the initial candidate and Base-to-revised-candidate scope remains the same five FB2-19 files.
+- Fresh R44-R2 independently re-attacks the discriminator cases and returns `IMPLEMENTATION_ACCEPTED_CANDIDATE` with no blocking finding. Validation is focused `94/94`, full CI `835/835`, core+regression `420/420`, client/content/determinism/Reference PASS, unchanged coverage `98/133/232` with raw `22/3/127/0/80/124`, automation audit `127/3/80/20`, and clean reviewer/candidate worktrees.
+- FB2-19 is accepted only as generic zero-credit support-only/rules-only registration infrastructure. Accepted overlap remains `111/944` (`11.76%`), leaving `833/944`.
+- P3-FB2-17-R2-RECOVERY is dispatched from the exact post-R44-R2 A synchronization lineage for exactly one non-frozen derived support card. It must use `authoringMasterSupportFiles`, preserve 7-player roster/fixture and outside-game placement, and may not modify `packages/` or migrate frozen Shirou s2.
+- P3-FM09 remains `MIGRATION_BLOCKED`; eleven frozen provisioning targets remain unresolved. No `121/944`, FM10, or Ciel credit/dispatch is authorized.

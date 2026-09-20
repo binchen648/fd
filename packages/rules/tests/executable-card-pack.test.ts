@@ -18,6 +18,28 @@ function installResolutionFixture(input: ReturnType<typeof sourceInput>, effects
   input.rules.archives[7]!.cards[0]!.abilities![0]!.effects = effects;
 }
 
+function masterSupportArchive(mutate?: (archive: any) => void): any {
+  const archive: any = {
+    schemaVersion: 'fd-card-authoring-v1',
+    archiveType: 'master_support_definition_archive',
+    id: 'master.support-owner',
+    name: 'Support Owner',
+    cards: [{
+      id: 'card.support.only',
+      name: 'Support Only',
+      cardType: 'master_skill',
+      initialPlacement: 'outside_game',
+      printedText: 'support only',
+      cardFace: { cost: 1, basePower: 1 },
+      playTiming: { phase: 'action', window: 'controller_play_card_window' },
+      playRequirements: [],
+      abilities: [],
+    }],
+  };
+  mutate?.(archive);
+  return archive;
+}
+
 describe('ExecutableCardPack compiler', () => {
   it('normalizes one canonical runtime definition and explicit deck per source archive', () => {
     const input = sourceInput();
@@ -46,6 +68,45 @@ describe('ExecutableCardPack compiler', () => {
     const changedClassification = structuredClone(executable);
     changedClassification.cards['servant.artoriac.skill.sc-artoriac-1']!.destinationZone = 'field';
     expect(() => assertExecutableCardPack(changedClassification, input)).toThrow(/hash mismatch/);
+  });
+
+  it('registers master support archives without creating playable character, fallback spell, deck, or archive-order drift', () => {
+    const input = sourceInput();
+    const baseline = compileExecutableCardPack(input);
+    const baselineArchiveIds = input.rules.archives.map((archive) => archive.id);
+    input.rules.archives.push(masterSupportArchive());
+
+    const executable = compileExecutableCardPack(input);
+    expect(input.rules.archives.slice(0, baselineArchiveIds.length).map((archive) => archive.id)).toEqual(baselineArchiveIds);
+    expect(Object.keys(executable.cards)).toHaveLength(Object.keys(baseline.cards).length + 1);
+    expect(executable.cards['card.support.only']).toMatchObject({
+      ownerId: 'master.support-owner',
+      cardType: 'master_skill',
+      initialPlacement: 'outside_game',
+    });
+    expect(executable.cards['card.support.only']!.initialZone).toBeUndefined();
+    expect(executable.characters['master.support-owner']).toBeUndefined();
+    expect(executable.fallbackCommandSpells['master.support-owner']).toBeUndefined();
+    expect(executable.cards['master.support-owner.command-spell']).toBeUndefined();
+    expect(executable.decks['master.support-owner']).toBeUndefined();
+    expect(executable.sourceMap['servant.artoriac.skill.sc-artoriac-1']!.archiveIndex).toBe(7);
+    expect(() => assertExecutableCardPack(executable, input)).not.toThrow();
+  });
+
+  it.each([
+    ['missing support discriminator', (archive: any) => { delete archive.archiveType; }, /support-shaped archive requires archiveType=master_support_definition_archive/],
+    ['normal-master discriminator on support shape', (archive: any) => { archive.archiveType = 'master_skill_card_archive'; }, /support-shaped archive requires archiveType=master_support_definition_archive/],
+    ['near-match support discriminator', (archive: any) => { archive.archiveType = 'master_support_definition_archive_x'; }, /support-shaped archive requires archiveType=master_support_definition_archive/],
+    ['wrong owner family', (archive: any) => { archive.id = 'servant.support-owner'; }, /id must start with master\./],
+    ['empty archive', (archive: any) => { archive.cards = []; }, /must contain at least one card/],
+    ['non-master-skill card', (archive: any) => { archive.cards[0].cardType = 'command_spell'; }, /only master_skill cards/],
+    ['missing outside-game placement', (archive: any) => { delete archive.cards[0].initialPlacement; }, /requires initialPlacement=outside_game/],
+    ['deck surface', (archive: any) => { archive.deck = []; }, /cannot define a deck/],
+    ['playable public information', (archive: any) => { archive.publicInformation = { initialMana: 4 }; }, /cannot define playable master publicInformation/],
+  ])('fails closed for malformed executable master support archive: %s', (_name, mutate, expected) => {
+    const input = sourceInput();
+    input.rules.archives.push(masterSupportArchive(mutate));
+    expect(() => compileExecutableCardPack(input)).toThrow(expected);
   });
 
   it('classifies exact required-additional master skills as attack-area cards through the shared marker contract', () => {
