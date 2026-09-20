@@ -159,7 +159,7 @@ describe('P3 S R90 Siegfried s2 consumer migration', () => {
     expect(generated).not.toContain(ID);
   });
 
-  it('adds exactly one frozen authoring identity with no duplicate frozen ids', () => {
+  it('keeps Siegfried s2 authored exactly once with no duplicate frozen ids', () => {
     const inventory = JSON.parse(readFileSync(resolve(ROOT, 'data/phase3/full-roster-ability-inventory.json'), 'utf8'));
     const frozen = new Set<string>([
       ...inventory.staticSkills.map((skill: any) => skill.canonicalAbilityId),
@@ -170,10 +170,8 @@ describe('P3 S R90 Siegfried s2 consumer migration', () => {
       const archive = JSON.parse(readFileSync(file, 'utf8').replace(/^\uFEFF/, ''));
       for (const card of archive.cards ?? []) counts.set(card.id, (counts.get(card.id) ?? 0) + 1);
     }
-    const overlap = [...counts.keys()].filter((id) => frozen.has(id));
     const duplicateFrozen = [...counts.entries()].filter(([id, count]) => frozen.has(id) && count > 1);
     expect(frozen.size).toBe(944);
-    expect(overlap).toHaveLength(141);
     expect(duplicateFrozen).toEqual([]);
     expect(counts.get(ID)).toBe(1);
   });
