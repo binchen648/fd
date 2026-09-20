@@ -5406,3 +5406,15 @@ Read: `docs/reports/2026-09-20-p3-a-r82-amakusa-consumer-migration-dispatch.md`
 Result: dispatch exactly one frozen identity, `master.amakusa.skill.s1` (`教则`), now S-ready on formally accepted FB2-39. A temporary whole-card normalization probe returned loader `report=[]`, automatic mode, and exact FB2-39 semantic acceptance for authoritative `game_start` + exact `source_owned` + the three Reference-backed opaque status assignments. No additional runtime seam is required.
 
 Base frozen overlap is **`137/944`** and Candidate must be exactly **`138/944`**, exact +1 Amakusa s1 with zero removals/duplicates. Formal migration remains **`142/944`**, remaining **`802`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+
+## TASK P3-A-R83-AMAKUSA-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r83-amakusa-migration-acceptance-sync`
+Base: exact accepted Candidate `f6be715b70ec02cc5632a2157ba96bfc853c9283`
+Read: `docs/reports/2026-09-20-p3-a-r83-amakusa-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #390 exact Candidate `f6be715b70ec02cc5632a2157ba96bfc853c9283`, backed by canonical evidence `https://github.com/binchen648/fd/pull/390#issuecomment-5747582266`. Exact frozen addition is `master.amakusa.skill.s1`; independent Base-to-Candidate frozen overlap is `137/944` to `138/944`, exact +1 with zero removals and zero duplicates. No production runtime or product registration changed.
+
+Formal project migration advances exactly one identity to **`143/944`**, with **`801`** remaining. PR #390 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted zero-gap whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
