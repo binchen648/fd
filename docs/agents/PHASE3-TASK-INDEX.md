@@ -5454,3 +5454,15 @@ Read: `docs/reports/2026-09-20-p3-a-fb2-41-current-round-combat-win-condition-di
 Result: migration-credit-first delta proof shows the current `S_READY_NOW` queue remains zero at **`143/944`**. FB2-40's exact `source_card_active_round_count` metric appears only on Nero s1 in Locked Reference, and Nero s1 still has the separate exact `combatWinRound` current-round absence condition. Dispatch one narrow identity-free server-owned current-round combat-win ledger/condition seam; no generic player flags and no consumer routing.
 
 FB2-41 earns zero migration credit; formal migration remains **`143/944`**, with **`801`** remaining. Fresh R is required before A synchronization; no merge/retarget.
+
+## TASK P3-A-R85-FB2-41-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r85-fb2-41-acceptance-sync`
+Base: exact accepted Candidate `72b2e284f93beb2d6659496b28a90e5719c78c95`
+Read: `docs/reports/2026-09-20-p3-a-r85-fb2-41-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #392 exact revised Candidate `72b2e284f93beb2d6659496b28a90e5719c78c95`, backed by canonical evidence `https://github.com/binchen648/fd/pull/392#issuecomment-5747802266`. Accepted capability is the narrow identity-free authoritative current-round combat-win ledger plus exact `player_flag_number_not_current_round/combatWinRound` condition; the prior loss-effect-suppression blocker is fixed and covered through the real game-loop producer path.
+
+FB2-41 earns zero migration credit; formal migration remains **`143/944`**, with **`801`** remaining. PR #392 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.nero.skill.sc-nero-1`; dispatch S only if it is mechanically zero-gap.
