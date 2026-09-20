@@ -33,6 +33,13 @@ import {
   trustedBattleLossVpWinnerRewardFacts,
 } from './battle-loss-vp-winner-reward';
 import {
+  CONTROLLER_DEFEATED_TRIGGER,
+  controllerDefeatedVpRewardAmount,
+  isAcceptedControllerDefeatedVpRewardAbility,
+  isControllerDefeatedVpRewardCandidate,
+  trustedControllerDefeatedFacts,
+} from './controller-defeated-vp-reward';
+import {
   currentRoundCombatWinAbsent,
   isAcceptedCurrentRoundCombatWinAbsenceCondition,
   recordCurrentRoundCombatWinsFromBattleResult,
@@ -822,6 +829,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'compiled')) return false;
   if (isBattleLossVpWinnerRewardCandidate(a) && !isAcceptedBattleLossVpWinnerRewardAbility(a, 'compiled')) return false;
+  if (isControllerDefeatedVpRewardCandidate(a) && !isAcceptedControllerDefeatedVpRewardAbility(a, 'compiled')) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
@@ -1029,7 +1037,7 @@ export function triggerEventScopeMatches(a: AuthoringAbility, event: AbilityEven
 function battleEventControllerEligibleAfterScoring(s: GameState, event: AbilityEvent, controllerId: string): boolean {
   if (player(s, controllerId).status === 'active') return true;
   const perBattleScoped = !!event.battlePhaseResolutionId && !!event.battleId && !!event.resultId &&
-    ['after_battle_result_determined', 'after_controller_wins_battle', 'after_controller_loses_battle', 'after_controller_first_loses_battle', 'after_controller_gains_victory'].includes(event.type);
+    ['after_battle_result_determined', 'after_controller_wins_battle', 'after_controller_loses_battle', CONTROLLER_DEFEATED_TRIGGER, 'after_controller_first_loses_battle', 'after_controller_gains_victory'].includes(event.type);
   const phaseTerminalScoped = !!event.battlePhaseResolutionId && event.type === 'after_battle_ended';
   return (perBattleScoped || phaseTerminalScoped) && event.battleParticipantIds?.includes(controllerId) === true;
 }
@@ -1388,6 +1396,35 @@ function settleBattleLossVpWinnerReward(s: GameState, ctx: EffectContext, a: Aut
       battleId: facts.battleId, battlefieldId: facts.battlefieldId, resultId: facts.resultId,
     });
   }
+}
+
+function settleControllerDefeatedVpReward(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAcceptedControllerDefeatedVpRewardAbility(a, 'compiled')) {
+    reject('resolution_failed', 'Unsupported controller-defeated VP reward semantic shape');
+  }
+  const amount = controllerDefeatedVpRewardAmount(a);
+  const facts = trustedControllerDefeatedFacts(s, ctx.controllerId, ctx.event);
+  if (!amount || !facts) reject('invalid_event', 'Controller-defeated VP reward requires trusted actual-defeat provenance');
+
+  const r = runtime(s);
+  if (r.preventEffects) {
+    r.events.push({ type: 'effect_prevented', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+    return;
+  }
+
+  const controller = player(s, ctx.controllerId);
+  if (!Number.isSafeInteger(controller.vp) || controller.vp < 0) reject('invalid_state', 'Controller VP must be a nonnegative safe integer');
+  const before = controller.vp;
+  const after = before + amount;
+  if (!Number.isSafeInteger(after)) reject('invalid_state', 'Controller VP reward would exceed safe integer range');
+
+  controller.vp = after;
+  r.events.push({
+    type: 'victory_points_adjusted', playerId: controller.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+    resource: 'victory_points', delta: amount, requestedDelta: amount, before, after,
+    triggerEventId: ctx.event!.id, battlePhaseResolutionId: facts.battlePhaseResolutionId, battleId: facts.battleId,
+    battlefieldId: facts.battlefieldId, resultId: facts.resultId,
+  });
 }
 
 function checkFormulaTriggers(s: GameState): void {
@@ -2928,6 +2965,12 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isAcceptedControllerDefeatedVpRewardAbility(a, 'compiled')) {
+    settleControllerDefeatedVpReward(s, ctx, a);
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
   if (isBattleLossUnpreventableVpTriggerSemantic(a)) {
     const beforeEvents = runtime(s).events.length;
     executeResolutionEffects(s, ctx, effects);
@@ -3201,6 +3244,9 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isBattleLossVpWinnerRewardCandidate(a) && !isAcceptedBattleLossVpWinnerRewardAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported battle-loss VP winner-reward semantic shape');
   }
+  if (isControllerDefeatedVpRewardCandidate(a) && !isAcceptedControllerDefeatedVpRewardAbility(a, 'compiled')) {
+    reject('resolution_failed', 'Unsupported controller-defeated VP reward semantic shape');
+  }
   if (isAcceptedPreBattleDefeatAbility(a, 'compiled')) {
     const controller = player(s, ctx.controllerId);
     if (controller.status !== 'active' || !isBattlefield(s, controller.locationId)) {
@@ -3393,7 +3439,10 @@ function processEvent(s: GameState, event: AbilityEvent): void {
     const battleResult = createBattleResult(event.battleResult);
     const winners = battleResult.winners;
     const losers = battleResult.loserIds.filter(id => !winners.includes(id));
-    
+
+    // FB2-47: actual defeat is a distinct server fact and must settle before battle-loss triggers.
+    // The trusted root event already excludes loss-effect-suppressed participants from loserIds.
+    for (const id of losers) processEvent(s, { ...event, id: `${event.id}:defeat:${id}`, type: CONTROLLER_DEFEATED_TRIGGER, playerId: id });
     for (const id of winners) processEvent(s, { ...event, id: `${event.id}:win:${id}`, type: 'after_controller_wins_battle', playerId: id });
     for (const id of winners) processEvent(s, { ...event, id: `${event.id}:victory:${id}`, type: 'after_controller_gains_victory', playerId: id });
     for (const id of losers) processEvent(s, { ...event, id: `${event.id}:lose:${id}`, type: 'after_controller_loses_battle', playerId: id });

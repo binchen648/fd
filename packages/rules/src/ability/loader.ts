@@ -24,6 +24,11 @@ import {
   isBattleLossVpWinnerRewardCandidate,
 } from './battle-loss-vp-winner-reward';
 import {
+  CONTROLLER_DEFEATED_TRIGGER,
+  isAcceptedControllerDefeatedVpRewardAbility,
+  isControllerDefeatedVpRewardCandidate,
+} from './controller-defeated-vp-reward';
+import {
   isGameStartPlayerStatusAssignmentCandidate,
   isGameStartPlayerStatusAssignmentSemantic,
 } from './game-start-player-status-assignment';
@@ -213,7 +218,7 @@ const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_car
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
   'after_battle_result_determined', 'after_controller_wins_battle', 'after_controller_gains_victory', 'when_formula_condition_met',
   // New triggers for 5 servants
-  'after_controller_loses_battle', 'while_active', 'when_power_calculation_applied',
+  'after_controller_loses_battle', CONTROLLER_DEFEATED_TRIGGER, 'while_active', 'when_power_calculation_applied',
   'after_battle_ended', 'after_player_deployed_to_battlefield', 'when_play_requirements_checked',
   // Master triggers
   'game_start', 'after_controller_enters_location', 'after_controller_loses_all_command_seals',
@@ -552,6 +557,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (isBattleLossVpWinnerRewardCandidate(a) && !isAcceptedBattleLossVpWinnerRewardAbility(a, 'authoring')) {
         issue('battleLossVpWinnerReward.gateway', 'Unsupported battle-loss VP winner-reward semantic shape', id);
+      }
+      if (isControllerDefeatedVpRewardCandidate(a) && !isAcceptedControllerDefeatedVpRewardAbility(a, 'authoring')) {
+        issue('controllerDefeatedVpReward.gateway', 'Unsupported controller-defeated VP reward semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;
