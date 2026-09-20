@@ -5430,3 +5430,15 @@ Read: `docs/reports/2026-09-20-p3-a-fb2-40-source-active-round-count-dispatch.md
 Result: migration-credit-first delta proof shows the current `S_READY_NOW` queue is zero at **`143/944`**. FB2-39 could newly unlock only `master.amakusa.skill.s1`, which is now migrated and added no runtime capability. Dispatch one narrow identity-free controlled formula metric, exact `source_card_active_round_count`, derived from authoritative source-card `playedRound`. Intended closure target is Nero s1; its separate `combatWinRound` absence condition remains unsupported and is not in FB2-40 scope.
 
 FB2-40 earns zero migration credit; formal migration remains **`143/944`**, with **`801`** remaining. Fresh R is required before A synchronization; no merge/retarget.
+
+## TASK P3-A-R84-FB2-40-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r84-fb2-40-acceptance-sync`
+Base: exact accepted Candidate `0f344ad5edf3bced8f8e4fced4098346a9eb98cb`
+Read: `docs/reports/2026-09-20-p3-a-r84-fb2-40-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #391 exact Candidate `0f344ad5edf3bced8f8e4fced4098346a9eb98cb`, backed by canonical evidence `https://github.com/binchen648/fd/pull/391#issuecomment-5747670710`. Accepted capability is the narrow identity-free controlled formula metric `source_card_active_round_count`, derived from authoritative source-card `playedRound` with fail-closed source provenance validation.
+
+FB2-40 earns zero migration credit; formal migration remains **`143/944`**, with **`801`** remaining. PR #391 remains OPEN, unmerged, and unretargeted. Next action is immediate migration-credit-first re-overlay; Nero s1 still has its distinct exact `combatWinRound` absence-condition gap and receives no credit here.
