@@ -5538,3 +5538,13 @@ Read: `docs/reports/2026-09-20-p3-a-r89-darius-s2-migration-acceptance-synchroni
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #395 exact Candidate `76023c8c852098679d05d4d2877af9ad92650a65`, backed by canonical evidence `https://github.com/binchen648/fd/pull/395#issuecomment-5748256383`. Exact frozen addition is `servant.darius.skill.sc-darius-2`; independent Base-to-Candidate frozen overlap is `139/944` to `140/944`, exact +1 with zero removals and zero duplicates. Existing Darius s1 remains semantically unchanged and no production runtime/product registration changed.
 
 Formal project migration advances exactly one identity to **`145/944`**, with **`799`** remaining. PR #395 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+
+## TASK P3-A-FB2-43-EVENT-LOCATION-EQUALS-CONTROLLER-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-43-event-location-equals-controller-dispatch`
+Base: `64b4bb7a8b1379dd858c746e77f503b271950ec1`
+Read: `docs/reports/2026-09-20-p3-a-fb2-43-event-location-equals-controller-dispatch.md`
+
+Result: migration-credit-first delta proof keeps the current `S_READY_NOW` queue zero at **`145/944`** after Darius s2: FB2-42's only newly admitted frozen modifier occurrence was Darius s2 itself, now migrated, and its S branch added no runtime capability. Targeted closure probing selects `servant.siegfried.skill.sc-siegfried-2`; every normalized whole-card contract is already accepted except exact type-only `event_location_equals_controller`. Dispatch only that identity-free movement-event relation condition. FB2-43 earns zero migration credit; formal state remains **`145/944`**, **`799` remaining**.
