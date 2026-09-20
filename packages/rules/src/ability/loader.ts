@@ -11,6 +11,7 @@ import {
 } from './ruler-seal';
 import { isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, OUTER_GOD_LIFE_CATEGORY } from './outer-god-life';
 import { classifyAcceptedSkillUseForbidModifier } from './skill-use-forbid';
+import { isAcceptedControlledCardCloseForbidModifier } from './card-close-forbid';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './deployment-destinations';
 import { isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 import { isAcceptedCurrentRoundCombatWinAbsenceCondition } from './current-round-combat-win-condition';
@@ -435,6 +436,8 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         const acceptedPaidCostModifier = acceptedPaidCostCombatPower && m === nodes(a.ruleModifiers)[0];
         const acceptedDeploymentModifier = acceptedDeploymentDestinationReplacement && m === nodes(a.ruleModifiers)[0];
         const acceptedSkillUseForbid = classifyAcceptedSkillUseForbidModifier(m);
+        const acceptedCardCloseForbid = mode === 'automatic' && lifecycle.duration === 'this_round' &&
+          isAcceptedControlledCardCloseForbidModifier(m);
         const operationSupported = ['add', 'set', 'ignore', 'lock', 'exclude', 'forbid'].includes(str(m.operation)) ||
           (acceptedRewardModifier && m.operation === 'replace') ||
           (acceptedDeploymentModifier && m.operation === 'replace');
@@ -442,9 +445,11 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
           (acceptedRewardModifier && m.rule === 'combat_reward_distribution') ||
           (acceptedPaidCostModifier && m.rule === 'combat_power') ||
           (acceptedDeploymentModifier && m.rule === 'deployment_destinations') ||
-          (acceptedSkillUseForbid !== undefined && m.rule === 'skill_use');
+          (acceptedSkillUseForbid !== undefined && m.rule === 'skill_use') ||
+          (acceptedCardCloseForbid && m.rule === 'card_close');
         if (!operationSupported || !ruleSupported) issue('ruleModifiers', 'Unmapped rule or operation', id);
         if (m.rule === 'skill_use' && acceptedSkillUseForbid === undefined) issue('ruleModifiers', 'Unsupported skill-use forbid selector shape', id);
+        if (m.rule === 'card_close' && !acceptedCardCloseForbid) issue('ruleModifiers', 'Unsupported card-close forbid selector shape', id);
         if (m.rule === 'deployment_destinations' && !acceptedDeploymentModifier) issue('ruleModifiers', 'Unsupported deployment-destination replacement shape', id);
         if (m.rule === 'combat_reward_distribution' && !acceptedRewardModifier) issue('ruleModifiers', 'Unsupported combat reward distribution modifier shape', id);
         if (m.rule === 'effect_prevention' && (m.operation !== 'ignore' || node(m.priority).tier !== 'explicit_exception')) issue('ruleModifiers.priority', 'Prevention exception requires explicit_exception', id);

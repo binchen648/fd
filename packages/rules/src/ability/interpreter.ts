@@ -2,7 +2,7 @@ import type { GameState, PhaseName } from '../schema/game';
 import type { CardInstance } from '../schema/card';
 import type { LocationId } from '../schema/location';
 import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
-import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID, evaluateCardSourceValidity } from '../core/card-source-state';
+import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID, evaluateCardSourceValidity, isActiveCardSource } from '../core/card-source-state';
 import {
   isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic,
   isSameBattlefieldPrivateHandReturnInteractionCandidate, isSameBattlefieldPrivateHandReturnInteractionSemantic,
@@ -21,6 +21,7 @@ import { currentDeploymentBonus } from '../core/terrain-advantage';
 import { eventRulePlacementByInstance, initializeEventRulePlacements, listEventRuleCandidates, moveEventRuleCandidate, moveEventRuleCandidates, type EventRuleZone } from './event-rule';
 import { applyOuterGodLifeUse, isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, settlePendingSourceCardReturns } from './outer-god-life';
 import { classifyAcceptedSkillUseForbidModifier, definitionHasStructuralTrueNameRelease, isAcceptedStaticWhileActiveSkillUseForbidAbility } from './skill-use-forbid';
+import { isCardCloseForbidden } from './card-close-forbid';
 import { currentRoundCombatLossAbsent, isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 import {
   currentRoundCombatWinAbsent,
@@ -90,8 +91,8 @@ function abilityDefinition(s: GameState, source: string, abilityId: string): Aut
 }
 function nextId(s: GameState, label: string): string { return `${label}-${++runtime(s).sequence}`; }
 function active(s: GameState, id: string): boolean {
-  const c = card(s, id); const m = runtime(s).cardState[id];
-  return ['field', 'attack_area'].includes(c.zone) && m?.active === true && !m.faceDown;
+  card(s, id);
+  return isActiveCardSource(s, id);
 }
 function phase(s: GameState): string { return s.round.activePhase === 'battle' ? 'combat' : s.round.activePhase; }
 function isAttack(d: AuthoringCard | undefined): boolean {
@@ -420,7 +421,7 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   const modifiers = liveOngoing(s).flatMap(o => o.ruleModifiers).sort((a, b) =>
     Number(node(a.definition.priority).tier === 'explicit_exception') - Number(node(b.definition.priority).tier === 'explicit_exception'));
   for (const modifier of modifiers) {
-    const m = modifier.definition; const scope = node(m.scope); if (m.rule === 'effect_prevention') continue;
+    const m = modifier.definition; const scope = node(m.scope); if (m.rule === 'effect_prevention' || m.rule === 'card_close') continue;
     if (!modifierControllerApplies(s, modifier.controllerId, source, scope)) continue;
     if (scope.object === 'source_card' && modifier.sourceCardId !== sourceId) continue;
     if (scope.object === 'attack_card' && !isAttack(d)) continue;
@@ -1466,6 +1467,9 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     }
     case 'create_modifier': installCreatedPowerModifier(s, ctx, effect); break;
     default: {
+      if (effect.type === 'close_source_card' && isCardCloseForbidden(s, ctx.sourceCardId)) {
+        reject('resolution_failed', 'Close source card is forbidden by a live rule modifier.');
+      }
       // Try extended effects handler
       try {
         resolveExtendedEffect(s, ctx.controllerId, effect, {

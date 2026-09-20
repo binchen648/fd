@@ -2,6 +2,7 @@ import type { GameState, PlayerState } from '../schema/game';
 import type { LocationId } from '../schema/location';
 import type { PlayerId, SafeEvent } from './types';
 import { clearTransientCardTransformState } from './card-instance-state';
+import { isCardCloseForbidden } from './card-close-forbid';
 import { grantMana } from '../core/rule-overrides';
 
 export type EffectExecutionStatus = 'applied' | 'no_op';
@@ -1484,6 +1485,9 @@ function closeSourceCard(
     }
     if (!state?.active) throw new ResolutionRuntimeError('inactive_close_source', 'Close source card is not active.');
     if (state.faceDown) throw new ResolutionRuntimeError('face_down_close_source', 'Close source card must be face up.');
+    if (isCardCloseForbidden(transaction.workingState, source.instanceId)) {
+      throw new ResolutionRuntimeError('card_close_forbidden', 'Close source card is forbidden by a live rule modifier.');
+    }
     state.active = false;
     state.faceDown = false;
   }
