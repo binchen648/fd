@@ -47,6 +47,7 @@ export function currentRoundCombatLossAbsent(
       new Set(resultIds).size !== resultIds.length || new Set(scoringReceiptIds).size !== scoringReceiptIds.length) return false;
 
   const representedParticipants: PlayerId[] = [];
+  let previousBattleOrdinal: number | undefined;
   for (let index = 0; index < outcomes.length; index += 1) {
     const outcome = outcomes[index];
     const battleId = battleIds[index];
@@ -54,14 +55,17 @@ export function currentRoundCombatLossAbsent(
     const winners = outcome?.winnerPlayerIds;
     const battleIdPrefix = `${phaseId}:battle:${outcome?.battlefieldId}:`;
     const battleOrdinal = battleId?.slice(battleIdPrefix.length);
+    const battleOrdinalValue = battleOrdinal && /^[1-9]\d*$/.test(battleOrdinal) ? Number(battleOrdinal) : undefined;
     if (!outcome || typeof outcome.battlefieldId !== 'string' || !knownBattlefieldIds.has(outcome.battlefieldId) || !battleId ||
-        !battleId.startsWith(battleIdPrefix) || !battleOrdinal || !/^[1-9]\d*$/.test(battleOrdinal) ||
+        !battleId.startsWith(battleIdPrefix) || battleOrdinalValue === undefined || !Number.isSafeInteger(battleOrdinalValue) ||
+        (previousBattleOrdinal !== undefined && battleOrdinalValue !== previousBattleOrdinal + 1) ||
         resultIds[index] !== `${battleId}:result` ||
         scoringReceiptIds[index] !== `${phaseId}:score:${outcome.battlefieldId}` ||
         !Array.isArray(participants) || participants.length === 0 || participants.some((value) => typeof value !== 'string' || value.length === 0 || !knownPlayerIds.has(value)) ||
         new Set(participants).size !== participants.length ||
         !Array.isArray(winners) || winners.length === 0 || winners.some((value) => typeof value !== 'string' || value.length === 0 || !knownPlayerIds.has(value)) ||
         new Set(winners).size !== winners.length || winners.some((winnerId) => !participants.includes(winnerId))) return false;
+    previousBattleOrdinal = battleOrdinalValue;
     representedParticipants.push(...participants);
   }
 

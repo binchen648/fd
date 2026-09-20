@@ -155,3 +155,23 @@ Validation after this revision:
 - generated determinism, exact Locked Reference verification, client production build, and `git diff --check`: PASS;
 - revision-only production hardcode audit: CLEAN;
 - formal migration remains **`140/944`**, with **`804`** remaining; FB2-38 remains zero-credit runtime capability infrastructure.
+## Cross-battle ordinal-sequence reviewer revision binding
+
+- Superseded Candidate: `484c24acfbe75552ae9e30a30dd3bad2e701cf81`
+- Fresh R verdict: `IMPLEMENTATION_NEEDS_REVISION`
+- Canonical reviewer evidence: `https://github.com/binchen648/fd/pull/387#issuecomment-5746467063`
+- Blocking finding: each battle ordinal was validated only as an independent positive integer, so impossible duplicate, reversed, or gapped multi-battle ordinal runs could be accepted even though both authoritative terminal producers emit one contiguous increasing run; history-aware MatchSession offsets such as `8,9` must remain valid.
+- Minimal revision: retain the first authoritative ordinal as an arbitrary positive history-aware offset, then require each following represented battle ordinal to equal the previous ordinal plus one in terminal outcome order; no phase-local ordinal reconstruction is added.
+- Focused regression uses the real `collectTriggeredAbilities` path to prove `[1,2]` and later-offset `[8,9]` remain valid while duplicate `[1,1]`, reversed `[2,1]`, and gapped `[1,3]` provenance fail closed without throwing.
+- Previously fixed post-scoring frozen provenance, string/grammar validation, current-roster identity validation, battle-capable/open-location validation, and non-empty represented outcome validation remain unchanged.
+
+Validation after this revision:
+
+- `npm.cmd run typecheck`: PASS;
+- focused FB2-38: **1 file / 10 tests PASS**;
+- rules `src/__tests__ + core + regression + focused`: **83 files / 504 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2`: **156 files / 1097 tests PASS**;
+- content validation: **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated determinism, exact Locked Reference verification, client production build, and `git diff --check`: PASS;
+- revision-only forbidden-scope and production hardcode audits: CLEAN;
+- formal migration remains **`140/944`**, with **`804`** remaining; FB2-38 remains zero-credit runtime capability infrastructure.

@@ -162,6 +162,29 @@ describe('P3-FB2-38 current-round combat-loss absence condition', () => {
     expect(rules.currentRoundCombatLossAbsent(session.state, 'p1', terminal)).toBe(true);
   });
 
+  it('requires multi-battle ordinals to be one contiguous increasing run while preserving history offsets', () => {
+    const state = setup();
+    const snapshot = [
+      result('miyama_town', ['p1', 'p2'], ['p1']),
+      result('shinto', ['p3', 'p4'], ['p3']),
+    ];
+    state.battleResults = structuredClone(snapshot);
+    const good = terminalEvent(state, snapshot);
+    const phaseId = `battle-phase:${state.round.roundNumber}`;
+    const withOrdinals = (ordinals: number[]): AbilityEvent => {
+      const battleIds = good.battleOutcomes!.map((outcome, index) =>
+        `${phaseId}:battle:${outcome.battlefieldId}:${ordinals[index]}`);
+      return { ...good, battleIds, resultIds: battleIds.map((id) => `${id}:result`) };
+    };
+
+    expect(trigger(state, withOrdinals([1, 2]))).toHaveLength(1);
+    expect(trigger(state, withOrdinals([8, 9]))).toHaveLength(1);
+    for (const ordinals of [[1, 1], [2, 1], [1, 3]]) {
+      const malformed = withOrdinals(ordinals);
+      expect(() => trigger(state, malformed)).not.toThrow();
+      expect(trigger(state, malformed)).toEqual([]);
+    }
+  });
   it('fails closed for stale, malformed, non-terminal, or runtime near-match contexts', () => {
     const state = setup();
     state.battleResults = [result('miyama_town', ['p1', 'p2'], ['p1'])];
