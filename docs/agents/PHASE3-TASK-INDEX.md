@@ -5418,3 +5418,15 @@ Read: `docs/reports/2026-09-20-p3-a-r83-amakusa-migration-acceptance-synchroniza
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #390 exact Candidate `f6be715b70ec02cc5632a2157ba96bfc853c9283`, backed by canonical evidence `https://github.com/binchen648/fd/pull/390#issuecomment-5747582266`. Exact frozen addition is `master.amakusa.skill.s1`; independent Base-to-Candidate frozen overlap is `137/944` to `138/944`, exact +1 with zero removals and zero duplicates. No production runtime or product registration changed.
 
 Formal project migration advances exactly one identity to **`143/944`**, with **`801`** remaining. PR #390 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted zero-gap whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+
+## TASK P3-A-FB2-40-SOURCE-ACTIVE-ROUND-COUNT-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-40-source-active-round-count-dispatch`
+Base: exact R83 Amakusa migration acceptance sync `e6441d15f5f735b78b8d56eee442b213ff7c981e`
+Read: `docs/reports/2026-09-20-p3-a-fb2-40-source-active-round-count-dispatch.md`
+
+Result: migration-credit-first delta proof shows the current `S_READY_NOW` queue is zero at **`143/944`**. FB2-39 could newly unlock only `master.amakusa.skill.s1`, which is now migrated and added no runtime capability. Dispatch one narrow identity-free controlled formula metric, exact `source_card_active_round_count`, derived from authoritative source-card `playedRound`. Intended closure target is Nero s1; its separate `combatWinRound` absence condition remains unsupported and is not in FB2-40 scope.
+
+FB2-40 earns zero migration credit; formal migration remains **`143/944`**, with **`801`** remaining. Fresh R is required before A synchronization; no merge/retarget.
