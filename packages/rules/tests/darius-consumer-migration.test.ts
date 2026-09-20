@@ -176,8 +176,12 @@ describe('P3 S R81 Darius consumer migration', () => {
       const state = setup();
       const snapshot = [result('miyama_town', ['p1', 'p2'], ['p1'])];
       const event = mutate(terminalEvent(state, snapshot)) as AbilityEvent;
-      expect(() => settle(state, snapshot, event)).not.toThrow();
-      expectOpen(state);
+      let settled: GameState | undefined;
+      expect(() => {
+        settled = settle(state, snapshot, event);
+      }).not.toThrow();
+      expect(settled).toBeDefined();
+      expectOpen(settled!);
     }
   });
 });
