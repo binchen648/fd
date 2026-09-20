@@ -198,7 +198,7 @@ export function isPhase3PullRequest(context: PullRequestContext): boolean {
 }
 
 export function extractManifestFromBody(body: string): unknown | undefined {
-  const match = body.match(/```(?:json\s+)?phase3-task-manifest\s*\r?\n([\s\S]*?)\r?\n```/i);
+  const match = body.match(/`{3,}(?:json\s+)?phase3-task-manifest\s*\r?\n([\s\S]*?)\r?\n`{3,}/i);
   if (!match) {
     return undefined;
   }

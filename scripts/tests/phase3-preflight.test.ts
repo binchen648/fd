@@ -130,9 +130,9 @@ describe('Phase 3 promotion governance preflight', () => {
     const body = [
       '## Phase 3 Task Manifest',
       '',
-      '```json phase3-task-manifest',
+      '````json phase3-task-manifest',
       JSON.stringify(promotionManifest(), null, 2),
-      '```',
+      '````',
     ].join('\n');
 
     expect(extractManifestFromBody(body)).toEqual(promotionManifest());
