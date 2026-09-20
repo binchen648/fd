@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_support_definition_archive",
+  "id": "master.shirou-emiya",
+  "name": "卫宫士郎",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "F1 is authoritative for the provisioning relationship; locked Reference supplies only stable identity, static metadata, and the source locator."
+  },
+  "cards": [
+    {
+      "id": "card.derived.master.shirou-emiya.ganjiang-moye",
+      "name": "干将·莫邪",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.shirou-emiya"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "（你的魔力需要达到8点才能打出此牌）\n投影-此牌需追加打出。",
+      "cardFace": {
+        "cost": 1,
+        "basePower": 5,
+        "attributes": [
+          "力量",
+          "宝具"
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "ganjiang-moye.append-only",
+          "kind": "passive",
+          "printedClause": "投影-此牌需追加打出。",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "effects": [
+            {
+              "type": "append_only_rule"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/卫宫士郎.png",
+            "locator": "master.shirou-emiya/干将·莫邪"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.shirou-emiya/s2"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "master.shirou-emiya.skill.s2",
+            "sha256": "a0ea1f45cedb3ac69c9d4050cfdadcf318cf32f62b749013a8454245535ca575"
+          }
+        ],
+        "sourceTextSha256": "a0ea1f45cedb3ac69c9d4050cfdadcf318cf32f62b749013a8454245535ca575",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "sourceLocator": "images/masters/卫宫士郎.png",
+          "cost": 1,
+          "basePower": 5,
+          "attributes": [
+            "力量",
+            "宝具"
+          ],
+          "skillZoneManaRequirement": 8
+        },
+        "acceptedContracts": {
+          "gameStartProvisioning": "P3-FB2-15",
+          "requiredAdditionalPlay": "P3-R42/FB2-16",
+          "outsideGameInitialPlacement": "P3-R43/FB2-18",
+          "masterSupportOnlyRegistration": "P3-R44/FB2-19"
+        }
+      }
+    }
+  ]
+}

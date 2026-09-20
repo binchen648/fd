@@ -8877,6 +8877,71 @@
         "destinationZone": "attack_area",
         "initialZone": "skill"
       },
+      "card.derived.master.shirou-emiya.ganjiang-moye": {
+        "id": "card.derived.master.shirou-emiya.ganjiang-moye",
+        "name": "干将·莫邪",
+        "cardType": "master_skill",
+        "cardFace": {
+          "cost": 1,
+          "basePower": 5,
+          "attributes": [
+            "力量",
+            "宝具"
+          ]
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
+        "abilities": [
+          {
+            "id": "ganjiang-moye.append-only",
+            "kind": "passive",
+            "printedClause": "投影-此牌需追加打出。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "append_only_rule"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.shirou-emiya",
+        "playKind": "attack",
+        "destinationZone": "attack_area"
+      },
       "basic.strength.1": {
         "id": "basic.strength.1",
         "name": "力量攻击 1",
@@ -10456,11 +10521,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "55e53412f43ec87365fe46070d5bd93aa943985d4b8121b08b5e9851eb012382",
+    "definitionHash": "15ab276d8333a7c9a9a60fec2ba1474396343733c08b41d1ab6693371764ef4a",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "55e53412f43ec87365fe46070d5bd93aa943985d4b8121b08b5e9851eb012382"
+      "definitionHash": "15ab276d8333a7c9a9a60fec2ba1474396343733c08b41d1ab6693371764ef4a"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -11382,6 +11447,19 @@
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[13].cards[2].abilities[1]"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 14,
+        "cardIndex": 0,
+        "path": "archives[14].cards[0]"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 14,
+        "cardIndex": 0,
+        "abilityIndex": 0,
+        "path": "archives[14].cards[0].abilities[0]"
       }
     }
   }
