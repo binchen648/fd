@@ -878,3 +878,22 @@ Permitted final status:
 - P3-FB2-17-RECOVERY is dispatched as the narrow zero-credit support-definition attempt for exactly the derived Shirou card. It may not migrate `master.shirou-emiya.skill.s2`, add any frozen target, change runtime/compiler code, weaken FB2-15 validation, or introduce identity/name/text/Reference-handler routing.
 - If current representation cannot register that card outside game without incorrect initial placement, or deterministic generation requires an out-of-scope generated artifact, S must return `SUPPORT_DEFINITION_BLOCKED` rather than widening scope.
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or Ciel task is authorized.
+
+## P3-A FB2-17 Recovery Blocker Synchronization / FB2-18 Dispatch - 2026-09-17
+
+- Fresh FB2-17 recovery blocker `310e6546fa2457b6bf11b91e547d25eb39751e99`, directly based on A sync `b934ea69390b159176ad295116ccc8d9fe0506c7`, returns `SUPPORT_DEFINITION_BLOCKED` and commits only its blocker report.
+- The support proposal itself is source-grounded and compatible with accepted FB2-16; the blockers are representation/registration/generator-contract boundaries, not card semantics.
+- Current representation gives a standalone owned `master_skill` `initialZone: skill`, contradicting the required outside-game start. Current `authoringMasterFiles` also widens the playable roster and creates a fallback command spell, while official deterministic generation additionally changes the evidence report.
+- Fresh A dispatches only the narrowest first prerequisite: P3-FB2-18-RECOVERY adds an identity-free `initialPlacement: outside_game` representation preserved by loader/compiler and producing no `initialZone`. It may not create/move cards, modify provisioning runtime, solve support-only registration, or touch authoring/generated product files.
+- Support-only registration and generated-output reconciliation remain separate later dependencies. P3-FM09 remains `MIGRATION_BLOCKED`; no FM10/Ciel dispatch is authorized.
+- FB2-17/18 take zero frozen-migration credit. Accepted overlap remains `111/944` (`11.76%`), leaving `833/944`.
+
+## P3-A R43 / FB2-18 Recovery Synchronization and FB2-17-R1 Retry Dispatch - 2026-09-18
+
+- Fresh process-separated R43 accepts FB2-18 recovery candidate `cb81559033db6b96b1f26cf7d9bd15686db5d4fb`, based on `d87e74007f2cf723b2436f27f284ebd09145a48f`, with verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE` and no blocking finding.
+- Reviewer validation is `npm ci --offline` PASS, focused `63/63`, rules core+regression `420/420`, full CI `816/816`, client build/content validation/generated determinism/locked Reference verification PASS, unchanged coverage `98/133/232` with raw `22/3/127/0/80/124`, unchanged automation audit, and clean exact candidate/reviewer worktrees.
+- FB2-18 closes only the outside-game representation blocker: an owned `master_skill` may now carry exact `initialPlacement: "outside_game"`, remain registered, and compile without `initialZone`. No runtime create/move/provision semantics are added.
+- FB2-18/R43 takes zero frozen-migration credit. Accepted current-main overlap remains `111/944` (`11.76%`), leaving `833/944`.
+- P3-FB2-17-R1-RECOVERY is dispatched as a fresh support-definition retry from the exact post-R43 A synchronization lineage. The retry authorizes the legitimate deterministic content-library and evidence-report outputs already exposed by the first blocker.
+- The retry still forbids rules/runtime/compiler changes. If ordinary master registration continues to create an eighth playable master, public master presentation material, fallback command spell, or archive-boundary drift, `SUPPORT_DEFINITION_BLOCKED` remains the correct result and the next dependency must be a separate identity-free support-only registration seam.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or Ciel task is authorized.
