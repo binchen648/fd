@@ -5644,3 +5644,14 @@ Read: `docs/reports/2026-09-20-p3-a-r93-leonidas-s1-migration-acceptance-synchro
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #406 exact Candidate `258df4fa845df6c0a8c0c2d135b0a3cda17020a3`, backed by canonical evidence `https://github.com/binchen648/fd/pull/406#issuecomment-5749874874`. Exact frozen addition is `servant.leonidas.skill.sc-leonidas-1`; independent Base-to-Candidate frozen overlap is `141/944` to `142/944`, exact +1 with zero removals and zero duplicate frozen ids. The fourth Candidate file is only the A-authorized compatibility correction removing Siegfried s2's stale absolute repository-overlap snapshot; no second frozen identity or production semantic change is present.
 
 Formal project migration advances exactly one identity to **`147/944`**, with **`797`** remaining. PR #406 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+## TASK P3-A-R93-DARNIC-S1A-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r93-darnic-s1a-consumer-migration-dispatch`
+Base: exact R93 Leonidas migration acceptance sync `0d27a0708019cb0b4d6854fefea6e273cc25b455`
+Read: `docs/reports/2026-09-20-p3-a-r93-darnic-s1a-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `master.darnic.skill.s1a` (`噬魂者`), mechanically `S_READY_NOW` on the current accepted baseline. Exact-ID whole-card probe returns loader `report=[]`, all-automatic execution, authoritative battle-win optional response with accept `mana -> 4` and decline no-op, plus exact round-end `mana <= 2` VP penalty positive/negative behavior. No new runtime seam is required.
+
+Base frozen overlap is **`142/944`**, duplicates `0`; Candidate must be exactly **`143/944`**, exact +1 Darnic s1a with zero removals/duplicates and no second frozen identity. S is additionally authorized only to replace Leonidas s1's stale repository-wide absolute `142` test assertion with stable Leonidas invariants; no Leonidas production change is authorized. Formal migration remains **`147/944`**, remaining **`797`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
