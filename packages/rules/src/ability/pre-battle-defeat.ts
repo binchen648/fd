@@ -1,7 +1,10 @@
 import { hostOperations, type AuthoringAbility, type RuleNode } from './types';
 
+function isRuleNode(value: unknown): value is RuleNode {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
 function node(value: unknown): RuleNode {
-  return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
+  return isRuleNode(value) ? value : {};
 }
 function nodes(value: unknown): RuleNode[] { return Array.isArray(value) ? value.map(node) : []; }
 function str(value: unknown): string { return typeof value === 'string' ? value : ''; }
@@ -50,18 +53,26 @@ export function isAcceptedPreBattleDefeatAbility(
   const attribute = str(predicate.attribute).trim();
   if (predicate.type !== 'no_attack_played_this_round_with_attribute' || !attribute || !exactKeys(predicate, ['type', 'attribute'])) return false;
 
-  if (Object.keys(node(raw.lifecycle)).length !== 0 || Object.keys(node(raw.limit)).length !== 0) return false;
-  const visibility = node(raw.visibility);
+  for (const key of ['lifecycle', 'limit']) {
+    const value = raw[key];
+    if (value !== undefined && (!isRuleNode(value) || Object.keys(value).length !== 0)) return false;
+  }
+  const rawVisibility = raw.visibility;
+  if (rawVisibility !== undefined && !isRuleNode(rawVisibility)) return false;
+  const visibility = node(rawVisibility);
   const emptyVisibility = Object.keys(visibility).length === 0;
   const exactTrueNameReveal = exactKeys(visibility, ['revealsTrueName', 'revealTiming', 'revealScope']) &&
     visibility.revealsTrueName === true && visibility.revealTiming === 'on_use_declared' && visibility.revealScope === 'servant_package';
   if (!emptyVisibility && !exactTrueNameReveal) return false;
 
-  const response = node(raw.responseWindow);
+  const rawResponse = raw.responseWindow;
   if (form === 'authoring') {
-    if (Object.keys(response).length !== 0) return false;
-  } else if (!(response.order === 'turn_order' && response.passBehavior === 'decline_this_window' &&
-      exactKeys(response, ['order', 'passBehavior']))) return false;
+    if (rawResponse !== undefined && (!isRuleNode(rawResponse) || Object.keys(rawResponse).length !== 0)) return false;
+  } else {
+    if (!isRuleNode(rawResponse)) return false;
+    if (!(rawResponse.order === 'turn_order' && rawResponse.passBehavior === 'decline_this_window' &&
+        exactKeys(rawResponse, ['order', 'passBehavior']))) return false;
+  }
 
   const execution = node(raw.execution);
   if (execution.mode !== 'automatic' || !exactKeys(execution, ['mode', 'hostOps', 'allowedOperations'])) return false;

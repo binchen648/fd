@@ -210,6 +210,43 @@ describe('P3-FB2-45 pre-battle defeat by current-round attack attribute', () => 
     }
   });
 
+  it('fails closed on malformed object-like FB2-45 containers before node normalization', () => {
+    const malformedObjectFields: Array<[string, unknown]> = [
+      ['lifecycle', 'round'],
+      ['lifecycle', []],
+      ['lifecycle', null],
+      ['lifecycle', { duration: 'round' }],
+      ['limit', 'once'],
+      ['limit', []],
+      ['limit', null],
+      ['limit', { perRound: 1 }],
+      ['responseWindow', 'turn_order'],
+      ['responseWindow', []],
+      ['responseWindow', null],
+      ['responseWindow', { order: 'turn_order' }],
+      ['visibility', 'public'],
+      ['visibility', []],
+      ['visibility', null],
+      ['visibility', { revealTiming: 'on_use_declared' }],
+    ];
+
+    for (const [field, value] of malformedObjectFields) {
+      const loaded = rules.loadAuthoringJson(archive({ [field]: value }));
+      expect(loaded.report, field).toEqual(expect.arrayContaining([
+        expect.objectContaining({ abilityId: ABILITY_ID, status: 'unsupported', path: 'preBattleDefeat.gateway' }),
+      ]));
+    }
+
+    const exactTrueNameReveal = rules.loadAuthoringJson(archive({
+      visibility: {
+        revealsTrueName: true,
+        revealTiming: 'on_use_declared',
+        revealScope: 'servant_package',
+      },
+    }));
+    expect(exactTrueNameReveal.report).toEqual([]);
+  });
+
   it('stages same-battlefield defeat and settlement excludes the stronger opponent, then consumes the intent', () => {
     const state = setup();
     activate(state);
