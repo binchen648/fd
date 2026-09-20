@@ -1,4 +1,4 @@
-﻿# P3-B2 FB2-41 Current-Round Combat-Win Absence Condition Result
+# P3-B2 FB2-41 Current-Round Combat-Win Absence Condition Result
 
 Role: Codex B2
 Status: `CANDIDATE_READY`
@@ -35,7 +35,7 @@ The implementation does not expose generic player flags. It adds only a server-o
 - battlefield is a currently enabled, non-closed battle-reward location;
 - battle ordinal is a positive safe integer;
 - participant / winner / loser arrays are dense, unique, known-player ids;
-- winners and losers are disjoint and their exact union is the participant set.
+- winners and losers are disjoint subsets of the authoritative participant set; participant-only entries are permitted because the production game loop intentionally omits loss-effect-suppressed losers from `battleResult.loserIds`.
 
 Only after all validation succeeds does the runtime write `abilityRuntime.combatWinRoundByPlayer[winnerId] = currentRound`. Shared/tied winners are all recorded. Losers and nonparticipants are not recorded. Invalid/stale envelopes return fail-closed without creating or mutating the win-round ledger.
 
@@ -90,9 +90,9 @@ Environment protocol was followed. This fresh worktree had no `node_modules`, so
 Validation on the Candidate working tree:
 
 - `npm.cmd run typecheck` — PASS.
-- FB2-41 + existing FB2-38 focused — PASS, **2 files / 21 tests** (`9 + 12`).
-- rules `src/__tests__ + core + regression + focused` — PASS, **84 files / 515 tests**.
-- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **161 files / 1131 tests**.
+- FB2-41 + existing FB2-38 focused — PASS, **2 files / 22 tests** (`10 + 12`).
+- rules `src/__tests__ + core + regression + focused` — PASS, **84 files / 516 tests**.
+- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **161 files / 1132 tests**.
 - `npm.cmd run content:validate` — PASS, **7 masters / 7 servants / 20 events / 0 blocking issues**.
 - `npm.cmd run verify:generated-content` — PASS with stable hashes:
   - library `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`;
@@ -105,6 +105,19 @@ Validation on the Candidate working tree:
 - authoring/product/client scope audit — CLEAN.
 - frozen overlap audit — `138/944`, duplicates `0`.
 
+## Revision after fresh R finding
+
+Fresh independent R reviewed exact Candidate 60d937e3b1a2b2bda4fb0a61cbbbf4d8326d2337 and returned IMPLEMENTATION_NEEDS_REVISION at canonical evidence https://github.com/binchen648/fd/pull/392#issuecomment-5747755871.
+
+The single blocking finding was that production game-loop intentionally removes lossEffectSuppressedPlayerIds from attleResult.loserIds while retaining them in attleParticipantIds; the first Candidate's exact-union check therefore rejected a legitimate authoritative battle-result envelope and failed to record the real winner.
+
+The minimal revision only:
+
+- removes the invalid exact-union requirement while preserving dense/unique/known participant validation, winner/loser membership validation, and winner/loser disjointness;
+- adds one focused regression that sends a battle result with lossEffectSuppressedPlayerIds: ['p2'] through the real stepGameLoop producer/queue path and verifies winner p1 is recorded for the current round;
+- updates this report to reflect the corrected producer semantics and rerun validation counts.
+
+No consumer authoring, second capability, generic flag interpreter, merge/retarget, or migration credit is introduced by the revision.
 ## Reviewer handoff
 
 The exact committed Candidate must receive a fresh independent read-only R review against its exact Base. Accepted formal verdict for this B2 is `IMPLEMENTATION_ACCEPTED_CANDIDATE`; revision verdict is `IMPLEMENTATION_NEEDS_REVISION`.

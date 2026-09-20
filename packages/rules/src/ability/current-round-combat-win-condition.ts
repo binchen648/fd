@@ -13,9 +13,6 @@ function isDenseStringArray(actual: unknown): actual is string[] {
   return true;
 }
 
-function exactStringSet(actual: string[], expected: string[]): boolean {
-  return actual.length === expected.length && new Set(actual).size === actual.length && actual.every((value) => expected.includes(value));
-}
 
 export function isAcceptedCurrentRoundCombatWinAbsenceCondition(condition: RuleNode): boolean {
   return condition.type === CONDITION_TYPE && condition.key === COMBAT_WIN_ROUND_KEY &&
@@ -46,8 +43,7 @@ export function recordCurrentRoundCombatWinsFromBattleResult(state: GameState, e
     winners.some((playerId) => !playerId || !knownPlayerIds.has(playerId) || !participants.includes(playerId)) ||
     !isDenseStringArray(losers) || new Set(losers).size !== losers.length ||
     losers.some((playerId) => !playerId || !knownPlayerIds.has(playerId) || !participants.includes(playerId)) ||
-    winners.some((playerId) => losers.includes(playerId)) ||
-    !exactStringSet(participants, [...winners, ...losers])) return false;
+    winners.some((playerId) => losers.includes(playerId))) return false;
 
   const closedLocations = new Set(
     ((state as unknown as { modeState?: { closedLocations?: unknown } }).modeState?.closedLocations instanceof Array

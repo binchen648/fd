@@ -98,6 +98,26 @@ describe('P3-FB2-41 current-round combat-win absence condition', () => {
     expect(rules.currentRoundCombatWinAbsent(state, 'p1', roundEndEvent())).toBe(false);
   });
 
+  it('records the real game-loop winner when the only loser has loss effects suppressed', () => {
+    const state = setup();
+    state.battleResults = [{
+      battlefieldId: 'miyama_town',
+      winnerPlayerIds: ['p1'],
+      tied: false,
+      lossEffectSuppressedPlayerIds: ['p2'],
+      winnerPlayerId: 'p1',
+      margin: 0,
+      vpReward: 0,
+      militaryAdjustments: [],
+      participantBreakdowns: ['p1', 'p2'].map((playerId) => ({
+        playerId, basePower: 0, totalModifier: 0, effectivePower: 0, modifiers: [],
+      })),
+    }];
+
+    const advanced = rules.stepGameLoop(state).nextState;
+    expect(advanced.abilityRuntime!.combatWinRoundByPlayer).toEqual({ p1: state.round.roundNumber });
+  });
+
   it('treats a shared/tied winner as a win for every winner', () => {
     const state = setup();
     rules.processAbilityEvent(state, battleEvent(state, ['p1', 'p2'], ['p3']));
