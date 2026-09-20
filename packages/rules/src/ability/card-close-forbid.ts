@@ -1,4 +1,5 @@
 import type { GameState } from '../schema/game';
+import { isActiveCardSource } from '../core/card-source-state';
 import type { RuleNode } from './types';
 
 function node(value: unknown): RuleNode {
@@ -43,6 +44,8 @@ export function isCardCloseForbidden(state: GameState, cardInstanceId: string): 
   for (const ongoing of runtime.ongoingEffects) {
     if (ongoing.duration !== 'this_round' || ongoing.startRound !== currentRound ||
       ongoing.expiresAtRound !== currentRound + 1) continue;
+    if (ongoing.sourceMustRemainActive !== false && !isActiveCardSource(state, ongoing.sourceCardId)) continue;
+    if (ongoing.sourceValidityPolicyId) continue;
     if (ongoing.controllerId !== target.controllerPlayerId) continue;
     for (const installed of ongoing.ruleModifiers) {
       const modifier = installed.definition;

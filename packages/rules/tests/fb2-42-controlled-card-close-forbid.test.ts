@@ -173,4 +173,38 @@ describe('P3 FB2-42 controlled card-close forbid', () => {
       causationId: 'fb2-42-test',
     })).toThrow(/forbidden by a live rule modifier/);
     expect(state).toEqual(before);
-  });});
+  });
+
+  it('stops protecting the target after the protection source closes through the typed path', () => {
+    const state = setup();
+    install(state);
+    expect(rules.isCardCloseForbidden(state, TARGET_ID)).toBe(true);
+
+    const wardClosed = rules.executeResolution({
+      state,
+      controllerId: 'p1',
+      sourceCardId: WARD_ID,
+      abilityId: 'install-close-ward',
+      effects: [{ id: 'close-ward', type: 'close_source_card' }],
+      resolutionId: 'fb2-42-close-ward',
+      causationId: 'fb2-42-source-liveness',
+    }).nextState;
+
+    expect(wardClosed.cards.find((card) => card.instanceId === WARD_ID)!.zone).toBe('skill');
+    expect(wardClosed.abilityRuntime!.cardState[WARD_ID]).toMatchObject({ active: false, faceDown: false });
+    expect(wardClosed.abilityRuntime!.ongoingEffects).toHaveLength(1);
+    expect(rules.isCardCloseForbidden(wardClosed, TARGET_ID)).toBe(false);
+
+    const targetClosed = rules.executeResolution({
+      state: wardClosed,
+      controllerId: 'p1',
+      sourceCardId: TARGET_ID,
+      abilityId: 'close-self',
+      effects: [{ id: 'close-target', type: 'close_source_card' }],
+      resolutionId: 'fb2-42-close-target-after-ward',
+      causationId: 'fb2-42-source-liveness',
+    }).nextState;
+    expect(targetClosed.cards.find((card) => card.instanceId === TARGET_ID)!.zone).toBe('skill');
+    expect(targetClosed.abilityRuntime!.cardState[TARGET_ID]!.active).toBe(false);
+  });
+});

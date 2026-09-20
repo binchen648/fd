@@ -2,7 +2,7 @@ import type { GameState, PhaseName } from '../schema/game';
 import type { CardInstance } from '../schema/card';
 import type { LocationId } from '../schema/location';
 import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
-import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID, evaluateCardSourceValidity } from '../core/card-source-state';
+import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID, evaluateCardSourceValidity, isActiveCardSource } from '../core/card-source-state';
 import {
   isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic,
   isSameBattlefieldPrivateHandReturnInteractionCandidate, isSameBattlefieldPrivateHandReturnInteractionSemantic,
@@ -91,8 +91,8 @@ function abilityDefinition(s: GameState, source: string, abilityId: string): Aut
 }
 function nextId(s: GameState, label: string): string { return `${label}-${++runtime(s).sequence}`; }
 function active(s: GameState, id: string): boolean {
-  const c = card(s, id); const m = runtime(s).cardState[id];
-  return ['field', 'attack_area'].includes(c.zone) && m?.active === true && !m.faceDown;
+  card(s, id);
+  return isActiveCardSource(s, id);
 }
 function phase(s: GameState): string { return s.round.activePhase === 'battle' ? 'combat' : s.round.activePhase; }
 function isAttack(d: AuthoringCard | undefined): boolean {
