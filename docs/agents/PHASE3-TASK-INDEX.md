@@ -5370,3 +5370,23 @@ Read: `docs/reports/2026-09-20-p3-a-r81-darius-migration-acceptance-synchronizat
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #388 exact Candidate `776ee46f5612481176a853dba099b489328b3236`, backed by canonical evidence `https://github.com/binchen648/fd/pull/388#issuecomment-5747146073`. Earlier reviewed Candidate `e6ac0c832914ba20911bbc2b461d5786a1577cb7` remains revision-only evidence and must not be re-reviewed. Exact frozen addition is `servant.darius.skill.sc-darius-1`; independent Base-to-Candidate frozen overlap is `136/944` to `137/944`, exact +1 with zero removals and zero duplicates.
 
 Formal project migration advances exactly one identity to **`141/944`**, with **`803`** remaining. PR #388 remains OPEN, unmerged, and unretargeted. PR #381 / Ibaraki remains an independent pending backlog item and receives no Darius credit. Under the frozen migration-credit-first scheduler, do not open FB2-39 while migration-ready work exists; next mechanically check PR #381 for fresh R evidence, then continue to the next `S_READY_NOW`.
+
+## TASK P3-A-R81-DARIUS-CLOSE-REVIEW-CONFLICT
+
+Owner: Codex A
+Status: `ACCEPTANCE_CONTESTED_BLOCKED`
+Branch: `codex/a-p3-r81-darius-close-gap`
+Read: `docs/reports/2026-09-20-p3-a-r81-darius-close-review-conflict.md`
+
+The user supplied a later independent R `FAILED` finding for the same Candidate `776ee46`: the Darius `after_battle_ended` residual `close_source_card` falls through the exact `on_card_played` typed CLOSE route to legacy `extended-effects`. The resulting card is in skill and inactive, but retains public visibility and emits no `source_card_closed` event. This conflicts with the earlier recorded `MIGRATION_ACCEPTED` for that exact Candidate. Preserve both decisions as evidence; do not silently erase the historical acceptance record.
+
+The Darius `+1` is quarantined for operational dispatch: use the uncontested `140/944`, remaining `804`, until an independent R review reconciles the conflicting same-SHA verdicts after the shared runtime fix. `141/944` is a previously recorded but contested count, not a new credit. No Darius merge, retarget, or second S migration is authorized from this task.
+
+## TASK P3-FB2-39-TRIGGERED-RESIDUAL-CLOSE
+
+Owner: Codex B2 (runtime capability lane)
+Status: `READY_RUNTIME_OWNER`
+Runtime Base: `1a57ee8443611e6c32fab4fee9ed8afd7e98c3d1` (accepted FB2-38 synchronization, before Darius S content)
+Handoff: `docs/reports/2026-09-20-p3-a-fb2-39-triggered-residual-close-handoff.md`
+
+Implement one identity-free semantic route for `after_battle_ended` residual `close_source_card`, reusing the accepted typed CLOSE operation. Keep the existing `on_card_played` CLOSE contract separate. Require exact source-active and combat-loss-absence conditions; reject unsupported or malformed forms instead of falling back to legacy. Prove invalid source/zone/controller/face state, owner-only post-close visibility, one `source_card_closed` event, no duplicate on replay, rollback, and real post-scoring `MatchSession.resolveBattlePhase` behavior. No Darius-specific routing, authoring changes, broad CLOSE migration, or migration credit. B2 may claim only `IMPLEMENTATION_COMPLETE_CANDIDATE`; R must review the exact implementation before A synchronizes it and S recertifies Darius.

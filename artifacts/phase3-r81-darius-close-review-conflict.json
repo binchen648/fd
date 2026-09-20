@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "fd-phase3-review-conflict-v1",
+  "date": "2026-09-20",
+  "owner": "Codex A",
+  "candidate": "776ee46f5612481176a853dba099b489328b3236",
+  "identity": "servant.darius.skill.sc-darius-1",
+  "status": "ACCEPTANCE_CONTESTED_BLOCKED",
+  "earlierDecision": { "verdict": "MIGRATION_ACCEPTED", "syncCommit": "e523e10", "recordedCount": 141 },
+  "laterFinding": { "verdict": "FAILED", "provenance": "user-provided independent R finding", "stableReviewUrl": null, "runtimeSemanticGap": "after_battle_ended close_source_card falls through to legacy handler; visibility and source_card_closed event differ from typed CLOSE" },
+  "accounting": { "denominator": 944, "uncontestedAccepted": 140, "uncontestedRemaining": 804, "contestedPreviouslyCredited": 1, "usableDariusCredit": 0 },
+  "nextTask": "P3-FB2-39-TRIGGERED-RESIDUAL-CLOSE",
+  "runtimeBase": "1a57ee8443611e6c32fab4fee9ed8afd7e98c3d1",
+  "runtimeAuthorizedForCodexA": false,
+  "migrationAuthorized": false
+}
