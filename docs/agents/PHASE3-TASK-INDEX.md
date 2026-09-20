@@ -5585,3 +5585,16 @@ Read: `docs/reports/2026-09-20-p3-a-r91-siegfried-s2-migration-acceptance-synchr
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #399 exact Candidate `edb92db571085b8059f203a504a9a39eb2d70e7e`, backed by canonical evidence `https://github.com/binchen648/fd/pull/399#issuecomment-5749092823`. Exact frozen addition is `servant.siegfried.skill.sc-siegfried-2`; independent Base-to-Candidate frozen overlap is `140/944` to `141/944`, exact +1 with zero removals and zero duplicate frozen ids. Existing accepted FB2-43 supplies the final identity-free event-location equality seam and no production runtime/product registration changed.
 
 Formal project migration advances exactly one identity to **`146/944`**, with **`798`** remaining. PR #399 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+
+
+## TASK P3-FB2-44-FACE-UP-CARDS-PER-ROUND
+
+Owner: Codex B2
+Status: `DISPATCHED`
+Branch: `codex/b2-p3-fb2-44-face-up-cards-per-round`
+Base: `7cc689dba18779619efde79e9367e5dd55f05f4f`
+Read: `docs/reports/2026-09-20-p3-a-fb2-44-face-up-cards-per-round-dispatch.md`
+
+Result required: implement only the exact identity-free same-battlefield `face_up_cards_per_round=set(1)` while-active static rule envelope needed by the current-baseline whole-card probe for `servant.leonidas.skill.sc-leonidas-1`. Server-owned actual completed face-up plays must be counted per round; face-down plays do not count; all authoritative regular/batch/effect play gateways must fail closed when the live allowance is exhausted; inactive/non-battlefield source and players elsewhere are unaffected. Exact loader selector only; no identity-specific runtime logic and no generic arbitrary play-limit engine.
+
+This is zero-credit capability work: formal migration remains **`146/944`**, **`798`** remaining. After fresh R acceptance and A synchronization, immediately re-overlay the entire Leonidas s1 card before any singleton S dispatch.
