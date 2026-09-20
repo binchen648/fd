@@ -4142,8 +4142,8 @@
         ],
         "mode": "automatic",
         "ownerId": "master.maiya",
-        "playKind": "support",
-        "destinationZone": "field"
+        "playKind": "attack",
+        "destinationZone": "attack_area"
       },
       "master.gatou.skill.seeker": {
         "id": "master.gatou.skill.seeker",
@@ -10456,11 +10456,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333",
+    "definitionHash": "55e53412f43ec87365fe46070d5bd93aa943985d4b8121b08b5e9851eb012382",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333"
+      "definitionHash": "55e53412f43ec87365fe46070d5bd93aa943985d4b8121b08b5e9851eb012382"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

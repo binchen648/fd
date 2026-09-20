@@ -4024,21 +4024,117 @@ Result: fresh R41 acceptance is synchronized without changing runtime or taking 
 ## TASK P3-FM09-RECOVERY
 
 Owner: Codex S
-Status: `READY_FOR_S_RECOVERY`
-Base: exact P3-A-R41-FB2-15-RECOVERY-SYNC commit carrying this task block
+Status: `MIGRATION_BLOCKED`
+Base: exact P3-A-R41-FB2-15-RECOVERY-SYNC `fa89d867977056968ec98019129487f80ed839df`
+Blocker: `9c6e38b33de1f1d6f090e9c644d0ab66dbbee4e7`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
-Read: `docs/reports/2026-09-17-p3-fb2-15-recovery-game-start-skill-provisioning-handoff.md`, `docs/reports/2026-09-17-p3-a-r41-fb2-15-recovery-synchronization.md`
+Read: `docs/reports/2026-09-17-p3-fb2-15-recovery-game-start-skill-provisioning-handoff.md`, `docs/reports/2026-09-17-p3-a-r41-fb2-15-recovery-synchronization.md`, `docs/reports/2026-09-17-p3-fm09-recovery-game-start-skill-provisioning-blocked.md`, `docs/reports/2026-09-17-p3-a-fm09-recovery-blocker-synchronization.md`
 
-Goal: perform a fresh S recovery attempt for only the exact ten locked-Reference `core.game-start-add-skill` source identities named in the FB2-15 recovery handoff. Use frozen F1 semantics and locked Reference static metadata. No runtime changes. Preserve the three explicit exclusions `master.fiore.skill.s1`, `master.sion.skill.ascension`, and `master.tokiomi.skill.s2`.
+Result: fresh S reconstructed the exact ten source proposal in memory and independently verified F1/Reference/hash provenance `10/10`, loader validity `10/10`, and accepted game-start provisioning semantics `10/10`. Product executable compilation then correctly failed closed because required target `master.bazett.skill.s2` is not registered. Current canonical target registration remains `0/12`; eleven targets are separate frozen static identities and one is a derived Shirou card.
 
-Dependency rule: the accepted FB2-15 compiler requires each provisioning target to already be a registered same-owner automatic `master_skill`. Fresh A scan finds all twelve target definitions absent. S must not create placeholders, weaken compiler validation, silently add the eleven extra frozen target identities, treat the derived Shirou target as a frozen source identity, or expand the exact-ten batch merely to make compilation pass. If the target-registration precondition remains unsatisfied, return `MIGRATION_BLOCKED`.
+S committed no FM09 source authoring and changed no runtime/taxonomy/KPI/Reference/generated material. The exact-ten source family and three exclusions remain unchanged. Placeholder targets, compiler weakening, target-family scope expansion, and denominator corruption remain prohibited.
 
-Completion status allowed:
+Completion status allowed on a future retry:
 - `MIGRATION_COMPLETE_CANDIDATE`
 - `MIGRATION_BLOCKED`
 
-No accepted overlap advances at dispatch time; current-main credit remains `111/944`.
+## TASK P3-A-FM09-RECOVERY-BLOCKER-SYNC
+
+Owner: Codex A
+Status: `BLOCKER_SYNCHRONIZED`
+Branch: `codex/a-p3-fm09-recovery-blocker-sync`
+Base: fresh S blocker `9c6e38b33de1f1d6f090e9c644d0ab66dbbee4e7`
+Read: `docs/reports/2026-09-17-p3-a-fm09-recovery-blocker-synchronization.md`
+
+Result: FM09 remains dependency-blocked. Fresh A classifies the eleven frozen targets across at least nine distinct handler boundaries, so they are not one homogeneous support-definition batch and may not be silently folded into FM09. No P3-FM10, broad FB2-16 implementation, or direct Ciel task is dispatched by this synchronization. Historical downstream work is planning evidence only, not acceptance provenance.
+
+Current-main accepted overlap remains `111/944` (`11.76%`), leaving `833/944`. Next coordinator work is explicit dependency / reviewed-special-handler planning before any implementation dispatch.
+
+## TASK P3-FB2-16-RECOVERY
+
+Owner: Codex B2
+Status: `REVIEW_ACCEPTED`
+Base: exact dependency-planning commit `ff0c9cb853d9b72273736d41ca85d8d1f08614fa`, descended from P3-A-FM09-RECOVERY-BLOCKER-SYNC `5b50f1ad0b6054c84dd1bb2d65ddfba7fbfd81ea`
+Candidate: `bc45b2032ec344d2c743d8b32e3a3d05aa8b67ca`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-17-p3-fb2-16-recovery-required-additional-play-handoff.md`
+
+Goal: implement only the identity-free **required additional-play marker** needed for cards whose own rule requires them to accompany a regular-play batch. Compiler and runtime must share one exact structural predicate. A required-additional card remains illegal standalone, is classified for regular attack/attack-area play even when stored as `master_skill`, may join an otherwise legal regular batch, pays in the same atomic batch, and does not consume the normal regular attack allowance.
+
+Explicitly preserve separation from foreign `append_only_rule` shapes, effect-play routes, optional/conditional additional-play permissions, explicit extra-regular-play allowances such as Sieg, and card-specific special handlers. No authoring migration, support-definition materialization, FM09 retry, taxonomy/KPI promotion, or identity/text/Reference-handler routing.
+
+May touch:
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/executable-card-pack.ts` only for exact required-marker play classification
+- one small shared required-additional-play structural helper under `packages/rules/src/ability/`
+- one focused FB2-16 regression test and the executable-pack regression only if needed
+- `data/generated/fd-playtest-v1.content-library.json` only if deterministically changed by the allowed executable classification
+- FB2-16 recovery result report
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+FB2-16 takes zero migration credit. Accepted overlap remains `111/944`.
+
+## TASK P3-R42-RECOVERY
+
+Owner: Codex R
+Status: `REVIEW_ACCEPTED`
+Base: `ff0c9cb853d9b72273736d41ca85d8d1f08614fa`
+Candidate: `bc45b2032ec344d2c743d8b32e3a3d05aa8b67ca`
+Read: `docs/reports/2026-09-17-p3-fb2-16-recovery-required-additional-play-handoff.md`, `docs/reports/2026-09-17-p3-fb2-16-recovery-required-additional-play-result.md`
+Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Blocking findings: none.
+
+Fresh process-separated R42 independently rechecked exact structural marker isolation, compiler/runtime shared predicate, standalone rejection, regular-batch-only eligibility, attack quota/counter separation, aggregate payment/rollback, staged flow, event evidence, foreign-marker/effect-play isolation, compatibility with normal play/Maiya/Sieg/FB2-14/FB2-15, identity-free production routing, generated determinism, exact lineage, zero-credit status, and final cleanliness. Reviewer evidence includes typecheck PASS, focused `65/65`, full CI `807/807`, rules core+regression `411/411`, client build/content/determinism/Reference verification PASS, unchanged coverage/audit, and `git diff --check` PASS.
+
+## TASK P3-A-R42-FB2-16-RECOVERY-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r42-fb2-16-recovery-sync`
+Base: exact fresh R42-accepted candidate `bc45b2032ec344d2c743d8b32e3a3d05aa8b67ca`
+Read: `docs/reports/2026-09-17-p3-a-r42-fb2-16-recovery-synchronization.md`
+
+Result: fresh R42 acceptance is synchronized without runtime changes or frozen migration credit. Fresh exact-ID scanning confirms all twelve FM09 provisioning targets remain absent; eleven are frozen static identities and the Shirou derived target is outside the 944 denominator.
+
+## TASK P3-FB2-17-RECOVERY
+
+Owner: Codex S
+Status: `READY_FOR_S_RECOVERY`
+Base: exact P3-A-R42-FB2-16-RECOVERY-SYNC commit carrying this task block
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-17-p3-fb2-17-recovery-shirou-derived-card-support-definition-handoff.md`
+
+Goal: materialize exactly one non-frozen support definition, `card.derived.master.shirou-emiya.ganjiang-moye`, so future `master.shirou-emiya.skill.s2` provisioning can resolve an already-registered same-owner automatic `master_skill`. Use frozen F1 only for the game-start relationship, locked Reference only for stable identity/static metadata, and fresh R42 only for the exact required-additional marker semantic. No frozen source migration and no runtime changes.
+
+May touch only:
+- `data/authoring/masters/master.shirou-emiya.json` (new; only the derived support card),
+- `data/packs/fd-playtest-v1/pack.json`,
+- `data/generated/fd-playtest-v1.content-library.json` only as deterministic output,
+- `docs/reports/2026-09-17-p3-fb2-17-recovery-shirou-derived-card-support-definition-result.md`.
+
+Do not modify `packages/rules`, scripts, taxonomy/KPI, other authoring identities, frozen source skills, Reference, or unrelated generated outputs. If the current representation gives the derived target an incorrect initial placement or official deterministic generation requires an out-of-scope generated file, return `SUPPORT_DEFINITION_BLOCKED` rather than widening scope.
+
+Completion status allowed:
+- `SUPPORT_DEFINITION_COMPLETE_CANDIDATE`
+- `SUPPORT_DEFINITION_BLOCKED`
+
+FB2-17 recovery takes zero frozen-migration credit. FM09 remains blocked and accepted overlap remains `111/944`.
+
+## Full-Roster Dispatch State After P3-R42 / P3-A-FB2-16 Recovery Synchronization
+
+- FB2-16/R42 is accepted only as runtime/compiler dependency closure and earns zero migration credit.
+- All twelve FM09 provisioning targets remain absent from canonical authoring and generated product definitions at dispatch time.
+- The eleven frozen targets remain separate unresolved frozen identities; FB2-17 does not authorize any of them.
+- The Shirou derived target is outside the frozen denominator and is the narrowest legal support-definition dependency. P3-FB2-17-RECOVERY is READY.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or Ciel task is dispatched.
+- Accepted overlap remains `111/944`, leaving `833/944`.
+
 
 ## Prompt Templates
 

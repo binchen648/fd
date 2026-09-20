@@ -9,6 +9,7 @@ import { clearTransientCardTransformState, getEffectiveCardAttributes } from './
 import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, situationForbidsAttribute } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
+import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import {
   DataFlowValidationError,
@@ -81,6 +82,7 @@ function legacyCardPlayClassification(d: AuthoringCard | undefined): CardPlayCla
 }
 /** Stable play classification. Card type, rather than power or effects, owns destination semantics. */
 export function classifyCardPlay(d: AuthoringCard | undefined): CardPlayClassification {
+  if (hasRequiredAdditionalPlayMarker(d)) return { playKind: 'attack', destinationZone: 'attack_area' };
   if (d && 'playKind' in d && 'destinationZone' in d) {
     return {
       playKind: d.playKind as CardPlayClassification['playKind'],
@@ -100,11 +102,15 @@ function entersAttackArea(s: GameState, sourceId: string): boolean {
 function isCommandSpellCard(s: GameState, sourceId: string): boolean {
   return definition(s, sourceId)?.cardType === 'command_spell';
 }
+function isRequiredAdditionalPlayCard(s: GameState, sourceId: string): boolean {
+  return hasRequiredAdditionalPlayMarker(definition(s, sourceId));
+}
 function legacyAttackAreaCardsPlayedThisRound(s: GameState, playerId: string): number {
   return s.cards.filter(c =>
     c.controllerPlayerId === playerId &&
     c.zone === 'attack_area' &&
-    runtime(s).cardState[c.instanceId]?.playedRound === s.round.roundNumber).length;
+    runtime(s).cardState[c.instanceId]?.playedRound === s.round.roundNumber &&
+    !isRequiredAdditionalPlayCard(s, c.instanceId)).length;
 }
 function attacksDeclaredThisRound(s: GameState, playerId: string): number {
   const r = runtime(s);
@@ -122,8 +128,9 @@ function attackPlayAllowance(s: GameState, playerId: string): number {
   return normalAttackCount + extraAttackPlayAllowance(s, playerId) + persistentExtraAttackAllowance(s, playerId);
 }
 function attackPlayLimitReached(s: GameState, playerId: string, sourceId: string, ignoreStaged = false): boolean {
-  if (!entersAttackArea(s, sourceId)) return false;
-  const staged = ignoreStaged ? 0 : (stagedAttacks(s)[playerId] ?? []).filter(choice => entersAttackArea(s, choice.cardInstanceId)).length;
+  if (!entersAttackArea(s, sourceId) || isRequiredAdditionalPlayCard(s, sourceId)) return false;
+  const staged = ignoreStaged ? 0 : (stagedAttacks(s)[playerId] ?? []).filter(choice =>
+    entersAttackArea(s, choice.cardInstanceId) && !isRequiredAdditionalPlayCard(s, choice.cardInstanceId)).length;
   return attacksDeclaredThisRound(s, playerId) + staged >= attackPlayAllowance(s, playerId);
 }
 function expectedPhaseWindow(abilityPhase: string): string | undefined {
@@ -723,12 +730,14 @@ function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean
       isActivateCardByIdTrigger(ability) &&
       ability.effects.some((effect) => effect.type === 'activate_card_by_id' && effect.definitionId === definitionId)));
 }
-function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false): string | undefined {
+function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false): string | undefined {
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (d.mode !== 'automatic') return d.mode;
   if (c.controllerPlayerId !== p || !['hand', 'skill'].includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
   if (c.zone === 'skill' && isActivationOnlyDefinition(s, c.definitionId)) return 'activation_only';
-  if (d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'))) return 'append_only';
+  const hasLegacyAppendOnlyMarker = d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'));
+  const requiredAdditionalPlay = hasRequiredAdditionalPlayMarker(d);
+  if (hasLegacyAppendOnlyMarker && (!allowRequiredAdditionalPlay || !requiredAdditionalPlay)) return 'append_only';
   if (!ignoreTiming && (phase(s) !== d.playTiming.phase || s.round.prioritySeat !== player(s, p).seat)) return 'illegal_timing';
   if (faceDown && (!isAttack(d) || d.cardType === 'servant_skill')) return 'illegal_face_down';
   const forbidRules = ongoingCardPlayForbidRules(s, p, sourceId);
@@ -768,11 +777,14 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   const staged = stagedAttacks(s)[playerId] ?? [];
   if (staged.length && s.round.prioritySeat === p.seat) {
     result.push({ type: 'confirm_staged_attack' }, { type: 'cancel_staged_attack' });
+    const hasOrdinaryStagedAttack = staged.some((entry) =>
+      entersAttackArea(s, entry.cardInstanceId) && !isRequiredAdditionalPlayCard(s, entry.cardInstanceId));
     for (const c of s.cards.filter(c => c.controllerPlayerId === playerId && !staged.some(entry => entry.cardInstanceId === c.instanceId))) {
-      if (!playFailure(s, playerId, c.instanceId) && entersAttackArea(s, c.instanceId)) {
+      const allowRequiredAdditional = hasOrdinaryStagedAttack && isRequiredAdditionalPlayCard(s, c.instanceId);
+      if (!playFailure(s, playerId, c.instanceId, false, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId)) {
         result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId });
       }
-      if (!playFailure(s, playerId, c.instanceId, true) && entersAttackArea(s, c.instanceId)) {
+      if (!playFailure(s, playerId, c.instanceId, true, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId)) {
         result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId, faceDown: true });
       }
     }
@@ -1111,6 +1123,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     case 'play_source_card': {
       const source = card(s, ctx.sourceCardId);
       if (source.controllerPlayerId !== p.id || source.zone !== 'hand') reject('illegal_action', 'Source card is not playable from hand');
+      if (isRequiredAdditionalPlayCard(s, ctx.sourceCardId)) reject('append_only', 'Required additional-play cards are not effect-playable');
       moveCard(s, ctx.sourceCardId, cardPlayClassification(s, ctx.sourceCardId).destinationZone);
       r.cardState[ctx.sourceCardId] = { active: effect.face === 'face_down' ? false : true, faceDown: effect.face === 'face_down', playedRound: s.round.roundNumber };
       if (effect.face === 'face_down') source.visibility = { scope: 'owner_only', ownerPlayerId: p.id };
@@ -2778,7 +2791,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
     case 'stage_attack_card': {
       const owned = s.cards.find(c => c.instanceId === command.cardInstanceId && c.controllerPlayerId === playerId);
       if (!owned) reject('illegal_action', 'Card is not available');
-      const failure = playFailure(s, playerId, command.cardInstanceId, command.faceDown === true);
+      const currentStaged = stagedAttacks(s)[playerId] ?? [];
+      const allowRequiredAdditional = isRequiredAdditionalPlayCard(s, command.cardInstanceId) && currentStaged.some((entry) =>
+        entersAttackArea(s, entry.cardInstanceId) && !isRequiredAdditionalPlayCard(s, entry.cardInstanceId));
+      const failure = playFailure(s, playerId, command.cardInstanceId, command.faceDown === true, false, false, false, allowRequiredAdditional);
       if (failure) reject(failure, 'Card cannot be staged in the current state');
       if (!entersAttackArea(s, command.cardInstanceId)) reject('not_attack_card', 'Only attack cards can be staged');
       if (!legal.some(a => a.type === command.type && a.cardInstanceId === command.cardInstanceId && !!a.faceDown === !!command.faceDown)) reject('illegal_action', 'Card staging is not available');
@@ -2869,13 +2885,21 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
 function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular'): void {
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
-  const attackChoices = choices.filter(c => entersAttackArea(s, c.cardInstanceId)).length;
-  if (quota === 'regular' && attacksDeclaredThisRound(s, playerId) + attackChoices > attackPlayAllowance(s, playerId)) {
+  const requiredAdditionalIds = new Set(choices
+    .filter(c => isRequiredAdditionalPlayCard(s, c.cardInstanceId))
+    .map(c => c.cardInstanceId));
+  const regularAttackChoices = choices.filter(c =>
+    entersAttackArea(s, c.cardInstanceId) && !requiredAdditionalIds.has(c.cardInstanceId)).length;
+  if (quota === 'regular' && requiredAdditionalIds.size > 0 && regularAttackChoices === 0) {
+    reject('append_only', 'Required additional-play cards need a regular attack in the same batch');
+  }
+  if (quota === 'regular' && attacksDeclaredThisRound(s, playerId) + regularAttackChoices > attackPlayAllowance(s, playerId)) {
     reject('attack_play_limit_reached', 'Attack play limit reached for this round');
   }
   let cost = 0;
   for (const c of choices) {
-    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect');
+    const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
+    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional);
     if (failure) reject(failure, 'Card cannot be played in this batch');
     if (!c.faceDown) cost += Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0);
   }
@@ -2926,7 +2950,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   }
   counters.cardsPlayedByPlayer[playerId] = (counters.cardsPlayedByPlayer[playerId] ?? 0) + choices.length;
   if (quota === 'regular') {
-    counters.attacksDeclaredByPlayer[playerId] = (counters.attacksDeclaredByPlayer[playerId] ?? 0) + attackChoices;
+    counters.attacksDeclaredByPlayer[playerId] = (counters.attacksDeclaredByPlayer[playerId] ?? 0) + regularAttackChoices;
   }
   for (const c of choices.filter(c => !c.faceDown)) {
     processEvent(s, { id: nextId(s, 'declare'), type: 'on_use_declared', playerId, sourceCardId: c.cardInstanceId, playedCards });

@@ -849,3 +849,32 @@ Permitted final status:
 - Fresh A exact-ID scan finds the ten FM09 source identities absent `0/10`, all three explicit exclusions absent `0/3`, and all twelve required provisioning target definitions absent `0/12` from current canonical authoring.
 - P3-FM09-RECOVERY is dispatched only as an exact-ten fresh S attempt. S may not create placeholder targets, weaken accepted FB2-15 compiler validation, silently absorb the eleven additional frozen target skills, count the derived Shirou target as a frozen source identity, or expand the batch merely to compile. If the target-registration precondition remains unsatisfied, `MIGRATION_BLOCKED` is the correct result.
 - FB2-15, R41, and A synchronization take zero migration credit. Accepted current-main overlap remains `111/944` (`11.76%`), leaving `833/944`. No jump to Ciel or superseded downstream FM09 acceptance is authorized.
+
+## P3-A FM09 Recovery Blocker Synchronization - 2026-09-17
+
+- Fresh S blocker `9c6e38b33de1f1d6f090e9c644d0ab66dbbee4e7`, based directly on A synchronization `fa89d867977056968ec98019129487f80ed839df`, returns `MIGRATION_BLOCKED` without committing any FM09 canonical authoring.
+- The exact-ten source proposal independently passes frozen F1/Reference/hash provenance `10/10`, authoring loader `10/10`, and the accepted shared game-start provisioning semantic classifier `10/10`. Product executable compilation then correctly fails closed at missing registered target `master.bazett.skill.s2`.
+- All twelve required provisioning targets remain absent from canonical authoring. Eleven are frozen static identities in the 944 denominator and one is the derived Shirou target outside the frozen static denominator.
+- Fresh A classifies the eleven frozen targets across at least nine distinct handler boundaries, including `core.bazett-fragarach`, `core.structured-skill`, `core.caules-yggdmillennia-thunder`, `core.fujino-injury-warp`, `core.nanaya-death-perception`, `core.ryougi-sever-life`, `core.tohno-shiki-possession`, `core.zouken-founder`, and `core.zouken-pseudo-vampire`. They are not one homogeneous support-definition batch.
+- FM09 therefore remains dependency-blocked. No FM09 source credit is taken; no P3-FM10, broad FB2-16 implementation, or direct Ciel task is dispatched by this synchronization. Historical downstream FB2-16/17/18/19/20 work is planning evidence only and carries no acceptance authority on the integrated recovery lineage.
+- Accepted current-main overlap remains `111/944` (`11.76%`), leaving `833/944`. Next coordinator work is explicit dependency / reviewed-special-handler planning before any implementation dispatch.
+
+## P3-FB2-16 Recovery Required Additional-Play Dependency Dispatch - 2026-09-17
+
+- Fresh dependency planning on blocker-sync base `5b50f1ad0b6054c84dd1bb2d65ddfba7fbfd81ea` isolates one narrow reusable prerequisite: the required additional-play card marker. This is a runtime/compiler dependency only and takes zero migration credit.
+- Current canonical Maiya Support Shot already carries the exact bare `append_only_rule` marker and final rulebook §9.4/§9.6 requires such cards to accompany regular play, pay atomically, and not count toward the normal two-card quantity. Current compiled product still classifies Maiya Support Shot as `support/field`.
+- Current runtime rejects the marker as standalone `append_only`, `playBatch()` reuses that rejection for every batch member, regular quota counts every attack-area member, and staged actions also depend on the same rejection. The required-additional regular-batch route is therefore absent on the integrated lineage.
+- Locked Reference independently confirms Shirou derived target `card.derived.master.shirou-emiya.ganjiang-moye` with the printed required-additional rule, while `basic.luck`'s foreign explicit `append_only_rule` and Sieg's accepted extra-regular-play allowance provide concrete exclusion boundaries.
+- P3-FB2-16-RECOVERY is dispatched only for an identity-free shared structural marker used by compiler and runtime. It may not materialize Shirou/Frozen identities, retry FM09, absorb optional/conditional/effect-play semantics, or broaden PLAY/ACTIVATE acceptance.
+- Fresh R42 and fresh A synchronization remain mandatory before any support-definition dependency is dispatched. FM09 remains `MIGRATION_BLOCKED`; accepted overlap remains `111/944` (`11.76%`).
+
+## P3-A R42 / FB2-16 Recovery Synchronization and FB2-17 Dispatch - 2026-09-17
+
+- Fresh R42 independently accepts FB2-16 recovery candidate `bc45b2032ec344d2c743d8b32e3a3d05aa8b67ca`, based on `ff0c9cb853d9b72273736d41ca85d8d1f08614fa`, with verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE` and no blocking finding.
+- Reviewer validation is typecheck PASS, focused `65/65`, full CI `807/807`, rules core+regression `411/411`, client build/content validation/generated determinism/locked Reference verification PASS, unchanged coverage `98/133/232` with raw `22/3/127/0/80/124`, unchanged automation audit, and clean exact candidate/reviewer worktrees.
+- FB2-16 remains runtime/compiler dependency closure only and takes zero frozen-migration credit. Accepted current-main overlap stays `111/944` (`11.76%`), leaving `833/944`.
+- Fresh exact-ID scanning on the accepted candidate finds all twelve FM09 provisioning targets absent from canonical authoring and generated product definitions. Eleven are separate frozen static identities; `card.derived.master.shirou-emiya.ganjiang-moye` is outside the frozen 944 denominator.
+- F1 still provides the Shirou s2 game-start provisioning relationship; locked Reference still supplies the derived card stable ID/static metadata; R42 supplies only the required-additional execution shape.
+- P3-FB2-17-RECOVERY is dispatched as the narrow zero-credit support-definition attempt for exactly the derived Shirou card. It may not migrate `master.shirou-emiya.skill.s2`, add any frozen target, change runtime/compiler code, weaken FB2-15 validation, or introduce identity/name/text/Reference-handler routing.
+- If current representation cannot register that card outside game without incorrect initial placement, or deterministic generation requires an out-of-scope generated artifact, S must return `SUPPORT_DEFINITION_BLOCKED` rather than widening scope.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or Ciel task is authorized.
