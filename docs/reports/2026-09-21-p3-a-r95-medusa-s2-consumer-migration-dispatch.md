@@ -89,7 +89,7 @@ A also searched existing consumer-migration tests for a stale absolute `143` rep
 
 Fresh S is authorized only to:
 
-1. add `data/authoring/servants/servant.medusa.json` containing exactly one frozen card, `servant.medusa.skill.sc-medusa-2`;
+1. modify the existing `data/authoring/servants/servant.medusa.json` archive, preserving its existing `servant.medusa.skill.sc-medusa-1` card unchanged and appending exactly one new frozen card, `servant.medusa.skill.sc-medusa-2`; the Candidate still adds exactly one frozen identity;
 2. encode the complete card only through the accepted normalization above, preserving exact F1 and Locked Reference evidence, including `aliases/legacyId: sc_medusa_2`, Rider owner metadata, exact cost/power/type/attribute/requirement, exact printed text/hash, exact phase-action/source-active/true-name visibility envelope, and exact FB2-45 defeat predicate;
 3. add focused `packages/rules/tests/medusa-s2-consumer-migration.test.ts` coverage proving exact printed text/hash/static metadata, loader `report=[]`, all-automatic execution, accepted FB2-45 classifier, structural/on-declaration true-name reveal, real play cost/activation, ordinary and face-down current-round `迅捷` protection, non-`迅捷` and stale-round negatives, accepted Maiya add-to-attack provenance, defeat settlement/consumption, Luck immunity, idempotence/round cleanup, product/generated non-registration, and exact frozen accounting;
 4. add `docs/reports/2026-09-21-p3-s-r95-medusa-s2-consumer-migration-result.md`.
