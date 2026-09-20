@@ -5501,3 +5501,15 @@ Read: `docs/reports/2026-09-20-p3-a-fb2-42-controlled-card-close-forbid-dispatch
 Result: migration-credit-first targeted re-probe finds the current `S_READY_NOW` queue zero at **`144/944`**. A fresh Darius s2 mechanical probe proves its +1 undead power clause is already expressible through existing identity-free `card.currentPower` + exact `has_card_id` this-round modifiers; its sole remaining whole-card gap is exact this-round `card_close` forbid for controller-owned cards selected by one structural definition id. Dispatch that bounded zero-credit seam only; no consumer routing or broad card-action prohibition DSL.
 
 FB2-42 earns zero migration credit; formal migration remains **`144/944`**, with **`800`** remaining. Fresh R is required before A synchronization; no merge/retarget. On acceptance, immediately re-overlay Darius s2 and dispatch singleton S only if whole-card zero-gap.
+
+## TASK P3-A-R88-FB2-42-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r88-fb2-42-acceptance-sync`
+Base: exact accepted Candidate `d082a90e194ee4cf1f528086f1ba01150a9ead41`
+Read: `docs/reports/2026-09-20-p3-a-r88-fb2-42-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #394 exact revised Candidate `d082a90e194ee4cf1f528086f1ba01150a9ead41`, backed by canonical evidence `https://github.com/binchen648/fd/pull/394#issuecomment-5748132070`. The prior Candidate `5fc30e258be7f007e979008d9d46a43a2917098a` was rejected for dead-source liveness; the accepted direct-child revision centralizes physical active-source detection and proves typed-path source closure drops the forbid before the target close.
+
+FB2-42 earns zero migration credit; formal migration remains **`144/944`**, with **`800`** remaining. PR #394 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.darius.skill.sc-darius-2`; dispatch singleton S only if it is mechanically zero-gap.
