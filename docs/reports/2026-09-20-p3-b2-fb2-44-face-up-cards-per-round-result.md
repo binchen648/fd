@@ -55,7 +55,7 @@ The server-owned play gateway now enforces the live cap before mutation:
 - face-down play neither consumes nor is rejected by the face-up allowance;
 - multi-card/staged face-up batches are preflighted against aggregate remaining allowance before mana/card mutation and fail atomically;
 - `play_selected_cards` effect play reuses `playBatch`, so it cannot bypass the cap;
-- `executeAbility` performs a recursive face-up effect-play preflight before mana, usage or source mutation, following the same selected `branch` semantics as execution so nested trusted play cannot bypass the cap;
+- `executeAbility` performs recursive face-up effect-play preflight before real mutation and, when the effect tree can contain a face-up trusted play, repeats branch selection on a cloned post-cost/source/usage preview state so cost-mutated branches cannot create a late bypass;
 - the existing direct `play_source_card` trusted effect route now both fails closed at its source-mutation boundary when the cap is exhausted and records a successful completed face-up play before declaration/play events.
 
 Existing all-card counters, attack allowance semantics, face-down visibility, timing/mana gates, required-additional-play behavior and unrelated rule modifiers remain intact.
@@ -99,6 +99,7 @@ The FB2-44 focused suite proves:
 - staged batch confirmation cannot bypass the aggregate cap;
 - selected-card trusted effect play cannot bypass the cap and rejected effect play leaves caller state unchanged;
 - a loader-valid `branch -> play_source_card(face_up)` route is rejected before mana/usage/source mutation after the allowance is consumed;
+- a loader-valid mana-cost branch whose truth flips only after paying cost is preflighted on the cloned post-cost preview and rejection leaves the complete trusted caller state unchanged;
 - a successful direct `play_source_card` face-up effect consumes the allowance before subsequent play checks.
 
 During focused validation an initial effect-play test exposed that rejection happened after `usedAbilities` mutation. The preflight was moved ahead of all ability cost/usage mutation and the test then passed. A later route audit found that successful direct `play_source_card` effects did not pass through `playBatch`; dedicated completed face-up counting plus a regression test closed that bypass before Candidate commit.
@@ -115,6 +116,16 @@ The single blocking finding was a loader-valid nested `branch -> play_source_car
 - adds a loader-valid branch-contained regression proving rejection leaves the complete caller state unchanged;
 - does not add a generic arbitrary play-limit/selector/conflict engine and does not change frozen authoring/product/client content.
 
+Fresh independent reviewer evidence for exact Base `24fb6d424625fd3cbfbfb4c7f7e56e3c05c6acd8` / prior Candidate `5ba1445119d855fd149fa7d2245fdcaccf3b5f5b` returned `IMPLEMENTATION_NEEDS_REVISION` at `https://github.com/binchen648/fd/pull/401#issuecomment-5749330189`.
+
+The exact blocking finding was a TOCTOU atomicity gap: branch preflight used pre-cost state, while actual branch execution re-evaluated after mana/source/usage mutations. A supported branch could therefore become a face-up source play only after cost mutation and reject too late, leaving caller state changed. This minimal revision:
+
+- preserves the existing early recursive preflight;
+- detects only effect trees that structurally contain supported face-up trusted play routes;
+- before any real mutation, clones the state and mirrors the existing pre-effect mutation sequence (mana/fixed mana component, calculation receipt, `move_source_card`, reveal, phase-use receipt, per-game/per-round usage and ongoing install), then runs the same recursive branch-aware face-up preflight on that preview;
+- adds a loader-valid `pay_mana` regression where mana starts at `3`, paying `2` flips branch truth into `play_source_card(face_up)`, and asserts complete state equality after rejection;
+- keeps the direct source-play boundary guard as defense-in-depth and does not broaden selector/value/conflict semantics.
+
 ## Validation
 
 Fresh worktree dependencies were installed with `npm.cmd ci --ignore-scripts --offline` (239 packages, 0 vulnerabilities), followed by normal typecheck/build output generation.
@@ -122,9 +133,9 @@ Fresh worktree dependencies were installed with `npm.cmd ci --ignore-scripts --o
 Validation on the final Candidate working tree:
 
 - `npm.cmd run typecheck` — PASS.
-- final FB2-44 + source-play focused verification — PASS, **2 files / 17 tests**.
-- rules `src/__tests__ + core + regression + FB2-43 + FB2-44` — PASS, **84 files / 515 tests**.
-- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **167 files / 1180 tests**.
+- final FB2-44 + source-play focused verification — PASS, **2 files / 18 tests**.
+- rules `src/__tests__ + core + regression + FB2-43 + FB2-44` — PASS, **84 files / 516 tests**.
+- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **167 files / 1181 tests**.
 - `npm.cmd run content:validate` — PASS, **7 masters / 7 servants / 20 events / 0 blocking issues**.
 - `npm.cmd run verify:generated-content` — PASS with unchanged hashes:
   - library `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`;
@@ -132,7 +143,7 @@ Validation on the final Candidate working tree:
   - evidence `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`.
 - `npm.cmd run phase3:reference:verify -- --reference-root E:\Codex\FD\fd-reference` — PASS at exact Locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9`.
 - `npm.cmd run build --workspace @fd/client` — PASS; only existing Vite browser-externalization/chunk-size warnings.
-- `npm.cmd run phase3:coverage` — PASS, `blockingIssues=0`. The command-generated coverage artifact was restored byte-for-byte to dispatch Base because it is validation output and outside FB2-44 delivery scope.
+- `npm.cmd run phase3:coverage` — PASS, `blockingIssues=0`. The command-generated coverage artifact was restored byte-for-byte to the pre-validation HEAD because it is validation output and outside FB2-44 delivery scope.
 - `git diff --check` — PASS.
 - runtime identity/hardcode audit — CLEAN.
 - forbidden authoring/generated/product/client scope audit — CLEAN.

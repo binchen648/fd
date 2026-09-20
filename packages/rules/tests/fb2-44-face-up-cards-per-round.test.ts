@@ -9,6 +9,7 @@ const BASIC_DEF = 'test.fb2-44.basic';
 const EFFECT_DEF = 'test.fb2-44.effect-source';
 const SOURCE_PLAY_DEF = 'test.fb2-44.source-play';
 const BRANCH_SOURCE_PLAY_DEF = 'test.fb2-44.branch-source-play';
+const COST_MUTATED_BRANCH_SOURCE_PLAY_DEF = 'test.fb2-44.cost-mutated-branch-source-play';
 const LIMIT_ID = 'limit-source-instance';
 const EFFECT_ID = 'effect-source-instance';
 
@@ -111,6 +112,20 @@ function branchSourcePlayAbility(): any {
   ability.effects = [{ type: 'branch', branches: [{ else: [{ type: 'play_source_card', face: 'face_up' }] }] }];
   return ability;
 }
+
+function costMutatedBranchSourcePlayAbility(): any {
+  const ability = sourcePlayAbility();
+  ability.id = 'cost-mutated-branch-play-self-face-up';
+  ability.printedClause = 'pay 2 mana, then play this source face up only below 3 mana';
+  ability.effects = [{
+    type: 'branch',
+    branches: [
+      { if: { type: 'controller_mana_at_least', value: 3 }, then: [] },
+      { else: [{ type: 'play_source_card', face: 'face_up' }] },
+    ],
+  }];
+  return ability;
+}
 function archive(modifier: any = exactModifier()): any {
   return {
     schemaVersion: 'fd-card-authoring-v1',
@@ -124,6 +139,7 @@ function archive(modifier: any = exactModifier()): any {
       card(EFFECT_DEF, [effectAbility()]),
       card(SOURCE_PLAY_DEF, [sourcePlayAbility()]),
       card(BRANCH_SOURCE_PLAY_DEF, [branchSourcePlayAbility()]),
+      card(COST_MUTATED_BRANCH_SOURCE_PLAY_DEF, [costMutatedBranchSourcePlayAbility()]),
     ],
   };
 }
@@ -352,6 +368,26 @@ describe('P3-FB2-44 same-battlefield face-up cards-per-round seam', () => {
     })).toThrow(/face-up card play limit reached/i);
     expect(state).toEqual(before);
   });
+  it('preflights a cost-mutated branch on post-cost preview state before mutating the trusted caller', () => {
+    const state = setup();
+    const first = add(state, 'p1');
+    const branchSource = add(state, 'p1');
+    state.cards.find((candidate) => candidate.instanceId === branchSource)!.definitionId = COST_MUTATED_BRANCH_SOURCE_PLAY_DEF;
+    state.players[0]!.mana = 3;
+    expect(play(state, 'p1', first).ok).toBe(true);
+    expect(rules.loadAuthoringJson(archive()).report).toEqual([]);
+    const before = structuredClone(state);
+
+    expect(() => rules.executeAbility(state, {
+      sourceCardId: branchSource,
+      abilityId: 'cost-mutated-branch-play-self-face-up',
+      controllerId: 'p1',
+      variables: {},
+      selections: {},
+    })).toThrow(/face-up card play limit reached/i);
+    expect(state).toEqual(before);
+  });
+
   it('counts a successful trusted source-card face-up effect before later play checks', () => {
     const state = setup();
     const sourcePlay = add(state, 'p1');

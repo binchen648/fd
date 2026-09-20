@@ -2986,6 +2986,45 @@ function preflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: Authori
     reject('face_up_card_play_limit_reached', 'Face-up card play limit reached for this round');
   }
 }
+
+function hasPotentialFaceUpEffectPlay(effects: RuleNode[]): boolean {
+  for (const effect of effects) {
+    if ((effect.type === 'play_source_card' || effect.type === 'play_selected_cards') && effect.face !== 'face_down') return true;
+    if (effect.type !== 'branch') continue;
+    for (const branch of nodes(effect.branches)) {
+      if (hasPotentialFaceUpEffectPlay([...nodes(branch.then), ...nodes(branch.else)])) return true;
+    }
+  }
+  return false;
+}
+
+function preflightFaceUpEffectPlaysAfterPreEffectMutations(
+  s: GameState,
+  ctx: EffectContext,
+  a: AuthoringAbility,
+  manaCost: number,
+  fixedControllerManaCost: boolean,
+  names: string[],
+  limitType: string,
+): void {
+  if (!hasPotentialFaceUpEffectPlay([...a.effects, ...a.creates])) return;
+  const preview = structuredClone(s);
+  const previewPlayer = player(preview, ctx.controllerId);
+  previewPlayer.mana -= manaCost;
+  if (fixedControllerManaCost && isAddToAttackRouteCandidate(a)) executeFixedControllerManaCost(preview, ctx, a);
+  if (names.length) runtime(preview).calculations.push({ controllerId: previewPlayer.id, lines: names.map(name => ({ label: name, value: ctx.variables[name]! })) });
+  for (const cost of a.cost.filter(c => c.type === 'move_source_card')) moveCard(preview, ctx.sourceCardId, str(node(cost.to).zone));
+  if (a.visibility.revealTiming === 'on_use_declared') reveal(preview, previewPlayer.id);
+  if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(preview, ctx.sourceCardId) && classifyAbilityInteraction(a).kind === 'phase_activation') {
+    runtime(preview).usedAbilities[`${ctx.sourceCardId}:${a.id}`] = preview.round.roundNumber;
+  }
+  if (limitType === 'per_game' || limitType === 'per_round') {
+    const usageKey = limitType === 'per_round' ? `${ctx.sourceCardId}:${a.id}:round:${preview.round.roundNumber}` : `${ctx.sourceCardId}:${a.id}`;
+    runtime(preview).abilityUsage[usageKey] = (runtime(preview).abilityUsage[usageKey] ?? 0) + 1;
+  }
+  installOngoing(preview, ctx, a);
+  preflightFaceUpEffectPlays(preview, ctx, a);
+}
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
@@ -3099,6 +3138,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (manaCost > p.mana) reject('insufficient_mana', 'Insufficient mana');
   if (fixedControllerManaCost && isFixedControllerAdvanceDrawActionSemantic(a) &&
     !hasAvailableManaForFixedCosts(s, ctx, a)) reject('insufficient_mana', 'Insufficient mana');
+  preflightFaceUpEffectPlaysAfterPreEffectMutations(s, ctx, a, manaCost, fixedControllerManaCost, names, limitType);
   p.mana -= manaCost;
   if (fixedControllerManaCost && isAddToAttackRouteCandidate(a)) executeFixedControllerManaCost(s, ctx, a);
   if (names.length) runtime(s).calculations.push({ controllerId: p.id, lines: names.map(name => ({ label: name, value: ctx.variables[name]! })) });
