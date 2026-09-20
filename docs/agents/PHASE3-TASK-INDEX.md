@@ -5370,3 +5370,15 @@ Read: `docs/reports/2026-09-20-p3-a-r81-darius-migration-acceptance-synchronizat
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #388 exact Candidate `776ee46f5612481176a853dba099b489328b3236`, backed by canonical evidence `https://github.com/binchen648/fd/pull/388#issuecomment-5747146073`. Earlier reviewed Candidate `e6ac0c832914ba20911bbc2b461d5786a1577cb7` remains revision-only evidence and must not be re-reviewed. Exact frozen addition is `servant.darius.skill.sc-darius-1`; independent Base-to-Candidate frozen overlap is `136/944` to `137/944`, exact +1 with zero removals and zero duplicates.
 
 Formal project migration advances exactly one identity to **`141/944`**, with **`803`** remaining. PR #388 remains OPEN, unmerged, and unretargeted. PR #381 / Ibaraki remains an independent pending backlog item and receives no Darius credit. Under the frozen migration-credit-first scheduler, do not open FB2-39 while migration-ready work exists; next mechanically check PR #381 for fresh R evidence, then continue to the next `S_READY_NOW`.
+
+## TASK P3-A-FB2-39-GAME-START-STATUS-ASSIGNMENT-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-39-game-start-status-assignment-dispatch`
+Base: exact R81 Darius migration acceptance sync `e523e10dd795c032a6b0e70627b7276213784604`; formal accounting reconciled through historical Ibaraki sync `51f8af150f10a249ba471aaa65d7d7b49cabc98e`
+Read: `docs/reports/2026-09-20-p3-a-fb2-39-game-start-status-assignment-dispatch.md`
+
+Result: migration-credit-first proof shows the current `S_READY_NOW` queue is zero at **`142/944`**. Dispatch one narrow identity-free B2 seam for authoritative `game_start` + exact `source_owned` player-status assignment to `controller` or exact `turn_order_next_player`, with server-owned deduplicated status keys and strict fail-closed shape validation. Intended closure target is `master.amakusa.skill.s1`; no consumer identity may appear in production routing and no consumer migration is authorized in B2.
+
+FB2-39 earns zero migration credit. Formal migration remains **`142/944`**, with **`802`** remaining. On fresh R acceptance plus A synchronization, immediately re-overlay the intended singleton consumer and dispatch S if zero-issue.
