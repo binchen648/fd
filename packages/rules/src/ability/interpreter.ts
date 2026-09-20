@@ -22,6 +22,12 @@ import { eventRulePlacementByInstance, initializeEventRulePlacements, listEventR
 import { applyOuterGodLifeUse, isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, settlePendingSourceCardReturns } from './outer-god-life';
 import { classifyAcceptedSkillUseForbidModifier, definitionHasStructuralTrueNameRelease, isAcceptedStaticWhileActiveSkillUseForbidAbility } from './skill-use-forbid';
 import { currentRoundCombatLossAbsent, isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
+import {
+  assignGameStartPlayerStatuses,
+  gameStartPlayerStatusAssignments,
+  isGameStartPlayerStatusAssignmentCandidate,
+  isGameStartPlayerStatusAssignmentSemantic,
+} from './game-start-player-status-assignment';
 export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import {
   DataFlowValidationError,
@@ -217,7 +223,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
+    cardState: {}, playerStatusKeysByPlayer: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
     eventRuleZoneRevision: 0, rulerSealBindings: [], rulerSealBindingHistory: {}, pendingRulerSealRewards: [],
     roundTotalPowerAdjustments: { round: s.round.roundNumber, byPlayer: {} }, pendingSourceCardReturns: [],
     usedAbilities: {}, processedEvents: [], revealedServants: [],
@@ -783,6 +789,9 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
+  if (isGameStartPlayerStatusAssignmentCandidate(a) &&
+    (!isGameStartPlayerStatusAssignmentSemantic(a) ||
+      !gameStartPlayerStatusAssignments(s, card(s, sourceId).controllerPlayerId, a))) return false;
   if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) return false;
   if (hasControllerMasterSkillDefinitionReturnCandidate(a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
@@ -2938,6 +2947,12 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) {
     reject('resolution_failed', 'Unsupported game-start fixed set-mana semantic shape');
+  }
+  if (isGameStartPlayerStatusAssignmentCandidate(a)) {
+    if (!assignGameStartPlayerStatuses(s, ctx.controllerId, a)) {
+      reject('resolution_failed', 'Unsupported game-start player-status assignment semantic shape or target topology');
+    }
+    return;
   }
   if (isGameStartSkillProvisioningCandidate(a)) {
     provisionGameStartSkillCards(s, ctx, a);

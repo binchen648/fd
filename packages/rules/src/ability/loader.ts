@@ -13,6 +13,10 @@ import { isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, OUTER_GO
 import { classifyAcceptedSkillUseForbidModifier } from './skill-use-forbid';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './deployment-destinations';
 import { isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
+import {
+  isGameStartPlayerStatusAssignmentCandidate,
+  isGameStartPlayerStatusAssignmentSemantic,
+} from './game-start-player-status-assignment';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -186,6 +190,8 @@ const supportedTypes = new Set([
   'event_player_won_combat', 'event_player_lost_combat',
   // FB2-29 source-owner relational power/return primitives
   'adjust_round_total_power', 'schedule_source_card_return',
+  // FB2-39 exact game-start player-status assignment
+  'add_status',
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -219,6 +225,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'eventController', 'locationId', 'locationRef', 'ruleControllerPlayerId', 'zones', 'tag', 'eventSetId',
   // FB2-29 exact relational fields
   'recipients', 'recipient', 'dedupe',
+  // FB2-39 opaque player-status key
+  'status',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -253,6 +261,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (!path.startsWith('conditions')) issue(path, 'Current-round combat-loss absence condition is supported only under ability conditions', abilityId);
         else if (!isAcceptedCurrentRoundCombatLossAbsenceCondition(n)) issue(path, 'Unsupported current-round combat-loss absence condition shape', abilityId);
         return;
+      }
+      if (n.type === 'add_status' && !path.startsWith('effects')) {
+        issue(path, 'Player-status assignment is supported only by the exact game-start effect envelope', abilityId);
       }
       for (const key of Object.keys(n)) if (!mechanicKeys.has(key)) issue(`${path}.${key}`, 'Unmapped mechanic field', abilityId);
       if (n.type && !supportedTypes.has(str(n.type))) issue(`${path}.type`, `Unmapped type: ${str(n.type)}`, abilityId);
@@ -444,7 +455,8 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       const installsRuleOverride = nodes(a.effects).some(effect => effect.type === 'install_rule_override');
       const provisionsSkillCards = nodes(a.effects).some(effect => effect.type === 'provision_skill_cards');
-      if (installsRuleOverride || provisionsSkillCards) {
+      const assignsPlayerStatuses = nodes(a.effects).some(effect => effect.type === 'add_status');
+      if (installsRuleOverride || provisionsSkillCards || assignsPlayerStatuses) {
         const executionKeys = new Set(['mode', 'hostOps', 'allowedOperations']);
         for (const key of Object.keys(execution)) {
           if (!executionKeys.has(key)) issue(`execution.${key}`, 'Unmapped rule-override execution field', id);
@@ -459,9 +471,18 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
             issue(`execution.${operationsKey}`, 'Automatic rule-override execution authority must be an empty array when declared', id);
           }
         }
+        if (assignsPlayerStatuses) {
+          const responseKeys = Object.keys(response);
+          const exactStatusResponse = responseKeys.length === 0 || (
+            response.order === 'turn_order' && response.passBehavior === 'decline_this_window' &&
+            responseKeys.length === 2 && responseKeys.every((key) => ['order', 'passBehavior'].includes(key)));
+          if (!exactStatusResponse) {
+            issue('responseWindow', 'Game-start player-status assignment requires an empty or exact default response window', id);
+          }
+        }
       }
       const requested = execution.hostOps ?? execution.allowedOperations;
-      const defaultAllowed = mode === 'automatic' && (installsRuleOverride || provisionsSkillCards) ? [] : [...hostOperations];
+      const defaultAllowed = mode === 'automatic' && (installsRuleOverride || provisionsSkillCards || assignsPlayerStatuses) ? [] : [...hostOperations];
       const allowed = Array.isArray(requested) ? hostOperations.filter(op => requested.includes(op)) : defaultAllowed;
       if (Array.isArray(requested) && requested.some(op => !hostOperations.includes(op as typeof hostOperations[number]))) issue('execution.hostOps', 'Operation outside the host allowlist', id);
       if (mode !== 'automatic') issue('execution.mode', str(execution.reason) || mode, id, mode as ExecutionMode);
@@ -485,6 +506,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (isOuterGodLifeAbilityCandidate(candidateAbility) && !isOuterGodLifeAbilitySemantic(candidateAbility)) {
         issue('outerGodLife.gateway', 'Unsupported Outer-God-Life relational semantic shape', id);
+      }
+      if (isGameStartPlayerStatusAssignmentCandidate(candidateAbility) && !isGameStartPlayerStatusAssignmentSemantic(candidateAbility)) {
+        issue('gameStartPlayerStatus.gateway', 'Unsupported game-start player-status assignment semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;
