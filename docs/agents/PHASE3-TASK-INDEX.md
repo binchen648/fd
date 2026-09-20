@@ -5526,3 +5526,15 @@ Read: `docs/reports/2026-09-20-p3-a-r88-darius-s2-consumer-migration-dispatch.md
 Result: dispatch exactly one frozen identity, `servant.darius.skill.sc-darius-2` (`巴比伦之门`), now mechanically `S_READY_NOW` after accepted FB2-42. Whole-card temporary probe returns loader `report=[]`, automatic execution, exact +1 power and close protection for all three normalized controller-owned undead definition ids, no effect on unrelated/opponent cards, and exact round expiry. No additional runtime seam is required.
 
 Base frozen overlap is **`139/944`** and Candidate must be exactly **`140/944`**, exact +1 Darius s2 with zero removals/duplicates. Formal migration remains **`144/944`**, remaining **`800`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+
+## TASK P3-A-R89-DARIUS-S2-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r89-darius-s2-migration-acceptance-sync`
+Base: exact accepted Candidate `76023c8c852098679d05d4d2877af9ad92650a65`
+Read: `docs/reports/2026-09-20-p3-a-r89-darius-s2-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #395 exact Candidate `76023c8c852098679d05d4d2877af9ad92650a65`, backed by canonical evidence `https://github.com/binchen648/fd/pull/395#issuecomment-5748256383`. Exact frozen addition is `servant.darius.skill.sc-darius-2`; independent Base-to-Candidate frozen overlap is `139/944` to `140/944`, exact +1 with zero removals and zero duplicates. Existing Darius s1 remains semantically unchanged and no production runtime/product registration changed.
+
+Formal project migration advances exactly one identity to **`145/944`**, with **`799`** remaining. PR #395 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
