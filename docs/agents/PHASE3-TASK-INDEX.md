@@ -5478,3 +5478,15 @@ Read: `docs/reports/2026-09-20-p3-a-r86-nero-consumer-migration-dispatch.md`
 Result: dispatch exactly one frozen identity, `servant.nero.skill.sc-nero-1` (`邀至心荡神驰的黄金剧场`), now mechanically `S_READY_NOW` after accepted FB2-40 + FB2-41. Whole-card temporary probes return loader `report=[]`, automatic execution, round-2 active-round reward = 2 VP after a controller win, authoritative `combatWinRound` recording, keep-open after a win, and close-on-round-end after no win. No additional runtime seam is required.
 
 Base frozen overlap is **`138/944`** and Candidate must be exactly **`139/944`**, exact +1 Nero s1 with zero removals/duplicates. Formal migration remains **`143/944`**, remaining **`801`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+
+## TASK P3-A-R87-NERO-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r87-nero-migration-acceptance-sync`
+Base: exact accepted Candidate `868b543d7b508aece7da054a6b8a9a66b675efd9`
+Read: `docs/reports/2026-09-20-p3-a-r87-nero-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #393 exact Candidate `868b543d7b508aece7da054a6b8a9a66b675efd9`, backed by canonical evidence `https://github.com/binchen648/fd/pull/393#issuecomment-5747885450`. Exact frozen addition is `servant.nero.skill.sc-nero-1`; independent Base-to-Candidate frozen overlap is `138/944` to `139/944`, exact +1 with zero removals and zero duplicates. Existing FB2-40/FB2-41 capabilities fully execute the migrated card without a new runtime seam.
+
+Formal project migration advances exactly one identity to **`144/944`**, with **`800`** remaining. PR #393 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted zero-gap whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
