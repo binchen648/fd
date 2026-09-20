@@ -5394,3 +5394,15 @@ Read: `docs/reports/2026-09-20-p3-a-r82-fb2-39-acceptance-synchronization.md`
 Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #389 exact Candidate `3ca21ec1c20cc7d6689b3fef6c28f982bb4ff93c`, backed by canonical evidence `https://github.com/binchen648/fd/pull/389#issuecomment-5747497720`. Accepted capability is the narrow identity-free authoritative `game_start` + exact `source_owned` player-status assignment seam to `controller` or exact `turn_order_next_player`, with server-owned deduplicated opaque status keys and fail-closed topology/shape validation.
 
 FB2-39 earns zero migration credit; formal migration remains **`142/944`**, with **`802`** remaining. PR #389 remains OPEN, unmerged, and unretargeted. Next action is immediate `master.amakusa.skill.s1` whole-card re-overlay and fresh singleton S dispatch if zero-issue.
+
+## TASK P3-A-R82-AMAKUSA-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r82-amakusa-consumer-migration-dispatch`
+Base: exact R82 FB2-39 acceptance sync `00edec31096190985a2e98f359c923a3ad913964`
+Read: `docs/reports/2026-09-20-p3-a-r82-amakusa-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `master.amakusa.skill.s1` (`教则`), now S-ready on formally accepted FB2-39. A temporary whole-card normalization probe returned loader `report=[]`, automatic mode, and exact FB2-39 semantic acceptance for authoritative `game_start` + exact `source_owned` + the three Reference-backed opaque status assignments. No additional runtime seam is required.
+
+Base frozen overlap is **`137/944`** and Candidate must be exactly **`138/944`**, exact +1 Amakusa s1 with zero removals/duplicates. Formal migration remains **`142/944`**, remaining **`802`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
