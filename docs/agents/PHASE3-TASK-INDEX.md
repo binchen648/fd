@@ -5666,3 +5666,15 @@ Read: `docs/reports/2026-09-20-p3-a-r94-darnic-s1a-migration-acceptance-synchron
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #407 exact Candidate `98fd4b52c3c70943410b72a85aec4e7b612987d0`, backed by canonical evidence `https://github.com/binchen648/fd/pull/407#issuecomment-5750144662`. Exact frozen addition is `master.darnic.skill.s1a`; independent Base-to-Candidate frozen overlap is `142/944` to `143/944`, exact +1 with zero removals and zero duplicate frozen ids. The fourth Candidate file is only the A-authorized compatibility correction removing Leonidas s1's stale absolute repository-overlap snapshot; no second frozen identity or production semantic change is present.
 
 Formal project migration advances exactly one identity to **`148/944`**, with **`796`** remaining. PR #407 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+
+## TASK P3-FB2-45-PREBATTLE-DEFEAT-ROUND-ATTACK-ATTRIBUTE
+
+Owner: Codex B2
+Status: `DISPATCHED`
+Branch: `codex/b2-p3-fb2-45-prebattle-defeat-round-attack-attribute`
+Base: exact synchronized formal baseline `0ffcbdbb8f9e0dbdf796bd95de7fc9c0601821c2`
+Read: `docs/reports/2026-09-20-p3-a-fb2-45-prebattle-defeat-round-attack-attribute-dispatch.md`
+
+Result required: implement only the exact identity-free action-phase pre-battle `defeat_player` shape whose target is `engaged_opponents` with the sole predicate `no_attack_played_this_round_with_attribute(<attribute>)`. Use authoritative ordinary/add-to-attack `playedRound` provenance and a separate typed round+battlefield pre-battle defeat ledger consumed by battle settlement while honoring existing battle-loss immunity. Do not widen Presence Concealment, arbitrary defeat scopes/predicates, elimination, or identity-specific runtime routing.
+
+This is zero-credit capability work: formal migration remains **`148/944`**, **`796`** remaining. After fresh R acceptance and A synchronization, immediately re-overlay the complete `servant.medusa.skill.sc-medusa-2` card and dispatch singleton S only if it is mechanically zero-gap.
