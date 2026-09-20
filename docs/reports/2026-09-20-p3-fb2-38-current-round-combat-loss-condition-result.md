@@ -134,3 +134,24 @@ Validation after this revision:
 - content validation: **7 masters / 7 servants / 20 events / 0 blocking issues**;
 - generated determinism, exact Locked Reference verification, client production build, and revision `git diff --check`: PASS;
 - formal migration remains **`140/944`**, with **`804`** remaining; FB2-38 remains zero-credit runtime capability infrastructure.
+
+## Current reviewer revision binding
+
+- Superseded Candidate: `ddf280664c00e27044f708608373ddb888609b8e`
+- Fresh R verdict: `IMPLEMENTATION_NEEDS_REVISION`
+- Canonical reviewer evidence: `https://github.com/binchen648/fd/pull/387#issuecomment-5746420578`
+- Blocking finding: a represented terminal battle outcome could contain an empty participant set or an empty winner set and still be accepted as authoritative provenance, even though production combat resolution cannot emit either shape for a resolved battle.
+- Minimal revision: preserve the valid phase-wide zero-battle terminal case (`battleOutcomes.length === 0`), but require every represented battle outcome to contain at least one participant and at least one winner before evaluating current-round loss absence.
+- Focused regression uses the real `collectTriggeredAbilities` path to prove zero-battle terminal provenance still passes while per-battle empty participants / empty winners fail closed without throwing.
+- Previously fixed post-scoring frozen provenance, history-aware ordinals, malformed ID grammar/type validation, current-roster identity validation, battlefield identity validation, and closed-location filtering remain unchanged.
+
+Validation after this revision:
+
+- `npm.cmd run typecheck`: PASS;
+- focused FB2-38: **1 file / 9 tests PASS**;
+- rules `src/__tests__ + core + regression + focused`: **83 files / 503 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2`: **156 files / 1096 tests PASS**;
+- content validation: **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated determinism, exact Locked Reference verification, client production build, and `git diff --check`: PASS;
+- revision-only production hardcode audit: CLEAN;
+- formal migration remains **`140/944`**, with **`804`** remaining; FB2-38 remains zero-credit runtime capability infrastructure.

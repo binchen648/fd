@@ -174,6 +174,25 @@ describe('P3-FB2-38 current-round combat-loss absence condition', () => {
       battleOutcomes: good.battleOutcomes!.map((outcome) => ({ ...outcome, participantPlayerIds: undefined })),
     })).toEqual([]);
     expect(trigger(state, { ...good, battleParticipantIds: ['p1'] })).toEqual([]);
+    expect(trigger(state, terminalEvent(state, []))).toEqual([
+      { cardInstanceId: 'source', abilityId: 'terminal-loss-check', controllerId: 'p1' },
+    ]);
+    for (const [participantPlayerIds, winnerPlayerIds] of [
+      [[], []],
+      [['p1', 'p2'], []],
+    ] as const) {
+      const malformedEmptyOutcome = {
+        ...good,
+        battleParticipantIds: [...participantPlayerIds],
+        battleOutcomes: good.battleOutcomes!.map((outcome) => ({
+          ...outcome,
+          participantPlayerIds: [...participantPlayerIds],
+          winnerPlayerIds: [...winnerPlayerIds],
+        })),
+      } as AbilityEvent;
+      expect(() => trigger(state, malformedEmptyOutcome)).not.toThrow();
+      expect(trigger(state, malformedEmptyOutcome)).toEqual([]);
+    }
     for (const [participantPlayerIds, winnerPlayerIds] of [
       [['ghost', 'p2'], ['p2']],
       [['ghost', 'p2'], ['ghost']],

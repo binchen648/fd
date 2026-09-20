@@ -58,9 +58,9 @@ export function currentRoundCombatLossAbsent(
         !battleId.startsWith(battleIdPrefix) || !battleOrdinal || !/^[1-9]\d*$/.test(battleOrdinal) ||
         resultIds[index] !== `${battleId}:result` ||
         scoringReceiptIds[index] !== `${phaseId}:score:${outcome.battlefieldId}` ||
-        !Array.isArray(participants) || participants.some((value) => typeof value !== 'string' || value.length === 0 || !knownPlayerIds.has(value)) ||
+        !Array.isArray(participants) || participants.length === 0 || participants.some((value) => typeof value !== 'string' || value.length === 0 || !knownPlayerIds.has(value)) ||
         new Set(participants).size !== participants.length ||
-        !Array.isArray(winners) || winners.some((value) => typeof value !== 'string' || value.length === 0 || !knownPlayerIds.has(value)) ||
+        !Array.isArray(winners) || winners.length === 0 || winners.some((value) => typeof value !== 'string' || value.length === 0 || !knownPlayerIds.has(value)) ||
         new Set(winners).size !== winners.length || winners.some((winnerId) => !participants.includes(winnerId))) return false;
     representedParticipants.push(...participants);
   }
