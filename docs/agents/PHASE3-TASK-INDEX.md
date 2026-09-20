@@ -5620,3 +5620,15 @@ Read: `docs/reports/2026-09-20-p3-a-r92-leonidas-s1-consumer-migration-dispatch.
 Result: dispatch exactly one frozen identity, `servant.leonidas.skill.sc-leonidas-1` (`炎门守护者`), now mechanically `S_READY_NOW` after accepted FB2-44. Whole-card read-only re-overlay returns loader `report=[]`, all-automatic execution, structural true-name declaration on use, exact same-battlefield one-face-up-per-round enforcement, face-down/outside-location negatives, and real authoritative controller movement closing the source while opponent movement does not. No additional runtime seam is required.
 
 Base frozen overlap is **`141/944`**, duplicates `0`; Candidate must be exactly **`142/944`**, exact +1 Leonidas s1 with zero removals/duplicates and no second frozen identity. Formal migration remains **`146/944`**, remaining **`798`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+
+## TASK P3-A-R92-LEONIDAS-S1-CI-COMPATIBILITY-SCOPE-CORRECTION
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r92-leonidas-s1-ci-compatibility-scope-correction`
+Base: exact Leonidas S dispatch `048d87108cc44abbd2cefe44e52b24af9fdc2351`
+Read: `docs/reports/2026-09-20-p3-a-r92-leonidas-s1-ci-compatibility-scope-correction.md`
+
+Result: the authorized Leonidas +1 makes repository frozen authoring overlap exactly `142/944`, but historical `packages/rules/tests/siegfried-s2-consumer-migration.test.ts` still hard-codes the earlier global snapshot `141`. S is additionally authorized to change only that old test's unstable absolute global-overlap assertion into stable Siegfried invariants (frozen denominator `944`, zero duplicate frozen ids, Siegfried s2 authored exactly once). No Siegfried production semantics, runtime, product/generated registration, second frozen identity, merge, retarget, or migration credit is authorized.
+
+Formal migration remains **`146/944`**, **`798`** remaining. Leonidas Candidate must still prove exact current overlap **`142/944`** with exact +1 `servant.leonidas.skill.sc-leonidas-1`.
