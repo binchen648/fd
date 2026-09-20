@@ -246,6 +246,15 @@ export interface PendingRulerSealReward {
 export interface PendingSourceCardReturn {
   sourceCardId: string; abilityId: string; recipientPlayerId: PlayerId; round: number;
 }
+export interface TrustedBattleResultSnapshot {
+  battlePhaseResolutionId: string;
+  battleId: string;
+  resultId: string;
+  battlefieldId: string;
+  battleParticipantIds: PlayerId[];
+  winners: PlayerId[];
+  loserIds: PlayerId[];
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
@@ -261,6 +270,8 @@ export interface AbilityRuntime {
   pendingPreBattleDefeats?: PendingPreBattleDefeat[];
   /** Server-owned post-scoring battle events waiting for Trigger Gateway settlement. */
   pendingPostBattleEvents?: AbilityEvent[];
+  /** FB2-47 immutable first-seen authoritative root result facts, keyed by exact result id. */
+  trustedBattleResultSnapshots?: Record<string, TrustedBattleResultSnapshot>;
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */
   pendingBattleTerminalEvent?: AbilityEvent;
   /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */
