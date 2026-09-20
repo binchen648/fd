@@ -5714,3 +5714,15 @@ Read: `docs/reports/2026-09-21-p3-a-r96-medusa-s2-migration-acceptance-synchroni
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #409 exact Candidate `b37828530d6a8cf8f0f04ae2057ed3587e1c23a4`, backed by canonical evidence `https://github.com/binchen648/fd/pull/409#issuecomment-5752721739`. Exact frozen addition is `servant.medusa.skill.sc-medusa-2`; independent Base-to-Candidate frozen overlap is `143/944` to `144/944`, exact +1 with zero removals and zero duplicate frozen ids. Existing `servant.medusa.skill.sc-medusa-1` remains authored exactly once; no production semantic or product/generated change is present.
 
 Formal project migration advances exactly one identity to **`149/944`**, with **`795`** remaining. PR #409 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+
+## TASK P3-FB2-46-BATTLE-LOSS-VP-WINNER-REWARD
+
+Owner: Codex B2
+Status: `READY`
+Branch: `codex/b2-p3-fb2-46-battle-loss-vp-winner-reward`
+Base: exact A dispatch Candidate on `codex/a-p3-fb2-46-battle-loss-vp-winner-reward-dispatch`
+Read: `docs/reports/2026-09-21-p3-a-fb2-46-battle-loss-vp-winner-reward-dispatch.md`
+
+Result required: implement only the exact identity-free authoritative battle-loss VP transaction released by A: on a trusted `after_controller_loses_battle` event, deduct a fixed positive VP amount from the losing controller with floor zero; only when actual loss is positive, grant a fixed VP reward once to every winner from that same frozen `battleResult`. Fail closed on malformed ability shape or battle provenance. Do not add generic `lose_victory_points`, generic event-winner targeting, generic `thenIfAnyLost`, `player.defeated`, identity routing, consumer authoring, or unrelated VP/battle semantics.
+
+This is zero-credit capability work: formal migration remains **`149/944`**, **`795`** remaining. After exact fresh R acceptance and A synchronization, re-overlay the complete `servant.nobunaga.skill.sc-nobunaga-3`; singleton S is allowed only if the whole card is then mechanically zero-gap.
