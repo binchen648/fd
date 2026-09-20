@@ -244,6 +244,8 @@ export interface PendingSourceCardReturn {
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
+  /** Server-owned opaque player-status keys. This is distinct from PlayerState active/eliminated status. */
+  playerStatusKeysByPlayer?: Record<PlayerId, string[]>;
   ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
   pendingDelayedActivations?: PendingDelayedActivation[];
   /** Server-owned pre-scoring battle-local defeat requests staged by the exact Presence Concealment response. */
