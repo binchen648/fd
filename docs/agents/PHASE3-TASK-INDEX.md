@@ -5690,3 +5690,15 @@ Read: `docs/reports/2026-09-21-p3-a-r95-fb2-45-acceptance-synchronization.md`
 Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #408 exact Candidate `17685e678e758cb38032732bf15d47b07592d81e`, backed by canonical evidence `https://github.com/binchen648/fd/pull/408#issuecomment-5752550000`. Accepted capability is only the bounded identity-free action-phase pre-battle `defeat_player` shape targeting `engaged_opponents` with the sole `no_attack_played_this_round_with_attribute(<attribute>)` predicate, authoritative current-round ordinary/add-to-attack provenance, a separate round+battlefield ledger, battle-loss immunity, matching-settlement consumption, and fail-closed whole-ability admission.
 
 FB2-45 earns zero migration credit; formal migration remains **`148/944`**, with **`796`** remaining. Current material authoring overlap remains **`143/944`**, duplicates **`0`**, and `servant.medusa.skill.sc-medusa-2` remains absent. PR #408 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.medusa.skill.sc-medusa-2`; dispatch singleton S only if it is mechanically zero-gap.
+
+## TASK P3-A-R95-MEDUSA-S2-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r95-medusa-s2-consumer-migration-dispatch`
+Base: exact R95 FB2-45 acceptance-sync `02d7a696658b639cdd7bfecc3e377dc4abebdbf0`
+Read: `docs/reports/2026-09-21-p3-a-r95-medusa-s2-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.medusa.skill.sc-medusa-2` (`石化之魔眼`), after a fresh complete-card re-overlay on the synchronized FB2-45 runtime returned loader `report=[]`, all-automatic execution, accepted FB2-45 classifier, structural true-name release on ability declaration, real play cost/activation, exact no-current-round-`迅捷` defeat settlement, ordinary/face-down/add-to-attack `迅捷` protection, Luck immunity, idempotence and round cleanup. No additional B2 seam is required.
+
+Base frozen authoring overlap is **`143/944`**, duplicates **`0`**; Candidate must be exactly **`144/944`**, exact +1 Medusa s2 with zero removals/duplicates and no second frozen identity. No stale absolute `143` compatibility snapshot exists, so S has no compatibility-edit authorization. Formal migration remains **`148/944`**, **`796`** remaining until fresh R `MIGRATION_ACCEPTED` plus A synchronization. Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
