@@ -17,6 +17,7 @@ import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './deployment-
 import { isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 import { isAcceptedCurrentRoundCombatWinAbsenceCondition } from './current-round-combat-win-condition';
 import { isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
+import { isAcceptedPreBattleDefeatAbility, isPreBattleDefeatCandidate } from './pre-battle-defeat';
 import {
   isGameStartPlayerStatusAssignmentCandidate,
   isGameStartPlayerStatusAssignmentSemantic,
@@ -194,6 +195,8 @@ const supportedTypes = new Set([
   'event_player_won_combat', 'event_player_lost_combat',
   // FB2-43 exact movement-event location relation condition
   'event_location_equals_controller',
+  // FB2-45 exact action-phase pre-battle defeat selector/effect tokens; gated by whole-ability classifier below.
+  'defeat_player', 'no_attack_played_this_round_with_attribute',
   // FB2-29 source-owner relational power/return primitives
   'adjust_round_total_power', 'schedule_source_card_return',
   // FB2-39 exact game-start player-status assignment
@@ -233,6 +236,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'recipients', 'recipient', 'dedupe',
   // FB2-39 opaque player-status key
   'status',
+  // FB2-45 nested exact target predicate list.
+  'where',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -533,6 +538,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (isGameStartPlayerStatusAssignmentCandidate(candidateAbility) && !isGameStartPlayerStatusAssignmentSemantic(candidateAbility)) {
         issue('gameStartPlayerStatus.gateway', 'Unsupported game-start player-status assignment semantic shape', id);
+      }
+      if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'authoring')) {
+        issue('preBattleDefeat.gateway', 'Unsupported pre-battle defeat semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

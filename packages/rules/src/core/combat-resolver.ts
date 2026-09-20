@@ -459,12 +459,14 @@ function buildBattleResultFromRanked(
   battlefieldId: CombatResolutionInput["battlefieldId"],
   ranked: BattleParticipantBreakdown[],
   presenceConcealmentDefeatedPlayerIds: string[] = [],
+  preBattleDefeatedPlayerIds: string[] = [],
 ): GameState["battleResults"][number] | null {
   if (!ranked.length) return null;
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   const excludedPlayerIds = [...new Set([
     ...ranked.filter((participant) => cannotWinBattleThisRound(state, participant.playerId)).map((participant) => participant.playerId),
     ...presenceConcealmentDefeatedPlayerIds.filter((playerId) => ranked.some((participant) => participant.playerId === playerId)),
+    ...preBattleDefeatedPlayerIds.filter((playerId) => ranked.some((participant) => participant.playerId === playerId)),
   ])];
   const eligible = ranked.filter((participant) => !excludedPlayerIds.includes(participant.playerId));
   const highestEligiblePower = eligible[0]?.effectivePower;
@@ -581,12 +583,25 @@ export function resolveBattlefield(
     const ranked = [...participants]
       .map((participant) => buildParticipantBreakdown(state, input.battlefieldId, participant))
       .sort((left, right) => right.effectivePower - left.effectivePower);
-    const loserIds = participants.map((participant) => participant.playerId).filter((playerId) => playerId !== returnSilenceController);
+    const allPendingPreBattle = state.abilityRuntime?.pendingPreBattleDefeats ?? [];
+    const matchingPendingPreBattle = allPendingPreBattle.filter((entry) =>
+      entry.round === state.round.roundNumber && entry.battlefieldId === input.battlefieldId);
+    const participantIds = new Set(participants.map((participant) => participant.playerId));
+    const preBattleTargets = [...new Set(matchingPendingPreBattle.flatMap((entry) => entry.targetPlayerIds))]
+      .filter((playerId) => participantIds.has(playerId));
+    const ignoredPreBattleTargets = preBattleTargets.filter((playerId) =>
+      ignoresBattleLossEffects(state, playerId, input.battlefieldId));
+    const defeatedPreBattleTargets = preBattleTargets.filter((playerId) => !ignoredPreBattleTargets.includes(playerId));
+    const returnSilenceControllerDefeated = defeatedPreBattleTargets.includes(returnSilenceController);
+    const winnerPlayerIds = returnSilenceControllerDefeated ? [] : [returnSilenceController];
+    const loserIds = participants.map((participant) => participant.playerId)
+      .filter((playerId) => returnSilenceControllerDefeated || playerId !== returnSilenceController);
     const battleResult: GameState["battleResults"][number] = {
       battlefieldId: input.battlefieldId,
-      winnerPlayerIds: [returnSilenceController],
+      winnerPlayerIds,
       tied: false,
-      winnerPlayerId: returnSilenceController,
+      ...(defeatedPreBattleTargets.length ? { excludedPlayerIds: defeatedPreBattleTargets } : {}),
+      winnerPlayerId: winnerPlayerIds.length === 1 ? winnerPlayerIds[0]! : null,
       margin: 8,
       vpReward: 0,
       baseVpPerWinner: 0,
@@ -602,9 +617,29 @@ export function resolveBattlefield(
       log: state.log.concat({
         type: "battle_resolved",
         message: `return_silence:${input.battlefieldId}`,
-        payload: { winnerPlayerIds: [returnSilenceController], tied: false, winnerPlayerId: returnSilenceController, loserIds, sourceCardId },
+        payload: { winnerPlayerIds, tied: false, winnerPlayerId: battleResult.winnerPlayerId, loserIds, sourceCardId },
       }),
     };
+    if (nextState.abilityRuntime && matchingPendingPreBattle.length) {
+      const consumed = new Set(matchingPendingPreBattle.map((entry) =>
+        `${entry.round}:${entry.battlefieldId}:${entry.controllerId}:${entry.sourceCardId}:${entry.abilityId}`));
+      nextState.abilityRuntime.pendingPreBattleDefeats = allPendingPreBattle.filter((entry) =>
+        !consumed.has(`${entry.round}:${entry.battlefieldId}:${entry.controllerId}:${entry.sourceCardId}:${entry.abilityId}`));
+    }
+    for (const playerId of defeatedPreBattleTargets) {
+      nextState.log.push({
+        type: 'prebattle_defeat_applied',
+        message: `${input.battlefieldId}:${playerId}`,
+        payload: { playerId, battlefieldId: input.battlefieldId, roundNumber: state.round.roundNumber },
+      });
+    }
+    for (const playerId of ignoredPreBattleTargets) {
+      nextState.log.push({
+        type: 'prebattle_defeat_ignored',
+        message: `${input.battlefieldId}:${playerId}`,
+        payload: { playerId, battlefieldId: input.battlefieldId, roundNumber: state.round.roundNumber, sourceCardDefinitionId: 'basic.luck' },
+      });
+    }
     const source = nextState.cards.find((card) => card.instanceId === sourceCardId);
     if (source) source.zone = "removed_from_game";
     if (nextState.abilityRuntime?.cardState[sourceCardId]) nextState.abilityRuntime.cardState[sourceCardId]!.active = false;
@@ -674,8 +709,18 @@ export function resolveBattlefield(
     ignoresBattleLossEffects(settlementState, playerId, input.battlefieldId));
   const defeatedPresenceTargets = presenceTargets.filter((playerId) => !ignoredPresenceTargets.includes(playerId));
 
+  const allPendingPreBattle = settlementState.abilityRuntime?.pendingPreBattleDefeats ?? [];
+  const matchingPendingPreBattle = allPendingPreBattle.filter((entry) =>
+    entry.round === settlementState.round.roundNumber && entry.battlefieldId === input.battlefieldId);
+  const participantIds = new Set(ranked.map((participant) => participant.playerId));
+  const preBattleTargets = [...new Set(matchingPendingPreBattle.flatMap((entry) => entry.targetPlayerIds))]
+    .filter((playerId) => participantIds.has(playerId));
+  const ignoredPreBattleTargets = preBattleTargets.filter((playerId) =>
+    ignoresBattleLossEffects(settlementState, playerId, input.battlefieldId));
+  const defeatedPreBattleTargets = preBattleTargets.filter((playerId) => !ignoredPreBattleTargets.includes(playerId));
+
   const battleResult = buildBattleResultFromRanked(
-    settlementState, input.battlefieldId, ranked, defeatedPresenceTargets);
+    settlementState, input.battlefieldId, ranked, defeatedPresenceTargets, defeatedPreBattleTargets);
   const nextBattleResults = battleResult
     ? settlementState.battleResults.concat(battleResult)
     : settlementState.battleResults;
@@ -726,6 +771,26 @@ export function resolveBattlefield(
       type: 'presence_concealment_defeat_ignored',
       message: `${input.battlefieldId}:${playerId}`,
       payload: { playerId, battlefieldId: input.battlefieldId, resultId, sourceCardDefinitionId: 'basic.luck' },
+    });
+  }
+  if (nextState.abilityRuntime && matchingPendingPreBattle.length) {
+    const consumed = new Set(matchingPendingPreBattle.map((entry) =>
+      `${entry.round}:${entry.battlefieldId}:${entry.controllerId}:${entry.sourceCardId}:${entry.abilityId}`));
+    nextState.abilityRuntime.pendingPreBattleDefeats = allPendingPreBattle.filter((entry) =>
+      !consumed.has(`${entry.round}:${entry.battlefieldId}:${entry.controllerId}:${entry.sourceCardId}:${entry.abilityId}`));
+  }
+  for (const playerId of defeatedPreBattleTargets) {
+    nextState.log.push({
+      type: 'prebattle_defeat_applied',
+      message: `${input.battlefieldId}:${playerId}`,
+      payload: { playerId, battlefieldId: input.battlefieldId, roundNumber: settlementState.round.roundNumber },
+    });
+  }
+  for (const playerId of ignoredPreBattleTargets) {
+    nextState.log.push({
+      type: 'prebattle_defeat_ignored',
+      message: `${input.battlefieldId}:${playerId}`,
+      payload: { playerId, battlefieldId: input.battlefieldId, roundNumber: settlementState.round.roundNumber, sourceCardDefinitionId: 'basic.luck' },
     });
   }
   if (settlementState.abilityRuntime && battleResult) {

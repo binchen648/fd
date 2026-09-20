@@ -25,6 +25,7 @@ import { isCardCloseForbidden } from './card-close-forbid';
 import { faceUpCardPlayLimitReached, recordCompletedFaceUpCardPlay } from './face-up-cards-per-round';
 import { currentRoundCombatLossAbsent, isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 import { eventLocationEqualsController, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
+import { isAcceptedPreBattleDefeatAbility, isPreBattleDefeatCandidate, preBattleDefeatAttribute } from './pre-battle-defeat';
 import {
   currentRoundCombatWinAbsent,
   isAcceptedCurrentRoundCombatWinAbsenceCondition,
@@ -231,7 +232,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, playerStatusKeysByPlayer: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
+    cardState: {}, playerStatusKeysByPlayer: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPreBattleDefeats: [], pendingPostBattleEvents: [],
     eventRuleZoneRevision: 0, rulerSealBindings: [], rulerSealBindingHistory: {}, pendingRulerSealRewards: [],
     roundTotalPowerAdjustments: { round: s.round.roundNumber, byPlayer: {} }, pendingSourceCardReturns: [],
     usedAbilities: {}, processedEvents: [], revealedServants: [],
@@ -813,6 +814,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) return false;
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) return false;
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
+  if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'compiled')) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
@@ -824,6 +826,10 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) return false;
   if (hasControllerMasterSkillDefinitionReturnCandidate(a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
+  if (isAcceptedPreBattleDefeatAbility(a, 'compiled')) {
+    const controller = player(s, card(s, sourceId).controllerPlayerId);
+    if (controller.status !== 'active' || !isBattlefield(s, controller.locationId)) return false;
+  }
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
   if (activationPhase && activationPhase !== phase(s)) return false;
@@ -1294,6 +1300,41 @@ function reveal(s: GameState, controllerId: string): void {
   const r = runtime(s); if (r.revealedServants.includes(controllerId)) return;
   r.revealedServants.push(controllerId); r.events.push({ type: 'servant_package_revealed', playerId: controllerId });
 }
+function playerHasRoundAttackWithAttribute(s: GameState, playerId: string, attribute: string): boolean {
+  return s.cards.some((candidate) => {
+    if (candidate.controllerPlayerId !== playerId) return false;
+    const state = runtime(s).cardState[candidate.instanceId];
+    if (state?.playedRound !== s.round.roundNumber) return false;
+    const d = definition(s, candidate.instanceId);
+    return classifyCardPlay(d).playKind === 'attack' && Array.isArray(d?.cardFace.attributes) && d.cardFace.attributes.includes(attribute);
+  });
+}
+
+function stagePreBattleDefeat(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAcceptedPreBattleDefeatAbility(a, 'compiled')) reject('resolution_failed', 'Unsupported pre-battle defeat semantic shape');
+  const attribute = preBattleDefeatAttribute(a);
+  const controller = player(s, ctx.controllerId);
+  if (!attribute || controller.status !== 'active' || !controller.locationId || !isBattlefield(s, controller.locationId)) {
+    reject('invalid_state', 'Pre-battle defeat requires an active controller at a battlefield');
+  }
+  const targetPlayerIds = s.players
+    .filter((candidate) => candidate.status === 'active' && candidate.id !== ctx.controllerId && candidate.locationId === controller.locationId)
+    .filter((candidate) => !playerHasRoundAttackWithAttribute(s, candidate.id, attribute))
+    .map((candidate) => candidate.id);
+  if (!targetPlayerIds.length) return;
+  const ledger = runtime(s).pendingPreBattleDefeats ??= [];
+  const existing = ledger.find((entry) => entry.round === s.round.roundNumber && entry.battlefieldId === controller.locationId &&
+    entry.controllerId === ctx.controllerId && entry.sourceCardId === ctx.sourceCardId && entry.abilityId === ctx.abilityId);
+  if (existing) {
+    existing.targetPlayerIds = [...new Set([...existing.targetPlayerIds, ...targetPlayerIds])];
+    return;
+  }
+  ledger.push({
+    round: s.round.roundNumber, battlefieldId: controller.locationId, controllerId: ctx.controllerId,
+    sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, targetPlayerIds,
+  });
+}
+
 function checkFormulaTriggers(s: GameState): void {
   for (const t of collectTriggeredAbilities(s, { id: 'formula-check', type: 'when_formula_condition_met' })) {
     if (runtime(s).revealedServants.includes(t.controllerId)) continue;
@@ -1306,6 +1347,10 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case 'defeat_player': {
+      stagePreBattleDefeat(s, ctx, a);
+      break;
+    }
     case 'defeat_highest_power_opponents': {
       if (!isPresenceConcealmentAssassinationSemantic(a)) reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
       const event = ctx.event;
@@ -3089,6 +3134,15 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) {
     reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
   }
+  if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'compiled')) {
+    reject('resolution_failed', 'Unsupported pre-battle defeat semantic shape');
+  }
+  if (isAcceptedPreBattleDefeatAbility(a, 'compiled')) {
+    const controller = player(s, ctx.controllerId);
+    if (controller.status !== 'active' || !isBattlefield(s, controller.locationId)) {
+      reject('invalid_state', 'Pre-battle defeat requires an active controller at a battlefield');
+    }
+  }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
     reject('resolution_failed', 'Unsupported persistent RuleOverride semantic shape');
   }
@@ -3306,6 +3360,7 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
     runtime(copy).pendingRulerSealRewards = runtime(copy).pendingRulerSealRewards.filter((reward) => reward.round >= round);
     runtime(copy).roundTotalPowerAdjustments = { round, byPlayer: {} };
     runtime(copy).pendingSourceCardReturns = runtime(copy).pendingSourceCardReturns.filter((entry) => entry.round >= round);
+    runtime(copy).pendingPreBattleDefeats = [];
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, faceUpCardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
   }
