@@ -316,6 +316,18 @@ export function evaluateFormula(input: unknown, s: GameState, controllerId: stri
       if (name === 'controller.availableMana') return player(s, controllerId).mana;
       if (name === 'controller.deployment_bonus') return currentDeploymentBonus(s, controllerId);
       if (name === 'game.round_number') return s.round.roundNumber;
+      if (name === 'source_card_active_round_count') {
+        const source = s.cards.find((candidate) => candidate.instanceId === sourceCardId);
+        const sourceState = runtime(s).cardState[sourceCardId];
+        const currentRound = s.round.roundNumber;
+        const playedRound = sourceState?.playedRound;
+        if (!source || !['field', 'attack_area'].includes(source.zone) || sourceState?.active !== true || sourceState.faceDown === true ||
+          !Number.isSafeInteger(currentRound) || currentRound < 1 || !Number.isSafeInteger(playedRound) ||
+          (playedRound as number) < 1 || (playedRound as number) > currentRound) {
+          reject('invalid_variable', 'source_card_active_round_count requires a valid active source-card round state');
+        }
+        return currentRound - (playedRound as number) + 1;
+      }
       if (name === 'consecutive_play_rounds') {
         const r = runtime(s);
         return r.consecutivePlayRounds[sourceCardId] ?? 1;
