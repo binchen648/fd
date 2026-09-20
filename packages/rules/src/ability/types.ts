@@ -80,6 +80,8 @@ export interface CardPlayClassification {
 export interface RoundPlayCounters {
   round: number;
   cardsPlayedByPlayer: Record<PlayerId, number>;
+  /** Actual completed face-up plays in the authoritative round; optional for backward-compatible restored states. */
+  faceUpCardsPlayedByPlayer?: Record<PlayerId, number>;
   attacksDeclaredByPlayer: Record<PlayerId, number>;
 }
 export interface BattleResultData { winners: PlayerId[]; loserIds: PlayerId[] }

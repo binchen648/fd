@@ -22,6 +22,7 @@ import { eventRulePlacementByInstance, initializeEventRulePlacements, listEventR
 import { applyOuterGodLifeUse, isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, settlePendingSourceCardReturns } from './outer-god-life';
 import { classifyAcceptedSkillUseForbidModifier, definitionHasStructuralTrueNameRelease, isAcceptedStaticWhileActiveSkillUseForbidAbility } from './skill-use-forbid';
 import { isCardCloseForbidden } from './card-close-forbid';
+import { faceUpCardPlayLimitReached, recordCompletedFaceUpCardPlay } from './face-up-cards-per-round';
 import { currentRoundCombatLossAbsent, isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 import { eventLocationEqualsController, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import {
@@ -239,7 +240,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
     manaGainedThisRound: { round: s.round.roundNumber, byPlayer: {} },
     playRulesVersion: options.playRulesVersion ?? 'explicit-v1',
-    playCounters: { round: s.round.roundNumber, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} } };
+    playCounters: { round: s.round.roundNumber, cardsPlayedByPlayer: {}, faceUpCardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} } };
   initializeEventRulePlacements(s, pack);
 }
 export function createBattleResult(data: BattleResultData): BattleResult {
@@ -932,6 +933,7 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (faceDown && (!isAttack(d) || d.cardType === 'servant_skill')) return 'illegal_face_down';
   const forbidRules = ongoingCardPlayForbidRules(s, p, sourceId);
   if (forbidRules.some(rule => !hasPlayRuleException(d, rule))) return 'play_forbidden';
+  if (!faceDown && faceUpCardPlayLimitReached(s, p)) return 'face_up_card_play_limit_reached';
   const limit = perGamePlayLimit(d);
   if (limit && (runtime(s).abilityUsage[`play:${sourceId}:${limit.key}`] ?? 0) >= limit.uses) return 'card_limit_reached';
   if (!ignoreAttackLimit && attackPlayLimitReached(s, p, sourceId, ignoreStagedAttackLimit)) return 'attack_play_limit_reached';
@@ -1388,6 +1390,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       moveCard(s, ctx.sourceCardId, cardPlayClassification(s, ctx.sourceCardId).destinationZone);
       r.cardState[ctx.sourceCardId] = { active: effect.face === 'face_down' ? false : true, faceDown: effect.face === 'face_down', playedRound: s.round.roundNumber };
       if (effect.face === 'face_down') source.visibility = { scope: 'owner_only', ownerPlayerId: p.id };
+      else recordCompletedFaceUpCardPlay(s, p.id);
       processEvent(s, { id: nextId(s, 'declare'), type: 'on_use_declared', playerId: p.id, sourceCardId: ctx.sourceCardId, playedCards: [{ instanceId: ctx.sourceCardId, controllerId: p.id, cardType: definition(s, ctx.sourceCardId)!.cardType, faceDown: effect.face === 'face_down' }] });
       processEvent(s, { id: nextId(s, 'play'), type: 'on_card_played', playerId: p.id, sourceCardId: ctx.sourceCardId, playedCards: [{ instanceId: ctx.sourceCardId, controllerId: p.id, cardType: definition(s, ctx.sourceCardId)!.cardType, faceDown: effect.face === 'face_down' }] });
       break;
@@ -2957,6 +2960,22 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   cleanupOngoing(s);
 }
 /** Server-only execution after discovery/trigger validation. Never accept an effect or context from the client. */
+function preflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  let additionalFaceUpCards = 0;
+  for (const effect of a.effects) {
+    if (effect.type === 'play_source_card' && effect.face !== 'face_down') {
+      additionalFaceUpCards += 1;
+      continue;
+    }
+    if (effect.type === 'play_selected_cards' && effect.face !== 'face_down') {
+      additionalFaceUpCards += (ctx.selections[str(effect.target)] ?? []).length;
+    }
+  }
+  if (additionalFaceUpCards > 0 && faceUpCardPlayLimitReached(s, ctx.controllerId, additionalFaceUpCards)) {
+    reject('face_up_card_play_limit_reached', 'Face-up card play limit reached for this round');
+  }
+}
+
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
@@ -3039,6 +3058,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     }
   }
   if (isAddToAttackRouteCandidate(a)) assertAddToAttackSupportAvailable(s, ctx, a);
+  preflightFaceUpEffectPlays(s, ctx, a);
   const p = player(s, ctx.controllerId); let manaCost = 0;
   const fixedControllerManaCost = usesAcceptedFixedControllerManaCostComponent(a);
   
@@ -3192,7 +3212,7 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
     runtime(copy).roundTotalPowerAdjustments = { round, byPlayer: {} };
     runtime(copy).pendingSourceCardReturns = runtime(copy).pendingSourceCardReturns.filter((entry) => entry.round >= round);
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
-    runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
+    runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, faceUpCardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
   }
   copy.round.activePhase = next; copy.round.roundNumber = round; cleanupOngoing(copy);
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
@@ -3472,6 +3492,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
 function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false): void {
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
+  const faceUpChoiceCount = choices.filter((choice) => choice.faceDown !== true).length;
+  if (faceUpChoiceCount > 0 && faceUpCardPlayLimitReached(s, playerId, faceUpChoiceCount)) {
+    reject('face_up_card_play_limit_reached', 'Face-up card play limit reached for this round');
+  }
   const requiredAdditionalIds = new Set(choices
     .filter(c => isRequiredAdditionalPlayCard(s, c.cardInstanceId))
     .map(c => c.cardInstanceId));
@@ -3537,9 +3561,12 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   if (counters.round !== s.round.roundNumber) {
     counters.round = s.round.roundNumber;
     counters.cardsPlayedByPlayer = {};
+    counters.faceUpCardsPlayedByPlayer = {};
     counters.attacksDeclaredByPlayer = {};
   }
   counters.cardsPlayedByPlayer[playerId] = (counters.cardsPlayedByPlayer[playerId] ?? 0) + choices.length;
+  counters.faceUpCardsPlayedByPlayer ??= {};
+  counters.faceUpCardsPlayedByPlayer[playerId] = (counters.faceUpCardsPlayedByPlayer[playerId] ?? 0) + faceUpChoiceCount;
   if (quota === 'regular') {
     counters.attacksDeclaredByPlayer[playerId] = (counters.attacksDeclaredByPlayer[playerId] ?? 0) + regularAttackChoices;
   }
