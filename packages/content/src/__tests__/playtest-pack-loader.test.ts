@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 
@@ -43,6 +43,7 @@ function createMinimalWorkspace(
     masterCardFiles: [],
     authoringServantFiles: [],
     authoringMasterFiles: ['data/authoring/masters/master.test.json'],
+    authoringMasterSupportFiles: [],
     eventSetFiles: [],
     eventCardFiles: [],
   });
@@ -93,6 +94,38 @@ function createMinimalWorkspace(
   return { root, packPath };
 }
 
+function addMasterSupportArchive(
+  workspace: { root: string; packPath: string },
+  mutate?: (archive: Record<string, any>) => void,
+  registerAs: 'support' | 'master' = 'support',
+): Record<string, any> {
+  const archive: Record<string, any> = {
+    schemaVersion: 'fd-card-authoring-v1',
+    archiveType: 'master_support_definition_archive',
+    id: 'master.support-owner',
+    name: 'Support Owner',
+    cards: [{
+      id: 'card.support.only',
+      name: 'Support Only',
+      cardType: 'master_skill',
+      initialPlacement: 'outside_game',
+      printedText: 'support only',
+      cardFace: { cost: 1, basePower: 1 },
+      playTiming: { phase: 'action' },
+      playRequirements: [],
+      abilities: [],
+    }],
+  };
+  mutate?.(archive);
+  const relativePath = 'data/authoring/support/master.support-owner.json';
+  writeJson(join(workspace.root, relativePath), archive);
+  const manifest = JSON.parse(readFileSync(workspace.packPath, 'utf8')) as Record<string, any>;
+  if (registerAs === 'support') manifest.authoringMasterSupportFiles = [relativePath];
+  else manifest.authoringMasterFiles = [...(manifest.authoringMasterFiles ?? []), relativePath];
+  writeJson(workspace.packPath, manifest);
+  return archive;
+}
+
 describe('playtest pack loader', () => {
   it('loads the complete approved roster with no blocking issues', () => {
     const loaded = loadPlaytestContentPack(packPath, { workspaceRoot });
@@ -110,6 +143,58 @@ describe('playtest pack loader', () => {
       code: 'SOURCE_ASSET_UNVERIFIED',
       blocking: false,
     }));
+  });
+
+  it('loads master support archives into rules only without widening the playable roster', () => {
+    const workspace = createMinimalWorkspace(false);
+    try {
+      const support = addMasterSupportArchive(workspace);
+      const loaded = loadPlaytestContentPack(workspace.packPath, { workspaceRoot: workspace.root });
+      const compiled = compileLoadedPlaytestPack(loaded);
+
+      expect(loaded.masters.map((master) => master.id)).toEqual(['master.test']);
+      expect(loaded.cards.some((card) => card.id === support.cards[0].id)).toBe(false);
+      expect(loaded.authoringArchives.map((archive) => archive.id)).toEqual(['master.test', support.id]);
+      expect(compiled.library.masters.map((master) => master.id)).toEqual(['master.test']);
+      expect(compiled.library.cards.some((card) => card.id === support.cards[0].id)).toBe(false);
+      expect(compiled.library.rules.archives.map((archive) => archive.id)).toEqual(['master.test', support.id]);
+      expect(compiled.library.rules.archives[1]).toMatchObject({
+        archiveType: 'master_support_definition_archive',
+        id: support.id,
+      });
+      expect(compiled.fixture.seats.every((seat) => seat.masterId !== support.id)).toBe(true);
+    } finally {
+      rmSync(workspace.root, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    ['missing discriminator', (archive: Record<string, any>) => { delete archive.archiveType; }, /requires archiveType=master_support_definition_archive/],
+    ['wrong owner family', (archive: Record<string, any>) => { archive.id = 'servant.support-owner'; }, /id must start with master\./],
+    ['empty archive', (archive: Record<string, any>) => { archive.cards = []; }, /must contain at least one card/],
+    ['non-master-skill card', (archive: Record<string, any>) => { archive.cards[0].cardType = 'command_spell'; }, /only master_skill cards/],
+    ['missing outside-game placement', (archive: Record<string, any>) => { delete archive.cards[0].initialPlacement; }, /requires initialPlacement=outside_game/],
+    ['deck surface', (archive: Record<string, any>) => { archive.deck = []; }, /cannot define a deck/],
+    ['playable public information', (archive: Record<string, any>) => { archive.publicInformation = { initialMana: 4 }; }, /cannot define playable master publicInformation/],
+  ])('fails closed for malformed master support archive: %s', (_name, mutate, expected) => {
+    const workspace = createMinimalWorkspace(false);
+    try {
+      addMasterSupportArchive(workspace, mutate);
+      expect(() => loadPlaytestContentPack(workspace.packPath, { workspaceRoot: workspace.root })).toThrow(expected);
+    } finally {
+      rmSync(workspace.root, { recursive: true, force: true });
+    }
+  });
+
+  it('rejects support archives registered through the normal master channel', () => {
+    const workspace = createMinimalWorkspace(false);
+    try {
+      addMasterSupportArchive(workspace, undefined, 'master');
+      expect(() => loadPlaytestContentPack(workspace.packPath, { workspaceRoot: workspace.root }))
+        .toThrow(/must be registered through authoringMasterSupportFiles/);
+    } finally {
+      rmSync(workspace.root, { recursive: true, force: true });
+    }
   });
 
   it('produces deterministic compiled output', () => {
