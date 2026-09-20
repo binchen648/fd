@@ -89,7 +89,7 @@ function expectClosed(state: GameState) {
 }
 
 describe('P3 S R81 Darius consumer migration', () => {
-  it('materializes exactly the frozen Darius card with F1 hashes, Reference metadata, and accepted semantics', () => {
+  it('preserves the frozen Darius s1 card with F1 hashes, Reference metadata, and accepted semantics', () => {
     const raw = rawArchive();
     expect(raw).toMatchObject({
       schemaVersion: 'fd-card-authoring-v1', archiveType: 'servant_skill_card_archive', id: OWNER,
@@ -99,8 +99,9 @@ describe('P3 S R81 Darius consumer migration', () => {
         referenceMetadataCommit: 'b2f9fa15fba07c63530bbf4612b03b8b704755f9',
       },
     });
-    expect(raw.cards.map((card: any) => card.id)).toEqual([ID]);
-    const authored = raw.cards[0];
+    expect(raw.cards.map((card: any) => card.id)).toContain(ID);
+    const authored = raw.cards.find((card: any) => card.id === ID);
+    expect(authored).toBeDefined();
     expect(authored).toMatchObject({
       id: ID, aliases: ['sc_darius_1'], legacyId: 'sc_darius_1', name: '阿契美尼德的荣耀',
       cardType: 'servant_skill', owner: { type: 'servant', id: OWNER },

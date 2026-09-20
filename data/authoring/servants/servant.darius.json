@@ -131,6 +131,239 @@
           "closeSourceCard": "CARD_ACTION_CLOSE"
         }
       }
+    },
+    {
+      "id": "servant.darius.skill.sc-darius-2",
+      "aliases": [
+        "sc_darius_2"
+      ],
+      "legacyId": "sc_darius_2",
+      "name": "巴比伦之门",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.darius"
+      },
+      "printedText": "【真名解放】打开冥府之门-行动阶段：你控制的【不死兵】获得+1威力且于本回合不会被关闭。",
+      "cardFace": {
+        "typeLabel": "特殊/宝具",
+        "attributes": [
+          "特殊",
+          "宝具"
+        ],
+        "cost": 4,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "open-underworld-gate",
+          "kind": "phase_action",
+          "printedClause": "【真名解放】打开冥府之门-行动阶段：你控制的【不死兵】获得+1威力且于本回合不会被关闭。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [
+            {
+              "id": "undead-power-plus-one-sc-darius-4",
+              "printedClause": "【真名解放】打开冥府之门-行动阶段：你控制的【不死兵】获得+1威力且于本回合不会被关闭。",
+              "operation": "add",
+              "rule": "card.currentPower",
+              "scope": {
+                "controller": "self",
+                "constraints": [
+                  {
+                    "type": "has_card_id",
+                    "cardId": "servant.darius.skill.sc-darius-4"
+                  }
+                ]
+              },
+              "value": 1,
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            },
+            {
+              "id": "undead-cannot-close-sc-darius-4",
+              "printedClause": "【真名解放】打开冥府之门-行动阶段：你控制的【不死兵】获得+1威力且于本回合不会被关闭。",
+              "operation": "forbid",
+              "rule": "card_close",
+              "scope": {
+                "controller": "self",
+                "constraints": [
+                  {
+                    "type": "has_card_id",
+                    "cardId": "servant.darius.skill.sc-darius-4"
+                  }
+                ]
+              },
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            },
+            {
+              "id": "undead-power-plus-one-legacy-sc-darius-4",
+              "printedClause": "【真名解放】打开冥府之门-行动阶段：你控制的【不死兵】获得+1威力且于本回合不会被关闭。",
+              "operation": "add",
+              "rule": "card.currentPower",
+              "scope": {
+                "controller": "self",
+                "constraints": [
+                  {
+                    "type": "has_card_id",
+                    "cardId": "card.skill.servant.darius.skill.sc-darius-4"
+                  }
+                ]
+              },
+              "value": 1,
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            },
+            {
+              "id": "undead-cannot-close-legacy-sc-darius-4",
+              "printedClause": "【真名解放】打开冥府之门-行动阶段：你控制的【不死兵】获得+1威力且于本回合不会被关闭。",
+              "operation": "forbid",
+              "rule": "card_close",
+              "scope": {
+                "controller": "self",
+                "constraints": [
+                  {
+                    "type": "has_card_id",
+                    "cardId": "card.skill.servant.darius.skill.sc-darius-4"
+                  }
+                ]
+              },
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            },
+            {
+              "id": "undead-power-plus-one-x-immortal",
+              "printedClause": "【真名解放】打开冥府之门-行动阶段：你控制的【不死兵】获得+1威力且于本回合不会被关闭。",
+              "operation": "add",
+              "rule": "card.currentPower",
+              "scope": {
+                "controller": "self",
+                "constraints": [
+                  {
+                    "type": "has_card_id",
+                    "cardId": "card.x-immortal"
+                  }
+                ]
+              },
+              "value": 1,
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            },
+            {
+              "id": "undead-cannot-close-x-immortal",
+              "printedClause": "【真名解放】打开冥府之门-行动阶段：你控制的【不死兵】获得+1威力且于本回合不会被关闭。",
+              "operation": "forbid",
+              "rule": "card_close",
+              "scope": {
+                "controller": "self",
+                "constraints": [
+                  {
+                    "type": "has_card_id",
+                    "cardId": "card.x-immortal"
+                  }
+                ]
+              },
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          },
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "大流士三世.htm",
+            "locator": "从者/狂战士/英文版/大流士三世.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/大流士三世.png",
+            "locator": "servant.darius/大流士三世"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[21].abilities[0].printedClause",
+            "sha256": "9306d30ca4244bde6326a78944a19e633f1dd3735f5cf4d2b33c4215ac794c01"
+          }
+        ],
+        "f1FullPrintedTextSha256": "9306d30ca4244bde6326a78944a19e633f1dd3735f5cf4d2b33c4215ac794c01",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_darius_2",
+          "class": "Berserker",
+          "cost": 4,
+          "basePower": 0,
+          "legacyRequirement": 8,
+          "typeLabel": "特殊/宝具",
+          "attributes": [
+            "特殊",
+            "宝具"
+          ]
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Locked Reference requirement is consistent; current authoring uses the accepted explicit skill-zone threshold."
+        },
+        "acceptedContracts": {
+          "sourceActive": "P3-R71/FB2-32",
+          "controlledDefinitionSelectors": "GENERIC_CONDITION_EVALUATION has_card_id",
+          "cardPower": "GENERIC_MODIFIER card.currentPower",
+          "cardCloseForbid": "P3-R88/FB2-42",
+          "thisRoundLifecycle": "GENERIC_LIFECYCLE_POLICY this_round",
+          "trueNameRelease": "GENERIC_VISIBILITY structural revealsTrueName"
+        }
+      }
     }
   ]
 }
