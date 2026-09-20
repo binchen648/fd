@@ -26,6 +26,10 @@ This revision changes only the two exact P1 findings:
 
 No generic defeat engine, new identity route, migration credit, merge, or retarget is introduced by the revision.
 
+A second fresh-R review for exact Candidate `b350e10ec422d14591dbfb1b31369f274ccce1ec` is GitHub comment `5752373797`, also terminal `IMPLEMENTATION_NEEDS_REVISION` on the same exact Base/task/branch. That review explicitly confirms the two prior findings are materially addressed and identifies one remaining P1: non-array forbidden authoring containers could be normalized away before the exact gateway rejected them.
+
+This second revision closes only that finding. For `targets`, `cost`, `creates`, and `ruleModifiers`, the FB2-45 classifier now checks the raw authoring value before normalization: the field may be absent or an exact empty array; object, scalar, null, or non-empty array forms fail `preBattleDefeat.gateway`. Focused regressions cover object and scalar misuse for all four fields. No loader vocabulary, runtime settlement behavior, identity route, or accepted semantic envelope is widened.
+
 ## Implemented capability
 
 FB2-45 admits one bounded action-phase pre-battle defeat shape and no generic arbitrary `defeat_player` engine.
@@ -42,7 +46,7 @@ The accepted semantic envelope is structurally restricted to:
 - automatic execution;
 - either empty visibility or the already-accepted exact servant-package true-name reveal metadata.
 
-The loader recognizes the new syntax tokens only behind this whole-ability classifier. Candidate detection traverses the complete ability, so the same tokens in `creates`, conditions, target constraints, or other non-authorized fields are rejected rather than silently admitted. Wrong phase, extra conditions/effects/fields, Gorgon-style `same_battlefield_opponents + face_up_cards_played_this_round_at_least`, Mephisto-style controller defeat, and widened predicates/scopes remain unsupported.
+The loader recognizes the new syntax tokens only behind this whole-ability classifier. Candidate detection traverses the complete ability, so the same tokens in `creates`, conditions, target constraints, or other non-authorized fields are rejected rather than silently admitted. The classifier also validates raw forbidden container shape before loader normalization: `targets`, `cost`, `creates`, and `ruleModifiers` must be absent or exact empty arrays. Wrong phase, extra conditions/effects/fields, malformed non-array forbidden containers, Gorgon-style `same_battlefield_opponents + face_up_cards_played_this_round_at_least`, Mephisto-style controller defeat, and widened predicates/scopes remain unsupported.
 
 ## Authoritative history and target derivation
 
@@ -80,6 +84,7 @@ The final FB2-45 focused suite proves:
 - exact loader shape accepted and renamed identity-independent runtime classifier works;
 - wrong phase, extra conditions/effects, wrong scope, wrong predicate, extra predicate fields and controller-defeat near-shape reject;
 - `defeat_player` in `creates` and the new predicate token in condition/target-constraint positions fail closed through `preBattleDefeat.gateway`;
+- object/scalar misuse of `targets`, `cost`, `creates`, and `ruleModifiers` fails closed before loader normalization rather than being erased/coerced into the accepted envelope;
 - an opponent with no qualifying current-round swift attack receives an intent and is excluded from winning settlement;
 - an ordinary current-round `迅捷` attack prevents defeat;
 - a face-down current-round `迅捷` attack also prevents defeat server-side;
@@ -117,10 +122,10 @@ Fresh B2 worktree dependencies were installed with `npm.cmd ci --ignore-scripts 
 Validation on the final working tree before Candidate commit:
 
 - `npm.cmd run typecheck` — PASS.
-- FB2-45 + Presence Concealment focused verification — PASS, **2 files / 20 tests**.
-- FB2-45 + Presence Concealment + existing Return Silence/B23 focused compatibility — PASS, **3 files / 31 tests**.
-- rules `src/__tests__ + core + regression + FB2-43 + FB2-44 + FB2-45` — PASS, **85 files / 530 tests**.
-- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **170 files / 1211 tests**.
+- FB2-45 + Presence Concealment focused verification — PASS, **2 files / 21 tests**.
+- FB2-45 + Presence Concealment + existing Return Silence/B23 focused compatibility — PASS, **3 files / 32 tests**.
+- rules `src/__tests__ + core + regression + FB2-43 + FB2-44 + FB2-45` — PASS, **85 files / 531 tests**.
+- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **170 files / 1212 tests**.
 - `npm.cmd run content:validate` — PASS, **7 masters / 7 servants / 20 events / 0 blocking issues**.
 - `npm.cmd run verify:generated-content` — PASS with unchanged hashes:
   - library `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`;

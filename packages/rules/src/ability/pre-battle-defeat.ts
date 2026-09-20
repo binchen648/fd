@@ -33,7 +33,10 @@ export function isAcceptedPreBattleDefeatAbility(
 
   const conditions = nodes(raw.conditions);
   if (conditions.length !== 1 || conditions[0]!.type !== 'source_active' || !exactKeys(conditions[0]!, ['type'])) return false;
-  if (nodes(raw.targets).length !== 0 || nodes(raw.cost).length !== 0 || nodes(raw.creates).length !== 0 || nodes(raw.ruleModifiers).length !== 0) return false;
+  for (const key of ['targets', 'cost', 'creates', 'ruleModifiers']) {
+    const value = raw[key];
+    if (value !== undefined && (!Array.isArray(value) || value.length !== 0)) return false;
+  }
 
   const effects = nodes(raw.effects);
   if (effects.length !== 1) return false;

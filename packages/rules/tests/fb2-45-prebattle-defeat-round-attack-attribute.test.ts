@@ -190,6 +190,26 @@ describe('P3-FB2-45 pre-battle defeat by current-round attack attribute', () => 
     ]));
   });
 
+  it('fails closed on non-array forbidden FB2-45 containers before loader normalization', () => {
+    const malformedForbiddenFields: Array<[string, unknown]> = [
+      ['targets', {}],
+      ['targets', 'controller'],
+      ['cost', { type: 'pay_mana', amount: 1 }],
+      ['cost', 1],
+      ['creates', {}],
+      ['creates', 'token'],
+      ['ruleModifiers', {}],
+      ['ruleModifiers', 'modifier'],
+    ];
+
+    for (const [field, value] of malformedForbiddenFields) {
+      const loaded = rules.loadAuthoringJson(archive({ [field]: value }));
+      expect(loaded.report, field).toEqual(expect.arrayContaining([
+        expect.objectContaining({ abilityId: ABILITY_ID, status: 'unsupported', path: 'preBattleDefeat.gateway' }),
+      ]));
+    }
+  });
+
   it('stages same-battlefield defeat and settlement excludes the stronger opponent, then consumes the intent', () => {
     const state = setup();
     activate(state);
