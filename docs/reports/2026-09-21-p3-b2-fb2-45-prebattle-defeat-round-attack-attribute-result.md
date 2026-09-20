@@ -1,7 +1,7 @@
 # P3-B2 FB2-45 Pre-Battle Defeat by Round Attack Attribute Result
 
 Role: Codex B2
-Status: `CANDIDATE_READY_FOR_FRESH_R`
+Status: `REVISION_CANDIDATE_READY_FOR_FRESH_R`
 Date: 2026-09-21
 
 ## Exact dispatch input
@@ -14,6 +14,17 @@ Date: 2026-09-21
 - Formal migration before/after this B2: **`148/944`**, remaining **`796`**.
 
 FB2-45 is identity-free runtime capability infrastructure and earns **zero migration credit**.
+
+## Fresh-R revision closure
+
+Formal fresh-R evidence for exact Candidate `28bf0cbb2aaf4ec5cc4394e3ca25222b95e61ea3` is GitHub comment `5752039805`, terminal verdict `IMPLEMENTATION_NEEDS_REVISION`, bound to exact Base `749b700f0e4b2d0b5cfcbf12acde3748a3f7f25b` and this task/branch.
+
+This revision changes only the two exact P1 findings:
+
+1. FB2-45 token admission now scans the entire containing ability rather than only `effects`, so `defeat_player` or `no_attack_played_this_round_with_attribute` placed in `creates`, conditions, target constraints, or any other non-authorized location must pass the same exact whole-ability gateway and therefore fail closed.
+2. The existing Return Silence early-settlement branch now applies the same round+battlefield FB2-45 target intersection, Basic Luck immunity check, winner exclusion, intent consumption, and applied/ignored logging before returning. A matching non-immune intent targeting the Return Silence controller can no longer leave that controller winner-eligible, and the intent cannot leak after settlement. Existing Return Silence behavior is unchanged when no matching non-immune FB2-45 target affects its controller.
+
+No generic defeat engine, new identity route, migration credit, merge, or retarget is introduced by the revision.
 
 ## Implemented capability
 
@@ -31,7 +42,7 @@ The accepted semantic envelope is structurally restricted to:
 - automatic execution;
 - either empty visibility or the already-accepted exact servant-package true-name reveal metadata.
 
-The loader recognizes the new syntax tokens only behind this whole-ability classifier. Wrong phase, extra conditions/effects/fields, Gorgon-style `same_battlefield_opponents + face_up_cards_played_this_round_at_least`, Mephisto-style controller defeat, and widened predicates/scopes remain unsupported.
+The loader recognizes the new syntax tokens only behind this whole-ability classifier. Candidate detection traverses the complete ability, so the same tokens in `creates`, conditions, target constraints, or other non-authorized fields are rejected rather than silently admitted. Wrong phase, extra conditions/effects/fields, Gorgon-style `same_battlefield_opponents + face_up_cards_played_this_round_at_least`, Mephisto-style controller defeat, and widened predicates/scopes remain unsupported.
 
 ## Authoritative history and target derivation
 
@@ -56,7 +67,8 @@ FB2-45 adds `PendingPreBattleDefeat`, keyed by current round + battlefield + con
 - target IDs are intersected with actual battle participants before application;
 - matching targets are routed through the existing `ignoresBattleLossEffects` check;
 - non-immune targets are added to the existing winner-exclusion input before winner/scoring derivation;
-- matching intents are consumed after settlement;
+- matching intents are consumed after settlement, including the existing Return Silence early-settlement path;
+- Return Silence applies the same FB2-45 participant intersection and Basic Luck immunity before deciding whether its controller remains winner-eligible;
 - resolving a different battlefield neither applies nor consumes the intent.
 
 Presence Concealment remains independent. Its `pendingPresenceConcealmentDefeats` `resultId` + frozen-Power snapshot contract, response timing and dedicated result/log fields are untouched and its focused suite remains green.
@@ -67,6 +79,7 @@ The final FB2-45 focused suite proves:
 
 - exact loader shape accepted and renamed identity-independent runtime classifier works;
 - wrong phase, extra conditions/effects, wrong scope, wrong predicate, extra predicate fields and controller-defeat near-shape reject;
+- `defeat_player` in `creates` and the new predicate token in condition/target-constraint positions fail closed through `preBattleDefeat.gateway`;
 - an opponent with no qualifying current-round swift attack receives an intent and is excluded from winning settlement;
 - an ordinary current-round `迅捷` attack prevents defeat;
 - a face-down current-round `迅捷` attack also prevents defeat server-side;
@@ -75,6 +88,7 @@ The final FB2-45 focused suite proves:
 - another battlefield and inactive player are not targeted;
 - settling another battlefield does not apply or consume the intent;
 - existing Basic Luck battle-loss immunity ignores the defeat consequence while still consuming the matching intent;
+- a matching intent targeting the transformed Return Silence controller is applied before the special early return, removes that controller from winner eligibility, and is consumed; the same interaction with Basic Luck is ignored and consumed while preserving the Return Silence winner;
 - repeated trusted resolution is idempotent;
 - round advance clears stale intents;
 - the complete existing Presence Concealment pre-scoring focused regression remains green.
@@ -103,9 +117,10 @@ Fresh B2 worktree dependencies were installed with `npm.cmd ci --ignore-scripts 
 Validation on the final working tree before Candidate commit:
 
 - `npm.cmd run typecheck` — PASS.
-- FB2-45 + Presence Concealment focused verification — PASS, **2 files / 18 tests**.
-- rules `src/__tests__ + core + regression + FB2-43 + FB2-44 + FB2-45` — PASS, **85 files / 528 tests**.
-- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **170 files / 1209 tests**.
+- FB2-45 + Presence Concealment focused verification — PASS, **2 files / 20 tests**.
+- FB2-45 + Presence Concealment + existing Return Silence/B23 focused compatibility — PASS, **3 files / 29 tests**.
+- rules `src/__tests__ + core + regression + FB2-43 + FB2-44 + FB2-45` — PASS, **85 files / 530 tests**.
+- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **170 files / 1211 tests**.
 - `npm.cmd run content:validate` — PASS, **7 masters / 7 servants / 20 events / 0 blocking issues**.
 - `npm.cmd run verify:generated-content` — PASS with unchanged hashes:
   - library `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`;

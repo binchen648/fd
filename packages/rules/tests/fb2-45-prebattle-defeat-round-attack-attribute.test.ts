@@ -157,6 +157,39 @@ describe('P3-FB2-45 pre-battle defeat by current-round attack attribute', () => 
     }
   });
 
+  it('fails closed when either FB2-45 token appears outside the exact effects envelope', () => {
+    const defeatInCreates = archive({
+      effects: [],
+      creates: [exactAbility().effects[0]],
+    });
+    expect(rules.loadAuthoringJson(defeatInCreates).report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ abilityId: ABILITY_ID, status: 'unsupported', path: 'preBattleDefeat.gateway' }),
+    ]));
+
+    const predicateInConditions = archive({
+      conditions: [
+        { type: 'source_active' },
+        { type: 'no_attack_played_this_round_with_attribute', attribute: '迅捷' },
+      ],
+      effects: [{ type: 'adjust_mana', player: 'controller', amount: 1 }],
+    });
+    expect(rules.loadAuthoringJson(predicateInConditions).report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ abilityId: ABILITY_ID, status: 'unsupported', path: 'preBattleDefeat.gateway' }),
+    ]));
+
+    const predicateInTargetConstraint = archive({
+      targets: [{
+        id: 'misused-predicate-target',
+        type: 'player',
+        constraints: [{ type: 'no_attack_played_this_round_with_attribute', attribute: '迅捷' }],
+      }],
+      effects: [{ type: 'adjust_mana', player: 'controller', amount: 1 }],
+    });
+    expect(rules.loadAuthoringJson(predicateInTargetConstraint).report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ abilityId: ABILITY_ID, status: 'unsupported', path: 'preBattleDefeat.gateway' }),
+    ]));
+  });
+
   it('stages same-battlefield defeat and settlement excludes the stronger opponent, then consumes the intent', () => {
     const state = setup();
     activate(state);
@@ -258,6 +291,78 @@ describe('P3-FB2-45 pre-battle defeat by current-round attack attribute', () => 
     expect(settled.battleResults.at(-1)!.winnerPlayerIds).toEqual(['p2']);
     expect(settled.abilityRuntime!.pendingPreBattleDefeats).toEqual([]);
     expect(settled.log).toContainEqual(expect.objectContaining({ type: 'prebattle_defeat_ignored' }));
+  });
+
+  it('applies and consumes a matching intent before Return Silence early settlement, including Luck immunity', () => {
+    const olgaRaw = JSON.parse(readFileSync(resolve(process.cwd(), 'data/authoring/masters/master.olga-marie.json'), 'utf8'));
+    const olgaPack = rules.loadAuthoringJson(olgaRaw);
+    expect(olgaPack.report).toEqual([]);
+
+    for (const immune of [false, true]) {
+      const state = createSeededGameState({ activeSeats: [1, 2] });
+      state.cards = [];
+      state.eventPlacements = [];
+      state.round.activePhase = 'battle';
+      state.players[0]!.locationId = 'miyama_town';
+      state.players[1]!.locationId = 'miyama_town';
+      rules.initializeAbilityRuntime(state, olgaPack, { seed: 4501 });
+      state.cards.push({
+        instanceId: 'return-silence-source',
+        definitionId: 'master.olga-marie.skill.trismegistus-grief',
+        ownerPlayerId: 'p1',
+        controllerPlayerId: 'p1',
+        zone: 'field',
+        visibility: { scope: 'public' },
+      });
+      state.abilityRuntime!.cardState['return-silence-source'] = {
+        active: true,
+        faceDown: false,
+        playedRound: state.round.roundNumber,
+      };
+      state.abilityRuntime!.transformedReturnSilenceSourceCardIds = ['return-silence-source'];
+      state.abilityRuntime!.pendingPreBattleDefeats = [{
+        round: state.round.roundNumber,
+        battlefieldId: 'miyama_town',
+        controllerId: 'p2',
+        sourceCardId: 'reviewer-prebattle-source',
+        abilityId: 'reviewer-prebattle-ability',
+        targetPlayerIds: ['p1'],
+      }];
+      if (immune) {
+        state.cards.push({
+          instanceId: 'p1-luck',
+          definitionId: 'basic.luck',
+          ownerPlayerId: 'p1',
+          controllerPlayerId: 'p1',
+          zone: 'attack_area',
+          visibility: { scope: 'public' },
+        });
+        state.abilityRuntime!.cardState['p1-luck'] = {
+          active: true,
+          faceDown: false,
+          playedRound: state.round.roundNumber,
+        };
+      }
+
+      const settled = rules.resolveBattlefield(state, {
+        battlefieldId: 'miyama_town',
+        participants: [
+          { playerId: 'p1', totalPower: 1 },
+          { playerId: 'p2', totalPower: 99 },
+        ],
+      }).nextState;
+
+      expect(settled.abilityRuntime!.pendingPreBattleDefeats).toEqual([]);
+      if (immune) {
+        expect(settled.battleResults.at(-1)!.winnerPlayerIds).toEqual(['p1']);
+        expect(settled.battleResults.at(-1)!.excludedPlayerIds ?? []).not.toContain('p1');
+        expect(settled.log).toContainEqual(expect.objectContaining({ type: 'prebattle_defeat_ignored' }));
+      } else {
+        expect(settled.battleResults.at(-1)!.winnerPlayerIds).not.toContain('p1');
+        expect(settled.battleResults.at(-1)!.excludedPlayerIds).toContain('p1');
+        expect(settled.log).toContainEqual(expect.objectContaining({ type: 'prebattle_defeat_applied' }));
+      }
+    }
   });
 
   it('repeated resolution is idempotent and round advance clears stale intents', () => {

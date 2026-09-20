@@ -18,7 +18,7 @@ export function isPreBattleDefeatCandidate(ability: AuthoringAbility | RuleNode)
     if (current.type === 'defeat_player' || current.type === 'no_attack_played_this_round_with_attribute') return true;
     return Object.values(current).some(visit);
   };
-  return visit(raw.effects);
+  return visit(raw);
 }
 
 /** FB2-45 exact identity-free action-phase pre-battle defeat semantic shape. */
