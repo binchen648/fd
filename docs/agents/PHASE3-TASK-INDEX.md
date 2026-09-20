@@ -5762,3 +5762,15 @@ Read: `docs/reports/2026-09-21-p3-a-r98-fb2-47-acceptance-synchronization.md`
 Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #411 exact Candidate `79e8c89202acef86b522aba4695d8b97961c71fd`, backed by canonical evidence `https://github.com/binchen648/fd/pull/411#issuecomment-5753617134`. The prior Candidate `e4dd39b7afc5a5801ff4e2c855fdedf611895e8a` was rejected only for the frozen-root provenance substitution gap; the accepted revision binds controller-defeated facts to the immutable first authoritative battle-result snapshot without widening authoring or defeat semantics.
 
 FB2-47 earns zero migration credit; formal migration remains **`149/944`**, with **`795`** remaining. Material authoring overlap remains **`144/944`**, duplicates **`0`**, and no consumer identity is added. PR #411 remains OPEN, unmerged and unretargeted. Next action is a fresh complete-card reconstruction of `servant.nobunaga.skill.sc-nobunaga-3` on this synchronized runtime; dispatch singleton S only if both frozen clauses, their ordering, static metadata and full runtime behavior are mechanically zero-gap.
+
+## TASK P3-A-R98-NOBUNAGA-S3-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r98-nobunaga-s3-consumer-migration-dispatch`
+Base: exact R98 FB2-47 acceptance-sync `2da84659aeebc0a4043076425dac187e9af019bf`
+Read: `docs/reports/2026-09-21-p3-a-r98-nobunaga-s3-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.nobunaga.skill.sc-nobunaga-3` (`尾张的大傻瓜`), after a fresh complete-card re-overlay on the synchronized FB2-47 runtime returned loader `report=[]`, both exact FB2-47/FB2-46 classifiers, Final Rules 9.4 7/8-mana play boundary with zero printed cost, exact defeat-before-loss `+3 -> -2 -> winners +2` ordering, no false non-loss payout and root replay idempotence. No additional B2 seam is required.
+
+Base frozen authoring overlap is **`144/944`**, duplicates **`0`**; Candidate must be exactly **`145/944`**, exact +1 Nobunaga s3 with zero removals/duplicates and no second frozen identity. No stale absolute `144` compatibility snapshot exists, so S has no compatibility-edit authorization. Formal migration remains **`149/944`**, **`795`** remaining until fresh R `MIGRATION_ACCEPTED` plus A synchronization. Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
