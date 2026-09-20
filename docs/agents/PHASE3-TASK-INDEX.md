@@ -5442,3 +5442,15 @@ Read: `docs/reports/2026-09-20-p3-a-r84-fb2-40-acceptance-synchronization.md`
 Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #391 exact Candidate `0f344ad5edf3bced8f8e4fced4098346a9eb98cb`, backed by canonical evidence `https://github.com/binchen648/fd/pull/391#issuecomment-5747670710`. Accepted capability is the narrow identity-free controlled formula metric `source_card_active_round_count`, derived from authoritative source-card `playedRound` with fail-closed source provenance validation.
 
 FB2-40 earns zero migration credit; formal migration remains **`143/944`**, with **`801`** remaining. PR #391 remains OPEN, unmerged, and unretargeted. Next action is immediate migration-credit-first re-overlay; Nero s1 still has its distinct exact `combatWinRound` absence-condition gap and receives no credit here.
+
+## TASK P3-A-FB2-41-CURRENT-ROUND-COMBAT-WIN-CONDITION-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-41-current-round-combat-win-condition-dispatch`
+Base: exact R84 FB2-40 acceptance sync `0aa115cf06d9dc652af61b4484ab230baa239318`
+Read: `docs/reports/2026-09-20-p3-a-fb2-41-current-round-combat-win-condition-dispatch.md`
+
+Result: migration-credit-first delta proof shows the current `S_READY_NOW` queue remains zero at **`143/944`**. FB2-40's exact `source_card_active_round_count` metric appears only on Nero s1 in Locked Reference, and Nero s1 still has the separate exact `combatWinRound` current-round absence condition. Dispatch one narrow identity-free server-owned current-round combat-win ledger/condition seam; no generic player flags and no consumer routing.
+
+FB2-41 earns zero migration credit; formal migration remains **`143/944`**, with **`801`** remaining. Fresh R is required before A synchronization; no merge/retarget.
