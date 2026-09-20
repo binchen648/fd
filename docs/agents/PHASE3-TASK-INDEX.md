@@ -5513,3 +5513,16 @@ Read: `docs/reports/2026-09-20-p3-a-r88-fb2-42-acceptance-synchronization.md`
 Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #394 exact revised Candidate `d082a90e194ee4cf1f528086f1ba01150a9ead41`, backed by canonical evidence `https://github.com/binchen648/fd/pull/394#issuecomment-5748132070`. The prior Candidate `5fc30e258be7f007e979008d9d46a43a2917098a` was rejected for dead-source liveness; the accepted direct-child revision centralizes physical active-source detection and proves typed-path source closure drops the forbid before the target close.
 
 FB2-42 earns zero migration credit; formal migration remains **`144/944`**, with **`800`** remaining. PR #394 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.darius.skill.sc-darius-2`; dispatch singleton S only if it is mechanically zero-gap.
+
+
+## TASK P3-A-R88-DARIUS-S2-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r88-darius-s2-consumer-migration-dispatch`
+Base: exact R88 FB2-42 acceptance sync `6b0ae42dc48b42171a3895ee3ee40d95f743d2d2`
+Read: `docs/reports/2026-09-20-p3-a-r88-darius-s2-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.darius.skill.sc-darius-2` (`巴比伦之门`), now mechanically `S_READY_NOW` after accepted FB2-42. Whole-card temporary probe returns loader `report=[]`, automatic execution, exact +1 power and close protection for all three normalized controller-owned undead definition ids, no effect on unrelated/opponent cards, and exact round expiry. No additional runtime seam is required.
+
+Base frozen overlap is **`139/944`** and Candidate must be exactly **`140/944`**, exact +1 Darius s2 with zero removals/duplicates. Formal migration remains **`144/944`**, remaining **`800`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
