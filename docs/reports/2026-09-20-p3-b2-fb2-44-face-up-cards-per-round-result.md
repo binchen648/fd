@@ -147,6 +147,16 @@ The exact blocking finding was a required-choice continuation gap: an unresolved
 - conservatively returns zero for optional/multi-select unresolved choices instead of broadening FB2-44 into a generic choice engine;
 - adds a loader-valid exact regression for `required choice -> choice_is branch -> required play_selected_cards(face_up)` proving exhausted allowance rejects before activation cost/usage/source/pending mutation;
 - adds a paired safe-alternative regression proving a `play/skip` choice remains legal under an exhausted allowance and `skip` resolves normally.
+Fresh independent reviewer evidence for exact Base `24fb6d424625fd3cbfbfb4c7f7e56e3c05c6acd8` / prior Candidate `59d02eb661ddd187123bedeaf693a26f45587c3a` returned `IMPLEMENTATION_NEEDS_REVISION` at `https://github.com/binchen648/fd/pull/401#issuecomment-5749529373`.
+
+The exact blocking finding was a cap-liveness TOCTOU gap across earlier supported effects: a player with prior face-up count `1` could start outside the accepted source battlefield, pay ability cost, execute `move_player` into that battlefield, and only then have a later `play_selected_cards(face_up)` discover the now-live exhausted cap, leaving direct trusted caller state partially mutated. This minimal revision:
+
+- keeps all existing preflight and route guards unchanged;
+- narrows the new transaction boundary to exported trusted abilities whose effect/create tree structurally contains `play_source_card(face_up)` or `play_selected_cards(face_up)`;
+- executes only those trusted face-up-play abilities against a cloned `GameState` and commits with `Object.assign` only after the existing interpreter finishes successfully, so any later `RuleRejection` leaves mana, movement, usage, source state, events and pending state untouched;
+- leaves abilities without a potential face-up trusted-play route on the existing direct execution path;
+- adds a loader-valid exact regression with prior face-up count `1`, subject initially at `shinto`, accepted FB2-44 source at `miyama_town`, `pay_mana(2) -> move_player -> play_selected_cards(face_up)`, and complete caller-state equality after rejection;
+- does not add new selector/value/conflict/play-limit semantics and does not change frozen authoring, product content or client production.
 ## Validation
 
 Fresh worktree dependencies were installed with `npm.cmd ci --ignore-scripts --offline` (239 packages, 0 vulnerabilities), followed by normal typecheck/build output generation.
@@ -154,9 +164,9 @@ Fresh worktree dependencies were installed with `npm.cmd ci --ignore-scripts --o
 Validation on the final Candidate working tree:
 
 - `npm.cmd run typecheck` — PASS.
-- final FB2-44 + source-play focused verification — PASS, **2 files / 21 tests**.
-- rules `src/__tests__ + core + regression + FB2-43 + FB2-44` — PASS, **84 files / 519 tests**.
-- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **167 files / 1184 tests**.
+- final FB2-44 + source-play focused verification — PASS, **2 files / 22 tests**.
+- rules `src/__tests__ + core + regression + FB2-43 + FB2-44` — PASS, **84 files / 520 tests**.
+- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **167 files / 1185 tests**.
 - `npm.cmd run content:validate` — PASS, **7 masters / 7 servants / 20 events / 0 blocking issues**.
 - `npm.cmd run verify:generated-content` — PASS with unchanged hashes:
   - library `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`;

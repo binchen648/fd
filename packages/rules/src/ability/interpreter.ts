@@ -3061,6 +3061,17 @@ function preflightFaceUpEffectPlaysAfterPreEffectMutations(
 }
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (!hasPotentialFaceUpEffectPlay([...a.effects, ...a.creates])) {
+    executeAbilityMutable(s, ctx);
+    return;
+  }
+  const transactional = structuredClone(s);
+  executeAbilityMutable(transactional, ctx);
+  Object.assign(s, transactional);
+}
+
+function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
+  const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
   if (isRulerSealBindingCandidate(a) && !isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
   if (isRulerSealUseCandidate(a) && !isRulerSealUseSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal use semantic shape');

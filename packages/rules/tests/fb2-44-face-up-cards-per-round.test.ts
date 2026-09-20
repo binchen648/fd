@@ -122,6 +122,37 @@ function pendingChoiceBranchPaidEffectAbility(withSafeAlternative = false): any 
   };
 }
 
+function moveThenFaceUpAbility(): any {
+  return {
+    id: 'move-then-play-one-face-up',
+    kind: 'phase_action',
+    printedClause: 'pay 2 mana, move, then play one selected hand card face up',
+    activation: { phase: 'action', opens: 'controller_action_window', requiresSourceState: 'active' },
+    conditions: [{ type: 'source_active' }],
+    targets: [
+      {
+        id: 'move_destination', type: 'location', count: { min: 1, max: 1 },
+        constraints: [{ type: 'any_enabled_location' }, { type: 'not_location_kind', locationKind: 'workshop' }], conditions: [],
+      },
+      {
+        id: 'move_play_card', type: 'card_instance', scope: { zone: 'hand', owner: 'controller' },
+        constraints: [], count: { min: 1, max: 1 }, conditions: [],
+      },
+    ],
+    effects: [
+      { type: 'move_player', player: 'controller', to: 'move_destination' },
+      { type: 'play_selected_cards', target: 'move_play_card', face: 'face_up' },
+    ],
+    cost: [{ type: 'pay_mana', amount: 2 }],
+    ruleModifiers: [],
+    creates: [],
+    lifecycle: {},
+    responseWindow: {},
+    limit: {},
+    visibility: {},
+    execution: { mode: 'automatic' },
+  };
+}
 function effectAbility(): any {
   return {
     id: 'effect-play-one-face-up',
@@ -197,7 +228,7 @@ function archive(modifier: any = exactModifier()): any {
     cards: [
       card(LIMIT_DEF, [exactLimitAbility(modifier)]),
       card(BASIC_DEF, []),
-      card(EFFECT_DEF, [effectAbility(), pendingPaidEffectAbility(), pendingChoiceBranchPaidEffectAbility(), pendingChoiceBranchPaidEffectAbility(true)]),
+      card(EFFECT_DEF, [effectAbility(), pendingPaidEffectAbility(), pendingChoiceBranchPaidEffectAbility(), pendingChoiceBranchPaidEffectAbility(true), moveThenFaceUpAbility()]),
       card(SOURCE_PLAY_DEF, [sourcePlayAbility()]),
       card(BRANCH_SOURCE_PLAY_DEF, [branchSourcePlayAbility()]),
       card(COST_MUTATED_BRANCH_SOURCE_PLAY_DEF, [costMutatedBranchSourcePlayAbility()]),
@@ -539,6 +570,38 @@ describe('P3-FB2-44 same-battlefield face-up cards-per-round seam', () => {
     expect(rules.faceUpCardsPlayedThisRound(state, 'p1')).toBe(1);
   });
 
+  it('rolls back trusted move-player liveness transition before a later rejected face-up effect play', () => {
+    const state = setup();
+    const movingSourceId = 'p3-move-effect-source';
+    state.cards.push({
+      instanceId: movingSourceId,
+      definitionId: EFFECT_DEF,
+      ownerPlayerId: 'p3',
+      controllerPlayerId: 'p3',
+      zone: 'field',
+      visibility: { scope: 'public' },
+    });
+    state.abilityRuntime!.cardState[movingSourceId] = { active: true, faceDown: false, playedRound: 1 };
+    const first = add(state, 'p3');
+    const later = add(state, 'p3');
+    state.players[2]!.locationId = 'shinto';
+    state.players[2]!.mana = 20;
+
+    expect(play(state, 'p3', first).ok).toBe(true);
+    expect(rules.faceUpCardsPlayedThisRound(state, 'p3')).toBe(1);
+    expect(rules.hasLiveFaceUpCardsPerRoundLimit(state, 'p3')).toBe(false);
+    expect(rules.loadAuthoringJson(archive()).report).toEqual([]);
+    const before = structuredClone(state);
+
+    expect(() => rules.executeAbility(state, {
+      sourceCardId: movingSourceId,
+      abilityId: 'move-then-play-one-face-up',
+      controllerId: 'p3',
+      variables: {},
+      selections: { move_destination: ['miyama_town'], move_play_card: [later] },
+    })).toThrow(/face-up card play limit reached/i);
+    expect(state).toEqual(before);
+  });
   it('counts a successful trusted source-card face-up effect before later play checks', () => {
     const state = setup();
     const sourcePlay = add(state, 'p1');
