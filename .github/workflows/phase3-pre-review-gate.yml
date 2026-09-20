@@ -31,7 +31,7 @@ jobs:
         run: npm ci
 
       - name: Validate Phase 3 task manifest policy
-        run: npm run phase3:ci-gate
+        run: npm run phase3:ci-gate -- --verify-git-ancestry
 
       - name: Run Phase 3 governance focused tests
         run: npx vitest run scripts/tests/phase3-preflight.test.ts
