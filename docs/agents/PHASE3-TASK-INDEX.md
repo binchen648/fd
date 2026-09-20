@@ -2903,7 +2903,7 @@ Completion status allowed:
 
 - FB2-06 candidate `3f1080a7cb4f68e7c08af91b349680a6536cd362` is independently accepted by R23 `0dc6619eba6f2ff67c96b6ec9c3ff736cae66740`.
 - Accepted component scope is fixed positive controller ordinary-deck draw; exact F1 component alignment is 23 identities. Parent-only qualifiers remain independently gated.
-- Accepted complete direct route is only the structural `advance/outpost + fixed pay 1 Mana + draw 2` family. At current F1 membership this yields one complete representative (`master.waver.skill.s2`) pending separate S migration; it does not create a 10–40 F4 batch.
+- Accepted complete direct route is only the structural `advance/outpost + fixed pay 1 Mana + draw 2` family. At current F1 membership this yields one complete representative (`master.waver.skill.s2`) pending separate S migration; it does not create a 10鈥?0 F4 batch.
 - The 14-identity servant draw/play family remains blocked by the `on_card_played` Trigger-owned draw clause; TO13 already covers the optional low-power hand-play half, but TO03 is specification-only and broad Trigger runtime is not accepted.
 - Fresh A coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled definition hash remains `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, with 70 cards, 14 characters, and 0 blocking issues.
 - Generated coverage drift is only timestamp/static source line numbers and is intentionally not committed.
@@ -3061,7 +3061,7 @@ Completion status allowed:
 - Fresh A coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled definition hash remains `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 cards, 14 characters, 0 blocking issues.
 - Frozen-F1 recheck proves 14/14 selected servant rows have `blockedBy=[]`, exact required capabilities `[CARD_ACTION_PLAY, GENERIC_CARD_ZONE]`, no additional semantic axes, and an identical source overlay.
 - TO13 accepts the private optional `0..3` controller-hand/base-power-at-most-3 play half; FB2-06 accepts the typed controller draw primitive; FB2-08 accepts the missing exact source-play/basic-attack draw trigger half.
-- The first 10–40 F4 batch gate is therefore met at 14 exact IDs. P3-FM01 is dispatched as `READY`; Okita remains excluded.
+- The first 10鈥?0 F4 batch gate is therefore met at 14 exact IDs. P3-FM01 is dispatched as `READY`; Okita remains excluded.
 
 ## TASK P3-FM01
 
@@ -3296,7 +3296,7 @@ Base: exact P3-FB2-10 A-owned handoff commit
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Read: `docs/reports/2026-09-16-p3-fb2-10-saber-magic-resistance-handoff.md`
 
-Goal: accept exactly one identity-free TO15 Power sub-contract for the ten remaining Saber-family `对魔力` cards: combat-phase Magic Resistance sets same-battlefield engaged opponents' Magic-attribute attack-card current Power to zero for this round. Do not promote broad Power/Modifier runtime.
+Goal: accept exactly one identity-free TO15 Power sub-contract for the ten remaining Saber-family `瀵归瓟鍔沗 cards: combat-phase Magic Resistance sets same-battlefield engaged opponents' Magic-attribute attack-card current Power to zero for this round. Do not promote broad Power/Modifier runtime.
 
 Exact accepted semantic shape only:
 - `phase_action`; activation phase `combat`; opens `controller_combat_action_window`; `requiresSourceState=active`;
@@ -3304,7 +3304,7 @@ Exact accepted semantic shape only:
 - exactly one `ruleModifier`;
 - modifier type `combat_power_modifier`; operation `set`; rule `attack.currentPower`; value exactly `0`;
 - scope controller exactly `engaged_opponents_same_battlefield`; object exactly `attack_card`;
-- exactly one scope constraint `has_attribute(attribute=魔术)`;
+- exactly one scope constraint `has_attribute(attribute=榄旀湳)`;
 - modifier lifecycle duration exactly `this_round`;
 - routing/classification is structural and identity-free.
 
@@ -3462,7 +3462,7 @@ Permitted final status:
 - Fresh frozen-F1 reconciliation is `10/10 PASS`: every selected identity is `CONTRACT_MAPPED`, `READY_GENERIC_EXTENSION`, `blockedBy=[]`, requires exactly `GENERIC_POWER + GENERIC_RESOURCE_NUMERIC`, uses Reference handler `core.saber-magic-resistance`, and has the same normalized two-operation source overlay.
 - B18/R12 and B19/R13 independently cover the two Noble Bloom Resource siblings; R29/FB2-10 covers the only missing Magic Resistance Power sibling.
 - Current frozen-F1 canonical-authoring overlap remains `49/944`; none of the ten FM03 identities currently has canonical authoring (`0/10`).
-- Locked Reference metadata is uniform for all ten selected cards: `cost=3`, `basePower=3`, `typeLabel=特殊`, historical `requirement=3`. Final rule 9.4 still requires 8 mana from the skill zone.
+- Locked Reference metadata is uniform for all ten selected cards: `cost=3`, `basePower=3`, `typeLabel=鐗规畩`, historical `requirement=3`. Final rule 9.4 still requires 8 mana from the skill zone.
 - Source/printed text is not globally identical: F1 preserves three source-hash variants (`8a6da48...`, `b2b1bc7c...`, `0cdfc3fa...`) and S must preserve the per-card text exactly rather than normalize wording.
 - Fresh coverage remains archives `39`, cards `71`, abilities `130`, raw `new=12 / legacyExecute=3 / legacyResolve=87 / dual=0 / notClassifiable=28 / taxonomyWarnings=104`, compiled definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 compiled cards / 14 characters / 0 blocking issues. Regenerated artifact drift is only generatedAt/static source-line movement and is intentionally not committed.
 - P3-FM03 is therefore READY at the normal F4 minimum batch size 10.
@@ -3858,7 +3858,7 @@ F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 Read: `docs/reports/2026-09-16-p3-a-fm07-migration-synchronization.md`, `docs/reports/2026-09-16-p3-fm07-alter-ego-transform-migration.md`, and `docs/reports/2026-09-16-p3-r37-fb2-13-alter-ego-transform-review.md`
 
-Goal: independently review the exact ten-member FM07 Alter Ego migration without implementing fixes. Required checks: exact 10-ID addition/no removals; nine regular source-text SHA plus distinct Sion EX SHA; locked owner/class/legacy/static metadata including Passionlip's distinct `特殊` metadata and Sion `Master`; final 8-mana skill-zone gate kept separate from printed card cost and Sion's triggered 3-mana payment; exact FB2-13 regular/EX structural conformance; real migrated regular and EX execution; A burn-down/material coverage integrity; no runtime diff; focused/migration/rules/content/determinism/full CI/diff check.
+Goal: independently review the exact ten-member FM07 Alter Ego migration without implementing fixes. Required checks: exact 10-ID addition/no removals; nine regular source-text SHA plus distinct Sion EX SHA; locked owner/class/legacy/static metadata including Passionlip's distinct `鐗规畩` metadata and Sion `Master`; final 8-mana skill-zone gate kept separate from printed card cost and Sion's triggered 3-mana payment; exact FB2-13 regular/EX structural conformance; real migrated regular and EX execution; A burn-down/material coverage integrity; no runtime diff; focused/migration/rules/content/determinism/full CI/diff check.
 
 Permitted final status:
 - `MIGRATION_ACCEPTED`
@@ -4104,34 +4104,88 @@ Result: fresh R42 acceptance is synchronized without runtime changes or frozen m
 ## TASK P3-FB2-17-RECOVERY
 
 Owner: Codex S
-Status: `READY_FOR_S_RECOVERY`
-Base: exact P3-A-R42-FB2-16-RECOVERY-SYNC commit carrying this task block
+Status: `SUPPORT_DEFINITION_BLOCKED`
+Base: exact P3-A-R42-FB2-16-RECOVERY-SYNC `b934ea69390b159176ad295116ccc8d9fe0506c7`
+Candidate/blocker commit: `310e6546fa2457b6bf11b91e547d25eb39751e99`
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
-Read: `docs/reports/2026-09-17-p3-fb2-17-recovery-shirou-derived-card-support-definition-handoff.md`
+Read: `docs/reports/2026-09-17-p3-fb2-17-recovery-shirou-derived-card-support-definition-handoff.md`, `docs/reports/2026-09-17-p3-fb2-17-recovery-shirou-derived-card-support-definition-result.md`
 
-Goal: materialize exactly one non-frozen support definition, `card.derived.master.shirou-emiya.ganjiang-moye`, so future `master.shirou-emiya.skill.s2` provisioning can resolve an already-registered same-owner automatic `master_skill`. Use frozen F1 only for the game-start relationship, locked Reference only for stable identity/static metadata, and fresh R42 only for the exact required-additional marker semantic. No frozen source migration and no runtime changes.
+Fresh S proves the exact derived support proposal is source-grounded and compatible with FB2-16, but current representation cannot accept it within scope. A standalone owned `master_skill` compiles with `initialZone: skill` instead of remaining outside game; ordinary `authoringMasterFiles` registration also widens the playable roster and synthesizes a fallback command spell; official deterministic generation additionally changes the evidence report outside the original May-touch list. No canonical product change is accepted by this blocker.
+
+## TASK P3-A-FB2-17-RECOVERY-BLOCKER-SYNC
+
+Owner: Codex A
+Status: `BLOCKER_SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-17-recovery-blocker-sync-current`
+Base: fresh S blocker `310e6546fa2457b6bf11b91e547d25eb39751e99`
+Read: `docs/reports/2026-09-17-p3-a-fb2-17-recovery-blocker-synchronization.md`
+
+Result: synchronize the fresh FB2-17 blocker and dispatch only the narrowest prerequisite first. FB2-18 recovery owns an identity-free card-level outside-game initial-placement representation seam. Support-only registration and generated-output scope remain later independent dependencies; they are not folded into FB2-18.
+
+## TASK P3-FB2-18-RECOVERY
+
+Owner: Codex B2
+Status: `REVIEW_ACCEPTED`
+Base: exact P3-A-FB2-17-RECOVERY-BLOCKER-SYNC `d87e74007f2cf723b2436f27f284ebd09145a48f`
+Candidate: `cb81559033db6b96b1f26cf7d9bd15686db5d4fb`
+Read: `docs/reports/2026-09-17-p3-fb2-18-recovery-outside-game-initial-placement-handoff.md`, `docs/reports/2026-09-17-p3-fb2-18-recovery-outside-game-initial-placement-result.md`
+
+Result: exact identity-free `initialPlacement: "outside_game"` representation/compiler seam implemented and freshly accepted. It preserves owned `master_skill` registration while suppressing `initialZone`, leaves ordinary master-skill placement unchanged, and adds no runtime create/move/provision behavior. Zero migration credit.
+
+## TASK P3-R43-RECOVERY
+
+Owner: Codex R
+Status: `REVIEW_ACCEPTED`
+Base: `d87e74007f2cf723b2436f27f284ebd09145a48f`
+Candidate: `cb81559033db6b96b1f26cf7d9bd15686db5d4fb`
+Read: `docs/reports/2026-09-17-p3-fb2-18-recovery-outside-game-initial-placement-handoff.md`, `docs/reports/2026-09-17-p3-fb2-18-recovery-outside-game-initial-placement-result.md`
+Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Blocking findings: none.
+
+Fresh process-separated R43 independently rechecked exact field validation, loader preservation, executable no-`initialZone` behavior, unchanged default master-skill placement, identity-free routing, absence of runtime movement semantics, FB2-15/FB2-16 compatibility, full validation, exact scope, zero-credit accounting, and final cleanliness. Reviewer evidence includes `npm ci --offline` PASS, focused `63/63`, core+regression `420/420`, full CI `816/816`, client build/content/determinism/Reference verification PASS, unchanged coverage/audit, and `git diff --check` PASS.
+
+## TASK P3-A-R43-FB2-18-RECOVERY-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r43-fb2-18-recovery-sync-current`
+Base: exact fresh R43-accepted candidate `cb81559033db6b96b1f26cf7d9bd15686db5d4fb`
+Read: `docs/reports/2026-09-18-p3-a-r43-fb2-18-recovery-synchronization.md`
+
+Result: fresh R43 acceptance is synchronized without product-code changes or frozen migration credit. The outside-game placement blocker is closed. The support-only registration blocker remains to be re-proven by a fresh support-definition retry.
+
+## TASK P3-FB2-17-R1-RECOVERY
+
+Owner: Codex S
+Status: `READY_FOR_S_RECOVERY`
+Base: exact P3-A-R43-FB2-18-RECOVERY-SYNC commit carrying this task block
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Accepted dependency: FB2-18 candidate `cb81559033db6b96b1f26cf7d9bd15686db5d4fb`, freshly accepted by R43
+Read: `docs/reports/2026-09-18-p3-fb2-17-r1-recovery-shirou-derived-card-support-definition-handoff.md`
+
+Goal: fresh retry for exactly `card.derived.master.shirou-emiya.ganjiang-moye` using `initialPlacement: "outside_game"`, the current 8-mana gate, and the exact accepted required-additional marker. Do not migrate Shirou s2 or any frozen identity.
 
 May touch only:
-- `data/authoring/masters/master.shirou-emiya.json` (new; only the derived support card),
+- `data/authoring/masters/master.shirou-emiya.json`,
 - `data/packs/fd-playtest-v1/pack.json`,
-- `data/generated/fd-playtest-v1.content-library.json` only as deterministic output,
-- `docs/reports/2026-09-17-p3-fb2-17-recovery-shirou-derived-card-support-definition-result.md`.
+- `data/generated/fd-playtest-v1.content-library.json`,
+- `data/generated/fd-playtest-v1.evidence-report.json`,
+- `docs/reports/2026-09-18-p3-fb2-17-r1-recovery-shirou-derived-card-support-definition-result.md`.
 
-Do not modify `packages/rules`, scripts, taxonomy/KPI, other authoring identities, frozen source skills, Reference, or unrelated generated outputs. If the current representation gives the derived target an incorrect initial placement or official deterministic generation requires an out-of-scope generated file, return `SUPPORT_DEFINITION_BLOCKED` rather than widening scope.
+No rules/runtime/compiler/scripts/taxonomy/KPI/other authoring/frozen identity/Reference/fixture changes. If the only current manifest path still promotes the support archive into a playable eighth master, adds public master presentation material, synthesizes a fallback command spell, or perturbs the stable archive boundary, return `SUPPORT_DEFINITION_BLOCKED`; do not widen scope or edit tests to normalize it.
 
 Completion status allowed:
 - `SUPPORT_DEFINITION_COMPLETE_CANDIDATE`
 - `SUPPORT_DEFINITION_BLOCKED`
 
-FB2-17 recovery takes zero frozen-migration credit. FM09 remains blocked and accepted overlap remains `111/944`.
+## Full-Roster Dispatch State After Fresh P3-R43 Acceptance
 
-## Full-Roster Dispatch State After P3-R42 / P3-A-FB2-16 Recovery Synchronization
-
-- FB2-16/R42 is accepted only as runtime/compiler dependency closure and earns zero migration credit.
-- All twelve FM09 provisioning targets remain absent from canonical authoring and generated product definitions at dispatch time.
-- The eleven frozen targets remain separate unresolved frozen identities; FB2-17 does not authorize any of them.
-- The Shirou derived target is outside the frozen denominator and is the narrowest legal support-definition dependency. P3-FB2-17-RECOVERY is READY.
+- FB2-18/R43 is freshly accepted as zero-credit representation/compiler dependency closure. Accepted frozen overlap remains `111/944`, leaving `833/944`.
+- The original FB2-17 initial-placement blocker is closed: an owned support `master_skill` can now be registered with exact `initialPlacement: "outside_game"` and no executable `initialZone`.
+- P3-FB2-17-R1-RECOVERY is READY as a fresh retry from this exact A synchronization lineage. It explicitly authorizes normal deterministic content-library and evidence-report outputs already proven necessary.
+- Support-only/rules-only registration is not assumed solved. If ordinary master registration still creates an eighth playable master/fallback command spell, the retry must stop blocked and A may then dispatch a separate generic registration dependency.
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or Ciel task is dispatched.
 - Accepted overlap remains `111/944`, leaving `833/944`.
 
