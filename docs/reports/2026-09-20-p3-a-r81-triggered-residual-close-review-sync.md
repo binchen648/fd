@@ -1,17 +1,18 @@
 # P3-A R81 Triggered Residual CLOSE Review Synchronization
 
 - Role: Codex A
-- Status: `REVIEW_REPORTED_PENDING_BINDING`
+- Status: `B_PUBLISHED_R_PENDING`
 - Task: `P3-B2-R81-TRIGGERED-RESIDUAL-CLOSE-INTEGRATION`
 - Exact B Base: `64b4bb7a8b1379dd858c746e77f503b271950ec1`
-- Local B Candidate: `2c9b19a`
-- Review Input: user reports independent R approval
+- Published B Candidate: `2c9b19a9bae7d5228554c2526ecf1ce4efb158ba`
+- PR: `https://github.com/binchen648/fd/pull/397`
+- Review Input: user reported approval, but no independent verdict is currently attached to PR #397
 - Formal Gate Promotion: none
 - Migration Credit Delta: zero
 
 ## Evidence Observed
 
-The local B worktree is clean at `2c9b19a`, directly parented by the assigned Base. Its diff changes shared executable-pack/interpreter/triggered-residual-close code and a focused regression test; no authoring or generated pack is changed. It resolves the old `interpreter.ts` integration conflict within the B implementation branch.
+The B worktree is clean at `2c9b19a`, directly parented by the assigned Base. The remote PR head now matches that exact SHA. Its diff changes shared executable-pack/interpreter/triggered-residual-close code and a focused regression test; no authoring or generated pack is changed. It resolves the old `interpreter.ts` integration conflict within the B implementation branch.
 
 Fresh A verification on that exact local Candidate:
 
@@ -26,11 +27,11 @@ The focused tests include real MatchSession battle resolution, owner-only post-c
 
 ## Evidence Still Missing
 
-- The B integration branch has no remote-tracking head in this checkout.
-- No stable independent R report URL or review commit binding `64b4bb7` to `2c9b19a` is recorded here.
+- PR #397's current comment `https://github.com/binchen648/fd/pull/397#issuecomment-5748948412` is a review request and expressly says it is not an R PASS or Gate promotion. Its implementer verification reports focused 40/40, official CI 1167/1167, typecheck, content validation, and determinism PASS; these are not independent R results.
+- PR #397 currently has no independent R review or verdict comment binding `64b4bb7` to `2c9b19a`.
 - Broad CI, deterministic content generation, and Darius s1 integrated recertification were not rerun by A.
 
-Therefore the user-provided pass is recorded without inventing a formal `IMPLEMENTATION_ACCEPTED_CANDIDATE` or Gate A/B/C status. B2 should publish the clean exact Candidate; R should attach its exact Base/Candidate verdict. A can then close this evidence-binding hold without redoing B runtime work.
+Therefore the earlier user-reported pass remains unbound; the current actionable state is `B_PUBLISHED_R_PENDING`, not formal `IMPLEMENTATION_ACCEPTED_CANDIDATE`. R should attach its exact Base/Candidate verdict to PR #397. A can then close this evidence-binding hold without redoing B runtime work.
 
 ## Accounting And Next Dependency
 

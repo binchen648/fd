@@ -5567,11 +5567,11 @@ Formal ledger currently records `145/944` after R89, but Darius s1's earlier `+1
 ## TASK P3-A-R81-TRIGGERED-RESIDUAL-CLOSE-REVIEW-SYNC
 
 Owner: Codex A
-Status: `REVIEW_REPORTED_PENDING_BINDING`
+Status: `B_PUBLISHED_R_PENDING`
 Branch: `codex/a-p3-r81-close-review-sync`
 Read: `docs/reports/2026-09-20-p3-a-r81-triggered-residual-close-review-sync.md`
 
-The integration Candidate is local commit `2c9b19a` with exact parent `64b4bb7`. The user reports R approval. Fresh A focused tests pass 19/19 and typecheck passes, but no remote B head or stable R review record binding exact Base/Candidate is available in this checkout. Preserve the report as a reported outcome; do not promote Gate status or formalize runtime acceptance until exact evidence is attached. Migration delta is zero.
+The integration Candidate `2c9b19a` is published as PR #397 with exact parent `64b4bb7`. The user previously reported R approval, but the PR currently contains only an explicit independent-review request and no R verdict. Fresh A focused tests pass 19/19 and typecheck passes. Do not promote Gate status, formalize runtime acceptance, or release S until the exact Base/Candidate R decision is recorded. Migration delta is zero.
 
 ## TASK P3-S-R81-DARIUS-S1-RECERTIFICATION
 
