@@ -174,6 +174,9 @@ export interface PendingPresenceConcealmentDefeat {
   controllerId: PlayerId; sourceCardId: string; abilityId: string; triggerEventId: string;
   resultId: string; battlefieldId: string; participantIds: PlayerId[]; participantPowers: Record<PlayerId, number>; targetPlayerIds: PlayerId[];
 }
+export interface PendingPreBattleDefeat {
+  round: number; battlefieldId: string; controllerId: PlayerId; sourceCardId: string; abilityId: string; targetPlayerIds: PlayerId[];
+}
 export interface PendingDelayedActivation {
   controllerId: PlayerId;
   sourceCardId: string;
@@ -254,6 +257,8 @@ export interface AbilityRuntime {
   pendingDelayedActivations?: PendingDelayedActivation[];
   /** Server-owned pre-scoring battle-local defeat requests staged by the exact Presence Concealment response. */
   pendingPresenceConcealmentDefeats?: PendingPresenceConcealmentDefeat[];
+  /** FB2-45 server-owned round+battlefield defeat intents, independent from frozen-Power Presence Concealment state. */
+  pendingPreBattleDefeats?: PendingPreBattleDefeat[];
   /** Server-owned post-scoring battle events waiting for Trigger Gateway settlement. */
   pendingPostBattleEvents?: AbilityEvent[];
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */
