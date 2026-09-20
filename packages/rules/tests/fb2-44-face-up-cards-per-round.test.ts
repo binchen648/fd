@@ -61,6 +61,28 @@ function card(id: string, abilities: any[]): any {
   };
 }
 
+function pendingPaidEffectAbility(): any {
+  return {
+    id: 'pending-paid-effect-play-one-face-up',
+    kind: 'phase_action',
+    printedClause: 'pay 2 mana, choose one hand card, then play it face up',
+    activation: { phase: 'action', opens: 'controller_action_window', requiresSourceState: 'active' },
+    conditions: [{ type: 'source_active' }],
+    targets: [{
+      id: 'pending_selected_card', type: 'card_instance', scope: { zone: 'hand', owner: 'controller' },
+      constraints: [], count: { min: 1, max: 1 }, conditions: [],
+    }],
+    effects: [{ type: 'play_selected_cards', target: 'pending_selected_card', face: 'face_up' }],
+    cost: [{ type: 'pay_mana', amount: 2 }],
+    ruleModifiers: [],
+    creates: [],
+    lifecycle: {},
+    responseWindow: {},
+    limit: {},
+    visibility: {},
+    execution: { mode: 'automatic' },
+  };
+}
 function effectAbility(): any {
   return {
     id: 'effect-play-one-face-up',
@@ -136,7 +158,7 @@ function archive(modifier: any = exactModifier()): any {
     cards: [
       card(LIMIT_DEF, [exactLimitAbility(modifier)]),
       card(BASIC_DEF, []),
-      card(EFFECT_DEF, [effectAbility()]),
+      card(EFFECT_DEF, [effectAbility(), pendingPaidEffectAbility()]),
       card(SOURCE_PLAY_DEF, [sourcePlayAbility()]),
       card(BRANCH_SOURCE_PLAY_DEF, [branchSourcePlayAbility()]),
       card(COST_MUTATED_BRANCH_SOURCE_PLAY_DEF, [costMutatedBranchSourcePlayAbility()]),
@@ -388,6 +410,37 @@ describe('P3-FB2-44 same-battlefield face-up cards-per-round seam', () => {
     expect(state).toEqual(before);
   });
 
+  it('rejects a required pending face-up selection before activation cost or pending-decision mutation', () => {
+    const state = setup();
+    const first = add(state, 'p1');
+    add(state, 'p1');
+    state.players[0]!.mana = 5;
+    expect(rules.getLegalActions(state, 'p1')).toContainEqual(expect.objectContaining({
+      type: 'activate_ability', cardInstanceId: EFFECT_ID, abilityId: 'pending-paid-effect-play-one-face-up',
+    }));
+    expect(play(state, 'p1', first).ok).toBe(true);
+    expect(rules.loadAuthoringJson(archive()).report).toEqual([]);
+    const before = structuredClone(state);
+
+    expect(rules.getLegalActions(state, 'p1')).not.toContainEqual(expect.objectContaining({
+      type: 'activate_ability', cardInstanceId: EFFECT_ID, abilityId: 'pending-paid-effect-play-one-face-up',
+    }));
+    const denied = rules.dispatchAbilityCommand(state, 'p1', {
+      type: 'activate_ability', cardInstanceId: EFFECT_ID, abilityId: 'pending-paid-effect-play-one-face-up',
+    });
+    expect(denied.ok).toBe(false);
+    expect(state).toEqual(before);
+
+    const direct = structuredClone(state);
+    expect(() => rules.executeAbility(direct, {
+      sourceCardId: EFFECT_ID,
+      abilityId: 'pending-paid-effect-play-one-face-up',
+      controllerId: 'p1',
+      variables: {},
+      selections: {},
+    })).toThrow(/face-up card play limit reached/i);
+    expect(direct).toEqual(before);
+  });
   it('counts a successful trusted source-card face-up effect before later play checks', () => {
     const state = setup();
     const sourcePlay = add(state, 'p1');

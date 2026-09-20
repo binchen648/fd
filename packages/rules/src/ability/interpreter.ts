@@ -850,7 +850,9 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     if (!alterEgoTriggerTarget(s, sourceId, event)) return false;
     if (classifyAlterEgoTransformVariant(a) === 'ex' && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
   }
-  return a.conditions.every(c => condition(s, context(s, sourceId, a.id, event), c));
+  const activationContext = context(s, sourceId, a.id, event);
+  if (!a.conditions.every(c => condition(s, activationContext, c))) return false;
+  return !faceUpEffectPlayLimitReached(s, activationContext, a);
 }
 function isGameStartRuleOverrideCandidate(a: AuthoringAbility): boolean {
   return a.effects.some((effect) => effect.type === 'install_rule_override');
@@ -2961,7 +2963,15 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   cleanupOngoing(s);
 }
 /** Server-only execution after discovery/trigger validation. Never accept an effect or context from the client. */
-function countPreflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, effects: RuleNode[]): number {
+function preflightFaceUpSelectedCount(a: AuthoringAbility, ctx: EffectContext, targetRef: string): number {
+  if (Object.prototype.hasOwnProperty.call(ctx.selections, targetRef)) return (ctx.selections[targetRef] ?? []).length;
+  const target = a.targets.find(candidate => candidate.id === targetRef);
+  if (!target) return 0;
+  const min = Number(node(target.count).min ?? 1);
+  return Number.isSafeInteger(min) && min > 0 ? min : 0;
+}
+
+function countPreflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): number {
   let additionalFaceUpCards = 0;
   for (const effect of effects) {
     if (effect.type === 'play_source_card' && effect.face !== 'face_down') {
@@ -2969,20 +2979,24 @@ function countPreflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, effec
       continue;
     }
     if (effect.type === 'play_selected_cards' && effect.face !== 'face_down') {
-      additionalFaceUpCards += (ctx.selections[str(effect.target)] ?? []).length;
+      additionalFaceUpCards += preflightFaceUpSelectedCount(a, ctx, str(effect.target));
       continue;
     }
     if (effect.type === 'branch') {
       const branch = nodes(effect.branches).find(b => b.else !== undefined || condition(s, ctx, node(b.if)));
-      if (branch) additionalFaceUpCards += countPreflightFaceUpEffectPlays(s, ctx, nodes(branch.then ?? branch.else));
+      if (branch) additionalFaceUpCards += countPreflightFaceUpEffectPlays(s, ctx, a, nodes(branch.then ?? branch.else));
     }
   }
   return additionalFaceUpCards;
 }
 
+function faceUpEffectPlayLimitReached(s: GameState, ctx: EffectContext, a: AuthoringAbility): boolean {
+  const additionalFaceUpCards = countPreflightFaceUpEffectPlays(s, ctx, a, [...a.effects, ...a.creates]);
+  return additionalFaceUpCards > 0 && faceUpCardPlayLimitReached(s, ctx.controllerId, additionalFaceUpCards);
+}
+
 function preflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
-  const additionalFaceUpCards = countPreflightFaceUpEffectPlays(s, ctx, [...a.effects, ...a.creates]);
-  if (additionalFaceUpCards > 0 && faceUpCardPlayLimitReached(s, ctx.controllerId, additionalFaceUpCards)) {
+  if (faceUpEffectPlayLimitReached(s, ctx, a)) {
     reject('face_up_card_play_limit_reached', 'Face-up card play limit reached for this round');
   }
 }

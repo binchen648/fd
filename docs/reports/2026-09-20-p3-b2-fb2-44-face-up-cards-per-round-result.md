@@ -100,6 +100,7 @@ The FB2-44 focused suite proves:
 - selected-card trusted effect play cannot bypass the cap and rejected effect play leaves caller state unchanged;
 - a loader-valid `branch -> play_source_card(face_up)` route is rejected before mana/usage/source mutation after the allowance is consumed;
 - a loader-valid mana-cost branch whose truth flips only after paying cost is preflighted on the cloned post-cost preview and rejection leaves the complete trusted caller state unchanged;
+- a loader-valid paid `play_selected_cards(face_up)` ability with one required pending hand-card target remains legal while allowance exists, but once exhausted it is removed from legal activation and both public dispatch and direct trusted execution reject without mana/usage/source/pending-decision mutation;
 - a successful direct `play_source_card` face-up effect consumes the allowance before subsequent play checks.
 
 During focused validation an initial effect-play test exposed that rejection happened after `usedAbilities` mutation. The preflight was moved ahead of all ability cost/usage mutation and the test then passed. A later route audit found that successful direct `play_source_card` effects did not pass through `playBatch`; dedicated completed face-up counting plus a regression test closed that bypass before Candidate commit.
@@ -126,6 +127,16 @@ The exact blocking finding was a TOCTOU atomicity gap: branch preflight used pre
 - adds a loader-valid `pay_mana` regression where mana starts at `3`, paying `2` flips branch truth into `play_source_card(face_up)`, and asserts complete state equality after rejection;
 - keeps the direct source-play boundary guard as defense-in-depth and does not broaden selector/value/conflict semantics.
 
+Fresh independent reviewer evidence for exact Base `24fb6d424625fd3cbfbfb4c7f7e56e3c05c6acd8` / prior Candidate `4a88586077ed345688b8503341e6c7b1caa4798e` returned `IMPLEMENTATION_NEEDS_REVISION` at `https://github.com/binchen648/fd/pull/401#issuecomment-5749388070`.
+
+The exact blocking finding was the remaining required-target continuation gap: before a required `play_selected_cards(face_up)` target was selected, preflight counted zero, so public activation could commit mana/usage/source mutation and install a pending decision before `choose_target` finally discovered the exhausted cap. This minimal revision:
+
+- when a supported face-up selected-card target is still pending, preflight counts only that target's required minimum selection count; already-supplied selections continue to use their exact selected length;
+- reuses the same narrow count in `canActivate`, so an exhausted allowance suppresses only an activation whose required pending face-up selection is already guaranteed to exceed the cap;
+- preserves legality while allowance remains and preserves the existing post-cost branch preview for cost-mutated branch truth;
+- adds a loader-valid paid phase-action regression matching the reviewer topology and asserts no paid mana, usage/source mutation or stranded `pendingDecision` survives rejection;
+- does not change pending-decision protocol, arbitrary selector/value/conflict semantics, frozen authoring, product content or client production.
+
 ## Validation
 
 Fresh worktree dependencies were installed with `npm.cmd ci --ignore-scripts --offline` (239 packages, 0 vulnerabilities), followed by normal typecheck/build output generation.
@@ -133,9 +144,9 @@ Fresh worktree dependencies were installed with `npm.cmd ci --ignore-scripts --o
 Validation on the final Candidate working tree:
 
 - `npm.cmd run typecheck` — PASS.
-- final FB2-44 + source-play focused verification — PASS, **2 files / 18 tests**.
-- rules `src/__tests__ + core + regression + FB2-43 + FB2-44` — PASS, **84 files / 516 tests**.
-- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **167 files / 1181 tests**.
+- final FB2-44 + source-play focused verification — PASS, **2 files / 19 tests**.
+- rules `src/__tests__ + core + regression + FB2-43 + FB2-44` — PASS, **84 files / 517 tests**.
+- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **167 files / 1182 tests**.
 - `npm.cmd run content:validate` — PASS, **7 masters / 7 servants / 20 events / 0 blocking issues**.
 - `npm.cmd run verify:generated-content` — PASS with unchanged hashes:
   - library `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`;
