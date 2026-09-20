@@ -5678,3 +5678,15 @@ Read: `docs/reports/2026-09-20-p3-a-fb2-45-prebattle-defeat-round-attack-attribu
 Result required: implement only the exact identity-free action-phase pre-battle `defeat_player` shape whose target is `engaged_opponents` with the sole predicate `no_attack_played_this_round_with_attribute(<attribute>)`. Use authoritative ordinary/add-to-attack `playedRound` provenance and a separate typed round+battlefield pre-battle defeat ledger consumed by battle settlement while honoring existing battle-loss immunity. Do not widen Presence Concealment, arbitrary defeat scopes/predicates, elimination, or identity-specific runtime routing.
 
 This is zero-credit capability work: formal migration remains **`148/944`**, **`796`** remaining. After fresh R acceptance and A synchronization, immediately re-overlay the complete `servant.medusa.skill.sc-medusa-2` card and dispatch singleton S only if it is mechanically zero-gap.
+
+## TASK P3-A-R95-FB2-45-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r95-fb2-45-acceptance-sync`
+Base: exact accepted Candidate `17685e678e758cb38032732bf15d47b07592d81e`
+Read: `docs/reports/2026-09-21-p3-a-r95-fb2-45-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #408 exact Candidate `17685e678e758cb38032732bf15d47b07592d81e`, backed by canonical evidence `https://github.com/binchen648/fd/pull/408#issuecomment-5752550000`. Accepted capability is only the bounded identity-free action-phase pre-battle `defeat_player` shape targeting `engaged_opponents` with the sole `no_attack_played_this_round_with_attribute(<attribute>)` predicate, authoritative current-round ordinary/add-to-attack provenance, a separate round+battlefield ledger, battle-loss immunity, matching-settlement consumption, and fail-closed whole-ability admission.
+
+FB2-45 earns zero migration credit; formal migration remains **`148/944`**, with **`796`** remaining. Current material authoring overlap remains **`143/944`**, duplicates **`0`**, and `servant.medusa.skill.sc-medusa-2` remains absent. PR #408 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.medusa.skill.sc-medusa-2`; dispatch singleton S only if it is mechanically zero-gap.
