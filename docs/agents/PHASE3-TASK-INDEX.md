@@ -5334,3 +5334,15 @@ Read: `docs/reports/2026-09-20-p3-a-fb2-38-current-round-combat-loss-condition-d
 Result: closure-first overlay selects the nearest one-seam, no-missing-material target. Dispatch one narrow identity-free exact `{ type: player_flag_number_not_current_round, key: combatLossRound }` condition evaluated from authoritative `after_battle_ended` battle-phase provenance. Do not add generic player-flag state or consumer routing.
 
 FB2-38 earns zero migration credit. Formal migration remains **`140/944`**, with **`804`** remaining. On fresh R acceptance plus A synchronization, immediately re-overlay the intended closure target and dispatch S if the normalized whole card is zero-issue.
+
+## TASK P3-A-R81-FB2-38-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r81-fb2-38-acceptance-sync`
+Base: exact accepted Candidate `886313bea6d70f5b271aceeb5787dfe475c4b635`
+Read: `docs/reports/2026-09-20-p3-a-r81-fb2-38-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #387 exact Candidate `886313bea6d70f5b271aceeb5787dfe475c4b635`, backed by canonical evidence `https://github.com/binchen648/fd/pull/387#issuecomment-5746633189`. Earlier revision verdicts bind historical Candidates only. Accepted capability is the exact identity-free current-battle-phase terminal combat-loss-absence condition dispatched by FB2-38.
+
+FB2-38 earns zero migration credit; formal migration remains **`140/944`**, with **`804`** remaining. PR #387 remains OPEN, unmerged, and unretargeted. Next action is immediate Darius s1 whole-card re-overlay and S dispatch if zero-issue.
