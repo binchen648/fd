@@ -5538,3 +5538,21 @@ Read: `docs/reports/2026-09-20-p3-a-r89-darius-s2-migration-acceptance-synchroni
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #395 exact Candidate `76023c8c852098679d05d4d2877af9ad92650a65`, backed by canonical evidence `https://github.com/binchen648/fd/pull/395#issuecomment-5748256383`. Exact frozen addition is `servant.darius.skill.sc-darius-2`; independent Base-to-Candidate frozen overlap is `139/944` to `140/944`, exact +1 with zero removals and zero duplicates. Existing Darius s1 remains semantically unchanged and no production runtime/product registration changed.
 
 Formal project migration advances exactly one identity to **`145/944`**, with **`799`** remaining. PR #395 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+
+## TASK P3-A-R81-TRIGGERED-RESIDUAL-CLOSE-REVIEW-SYNC
+
+Owner: Codex A
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Read: `docs/reports/2026-09-20-p3-a-r81-triggered-residual-close-review-sync.md`
+
+Independent R bound exact Base `64b4bb7a8b1379dd858c746e77f503b271950ec1` and exact B2 Candidate `2c9b19a9bae7d5228554c2526ecf1ce4efb158ba`, returning `IMPLEMENTATION_ACCEPTED_CANDIDATE`. This accepts only the zero-credit shared battle-end residual CLOSE capability. It does not grant Gate C, Phase PASS, Release Ready, or Darius migration credit.
+
+## TASK P3-S-R81-DARIUS-S1-RECERTIFICATION
+
+Owner: Codex S
+Status: `READY`
+Handoff: `docs/reports/2026-09-20-p3-a-r81-darius-s1-recertification-handoff.md`
+Start branch: `origin/codex/a-p3-r81-darius-s1-recertification-ready`
+Runtime dependency: exact accepted Candidate `2c9b19a9bae7d5228554c2526ecf1ce4efb158ba`
+
+Recertify the frozen `servant.darius.skill.sc-darius-1` against the accepted B2 Candidate. Do not rewrite source JSON merely to pass tests, modify runtime, or add a second migration identity. Prove typed CLOSE consumption through real post-scoring `MatchSession.resolveBattlePhase`, owner-only visibility, exactly one `source_card_closed`, invalid-source/replay fail-closed behavior, and existing no-loss/loss/non-participation semantics. R independently reviews the integrated S result; A then reconciles the contested historical credit without awarding another +1.

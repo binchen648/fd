@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "fd-phase3-review-sync-v1",
+  "date": "2026-09-20",
+  "owner": "Codex A",
+  "task": "P3-B2-R81-TRIGGERED-RESIDUAL-CLOSE-INTEGRATION",
+  "status": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "baseCommit": "64b4bb7a8b1379dd858c746e77f503b271950ec1",
+  "publishedCandidateCommit": "2c9b19a9bae7d5228554c2526ecf1ce4efb158ba",
+  "prUrl": "https://github.com/binchen648/fd/pull/397",
+  "review": { "decision": "IMPLEMENTATION_ACCEPTED_CANDIDATE", "stableReviewUrl": "https://github.com/binchen648/fd/pull/397#issuecomment-5749018881", "exactCommitBindingVerified": true, "gatePromotionPerformed": false },
+  "implementerEvidenceUrl": "https://github.com/binchen648/fd/pull/397#issuecomment-5748948412",
+  "freshVerification": { "focusedVitest": "PASS 19/19", "typecheck": "PASS" },
+  "migrationCreditDelta": 0,
+  "recordedLedger": { "accepted": 145, "denominator": 944, "dariusS1CreditContested": true },
+  "nextTask": {
+    "id": "P3-S-R81-DARIUS-S1-RECERTIFICATION",
+    "status": "READY",
+    "startBranch": "origin/codex/a-p3-r81-darius-s1-recertification-ready",
+    "runtimeDependency": "2c9b19a9bae7d5228554c2526ecf1ce4efb158ba"
+  }
+}
