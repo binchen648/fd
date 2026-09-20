@@ -191,6 +191,18 @@ describe('P3-FB2-38 current-round combat-loss absence condition', () => {
       expect(() => trigger(state, malformedRosterProvenance)).not.toThrow();
       expect(trigger(state, malformedRosterProvenance)).toEqual([]);
     }
+    for (const malformedBattlefieldId of ['', 'ghost_battlefield', 'magic_workshop']) {
+      const malformedBattleId = `battle-phase:${state.round.roundNumber}:battle:${malformedBattlefieldId}:1`;
+      const malformedBattlefieldProvenance = {
+        ...good,
+        battleIds: [malformedBattleId],
+        resultIds: [`${malformedBattleId}:result`],
+        scoringReceiptIds: [`battle-phase:${state.round.roundNumber}:score:${malformedBattlefieldId}`],
+        battleOutcomes: good.battleOutcomes!.map((outcome) => ({ ...outcome, battlefieldId: malformedBattlefieldId })),
+      } as AbilityEvent;
+      expect(() => trigger(state, malformedBattlefieldProvenance)).not.toThrow();
+      expect(trigger(state, malformedBattlefieldProvenance)).toEqual([]);
+    }
     for (const key of ['battleIds', 'resultIds', 'scoringReceiptIds'] as const) {
       const malformedIds = { ...good, [key]: [123] } as unknown as AbilityEvent;
       expect(() => trigger(state, malformedIds)).not.toThrow();

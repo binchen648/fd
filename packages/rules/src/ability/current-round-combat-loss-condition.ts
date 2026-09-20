@@ -1,4 +1,5 @@
 import type { GameState } from '../schema/game';
+import { getEnabledLocations } from '../core/map-engine';
 import type { AbilityEvent, PlayerId, RuleNode } from './types';
 
 const CONDITION_TYPE = 'player_flag_number_not_current_round';
@@ -20,6 +21,9 @@ export function currentRoundCombatLossAbsent(
   event: AbilityEvent | undefined,
 ): boolean {
   const knownPlayerIds = new Set(state.players.map((player) => player.id));
+  const knownBattlefieldIds = new Set<string>(getEnabledLocations(state.map, state.locationConfig)
+    .filter((location) => location.tags.includes('battlefield') || location.rewardHooks.includes('battle_rewards'))
+    .map((location) => location.id));
   if (!knownPlayerIds.has(controllerId)) return false;
   const phaseId = `battle-phase:${state.round.roundNumber}`;
   if (!event || event.type !== 'after_battle_ended' || event.id !== `${phaseId}:after_battle_ended` ||
@@ -44,7 +48,7 @@ export function currentRoundCombatLossAbsent(
     const winners = outcome?.winnerPlayerIds;
     const battleIdPrefix = `${phaseId}:battle:${outcome?.battlefieldId}:`;
     const battleOrdinal = battleId?.slice(battleIdPrefix.length);
-    if (!outcome || typeof outcome.battlefieldId !== 'string' || !battleId ||
+    if (!outcome || typeof outcome.battlefieldId !== 'string' || !knownBattlefieldIds.has(outcome.battlefieldId) || !battleId ||
         !battleId.startsWith(battleIdPrefix) || !battleOrdinal || !/^[1-9]\d*$/.test(battleOrdinal) ||
         resultIds[index] !== `${battleId}:result` ||
         scoringReceiptIds[index] !== `${phaseId}:score:${outcome.battlefieldId}` ||
