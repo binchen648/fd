@@ -5632,3 +5632,15 @@ Read: `docs/reports/2026-09-20-p3-a-r92-leonidas-s1-ci-compatibility-scope-corre
 Result: the authorized Leonidas +1 makes repository frozen authoring overlap exactly `142/944`, but historical `packages/rules/tests/siegfried-s2-consumer-migration.test.ts` still hard-codes the earlier global snapshot `141`. S is additionally authorized to change only that old test's unstable absolute global-overlap assertion into stable Siegfried invariants (frozen denominator `944`, zero duplicate frozen ids, Siegfried s2 authored exactly once). No Siegfried production semantics, runtime, product/generated registration, second frozen identity, merge, retarget, or migration credit is authorized.
 
 Formal migration remains **`146/944`**, **`798`** remaining. Leonidas Candidate must still prove exact current overlap **`142/944`** with exact +1 `servant.leonidas.skill.sc-leonidas-1`.
+
+## TASK P3-A-R93-LEONIDAS-S1-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r93-leonidas-s1-migration-acceptance-sync`
+Base: exact accepted Candidate `258df4fa845df6c0a8c0c2d135b0a3cda17020a3`
+Read: `docs/reports/2026-09-20-p3-a-r93-leonidas-s1-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #406 exact Candidate `258df4fa845df6c0a8c0c2d135b0a3cda17020a3`, backed by canonical evidence `https://github.com/binchen648/fd/pull/406#issuecomment-5749874874`. Exact frozen addition is `servant.leonidas.skill.sc-leonidas-1`; independent Base-to-Candidate frozen overlap is `141/944` to `142/944`, exact +1 with zero removals and zero duplicate frozen ids. The fourth Candidate file is only the A-authorized compatibility correction removing Siegfried s2's stale absolute repository-overlap snapshot; no second frozen identity or production semantic change is present.
+
+Formal project migration advances exactly one identity to **`147/944`**, with **`797`** remaining. PR #406 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
