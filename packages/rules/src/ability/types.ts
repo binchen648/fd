@@ -97,7 +97,7 @@ export interface AbilityEvent {
   /** Trusted frozen effective-Power snapshot for the exact pre-scoring battle response gateway. */
   battleParticipantPowers?: Record<PlayerId, number>;
   /** Frozen phase-terminal battle outcome facts used by exact terminal consumers. */
-  battleOutcomes?: Array<{ battlefieldId: string; winnerPlayerIds: PlayerId[] }>;
+  battleOutcomes?: Array<{ battlefieldId: string; participantPlayerIds?: PlayerId[]; winnerPlayerIds: PlayerId[] }>;
   battlefieldId?: string;
   lossOrdinal?: number;
   /** Trusted backend snapshot of the simultaneous play batch, never a client-supplied condition. */

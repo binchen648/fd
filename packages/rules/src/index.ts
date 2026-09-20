@@ -37,3 +37,4 @@ export * from './ability/event-rule';
 export * from './ability/outer-god-life';
 export * from './ability/skill-use-forbid';
 export * from './ability/deployment-destinations';
+export * from './ability/current-round-combat-loss-condition';

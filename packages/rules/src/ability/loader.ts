@@ -12,6 +12,7 @@ import {
 import { isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, OUTER_GOD_LIFE_CATEGORY } from './outer-god-life';
 import { classifyAcceptedSkillUseForbidModifier } from './skill-use-forbid';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './deployment-destinations';
+import { isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -248,6 +249,11 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (Array.isArray(value)) { value.forEach((v, i) => scan(v, `${path}[${i}]`, abilityId)); return; }
       if (!value || typeof value !== 'object') return;
       const n = node(value);
+      if (n.type === 'player_flag_number_not_current_round') {
+        if (!path.startsWith('conditions')) issue(path, 'Current-round combat-loss absence condition is supported only under ability conditions', abilityId);
+        else if (!isAcceptedCurrentRoundCombatLossAbsenceCondition(n)) issue(path, 'Unsupported current-round combat-loss absence condition shape', abilityId);
+        return;
+      }
       for (const key of Object.keys(n)) if (!mechanicKeys.has(key)) issue(`${path}.${key}`, 'Unmapped mechanic field', abilityId);
       if (n.type && !supportedTypes.has(str(n.type))) issue(`${path}.type`, `Unmapped type: ${str(n.type)}`, abilityId);
       if (n.op && !formulaOps.has(str(n.op))) issue(`${path}.op`, `Unmapped formula: ${str(n.op)}`, abilityId);
