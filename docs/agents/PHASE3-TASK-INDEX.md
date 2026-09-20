@@ -5382,3 +5382,15 @@ Read: `docs/reports/2026-09-20-p3-a-fb2-39-game-start-status-assignment-dispatch
 Result: migration-credit-first proof shows the current `S_READY_NOW` queue is zero at **`142/944`**. Dispatch one narrow identity-free B2 seam for authoritative `game_start` + exact `source_owned` player-status assignment to `controller` or exact `turn_order_next_player`, with server-owned deduplicated status keys and strict fail-closed shape validation. Intended closure target is `master.amakusa.skill.s1`; no consumer identity may appear in production routing and no consumer migration is authorized in B2.
 
 FB2-39 earns zero migration credit. Formal migration remains **`142/944`**, with **`802`** remaining. On fresh R acceptance plus A synchronization, immediately re-overlay the intended singleton consumer and dispatch S if zero-issue.
+
+## TASK P3-A-R82-FB2-39-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r82-fb2-39-acceptance-sync`
+Base: exact accepted Candidate `3ca21ec1c20cc7d6689b3fef6c28f982bb4ff93c`
+Read: `docs/reports/2026-09-20-p3-a-r82-fb2-39-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #389 exact Candidate `3ca21ec1c20cc7d6689b3fef6c28f982bb4ff93c`, backed by canonical evidence `https://github.com/binchen648/fd/pull/389#issuecomment-5747497720`. Accepted capability is the narrow identity-free authoritative `game_start` + exact `source_owned` player-status assignment seam to `controller` or exact `turn_order_next_player`, with server-owned deduplicated opaque status keys and fail-closed topology/shape validation.
+
+FB2-39 earns zero migration credit; formal migration remains **`142/944`**, with **`802`** remaining. PR #389 remains OPEN, unmerged, and unretargeted. Next action is immediate `master.amakusa.skill.s1` whole-card re-overlay and fresh singleton S dispatch if zero-issue.
