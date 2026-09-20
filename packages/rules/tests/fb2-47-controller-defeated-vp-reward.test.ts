@@ -315,7 +315,7 @@ describe('P3-FB2-47 controller-defeated fixed VP reward', () => {
     const root = resultEvent(state);
     const valid = defeatedEvent(state);
     expect(rules.trustedControllerDefeatedFacts(state, 'p1', valid)).toBeUndefined();
-    state.abilityRuntime!.processedEvents.push(root.id);
+    rules.processAbilityEvent(state, root);
     expect(rules.trustedControllerDefeatedFacts(state, 'p1', valid)).toEqual({
       battlePhaseResolutionId: 'battle-phase:1',
       battleId: 'battle-phase:1:battle:miyama_town:1',
@@ -354,6 +354,28 @@ describe('P3-FB2-47 controller-defeated fixed VP reward', () => {
     const before = JSON.stringify(standalone);
     expect(() => rules.processAbilityEvent(standalone, forged)).toThrow('trusted actual-defeat provenance');
     expect(JSON.stringify(standalone)).toBe(before);
+  });
+
+  it('rejects a contradictory defeated fact that reuses an already processed root result id', () => {
+    const state = setup();
+    state.players[0]!.vp = 4;
+    const authoritativeRoot = resultEvent(state, ['p1'], ['p2'], ['p1', 'p2']);
+    rules.processAbilityEvent(state, authoritativeRoot);
+    expect(state.players[0]!.vp).toBe(4);
+
+    const forged = {
+      ...authoritativeRoot,
+      id: `${authoritativeRoot.resultId}:defeat:p1`,
+      type: rules.CONTROLLER_DEFEATED_TRIGGER,
+      playerId: 'p1',
+      battleResult: { winners: ['p2'], loserIds: ['p1'] },
+    } satisfies AbilityEvent;
+
+    expect(rules.trustedControllerDefeatedFacts(state, 'p1', forged)).toBeUndefined();
+    const before = JSON.stringify(state);
+    expect(() => rules.processAbilityEvent(state, forged)).toThrow('trusted actual-defeat provenance');
+    expect(JSON.stringify(state)).toBe(before);
+    expect(state.players[0]!.vp).toBe(4);
   });
 
   it('settles defeat reward before FB2-46 loss so zero starting VP still enables winner reward', () => {

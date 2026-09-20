@@ -245,7 +245,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, playerStatusKeysByPlayer: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPreBattleDefeats: [], pendingPostBattleEvents: [],
+    cardState: {}, playerStatusKeysByPlayer: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPreBattleDefeats: [], pendingPostBattleEvents: [], trustedBattleResultSnapshots: {},
     eventRuleZoneRevision: 0, rulerSealBindings: [], rulerSealBindingHistory: {}, pendingRulerSealRewards: [],
     roundTotalPowerAdjustments: { round: s.round.roundNumber, byPlayer: {} }, pendingSourceCardReturns: [],
     usedAbilities: {}, processedEvents: [], revealedServants: [],
@@ -3402,10 +3402,30 @@ function consumeDelayedActivations(s: GameState, event: AbilityEvent): void {
   }
 }
 
+function rememberTrustedBattleResultSnapshot(r: AbilityRuntime, event: AbilityEvent): void {
+  if (event.type !== 'after_battle_result_determined' || event.id !== event.resultId ||
+      typeof event.battlePhaseResolutionId !== 'string' || typeof event.battleId !== 'string' ||
+      typeof event.resultId !== 'string' || typeof event.battlefieldId !== 'string' ||
+      !Array.isArray(event.battleParticipantIds) || !Array.isArray(event.battleResult?.winners) ||
+      !Array.isArray(event.battleResult?.loserIds)) return;
+  const snapshots = r.trustedBattleResultSnapshots ??= {};
+  if (snapshots[event.resultId]) return;
+  snapshots[event.resultId] = {
+    battlePhaseResolutionId: event.battlePhaseResolutionId,
+    battleId: event.battleId,
+    resultId: event.resultId,
+    battlefieldId: event.battlefieldId,
+    battleParticipantIds: [...event.battleParticipantIds],
+    winners: [...event.battleResult.winners],
+    loserIds: [...event.battleResult.loserIds],
+  };
+}
+
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s); if (r.processedEvents.includes(event.id)) return;
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
+  rememberTrustedBattleResultSnapshot(r, event);
   settlePendingRulerSealRewards(s, event);
   try { settlePendingSourceCardReturns(s, event); } catch (error) { reject('resolution_failed', error instanceof Error ? error.message : 'Source-card return failed'); }
   if (event.type === 'after_battle_result_determined') recordCurrentRoundCombatWinsFromBattleResult(s, event);

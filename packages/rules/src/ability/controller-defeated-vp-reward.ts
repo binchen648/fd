@@ -32,6 +32,9 @@ function isDenseStringArray(value: unknown): value is string[] {
   }
   return true;
 }
+function exactStringArray(left: readonly string[], right: readonly string[]): boolean {
+  return left.length === right.length && left.every((value, index) => value === right[index]);
+}
 
 /** Raw candidate discovery prevents malformed defeated-trigger envelopes from normalizing into a runnable sibling. */
 export function isControllerDefeatedVpRewardCandidate(ability: AuthoringAbility | RuleNode): boolean {
@@ -127,8 +130,10 @@ export function trustedControllerDefeatedFacts(
       event.battlePhaseResolutionId !== phaseId || typeof battlefieldId !== 'string' || !battlefieldId ||
       typeof battleId !== 'string' || typeof resultId !== 'string' || resultId !== `${battleId}:result` ||
       event.id !== `${resultId}:defeat:${controllerId}`) return undefined;
-  // A defeated fact is derived only while/after its trusted root result is already inside the server event transaction.
+  // A defeated fact is derived only while/after its exact trusted root result is already inside the server event transaction.
   if (!state.abilityRuntime?.processedEvents.includes(resultId)) return undefined;
+  const frozenRoot = state.abilityRuntime.trustedBattleResultSnapshots?.[resultId];
+  if (!frozenRoot) return undefined;
 
   const closedLocations = new Set(
     ((state as unknown as { modeState?: { closedLocations?: unknown } }).modeState?.closedLocations instanceof Array
@@ -157,6 +162,11 @@ export function trustedControllerDefeatedFacts(
       losers.some((playerId) => !knownPlayerIds.has(playerId) || !participants.includes(playerId)) ||
       winners.some((playerId) => losers.includes(playerId)) ||
       !participants.includes(controllerId) || !losers.includes(controllerId) || winners.includes(controllerId)) return undefined;
+
+  if (frozenRoot.battlePhaseResolutionId !== phaseId || frozenRoot.battleId !== battleId ||
+      frozenRoot.resultId !== resultId || frozenRoot.battlefieldId !== battlefieldId ||
+      !exactStringArray(frozenRoot.battleParticipantIds, participants) ||
+      !exactStringArray(frozenRoot.winners, winners) || !exactStringArray(frozenRoot.loserIds, losers)) return undefined;
 
   return { battlePhaseResolutionId: phaseId, battleId, resultId, battlefieldId };
 }

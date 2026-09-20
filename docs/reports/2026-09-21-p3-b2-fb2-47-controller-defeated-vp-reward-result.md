@@ -17,6 +17,19 @@ Date: 2026-09-21
 
 FB2-47 is zero-credit identity-free runtime capability work. This Candidate adds no frozen consumer identity.
 
+## Fresh R revision closure
+
+The first exact Candidate `e4dd39b7afc5a5801ff4e2c855fdedf611895e8a` received formal fresh-R `IMPLEMENTATION_NEEDS_REVISION` evidence at `https://github.com/binchen648/fd/pull/411#issuecomment-5753258686` for one P1 provenance gap: root trust used only `processedEvents` membership, so a later standalone defeated event could reuse an already processed `resultId`, substitute contradictory winners/losers, and receive the reward.
+
+This revision closes only that finding:
+
+- the first server-processed `after_battle_result_determined` payload for an exact `resultId` is frozen into a server-owned immutable runtime snapshot;
+- a derived `after_controller_defeated` fact must match that frozen root's phase, battle, result, battlefield, participant order, winner order and loser order exactly in addition to the existing structural checks;
+- the snapshot is first-seen only and root replay cannot overwrite it;
+- the exact reviewer sequence is now a focused regression: authoritative root `[winner=p1, loser=p2]`, followed by contradictory same-result `defeat:p1` carrying `[winner=p2, loser=p1]`, fails closed with no VP mutation.
+
+The released trigger envelope, defeat-before-loss ordering, suppression semantics, fixed reward semantics and zero-credit accounting are unchanged.
+
 ## Implemented capability
 
 The Candidate implements only the released **authoritative controller-defeated fact -> fixed controller VP reward** seam.
@@ -52,13 +65,14 @@ The trusted-fact validator requires:
 
 - battle phase and current round provenance;
 - exact `battlePhaseResolutionId`, `battleId`, `resultId`, enabled battlefield and stable battle ordinal;
-- the root `resultId` already present in the server `processedEvents` ledger;
+- the root `resultId` already present in the server `processedEvents` ledger and an immutable first-seen server snapshot exists for that exact root;
 - dense unique known participant / winner / loser ids;
 - the controller is a participant and frozen loser and not a winner;
 - no winner/loser overlap;
-- exact derived event id and controller player id.
+- exact derived event id and controller player id;
+- participant, winner and loser arrays exactly equal the frozen first-seen root snapshot.
 
-A standalone forged defeated event therefore cannot execute the reward even if its visible fields imitate a battle result. Invalid event provenance is mutation-free.
+A standalone forged defeated event therefore cannot execute the reward even if its visible fields imitate a battle result or reuse an already processed root `resultId` with substituted outcome arrays. Invalid event provenance is mutation-free.
 
 The producer consumes the already frozen post-scoring loser list. It does not recompute defeat from Power, current VP, location, logs or mutable board occupancy. `battleResultLoserIds(...)` already removes authoritative `lossEffectSuppressedPlayerIds`, so Basic Luck / battle-loss suppression does not generate a false defeat fact.
 
@@ -121,9 +135,9 @@ All formal/current gates used for this Candidate are green:
 
 - dependency bootstrap: `npm ci --ignore-scripts --offline` -> **239 packages**, **0 vulnerabilities**;
 - `npm run typecheck` -> **PASS**;
-- focused FB2-47 + FB2-46 + FB2-45 + Presence compatibility -> **5 files / 47 tests PASS**;
-  - FB2-47 focused suite -> **11/11 PASS**;
-- official repository CI gate: `npm run test:ci -- --maxWorkers=2` -> **173 files / 1242 tests PASS**;
+- focused FB2-47 + FB2-46 + FB2-45 + Presence compatibility -> **5 files / 48 tests PASS**;
+  - FB2-47 focused suite -> **12/12 PASS**;
+- official repository CI gate: `npm run test:ci -- --maxWorkers=2` -> **173 files / 1243 tests PASS**;
 - `npm run content:validate` -> **7 masters / 7 servants / 20 events / 0 blocking issues**;
 - `npm run verify:generated-content` -> **PASS**, hashes unchanged:
   - content library `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`;
@@ -148,8 +162,11 @@ Authorized implementation scope is exactly:
 2. `packages/rules/src/ability/controller-defeated-vp-reward.ts`
 3. `packages/rules/src/ability/interpreter.ts`
 4. `packages/rules/src/ability/loader.ts`
-5. `packages/rules/src/index.ts`
-6. `packages/rules/tests/fb2-47-controller-defeated-vp-reward.test.ts`
+5. `packages/rules/src/ability/types.ts`
+6. `packages/rules/src/index.ts`
+7. `packages/rules/tests/fb2-47-controller-defeated-vp-reward.test.ts`
+
+`packages/rules/src/ability/types.ts` is added only to type the narrow server-owned frozen-root snapshot required to close the exact reviewer P1; it does not add generic event authoring or a defeat subsystem.
 
 No `data/authoring/**`, pack/product/generated output, client production source, Task Index or coverage artifact is modified by this B2 Candidate.
 
