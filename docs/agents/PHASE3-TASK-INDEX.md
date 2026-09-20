@@ -5358,3 +5358,15 @@ Read: `docs/reports/2026-09-20-p3-a-r81-darius-consumer-migration-dispatch.md`
 Result: dispatch exactly one frozen identity, `servant.darius.skill.sc-darius-1`, now S-ready on formally accepted FB2-38. Whole-card normalization is zero-issue: standard action play envelope with explicit mana threshold 0; residual `after_battle_ended`; exact `source_active` plus FB2-38 combat-loss-absence condition; `close_source_card`; `while_active/immediate/remain_active`. No runtime production source or second consumer identity.
 
 Base branch-local frozen overlap is **`136/944`** and Candidate must be exactly **`137/944`**, exact +1 with zero removals/duplicates. Formal migration remains **`140/944`**, remaining **`804`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+
+## TASK P3-A-R81-DARIUS-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r81-darius-migration-acceptance-sync`
+Base: exact accepted Candidate `776ee46f5612481176a853dba099b489328b3236`
+Read: `docs/reports/2026-09-20-p3-a-r81-darius-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #388 exact Candidate `776ee46f5612481176a853dba099b489328b3236`, backed by canonical evidence `https://github.com/binchen648/fd/pull/388#issuecomment-5747146073`. Earlier reviewed Candidate `e6ac0c832914ba20911bbc2b461d5786a1577cb7` remains revision-only evidence and must not be re-reviewed. Exact frozen addition is `servant.darius.skill.sc-darius-1`; independent Base-to-Candidate frozen overlap is `136/944` to `137/944`, exact +1 with zero removals and zero duplicates.
+
+Formal project migration advances exactly one identity to **`141/944`**, with **`803`** remaining. PR #388 remains OPEN, unmerged, and unretargeted. PR #381 / Ibaraki remains an independent pending backlog item and receives no Darius credit. Under the frozen migration-credit-first scheduler, do not open FB2-39 while migration-ready work exists; next mechanically check PR #381 for fresh R evidence, then continue to the next `S_READY_NOW`.
