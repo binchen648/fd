@@ -5560,3 +5560,15 @@ Read: `docs/reports/2026-09-20-p3-a-r90-fb2-43-acceptance-synchronization.md`
 Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #396 exact Candidate `19ff09ed65e34f241d332250e1cc1370071ecf75`, backed by canonical evidence `https://github.com/binchen648/fd/pull/396#issuecomment-5748914327`. Accepted capability is the narrow identity-free exact type-only `event_location_equals_controller` condition for authoritative `after_controller_enters_location`, with fail-closed current-controller location equality and narrowly bounded opponent-event admission only when composed with accepted `event_player_is_opponent`.
 
 FB2-43 earns zero migration credit; formal migration remains **`145/944`**, with **`799`** remaining. PR #396 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.siegfried.skill.sc-siegfried-2`; dispatch singleton S only if it is mechanically zero-gap.
+
+## TASK P3-A-R90-SIEGFRIED-S2-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r90-siegfried-consumer-migration-dispatch`
+Base: exact R90 FB2-43 acceptance sync `dcaa4d6cd9e9125bccaa99a530ec92cf459a5591`
+Read: `docs/reports/2026-09-20-p3-a-r90-siegfried-s2-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.siegfried.skill.sc-siegfried-2` (`恶龙之血铠`), now mechanically `S_READY_NOW` after accepted FB2-43. Whole-card read-only re-overlay on exact reviewed runtime returns loader `report=[]`, automatic execution, structural true-name release, real opponent movement to the controller battlefield closes the source, and self/elsewhere/unrevealed/non-battlefield/inactive negatives fail closed. No additional runtime seam is required.
+
+Base frozen overlap is **`140/944`**, duplicates `0`; Candidate must be exactly **`141/944`**, exact +1 Siegfried s2 with zero removals/duplicates and no second frozen identity. Formal migration remains **`145/944`**, remaining **`799`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
