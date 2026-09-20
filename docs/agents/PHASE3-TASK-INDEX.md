@@ -5216,3 +5216,17 @@ Read: `docs/reports/2026-09-20-p3-a-r75-ibaraki-consumer-migration-dispatch.md`
 Goal: migrate exactly `servant.ibaraki.skill.sc-ibaraki-1` as one standalone servant-skill archive using only already accepted structural semantics: exact type-only `source_owned` plus FB2-35 permanent `combat_power:add(+6)` for players at the source battlefield tied for highest current-round active authored-attack actual paid-mana sum. No runtime-source widening, no second consumer, no pack/generated registration.
 
 Project formal migration accounting remains `137/944` until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A performs acceptance synchronization. Branch-local frozen authoring overlap should move only `133 -> 134`.
+
+## TASK P3-A-R75-IBARAKI-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r75-ibaraki-migration-acceptance-sync`
+Base: exact accepted Candidate `78ab99ce3136f654e53ec922466c26d4751b1917`
+Read: `docs/reports/2026-09-20-p3-a-r75-ibaraki-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #381 exact Candidate `78ab99ce3136f654e53ec922466c26d4751b1917`, backed by canonical evidence `https://github.com/binchen648/fd/pull/381#issuecomment-5747179411`. Exact frozen addition is `servant.ibaraki.skill.sc-ibaraki-1`; independent Base-to-Candidate frozen overlap is `133/944` to `134/944`, exact +1 with zero removals and zero duplicates.
+
+Because PR #381 is a historical pending Candidate, its branch-local historical project-formal statement is not reused as the current baseline. Current formal accounting is reconciled from already-synchronized Darius A commit `e523e10dd795c032a6b0e70627b7276213784604`, which recorded `141/944` with `803` remaining and explicitly left Ibaraki uncredited. This synchronization therefore advances exactly one previously-uncredited identity to **`142/944`**, with **`802`** remaining.
+
+PR #381 remains OPEN, unmerged, and unretargeted. Historical `P3-FM09-RECOVERY` remains `MIGRATION_BLOCKED`. Continue migration-credit-first from `142/944`; do not open unrelated FB2/runtime work while another migration-ready Candidate or `S_READY_NOW` exists.
