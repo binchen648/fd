@@ -5598,3 +5598,14 @@ Read: `docs/reports/2026-09-20-p3-a-fb2-44-face-up-cards-per-round-dispatch.md`
 Result required: implement only the exact identity-free same-battlefield `face_up_cards_per_round=set(1)` while-active static rule envelope needed by the current-baseline whole-card probe for `servant.leonidas.skill.sc-leonidas-1`. Server-owned actual completed face-up plays must be counted per round; face-down plays do not count; all authoritative regular/batch/effect play gateways must fail closed when the live allowance is exhausted; inactive/non-battlefield source and players elsewhere are unaffected. Exact loader selector only; no identity-specific runtime logic and no generic arbitrary play-limit engine.
 
 This is zero-credit capability work: formal migration remains **`146/944`**, **`798`** remaining. After fresh R acceptance and A synchronization, immediately re-overlay the entire Leonidas s1 card before any singleton S dispatch.
+## TASK P3-A-R92-FB2-44-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r92-fb2-44-acceptance-sync`
+Base: exact accepted Candidate `fe0d89be242b46ee0834544573bede6f3c73be5d`
+Read: `docs/reports/2026-09-20-p3-a-r92-fb2-44-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #401 exact Candidate `fe0d89be242b46ee0834544573bede6f3c73be5d`, backed by canonical evidence `https://github.com/binchen648/fd/pull/401#issuecomment-5749622195`. Accepted capability is only the identity-free same-battlefield while-active exact `face_up_cards_per_round=set(1)` seam with server-owned completed face-up counting and authoritative fail-closed play gateways.
+
+FB2-44 earns zero migration credit; formal migration remains **`146/944`**, with **`798`** remaining. Current authoring overlap remains `141/944`, duplicates `0`, and Leonidas s1 remains absent. PR #401 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.leonidas.skill.sc-leonidas-1`; dispatch singleton S only if mechanically zero-gap.
