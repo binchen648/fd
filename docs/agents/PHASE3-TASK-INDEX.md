@@ -5466,3 +5466,15 @@ Read: `docs/reports/2026-09-20-p3-a-r85-fb2-41-acceptance-synchronization.md`
 Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #392 exact revised Candidate `72b2e284f93beb2d6659496b28a90e5719c78c95`, backed by canonical evidence `https://github.com/binchen648/fd/pull/392#issuecomment-5747802266`. Accepted capability is the narrow identity-free authoritative current-round combat-win ledger plus exact `player_flag_number_not_current_round/combatWinRound` condition; the prior loss-effect-suppression blocker is fixed and covered through the real game-loop producer path.
 
 FB2-41 earns zero migration credit; formal migration remains **`143/944`**, with **`801`** remaining. PR #392 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.nero.skill.sc-nero-1`; dispatch S only if it is mechanically zero-gap.
+
+## TASK P3-A-R86-NERO-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r86-nero-consumer-migration-dispatch`
+Base: exact R85 FB2-41 acceptance sync `e8c58b7d8b4c822f8e658935bfde8b14cf78bdf2`
+Read: `docs/reports/2026-09-20-p3-a-r86-nero-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.nero.skill.sc-nero-1` (`邀至心荡神驰的黄金剧场`), now mechanically `S_READY_NOW` after accepted FB2-40 + FB2-41. Whole-card temporary probes return loader `report=[]`, automatic execution, round-2 active-round reward = 2 VP after a controller win, authoritative `combatWinRound` recording, keep-open after a win, and close-on-round-end after no win. No additional runtime seam is required.
+
+Base frozen overlap is **`138/944`** and Candidate must be exactly **`139/944`**, exact +1 Nero s1 with zero removals/duplicates. Formal migration remains **`143/944`**, remaining **`801`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
