@@ -143,6 +143,135 @@
           "note": "Legacy requirement is retained as metadata only and does not override the final-rule skill-zone threshold."
         }
       }
+    },
+    {
+      "id": "servant.medusa.skill.sc-medusa-2",
+      "aliases": [
+        "sc_medusa_2"
+      ],
+      "legacyId": "sc_medusa_2",
+      "name": "石化之魔眼",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.medusa"
+      },
+      "printedText": "【真名解放】\n行动阶段：在战斗阶段开始前，若与你进行战斗的对手本回合没有打出/加入迅捷属性攻击，则其【败北】。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 4,
+        "basePower": 1
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 4
+        }
+      ],
+      "abilities": [
+        {
+          "id": "mystic-eyes-petrification",
+          "kind": "phase_action",
+          "printedClause": "【真名解放】\n行动阶段：在战斗阶段开始前，若与你进行战斗的对手本回合没有打出/加入迅捷属性攻击，则其【败北】。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "defeat_player",
+              "target": {
+                "scope": "engaged_opponents",
+                "where": [
+                  {
+                    "type": "no_attack_played_this_round_with_attribute",
+                    "attribute": "迅捷"
+                  }
+                ]
+              }
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "美杜莎.htm",
+            "locator": "从者/骑兵/英文版/美杜莎.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/美杜莎.png",
+            "locator": "servant.medusa/美杜莎"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[35].abilities[0].printedClause",
+            "sha256": "fe34566fb9dbea83e43f7f97dc56a97f5176e07e8a124ee1816aa5645bf770ff"
+          }
+        ],
+        "f1FullPrintedTextSha256": "fe34566fb9dbea83e43f7f97dc56a97f5176e07e8a124ee1816aa5645bf770ff",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_medusa_2",
+          "class": "Rider",
+          "cost": 4,
+          "basePower": 1,
+          "legacyRequirement": 4,
+          "typeLabel": "魔术",
+          "attributes": [
+            "魔术"
+          ]
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 4,
+          "authority": "final_rules_9.4",
+          "note": "Locked Reference requirement is consistent; current authoring uses the accepted explicit skill-zone threshold."
+        },
+        "acceptedContracts": {
+          "sourceActive": "P3-R71/FB2-32",
+          "trueNameRelease": "GENERIC_VISIBILITY structural revealsTrueName/on_use_declared servant-package reveal",
+          "preBattleDefeatRoundAttackAttribute": "P3-R95/FB2-45 exact engaged_opponents + no_attack_played_this_round_with_attribute",
+          "attackHistory": "P3-R95/FB2-45 authoritative playedRound + classifyCardPlay including accepted add-to-attack provenance",
+          "battleLossImmunity": "P3-R95/FB2-45 settlement through existing ignoresBattleLossEffects",
+          "intentLifecycle": "P3-R95/FB2-45 separate round+battlefield pendingPreBattleDefeats ledger"
+        }
+      }
     }
   ]
 }
