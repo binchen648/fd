@@ -83,6 +83,45 @@ function pendingPaidEffectAbility(): any {
     execution: { mode: 'automatic' },
   };
 }
+function pendingChoiceBranchPaidEffectAbility(withSafeAlternative = false): any {
+  return {
+    id: withSafeAlternative ? 'pending-choice-branch-with-safe-alternative' : 'pending-choice-branch-required-face-up',
+    kind: 'phase_action',
+    printedClause: 'pay 2 mana, choose a mode, then choose and play one hand card face up when play mode is chosen',
+    activation: { phase: 'action', opens: 'controller_action_window', requiresSourceState: 'active' },
+    conditions: [{ type: 'source_active' }],
+    targets: [
+      {
+        id: 'pending_mode', type: 'choice',
+        options: withSafeAlternative ? [{ id: 'play' }, { id: 'skip' }] : [{ id: 'play' }],
+        count: { min: 1, max: 1 }, conditions: [],
+      },
+      {
+        id: 'branch_selected_card', type: 'card_instance', scope: { zone: 'hand', owner: 'controller' },
+        constraints: [], count: { min: 1, max: 1 }, conditions: [],
+      },
+    ],
+    effects: [{
+      type: 'branch',
+      branches: [
+        {
+          if: { type: 'choice_is', choiceId: 'pending_mode', value: 'play' },
+          then: [{ type: 'play_selected_cards', target: 'branch_selected_card', face: 'face_up' }],
+        },
+        { else: [] },
+      ],
+    }],
+    cost: [{ type: 'pay_mana', amount: 2 }],
+    ruleModifiers: [],
+    creates: [],
+    lifecycle: {},
+    responseWindow: {},
+    limit: {},
+    visibility: {},
+    execution: { mode: 'automatic' },
+  };
+}
+
 function effectAbility(): any {
   return {
     id: 'effect-play-one-face-up',
@@ -158,7 +197,7 @@ function archive(modifier: any = exactModifier()): any {
     cards: [
       card(LIMIT_DEF, [exactLimitAbility(modifier)]),
       card(BASIC_DEF, []),
-      card(EFFECT_DEF, [effectAbility(), pendingPaidEffectAbility()]),
+      card(EFFECT_DEF, [effectAbility(), pendingPaidEffectAbility(), pendingChoiceBranchPaidEffectAbility(), pendingChoiceBranchPaidEffectAbility(true)]),
       card(SOURCE_PLAY_DEF, [sourcePlayAbility()]),
       card(BRANCH_SOURCE_PLAY_DEF, [branchSourcePlayAbility()]),
       card(COST_MUTATED_BRANCH_SOURCE_PLAY_DEF, [costMutatedBranchSourcePlayAbility()]),
@@ -441,6 +480,65 @@ describe('P3-FB2-44 same-battlefield face-up cards-per-round seam', () => {
     })).toThrow(/face-up card play limit reached/i);
     expect(direct).toEqual(before);
   });
+  it('preflights a required choice branch when every continuation requires an over-limit face-up play', () => {
+    const state = setup();
+    const first = add(state, 'p1');
+    add(state, 'p1');
+    state.players[0]!.mana = 5;
+
+    expect(rules.getLegalActions(state, 'p1')).toContainEqual(expect.objectContaining({
+      type: 'activate_ability', cardInstanceId: EFFECT_ID, abilityId: 'pending-choice-branch-required-face-up',
+    }));
+    expect(play(state, 'p1', first).ok).toBe(true);
+    expect(rules.loadAuthoringJson(archive()).report).toEqual([]);
+    const before = structuredClone(state);
+
+    expect(rules.getLegalActions(state, 'p1')).not.toContainEqual(expect.objectContaining({
+      type: 'activate_ability', cardInstanceId: EFFECT_ID, abilityId: 'pending-choice-branch-required-face-up',
+    }));
+    const denied = rules.dispatchAbilityCommand(state, 'p1', {
+      type: 'activate_ability', cardInstanceId: EFFECT_ID, abilityId: 'pending-choice-branch-required-face-up',
+    });
+    expect(denied.ok).toBe(false);
+    expect(state).toEqual(before);
+
+    const direct = structuredClone(state);
+    expect(() => rules.executeAbility(direct, {
+      sourceCardId: EFFECT_ID,
+      abilityId: 'pending-choice-branch-required-face-up',
+      controllerId: 'p1',
+      variables: {},
+      selections: {},
+    })).toThrow(/face-up card play limit reached/i);
+    expect(direct).toEqual(before);
+  });
+
+  it('does not over-block a required choice branch that has a legal non-play alternative', () => {
+    const state = setup();
+    const first = add(state, 'p1');
+    add(state, 'p1');
+    state.players[0]!.mana = 5;
+    expect(play(state, 'p1', first).ok).toBe(true);
+
+    expect(rules.getLegalActions(state, 'p1')).toContainEqual(expect.objectContaining({
+      type: 'activate_ability', cardInstanceId: EFFECT_ID, abilityId: 'pending-choice-branch-with-safe-alternative',
+    }));
+    const activated = rules.dispatchAbilityCommand(state, 'p1', {
+      type: 'activate_ability', cardInstanceId: EFFECT_ID, abilityId: 'pending-choice-branch-with-safe-alternative',
+    });
+    expect(activated.ok).toBe(true);
+    expect(state.players[0]!.mana).toBe(3);
+    const decisionId = state.abilityRuntime!.pendingDecision!.id;
+    expect(state.abilityRuntime!.pendingDecision!.candidates).toEqual(['play', 'skip']);
+
+    const skipped = rules.dispatchAbilityCommand(state, 'p1', {
+      type: 'choose_target', decisionId, selectedIds: ['skip'],
+    });
+    expect(skipped.ok).toBe(true);
+    expect(state.abilityRuntime!.pendingDecision).toBeUndefined();
+    expect(rules.faceUpCardsPlayedThisRound(state, 'p1')).toBe(1);
+  });
+
   it('counts a successful trusted source-card face-up effect before later play checks', () => {
     const state = setup();
     const sourcePlay = add(state, 'p1');

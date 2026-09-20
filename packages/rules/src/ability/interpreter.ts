@@ -2990,8 +2990,28 @@ function countPreflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: Au
   return additionalFaceUpCards;
 }
 
+function guaranteedPreflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): number {
+  const unresolvedChoice = a.targets.find(target => target.type === 'choice' &&
+    !Object.prototype.hasOwnProperty.call(ctx.selections, str(target.id)));
+  if (!unresolvedChoice) return countPreflightFaceUpEffectPlays(s, ctx, a, effects);
+
+  const choiceCount = node(unresolvedChoice.count);
+  const min = Number(choiceCount.min ?? 1); const max = Number(choiceCount.max ?? 1);
+  if (min !== 1 || max !== 1) return 0;
+  const options = candidates(s, ctx, unresolvedChoice);
+  if (!options.length) return 0;
+
+  let guaranteed = Number.POSITIVE_INFINITY;
+  for (const option of options) {
+    const choiceContext = structuredClone(ctx);
+    choiceContext.selections[str(unresolvedChoice.id)] = [option];
+    guaranteed = Math.min(guaranteed, guaranteedPreflightFaceUpEffectPlays(s, choiceContext, a, effects));
+  }
+  return Number.isFinite(guaranteed) ? guaranteed : 0;
+}
+
 function faceUpEffectPlayLimitReached(s: GameState, ctx: EffectContext, a: AuthoringAbility): boolean {
-  const additionalFaceUpCards = countPreflightFaceUpEffectPlays(s, ctx, a, [...a.effects, ...a.creates]);
+  const additionalFaceUpCards = guaranteedPreflightFaceUpEffectPlays(s, ctx, a, [...a.effects, ...a.creates]);
   return additionalFaceUpCards > 0 && faceUpCardPlayLimitReached(s, ctx.controllerId, additionalFaceUpCards);
 }
 

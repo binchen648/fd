@@ -137,6 +137,16 @@ The exact blocking finding was the remaining required-target continuation gap: b
 - adds a loader-valid paid phase-action regression matching the reviewer topology and asserts no paid mana, usage/source mutation or stranded `pendingDecision` survives rejection;
 - does not change pending-decision protocol, arbitrary selector/value/conflict semantics, frozen authoring, product content or client production.
 
+Fresh independent reviewer evidence for exact Base `24fb6d424625fd3cbfbfb4c7f7e56e3c05c6acd8` / prior Candidate `3a73271a851020eeabba93624e055744f20291f2` returned `IMPLEMENTATION_NEEDS_REVISION` at `https://github.com/binchen648/fd/pull/401#issuecomment-5749467590`.
+
+The exact blocking finding was a required-choice continuation gap: an unresolved required `choice` could control a later `branch -> play_selected_cards(face_up)` route, so preflight evaluated the pre-choice branch as zero face-up plays, activation committed cost/usage and installed a pending choice, and only the later selected branch discovered the exhausted allowance. This minimal revision:
+
+- follows the same unresolved-choice ordering as `findPendingTarget` and only expands pending `choice` targets whose count is exactly `min=1,max=1`;
+- evaluates every currently legal option on a cloned `EffectContext` and uses the minimum face-up-play count across those continuations as the guaranteed lower bound;
+- therefore blocks only when every required single-choice continuation still guarantees an over-limit face-up play; any safe alternative makes the guaranteed lower bound zero;
+- conservatively returns zero for optional/multi-select unresolved choices instead of broadening FB2-44 into a generic choice engine;
+- adds a loader-valid exact regression for `required choice -> choice_is branch -> required play_selected_cards(face_up)` proving exhausted allowance rejects before activation cost/usage/source/pending mutation;
+- adds a paired safe-alternative regression proving a `play/skip` choice remains legal under an exhausted allowance and `skip` resolves normally.
 ## Validation
 
 Fresh worktree dependencies were installed with `npm.cmd ci --ignore-scripts --offline` (239 packages, 0 vulnerabilities), followed by normal typecheck/build output generation.
@@ -144,9 +154,9 @@ Fresh worktree dependencies were installed with `npm.cmd ci --ignore-scripts --o
 Validation on the final Candidate working tree:
 
 - `npm.cmd run typecheck` — PASS.
-- final FB2-44 + source-play focused verification — PASS, **2 files / 19 tests**.
-- rules `src/__tests__ + core + regression + FB2-43 + FB2-44` — PASS, **84 files / 517 tests**.
-- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **167 files / 1182 tests**.
+- final FB2-44 + source-play focused verification — PASS, **2 files / 21 tests**.
+- rules `src/__tests__ + core + regression + FB2-43 + FB2-44` — PASS, **84 files / 519 tests**.
+- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **167 files / 1184 tests**.
 - `npm.cmd run content:validate` — PASS, **7 masters / 7 servants / 20 events / 0 blocking issues**.
 - `npm.cmd run verify:generated-content` — PASS with unchanged hashes:
   - library `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`;
