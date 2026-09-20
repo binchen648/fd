@@ -16,6 +16,7 @@ function ability(condition: RuleNode): AuthoringAbility {
 
 function setup(condition: RuleNode = exact()) {
   const state = createSeededGameState({ activeSeats: [1, 2, 3, 4] });
+  state.round.activePhase = 'battle';
   state.cards = [{ instanceId: 'source', definitionId: 'skill.source', ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'field', visibility: { scope: 'public' } }];
   const card: ExecutableCardDefinition = {
     id: 'skill.source', name: 'synthetic', cardType: 'servant_skill', ownerId: 'servant.synthetic',
@@ -99,6 +100,16 @@ describe('P3-FB2-38 current-round combat-loss absence condition', () => {
     expect(trigger(state)).toEqual([{ cardInstanceId: 'source', abilityId: 'terminal-loss-check', controllerId: 'p1' }]);
   });
 
+  it('fails closed for exact current-round terminal provenance outside the battle phase', () => {
+    const state = setup();
+    state.battleResults = [result('miyama_town', ['p1', 'p2'], ['p1'])];
+    const terminal = terminalEvent(state);
+    state.round.activePhase = 'round_end';
+
+    expect(rules.currentRoundCombatLossAbsent(state, 'p1', terminal)).toBe(false);
+    expect(trigger(state, terminal)).toEqual([]);
+  });
+
   it('fails when controller is a participant and non-winner in any phase battle', () => {
     const state = setup();
     state.battleResults = [result('miyama_town', ['p1', 'p2'], ['p2'])];
@@ -147,6 +158,7 @@ describe('P3-FB2-38 current-round combat-loss absence condition', () => {
       humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'],
     });
     session.state.round.roundNumber = 3;
+    session.state.round.activePhase = 'battle';
     session.state.battleResults = [];
     session.battleHistory = [result('shinto', ['p3', 'p4'], ['p3'])];
     const currentBattle = result('miyama_town', ['p1', 'p2'], ['p1']);

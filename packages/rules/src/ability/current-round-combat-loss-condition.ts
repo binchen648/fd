@@ -28,6 +28,7 @@ export function currentRoundCombatLossAbsent(
   controllerId: PlayerId,
   event: AbilityEvent | undefined,
 ): boolean {
+  if (state.round.activePhase !== 'battle') return false;
   const knownPlayerIds = new Set(state.players.map((player) => player.id));
   const closedLocations = new Set(
     ((state as unknown as { modeState?: { closedLocations?: unknown } }).modeState?.closedLocations instanceof Array

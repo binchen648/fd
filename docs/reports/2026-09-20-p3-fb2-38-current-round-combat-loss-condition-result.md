@@ -175,3 +175,26 @@ Validation after this revision:
 - generated determinism, exact Locked Reference verification, client production build, and `git diff --check`: PASS;
 - revision-only forbidden-scope and production hardcode audits: CLEAN;
 - formal migration remains **`140/944`**, with **`804`** remaining; FB2-38 remains zero-credit runtime capability infrastructure.
+
+## Battle-phase terminal-window reviewer revision binding
+
+- Superseded Candidate: `3c47cbed3e8ddb40532f74d2a6d3df104abebafe`
+- Fresh R verdict: `IMPLEMENTATION_NEEDS_REVISION`
+- Canonical reviewer evidence: `https://github.com/binchen648/fd/pull/387#issuecomment-5746571330`
+- Blocking finding: otherwise internally valid current-round `after_battle_ended` provenance was accepted while `state.round.activePhase` was a non-battle phase, even though both authoritative terminal producers stage and process this terminal only while the authoritative state remains in `battle`.
+- Minimal revision: require `state.round.activePhase === 'battle'` before any FB2-38 provenance evaluation; make the focused fixture model the real battle terminal window; explicitly bind the later-round MatchSession provenance test to battle phase; add a real `collectTriggeredAbilities` regression proving the same exact terminal provenance returns false / no trigger after switching to `round_end`.
+- Previously fixed post-scoring frozen provenance, history-aware contiguous ordinals, dense string arrays, current-roster identity validation, battle-capable/open-location validation, and non-empty represented-outcome validation remain unchanged.
+
+Validation after this revision:
+
+- `npm.cmd run typecheck`: PASS;
+- focused FB2-38: **1 file / 12 tests PASS**;
+- rules `src/__tests__ + core + regression + focused`: **83 files / 506 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2`: **156 files / 1099 tests PASS**;
+- content validation: **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated determinism: PASS with unchanged hashes (`866a5b...e736`, `fb6938...f057`, `b1bb89...55cc3`);
+- exact Locked Reference verification at `b2f9fa15fba07c63530bbf4612b03b8b704755f9`: PASS;
+- client production build: PASS; existing Vite browser-externalization / chunk-size warnings only;
+- `git diff --check`: PASS;
+- forbidden-scope path scan: CLEAN; no consumer authoring, pack/generated product, content package, or app changes;
+- formal migration remains **`140/944`**, with **`804`** remaining; FB2-38 remains zero-credit runtime capability infrastructure.
