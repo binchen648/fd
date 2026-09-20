@@ -222,7 +222,7 @@ export function validatePhase3Governance(
   manifest: unknown | undefined,
   options: ValidationOptions = {},
 ): ValidationResult {
-  if (!isPhase3PullRequest(context)) {
+  if (!isPhase3PullRequest(context) && manifest === undefined) {
     return { status: 'skipped', messages: ['No Phase 3 branch, title, or file signal detected.'] };
   }
   if (!manifest) {

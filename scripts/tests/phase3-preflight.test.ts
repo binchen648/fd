@@ -126,6 +126,17 @@ describe('Phase 3 promotion governance preflight', () => {
     });
   });
 
+  it('validates a supplied manifest even when the PR name lacks a Phase 3 marker', () => {
+    const context = promotionContext({
+      headRef: 'codex/integration',
+      title: 'Integration update',
+      changedFiles: [],
+    });
+    const manifest = promotionManifest({ head: { ref: context.headRef, sha: headSha } });
+
+    expect(validatePhase3Governance(context, manifest).status).toBe('passed');
+  });
+
   it('extracts the manifest from the PR template fenced block', () => {
     const body = [
       '## Phase 3 Task Manifest',

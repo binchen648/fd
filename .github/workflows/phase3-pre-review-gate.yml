@@ -1,6 +1,8 @@
 name: Phase 3 Pre-Review Gate
 
 on:
+  push:
+    branches: [main]
   pull_request:
     types: [opened, synchronize, reopened, edited, ready_for_review]
 
@@ -31,6 +33,7 @@ jobs:
         run: npm ci
 
       - name: Validate Phase 3 task manifest policy
+        if: github.event_name == 'pull_request'
         run: npm run phase3:ci-gate -- --verify-git-ancestry
 
       - name: Run Phase 3 governance focused tests
