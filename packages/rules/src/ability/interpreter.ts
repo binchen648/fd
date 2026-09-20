@@ -34,6 +34,7 @@ import {
   isGameStartPlayerStatusAssignmentCandidate,
   isGameStartPlayerStatusAssignmentSemantic,
 } from './game-start-player-status-assignment';
+import { isBattleEndResidualCloseCandidate, isBattleEndResidualCloseSemantic } from './triggered-residual-close';
 export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import {
   DataFlowValidationError,
@@ -2919,6 +2920,14 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isBattleEndResidualCloseCandidate(a)) {
+    if (!isBattleEndResidualCloseSemantic(a)) reject('resolution_failed', 'Unsupported battle-end residual CLOSE semantic shape');
+    if (!currentRoundCombatLossAbsent(s, ctx.controllerId, ctx.event)) reject('resolution_failed', 'Battle-end CLOSE requires current terminal non-loss provenance');
+    assertCloseSourceState(s, ctx.sourceCardId, ctx.controllerId);
+    executeResolutionEffects(s, ctx, effects);
+    cleanupOngoing(s);
+    return;
+  }
   if (isAddToAttackRouteCandidate(a)) {
     const pending = findPendingTarget(s, ctx, a, effects);
     if (pending) { runtime(s).pendingDecision = pending; return; }
@@ -2949,6 +2958,15 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 /** Server-only execution after discovery/trigger validation. Never accept an effect or context from the client. */
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (isBattleEndResidualCloseCandidate(a) && !isBattleEndResidualCloseSemantic(a)) {
+    reject('resolution_failed', 'Unsupported battle-end residual CLOSE semantic shape');
+  }
+  if (isBattleEndResidualCloseCandidate(a)) {
+    if (!currentRoundCombatLossAbsent(s, ctx.controllerId, ctx.event)) {
+      reject('resolution_failed', 'Battle-end CLOSE requires current terminal non-loss provenance');
+    }
+    assertCloseSourceState(s, ctx.sourceCardId, ctx.controllerId);
+  }
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
   if (isRulerSealBindingCandidate(a) && !isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
   if (isRulerSealUseCandidate(a) && !isRulerSealUseSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal use semantic shape');
@@ -3020,7 +3038,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     });
     return;
   }
-  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isAnyLocationExceptWorkshopMovementSemantic(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a)) {
+  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isAnyLocationExceptWorkshopMovementSemantic(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a) || isBattleEndResidualCloseCandidate(a)) {
     try {
       normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     } catch (error) {
