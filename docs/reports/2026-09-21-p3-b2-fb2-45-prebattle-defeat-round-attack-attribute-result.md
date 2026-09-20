@@ -118,7 +118,7 @@ Validation on the final working tree before Candidate commit:
 
 - `npm.cmd run typecheck` — PASS.
 - FB2-45 + Presence Concealment focused verification — PASS, **2 files / 20 tests**.
-- FB2-45 + Presence Concealment + existing Return Silence/B23 focused compatibility — PASS, **3 files / 29 tests**.
+- FB2-45 + Presence Concealment + existing Return Silence/B23 focused compatibility — PASS, **3 files / 31 tests**.
 - rules `src/__tests__ + core + regression + FB2-43 + FB2-44 + FB2-45` — PASS, **85 files / 530 tests**.
 - `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **170 files / 1211 tests**.
 - `npm.cmd run content:validate` — PASS, **7 masters / 7 servants / 20 events / 0 blocking issues**.
