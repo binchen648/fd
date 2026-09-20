@@ -5563,3 +5563,20 @@ The former `P3-FB2-39-TRIGGERED-RESIDUAL-CLOSE` name in A branch `a379a50` is a 
 Read-only `git merge-tree --write-tree 64b4bb7 f4d67cc` reports a content conflict in `packages/rules/src/ability/interpreter.ts`. B2 must own the hot-file lease and resolve this on a fresh integration branch; Codex A must not modify runtime. Preserve the identity-free combat-end residual CLOSE contract, typed owner-only visibility and `source_card_closed` event, rollback, stale replay rejection, and existing on-play CLOSE behavior. No S authoring or generated-content changes. R must review the exact integrated Base/Candidate before A synchronizes capability and reopens Darius s1 recertification.
 
 Formal ledger currently records `145/944` after R89, but Darius s1's earlier `+1` is under a separate same-SHA semantic review conflict. Do not award new credit or silently rewrite historical counts until that conflict is reconciled by independent R on the integrated runtime.
+
+## TASK P3-A-R81-TRIGGERED-RESIDUAL-CLOSE-REVIEW-SYNC
+
+Owner: Codex A
+Status: `REVIEW_REPORTED_PENDING_BINDING`
+Branch: `codex/a-p3-r81-close-review-sync`
+Read: `docs/reports/2026-09-20-p3-a-r81-triggered-residual-close-review-sync.md`
+
+The integration Candidate is local commit `2c9b19a` with exact parent `64b4bb7`. The user reports R approval. Fresh A focused tests pass 19/19 and typecheck passes, but no remote B head or stable R review record binding exact Base/Candidate is available in this checkout. Preserve the report as a reported outcome; do not promote Gate status or formalize runtime acceptance until exact evidence is attached. Migration delta is zero.
+
+## TASK P3-S-R81-DARIUS-S1-RECERTIFICATION
+
+Owner: Codex S
+Status: `READY_AFTER_B2_REVIEW_BINDING`
+Handoff: `docs/reports/2026-09-20-p3-a-r81-darius-s1-recertification-handoff.md`
+
+After B2 integration is published and exact R acceptance is bound, recertify the existing frozen `servant.darius.skill.sc-darius-1` against that runtime. The prior source JSON is not to be rewritten merely to pass tests. Prove typed CLOSE consumption in real post-scoring MatchSession, owner-only visibility, one `source_card_closed`, stale replay rejection, invalid source fail-closed, and existing no-loss/loss semantics. S must not change runtime or add a second migration identity. R independently reviews the integrated S result; A then reconciles the previously contested Darius s1 credit without awarding a second +1.

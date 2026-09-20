@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "fd-phase3-review-sync-v1",
+  "date": "2026-09-20",
+  "owner": "Codex A",
+  "task": "P3-B2-R81-TRIGGERED-RESIDUAL-CLOSE-INTEGRATION",
+  "status": "REVIEW_REPORTED_PENDING_BINDING",
+  "baseCommit": "64b4bb7a8b1379dd858c746e77f503b271950ec1",
+  "localCandidateCommit": "2c9b19a",
+  "review": { "decision": "PASS_USER_REPORTED", "stableReviewUrl": null, "exactCommitBindingVerified": false, "gatePromotionPerformed": false },
+  "freshVerification": { "focusedVitest": "PASS 19/19", "typecheck": "PASS" },
+  "migrationCreditDelta": 0,
+  "recordedLedger": { "accepted": 145, "denominator": 944, "dariusS1CreditContested": true },
+  "nextTask": { "id": "P3-S-R81-DARIUS-S1-RECERTIFICATION", "status": "READY_AFTER_B2_REVIEW_BINDING" }
+}
