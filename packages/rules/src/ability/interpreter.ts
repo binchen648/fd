@@ -8,6 +8,8 @@ import { checkExtendedCondition, resolveExtendedEffect } from './extended-effect
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, situationForbidsAttribute } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
+import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
+export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import {
   DataFlowValidationError,
   normalizeResolutionDataFlowNodes,
@@ -17,7 +19,7 @@ import {
 } from './resolution-dataflow';
 import type {
   AbilityCommand, AbilityDefinitionPack, AbilityEvent, AbilityPlayerView, AbilityRuntime, AuthoringAbility, AuthoringCard,
-  BattleResult, BattleResultData, CalculationLine, CardPlayClassification, DispatchResult, EffectContext,
+  BattleResult, BattleResultData, CalculationLine, CardPlayClassification, DispatchResult, EffectContext, ExecutableCardDefinition,
   LegalAction, OngoingEffect, PendingDecision, RuleNode, TriggeredAbility,
   AbilityInteractionClassification,
   PlayCardAction,
@@ -622,6 +624,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
+  if (isGameStartSkillProvisioningCandidate(a) &&
+    (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
@@ -666,6 +670,51 @@ export function isGameStartRuleOverrideSemantic(a: AuthoringAbility): boolean {
   if (!a.effects.length || !a.effects.every((effect) => isExactGameStartRuleOverrideEffect(effect))) return false;
   const rules = a.effects.map((effect) => str(effect.rule));
   return new Set(rules).size === rules.length;
+}
+
+function provisionedSkillCardIsValid(s: GameState, instance: CardInstance, controllerId: string): boolean {
+  const state = runtime(s).cardState[instance.instanceId];
+  return instance.ownerPlayerId === controllerId && instance.controllerPlayerId === controllerId &&
+    instance.zone === 'skill' && instance.visibility.scope === 'owner_only' &&
+    instance.visibility.ownerPlayerId === controllerId && state?.active !== true && state?.faceDown !== true;
+}
+
+function gameStartSkillProvisioningPreflight(s: GameState, sourceId: string, a: AuthoringAbility): boolean {
+  const source = card(s, sourceId); const controller = player(s, source.controllerPlayerId);
+  const sourceDefinition = definition(s, sourceId) as ExecutableCardDefinition | undefined;
+  if (source.ownerPlayerId !== controller.id || source.zone !== 'skill' || sourceDefinition?.cardType !== 'master_skill' ||
+    sourceDefinition.ownerId !== controller.masterCardId) return false;
+  const targets = a.effects[0]?.targetDefinitionIds;
+  if (!Array.isArray(targets)) return false;
+  for (const definitionId of targets) {
+    if (typeof definitionId !== 'string') return false;
+    const target = runtime(s).pack.cards[definitionId] as ExecutableCardDefinition | undefined;
+    if (!target || target.mode !== 'automatic' || target.cardType !== 'master_skill' ||
+      target.ownerId !== controller.masterCardId || target.initialZone !== undefined) return false;
+    const existing = s.cards.filter((candidate) => candidate.definitionId === definitionId);
+    if (existing.length > 1 || (existing.length === 1 && !provisionedSkillCardIsValid(s, existing[0]!, controller.id))) return false;
+  }
+  return true;
+}
+
+function provisionGameStartSkillCards(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, ctx.sourceCardId, a)) {
+    reject('resolution_failed', 'Unsupported game-start skill-provisioning semantic shape');
+  }
+  const targets = a.effects[0]!.targetDefinitionIds as string[];
+  for (const definitionId of targets) {
+    if (s.cards.some((candidate) => candidate.definitionId === definitionId)) continue;
+    const instanceId = nextId(s, 'provisioned-skill');
+    s.cards.push({
+      instanceId, definitionId, ownerPlayerId: ctx.controllerId, controllerPlayerId: ctx.controllerId,
+      zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: ctx.controllerId }, generatedBy: ctx.sourceCardId,
+    });
+    runtime(s).cardState[instanceId] = { active: false, faceDown: false, playedRound: s.round.roundNumber };
+    runtime(s).events.push({
+      type: 'card_created', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+      cardInstanceId: instanceId, toZone: 'skill', movedCount: 1,
+    });
+  }
 }
 
 function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean {
@@ -2434,6 +2483,10 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
     reject('resolution_failed', 'Unsupported persistent RuleOverride semantic shape');
+  }
+  if (isGameStartSkillProvisioningCandidate(a)) {
+    provisionGameStartSkillCards(s, ctx, a);
+    return;
   }
   if (isAlterEgoTransformCandidate(a)) {
     if (!isAlterEgoTransformSemantic(a)) reject('resolution_failed', 'Unsupported Alter Ego transform semantic shape');
