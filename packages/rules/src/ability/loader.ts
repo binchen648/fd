@@ -12,6 +12,7 @@ import {
 import { isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, OUTER_GOD_LIFE_CATEGORY } from './outer-god-life';
 import { classifyAcceptedSkillUseForbidModifier } from './skill-use-forbid';
 import { isAcceptedControlledCardCloseForbidModifier } from './card-close-forbid';
+import { isAcceptedStaticFaceUpCardsPerRoundAbility } from './face-up-cards-per-round';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './deployment-destinations';
 import { isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 import { isAcceptedCurrentRoundCombatWinAbsenceCondition } from './current-round-combat-win-condition';
@@ -438,6 +439,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       const acceptedStaticCombatRewardDistribution = isAcceptedStaticCombatRewardDistributionAbility(a);
       const acceptedPaidCostCombatPower = isAcceptedRoundActiveAttackPaidCostCombatPowerAbility(a);
       const acceptedDeploymentDestinationReplacement = isAcceptedLowerVpLoneBattlefieldDeploymentAbility(a);
+      const acceptedFaceUpCardsPerRound = isAcceptedStaticFaceUpCardsPerRoundAbility(a, 'authoring');
       for (const m of nodes(a.ruleModifiers)) {
         const acceptedRewardModifier = acceptedStaticCombatRewardDistribution && m === nodes(a.ruleModifiers)[0];
         const acceptedPaidCostModifier = acceptedPaidCostCombatPower && m === nodes(a.ruleModifiers)[0];
@@ -445,6 +447,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         const acceptedSkillUseForbid = classifyAcceptedSkillUseForbidModifier(m);
         const acceptedCardCloseForbid = mode === 'automatic' && lifecycle.duration === 'this_round' &&
           isAcceptedControlledCardCloseForbidModifier(m);
+        const acceptedFaceUpPlayLimit = acceptedFaceUpCardsPerRound && m === nodes(a.ruleModifiers)[0];
         const operationSupported = ['add', 'set', 'ignore', 'lock', 'exclude', 'forbid'].includes(str(m.operation)) ||
           (acceptedRewardModifier && m.operation === 'replace') ||
           (acceptedDeploymentModifier && m.operation === 'replace');
@@ -453,10 +456,12 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
           (acceptedPaidCostModifier && m.rule === 'combat_power') ||
           (acceptedDeploymentModifier && m.rule === 'deployment_destinations') ||
           (acceptedSkillUseForbid !== undefined && m.rule === 'skill_use') ||
-          (acceptedCardCloseForbid && m.rule === 'card_close');
+          (acceptedCardCloseForbid && m.rule === 'card_close') ||
+          (acceptedFaceUpPlayLimit && m.rule === 'face_up_cards_per_round');
         if (!operationSupported || !ruleSupported) issue('ruleModifiers', 'Unmapped rule or operation', id);
         if (m.rule === 'skill_use' && acceptedSkillUseForbid === undefined) issue('ruleModifiers', 'Unsupported skill-use forbid selector shape', id);
         if (m.rule === 'card_close' && !acceptedCardCloseForbid) issue('ruleModifiers', 'Unsupported card-close forbid selector shape', id);
+        if (m.rule === 'face_up_cards_per_round' && !acceptedFaceUpPlayLimit) issue('ruleModifiers', 'Unsupported face-up cards-per-round selector shape', id);
         if (m.rule === 'deployment_destinations' && !acceptedDeploymentModifier) issue('ruleModifiers', 'Unsupported deployment-destination replacement shape', id);
         if (m.rule === 'combat_reward_distribution' && !acceptedRewardModifier) issue('ruleModifiers', 'Unsupported combat reward distribution modifier shape', id);
         if (m.rule === 'effect_prevention' && (m.operation !== 'ignore' || node(m.priority).tier !== 'explicit_exception')) issue('ruleModifiers.priority', 'Prevention exception requires explicit_exception', id);

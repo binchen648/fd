@@ -37,6 +37,7 @@ export * from './ability/event-rule';
 export * from './ability/outer-god-life';
 export * from './ability/skill-use-forbid';
 export * from './ability/card-close-forbid';
+export * from './ability/face-up-cards-per-round';
 export * from './ability/deployment-destinations';
 export * from './ability/current-round-combat-loss-condition';
 export * from './ability/current-round-combat-win-condition';

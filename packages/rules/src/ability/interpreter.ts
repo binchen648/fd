@@ -22,6 +22,7 @@ import { eventRulePlacementByInstance, initializeEventRulePlacements, listEventR
 import { applyOuterGodLifeUse, isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, settlePendingSourceCardReturns } from './outer-god-life';
 import { classifyAcceptedSkillUseForbidModifier, definitionHasStructuralTrueNameRelease, isAcceptedStaticWhileActiveSkillUseForbidAbility } from './skill-use-forbid';
 import { isCardCloseForbidden } from './card-close-forbid';
+import { faceUpCardPlayLimitReached, recordCompletedFaceUpCardPlay } from './face-up-cards-per-round';
 import { currentRoundCombatLossAbsent, isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 import { eventLocationEqualsController, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import {
@@ -239,7 +240,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
     manaGainedThisRound: { round: s.round.roundNumber, byPlayer: {} },
     playRulesVersion: options.playRulesVersion ?? 'explicit-v1',
-    playCounters: { round: s.round.roundNumber, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} } };
+    playCounters: { round: s.round.roundNumber, cardsPlayedByPlayer: {}, faceUpCardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} } };
   initializeEventRulePlacements(s, pack);
 }
 export function createBattleResult(data: BattleResultData): BattleResult {
@@ -849,7 +850,9 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     if (!alterEgoTriggerTarget(s, sourceId, event)) return false;
     if (classifyAlterEgoTransformVariant(a) === 'ex' && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
   }
-  return a.conditions.every(c => condition(s, context(s, sourceId, a.id, event), c));
+  const activationContext = context(s, sourceId, a.id, event);
+  if (!a.conditions.every(c => condition(s, activationContext, c))) return false;
+  return !faceUpEffectPlayLimitReached(s, activationContext, a);
 }
 function isGameStartRuleOverrideCandidate(a: AuthoringAbility): boolean {
   return a.effects.some((effect) => effect.type === 'install_rule_override');
@@ -932,6 +935,7 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (faceDown && (!isAttack(d) || d.cardType === 'servant_skill')) return 'illegal_face_down';
   const forbidRules = ongoingCardPlayForbidRules(s, p, sourceId);
   if (forbidRules.some(rule => !hasPlayRuleException(d, rule))) return 'play_forbidden';
+  if (!faceDown && faceUpCardPlayLimitReached(s, p)) return 'face_up_card_play_limit_reached';
   const limit = perGamePlayLimit(d);
   if (limit && (runtime(s).abilityUsage[`play:${sourceId}:${limit.key}`] ?? 0) >= limit.uses) return 'card_limit_reached';
   if (!ignoreAttackLimit && attackPlayLimitReached(s, p, sourceId, ignoreStagedAttackLimit)) return 'attack_play_limit_reached';
@@ -1385,9 +1389,11 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       const source = card(s, ctx.sourceCardId);
       if (source.controllerPlayerId !== p.id || source.zone !== 'hand') reject('illegal_action', 'Source card is not playable from hand');
       if (isRequiredAdditionalPlayCard(s, ctx.sourceCardId)) reject('append_only', 'Required additional-play cards are not effect-playable');
+      if (effect.face !== 'face_down' && faceUpCardPlayLimitReached(s, p.id)) reject('face_up_card_play_limit_reached', 'Face-up card play limit reached for this round');
       moveCard(s, ctx.sourceCardId, cardPlayClassification(s, ctx.sourceCardId).destinationZone);
       r.cardState[ctx.sourceCardId] = { active: effect.face === 'face_down' ? false : true, faceDown: effect.face === 'face_down', playedRound: s.round.roundNumber };
       if (effect.face === 'face_down') source.visibility = { scope: 'owner_only', ownerPlayerId: p.id };
+      else recordCompletedFaceUpCardPlay(s, p.id);
       processEvent(s, { id: nextId(s, 'declare'), type: 'on_use_declared', playerId: p.id, sourceCardId: ctx.sourceCardId, playedCards: [{ instanceId: ctx.sourceCardId, controllerId: p.id, cardType: definition(s, ctx.sourceCardId)!.cardType, faceDown: effect.face === 'face_down' }] });
       processEvent(s, { id: nextId(s, 'play'), type: 'on_card_played', playerId: p.id, sourceCardId: ctx.sourceCardId, playedCards: [{ instanceId: ctx.sourceCardId, controllerId: p.id, cardType: definition(s, ctx.sourceCardId)!.cardType, faceDown: effect.face === 'face_down' }] });
       break;
@@ -2957,7 +2963,114 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   cleanupOngoing(s);
 }
 /** Server-only execution after discovery/trigger validation. Never accept an effect or context from the client. */
+function preflightFaceUpSelectedCount(a: AuthoringAbility, ctx: EffectContext, targetRef: string): number {
+  if (Object.prototype.hasOwnProperty.call(ctx.selections, targetRef)) return (ctx.selections[targetRef] ?? []).length;
+  const target = a.targets.find(candidate => candidate.id === targetRef);
+  if (!target) return 0;
+  const min = Number(node(target.count).min ?? 1);
+  return Number.isSafeInteger(min) && min > 0 ? min : 0;
+}
+
+function countPreflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): number {
+  let additionalFaceUpCards = 0;
+  for (const effect of effects) {
+    if (effect.type === 'play_source_card' && effect.face !== 'face_down') {
+      additionalFaceUpCards += 1;
+      continue;
+    }
+    if (effect.type === 'play_selected_cards' && effect.face !== 'face_down') {
+      additionalFaceUpCards += preflightFaceUpSelectedCount(a, ctx, str(effect.target));
+      continue;
+    }
+    if (effect.type === 'branch') {
+      const branch = nodes(effect.branches).find(b => b.else !== undefined || condition(s, ctx, node(b.if)));
+      if (branch) additionalFaceUpCards += countPreflightFaceUpEffectPlays(s, ctx, a, nodes(branch.then ?? branch.else));
+    }
+  }
+  return additionalFaceUpCards;
+}
+
+function guaranteedPreflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): number {
+  const unresolvedChoice = a.targets.find(target => target.type === 'choice' &&
+    !Object.prototype.hasOwnProperty.call(ctx.selections, str(target.id)));
+  if (!unresolvedChoice) return countPreflightFaceUpEffectPlays(s, ctx, a, effects);
+
+  const choiceCount = node(unresolvedChoice.count);
+  const min = Number(choiceCount.min ?? 1); const max = Number(choiceCount.max ?? 1);
+  if (min !== 1 || max !== 1) return 0;
+  const options = candidates(s, ctx, unresolvedChoice);
+  if (!options.length) return 0;
+
+  let guaranteed = Number.POSITIVE_INFINITY;
+  for (const option of options) {
+    const choiceContext = structuredClone(ctx);
+    choiceContext.selections[str(unresolvedChoice.id)] = [option];
+    guaranteed = Math.min(guaranteed, guaranteedPreflightFaceUpEffectPlays(s, choiceContext, a, effects));
+  }
+  return Number.isFinite(guaranteed) ? guaranteed : 0;
+}
+
+function faceUpEffectPlayLimitReached(s: GameState, ctx: EffectContext, a: AuthoringAbility): boolean {
+  const additionalFaceUpCards = guaranteedPreflightFaceUpEffectPlays(s, ctx, a, [...a.effects, ...a.creates]);
+  return additionalFaceUpCards > 0 && faceUpCardPlayLimitReached(s, ctx.controllerId, additionalFaceUpCards);
+}
+
+function preflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (faceUpEffectPlayLimitReached(s, ctx, a)) {
+    reject('face_up_card_play_limit_reached', 'Face-up card play limit reached for this round');
+  }
+}
+
+function hasPotentialFaceUpEffectPlay(effects: RuleNode[]): boolean {
+  for (const effect of effects) {
+    if ((effect.type === 'play_source_card' || effect.type === 'play_selected_cards') && effect.face !== 'face_down') return true;
+    if (effect.type !== 'branch') continue;
+    for (const branch of nodes(effect.branches)) {
+      if (hasPotentialFaceUpEffectPlay([...nodes(branch.then), ...nodes(branch.else)])) return true;
+    }
+  }
+  return false;
+}
+
+function preflightFaceUpEffectPlaysAfterPreEffectMutations(
+  s: GameState,
+  ctx: EffectContext,
+  a: AuthoringAbility,
+  manaCost: number,
+  fixedControllerManaCost: boolean,
+  names: string[],
+  limitType: string,
+): void {
+  if (!hasPotentialFaceUpEffectPlay([...a.effects, ...a.creates])) return;
+  const preview = structuredClone(s);
+  const previewPlayer = player(preview, ctx.controllerId);
+  previewPlayer.mana -= manaCost;
+  if (fixedControllerManaCost && isAddToAttackRouteCandidate(a)) executeFixedControllerManaCost(preview, ctx, a);
+  if (names.length) runtime(preview).calculations.push({ controllerId: previewPlayer.id, lines: names.map(name => ({ label: name, value: ctx.variables[name]! })) });
+  for (const cost of a.cost.filter(c => c.type === 'move_source_card')) moveCard(preview, ctx.sourceCardId, str(node(cost.to).zone));
+  if (a.visibility.revealTiming === 'on_use_declared') reveal(preview, previewPlayer.id);
+  if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(preview, ctx.sourceCardId) && classifyAbilityInteraction(a).kind === 'phase_activation') {
+    runtime(preview).usedAbilities[`${ctx.sourceCardId}:${a.id}`] = preview.round.roundNumber;
+  }
+  if (limitType === 'per_game' || limitType === 'per_round') {
+    const usageKey = limitType === 'per_round' ? `${ctx.sourceCardId}:${a.id}:round:${preview.round.roundNumber}` : `${ctx.sourceCardId}:${a.id}`;
+    runtime(preview).abilityUsage[usageKey] = (runtime(preview).abilityUsage[usageKey] ?? 0) + 1;
+  }
+  installOngoing(preview, ctx, a);
+  preflightFaceUpEffectPlays(preview, ctx, a);
+}
 export function executeAbility(s: GameState, ctx: EffectContext): void {
+  const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (!hasPotentialFaceUpEffectPlay([...a.effects, ...a.creates])) {
+    executeAbilityMutable(s, ctx);
+    return;
+  }
+  const transactional = structuredClone(s);
+  executeAbilityMutable(transactional, ctx);
+  Object.assign(s, transactional);
+}
+
+function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
   if (isRulerSealBindingCandidate(a) && !isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
@@ -3039,6 +3152,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     }
   }
   if (isAddToAttackRouteCandidate(a)) assertAddToAttackSupportAvailable(s, ctx, a);
+  preflightFaceUpEffectPlays(s, ctx, a);
   const p = player(s, ctx.controllerId); let manaCost = 0;
   const fixedControllerManaCost = usesAcceptedFixedControllerManaCostComponent(a);
   
@@ -3069,6 +3183,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (manaCost > p.mana) reject('insufficient_mana', 'Insufficient mana');
   if (fixedControllerManaCost && isFixedControllerAdvanceDrawActionSemantic(a) &&
     !hasAvailableManaForFixedCosts(s, ctx, a)) reject('insufficient_mana', 'Insufficient mana');
+  preflightFaceUpEffectPlaysAfterPreEffectMutations(s, ctx, a, manaCost, fixedControllerManaCost, names, limitType);
   p.mana -= manaCost;
   if (fixedControllerManaCost && isAddToAttackRouteCandidate(a)) executeFixedControllerManaCost(s, ctx, a);
   if (names.length) runtime(s).calculations.push({ controllerId: p.id, lines: names.map(name => ({ label: name, value: ctx.variables[name]! })) });
@@ -3192,7 +3307,7 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
     runtime(copy).roundTotalPowerAdjustments = { round, byPlayer: {} };
     runtime(copy).pendingSourceCardReturns = runtime(copy).pendingSourceCardReturns.filter((entry) => entry.round >= round);
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
-    runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
+    runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, faceUpCardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
   }
   copy.round.activePhase = next; copy.round.roundNumber = round; cleanupOngoing(copy);
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
@@ -3472,6 +3587,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
 function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false): void {
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
+  const faceUpChoiceCount = choices.filter((choice) => choice.faceDown !== true).length;
+  if (faceUpChoiceCount > 0 && faceUpCardPlayLimitReached(s, playerId, faceUpChoiceCount)) {
+    reject('face_up_card_play_limit_reached', 'Face-up card play limit reached for this round');
+  }
   const requiredAdditionalIds = new Set(choices
     .filter(c => isRequiredAdditionalPlayCard(s, c.cardInstanceId))
     .map(c => c.cardInstanceId));
@@ -3537,9 +3656,12 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   if (counters.round !== s.round.roundNumber) {
     counters.round = s.round.roundNumber;
     counters.cardsPlayedByPlayer = {};
+    counters.faceUpCardsPlayedByPlayer = {};
     counters.attacksDeclaredByPlayer = {};
   }
   counters.cardsPlayedByPlayer[playerId] = (counters.cardsPlayedByPlayer[playerId] ?? 0) + choices.length;
+  counters.faceUpCardsPlayedByPlayer ??= {};
+  counters.faceUpCardsPlayedByPlayer[playerId] = (counters.faceUpCardsPlayedByPlayer[playerId] ?? 0) + faceUpChoiceCount;
   if (quota === 'regular') {
     counters.attacksDeclaredByPlayer[playerId] = (counters.attacksDeclaredByPlayer[playerId] ?? 0) + regularAttackChoices;
   }
