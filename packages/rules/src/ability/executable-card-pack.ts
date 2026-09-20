@@ -5,6 +5,7 @@ import type {
 
 import { loadAuthoringJson, node, nodes, str } from './loader';
 import { gameStartSkillProvisioningTargetDefinitionIds, isGameStartSkillProvisioningCandidate } from './game-start-skill-provisioning';
+import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import { sha256Hex } from './portable-sha256';
 import {
   DataFlowValidationError,
@@ -120,15 +121,16 @@ export function assertExecutableCardPack(value: unknown, content: ContentIdentit
   }
 }
 
-function classifyCard(cardType: string): Pick<ExecutableCardDefinition, 'playKind' | 'destinationZone'> {
-  const attack = ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack', 'master_deck_card'].includes(cardType);
+function classifyCard(card: AuthoringCard): Pick<ExecutableCardDefinition, 'playKind' | 'destinationZone'> {
+  const attack = hasRequiredAdditionalPlayMarker(card) ||
+    ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack', 'master_deck_card'].includes(card.cardType);
   return attack
     ? { playKind: 'attack', destinationZone: 'attack_area' }
     : { playKind: 'support', destinationZone: 'field' };
 }
 
 function executableDefinition(card: AuthoringCard, ownerId?: string): ExecutableCardDefinition {
-  return { ...card, ...(ownerId ? { ownerId } : {}), ...classifyCard(card.cardType) };
+  return { ...card, ...(ownerId ? { ownerId } : {}), ...classifyCard(card) };
 }
 
 function assertSemanticSubset(source: unknown, compiled: unknown, path: string): void {
