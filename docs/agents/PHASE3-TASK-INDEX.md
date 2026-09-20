@@ -5490,3 +5490,14 @@ Read: `docs/reports/2026-09-20-p3-a-r87-nero-migration-acceptance-synchronizatio
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #393 exact Candidate `868b543d7b508aece7da054a6b8a9a66b675efd9`, backed by canonical evidence `https://github.com/binchen648/fd/pull/393#issuecomment-5747885450`. Exact frozen addition is `servant.nero.skill.sc-nero-1`; independent Base-to-Candidate frozen overlap is `138/944` to `139/944`, exact +1 with zero removals and zero duplicates. Existing FB2-40/FB2-41 capabilities fully execute the migrated card without a new runtime seam.
 
 Formal project migration advances exactly one identity to **`144/944`**, with **`800`** remaining. PR #393 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted zero-gap whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+## TASK P3-A-FB2-42-CONTROLLED-CARD-CLOSE-FORBID-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-42-card-close-forbid-dispatch`
+Base: exact R87 Nero migration acceptance sync `8cbd313373ce4e683d0454f10bdcb82116093724`
+Read: `docs/reports/2026-09-20-p3-a-fb2-42-controlled-card-close-forbid-dispatch.md`
+
+Result: migration-credit-first targeted re-probe finds the current `S_READY_NOW` queue zero at **`144/944`**. A fresh Darius s2 mechanical probe proves its +1 undead power clause is already expressible through existing identity-free `card.currentPower` + exact `has_card_id` this-round modifiers; its sole remaining whole-card gap is exact this-round `card_close` forbid for controller-owned cards selected by one structural definition id. Dispatch that bounded zero-credit seam only; no consumer routing or broad card-action prohibition DSL.
+
+FB2-42 earns zero migration credit; formal migration remains **`144/944`**, with **`800`** remaining. Fresh R is required before A synchronization; no merge/retarget. On acceptance, immediately re-overlay Darius s2 and dispatch singleton S only if whole-card zero-gap.
