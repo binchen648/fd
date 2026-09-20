@@ -16,6 +16,15 @@ Date: 2026-09-21
 
 FB2-46 is identity-free capability work and earns zero migration credit. No consumer authoring is materialized by this Candidate.
 
+## Fresh independent review cycle 1
+
+- Reviewed Candidate: `2c4d46f8a3df3ffdc9e48f992308ae5c7ecdfb49`
+- Canonical reviewer evidence: `https://github.com/binchen648/fd/pull/410#issuecomment-5752950621`
+- Terminal verdict: `IMPLEMENTATION_NEEDS_REVISION`
+- Unique blocking finding: raw `markers` was present in the FB2-46 top-level allowlist but not validated by the exact authoring classifier, so malformed scalar markers could normalize away and `['真名解放']` could be interpreted by loader post-processing after bypassing `battleLossVpWinnerReward.gateway`.
+- Minimal revision applied on the same PR/branch: the classifier now accepts `markers` only when absent or an exact empty array; malformed/nonempty marker payloads are rejected by the existing explicit FB2-46 gateway. Focused regressions cover both `markers: 'bad-scalar'` and `markers: ['真名解放']`, while explicitly proving `markers: []` remains accepted.
+- No loader/runtime-settlement semantics were widened or otherwise changed by this revision.
+
 ## Implemented bounded contract
 
 FB2-46 adds exactly one dedicated executable transaction effect:
@@ -36,6 +45,7 @@ The whole parent ability is admitted only when it is the exact fail-closed envel
 - no targets, cost, creates, or rule modifiers;
 - exactly one dedicated FB2-46 effect;
 - `lossAmount` and `winnerRewardAmount` are positive safe integers;
+- top-level `markers` is absent or an exact empty array only;
 - empty lifecycle, responseWindow, limit and visibility in authoring form;
 - automatic execution;
 - malformed object/scalar containers do not normalize to empty acceptance.
@@ -92,7 +102,7 @@ The dedicated FB2-46 suite proves:
 
 - exact authoring and compiled classifier admission;
 - exact amount extraction;
-- fail-closed gateway behavior for wrong trigger, extra condition/effect/key, malformed target/cost/create/modifier/lifecycle/response/limit/visibility containers, nonpositive/noninteger/non-number amounts, historical raw `lose_victory_points` / `thenIfAnyLost` / `event_combat_winners`, and the dedicated token hidden in a forbidden container;
+- fail-closed gateway behavior for wrong trigger, extra condition/effect/key, malformed/nonempty `markers` (including scalar and `真名解放`), malformed target/cost/create/modifier/lifecycle/response/limit/visibility containers, nonpositive/noninteger/non-number amounts, historical raw `lose_victory_points` / `thenIfAnyLost` / `event_combat_winners`, and the dedicated token hidden in a forbidden container; explicit empty `markers: []` remains accepted;
 - normal `5 -> 3` loser deduction and same-result winner `+2`;
 - unrelated player receives no reward;
 - `1 -> 0` still rewards the fixed `+2`;

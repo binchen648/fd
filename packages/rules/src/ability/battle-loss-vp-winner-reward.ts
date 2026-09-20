@@ -56,6 +56,7 @@ export function isAcceptedBattleLossVpWinnerRewardAbility(
     'id', 'kind', 'printedClause', 'markers', 'activation', 'conditions', 'targets', 'effects', 'cost', 'creates',
     'ruleModifiers', 'lifecycle', 'responseWindow', 'limit', 'visibility', 'execution',
   ]) || raw.kind !== 'forced_trigger') return false;
+  if (!exactEmptyArray(raw, 'markers')) return false;
 
   const activation = node(raw.activation);
   if (!exactKeys(activation, ['trigger']) || activation.trigger !== 'after_controller_loses_battle') return false;

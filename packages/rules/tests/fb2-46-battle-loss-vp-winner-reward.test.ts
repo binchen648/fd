@@ -126,6 +126,11 @@ describe('P3-FB2-46 battle-loss VP then same-result winners reward', () => {
     expect(compiled.execution.mode).toBe('automatic');
     expect(rules.isAcceptedBattleLossVpWinnerRewardAbility(compiled, 'compiled')).toBe(true);
     expect(rules.battleLossVpWinnerRewardAmounts(compiled)).toEqual({ lossAmount: 2, winnerRewardAmount: 2 });
+
+    const explicitEmptyMarkers = structuredClone(ability());
+    explicitEmptyMarkers.markers = [];
+    expect(rules.isAcceptedBattleLossVpWinnerRewardAbility(explicitEmptyMarkers, 'authoring')).toBe(true);
+    expect(gatewayReport(explicitEmptyMarkers)).toEqual([]);
   });
 
   it('fails closed through one gateway for malformed envelopes, containers, amounts, and forbidden raw vocabulary', () => {
@@ -150,6 +155,14 @@ describe('P3-FB2-46 battle-loss VP then same-result winners reward', () => {
     const extraTopLevelKey = structuredClone(ability());
     extraTopLevelKey.unexpectedSemanticPayload = true;
     malformed.push(extraTopLevelKey);
+
+    const scalarMarkers = structuredClone(ability());
+    scalarMarkers.markers = 'bad-scalar';
+    malformed.push(scalarMarkers);
+
+    const trueNameMarkers = structuredClone(ability());
+    trueNameMarkers.markers = ['真名解放'];
+    malformed.push(trueNameMarkers);
 
     for (const [field, value] of [
       ['targets', {}], ['targets', 'bad'],
