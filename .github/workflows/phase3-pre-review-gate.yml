@@ -1,0 +1,37 @@
+name: Phase 3 Pre-Review Gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase3-pre-review-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phase3-promotion-policy:
+    name: Phase 3 Promotion Lane / policy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate Phase 3 task manifest policy
+        run: npm run phase3:ci-gate
+
+      - name: Run Phase 3 governance focused tests
+        run: npx vitest run scripts/tests/phase3-preflight.test.ts
