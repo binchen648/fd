@@ -5609,3 +5609,14 @@ Read: `docs/reports/2026-09-20-p3-a-r92-fb2-44-acceptance-synchronization.md`
 Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #401 exact Candidate `fe0d89be242b46ee0834544573bede6f3c73be5d`, backed by canonical evidence `https://github.com/binchen648/fd/pull/401#issuecomment-5749622195`. Accepted capability is only the identity-free same-battlefield while-active exact `face_up_cards_per_round=set(1)` seam with server-owned completed face-up counting and authoritative fail-closed play gateways.
 
 FB2-44 earns zero migration credit; formal migration remains **`146/944`**, with **`798`** remaining. Current authoring overlap remains `141/944`, duplicates `0`, and Leonidas s1 remains absent. PR #401 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.leonidas.skill.sc-leonidas-1`; dispatch singleton S only if mechanically zero-gap.
+## TASK P3-A-R92-LEONIDAS-S1-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r92-leonidas-s1-consumer-migration-dispatch`
+Base: exact R92 FB2-44 acceptance sync `978e2e70588bf6f002c42b3a6b3d47cc7919eb91`
+Read: `docs/reports/2026-09-20-p3-a-r92-leonidas-s1-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.leonidas.skill.sc-leonidas-1` (`炎门守护者`), now mechanically `S_READY_NOW` after accepted FB2-44. Whole-card read-only re-overlay returns loader `report=[]`, all-automatic execution, structural true-name declaration on use, exact same-battlefield one-face-up-per-round enforcement, face-down/outside-location negatives, and real authoritative controller movement closing the source while opponent movement does not. No additional runtime seam is required.
+
+Base frozen overlap is **`141/944`**, duplicates `0`; Candidate must be exactly **`142/944`**, exact +1 Leonidas s1 with zero removals/duplicates and no second frozen identity. Formal migration remains **`146/944`**, remaining **`798`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
