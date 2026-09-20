@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.darnic",
+  "name": "达尼克·普雷斯通",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1; Locked Reference is used only for owner/static metadata. Current execution uses already accepted generic trigger, response-window, condition, and resource primitives."
+  },
+  "cards": [
+    {
+      "id": "master.darnic.skill.s1a",
+      "aliases": ["s1a"],
+      "legacyId": "s1a",
+      "name": "噬魂者",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.darnic" },
+      "printedText": "当你赢得一场战斗后，你可以将你的魔力设为4点。\n回合结束时，若你的魔力小于等于2，失去2点战果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "soul-eater-win-set-mana",
+          "kind": "optional_trigger",
+          "printedClause": "当你赢得一场战斗后，你可以将你的魔力设为4点。",
+          "activation": { "trigger": "after_controller_wins_battle" },
+          "conditions": [{ "type": "source_owned" }],
+          "targets": [],
+          "effects": [{ "type": "set_mana", "player": "controller", "amount": 4 }],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "opens": "after_controller_wins_battle",
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "soul-eater-round-end-loss",
+          "kind": "forced_trigger",
+          "printedClause": "回合结束时，若你的魔力小于等于2，失去2点战果。",
+          "activation": { "trigger": "round_end" },
+          "conditions": [
+            { "type": "source_owned" },
+            {
+              "type": "lte",
+              "left": { "var": "controller.availableMana" },
+              "right": { "op": "const", "value": 2 }
+            }
+          ],
+          "targets": [],
+          "effects": [{ "type": "adjust_victory_points", "player": "controller", "amount": -2 }],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/达尼克·普雷斯通.png",
+            "locator": "master.darnic/达尼克·普雷斯通"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.darnic/s1a"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[23].abilities[0].printedClause",
+            "sha256": "464fd9246076fc8c86029d2c63bbbbe81df7d31390196595f2e3b94c4a79a02b"
+          },
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[23].abilities[1].printedClause",
+            "sha256": "7a159e392ad4e1dcb5ad3edf73800151c33353a2bb39da2f01eebeb92bdf64b4"
+          }
+        ],
+        "f1FullPrintedTextSha256": "088a6c3e26174bb98ead15d585dc8cc408d6925acd3b0405dd4f62ab1c10653e",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s1a",
+          "class": "Master",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动",
+          "attributes": []
+        },
+        "acceptedContracts": {
+          "battleWinTrigger": "GENERIC_TRIGGER_GATEWAY",
+          "optionalResponseWindow": "GENERIC_PENDING_INTERACTION",
+          "setMana": "GENERIC_RESOURCE_NUMERIC",
+          "roundEndTrigger": "GENERIC_TRIGGER_GATEWAY",
+          "manaMetricCompare": "GENERIC_CONDITION_EVALUATION",
+          "victoryPointAdjustment": "GENERIC_RESOURCE_NUMERIC"
+        }
+      }
+    }
+  ]
+}
