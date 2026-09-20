@@ -269,7 +269,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (n.type && !supportedTypes.has(str(n.type))) issue(`${path}.type`, `Unmapped type: ${str(n.type)}`, abilityId);
       if (n.op && !formulaOps.has(str(n.op))) issue(`${path}.op`, `Unmapped formula: ${str(n.op)}`, abilityId);
       const serverMetric = ['controller.availableMana', 'controller.deployment_bonus', 'consecutive_play_rounds', 'game.round_number',
-        'controller.movement_distance_this_round',
+        'source_card_active_round_count', 'controller.movement_distance_this_round',
         'controller.battlefields_passed_or_stayed_this_round'].includes(str(n.var ?? n.name));
       if ((n.var !== undefined || n.op === 'var') && !serverMetric &&
         !(abilityId && boundVariables.get(abilityId)?.includes(str(n.var ?? n.name)))) {
