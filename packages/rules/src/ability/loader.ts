@@ -13,6 +13,7 @@ import { isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, OUTER_GO
 import { classifyAcceptedSkillUseForbidModifier } from './skill-use-forbid';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './deployment-destinations';
 import { isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
+import { isAcceptedCurrentRoundCombatWinAbsenceCondition } from './current-round-combat-win-condition';
 import {
   isGameStartPlayerStatusAssignmentCandidate,
   isGameStartPlayerStatusAssignmentSemantic,
@@ -258,8 +259,14 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (!value || typeof value !== 'object') return;
       const n = node(value);
       if (n.type === 'player_flag_number_not_current_round') {
-        if (!path.startsWith('conditions')) issue(path, 'Current-round combat-loss absence condition is supported only under ability conditions', abilityId);
-        else if (!isAcceptedCurrentRoundCombatLossAbsenceCondition(n)) issue(path, 'Unsupported current-round combat-loss absence condition shape', abilityId);
+        if (!path.startsWith('conditions')) issue(path, n.key === 'combatWinRound'
+          ? 'Current-round combat-win absence condition is supported only under ability conditions'
+          : 'Current-round combat-loss absence condition is supported only under ability conditions', abilityId);
+        else if (!isAcceptedCurrentRoundCombatLossAbsenceCondition(n) && !isAcceptedCurrentRoundCombatWinAbsenceCondition(n)) {
+          issue(path, n.key === 'combatWinRound'
+            ? 'Unsupported current-round combat-win absence condition shape'
+            : 'Unsupported current-round combat-loss absence condition shape', abilityId);
+        }
         return;
       }
       if (n.type === 'add_status' && !path.startsWith('effects')) {

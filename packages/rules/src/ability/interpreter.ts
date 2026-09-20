@@ -23,6 +23,11 @@ import { applyOuterGodLifeUse, isOuterGodLifeAbilityCandidate, isOuterGodLifeAbi
 import { classifyAcceptedSkillUseForbidModifier, definitionHasStructuralTrueNameRelease, isAcceptedStaticWhileActiveSkillUseForbidAbility } from './skill-use-forbid';
 import { currentRoundCombatLossAbsent, isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 import {
+  currentRoundCombatWinAbsent,
+  isAcceptedCurrentRoundCombatWinAbsenceCondition,
+  recordCurrentRoundCombatWinsFromBattleResult,
+} from './current-round-combat-win-condition';
+import {
   assignGameStartPlayerStatuses,
   gameStartPlayerStatusAssignments,
   isGameStartPlayerStatusAssignmentCandidate,
@@ -658,8 +663,11 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'event_player_won_combat':
     case 'event_player_lost_combat': return eventCombatOutcomeCondition(s, ctx, c);
     case 'player_flag_number_not_current_round': {
-      if (!isAcceptedCurrentRoundCombatLossAbsenceCondition(c)) return reject('unsupported', 'Unsupported current-round combat-loss absence condition shape');
-      return currentRoundCombatLossAbsent(s, ctx.controllerId, ctx.event);
+      if (isAcceptedCurrentRoundCombatLossAbsenceCondition(c)) return currentRoundCombatLossAbsent(s, ctx.controllerId, ctx.event);
+      if (isAcceptedCurrentRoundCombatWinAbsenceCondition(c)) return currentRoundCombatWinAbsent(s, ctx.controllerId, ctx.event);
+      return reject('unsupported', c.key === 'combatWinRound'
+        ? 'Unsupported current-round combat-win absence condition shape'
+        : 'Unsupported current-round combat-loss absence condition shape');
     }
     case 'controller_seat_in_first_half': {
       const activePlayers = s.players.filter(candidate => candidate.status === 'active').sort((a, b) => a.seat - b.seat);
@@ -3107,6 +3115,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   r.processedEvents.push(event.id);
   settlePendingRulerSealRewards(s, event);
   try { settlePendingSourceCardReturns(s, event); } catch (error) { reject('resolution_failed', error instanceof Error ? error.message : 'Source-card return failed'); }
+  if (event.type === 'after_battle_result_determined') recordCurrentRoundCombatWinsFromBattleResult(s, event);
   if (event.type === 'round_end') consumeDelayedActivations(s, event);
   const triggered = collectTriggeredAbilities(s, event);
   for (const t of triggered) {

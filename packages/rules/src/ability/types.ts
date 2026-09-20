@@ -246,6 +246,8 @@ export interface AbilityRuntime {
   cardState: Record<string, CardRuntimeState>;
   /** Server-owned opaque player-status keys. This is distinct from PlayerState active/eliminated status. */
   playerStatusKeysByPlayer?: Record<PlayerId, string[]>;
+  /** Narrow identity-free last combat-win round ledger, written only from authoritative battle-result events. */
+  combatWinRoundByPlayer?: Record<PlayerId, number>;
   ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
   pendingDelayedActivations?: PendingDelayedActivation[];
   /** Server-owned pre-scoring battle-local defeat requests staged by the exact Presence Concealment response. */

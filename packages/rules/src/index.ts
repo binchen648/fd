@@ -38,4 +38,5 @@ export * from './ability/outer-god-life';
 export * from './ability/skill-use-forbid';
 export * from './ability/deployment-destinations';
 export * from './ability/current-round-combat-loss-condition';
+export * from './ability/current-round-combat-win-condition';
 export * from './ability/game-start-player-status-assignment';
