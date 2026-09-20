@@ -5567,16 +5567,16 @@ Formal ledger currently records `145/944` after R89, but Darius s1's earlier `+1
 ## TASK P3-A-R81-TRIGGERED-RESIDUAL-CLOSE-REVIEW-SYNC
 
 Owner: Codex A
-Status: `B_PUBLISHED_R_PENDING`
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 Branch: `codex/a-p3-r81-close-review-sync`
 Read: `docs/reports/2026-09-20-p3-a-r81-triggered-residual-close-review-sync.md`
 
-The integration Candidate `2c9b19a` is published as PR #397 with exact parent `64b4bb7`. The user previously reported R approval, but the PR currently contains only an explicit independent-review request and no R verdict. Fresh A focused tests pass 19/19 and typecheck passes. Do not promote Gate status, formalize runtime acceptance, or release S until the exact Base/Candidate R decision is recorded. Migration delta is zero.
+The integration Candidate `2c9b19a` is published as PR #397 with exact parent `64b4bb7`. Independent R verdict `https://github.com/binchen648/fd/pull/397#issuecomment-5749018881` binds that exact Base/Candidate and returns `IMPLEMENTATION_ACCEPTED_CANDIDATE`. This accepts only the zero-credit shared battle-end residual CLOSE capability; it does not promote Gate C, Phase PASS, Release Ready, or Darius migration credit. S recertification is released.
 
 ## TASK P3-S-R81-DARIUS-S1-RECERTIFICATION
 
 Owner: Codex S
-Status: `READY_AFTER_B2_REVIEW_BINDING`
+Status: `READY`
 Handoff: `docs/reports/2026-09-20-p3-a-r81-darius-s1-recertification-handoff.md`
 
-After B2 integration is published and exact R acceptance is bound, recertify the existing frozen `servant.darius.skill.sc-darius-1` against that runtime. The prior source JSON is not to be rewritten merely to pass tests. Prove typed CLOSE consumption in real post-scoring MatchSession, owner-only visibility, one `source_card_closed`, stale replay rejection, invalid source fail-closed, and existing no-loss/loss semantics. S must not change runtime or add a second migration identity. R independently reviews the integrated S result; A then reconciles the previously contested Darius s1 credit without awarding a second +1.
+Recertify the existing frozen `servant.darius.skill.sc-darius-1` against accepted B2 Candidate `2c9b19a`. The prior source JSON is not to be rewritten merely to pass tests. Prove typed CLOSE consumption in real post-scoring MatchSession, owner-only visibility, one `source_card_closed`, stale replay rejection, invalid source fail-closed, and existing no-loss/loss semantics. S must not change runtime or add a second migration identity. R independently reviews the integrated S result; A then reconciles the previously contested Darius s1 credit without awarding a second +1.

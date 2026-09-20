@@ -1,12 +1,12 @@
 # P3-A R81 Triggered Residual CLOSE Review Synchronization
 
 - Role: Codex A
-- Status: `B_PUBLISHED_R_PENDING`
+- Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - Task: `P3-B2-R81-TRIGGERED-RESIDUAL-CLOSE-INTEGRATION`
 - Exact B Base: `64b4bb7a8b1379dd858c746e77f503b271950ec1`
 - Published B Candidate: `2c9b19a9bae7d5228554c2526ecf1ce4efb158ba`
 - PR: `https://github.com/binchen648/fd/pull/397`
-- Review Input: user reported approval, but no independent verdict is currently attached to PR #397
+- Independent R Verdict: `https://github.com/binchen648/fd/pull/397#issuecomment-5749018881`
 - Formal Gate Promotion: none
 - Migration Credit Delta: zero
 
@@ -25,14 +25,12 @@ PASS
 
 The focused tests include real MatchSession battle resolution, owner-only post-close visibility, exactly one `source_card_closed`, stale/non-terminal rejection, invalid source states, and on-play CLOSE regression. These are A-observed test results, not a substitute for independent R review.
 
-## Evidence Still Missing
+## Independent Review Binding
 
-- PR #397's current comment `https://github.com/binchen648/fd/pull/397#issuecomment-5748948412` is a review request and expressly says it is not an R PASS or Gate promotion. Its implementer verification reports focused 40/40, official CI 1167/1167, typecheck, content validation, and determinism PASS; these are not independent R results.
-- PR #397 currently has no independent R review or verdict comment binding `64b4bb7` to `2c9b19a`.
-- Broad CI, deterministic content generation, and Darius s1 integrated recertification were not rerun by A.
+Independent R binds exact Base `64b4bb7a8b1379dd858c746e77f503b271950ec1` and exact Candidate `2c9b19a9bae7d5228554c2526ecf1ce4efb158ba`, returning `IMPLEMENTATION_ACCEPTED_CANDIDATE`. R reports focused integration/Artoria/battle-terminal 26/26, close-forbid/Nero/Darius 21/21, official CI 1167/1167, typecheck, content validation, generated determinism, and diff check passing. R independently checked malformed near-matches, terminal provenance, source corruption, lifecycle rollback, once-only closure, owner-only projection, and loaded Darius s1 candidate/exact classification.
 
-Therefore the earlier user-reported pass remains unbound; the current actionable state is `B_PUBLISHED_R_PENDING`, not formal `IMPLEMENTATION_ACCEPTED_CANDIDATE`. R should attach its exact Base/Candidate verdict to PR #397. A can then close this evidence-binding hold without redoing B runtime work.
+The acceptance boundary is zero-credit shared capability integration only. It grants no authoring acceptance, additional Darius migration credit, browser Gate C, Phase PASS, or Release Ready. A releases S recertification without changing the ledger.
 
 ## Accounting And Next Dependency
 
-Latest remote formal ledger reports `145/944` after R89, but the earlier Darius s1 `+1` remains separately contested by the legacy-CLOSE finding. This task adds zero migration credit and does not change that ledger. After evidence binding, S performs Darius s1 recertification, R judges the integrated card behavior, and A reconciles the disputed credit; the count must not receive another +1 for the same identity.
+Latest remote formal ledger reports `145/944` after R89, but the earlier Darius s1 `+1` remains separately contested by the legacy-CLOSE finding. This task adds zero migration credit and does not change that ledger. S now performs Darius s1 recertification, R judges the integrated card behavior, and A reconciles the disputed credit; the count must not receive another +1 for the same identity.
