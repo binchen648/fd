@@ -5750,3 +5750,15 @@ Read: `docs/reports/2026-09-21-p3-a-fb2-47-controller-defeated-vp-reward-dispatc
 Result required: implement only the exact identity-free authoritative controller-defeated fact -> fixed controller VP reward seam released by A. Add one trusted defeated trigger derived from the frozen unsuppressed loser fact and process it before that controller's `after_controller_loses_battle`; admit only the exact forced-trigger + `event_player_is_controller` + fixed positive controller `adjust_victory_points` envelope. Fail closed on malformed authoring or battle provenance. Do not add generic client `player.defeated`, generic `event_type_is`, persistent defeated state, generic defeat engine, identity routing, consumer authoring, or unrelated VP/battle semantics.
 
 This is zero-credit capability work: formal migration remains **`149/944`**, **`795`** remaining. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.nobunaga.skill.sc-nobunaga-3`; singleton S is allowed only if both frozen clauses and their ordering are then mechanically zero-gap.
+
+## TASK P3-A-R98-FB2-47-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r98-fb2-47-acceptance-sync`
+Base: exact accepted Candidate `79e8c89202acef86b522aba4695d8b97961c71fd`
+Read: `docs/reports/2026-09-21-p3-a-r98-fb2-47-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #411 exact Candidate `79e8c89202acef86b522aba4695d8b97961c71fd`, backed by canonical evidence `https://github.com/binchen648/fd/pull/411#issuecomment-5753617134`. The prior Candidate `e4dd39b7afc5a5801ff4e2c855fdedf611895e8a` was rejected only for the frozen-root provenance substitution gap; the accepted revision binds controller-defeated facts to the immutable first authoritative battle-result snapshot without widening authoring or defeat semantics.
+
+FB2-47 earns zero migration credit; formal migration remains **`149/944`**, with **`795`** remaining. Material authoring overlap remains **`144/944`**, duplicates **`0`**, and no consumer identity is added. PR #411 remains OPEN, unmerged and unretargeted. Next action is a fresh complete-card reconstruction of `servant.nobunaga.skill.sc-nobunaga-3` on this synchronized runtime; dispatch singleton S only if both frozen clauses, their ordering, static metadata and full runtime behavior are mechanically zero-gap.
