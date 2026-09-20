@@ -5738,3 +5738,15 @@ Read: `docs/reports/2026-09-21-p3-a-r97-fb2-46-acceptance-synchronization.md`
 Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #410 exact Candidate `43ba2b1b7fc8dc53a9602b70dcf869f50784a58d`, backed by canonical evidence `https://github.com/binchen648/fd/pull/410#issuecomment-5753024529`. The prior Candidate `2c4d46f8a3df3ffdc9e48f992308ae5c7ecdfb49` was rejected only for the raw `markers` fail-closed gap; the accepted revision closes that exact finding without widening loader/runtime settlement behavior. Accepted capability remains only the bounded identity-free trusted battle-loss VP transaction: floor the losing controller's fixed VP loss at zero and, only on actual positive loss, grant a fixed reward once to every winner from the same frozen battle result.
 
 FB2-46 earns zero migration credit; formal migration remains **`149/944`**, with **`795`** remaining. Material authoring overlap remains **`144/944`**, duplicates **`0`**, and no consumer identity is added. PR #410 remains OPEN, unmerged and unretargeted. Next action is a fresh complete-card reconstruction of `servant.nobunaga.skill.sc-nobunaga-3` on this synchronized runtime; dispatch singleton S only if the full card is mechanically zero-gap, otherwise record the residual blocker and continue migration-credit-first probing.
+
+## TASK P3-FB2-47-CONTROLLER-DEFEATED-VP-REWARD
+
+Owner: Codex B2
+Status: `READY`
+Branch: `codex/b2-p3-fb2-47-controller-defeated-vp-reward`
+Base: exact A dispatch Candidate on `codex/a-p3-fb2-47-controller-defeated-vp-dispatch`
+Read: `docs/reports/2026-09-21-p3-a-fb2-47-controller-defeated-vp-reward-dispatch.md`
+
+Result required: implement only the exact identity-free authoritative controller-defeated fact -> fixed controller VP reward seam released by A. Add one trusted defeated trigger derived from the frozen unsuppressed loser fact and process it before that controller's `after_controller_loses_battle`; admit only the exact forced-trigger + `event_player_is_controller` + fixed positive controller `adjust_victory_points` envelope. Fail closed on malformed authoring or battle provenance. Do not add generic client `player.defeated`, generic `event_type_is`, persistent defeated state, generic defeat engine, identity routing, consumer authoring, or unrelated VP/battle semantics.
+
+This is zero-credit capability work: formal migration remains **`149/944`**, **`795`** remaining. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.nobunaga.skill.sc-nobunaga-3`; singleton S is allowed only if both frozen clauses and their ordering are then mechanically zero-gap.
