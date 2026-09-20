@@ -185,6 +185,32 @@ describe('P3-FB2-38 current-round combat-loss absence condition', () => {
       expect(trigger(state, malformed)).toEqual([]);
     }
   });
+  it('fails closed for sparse terminal provenance through real trigger collection', () => {
+    const state = setup();
+    state.battleResults = [result('miyama_town', ['p1', 'p2'], ['p1'])];
+    const good = terminalEvent(state);
+    const sparseParticipants = Array(1) as string[];
+    const sparseWinners = Array(1) as string[];
+    const sparseAggregate = Array(1) as string[];
+    const sparseOutcome = {
+      ...good,
+      battleParticipantIds: sparseAggregate,
+      battleOutcomes: good.battleOutcomes!.map((outcome) => ({
+        ...outcome,
+        participantPlayerIds: sparseParticipants,
+        winnerPlayerIds: sparseWinners,
+      })),
+    } as AbilityEvent;
+
+    expect(() => trigger(state, sparseOutcome)).not.toThrow();
+    expect(trigger(state, sparseOutcome)).toEqual([]);
+
+    for (const key of ['battleIds', 'resultIds', 'scoringReceiptIds'] as const) {
+      const sparseTopLevelIds = { ...good, [key]: Array(1) } as unknown as AbilityEvent;
+      expect(() => trigger(state, sparseTopLevelIds)).not.toThrow();
+      expect(trigger(state, sparseTopLevelIds)).toEqual([]);
+    }
+  });
   it('fails closed for stale, malformed, non-terminal, or runtime near-match contexts', () => {
     const state = setup();
     state.battleResults = [result('miyama_town', ['p1', 'p2'], ['p1'])];

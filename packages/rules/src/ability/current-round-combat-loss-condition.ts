@@ -5,8 +5,16 @@ import type { AbilityEvent, PlayerId, RuleNode } from './types';
 const CONDITION_TYPE = 'player_flag_number_not_current_round';
 const COMBAT_LOSS_ROUND_KEY = 'combatLossRound';
 
+function isDenseStringArray(actual: unknown): actual is string[] {
+  if (!Array.isArray(actual)) return false;
+  for (let index = 0; index < actual.length; index += 1) {
+    if (!Object.prototype.hasOwnProperty.call(actual, index) || typeof actual[index] !== 'string') return false;
+  }
+  return true;
+}
+
 function exactStringSet(actual: unknown, expected: string[]): boolean {
-  if (!Array.isArray(actual) || actual.some((value) => typeof value !== 'string')) return false;
+  if (!isDenseStringArray(actual)) return false;
   return actual.length === expected.length && new Set(actual).size === actual.length && actual.every((value) => expected.includes(value));
 }
 
@@ -39,9 +47,8 @@ export function currentRoundCombatLossAbsent(
   const resultIds = event.resultIds;
   const scoringReceiptIds = event.scoringReceiptIds;
   const outcomes = event.battleOutcomes;
-  if (!Array.isArray(battleIds) || !Array.isArray(resultIds) || !Array.isArray(scoringReceiptIds) ||
-      !Array.isArray(outcomes) || battleIds.some((value) => typeof value !== 'string') ||
-      resultIds.some((value) => typeof value !== 'string') || scoringReceiptIds.some((value) => typeof value !== 'string') ||
+  if (!isDenseStringArray(battleIds) || !isDenseStringArray(resultIds) || !isDenseStringArray(scoringReceiptIds) ||
+      !Array.isArray(outcomes) ||
       battleIds.length !== outcomes.length || resultIds.length !== outcomes.length ||
       scoringReceiptIds.length !== outcomes.length || new Set(battleIds).size !== battleIds.length ||
       new Set(resultIds).size !== resultIds.length || new Set(scoringReceiptIds).size !== scoringReceiptIds.length) return false;
@@ -61,16 +68,16 @@ export function currentRoundCombatLossAbsent(
         (previousBattleOrdinal !== undefined && battleOrdinalValue !== previousBattleOrdinal + 1) ||
         resultIds[index] !== `${battleId}:result` ||
         scoringReceiptIds[index] !== `${phaseId}:score:${outcome.battlefieldId}` ||
-        !Array.isArray(participants) || participants.length === 0 || participants.some((value) => typeof value !== 'string' || value.length === 0 || !knownPlayerIds.has(value)) ||
+        !isDenseStringArray(participants) || participants.length === 0 || participants.some((value) => value.length === 0 || !knownPlayerIds.has(value)) ||
         new Set(participants).size !== participants.length ||
-        !Array.isArray(winners) || winners.length === 0 || winners.some((value) => typeof value !== 'string' || value.length === 0 || !knownPlayerIds.has(value)) ||
+        !isDenseStringArray(winners) || winners.length === 0 || winners.some((value) => value.length === 0 || !knownPlayerIds.has(value)) ||
         new Set(winners).size !== winners.length || winners.some((winnerId) => !participants.includes(winnerId))) return false;
     previousBattleOrdinal = battleOrdinalValue;
     representedParticipants.push(...participants);
   }
 
-  if (!Array.isArray(event.battleParticipantIds) ||
-      event.battleParticipantIds.some((value) => typeof value !== 'string' || value.length === 0 || !knownPlayerIds.has(value)) ||
+  if (!isDenseStringArray(event.battleParticipantIds) ||
+      event.battleParticipantIds.some((value) => value.length === 0 || !knownPlayerIds.has(value)) ||
       !exactStringSet(event.battleParticipantIds, [...new Set(representedParticipants)])) return false;
 
   return !outcomes.some((outcome) => {
