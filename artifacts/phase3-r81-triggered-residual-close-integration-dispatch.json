@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "fd-phase3-capability-integration-dispatch-v1",
+  "date": "2026-09-20",
+  "owner": "Codex A",
+  "task": "P3-B2-R81-TRIGGERED-RESIDUAL-CLOSE-INTEGRATION",
+  "status": "READY_AFTER_HOT_FILE_LEASE",
+  "withdrawnAlias": "P3-FB2-39-TRIGGERED-RESIDUAL-CLOSE",
+  "collidingFormalTask": "P3-FB2-39-GAME-START-STATUS-ASSIGNMENT",
+  "acceptedRuntimeBase": "64b4bb7a8b1379dd858c746e77f503b271950ec1",
+  "localCandidate": "f4d67cc",
+  "localCandidateBranch": "codex/b-p3-fb2-39-triggered-residual-close",
+  "reviewEvidence": "USER_REPORTED_PASS_UNBOUND_TO_STABLE_REVIEW_URL",
+  "integrationConflict": ["packages/rules/src/ability/interpreter.ts"],
+  "migrationCreditDelta": 0,
+  "recordedFormalMigration": {"accepted": 145, "denominator": 944, "remaining": 799, "dariusS1CreditContested": true},
+  "requiredNext": ["B2 integrate on exact accepted runtime base", "R review exact integrated Base/Candidate", "A capability synchronization", "S Darius s1 recertification", "R reconcile Darius s1 verdict", "A migration accounting reconciliation"]
+}

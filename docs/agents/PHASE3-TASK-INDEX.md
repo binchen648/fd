@@ -5548,3 +5548,18 @@ Base: `64b4bb7a8b1379dd858c746e77f503b271950ec1`
 Read: `docs/reports/2026-09-20-p3-a-fb2-43-event-location-equals-controller-dispatch.md`
 
 Result: migration-credit-first delta proof keeps the current `S_READY_NOW` queue zero at **`145/944`** after Darius s2: FB2-42's only newly admitted frozen modifier occurrence was Darius s2 itself, now migrated, and its S branch added no runtime capability. Targeted closure probing selects `servant.siegfried.skill.sc-siegfried-2`; every normalized whole-card contract is already accepted except exact type-only `event_location_equals_controller`. Dispatch only that identity-free movement-event relation condition. FB2-43 earns zero migration credit; formal state remains **`145/944`**, **`799` remaining**.
+
+## TASK P3-B2-R81-TRIGGERED-RESIDUAL-CLOSE-INTEGRATION
+
+Owner: Codex B2 (runtime integration lane)
+Status: `READY_AFTER_HOT_FILE_LEASE`
+Coordinator Branch: `codex/a-p3-r81-close-integration-dispatch`
+Accepted Runtime Base: `64b4bb7a8b1379dd858c746e77f503b271950ec1` (R89 Darius s2 acceptance sync)
+Historical Local B Candidate: `f4d67cc` on `codex/b-p3-fb2-39-triggered-residual-close`
+Read: `docs/reports/2026-09-20-p3-a-r81-triggered-residual-close-integration-dispatch.md`
+
+The former `P3-FB2-39-TRIGGERED-RESIDUAL-CLOSE` name in A branch `a379a50` is a withdrawn alias: formal `P3-FB2-39` already belongs to game-start status assignment. Do not reuse it for commits, evidence IDs, tests, PRs, or migration credit. User reports that the local B Candidate was independently reviewed and passed, but no stable exact-SHA R review record is bound here; integration needs its own R review.
+
+Read-only `git merge-tree --write-tree 64b4bb7 f4d67cc` reports a content conflict in `packages/rules/src/ability/interpreter.ts`. B2 must own the hot-file lease and resolve this on a fresh integration branch; Codex A must not modify runtime. Preserve the identity-free combat-end residual CLOSE contract, typed owner-only visibility and `source_card_closed` event, rollback, stale replay rejection, and existing on-play CLOSE behavior. No S authoring or generated-content changes. R must review the exact integrated Base/Candidate before A synchronizes capability and reopens Darius s1 recertification.
+
+Formal ledger currently records `145/944` after R89, but Darius s1's earlier `+1` is under a separate same-SHA semantic review conflict. Do not award new credit or silently rewrite historical counts until that conflict is reconciled by independent R on the integrated runtime.
