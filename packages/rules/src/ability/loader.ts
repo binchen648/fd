@@ -15,6 +15,7 @@ import { isAcceptedControlledCardCloseForbidModifier } from './card-close-forbid
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './deployment-destinations';
 import { isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 import { isAcceptedCurrentRoundCombatWinAbsenceCondition } from './current-round-combat-win-condition';
+import { isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import {
   isGameStartPlayerStatusAssignmentCandidate,
   isGameStartPlayerStatusAssignmentSemantic,
@@ -190,6 +191,8 @@ const supportedTypes = new Set([
   'source_active', 'source_owned',
   // FB2-33 event combat outcome conditions
   'event_player_won_combat', 'event_player_lost_combat',
+  // FB2-43 exact movement-event location relation condition
+  'event_location_equals_controller',
   // FB2-29 source-owner relational power/return primitives
   'adjust_round_total_power', 'schedule_source_card_return',
   // FB2-39 exact game-start player-status assignment
@@ -312,6 +315,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (['event_player_won_combat', 'event_player_lost_combat'].includes(str(n.type))) {
         if (!path.startsWith('conditions')) issue(path, 'Event combat outcome condition is supported only under ability conditions', abilityId);
         if (!Object.keys(n).every((key) => key === 'type')) issue(path, 'Event combat outcome condition must contain only type', abilityId);
+      }
+      if (str(n.type) === 'event_location_equals_controller') {
+        if (!path.startsWith('conditions')) issue(path, 'Event-location relation condition is supported only under ability conditions', abilityId);
+        if (!isAcceptedEventLocationEqualsControllerCondition(n)) issue(path, 'Event-location relation condition must contain only type', abilityId);
       }
       if (n.type === 'base_power_at_most' && (typeof n.value !== 'number' || !Number.isFinite(n.value))) issue(`${path}.value`, 'Base power bound must be finite', abilityId);
       if (['move_card', 'move_source_card', 'move_all_remaining', 'create_card'].includes(str(n.type)) &&

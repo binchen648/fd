@@ -23,6 +23,7 @@ import { applyOuterGodLifeUse, isOuterGodLifeAbilityCandidate, isOuterGodLifeAbi
 import { classifyAcceptedSkillUseForbidModifier, definitionHasStructuralTrueNameRelease, isAcceptedStaticWhileActiveSkillUseForbidAbility } from './skill-use-forbid';
 import { isCardCloseForbidden } from './card-close-forbid';
 import { currentRoundCombatLossAbsent, isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
+import { eventLocationEqualsController, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import {
   currentRoundCombatWinAbsent,
   isAcceptedCurrentRoundCombatWinAbsenceCondition,
@@ -663,6 +664,12 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'source_owned': return sourceStateCondition(s, ctx, c);
     case 'event_player_won_combat':
     case 'event_player_lost_combat': return eventCombatOutcomeCondition(s, ctx, c);
+    case 'event_location_equals_controller': {
+      if (!isAcceptedEventLocationEqualsControllerCondition(c)) {
+        return reject('unsupported', 'Unsupported event-location relation condition shape');
+      }
+      return eventLocationEqualsController(s, ctx.controllerId, ctx.event);
+    }
     case 'player_flag_number_not_current_round': {
       if (isAcceptedCurrentRoundCombatLossAbsenceCondition(c)) return currentRoundCombatLossAbsent(s, ctx.controllerId, ctx.event);
       if (isAcceptedCurrentRoundCombatWinAbsenceCondition(c)) return currentRoundCombatWinAbsent(s, ctx.controllerId, ctx.event);
@@ -1040,7 +1047,10 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
       if (['on_card_played', 'on_use_declared'].includes(event.type) && event.sourceCardId !== c.instanceId &&
         !a.conditions.some((condition) => condition.type === 'event_played_card_has_attribute') &&
         !isAlterEgoTransformSemantic(a)) continue;
-      if (event.type.startsWith('after_controller_') && event.playerId !== c.controllerPlayerId) continue;
+      const allowsOpponentMovementEvent = event.type === 'after_controller_enters_location' &&
+        a.conditions.some((entry) => isEventPlayerRelationCondition(entry) && entry.type === 'event_player_is_opponent');
+      if (event.type.startsWith('after_controller_') && event.playerId !== c.controllerPlayerId &&
+        !allowsOpponentMovementEvent) continue;
       found.push({ cardInstanceId: c.instanceId, abilityId: a.id, controllerId: c.controllerPlayerId });
     }
   }
