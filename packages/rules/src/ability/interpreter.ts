@@ -1387,6 +1387,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       const source = card(s, ctx.sourceCardId);
       if (source.controllerPlayerId !== p.id || source.zone !== 'hand') reject('illegal_action', 'Source card is not playable from hand');
       if (isRequiredAdditionalPlayCard(s, ctx.sourceCardId)) reject('append_only', 'Required additional-play cards are not effect-playable');
+      if (effect.face !== 'face_down' && faceUpCardPlayLimitReached(s, p.id)) reject('face_up_card_play_limit_reached', 'Face-up card play limit reached for this round');
       moveCard(s, ctx.sourceCardId, cardPlayClassification(s, ctx.sourceCardId).destinationZone);
       r.cardState[ctx.sourceCardId] = { active: effect.face === 'face_down' ? false : true, faceDown: effect.face === 'face_down', playedRound: s.round.roundNumber };
       if (effect.face === 'face_down') source.visibility = { scope: 'owner_only', ownerPlayerId: p.id };
@@ -2960,22 +2961,31 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   cleanupOngoing(s);
 }
 /** Server-only execution after discovery/trigger validation. Never accept an effect or context from the client. */
-function preflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+function countPreflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, effects: RuleNode[]): number {
   let additionalFaceUpCards = 0;
-  for (const effect of a.effects) {
+  for (const effect of effects) {
     if (effect.type === 'play_source_card' && effect.face !== 'face_down') {
       additionalFaceUpCards += 1;
       continue;
     }
     if (effect.type === 'play_selected_cards' && effect.face !== 'face_down') {
       additionalFaceUpCards += (ctx.selections[str(effect.target)] ?? []).length;
+      continue;
+    }
+    if (effect.type === 'branch') {
+      const branch = nodes(effect.branches).find(b => b.else !== undefined || condition(s, ctx, node(b.if)));
+      if (branch) additionalFaceUpCards += countPreflightFaceUpEffectPlays(s, ctx, nodes(branch.then ?? branch.else));
     }
   }
+  return additionalFaceUpCards;
+}
+
+function preflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  const additionalFaceUpCards = countPreflightFaceUpEffectPlays(s, ctx, [...a.effects, ...a.creates]);
   if (additionalFaceUpCards > 0 && faceUpCardPlayLimitReached(s, ctx.controllerId, additionalFaceUpCards)) {
     reject('face_up_card_play_limit_reached', 'Face-up card play limit reached for this round');
   }
 }
-
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');

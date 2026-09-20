@@ -55,8 +55,8 @@ The server-owned play gateway now enforces the live cap before mutation:
 - face-down play neither consumes nor is rejected by the face-up allowance;
 - multi-card/staged face-up batches are preflighted against aggregate remaining allowance before mana/card mutation and fail atomically;
 - `play_selected_cards` effect play reuses `playBatch`, so it cannot bypass the cap;
-- `executeAbility` performs a face-up effect-play preflight before mana, usage or source mutation, preventing a rejected effect route from polluting `usedAbilities` or costs;
-- the existing direct `play_source_card` trusted effect route now records a completed face-up play before its declaration/play events, so a successful source-card effect consumes the same per-round allowance and cannot be followed by another face-up play at the live battlefield.
+- `executeAbility` performs a recursive face-up effect-play preflight before mana, usage or source mutation, following the same selected `branch` semantics as execution so nested trusted play cannot bypass the cap;
+- the existing direct `play_source_card` trusted effect route now both fails closed at its source-mutation boundary when the cap is exhausted and records a successful completed face-up play before declaration/play events.
 
 Existing all-card counters, attack allowance semantics, face-down visibility, timing/mana gates, required-additional-play behavior and unrelated rule modifiers remain intact.
 
@@ -98,9 +98,22 @@ The FB2-44 focused suite proves:
 - a two-face-up-card batch is rejected before mutation;
 - staged batch confirmation cannot bypass the aggregate cap;
 - selected-card trusted effect play cannot bypass the cap and rejected effect play leaves caller state unchanged;
+- a loader-valid `branch -> play_source_card(face_up)` route is rejected before mana/usage/source mutation after the allowance is consumed;
 - a successful direct `play_source_card` face-up effect consumes the allowance before subsequent play checks.
 
 During focused validation an initial effect-play test exposed that rejection happened after `usedAbilities` mutation. The preflight was moved ahead of all ability cost/usage mutation and the test then passed. A later route audit found that successful direct `play_source_card` effects did not pass through `playBatch`; dedicated completed face-up counting plus a regression test closed that bypass before Candidate commit.
+
+## Reviewer revision response
+
+Fresh independent reviewer evidence for exact Base `24fb6d424625fd3cbfbfb4c7f7e56e3c05c6acd8` / prior Candidate `955b847d268b8facafdbd1bcffab5bce5319c39b` returned `IMPLEMENTATION_NEEDS_REVISION` at `https://github.com/binchen648/fd/pull/401#issuecomment-5749253308`.
+
+The single blocking finding was a loader-valid nested `branch -> play_source_card(face_up)` route that could bypass the live cap because the prior preflight scanned only top-level effects. The minimal revision:
+
+- recursively counts face-up trusted plays through the same selected `branch` path used by `executeEffects`;
+- retains preflight before cost/usage/source mutation for atomic rejection;
+- adds a direct fail-closed cap check immediately before trusted source-card movement as a local route guard;
+- adds a loader-valid branch-contained regression proving rejection leaves the complete caller state unchanged;
+- does not add a generic arbitrary play-limit/selector/conflict engine and does not change frozen authoring/product/client content.
 
 ## Validation
 
@@ -109,9 +122,9 @@ Fresh worktree dependencies were installed with `npm.cmd ci --ignore-scripts --o
 Validation on the final Candidate working tree:
 
 - `npm.cmd run typecheck` — PASS.
-- final FB2-44 + source-play focused verification — PASS, **2 files / 16 tests**.
-- rules `src/__tests__ + core + regression + FB2-43 + FB2-44` — PASS, **84 files / 514 tests**.
-- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **167 files / 1179 tests**.
+- final FB2-44 + source-play focused verification — PASS, **2 files / 17 tests**.
+- rules `src/__tests__ + core + regression + FB2-43 + FB2-44` — PASS, **84 files / 515 tests**.
+- `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **167 files / 1180 tests**.
 - `npm.cmd run content:validate` — PASS, **7 masters / 7 servants / 20 events / 0 blocking issues**.
 - `npm.cmd run verify:generated-content` — PASS with unchanged hashes:
   - library `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`;
@@ -131,6 +144,6 @@ The exact committed Candidate must receive a fresh independent read-only R revie
 
 Formal accepted verdict for this B2 is `IMPLEMENTATION_ACCEPTED_CANDIDATE`; revision verdict is `IMPLEMENTATION_NEEDS_REVISION`.
 
-Do not merge or retarget. Do not credit any frozen identity. On fresh R acceptance, A synchronizes FB2-44 with zero migration credit and mechanically re-overlays the complete `servant.leonidas.skill.sc-leonidas-1` card against the accepted runtime. Only if that whole card is mechanically zero-gap may A dispatch singleton S.
+Do not merge or retarget. Do not credit any frozen identity. After any fresh R acceptance, mechanically re-read the current repo contract/task/reports/PR state before deciding whether acceptance synchronization is required, whether any migration credit exists, and what task is formally released next.
 
-Long-term S gate: any later S must complete recertification and lock/submit its **Exact Base** and **Exact Candidate** before it is eligible for fresh independent R. An S lacking recertification or exact SHA lineage must not enter fresh R.
+Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。

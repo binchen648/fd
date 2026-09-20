@@ -8,6 +8,7 @@ const LIMIT_DEF = 'test.fb2-44.limit-source';
 const BASIC_DEF = 'test.fb2-44.basic';
 const EFFECT_DEF = 'test.fb2-44.effect-source';
 const SOURCE_PLAY_DEF = 'test.fb2-44.source-play';
+const BRANCH_SOURCE_PLAY_DEF = 'test.fb2-44.branch-source-play';
 const LIMIT_ID = 'limit-source-instance';
 const EFFECT_ID = 'effect-source-instance';
 
@@ -103,6 +104,13 @@ function sourcePlayAbility(): any {
   };
 }
 
+function branchSourcePlayAbility(): any {
+  const ability = sourcePlayAbility();
+  ability.id = 'branch-play-self-face-up';
+  ability.printedClause = 'pay 2 mana to play this source face up through a branch';
+  ability.effects = [{ type: 'branch', branches: [{ else: [{ type: 'play_source_card', face: 'face_up' }] }] }];
+  return ability;
+}
 function archive(modifier: any = exactModifier()): any {
   return {
     schemaVersion: 'fd-card-authoring-v1',
@@ -115,6 +123,7 @@ function archive(modifier: any = exactModifier()): any {
       card(BASIC_DEF, []),
       card(EFFECT_DEF, [effectAbility()]),
       card(SOURCE_PLAY_DEF, [sourcePlayAbility()]),
+      card(BRANCH_SOURCE_PLAY_DEF, [branchSourcePlayAbility()]),
     ],
   };
 }
@@ -322,6 +331,24 @@ describe('P3-FB2-44 same-battlefield face-up cards-per-round seam', () => {
       controllerId: 'p1',
       variables: {},
       selections: { selected_card: [effectTarget] },
+    })).toThrow(/face-up card play limit reached/i);
+    expect(state).toEqual(before);
+  });
+  it('rejects a loader-valid branch-contained trusted source play before any mutation', () => {
+    const state = setup();
+    const first = add(state, 'p1');
+    const branchSource = add(state, 'p1');
+    state.cards.find((candidate) => candidate.instanceId === branchSource)!.definitionId = BRANCH_SOURCE_PLAY_DEF;
+    expect(play(state, 'p1', first).ok).toBe(true);
+    expect(rules.loadAuthoringJson(archive()).report).toEqual([]);
+    const before = structuredClone(state);
+
+    expect(() => rules.executeAbility(state, {
+      sourceCardId: branchSource,
+      abilityId: 'branch-play-self-face-up',
+      controllerId: 'p1',
+      variables: {},
+      selections: {},
     })).toThrow(/face-up card play limit reached/i);
     expect(state).toEqual(before);
   });
