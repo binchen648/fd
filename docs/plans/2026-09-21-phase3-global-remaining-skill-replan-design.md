@@ -19,6 +19,14 @@ A mechanically intersected the locked full-roster inventory with all current can
 - material/formal drift: `0`;
 - remaining identities: `793`.
 
+The current machine catalog gives only a coarse starting split for those `793` missing identities:
+
+- `738` `SOURCE_EVIDENCE_REQUIRED`;
+- `50` historical `READY_GENERIC_EXTENSION`;
+- `5` `SPECIAL_HANDLER_CANDIDATE`.
+
+These labels predate much of the accepted runtime work. In particular, historical `READY_GENERIC_EXTENSION` does not mean `S_READY_NOW`; every one of the 50 rows still requires a fresh complete-card overlay against exact accepted contracts. Conversely, task-local accepted source evidence must be reconciled before a row remains permanently in the 738 source-evidence bucket.
+
 The historical eleven FM09 provisioning targets are now:
 
 | State | Count | Identities |
@@ -111,4 +119,3 @@ The human report summarizes counts and the top bounded candidates. It must never
 ## Release boundaries
 
 This design authorizes planning and automation only. It does not authorize roster JSON changes, runtime changes, a new B2 seam, an S migration, Gate promotion, Phase PASS, Release Ready, PR merge, or PR retarget.
-
