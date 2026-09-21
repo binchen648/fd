@@ -548,3 +548,53 @@ Revision recertification on exact implementation `037b02ce19e03b45e78379bccaf46b
 - `git diff --check 8421c03383f96abbaff68e1b47af4a9d4feab9a0..037b02ce19e03b45e78379bccaf46b2e9e241cf5` - PASS.
 
 Accounting remains unchanged: FB2-49 is identity-free zero-credit capability work; formal migration remains **151/944**, **793 remaining**. No Astolfo consumer authoring, identity/name/text routing, generic each-player authoring API, product/generated/client semantic expansion, merge, retarget, or frozen migration credit is introduced.
+## Revision after fresh Reviewer review on Candidate `854317043d10d527efb0a219b7bc303c59eb46bb`
+
+Fresh Reviewer evidence is canonical GitHub comment `5757525890` on PR #415: `https://github.com/binchen648/fd/pull/415#issuecomment-5757525890`. Verdict: `IMPLEMENTATION_NEEDS_REVISION`. The Reviewer continued through the exact FB2-49 scope and returned one persistence-lifetime P1 plus one token-lifecycle P2.
+
+Both findings are corrected together without widening the dispatched compound ability or touching consumer authoring/client production:
+
+1. **Durable save/reload no longer depends on a process-local authority-token registry**
+   - removed the per-save opaque-token `Map` persistence design entirely;
+   - a live FB2-49 frozen authority is persisted as an exact runtime-validated sealed envelope containing the frozen authority plus a SHA-256 binding of the serialized `GameState` and an HMAC-SHA-256 authentication tag;
+   - the HMAC persistence secret is never serialized inside `GameState`, `MatchSessionSnapshot`, the room snapshot, queue metadata, or the sealed envelope itself;
+   - browser-hosted rules persistence resolves one durable secret from a separate host storage key (`fd.rules.fb2-49.persistence-secret.v1`), allowing the repository's existing `room.serializeRoom()` -> localStorage -> `restoreMatchRoom(JSON.parse(...))` lifecycle to survive a page/module reload without changing `apps/client` production code;
+   - non-browser/server rules hosts retain a private process secret, while tests or another durable host may explicitly inject the same secret across a durable boundary;
+   - untouched JSON-round-tripped FB2-49 state restores with no pre-existing `WeakMap` authority and completes p2 then p3; a second regression exercises the default browser-host secret resolver with no explicit restore secret and proves the serialized snapshot does not contain the persistence secret;
+   - forged state/queue/authority body or a valid sealed authority transplanted from another serialized transaction still fails closed because the attacker-controlled snapshot cannot recompute a valid MAC for the independently held secret and exact state binding;
+   - malformed seals continue to fail closed without raw exceptions.
+
+2. **No unbounded authority-token registry remains**
+   - `persistedAuthorityByToken` and the per-save token allocation path are deleted rather than given a cleanup timer;
+   - repeated `serializeSession()` / replay checkpoint creation no longer creates retained authority records in a global `Map`;
+   - the only live in-memory authority remains the existing `WeakMap<GameState,...>` transaction authority, whose entries follow the lifetime of their `GameState` objects and are explicitly cleared when the FB2-49 queue completes;
+   - the durable secret is one constant-size host secret, not a per-save/per-transaction registry.
+
+The portable HMAC implementation is covered against Node `crypto.createHmac('sha256', ...)` for ASCII and Unicode vectors. Exact seal/authority shapes remain runtime validated before dereference.
+
+Scope was mechanically rechecked against the formal FB2-49 dispatch. An intermediate product-glue experiment was discarded before the implementation commit because the dispatch prohibits client-production changes. Exact implementation `586badbda24024d5dc07af514274d0c10ce26eed` changes only five rules/focused-test files relative to rejected Candidate `854317043d10d527efb0a219b7bc303c59eb46bb`:
+
+- `packages/rules/src/ability/opponent-close-to-one-authority.ts`;
+- `packages/rules/src/ability/portable-sha256.ts`;
+- `packages/rules/src/match-session.ts`;
+- `packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts`;
+- `packages/rules/tests/portable-sha256.test.ts`.
+
+Fresh detached validation at exact implementation `586badbda24024d5dc07af514274d0c10ce26eed` used its own `npm ci` workspace and produced:
+
+- `npm.cmd run typecheck` - PASS;
+- focused FB2-49 - **26/26 PASS**;
+- persistence/room/session + portable-HMAC compatibility - **5 files / 65 tests PASS**;
+- `@fd/server` workspace tests - **1 file / 2 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2` - **177 files / 1298 tests PASS**;
+- `npm.cmd run content:validate` - **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated-content determinism PASS with hashes `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`, `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, and `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`;
+- exact Locked Reference verification PASS at `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- `npm.cmd run build --workspace @fd/client` - PASS with only the existing Vite browser-externalization/chunk-size warnings;
+- fresh client `App.test.tsx` save/restore shell - **5/5 PASS**, including the existing local room save/restore path. The full client workspace additionally exposes one inherited stale `fd-asset-registry.test.ts` authoring-list expectation (14 expected vs 127 current archives); Base->implementation has zero diff in that test and `data/authoring/**`, so it is not a Candidate regression and was not modified out of scope;
+- `phase3:coverage` PASS: archives=127, cards=169, abilities=281, compiledCards=76, compiledCharacters=14, blockingIssues=0, newRuntimeSemanticRouted=22, legacyExecuteAbility=3, legacyResolveEffect=144, dualRuntime=0, notClassifiable=112, taxonomyWarnings=151;
+- `phase3:automation-audit` PASS: legacyResolveEffect=144, legacyExecuteAbility=3, notClassifiable=112, promotionFindings=20;
+- coverage/audit write artifacts restored byte-for-byte from exact implementation Git blobs; detached validation worktree finished clean;
+- `git diff --check` - PASS.
+
+Accounting remains unchanged: FB2-49 is identity-free zero-credit capability work; formal migration remains **151/944**, **793 remaining**. No Astolfo consumer authoring, identity/name/text routing, generic each-player authoring API, client-production file change, product/generated mutation, merge, retarget, or migration credit is introduced.
