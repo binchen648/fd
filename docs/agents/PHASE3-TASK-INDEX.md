@@ -5834,3 +5834,15 @@ Read: `docs/reports/2026-09-21-p3-a-r101-spartacus-s2-migration-acceptance-synch
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #414 exact Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`, backed by canonical evidence `https://github.com/binchen648/fd/pull/414#issuecomment-5754190524`. Independent Base-to-Candidate frozen recount is `145/944` to `146/944`, exact +1 `servant.spartacus.skill.sc-spartacus-2`, zero removals and zero duplicate frozen ids. The fourth Candidate path is only the A-authorized compatibility removal of Nobunaga s3's stale repository-wide `overlap===145` snapshot; Nobunaga s3 remains authored exactly once and no production semantic/product/generated change is present.
 
 Formal project migration advances exactly one identity to **`151/944`**, with **`793`** remaining. PR #414 remains OPEN, unmerged and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new B2 seam while such a migration exists.
+
+## TASK P3-FB2-49-OPPONENT-CLOSE-TO-ONE-INTERACTION
+
+Owner: Codex B2
+Status: `READY`
+Branch: `codex/b2-p3-fb2-49-opponent-close-to-one-interaction`
+Base: exact A dispatch Candidate on `codex/a-p3-fb2-49-opponent-close-to-one-dispatch`
+Read: `docs/reports/2026-09-21-p3-a-fb2-49-opponent-close-to-one-dispatch.md`
+
+Result required: implement only the exact identity-free compound transaction released by A: a combat phase-action whose source is owned and controller is at a battlefield serializes one non-cancellable exactly-one “keep” decision for each same-battlefield opponent with at least two currently active, face-up, non-residual attack-area cards, then closes every other still-valid card from that opponent's frozen qualifying set. Fail closed atomically on malformed authoring, state/provenance drift or forged/stale selection. Do not expose generic `choose_each_player_cards`, generic `close_matching_cards_except_selected`, arbitrary each-player selectors/mass close, identity routing or consumer authoring.
+
+This is zero-credit capability work: formal migration remains **`151/944`**, **`793`** remaining. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.astolfo.skill.sc-astolfo-1`; singleton S is allowed only if the whole card is then mechanically zero-gap.
