@@ -16,6 +16,21 @@ Phase 3 PRs must include a fenced `json phase3-task-manifest` block in the PR bo
 
 Roles are `A`, `B`, `R`, `S`, `I`, and `G`. Promotion PRs targeting `main` must use role `I`; governance-only PRs use role `G`; stacked Phase 3 implementation/review/migration PRs use role `A`, `B`, `R`, or `S` with `prType: "stacked"`. A Promotion review conclusion must be an explicit accepted Phase 3 conclusion. The R review SHA must resolve to a fetched commit and be distinct from the base, candidate, synchronization, and integration commits. The reviewed candidate must precede A synchronization, and A synchronization must precede the Promotion head.
 
+Promotion review evidence is a machine-readable JSON attestation stored below `docs/reviews/phase3/` in the tree identified by `review.sha`. The manifest binds that file by SHA-256 and repeats its `taskId`, `reviewer` (`github:<login>`), GitHub review-thread URL, candidate SHA, and conclusion. The gate reads the file from the review commit and requires every field to match. This makes evidence tampering or accidental reuse detectable; GitHub's independent-approval rule remains the authority that proves the reviewer account differs from the PR author.
+
+The attestation shape is:
+
+```json
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-...",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/000#issuecomment-000",
+  "candidateSha": "<40-character candidate SHA>",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE"
+}
+```
+
 ## External Repository Settings
 
 Branch protection and rulesets are repository settings, not source files. Required checks should be configured only after the checks have run on `main` and GitHub has produced stable status contexts. Required status checks must use strict mode (`Require branches to be up to date before merging`) so a changed upstream HEAD forces a new merge-base validation.

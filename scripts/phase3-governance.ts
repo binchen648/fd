@@ -1,9 +1,11 @@
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-export const phase3ManifestSchemaVersion = 'fd-phase3-promotion-manifest-v1';
+export const phase3ManifestSchemaVersion = 'fd-phase3-promotion-manifest-v2';
+export const phase3ReviewAttestationSchemaVersion = 'fd-phase3-review-attestation-v1';
 
 export type Phase3Role = 'A' | 'B' | 'R' | 'S' | 'I' | 'G';
 export type Phase3PrType = 'promotion' | 'stacked' | 'governance';
@@ -30,6 +32,10 @@ export interface Phase3TaskManifest {
   };
   review: {
     sha: string;
+    reviewer?: string;
+    reviewThread?: string;
+    evidencePath?: string;
+    evidenceSha256?: string;
     conclusion: string;
     reviewedCandidateSha: string;
   };
@@ -72,6 +78,10 @@ export interface ValidationResult {
 }
 
 const shaPattern = /^[a-f0-9]{40}$/;
+const sha256Pattern = /^[a-f0-9]{64}$/;
+const reviewerPattern = /^github:[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/;
+const reviewThreadPattern = /^https:\/\/github\.com\/binchen648\/fd\/pull\/\d+#(?:issuecomment|pullrequestreview)-\d+$/;
+const reviewEvidencePathPattern = /^docs\/reviews\/phase3\/(?!.*(?:^|\/)\.\.(?:\/|$))[A-Za-z0-9._/-]+\.json$/;
 const roles = new Set<Phase3Role>(['A', 'B', 'R', 'S', 'I', 'G']);
 const prTypes = new Set<Phase3PrType>(['promotion', 'stacked', 'governance']);
 const acceptedReviewConclusions = new Set([
@@ -112,6 +122,14 @@ function assertSha(value: unknown, label: string): string {
     throw new Error(`${label} must be an exact 40-character Git SHA.`);
   }
   return sha;
+}
+
+function assertPattern(value: unknown, label: string, pattern: RegExp, expectation: string): string {
+  const text = assertString(value, label);
+  if (!pattern.test(text)) {
+    throw new Error(`${label} must ${expectation}.`);
+  }
+  return text;
 }
 
 function assertStringArray(value: unknown, label: string): string[] {
@@ -256,6 +274,52 @@ function gitCommitExists(workspaceRoot: string, sha: string): boolean {
   }
 }
 
+function gitFileAtCommit(workspaceRoot: string, sha: string, path: string): string {
+  try {
+    return execFileSync('git', ['show', `${sha}:${path}`], {
+      cwd: workspaceRoot,
+      encoding: 'utf8',
+    });
+  } catch {
+    throw new Error(`review evidence file ${path} does not exist at review.sha.`);
+  }
+}
+
+function verifyReviewAttestation(
+  workspaceRoot: string,
+  manifest: Phase3TaskManifest,
+): void {
+  const evidence = gitFileAtCommit(workspaceRoot, manifest.review.sha, manifest.review.evidencePath!);
+  const digest = createHash('sha256').update(evidence, 'utf8').digest('hex');
+  if (digest !== manifest.review.evidenceSha256) {
+    throw new Error('review evidence SHA-256 does not match the file at review.sha.');
+  }
+
+  let attestation: unknown;
+  try {
+    attestation = JSON.parse(evidence);
+  } catch {
+    throw new Error('review evidence must be valid JSON.');
+  }
+  assertRecord(attestation, 'review attestation');
+  if (attestation.schemaVersion !== phase3ReviewAttestationSchemaVersion) {
+    throw new Error(`review attestation schemaVersion must be ${phase3ReviewAttestationSchemaVersion}.`);
+  }
+
+  const expected = {
+    taskId: manifest.taskId,
+    reviewer: manifest.review.reviewer,
+    reviewThread: manifest.review.reviewThread,
+    candidateSha: manifest.review.reviewedCandidateSha,
+    conclusion: manifest.review.conclusion,
+  };
+  for (const [field, expectedValue] of Object.entries(expected)) {
+    if (attestation[field] !== expectedValue) {
+      throw new Error(`review attestation ${field} does not match the Promotion manifest.`);
+    }
+  }
+}
+
 function gitChangedFiles(workspaceRoot: string, baseSha: string, headSha: string): string[] {
   const output = execFileSync(
     'git',
@@ -301,6 +365,25 @@ export function validatePhase3Governance(
   }
 
   if (manifest.prType === 'promotion') {
+    assertPattern(manifest.review.reviewer, 'review.reviewer', reviewerPattern, 'use github:<login>');
+    assertPattern(
+      manifest.review.reviewThread,
+      'review.reviewThread',
+      reviewThreadPattern,
+      'identify a review comment or review on a binchen648/fd pull request',
+    );
+    assertPattern(
+      manifest.review.evidencePath,
+      'review.evidencePath',
+      reviewEvidencePathPattern,
+      'be a JSON file below docs/reviews/phase3',
+    );
+    assertPattern(
+      manifest.review.evidenceSha256,
+      'review.evidenceSha256',
+      sha256Pattern,
+      'be a lowercase SHA-256 digest',
+    );
     if (manifest.role !== 'I') {
       throw new Error('Promotion PRs must use role I.');
     }
@@ -353,6 +436,9 @@ export function validatePhase3Governance(
   if (options.verifyGitAncestry && options.workspaceRoot) {
     if (!gitCommitExists(options.workspaceRoot, manifest.review.sha)) {
       throw new Error('review.sha does not identify a fetched Git commit.');
+    }
+    if (manifest.prType === 'promotion') {
+      verifyReviewAttestation(options.workspaceRoot, manifest);
     }
     if (manifest.prType === 'promotion'
       && !gitIsAncestor(

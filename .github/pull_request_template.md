@@ -8,7 +8,7 @@
 
 ```json phase3-task-manifest
 {
-  "schemaVersion": "fd-phase3-promotion-manifest-v1",
+  "schemaVersion": "fd-phase3-promotion-manifest-v2",
   "role": "I",
   "taskId": "P3-...",
   "prType": "promotion",
@@ -29,6 +29,10 @@
   },
   "review": {
     "sha": "",
+    "reviewer": "github:binchen648",
+    "reviewThread": "https://github.com/binchen648/fd/pull/000#issuecomment-000",
+    "evidencePath": "docs/reviews/phase3/P3-...-review.json",
+    "evidenceSha256": "",
     "conclusion": "",
     "reviewedCandidateSha": ""
   },
@@ -60,7 +64,7 @@
 - Affected ability IDs:
 - RuntimeBehaviorChanged:
 - Rules source and Reference commit:
-- R review SHA and conclusion:
+- R review SHA, reviewer, thread, evidence path/digest, and conclusion:
 - R reviewed candidate SHA:
 - A synchronization SHA:
 - Mainline migration count:

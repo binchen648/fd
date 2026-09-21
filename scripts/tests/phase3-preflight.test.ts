@@ -1,5 +1,6 @@
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -22,7 +23,12 @@ const syncSha = '5555555555555555555555555555555555555555';
 
 interface GitFixture {
   root: string;
-  shas: string[];
+  base: string;
+  candidate: string;
+  synchronization: string;
+  head: string;
+  review: string;
+  evidenceSha256: string;
 }
 
 let gitFixture: GitFixture;
@@ -38,14 +44,70 @@ function createGitFixture(): GitFixture {
   git(root, ['config', 'user.email', 'phase3-governance@example.invalid']);
   git(root, ['config', 'core.autocrlf', 'false']);
 
-  const shas: string[] = [];
-  for (let index = 0; index < 5; index += 1) {
-    writeFileSync(join(root, 'evidence.txt'), `evidence-${index}\n`);
+  writeFileSync(join(root, 'evidence.txt'), 'base\n');
+  git(root, ['add', 'evidence.txt']);
+  git(root, ['commit', '-m', 'base']);
+  const base = git(root, ['rev-parse', 'HEAD']);
+
+  const chain: string[] = [];
+  for (const label of ['candidate', 'synchronization', 'head']) {
+    writeFileSync(join(root, 'evidence.txt'), `${label}\n`);
     git(root, ['add', 'evidence.txt']);
-    git(root, ['commit', '-m', `evidence ${index}`]);
-    shas.push(git(root, ['rev-parse', 'HEAD']));
+    git(root, ['commit', '-m', label]);
+    chain.push(git(root, ['rev-parse', 'HEAD']));
   }
-  return { root, shas };
+  const [candidate, synchronization, head] = chain as [string, string, string];
+
+  git(root, ['checkout', '--detach', base]);
+  const evidencePath = join(root, 'docs', 'reviews', 'phase3');
+  mkdirSync(evidencePath, { recursive: true });
+  const evidence = `${JSON.stringify({
+    schemaVersion: 'fd-phase3-review-attestation-v1',
+    taskId: 'P3-FB2-99',
+    reviewer: 'github:binchen648',
+    reviewThread: 'https://github.com/binchen648/fd/pull/499#issuecomment-123',
+    candidateSha: candidate,
+    conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE',
+  }, null, 2)}\n`;
+  writeFileSync(join(evidencePath, 'P3-FB2-99-review.json'), evidence);
+  git(root, ['add', 'docs/reviews/phase3/P3-FB2-99-review.json']);
+  git(root, ['commit', '-m', 'review attestation']);
+  const review = git(root, ['rev-parse', 'HEAD']);
+  git(root, ['checkout', '--detach', head]);
+
+  return {
+    root,
+    base,
+    candidate,
+    synchronization,
+    head,
+    review,
+    evidenceSha256: createHash('sha256').update(evidence).digest('hex'),
+  };
+}
+
+function promotionReview(overrides: Partial<Phase3TaskManifest['review']> = {}): Phase3TaskManifest['review'] {
+  return {
+    sha: reviewSha,
+    reviewer: 'github:binchen648',
+    reviewThread: 'https://github.com/binchen648/fd/pull/499#issuecomment-123',
+    evidencePath: 'docs/reviews/phase3/P3-FB2-99-review.json',
+    evidenceSha256: '6666666666666666666666666666666666666666666666666666666666666666',
+    conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE',
+    reviewedCandidateSha: candidateSha,
+    ...overrides,
+  };
+}
+
+function fixturePromotionReview(
+  overrides: Partial<Phase3TaskManifest['review']> = {},
+): Phase3TaskManifest['review'] {
+  return promotionReview({
+    sha: gitFixture.review,
+    evidenceSha256: gitFixture.evidenceSha256,
+    reviewedCandidateSha: gitFixture.candidate,
+    ...overrides,
+  });
 }
 
 function promotionContext(overrides: Partial<PullRequestContext> = {}): PullRequestContext {
@@ -75,11 +137,7 @@ function promotionManifest(overrides: Partial<Phase3TaskManifest> = {}): Phase3T
       source: 'docs/rules/FD-Game-Rules-Final.md',
       referenceCommit: baseSha,
     },
-    review: {
-      sha: reviewSha,
-      conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE',
-      reviewedCandidateSha: candidateSha,
-    },
+    review: promotionReview(),
     synchronization: { sha: syncSha },
     migrationCounts: { mainline: 0, recovery: 0, candidate: 0 },
     tests: [{ command: 'npm run test:ci', result: 'PASS 807/807' }],
@@ -112,6 +170,13 @@ describe('Phase 3 promotion governance preflight', () => {
       .toThrow(/must include a phase3-task-manifest/);
   });
 
+  it('requires machine-readable review attestation fields for Promotion PRs', () => {
+    expect(() => validatePhase3Governance(
+      promotionContext(),
+      promotionManifest({ review: promotionReview({ reviewer: undefined }) }),
+    )).toThrow(/review\.reviewer/);
+  });
+
   it('rejects outdated base SHA evidence after upstream main changes', () => {
     expect(() => validatePhase3Governance(
       promotionContext({ baseSha: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' }),
@@ -127,34 +192,28 @@ describe('Phase 3 promotion governance preflight', () => {
   });
 
   it('rejects stale reviewer candidate evidence when ancestry verification is requested', () => {
-    const [, existingReview, , synchronization, currentHead] = gitFixture.shas;
-    const context = promotionContext({ headSha: currentHead });
+    const context = promotionContext({ headSha: gitFixture.head });
     expect(() => validatePhase3Governance(
       context,
       promotionManifest({
-        head: { ref: context.headRef, sha: currentHead },
-        review: {
-          sha: existingReview,
-          conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE',
+        head: { ref: context.headRef, sha: gitFixture.head },
+        review: fixturePromotionReview({
           reviewedCandidateSha: '9999999999999999999999999999999999999999',
-        },
-        synchronization: { sha: synchronization },
+        }),
+        synchronization: { sha: gitFixture.synchronization },
       }),
       { workspaceRoot: gitFixture.root, verifyGitAncestry: true },
-    )).toThrow(/reviewed candidate/);
+    )).toThrow(/attestation candidateSha/);
   });
 
   it('rejects a missing R review commit even when candidate and synchronization ancestry are current', () => {
-    const [, , candidate, synchronization, currentHead] = gitFixture.shas;
-    const context = promotionContext({ headSha: currentHead });
+    const context = promotionContext({ headSha: gitFixture.head });
     const manifest = promotionManifest({
-      head: { ref: context.headRef, sha: currentHead },
-      review: {
+      head: { ref: context.headRef, sha: gitFixture.head },
+      review: fixturePromotionReview({
         sha: '9999999999999999999999999999999999999999',
-        conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE',
-        reviewedCandidateSha: candidate,
-      },
-      synchronization: { sha: synchronization },
+      }),
+      synchronization: { sha: gitFixture.synchronization },
     });
 
     expect(() => validatePhase3Governance(
@@ -168,14 +227,14 @@ describe('Phase 3 promotion governance preflight', () => {
     expect(() => validatePhase3Governance(
       promotionContext(),
       promotionManifest({
-        review: { sha: candidateSha, conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE', reviewedCandidateSha: candidateSha },
+        review: promotionReview({ sha: candidateSha }),
       }),
     )).toThrow(/review.sha must be distinct/);
 
     expect(() => validatePhase3Governance(
       promotionContext(),
       promotionManifest({
-        review: { sha: reviewSha, conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE', reviewedCandidateSha: headSha },
+        review: promotionReview({ reviewedCandidateSha: headSha }),
       }),
     )).toThrow(/reviewed candidate must precede/);
 
@@ -186,16 +245,11 @@ describe('Phase 3 promotion governance preflight', () => {
   });
 
   it('requires the reviewed candidate to be an ancestor of A synchronization', () => {
-    const [, review, synchronization, candidate, currentHead] = gitFixture.shas;
-    const context = promotionContext({ headSha: currentHead });
+    const context = promotionContext({ headSha: gitFixture.head });
     const manifest = promotionManifest({
-      head: { ref: context.headRef, sha: currentHead },
-      review: {
-        sha: review,
-        conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE',
-        reviewedCandidateSha: candidate,
-      },
-      synchronization: { sha: synchronization },
+      head: { ref: context.headRef, sha: gitFixture.head },
+      review: fixturePromotionReview(),
+      synchronization: { sha: gitFixture.base },
     });
 
     expect(() => validatePhase3Governance(
@@ -203,6 +257,45 @@ describe('Phase 3 promotion governance preflight', () => {
       manifest,
       { workspaceRoot: gitFixture.root, verifyGitAncestry: true },
     )).toThrow(/reviewed candidate is not an ancestor of synchronization.sha/);
+  });
+
+  it('rejects a tampered review evidence digest', () => {
+    const context = promotionContext({ headSha: gitFixture.head });
+    expect(() => validatePhase3Governance(
+      context,
+      promotionManifest({
+        head: { ref: context.headRef, sha: gitFixture.head },
+        review: fixturePromotionReview({ evidenceSha256: '7'.repeat(64) }),
+        synchronization: { sha: gitFixture.synchronization },
+      }),
+      { workspaceRoot: gitFixture.root, verifyGitAncestry: true },
+    )).toThrow(/evidence SHA-256/);
+  });
+
+  it('rejects review identity that does not match the committed attestation', () => {
+    const context = promotionContext({ headSha: gitFixture.head });
+    expect(() => validatePhase3Governance(
+      context,
+      promotionManifest({
+        head: { ref: context.headRef, sha: gitFixture.head },
+        review: fixturePromotionReview({ reviewer: 'github:fengling20011118-dotcom' }),
+        synchronization: { sha: gitFixture.synchronization },
+      }),
+      { workspaceRoot: gitFixture.root, verifyGitAncestry: true },
+    )).toThrow(/attestation reviewer/);
+  });
+
+  it('rejects a review evidence path absent from review.sha', () => {
+    const context = promotionContext({ headSha: gitFixture.head });
+    expect(() => validatePhase3Governance(
+      context,
+      promotionManifest({
+        head: { ref: context.headRef, sha: gitFixture.head },
+        review: fixturePromotionReview({ evidencePath: 'docs/reviews/phase3/missing.json' }),
+        synchronization: { sha: gitFixture.synchronization },
+      }),
+      { workspaceRoot: gitFixture.root, verifyGitAncestry: true },
+    )).toThrow(/does not exist at review.sha/);
   });
 
   it('accepts a stacked Phase 3 PR policy check without requiring main as base', () => {
@@ -246,7 +339,7 @@ describe('Phase 3 promotion governance preflight', () => {
   it('rejects ambiguous review conclusions and non-pass test results', () => {
     expect(() => validatePhase3Governance(
       promotionContext(),
-      promotionManifest({ review: { sha: reviewSha, conclusion: 'ACCEPTED', reviewedCandidateSha: candidateSha } }),
+      promotionManifest({ review: promotionReview({ conclusion: 'ACCEPTED' }) }),
     )).toThrow(/review conclusion is not accepted/);
 
     expect(() => validatePhase3Governance(
