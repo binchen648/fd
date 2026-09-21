@@ -11,12 +11,16 @@ import {
   persistOpponentCloseToOneReplayManifest,
   persistOpponentCloseToOneServerAuthority,
   pruneOpponentCloseToOneTrustedReplayTransactions,
+  rememberOpponentCloseToOneTrustedReplayCheckpoint,
   restoreOpponentCloseToOneServerAuthority,
   synchronizeOpponentCloseToOneCurrentTrust,
+  synchronizeOpponentCloseToOneTrustedReplayCheckpoints,
   verifyOpponentCloseToOneReplayManifest,
+  type OpponentCloseToOneReplayManifestEntry,
   type OpponentCloseToOneReplayManifestSeal,
   type OpponentCloseToOneServerAuthoritySeal,
 } from './ability/opponent-close-to-one-authority';
+import { sha256Hex } from './ability/portable-sha256';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './ability/deployment-destinations';
@@ -203,6 +207,24 @@ function persistedOpponentCloseToOneAuthorityField(
 ): { opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySeal } {
   const seal = persistOpponentCloseToOneServerAuthority(state, persistenceSecret, persistenceScope, replayCheckpointId);
   return seal ? { opponentCloseToOneServerAuthority: seal } : {};
+}
+
+function replayCheckpointDigest(snapshot: MatchReplayStateSnapshot): string {
+  return sha256Hex(JSON.stringify(snapshot));
+}
+
+function replayManifestEntries(snapshots: readonly MatchReplayStateSnapshot[]): OpponentCloseToOneReplayManifestEntry[] {
+  return snapshots.map((snapshot) => ({
+    checkpointId: snapshot.checkpointId,
+    checkpointDigest: replayCheckpointDigest(snapshot),
+  }));
+}
+
+function hasOpponentCloseToOneReplayAuthority(
+  currentSeal: OpponentCloseToOneServerAuthoritySeal | undefined,
+  snapshots: readonly MatchReplayStateSnapshot[],
+): boolean {
+  return currentSeal !== undefined || snapshots.some((snapshot) => snapshot.opponentCloseToOneServerAuthority !== undefined);
 }
 const masterCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'master');
 const servantCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'servant');
@@ -500,15 +522,12 @@ export class MatchSession {
   private consumedDirectiveCount = 0;
   private seenFingerprints = new Map<string, number>();
   private replayCaptureEnabled = true;
-  private replayManifestEnabled: boolean;
 
   constructor(
     config: MatchSessionConfig = {},
     initializeReplay = true,
-    replayManifestEnabled = config.persistenceScope !== undefined,
   ) {
     this.replayCaptureEnabled = initializeReplay;
-    this.replayManifestEnabled = replayManifestEnabled;
     this.seed = config.seed ?? 20260904;
     this.humanPlayerId = config.humanPlayerId ?? 'p1';
     this.humanPlayerIds = [...new Set(config.humanPlayerIds ?? [this.humanPlayerId])];
@@ -538,9 +557,13 @@ export class MatchSession {
   }
 
   reconcileReplayPersistenceTrust(): void {
-    pruneOpponentCloseToOneTrustedReplayTransactions(
+    synchronizeOpponentCloseToOneTrustedReplayCheckpoints(
       this.persistenceScope,
-      this.replaySnapshots.map((candidate) => candidate.checkpointId),
+      this.replaySnapshots.map((snapshot) => ({
+        checkpointId: snapshot.checkpointId,
+        checkpointDigest: replayCheckpointDigest(snapshot),
+        seal: snapshot.opponentCloseToOneServerAuthority,
+      })),
     );
   }
 
@@ -894,6 +917,9 @@ export class MatchSession {
   }
 
   serializeSession(): MatchSessionSnapshot {
+    const authorityField = persistedOpponentCloseToOneAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
+    const currentSeal = authorityField.opponentCloseToOneServerAuthority;
+    const replaySensitive = hasOpponentCloseToOneReplayAuthority(currentSeal, this.replaySnapshots);
     return {
       version: 1,
       seed: this.seed,
@@ -901,11 +927,11 @@ export class MatchSession {
       humanPlayerIds: [...this.humanPlayerIds],
       maxActionsPerPlayer: this.maxActionsPerPlayer,
       state: structuredClone(this.state),
-      ...persistedOpponentCloseToOneAuthorityField(this.state, this.persistenceSecret, this.persistenceScope),
-      ...(this.replayManifestEnabled ? {
+      ...authorityField,
+      ...(replaySensitive ? {
         opponentCloseToOneReplayManifest: persistOpponentCloseToOneReplayManifest(
           this.state,
-          this.replaySnapshots.map((candidate) => candidate.checkpointId),
+          replayManifestEntries(this.replaySnapshots),
           this.persistenceSecret,
           this.persistenceScope,
         ),
@@ -950,12 +976,14 @@ export class MatchSession {
     const candidateLogs = structuredClone(snapshot.logs);
     const candidateBattleHistory = structuredClone(snapshot.battleHistory);
     const candidateRejection = snapshot.rejection ? structuredClone(snapshot.rejection) : undefined;
+    const checkpointDigest = replayCheckpointDigest(snapshot);
     if (!restoreOpponentCloseToOneServerAuthority(
       candidateState,
       snapshot.opponentCloseToOneServerAuthority,
       this.persistenceSecret,
       this.persistenceScope,
       checkpointId,
+      checkpointDigest,
     )) return false;
     this.state = candidateState;
     this.logs = candidateLogs;
@@ -1613,7 +1641,7 @@ export class MatchSession {
       label,
     };
     this.replay.push(checkpoint);
-    this.replaySnapshots.push({
+    const replaySnapshot: MatchReplayStateSnapshot = {
       checkpointId: checkpoint.id,
       state: structuredClone(state),
       ...persistedOpponentCloseToOneAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
@@ -1622,7 +1650,14 @@ export class MatchSession {
       consumedDirectiveCount: this.consumedDirectiveCount,
       ...(this.stopReason ? { stopReason: this.stopReason } : {}),
       ...(this.rejection ? { rejection: structuredClone(this.rejection) } : {}),
-    });
+    };
+    this.replaySnapshots.push(replaySnapshot);
+    rememberOpponentCloseToOneTrustedReplayCheckpoint(
+      this.persistenceScope,
+      checkpoint.id,
+      replayCheckpointDigest(replaySnapshot),
+      replaySnapshot.opponentCloseToOneServerAuthority,
+    );
     pruneOpponentCloseToOneTrustedReplayTransactions(
       this.persistenceScope,
       this.replaySnapshots.map((candidate) => candidate.checkpointId),
@@ -1646,10 +1681,15 @@ export function restoreMatchSession(
   reconcileReplayTrust = true,
 ): MatchSession {
   if (snapshot.version !== 1) throw new Error(`Unsupported MatchSession snapshot version: ${snapshot.version}`);
+  if (!Array.isArray(snapshot.replay) || !Array.isArray(snapshot.replaySnapshots)) {
+    throw new Error('Invalid FB2-49 replay snapshot container');
+  }
+  if (!snapshot.replay.every((entry) => entry !== null && typeof entry === 'object' && typeof entry.id === 'string') ||
+      !snapshot.replaySnapshots.every((entry) => entry !== null && typeof entry === 'object' && typeof entry.checkpointId === 'string')) {
+    throw new Error('Invalid FB2-49 replay snapshot container');
+  }
   const persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
   const persistenceScope = config.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
-  const replayManifestRequired = config.persistenceScope !== undefined || snapshot.opponentCloseToOneReplayManifest !== undefined;
-  const replayCheckpointIds = (snapshot.replaySnapshots ?? []).map((candidate) => candidate.checkpointId);
   const candidateState = structuredClone(snapshot.state);
   if (!restoreOpponentCloseToOneServerAuthority(
     candidateState,
@@ -1657,9 +1697,14 @@ export function restoreMatchSession(
     persistenceSecret,
     persistenceScope,
   )) throw new Error('Invalid or missing FB2-49 persisted authority');
-  if (replayManifestRequired && !verifyOpponentCloseToOneReplayManifest(
+  const replaySensitive = hasOpponentCloseToOneReplayAuthority(
+    snapshot.opponentCloseToOneServerAuthority,
+    snapshot.replaySnapshots,
+  );
+  const replayEntries = replayManifestEntries(snapshot.replaySnapshots);
+  if (replaySensitive && !verifyOpponentCloseToOneReplayManifest(
     candidateState,
-    replayCheckpointIds,
+    replayEntries,
     snapshot.opponentCloseToOneReplayManifest,
     persistenceSecret,
     persistenceScope,
@@ -1671,7 +1716,7 @@ export function restoreMatchSession(
     maxActionsPerPlayer: snapshot.maxActionsPerPlayer,
     persistenceSecret,
     persistenceScope,
-  }, false, replayManifestRequired);
+  }, false);
   session.state = candidateState;
   session.logs = structuredClone(snapshot.logs);
   session.replay = structuredClone(snapshot.replay);

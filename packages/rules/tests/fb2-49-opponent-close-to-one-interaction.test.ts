@@ -1012,6 +1012,78 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(session.state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
   });
 
+  it('round-trips ordinary no-FB2 room and fresh-Hub snapshots without persistence-scope coupling', () => {
+    const room = rules.createMatchRoom({ roomId: 'fb2-49-ordinary-room', hostClientId: 'host' });
+    room.session = rules.createMatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], ...room.getPersistenceContext() });
+    room.status = 'running';
+    const roomSnapshot = structuredClone(room.serializeRoom());
+    expect(roomSnapshot.session?.opponentCloseToOneReplayManifest).toBeUndefined();
+    expect(() => rules.restoreMatchRoom(roomSnapshot)).not.toThrow();
+
+    const hub = rules.createMatchRoomHub();
+    hub.createRoom({ roomId: 'fb2-49-ordinary-hub', hostClientId: 'host' });
+    const hubRoom = hub.getRoom('fb2-49-ordinary-hub');
+    hubRoom.session = rules.createMatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], ...hubRoom.getPersistenceContext() });
+    hubRoom.status = 'running';
+    const hubSnapshot = structuredClone(hub.serialize());
+    expect(hubSnapshot.rooms[0]?.session?.opponentCloseToOneReplayManifest).toBeUndefined();
+    const freshHub = rules.createMatchRoomHub();
+    expect(() => freshHub.restore(hubSnapshot)).not.toThrow();
+    expect(freshHub.getRoom('fb2-49-ordinary-hub').session).toBeDefined();
+  });
+
+  it('binds reused checkpoint ids to immutable branch content across rollback and a new transaction', () => {
+    const scope = 'fb2-49-persistence-scope:' + 'dd'.repeat(32);
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    const original = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    original.state = state;
+    const branchPoint = structuredClone(original.serializeSession());
+
+    expect(original.dispatchPlayerAction('p1', { type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID }).ok).toBe(true);
+    const transactionOneId = original.replay.at(-1)!.id;
+    const transactionOneSeal = structuredClone(
+      original.replaySnapshots.find((entry) => entry.checkpointId === transactionOneId)!.opponentCloseToOneServerAuthority!,
+    );
+    const transactionOneDecision = original.state.abilityRuntime!.pendingDecision!.id;
+    expect(original.dispatchPlayerAction('p2', { type: 'choose_target', decisionId: transactionOneDecision, selectedIds: ['p2-a'] }).ok).toBe(true);
+    const transactionOneSnapshot = structuredClone(original.serializeSession());
+
+    const branched = rules.restoreMatchSession(branchPoint, { persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope });
+    expect(branched.dispatchPlayerAction('p1', { type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID }).ok).toBe(true);
+    const transactionTwoId = branched.replay.at(-1)!.id;
+    const transactionTwoReplay = structuredClone(
+      branched.replaySnapshots.find((entry) => entry.checkpointId === transactionTwoId)!,
+    );
+    const transactionTwoSeal = transactionTwoReplay.opponentCloseToOneServerAuthority!;
+    expect(transactionTwoId).toBe(transactionOneId);
+    expect(transactionTwoSeal.transactionId).not.toBe(transactionOneSeal.transactionId);
+    const transactionTwoDecision = branched.state.abilityRuntime!.pendingDecision!.id;
+    expect(branched.dispatchPlayerAction('p2', { type: 'choose_target', decisionId: transactionTwoDecision, selectedIds: ['p2-a'] }).ok).toBe(true);
+
+    const restoredTransactionOne = rules.restoreMatchSession(transactionOneSnapshot, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    const forged: any = structuredClone(transactionOneSnapshot);
+    const reusedIndex = forged.replaySnapshots.findIndex((entry: any) => entry.checkpointId === transactionOneId);
+    forged.replaySnapshots[reusedIndex] = transactionTwoReplay;
+    expect(() => rules.restoreMatchSession(forged, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    })).toThrow('Invalid or missing FB2-49 replay manifest');
+    expect(restoredTransactionOne.restoreToCheckpoint(transactionOneId)).toBe(true);
+    expect(restoredTransactionOne.state.abilityRuntime?.pendingDecision?.controllerId).toBe('p2');
+  });
+
+  it('rejects malformed replay containers with a controlled restore-boundary error', () => {
+    const snapshot = rules.createMatchSession().serializeSession();
+    for (const [field, value] of [['replay', {}], ['replaySnapshots', {}]] as const) {
+      const malformed: any = structuredClone(snapshot);
+      malformed[field] = value;
+      expect(() => rules.restoreMatchSession(malformed)).toThrow('Invalid FB2-49 replay snapshot container');
+    }
+  });
+
   it('revokes replay trust for a checkpoint removed by a successful older-session restore', () => {
     const scope = 'fb2-49-persistence-scope:' + '66'.repeat(32);
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
