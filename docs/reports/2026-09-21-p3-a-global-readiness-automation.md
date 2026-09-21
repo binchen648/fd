@@ -66,3 +66,7 @@ Exact final outcomes are recorded in the review handoff. Generated queue evidenc
 ## Acceptance boundary
 
 Claimed status is only `AUTOMATION_BASELINE_CANDIDATE`. No queue row is independently promoted by this implementation, no Gate A/B/C state changes, and no Phase or Release Gate claim is made.
+
+## R revision: decision-state authority
+
+The decision JSON boundary now accepts only `S_READY_NOW`, `ONE_SHARED_GAP`, `TRANSITIVE_DEPENDENCY`, `MULTI_GAP`, and `RULE_DECISION_REQUIRED`. It rejects `MIGRATED_CONFIRMED`, unknown future values, and every state owned by migration evidence, default classification, or active reservations. This prevents a forged decision row from disagreeing with `summary.migrated` and migration evidence.

@@ -174,6 +174,14 @@ const states: GlobalReadinessState[] = [
   'ACTIVE_TASK_RESERVED',
 ];
 
+const allowedDecisionStates = new Set<GlobalReadinessDecision['state']>([
+  'S_READY_NOW',
+  'ONE_SHARED_GAP',
+  'TRANSITIVE_DEPENDENCY',
+  'MULTI_GAP',
+  'RULE_DECISION_REQUIRED',
+]);
+
 const sha40 = /^[0-9a-f]{40}$/;
 const sha64 = /^[0-9a-f]{64}$/;
 
@@ -328,6 +336,10 @@ function validateDecisionFile(
   for (const decision of file.decisions) {
     assert(inventoryIds.has(decision.identity), `Decision contains unknown identity: ${decision.identity}`);
     assert(!decisions.has(decision.identity), `Duplicate readiness decision: ${decision.identity}`);
+    assert(
+      allowedDecisionStates.has(decision.state),
+      `Unsupported readiness decision state for ${decision.identity}: ${String(decision.state)}`,
+    );
     assert(decision.reasonCodes.length > 0, `Decision lacks reason codes: ${decision.identity}`);
     assert(decision.evidenceRefs.length > 0, `Decision lacks evidence references: ${decision.identity}`);
     assertSha64(decision.sourceSha256, `Decision source digest for ${decision.identity}`);

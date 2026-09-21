@@ -200,6 +200,34 @@ describe('phase3 global readiness compiler', () => {
     ).toThrow(/stale readiness decision file/i);
   });
 
+  it.each(['MIGRATED_CONFIRMED', 'FUTURE_UNRECOGNIZED_STATE'])(
+    'rejects forbidden or unknown decision state %s at the JSON boundary',
+    (state) => {
+      const decisionFile = decisions();
+      decisionFile.formalLedger.denominator = 1;
+      (decisionFile.decisions as unknown[]).push({
+        identity: 'master.a.skill.s1',
+        state,
+        reasonCodes: ['FORGED_DECISION'],
+        sourceSha256: '6'.repeat(64),
+        runtimeEvidenceFingerprint: '7'.repeat(64),
+        evidenceRefs: ['docs/reports/forged.md'],
+        dependencyIds: [],
+      });
+
+      expect(() => compileGlobalReadiness({
+        baselineCommit,
+        inventorySha256,
+        authoringFingerprint,
+        inventory: [entry('master.a.skill.s1', 'READY_GENERIC_EXTENSION')],
+        authoredFrozenIds: [],
+        migrationEvidence: migrationEvidence([], 1),
+        capabilityEvidence: capabilityEvidence(),
+        decisions: decisionFile,
+      })).toThrow(/unsupported readiness decision state/i);
+    },
+  );
+
   it('requires accepted capabilities before a row can become S_READY_NOW', () => {
     const decisionFile = decisions();
     decisionFile.formalLedger.denominator = 1;
