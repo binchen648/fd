@@ -4,6 +4,7 @@ Status: `AUTOMATION_BASELINE_CANDIDATE`
 Owner: Codex A
 Branch: `codex/a-p3-global-remaining-skill-replan`
 Source governance baseline: `8b63d3cdd2ae068810805c650dca6903874e825d`
+Accepted automation dependency: P3-A01 Candidate `2c59d0623b8c2d3ee0de0f6fbd95692556316bbd`
 
 ## Scope
 
@@ -46,6 +47,9 @@ FM09 remains metadata only: `2/11` present, `9/11` missing. No FM09 completion b
 - active reservation override;
 - singleton dispatch default with a narrow documented same-owner exception;
 - explicit FM09 bulk, Fujino co-bundle and Ryougi cross-card inheritance rejection.
+- invalid Git review diff bases fail before packet creation and cannot produce a false `hotRuntimeFilesTouched=NO` result.
+
+The accepted A01 behavior was ported onto this branch rather than copying A01's generated artifact. Fresh branch-local coverage reports definition hash `7f5f8b8aa6f0abbe060b611189d4c104481486aa50435f4b73a8be7c7890bde1`, `0` blocking issues, `22` semantic-routed consumers, `144` legacy `resolveEffect` consumers, and `0` dual consumers.
 
 ## Commands
 

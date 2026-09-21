@@ -1,131 +1,536 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-09-16T00:46:10.369Z",
-  "sourceFingerprint": "da58018bfea23bfea721ecf5909ebef468e164d02c51eb37bad3ecd3030aef80",
+  "generatedAt": "2026-09-21T08:31:26.088Z",
+  "sourceFingerprint": "7239686f1a799c82029d383962a6674363eb1eb20b6ba399ed988f466e0a2fd0",
   "counts": {
-    "totalArchives": 90,
-    "totalCards": 123,
-    "totalAbilities": 222,
+    "totalArchives": 127,
+    "totalCards": 169,
+    "totalAbilities": 281,
     "abilityKindCounts": {
       "CONDITIONAL_REVEAL": 1,
-      "CONTINUOUS_FORMULA": 11,
-      "DECLARATION_REVEAL": 9,
-      "FORCED_TRIGGER": 50,
-      "OPTIONAL_TRIGGER": 48,
-      "PASSIVE": 18,
-      "PHASE_ACTION": 79,
-      "RESIDUAL": 5,
+      "CONTINUOUS_FORMULA": 13,
+      "DECLARATION_REVEAL": 10,
+      "FORCED_TRIGGER": 74,
+      "OPTIONAL_TRIGGER": 51,
+      "PASSIVE": 24,
+      "PHASE_ACTION": 96,
+      "RESIDUAL": 11,
       "RESPONSE": 1
     },
     "timingCounts": {
-      "ACTION": 66,
+      "ACTION": 76,
       "ADVANCE": 2,
-      "COMBAT": 56,
-      "CONTROLLER_ACTION_WINDOW": 59,
-      "CONTROLLER_COMBAT_ACTION_WINDOW": 21,
+      "COMBAT": 66,
+      "CONTROLLER_ACTION_WINDOW": 69,
+      "CONTROLLER_COMBAT_ACTION_WINDOW": 28,
       "IMMEDIATE": 7,
       "POST_BATTLE_OPTIONAL_TRIGGER_WINDOW": 3,
       "PREPARATION": 1,
       "WHEN_FORMULA_CONDITION_MET": 1,
       "WHEN_PLAY_REQUIREMENTS_CHECKED": 8,
       "WHEN_POWER_CALCULATION_APPLIED": 1,
-      "WHILE_ACTIVE": 10
+      "WHILE_ACTIVE": 12
     },
     "domainEventTriggerCounts": {
-      "after_battle_ended": 2,
-      "after_battle_result_determined": 23,
-      "after_controller_enters_location": 1,
+      "after_battle_ended": 3,
+      "after_battle_result_determined": 26,
+      "after_controller_enters_location": 3,
       "after_controller_first_loses_battle": 1,
       "after_controller_gains_victory": 1,
       "after_controller_loses_all_command_seals": 1,
-      "after_controller_loses_battle": 14,
-      "after_controller_wins_battle": 3,
-      "after_player_deployed_to_battlefield": 11,
+      "after_controller_loses_battle": 15,
+      "after_controller_wins_battle": 7,
+      "after_player_deployed_to_battlefield": 13,
       "before_situation_or_event_resolves": 1,
-      "game_start": 4,
-      "on_card_played": 39,
-      "on_use_declared": 9
+      "game_start": 20,
+      "on_card_played": 41,
+      "on_use_declared": 10
     },
     "requirementCounts": {
-      "BATTLE_STATE": 101,
-      "LOCATION": 42,
+      "BATTLE_STATE": 130,
+      "LOCATION": 51,
       "MANA": 2,
-      "SOURCE_ACTIVE": 119
+      "SOURCE_ACTIVE": 139
     },
     "targetCounts": {
-      "BRANCH_CHOICE": 1,
+      "BRANCH_CHOICE": 2,
       "CHOOSE_LOCATION": 15,
       "CHOOSE_N_CARDS": 19,
-      "CHOOSE_ONE_PLAYER": 1
+      "CHOOSE_ONE_PLAYER": 8
     },
     "costCounts": {
       "COMMAND_SEAL_OR_RESOURCE": 1,
-      "DISCARD_OR_CLOSE": 18,
+      "DISCARD_OR_CLOSE": 29,
       "MANA": 7
     },
     "interactionCounts": {
-      "BRANCH_CHOICE": 1,
+      "BRANCH_CHOICE": 2,
       "CHOOSE_LOCATION": 15,
       "CHOOSE_N_CARDS": 19,
-      "CHOOSE_ONE_PLAYER": 1,
+      "CHOOSE_ONE_PLAYER": 8,
       "RESPONSE": 1,
-      "YES_NO": 48
+      "YES_NO": 51
     },
     "strictPendingInteractionCounts": {
-      "BRANCH_CHOICE": 1,
+      "BRANCH_CHOICE": 2,
       "CHOOSE_LOCATION": 15,
       "CHOOSE_N_CARDS": 19,
-      "CHOOSE_ONE_PLAYER": 1
+      "CHOOSE_ONE_PLAYER": 8
     },
     "effectPrimitiveFamilyCounts": {
-      "CARD_ACTION_SEMANTICS": 29,
+      "CARD_ACTION_SEMANTICS": 35,
       "CARD_ZONE": 29,
       "MOVEMENT": 16,
-      "RESOURCE_NUMERIC": 67,
-      "VISIBILITY": 14
+      "RESOURCE_NUMERIC": 77,
+      "VISIBILITY": 15
     },
     "modifierCounts": {
       "EFFECT_MODIFIER": 9,
-      "RULE_MODIFIER": 36
+      "RULE_MODIFIER": 43
     },
     "lifecyclePolicyCounts": {
       "lifecycle:cleanup:expire_after_duration": 1,
-      "lifecycle:cleanup:remain_active": 1,
+      "lifecycle:cleanup:remain_active": 4,
       "lifecycle:cleanup:when_card_leaves_active_area": 2,
       "lifecycle:duration:round_count": 1,
+      "lifecycle:duration:this_round": 2,
+      "lifecycle:duration:while_active": 7,
       "lifecycle:duration:while_card_active": 3,
       "lifecycle:rounds:2": 1,
       "lifecycle:sourceValidity:kind:accepted_source_state_policy": 1,
       "lifecycle:sourceValidity:owner:card_zone_source_state": 1,
       "lifecycle:sourceValidity:policyId:fd.card-zone.active-card-source.v1": 1,
-      "lifecycle:starts:immediate": 4,
+      "lifecycle:starts:immediate": 6,
       "limit:conflictPolicy:only_one_effect_may_activate_per_window": 3,
       "limit:groupId:artoriac-pilgrim-unique-on-win": 3,
-      "limit:scope:this_card": 17,
+      "limit:scope:this_card": 22,
       "limit:scope:unique_keyword_group": 3,
-      "limit:type:per_game": 3,
+      "limit:type:per_game": 8,
       "limit:type:per_round": 14,
       "limit:type:unique": 3,
       "limit:uses:1": 17,
+      "limit:uses:3": 5,
       "limit:window:trigger_window": 3
     },
     "hiddenInformationCounts": {
-      "HIDDEN_OR_PRIVATE": 34,
+      "HIDDEN_OR_PRIVATE": 49,
       "PRIVATE_LOOK": 2,
-      "REVEAL": 11,
+      "REVEAL": 12,
       "ZONE_VISIBILITY": 1
     },
     "resultBindingCounts": {
       "RESULT_VAR": 2
     },
     "battleIntegrationCounts": {
-      "BATTLE_INTEGRATION": 101
+      "BATTLE_INTEGRATION": 130
     },
     "specialSubsystemCounts": {
       "SPECIAL_SUBSYSTEM": 17
     }
   },
   "semanticAxes": [
+    {
+      "archiveId": "master.amakusa",
+      "cardId": "master.amakusa.skill.s1",
+      "abilityId": "doctrine-assign-roles",
+      "abilityKey": "master.amakusa.skill.s1::doctrine-assign-roles",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "add_status"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:target_reference_without_declared_pending_interaction"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:add_status"
+      ]
+    },
+    {
+      "archiveId": "master.bazett",
+      "cardId": "master.bazett.skill.s1b",
+      "abilityId": "bazett.day1.dazed",
+      "abilityKey": "master.bazett.skill.s1b::bazett.day1.dazed",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
+      "archiveId": "master.caules",
+      "cardId": "master.caules.skill.s1a",
+      "abilityId": "master.caules.skill.s1a.game-start-rules",
+      "abilityKey": "master.caules.skill.s1a::master.caules.skill.s1a.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
+      "archiveId": "master.ciel",
+      "cardId": "master.ciel.skill.s1a",
+      "abilityId": "s1a.game-start-skill-provisioning",
+      "abilityKey": "master.ciel.skill.s1a::s1a.game-start-skill-provisioning",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "provision_skill_cards"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:provision_skill_cards"
+      ]
+    },
+    {
+      "archiveId": "master.ciel",
+      "cardId": "master.ciel.skill.s2",
+      "abilityId": "exorcism-uncontested-win",
+      "abilityKey": "master.ciel.skill.s2::exorcism-uncontested-win",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_wins_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "master.ciel",
+      "cardId": "master.ciel.skill.s2",
+      "abilityId": "clerical-convenience",
+      "abilityKey": "master.ciel.skill.s2::clerical-convenience",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_mana"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "master.darnic",
+      "cardId": "master.darnic.skill.s1a",
+      "abilityId": "soul-eater-win-set-mana",
+      "abilityKey": "master.darnic.skill.s1a::soul-eater-win-set-mana",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_wins_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "set_mana"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:set_mana"
+      ]
+    },
+    {
+      "archiveId": "master.darnic",
+      "cardId": "master.darnic.skill.s1a",
+      "abilityId": "soul-eater-round-end-loss",
+      "abilityKey": "master.darnic.skill.s1a::soul-eater-round-end-loss",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "master.fiore",
+      "cardId": "master.fiore.skill.s2",
+      "abilityId": "master.fiore.skill.s2.game-start-rules",
+      "abilityKey": "master.fiore.skill.s2::master.fiore.skill.s2.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
+      "archiveId": "master.fiore",
+      "cardId": "master.fiore.skill.s3",
+      "abilityId": "master.fiore.skill.s3.game-start-rules",
+      "abilityKey": "master.fiore.skill.s3::master.fiore.skill.s3.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
+      "archiveId": "master.fiore",
+      "cardId": "master.fiore.skill.s4",
+      "abilityId": "master.fiore.skill.s4.game-start-rules",
+      "abilityKey": "master.fiore.skill.s4::master.fiore.skill.s4.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
     {
       "archiveId": "master.gatou",
       "cardId": "master.gatou.skill.seeker",
@@ -331,6 +736,74 @@
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "master.iliya",
+      "cardId": "master.iliya.skill.s1",
+      "abilityId": "iliya.homunculus.initial-mana",
+      "abilityKey": "master.iliya.skill.s1::iliya.homunculus.initial-mana",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "set_mana"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:set_mana"
+      ]
+    },
+    {
+      "archiveId": "master.irisviel",
+      "cardId": "master.irisviel.skill.s1",
+      "abilityId": "irisviel.proxy-master.command-seal-window",
+      "abilityKey": "master.irisviel.skill.s1::irisviel.proxy-master.command-seal-window",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
     },
     {
       "archiveId": "master.irisviel",
@@ -648,6 +1121,45 @@
       "semanticRoutes": [],
       "taxonomyWarnings": [
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "master.kayneth",
+      "cardId": "master.kayneth.skill.s3",
+      "abilityId": "arrogant-forced-deployment",
+      "abilityKey": "master.kayneth.skill.s3::arrogant-forced-deployment",
+      "abilityKind": [
+        "PASSIVE"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:passive_kind_is_not_lifecycle_policy"
       ],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:runtime_route_unknown"
@@ -1418,6 +1930,166 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "master.peperoncino",
+      "cardId": "master.peperoncino.skill.s1a",
+      "abilityId": "master.peperoncino.skill.s1a.game-start-rules",
+      "abilityKey": "master.peperoncino.skill.s1a::master.peperoncino.skill.s1a.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
+      "archiveId": "master.shiki-ryougi",
+      "cardId": "master.shiki-ryougi.skill.s1a",
+      "abilityId": "s1a.game-start-skill-provisioning",
+      "abilityKey": "master.shiki-ryougi.skill.s1a::s1a.game-start-skill-provisioning",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "provision_skill_cards"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:provision_skill_cards"
+      ]
+    },
+    {
+      "archiveId": "master.shiki-ryougi",
+      "cardId": "master.shiki-ryougi.skill.s3",
+      "abilityId": "required-additional-play",
+      "abilityKey": "master.shiki-ryougi.skill.s3::required-additional-play",
+      "abilityKind": [
+        "PASSIVE"
+      ],
+      "timingWindows": [
+        "WHILE_ACTIVE"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "append_only_rule"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:passive_kind_is_not_lifecycle_policy",
+        "TAXONOMY_DRIFT_WARNING:while_active_is_timing_hook_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "master.shiki-ryougi",
+      "cardId": "master.shiki-ryougi.skill.s3",
+      "abilityId": "same-battlefield-private-hand-return",
+      "abilityKey": "master.shiki-ryougi.skill.s3::same-battlefield-private-hand-return",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "inspect_target_hand_optional_return_one_to_owner_deck"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:inspect_target_hand_optional_return_one_to_owner_deck"
+      ]
+    },
+    {
       "archiveId": "master.shinji",
       "cardId": "master.shinji.skill.drain-command",
       "abilityId": "drain-command.enter-miyama",
@@ -1568,6 +2240,111 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "master.shirou-emiya",
+      "cardId": "master.shirou-emiya.skill.s2",
+      "abilityId": "s2.game-start-skill-provisioning",
+      "abilityKey": "master.shirou-emiya.skill.s2::s2.game-start-skill-provisioning",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "provision_skill_cards"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:provision_skill_cards"
+      ]
+    },
+    {
+      "archiveId": "master.shirou-emiya",
+      "cardId": "card.derived.master.shirou-emiya.ganjiang-moye",
+      "abilityId": "ganjiang-moye.append-only",
+      "abilityKey": "card.derived.master.shirou-emiya.ganjiang-moye::ganjiang-moye.append-only",
+      "abilityKind": [
+        "PASSIVE"
+      ],
+      "timingWindows": [
+        "WHILE_ACTIVE"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "append_only_rule"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:passive_kind_is_not_lifecycle_policy",
+        "TAXONOMY_DRIFT_WARNING:while_active_is_timing_hook_not_domain_trigger"
+      ],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "master.sieg",
+      "cardId": "master.sieg.skill.s1",
+      "abilityId": "master.sieg.skill.s1.game-start-rules",
+      "abilityKey": "master.sieg.skill.s1::master.sieg.skill.s1.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
       "archiveId": "master.sion",
       "cardId": "master.sion.skill.s12",
       "abilityId": "s12.alter-ego-transform",
@@ -1611,6 +2388,158 @@
       "taxonomyWarnings": [],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+      ]
+    },
+    {
+      "archiveId": "master.taiga",
+      "cardId": "master.taiga.skill.s1",
+      "abilityId": "taiga.helper.initial-mana",
+      "abilityKey": "master.taiga.skill.s1::taiga.helper.initial-mana",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "set_mana"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:set_mana"
+      ]
+    },
+    {
+      "archiveId": "master.waver",
+      "cardId": "master.waver.skill.s1",
+      "abilityId": "master.waver.skill.s1.game-start-rules",
+      "abilityKey": "master.waver.skill.s1::master.waver.skill.s1.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
+      "archiveId": "master.zouken",
+      "cardId": "master.zouken.skill.s5",
+      "abilityId": "master.zouken.skill.s5.game-start-rules",
+      "abilityKey": "master.zouken.skill.s5::master.zouken.skill.s5.game-start-rules",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "game_start"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "install_rule_override"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+      ]
+    },
+    {
+      "archiveId": "servant.abigail",
+      "cardId": "servant.abigail.skill.sc-abigail-4",
+      "abilityId": "sc-abigail-4.outer-god-life",
+      "abilityKey": "servant.abigail.skill.sc-abigail-4::sc-abigail-4.outer-god-life",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "adjust_round_total_power",
+        "schedule_source_card_return"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:adjust_round_total_power",
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:schedule_source_card_return"
       ]
     },
     {
@@ -1930,6 +2859,104 @@
       ],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.amakusa",
+      "cardId": "servant.amakusa.skill.sc-amakusa-3",
+      "abilityId": "sc-amakusa-3.ruler-binding",
+      "abilityKey": "servant.amakusa.skill.sc-amakusa-3::sc-amakusa-3.ruler-binding",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [],
+      "targets": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "grant_ruler_seals",
+        "ruler_copy_steal_guard"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [
+        "limit:scope:this_card",
+        "limit:type:per_game",
+        "limit:uses:3"
+      ],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:grant_ruler_seals",
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:ruler_copy_steal_guard"
+      ]
+    },
+    {
+      "archiveId": "servant.amor",
+      "cardId": "servant.amor.skill.sc-amor-1",
+      "abilityId": "sc-amor-1.ruler-binding",
+      "abilityKey": "servant.amor.skill.sc-amor-1::sc-amor-1.ruler-binding",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [],
+      "targets": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "grant_ruler_seals",
+        "ruler_copy_steal_guard"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [
+        "limit:scope:this_card",
+        "limit:type:per_game",
+        "limit:uses:3"
+      ],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:grant_ruler_seals",
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:ruler_copy_steal_guard"
       ]
     },
     {
@@ -3949,6 +4976,54 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.clytie",
+      "cardId": "servant.clytie.skill.sc-clytie-4",
+      "abilityId": "sc-clytie-4.outer-god-life",
+      "abilityKey": "servant.clytie.skill.sc-clytie-4::sc-clytie-4.outer-god-life",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "adjust_round_total_power",
+        "schedule_source_card_return"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:adjust_round_total_power",
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:schedule_source_card_return"
+      ]
+    },
+    {
       "archiveId": "servant.constantine",
       "cardId": "servant.constantine.skill.sc-constantine-1",
       "abilityId": "sc-constantine-1.draw",
@@ -4165,6 +5240,98 @@
       "taxonomyWarnings": [],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:defeat_highest_power_opponents"
+      ]
+    },
+    {
+      "archiveId": "servant.darius",
+      "cardId": "servant.darius.skill.sc-darius-1",
+      "abilityId": "achaemenid-glory-residual",
+      "abilityKey": "servant.darius.skill.sc-darius-1::achaemenid-glory-residual",
+      "abilityKind": [
+        "RESIDUAL"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_ended"
+      ],
+      "requirements": [
+        "BATTLE_STATE",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "close_source_card"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [
+        "lifecycle:cleanup:remain_active",
+        "lifecycle:duration:while_active",
+        "lifecycle:starts:immediate"
+      ],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.darius",
+      "cardId": "servant.darius.skill.sc-darius-2",
+      "abilityId": "open-underworld-gate",
+      "abilityKey": "servant.darius.skill.sc-darius-2::open-underworld-gate",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [
+        "lifecycle:duration:this_round"
+      ],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
       ]
     },
     {
@@ -5355,6 +6522,79 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.gilles",
+      "cardId": "servant.gilles.skill.sc-gilles-2",
+      "abilityId": "sc-gilles-2.round-power",
+      "abilityKey": "servant.gilles.skill.sc-gilles-2::sc-gilles-2.round-power",
+      "abilityKind": [
+        "CONTINUOUS_FORMULA"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.gilles",
+      "cardId": "servant.gilles.skill.sc-gilles-2",
+      "abilityId": "sc-gilles-2.deployment-reward",
+      "abilityKey": "servant.gilles.skill.sc-gilles-2::sc-gilles-2.deployment-reward",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_player_deployed_to_battlefield"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_mana",
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.hassan",
       "cardId": "servant.hassan.skill.sc-hassan-1",
       "abilityId": "sc-hassan-1.presence-concealment",
@@ -5490,6 +6730,50 @@
       ]
     },
     {
+      "archiveId": "servant.helena",
+      "cardId": "servant.helena.skill.sc-helena-3",
+      "abilityId": "mana-synchronization",
+      "abilityKey": "servant.helena.skill.sc-helena-3::mana-synchronization",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [
+        "lifecycle:duration:this_round"
+      ],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
       "archiveId": "servant.hephaistion",
       "cardId": "servant.hephaistion.skill.sc-hephaistion-3",
       "abilityId": "sc-hephaistion-3.draw",
@@ -5571,6 +6855,54 @@
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.hokusai",
+      "cardId": "servant.hokusai.skill.sc-hokusai-4",
+      "abilityId": "sc-hokusai-4.outer-god-life",
+      "abilityKey": "servant.hokusai.skill.sc-hokusai-4::sc-hokusai-4.outer-god-life",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "adjust_round_total_power",
+        "schedule_source_card_return"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:adjust_round_total_power",
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:schedule_source_card_return"
+      ]
     },
     {
       "archiveId": "servant.ishtar",
@@ -5909,6 +7241,55 @@
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.jeanne",
+      "cardId": "servant.jeanne.skill.sc-jeanne-1",
+      "abilityId": "sc-jeanne-1.ruler-binding",
+      "abilityKey": "servant.jeanne.skill.sc-jeanne-1::sc-jeanne-1.ruler-binding",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [],
+      "targets": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "grant_ruler_seals",
+        "ruler_copy_steal_guard"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [
+        "limit:scope:this_card",
+        "limit:type:per_game",
+        "limit:uses:3"
+      ],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:grant_ruler_seals",
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:ruler_copy_steal_guard"
+      ]
     },
     {
       "archiveId": "servant.jekyll",
@@ -6854,6 +8235,122 @@
       ]
     },
     {
+      "archiveId": "servant.leonidas",
+      "cardId": "servant.leonidas.skill.sc-leonidas-1",
+      "abilityId": "thermopylae-true-name-release",
+      "abilityKey": "servant.leonidas.skill.sc-leonidas-1::thermopylae-true-name-release",
+      "abilityKind": [
+        "DECLARATION_REVEAL"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "on_use_declared"
+      ],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "VISIBILITY"
+      ],
+      "exactEffectPrimitives": [
+        "reveal_information"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE",
+        "REVEAL"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.leonidas",
+      "cardId": "servant.leonidas.skill.sc-leonidas-1",
+      "abilityId": "thermopylae-close-on-move",
+      "abilityKey": "servant.leonidas.skill.sc-leonidas-1::thermopylae-close-on-move",
+      "abilityKind": [
+        "RESIDUAL"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_enters_location"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "close_source_card"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [
+        "lifecycle:duration:while_active"
+      ],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.leonidas",
+      "cardId": "servant.leonidas.skill.sc-leonidas-1",
+      "abilityId": "thermopylae-face-up-limit",
+      "abilityKey": "servant.leonidas.skill.sc-leonidas-1::thermopylae-face-up-limit",
+      "abilityKind": [
+        "RESIDUAL"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [
+        "lifecycle:duration:while_active"
+      ],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
       "archiveId": "servant.lishuwen",
       "cardId": "servant.lishuwen.skill.sc-lishuwen-3",
       "abilityId": "sc-lishuwen-3.move",
@@ -7267,6 +8764,79 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.medea",
+      "cardId": "servant.medea.skill.sc-medea-2",
+      "abilityId": "sc-medea-2.round-power",
+      "abilityKey": "servant.medea.skill.sc-medea-2::sc-medea-2.round-power",
+      "abilityKind": [
+        "CONTINUOUS_FORMULA"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "on_card_played"
+      ],
+      "requirements": [
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.medea",
+      "cardId": "servant.medea.skill.sc-medea-2",
+      "abilityId": "sc-medea-2.deployment-reward",
+      "abilityKey": "servant.medea.skill.sc-medea-2::sc-medea-2.deployment-reward",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_player_deployed_to_battlefield"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_mana",
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.medusa",
       "cardId": "servant.medusa.skill.sc-medusa-1",
       "abilityId": "sc-medusa-1.draw",
@@ -7348,6 +8918,52 @@
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.medusa",
+      "cardId": "servant.medusa.skill.sc-medusa-2",
+      "abilityId": "mystic-eyes-petrification",
+      "abilityKey": "servant.medusa.skill.sc-medusa-2::mystic-eyes-petrification",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "defeat_player",
+        "no_attack_played_this_round_with_attribute"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger",
+        "TAXONOMY_DRIFT_WARNING:target_reference_without_declared_pending_interaction"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:defeat_player",
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:no_attack_played_this_round_with_attribute"
+      ]
     },
     {
       "archiveId": "servant.meltryllis",
@@ -7466,6 +9082,181 @@
       "semanticRoutes": [],
       "taxonomyWarnings": [],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.mhx",
+      "cardId": "servant.mhx.skill.sc-mhx-3",
+      "abilityId": "sc-mhx-3.noble-bloom",
+      "abilityKey": "servant.mhx.skill.sc-mhx-3::sc-mhx-3.noble-bloom",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.mhx",
+      "cardId": "servant.mhx.skill.sc-mhx-3",
+      "abilityId": "sc-mhx-3.noble-bloom-extra-vp",
+      "abilityKey": "servant.mhx.skill.sc-mhx-3::sc-mhx-3.noble-bloom-extra-vp",
+      "abilityKind": [
+        "OPTIONAL_TRIGGER"
+      ],
+      "timingWindows": [
+        "COMBAT"
+      ],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [
+        "YES_NO"
+      ],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.mhx",
+      "cardId": "servant.mhx.skill.sc-mhx-3",
+      "abilityId": "sc-mhx-3.magic-resistance",
+      "abilityKey": "servant.mhx.skill.sc-mhx-3::sc-mhx-3.magic-resistance",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.molay",
+      "cardId": "servant.molay.skill.sc-molay-4",
+      "abilityId": "sc-molay-4.outer-god-life",
+      "abilityKey": "servant.molay.skill.sc-molay-4::sc-molay-4.outer-god-life",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "adjust_round_total_power",
+        "schedule_source_card_return"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:adjust_round_total_power",
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:schedule_source_card_return"
+      ]
     },
     {
       "archiveId": "servant.mordred",
@@ -7592,6 +9383,55 @@
       ],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.morgan",
+      "cardId": "servant.morgan.skill.sc-morgan-3",
+      "abilityId": "sc-morgan-3.ruler-binding",
+      "abilityKey": "servant.morgan.skill.sc-morgan-3::sc-morgan-3.ruler-binding",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [],
+      "targets": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "grant_ruler_seals",
+        "ruler_copy_steal_guard"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [
+        "limit:scope:this_card",
+        "limit:type:per_game",
+        "limit:uses:3"
+      ],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:grant_ruler_seals",
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:ruler_copy_steal_guard"
       ]
     },
     {
@@ -7919,6 +9759,305 @@
       "semanticRoutes": [],
       "taxonomyWarnings": [],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.nero",
+      "cardId": "servant.nero.skill.sc-nero-1",
+      "abilityId": "golden-theater-win-reward",
+      "abilityKey": "servant.nero.skill.sc-nero-1::golden-theater-win-reward",
+      "abilityKind": [
+        "RESIDUAL"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_wins_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [
+        "lifecycle:cleanup:remain_active",
+        "lifecycle:duration:while_active",
+        "lifecycle:starts:immediate"
+      ],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.nero",
+      "cardId": "servant.nero.skill.sc-nero-1",
+      "abilityId": "golden-theater-close-on-no-win",
+      "abilityKey": "servant.nero.skill.sc-nero-1::golden-theater-close-on-no-win",
+      "abilityKind": [
+        "RESIDUAL"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "close_source_card"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [
+        "lifecycle:cleanup:remain_active",
+        "lifecycle:duration:while_active"
+      ],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.nobunaga",
+      "cardId": "servant.nobunaga.skill.sc-nobunaga-3",
+      "abilityId": "fool-defeat-reward",
+      "abilityKey": "servant.nobunaga.skill.sc-nobunaga-3::fool-defeat-reward",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.nobunaga",
+      "cardId": "servant.nobunaga.skill.sc-nobunaga-3",
+      "abilityId": "reckless-strategy",
+      "abilityKey": "servant.nobunaga.skill.sc-nobunaga-3::reckless-strategy",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_loses_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "battle_loss_vp_then_reward_winners"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:battle_loss_vp_then_reward_winners"
+      ]
+    },
+    {
+      "archiveId": "servant.nursery",
+      "cardId": "servant.nursery.skill.sc-nursery-2",
+      "abilityId": "memory-playground",
+      "abilityKey": "servant.nursery.skill.sc-nursery-2::memory-playground",
+      "abilityKind": [
+        "PASSIVE"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [],
+      "requirements": [
+        "LOCATION"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [
+        "lifecycle:duration:while_active"
+      ],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:passive_kind_is_not_lifecycle_policy"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.oberon",
+      "cardId": "servant.oberon.skill.sc-oberon-3",
+      "abilityId": "sc-oberon-3.ruler-binding",
+      "abilityKey": "servant.oberon.skill.sc-oberon-3::sc-oberon-3.ruler-binding",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [],
+      "targets": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "costs": [],
+      "interactions": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "strictPendingInteractions": [
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "grant_ruler_seals",
+        "ruler_copy_steal_guard"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [
+        "limit:scope:this_card",
+        "limit:type:per_game",
+        "limit:uses:3"
+      ],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:grant_ruler_seals",
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:ruler_copy_steal_guard"
+      ]
+    },
+    {
+      "archiveId": "servant.oberon",
+      "cardId": "servant.oberon.skill.sc-oberon-4",
+      "abilityId": "sc-oberon-4.ruler-seal-use",
+      "abilityKey": "servant.oberon.skill.sc-oberon-4::sc-oberon-4.ruler-seal-use",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "ACTION",
+        "CONTROLLER_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION"
+      ],
+      "targets": [
+        "BRANCH_CHOICE",
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "costs": [],
+      "interactions": [
+        "BRANCH_CHOICE",
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "strictPendingInteractions": [
+        "BRANCH_CHOICE",
+        "CHOOSE_ONE_PLAYER"
+      ],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "use_ruler_seal"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:use_ruler_seal"
+      ]
     },
     {
       "archiveId": "servant.odysseus",
@@ -8749,6 +10888,50 @@
       "unclassifiedReasons": []
     },
     {
+      "archiveId": "servant.siegfried",
+      "cardId": "servant.siegfried.skill.sc-siegfried-2",
+      "abilityId": "armor-of-fafnir",
+      "abilityKey": "servant.siegfried.skill.sc-siegfried-2::armor-of-fafnir",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_enters_location"
+      ],
+      "requirements": [
+        "BATTLE_STATE",
+        "LOCATION",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "CARD_ACTION_SEMANTICS"
+      ],
+      "exactEffectPrimitives": [
+        "close_source_card"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
+    },
+    {
       "archiveId": "servant.sitonai",
       "cardId": "servant.sitonai.skill.sc-sitonai-3",
       "abilityId": "sc-sitonai-3.alter-ego-transform",
@@ -8791,6 +10974,47 @@
       "taxonomyWarnings": [],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+      ]
+    },
+    {
+      "archiveId": "servant.spartacus",
+      "cardId": "servant.spartacus.skill.sc-spartacus-2",
+      "abilityId": "wounded-beast-roar-reward",
+      "abilityKey": "servant.spartacus.skill.sc-spartacus-2::wounded-beast-roar-reward",
+      "abilityKind": [
+        "RESIDUAL"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_battle_result_determined"
+      ],
+      "requirements": [
+        "BATTLE_STATE",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "combat_opponent_power_vp_reward"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [
+        "lifecycle:duration:while_active"
+      ],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:combat_opponent_power_vp_reward"
       ]
     },
     {
@@ -8837,6 +11061,117 @@
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:defeat_highest_power_opponents"
       ]
+    },
+    {
+      "archiveId": "servant.stheno",
+      "cardId": "servant.stheno.skill.sc-stheno-2",
+      "abilityId": "true-name-release",
+      "abilityKey": "servant.stheno.skill.sc-stheno-2::true-name-release",
+      "abilityKind": [
+        "PASSIVE"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [],
+      "requirements": [],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:passive_kind_is_not_lifecycle_policy"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.stheno",
+      "cardId": "servant.stheno.skill.sc-stheno-2",
+      "abilityId": "goddess-smile-reward-distribution",
+      "abilityKey": "servant.stheno.skill.sc-stheno-2::goddess-smile-reward-distribution",
+      "abilityKind": [
+        "PASSIVE"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [],
+      "modifiers": [
+        "RULE_MODIFIER"
+      ],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:passive_kind_is_not_lifecycle_policy"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:runtime_route_unknown"
+      ]
+    },
+    {
+      "archiveId": "servant.stheno",
+      "cardId": "servant.stheno.skill.sc-stheno-2",
+      "abilityId": "goddess-smile-win-reward",
+      "abilityKey": "servant.stheno.skill.sc-stheno-2::goddess-smile-win-reward",
+      "abilityKind": [
+        "FORCED_TRIGGER"
+      ],
+      "timingWindows": [],
+      "domainEventTriggers": [
+        "after_controller_wins_battle"
+      ],
+      "requirements": [
+        "BATTLE_STATE",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [
+        "RESOURCE_NUMERIC"
+      ],
+      "exactEffectPrimitives": [
+        "adjust_victory_points"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "LEGACY_RESOLVE_EFFECT",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [],
+      "unclassifiedReasons": []
     },
     {
       "archiveId": "servant.taisui",
@@ -9423,6 +11758,54 @@
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
       "unclassifiedReasons": []
+    },
+    {
+      "archiveId": "servant.voyager",
+      "cardId": "servant.voyager.skill.sc-voyager-4",
+      "abilityId": "sc-voyager-4.outer-god-life",
+      "abilityKey": "servant.voyager.skill.sc-voyager-4::sc-voyager-4.outer-god-life",
+      "abilityKind": [
+        "PHASE_ACTION"
+      ],
+      "timingWindows": [
+        "COMBAT",
+        "CONTROLLER_COMBAT_ACTION_WINDOW"
+      ],
+      "domainEventTriggers": [],
+      "requirements": [
+        "BATTLE_STATE",
+        "SOURCE_ACTIVE"
+      ],
+      "targets": [],
+      "costs": [
+        "DISCARD_OR_CLOSE"
+      ],
+      "interactions": [],
+      "strictPendingInteractions": [],
+      "effectPrimitiveFamilies": [],
+      "exactEffectPrimitives": [
+        "adjust_round_total_power",
+        "schedule_source_card_return"
+      ],
+      "modifiers": [],
+      "lifecyclePolicies": [],
+      "hiddenInformation": [
+        "HIDDEN_OR_PRIVATE"
+      ],
+      "resultBinding": [],
+      "battleIntegration": [
+        "BATTLE_INTEGRATION"
+      ],
+      "specialSubsystems": [],
+      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "semanticRoutes": [],
+      "taxonomyWarnings": [
+        "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      ],
+      "unclassifiedReasons": [
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:adjust_round_total_power",
+        "NOT_CLASSIFIABLE:unknown_effect_primitive:schedule_source_card_return"
+      ]
     }
   ],
   "runtimeRouting": {
@@ -9447,8 +11830,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 127,
-      "after": 127,
+      "before": 144,
+      "after": 144,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -9457,9 +11840,9 @@
       "delta": 0
     },
     "notClassifiable": {
-      "before": 75,
-      "after": 70,
-      "delta": -5
+      "before": 128,
+      "after": 112,
+      "delta": -16
     },
     "pilotAllowlistEntries": {
       "before": 0,
@@ -9469,211 +11852,259 @@
     "cardSpecificRuntimeHandlers": [
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 66,
+        "line": 121,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 66,
+        "line": 121,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 66,
+        "line": 121,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 73,
+        "line": 128,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 73,
+        "line": 128,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 73,
+        "line": 128,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 87,
+        "line": 143,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 87,
+        "line": 143,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 87,
+        "line": 143,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 87,
+        "line": 143,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 558,
+        "line": 430,
+        "id": "master_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 753,
+        "id": "master_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 753,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 645,
+        "line": 788,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 959,
-        "id": "servant_skill",
+        "line": 916,
+        "id": "master_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 923,
+        "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
         "line": 966,
+        "id": "servant_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 1319,
+        "id": "servant_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 1326,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1033,
+        "line": 1548,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1377,
+        "line": 1915,
+        "id": "master-skills",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 1941,
+        "id": "master_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 1946,
+        "id": "master_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 2128,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 2598,
+        "line": 3582,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/resolution-dataflow.ts",
-        "line": 1203,
+        "line": 1205,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/resolution-dataflow.ts",
-        "line": 1846,
+        "line": 1856,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 173,
+        "line": 175,
         "id": "master",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 174,
+        "line": 176,
         "id": "servant",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 277,
+        "line": 279,
         "id": "master",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1403,
+        "line": 1425,
         "id": "master_main",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1404,
+        "line": 1426,
         "id": "servant_identity",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1406,
+        "line": 1428,
         "id": "servant_deck",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1407,
+        "line": 1429,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1407,
+        "line": 1429,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1408,
+        "line": 1430,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/match-session.ts",
-        "line": 1408,
+        "line": 1430,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 235,
+        "line": 218,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 244,
+        "line": 227,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 244,
+        "line": 227,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 244,
+        "line": 227,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 353,
+        "line": 298,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/core/combat-resolver.ts",
-        "line": 371,
+        "line": 316,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       }
@@ -9686,8 +12117,8 @@
       "delta": 0
     },
     "legacyResolveEffectConsumers": {
-      "before": 127,
-      "after": 127,
+      "before": 144,
+      "after": 144,
       "delta": 0
     },
     "dualRuntimeConsumers": {
@@ -9701,8 +12132,8 @@
       "delta": 0
     },
     "unsupportedNodes": {
-      "before": 75,
-      "after": 75,
+      "before": 128,
+      "after": 128,
       "delta": 0
     },
     "kpiNote": "KPI tracks routing/legacy consumers and unsupported nodes, not raw ability count."
@@ -9710,17 +12141,21 @@
   "primitiveCoverage": {
     "exactPrimitiveCounts": {
       "activate_card_by_id": 1,
+      "add_status": 1,
       "adjust_command_seals": 7,
-      "adjust_mana": 16,
-      "adjust_victory_points": 60,
-      "append_only_rule": 1,
+      "adjust_mana": 19,
+      "adjust_round_total_power": 5,
+      "adjust_victory_points": 69,
+      "append_only_rule": 3,
       "attach_card_to_player_attack": 1,
+      "battle_loss_vp_then_reward_winners": 1,
       "branch": 5,
       "can_adjust_mana": 1,
       "card_not_on_board": 1,
       "choice_is": 1,
       "claim_and_discard_location_events": 1,
-      "close_source_card": 10,
+      "close_source_card": 14,
+      "combat_opponent_power_vp_reward": 1,
       "controller_alone_at_battlefield": 1,
       "controller_at_battlefield": 1,
       "controller_at_location_kind": 1,
@@ -9729,28 +12164,37 @@
       "create_modifier": 3,
       "create_status": 1,
       "defeat_highest_power_opponents": 12,
+      "defeat_player": 1,
       "deployment_rule_override": 1,
       "draw_cards": 15,
       "draw_from_independent_deck": 1,
       "false_attendant_book_replacement": 1,
+      "grant_ruler_seals": 5,
       "hide_servant_true_name": 1,
+      "inspect_target_hand_optional_return_one_to_owner_deck": 1,
+      "install_rule_override": 10,
       "look_at_deck_top": 1,
       "look_at_match_deck_bottoms": 1,
       "move_all_remaining": 2,
       "move_card": 5,
       "move_player": 15,
       "movement_rule_override": 1,
+      "no_attack_played_this_round_with_attribute": 1,
       "opponents_random_discard": 2,
       "pay_mana": 2,
       "play_selected_cards": 15,
       "play_source_card": 1,
       "power_bonus": 2,
+      "provision_skill_cards": 3,
       "record_master_directive": 10,
       "reduce_opponents_power": 1,
       "replace_card_in_deck": 1,
       "return_silence_battle_start": 1,
-      "reveal_information": 11,
+      "reveal_information": 12,
       "reverse_situation_and_event_power_modifiers": 1,
+      "ruler_copy_steal_guard": 5,
+      "schedule_source_card_return": 5,
+      "set_mana": 3,
       "set_opponent_power_to_zero": 1,
       "set_zone_visibility": 1,
       "shuffle_zone_into_deck": 1,
@@ -9759,30 +12203,45 @@
       "terrain_multiplier": 2,
       "transfer_vp_to_owner": 1,
       "transform_event_source_card": 10,
-      "transform_to_return_silence_on_loss": 1
+      "transform_to_return_silence_on_loss": 1,
+      "use_ruler_seal": 1
     },
     "primitiveFamilyCounts": {
-      "CARD_ACTION_SEMANTICS": 29,
+      "CARD_ACTION_SEMANTICS": 35,
       "CARD_ZONE": 29,
       "MOVEMENT": 16,
-      "RESOURCE_NUMERIC": 67,
-      "VISIBILITY": 14
+      "RESOURCE_NUMERIC": 77,
+      "VISIBILITY": 15
     },
     "unknownPrimitiveCounts": {
+      "add_status": 1,
+      "adjust_round_total_power": 5,
+      "battle_loss_vp_then_reward_winners": 1,
       "can_adjust_mana": 1,
       "card_not_on_board": 1,
       "choice_is": 1,
       "claim_and_discard_location_events": 1,
+      "combat_opponent_power_vp_reward": 1,
       "controller_alone_at_battlefield": 1,
       "controller_at_battlefield": 1,
       "controller_at_location_kind": 1,
       "defeat_highest_power_opponents": 12,
+      "defeat_player": 1,
       "deployment_rule_override": 1,
+      "grant_ruler_seals": 5,
       "hide_servant_true_name": 1,
+      "inspect_target_hand_optional_return_one_to_owner_deck": 1,
+      "install_rule_override": 10,
+      "no_attack_played_this_round_with_attribute": 1,
       "opponents_random_discard": 2,
       "power_bonus": 2,
+      "provision_skill_cards": 3,
+      "ruler_copy_steal_guard": 5,
+      "schedule_source_card_return": 5,
+      "set_mana": 3,
       "transfer_vp_to_owner": 1,
-      "transform_event_source_card": 10
+      "transform_event_source_card": 10,
+      "use_ruler_seal": 1
     }
   },
   "gateEvidenceMetadata": {
@@ -9793,6 +12252,18 @@
   },
   "taxonomyDriftProtections": {
     "warnings": [
+      {
+        "archiveId": "master.amakusa",
+        "cardId": "master.amakusa.skill.s1",
+        "abilityId": "doctrine-assign-roles",
+        "warning": "TAXONOMY_DRIFT_WARNING:target_reference_without_declared_pending_interaction"
+      },
+      {
+        "archiveId": "master.ciel",
+        "cardId": "master.ciel.skill.s2",
+        "abilityId": "clerical-convenience",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
       {
         "archiveId": "master.gatou",
         "cardId": "master.gatou.skill.seeker",
@@ -9888,6 +12359,12 @@
         "cardId": "master.kayneth.deck.volumen-hydrargyrum",
         "abilityId": "volumen.slash",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "master.kayneth",
+        "cardId": "master.kayneth.skill.s3",
+        "abilityId": "arrogant-forced-deployment",
+        "warning": "TAXONOMY_DRIFT_WARNING:passive_kind_is_not_lifecycle_policy"
       },
       {
         "archiveId": "master.kiritsugu",
@@ -9998,6 +12475,42 @@
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "master.shiki-ryougi",
+        "cardId": "master.shiki-ryougi.skill.s3",
+        "abilityId": "required-additional-play",
+        "warning": "TAXONOMY_DRIFT_WARNING:passive_kind_is_not_lifecycle_policy"
+      },
+      {
+        "archiveId": "master.shiki-ryougi",
+        "cardId": "master.shiki-ryougi.skill.s3",
+        "abilityId": "required-additional-play",
+        "warning": "TAXONOMY_DRIFT_WARNING:while_active_is_timing_hook_not_domain_trigger"
+      },
+      {
+        "archiveId": "master.shiki-ryougi",
+        "cardId": "master.shiki-ryougi.skill.s3",
+        "abilityId": "same-battlefield-private-hand-return",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "master.shirou-emiya",
+        "cardId": "card.derived.master.shirou-emiya.ganjiang-moye",
+        "abilityId": "ganjiang-moye.append-only",
+        "warning": "TAXONOMY_DRIFT_WARNING:passive_kind_is_not_lifecycle_policy"
+      },
+      {
+        "archiveId": "master.shirou-emiya",
+        "cardId": "card.derived.master.shirou-emiya.ganjiang-moye",
+        "abilityId": "ganjiang-moye.append-only",
+        "warning": "TAXONOMY_DRIFT_WARNING:while_active_is_timing_hook_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.abigail",
+        "cardId": "servant.abigail.skill.sc-abigail-4",
+        "abilityId": "sc-abigail-4.outer-god-life",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.achilles",
         "cardId": "servant.achilles.skill.sc-achilles-1",
         "abilityId": "sc-achilles-1.gale-advance",
@@ -10019,6 +12532,18 @@
         "archiveId": "servant.altera",
         "cardId": "servant.altera.skill.sc-altera-3",
         "abilityId": "sc-altera-3.magic-resistance",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.amakusa",
+        "cardId": "servant.amakusa.skill.sc-amakusa-3",
+        "abilityId": "sc-amakusa-3.ruler-binding",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.amor",
+        "cardId": "servant.amor.skill.sc-amor-1",
+        "abilityId": "sc-amor-1.ruler-binding",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -10160,6 +12685,12 @@
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "servant.clytie",
+        "cardId": "servant.clytie.skill.sc-clytie-4",
+        "abilityId": "sc-clytie-4.outer-god-life",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.constantine",
         "cardId": "servant.constantine.skill.sc-constantine-1",
         "abilityId": "sc-constantine-1.mount-summon",
@@ -10169,6 +12700,12 @@
         "archiveId": "servant.cu",
         "cardId": "servant.cu.skill.sc-cu-2",
         "abilityId": "sc-cu-2.move",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.darius",
+        "cardId": "servant.darius.skill.sc-darius-2",
+        "abilityId": "open-underworld-gate",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -10280,9 +12817,21 @@
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "servant.helena",
+        "cardId": "servant.helena.skill.sc-helena-3",
+        "abilityId": "mana-synchronization",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.hephaistion",
         "cardId": "servant.hephaistion.skill.sc-hephaistion-3",
         "abilityId": "sc-hephaistion-3.mount-summon",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.hokusai",
+        "cardId": "servant.hokusai.skill.sc-hokusai-4",
+        "abilityId": "sc-hokusai-4.outer-god-life",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -10307,6 +12856,12 @@
         "archiveId": "servant.jaguarman",
         "cardId": "servant.jaguarman.skill.sc-jaguarman-1",
         "abilityId": "sc-jaguarman-1.move",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.jeanne",
+        "cardId": "servant.jeanne.skill.sc-jeanne-1",
+        "abilityId": "sc-jeanne-1.ruler-binding",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -10430,9 +12985,39 @@
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
+        "archiveId": "servant.medusa",
+        "cardId": "servant.medusa.skill.sc-medusa-2",
+        "abilityId": "mystic-eyes-petrification",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.medusa",
+        "cardId": "servant.medusa.skill.sc-medusa-2",
+        "abilityId": "mystic-eyes-petrification",
+        "warning": "TAXONOMY_DRIFT_WARNING:target_reference_without_declared_pending_interaction"
+      },
+      {
+        "archiveId": "servant.mhx",
+        "cardId": "servant.mhx.skill.sc-mhx-3",
+        "abilityId": "sc-mhx-3.magic-resistance",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.molay",
+        "cardId": "servant.molay.skill.sc-molay-4",
+        "abilityId": "sc-molay-4.outer-god-life",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
         "archiveId": "servant.mordred",
         "cardId": "servant.mordred.skill.sc-mordred-3",
         "abilityId": "sc-mordred-3.magic-resistance",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.morgan",
+        "cardId": "servant.morgan.skill.sc-morgan-3",
+        "abilityId": "sc-morgan-3.ruler-binding",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -10445,6 +13030,24 @@
         "archiveId": "servant.napoleon",
         "cardId": "servant.napoleon.skill.sc-napoleon-3",
         "abilityId": "sc-napoleon-3.independent-action",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.nursery",
+        "cardId": "servant.nursery.skill.sc-nursery-2",
+        "abilityId": "memory-playground",
+        "warning": "TAXONOMY_DRIFT_WARNING:passive_kind_is_not_lifecycle_policy"
+      },
+      {
+        "archiveId": "servant.oberon",
+        "cardId": "servant.oberon.skill.sc-oberon-3",
+        "abilityId": "sc-oberon-3.ruler-binding",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.oberon",
+        "cardId": "servant.oberon.skill.sc-oberon-4",
+        "abilityId": "sc-oberon-4.ruler-seal-use",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       },
       {
@@ -10482,6 +13085,18 @@
         "cardId": "servant.saitou.skill.sc-saitou-1",
         "abilityId": "sc-saitou-1.magic-resistance",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.stheno",
+        "cardId": "servant.stheno.skill.sc-stheno-2",
+        "abilityId": "true-name-release",
+        "warning": "TAXONOMY_DRIFT_WARNING:passive_kind_is_not_lifecycle_policy"
+      },
+      {
+        "archiveId": "servant.stheno",
+        "cardId": "servant.stheno.skill.sc-stheno-2",
+        "abilityId": "goddess-smile-reward-distribution",
+        "warning": "TAXONOMY_DRIFT_WARNING:passive_kind_is_not_lifecycle_policy"
       },
       {
         "archiveId": "servant.teach",
@@ -10536,6 +13151,12 @@
         "cardId": "servant.vlad.skill.sc-vlad-3",
         "abilityId": "sc-vlad-3.move",
         "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
+      },
+      {
+        "archiveId": "servant.voyager",
+        "cardId": "servant.voyager.skill.sc-voyager-4",
+        "abilityId": "sc-voyager-4.outer-god-life",
+        "warning": "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       }
     ],
     "rules": [
@@ -10548,6 +13169,66 @@
   },
   "unclassifiedItems": [
     {
+      "archiveId": "master.amakusa",
+      "cardId": "master.amakusa.skill.s1",
+      "abilityId": "doctrine-assign-roles",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:add_status"
+    },
+    {
+      "archiveId": "master.bazett",
+      "cardId": "master.bazett.skill.s1b",
+      "abilityId": "bazett.day1.dazed",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "master.caules",
+      "cardId": "master.caules.skill.s1a",
+      "abilityId": "master.caules.skill.s1a.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "master.ciel",
+      "cardId": "master.ciel.skill.s1a",
+      "abilityId": "s1a.game-start-skill-provisioning",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:provision_skill_cards"
+    },
+    {
+      "archiveId": "master.darnic",
+      "cardId": "master.darnic.skill.s1a",
+      "abilityId": "soul-eater-win-set-mana",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:set_mana"
+    },
+    {
+      "archiveId": "master.fiore",
+      "cardId": "master.fiore.skill.s2",
+      "abilityId": "master.fiore.skill.s2.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "master.fiore",
+      "cardId": "master.fiore.skill.s3",
+      "abilityId": "master.fiore.skill.s3.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "master.fiore",
+      "cardId": "master.fiore.skill.s4",
+      "abilityId": "master.fiore.skill.s4.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "master.iliya",
+      "cardId": "master.iliya.skill.s1",
+      "abilityId": "iliya.homunculus.initial-mana",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:set_mana"
+    },
+    {
+      "archiveId": "master.irisviel",
+      "cardId": "master.irisviel.skill.s1",
+      "abilityId": "irisviel.proxy-master.command-seal-window",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
       "archiveId": "master.kayneth",
       "cardId": "master.kayneth.skill.pride",
       "abilityId": "pride.must-deploy",
@@ -10557,6 +13238,12 @@
       "archiveId": "master.kayneth",
       "cardId": "master.kayneth.deck.volumen-hydrargyrum",
       "abilityId": "volumen.slash",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "master.kayneth",
+      "cardId": "master.kayneth.skill.s3",
+      "abilityId": "arrogant-forced-deployment",
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
@@ -10572,10 +13259,70 @@
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
+      "archiveId": "master.peperoncino",
+      "cardId": "master.peperoncino.skill.s1a",
+      "abilityId": "master.peperoncino.skill.s1a.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "master.shiki-ryougi",
+      "cardId": "master.shiki-ryougi.skill.s1a",
+      "abilityId": "s1a.game-start-skill-provisioning",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:provision_skill_cards"
+    },
+    {
+      "archiveId": "master.shiki-ryougi",
+      "cardId": "master.shiki-ryougi.skill.s3",
+      "abilityId": "same-battlefield-private-hand-return",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:inspect_target_hand_optional_return_one_to_owner_deck"
+    },
+    {
+      "archiveId": "master.shirou-emiya",
+      "cardId": "master.shirou-emiya.skill.s2",
+      "abilityId": "s2.game-start-skill-provisioning",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:provision_skill_cards"
+    },
+    {
+      "archiveId": "master.sieg",
+      "cardId": "master.sieg.skill.s1",
+      "abilityId": "master.sieg.skill.s1.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
       "archiveId": "master.sion",
       "cardId": "master.sion.skill.s12",
       "abilityId": "s12.alter-ego-transform",
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+    },
+    {
+      "archiveId": "master.taiga",
+      "cardId": "master.taiga.skill.s1",
+      "abilityId": "taiga.helper.initial-mana",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:set_mana"
+    },
+    {
+      "archiveId": "master.waver",
+      "cardId": "master.waver.skill.s1",
+      "abilityId": "master.waver.skill.s1.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "master.zouken",
+      "cardId": "master.zouken.skill.s5",
+      "abilityId": "master.zouken.skill.s5.game-start-rules",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
+    },
+    {
+      "archiveId": "servant.abigail",
+      "cardId": "servant.abigail.skill.sc-abigail-4",
+      "abilityId": "sc-abigail-4.outer-god-life",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:adjust_round_total_power"
+    },
+    {
+      "archiveId": "servant.abigail",
+      "cardId": "servant.abigail.skill.sc-abigail-4",
+      "abilityId": "sc-abigail-4.outer-god-life",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:schedule_source_card_return"
     },
     {
       "archiveId": "servant.achilles",
@@ -10612,6 +13359,30 @@
       "cardId": "servant.altera.skill.sc-altera-3",
       "abilityId": "sc-altera-3.magic-resistance",
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.amakusa",
+      "cardId": "servant.amakusa.skill.sc-amakusa-3",
+      "abilityId": "sc-amakusa-3.ruler-binding",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:grant_ruler_seals"
+    },
+    {
+      "archiveId": "servant.amakusa",
+      "cardId": "servant.amakusa.skill.sc-amakusa-3",
+      "abilityId": "sc-amakusa-3.ruler-binding",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:ruler_copy_steal_guard"
+    },
+    {
+      "archiveId": "servant.amor",
+      "cardId": "servant.amor.skill.sc-amor-1",
+      "abilityId": "sc-amor-1.ruler-binding",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:grant_ruler_seals"
+    },
+    {
+      "archiveId": "servant.amor",
+      "cardId": "servant.amor.skill.sc-amor-1",
+      "abilityId": "sc-amor-1.ruler-binding",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:ruler_copy_steal_guard"
     },
     {
       "archiveId": "servant.anastasia",
@@ -10704,6 +13475,18 @@
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
+      "archiveId": "servant.clytie",
+      "cardId": "servant.clytie.skill.sc-clytie-4",
+      "abilityId": "sc-clytie-4.outer-god-life",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:adjust_round_total_power"
+    },
+    {
+      "archiveId": "servant.clytie",
+      "cardId": "servant.clytie.skill.sc-clytie-4",
+      "abilityId": "sc-clytie-4.outer-god-life",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:schedule_source_card_return"
+    },
+    {
       "archiveId": "servant.corday",
       "cardId": "servant.corday.skill.sc-corday-1",
       "abilityId": "sc-corday-1.presence-concealment",
@@ -10714,6 +13497,12 @@
       "cardId": "servant.danzou.skill.sc-danzou-3",
       "abilityId": "sc-danzou-3.presence-concealment",
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:defeat_highest_power_opponents"
+    },
+    {
+      "archiveId": "servant.darius",
+      "cardId": "servant.darius.skill.sc-darius-2",
+      "abilityId": "open-underworld-gate",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
       "archiveId": "servant.douman",
@@ -10776,6 +13565,12 @@
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
+      "archiveId": "servant.gilles",
+      "cardId": "servant.gilles.skill.sc-gilles-2",
+      "abilityId": "sc-gilles-2.round-power",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
       "archiveId": "servant.hassan",
       "cardId": "servant.hassan.skill.sc-hassan-1",
       "abilityId": "sc-hassan-1.presence-concealment",
@@ -10794,10 +13589,40 @@
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:defeat_highest_power_opponents"
     },
     {
+      "archiveId": "servant.helena",
+      "cardId": "servant.helena.skill.sc-helena-3",
+      "abilityId": "mana-synchronization",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.hokusai",
+      "cardId": "servant.hokusai.skill.sc-hokusai-4",
+      "abilityId": "sc-hokusai-4.outer-god-life",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:adjust_round_total_power"
+    },
+    {
+      "archiveId": "servant.hokusai",
+      "cardId": "servant.hokusai.skill.sc-hokusai-4",
+      "abilityId": "sc-hokusai-4.outer-god-life",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:schedule_source_card_return"
+    },
+    {
       "archiveId": "servant.izou",
       "cardId": "servant.izou.skill.sc-izou-3",
       "abilityId": "sc-izou-3.presence-concealment",
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:defeat_highest_power_opponents"
+    },
+    {
+      "archiveId": "servant.jeanne",
+      "cardId": "servant.jeanne.skill.sc-jeanne-1",
+      "abilityId": "sc-jeanne-1.ruler-binding",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:grant_ruler_seals"
+    },
+    {
+      "archiveId": "servant.jeanne",
+      "cardId": "servant.jeanne.skill.sc-jeanne-1",
+      "abilityId": "sc-jeanne-1.ruler-binding",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:ruler_copy_steal_guard"
     },
     {
       "archiveId": "servant.jekyll",
@@ -10890,6 +13715,12 @@
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
+      "archiveId": "servant.leonidas",
+      "cardId": "servant.leonidas.skill.sc-leonidas-1",
+      "abilityId": "thermopylae-face-up-limit",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
       "archiveId": "servant.maxwell",
       "cardId": "servant.maxwell.skill.sc-maxwell-1",
       "abilityId": "sc-maxwell-1.round-power",
@@ -10900,6 +13731,24 @@
       "cardId": "servant.mechaeli.skill.sc-mechaeli-3",
       "abilityId": "sc-mechaeli-3.alter-ego-transform",
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+    },
+    {
+      "archiveId": "servant.medea",
+      "cardId": "servant.medea.skill.sc-medea-2",
+      "abilityId": "sc-medea-2.round-power",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.medusa",
+      "cardId": "servant.medusa.skill.sc-medusa-2",
+      "abilityId": "mystic-eyes-petrification",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:defeat_player"
+    },
+    {
+      "archiveId": "servant.medusa",
+      "cardId": "servant.medusa.skill.sc-medusa-2",
+      "abilityId": "mystic-eyes-petrification",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:no_attack_played_this_round_with_attribute"
     },
     {
       "archiveId": "servant.meltryllis",
@@ -10914,10 +13763,40 @@
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
+      "archiveId": "servant.mhx",
+      "cardId": "servant.mhx.skill.sc-mhx-3",
+      "abilityId": "sc-mhx-3.magic-resistance",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.molay",
+      "cardId": "servant.molay.skill.sc-molay-4",
+      "abilityId": "sc-molay-4.outer-god-life",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:adjust_round_total_power"
+    },
+    {
+      "archiveId": "servant.molay",
+      "cardId": "servant.molay.skill.sc-molay-4",
+      "abilityId": "sc-molay-4.outer-god-life",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:schedule_source_card_return"
+    },
+    {
       "archiveId": "servant.mordred",
       "cardId": "servant.mordred.skill.sc-mordred-3",
       "abilityId": "sc-mordred-3.magic-resistance",
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.morgan",
+      "cardId": "servant.morgan.skill.sc-morgan-3",
+      "abilityId": "sc-morgan-3.ruler-binding",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:grant_ruler_seals"
+    },
+    {
+      "archiveId": "servant.morgan",
+      "cardId": "servant.morgan.skill.sc-morgan-3",
+      "abilityId": "sc-morgan-3.ruler-binding",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:ruler_copy_steal_guard"
     },
     {
       "archiveId": "servant.mozart",
@@ -10936,6 +13815,36 @@
       "cardId": "servant.musashi.skill.sc-musashi-3",
       "abilityId": "sc-musashi-3.magic-resistance",
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.nobunaga",
+      "cardId": "servant.nobunaga.skill.sc-nobunaga-3",
+      "abilityId": "reckless-strategy",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:battle_loss_vp_then_reward_winners"
+    },
+    {
+      "archiveId": "servant.nursery",
+      "cardId": "servant.nursery.skill.sc-nursery-2",
+      "abilityId": "memory-playground",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.oberon",
+      "cardId": "servant.oberon.skill.sc-oberon-3",
+      "abilityId": "sc-oberon-3.ruler-binding",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:grant_ruler_seals"
+    },
+    {
+      "archiveId": "servant.oberon",
+      "cardId": "servant.oberon.skill.sc-oberon-3",
+      "abilityId": "sc-oberon-3.ruler-binding",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:ruler_copy_steal_guard"
+    },
+    {
+      "archiveId": "servant.oberon",
+      "cardId": "servant.oberon.skill.sc-oberon-4",
+      "abilityId": "sc-oberon-4.ruler-seal-use",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:use_ruler_seal"
     },
     {
       "archiveId": "servant.okita-alt",
@@ -10986,23 +13895,53 @@
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
     },
     {
+      "archiveId": "servant.spartacus",
+      "cardId": "servant.spartacus.skill.sc-spartacus-2",
+      "abilityId": "wounded-beast-roar-reward",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:combat_opponent_power_vp_reward"
+    },
+    {
       "archiveId": "servant.stheno",
       "cardId": "servant.stheno.skill.sc-stheno-1",
       "abilityId": "sc-stheno-1.presence-concealment",
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:defeat_highest_power_opponents"
     },
     {
+      "archiveId": "servant.stheno",
+      "cardId": "servant.stheno.skill.sc-stheno-2",
+      "abilityId": "true-name-release",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
+      "archiveId": "servant.stheno",
+      "cardId": "servant.stheno.skill.sc-stheno-2",
+      "abilityId": "goddess-smile-reward-distribution",
+      "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
+    },
+    {
       "archiveId": "servant.taisui",
       "cardId": "servant.taisui.skill.sc-taisui-1",
       "abilityId": "sc-taisui-1.alter-ego-transform",
       "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:transform_event_source_card"
+    },
+    {
+      "archiveId": "servant.voyager",
+      "cardId": "servant.voyager.skill.sc-voyager-4",
+      "abilityId": "sc-voyager-4.outer-god-life",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:adjust_round_total_power"
+    },
+    {
+      "archiveId": "servant.voyager",
+      "cardId": "servant.voyager.skill.sc-voyager-4",
+      "abilityId": "sc-voyager-4.outer-god-life",
+      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:schedule_source_card_return"
     }
   ],
   "compiledDefinitions": {
     "packId": "fd-playtest-v1",
     "version": 1,
-    "definitionHash": "37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333",
-    "compiledCards": 70,
+    "definitionHash": "7f5f8b8aa6f0abbe060b611189d4c104481486aa50435f4b73a8be7c7890bde1",
+    "compiledCards": 76,
     "compiledCharacters": 14,
     "blockingIssues": 0
   }

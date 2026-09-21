@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -13,7 +13,13 @@ import {
   buildP3A02AutomationAudit,
   summarizeLegacyOwners,
 } from '../phase3-automation-audit';
-import { buildReviewPacket, hotRuntimeTouchSummary, loadCoverage } from '../phase3-review-packet';
+import {
+  buildReviewPacket,
+  diffFiles,
+  hotRuntimeTouchSummary,
+  loadCoverage,
+  runReviewPacketCli,
+} from '../phase3-review-packet';
 
 function archiveWithAbilities(abilities: unknown[]): AuthoringArchiveLike {
   return {
@@ -418,6 +424,30 @@ describe('phase3 coverage taxonomy drift protections', () => {
       'scripts/phase3-coverage.ts',
       'docs/reports/result.md',
     ])).toEqual({ status: 'NO', files: [] });
+  });
+
+  it('fails closed when the requested Git diff base cannot be resolved', () => {
+    expect(() => diffFiles(process.cwd(), 'refs/heads/definitely-missing-phase3-base')).toThrow(
+      /unable to compute reviewed diff/i,
+    );
+  });
+
+  it('does not write a review packet when CLI diff evidence is unavailable', () => {
+    const workspace = mkdtempSync(join(tmpdir(), 'fd-review-packet-invalid-base-'));
+    const output = join(workspace, 'packet.json');
+    try {
+      expect(() => runReviewPacketCli([
+        '--task',
+        'P3-A-GLOBAL-READINESS-AUTOMATION',
+        '--diff-base',
+        'refs/heads/definitely-missing-phase3-base',
+        '--out',
+        output,
+      ], process.cwd())).toThrow(/unable to compute reviewed diff/i);
+      expect(existsSync(output)).toBe(false);
+    } finally {
+      rmSync(workspace, { recursive: true, force: true });
+    }
   });
 
   it('regenerates review coverage from current authoring instead of stale artifact files', () => {
