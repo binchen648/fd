@@ -5,6 +5,7 @@ import type { GameState } from '../src/schema/game';
 import { createSeededGameState } from '../src/tools/seeded-state';
 import {
   exportOpponentCloseToOneServerAuthority,
+  persistOpponentCloseToOneServerAuthority,
   restoreOpponentCloseToOneServerAuthority,
 } from '../src/ability/opponent-close-to-one-authority';
 
@@ -596,18 +597,67 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(state.abilityRuntime!.pendingOpponentCloseToOne?.map((entry) => entry.decisionPlayerId)).toEqual(['p2']);
   });
 
-  it('restores the hidden FB2-49 server authority separately from serialized GameState', () => {
+  it('restores FB2-49 authority through an opaque server-issued handle instead of serialized authority contents', () => {
     const state = setup();
     add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2'); add(state, 'p3-a', 'p3'); add(state, 'p3-b', 'p3');
     expect(activate(state).ok).toBe(true);
     const authority = exportOpponentCloseToOneServerAuthority(state);
     expect(authority?.entries.map((entry) => entry.decisionPlayerId)).toEqual(['p2', 'p3']);
+    const handle = persistOpponentCloseToOneServerAuthority(state);
+    expect(handle).toEqual({ token: expect.stringMatching(/^fb2-49-authority:[0-9a-f]{48}$/) });
 
     const restored = structuredClone(state);
-    restoreOpponentCloseToOneServerAuthority(restored, authority);
+    expect(restoreOpponentCloseToOneServerAuthority(restored, handle)).toBe(true);
     expect(choose(restored, 'p2', ['p2-a']).ok).toBe(true);
     expect(restored.abilityRuntime!.pendingDecision?.controllerId).toBe('p3');
     expect(restored.abilityRuntime!.pendingOpponentCloseToOne?.map((entry) => entry.decisionPlayerId)).toEqual(['p3']);
+  });
+
+  it('rejects coherent queue plus persisted-authority forgery after MatchSession restore', () => {
+    const state = setup();
+    add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2'); add(state, 'p3-a', 'p3'); add(state, 'p3-b', 'p3');
+    expect(activate(state).ok).toBe(true);
+    const decisionId = state.abilityRuntime!.pendingDecision!.id;
+    const handle = persistOpponentCloseToOneServerAuthority(state)!;
+    const baseSnapshot = rules.createMatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'] }).serializeSession();
+    const snapshot: any = { ...baseSnapshot, state: structuredClone(state), opponentCloseToOneServerAuthority: structuredClone(handle) };
+
+    snapshot.state.abilityRuntime.cardState['p3-b'].faceDown = true;
+    snapshot.state.abilityRuntime.pendingOpponentCloseToOne.splice(1, 1);
+    snapshot.state.abilityRuntime.pendingOpponentCloseToOne[0].remainingDecisionPlayerIds = ['p2'];
+    snapshot.state.abilityRuntime.pendingDecision.interaction.remainingDecisionPlayerIds = ['p2'];
+    // The same untrusted input may try to restore the old raw-authority shape too.
+    snapshot.opponentCloseToOneServerAuthority = { nextIndex: 0, entries: structuredClone(snapshot.state.abilityRuntime.pendingOpponentCloseToOne) };
+
+    const restored = rules.restoreMatchSession(snapshot);
+    const before = structuredClone(restored.state);
+    let result: ReturnType<typeof restored.dispatchPlayerAction> | undefined;
+    expect(() => { result = restored.dispatchPlayerAction('p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] }); }).not.toThrow();
+    expect(result?.ok).toBe(false);
+    expect(restored.state).toEqual(before);
+    expect(restored.state.abilityRuntime!.pendingOpponentCloseToOne?.map((entry) => entry.decisionPlayerId)).toEqual(['p2']);
+    expect(restored.state.abilityRuntime!.cardState['p3-b']).toMatchObject({ active: true, faceDown: true });
+  });
+
+  it('fails closed without raw exceptions for malformed persisted authority handles', () => {
+    const malformedAuthorityValues: unknown[] = [
+      null, [], 'forged', 7, true, {}, { nextIndex: 0 },
+      { token: 7 }, { token: 'fb2-49-authority:not-hex' },
+      { token: 'fb2-49-authority:' + 'a'.repeat(48), extra: true },
+    ];
+    for (const malformed of malformedAuthorityValues) {
+      const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+      expect(activate(state).ok).toBe(true);
+      const decisionId = state.abilityRuntime!.pendingDecision!.id;
+      const baseSnapshot = rules.createMatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'] }).serializeSession();
+      const snapshot: any = { ...baseSnapshot, state: structuredClone(state), opponentCloseToOneServerAuthority: structuredClone(malformed) };
+      const restored = rules.restoreMatchSession(snapshot);
+      const before = structuredClone(restored.state);
+      let result: ReturnType<typeof restored.dispatchPlayerAction> | undefined;
+      expect(() => { result = restored.dispatchPlayerAction('p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] }); }).not.toThrow();
+      expect(result?.ok).toBe(false);
+      expect(restored.state).toEqual(before);
+    }
   });
 
   it('treats a live close-forbid as an atomic failure instead of partially closing the frozen set', () => {

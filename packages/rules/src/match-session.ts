@@ -6,9 +6,9 @@ import {
   projectAbilityState,
 } from './ability/interpreter';
 import {
-  exportOpponentCloseToOneServerAuthority,
+  persistOpponentCloseToOneServerAuthority,
   restoreOpponentCloseToOneServerAuthority,
-  type OpponentCloseToOneServerAuthoritySnapshot,
+  type OpponentCloseToOneServerAuthorityHandle,
 } from './ability/opponent-close-to-one-authority';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
@@ -147,8 +147,8 @@ export interface MatchClientState {
 export interface MatchReplayStateSnapshot {
   checkpointId: string;
   state: GameState;
-  /** Server-only FB2-49 frozen continuation authority; never projected to clients. */
-  opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySnapshot;
+  /** Opaque handle to server-only FB2-49 frozen continuation authority; never projects authority contents. */
+  opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthorityHandle;
   logs: MatchSessionLogEntry[];
   battleHistory: GameState['battleResults'];
   consumedDirectiveCount: number;
@@ -163,8 +163,8 @@ export interface MatchSessionSnapshot {
   humanPlayerIds: string[];
   maxActionsPerPlayer: number;
   state: GameState;
-  /** Server-only FB2-49 frozen continuation authority; separate from serialized GameState. */
-  opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySnapshot;
+  /** Opaque handle to server-only FB2-49 frozen continuation authority; separate from serialized GameState. */
+  opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthorityHandle;
   logs: MatchSessionLogEntry[];
   replay: MatchClientState['replay'];
   replaySnapshots: MatchReplayStateSnapshot[];
@@ -181,6 +181,11 @@ type RuntimeContentLibrary = {
 const uncheckedContent = contentLibrary as unknown as CompiledPlaytestContentLibrary & { rules: unknown };
 assertExecutableCardPack(uncheckedContent.rules, uncheckedContent);
 const runtimeContent: RuntimeContentLibrary = { pack: uncheckedContent.pack, rules: uncheckedContent.rules };
+
+function persistedOpponentCloseToOneAuthorityField(state: GameState): { opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthorityHandle } {
+  const handle = persistOpponentCloseToOneServerAuthority(state);
+  return handle ? { opponentCloseToOneServerAuthority: handle } : {};
+}
 const masterCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'master');
 const servantCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'servant');
 
@@ -858,9 +863,7 @@ export class MatchSession {
       humanPlayerIds: [...this.humanPlayerIds],
       maxActionsPerPlayer: this.maxActionsPerPlayer,
       state: structuredClone(this.state),
-      ...(exportOpponentCloseToOneServerAuthority(this.state)
-        ? { opponentCloseToOneServerAuthority: exportOpponentCloseToOneServerAuthority(this.state)! }
-        : {}),
+      ...persistedOpponentCloseToOneAuthorityField(this.state),
       logs: structuredClone(this.logs),
       replay: structuredClone(this.replay),
       replaySnapshots: structuredClone(this.replaySnapshots),
@@ -1555,9 +1558,7 @@ export class MatchSession {
     this.replaySnapshots.push({
       checkpointId: checkpoint.id,
       state: structuredClone(state),
-      ...(exportOpponentCloseToOneServerAuthority(state)
-        ? { opponentCloseToOneServerAuthority: exportOpponentCloseToOneServerAuthority(state)! }
-        : {}),
+      ...persistedOpponentCloseToOneAuthorityField(state),
       logs: structuredClone(this.logs),
       battleHistory: structuredClone(this.battleHistory),
       consumedDirectiveCount: this.consumedDirectiveCount,
