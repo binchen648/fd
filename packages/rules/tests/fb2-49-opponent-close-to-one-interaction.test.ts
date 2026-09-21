@@ -193,18 +193,15 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     add(state, 'p3-a', 'p3'); add(state, 'p3-b', 'p3'); add(state, 'p3-c', 'p3');
     expect(activate(state).ok).toBe(true);
     expect(state.abilityRuntime!.pendingOpponentCloseToOne?.map((entry) => entry.decisionPlayerId)).toEqual(['p2', 'p3']);
-    expect(state.abilityRuntime!.trustedOpponentCloseToOneCommitment?.decisionPlayerIds).toEqual(['p2', 'p3']);
     expect(state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
     expect(rules.projectAbilityState(state, 'p3').pendingDecision).toBeUndefined();
     expect(choose(state, 'p2', ['p2-b']).ok).toBe(true);
     expect(state.abilityRuntime!.pendingOpponentCloseToOne?.map((entry) => entry.decisionPlayerId)).toEqual(['p3']);
-    expect(state.abilityRuntime!.trustedOpponentCloseToOneCommitment?.decisionPlayerIds).toEqual(['p2', 'p3']);
     expect(state.abilityRuntime!.pendingDecision?.controllerId).toBe('p3');
     expect(rules.projectAbilityState(state, 'p3').pendingDecision?.candidates).toEqual(['p3-a', 'p3-b', 'p3-c']);
     expect(choose(state, 'p3', ['p3-c']).ok).toBe(true);
     expect(state.abilityRuntime!.pendingDecision).toBeUndefined();
     expect(state.abilityRuntime!.pendingOpponentCloseToOne).toEqual([]);
-    expect(state.abilityRuntime!.trustedOpponentCloseToOneCommitment).toBeUndefined();
     expect(state.abilityRuntime!.cardState['p2-a']!.faceDown).toBe(true);
     expect(state.abilityRuntime!.cardState['p2-b']!.active).toBe(true);
     expect(state.abilityRuntime!.cardState['p3-a']!.faceDown).toBe(true);
@@ -289,7 +286,6 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
       expect(activate(activation).ok).toBe(false);
       expect(activation.abilityRuntime!.pendingDecision).toBeUndefined();
       expect(activation.abilityRuntime!.pendingOpponentCloseToOne).toBeUndefined();
-      expect(activation.abilityRuntime!.trustedOpponentCloseToOneCommitment).toBeUndefined();
       expect(activation.abilityRuntime!.cardState['p2-a']).toMatchObject({ active: true, faceDown: false });
       expect(activation.abilityRuntime!.cardState['p2-b']).toMatchObject({ active: true, faceDown: false });
 
@@ -310,29 +306,6 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     }
   });
 
-  it('fails closed when the independent FB2-49 trusted commitment is missing or malformed', () => {
-    const corruptions: Array<(state: GameState) => void> = [
-      state => { delete state.abilityRuntime!.trustedOpponentCloseToOneCommitment; },
-      state => { (state.abilityRuntime as any).trustedOpponentCloseToOneCommitment = null; },
-      state => { (state.abilityRuntime!.trustedOpponentCloseToOneCommitment as any).forgedExtra = true; },
-      state => { state.abilityRuntime!.trustedOpponentCloseToOneCommitment!.decisionPlayerIds = ['p2', 'p4']; },
-    ];
-    for (const corrupt of corruptions) {
-      const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
-      expect(activate(state).ok).toBe(true);
-      const decisionId = state.abilityRuntime!.pendingDecision!.id;
-      corrupt(state);
-      const before = structuredClone(state);
-      let result: ReturnType<typeof rules.dispatchAbilityCommand> | undefined;
-      expect(() => {
-        result = rules.dispatchAbilityCommand(state, 'p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] });
-      }).not.toThrow();
-      expect(result?.ok).toBe(false);
-      expect(state).toEqual(before);
-      expect(state.abilityRuntime!.cardState['p2-b']).toMatchObject({ active: true, faceDown: false });
-      expect(state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
-    }
-  });
 
   it('fails closed mutation-free when only frozen qualifying-card ownership provenance drifts', () => {
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
@@ -488,14 +461,16 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
   });
 
-  it('rejects coherent queue truncation even when both serialized suffix mirrors are rewritten', () => {
+  it('rejects coherent queue truncation even when every serialized continuation mirror is rewritten', () => {
     const state = setup();
     add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2'); add(state, 'p3-a', 'p3'); add(state, 'p3-b', 'p3');
     expect(activate(state).ok).toBe(true);
-    expect(state.abilityRuntime!.trustedOpponentCloseToOneCommitment?.decisionPlayerIds).toEqual(['p2', 'p3']);
     state.abilityRuntime!.pendingOpponentCloseToOne!.splice(1, 1);
     state.abilityRuntime!.pendingOpponentCloseToOne![0]!.remainingDecisionPlayerIds = ['p2'];
     (state.abilityRuntime!.pendingDecision!.interaction as any).remainingDecisionPlayerIds = ['p2'];
+    (state.abilityRuntime as any).trustedOpponentCloseToOneCommitment = {
+      initiatingControllerId: 'p1', sourceCardId: SOURCE_ID, abilityId: ABILITY_ID, battlefieldId: 'fuyuki-bridge', decisionPlayerIds: ['p2'],
+    };
     const before = structuredClone(state);
     const decisionId = state.abilityRuntime!.pendingDecision!.id;
     let result: ReturnType<typeof rules.dispatchAbilityCommand> | undefined;
@@ -508,7 +483,6 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(state.abilityRuntime!.cardState['p3-a']).toMatchObject({ active: true, faceDown: false });
     expect(state.abilityRuntime!.cardState['p3-b']).toMatchObject({ active: true, faceDown: false });
     expect(state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
-    expect(state.abilityRuntime!.trustedOpponentCloseToOneCommitment?.decisionPlayerIds).toEqual(['p2', 'p3']);
   });
 
   it('fails closed atomically when FB2-49 synthetic continuation metadata is malformed', () => {

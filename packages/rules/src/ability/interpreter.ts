@@ -71,7 +71,7 @@ import {
 import type {
   AbilityCommand, AbilityDefinitionPack, AbilityEvent, AbilityPlayerView, AbilityRuntime, AuthoringAbility, AuthoringCard,
   BattleResult, BattleResultData, CalculationLine, CardPlayClassification, CardRuntimeState, DispatchResult, EffectContext, ExecutableCardDefinition,
-  LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, RuleNode, TriggeredAbility, TrustedOpponentCloseToOneCommitment,
+  LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, RuleNode, TriggeredAbility,
   AbilityInteractionClassification,
   PlayCardAction,
 } from './types';
@@ -1873,24 +1873,21 @@ function isValidOpponentCloseToOneSourceCardState(value: unknown): value is Card
   return isPlainRecord(value) && typeof value.active === 'boolean' && typeof value.faceDown === 'boolean' &&
     Number.isSafeInteger(value.playedRound);
 }
-function isExactTrustedOpponentCloseToOneCommitment(value: unknown): value is TrustedOpponentCloseToOneCommitment {
-  if (!isPlainRecord(value)) return false;
-  return exactPlayerArray(Object.keys(value).sort(), ['abilityId', 'battlefieldId', 'decisionPlayerIds', 'initiatingControllerId', 'sourceCardId']) &&
-    typeof value.initiatingControllerId === 'string' && value.initiatingControllerId.length > 0 &&
-    typeof value.sourceCardId === 'string' && value.sourceCardId.length > 0 &&
-    typeof value.abilityId === 'string' && value.abilityId.length > 0 &&
-    typeof value.battlefieldId === 'string' && value.battlefieldId.length > 0 &&
-    isExactNonEmptyPlayerIdList(value.decisionPlayerIds) && !value.decisionPlayerIds.includes(value.initiatingControllerId);
+function authoritativeOpponentCloseToOneDecisionPlayerIds(
+  s: GameState, initiatingControllerId: string, battlefieldId: string,
+): string[] {
+  const initiatingController = s.players.find((candidate) => candidate.id === initiatingControllerId);
+  if (!initiatingController || initiatingController.status !== 'active' || initiatingController.locationId !== battlefieldId) return [];
+  return s.players.filter((candidate) => candidate.id !== initiatingControllerId && candidate.status === 'active' &&
+    candidate.locationId === battlefieldId && qualifyingOpponentCloseToOneCardIds(s, candidate.id).length >= 2)
+    .sort((left, right) => left.seat - right.seat)
+    .map((candidate) => candidate.id);
 }
-function opponentCloseToOneQueueMatchesTrustedCommitment(
-  queue: PendingOpponentCloseToOne[], commitment: TrustedOpponentCloseToOneCommitment,
-): boolean {
-  const queueDecisionPlayerIds = queue.map((entry) => entry.decisionPlayerId);
-  const startIndex = commitment.decisionPlayerIds.indexOf(queueDecisionPlayerIds[0]!);
-  if (startIndex < 0 || !exactPlayerArray(queueDecisionPlayerIds, commitment.decisionPlayerIds.slice(startIndex))) return false;
-  return queue.every((entry) =>
-    entry.initiatingControllerId === commitment.initiatingControllerId && entry.sourceCardId === commitment.sourceCardId &&
-    entry.abilityId === commitment.abilityId && entry.battlefieldId === commitment.battlefieldId);
+function opponentCloseToOneQueueMatchesAuthoritativeState(s: GameState, queue: PendingOpponentCloseToOne[]): boolean {
+  const first = queue[0];
+  if (!first) return false;
+  const requiredDecisionPlayerIds = authoritativeOpponentCloseToOneDecisionPlayerIds(s, first.initiatingControllerId, first.battlefieldId);
+  return requiredDecisionPlayerIds.length > 0 && exactPlayerArray(queue.map((entry) => entry.decisionPlayerId), requiredDecisionPlayerIds);
 }
 function hasExactOpponentCloseToOneDecisionRootKeys(value: unknown): boolean {
   if (!isPlainRecord(value)) return false;
@@ -1995,10 +1992,8 @@ function stageNextOpponentCloseToOneDecision(s: GameState): void {
   if (!Array.isArray(queue)) reject('resolution_failed', 'Corrupt opponent close-to-one queue state');
   if (queue.length === 0) return;
   if (!isExactOpponentCloseToOneQueue(s, queue)) reject('resolution_failed', 'Corrupt or stale opponent close-to-one queue state');
-  const commitmentValue: unknown = r.trustedOpponentCloseToOneCommitment;
-  if (!isExactTrustedOpponentCloseToOneCommitment(commitmentValue) ||
-      !opponentCloseToOneQueueMatchesTrustedCommitment(queue, commitmentValue)) {
-    reject('resolution_failed', 'Corrupt or stale opponent close-to-one trusted commitment');
+  if (!opponentCloseToOneQueueMatchesAuthoritativeState(s, queue)) {
+    reject('resolution_failed', 'Corrupt or stale opponent close-to-one authoritative continuation');
   }
   const pending = queue[0]!;
   const id = nextId(s, 'opponent-close-to-one');
@@ -2031,7 +2026,6 @@ function stageOpponentCloseToOne(s: GameState, ctx: EffectContext, a: AuthoringA
   const battlefieldId = controller.locationId!;
   const existingQueue: unknown = r.pendingOpponentCloseToOne;
   if (existingQueue !== undefined && !Array.isArray(existingQueue)) reject('resolution_failed', 'Corrupt opponent close-to-one queue state');
-  if (r.trustedOpponentCloseToOneCommitment !== undefined) reject('pending_resolution', 'Opponent close-to-one trusted commitment is already active');
   const queue = r.pendingOpponentCloseToOne ??= [];
   if (queue.length) reject('pending_resolution', 'Opponent close-to-one queue is already active');
   const opponents = s.players.filter((candidate) => candidate.id !== controller.id && candidate.status === 'active' &&
@@ -2046,12 +2040,6 @@ function stageOpponentCloseToOne(s: GameState, ctx: EffectContext, a: AuthoringA
       abilityId: ctx.abilityId, battlefieldId, qualifyingCardIds, qualifyingCardOwners });
   }
   const frozenDecisionPlayerIds = frozenEntries.map((entry) => entry.decisionPlayerId);
-  if (frozenEntries.length) {
-    r.trustedOpponentCloseToOneCommitment = {
-      initiatingControllerId: controller.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, battlefieldId,
-      decisionPlayerIds: [...frozenDecisionPlayerIds],
-    };
-  }
   for (const [index, entry] of frozenEntries.entries()) {
     queue.push({ ...entry, remainingDecisionPlayerIds: frozenDecisionPlayerIds.slice(index) });
   }
@@ -3953,12 +3941,9 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           }
           const pendingQueue = pendingQueueValue;
           const pending = pendingQueue[0]!;
-          const trustedCommitmentValue: unknown = r.trustedOpponentCloseToOneCommitment;
-          if (!isExactTrustedOpponentCloseToOneCommitment(trustedCommitmentValue) ||
-              !opponentCloseToOneQueueMatchesTrustedCommitment(pendingQueue, trustedCommitmentValue)) {
-            reject('resolution_failed', 'Corrupt or stale opponent close-to-one trusted commitment');
+          if (!opponentCloseToOneQueueMatchesAuthoritativeState(s, pendingQueue)) {
+            reject('resolution_failed', 'Corrupt or stale opponent close-to-one authoritative continuation');
           }
-          const trustedCommitment = trustedCommitmentValue;
           const source = s.cards.find((candidate) => candidate.instanceId === decisionContext.sourceCardId);
           const sourceState: unknown = source ? r.cardState[source.instanceId] : undefined;
           const initiatingController = s.players.find((candidate) => candidate.id === meta.initiatingControllerId);
@@ -3974,9 +3959,6 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
               initiatingController.locationId !== meta.battlefieldId || decisionPlayer.locationId !== meta.battlefieldId ||
               !isBattlefield(s, meta.battlefieldId) || source.ownerPlayerId !== meta.initiatingControllerId ||
               source.controllerPlayerId !== meta.initiatingControllerId || !isValidOpponentCloseToOneSourceCardState(sourceState) || sourceState.faceDown ||
-              trustedCommitment.initiatingControllerId !== meta.initiatingControllerId ||
-              trustedCommitment.sourceCardId !== meta.sourceCardInstanceId || trustedCommitment.abilityId !== meta.abilityId ||
-              trustedCommitment.battlefieldId !== meta.battlefieldId ||
               d.controllerId !== meta.decisionPlayerId || decisionContext.controllerId !== meta.initiatingControllerId ||
               pending.initiatingControllerId !== meta.initiatingControllerId || pending.decisionPlayerId !== meta.decisionPlayerId ||
               pending.sourceCardId !== meta.sourceCardInstanceId || pending.abilityId !== meta.abilityId ||
@@ -4003,7 +3985,6 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           for (const instanceId of closeIds) closeOpponentCardForCloseToOne(s, meta.decisionPlayerId, instanceId);
           delete r.pendingDecision;
           pendingQueue.shift();
-          if (pendingQueue.length === 0) delete r.trustedOpponentCloseToOneCommitment;
           for (const instanceId of closeIds) {
             const closed = card(s, instanceId);
             r.events.push({ type: 'opponent_card_closed_to_one', playerId: meta.decisionPlayerId, controllerId: meta.initiatingControllerId,

@@ -186,10 +186,6 @@ export interface PendingOpponentCloseToOne {
   battlefieldId: string; qualifyingCardIds: string[]; qualifyingCardOwners: Record<string, PlayerId>;
   remainingDecisionPlayerIds: PlayerId[];
 }
-export interface TrustedOpponentCloseToOneCommitment {
-  initiatingControllerId: PlayerId; sourceCardId: string; abilityId: string; battlefieldId: string;
-  decisionPlayerIds: PlayerId[];
-}
 export type PendingInteractionMetadata =
   PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata | SameBattlefieldPrivateHandReturnInteractionMetadata |
   RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata |
@@ -306,8 +302,6 @@ export interface AbilityRuntime {
   pendingCombatOpponentPowerVpRewards?: PendingCombatOpponentPowerVpReward[];
   /** FB2-49 serialized same-battlefield opponent keep-one card decisions. */
   pendingOpponentCloseToOne?: PendingOpponentCloseToOne[];
-  /** FB2-49 independent authoritative commitment to the originally frozen eligible-opponent sequence. */
-  trustedOpponentCloseToOneCommitment?: TrustedOpponentCloseToOneCommitment;
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */
   pendingBattleTerminalEvent?: AbilityEvent;
   /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */
