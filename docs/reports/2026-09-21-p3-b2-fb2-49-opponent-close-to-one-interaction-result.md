@@ -598,3 +598,46 @@ Fresh detached validation at exact implementation `586badbda24024d5dc07af514274d
 - `git diff --check` - PASS.
 
 Accounting remains unchanged: FB2-49 is identity-free zero-credit capability work; formal migration remains **151/944**, **793 remaining**. No Astolfo consumer authoring, identity/name/text routing, generic each-player authoring API, client-production file change, product/generated mutation, merge, retarget, or migration credit is introduced.
+
+## Revision after fresh Reviewer review on Candidate `1ec87ff0b8b93845e3016117fb6c8c63b2b9801e`
+
+Fresh Reviewer evidence is canonical GitHub comment `5758390982` on PR #415: `https://github.com/binchen648/fd/pull/415#issuecomment-5758390982`. Verdict: `IMPLEMENTATION_NEEDS_REVISION`. The Reviewer completed the remaining exact FB2-49 scope and reported two restore/authority P1 findings; no third independently reproducible blocker was confirmed.
+
+Both findings are corrected together in the exact FB2-49 persistence boundary:
+
+1. **Invalid/missing authority now rejects before authoritative restore state is replaced**
+   - `restoreMatchSession()` first clones the candidate state and validates the FB2-49 persisted authority against the independently supplied host persistence context. A live serialized FB2-49 queue/decision with missing, malformed, MAC-invalid, state-mismatched, scope-mismatched, or transaction-mismatched authority throws the controlled `Invalid or missing FB2-49 persisted authority` error before a `MatchSession` is returned.
+   - `restoreToCheckpoint()` validates a cloned candidate state before changing `this.state`, logs, battle history, directive count, stop reason, or rejection. Invalid authority returns `false` and the live session remains unchanged.
+   - `MatchRoomHub.restore()` restores and validates all candidate rooms into a temporary map first. It does not clear/replace the current room map or versions until every candidate room succeeds. A single invalid room therefore leaves all authoritative rooms untouched.
+   - focused regressions cover invalid MAC, omitted seal on a live transaction, malformed seal values, checkpoint atomicity, and Hub restore atomicity.
+
+2. **The seal is now bound to independently trusted room/match scope and transaction identity**
+   - every FB2-49 authority transaction receives a cryptographically random server-only transaction id when the hidden authority is installed;
+   - the HMAC payload now binds host-owned `persistenceScope`, transaction id, exact serialized-state hash, and normalized frozen authority;
+   - room/match persistence scope is never serialized in `MatchRoomSnapshot`/`MatchSessionSnapshot`. Local-browser mode stores that scope under a separate rules-owned host-storage key derived from room id; an equal-state snapshot from a different room therefore receives a different trusted scope;
+   - the currently trusted transaction id is also held outside the room/session snapshot. Browser local mode stores one current transaction binding per persistence scope under a separate rules-owned host key. Non-browser mode retains at most one current transaction binding per active scope; repeated saves overwrite the same binding rather than allocating per-save tokens, and completion/clear deletes the process binding (browser storage is cleared to a non-valid empty value);
+   - seal restoration requires the independently trusted current transaction id to equal the signed transaction id before state/hash/MAC acceptance;
+   - focused regressions prove rejection for byte-identical GameState across different room scopes and for byte-identical GameState across two distinct transactions in the same scope.
+
+The previous per-save `persistedAuthorityByToken` authority registry remains removed. No authority contents are retained in a per-serialization token map, so the earlier P2 unbounded-token retention design is not reintroduced.
+
+Exact implementation SHA before this report-only evidence update: `b106adb228c8e95e0090089650a5ccd4f7afd341`, whose direct parent is rejected Candidate `1ec87ff0b8b93845e3016117fb6c8c63b2b9801e`. Fresh detached validation worktree `E:\Codex\FD\fd-b2-fb2-49-r17-validate` was created at that exact implementation SHA with its own `npm ci --ignore-scripts` dependency tree.
+
+Final validation on exact implementation `b106adb228c8e95e0090089650a5ccd4f7afd341`:
+
+- `npm.cmd run typecheck` — PASS;
+- concentrated FB2-49 + portable HMAC adversarial set — **2 files / 37 tests PASS** (FB2-49 **30/30**, HMAC **7/7**);
+- room/session/interaction/close compatibility set — **5 files / 21 tests PASS**;
+- server workspace — **1 file / 2 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2` — **177 files / 1302 tests PASS**;
+- `npm.cmd run content:validate` — **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated-content determinism PASS with unchanged hashes `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`, `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, and `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`;
+- exact Locked Reference verification PASS at `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- client production build PASS with only existing Vite browser-externalization/chunk-size warnings;
+- client `src/App.test.tsx` product save/restore shell — **5/5 PASS**;
+- `phase3:coverage` PASS: archives=127, cards=169, abilities=281, compiledCards=76, compiledCharacters=14, blockingIssues=0, newRuntimeSemanticRouted=22, legacyExecuteAbility=3, legacyResolveEffect=144, dualRuntime=0, notClassifiable=112, taxonomyWarnings=151;
+- `phase3:automation-audit` PASS: legacyResolveEffect=144, legacyExecuteAbility=3, notClassifiable=112, promotionFindings=20;
+- write-producing coverage/audit artifacts were restored byte-for-byte from exact implementation Git blobs; fresh validation worktree finished clean;
+- `git diff --check 1ec87ff0b8b93845e3016117fb6c8c63b2b9801e..b106adb228c8e95e0090089650a5ccd4f7afd341` — PASS.
+
+Scope remains identity-free FB2-49 infrastructure only: no `apps/client` production change, no `apps/server` production change, no `data/authoring/**`, no generated product content, no Astolfo consumer authoring/routing, no generic each-player authoring API, no merge, and no retarget. Accounting remains zero-credit: formal migration stays **151/944**, **793 remaining**.
