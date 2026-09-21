@@ -144,6 +144,8 @@ This map is the task-level bridge back to the total project goals. It does not p
 Owner: Codex A
 Status: REVIEW_ACCEPTED
 Branch: `codex/a-p3-a01-coverage-automation`
+Accepted Candidate: `2c59d0623b8c2d3ee0de0f6fbd95692556316bbd`
+Review evidence: coordinator-confirmed independent R re-review recorded in `docs/reports/2026-09-21-p3-a01-review-fix.md`
 
 Goal:
 
