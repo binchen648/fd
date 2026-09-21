@@ -1,6 +1,9 @@
 import { execFileSync } from 'node:child_process';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
-import { describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 import {
   extractManifestFromBody,
@@ -16,6 +19,34 @@ const headSha = '2222222222222222222222222222222222222222';
 const reviewSha = '3333333333333333333333333333333333333333';
 const candidateSha = '4444444444444444444444444444444444444444';
 const syncSha = '5555555555555555555555555555555555555555';
+
+interface GitFixture {
+  root: string;
+  shas: string[];
+}
+
+let gitFixture: GitFixture;
+
+function git(root: string, args: string[]): string {
+  return execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
+}
+
+function createGitFixture(): GitFixture {
+  const root = mkdtempSync(join(tmpdir(), 'fd-phase3-governance-'));
+  git(root, ['init']);
+  git(root, ['config', 'user.name', 'Phase 3 Governance Test']);
+  git(root, ['config', 'user.email', 'phase3-governance@example.invalid']);
+  git(root, ['config', 'core.autocrlf', 'false']);
+
+  const shas: string[] = [];
+  for (let index = 0; index < 5; index += 1) {
+    writeFileSync(join(root, 'evidence.txt'), `evidence-${index}\n`);
+    git(root, ['add', 'evidence.txt']);
+    git(root, ['commit', '-m', `evidence ${index}`]);
+    shas.push(git(root, ['rev-parse', 'HEAD']));
+  }
+  return { root, shas };
+}
 
 function promotionContext(overrides: Partial<PullRequestContext> = {}): PullRequestContext {
   return {
@@ -61,6 +92,14 @@ function promotionManifest(overrides: Partial<Phase3TaskManifest> = {}): Phase3T
 }
 
 describe('Phase 3 promotion governance preflight', () => {
+  beforeAll(() => {
+    gitFixture = createGitFixture();
+  });
+
+  afterAll(() => {
+    rmSync(gitFixture.root, { recursive: true, force: true });
+  });
+
   it('accepts a complete main Promotion PR manifest', () => {
     expect(validatePhase3Governance(promotionContext(), promotionManifest())).toEqual({
       status: 'passed',
@@ -88,9 +127,7 @@ describe('Phase 3 promotion governance preflight', () => {
   });
 
   it('rejects stale reviewer candidate evidence when ancestry verification is requested', () => {
-    const currentHead = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-    const synchronization = execFileSync('git', ['rev-parse', 'HEAD~1'], { encoding: 'utf8' }).trim();
-    const existingReview = execFileSync('git', ['rev-parse', 'HEAD~2'], { encoding: 'utf8' }).trim();
+    const [, existingReview, , synchronization, currentHead] = gitFixture.shas;
     const context = promotionContext({ headSha: currentHead });
     expect(() => validatePhase3Governance(
       context,
@@ -103,14 +140,12 @@ describe('Phase 3 promotion governance preflight', () => {
         },
         synchronization: { sha: synchronization },
       }),
-      { workspaceRoot: process.cwd(), verifyGitAncestry: true },
+      { workspaceRoot: gitFixture.root, verifyGitAncestry: true },
     )).toThrow(/reviewed candidate/);
   });
 
   it('rejects a missing R review commit even when candidate and synchronization ancestry are current', () => {
-    const currentHead = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-    const synchronization = execFileSync('git', ['rev-parse', 'HEAD~1'], { encoding: 'utf8' }).trim();
-    const candidate = execFileSync('git', ['rev-parse', 'HEAD~2'], { encoding: 'utf8' }).trim();
+    const [, , candidate, synchronization, currentHead] = gitFixture.shas;
     const context = promotionContext({ headSha: currentHead });
     const manifest = promotionManifest({
       head: { ref: context.headRef, sha: currentHead },
@@ -125,7 +160,7 @@ describe('Phase 3 promotion governance preflight', () => {
     expect(() => validatePhase3Governance(
       context,
       manifest,
-      { workspaceRoot: process.cwd(), verifyGitAncestry: true },
+      { workspaceRoot: gitFixture.root, verifyGitAncestry: true },
     )).toThrow(/review\.sha/);
   });
 
@@ -151,10 +186,7 @@ describe('Phase 3 promotion governance preflight', () => {
   });
 
   it('requires the reviewed candidate to be an ancestor of A synchronization', () => {
-    const currentHead = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-    const candidate = execFileSync('git', ['rev-parse', 'HEAD~1'], { encoding: 'utf8' }).trim();
-    const synchronization = execFileSync('git', ['rev-parse', 'HEAD~2'], { encoding: 'utf8' }).trim();
-    const review = execFileSync('git', ['rev-parse', 'HEAD~3'], { encoding: 'utf8' }).trim();
+    const [, review, synchronization, candidate, currentHead] = gitFixture.shas;
     const context = promotionContext({ headSha: currentHead });
     const manifest = promotionManifest({
       head: { ref: context.headRef, sha: currentHead },
@@ -169,7 +201,7 @@ describe('Phase 3 promotion governance preflight', () => {
     expect(() => validatePhase3Governance(
       context,
       manifest,
-      { workspaceRoot: process.cwd(), verifyGitAncestry: true },
+      { workspaceRoot: gitFixture.root, verifyGitAncestry: true },
     )).toThrow(/reviewed candidate is not an ancestor of synchronization.sha/);
   });
 
