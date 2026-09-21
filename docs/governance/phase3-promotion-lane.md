@@ -1,0 +1,36 @@
+# Phase 3 Promotion Lane Governance
+
+Phase 3 candidate work may be promoted to `main` only through a Promotion PR that carries structured evidence, repeatable CI, and independent review. This lane is governance infrastructure only; it does not change game rules, runtime behavior, card data, migration counts, or existing acceptance conclusions.
+
+## GitHub Checks
+
+- `Build / build`: existing workspace typecheck and client build.
+- `Test / test`: existing typecheck plus `npm run test:ci`.
+- `Phase 3 Promotion Lane / policy`: structured Phase 3 manifest policy and focused governance tests.
+
+The Phase 3 gate runs on all pull requests so stacked Phase 3 PRs get a stable policy check even when their base is another `codex/...` branch. Phase 3 naming and changes under rules, content, Phase 3 data, scripts, plans, reports, audits, repository package manifests, or `.github` governance paths activate manifest policy. Ordinary PRs outside those signals are skipped. A push to `main` runs the focused tests under the same check name, establishing its status context before it is made required. The gate uses `pull_request`, not `pull_request_target`, has `contents: read`, uses no secrets, does not persist checkout credentials, and cancels stale runs for the same PR.
+
+## Manifest Policy
+
+Phase 3 PRs must include a fenced `json phase3-task-manifest` block in the PR body. The manifest records role, task ID, base/head refs and SHAs, dependency PRs, affected ability IDs, runtime behavior flag, rules source, Reference commit, R review evidence, A synchronization evidence, migration counts, tests, uncovered scenarios, blockers, zero-migration credit, and upstream revalidation acknowledgement.
+
+Roles are `A`, `B`, `R`, `S`, `I`, and `G`. Promotion PRs targeting `main` must use role `I`; governance-only PRs use role `G`; stacked Phase 3 implementation/review/migration PRs use role `A`, `B`, `R`, or `S` with `prType: "stacked"`. A Promotion review conclusion must be an explicit accepted Phase 3 conclusion. The R review SHA must resolve to a fetched commit and be distinct from the base, candidate, synchronization, and integration commits. The reviewed candidate must precede A synchronization, and A synchronization must precede the Promotion head.
+
+Promotion review evidence is a machine-readable JSON attestation stored below `docs/reviews/phase3/` in the tree identified by `review.sha`. The manifest binds that file by SHA-256 and repeats its `taskId`, `reviewer` (`github:<login>`), GitHub review-thread URL, candidate SHA, and conclusion. The gate reads the file from the review commit and requires every field to match. This makes evidence tampering or accidental reuse detectable; GitHub's independent-approval rule remains the authority that proves the reviewer account differs from the PR author.
+
+The attestation shape is:
+
+```json
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-...",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/000#issuecomment-000",
+  "candidateSha": "<40-character candidate SHA>",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE"
+}
+```
+
+## External Repository Settings
+
+Branch protection and rulesets are repository settings, not source files. Required checks should be configured only after the checks have run on `main` and GitHub has produced stable status contexts. Required status checks must use strict mode (`Require branches to be up to date before merging`) so a changed upstream HEAD forces a new merge-base validation.
