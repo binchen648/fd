@@ -5846,3 +5846,15 @@ Read: `docs/reports/2026-09-21-p3-a-fb2-49-opponent-close-to-one-dispatch.md`
 Result required: implement only the exact identity-free compound transaction released by A: a combat phase-action whose source is owned and controller is at a battlefield serializes one non-cancellable exactly-one “keep” decision for each same-battlefield opponent with at least two currently active, face-up, non-residual attack-area cards, then closes every other still-valid card from that opponent's frozen qualifying set. Fail closed atomically on malformed authoring, state/provenance drift or forged/stale selection. Do not expose generic `choose_each_player_cards`, generic `close_matching_cards_except_selected`, arbitrary each-player selectors/mass close, identity routing or consumer authoring.
 
 This is zero-credit capability work: formal migration remains **`151/944`**, **`793`** remaining. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.astolfo.skill.sc-astolfo-1`; singleton S is allowed only if the whole card is then mechanically zero-gap.
+
+## TASK P3-A-DARIUS-S1-CREDIT-RECONCILIATION
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-darius-s1-credit-reconciliation`
+Integrated Candidate: `65bfd29ca9319f8dad90cf828c84dce8202058c7`
+Read: `docs/reports/2026-09-21-p3-a-darius-s1-credit-reconciliation.md`
+
+Result: independent R reports PASS for the integrated Darius s1 recertification Candidate containing historical S Candidate `776ee46` and accepted B2 typed residual CLOSE Candidate `2c9b19a`. The existing `servant.darius.skill.sc-darius-1` credit changes from included-but-contested to included-and-confirmed. This is a reconciliation of the same frozen identity, so migration credit delta is exactly **`0`** and no duplicate `+1` is permitted.
+
+Formal migration remains **`151/944`**, with **`793`** remaining. This synchronization changes no runtime, authoring, tests, generated product, pack, or client code and grants no Gate C, Phase PASS, or Release Ready promotion.

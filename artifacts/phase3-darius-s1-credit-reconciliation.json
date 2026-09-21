@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "fd-phase3-credit-reconciliation-v1",
+  "date": "2026-09-21",
+  "owner": "Codex A",
+  "task": "P3-A-DARIUS-S1-CREDIT-RECONCILIATION",
+  "status": "SYNCHRONIZED",
+  "identity": "servant.darius.skill.sc-darius-1",
+  "historicalSCandidate": "776ee46f5612481176a853dba099b489328b3236",
+  "acceptedB2Candidate": "2c9b19a9bae7d5228554c2526ecf1ce4efb158ba",
+  "integratedRecertificationCandidate": "65bfd29ca9319f8dad90cf828c84dce8202058c7",
+  "review": {
+    "decision": "PASS",
+    "source": "project_coordinator_confirmation",
+    "stableReviewUrl": null
+  },
+  "freshVerification": {
+    "focusedVitest": "PASS 3 files / 31 tests",
+    "typecheck": "KNOWN_UNRELATED_BASELINE_FAILURE"
+  },
+  "creditBefore": "INCLUDED_CONTESTED",
+  "creditAfter": "INCLUDED_CONFIRMED",
+  "migrationCreditDelta": 0,
+  "duplicateCreditAwarded": false,
+  "formalLedger": {
+    "accepted": 151,
+    "denominator": 944,
+    "remaining": 793
+  }
+}
