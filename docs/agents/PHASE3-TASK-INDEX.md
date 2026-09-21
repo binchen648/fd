@@ -5822,3 +5822,15 @@ Read: `docs/reports/2026-09-21-p3-a-r100-spartacus-s2-consumer-migration-dispatc
 Result: dispatch exactly one frozen identity, `servant.spartacus.skill.sc-spartacus-2` (`伤兽的咆哮`), after fresh whole-card reconstruction on synchronized FB2-48 returned loader `report=[]`, compiled exact FB2-48 classifier acceptance, real 7/8-mana skill-zone boundary with printed cost 3, active-source/root-battlefield gating, exact frozen-opponent choice -> `floor(power/5)` VP settlement, negative source/location cases and replay idempotence. No additional B2 seam is required.
 
 Base frozen overlap is **`145/944`**, duplicates **`0`**; Candidate must be exactly **`146/944`**, exact +1 Spartacus s2 with zero removals/duplicates and no second frozen identity. S is additionally authorized to remove only Nobunaga s3's stale historical repository-wide `overlap===145` assertion while retaining denominator 944, zero duplicates and Nobunaga s3 authored exactly once. Formal migration remains **`150/944`**, **`794`** remaining until fresh R `MIGRATION_ACCEPTED` plus A synchronization. Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
+
+## TASK P3-A-R101-SPARTACUS-S2-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r101-spartacus-s2-migration-acceptance-sync`
+Base: exact accepted Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`
+Read: `docs/reports/2026-09-21-p3-a-r101-spartacus-s2-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #414 exact Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`, backed by canonical evidence `https://github.com/binchen648/fd/pull/414#issuecomment-5754190524`. Independent Base-to-Candidate frozen recount is `145/944` to `146/944`, exact +1 `servant.spartacus.skill.sc-spartacus-2`, zero removals and zero duplicate frozen ids. The fourth Candidate path is only the A-authorized compatibility removal of Nobunaga s3's stale repository-wide `overlap===145` snapshot; Nobunaga s3 remains authored exactly once and no production semantic/product/generated change is present.
+
+Formal project migration advances exactly one identity to **`151/944`**, with **`793`** remaining. PR #414 remains OPEN, unmerged and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new B2 seam while such a migration exists.
