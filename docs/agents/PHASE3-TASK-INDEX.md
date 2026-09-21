@@ -5810,3 +5810,15 @@ Read: `docs/reports/2026-09-21-p3-a-r100-fb2-48-acceptance-synchronization.md`
 Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #413 exact Candidate `14c8688c201d4d39a85843470be6b79eec01853d`, backed by canonical evidence `https://github.com/binchen648/fd/pull/413#issuecomment-5754051359`. Accepted capability remains only the bounded identity-free trusted resolved-battle snapshot -> exactly-one frozen combat opponent choice -> controller VP reward `floor(frozen opponent power / 5)` transaction; the authoritative root producers only add the frozen participant-power field and no generic selector/formula or identity routing is opened.
 
 FB2-48 earns zero migration credit; formal migration remains **`150/944`**, with **`794`** remaining. Material authoring overlap remains **`145/944`**, duplicates **`0`**, and no consumer identity is added. PR #413 remains OPEN, unmerged and unretargeted. Next action is a fresh complete-card reconstruction of `servant.spartacus.skill.sc-spartacus-2` on this synchronized runtime; dispatch singleton S only if the whole card is mechanically zero-gap.
+
+## TASK P3-A-R100-SPARTACUS-S2-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r100-spartacus-s2-consumer-migration-dispatch`
+Base: exact R100 FB2-48 acceptance-sync `ff6aeba3cafa63e1be9002c549a94be9d54da2d5`
+Read: `docs/reports/2026-09-21-p3-a-r100-spartacus-s2-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.spartacus.skill.sc-spartacus-2` (`伤兽的咆哮`), after fresh whole-card reconstruction on synchronized FB2-48 returned loader `report=[]`, compiled exact FB2-48 classifier acceptance, real 7/8-mana skill-zone boundary with printed cost 3, active-source/root-battlefield gating, exact frozen-opponent choice -> `floor(power/5)` VP settlement, negative source/location cases and replay idempotence. No additional B2 seam is required.
+
+Base frozen overlap is **`145/944`**, duplicates **`0`**; Candidate must be exactly **`146/944`**, exact +1 Spartacus s2 with zero removals/duplicates and no second frozen identity. S is additionally authorized to remove only Nobunaga s3's stale historical repository-wide `overlap===145` assertion while retaining denominator 944, zero duplicates and Nobunaga s3 authored exactly once. Formal migration remains **`150/944`**, **`794`** remaining until fresh R `MIGRATION_ACCEPTED` plus A synchronization. Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
