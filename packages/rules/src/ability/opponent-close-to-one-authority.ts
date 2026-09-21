@@ -40,7 +40,7 @@ const AUTHORITY_BROWSER_TRANSACTION_KEY_PREFIX = 'fd.rules.fb2-49.transaction.v1
 const AUTHORITY_BROWSER_REPLAY_TRANSACTION_KEY_PREFIX = 'fd.rules.fb2-49.replay-transactions.v1:';
 const processTransactionByScope = new Map<string, string>();
 interface TrustedReplayBinding {
-  transactionId: string;
+  transactionId: string | null;
   checkpointDigest: string;
 }
 const processReplayTransactionsByScope = new Map<string, Map<string, TrustedReplayBinding>>();
@@ -304,7 +304,8 @@ function replayTransactionsStorageKey(persistenceScope: string): string {
 
 function isTrustedReplayBinding(value: unknown): value is TrustedReplayBinding {
   return isPlainRecord(value) && exactKeys(value, ['transactionId', 'checkpointDigest']) &&
-    typeof value.transactionId === 'string' && /^fb2-49-transaction:[0-9a-f]{64}$/.test(value.transactionId) &&
+    (value.transactionId === null ||
+      (typeof value.transactionId === 'string' && /^fb2-49-transaction:[0-9a-f]{64}$/.test(value.transactionId))) &&
     typeof value.checkpointDigest === 'string' && /^[0-9a-f]{64}$/.test(value.checkpointDigest);
 }
 
@@ -354,6 +355,27 @@ function trustedReplayTransaction(persistenceScope: string, checkpointId: string
     if (value) return value;
   }
   return processReplayTransactionsByScope.get(persistenceScope)?.get(checkpointId);
+}
+
+export function hasOpponentCloseToOneTrustedReplayAuthority(
+  persistenceScope: string,
+  checkpointIds: readonly string[],
+): boolean {
+  return checkpointIds.some((checkpointId) =>
+    isCheckpointId(checkpointId) && trustedReplayTransaction(persistenceScope, checkpointId)?.transactionId !== null &&
+    trustedReplayTransaction(persistenceScope, checkpointId)?.transactionId !== undefined);
+}
+
+export function verifyOpponentCloseToOneTrustedReplayCheckpoints(
+  persistenceScope: string,
+  checkpoints: readonly OpponentCloseToOneReplayManifestEntry[],
+): boolean {
+  for (const checkpoint of checkpoints) {
+    if (!isReplayManifestEntry(checkpoint)) return false;
+    const trusted = trustedReplayTransaction(persistenceScope, checkpoint.checkpointId);
+    if (trusted && trusted.checkpointDigest !== checkpoint.checkpointDigest) return false;
+  }
+  return true;
 }
 
 export function pruneOpponentCloseToOneTrustedReplayTransactions(
@@ -542,7 +564,12 @@ export function rememberOpponentCloseToOneTrustedReplayCheckpoint(
   checkpointDigest: string,
   seal: unknown,
 ): void {
-  if (!isExactAuthoritySeal(seal) || seal.checkpointId !== checkpointId || !/^[0-9a-f]{64}$/.test(checkpointDigest)) return;
+  if (!isCheckpointId(checkpointId) || !/^[0-9a-f]{64}$/.test(checkpointDigest)) return;
+  if (seal === undefined) {
+    rememberTrustedReplayTransaction(persistenceScope, checkpointId, { transactionId: null, checkpointDigest });
+    return;
+  }
+  if (!isExactAuthoritySeal(seal) || seal.checkpointId !== checkpointId) return;
   rememberTrustedReplayTransaction(persistenceScope, checkpointId, { transactionId: seal.transactionId, checkpointDigest });
 }
 
@@ -553,6 +580,10 @@ export function synchronizeOpponentCloseToOneTrustedReplayCheckpoints(
   const next: Record<string, TrustedReplayBinding> = {};
   for (const checkpoint of checkpoints) {
     if (!isCheckpointId(checkpoint.checkpointId) || !/^[0-9a-f]{64}$/.test(checkpoint.checkpointDigest)) continue;
+    if (checkpoint.seal === undefined) {
+      next[checkpoint.checkpointId] = { transactionId: null, checkpointDigest: checkpoint.checkpointDigest };
+      continue;
+    }
     if (!isExactAuthoritySeal(checkpoint.seal) || checkpoint.seal.checkpointId !== checkpoint.checkpointId) continue;
     next[checkpoint.checkpointId] = { transactionId: checkpoint.seal.transactionId, checkpointDigest: checkpoint.checkpointDigest };
   }
@@ -583,6 +614,7 @@ export function restoreOpponentCloseToOneServerAuthority(
   const trustedReplay = replayCheckpointId
     ? trustedReplayTransaction(persistenceScope, replayCheckpointId)
     : undefined;
+  if (replayCheckpointId && trustedReplay && trustedReplay.checkpointDigest !== replayCheckpointDigest) return false;
   const trustedTransaction = trustedReplay?.transactionId ??
     (replayCheckpointId ? undefined : trustedTransactionForScope(persistenceScope));
   if (seal === undefined) {
@@ -594,7 +626,6 @@ export function restoreOpponentCloseToOneServerAuthority(
       !isOpponentCloseToOnePersistenceScope(persistenceScope) || !isExactAuthoritySeal(seal)) return false;
   if (seal.checkpointId !== (replayCheckpointId ?? null)) return false;
   if (trustedTransaction !== seal.transactionId) return false;
-  if (replayCheckpointId && trustedReplay?.checkpointDigest !== replayCheckpointDigest) return false;
   const binding = stateBinding(state);
   if (seal.stateBinding !== binding) return false;
   const authority = normalizedAuthority(seal.authority);

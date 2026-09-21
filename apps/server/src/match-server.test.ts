@@ -1,6 +1,14 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { WebSocket } from 'ws';
-import { createMatchSession, type RoomHttpResponse, type ServerRoomMessage } from '@fd/rules';
+import {
+  createMatchSession,
+  createSeededGameState,
+  initializeAbilityRuntime,
+  loadAuthoringJson,
+  OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT,
+  type RoomHttpResponse,
+  type ServerRoomMessage,
+} from '@fd/rules';
 
 import { createMatchServer, type MatchServerHandle } from './match-server';
 
@@ -22,6 +30,65 @@ function postJson<T>(url: string, body: unknown): Promise<T> {
     if (!response.ok) throw new Error(await response.text());
     return response.json() as Promise<T>;
   });
+}
+
+const FB249_SOURCE_DEF = 'test.server.fb2-49.source';
+const FB249_SOURCE_ID = 'server-fb2-49-source-p1';
+const FB249_ABILITY_ID = 'test.server.fb2-49.close-to-one';
+const FB249_ATTACK_DEF = 'test.server.fb2-49.attack';
+
+function createServerFb249State() {
+  const archive: any = {
+    schemaVersion: 'fd-card-authoring-v1',
+    archiveType: 'servant_skill_card_archive',
+    id: 'test.server.fb2-49',
+    name: 'Server FB2-49 synthetic',
+    class: 'Test',
+    cards: [{
+      id: FB249_SOURCE_DEF,
+      name: 'Server FB2-49 source',
+      cardType: 'servant_skill',
+      owner: { type: 'servant', id: 'test.server.fb2-49' },
+      cardFace: { typeLabel: 'test', attributes: ['test'], cost: 0, basePower: 0 },
+      playTiming: { phase: 'action', window: 'controller_play_card_window' },
+      playRequirements: [],
+      abilities: [{
+        id: FB249_ABILITY_ID,
+        kind: 'phase_action',
+        printedClause: 'synthetic identity-free FB2-49',
+        activation: { phase: 'combat', opens: 'controller_combat_action_window' },
+        conditions: [{ type: 'source_owned' }, { type: 'at_battlefield' }],
+        targets: [],
+        effects: [{ type: OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT }],
+        cost: [], creates: [], ruleModifiers: [], lifecycle: {}, responseWindow: {}, limit: {},
+        visibility: { revealsTrueName: true, revealTiming: 'on_use_declared', revealScope: 'servant_package' },
+        execution: { mode: 'automatic' },
+      }],
+    }],
+  };
+  const loaded = loadAuthoringJson(archive);
+  if (loaded.report.length) throw new Error(`Synthetic FB2-49 authoring rejected: ${JSON.stringify(loaded.report)}`);
+  loaded.cards[FB249_ATTACK_DEF] = {
+    id: FB249_ATTACK_DEF, name: 'Server FB2-49 attack', cardType: 'servant_attack',
+    cardFace: { typeLabel: 'test', attributes: ['test'], cost: 0, basePower: 1 },
+    playTiming: { phase: 'action', window: 'controller_play_card_window' },
+    playRequirements: [], mode: 'automatic', abilities: [],
+  } as any;
+  const state = createSeededGameState({ activeSeats: [1, 2] });
+  state.cards = [
+    { instanceId: FB249_SOURCE_ID, definitionId: FB249_SOURCE_DEF, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: 'p1' } },
+    { instanceId: 'server-p2-a', definitionId: FB249_ATTACK_DEF, ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'attack_area', visibility: { scope: 'public' } },
+    { instanceId: 'server-p2-b', definitionId: FB249_ATTACK_DEF, ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'attack_area', visibility: { scope: 'public' } },
+  ];
+  state.round.activePhase = 'battle';
+  state.round.prioritySeat = state.players[0]!.seat;
+  state.players[0]!.locationId = 'miyama_town';
+  state.players[1]!.locationId = 'miyama_town';
+  initializeAbilityRuntime(state, loaded, { seed: 4901 });
+  state.abilityRuntime!.cardState[FB249_SOURCE_ID] = { active: false, faceDown: false, playedRound: state.round.roundNumber };
+  state.abilityRuntime!.cardState['server-p2-a'] = { active: true, faceDown: false, playedRound: state.round.roundNumber };
+  state.abilityRuntime!.cardState['server-p2-b'] = { active: true, faceDown: false, playedRound: state.round.roundNumber };
+  return state;
 }
 
 interface SocketInbox {
@@ -120,6 +187,59 @@ describe('match websocket server', () => {
     expect(restoreSpy).toHaveBeenCalledTimes(1);
     expect(restoreSpy).toHaveBeenCalledWith('restore-room', snapshot);
     expect(restored.roomId).toBe('restore-room');
+  });
+
+  it('fails closed on historical FB2-49 replay erasure and malformed nested replay snapshots over HTTP', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const httpBase = `http://127.0.0.1:${port}`;
+
+    await postJson<RoomHttpResponse>(`${httpBase}/rooms`, {
+      roomId: 'fb2-49-http-guard', hostClientId: 'host', hostName: 'Host', seed: 20260905,
+    });
+    const room = serverHandle.hub.getRoom('fb2-49-http-guard');
+    room.session = createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], ...room.getPersistenceContext(),
+    });
+    room.session.state = createServerFb249State();
+    room.status = 'running';
+    expect(room.session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: FB249_SOURCE_ID, abilityId: FB249_ABILITY_ID,
+    }).ok).toBe(true);
+    const liveId = room.session.replay.at(-1)!.id;
+    const decisionId = room.session.state.abilityRuntime!.pendingDecision!.id;
+    expect(room.session.dispatchPlayerAction('p2', {
+      type: 'choose_target', decisionId, selectedIds: ['server-p2-a'],
+    }).ok).toBe(true);
+
+    const forged: any = structuredClone(room.serializeRoom());
+    const liveSnapshot = forged.session.replaySnapshots.find((entry: any) => entry.checkpointId === liveId);
+    delete liveSnapshot.opponentCloseToOneServerAuthority;
+    liveSnapshot.state.abilityRuntime.pendingOpponentCloseToOne = [];
+    delete liveSnapshot.state.abilityRuntime.pendingDecision;
+    delete forged.session.opponentCloseToOneReplayManifest;
+    const beforeRoom = serverHandle.hub.getRoom('fb2-49-http-guard');
+    const beforeVersion = serverHandle.hub.version('fb2-49-http-guard');
+    const erasedResponse = await fetch(`${httpBase}/rooms/fb2-49-http-guard/restore`, {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot: forged }),
+    });
+    expect(erasedResponse.status).toBe(400);
+    const erasedBody = await erasedResponse.json() as { code: string; message: string };
+    expect(erasedBody.code).toBe('bad_request');
+    expect(erasedBody.message).toContain('FB2-49 replay');
+    expect(serverHandle.hub.getRoom('fb2-49-http-guard')).toBe(beforeRoom);
+    expect(serverHandle.hub.version('fb2-49-http-guard')).toBe(beforeVersion);
+
+    const malformed: any = structuredClone(beforeRoom.serializeRoom());
+    malformed.session.replaySnapshots = [{ checkpointId: 'checkpoint:1' }];
+    const malformedResponse = await fetch(`${httpBase}/rooms/fb2-49-http-guard/restore`, {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot: malformed }),
+    });
+    expect(malformedResponse.status).toBe(400);
+    const malformedBody = await malformedResponse.json() as { code: string; message: string };
+    expect(malformedBody).toEqual({ code: 'bad_request', message: 'Invalid FB2-49 replay snapshot container' });
+    expect(serverHandle.hub.getRoom('fb2-49-http-guard')).toBe(beforeRoom);
+    expect(serverHandle.hub.version('fb2-49-http-guard')).toBe(beforeVersion);
   });
 
   it('syncs room projections across browser clients without leaking private hands', async () => {

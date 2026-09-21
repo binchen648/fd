@@ -1012,6 +1012,61 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(session.state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
   });
 
+  it('rejects historical trusted checkpoint seal and continuation erasure before restore commits', () => {
+    const scope = 'fb2-49-persistence-scope:' + 'de'.repeat(32);
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    const session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    session.state = state;
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID,
+    }).ok).toBe(true);
+    const liveId = session.replay.at(-1)!.id;
+    const decisionId = session.state.abilityRuntime!.pendingDecision!.id;
+    expect(session.dispatchPlayerAction('p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] }).ok).toBe(true);
+
+    const forged: any = structuredClone(session.serializeSession());
+    const liveSnapshot = forged.replaySnapshots.find((entry: any) => entry.checkpointId === liveId);
+    delete liveSnapshot.opponentCloseToOneServerAuthority;
+    liveSnapshot.state.abilityRuntime.pendingOpponentCloseToOne = [];
+    delete liveSnapshot.state.abilityRuntime.pendingDecision;
+    delete forged.opponentCloseToOneReplayManifest;
+
+    expect(() => rules.restoreMatchSession(forged, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    })).toThrow('Invalid FB2-49 replay checkpoint lineage');
+    expect(session.restoreToCheckpoint(liveId)).toBe(true);
+    expect(session.state.abilityRuntime?.pendingDecision?.controllerId).toBe('p2');
+  });
+
+  it('rejects replay metadata truncation when replay snapshots and authenticated lineage are unchanged', () => {
+    const scope = 'fb2-49-persistence-scope:' + 'df'.repeat(32);
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    const session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    session.state = state;
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID,
+    }).ok).toBe(true);
+    const decisionId = session.state.abilityRuntime!.pendingDecision!.id;
+    expect(session.dispatchPlayerAction('p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] }).ok).toBe(true);
+
+    const forged: any = structuredClone(session.serializeSession());
+    expect(forged.opponentCloseToOneReplayManifest).toBeDefined();
+    forged.replay.pop();
+    expect(() => rules.restoreMatchSession(forged, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    })).toThrow('Invalid FB2-49 replay snapshot container');
+  });
+
+  it('rejects nested malformed replay snapshots with a controlled restore-boundary error', () => {
+    const snapshot: any = structuredClone(rules.createMatchSession().serializeSession());
+    snapshot.replaySnapshots = [{ checkpointId: 'checkpoint:1' }];
+    expect(() => rules.restoreMatchSession(snapshot)).toThrow('Invalid FB2-49 replay snapshot container');
+  });
+
   it('round-trips ordinary no-FB2 room and fresh-Hub snapshots without persistence-scope coupling', () => {
     const room = rules.createMatchRoom({ roomId: 'fb2-49-ordinary-room', hostClientId: 'host' });
     room.session = rules.createMatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], ...room.getPersistenceContext() });

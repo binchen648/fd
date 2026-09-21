@@ -7,6 +7,7 @@ import {
 } from './ability/interpreter';
 import {
   createOpponentCloseToOnePersistenceScope,
+  hasOpponentCloseToOneTrustedReplayAuthority,
   resolveOpponentCloseToOnePersistenceSecret,
   persistOpponentCloseToOneReplayManifest,
   persistOpponentCloseToOneServerAuthority,
@@ -16,6 +17,7 @@ import {
   synchronizeOpponentCloseToOneCurrentTrust,
   synchronizeOpponentCloseToOneTrustedReplayCheckpoints,
   verifyOpponentCloseToOneReplayManifest,
+  verifyOpponentCloseToOneTrustedReplayCheckpoints,
   type OpponentCloseToOneReplayManifestEntry,
   type OpponentCloseToOneReplayManifestSeal,
   type OpponentCloseToOneServerAuthoritySeal,
@@ -225,6 +227,79 @@ function hasOpponentCloseToOneReplayAuthority(
   snapshots: readonly MatchReplayStateSnapshot[],
 ): boolean {
   return currentSeal !== undefined || snapshots.some((snapshot) => snapshot.opponentCloseToOneServerAuthority !== undefined);
+}
+
+const validReplayPhases = new Set<string>([
+  'round_start', 'preparation', 'advance', 'action', 'battle', 'cleanup', 'round_end',
+]);
+const validPauseReasons = new Set<string>([
+  'human_input', 'host_directive', 'backend_rejection', 'round_end', 'match_complete', 'state_loop', 'no_legal_action',
+]);
+
+function isRestoreRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+function isRestoreGameState(value: unknown): value is GameState {
+  if (!isRestoreRecord(value) || typeof value.id !== 'string' || !Array.isArray(value.players) ||
+      !isRestoreRecord(value.round) || !isRestoreRecord(value.map) || !isRestoreRecord(value.locationConfig) ||
+      !Array.isArray(value.cards) || !Array.isArray(value.eventPlacements) || !Array.isArray(value.battleResults) ||
+      !Array.isArray(value.effectStack) || !Array.isArray(value.log)) return false;
+  const round = value.round;
+  if (!Number.isSafeInteger(round.roundNumber) || (round.roundNumber as number) < 1 ||
+      typeof round.activePhase !== 'string' || !validReplayPhases.has(round.activePhase) ||
+      !Number.isSafeInteger(round.prioritySeat) || (round.prioritySeat as number) < 1) return false;
+  return value.abilityRuntime === undefined || isRestoreRecord(value.abilityRuntime);
+}
+
+function isRestoreLogEntry(value: unknown): value is MatchSessionLogEntry {
+  if (!isRestoreRecord(value) || typeof value.id !== 'string' || !Number.isSafeInteger(value.round) ||
+      (value.round as number) < 1 || typeof value.phase !== 'string' || !validReplayPhases.has(value.phase) ||
+      typeof value.type !== 'string' || typeof value.message !== 'string') return false;
+  if (value.playerId !== undefined && typeof value.playerId !== 'string') return false;
+  return value.payload === undefined || isRestoreRecord(value.payload);
+}
+
+function isRestoreRejection(value: unknown): value is NonNullable<DispatchResult['rejection']> {
+  return isRestoreRecord(value) && typeof value.code === 'string' && typeof value.message === 'string' &&
+    (value.allowedOperations === undefined || Array.isArray(value.allowedOperations));
+}
+
+function isRestoreReplayEntry(value: unknown): value is MatchClientState['replay'][number] {
+  return isRestoreRecord(value) && typeof value.id === 'string' && /^checkpoint:\d+$/.test(value.id) &&
+    Number.isSafeInteger(value.round) && (value.round as number) >= 1 &&
+    typeof value.phase === 'string' && validReplayPhases.has(value.phase) &&
+    Number.isSafeInteger(value.revision) && (value.revision as number) >= 0 &&
+    typeof value.label === 'string';
+}
+
+function isRestoreReplaySnapshot(value: unknown): value is MatchReplayStateSnapshot {
+  if (!isRestoreRecord(value) || typeof value.checkpointId !== 'string' || !/^checkpoint:\d+$/.test(value.checkpointId) ||
+      !isRestoreGameState(value.state) || !Array.isArray(value.logs) || !value.logs.every(isRestoreLogEntry) ||
+      !Array.isArray(value.battleHistory) || !value.battleHistory.every(isRestoreRecord) ||
+      !Number.isSafeInteger(value.consumedDirectiveCount) || (value.consumedDirectiveCount as number) < 0) return false;
+  if (value.stopReason !== undefined && (typeof value.stopReason !== 'string' || !validPauseReasons.has(value.stopReason))) return false;
+  if (value.rejection !== undefined && !isRestoreRejection(value.rejection)) return false;
+  return true;
+}
+
+function hasCoherentReplayRestoreEnvelope(
+  replay: unknown,
+  replaySnapshots: unknown,
+): replay is MatchClientState['replay'] {
+  if (!Array.isArray(replay) || !Array.isArray(replaySnapshots) || replay.length !== replaySnapshots.length) return false;
+  if (!replay.every(isRestoreReplayEntry) || !replaySnapshots.every(isRestoreReplaySnapshot)) return false;
+  for (let index = 0; index < replay.length; index++) {
+    const replayEntry = replay[index]!;
+    const replaySnapshot = replaySnapshots[index]! as MatchReplayStateSnapshot;
+    const expectedId = `checkpoint:${index + 1}`;
+    const expectedRevision = replaySnapshot.state.abilityRuntime?.revision ?? 0;
+    if (replayEntry.id !== expectedId || replaySnapshot.checkpointId !== expectedId ||
+        replayEntry.round !== replaySnapshot.state.round.roundNumber ||
+        replayEntry.phase !== replaySnapshot.state.round.activePhase ||
+        replayEntry.revision !== expectedRevision) return false;
+  }
+  return true;
 }
 const masterCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'master');
 const servantCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'servant');
@@ -1681,11 +1756,7 @@ export function restoreMatchSession(
   reconcileReplayTrust = true,
 ): MatchSession {
   if (snapshot.version !== 1) throw new Error(`Unsupported MatchSession snapshot version: ${snapshot.version}`);
-  if (!Array.isArray(snapshot.replay) || !Array.isArray(snapshot.replaySnapshots)) {
-    throw new Error('Invalid FB2-49 replay snapshot container');
-  }
-  if (!snapshot.replay.every((entry) => entry !== null && typeof entry === 'object' && typeof entry.id === 'string') ||
-      !snapshot.replaySnapshots.every((entry) => entry !== null && typeof entry === 'object' && typeof entry.checkpointId === 'string')) {
+  if (!hasCoherentReplayRestoreEnvelope(snapshot.replay, snapshot.replaySnapshots)) {
     throw new Error('Invalid FB2-49 replay snapshot container');
   }
   const persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
@@ -1697,11 +1768,16 @@ export function restoreMatchSession(
     persistenceSecret,
     persistenceScope,
   )) throw new Error('Invalid or missing FB2-49 persisted authority');
-  const replaySensitive = hasOpponentCloseToOneReplayAuthority(
+  const replayCheckpointIds = snapshot.replaySnapshots.map((entry) => entry.checkpointId);
+  const replayEntries = replayManifestEntries(snapshot.replaySnapshots);
+  const suppliedReplayManifest = snapshot.opponentCloseToOneReplayManifest !== undefined;
+  if (!suppliedReplayManifest && !verifyOpponentCloseToOneTrustedReplayCheckpoints(persistenceScope, replayEntries)) {
+    throw new Error('Invalid FB2-49 replay checkpoint lineage');
+  }
+  const replaySensitive = suppliedReplayManifest || hasOpponentCloseToOneReplayAuthority(
     snapshot.opponentCloseToOneServerAuthority,
     snapshot.replaySnapshots,
-  );
-  const replayEntries = replayManifestEntries(snapshot.replaySnapshots);
+  ) || hasOpponentCloseToOneTrustedReplayAuthority(persistenceScope, replayCheckpointIds);
   if (replaySensitive && !verifyOpponentCloseToOneReplayManifest(
     candidateState,
     replayEntries,
