@@ -6,6 +6,7 @@ import {
   projectAbilityState,
 } from './ability/interpreter';
 import {
+  createOpponentCloseToOnePersistenceScope,
   resolveOpponentCloseToOnePersistenceSecret,
   persistOpponentCloseToOneServerAuthority,
   restoreOpponentCloseToOneServerAuthority,
@@ -69,6 +70,8 @@ export interface MatchSessionConfig {
   maxActionsPerPlayer?: number;
   /** Server/local-host persistence secret; never serialized inside MatchSessionSnapshot. */
   persistenceSecret?: string;
+  /** Server-authoritative room/match scope; never serialized inside MatchSessionSnapshot. */
+  persistenceScope?: string;
 }
 
 export type MatchPauseReason =
@@ -188,8 +191,9 @@ const runtimeContent: RuntimeContentLibrary = { pack: uncheckedContent.pack, rul
 function persistedOpponentCloseToOneAuthorityField(
   state: GameState,
   persistenceSecret: string,
+  persistenceScope: string,
 ): { opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySeal } {
-  const seal = persistOpponentCloseToOneServerAuthority(state, persistenceSecret);
+  const seal = persistOpponentCloseToOneServerAuthority(state, persistenceSecret, persistenceScope);
   return seal ? { opponentCloseToOneServerAuthority: seal } : {};
 }
 const masterCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'master');
@@ -475,6 +479,7 @@ export class MatchSession {
   readonly humanPlayerIds: string[];
   readonly maxActionsPerPlayer: number;
   private readonly persistenceSecret: string;
+  private readonly persistenceScope: string;
   state: GameState;
   pairings: Array<{ playerId: string; seat: number; master: ExecutableCharacterDefinition; servant: ExecutableCharacterDefinition }>;
   rawCards: Map<string, RuntimeRawCard>;
@@ -493,6 +498,7 @@ export class MatchSession {
     this.humanPlayerIds = [...new Set(config.humanPlayerIds ?? [this.humanPlayerId])];
     this.maxActionsPerPlayer = config.maxActionsPerPlayer ?? 2;
     this.persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
+    this.persistenceScope = config.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
     const built = this.buildInitialState();
     this.state = built.state;
     this.pairings = built.pairings;
@@ -871,7 +877,7 @@ export class MatchSession {
       humanPlayerIds: [...this.humanPlayerIds],
       maxActionsPerPlayer: this.maxActionsPerPlayer,
       state: structuredClone(this.state),
-      ...persistedOpponentCloseToOneAuthorityField(this.state, this.persistenceSecret),
+      ...persistedOpponentCloseToOneAuthorityField(this.state, this.persistenceSecret, this.persistenceScope),
       logs: structuredClone(this.logs),
       replay: structuredClone(this.replay),
       replaySnapshots: structuredClone(this.replaySnapshots),
@@ -908,8 +914,14 @@ export class MatchSession {
   restoreToCheckpoint(checkpointId: string): boolean {
     const snapshot = this.replaySnapshots.find((candidate) => candidate.checkpointId === checkpointId);
     if (!snapshot) return false;
-    this.state = structuredClone(snapshot.state);
-    restoreOpponentCloseToOneServerAuthority(this.state, snapshot.opponentCloseToOneServerAuthority, this.persistenceSecret);
+    const candidateState = structuredClone(snapshot.state);
+    if (!restoreOpponentCloseToOneServerAuthority(
+      candidateState,
+      snapshot.opponentCloseToOneServerAuthority,
+      this.persistenceSecret,
+      this.persistenceScope,
+    )) return false;
+    this.state = candidateState;
     this.logs = structuredClone(snapshot.logs);
     this.battleHistory = structuredClone(snapshot.battleHistory);
     this.consumedDirectiveCount = snapshot.consumedDirectiveCount;
@@ -1566,7 +1578,7 @@ export class MatchSession {
     this.replaySnapshots.push({
       checkpointId: checkpoint.id,
       state: structuredClone(state),
-      ...persistedOpponentCloseToOneAuthorityField(state, this.persistenceSecret),
+      ...persistedOpponentCloseToOneAuthorityField(state, this.persistenceSecret, this.persistenceScope),
       logs: structuredClone(this.logs),
       battleHistory: structuredClone(this.battleHistory),
       consumedDirectiveCount: this.consumedDirectiveCount,
@@ -1588,21 +1600,27 @@ export function createMatchSession(config?: MatchSessionConfig): MatchSession {
 
 export function restoreMatchSession(
   snapshot: MatchSessionSnapshot,
-  config: Pick<MatchSessionConfig, 'persistenceSecret'> = {},
+  config: Pick<MatchSessionConfig, 'persistenceSecret' | 'persistenceScope'> = {},
 ): MatchSession {
   if (snapshot.version !== 1) throw new Error(`Unsupported MatchSession snapshot version: ${snapshot.version}`);
   const persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
+  const persistenceScope = config.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
+  const candidateState = structuredClone(snapshot.state);
+  if (!restoreOpponentCloseToOneServerAuthority(
+    candidateState,
+    snapshot.opponentCloseToOneServerAuthority,
+    persistenceSecret,
+    persistenceScope,
+  )) throw new Error('Invalid or missing FB2-49 persisted authority');
   const session = new MatchSession({
     seed: snapshot.seed,
     humanPlayerId: snapshot.humanPlayerId,
     humanPlayerIds: snapshot.humanPlayerIds ?? [snapshot.humanPlayerId],
     maxActionsPerPlayer: snapshot.maxActionsPerPlayer,
     persistenceSecret,
+    persistenceScope,
   });
-  session.state = structuredClone(snapshot.state);
-  restoreOpponentCloseToOneServerAuthority(
-    session.state, snapshot.opponentCloseToOneServerAuthority, persistenceSecret,
-  );
+  session.state = candidateState;
   session.logs = structuredClone(snapshot.logs);
   session.replay = structuredClone(snapshot.replay);
   session.replaySnapshots = structuredClone(snapshot.replaySnapshots ?? []);

@@ -118,13 +118,16 @@ export class MatchRoomHub {
 
   restore(snapshot: MatchRoomHubSnapshot): void {
     if (snapshot.version !== 1) throw new Error(`Unsupported MatchRoomHub snapshot version: ${snapshot.version}`);
-    this.rooms.clear();
-    this.roomVersions.clear();
+    const restoredRooms = new Map<string, MatchRoom>();
     for (const roomSnapshot of snapshot.rooms) {
-      const room = restoreMatchRoom(roomSnapshot);
-      this.rooms.set(room.roomId, room);
-      this.bump(room.roomId, 'room_restored');
+      const existing = this.rooms.get(roomSnapshot.roomId);
+      const room = restoreMatchRoom(roomSnapshot, existing?.getPersistenceContext());
+      if (restoredRooms.has(room.roomId)) throw new Error(`Duplicate room in restore snapshot: ${room.roomId}`);
+      restoredRooms.set(room.roomId, room);
     }
+    this.rooms = restoredRooms;
+    this.roomVersions = new Map();
+    for (const roomId of this.rooms.keys()) this.bump(roomId, 'room_restored');
   }
 
   private bump(roomId: string, type: MatchRoomHubEvent['type']): MatchRoomHubEvent {
