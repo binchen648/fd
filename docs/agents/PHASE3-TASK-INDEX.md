@@ -5774,3 +5774,15 @@ Read: `docs/reports/2026-09-21-p3-a-r98-nobunaga-s3-consumer-migration-dispatch.
 Result: dispatch exactly one frozen identity, `servant.nobunaga.skill.sc-nobunaga-3` (`尾张的大傻瓜`), after a fresh complete-card re-overlay on the synchronized FB2-47 runtime returned loader `report=[]`, both exact FB2-47/FB2-46 classifiers, Final Rules 9.4 7/8-mana play boundary with zero printed cost, exact defeat-before-loss `+3 -> -2 -> winners +2` ordering, no false non-loss payout and root replay idempotence. No additional B2 seam is required.
 
 Base frozen authoring overlap is **`144/944`**, duplicates **`0`**; Candidate must be exactly **`145/944`**, exact +1 Nobunaga s3 with zero removals/duplicates and no second frozen identity. No stale absolute `144` compatibility snapshot exists, so S has no compatibility-edit authorization. Formal migration remains **`149/944`**, **`795`** remaining until fresh R `MIGRATION_ACCEPTED` plus A synchronization. Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
+
+## TASK P3-A-R99-NOBUNAGA-S3-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r99-nobunaga-s3-migration-acceptance-sync`
+Base: exact accepted Candidate `bad696b11beb67cd2df88bdb2075e984f5965e1a`
+Read: `docs/reports/2026-09-21-p3-a-r99-nobunaga-s3-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #412 exact Candidate `bad696b11beb67cd2df88bdb2075e984f5965e1a`, backed by canonical evidence `https://github.com/binchen648/fd/pull/412#issuecomment-5753794601`. Exact frozen addition is `servant.nobunaga.skill.sc-nobunaga-3`; independent Base-to-Candidate frozen overlap is `144/944` to `145/944`, exact +1 with zero removals and zero duplicate frozen ids. No production runtime/product/generated change is present.
+
+Formal project migration advances exactly one identity to **`150/944`**, with **`794`** remaining. PR #412 remains OPEN, unmerged and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
