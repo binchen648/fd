@@ -400,6 +400,28 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
   });
 
+  it('fails closed atomically when FB2-49 synthetic continuation metadata is malformed', () => {
+    const corruptions: Array<(state: GameState) => void> = [
+      state => { (state.abilityRuntime!.pendingDecision as any).remainingEffects = null; },
+      state => { (state.abilityRuntime!.pendingDecision as any).remainingEffects = {}; },
+      state => { (state.abilityRuntime!.pendingDecision as any).remainingEffects = [{ id: 'forged', type: 'draw', count: 1 }]; },
+    ];
+    for (const corrupt of corruptions) {
+      const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+      expect(activate(state).ok).toBe(true);
+      const decisionId = state.abilityRuntime!.pendingDecision!.id;
+      corrupt(state);
+      const before = structuredClone(state);
+      let result: ReturnType<typeof rules.dispatchAbilityCommand> | undefined;
+      expect(() => {
+        result = rules.dispatchAbilityCommand(state, 'p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] });
+      }).not.toThrow();
+      expect(result?.ok).toBe(false);
+      expect(state).toEqual(before);
+      expect(state.abilityRuntime!.cardState['p2-b']).toMatchObject({ active: true, faceDown: false });
+      expect(state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
+    }
+  });
   it('treats a live close-forbid as an atomic failure instead of partially closing the frozen set', () => {
     const state = setup();
     add(state, 'p2-keep', 'p2'); add(state, 'p2-protected', 'p2', PROTECTED_DEF); add(state, 'p2-other', 'p2');

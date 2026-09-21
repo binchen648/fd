@@ -315,3 +315,27 @@ Revision recertification:
 - validation artifacts restored byte-for-byte to the rejected Candidate blobs.
 
 Formal migration remains **151/944**, **793** remaining. FB2-49 remains zero-credit capability work.
+## Revision after seventh fresh Reviewer finding
+
+Fresh Reviewer evidence for rejected Candidate `9f713433ffc2c29a4430da2f4b073cfaecbc9f40` is canonical GitHub comment `5754832905` on PR #415: `https://github.com/binchen648/fd/pull/415#issuecomment-5754832905`. Verdict: `IMPLEMENTATION_NEEDS_REVISION`.
+
+The prior queue-completeness finding is closed. This revision addresses only the newly identified forged synthetic continuation metadata gap:
+
+- FB2-49 stages `PendingDecision.remainingEffects` as an exact empty array and settlement now requires the runtime value to remain an Array with length exactly zero before any card mutation, queue shift or decision consumption;
+- malformed `remainingEffects` values (`null`, a non-array record, or a forged non-empty effect array) fail closed through `RuleRejection`, return `ok:false`, throw no raw exception, and preserve caller state structure-equivalent;
+- all existing queue-completeness, target/context, candidate-list, constraint, owner-provenance and control-based qualification guards remain unchanged;
+- no consumer identity routing or generic interaction behavior was added; FB2-49 remains zero-credit capability work.
+
+Validation after this revision:
+
+- `npm.cmd run typecheck` — PASS;
+- focused FB2-49 — **14/14 PASS**;
+- Reviewer-named adjacent compatibility set — **8 files / 58 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2` — **177 files / 1283 tests PASS**;
+- content validate — 7 masters / 7 servants / 20 events / 0 blocking issues;
+- generated-content determinism — unchanged;
+- Locked Reference exact verification — PASS at `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- client build — PASS (existing Vite warnings only);
+- coverage/audit metrics — unchanged; generated audit artifacts restored to their exact pre-revision Git blobs.
+
+Formal migration remains **`151/944`**, **`793`** remaining.

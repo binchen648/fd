@@ -3930,7 +3930,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
               meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
               meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
               meta.sourceCardInstanceId !== decisionContext.sourceCardId || meta.abilityId !== decisionContext.abilityId ||
-              !isExactOpponentCloseToOneConstraints(metaConstraints) || !exactSyntheticTarget ||
+              !isExactOpponentCloseToOneConstraints(metaConstraints) || !exactSyntheticTarget || !Array.isArray(d.remainingEffects) || d.remainingEffects.length !== 0 ||
               d.min !== 1 || d.max !== 1 || !exactFrozenCardIdList(decisionCandidates, metaQualifyingCardIds) ||
               !Array.isArray(selected) || selected.length !== 1 || !d.candidates.includes(selected[0]!) ||
               !exactFrozenCardIdList(qualifyingOpponentCloseToOneCardIds(s, meta.decisionPlayerId), metaQualifyingCardIds) ||
