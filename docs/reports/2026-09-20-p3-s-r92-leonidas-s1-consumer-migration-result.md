@@ -48,7 +48,7 @@ Final tree gates on exact Base `88bd84b484dc4d7841a06b2338ef83c3492b8f33`:
 
 The first full-CI attempt on the pre-correction Base failed only because the historical Siegfried consumer test hard-coded the repository-wide overlap snapshot `141`. A issued the exact compatibility scope correction in Base `88bd84b484dc4d7841a06b2338ef83c3492b8f33`; the final tree removes only that unstable global-count assertion while retaining frozen denominator `944`, zero duplicates, and Siegfried s2 authored exactly once. Final full CI is green.
 
-S 完成 recertification 并提交 Exact Base/Candidate。
+For this dispatched S task only: **S 完成 recertification 并提交 Exact Base/Candidate**。This records a task-local requirement only and is not a standing rule for later S tasks.
 
 ## Accounting / scope audit
 

@@ -117,4 +117,4 @@ S must prove, at minimum:
 
 Formal project migration remains **`149/944`**, with **`795`** remaining until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A synchronizes that acceptance.
 
-Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
+Task-local S requirement for this dispatched task only: **S 完成 recertification 并提交 Exact Base/Candidate**。This was not a standing S rule and must not be inherited by later S tasks unless their own current formal task explicitly requires it.
