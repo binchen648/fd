@@ -1278,6 +1278,7 @@ export class MatchSession {
         battleId,
         resultId,
         battleParticipantIds: participants,
+        battleParticipantPowers: Object.fromEntries((battle.participantBreakdowns ?? []).filter((participant) => participants.includes(participant.playerId)).map((participant) => [participant.playerId, participant.effectivePower])),
         battlefieldId: battle.battlefieldId,
         battleResult: { winners: [...battle.winnerPlayerIds], loserIds },
       };

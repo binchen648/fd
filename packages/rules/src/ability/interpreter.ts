@@ -40,6 +40,12 @@ import {
   trustedControllerDefeatedFacts,
 } from './controller-defeated-vp-reward';
 import {
+  COMBAT_OPPONENT_POWER_VP_REWARD_DIVISOR,
+  isAcceptedCombatOpponentPowerVpRewardAbility,
+  isCombatOpponentPowerVpRewardCandidate,
+  trustedCombatOpponentPowerRewardFacts,
+} from './combat-opponent-power-vp-reward';
+import {
   currentRoundCombatWinAbsent,
   isAcceptedCurrentRoundCombatWinAbsenceCondition,
   recordCurrentRoundCombatWinsFromBattleResult,
@@ -830,6 +836,9 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'compiled')) return false;
   if (isBattleLossVpWinnerRewardCandidate(a) && !isAcceptedBattleLossVpWinnerRewardAbility(a, 'compiled')) return false;
   if (isControllerDefeatedVpRewardCandidate(a) && !isAcceptedControllerDefeatedVpRewardAbility(a, 'compiled')) return false;
+  if (isCombatOpponentPowerVpRewardCandidate(a) && !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) return false;
+  if (isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled') &&
+    !trustedCombatOpponentPowerRewardFacts(s, card(s, sourceId).controllerPlayerId, event)) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
@@ -872,6 +881,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     if (classifyAlterEgoTransformVariant(a) === 'ex' && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
   }
   const activationContext = context(s, sourceId, a.id, event);
+  if (isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) return !faceUpEffectPlayLimitReached(s, activationContext, a);
   if (!a.conditions.every(c => condition(s, activationContext, c))) return false;
   return !faceUpEffectPlayLimitReached(s, activationContext, a);
 }
@@ -1791,6 +1801,50 @@ function settlePendingRulerSealRewards(s: GameState, event: AbilityEvent): void 
     }
   }
   r.pendingRulerSealRewards = remaining;
+}
+
+function exactPlayerArray(left: readonly string[], right: readonly string[]): boolean {
+  return left.length === right.length && left.every((value, index) => value === right[index]);
+}
+function exactPlayerPowerMap(left: Record<string, number>, right: Record<string, number>, ids: readonly string[]): boolean {
+  return Object.keys(left).length === ids.length && Object.keys(right).length === ids.length &&
+    ids.every((id) => Object.prototype.hasOwnProperty.call(left, id) && Object.prototype.hasOwnProperty.call(right, id) && left[id] === right[id]);
+}
+function stageNextCombatOpponentPowerVpRewardDecision(s: GameState): void {
+  const r = runtime(s);
+  if (r.pendingDecision) return;
+  const pending = r.pendingCombatOpponentPowerVpRewards?.[0];
+  if (!pending) return;
+  const id = nextId(s, 'combat-opponent-power-vp-reward');
+  const target: RuleNode = { id: 'resolved_battle_opponent', type: 'player', count: { min: 1, max: 1 } };
+  r.pendingDecision = {
+    id, controllerId: pending.controllerId, target, candidates: [...pending.opponentIds], min: 1, max: 1,
+    context: { controllerId: pending.controllerId, sourceCardId: pending.sourceCardId, abilityId: pending.abilityId, variables: {}, selections: {} },
+    remainingEffects: [],
+    interaction: {
+      kind: 'combat_opponent_power_vp_reward_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: pending.sourceCardId, abilityId: pending.abilityId, createdRevision: r.revision + 1,
+      continuationRef: `${id}:continuation`, triggerEventId: pending.triggerEventId,
+      battlePhaseResolutionId: pending.battlePhaseResolutionId, battleId: pending.battleId, resultId: pending.resultId, battlefieldId: pending.battlefieldId,
+      participantIds: [...pending.participantIds], participantPowers: { ...pending.participantPowers }, opponentIds: [...pending.opponentIds],
+      divisor: COMBAT_OPPONENT_POWER_VP_REWARD_DIVISOR,
+      constraints: { kind: 'target', targetKind: 'player', min: 1, max: 1, distinct: true },
+    },
+  };
+}
+function stageCombatOpponentPowerVpReward(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) reject('resolution_failed', 'Unsupported frozen combat-opponent power VP reward semantic shape');
+  const facts = trustedCombatOpponentPowerRewardFacts(s, ctx.controllerId, ctx.event);
+  if (!facts) reject('invalid_event', 'Combat-opponent power reward requires a trusted resolved-battle root snapshot');
+  const r = runtime(s);
+  const queue = r.pendingCombatOpponentPowerVpRewards ??= [];
+  if (queue.some((entry) => entry.sourceCardId === ctx.sourceCardId && entry.abilityId === ctx.abilityId && entry.triggerEventId === ctx.event!.id)) return;
+  queue.push({
+    controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, triggerEventId: ctx.event!.id,
+    battlePhaseResolutionId: facts.battlePhaseResolutionId, battleId: facts.battleId, resultId: facts.resultId, battlefieldId: facts.battlefieldId,
+    participantIds: [...facts.participantIds], participantPowers: { ...facts.participantPowers }, opponentIds: [...facts.opponentIds],
+  });
+  stageNextCombatOpponentPowerVpRewardDecision(s);
 }
 
 const directResourcePrimitiveTypes = new Set(['adjust_mana', 'adjust_victory_points']);
@@ -3247,6 +3301,13 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isControllerDefeatedVpRewardCandidate(a) && !isAcceptedControllerDefeatedVpRewardAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported controller-defeated VP reward semantic shape');
   }
+  if (isCombatOpponentPowerVpRewardCandidate(a) && !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) {
+    reject('resolution_failed', 'Unsupported frozen combat-opponent power VP reward semantic shape');
+  }
+  if (isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) {
+    stageCombatOpponentPowerVpReward(s, ctx, a);
+    return;
+  }
   if (isAcceptedPreBattleDefeatAbility(a, 'compiled')) {
     const controller = player(s, ctx.controllerId);
     if (controller.status !== 'active' || !isBattlefield(s, controller.locationId)) {
@@ -3416,6 +3477,8 @@ function rememberTrustedBattleResultSnapshot(r: AbilityRuntime, event: AbilityEv
     resultId: event.resultId,
     battlefieldId: event.battlefieldId,
     battleParticipantIds: [...event.battleParticipantIds],
+    ...(event.battleParticipantPowers && typeof event.battleParticipantPowers === 'object' && !Array.isArray(event.battleParticipantPowers)
+      ? { battleParticipantPowers: { ...event.battleParticipantPowers } } : {}),
     winners: [...event.battleResult.winners],
     loserIds: [...event.battleResult.loserIds],
   };
@@ -3635,6 +3698,55 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       if (d.interaction) {
         const meta = d.interaction;
         const a = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
+        if (meta.kind === 'combat_opponent_power_vp_reward_v1') {
+          const pendingQueue = r.pendingCombatOpponentPowerVpRewards;
+          const pending = pendingQueue?.[0];
+          const source = s.cards.find((candidate) => candidate.instanceId === d.context.sourceCardId);
+          const frozenRoot = r.trustedBattleResultSnapshots?.[meta.resultId];
+          const exactSyntheticTarget = d.target.id === 'resolved_battle_opponent' && d.target.type === 'player' &&
+            Number(node(d.target.count).min) === 1 && Number(node(d.target.count).max) === 1;
+          const rootPowers = frozenRoot?.battleParticipantPowers;
+          if (!isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled') || !pending ||
+            !source || source.controllerPlayerId !== d.controllerId || !active(s, source.instanceId) ||
+            d.context.controllerId !== d.controllerId || pending.controllerId !== d.controllerId ||
+            meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+            meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
+            meta.sourceCardInstanceId !== d.context.sourceCardId || meta.abilityId !== d.context.abilityId ||
+            pending.sourceCardId !== meta.sourceCardInstanceId || pending.abilityId !== meta.abilityId ||
+            pending.triggerEventId !== meta.triggerEventId || pending.battlePhaseResolutionId !== meta.battlePhaseResolutionId ||
+            pending.battleId !== meta.battleId || pending.resultId !== meta.resultId || pending.battlefieldId !== meta.battlefieldId ||
+            !exactPlayerArray(pending.participantIds, meta.participantIds) || !exactPlayerArray(pending.opponentIds, meta.opponentIds) ||
+            !exactPlayerPowerMap(pending.participantPowers, meta.participantPowers, meta.participantIds) ||
+            !frozenRoot || frozenRoot.battlePhaseResolutionId !== meta.battlePhaseResolutionId || frozenRoot.battleId !== meta.battleId ||
+            frozenRoot.resultId !== meta.resultId || frozenRoot.battlefieldId !== meta.battlefieldId ||
+            !exactPlayerArray(frozenRoot.battleParticipantIds, meta.participantIds) || !rootPowers ||
+            !exactPlayerPowerMap(rootPowers, meta.participantPowers, meta.participantIds) ||
+            meta.divisor !== COMBAT_OPPONENT_POWER_VP_REWARD_DIVISOR ||
+            meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'player' || meta.constraints.min !== 1 ||
+            meta.constraints.max !== 1 || meta.constraints.distinct !== true || !exactSyntheticTarget ||
+            d.min !== 1 || d.max !== 1 || !exactPlayerArray(d.candidates, meta.opponentIds) ||
+            new Set(d.candidates).size !== d.candidates.length || meta.opponentIds.includes(d.controllerId) ||
+            meta.opponentIds.length !== meta.participantIds.length - 1 ||
+            !meta.participantIds.includes(d.controllerId) || meta.participantIds.some((id) =>
+              id === d.controllerId ? meta.opponentIds.includes(id) : !meta.opponentIds.includes(id)) ||
+            !Array.isArray(selected) || selected.length !== 1 || !meta.opponentIds.includes(selected[0]!) ||
+            !Number.isSafeInteger(meta.participantPowers[selected[0]!] ?? NaN) || Number(meta.participantPowers[selected[0]!]) < 0) {
+            reject('resolution_failed', 'Corrupt or stale combat-opponent power reward interaction state');
+          }
+          const selectedPlayerId = selected[0]!;
+          const rewardVp = Math.floor(meta.participantPowers[selectedPlayerId]! / COMBAT_OPPONENT_POWER_VP_REWARD_DIVISOR);
+          const recipient = player(s, d.controllerId);
+          const before = recipient.vp;
+          delete r.pendingDecision;
+          pendingQueue.shift();
+          recipient.vp += rewardVp;
+          r.events.push({
+            type: 'victory_points_adjusted', playerId: d.controllerId, sourceCardId: meta.sourceCardInstanceId, abilityId: meta.abilityId,
+            delta: rewardVp, before, after: recipient.vp, triggerEventId: meta.triggerEventId,
+          });
+          stageNextCombatOpponentPowerVpRewardDecision(s);
+          break;
+        }
         if (meta.kind === 'ruler_seal_move_v1') {
           const a = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId); const binding = r.rulerSealBindings.find((entry) => entry.id === meta.sealId);
           const currentEnabled = getEnabledLocations(s.map, s.locationConfig).map((location) => location.id);

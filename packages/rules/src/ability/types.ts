@@ -162,9 +162,21 @@ export interface RulerSealFreePlayInteractionMetadata {
   sealId: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; rewardVp: number;
   constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: 1; distinct: true };
 }
+export interface CombatOpponentPowerVpRewardInteractionMetadata {
+  kind: 'combat_opponent_power_vp_reward_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string; triggerEventId: string;
+  battlePhaseResolutionId: string; battleId: string; resultId: string; battlefieldId: string;
+  participantIds: PlayerId[]; participantPowers: Record<PlayerId, number>; opponentIds: PlayerId[]; divisor: 5;
+  constraints: { kind: 'target'; targetKind: 'player'; min: 1; max: 1; distinct: true };
+}
+export interface PendingCombatOpponentPowerVpReward {
+  controllerId: PlayerId; sourceCardId: string; abilityId: string; triggerEventId: string;
+  battlePhaseResolutionId: string; battleId: string; resultId: string; battlefieldId: string;
+  participantIds: PlayerId[]; participantPowers: Record<PlayerId, number>; opponentIds: PlayerId[];
+}
 export type PendingInteractionMetadata =
   PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata | SameBattlefieldPrivateHandReturnInteractionMetadata |
-  RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata;
+  RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -252,6 +264,7 @@ export interface TrustedBattleResultSnapshot {
   resultId: string;
   battlefieldId: string;
   battleParticipantIds: PlayerId[];
+  battleParticipantPowers?: Record<PlayerId, number>;
   winners: PlayerId[];
   loserIds: PlayerId[];
 }
@@ -272,6 +285,8 @@ export interface AbilityRuntime {
   pendingPostBattleEvents?: AbilityEvent[];
   /** FB2-47 immutable first-seen authoritative root result facts, keyed by exact result id. */
   trustedBattleResultSnapshots?: Record<string, TrustedBattleResultSnapshot>;
+  /** FB2-48 serialized frozen-battle opponent-power rewards awaiting owner choice. */
+  pendingCombatOpponentPowerVpRewards?: PendingCombatOpponentPowerVpReward[];
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */
   pendingBattleTerminalEvent?: AbilityEvent;
   /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */
