@@ -1,6 +1,6 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.39
+- Version: P3-TI-1.40
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
@@ -16,6 +16,18 @@ This file is the task lookup entry point for Phase 3 agents. Do not read the ful
 5. B may not start the next runtime task until its previous implementation report exists and either R has reviewed it or the coordinator explicitly accepts the risk.
 6. Full-roster S work may run in parallel as a read-only intake lane under `PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`; it does not change current runtime task status.
 7. B2 runtime work starts only from an explicit `READY` block after the active hot-file lane and all listed gates are closed.
+
+## Implementation / Review Sequencing Reset
+
+Current implementation sequencing returns to the original startup/agent-contract model and does not weaken semantic acceptance:
+
+1. Implementer: write/adjust the failing or targeted test, implement the minimum declared behavior, run focused/task-relevant verification, run `git diff --check`, commit only declared files, then open/update the PR and request fresh independent R.
+2. Reviewer: stay independent/read-only, review the exact Base->Candidate diff and declared contract scope, and continue the same review after a blocker to report all independently confirmable findings in that scope when meaningful.
+3. `IMPLEMENTATION_NEEDS_REVISION`: fix only the exact reviewer findings, rerun the affected focused/adversarial verification plus `git diff --check`, produce a new exact Candidate, and request fresh R. Do **not** blanket-rerun repository-wide release gates for every revision unless the finding itself affects those gates.
+4. Repository-wide `official CI`, content validation, generated determinism, Locked Reference verification, client build, Phase 3 coverage/audit, and similar expensive checks are **final evidence / acceptance checks**, not a default pre-R gate for every intermediate Candidate. Run them once the exact Candidate is otherwise stable, or earlier only when the exact task/finding specifically depends on that surface.
+5. Historical completed-task evidence remains historical. Later task blocks that list heavy checks under "Required proof/evidence" are interpreted as final-evidence requirements unless they explicitly state that a particular heavy check is needed before review for that exact task.
+
+This sequencing correction changes workflow only. It does not change rule semantics, task scope, Base/Candidate lineage, independent-review requirements, acceptance thresholds, migration credit, merge/retarget prohibitions, or A/R ownership.
 
 ## Full-Roster Flow
 
