@@ -203,6 +203,7 @@ describe('match websocket server', () => {
     });
     room.session.state = createServerFb249State();
     room.status = 'running';
+    const olderPrefixRoom: any = structuredClone(room.serializeRoom());
     expect(room.session.dispatchPlayerAction('p1', {
       type: 'activate_ability', cardInstanceId: FB249_SOURCE_ID, abilityId: FB249_ABILITY_ID,
     }).ok).toBe(true);
@@ -212,14 +213,26 @@ describe('match websocket server', () => {
       type: 'choose_target', decisionId, selectedIds: ['server-p2-a'],
     }).ok).toBe(true);
 
+    const mixedPrefix: any = structuredClone(room.serializeRoom());
+    mixedPrefix.session.replay = structuredClone(olderPrefixRoom.session.replay);
+    mixedPrefix.session.replaySnapshots = structuredClone(olderPrefixRoom.session.replaySnapshots);
+    delete mixedPrefix.session.opponentCloseToOneReplayManifest;
+    const beforeRoom = serverHandle.hub.getRoom('fb2-49-http-guard');
+    const beforeVersion = serverHandle.hub.version('fb2-49-http-guard');
+    const mixedResponse = await fetch(`${httpBase}/rooms/fb2-49-http-guard/restore`, {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot: mixedPrefix }),
+    });
+    expect(mixedResponse.status).toBe(400);
+    const mixedBody = await mixedResponse.json() as { code: string; message: string };
+    expect(mixedBody).toEqual({ code: 'bad_request', message: 'Invalid FB2-49 replay checkpoint lineage' });
+    expect(serverHandle.hub.getRoom('fb2-49-http-guard')).toBe(beforeRoom);
+    expect(serverHandle.hub.version('fb2-49-http-guard')).toBe(beforeVersion);
     const forged: any = structuredClone(room.serializeRoom());
     const liveSnapshot = forged.session.replaySnapshots.find((entry: any) => entry.checkpointId === liveId);
     delete liveSnapshot.opponentCloseToOneServerAuthority;
     liveSnapshot.state.abilityRuntime.pendingOpponentCloseToOne = [];
     delete liveSnapshot.state.abilityRuntime.pendingDecision;
     delete forged.session.opponentCloseToOneReplayManifest;
-    const beforeRoom = serverHandle.hub.getRoom('fb2-49-http-guard');
-    const beforeVersion = serverHandle.hub.version('fb2-49-http-guard');
     const erasedResponse = await fetch(`${httpBase}/rooms/fb2-49-http-guard/restore`, {
       method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot: forged }),
     });
@@ -231,7 +244,7 @@ describe('match websocket server', () => {
     expect(serverHandle.hub.version('fb2-49-http-guard')).toBe(beforeVersion);
 
     const malformed: any = structuredClone(beforeRoom.serializeRoom());
-    malformed.session.replaySnapshots = [{ checkpointId: 'checkpoint:1' }];
+    malformed.session.replaySnapshots[0].state.players = [null];
     const malformedResponse = await fetch(`${httpBase}/rooms/fb2-49-http-guard/restore`, {
       method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot: malformed }),
     });

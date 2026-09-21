@@ -7,7 +7,9 @@ import {
 } from './ability/interpreter';
 import {
   createOpponentCloseToOnePersistenceScope,
+  hasOpponentCloseToOneOmittedTrustedReplayAuthority,
   hasOpponentCloseToOneTrustedReplayAuthority,
+  rememberOpponentCloseToOneTrustedReplayLineage,
   resolveOpponentCloseToOnePersistenceSecret,
   persistOpponentCloseToOneReplayManifest,
   persistOpponentCloseToOneServerAuthority,
@@ -18,6 +20,7 @@ import {
   synchronizeOpponentCloseToOneTrustedReplayCheckpoints,
   verifyOpponentCloseToOneReplayManifest,
   verifyOpponentCloseToOneTrustedReplayCheckpoints,
+  verifyOpponentCloseToOneTrustedReplayLineage,
   type OpponentCloseToOneReplayManifestEntry,
   type OpponentCloseToOneReplayManifestSeal,
   type OpponentCloseToOneServerAuthoritySeal,
@@ -240,16 +243,88 @@ function isRestoreRecord(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
+function isRestoreStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((entry) => typeof entry === 'string');
+}
+
+function isRestoreVisibilityState(value: unknown): boolean {
+  if (!isRestoreRecord(value) || typeof value.scope !== 'string') return false;
+  if (value.ownerPlayerId !== undefined && typeof value.ownerPlayerId !== 'string') return false;
+  if (value.revealedToPlayerIds !== undefined && !isRestoreStringArray(value.revealedToPlayerIds)) return false;
+  return value.revealReason === undefined || typeof value.revealReason === 'string';
+}
+
+function isRestorePlayerState(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.id === 'string' && value.id.length > 0 &&
+    Number.isSafeInteger(value.seat) && (value.seat as number) > 0 &&
+    (value.status === 'active' || value.status === 'eliminated') &&
+    typeof value.masterCardId === 'string' && typeof value.servantCardId === 'string' &&
+    (value.locationId === undefined || typeof value.locationId === 'string') &&
+    typeof value.vp === 'number' && Number.isFinite(value.vp) &&
+    typeof value.militaryResult === 'number' && Number.isFinite(value.militaryResult) &&
+    typeof value.mana === 'number' && Number.isFinite(value.mana) &&
+    (value.eliminationOrder === undefined || Number.isSafeInteger(value.eliminationOrder));
+}
+
+function isRestoreCardInstance(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.instanceId === 'string' && value.instanceId.length > 0 &&
+    typeof value.definitionId === 'string' && typeof value.ownerPlayerId === 'string' &&
+    typeof value.controllerPlayerId === 'string' && typeof value.zone === 'string' &&
+    isRestoreVisibilityState(value.visibility) &&
+    (value.generatedBy === undefined || typeof value.generatedBy === 'string');
+}
+
+function isRestoreMapDefinition(value: unknown): boolean {
+  if (!isRestoreRecord(value) || typeof value.id !== 'string' || !Number.isSafeInteger(value.playerCount) ||
+      (value.playerCount as number) < 1 || !Array.isArray(value.locations)) return false;
+  return value.locations.every((location) => isRestoreRecord(location) && typeof location.id === 'string' &&
+    typeof location.displayName === 'string' && typeof location.enabledByDefault === 'boolean' &&
+    typeof location.optional === 'boolean' && typeof location.occupancyMode === 'string' &&
+    typeof location.eventPolicy === 'string' && isRestoreStringArray(location.movementLinks) &&
+    isRestoreStringArray(location.rewardHooks) && isRestoreStringArray(location.visibilityHooks) &&
+    isRestoreStringArray(location.tags));
+}
+
+function isRestoreLocationConfig(value: unknown): boolean {
+  return isRestoreRecord(value) && isRestoreStringArray(value.enabledLocationIds);
+}
+
+function isRestoreRecordArray(value: unknown): boolean {
+  return Array.isArray(value) && value.every(isRestoreRecord);
+}
+
+function isRestoreAbilityRuntimeBoundary(value: unknown): boolean {
+  if (value === undefined) return true;
+  if (!isRestoreRecord(value) || !isRestoreRecord(value.pack) || !isRestoreRecord(value.pack.cards) ||
+      !isRestoreRecord(value.cardState) || !Number.isSafeInteger(value.revision) || !Number.isSafeInteger(value.sequence) ||
+      typeof value.randomState !== 'number' || !Number.isFinite(value.randomState) ||
+      !isRestoreRecordArray(value.ongoingEffects) || !isRestoreRecordArray(value.responseWindows) ||
+      !isRestoreStringArray(value.revealedServants) || !isRestoreRecordArray(value.events) ||
+      !isRestoreRecordArray(value.calculations) || !isRestoreRecordArray(value.hostRequests) ||
+      !isRestoreRecord(value.playCounters)) return false;
+  if (value.pendingDecision !== undefined) {
+    const decision = value.pendingDecision;
+    if (!isRestoreRecord(decision) || typeof decision.id !== 'string' || typeof decision.controllerId !== 'string' ||
+        !isRestoreRecord(decision.target) || !isRestoreStringArray(decision.candidates) ||
+        typeof decision.min !== 'number' || typeof decision.max !== 'number' || !isRestoreRecord(decision.context) ||
+        !Array.isArray(decision.remainingEffects) || !decision.remainingEffects.every(isRestoreRecord) ||
+        (decision.interaction !== undefined && !isRestoreRecord(decision.interaction))) return false;
+  }
+  if (value.pendingOpponentCloseToOne !== undefined && !isRestoreRecordArray(value.pendingOpponentCloseToOne)) return false;
+  return true;
+}
+
 function isRestoreGameState(value: unknown): value is GameState {
-  if (!isRestoreRecord(value) || typeof value.id !== 'string' || !Array.isArray(value.players) ||
-      !isRestoreRecord(value.round) || !isRestoreRecord(value.map) || !isRestoreRecord(value.locationConfig) ||
-      !Array.isArray(value.cards) || !Array.isArray(value.eventPlacements) || !Array.isArray(value.battleResults) ||
-      !Array.isArray(value.effectStack) || !Array.isArray(value.log)) return false;
+  if (!isRestoreRecord(value) || typeof value.id !== 'string' || !Array.isArray(value.players) || value.players.length < 1 ||
+      !value.players.every(isRestorePlayerState) || !isRestoreRecord(value.round) || !isRestoreMapDefinition(value.map) ||
+      !isRestoreLocationConfig(value.locationConfig) || !Array.isArray(value.cards) || !value.cards.every(isRestoreCardInstance) ||
+      !isRestoreRecordArray(value.eventPlacements) || !isRestoreRecordArray(value.battleResults) ||
+      !isRestoreRecordArray(value.effectStack) || !isRestoreRecordArray(value.log)) return false;
   const round = value.round;
   if (!Number.isSafeInteger(round.roundNumber) || (round.roundNumber as number) < 1 ||
       typeof round.activePhase !== 'string' || !validReplayPhases.has(round.activePhase) ||
       !Number.isSafeInteger(round.prioritySeat) || (round.prioritySeat as number) < 1) return false;
-  return value.abilityRuntime === undefined || isRestoreRecord(value.abilityRuntime);
+  return isRestoreAbilityRuntimeBoundary(value.abilityRuntime);
 }
 
 function isRestoreLogEntry(value: unknown): value is MatchSessionLogEntry {
@@ -994,6 +1069,8 @@ export class MatchSession {
   serializeSession(): MatchSessionSnapshot {
     const authorityField = persistedOpponentCloseToOneAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
     const currentSeal = authorityField.opponentCloseToOneServerAuthority;
+    const replayEntries = replayManifestEntries(this.replaySnapshots);
+    rememberOpponentCloseToOneTrustedReplayLineage(this.persistenceScope, this.state, replayEntries);
     const replaySensitive = hasOpponentCloseToOneReplayAuthority(currentSeal, this.replaySnapshots);
     return {
       version: 1,
@@ -1006,7 +1083,7 @@ export class MatchSession {
       ...(replaySensitive ? {
         opponentCloseToOneReplayManifest: persistOpponentCloseToOneReplayManifest(
           this.state,
-          replayManifestEntries(this.replaySnapshots),
+          replayEntries,
           this.persistenceSecret,
           this.persistenceScope,
         ),
@@ -1771,6 +1848,11 @@ export function restoreMatchSession(
   const replayCheckpointIds = snapshot.replaySnapshots.map((entry) => entry.checkpointId);
   const replayEntries = replayManifestEntries(snapshot.replaySnapshots);
   const suppliedReplayManifest = snapshot.opponentCloseToOneReplayManifest !== undefined;
+  const omittedTrustedSensitiveReplay = hasOpponentCloseToOneOmittedTrustedReplayAuthority(persistenceScope, replayCheckpointIds);
+  if (!suppliedReplayManifest && omittedTrustedSensitiveReplay &&
+      !verifyOpponentCloseToOneTrustedReplayLineage(persistenceScope, candidateState, replayEntries)) {
+    throw new Error('Invalid FB2-49 replay checkpoint lineage');
+  }
   if (!suppliedReplayManifest && !verifyOpponentCloseToOneTrustedReplayCheckpoints(persistenceScope, replayEntries)) {
     throw new Error('Invalid FB2-49 replay checkpoint lineage');
   }

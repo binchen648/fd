@@ -38,12 +38,14 @@ const AUTHORITY_BROWSER_STORAGE_KEY = 'fd.rules.fb2-49.persistence-secret.v1';
 const AUTHORITY_BROWSER_SCOPE_KEY_PREFIX = 'fd.rules.fb2-49.persistence-scope.v1:';
 const AUTHORITY_BROWSER_TRANSACTION_KEY_PREFIX = 'fd.rules.fb2-49.transaction.v1:';
 const AUTHORITY_BROWSER_REPLAY_TRANSACTION_KEY_PREFIX = 'fd.rules.fb2-49.replay-transactions.v1:';
+const AUTHORITY_BROWSER_REPLAY_LINEAGE_KEY_PREFIX = 'fd.rules.fb2-49.replay-lineages.v1:';
 const processTransactionByScope = new Map<string, string>();
 interface TrustedReplayBinding {
   transactionId: string | null;
   checkpointDigest: string;
 }
 const processReplayTransactionsByScope = new Map<string, Map<string, TrustedReplayBinding>>();
+const processReplayLineagesByScope = new Map<string, Set<string>>();
 interface OpponentCloseToOneServerAuthorityRecord {
   authority: OpponentCloseToOneServerAuthoritySnapshot;
   transactionId: string;
@@ -302,6 +304,32 @@ function replayTransactionsStorageKey(persistenceScope: string): string {
   return AUTHORITY_BROWSER_REPLAY_TRANSACTION_KEY_PREFIX + sha256Hex(persistenceScope);
 }
 
+function replayLineagesStorageKey(persistenceScope: string): string {
+  return AUTHORITY_BROWSER_REPLAY_LINEAGE_KEY_PREFIX + sha256Hex(persistenceScope);
+}
+
+function replayLineageDigest(
+  persistenceScope: string,
+  state: GameState,
+  checkpoints: readonly OpponentCloseToOneReplayManifestEntry[],
+): string {
+  return sha256Hex(replayManifestPayload(persistenceScope, stateBinding(state), checkpoints));
+}
+
+function readBrowserReplayLineages(persistenceScope: string): string[] {
+  const storage = browserPersistenceStorage();
+  if (!storage) return [];
+  try {
+    const raw = storage.getItem(replayLineagesStorageKey(persistenceScope));
+    if (!raw) return [];
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((value): value is string => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value));
+  } catch {
+    return [];
+  }
+}
+
 function isTrustedReplayBinding(value: unknown): value is TrustedReplayBinding {
   return isPlainRecord(value) && exactKeys(value, ['transactionId', 'checkpointDigest']) &&
     (value.transactionId === null ||
@@ -378,6 +406,57 @@ export function verifyOpponentCloseToOneTrustedReplayCheckpoints(
   return true;
 }
 
+export function hasOpponentCloseToOneOmittedTrustedReplayAuthority(
+  persistenceScope: string,
+  checkpointIds: readonly string[],
+): boolean {
+  const supplied = new Set(checkpointIds);
+  const browserBindings = readBrowserReplayTransactions(persistenceScope);
+  if (Object.entries(browserBindings).some(([checkpointId, binding]) =>
+    !supplied.has(checkpointId) && binding.transactionId !== null)) return true;
+  const processBindings = processReplayTransactionsByScope.get(persistenceScope);
+  return Boolean(processBindings && [...processBindings.entries()].some(([checkpointId, binding]) =>
+    !supplied.has(checkpointId) && binding.transactionId !== null));
+}
+
+export function rememberOpponentCloseToOneTrustedReplayLineage(
+  persistenceScope: string,
+  state: GameState,
+  checkpoints: readonly OpponentCloseToOneReplayManifestEntry[],
+): void {
+  if (!isOpponentCloseToOnePersistenceScope(persistenceScope) || !isExactReplayManifestEntries(checkpoints)) return;
+  const digest = replayLineageDigest(persistenceScope, state, checkpoints);
+  const storage = browserPersistenceStorage();
+  if (storage) {
+    try {
+      const lineages = readBrowserReplayLineages(persistenceScope).filter((value) => value !== digest);
+      lineages.push(digest);
+      storage.setItem(replayLineagesStorageKey(persistenceScope), JSON.stringify(lineages.slice(-128)));
+    } catch {
+      // Process-private lineage is recorded below as well.
+    }
+  }
+  let lineages = processReplayLineagesByScope.get(persistenceScope);
+  if (!lineages) {
+    lineages = new Set<string>();
+    processReplayLineagesByScope.set(persistenceScope, lineages);
+  }
+  lineages.delete(digest);
+  lineages.add(digest);
+  while (lineages.size > 128) lineages.delete(lineages.values().next().value!);
+}
+
+export function verifyOpponentCloseToOneTrustedReplayLineage(
+  persistenceScope: string,
+  state: GameState,
+  checkpoints: readonly OpponentCloseToOneReplayManifestEntry[],
+): boolean {
+  if (!isOpponentCloseToOnePersistenceScope(persistenceScope) || !isExactReplayManifestEntries(checkpoints)) return false;
+  const digest = replayLineageDigest(persistenceScope, state, checkpoints);
+  if (readBrowserReplayLineages(persistenceScope).includes(digest)) return true;
+  return processReplayLineagesByScope.get(persistenceScope)?.has(digest) === true;
+}
+
 export function pruneOpponentCloseToOneTrustedReplayTransactions(
   persistenceScope: string,
   checkpointIds: readonly string[],
@@ -407,12 +486,14 @@ export function revokeOpponentCloseToOnePersistenceTrust(persistenceScope: strin
     try {
       storage.setItem(transactionStorageKey(persistenceScope), '');
       storage.setItem(replayTransactionsStorageKey(persistenceScope), '{}');
+      storage.setItem(replayLineagesStorageKey(persistenceScope), '[]');
     } catch {
       // Process-private trust is still revoked below.
     }
   }
   processTransactionByScope.delete(persistenceScope);
   processReplayTransactionsByScope.delete(persistenceScope);
+  processReplayLineagesByScope.delete(persistenceScope);
 }
 
 /**
