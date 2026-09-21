@@ -1,0 +1,260 @@
+import { describe, expect, it } from 'vitest';
+
+import * as rules from '../src/index';
+import type { GameState } from '../src/schema/game';
+import { createSeededGameState } from '../src/tools/seeded-state';
+
+const SOURCE_DEF = 'test.fb2-49.source';
+const SOURCE_ID = 'fb2-49-source-p1';
+const ABILITY_ID = 'test.fb2-49.close-to-one';
+const NORMAL_DEF = 'test.fb2-49.normal';
+const SKILL_DEF = 'test.fb2-49.skill';
+const RESIDUAL_DEF = 'test.fb2-49.residual';
+const PROTECTED_DEF = 'test.fb2-49.protected';
+
+function ability(): any {
+  return {
+    id: ABILITY_ID,
+    kind: 'phase_action',
+    printedClause: 'synthetic identity-free FB2-49',
+    activation: { phase: 'combat', opens: 'controller_combat_action_window' },
+    conditions: [{ type: 'source_owned' }, { type: 'at_battlefield' }],
+    targets: [],
+    effects: [{ type: rules.OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT }],
+    cost: [], creates: [], ruleModifiers: [], lifecycle: {}, responseWindow: {}, limit: {},
+    visibility: { revealsTrueName: true, revealTiming: 'on_use_declared', revealScope: 'servant_package' },
+    execution: { mode: 'automatic' },
+  };
+}
+
+function archive(rawAbility: any = ability()): any {
+  return {
+    schemaVersion: 'fd-card-authoring-v1', archiveType: 'servant_skill_card_archive',
+    id: 'test.fb2-49', name: 'FB2-49 synthetic', class: 'Test',
+    cards: [{
+      id: SOURCE_DEF, name: 'FB2-49 source', cardType: 'servant_skill', owner: { type: 'servant', id: 'test.fb2-49' },
+      cardFace: { typeLabel: '宝具', attributes: ['宝具'], cost: 0, basePower: 0 },
+      playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [rawAbility],
+    }],
+  };
+}
+
+function compiledCard(id: string, cardType = 'servant_attack', residual = false): any {
+  return {
+    id, name: id, cardType, cardFace: { typeLabel: 'test', attributes: ['力量'], cost: 0, basePower: 1 },
+    playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], mode: 'automatic',
+    abilities: residual ? [{
+      id: `${id}.residual`, kind: 'residual', printedClause: 'residual', activation: { trigger: 'while_active' },
+      conditions: [], targets: [], effects: [], cost: [], creates: [], ruleModifiers: [],
+      lifecycle: { duration: 'while_active', cleanup: 'remain_active' }, responseWindow: {}, limit: {}, visibility: {},
+      execution: { mode: 'automatic', allowedOperations: [] },
+    }] : [],
+  };
+}
+
+function setup(): GameState {
+  const loaded = rules.loadAuthoringJson(archive());
+  expect(loaded.report).toEqual([]);
+  loaded.cards[NORMAL_DEF] = compiledCard(NORMAL_DEF);
+  loaded.cards[SKILL_DEF] = compiledCard(SKILL_DEF, 'servant_skill');
+  loaded.cards[RESIDUAL_DEF] = compiledCard(RESIDUAL_DEF, 'servant_attack', true);
+  loaded.cards[PROTECTED_DEF] = compiledCard(PROTECTED_DEF);
+  const state = createSeededGameState({ activeSeats: [1, 2, 3, 4] });
+  state.cards = [{ instanceId: SOURCE_ID, definitionId: SOURCE_DEF, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: 'p1' } }];
+  state.round.activePhase = 'battle';
+  state.round.prioritySeat = state.players[0]!.seat;
+  state.players[0]!.locationId = 'miyama_town';
+  state.players[1]!.locationId = 'miyama_town';
+  state.players[2]!.locationId = 'miyama_town';
+  state.players[3]!.locationId = 'shinto';
+  rules.initializeAbilityRuntime(state, loaded, { seed: 4901 });
+  state.abilityRuntime!.cardState[SOURCE_ID] = { active: false, faceDown: false, playedRound: state.round.roundNumber };
+  return state;
+}
+
+function add(state: GameState, instanceId: string, controllerPlayerId: string, definitionId = NORMAL_DEF,
+  options: { zone?: string; active?: boolean; faceDown?: boolean; ownerPlayerId?: string } = {}): void {
+  state.cards.push({
+    instanceId, definitionId, ownerPlayerId: options.ownerPlayerId ?? controllerPlayerId, controllerPlayerId,
+    zone: options.zone ?? 'attack_area', visibility: options.faceDown ? { scope: 'owner_only', ownerPlayerId: options.ownerPlayerId ?? controllerPlayerId } : { scope: 'public' },
+  });
+  state.abilityRuntime!.cardState[instanceId] = {
+    active: options.active ?? true, faceDown: options.faceDown ?? false, playedRound: state.round.roundNumber,
+  };
+}
+
+function activate(state: GameState) {
+  return rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID });
+}
+function choose(state: GameState, playerId: string, selectedIds: string[]) {
+  const d = state.abilityRuntime!.pendingDecision!;
+  return rules.dispatchAbilityCommand(state, playerId, { type: 'choose_target', decisionId: d.id, selectedIds });
+}
+function gatewayReport(rawAbility: any) { return rules.loadAuthoringJson(archive(rawAbility)).report; }
+
+function installCloseForbid(state: GameState, controllerId: string, definitionId: string): void {
+  state.abilityRuntime!.ongoingEffects.push({
+    id: 'fb2-49-close-forbid', sourceCardId: SOURCE_ID, abilityId: 'fixture-close-forbid', controllerId,
+    starts: 'immediate', duration: 'this_round', startRound: state.round.roundNumber, expiresAtRound: state.round.roundNumber + 1,
+    cleanup: 'expire_after_duration', publicZones: [], sourceMustRemainActive: false,
+    ruleModifiers: [{
+      id: 'protect-one-definition', definition: {
+        id: 'protect-one-definition', operation: 'forbid', rule: 'card_close',
+        scope: { controller: 'self', constraints: [{ type: 'has_card_id', cardId: definitionId }] },
+        lifecycle: { duration: 'this_round' },
+      },
+    }],
+  });
+}
+
+describe('P3-FB2-49 opponent close non-residual cards to one', () => {
+  it('admits only the exact raw and compiled whole-ability envelope and rejects historical generic vocabulary', () => {
+    const raw = ability();
+    expect(rules.isOpponentCloseToOneCandidate(raw)).toBe(true);
+    expect(rules.isAcceptedOpponentCloseToOneAbility(raw, 'authoring')).toBe(true);
+    const loaded = rules.loadAuthoringJson(archive(raw));
+    expect(loaded.report).toEqual([]);
+    expect(rules.isAcceptedOpponentCloseToOneAbility(loaded.cards[SOURCE_DEF]!.abilities[0]!, 'compiled')).toBe(true);
+
+    const malformed: any[] = [];
+    const wrongPhase = structuredClone(raw); wrongPhase.activation.phase = 'action'; malformed.push(wrongPhase);
+    const wrongWindow = structuredClone(raw); wrongWindow.activation.opens = 'controller_action_window'; malformed.push(wrongWindow);
+    const extraCondition = structuredClone(raw); extraCondition.conditions.push({ type: 'source_active' }); malformed.push(extraCondition);
+    const wrongOrder = structuredClone(raw); wrongOrder.conditions.reverse(); malformed.push(wrongOrder);
+    const payloadEffect = structuredClone(raw); payloadEffect.effects[0].minCount = 1; malformed.push(payloadEffect);
+    const wrongVisibility = structuredClone(raw); wrongVisibility.visibility.revealScope = 'card_only'; malformed.push(wrongVisibility);
+    const historical = structuredClone(raw); historical.effects = [{
+      type: 'choose_each_player_cards', candidateTarget: { scope: 'same_battlefield_opponents' }, zone: 'attack', activeOnly: true,
+      face: 'up', residual: false, minCandidateCount: 2, minCount: 1, maxCount: 1, payloadKey: 'keptInstanceIds', skipIfNoCandidates: true,
+      then: [{ type: 'close_matching_cards_except_selected', target: 'decision_player', zone: 'attack', activeOnly: true, face: 'up', residual: false, payloadKey: 'keptInstanceIds' }],
+    }]; malformed.push(historical);
+    for (const candidate of malformed) {
+      expect(gatewayReport(candidate)).toEqual(expect.arrayContaining([
+        expect.objectContaining({ path: 'opponentCloseToOne.gateway', status: 'unsupported' }),
+      ]));
+    }
+  });
+
+  it('skips zero/one-card opponents without staging a decision or mutating their card', () => {
+    const zero = setup();
+    expect(activate(zero).ok).toBe(true);
+    expect(zero.abilityRuntime!.pendingDecision).toBeUndefined();
+    expect(zero.abilityRuntime!.pendingOpponentCloseToOne).toEqual([]);
+
+    const one = setup(); add(one, 'p2-one', 'p2');
+    one.players.find((player) => player.id === 'p3')!.status = 'eliminated';
+    add(one, 'eliminated-a', 'p3'); add(one, 'eliminated-b', 'p3');
+    expect(activate(one).ok).toBe(true);
+    expect(one.abilityRuntime!.pendingDecision).toBeUndefined();
+    expect(one.abilityRuntime!.cardState['p2-one']).toMatchObject({ active: true, faceDown: false });
+    expect(one.abilityRuntime!.cardState['eliminated-a']).toMatchObject({ active: true, faceDown: false });
+    expect(one.abilityRuntime!.cardState['eliminated-b']).toMatchObject({ active: true, faceDown: false });
+  });
+
+  it('lets one opponent keep exactly one while closing all other qualifying cards and excluding residual/state mismatches', () => {
+    const state = setup();
+    add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2'); add(state, 'p2-skill', 'p2', SKILL_DEF);
+    add(state, 'p2-residual', 'p2', RESIDUAL_DEF);
+    add(state, 'p2-facedown', 'p2', NORMAL_DEF, { faceDown: true });
+    add(state, 'p2-inactive', 'p2', NORMAL_DEF, { active: false });
+    add(state, 'p2-hand', 'p2', NORMAL_DEF, { zone: 'hand' });
+    add(state, 'p2-owned-p3-controlled', 'p3', NORMAL_DEF, { ownerPlayerId: 'p2' });
+    add(state, 'remote-a', 'p4'); add(state, 'remote-b', 'p4');
+
+    expect(activate(state).ok).toBe(true);
+    expect(rules.projectAbilityState(state, 'p1').pendingDecision).toBeUndefined();
+    expect(rules.projectAbilityState(state, 'p1').waitingLabel).toBe('等待响应结算');
+    expect(rules.projectAbilityState(state, 'p2').pendingDecision?.candidates).toEqual(['p2-a', 'p2-b', 'p2-skill']);
+    const firstDecision = state.abilityRuntime!.pendingDecision!.id;
+    expect(choose(state, 'p2', ['p2-a']).ok).toBe(true);
+
+    expect(state.abilityRuntime!.cardState['p2-a']).toMatchObject({ active: true, faceDown: false });
+    expect(state.abilityRuntime!.cardState['p2-b']).toMatchObject({ active: false, faceDown: true });
+    expect(state.cards.find((card) => card.instanceId === 'p2-b')!.zone).toBe('attack_area');
+    expect(state.cards.find((card) => card.instanceId === 'p2-skill')).toMatchObject({ zone: 'skill', controllerPlayerId: 'p2' });
+    expect(state.abilityRuntime!.cardState['p2-skill']).toMatchObject({ active: false, faceDown: false });
+    expect(state.abilityRuntime!.cardState['p2-residual']).toMatchObject({ active: true, faceDown: false });
+    expect(state.abilityRuntime!.cardState['p2-facedown']!.faceDown).toBe(true);
+    expect(state.abilityRuntime!.cardState['p2-inactive']!.active).toBe(false);
+    expect(state.abilityRuntime!.cardState['p2-owned-p3-controlled']).toMatchObject({ active: true, faceDown: false });
+    expect(state.abilityRuntime!.cardState['remote-a']!.active).toBe(true);
+    expect(state.abilityRuntime!.pendingDecision).toBeUndefined();
+    expect(state.abilityRuntime!.pendingOpponentCloseToOne).toEqual([]);
+
+    const settled = structuredClone(state);
+    const replay = rules.dispatchAbilityCommand(state, 'p2', { type: 'choose_target', decisionId: firstDecision, selectedIds: ['p2-a'] });
+    expect(replay.ok).toBe(false);
+    expect(state).toEqual(settled);
+  });
+
+  it('serializes eligible opponents by seat without overwriting private decision ownership', () => {
+    const state = setup();
+    add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    add(state, 'p3-a', 'p3'); add(state, 'p3-b', 'p3'); add(state, 'p3-c', 'p3');
+    expect(activate(state).ok).toBe(true);
+    expect(state.abilityRuntime!.pendingOpponentCloseToOne?.map((entry) => entry.decisionPlayerId)).toEqual(['p2', 'p3']);
+    expect(state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
+    expect(rules.projectAbilityState(state, 'p3').pendingDecision).toBeUndefined();
+    expect(choose(state, 'p2', ['p2-b']).ok).toBe(true);
+    expect(state.abilityRuntime!.pendingOpponentCloseToOne?.map((entry) => entry.decisionPlayerId)).toEqual(['p3']);
+    expect(state.abilityRuntime!.pendingDecision?.controllerId).toBe('p3');
+    expect(rules.projectAbilityState(state, 'p3').pendingDecision?.candidates).toEqual(['p3-a', 'p3-b', 'p3-c']);
+    expect(choose(state, 'p3', ['p3-c']).ok).toBe(true);
+    expect(state.abilityRuntime!.pendingDecision).toBeUndefined();
+    expect(state.abilityRuntime!.pendingOpponentCloseToOne).toEqual([]);
+    expect(state.abilityRuntime!.cardState['p2-a']!.faceDown).toBe(true);
+    expect(state.abilityRuntime!.cardState['p2-b']!.active).toBe(true);
+    expect(state.abilityRuntime!.cardState['p3-a']!.faceDown).toBe(true);
+    expect(state.abilityRuntime!.cardState['p3-b']!.faceDown).toBe(true);
+    expect(state.abilityRuntime!.cardState['p3-c']!.active).toBe(true);
+  });
+
+  it('rejects wrong-player, empty, duplicate, multiple and outsider selections mutation-free', () => {
+    const attempts: Array<{ playerId: string; selectedIds: string[] }> = [
+      { playerId: 'p1', selectedIds: ['p2-a'] },
+      { playerId: 'p2', selectedIds: [] },
+      { playerId: 'p2', selectedIds: ['p2-a', 'p2-a'] },
+      { playerId: 'p2', selectedIds: ['p2-a', 'p2-b'] },
+      { playerId: 'p2', selectedIds: ['outsider'] },
+    ];
+    for (const attempt of attempts) {
+      const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+      expect(activate(state).ok).toBe(true);
+      const before = structuredClone(state);
+      const result = choose(state, attempt.playerId, attempt.selectedIds);
+      expect(result.ok).toBe(false);
+      expect(state).toEqual(before);
+    }
+  });
+
+  it('fails closed mutation-free on battlefield/source/card/metadata provenance drift', () => {
+    const corruptions: Array<(state: GameState) => void> = [
+      state => { state.players.find((player) => player.id === 'p2')!.locationId = 'shinto'; },
+      state => { state.cards.find((card) => card.instanceId === SOURCE_ID)!.ownerPlayerId = 'p4'; },
+      state => { state.abilityRuntime!.cardState['p2-b']!.faceDown = true; },
+      state => { state.cards.find((card) => card.instanceId === 'p2-b')!.controllerPlayerId = 'p3'; },
+      state => { (state.abilityRuntime!.pendingDecision!.interaction as any).qualifyingCardIds = ['p2-a', 'forged']; },
+      state => { (state.abilityRuntime!.pendingDecision!.interaction as any).createdRevision += 1; },
+    ];
+    for (const corrupt of corruptions) {
+      const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+      expect(activate(state).ok).toBe(true);
+      corrupt(state);
+      const before = structuredClone(state);
+      expect(choose(state, 'p2', ['p2-a']).ok).toBe(false);
+      expect(state).toEqual(before);
+    }
+  });
+
+  it('treats a live close-forbid as an atomic failure instead of partially closing the frozen set', () => {
+    const state = setup();
+    add(state, 'p2-keep', 'p2'); add(state, 'p2-protected', 'p2', PROTECTED_DEF); add(state, 'p2-other', 'p2');
+    expect(activate(state).ok).toBe(true);
+    installCloseForbid(state, 'p2', PROTECTED_DEF);
+    const before = structuredClone(state);
+    expect(choose(state, 'p2', ['p2-keep']).ok).toBe(false);
+    expect(state).toEqual(before);
+    expect(state.abilityRuntime!.cardState['p2-protected']).toMatchObject({ active: true, faceDown: false });
+    expect(state.abilityRuntime!.cardState['p2-other']).toMatchObject({ active: true, faceDown: false });
+  });
+});

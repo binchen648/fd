@@ -34,6 +34,11 @@ import {
   isCombatOpponentPowerVpRewardCandidate,
 } from './combat-opponent-power-vp-reward';
 import {
+  OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT,
+  isAcceptedOpponentCloseToOneAbility,
+  isOpponentCloseToOneCandidate,
+} from './opponent-close-to-one';
+import {
   isGameStartPlayerStatusAssignmentCandidate,
   isGameStartPlayerStatusAssignmentSemantic,
 } from './game-start-player-status-assignment';
@@ -213,7 +218,7 @@ const supportedTypes = new Set([
   // FB2-45 exact action-phase pre-battle defeat selector/effect tokens; gated by whole-ability classifier below.
   'defeat_player', 'no_attack_played_this_round_with_attribute',
   // FB2-46 exact battle-loss VP -> same-result winners transaction; gated by whole-ability classifier below.
-  BATTLE_LOSS_VP_WINNER_REWARD_EFFECT, COMBAT_OPPONENT_POWER_VP_REWARD_EFFECT,
+  BATTLE_LOSS_VP_WINNER_REWARD_EFFECT, COMBAT_OPPONENT_POWER_VP_REWARD_EFFECT, OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT,
   // FB2-29 source-owner relational power/return primitives
   'adjust_round_total_power', 'schedule_source_card_return',
   // FB2-39 exact game-start player-status assignment
@@ -568,6 +573,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (isCombatOpponentPowerVpRewardCandidate(a) && !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'authoring')) {
         issue('combatOpponentPowerVpReward.gateway', 'Unsupported frozen combat-opponent power VP reward semantic shape', id);
+      }
+      if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'authoring')) {
+        issue('opponentCloseToOne.gateway', 'Unsupported opponent close-to-one interaction semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

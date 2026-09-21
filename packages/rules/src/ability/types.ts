@@ -174,9 +174,20 @@ export interface PendingCombatOpponentPowerVpReward {
   battlePhaseResolutionId: string; battleId: string; resultId: string; battlefieldId: string;
   participantIds: PlayerId[]; participantPowers: Record<PlayerId, number>; opponentIds: PlayerId[];
 }
+export interface OpponentCloseToOneInteractionMetadata {
+  kind: 'opponent_close_non_residual_to_one_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; battlefieldId: string; qualifyingCardIds: string[];
+  constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
+}
+export interface PendingOpponentCloseToOne {
+  initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; sourceCardId: string; abilityId: string;
+  battlefieldId: string; qualifyingCardIds: string[];
+}
 export type PendingInteractionMetadata =
   PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata | SameBattlefieldPrivateHandReturnInteractionMetadata |
-  RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata;
+  RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata |
+  OpponentCloseToOneInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -287,6 +298,8 @@ export interface AbilityRuntime {
   trustedBattleResultSnapshots?: Record<string, TrustedBattleResultSnapshot>;
   /** FB2-48 serialized frozen-battle opponent-power rewards awaiting owner choice. */
   pendingCombatOpponentPowerVpRewards?: PendingCombatOpponentPowerVpReward[];
+  /** FB2-49 serialized same-battlefield opponent keep-one card decisions. */
+  pendingOpponentCloseToOne?: PendingOpponentCloseToOne[];
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */
   pendingBattleTerminalEvent?: AbilityEvent;
   /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */
