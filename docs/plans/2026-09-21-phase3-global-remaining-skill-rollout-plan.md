@@ -275,4 +275,3 @@ Run `npm run phase3:global-readiness`. Never inherit the prior cycle's top candi
 **Step 4: Stop after each bounded dispatch**
 
 Do not start the next runtime capability until the exact Candidate has independent R judgment and A synchronization. Do not start an FM09 batch at any point.
-
