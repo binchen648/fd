@@ -150,4 +150,4 @@ FB2-45 itself changes no frozen identity and cannot increase migration credit. F
 
 This result is only a Candidate for fresh independent R. No acceptance, synchronization or Medusa migration credit is claimed here.
 
-Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
+Task-local S requirement for this dispatched task only: **S 完成 recertification 并提交 Exact Base/Candidate**。This was not a standing S rule and must not be inherited by later S tasks unless their own current formal task explicitly requires it.

@@ -188,4 +188,4 @@ Formal accepted verdict for this B2 is `IMPLEMENTATION_ACCEPTED_CANDIDATE`; revi
 
 Do not merge or retarget. Do not credit any frozen identity. After any fresh R acceptance, mechanically re-read the current repo contract/task/reports/PR state before deciding whether acceptance synchronization is required, whether any migration credit exists, and what task is formally released next.
 
-Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
+Task-local S requirement for this dispatched task only: **S 完成 recertification 并提交 Exact Base/Candidate**。This was not a standing S rule and must not be inherited by later S tasks unless their own current formal task explicitly requires it.

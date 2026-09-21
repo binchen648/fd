@@ -124,4 +124,4 @@ No production runtime, product pack, generated product output, client production
 
 Formal migration remains **`149/944`**, remaining **`795`**. This is only an S Candidate for fresh independent R; no migration acceptance or credit is claimed here.
 
-Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
+Task-local S requirement for this dispatched task only: **S 完成 recertification 并提交 Exact Base/Candidate**。This was not a standing S rule and must not be inherited by later S tasks unless their own current formal task explicitly requires it.

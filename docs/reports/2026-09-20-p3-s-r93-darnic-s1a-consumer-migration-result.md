@@ -47,7 +47,7 @@ Final Candidate-tree gates on exact Base `93a3a579c9bbb2b51e21f2f9a9757ba3c8a038
 - coverage-generated `artifacts/phase3-skill-coverage.json` was restored byte-for-byte from Base and is not part of the Candidate.
 - `git diff --check`: PASS.
 
-S 完成 recertification 并提交 Exact Base/Candidate。
+For this dispatched S task only: **S 完成 recertification 并提交 Exact Base/Candidate**。This records a task-local requirement only and is not a standing rule for later S tasks.
 
 ## Accounting / scope audit
 
