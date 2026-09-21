@@ -432,3 +432,34 @@ Revision recertification on exact implementation `46af34bb12dcf196e50ff74d2d81dc
 Accounting remains unchanged: FB2-49 is zero-credit capability work; formal migration remains **151/944**, **793 remaining**.
 
 \n
+
+## Revision after fresh Reviewer finding on Candidate `26cadeacbdd602e6c512c3b4c0e5adae4e27c46c`
+
+Fresh Reviewer evidence is canonical GitHub comment `5755960230` on PR #415: `https://github.com/binchen648/fd/pull/415#issuecomment-5755960230`. Verdict: `IMPLEMENTATION_NEEDS_REVISION`.
+
+The sole remaining P1 was that the newly introduced `trustedOpponentCloseToOneCommitment` was still co-mutable serialized runtime state. A coherent forgery could truncate `[p2,p3]` to `[p2]` while rewriting the queue suffix, current interaction suffix, and the supposed trusted commitment together, allowing p2 settlement to commit while silently skipping p3.
+
+Minimum FB2-49 correction only:
+
+- removed the co-mutable `TrustedOpponentCloseToOneCommitment` runtime type/state and all settlement reliance on that mirror;
+- before staging or settling each FB2-49 decision, the complete currently required opponent continuation is re-derived directly from authoritative `GameState`: active same-battlefield opponents other than the initiating controller, in seat order, that still have at least two currently qualifying active face-up non-residual attack-area cards;
+- the serialized FB2-49 queue must exactly equal that authoritative required sequence before any decision staging or card/queue mutation;
+- after p2 legitimately settles to one remaining qualifying card, the same authoritative derivation naturally advances from `[p2,p3]` to `[p3]` for the next mandatory decision;
+- the focused coherent-forgery regression truncates the queue and rewrites the interaction suffix while also injecting/re-writing a legacy `trustedOpponentCloseToOneCommitment` mirror to `['p2']`; settlement still returns `ok:false`, throws no raw exception, preserves caller state structure-equivalent, closes no p2 card, consumes no decision/queue entry, and does not skip p3;
+- all previously closed source-state, owner-provenance, exact-root-envelope, continuation, target/context, candidate-list, constraints, close-forbid, control-based qualification and identity-free behavior remains unchanged.
+
+Fresh clean validation was run from detached implementation SHA `8cc86979f2c0972a03164e00e7d6c09c88004380` with its own `npm ci` workspace:
+
+- `npm.cmd run typecheck` — PASS;
+- focused FB2-49 — **18/18 PASS**;
+- Reviewer-named adjacent compatibility set — **8 files / 62 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2` — **177 files / 1287 tests PASS**;
+- `content:validate` — **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated-content determinism PASS with unchanged hashes `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`, `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, and `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`;
+- exact Locked Reference verification PASS at `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- client build PASS with only existing Vite browser-externalization/chunk-size warnings;
+- `phase3:coverage` PASS: archives=127, cards=169, abilities=281, newRuntimeSemanticRouted=22, legacyExecuteAbility=3, legacyResolveEffect=144, dualRuntime=0, notClassifiable=112;
+- `phase3:automation-audit` PASS: legacyResolveEffect=144, legacyExecuteAbility=3, notClassifiable=112, promotionFindings=20;
+- write-producing coverage/audit artifacts were restored byte-for-byte from the exact implementation Git blobs after metrics were recorded; validation worktree is clean.
+
+Accounting remains unchanged: FB2-49 is zero-credit capability work; formal migration remains **151/944**, **793 remaining**.
