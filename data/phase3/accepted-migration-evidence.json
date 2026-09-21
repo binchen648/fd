@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "fd-phase3-accepted-migration-evidence-v1",
+  "baseline": {
+    "commit": "8b63d3cdd2ae068810805c650dca6903874e825d",
+    "denominator": 944,
+    "acceptedCount": 146,
+    "authoringFingerprint": "691dc60214db71a0c5bf121f7483c8401b3655858ee222c8562b49ed53913a43",
+    "identitySetSha256": "3039d381377e45c225c8967f5bb9e1d1a669cdaf3bde29af2ac248e3fcb3f005"
+  },
+  "entries": [
+    {
+      "identity": "servant.darius.skill.sc-darius-1",
+      "candidateCommit": "65bfd29ca9319f8dad90cf828c84dce8202058c7",
+      "reviewDecision": "MIGRATION_ACCEPTED",
+      "coordinatorVerdictRef": "docs/reports/2026-09-21-p3-a-darius-s1-credit-reconciliation.md",
+      "synchronizationCommit": "8b63d3cdd2ae068810805c650dca6903874e825d",
+      "creditDelta": 0
+    }
+  ]
+}

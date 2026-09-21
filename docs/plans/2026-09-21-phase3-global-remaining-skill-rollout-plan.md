@@ -2,7 +2,7 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Build a fail-closed, reproducible global readiness queue for the remaining 793 frozen identities and use it to dispatch only singleton consumers or one bounded shared capability at a time.
+**Goal:** Build a fail-closed, reproducible global readiness queue that separately reports the formal `793` remaining ledger and the `798` identities absent from this checkout, then dispatch only singleton consumers or one bounded shared capability at a time.
 
 **Architecture:** Codex A adds a machine-readable accepted-evidence registry and a readiness compiler that joins the locked 944-identity inventory, current canonical authoring, accepted migration/capability evidence, task-local probe decisions, and active reservations. The compiler never infers acceptance from broad taxonomy or implementation presence. It emits one state per frozen identity, a ranked bounded queue, FM09 metadata, and hard failures for stale evidence, duplicate credit, unknown semantics, or bulk-dispatch attempts.
 
@@ -57,7 +57,7 @@ git add scripts/phase3-global-readiness.ts scripts/tests/phase3-global-readiness
 git commit -m "test(phase3): define global readiness schema"
 ```
 
-### Task 2: Reproduce the 151/944 material baseline
+### Task 2: Reproduce the strict material baseline and formal drift
 
 **Files:**
 - Modify: `scripts/phase3-global-readiness.ts`
@@ -74,7 +74,7 @@ Read only `data/authoring/masters/**/*.json` and `data/authoring/servants/**/*.j
 **Step 3: Verify the real baseline**
 
 Run: `npm run phase3:global-readiness -- --validate-only`
-Expected at the frozen baseline: `944 total / 151 migrated / 793 remaining / drift 0`.
+Expected at this checkout: `944 total / 146 material / 798 material missing / 151 formal / 793 formal remaining / drift 5`.
 
 **Step 4: Commit**
 
@@ -139,7 +139,7 @@ Each manual decision must bind identity, source hash, runtime/evidence fingerpri
 
 **Step 3: Verify current coarse counts**
 
-Before fresh probes and excluding active reservations, the raw missing population must reconcile to the observed `738 source-evidence / 50 probe-required / 5 special-handler` starting split. Astolfo s1 must be reserved while FB2-49 is active.
+Before fresh probes, the raw material-missing population must reconcile to `743 source-evidence / 50 generic-extension / 5 special-handler`. Astolfo s1 moves one generic-extension row to `ACTIVE_TASK_RESERVED` while FB2-49 is active, yielding `49 probe-required / 1 reserved` in the emitted state counts.
 
 **Step 4: Commit**
 
@@ -225,7 +225,7 @@ Add:
 **Step 2: Generate fresh evidence**
 
 Run: `npm run phase3:global-readiness`
-Expected: one deterministic row per frozen identity, no count drift, no duplicate credit, and an explicit ranked top candidate list.
+Expected: one deterministic row per frozen identity, explicit formal/material drift, no duplicate credit, and an explicit ranked top candidate list.
 
 **Step 3: Run the A automation gates**
 

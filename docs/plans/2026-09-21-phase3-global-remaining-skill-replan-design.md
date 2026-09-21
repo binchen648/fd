@@ -11,17 +11,19 @@ Replace the historical FM09 dependency batch mindset with a reproducible global 
 
 ## Verified baseline
 
-A mechanically intersected the locked full-roster inventory with all current canonical authoring JSON at the baseline:
+A strict top-level `cards[]` intersection of the locked full-roster inventory with current canonical authoring JSON gives:
 
 - frozen denominator: `944` (`943` static plus `1` known dynamic identity);
-- canonical authored frozen identities: `151`;
+- canonical authored frozen identities in this checkout: `146`;
 - formal accepted migration ledger: `151/944`;
-- material/formal drift: `0`;
-- remaining identities: `793`.
+- material/formal drift: `5` identities from accepted stacked branches not materialized in this checkout;
+- material missing identities: `798`; formal remaining identities: `793`.
 
-The current machine catalog gives only a coarse starting split for those `793` missing identities:
+The earlier `151` material count recursively inspected nested objects and counted five nested IDs as if they were top-level cards. The readiness collector now reads only canonical archive `cards[]` entries. It reports material and formal ledgers separately and does not infer duplicate credit from the five-identity branch drift.
 
-- `738` `SOURCE_EVIDENCE_REQUIRED`;
+The current machine catalog gives only a coarse starting split for the `798` identities absent from this checkout:
+
+- `743` `SOURCE_EVIDENCE_REQUIRED`;
 - `50` historical `READY_GENERIC_EXTENSION`;
 - `5` `SPECIAL_HANDLER_CANDIDATE`.
 
@@ -52,7 +54,7 @@ Recompute every missing identity against the exact current accepted runtime, imm
 
 ## Queue model
 
-Every one of the `793` missing identities must be assigned exactly one current state:
+Every material-missing identity must be assigned exactly one current state. The formal ledger remains separately visible until branch integration removes the drift:
 
 1. `S_READY_NOW`: source-grounded, all referenced definitions exist, compiler/load report is empty, every semantic node maps to an independently accepted runtime contract, and the complete card has executable positive and negative proof.
 2. `ONE_SHARED_GAP`: exactly one reusable identity-free capability is missing; all other complete-card semantics are accepted.

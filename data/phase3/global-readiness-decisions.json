@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "fd-phase3-global-readiness-decisions-v1",
+  "baselineCommit": "8b63d3cdd2ae068810805c650dca6903874e825d",
+  "inventorySha256": "4242922cd047ba3452878ee7dba3d25b2afe3a22294c4a097102997fcfec019f",
+  "authoringFingerprint": "691dc60214db71a0c5bf121f7483c8401b3655858ee222c8562b49ed53913a43",
+  "formalLedger": {
+    "accepted": 151,
+    "denominator": 944
+  },
+  "activeReservations": [
+    {
+      "task": "P3-FB2-49-OPPONENT-CLOSE-TO-ONE-INTERACTION",
+      "identity": "servant.astolfo.skill.sc-astolfo-1"
+    }
+  ],
+  "decisions": [],
+  "fm09TargetIds": [
+    "master.bazett.skill.s2",
+    "master.caules-yggdmillennia.skill.s2",
+    "master.caules-yggdmillennia.skill.s3",
+    "master.ciel.skill.s2",
+    "master.fujino.skill.s3",
+    "master.shiki-nanaya.skill.s2",
+    "master.shiki-ryougi.skill.s2",
+    "master.shiki-ryougi.skill.s3",
+    "master.shiki-tohno.skill.s2",
+    "master.zouken.skill.s3",
+    "master.zouken.skill.s4"
+  ]
+}

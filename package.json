@@ -32,7 +32,8 @@
     "phase3:reference:intake": "tsx scripts/phase3-reference/build-full-roster-inventory.ts",
     "phase3:coverage": "tsx scripts/phase3-coverage.ts",
     "phase3:review-packet": "tsx scripts/phase3-review-packet.ts",
-    "phase3:automation-audit": "tsx scripts/phase3-automation-audit.ts"
+    "phase3:automation-audit": "tsx scripts/phase3-automation-audit.ts",
+    "phase3:global-readiness": "tsx scripts/phase3-global-readiness.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",

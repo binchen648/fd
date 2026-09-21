@@ -5867,6 +5867,18 @@ Branch: `codex/a-p3-global-remaining-skill-replan`
 Baseline: exact Darius credit reconciliation `8b63d3cdd2ae068810805c650dca6903874e825d`
 Read: `docs/plans/2026-09-21-phase3-global-remaining-skill-replan-design.md`, `docs/plans/2026-09-21-phase3-global-remaining-skill-rollout-plan.md`
 
-Result: replace the historical FM09 batch mindset with a fail-closed global queue over all `944` frozen identities. Mechanical baseline is formal/material `151/944`, drift `0`, and `793` remaining. The current coarse missing split is `738 SOURCE_EVIDENCE_REQUIRED`, `50 COMPLETE_CARD_PROBE_REQUIRED`, and `5 SPECIAL_HANDLER_REVIEW`; historical generic-extension labels do not grant `S_READY_NOW`.
+Result: replace the historical FM09 batch mindset with a fail-closed global queue over all `944` frozen identities. The formal ledger is `151/944`, while strict top-level canonical material in this checkout is `146/944`; the explicit branch drift is `5`, with `793` formal remaining and `798` absent from this checkout. The corrected coarse material-missing split is `743 SOURCE_EVIDENCE_REQUIRED`, `50` historical generic-extension rows, and `5 SPECIAL_HANDLER_REVIEW`; historical generic-extension labels do not grant `S_READY_NOW`. Astolfo s1 is reserved by FB2-49, so emitted states contain `49 COMPLETE_CARD_PROBE_REQUIRED` plus `1 ACTIVE_TASK_RESERVED`.
 
 The original eleven FM09 targets now have two present and nine missing. The nine missing identities enter the global queue independently and no “complete FM09” batch is authorized. Preserve the active FB2-49 -> R -> A -> Astolfo singleton chain. After that chain, implement and run the global readiness compiler before dispatching another capability or consumer.
+
+## TASK P3-A-GLOBAL-READINESS-AUTOMATION
+
+Owner: Codex A
+Status: `AUTOMATION_BASELINE_CANDIDATE`
+Branch: `codex/a-p3-global-remaining-skill-replan`
+Baseline: exact Darius credit reconciliation `8b63d3cdd2ae068810805c650dca6903874e825d`
+Read: `docs/reports/2026-09-21-p3-a-global-readiness-automation.md`
+
+Result: implement a deterministic fail-closed readiness compiler and machine evidence registries over all `944` frozen identities. Strict canonical material is `146/944`; the formal ledger remains `151/944`, so the artifact explicitly reports branch drift `5` instead of manufacturing or repeating credit. The queue has no automatic `S_READY_NOW`: historical generic labels remain probe-required, Astolfo s1 remains reserved by FB2-49, and FM09 membership grants no priority or acceptance inheritance.
+
+This task is automation/evidence only. It authorizes no runtime or authoring change, no new dispatch before the active chain closes, no Gate promotion, no Phase PASS, no Release Ready, and no merge or retarget.

@@ -12,12 +12,13 @@
   "ledger": {
     "denominator": 944,
     "formalAccepted": 151,
-    "authoredFrozen": 151,
-    "remaining": 793,
-    "formalMaterialDrift": 0
+    "authoredFrozen": 146,
+    "materialRemaining": 798,
+    "formalRemaining": 793,
+    "formalMaterialDrift": 5
   },
   "coarseMissingClassification": {
-    "SOURCE_EVIDENCE_REQUIRED": 738,
+    "SOURCE_EVIDENCE_REQUIRED": 743,
     "COMPLETE_CARD_PROBE_REQUIRED": 50,
     "SPECIAL_HANDLER_REVIEW": 5
   },
@@ -51,5 +52,6 @@
     "historicalReadyLabelGrantsSReady": false,
     "fm09MembershipAffectsPriority": false
   },
-  "nextAction": "Implement the readiness automation plan after the active FB2-49 chain; do not dispatch an FM09 batch."
+  "baselineCorrection": "Strict collection reads only top-level canonical cards[] IDs; the earlier recursive scan counted five nested IDs as card identities.",
+  "nextAction": "Run readiness automation in parallel, but do not dispatch from it until the active FB2-49 chain closes and formal/material drift is reconciled."
 }
