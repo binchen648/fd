@@ -641,3 +641,39 @@ Final validation on exact implementation `b106adb228c8e95e0090089650a5ccd4f7afd3
 - `git diff --check 1ec87ff0b8b93845e3016117fb6c8c63b2b9801e..b106adb228c8e95e0090089650a5ccd4f7afd341` — PASS.
 
 Scope remains identity-free FB2-49 infrastructure only: no `apps/client` production change, no `apps/server` production change, no `data/authoring/**`, no generated product content, no Astolfo consumer authoring/routing, no generic each-player authoring API, no merge, and no retarget. Accounting remains zero-credit: formal migration stays **151/944**, **793 remaining**.
+
+## Pre-review follow-up: restore/replay trust closure after `d1a422173c3eec205133952a71e14aa361cbb541`
+
+The fresh pre-review of `d1a422173c3eec205133952a71e14aa361cbb541` identified three remaining P1 trust-boundary gaps. They are closed by implementation commit `0e3b14a1eb35cc624aa5335715e94e274ed8025c`:
+
+- Missing-seal erasure is fail-closed against server-owned current-transaction state. A client snapshot cannot make a mandatory continuation disappear by deleting the seal, `pendingOpponentCloseToOne`, and `pendingDecision` together while the trusted persistence scope still owns an active transaction.
+- The production Node `POST /rooms/:id/restore` route now enters `MatchRoomHub.restoreRoom(...)` directly. The Hub reuses the existing room's trusted persistence context and only swaps the room after successful restore validation; it no longer pre-restores through a fresh random scope.
+- Replay checkpoints retain checkpoint-scoped trusted transaction bindings independent of the currently active transaction binding. Completing the live transaction clears only the current binding; a previously valid live checkpoint can still authenticate and restore. Checkpoint bindings are pruned against the actual `replaySnapshots` set and are not the removed per-serialize authority-token registry.
+
+Exact regression evidence added in the same implementation:
+
+- forged snapshot removes seal + queue + pending decision -> `restoreMatchSession` rejects at the restore boundary;
+- legitimate live replay checkpoint restores after the transaction has completed;
+- direct Node restore with a fresh scope fails closed while Hub trusted-context restore succeeds;
+- HTTP room restore is mechanically asserted to call the Hub trusted-context restore boundary.
+
+Fresh detached validation worktree: `E:\Codex\FD\fd-b2-fb2-49-r18-validate` at exact implementation `0e3b14a1eb35cc624aa5335715e94e274ed8025c`.
+
+Validation:
+
+- typecheck: PASS;
+- FB2-49 focused + portable HMAC: 40/40 PASS;
+- related room/session/replay compatibility: 7 files / 82 tests PASS;
+- server workspace: 3/3 PASS;
+- official CI with the established stable `--maxWorkers=2`: 177 files / 1305 tests PASS;
+- content validation: 7 masters / 7 servants / 20 events / 0 blocking issues;
+- generated-content determinism: PASS with unchanged hashes `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`, `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`;
+- Locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9`: PASS;
+- client production build: PASS (existing browser-externalized `node:crypto` and chunk-size warnings only);
+- App product shell/save-restore: 5/5 PASS;
+- Phase 3 coverage: archives=127, cards=169, abilities=281, newRuntimeSemanticRouted=22, legacyExecuteAbility=3, legacyResolveEffect=144, dualRuntime=0, notClassifiable=112, taxonomyWarnings=151;
+- automation audit: legacyResolveEffect=144, legacyExecuteAbility=3, notClassifiable=112, promotionFindings=20;
+- generated coverage/audit artifacts restored byte-for-byte from exact implementation HEAD; fresh validation worktree clean;
+- `git diff --check`: PASS.
+
+Accounting remains unchanged: FB2-49 is identity-free B2 capability work and earns zero migration credit.
