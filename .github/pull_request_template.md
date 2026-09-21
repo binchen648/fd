@@ -46,8 +46,8 @@
       "result": ""
     }
   ],
-  "uncoveredScenarios": [],
-  "knownBlockers": [],
+  "uncoveredScenarios": ["None declared."],
+  "knownBlockers": ["None declared."],
   "zeroMigrationCredit": false,
   "reverifyOnUpstreamHeadChange": true
 }
@@ -61,6 +61,7 @@
 - RuntimeBehaviorChanged:
 - Rules source and Reference commit:
 - R review SHA and conclusion:
+- R reviewed candidate SHA:
 - A synchronization SHA:
 - Mainline migration count:
 - Recovery migration count:

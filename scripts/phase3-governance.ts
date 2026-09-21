@@ -77,8 +77,19 @@ const prTypes = new Set<Phase3PrType>(['promotion', 'stacked', 'governance']);
 const acceptedReviewConclusions = new Set([
   'IMPLEMENTATION_ACCEPTED_CANDIDATE',
   'MIGRATION_ACCEPTED',
-  'ACCEPTED',
+  'GATE_A_B_CANDIDATE_ACCEPTED',
+  'REVIEW_ACCEPTED',
 ]);
+const phase3StackedRoles = new Set<Phase3Role>(['A', 'B', 'R', 'S']);
+const phase3ProtectedPathPatterns = [
+  /^packages\/rules\//,
+  /^packages\/content\//,
+  /^src\/content\//,
+  /^data\/phase3\//,
+  /^scripts\/(?:tests\/)?phase3(?:-|\/)/,
+  /^docs\/(?:audits|plans|reports)\/.*(?:p3|phase-?3)/,
+  /^docs\/governance\/phase3/,
+];
 
 function assertRecord(value: unknown, label: string): asserts value is Record<string, unknown> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
@@ -106,6 +117,14 @@ function assertStringArray(value: unknown, label: string): string[] {
     throw new Error(`${label} must be an array of non-empty strings.`);
   }
   return value;
+}
+
+function assertNonEmptyStringArray(value: unknown, label: string): string[] {
+  const items = assertStringArray(value, label);
+  if (items.length === 0) {
+    throw new Error(`${label} must contain an explicit declaration.`);
+  }
+  return items;
 }
 
 function assertNumberArray(value: unknown, label: string): number[] {
@@ -179,8 +198,8 @@ export function assertPhase3TaskManifest(value: unknown): asserts value is Phase
     assertString(test.command, `tests[${index}].command`);
     assertString(test.result, `tests[${index}].result`);
   }
-  assertStringArray(value.uncoveredScenarios, 'uncoveredScenarios');
-  assertStringArray(value.knownBlockers, 'knownBlockers');
+  assertNonEmptyStringArray(value.uncoveredScenarios, 'uncoveredScenarios');
+  assertNonEmptyStringArray(value.knownBlockers, 'knownBlockers');
   assertBoolean(value.zeroMigrationCredit, 'zeroMigrationCredit');
   if (value.reverifyOnUpstreamHeadChange !== true) {
     throw new Error('reverifyOnUpstreamHeadChange must be true.');
@@ -194,7 +213,13 @@ export function isPhase3PullRequest(context: PullRequestContext): boolean {
     context.title ?? '',
     ...(context.changedFiles ?? []),
   ].join('\n').toLowerCase();
-  return /\bp3-|phase ?3|phase3/.test(haystack);
+  if (/\bp3-|phase ?3|phase3/.test(haystack)) {
+    return true;
+  }
+  return (context.changedFiles ?? []).some((path) => {
+    const normalizedPath = path.replaceAll('\\', '/').toLowerCase();
+    return phase3ProtectedPathPatterns.some((pattern) => pattern.test(normalizedPath));
+  });
 }
 
 export function extractManifestFromBody(body: string): unknown | undefined {
@@ -215,6 +240,27 @@ function gitIsAncestor(workspaceRoot: string, ancestor: string, descendant: stri
   } catch {
     return false;
   }
+}
+
+function gitCommitExists(workspaceRoot: string, sha: string): boolean {
+  try {
+    execFileSync('git', ['cat-file', '-e', `${sha}^{commit}`], {
+      cwd: workspaceRoot,
+      stdio: 'ignore',
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function gitChangedFiles(workspaceRoot: string, baseSha: string, headSha: string): string[] {
+  const output = execFileSync(
+    'git',
+    ['diff', '--name-only', '--diff-filter=ACMR', baseSha, headSha],
+    { cwd: workspaceRoot, encoding: 'utf8' },
+  );
+  return output.split(/\r?\n/).filter(Boolean);
 }
 
 export function validatePhase3Governance(
@@ -262,8 +308,8 @@ export function validatePhase3Governance(
     if (!acceptedReviewConclusions.has(manifest.review.conclusion)) {
       throw new Error(`Promotion review conclusion is not accepted: ${manifest.review.conclusion}.`);
     }
-    if (manifest.tests.some((test) => !/\bPASS\b/i.test(test.result))) {
-      throw new Error('Promotion manifest tests must record PASS results.');
+    if (manifest.tests.some((test) => !/^PASS\b/i.test(test.result.trim()))) {
+      throw new Error('Promotion manifest test results must start with PASS.');
     }
     if (manifest.zeroMigrationCredit) {
       const { mainline, recovery, candidate } = manifest.migrationCounts;
@@ -273,11 +319,26 @@ export function validatePhase3Governance(
     }
   }
 
+  if (manifest.prType === 'governance' && manifest.role !== 'G') {
+    throw new Error('Governance PRs must use role G.');
+  }
   if (manifest.role === 'G' && manifest.prType !== 'governance') {
     throw new Error('Role G manifests must use prType=governance.');
   }
+  if (manifest.role === 'I' && manifest.prType !== 'promotion') {
+    throw new Error('Role I manifests must use prType=promotion.');
+  }
+  if (manifest.prType === 'stacked' && !phase3StackedRoles.has(manifest.role)) {
+    throw new Error('Stacked PRs must use role A, B, R, or S.');
+  }
 
   if (options.verifyGitAncestry && options.workspaceRoot) {
+    if (!gitCommitExists(options.workspaceRoot, manifest.review.sha)) {
+      throw new Error('review.sha does not identify a fetched Git commit.');
+    }
+    if (manifest.prType === 'promotion' && manifest.review.sha === manifest.review.reviewedCandidateSha) {
+      throw new Error('Promotion review.sha must differ from review.reviewedCandidateSha.');
+    }
     if (!gitIsAncestor(options.workspaceRoot, manifest.review.reviewedCandidateSha, manifest.head.sha)) {
       throw new Error('review.reviewedCandidateSha is not an ancestor of the PR head SHA.');
     }
@@ -337,6 +398,7 @@ export function runPhase3GovernanceCli(argv = process.argv.slice(2), workspaceRo
     const event = readJson(eventPath);
     assertRecord(event, 'GitHub event');
     context = contextFromEvent(event);
+    context.changedFiles = gitChangedFiles(workspaceRoot, context.baseSha, context.headSha);
     manifest = context.body ? extractManifestFromBody(context.body) : undefined;
   } else {
     context = {

@@ -1,3 +1,5 @@
+import { execFileSync } from 'node:child_process';
+
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -86,11 +88,41 @@ describe('Phase 3 promotion governance preflight', () => {
   });
 
   it('rejects stale reviewer candidate evidence when ancestry verification is requested', () => {
+    const currentHead = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+    const context = promotionContext({ headSha: currentHead });
     expect(() => validatePhase3Governance(
-      promotionContext(),
-      promotionManifest({ review: { sha: reviewSha, conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE', reviewedCandidateSha: '9999999999999999999999999999999999999999' } }),
+      context,
+      promotionManifest({
+        head: { ref: context.headRef, sha: currentHead },
+        review: {
+          sha: currentHead,
+          conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE',
+          reviewedCandidateSha: '9999999999999999999999999999999999999999',
+        },
+        synchronization: { sha: currentHead },
+      }),
       { workspaceRoot: process.cwd(), verifyGitAncestry: true },
     )).toThrow(/review\.reviewedCandidateSha/);
+  });
+
+  it('rejects a missing R review commit even when candidate and synchronization ancestry are current', () => {
+    const currentHead = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+    const context = promotionContext({ headSha: currentHead });
+    const manifest = promotionManifest({
+      head: { ref: context.headRef, sha: currentHead },
+      review: {
+        sha: '9999999999999999999999999999999999999999',
+        conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE',
+        reviewedCandidateSha: currentHead,
+      },
+      synchronization: { sha: currentHead },
+    });
+
+    expect(() => validatePhase3Governance(
+      context,
+      manifest,
+      { workspaceRoot: process.cwd(), verifyGitAncestry: true },
+    )).toThrow(/review\.sha/);
   });
 
   it('accepts a stacked Phase 3 PR policy check without requiring main as base', () => {
@@ -112,6 +144,49 @@ describe('Phase 3 promotion governance preflight', () => {
     expect(validatePhase3Governance(context, manifest).status).toBe('passed');
   });
 
+  it('requires governance PRs to use role G', () => {
+    expect(() => validatePhase3Governance(
+      promotionContext(),
+      promotionManifest({ role: 'A', prType: 'governance' }),
+    )).toThrow(/Governance PRs must use role G/);
+  });
+
+  it('reserves role I for Promotion PRs', () => {
+    const context = promotionContext({ baseRef: 'codex/a-p3-dispatch' });
+    expect(() => validatePhase3Governance(
+      context,
+      promotionManifest({
+        role: 'I',
+        prType: 'stacked',
+        base: { ref: context.baseRef, sha: baseSha },
+      }),
+    )).toThrow(/Role I manifests must use prType=promotion/);
+  });
+
+  it('rejects ambiguous review conclusions and non-pass test results', () => {
+    expect(() => validatePhase3Governance(
+      promotionContext(),
+      promotionManifest({ review: { sha: reviewSha, conclusion: 'ACCEPTED', reviewedCandidateSha: candidateSha } }),
+    )).toThrow(/review conclusion is not accepted/);
+
+    expect(() => validatePhase3Governance(
+      promotionContext(),
+      promotionManifest({ tests: [{ command: 'npm run test:ci', result: 'NOT PASS - timeout' }] }),
+    )).toThrow(/must start with PASS/);
+  });
+
+  it('requires explicit uncovered-scenario and blocker declarations', () => {
+    expect(() => validatePhase3Governance(
+      promotionContext(),
+      promotionManifest({ uncoveredScenarios: [] }),
+    )).toThrow(/uncoveredScenarios must contain/);
+
+    expect(() => validatePhase3Governance(
+      promotionContext(),
+      promotionManifest({ knownBlockers: [] }),
+    )).toThrow(/knownBlockers must contain/);
+  });
+
   it('skips ordinary non-Phase 3 PRs', () => {
     expect(validatePhase3Governance({
       baseRef: 'main',
@@ -124,6 +199,17 @@ describe('Phase 3 promotion governance preflight', () => {
       status: 'skipped',
       messages: ['No Phase 3 branch, title, or file signal detected.'],
     });
+  });
+
+  it('detects Phase 3 sensitive runtime paths without relying on branch or title naming', () => {
+    expect(isPhase3PullRequest({
+      baseRef: 'main',
+      baseSha,
+      headRef: 'codex/runtime-update',
+      headSha,
+      title: 'Update resolver behavior',
+      changedFiles: ['packages/rules/src/effect-resolver.ts'],
+    })).toBe(true);
   });
 
   it('validates a supplied manifest even when the PR name lacks a Phase 3 marker', () => {
