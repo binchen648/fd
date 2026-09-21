@@ -1810,6 +1810,20 @@ function settlePendingRulerSealRewards(s: GameState, event: AbilityEvent): void 
 function exactPlayerArray(left: readonly string[], right: readonly string[]): boolean {
   return left.length === right.length && left.every((value, index) => value === right[index]);
 }
+function isExactFrozenCardIdList(value: unknown): value is string[] {
+  return Array.isArray(value) && value.length >= 2 &&
+    value.every((id) => typeof id === 'string' && id.length > 0) && new Set(value).size === value.length;
+}
+function exactFrozenCardIdList(left: unknown, right: unknown): boolean {
+  return isExactFrozenCardIdList(left) && isExactFrozenCardIdList(right) && exactPlayerArray(left, right);
+}
+function isExactOpponentCloseToOneConstraints(value: unknown): boolean {
+  if (value === null || typeof value !== 'object' || Array.isArray(value)) return false;
+  const record = value as Record<string, unknown>;
+  const keys = Object.keys(record).sort();
+  return exactPlayerArray(keys, ['distinct', 'kind', 'max', 'min', 'targetKind']) &&
+    record.kind === 'target' && record.targetKind === 'card' && record.min === 1 && record.max === 1 && record.distinct === true;
+}
 function exactPlayerPowerMap(left: Record<string, number>, right: Record<string, number>, ids: readonly string[]): boolean {
   return Object.keys(left).length === ids.length && Object.keys(right).length === ids.length &&
     ids.every((id) => Object.prototype.hasOwnProperty.call(left, id) && Object.prototype.hasOwnProperty.call(right, id) && left[id] === right[id]);
@@ -1820,11 +1834,12 @@ function isExactPlayerOwnerMap(value: unknown, ids: readonly string[]): value is
   return Object.keys(record).length === ids.length && ids.every((id) =>
     Object.prototype.hasOwnProperty.call(record, id) && typeof record[id] === 'string' && record[id]!.length > 0);
 }
-function exactPlayerOwnerMap(left: unknown, right: unknown, ids: readonly string[]): boolean {
+function exactPlayerOwnerMap(left: unknown, right: unknown, ids: unknown): boolean {
+  if (!isExactFrozenCardIdList(ids)) return false;
   return isExactPlayerOwnerMap(left, ids) && isExactPlayerOwnerMap(right, ids) && ids.every((id) => left[id] === right[id]);
 }
-function livePlayerOwnersMatchFrozen(s: GameState, frozen: unknown, ids: readonly string[]): boolean {
-  if (!isExactPlayerOwnerMap(frozen, ids)) return false;
+function livePlayerOwnersMatchFrozen(s: GameState, frozen: unknown, ids: unknown): boolean {
+  if (!isExactFrozenCardIdList(ids) || !isExactPlayerOwnerMap(frozen, ids)) return false;
   return ids.every((instanceId) => {
     const current = s.cards.find((candidate) => candidate.instanceId === instanceId);
     return !!current && current.ownerPlayerId === frozen[instanceId];
@@ -3814,6 +3829,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           const decisionPlayer = s.players.find((candidate) => candidate.id === meta.decisionPlayerId);
           const exactSyntheticTarget = d.target.id === 'frozen_non_residual_attack_to_keep' && d.target.type === 'card_instance' &&
             Number(node(d.target.count).min) === 1 && Number(node(d.target.count).max) === 1;
+          const pendingQualifyingCardIds: unknown = pending?.qualifyingCardIds;
+          const metaQualifyingCardIds: unknown = meta.qualifyingCardIds;
+          const metaConstraints: unknown = meta.constraints;
+          const decisionCandidates: unknown = d.candidates;
           if (!isAcceptedOpponentCloseToOneAbility(a, 'compiled') || !pending || !source || !initiatingController || !decisionPlayer ||
               initiatingController.status !== 'active' || decisionPlayer.status !== 'active' ||
               initiatingController.locationId !== meta.battlefieldId || decisionPlayer.locationId !== meta.battlefieldId ||
@@ -3822,18 +3841,16 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
               d.controllerId !== meta.decisionPlayerId || d.context.controllerId !== meta.initiatingControllerId ||
               pending.initiatingControllerId !== meta.initiatingControllerId || pending.decisionPlayerId !== meta.decisionPlayerId ||
               pending.sourceCardId !== meta.sourceCardInstanceId || pending.abilityId !== meta.abilityId ||
-              pending.battlefieldId !== meta.battlefieldId || !exactPlayerArray(pending.qualifyingCardIds, meta.qualifyingCardIds) ||
-              !exactPlayerOwnerMap(pending.qualifyingCardOwners, meta.qualifyingCardOwners, meta.qualifyingCardIds) ||
+              pending.battlefieldId !== meta.battlefieldId || !exactFrozenCardIdList(pendingQualifyingCardIds, metaQualifyingCardIds) ||
+              !exactPlayerOwnerMap(pending.qualifyingCardOwners, meta.qualifyingCardOwners, metaQualifyingCardIds) ||
               meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
               meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
               meta.sourceCardInstanceId !== d.context.sourceCardId || meta.abilityId !== d.context.abilityId ||
-              meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' || meta.constraints.min !== 1 ||
-              meta.constraints.max !== 1 || meta.constraints.distinct !== true || !exactSyntheticTarget ||
-              d.min !== 1 || d.max !== 1 || !exactPlayerArray(d.candidates, meta.qualifyingCardIds) ||
-              new Set(d.candidates).size !== d.candidates.length || d.candidates.length < 2 ||
+              !isExactOpponentCloseToOneConstraints(metaConstraints) || !exactSyntheticTarget ||
+              d.min !== 1 || d.max !== 1 || !exactFrozenCardIdList(decisionCandidates, metaQualifyingCardIds) ||
               !Array.isArray(selected) || selected.length !== 1 || !d.candidates.includes(selected[0]!) ||
-              !exactPlayerArray(qualifyingOpponentCloseToOneCardIds(s, meta.decisionPlayerId), meta.qualifyingCardIds) ||
-              !livePlayerOwnersMatchFrozen(s, meta.qualifyingCardOwners, meta.qualifyingCardIds)) {
+              !exactFrozenCardIdList(qualifyingOpponentCloseToOneCardIds(s, meta.decisionPlayerId), metaQualifyingCardIds) ||
+              !livePlayerOwnersMatchFrozen(s, meta.qualifyingCardOwners, metaQualifyingCardIds)) {
             reject('resolution_failed', 'Corrupt or stale opponent close-to-one interaction state');
           }
           const selectedCardId = selected[0]!;

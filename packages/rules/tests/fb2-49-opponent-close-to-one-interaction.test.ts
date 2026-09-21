@@ -286,6 +286,31 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     }
   });
 
+  it('fails closed through the DTO boundary when frozen candidate-list or constraint metadata is malformed', () => {
+    const corruptions: Array<(state: GameState) => void> = [
+      state => { (state.abilityRuntime!.pendingDecision!.interaction as any).qualifyingCardIds = null; },
+      state => { (state.abilityRuntime!.pendingOpponentCloseToOne![0] as any).qualifyingCardIds = null; },
+      state => { (state.abilityRuntime!.pendingDecision!.interaction as any).qualifyingCardIds = ['p2-a', 'p2-a']; },
+      state => { (state.abilityRuntime!.pendingOpponentCloseToOne![0] as any).qualifyingCardIds = ['p2-a', 7]; },
+      state => { (state.abilityRuntime!.pendingDecision!.interaction as any).constraints = null; },
+      state => { (state.abilityRuntime!.pendingDecision!.interaction as any).constraints = []; },
+      state => { (state.abilityRuntime!.pendingDecision!.interaction as any).constraints = { kind: 'target', targetKind: 'card', min: 1, max: 2, distinct: true }; },
+    ];
+    for (const corrupt of corruptions) {
+      const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+      expect(activate(state).ok).toBe(true);
+      corrupt(state);
+      const before = structuredClone(state);
+      const decisionId = state.abilityRuntime!.pendingDecision!.id;
+      let result: ReturnType<typeof rules.dispatchAbilityCommand> | undefined;
+      expect(() => {
+        result = rules.dispatchAbilityCommand(state, 'p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] });
+      }).not.toThrow();
+      expect(result?.ok).toBe(false);
+      expect(state).toEqual(before);
+    }
+  });
+
   it('treats a live close-forbid as an atomic failure instead of partially closing the frozen set', () => {
     const state = setup();
     add(state, 'p2-keep', 'p2'); add(state, 'p2-protected', 'p2', PROTECTED_DEF); add(state, 'p2-other', 'p2');

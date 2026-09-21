@@ -185,3 +185,37 @@ Revision recertification after this correction:
 - `phase3:automation-audit` — PASS at `legacyResolveEffect=144`, `legacyExecuteAbility=3`, `notClassifiable=112`, `promotionFindings=20`.
 - coverage/audit artifacts restored byte-for-byte to the exact rejected-Candidate Git blobs after validation.
 - formal migration remains **151/944**, **793 remaining**; FB2-49 remains zero-credit.
+
+## Revision after third fresh Reviewer finding
+
+Fresh Reviewer evidence for rejected Candidate `002c81c65bad1f9a2be9767614b6dfe90a7d7535` is GitHub comment `5754548446` on PR #415. Verdict: `IMPLEMENTATION_NEEDS_REVISION`.
+
+The sole finding was another FB2-49-owned runtime-shape hole: queue / interaction `qualifyingCardIds` and interaction `constraints` could be null or malformed and be dereferenced before shape validation, allowing raw `TypeError` to escape the public transactional command boundary instead of returning the safe `RuleRejection -> { ok:false }` DTO. The previous owner-provenance semantic and owner-map shape blockers remain closed.
+
+Minimum correction only:
+
+- added an FB2-49-specific frozen-card-id-list guard requiring an array of at least two non-empty distinct string ids before any equality, length, iteration, set or indexing use in settlement;
+- queue and interaction frozen id lists must both pass that guard and match exactly before owner-map comparison or live provenance checks;
+- added an exact FB2-49 constraint-record guard before any constraint field dereference; it requires exactly `kind/targetKind/min/max/distinct` with values `target/card/1/1/true`;
+- existing owner-map helpers now accept unknown id-list input and reject safely if that list is malformed;
+- control-based qualification is unchanged: qualification still uses `controllerPlayerId === decisionPlayerId`; owner identity is not used as a qualification restriction;
+- no authoring vocabulary, consumer content, Astolfo identity routing, pack/generated/client scope or migration accounting changed.
+
+Focused regression now additionally proves safe DTO rejection with structure-equivalent caller state for malformed/null interaction and queue `qualifyingCardIds` plus null/array/wrong-shape interaction `constraints`.
+
+Revision recertification after this correction:
+
+- `npm.cmd run typecheck` — PASS.
+- focused FB2-49 — **10/10 PASS**.
+- Reviewer-named adjacent compatibility set — **8 files / 54 tests PASS**.
+- official `npm.cmd run test:ci -- --maxWorkers=2` — **177 files / 1279 tests PASS**.
+- `npm.cmd run content:validate` — PASS, **7 masters / 7 servants / 20 events / 0 blocking issues**.
+- generated-content determinism — PASS with unchanged hashes `866a5b...`, `fb6938...`, `b1bb89...`.
+- exact Locked Reference verification at `b2f9fa15fba07c63530bbf4612b03b8b704755f9` — PASS.
+- client build — PASS; only pre-existing Vite warnings.
+- Phase 3 coverage — PASS: **127 archives / 169 cards / 281 abilities / 0 blocking**, `dualRuntime=0`; metrics otherwise unchanged.
+- automation audit — PASS; `legacyResolveEffect=144`, `legacyExecuteAbility=3`, `notClassifiable=112`, `promotionFindings=20`.
+- validation artifacts restored byte-for-byte to Candidate `002c81c...` blobs after validation.
+- `git diff --check` — PASS.
+
+FB2-49 remains **zero migration credit**. Formal migration remains **151/944**, with **793** remaining. No merge or retarget is authorized.
