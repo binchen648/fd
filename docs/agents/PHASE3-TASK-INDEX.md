@@ -5786,3 +5786,15 @@ Read: `docs/reports/2026-09-21-p3-a-r99-nobunaga-s3-migration-acceptance-synchro
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #412 exact Candidate `bad696b11beb67cd2df88bdb2075e984f5965e1a`, backed by canonical evidence `https://github.com/binchen648/fd/pull/412#issuecomment-5753794601`. Exact frozen addition is `servant.nobunaga.skill.sc-nobunaga-3`; independent Base-to-Candidate frozen overlap is `144/944` to `145/944`, exact +1 with zero removals and zero duplicate frozen ids. No production runtime/product/generated change is present.
 
 Formal project migration advances exactly one identity to **`150/944`**, with **`794`** remaining. PR #412 remains OPEN, unmerged and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+
+## TASK P3-FB2-48-COMBAT-OPPONENT-POWER-VP-REWARD
+
+Owner: Codex B2
+Status: `READY`
+Branch: `codex/b2-p3-fb2-48-combat-opponent-power-vp-reward`
+Base: exact A dispatch Candidate on `codex/a-p3-fb2-48-combat-opponent-power-vp-reward-dispatch`
+Read: `docs/reports/2026-09-21-p3-a-fb2-48-combat-opponent-power-vp-reward-dispatch.md`
+
+Result required: implement only the exact identity-free authoritative combat-opponent-power VP transaction released by A. On the trusted resolved-battle root at the controller battlefield while the source is active, freeze exact participant ids/powers, offer a server-owned non-cancellable exactly-one choice from that battle's opponents, and reward the controller exactly `floor(selected frozen opponent power / 5)` VP. Fail closed on malformed authoring, battle provenance, pending metadata or stale/forged selection. Do not add generic player selection, generic `event_combat_opponents`, generic selected-player metrics, generic formula/floor-divide execution, identity routing, consumer authoring, or unrelated battle/resource semantics.
+
+This is zero-credit capability work: formal migration remains **`150/944`**, **`794`** remaining. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.spartacus.skill.sc-spartacus-2`; singleton S is allowed only if the whole card is then mechanically zero-gap.
