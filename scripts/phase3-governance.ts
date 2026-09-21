@@ -82,6 +82,8 @@ const acceptedReviewConclusions = new Set([
 ]);
 const phase3StackedRoles = new Set<Phase3Role>(['A', 'B', 'R', 'S']);
 const phase3ProtectedPathPatterns = [
+  /^package(?:-lock)?\.json$/,
+  /^\.github\//,
   /^packages\/rules\//,
   /^packages\/content\//,
   /^src\/content\//,

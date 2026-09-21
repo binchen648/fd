@@ -8,7 +8,7 @@ Phase 3 candidate work may be promoted to `main` only through a Promotion PR tha
 - `Test / test`: existing typecheck plus `npm run test:ci`.
 - `Phase 3 Promotion Lane / policy`: structured Phase 3 manifest policy and focused governance tests.
 
-The Phase 3 gate runs on all pull requests so stacked Phase 3 PRs get a stable policy check even when their base is another `codex/...` branch. Phase 3 naming and changes under rules, content, Phase 3 data, scripts, plans, reports, audits, or governance paths activate manifest policy. Ordinary PRs outside those signals are skipped. A push to `main` runs the focused tests under the same check name, establishing its status context before it is made required. The gate uses `pull_request`, not `pull_request_target`, has `contents: read`, uses no secrets, does not persist checkout credentials, and cancels stale runs for the same PR.
+The Phase 3 gate runs on all pull requests so stacked Phase 3 PRs get a stable policy check even when their base is another `codex/...` branch. Phase 3 naming and changes under rules, content, Phase 3 data, scripts, plans, reports, audits, repository package manifests, or `.github` governance paths activate manifest policy. Ordinary PRs outside those signals are skipped. A push to `main` runs the focused tests under the same check name, establishing its status context before it is made required. The gate uses `pull_request`, not `pull_request_target`, has `contents: read`, uses no secrets, does not persist checkout credentials, and cancels stale runs for the same PR.
 
 ## Manifest Policy
 

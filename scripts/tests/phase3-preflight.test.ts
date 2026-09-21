@@ -292,6 +292,24 @@ describe('Phase 3 promotion governance preflight', () => {
     })).toBe(true);
   });
 
+  it('detects governance bootstrap files that can redirect or suppress the gate', () => {
+    for (const path of [
+      'package.json',
+      'package-lock.json',
+      '.github/pull_request_template.md',
+      '.github/workflows/test.yml',
+    ]) {
+      expect(isPhase3PullRequest({
+        baseRef: 'main',
+        baseSha,
+        headRef: 'codex/tooling-update',
+        headSha,
+        title: 'Update repository tooling',
+        changedFiles: [path],
+      }), path).toBe(true);
+    }
+  });
+
   it('validates a supplied manifest even when the PR name lacks a Phase 3 marker', () => {
     const context = promotionContext({
       headRef: 'codex/integration',
