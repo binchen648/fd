@@ -113,22 +113,32 @@ export function hotRuntimeTouchSummary(changedFiles: string[]) {
   return { status: files.length > 0 ? 'YES' : 'NO', files };
 }
 
-function diffFiles(workspaceRoot: string, diffBase: string): string[] {
+export function diffFiles(workspaceRoot: string, diffBase: string): string[] {
   const commands = [
     ['diff', '--name-only', `${diffBase}...HEAD`],
     ['diff', '--name-only', `${diffBase}..HEAD`],
   ];
+  const failures: string[] = [];
   for (const args of commands) {
     try {
-      return execFileSync('git', args, { cwd: workspaceRoot, encoding: 'utf8' })
+      return execFileSync('git', args, {
+        cwd: workspaceRoot,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'pipe'],
+      })
         .split(/\r?\n/)
         .map((line) => line.trim())
         .filter(Boolean);
-    } catch {
-      // Try the next diff form before giving up.
+    } catch (error) {
+      const failure = error as { stderr?: string | Buffer; message?: string };
+      const detail = String(failure.stderr ?? failure.message ?? error).trim().replace(/\s+/g, ' ');
+      failures.push(`git ${args.join(' ')}: ${detail}`);
     }
   }
-  return [];
+  throw new Error(
+    `Unable to compute reviewed diff from base ${JSON.stringify(diffBase)}. ` +
+      `Refusing to report hotRuntimeFilesTouched=NO. ${failures.join(' | ')}`,
+  );
 }
 
 export function runReviewPacketCli(argv = process.argv.slice(2), workspaceRoot = resolve('.')): void {
