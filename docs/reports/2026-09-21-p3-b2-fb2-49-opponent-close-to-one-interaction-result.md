@@ -361,3 +361,34 @@ Validation after the eighth finding correction:
 - phase3 coverage/audit metrics unchanged; generated audit artifacts restored to the exact pre-revision Git blobs.
 
 Accounting remains unchanged: FB2-49 is zero-credit capability work; formal migration remains **151/944**, **793 remaining**.
+
+
+## Revision after ninth fresh Reviewer finding
+
+Fresh Reviewer evidence for rejected Candidate `0e716daa949c7c1d80dbca525622009e66b6d8d2` is canonical GitHub comment `5754993932` on PR #415: `https://github.com/binchen648/fd/pull/415#issuecomment-5754993932`. Verdict: `IMPLEMENTATION_NEEDS_REVISION`.
+
+The sole new P1 finding was missing source runtime card-state provenance: both activation staging and settlement treated an absent `abilityRuntime.cardState[sourceId]` as acceptable because the old guard only rejected explicit `faceDown === true`.
+
+Minimum correction only:
+
+- FB2-49 activation now requires the source runtime card-state record to exist and proves face-up from that record before staging any opponent queue or decision;
+- FB2-49 settlement independently re-requires the source runtime card-state record before accepting a frozen keep-one decision;
+- a focused regression covers both missing state before activation and deletion after a valid decision is staged; the settlement case proves safe `ok:false`, no raw throw, caller state structure-equivalent, no card close, and no queue/decision consumption;
+- all previously closed exact-envelope, continuation, queue-completeness, target/context, candidate-list, constraints, owner-provenance and control-based qualification behavior remains unchanged;
+- no generic vocabulary, consumer routing, product/generated/client scope, merge, retarget, or migration credit is introduced.
+
+Revision recertification:
+
+- `npm.cmd run typecheck` — PASS;
+- focused FB2-49 — **16/16 PASS**;
+- Reviewer-named adjacent compatibility set — **8 files / 60 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2` — **177 files / 1285 tests PASS**;
+- `npm.cmd run content:validate` — **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated-content determinism PASS with unchanged hashes `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`, `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, and `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`;
+- exact Locked Reference verification PASS at `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- client build PASS with only the existing Vite externalization/chunk-size warnings;
+- `phase3:coverage` PASS: archives=127, cards=169, abilities=281, newRuntimeSemanticRouted=22, legacyExecuteAbility=3, legacyResolveEffect=144, dualRuntime=0, notClassifiable=112;
+- `phase3:automation-audit` PASS: legacyResolveEffect=144, legacyExecuteAbility=3, notClassifiable=112, promotionFindings=20;
+- write-producing validation artifacts were restored byte-for-byte from the exact rejected Candidate Git blobs after metrics were recorded.
+
+Accounting remains unchanged: FB2-49 is zero-credit capability work; formal migration remains **151/944**, **793 remaining**.

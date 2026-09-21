@@ -246,6 +246,36 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     }
   });
 
+  it('requires a real source runtime card-state record at activation and settlement', () => {
+    {
+      const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+      delete state.abilityRuntime!.cardState[SOURCE_ID];
+      expect(activate(state).ok).toBe(false);
+      expect(state.abilityRuntime!.cardState[SOURCE_ID]).toBeUndefined();
+      expect(state.abilityRuntime!.pendingDecision).toBeUndefined();
+      expect(state.abilityRuntime!.pendingOpponentCloseToOne).toBeUndefined();
+      expect(state.abilityRuntime!.cardState['p2-a']).toMatchObject({ active: true, faceDown: false });
+      expect(state.abilityRuntime!.cardState['p2-b']).toMatchObject({ active: true, faceDown: false });
+    }
+
+    {
+      const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+      expect(activate(state).ok).toBe(true);
+      const decisionId = state.abilityRuntime!.pendingDecision!.id;
+      delete state.abilityRuntime!.cardState[SOURCE_ID];
+      const before = structuredClone(state);
+      let result: ReturnType<typeof rules.dispatchAbilityCommand> | undefined;
+      expect(() => {
+        result = rules.dispatchAbilityCommand(state, 'p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] });
+      }).not.toThrow();
+      expect(result?.ok).toBe(false);
+      expect(state).toEqual(before);
+      expect(state.abilityRuntime!.cardState['p2-b']).toMatchObject({ active: true, faceDown: false });
+      expect(state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
+      expect(state.abilityRuntime!.pendingOpponentCloseToOne).toHaveLength(1);
+    }
+  });
+
   it('fails closed mutation-free when only frozen qualifying-card ownership provenance drifts', () => {
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     expect(activate(state).ok).toBe(true);

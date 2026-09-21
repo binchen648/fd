@@ -1993,9 +1993,10 @@ function stageOpponentCloseToOne(s: GameState, ctx: EffectContext, a: AuthoringA
   if (!isAcceptedOpponentCloseToOneAbility(a, 'compiled')) reject('resolution_failed', 'Unsupported opponent close-to-one interaction semantic shape');
   const controller = player(s, ctx.controllerId);
   const source = s.cards.find((candidate) => candidate.instanceId === ctx.sourceCardId);
-  if (controller.status !== 'active' || !isBattlefield(s, controller.locationId) || !source ||
+  const sourceState = source ? runtime(s).cardState[source.instanceId] : undefined;
+  if (controller.status !== 'active' || !isBattlefield(s, controller.locationId) || !source || !sourceState ||
       source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId ||
-      runtime(s).cardState[source.instanceId]?.faceDown === true) {
+      sourceState.faceDown === true) {
     reject('invalid_state', 'Opponent close-to-one requires a controller-owned source at an active battlefield');
   }
   const battlefieldId = controller.locationId!;
@@ -3917,6 +3918,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           const pendingQueue = pendingQueueValue;
           const pending = pendingQueue[0]!;
           const source = s.cards.find((candidate) => candidate.instanceId === decisionContext.sourceCardId);
+          const sourceState = source ? r.cardState[source.instanceId] : undefined;
           const initiatingController = s.players.find((candidate) => candidate.id === meta.initiatingControllerId);
           const decisionPlayer = s.players.find((candidate) => candidate.id === meta.decisionPlayerId);
           const exactSyntheticTarget = true;
@@ -3929,7 +3931,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
               initiatingController.status !== 'active' || decisionPlayer.status !== 'active' ||
               initiatingController.locationId !== meta.battlefieldId || decisionPlayer.locationId !== meta.battlefieldId ||
               !isBattlefield(s, meta.battlefieldId) || source.ownerPlayerId !== meta.initiatingControllerId ||
-              source.controllerPlayerId !== meta.initiatingControllerId || r.cardState[source.instanceId]?.faceDown === true ||
+              source.controllerPlayerId !== meta.initiatingControllerId || !sourceState || sourceState.faceDown === true ||
               d.controllerId !== meta.decisionPlayerId || decisionContext.controllerId !== meta.initiatingControllerId ||
               pending.initiatingControllerId !== meta.initiatingControllerId || pending.decisionPlayerId !== meta.decisionPlayerId ||
               pending.sourceCardId !== meta.sourceCardInstanceId || pending.abilityId !== meta.abilityId ||
