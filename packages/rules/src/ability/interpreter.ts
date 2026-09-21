@@ -71,7 +71,7 @@ import {
 import type {
   AbilityCommand, AbilityDefinitionPack, AbilityEvent, AbilityPlayerView, AbilityRuntime, AuthoringAbility, AuthoringCard,
   BattleResult, BattleResultData, CalculationLine, CardPlayClassification, DispatchResult, EffectContext, ExecutableCardDefinition,
-  LegalAction, OngoingEffect, PendingDecision, RuleNode, TriggeredAbility,
+  LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, RuleNode, TriggeredAbility,
   AbilityInteractionClassification,
   PlayCardAction,
 } from './types';
@@ -1865,6 +1865,40 @@ function livePlayerOwnersMatchFrozen(s: GameState, frozen: unknown, ids: unknown
     return !!current && current.ownerPlayerId === frozen[instanceId];
   });
 }
+function isExactOpponentCloseToOneQueueEntry(value: unknown): value is PendingOpponentCloseToOne {
+  if (!isPlainRecord(value)) return false;
+  const keys = Object.keys(value).sort();
+  return exactPlayerArray(keys, ['abilityId', 'battlefieldId', 'decisionPlayerId', 'initiatingControllerId', 'qualifyingCardIds', 'qualifyingCardOwners', 'sourceCardId']) &&
+    typeof value.initiatingControllerId === 'string' && value.initiatingControllerId.length > 0 &&
+    typeof value.decisionPlayerId === 'string' && value.decisionPlayerId.length > 0 && value.decisionPlayerId !== value.initiatingControllerId &&
+    typeof value.sourceCardId === 'string' && value.sourceCardId.length > 0 &&
+    typeof value.abilityId === 'string' && value.abilityId.length > 0 &&
+    typeof value.battlefieldId === 'string' && value.battlefieldId.length > 0 &&
+    isExactFrozenCardIdList(value.qualifyingCardIds) && isExactPlayerOwnerMap(value.qualifyingCardOwners, value.qualifyingCardIds);
+}
+function isExactOpponentCloseToOneQueue(s: GameState, value: unknown): value is PendingOpponentCloseToOne[] {
+  if (!Array.isArray(value) || value.length < 1) return false;
+  let priorSeat = -Infinity;
+  const decisionPlayerIds = new Set<string>();
+  let first: PendingOpponentCloseToOne | undefined;
+  for (const rawEntry of value) {
+    if (!isExactOpponentCloseToOneQueueEntry(rawEntry)) return false;
+    const entry = rawEntry;
+    first ??= entry;
+    if (entry.initiatingControllerId !== first.initiatingControllerId || entry.sourceCardId !== first.sourceCardId ||
+        entry.abilityId !== first.abilityId || entry.battlefieldId !== first.battlefieldId ||
+        decisionPlayerIds.has(entry.decisionPlayerId)) return false;
+    const decisionPlayer = s.players.find((candidate) => candidate.id === entry.decisionPlayerId);
+    if (!decisionPlayer || decisionPlayer.status !== 'active' || decisionPlayer.locationId !== entry.battlefieldId ||
+        decisionPlayer.seat <= priorSeat ||
+        !exactFrozenCardIdList(qualifyingOpponentCloseToOneCardIds(s, entry.decisionPlayerId), entry.qualifyingCardIds) ||
+        !livePlayerOwnersMatchFrozen(s, entry.qualifyingCardOwners, entry.qualifyingCardIds)) return false;
+    priorSeat = decisionPlayer.seat;
+    decisionPlayerIds.add(entry.decisionPlayerId);
+  }
+  const initiatingController = s.players.find((candidate) => candidate.id === first!.initiatingControllerId);
+  return !!initiatingController && initiatingController.status === 'active' && initiatingController.locationId === first!.battlefieldId;
+}
 function stageNextCombatOpponentPowerVpRewardDecision(s: GameState): void {
   const r = runtime(s);
   if (r.pendingDecision) return;
@@ -1918,8 +1952,12 @@ function qualifyingOpponentCloseToOneCardIds(s: GameState, decisionPlayerId: str
 function stageNextOpponentCloseToOneDecision(s: GameState): void {
   const r = runtime(s);
   if (r.pendingDecision) return;
-  const pending = r.pendingOpponentCloseToOne?.[0];
-  if (!pending) return;
+  const queue: unknown = r.pendingOpponentCloseToOne;
+  if (queue === undefined) return;
+  if (!Array.isArray(queue)) reject('resolution_failed', 'Corrupt opponent close-to-one queue state');
+  if (queue.length === 0) return;
+  if (!isExactOpponentCloseToOneQueue(s, queue)) reject('resolution_failed', 'Corrupt or stale opponent close-to-one queue state');
+  const pending = queue[0]!;
   const id = nextId(s, 'opponent-close-to-one');
   const target: RuleNode = { id: 'frozen_non_residual_attack_to_keep', type: 'card_instance', count: { min: 1, max: 1 } };
   r.pendingDecision = {
@@ -1946,6 +1984,8 @@ function stageOpponentCloseToOne(s: GameState, ctx: EffectContext, a: AuthoringA
     reject('invalid_state', 'Opponent close-to-one requires a controller-owned source at an active battlefield');
   }
   const battlefieldId = controller.locationId!;
+  const existingQueue: unknown = runtime(s).pendingOpponentCloseToOne;
+  if (existingQueue !== undefined && !Array.isArray(existingQueue)) reject('resolution_failed', 'Corrupt opponent close-to-one queue state');
   const queue = runtime(s).pendingOpponentCloseToOne ??= [];
   if (queue.length) reject('pending_resolution', 'Opponent close-to-one queue is already active');
   const opponents = s.players.filter((candidate) => candidate.id !== controller.id && candidate.status === 'active' &&
@@ -3847,8 +3887,12 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
             reject('resolution_failed', 'Corrupt or stale opponent close-to-one interaction state');
           }
           const a = abilityDefinition(s, decisionContext.sourceCardId, decisionContext.abilityId);
-          const pendingQueue = r.pendingOpponentCloseToOne;
-          const pending = pendingQueue?.[0];
+          const pendingQueueValue: unknown = r.pendingOpponentCloseToOne;
+          if (!isExactOpponentCloseToOneQueue(s, pendingQueueValue)) {
+            reject('resolution_failed', 'Corrupt or stale opponent close-to-one queue state');
+          }
+          const pendingQueue = pendingQueueValue;
+          const pending = pendingQueue[0]!;
           const source = s.cards.find((candidate) => candidate.instanceId === decisionContext.sourceCardId);
           const initiatingController = s.players.find((candidate) => candidate.id === meta.initiatingControllerId);
           const decisionPlayer = s.players.find((candidate) => candidate.id === meta.decisionPlayerId);

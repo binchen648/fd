@@ -252,3 +252,35 @@ Revision recertification:
 - `git diff --check` — PASS.
 
 FB2-49 remains identity-free zero-credit B2 capability work. Formal migration remains **151/944**, with **793** remaining. No merge or retarget is authorized.
+
+## Revision after fifth fresh Reviewer finding
+
+Fresh Reviewer evidence for rejected Candidate `4a4357037e462ca8dc5d0e20cc731aca0dbde328` is canonical GitHub comment `5754684020` on PR #415: `https://github.com/binchen648/fd/pull/415#issuecomment-5754684020`. Verdict: `IMPLEMENTATION_NEEDS_REVISION`.
+
+The prior target/context finding is closed. The new sole finding was that the FB2-49 serialized `pendingOpponentCloseToOne` queue container and tail entries were still trusted at settlement/transition time: a forged plain-object queue could reach `.shift()` and throw, while a valid head followed by a forged null tail could commit the current card closures as `ok:true` and silently skip the next mandatory opponent decision.
+
+This revision is limited to FB2-49 queue integrity. It now:
+
+- validates the queue container as an actual non-empty Array before settlement;
+- validates every serialized queue entry as the exact FB2-49 entry shape, including distinct frozen ids and exact owner map;
+- requires all queued entries to share the same initiating controller/source/ability/battlefield lineage, unique decision players, and stable increasing seat order;
+- revalidates every queued opponent as active at the frozen battlefield with an exact current qualifying-card set and frozen owner provenance before any current card is closed;
+- validates queue shape before next-decision staging, while preserving an empty Array as normal queue exhaustion;
+- rejects a pre-existing non-array FB2-49 queue before activation can use `.length`/`.push()`;
+- leaves the existing target/context, candidate-list, constraints, owner-provenance and control-based qualification guards unchanged.
+
+Focused adversarial regression now covers the Reviewer reproductions `{ 0: validHead }` and `[validHead, null]`, plus a malformed tail and a structurally valid but battlefield-forged tail. Each case is non-throwing, returns `ok:false`, leaves caller state structure-equivalent, preserves the current opponent's cards, and does not skip the mandatory next opponent decision.
+
+Revision recertification:
+
+- `npm.cmd run typecheck` - PASS;
+- focused FB2-49 - **12/12 PASS**;
+- Reviewer-named adjacent compatibility set - **8 files / 56 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2` - **177 files / 1281 tests PASS**;
+- content validation - **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated-content determinism hashes unchanged;
+- Locked Reference exact commit verification - PASS;
+- client build - PASS (existing Vite warnings only);
+- Phase 3 coverage/audit metrics unchanged and validation artifacts restored byte-for-byte to the rejected Candidate blobs.
+
+Accounting remains unchanged: FB2-49 is zero-credit capability work, formal migration remains **151/944**, **793 remaining**. No consumer authoring, identity routing, product/generated/client scope, merge, or retarget is introduced by this revision.

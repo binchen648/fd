@@ -337,6 +337,46 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     }
   });
 
+  it('fails closed atomically when the serialized FB2-49 queue container or tail is malformed', () => {
+    {
+      const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+      expect(activate(state).ok).toBe(true);
+      const validHead = structuredClone(state.abilityRuntime!.pendingOpponentCloseToOne![0]!);
+      (state.abilityRuntime as any).pendingOpponentCloseToOne = { 0: validHead };
+      const decisionId = state.abilityRuntime!.pendingDecision!.id;
+      const before = structuredClone(state);
+      let result: ReturnType<typeof rules.dispatchAbilityCommand> | undefined;
+      expect(() => {
+        result = rules.dispatchAbilityCommand(state, 'p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] });
+      }).not.toThrow();
+      expect(result?.ok).toBe(false);
+      expect(state).toEqual(before);
+    }
+
+    const tailCorruptions: Array<(state: GameState) => void> = [
+      state => { (state.abilityRuntime!.pendingOpponentCloseToOne as any[])[1] = null; },
+      state => { (state.abilityRuntime!.pendingOpponentCloseToOne as any[])[1] = { ...state.abilityRuntime!.pendingOpponentCloseToOne![1], qualifyingCardIds: null }; },
+      state => { (state.abilityRuntime!.pendingOpponentCloseToOne as any[])[1] = { ...state.abilityRuntime!.pendingOpponentCloseToOne![1], battlefieldId: 'shinto' }; },
+    ];
+    for (const corrupt of tailCorruptions) {
+      const state = setup();
+      add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2'); add(state, 'p3-a', 'p3'); add(state, 'p3-b', 'p3');
+      expect(activate(state).ok).toBe(true);
+      expect(state.abilityRuntime!.pendingOpponentCloseToOne?.map((entry) => entry.decisionPlayerId)).toEqual(['p2', 'p3']);
+      const decisionId = state.abilityRuntime!.pendingDecision!.id;
+      corrupt(state);
+      const before = structuredClone(state);
+      let result: ReturnType<typeof rules.dispatchAbilityCommand> | undefined;
+      expect(() => {
+        result = rules.dispatchAbilityCommand(state, 'p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] });
+      }).not.toThrow();
+      expect(result?.ok).toBe(false);
+      expect(state).toEqual(before);
+      expect(state.abilityRuntime!.cardState['p2-b']).toMatchObject({ active: true, faceDown: false });
+      expect(state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
+    }
+  });
+
   it('treats a live close-forbid as an atomic failure instead of partially closing the frozen set', () => {
     const state = setup();
     add(state, 'p2-keep', 'p2'); add(state, 'p2-protected', 'p2', PROTECTED_DEF); add(state, 'p2-other', 'p2');
