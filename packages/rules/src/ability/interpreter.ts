@@ -1824,6 +1824,26 @@ function isExactOpponentCloseToOneConstraints(value: unknown): boolean {
   return exactPlayerArray(keys, ['distinct', 'kind', 'max', 'min', 'targetKind']) &&
     record.kind === 'target' && record.targetKind === 'card' && record.min === 1 && record.max === 1 && record.distinct === true;
 }
+function isPlainRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+function isExactOpponentCloseToOneContext(value: unknown): value is EffectContext {
+  if (!isPlainRecord(value) || !isPlainRecord(value.variables) || !isPlainRecord(value.selections)) return false;
+  const keys = Object.keys(value).sort();
+  return exactPlayerArray(keys, ['abilityId', 'controllerId', 'selections', 'sourceCardId', 'variables']) &&
+    typeof value.controllerId === 'string' && value.controllerId.length > 0 &&
+    typeof value.sourceCardId === 'string' && value.sourceCardId.length > 0 &&
+    typeof value.abilityId === 'string' && value.abilityId.length > 0 &&
+    Object.keys(value.variables).length === 0 && Object.keys(value.selections).length === 0;
+}
+function isExactOpponentCloseToOneTarget(value: unknown): value is RuleNode {
+  if (!isPlainRecord(value) || !isPlainRecord(value.count)) return false;
+  const keys = Object.keys(value).sort();
+  const countKeys = Object.keys(value.count).sort();
+  return exactPlayerArray(keys, ['count', 'id', 'type']) && exactPlayerArray(countKeys, ['max', 'min']) &&
+    value.id === 'frozen_non_residual_attack_to_keep' && value.type === 'card_instance' &&
+    value.count.min === 1 && value.count.max === 1;
+}
 function exactPlayerPowerMap(left: Record<string, number>, right: Record<string, number>, ids: readonly string[]): boolean {
   return Object.keys(left).length === ids.length && Object.keys(right).length === ids.length &&
     ids.every((id) => Object.prototype.hasOwnProperty.call(left, id) && Object.prototype.hasOwnProperty.call(right, id) && left[id] === right[id]);
@@ -3820,15 +3840,19 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
-        const a = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
         if (meta.kind === 'opponent_close_non_residual_to_one_v1') {
+          const decisionContext: unknown = d.context;
+          const decisionTarget: unknown = d.target;
+          if (!isExactOpponentCloseToOneContext(decisionContext) || !isExactOpponentCloseToOneTarget(decisionTarget)) {
+            reject('resolution_failed', 'Corrupt or stale opponent close-to-one interaction state');
+          }
+          const a = abilityDefinition(s, decisionContext.sourceCardId, decisionContext.abilityId);
           const pendingQueue = r.pendingOpponentCloseToOne;
           const pending = pendingQueue?.[0];
-          const source = s.cards.find((candidate) => candidate.instanceId === d.context.sourceCardId);
+          const source = s.cards.find((candidate) => candidate.instanceId === decisionContext.sourceCardId);
           const initiatingController = s.players.find((candidate) => candidate.id === meta.initiatingControllerId);
           const decisionPlayer = s.players.find((candidate) => candidate.id === meta.decisionPlayerId);
-          const exactSyntheticTarget = d.target.id === 'frozen_non_residual_attack_to_keep' && d.target.type === 'card_instance' &&
-            Number(node(d.target.count).min) === 1 && Number(node(d.target.count).max) === 1;
+          const exactSyntheticTarget = true;
           const pendingQualifyingCardIds: unknown = pending?.qualifyingCardIds;
           const metaQualifyingCardIds: unknown = meta.qualifyingCardIds;
           const metaConstraints: unknown = meta.constraints;
@@ -3838,14 +3862,14 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
               initiatingController.locationId !== meta.battlefieldId || decisionPlayer.locationId !== meta.battlefieldId ||
               !isBattlefield(s, meta.battlefieldId) || source.ownerPlayerId !== meta.initiatingControllerId ||
               source.controllerPlayerId !== meta.initiatingControllerId || r.cardState[source.instanceId]?.faceDown === true ||
-              d.controllerId !== meta.decisionPlayerId || d.context.controllerId !== meta.initiatingControllerId ||
+              d.controllerId !== meta.decisionPlayerId || decisionContext.controllerId !== meta.initiatingControllerId ||
               pending.initiatingControllerId !== meta.initiatingControllerId || pending.decisionPlayerId !== meta.decisionPlayerId ||
               pending.sourceCardId !== meta.sourceCardInstanceId || pending.abilityId !== meta.abilityId ||
               pending.battlefieldId !== meta.battlefieldId || !exactFrozenCardIdList(pendingQualifyingCardIds, metaQualifyingCardIds) ||
               !exactPlayerOwnerMap(pending.qualifyingCardOwners, meta.qualifyingCardOwners, metaQualifyingCardIds) ||
               meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
               meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
-              meta.sourceCardInstanceId !== d.context.sourceCardId || meta.abilityId !== d.context.abilityId ||
+              meta.sourceCardInstanceId !== decisionContext.sourceCardId || meta.abilityId !== decisionContext.abilityId ||
               !isExactOpponentCloseToOneConstraints(metaConstraints) || !exactSyntheticTarget ||
               d.min !== 1 || d.max !== 1 || !exactFrozenCardIdList(decisionCandidates, metaQualifyingCardIds) ||
               !Array.isArray(selected) || selected.length !== 1 || !d.candidates.includes(selected[0]!) ||
@@ -3869,6 +3893,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           stageNextOpponentCloseToOneDecision(s);
           break;
         }
+        const a = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
         if (meta.kind === 'combat_opponent_power_vp_reward_v1') {
           const pendingQueue = r.pendingCombatOpponentPowerVpRewards;
           const pending = pendingQueue?.[0];

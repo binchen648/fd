@@ -219,3 +219,36 @@ Revision recertification after this correction:
 - `git diff --check` — PASS.
 
 FB2-49 remains **zero migration credit**. Formal migration remains **151/944**, with **793** remaining. No merge or retarget is authorized.
+
+## Revision after fourth fresh Reviewer finding
+
+Fresh Reviewer evidence for rejected Candidate `bd019ef07fb2615d6457bc2bd0d4299926aa2bde` is canonical GitHub comment `5754617799` on PR #415: `https://github.com/binchen648/fd/pull/415#issuecomment-5754617799`. Verdict: `IMPLEMENTATION_NEEDS_REVISION`.
+
+The prior queue/interaction candidate-list, constraints and owner-provenance shape guards were explicitly confirmed closed. The sole new P1 finding was that the FB2-49 settlement path still dereferenced server-owned `PendingDecision.target` / `PendingDecision.context` before proving their runtime shape, allowing forged null metadata to escape as raw `TypeError` instead of the rules rejection DTO.
+
+Minimum correction in this revision:
+
+- adds FB2-49-only exact runtime guards for the synthetic target and synthetic context before any target/context dereference;
+- target must be the exact `frozen_non_residual_attack_to_keep` / `card_instance` / count `1..1` envelope, with no forged extra field;
+- context must contain exactly `controllerId`, `sourceCardId`, `abilityId`, empty `variables` and empty `selections`, with no forged extra field;
+- moves the shared interaction `abilityDefinition(...)` lookup after the FB2-49 branch so this transaction can reject malformed context before dereference without changing the other interaction paths;
+- keeps controller-based qualification, frozen owner binding, candidate-list/constraint guards, compound authoring vocabulary and zero-credit accounting unchanged.
+
+Focused adversarial coverage now includes null, array, malformed-internal and forged-extra-field variants for both FB2-49 target and context. Every case returns `ok:false`, throws no raw exception, and leaves caller state structure-equivalent.
+
+Revision recertification:
+
+- `npm.cmd run typecheck` — PASS;
+- focused FB2-49 — **11/11 PASS**;
+- Reviewer-named adjacent compatibility set — **8 files / 55 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2` — **177 files / 1280 tests PASS**;
+- content validation — **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated-content determinism — PASS with unchanged three hashes;
+- exact Locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` — PASS;
+- client build — PASS with only existing Vite warnings;
+- phase3 coverage — **127 archives / 169 cards / 281 abilities / 0 blocking issues**, `dualRuntime=0`;
+- automation audit — `legacyResolveEffect=144`, `legacyExecuteAbility=3`, `notClassifiable=112`, `promotionFindings=20`;
+- validation artifacts restored byte-for-byte to rejected Candidate `bd019ef...` Git blobs;
+- `git diff --check` — PASS.
+
+FB2-49 remains identity-free zero-credit B2 capability work. Formal migration remains **151/944**, with **793** remaining. No merge or retarget is authorized.

@@ -311,6 +311,32 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     }
   });
 
+  it('fails closed through the DTO boundary when FB2-49 target or context metadata is malformed', () => {
+    const corruptions: Array<(state: GameState) => void> = [
+      state => { (state.abilityRuntime!.pendingDecision as any).target = null; },
+      state => { (state.abilityRuntime!.pendingDecision as any).target = []; },
+      state => { (state.abilityRuntime!.pendingDecision as any).target = { id: 'frozen_non_residual_attack_to_keep', type: 'card_instance', count: null }; },
+      state => { (state.abilityRuntime!.pendingDecision as any).target = { id: 'frozen_non_residual_attack_to_keep', type: 'card_instance', count: { min: 1, max: 1 }, forged: true }; },
+      state => { (state.abilityRuntime!.pendingDecision as any).context = null; },
+      state => { (state.abilityRuntime!.pendingDecision as any).context = []; },
+      state => { (state.abilityRuntime!.pendingDecision as any).context = { controllerId: 'p1', sourceCardId: SOURCE_ID, abilityId: ABILITY_ID, variables: null, selections: {} }; },
+      state => { (state.abilityRuntime!.pendingDecision as any).context = { controllerId: 'p1', sourceCardId: SOURCE_ID, abilityId: ABILITY_ID, variables: {}, selections: {}, forged: true }; },
+    ];
+    for (const corrupt of corruptions) {
+      const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+      expect(activate(state).ok).toBe(true);
+      const decisionId = state.abilityRuntime!.pendingDecision!.id;
+      corrupt(state);
+      const before = structuredClone(state);
+      let result: ReturnType<typeof rules.dispatchAbilityCommand> | undefined;
+      expect(() => {
+        result = rules.dispatchAbilityCommand(state, 'p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] });
+      }).not.toThrow();
+      expect(result?.ok).toBe(false);
+      expect(state).toEqual(before);
+    }
+  });
+
   it('treats a live close-forbid as an atomic failure instead of partially closing the frozen set', () => {
     const state = setup();
     add(state, 'p2-keep', 'p2'); add(state, 'p2-protected', 'p2', PROTECTED_DEF); add(state, 'p2-other', 'p2');
