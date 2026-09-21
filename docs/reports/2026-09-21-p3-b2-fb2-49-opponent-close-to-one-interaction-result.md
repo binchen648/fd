@@ -507,3 +507,44 @@ Revision recertification on exact implementation `fce3bba20c5feeee792dff305652f1
 - `git diff --check` - PASS.
 
 Accounting remains unchanged: FB2-49 is zero-credit capability work; formal migration remains **151/944**, **793 remaining**. No Astolfo consumer authoring, identity routing, generic each-player authoring API, product/generated/client semantic change, merge, retarget, or migration credit is introduced.
+
+## Revision after fresh Reviewer review on Candidate `8421c03383f96abbaff68e1b47af4a9d4feab9a0`
+
+Fresh Reviewer evidence is canonical GitHub comment `5756878417` on PR #415: `https://github.com/binchen648/fd/pull/415#issuecomment-5756878417`. Verdict: `IMPLEMENTATION_NEEDS_REVISION`. The upgraded Reviewer completed the exact FB2-49 scope and returned two persistence/restore P1 findings in one review.
+
+Both findings are corrected together in one minimum FB2-49 revision:
+
+1. **Persisted authority was co-forgeable with the restored queue**
+   - `MatchSessionSnapshot` and replay checkpoints no longer serialize the frozen FB2-49 authority contents (`nextIndex` / `entries`). They serialize only an opaque 192-bit server-issued capability handle.
+   - the actual frozen continuation remains in a server-private registry outside serialized `GameState`, `AbilityRuntime`, and the client-controlled restore body. The same HTTP restore input therefore cannot rewrite the queue and the authority that is supposed to detect queue forgery.
+   - each capability is additionally bound server-side to the exact serialized `GameState` that existed when it was issued. A valid capability transplanted from another snapshot/transaction, or paired with any rewritten current snapshot state, fails closed instead of installing authority.
+   - valid same-server-lifecycle serialize/restore and replay-checkpoint restore retain the hidden authority. Missing, expired, malformed, forged, or state-mismatched capabilities install no authority; a live FB2-49 settlement then rejects through the ordinary `RuleRejection` boundary rather than trusting serialized queue metadata.
+   - the Reviewer reproduction that coherently truncates `[p2,p3] -> [p2]`, drifts future p3 state, rewrites queue/interaction suffixes, and supplies the old raw serialized-authority object now restores without installing attacker-controlled authority and the exact p2 settlement returns `ok:false` mutation-free.
+
+2. **Malformed persisted authority produced a raw exception**
+   - restore now runtime-validates the complete opaque-handle envelope before any registry lookup: exact single `token` key, string primitive, exact prefix, and exact 48-hex payload.
+   - malformed values including `null`, array, primitive, empty object, the historical `{nextIndex:0}` raw-authority shape, wrong token primitive, malformed token text, extra keys, and unknown-but-well-formed tokens never reach `authority.entries` dereference.
+   - focused regression submits the exact pending decision after each malformed restore and proves no raw throw, `ok:false`, and structure-equivalent caller state.
+
+A final Worker pre-R adversarial pass also covered a valid capability transplanted from a different serialized transaction. That transplant is rejected by the server-private state binding and cannot shorten the frozen continuation. This remains the same Reviewer finding family (independent/authenticated restore authority), not a new authoring/runtime feature.
+
+The production trust boundary was mechanically rechecked: HTTP `POST /rooms/:id/restore` calls `restoreMatchRoom(body.snapshot)`, which calls `restoreMatchSession(snapshot.session)`. The focused restore regressions therefore exercise the same session restoration primitive used by the production HTTP path. Existing room/session contracts and tests require serialize/restore/reconnect/replay; no repository contract requiring live FB2-49 continuation to survive a separate server-process restart was found. Invalid/expired server-private capabilities fail closed rather than reconstructing trust from client-controlled fields.
+
+Exact implementation before this report-only evidence update: `037b02ce19e03b45e78379bccaf46b2e9e241cf5`. It descends only from rejected Candidate `8421c03383f96abbaff68e1b47af4a9d4feab9a0` through the two minimum persistence-security commits. A fresh detached validation worktree `E:\Codex\FD\fd-b2-fb2-49-r15-validate` was created at that exact implementation SHA with its own `npm ci --ignore-scripts` dependency tree.
+
+Revision recertification on exact implementation `037b02ce19e03b45e78379bccaf46b2e9e241cf5`:
+
+- `npm.cmd run typecheck` - PASS;
+- focused FB2-49 - **24/24 PASS**;
+- broader related compatibility set - **10 files / 175 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2` - **177 files / 1293 tests PASS**;
+- `npm.cmd run content:validate` - **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated-content determinism PASS with unchanged hashes `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`, `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, and `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`;
+- exact Locked Reference verification PASS at `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- client build PASS with only the existing Vite browser-externalization/chunk-size warnings;
+- `phase3:coverage` PASS: archives=127, cards=169, abilities=281, compiledCards=76, compiledCharacters=14, blockingIssues=0, newRuntimeSemanticRouted=22, legacyExecuteAbility=3, legacyResolveEffect=144, dualRuntime=0, notClassifiable=112, taxonomyWarnings=151;
+- `phase3:automation-audit` PASS: legacyResolveEffect=144, legacyExecuteAbility=3, notClassifiable=112, promotionFindings=20;
+- write-producing coverage/audit artifacts were restored byte-for-byte from the exact implementation Git blobs and the detached validation worktree finished clean;
+- `git diff --check 8421c03383f96abbaff68e1b47af4a9d4feab9a0..037b02ce19e03b45e78379bccaf46b2e9e241cf5` - PASS.
+
+Accounting remains unchanged: FB2-49 is identity-free zero-credit capability work; formal migration remains **151/944**, **793 remaining**. No Astolfo consumer authoring, identity/name/text routing, generic each-player authoring API, product/generated/client semantic expansion, merge, retarget, or frozen migration credit is introduced.
