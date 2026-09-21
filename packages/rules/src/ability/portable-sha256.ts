@@ -18,8 +18,14 @@ function rotateRight(value: number, bits: number): number {
   return (value >>> bits) | (value << (32 - bits));
 }
 
-export function sha256Hex(input: string): string {
-  const source = new TextEncoder().encode(input);
+function concatenate(left: Uint8Array, right: Uint8Array): Uint8Array {
+  const result = new Uint8Array(left.length + right.length);
+  result.set(left, 0);
+  result.set(right, left.length);
+  return result;
+}
+
+function sha256Bytes(source: Uint8Array): Uint8Array {
   const paddedLength = Math.ceil((source.length + 9) / 64) * 64;
   const padded = new Uint8Array(paddedLength);
   padded.set(source);
@@ -72,5 +78,33 @@ export function sha256Hex(input: string): string {
     hash[7] = (hash[7]! + h!) >>> 0;
   }
 
-  return hash.map((word) => word.toString(16).padStart(8, '0')).join('');
+  const output = new Uint8Array(32);
+  const outputView = new DataView(output.buffer);
+  hash.forEach((word, index) => outputView.setUint32(index * 4, word));
+  return output;
+}
+
+function bytesToHex(bytes: Uint8Array): string {
+  return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
+export function sha256Hex(input: string): string {
+  return bytesToHex(sha256Bytes(new TextEncoder().encode(input)));
+}
+
+/** Portable RFC 2104 HMAC-SHA-256 for browser and Node rules persistence. */
+export function hmacSha256Hex(key: string, message: string): string {
+  let keyBytes: Uint8Array = new TextEncoder().encode(key);
+  if (keyBytes.length > 64) keyBytes = sha256Bytes(keyBytes);
+  const block = new Uint8Array(64);
+  block.set(keyBytes);
+  const innerPad = new Uint8Array(64);
+  const outerPad = new Uint8Array(64);
+  for (let index = 0; index < 64; index += 1) {
+    innerPad[index] = block[index]! ^ 0x36;
+    outerPad[index] = block[index]! ^ 0x5c;
+  }
+  const messageBytes = new TextEncoder().encode(message);
+  const inner = sha256Bytes(concatenate(innerPad, messageBytes));
+  return bytesToHex(sha256Bytes(concatenate(outerPad, inner)));
 }
