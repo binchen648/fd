@@ -124,6 +124,7 @@ export class MatchRoomHub {
     const restored = restoreMatchRoom(snapshot, existing.getPersistenceContext());
     this.rooms.set(roomId, restored);
     this.bump(roomId, 'room_restored');
+    if (!restored.session) existing.revokePersistenceTrust();
     return restored.getProjection(restored.hostClientId);
   }
 
@@ -132,10 +133,20 @@ export class MatchRoomHub {
     const restoredRooms = new Map<string, MatchRoom>();
     for (const roomSnapshot of snapshot.rooms) {
       const existing = this.rooms.get(roomSnapshot.roomId);
-      const room = restoreMatchRoom(roomSnapshot, existing?.getPersistenceContext());
+      const room = restoreMatchRoom(roomSnapshot, existing?.getPersistenceContext(), false);
       if (restoredRooms.has(room.roomId)) throw new Error(`Duplicate room in restore snapshot: ${room.roomId}`);
       restoredRooms.set(room.roomId, room);
     }
+    const retainedScopes = new Set(
+      [...restoredRooms.values()]
+        .filter((room) => room.session)
+        .map((room) => room.getPersistenceContext().persistenceScope),
+    );
+    const removedRooms = [...this.rooms.values()].filter(
+      (room) => !retainedScopes.has(room.getPersistenceContext().persistenceScope!),
+    );
+    for (const room of restoredRooms.values()) room.reconcilePersistenceTrust();
+    for (const room of removedRooms) room.revokePersistenceTrust();
     this.rooms = restoredRooms;
     this.roomVersions = new Map();
     for (const roomId of this.rooms.keys()) this.bump(roomId, 'room_restored');

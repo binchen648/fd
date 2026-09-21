@@ -918,6 +918,11 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(badRoom.session.dispatchPlayerAction('p1', { type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID }).ok).toBe(true);
 
     const snapshot: any = structuredClone(hub.serialize());
+    const goodSnapshot = snapshot.rooms.find((room: any) => room.roomId === 'fb2-49-hub-good');
+    goodSnapshot.session.replay = goodSnapshot.session.replay.filter((entry: any) => entry.id !== goodLiveCheckpointId);
+    goodSnapshot.session.replaySnapshots = goodSnapshot.session.replaySnapshots.filter(
+      (entry: any) => entry.checkpointId !== goodLiveCheckpointId,
+    );
     const badSnapshot = snapshot.rooms.find((room: any) => room.roomId === 'fb2-49-hub-bad');
     badSnapshot.session.opponentCloseToOneServerAuthority.mac = '0'.repeat(64);
     const goodRoomIdentity = hub.getRoom('fb2-49-hub-good');
@@ -963,6 +968,99 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const restoredProjection = hub.restoreRoom(roomId, snapshot);
     expect(restoredProjection.roomId).toBe(roomId);
     expect(hub.getRoom(roomId).session?.state.abilityRuntime?.pendingDecision?.controllerId).toBe('p2');
+  });
+
+  it('revokes replay trust for checkpoints removed by a successful durable restore', () => {
+    const scope = 'fb2-49-persistence-scope:' + '66'.repeat(32);
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    const session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    session.state = state;
+    const olderSnapshot = structuredClone(session.serializeSession());
+
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID,
+    }).ok).toBe(true);
+    const liveCheckpointId = session.replay.at(-1)!.id;
+    const liveReplay = structuredClone(session.replay.find((entry) => entry.id === liveCheckpointId)!);
+    const liveReplaySnapshot = structuredClone(
+      session.replaySnapshots.find((candidate) => candidate.checkpointId === liveCheckpointId)!,
+    );
+    const decisionId = session.state.abilityRuntime!.pendingDecision!.id;
+    expect(session.dispatchPlayerAction('p2', {
+      type: 'choose_target', decisionId, selectedIds: ['p2-a'],
+    }).ok).toBe(true);
+
+    const restoredOlder = rules.restoreMatchSession(olderSnapshot, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    expect(restoredOlder.replaySnapshots.some((candidate) => candidate.checkpointId === liveCheckpointId)).toBe(false);
+
+    const resurrectionAttempt = structuredClone(restoredOlder.serializeSession());
+    resurrectionAttempt.replay.push(liveReplay);
+    resurrectionAttempt.replaySnapshots.push(liveReplaySnapshot);
+    const restoredAttempt = rules.restoreMatchSession(resurrectionAttempt, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    expect(restoredAttempt.restoreToCheckpoint(liveCheckpointId)).toBe(false);
+    expect(restoredAttempt.state.abilityRuntime?.pendingDecision).toBeUndefined();
+  });
+
+  it('revokes current and replay trust when a successful Hub restore removes a room', () => {
+    const scope = 'fb2-49-persistence-scope:' + '77'.repeat(32);
+    const hub = rules.createMatchRoomHub();
+    hub.createRoom({ roomId: 'fb2-49-removed-room', hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope });
+    const room = hub.getRoom('fb2-49-removed-room');
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    room.session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    room.session.state = state;
+    room.status = 'running';
+    expect(room.session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID,
+    }).ok).toBe(true);
+
+    hub.restore({ version: 1, rooms: [] });
+    expect(() => hub.getRoom('fb2-49-removed-room')).toThrow('Unknown room');
+
+    const plain = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    }).serializeSession();
+    expect(() => rules.restoreMatchSession(plain, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    })).not.toThrow();
+  });
+
+  it('revokes trust when a successful room replacement removes its authoritative session', () => {
+    const scope = 'fb2-49-persistence-scope:' + '88'.repeat(32);
+    const roomId = 'fb2-49-replaced-room';
+    const hub = rules.createMatchRoomHub();
+    hub.createRoom({ roomId, hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope });
+    const room = hub.getRoom(roomId);
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    room.session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    room.session.state = state;
+    room.status = 'running';
+    expect(room.session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID,
+    }).ok).toBe(true);
+
+    const replacement: any = structuredClone(room.serializeRoom());
+    replacement.status = 'lobby';
+    delete replacement.session;
+    hub.restoreRoom(roomId, replacement);
+    expect(hub.getRoom(roomId).session).toBeUndefined();
+
+    const plain = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    }).serializeSession();
+    expect(() => rules.restoreMatchSession(plain, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    })).not.toThrow();
   });
 
   it('treats a live close-forbid as an atomic failure instead of partially closing the frozen set', () => {

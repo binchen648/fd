@@ -7,6 +7,7 @@ import {
   type MatchSessionSnapshot,
 } from './match-session';
 import type { AbilityCommand, DispatchResult } from './ability/types';
+import { revokeOpponentCloseToOnePersistenceScope } from './ability/opponent-close-to-one-authority';
 import {
   resolveOpponentCloseToOnePersistenceScope,
   resolveOpponentCloseToOnePersistenceSecret,
@@ -257,6 +258,14 @@ export class MatchRoom {
     return { persistenceSecret: this.persistenceSecret, persistenceScope: this.persistenceScope };
   }
 
+  revokePersistenceTrust(): void {
+    revokeOpponentCloseToOnePersistenceScope(this.persistenceScope);
+  }
+
+  reconcilePersistenceTrust(): void {
+    this.session?.reconcilePersistenceTrust();
+  }
+
   serializeRoom(): MatchRoomSnapshot {
     return {
       version: 1,
@@ -288,6 +297,7 @@ export function createMatchRoom(config?: MatchRoomConfig): MatchRoom {
 export function restoreMatchRoom(
   snapshot: MatchRoomSnapshot,
   persistence: Pick<MatchSessionConfig, 'persistenceSecret' | 'persistenceScope'> = {},
+  reconcilePersistenceTrust = true,
 ): MatchRoom {
   if (snapshot.version !== 1) throw new Error(`Unsupported MatchRoom snapshot version: ${snapshot.version}`);
   const room = new MatchRoom({
@@ -297,7 +307,9 @@ export function restoreMatchRoom(
     ...persistence,
   });
   const persistenceContext = room.getPersistenceContext();
-  const restoredSession = snapshot.session ? restoreMatchSession(snapshot.session, persistenceContext) : undefined;
+  const restoredSession = snapshot.session
+    ? restoreMatchSession(snapshot.session, persistenceContext, reconcilePersistenceTrust)
+    : undefined;
   room.status = snapshot.status;
   room.clients = structuredClone(snapshot.clients);
   room.seats = structuredClone(snapshot.seats);
