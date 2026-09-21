@@ -1,10 +1,12 @@
 # P3-A Global Readiness Automation
 
-Status: `AUTOMATION_BASELINE_CANDIDATE`
+Status: `REVIEW_ACCEPTED`
 Owner: Codex A
 Branch: `codex/a-p3-global-remaining-skill-replan`
 Source governance baseline: `8b63d3cdd2ae068810805c650dca6903874e825d`
 Accepted automation dependency: P3-A01 Candidate `2c59d0623b8c2d3ee0de0f6fbd95692556316bbd`
+Accepted Candidate: `0525fe63de71885a1b4df188f5f2d867758e745e`
+Verdict source: coordinator-confirmed independent R re-review in the task thread on 2026-09-21
 
 ## Scope
 
@@ -65,7 +67,7 @@ Exact final outcomes are recorded in the review handoff. Generated queue evidenc
 
 ## Acceptance boundary
 
-Claimed status is only `AUTOMATION_BASELINE_CANDIDATE`. No queue row is independently promoted by this implementation, no Gate A/B/C state changes, and no Phase or Release Gate claim is made.
+Independent R re-review accepted the exact Candidate above as the readiness automation baseline. This accepts the automation boundary only: no queue row, Gate A/B/C, Phase, or Release Gate status is promoted by inheritance.
 
 ## R revision: decision-state authority
 

@@ -5874,10 +5874,12 @@ The original eleven FM09 targets now have two present and nine missing. The nine
 ## TASK P3-A-GLOBAL-READINESS-AUTOMATION
 
 Owner: Codex A
-Status: `AUTOMATION_BASELINE_CANDIDATE`
+Status: `REVIEW_ACCEPTED`
 Branch: `codex/a-p3-global-remaining-skill-replan`
 Baseline: exact Darius credit reconciliation `8b63d3cdd2ae068810805c650dca6903874e825d`
 Accepted automation dependency: P3-A01 Candidate `2c59d0623b8c2d3ee0de0f6fbd95692556316bbd`
+Accepted Candidate: `0525fe63de71885a1b4df188f5f2d867758e745e`
+Review evidence: coordinator-confirmed independent R re-review recorded in `docs/reports/2026-09-21-p3-a-global-readiness-automation.md`
 Read: `docs/reports/2026-09-21-p3-a-global-readiness-automation.md`
 
 Result: implement a deterministic fail-closed readiness compiler and machine evidence registries over all `944` frozen identities. Strict canonical material is `146/944`; the formal ledger remains `151/944`, so the artifact explicitly reports branch drift `5` instead of manufacturing or repeating credit. The queue has no automatic `S_READY_NOW`: historical generic labels remain probe-required, Astolfo s1 remains reserved by FB2-49, and FM09 membership grants no priority or acceptance inheritance.
