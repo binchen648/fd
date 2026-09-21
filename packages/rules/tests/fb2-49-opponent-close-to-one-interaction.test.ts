@@ -868,6 +868,83 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(exportOpponentCloseToOneServerAuthority(session.state)?.entries.map((entry) => entry.decisionPlayerId)).toEqual(['p2']);
   });
 
+  it('preserves a live replay trust binding across durable MatchSession restore after the transaction completes', () => {
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    const session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+    });
+    session.state = state;
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID,
+    }).ok).toBe(true);
+    const liveCheckpointId = session.replay.at(-1)!.id;
+    const decisionId = session.state.abilityRuntime!.pendingDecision!.id;
+    expect(session.dispatchPlayerAction('p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] }).ok).toBe(true);
+    expect(session.state.abilityRuntime!.pendingOpponentCloseToOne).toEqual([]);
+
+    const durable = structuredClone(session.serializeSession());
+    const restored = rules.restoreMatchSession(durable, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+    });
+    expect(restored.restoreToCheckpoint(liveCheckpointId)).toBe(true);
+    expect(restored.state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
+    expect(exportOpponentCloseToOneServerAuthority(restored.state)?.entries.map((entry) => entry.decisionPlayerId)).toEqual(['p2']);
+  });
+
+  it('keeps prior-room replay trust and Hub versions atomic when a later Hub restore candidate is invalid', () => {
+    const goodScope = 'fb2-49-persistence-scope:' + '44'.repeat(32);
+    const badScope = 'fb2-49-persistence-scope:' + '55'.repeat(32);
+    const hub = rules.createMatchRoomHub();
+    hub.createRoom({ roomId: 'fb2-49-hub-good', hostClientId: 'host-good', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: goodScope });
+    hub.createRoom({ roomId: 'fb2-49-hub-bad', hostClientId: 'host-bad', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: badScope });
+
+    const goodRoom = hub.getRoom('fb2-49-hub-good');
+    const goodState = setup(); add(goodState, 'p2-a', 'p2'); add(goodState, 'p2-b', 'p2');
+    goodRoom.session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: goodScope,
+    });
+    goodRoom.session.state = goodState; goodRoom.status = 'running';
+    expect(goodRoom.session.dispatchPlayerAction('p1', { type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID }).ok).toBe(true);
+    const goodLiveCheckpointId = goodRoom.session.replay.at(-1)!.id;
+    const goodDecisionId = goodRoom.session.state.abilityRuntime!.pendingDecision!.id;
+    expect(goodRoom.session.dispatchPlayerAction('p2', { type: 'choose_target', decisionId: goodDecisionId, selectedIds: ['p2-a'] }).ok).toBe(true);
+
+    const badRoom = hub.getRoom('fb2-49-hub-bad');
+    const badState = setup(); add(badState, 'p2-a', 'p2'); add(badState, 'p2-b', 'p2');
+    badRoom.session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: badScope,
+    });
+    badRoom.session.state = badState; badRoom.status = 'running';
+    expect(badRoom.session.dispatchPlayerAction('p1', { type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID }).ok).toBe(true);
+
+    const snapshot: any = structuredClone(hub.serialize());
+    const badSnapshot = snapshot.rooms.find((room: any) => room.roomId === 'fb2-49-hub-bad');
+    badSnapshot.session.opponentCloseToOneServerAuthority.mac = '0'.repeat(64);
+    const goodRoomIdentity = hub.getRoom('fb2-49-hub-good');
+    const goodVersion = hub.version('fb2-49-hub-good');
+    const badVersion = hub.version('fb2-49-hub-bad');
+
+    expect(() => hub.restore(snapshot)).toThrow('Invalid or missing FB2-49 persisted authority');
+    expect(hub.getRoom('fb2-49-hub-good')).toBe(goodRoomIdentity);
+    expect(hub.version('fb2-49-hub-good')).toBe(goodVersion);
+    expect(hub.version('fb2-49-hub-bad')).toBe(badVersion);
+    expect(goodRoomIdentity.session!.restoreToCheckpoint(goodLiveCheckpointId)).toBe(true);
+  });
+
+  it('does not commit replay_restored or bump Hub version when the checkpoint restore returns false', () => {
+    const hub = rules.createMatchRoomHub();
+    hub.createRoom({ roomId: 'fb2-49-replay-fail', hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE });
+    const room = hub.getRoom('fb2-49-replay-fail');
+    room.session = rules.createMatchSession({ persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE });
+    room.status = 'running';
+    const beforeVersion = hub.version('fb2-49-replay-fail');
+    const beforeProjection = structuredClone(hub.project('fb2-49-replay-fail', 'host'));
+
+    expect(() => hub.restoreReplay('fb2-49-replay-fail', 'host', 'checkpoint:999999')).toThrow('Replay restore failed: checkpoint:999999');
+    expect(hub.version('fb2-49-replay-fail')).toBe(beforeVersion);
+    expect(hub.project('fb2-49-replay-fail', 'host')).toEqual(beforeProjection);
+  });
+
   it('restores a legal live room through Hub trusted context while direct Node restore with a fresh scope fails closed', () => {
     const roomId = 'fb2-49-context-room';
     const hub = rules.createMatchRoomHub();

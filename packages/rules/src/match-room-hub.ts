@@ -96,7 +96,9 @@ export class MatchRoomHub {
 
   restoreReplay(roomId: string, clientId: string, checkpointId: string): MatchRoomProjection {
     const room = this.getRoom(roomId);
-    room.restoreToReplayCheckpoint(clientId, checkpointId);
+    if (!room.restoreToReplayCheckpoint(clientId, checkpointId)) {
+      throw new Error(`Replay restore failed: ${checkpointId}`);
+    }
     this.bump(roomId, 'replay_restored');
     return room.getProjection(clientId);
   }

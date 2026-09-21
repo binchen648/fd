@@ -493,8 +493,10 @@ export class MatchSession {
   rejection: DispatchResult['rejection'] | undefined;
   private consumedDirectiveCount = 0;
   private seenFingerprints = new Map<string, number>();
+  private replayCaptureEnabled = true;
 
-  constructor(config: MatchSessionConfig = {}) {
+  constructor(config: MatchSessionConfig = {}, initializeReplay = true) {
+    this.replayCaptureEnabled = initializeReplay;
     this.seed = config.seed ?? 20260904;
     this.humanPlayerId = config.humanPlayerId ?? 'p1';
     this.humanPlayerIds = [...new Set(config.humanPlayerIds ?? [this.humanPlayerId])];
@@ -507,7 +509,8 @@ export class MatchSession {
     this.rawCards = built.rawCards;
     this.record('session_start', '7-player authoring match session started', { seed: this.seed, pairings: this.pairings.map((p) => ({ playerId: p.playerId, master: p.master.id, servant: p.servant.id })) });
     this.consumeAppliedDirectives();
-    this.checkpoint('game start');
+    if (initializeReplay) this.checkpoint('game start');
+    this.replayCaptureEnabled = true;
   }
 
   getPlayerView(playerId = this.humanPlayerId): AbilityPlayerView {
@@ -1569,6 +1572,7 @@ export class MatchSession {
   }
 
   private checkpoint(label: string, state = this.state): void {
+    if (!this.replayCaptureEnabled) return;
     const revision = state.abilityRuntime?.revision ?? 0;
     const checkpoint = {
       id: `checkpoint:${this.replay.length + 1}`,
@@ -1626,7 +1630,7 @@ export function restoreMatchSession(
     maxActionsPerPlayer: snapshot.maxActionsPerPlayer,
     persistenceSecret,
     persistenceScope,
-  });
+  }, false);
   session.state = candidateState;
   session.logs = structuredClone(snapshot.logs);
   session.replay = structuredClone(snapshot.replay);

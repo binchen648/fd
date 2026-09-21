@@ -677,3 +677,27 @@ Validation:
 - `git diff --check`: PASS.
 
 Accounting remains unchanged: FB2-49 is identity-free B2 capability work and earns zero migration credit.
+
+## Revision after pre-review on Candidate `d1df414b45b0754979b2a0b4ec292b8a78160679`
+
+The fresh pre-review returned two exact-scope P1 findings. Both are corrected together without broadening FB2-49 semantics:
+
+1. **Replay trusted-binding lifetime now survives durable session restore and failed multi-room Hub restore**
+   - restore construction no longer emits or prunes replay checkpoints while `MatchSession` is rebuilding its synthetic initial state;
+   - replay capture is disabled for the whole restore-only constructor initialization, then re-enabled before the persisted state/replay/replaySnapshots are installed;
+   - this prevents constructor-time `startRound()` / `checkpoint()` from pruning checkpoint-scoped trusted FB2-49 transaction bindings before the persisted replay set exists;
+   - a regression proves a legitimate live FB2-49 replay checkpoint remains restorable after the transaction completes, the session is serialized, and that session is restored;
+   - a second regression proves a later invalid room in `MatchRoomHub.restore()` cannot covertly destroy an earlier room's replay trust: original room identity and Hub versions remain unchanged and the earlier legal checkpoint remains restorable.
+
+2. **`MatchRoomHub.restoreReplay()` now respects checkpoint restore failure atomically**
+   - `room.restoreToReplayCheckpoint(...) === false` now throws before `replay_restored` is committed;
+   - Hub version is not bumped and the projected authoritative room state is unchanged on failure;
+   - a focused regression covers the exact false-return path.
+
+Focused verification for this revision under the restored implementation/review sequencing:
+
+- `packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts` - **36/36 PASS**;
+- `git diff --check` - PASS;
+- no repository-wide CI/build/content/coverage/audit rerun was performed for this intermediate revision because neither exact finding requires those surfaces before fresh R.
+
+Scope remains identity-free FB2-49 capability work. No Astolfo consumer migration, client production change, authoring vocabulary expansion, migration credit, merge, or retarget is introduced.
