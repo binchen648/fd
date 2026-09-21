@@ -154,3 +154,34 @@ This is only a B2 implementation Candidate. Fresh independent R must review the 
 If and only if fresh R returns formal `IMPLEMENTATION_ACCEPTED_CANDIDATE` for the exact Candidate and A synchronizes that capability acceptance, the coordinator must freshly reconstruct complete `servant.astolfo.skill.sc-astolfo-1` against the synchronized runtime. Singleton S is permitted only if the full card — F1/static metadata, combat phase action, true-name reveal, source ownership/battlefield conditions, exact per-opponent keep-one transaction, card close semantics and play lifecycle — is mechanically zero-gap.
 
 FB2-49 earns **zero migration credit**. Formal migration remains **`151/944`**, with **`793`** remaining. No merge or retarget is authorized.
+## Revision after second fresh Reviewer finding
+
+Fresh Reviewer evidence for rejected Candidate `807440a9d35b351d82d060deb4f273ea7f70a183` is GitHub comment `5754455947` on PR #415. Verdict: `IMPLEMENTATION_NEEDS_REVISION`.
+
+The exact finding was limited to malformed/forged frozen-owner metadata escaping the rules rejection protocol as a raw `TypeError`: `qualifyingCardOwners` was correctly frozen and semantically revalidated, but the validator called `Object.keys(...)` before proving the runtime value was a record. The minimum correction therefore keeps the existing control-based qualification and owner-provenance semantics unchanged while hardening only the FB2-49 owner-map validation boundary.
+
+The revision now:
+
+- treats both queue and interaction `qualifyingCardOwners` values as untrusted runtime shape at settlement;
+- rejects absent, null, array, non-record, wrong-key-count, missing-key, empty/non-string owner values before any indexing/equality operation;
+- compares queue and interaction owner maps only after both pass exact structural validation;
+- compares live card ownership against the structurally validated frozen interaction map;
+- preserves qualification by `controllerPlayerId` and does **not** require `ownerPlayerId === decisionPlayerId`;
+- routes malformed provenance through the existing `RuleRejection` path so `dispatchAbilityCommand` returns `ok:false` without throwing or committing mutation.
+
+Focused regression now covers deleted/null interaction owner maps plus null/array queue owner maps and proves `ok:false`, no throw, and structure-equivalent caller state.
+
+Revision recertification after this correction:
+
+- `npm.cmd run typecheck` — PASS.
+- focused FB2-49 — **9/9 PASS**.
+- Reviewer-named adjacent compatibility set — **8 files / 53 tests PASS**.
+- official `npm.cmd run test:ci -- --maxWorkers=2` — **177 files / 1278 tests PASS**.
+- `npm.cmd run content:validate` — PASS, **7 masters / 7 servants / 20 events / 0 blocking issues**.
+- `npm.cmd run verify:generated-content` — PASS; hashes remain `866a5b...`, `fb6938...`, `b1bb89...`.
+- exact Locked Reference verification at `b2f9fa15fba07c63530bbf4612b03b8b704755f9` — PASS.
+- `npm.cmd run build --workspace @fd/client` — PASS; only existing Vite warnings.
+- `phase3:coverage` — PASS at **127 archives / 169 cards / 281 abilities / 0 blocking issues**, `newRuntimeSemanticRouted=22`, `dualRuntime=0`, `pilotAllowlist=0`, `notClassifiable=112`, `taxonomyWarnings=151`.
+- `phase3:automation-audit` — PASS at `legacyResolveEffect=144`, `legacyExecuteAbility=3`, `notClassifiable=112`, `promotionFindings=20`.
+- coverage/audit artifacts restored byte-for-byte to the exact rejected-Candidate Git blobs after validation.
+- formal migration remains **151/944**, **793 remaining**; FB2-49 remains zero-credit.

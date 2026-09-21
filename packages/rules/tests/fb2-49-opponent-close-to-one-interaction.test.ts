@@ -263,6 +263,29 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(state.abilityRuntime!.cardState['p2-b']).toMatchObject({ active: true, faceDown: false });
   });
 
+  it('fails closed through the DTO boundary when frozen owner provenance metadata is missing or malformed', () => {
+    const corruptions: Array<(state: GameState) => void> = [
+      state => { delete (state.abilityRuntime!.pendingDecision!.interaction as any).qualifyingCardOwners; },
+      state => { (state.abilityRuntime!.pendingDecision!.interaction as any).qualifyingCardOwners = null; },
+      state => { (state.abilityRuntime!.pendingOpponentCloseToOne![0] as any).qualifyingCardOwners = null; },
+      state => { (state.abilityRuntime!.pendingOpponentCloseToOne![0] as any).qualifyingCardOwners = []; },
+    ];
+    for (const corrupt of corruptions) {
+      const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+      expect(activate(state).ok).toBe(true);
+      corrupt(state);
+      const before = structuredClone(state);
+      let result: ReturnType<typeof rules.dispatchAbilityCommand> | undefined;
+      expect(() => {
+        result = rules.dispatchAbilityCommand(state, 'p2', {
+          type: 'choose_target', decisionId: state.abilityRuntime!.pendingDecision!.id, selectedIds: ['p2-a'],
+        });
+      }).not.toThrow();
+      expect(result?.ok).toBe(false);
+      expect(state).toEqual(before);
+    }
+  });
+
   it('treats a live close-forbid as an atomic failure instead of partially closing the frozen set', () => {
     const state = setup();
     add(state, 'p2-keep', 'p2'); add(state, 'p2-protected', 'p2', PROTECTED_DEF); add(state, 'p2-other', 'p2');

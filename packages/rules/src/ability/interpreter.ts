@@ -1814,9 +1814,21 @@ function exactPlayerPowerMap(left: Record<string, number>, right: Record<string,
   return Object.keys(left).length === ids.length && Object.keys(right).length === ids.length &&
     ids.every((id) => Object.prototype.hasOwnProperty.call(left, id) && Object.prototype.hasOwnProperty.call(right, id) && left[id] === right[id]);
 }
-function exactPlayerOwnerMap(left: Record<string, string>, right: Record<string, string>, ids: readonly string[]): boolean {
-  return Object.keys(left).length === ids.length && Object.keys(right).length === ids.length &&
-    ids.every((id) => Object.prototype.hasOwnProperty.call(left, id) && Object.prototype.hasOwnProperty.call(right, id) && left[id] === right[id]);
+function isExactPlayerOwnerMap(value: unknown, ids: readonly string[]): value is Record<string, string> {
+  if (value === null || typeof value !== 'object' || Array.isArray(value)) return false;
+  const record = value as Record<string, unknown>;
+  return Object.keys(record).length === ids.length && ids.every((id) =>
+    Object.prototype.hasOwnProperty.call(record, id) && typeof record[id] === 'string' && record[id]!.length > 0);
+}
+function exactPlayerOwnerMap(left: unknown, right: unknown, ids: readonly string[]): boolean {
+  return isExactPlayerOwnerMap(left, ids) && isExactPlayerOwnerMap(right, ids) && ids.every((id) => left[id] === right[id]);
+}
+function livePlayerOwnersMatchFrozen(s: GameState, frozen: unknown, ids: readonly string[]): boolean {
+  if (!isExactPlayerOwnerMap(frozen, ids)) return false;
+  return ids.every((instanceId) => {
+    const current = s.cards.find((candidate) => candidate.instanceId === instanceId);
+    return !!current && current.ownerPlayerId === frozen[instanceId];
+  });
 }
 function stageNextCombatOpponentPowerVpRewardDecision(s: GameState): void {
   const r = runtime(s);
@@ -3821,11 +3833,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
               new Set(d.candidates).size !== d.candidates.length || d.candidates.length < 2 ||
               !Array.isArray(selected) || selected.length !== 1 || !d.candidates.includes(selected[0]!) ||
               !exactPlayerArray(qualifyingOpponentCloseToOneCardIds(s, meta.decisionPlayerId), meta.qualifyingCardIds) ||
-              Object.keys(meta.qualifyingCardOwners).length !== meta.qualifyingCardIds.length ||
-              meta.qualifyingCardIds.some((instanceId) => {
-                const current = s.cards.find((candidate) => candidate.instanceId === instanceId);
-                return !current || current.ownerPlayerId !== meta.qualifyingCardOwners[instanceId];
-              })) {
+              !livePlayerOwnersMatchFrozen(s, meta.qualifyingCardOwners, meta.qualifyingCardIds)) {
             reject('resolution_failed', 'Corrupt or stale opponent close-to-one interaction state');
           }
           const selectedCardId = selected[0]!;
