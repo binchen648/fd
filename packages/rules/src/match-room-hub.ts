@@ -7,6 +7,7 @@ import {
   type MatchRoomSnapshot,
 } from './match-room';
 import type { AbilityCommand, DispatchResult } from './ability/types';
+import { revokeOpponentCloseToOnePersistenceTrust } from './ability/opponent-close-to-one-authority';
 
 export interface MatchRoomHubSnapshot {
   version: 1;
@@ -121,7 +122,11 @@ export class MatchRoomHub {
   restoreRoom(roomId: string, snapshot: MatchRoomSnapshot): MatchRoomProjection {
     if (snapshot.roomId !== roomId) throw new Error(`Restore room id mismatch: expected ${roomId}, got ${snapshot.roomId}`);
     const existing = this.getRoom(roomId);
-    const restored = restoreMatchRoom(snapshot, existing.getPersistenceContext());
+    const existingPersistence = existing.getPersistenceContext();
+    const restored = restoreMatchRoom(snapshot, existingPersistence);
+    if (!restored.session && existingPersistence.persistenceScope) {
+      revokeOpponentCloseToOnePersistenceTrust(existingPersistence.persistenceScope);
+    }
     this.rooms.set(roomId, restored);
     this.bump(roomId, 'room_restored');
     return restored.getProjection(restored.hostClientId);
@@ -132,10 +137,27 @@ export class MatchRoomHub {
     const restoredRooms = new Map<string, MatchRoom>();
     for (const roomSnapshot of snapshot.rooms) {
       const existing = this.rooms.get(roomSnapshot.roomId);
-      const room = restoreMatchRoom(roomSnapshot, existing?.getPersistenceContext());
+      const room = restoreMatchRoom(roomSnapshot, existing?.getPersistenceContext(), false);
       if (restoredRooms.has(room.roomId)) throw new Error(`Duplicate room in restore snapshot: ${room.roomId}`);
       restoredRooms.set(room.roomId, room);
     }
+
+    // Trust mutation is deliberately deferred until every candidate room has validated.
+    const authoritativeSessionScopes = new Set<string>();
+    for (const room of restoredRooms.values()) {
+      const scope = room.getPersistenceContext().persistenceScope;
+      if (room.session && scope) {
+        authoritativeSessionScopes.add(scope);
+        room.session.reconcileReplayPersistenceTrust();
+      }
+    }
+    for (const room of this.rooms.values()) {
+      const scope = room.getPersistenceContext().persistenceScope;
+      if (scope && !authoritativeSessionScopes.has(scope)) {
+        revokeOpponentCloseToOnePersistenceTrust(scope);
+      }
+    }
+
     this.rooms = restoredRooms;
     this.roomVersions = new Map();
     for (const roomId of this.rooms.keys()) this.bump(roomId, 'room_restored');

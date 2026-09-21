@@ -525,6 +525,13 @@ export class MatchSession {
     return this.projectToClientState(playerId);
   }
 
+  reconcileReplayPersistenceTrust(): void {
+    pruneOpponentCloseToOneTrustedReplayTransactions(
+      this.persistenceScope,
+      this.replaySnapshots.map((candidate) => candidate.checkpointId),
+    );
+  }
+
   dispatchPlayerAction(playerId: string, command: AbilityCommand): DispatchResult {
     if (command.type === 'deploy_player') return this.dispatchDeployPlayer(playerId, command.locationId as LocationId);
     const privateInteractionMutation = command.type === 'choose_target' &&
@@ -1612,6 +1619,7 @@ export function createMatchSession(config?: MatchSessionConfig): MatchSession {
 export function restoreMatchSession(
   snapshot: MatchSessionSnapshot,
   config: Pick<MatchSessionConfig, 'persistenceSecret' | 'persistenceScope'> = {},
+  reconcileReplayTrust = true,
 ): MatchSession {
   if (snapshot.version !== 1) throw new Error(`Unsupported MatchSession snapshot version: ${snapshot.version}`);
   const persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
@@ -1638,6 +1646,7 @@ export function restoreMatchSession(
   session.battleHistory = structuredClone(snapshot.battleHistory);
   session.stopReason = snapshot.stopReason;
   session.rejection = snapshot.rejection ? structuredClone(snapshot.rejection) : undefined;
+  if (reconcileReplayTrust) session.reconcileReplayPersistenceTrust();
   return session;
 }
 

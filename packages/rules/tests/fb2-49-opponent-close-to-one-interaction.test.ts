@@ -918,6 +918,11 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(badRoom.session.dispatchPlayerAction('p1', { type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID }).ok).toBe(true);
 
     const snapshot: any = structuredClone(hub.serialize());
+    const goodSnapshot = snapshot.rooms.find((room: any) => room.roomId === 'fb2-49-hub-good');
+    goodSnapshot.session.replay = goodSnapshot.session.replay.filter((entry: any) => entry.id !== goodLiveCheckpointId);
+    goodSnapshot.session.replaySnapshots = goodSnapshot.session.replaySnapshots.filter(
+      (entry: any) => entry.checkpointId !== goodLiveCheckpointId,
+    );
     const badSnapshot = snapshot.rooms.find((room: any) => room.roomId === 'fb2-49-hub-bad');
     badSnapshot.session.opponentCloseToOneServerAuthority.mac = '0'.repeat(64);
     const goodRoomIdentity = hub.getRoom('fb2-49-hub-good');
@@ -929,6 +934,97 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(hub.version('fb2-49-hub-good')).toBe(goodVersion);
     expect(hub.version('fb2-49-hub-bad')).toBe(badVersion);
     expect(goodRoomIdentity.session!.restoreToCheckpoint(goodLiveCheckpointId)).toBe(true);
+  });
+
+  it('revokes replay trust for a checkpoint removed by a successful older-session restore', () => {
+    const scope = 'fb2-49-persistence-scope:' + '66'.repeat(32);
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    const session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    session.state = state;
+    const olderSnapshot = structuredClone(session.serializeSession());
+
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID,
+    }).ok).toBe(true);
+    const removedCheckpointId = session.replay.at(-1)!.id;
+    const removedReplay = structuredClone(session.replay.find((entry) => entry.id === removedCheckpointId)!);
+    const removedReplaySnapshot = structuredClone(
+      session.replaySnapshots.find((entry) => entry.checkpointId === removedCheckpointId)!,
+    );
+    const decisionId = session.state.abilityRuntime!.pendingDecision!.id;
+    expect(session.dispatchPlayerAction('p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] }).ok).toBe(true);
+
+    const restoredOlder = rules.restoreMatchSession(olderSnapshot, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    expect(restoredOlder.replaySnapshots.some((entry) => entry.checkpointId === removedCheckpointId)).toBe(false);
+
+    const resurrection: any = structuredClone(restoredOlder.serializeSession());
+    resurrection.replay.push(removedReplay);
+    resurrection.replaySnapshots.push(removedReplaySnapshot);
+    const restoredResurrection = rules.restoreMatchSession(resurrection, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    expect(restoredResurrection.restoreToCheckpoint(removedCheckpointId)).toBe(false);
+    expect(restoredResurrection.state.abilityRuntime?.pendingDecision).toBeUndefined();
+  });
+
+  it('revokes current and replay trust when a successful Hub restore removes an authoritative room', () => {
+    const scope = 'fb2-49-persistence-scope:' + '77'.repeat(32);
+    const hub = rules.createMatchRoomHub();
+    hub.createRoom({ roomId: 'fb2-49-remove-room', hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope });
+    const room = hub.getRoom('fb2-49-remove-room');
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    room.session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    room.session.state = state;
+    room.status = 'running';
+    expect(room.session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID,
+    }).ok).toBe(true);
+
+    hub.restore({ version: 1, rooms: [] });
+    expect(() => hub.getRoom('fb2-49-remove-room')).toThrow('Unknown room');
+
+    const cleanSnapshot = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    }).serializeSession();
+    expect(() => rules.restoreMatchSession(cleanSnapshot, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    })).not.toThrow();
+  });
+
+  it('revokes room trust when a successful single-room replacement removes its session', () => {
+    const scope = 'fb2-49-persistence-scope:' + '88'.repeat(32);
+    const roomId = 'fb2-49-replace-room';
+    const hub = rules.createMatchRoomHub();
+    hub.createRoom({ roomId, hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope });
+    const room = hub.getRoom(roomId);
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    room.session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    room.session.state = state;
+    room.status = 'running';
+    expect(room.session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID,
+    }).ok).toBe(true);
+
+    const replacement: any = structuredClone(room.serializeRoom());
+    replacement.status = 'lobby';
+    delete replacement.session;
+    hub.restoreRoom(roomId, replacement);
+    expect(hub.getRoom(roomId).session).toBeUndefined();
+
+    const cleanSnapshot = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    }).serializeSession();
+    expect(() => rules.restoreMatchSession(cleanSnapshot, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    })).not.toThrow();
   });
 
   it('does not commit replay_restored or bump Hub version when the checkpoint restore returns false', () => {

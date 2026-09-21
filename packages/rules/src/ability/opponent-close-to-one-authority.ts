@@ -301,6 +301,21 @@ export function pruneOpponentCloseToOneTrustedReplayTransactions(
   }
 }
 
+/** Revoke all current and replay trust owned by one authoritative room/match scope. */
+export function revokeOpponentCloseToOnePersistenceTrust(persistenceScope: string): void {
+  const storage = browserPersistenceStorage();
+  if (storage) {
+    try {
+      storage.setItem(transactionStorageKey(persistenceScope), '');
+      storage.setItem(replayTransactionsStorageKey(persistenceScope), '{}');
+    } catch {
+      // Process-private trust is still revoked below.
+    }
+  }
+  processTransactionByScope.delete(persistenceScope);
+  processReplayTransactionsByScope.delete(persistenceScope);
+}
+
 /**
  * Host-owned persistence secret. In the browser it is stored separately from every room
  * snapshot so ordinary save/reload can resume without making the snapshot self-authenticating.

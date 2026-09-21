@@ -288,6 +288,7 @@ export function createMatchRoom(config?: MatchRoomConfig): MatchRoom {
 export function restoreMatchRoom(
   snapshot: MatchRoomSnapshot,
   persistence: Pick<MatchSessionConfig, 'persistenceSecret' | 'persistenceScope'> = {},
+  reconcileReplayTrust = true,
 ): MatchRoom {
   if (snapshot.version !== 1) throw new Error(`Unsupported MatchRoom snapshot version: ${snapshot.version}`);
   const room = new MatchRoom({
@@ -297,7 +298,9 @@ export function restoreMatchRoom(
     ...persistence,
   });
   const persistenceContext = room.getPersistenceContext();
-  const restoredSession = snapshot.session ? restoreMatchSession(snapshot.session, persistenceContext) : undefined;
+  const restoredSession = snapshot.session
+    ? restoreMatchSession(snapshot.session, persistenceContext, reconcileReplayTrust)
+    : undefined;
   room.status = snapshot.status;
   room.clients = structuredClone(snapshot.clients);
   room.seats = structuredClone(snapshot.seats);
