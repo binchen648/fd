@@ -639,6 +639,33 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(restored.state.abilityRuntime!.cardState['p3-b']).toMatchObject({ active: true, faceDown: true });
   });
 
+  it('rejects transplanting a valid authority capability from a different serialized transaction', () => {
+    const donor = setup();
+    add(donor, 'p2-a', 'p2'); add(donor, 'p2-b', 'p2');
+    expect(activate(donor).ok).toBe(true);
+    const donorHandle = persistOpponentCloseToOneServerAuthority(donor)!;
+
+    const target = setup();
+    add(target, 'p2-a', 'p2'); add(target, 'p2-b', 'p2'); add(target, 'p3-a', 'p3'); add(target, 'p3-b', 'p3');
+    expect(activate(target).ok).toBe(true);
+    const decisionId = target.abilityRuntime!.pendingDecision!.id;
+    target.abilityRuntime!.pendingOpponentCloseToOne!.splice(1, 1);
+    target.abilityRuntime!.pendingOpponentCloseToOne![0].remainingDecisionPlayerIds = ['p2'];
+    target.abilityRuntime!.pendingDecision!.interaction!.remainingDecisionPlayerIds = ['p2'];
+
+    const baseSnapshot = rules.createMatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'] }).serializeSession();
+    const restored = rules.restoreMatchSession({
+      ...baseSnapshot,
+      state: structuredClone(target),
+      opponentCloseToOneServerAuthority: structuredClone(donorHandle),
+    } as any);
+    const before = structuredClone(restored.state);
+    let result: ReturnType<typeof restored.dispatchPlayerAction> | undefined;
+    expect(() => { result = restored.dispatchPlayerAction('p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] }); }).not.toThrow();
+    expect(result?.ok).toBe(false);
+    expect(restored.state).toEqual(before);
+  });
+
   it('fails closed without raw exceptions for malformed persisted authority handles', () => {
     const malformedAuthorityValues: unknown[] = [
       null, [], 'forged', 7, true, {}, { nextIndex: 0 },

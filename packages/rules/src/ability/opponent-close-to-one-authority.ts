@@ -21,7 +21,18 @@ export interface OpponentCloseToOneServerAuthorityHandle {
 
 const AUTHORITY_TOKEN_PREFIX = 'fb2-49-authority:';
 const authorityByState = new WeakMap<GameState, OpponentCloseToOneServerAuthoritySnapshot>();
-const persistedAuthorityByToken = new Map<string, OpponentCloseToOneServerAuthoritySnapshot>();
+interface PersistedOpponentCloseToOneAuthorityRecord {
+  authority: OpponentCloseToOneServerAuthoritySnapshot;
+  stateBinding: string;
+}
+const persistedAuthorityByToken = new Map<string, PersistedOpponentCloseToOneAuthorityRecord>();
+
+function exactStateBinding(state: GameState): string {
+  // This string never leaves the server registry. Exact JSON equality is deliberately
+  // stricter than semantic equality: any client-side snapshot rewrite invalidates the
+  // capability instead of being normalized back into a trusted transaction.
+  return JSON.stringify(state);
+}
 
 function createAuthorityToken(): string {
   const cryptoApi = globalThis.crypto;
@@ -95,7 +106,10 @@ export function persistOpponentCloseToOneServerAuthority(
   const authority = authorityByState.get(state);
   if (!authority) return undefined;
   const token = createAuthorityToken();
-  persistedAuthorityByToken.set(token, cloneAuthority(authority));
+  persistedAuthorityByToken.set(token, {
+    authority: cloneAuthority(authority),
+    stateBinding: exactStateBinding(state),
+  });
   return { token };
 }
 
@@ -111,8 +125,8 @@ export function restoreOpponentCloseToOneServerAuthority(
   authorityByState.delete(state);
   if (handle === undefined) return true;
   if (!isExactAuthorityHandle(handle)) return false;
-  const authority = persistedAuthorityByToken.get(handle.token);
-  if (!authority) return false;
-  authorityByState.set(state, cloneAuthority(authority));
+  const record = persistedAuthorityByToken.get(handle.token);
+  if (!record || record.stateBinding !== exactStateBinding(state)) return false;
+  authorityByState.set(state, cloneAuthority(record.authority));
   return true;
 }
