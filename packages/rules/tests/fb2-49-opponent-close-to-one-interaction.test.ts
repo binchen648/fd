@@ -830,6 +830,64 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(hub.version(roomId)).toBe(beforeVersion);
   });
 
+  it('rejects missing seal even when a forged snapshot deletes every serialized live-transaction marker', () => {
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    expect(activate(state).ok).toBe(true);
+    const seal = persistOpponentCloseToOneServerAuthority(state, PERSISTENCE_SECRET, PERSISTENCE_SCOPE)!;
+    const baseSnapshot = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+    }).serializeSession();
+    const snapshot: any = { ...baseSnapshot, state: structuredClone(state), opponentCloseToOneServerAuthority: structuredClone(seal) };
+    delete snapshot.opponentCloseToOneServerAuthority;
+    snapshot.state.abilityRuntime.pendingOpponentCloseToOne = [];
+    delete snapshot.state.abilityRuntime.pendingDecision;
+    expect(() => rules.restoreMatchSession(snapshot, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+    })).toThrow('Invalid or missing FB2-49 persisted authority');
+  });
+
+  it('restores a legitimate live replay checkpoint after the transaction has completed and current binding was consumed', () => {
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    const session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+    });
+    session.state = state;
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID,
+    }).ok).toBe(true);
+    const activationCheckpointId = session.replay.at(-1)!.id;
+    expect(session.replaySnapshots.find((candidate) => candidate.checkpointId === activationCheckpointId)?.opponentCloseToOneServerAuthority).toBeDefined();
+    const decisionId = session.state.abilityRuntime!.pendingDecision!.id;
+    expect(session.dispatchPlayerAction('p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] }).ok).toBe(true);
+    expect(session.state.abilityRuntime!.pendingOpponentCloseToOne).toEqual([]);
+    expect(exportOpponentCloseToOneServerAuthority(session.state)).toBeUndefined();
+
+    expect(session.restoreToCheckpoint(activationCheckpointId)).toBe(true);
+    expect(session.state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
+    expect(session.state.abilityRuntime!.pendingOpponentCloseToOne?.map((entry) => entry.decisionPlayerId)).toEqual(['p2']);
+    expect(exportOpponentCloseToOneServerAuthority(session.state)?.entries.map((entry) => entry.decisionPlayerId)).toEqual(['p2']);
+  });
+
+  it('restores a legal live room through Hub trusted context while direct Node restore with a fresh scope fails closed', () => {
+    const roomId = 'fb2-49-context-room';
+    const hub = rules.createMatchRoomHub();
+    hub.createRoom({ roomId, hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE });
+    const room = hub.getRoom(roomId);
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    expect(activate(state).ok).toBe(true);
+    room.session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+    });
+    room.session.state = state;
+    room.status = 'running';
+    const snapshot = room.serializeRoom();
+
+    expect(() => rules.restoreMatchRoom(snapshot)).toThrow('Invalid or missing FB2-49 persisted authority');
+    const restoredProjection = hub.restoreRoom(roomId, snapshot);
+    expect(restoredProjection.roomId).toBe(roomId);
+    expect(hub.getRoom(roomId).session?.state.abilityRuntime?.pendingDecision?.controllerId).toBe('p2');
+  });
+
   it('treats a live close-forbid as an atomic failure instead of partially closing the frozen set', () => {
     const state = setup();
     add(state, 'p2-keep', 'p2'); add(state, 'p2-protected', 'p2', PROTECTED_DEF); add(state, 'p2-other', 'p2');

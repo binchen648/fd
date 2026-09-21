@@ -9,6 +9,7 @@ import {
   createOpponentCloseToOnePersistenceScope,
   resolveOpponentCloseToOnePersistenceSecret,
   persistOpponentCloseToOneServerAuthority,
+  pruneOpponentCloseToOneTrustedReplayTransactions,
   restoreOpponentCloseToOneServerAuthority,
   type OpponentCloseToOneServerAuthoritySeal,
 } from './ability/opponent-close-to-one-authority';
@@ -192,8 +193,9 @@ function persistedOpponentCloseToOneAuthorityField(
   state: GameState,
   persistenceSecret: string,
   persistenceScope: string,
+  replayCheckpointId?: string,
 ): { opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySeal } {
-  const seal = persistOpponentCloseToOneServerAuthority(state, persistenceSecret, persistenceScope);
+  const seal = persistOpponentCloseToOneServerAuthority(state, persistenceSecret, persistenceScope, replayCheckpointId);
   return seal ? { opponentCloseToOneServerAuthority: seal } : {};
 }
 const masterCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'master');
@@ -920,6 +922,7 @@ export class MatchSession {
       snapshot.opponentCloseToOneServerAuthority,
       this.persistenceSecret,
       this.persistenceScope,
+      checkpointId,
     )) return false;
     this.state = candidateState;
     this.logs = structuredClone(snapshot.logs);
@@ -1578,13 +1581,17 @@ export class MatchSession {
     this.replaySnapshots.push({
       checkpointId: checkpoint.id,
       state: structuredClone(state),
-      ...persistedOpponentCloseToOneAuthorityField(state, this.persistenceSecret, this.persistenceScope),
+      ...persistedOpponentCloseToOneAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
       logs: structuredClone(this.logs),
       battleHistory: structuredClone(this.battleHistory),
       consumedDirectiveCount: this.consumedDirectiveCount,
       ...(this.stopReason ? { stopReason: this.stopReason } : {}),
       ...(this.rejection ? { rejection: structuredClone(this.rejection) } : {}),
     });
+    pruneOpponentCloseToOneTrustedReplayTransactions(
+      this.persistenceScope,
+      this.replaySnapshots.map((candidate) => candidate.checkpointId),
+    );
   }
 
   private modeState(): Record<string, unknown> {

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { WebSocket } from 'ws';
 import { createMatchSession, type RoomHttpResponse, type ServerRoomMessage } from '@fd/rules';
 
@@ -105,6 +105,21 @@ describe('match websocket server', () => {
       expect(afterStale.projection.match?.logs).toHaveLength(logCount);
     }
     hostSocket.socket.close();
+  });
+
+  it('routes HTTP room restore through the Hub trusted-context restore boundary', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const httpBase = `http://127.0.0.1:${port}`;
+    await postJson<RoomHttpResponse>(`${httpBase}/rooms`, {
+      roomId: 'restore-room', hostClientId: 'restore-host', hostName: 'Host', seed: 20260905,
+    });
+    const snapshot = serverHandle.hub.getRoom('restore-room').serializeRoom();
+    const restoreSpy = vi.spyOn(serverHandle.hub, 'restoreRoom');
+    const restored = await postJson<RoomHttpResponse>(`${httpBase}/rooms/restore-room/restore`, { snapshot });
+    expect(restoreSpy).toHaveBeenCalledTimes(1);
+    expect(restoreSpy).toHaveBeenCalledWith('restore-room', snapshot);
+    expect(restored.roomId).toBe('restore-room');
   });
 
   it('syncs room projections across browser clients without leaking private hands', async () => {

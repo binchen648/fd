@@ -116,6 +116,15 @@ export class MatchRoomHub {
     };
   }
 
+  restoreRoom(roomId: string, snapshot: MatchRoomSnapshot): MatchRoomProjection {
+    if (snapshot.roomId !== roomId) throw new Error(`Restore room id mismatch: expected ${roomId}, got ${snapshot.roomId}`);
+    const existing = this.getRoom(roomId);
+    const restored = restoreMatchRoom(snapshot, existing.getPersistenceContext());
+    this.rooms.set(roomId, restored);
+    this.bump(roomId, 'room_restored');
+    return restored.getProjection(restored.hostClientId);
+  }
+
   restore(snapshot: MatchRoomHubSnapshot): void {
     if (snapshot.version !== 1) throw new Error(`Unsupported MatchRoomHub snapshot version: ${snapshot.version}`);
     const restoredRooms = new Map<string, MatchRoom>();

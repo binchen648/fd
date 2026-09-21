@@ -23,7 +23,9 @@ const AUTHORITY_TRANSACTION_PREFIX = 'fb2-49-transaction:';
 const AUTHORITY_BROWSER_STORAGE_KEY = 'fd.rules.fb2-49.persistence-secret.v1';
 const AUTHORITY_BROWSER_SCOPE_KEY_PREFIX = 'fd.rules.fb2-49.persistence-scope.v1:';
 const AUTHORITY_BROWSER_TRANSACTION_KEY_PREFIX = 'fd.rules.fb2-49.transaction.v1:';
+const AUTHORITY_BROWSER_REPLAY_TRANSACTION_KEY_PREFIX = 'fd.rules.fb2-49.replay-transactions.v1:';
 const processTransactionByScope = new Map<string, string>();
+const processReplayTransactionsByScope = new Map<string, Map<string, string>>();
 interface OpponentCloseToOneServerAuthorityRecord {
   authority: OpponentCloseToOneServerAuthoritySnapshot;
   transactionId: string;
@@ -223,6 +225,82 @@ function forgetTrustedTransaction(persistenceScope: string | undefined, transact
   if (processTransactionByScope.get(persistenceScope) === transactionId) processTransactionByScope.delete(persistenceScope);
 }
 
+function replayTransactionsStorageKey(persistenceScope: string): string {
+  return AUTHORITY_BROWSER_REPLAY_TRANSACTION_KEY_PREFIX + sha256Hex(persistenceScope);
+}
+
+function readBrowserReplayTransactions(persistenceScope: string): Record<string, string> {
+  const storage = browserPersistenceStorage();
+  if (!storage) return {};
+  try {
+    const raw = storage.getItem(replayTransactionsStorageKey(persistenceScope));
+    if (!raw) return {};
+    const parsed: unknown = JSON.parse(raw);
+    if (!isPlainRecord(parsed)) return {};
+    const bindings: Record<string, string> = {};
+    for (const [checkpointId, transactionId] of Object.entries(parsed)) {
+      if (/^checkpoint:\d+$/.test(checkpointId) && typeof transactionId === 'string' && /^fb2-49-transaction:[0-9a-f]{64}$/.test(transactionId)) {
+        bindings[checkpointId] = transactionId;
+      }
+    }
+    return bindings;
+  } catch {
+    return {};
+  }
+}
+
+function rememberTrustedReplayTransaction(persistenceScope: string, checkpointId: string, transactionId: string): void {
+  if (!/^checkpoint:\d+$/.test(checkpointId)) throw new Error('Invalid FB2-49 replay checkpoint id');
+  const storage = browserPersistenceStorage();
+  if (storage) {
+    try {
+      const bindings = readBrowserReplayTransactions(persistenceScope);
+      bindings[checkpointId] = transactionId;
+      storage.setItem(replayTransactionsStorageKey(persistenceScope), JSON.stringify(bindings));
+      return;
+    } catch {
+      // Fall through to process-private replay binding.
+    }
+  }
+  let bindings = processReplayTransactionsByScope.get(persistenceScope);
+  if (!bindings) {
+    bindings = new Map();
+    processReplayTransactionsByScope.set(persistenceScope, bindings);
+  }
+  bindings.set(checkpointId, transactionId);
+}
+
+function trustedReplayTransaction(persistenceScope: string, checkpointId: string): string | undefined {
+  const storage = browserPersistenceStorage();
+  if (storage) {
+    const value = readBrowserReplayTransactions(persistenceScope)[checkpointId];
+    if (value) return value;
+  }
+  return processReplayTransactionsByScope.get(persistenceScope)?.get(checkpointId);
+}
+
+export function pruneOpponentCloseToOneTrustedReplayTransactions(
+  persistenceScope: string,
+  checkpointIds: readonly string[],
+): void {
+  const keep = new Set(checkpointIds);
+  const storage = browserPersistenceStorage();
+  if (storage) {
+    try {
+      const bindings = readBrowserReplayTransactions(persistenceScope);
+      const pruned = Object.fromEntries(Object.entries(bindings).filter(([checkpointId]) => keep.has(checkpointId)));
+      storage.setItem(replayTransactionsStorageKey(persistenceScope), JSON.stringify(pruned));
+    } catch {
+      // Process-private fallback is pruned below as well.
+    }
+  }
+  const processBindings = processReplayTransactionsByScope.get(persistenceScope);
+  if (processBindings) {
+    for (const checkpointId of processBindings.keys()) if (!keep.has(checkpointId)) processBindings.delete(checkpointId);
+    if (processBindings.size === 0) processReplayTransactionsByScope.delete(persistenceScope);
+  }
+}
+
 /**
  * Host-owned persistence secret. In the browser it is stored separately from every room
  * snapshot so ordinary save/reload can resume without making the snapshot self-authenticating.
@@ -303,6 +381,7 @@ export function persistOpponentCloseToOneServerAuthority(
   state: GameState,
   persistenceSecret: string,
   persistenceScope: string,
+  replayCheckpointId?: string,
 ): OpponentCloseToOneServerAuthoritySeal | undefined {
   const record = authorityByState.get(state);
   if (!record) return undefined;
@@ -311,6 +390,7 @@ export function persistOpponentCloseToOneServerAuthority(
   if (record.persistenceScope && record.persistenceScope !== persistenceScope) throw new Error('FB2-49 authority scope changed during transaction');
   record.persistenceScope = persistenceScope;
   rememberTrustedTransaction(persistenceScope, record.transactionId);
+  if (replayCheckpointId) rememberTrustedReplayTransaction(persistenceScope, replayCheckpointId, record.transactionId);
   const normalized = normalizedAuthority(record.authority);
   const binding = stateBinding(state);
   const payload = sealPayload(persistenceScope, record.transactionId, binding, normalized);
@@ -332,15 +412,19 @@ export function restoreOpponentCloseToOneServerAuthority(
   seal: unknown,
   persistenceSecret: string,
   persistenceScope: string,
+  replayCheckpointId?: string,
 ): boolean {
+  const trustedTransaction = replayCheckpointId
+    ? trustedReplayTransaction(persistenceScope, replayCheckpointId)
+    : trustedTransactionForScope(persistenceScope);
   if (seal === undefined) {
-    if (hasSerializedLiveOpponentCloseToOneTransaction(state)) return false;
+    if (trustedTransaction || hasSerializedLiveOpponentCloseToOneTransaction(state)) return false;
     authorityByState.delete(state);
     return true;
   }
   if (!isOpponentCloseToOnePersistenceSecret(persistenceSecret) ||
       !isOpponentCloseToOnePersistenceScope(persistenceScope) || !isExactAuthoritySeal(seal)) return false;
-  if (trustedTransactionForScope(persistenceScope) !== seal.transactionId) return false;
+  if (trustedTransaction !== seal.transactionId) return false;
   const binding = stateBinding(state);
   if (seal.stateBinding !== binding) return false;
   const authority = normalizedAuthority(seal.authority);
