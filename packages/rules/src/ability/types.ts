@@ -178,11 +178,12 @@ export interface OpponentCloseToOneInteractionMetadata {
   kind: 'opponent_close_non_residual_to_one_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
   sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
   initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; battlefieldId: string; qualifyingCardIds: string[];
+  qualifyingCardOwners: Record<string, PlayerId>;
   constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
 }
 export interface PendingOpponentCloseToOne {
   initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; sourceCardId: string; abilityId: string;
-  battlefieldId: string; qualifyingCardIds: string[];
+  battlefieldId: string; qualifyingCardIds: string[]; qualifyingCardOwners: Record<string, PlayerId>;
 }
 export type PendingInteractionMetadata =
   PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata | SameBattlefieldPrivateHandReturnInteractionMetadata |

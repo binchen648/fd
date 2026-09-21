@@ -246,6 +246,23 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     }
   });
 
+  it('fails closed mutation-free when only frozen qualifying-card ownership provenance drifts', () => {
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    expect(activate(state).ok).toBe(true);
+    const interaction = state.abilityRuntime!.pendingDecision!.interaction as any;
+    expect(interaction.qualifyingCardOwners).toEqual({ 'p2-a': 'p2', 'p2-b': 'p2' });
+    expect(state.abilityRuntime!.pendingOpponentCloseToOne?.[0]?.qualifyingCardOwners).toEqual({ 'p2-a': 'p2', 'p2-b': 'p2' });
+    const drifted = state.cards.find((card) => card.instanceId === 'p2-b')!;
+    drifted.ownerPlayerId = 'p3';
+    expect(drifted.controllerPlayerId).toBe('p2');
+    expect(drifted.zone).toBe('attack_area');
+    expect(state.abilityRuntime!.cardState['p2-b']).toMatchObject({ active: true, faceDown: false });
+    const before = structuredClone(state);
+    expect(choose(state, 'p2', ['p2-a']).ok).toBe(false);
+    expect(state).toEqual(before);
+    expect(state.abilityRuntime!.cardState['p2-b']).toMatchObject({ active: true, faceDown: false });
+  });
+
   it('treats a live close-forbid as an atomic failure instead of partially closing the frozen set', () => {
     const state = setup();
     add(state, 'p2-keep', 'p2'); add(state, 'p2-protected', 'p2', PROTECTED_DEF); add(state, 'p2-other', 'p2');

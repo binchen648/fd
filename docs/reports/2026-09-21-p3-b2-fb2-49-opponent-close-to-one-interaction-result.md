@@ -94,9 +94,9 @@ No Task Index modification belongs in the B2 Candidate because A already dispatc
 - battlefield/source/card/controller/metadata/revision drift fails mutation-free;
 - a live FB2-42 close-forbid causes an atomic failure with no partial close.
 
-Focused FB2-49 suite: **7/7 PASS**.
+Focused FB2-49 suite: **8/8 PASS**.
 
-Compatibility suite covering FB2-49, FB2-42, interaction projection, room-boundary/private interaction, card-action close and battle cleanup: **7 files / 43 tests PASS**.
+Compatibility suite covering FB2-49, FB2-42, interaction projection, match-room/hub, same-battlefield private interaction, card-action close and battle cleanup: **8 files / 52 tests PASS**.
 
 ## Validation / B2 recertification
 
@@ -105,9 +105,9 @@ Compatibility suite covering FB2-49, FB2-42, interaction projection, room-bounda
 Final pre-Candidate gates:
 
 - `npm.cmd run typecheck` — PASS.
-- focused FB2-49 — **7/7 PASS**.
-- focused/adjacent compatibility — **7 files / 43 tests PASS**.
-- official `npm.cmd run test:ci -- --maxWorkers=2` — **177 files / 1276 tests PASS**.
+- focused FB2-49 — **8/8 PASS**.
+- focused/adjacent compatibility — **8 files / 52 tests PASS**.
+- official `npm.cmd run test:ci -- --maxWorkers=2` — **177 files / 1277 tests PASS**.
 - `npm.cmd run content:validate` — PASS, **7 masters / 7 servants / 20 events / 0 blocking issues**.
 - `npm.cmd run verify:generated-content` — PASS with unchanged hashes:
   - library `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`;
@@ -120,6 +120,32 @@ Final pre-Candidate gates:
 - validation artifacts `artifacts/phase3-skill-coverage.json` and `artifacts/phase3-a02-automation-audit.json` were restored byte-for-byte to their exact Base Git blobs after validation.
 - post-gate material recount remains **`146/944`**, target Astolfo count `0`, duplicates `0`.
 - `git diff --check` — PASS.
+
+## Reviewer revision — frozen qualifying-card owner provenance
+
+Fresh independent R on PR `#415`, Candidate `80509744f868aafda06e4d5731fe12b2edf79163`, returned `IMPLEMENTATION_NEEDS_REVISION` at `https://github.com/binchen648/fd/pull/415#issuecomment-5754379961`. The sole finding was that the frozen keep-one transaction bound qualifying card ids but not each card's `ownerPlayerId`, so an owner-only drift could survive the existing controller/zone/active/face/residual revalidation.
+
+The minimum correction is limited to FB2-49 provenance state and its focused regression:
+
+- queue creation now freezes `qualifyingCardOwners: instanceId -> ownerPlayerId` alongside the already-frozen qualifying ids;
+- the same owner snapshot is copied into the server-owned interaction metadata and exact queue/metadata equality is required at settlement;
+- before accepting the keep choice, every frozen qualifying instance — both the selected keep card and every would-be closed card — must still have the exact frozen owner;
+- qualification remains control-based (`controllerPlayerId === decisionPlayerId`); ownership is **not** narrowed to `ownerPlayerId === decisionPlayerId`;
+- the new regression changes only one frozen qualifying card's owner while controller, zone, active, face and residual state remain valid, then proves rejection is mutation-free.
+
+Revision recertification:
+
+- `npm.cmd run typecheck` — PASS.
+- focused FB2-49 — **8/8 PASS**.
+- Reviewer-requested adjacent set — **8 files / 52 tests PASS**.
+- official `npm.cmd run test:ci -- --maxWorkers=2` — **177 files / 1277 tests PASS**.
+- content validation — **7 masters / 7 servants / 20 events / 0 blocking issues**.
+- generated-content hashes unchanged (`866a5b...`, `fb6938...`, `b1bb89...`).
+- exact Locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` — PASS.
+- client build — PASS with only the existing Vite warnings.
+- coverage/audit remain unchanged: `127/169/281`, `newRuntimeSemanticRouted=22`, `dualRuntime=0`, `notClassifiable=112`, `legacyResolveEffect=144`, `legacyExecuteAbility=3`, `promotionFindings=20`.
+- validation artifacts restored byte-for-byte to the pre-revision Candidate blobs.
+- formal migration remains **151/944**, **793** remaining; FB2-49 remains zero-credit.
 
 ## Next gate
 

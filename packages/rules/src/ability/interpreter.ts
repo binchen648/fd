@@ -1814,6 +1814,10 @@ function exactPlayerPowerMap(left: Record<string, number>, right: Record<string,
   return Object.keys(left).length === ids.length && Object.keys(right).length === ids.length &&
     ids.every((id) => Object.prototype.hasOwnProperty.call(left, id) && Object.prototype.hasOwnProperty.call(right, id) && left[id] === right[id]);
 }
+function exactPlayerOwnerMap(left: Record<string, string>, right: Record<string, string>, ids: readonly string[]): boolean {
+  return Object.keys(left).length === ids.length && Object.keys(right).length === ids.length &&
+    ids.every((id) => Object.prototype.hasOwnProperty.call(left, id) && Object.prototype.hasOwnProperty.call(right, id) && left[id] === right[id]);
+}
 function stageNextCombatOpponentPowerVpRewardDecision(s: GameState): void {
   const r = runtime(s);
   if (r.pendingDecision) return;
@@ -1880,6 +1884,7 @@ function stageNextOpponentCloseToOneDecision(s: GameState): void {
       sourceCardInstanceId: pending.sourceCardId, abilityId: pending.abilityId, createdRevision: r.revision + 1,
       continuationRef: `${id}:continuation`, initiatingControllerId: pending.initiatingControllerId,
       decisionPlayerId: pending.decisionPlayerId, battlefieldId: pending.battlefieldId, qualifyingCardIds: [...pending.qualifyingCardIds],
+      qualifyingCardOwners: { ...pending.qualifyingCardOwners },
       constraints: { kind: 'target', targetKind: 'card', min: 1, max: 1, distinct: true },
     },
   };
@@ -1901,8 +1906,10 @@ function stageOpponentCloseToOne(s: GameState, ctx: EffectContext, a: AuthoringA
   for (const opponent of opponents) {
     const qualifyingCardIds = qualifyingOpponentCloseToOneCardIds(s, opponent.id);
     if (qualifyingCardIds.length < 2) continue;
+    const qualifyingCardOwners = Object.fromEntries(qualifyingCardIds.map((instanceId) =>
+      [instanceId, card(s, instanceId).ownerPlayerId]));
     queue.push({ initiatingControllerId: controller.id, decisionPlayerId: opponent.id, sourceCardId: ctx.sourceCardId,
-      abilityId: ctx.abilityId, battlefieldId, qualifyingCardIds });
+      abilityId: ctx.abilityId, battlefieldId, qualifyingCardIds, qualifyingCardOwners });
   }
   stageNextOpponentCloseToOneDecision(s);
 }
@@ -3804,6 +3811,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
               pending.initiatingControllerId !== meta.initiatingControllerId || pending.decisionPlayerId !== meta.decisionPlayerId ||
               pending.sourceCardId !== meta.sourceCardInstanceId || pending.abilityId !== meta.abilityId ||
               pending.battlefieldId !== meta.battlefieldId || !exactPlayerArray(pending.qualifyingCardIds, meta.qualifyingCardIds) ||
+              !exactPlayerOwnerMap(pending.qualifyingCardOwners, meta.qualifyingCardOwners, meta.qualifyingCardIds) ||
               meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
               meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
               meta.sourceCardInstanceId !== d.context.sourceCardId || meta.abilityId !== d.context.abilityId ||
@@ -3812,7 +3820,12 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
               d.min !== 1 || d.max !== 1 || !exactPlayerArray(d.candidates, meta.qualifyingCardIds) ||
               new Set(d.candidates).size !== d.candidates.length || d.candidates.length < 2 ||
               !Array.isArray(selected) || selected.length !== 1 || !d.candidates.includes(selected[0]!) ||
-              !exactPlayerArray(qualifyingOpponentCloseToOneCardIds(s, meta.decisionPlayerId), meta.qualifyingCardIds)) {
+              !exactPlayerArray(qualifyingOpponentCloseToOneCardIds(s, meta.decisionPlayerId), meta.qualifyingCardIds) ||
+              Object.keys(meta.qualifyingCardOwners).length !== meta.qualifyingCardIds.length ||
+              meta.qualifyingCardIds.some((instanceId) => {
+                const current = s.cards.find((candidate) => candidate.instanceId === instanceId);
+                return !current || current.ownerPlayerId !== meta.qualifyingCardOwners[instanceId];
+              })) {
             reject('resolution_failed', 'Corrupt or stale opponent close-to-one interaction state');
           }
           const selectedCardId = selected[0]!;
