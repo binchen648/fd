@@ -89,33 +89,37 @@ describe('Phase 3 promotion governance preflight', () => {
 
   it('rejects stale reviewer candidate evidence when ancestry verification is requested', () => {
     const currentHead = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+    const synchronization = execFileSync('git', ['rev-parse', 'HEAD~1'], { encoding: 'utf8' }).trim();
+    const existingReview = execFileSync('git', ['rev-parse', 'HEAD~2'], { encoding: 'utf8' }).trim();
     const context = promotionContext({ headSha: currentHead });
     expect(() => validatePhase3Governance(
       context,
       promotionManifest({
         head: { ref: context.headRef, sha: currentHead },
         review: {
-          sha: currentHead,
+          sha: existingReview,
           conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE',
           reviewedCandidateSha: '9999999999999999999999999999999999999999',
         },
-        synchronization: { sha: currentHead },
+        synchronization: { sha: synchronization },
       }),
       { workspaceRoot: process.cwd(), verifyGitAncestry: true },
-    )).toThrow(/review\.reviewedCandidateSha/);
+    )).toThrow(/reviewed candidate/);
   });
 
   it('rejects a missing R review commit even when candidate and synchronization ancestry are current', () => {
     const currentHead = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+    const synchronization = execFileSync('git', ['rev-parse', 'HEAD~1'], { encoding: 'utf8' }).trim();
+    const candidate = execFileSync('git', ['rev-parse', 'HEAD~2'], { encoding: 'utf8' }).trim();
     const context = promotionContext({ headSha: currentHead });
     const manifest = promotionManifest({
       head: { ref: context.headRef, sha: currentHead },
       review: {
         sha: '9999999999999999999999999999999999999999',
         conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE',
-        reviewedCandidateSha: currentHead,
+        reviewedCandidateSha: candidate,
       },
-      synchronization: { sha: currentHead },
+      synchronization: { sha: synchronization },
     });
 
     expect(() => validatePhase3Governance(
@@ -123,6 +127,50 @@ describe('Phase 3 promotion governance preflight', () => {
       manifest,
       { workspaceRoot: process.cwd(), verifyGitAncestry: true },
     )).toThrow(/review\.sha/);
+  });
+
+  it('rejects self-referential Promotion evidence', () => {
+    expect(() => validatePhase3Governance(
+      promotionContext(),
+      promotionManifest({
+        review: { sha: candidateSha, conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE', reviewedCandidateSha: candidateSha },
+      }),
+    )).toThrow(/review.sha must be distinct/);
+
+    expect(() => validatePhase3Governance(
+      promotionContext(),
+      promotionManifest({
+        review: { sha: reviewSha, conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE', reviewedCandidateSha: headSha },
+      }),
+    )).toThrow(/reviewed candidate must precede/);
+
+    expect(() => validatePhase3Governance(
+      promotionContext(),
+      promotionManifest({ synchronization: { sha: headSha } }),
+    )).toThrow(/synchronization must precede/);
+  });
+
+  it('requires the reviewed candidate to be an ancestor of A synchronization', () => {
+    const currentHead = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+    const candidate = execFileSync('git', ['rev-parse', 'HEAD~1'], { encoding: 'utf8' }).trim();
+    const synchronization = execFileSync('git', ['rev-parse', 'HEAD~2'], { encoding: 'utf8' }).trim();
+    const review = execFileSync('git', ['rev-parse', 'HEAD~3'], { encoding: 'utf8' }).trim();
+    const context = promotionContext({ headSha: currentHead });
+    const manifest = promotionManifest({
+      head: { ref: context.headRef, sha: currentHead },
+      review: {
+        sha: review,
+        conclusion: 'IMPLEMENTATION_ACCEPTED_CANDIDATE',
+        reviewedCandidateSha: candidate,
+      },
+      synchronization: { sha: synchronization },
+    });
+
+    expect(() => validatePhase3Governance(
+      context,
+      manifest,
+      { workspaceRoot: process.cwd(), verifyGitAncestry: true },
+    )).toThrow(/reviewed candidate is not an ancestor of synchronization.sha/);
   });
 
   it('accepts a stacked Phase 3 PR policy check without requiring main as base', () => {

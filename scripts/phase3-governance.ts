@@ -308,6 +308,22 @@ export function validatePhase3Governance(
     if (!acceptedReviewConclusions.has(manifest.review.conclusion)) {
       throw new Error(`Promotion review conclusion is not accepted: ${manifest.review.conclusion}.`);
     }
+    const reviewMustDifferFrom = new Set([
+      manifest.base.sha,
+      manifest.head.sha,
+      manifest.review.reviewedCandidateSha,
+      manifest.synchronization.sha,
+    ]);
+    if (reviewMustDifferFrom.has(manifest.review.sha)) {
+      throw new Error('Promotion review.sha must be distinct from base, head, candidate, and synchronization SHAs.');
+    }
+    if (manifest.review.reviewedCandidateSha === manifest.head.sha
+      || manifest.review.reviewedCandidateSha === manifest.synchronization.sha) {
+      throw new Error('Promotion reviewed candidate must precede synchronization and head.');
+    }
+    if (manifest.synchronization.sha === manifest.head.sha) {
+      throw new Error('Promotion synchronization must precede the integration head.');
+    }
     if (manifest.tests.some((test) => !/^PASS\b/i.test(test.result.trim()))) {
       throw new Error('Promotion manifest test results must start with PASS.');
     }
@@ -336,11 +352,13 @@ export function validatePhase3Governance(
     if (!gitCommitExists(options.workspaceRoot, manifest.review.sha)) {
       throw new Error('review.sha does not identify a fetched Git commit.');
     }
-    if (manifest.prType === 'promotion' && manifest.review.sha === manifest.review.reviewedCandidateSha) {
-      throw new Error('Promotion review.sha must differ from review.reviewedCandidateSha.');
-    }
-    if (!gitIsAncestor(options.workspaceRoot, manifest.review.reviewedCandidateSha, manifest.head.sha)) {
-      throw new Error('review.reviewedCandidateSha is not an ancestor of the PR head SHA.');
+    if (manifest.prType === 'promotion'
+      && !gitIsAncestor(
+        options.workspaceRoot,
+        manifest.review.reviewedCandidateSha,
+        manifest.synchronization.sha,
+      )) {
+      throw new Error('Promotion reviewed candidate is not an ancestor of synchronization.sha.');
     }
     if (!gitIsAncestor(options.workspaceRoot, manifest.synchronization.sha, manifest.head.sha)) {
       throw new Error('synchronization.sha is not an ancestor of the PR head SHA.');
