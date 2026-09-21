@@ -5833,7 +5833,7 @@ Read: `docs/reports/2026-09-21-p3-a-r101-spartacus-s2-migration-acceptance-synch
 
 Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #414 exact Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`, backed by canonical evidence `https://github.com/binchen648/fd/pull/414#issuecomment-5754190524`. Independent Base-to-Candidate frozen recount is `145/944` to `146/944`, exact +1 `servant.spartacus.skill.sc-spartacus-2`, zero removals and zero duplicate frozen ids. The fourth Candidate path is only the A-authorized compatibility removal of Nobunaga s3's stale repository-wide `overlap===145` snapshot; Nobunaga s3 remains authored exactly once and no production semantic/product/generated change is present.
 
-Formal project migration advances exactly one identity to **`151/944`**, with **`793`** remaining. PR #414 remains OPEN, unmerged and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new B2 seam while such a migration exists.
+Formal project migration advances exactly one identity to **`151/944`**, with **`793`** remaining. PR #414 remains OPEN, unmerged and unretargeted. The legacy singleton-first next-action text is superseded by `P3-A-THROUGHPUT-SCHEDULER-REBASE`: finish already-dispatched FB2-49, then perform a full current-baseline overlay over the complete remaining set before any further S/B2 dispatch.
 
 ## TASK P3-FB2-49-OPPONENT-CLOSE-TO-ONE-INTERACTION
 
@@ -5845,4 +5845,20 @@ Read: `docs/reports/2026-09-21-p3-a-fb2-49-opponent-close-to-one-dispatch.md`
 
 Result required: implement only the exact identity-free compound transaction released by A: a combat phase-action whose source is owned and controller is at a battlefield serializes one non-cancellable exactly-one “keep” decision for each same-battlefield opponent with at least two currently active, face-up, non-residual attack-area cards, then closes every other still-valid card from that opponent's frozen qualifying set. Fail closed atomically on malformed authoring, state/provenance drift or forged/stale selection. Do not expose generic `choose_each_player_cards`, generic `close_matching_cards_except_selected`, arbitrary each-player selectors/mass close, identity routing or consumer authoring.
 
-This is zero-credit capability work: formal migration remains **`151/944`**, **`793`** remaining. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.astolfo.skill.sc-astolfo-1`; singleton S is allowed only if the whole card is then mechanically zero-gap.
+This is zero-credit capability work: formal migration remains **`151/944`**, **`793`** remaining. After exact fresh R acceptance and A synchronization, perform the full remaining-set overlay required by `P3-A-THROUGHPUT-SCHEDULER-REBASE`. Re-probe `servant.astolfo.skill.sc-astolfo-1` as an intended consumer, but do not automatically dispatch it as a singleton when a larger honest zero-gap S batch exists.
+
+## TASK P3-A-THROUGHPUT-SCHEDULER-REBASE
+
+Owner: Codex A / Coordinator
+Status: `READY`
+Branch: `codex/docs-p3-throughput-scheduler-rebase`
+Base: `822b5f9dfd05a64a5707fcb945b8b85eff2238e6`
+Read: `docs/reports/2026-09-21-p3-throughput-scheduler-rebase.md`
+
+Result: rebase future Phase 3 dispatch scheduling from first-singleton migration-credit-first selection back to a full remaining-set throughput overlay while preserving exact dependency and acceptance gates. Formal migration is **`151/944`**, with **`793`** remaining. The exact remaining F1 route split is `READY_EXISTING_CONTRACT=2`, `READY_GENERIC_EXTENSION=177`, `SPECIAL_HANDLER_CANDIDATE=614`; these are F1 planning classifications, not current S-readiness claims.
+
+The already-dispatched `P3-FB2-49-OPPONENT-CLOSE-TO-ONE-INTERACTION` remains in force and must finish its exact fresh-R/revision/synchronization cycle. After that in-flight task closes, A must overlay the complete then-current remaining set before releasing another B2 or singleton S task. Do not stop after the first ready identity. Prefer the largest honest zero-gap S batch (normally 10-40 only when evidence supports one shared accepted envelope), then smaller honest zero-gap groups, then singleton S only when no larger honest ready set exists. New B2 work is allowed only when no zero-gap S work remains, and its bounded identity-free gap should maximize exact consumer unlock without broadening semantics.
+
+Fresh independent R remains mandatory under the existing contract. For one exact review job, after the first blocker R should continue through the same exact task / Base->Candidate diff / declared scope and report all independently confirmable findings in one review, stopping early only for invalid prerequisites, changing inputs, or a repair that is required before the remaining scope can be evaluated. This changes review completeness, not acceptance standards.
+
+This task supersedes only the **future scheduling effect** of the post-`141/944` singleton-first language, including the blanket `batch-first / large-group-first = SUPERSEDED` instruction. Historical reports and their accounting remain historical evidence and are not rewritten. No runtime/product/F1 artifact change, migration credit, merge, or retarget is authorized by this scheduler rebase.
