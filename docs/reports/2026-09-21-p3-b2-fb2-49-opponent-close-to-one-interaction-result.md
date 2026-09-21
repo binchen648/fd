@@ -392,3 +392,43 @@ Revision recertification:
 - write-producing validation artifacts were restored byte-for-byte from the exact rejected Candidate Git blobs after metrics were recorded.
 
 Accounting remains unchanged: FB2-49 is zero-credit capability work; formal migration remains **151/944**, **793 remaining**.
+
+## Revision after tenth fresh Reviewer review
+
+Fresh Reviewer evidence for rejected Candidate `5a66696a4b9faece5cb2cc12dcc7b4ac0b2a2694` is canonical GitHub comment `5755765128` on PR #415: `https://github.com/binchen648/fd/pull/415#issuecomment-5755765128`. Verdict: `IMPLEMENTATION_NEEDS_REVISION`. This review intentionally continued after the first blocker and returned both independently confirmed P1 findings in the same exact review scope.
+
+Both findings are corrected together in one revision:
+
+1. **Malformed source runtime-state provenance**
+   - FB2-49 no longer treats a truthy value as a valid `CardRuntimeState`; activation and settlement now require a plain runtime-state record with boolean `active`, boolean `faceDown`, and safe-integer `playedRound` before using source face-state provenance.
+   - Truthy malformed primitives/containers and malformed required fields therefore fail closed instead of being interpreted as face-up.
+   - focused regressions cover string, array, number, wrong-typed `faceDown`, and missing `playedRound` at activation and again after a valid decision was staged; settlement proves `ok:false`, no raw throw, caller state structure-equivalent, no card close, and no queue/decision consumption.
+
+2. **Jointly forgeable serialized queue-completeness mirrors**
+   - FB2-49 now records an independent server-owned `trustedOpponentCloseToOneCommitment` when the complete eligible-opponent sequence is frozen. It binds initiating controller, source, ability, battlefield, and the complete original decision-player sequence.
+   - the commitment has its own exact-shape validation and is checked both before staging each synthetic decision and before settlement mutation; current serialized queue must be the exact remaining suffix of the original authoritative sequence.
+   - the trusted commitment is not shortened as the serialized queue advances and is deleted only after the final mandatory opponent settles.
+   - a focused regression coherently truncates `[p2,p3]` to `[p2]` and rewrites both the queue-head and interaction `remainingDecisionPlayerIds` mirrors to `['p2']`; the untouched authoritative commitment still requires `['p2','p3']`, so the forged transaction rejects mutation-free and p3 is not skipped.
+   - additional focused regressions cover missing/null/extra-key/malformed trusted commitment state so the newly added authority itself fails closed.
+
+All previously closed root-envelope, continuation, target/context, candidate-list, constraints, owner-provenance, queue-shape, close-forbid, replay and control-based qualification behavior remains unchanged. No generic authoring vocabulary, consumer identity routing, product/generated/client semantic scope, merge, retarget, or migration credit is introduced.
+
+Exact implementation before this report-only evidence update: `46af34bb12dcf196e50ff74d2d81dc3fd0899708`. A separate fresh detached validation worktree at that exact SHA used its own `npm ci --ignore-scripts` dependency tree, so workspace/client validation did not resolve through an older worktree.
+
+Revision recertification on exact implementation `46af34bb12dcf196e50ff74d2d81dc3fd0899708`:
+
+- `npm.cmd run typecheck` — PASS;
+- focused FB2-49 — **19/19 PASS**;
+- Reviewer-named adjacent compatibility set — **8 files / 63 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2` — **177 files / 1288 tests PASS**;
+- `npm.cmd run content:validate` — **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated-content determinism PASS with unchanged hashes `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`, `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, and `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`;
+- exact Locked Reference verification PASS at `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- client build PASS from the exact fresh validation worktree, with only the existing Vite externalization/chunk-size warnings;
+- `phase3:coverage` PASS: archives=127, cards=169, abilities=281, newRuntimeSemanticRouted=22, legacyExecuteAbility=3, legacyResolveEffect=144, dualRuntime=0, notClassifiable=112, taxonomyWarnings=151;
+- `phase3:automation-audit` PASS: legacyResolveEffect=144, legacyExecuteAbility=3, notClassifiable=112, promotionFindings=20;
+- write-producing coverage/audit artifacts were restored byte-for-byte from the exact implementation Git blobs after metrics were recorded, and the detached validation worktree finished clean.
+
+Accounting remains unchanged: FB2-49 is zero-credit capability work; formal migration remains **151/944**, **793 remaining**.
+
+\n
