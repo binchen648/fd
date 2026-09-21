@@ -868,6 +868,43 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(exportOpponentCloseToOneServerAuthority(session.state)?.entries.map((entry) => entry.decisionPlayerId)).toEqual(['p2']);
   });
 
+  it('rejects swapping an earlier authenticated state into a later checkpoint of the same transaction', () => {
+    const scope = 'fb2-49-persistence-scope:' + '99'.repeat(32);
+    const state = setup();
+    add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    add(state, 'p3-a', 'p3'); add(state, 'p3-b', 'p3');
+    const session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    session.state = state;
+
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID,
+    }).ok).toBe(true);
+    const earlierCheckpointId = session.replay.at(-1)!.id;
+    const earlierSnapshot = structuredClone(
+      session.replaySnapshots.find((candidate) => candidate.checkpointId === earlierCheckpointId)!,
+    );
+    const p2DecisionId = session.state.abilityRuntime!.pendingDecision!.id;
+    expect(session.dispatchPlayerAction('p2', {
+      type: 'choose_target', decisionId: p2DecisionId, selectedIds: ['p2-a'],
+    }).ok).toBe(true);
+    const laterCheckpointId = session.replay.at(-1)!.id;
+    expect(laterCheckpointId).not.toBe(earlierCheckpointId);
+    expect(session.state.abilityRuntime!.pendingDecision?.controllerId).toBe('p3');
+
+    const laterIndex = session.replaySnapshots.findIndex((candidate) => candidate.checkpointId === laterCheckpointId);
+    session.replaySnapshots[laterIndex] = { ...earlierSnapshot, checkpointId: laterCheckpointId };
+    const before = structuredClone(session.state);
+    const beforeLogs = structuredClone(session.logs);
+    const beforeAuthority = exportOpponentCloseToOneServerAuthority(session.state);
+    expect(session.restoreToCheckpoint(laterCheckpointId)).toBe(false);
+    expect(session.state).toEqual(before);
+    expect(session.logs).toEqual(beforeLogs);
+    expect(exportOpponentCloseToOneServerAuthority(session.state)).toEqual(beforeAuthority);
+    expect(session.state.abilityRuntime!.pendingDecision?.controllerId).toBe('p3');
+  });
+
   it('preserves a live replay trust binding across durable MatchSession restore after the transaction completes', () => {
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     const session = rules.createMatchSession({
