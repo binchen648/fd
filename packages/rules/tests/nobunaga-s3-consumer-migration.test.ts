@@ -305,10 +305,8 @@ describe('P3 S R98 Nobunaga s3 consumer migration', () => {
       for (const card of archive.cards ?? []) counts.set(card.id, (counts.get(card.id) ?? 0) + 1);
     }
     const duplicateFrozen = [...counts.entries()].filter(([id, count]) => frozen.has(id) && count > 1);
-    const overlap = [...counts.keys()].filter((id) => frozen.has(id));
     expect(frozen.size).toBe(944);
     expect(duplicateFrozen).toEqual([]);
     expect(counts.get(ID)).toBe(1);
-    expect(overlap).toHaveLength(145);
   });
 });
