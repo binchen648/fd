@@ -3,6 +3,10 @@ import { describe, expect, it } from 'vitest';
 import * as rules from '../src/index';
 import type { GameState } from '../src/schema/game';
 import { createSeededGameState } from '../src/tools/seeded-state';
+import {
+  exportOpponentCloseToOneServerAuthority,
+  restoreOpponentCloseToOneServerAuthority,
+} from '../src/ability/opponent-close-to-one-authority';
 
 const SOURCE_DEF = 'test.fb2-49.source';
 const SOURCE_ID = 'fb2-49-source-p1';
@@ -528,6 +532,82 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
       expect(state.abilityRuntime!.cardState['p2-b']).toMatchObject({ active: true, faceDown: false });
       expect(state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
     }
+  });
+
+  it('rejects malformed qualifying opponent card runtime states at activation and settlement', () => {
+    const malformedStates: unknown[] = [
+      'forged', [], 7,
+      { active: true, faceDown: 'false', playedRound: 1 },
+      { active: true, faceDown: false },
+      { active: 'true', faceDown: false, playedRound: 1 },
+      { active: true, faceDown: false, playedRound: '1' },
+    ];
+    for (const malformed of malformedStates) {
+      const activation = setup(); add(activation, 'p2-a', 'p2'); add(activation, 'p2-b', 'p2');
+      (activation.abilityRuntime!.cardState as any)['p2-b'] = structuredClone(malformed);
+      const activationBefore = structuredClone(activation);
+      let activationResult: ReturnType<typeof rules.dispatchAbilityCommand> | undefined;
+      expect(() => { activationResult = activate(activation); }).not.toThrow();
+      expect(activationResult?.ok).toBe(false);
+      expect(activation).toEqual(activationBefore);
+      expect(activation.abilityRuntime!.pendingDecision).toBeUndefined();
+      expect(activation.abilityRuntime!.pendingOpponentCloseToOne).toBeUndefined();
+
+      const settlement = setup(); add(settlement, 'p2-a', 'p2'); add(settlement, 'p2-b', 'p2');
+      expect(activate(settlement).ok).toBe(true);
+      const decisionId = settlement.abilityRuntime!.pendingDecision!.id;
+      (settlement.abilityRuntime!.cardState as any)['p2-b'] = structuredClone(malformed);
+      const settlementBefore = structuredClone(settlement);
+      let settlementResult: ReturnType<typeof rules.dispatchAbilityCommand> | undefined;
+      expect(() => {
+        settlementResult = rules.dispatchAbilityCommand(settlement, 'p2', {
+          type: 'choose_target', decisionId, selectedIds: ['p2-a'],
+        });
+      }).not.toThrow();
+      expect(settlementResult?.ok).toBe(false);
+      expect(settlement).toEqual(settlementBefore);
+      expect(settlement.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
+      expect(settlement.abilityRuntime!.pendingOpponentCloseToOne).toHaveLength(1);
+    }
+  });
+
+  it('rejects future frozen-card drift even when the serialized future queue and suffixes are coherently truncated', () => {
+    const state = setup();
+    add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2'); add(state, 'p3-a', 'p3'); add(state, 'p3-b', 'p3');
+    expect(activate(state).ok).toBe(true);
+    expect(state.abilityRuntime!.pendingOpponentCloseToOne?.map((entry) => entry.decisionPlayerId)).toEqual(['p2', 'p3']);
+
+    state.abilityRuntime!.cardState['p3-b']!.faceDown = true;
+    state.abilityRuntime!.pendingOpponentCloseToOne!.splice(1, 1);
+    state.abilityRuntime!.pendingOpponentCloseToOne![0]!.remainingDecisionPlayerIds = ['p2'];
+    (state.abilityRuntime!.pendingDecision!.interaction as any).remainingDecisionPlayerIds = ['p2'];
+
+    const before = structuredClone(state);
+    const decisionId = state.abilityRuntime!.pendingDecision!.id;
+    let result: ReturnType<typeof rules.dispatchAbilityCommand> | undefined;
+    expect(() => {
+      result = rules.dispatchAbilityCommand(state, 'p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] });
+    }).not.toThrow();
+    expect(result?.ok).toBe(false);
+    expect(state).toEqual(before);
+    expect(state.abilityRuntime!.cardState['p2-b']).toMatchObject({ active: true, faceDown: false });
+    expect(state.abilityRuntime!.cardState['p3-b']).toMatchObject({ active: true, faceDown: true });
+    expect(state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
+    expect(state.abilityRuntime!.pendingOpponentCloseToOne?.map((entry) => entry.decisionPlayerId)).toEqual(['p2']);
+  });
+
+  it('restores the hidden FB2-49 server authority separately from serialized GameState', () => {
+    const state = setup();
+    add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2'); add(state, 'p3-a', 'p3'); add(state, 'p3-b', 'p3');
+    expect(activate(state).ok).toBe(true);
+    const authority = exportOpponentCloseToOneServerAuthority(state);
+    expect(authority?.entries.map((entry) => entry.decisionPlayerId)).toEqual(['p2', 'p3']);
+
+    const restored = structuredClone(state);
+    restoreOpponentCloseToOneServerAuthority(restored, authority);
+    expect(choose(restored, 'p2', ['p2-a']).ok).toBe(true);
+    expect(restored.abilityRuntime!.pendingDecision?.controllerId).toBe('p3');
+    expect(restored.abilityRuntime!.pendingOpponentCloseToOne?.map((entry) => entry.decisionPlayerId)).toEqual(['p3']);
   });
 
   it('treats a live close-forbid as an atomic failure instead of partially closing the frozen set', () => {

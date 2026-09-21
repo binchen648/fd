@@ -50,6 +50,13 @@ import {
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
 import {
+  advanceOpponentCloseToOneServerAuthority,
+  clearOpponentCloseToOneServerAuthority,
+  copyOpponentCloseToOneServerAuthority,
+  getOpponentCloseToOneServerAuthority,
+  installOpponentCloseToOneServerAuthority,
+} from './opponent-close-to-one-authority';
+import {
   currentRoundCombatWinAbsent,
   isAcceptedCurrentRoundCombatWinAbsenceCondition,
   recordCurrentRoundCombatWinsFromBattleResult,
@@ -1873,21 +1880,22 @@ function isValidOpponentCloseToOneSourceCardState(value: unknown): value is Card
   return isPlainRecord(value) && typeof value.active === 'boolean' && typeof value.faceDown === 'boolean' &&
     Number.isSafeInteger(value.playedRound);
 }
-function authoritativeOpponentCloseToOneDecisionPlayerIds(
-  s: GameState, initiatingControllerId: string, battlefieldId: string,
-): string[] {
-  const initiatingController = s.players.find((candidate) => candidate.id === initiatingControllerId);
-  if (!initiatingController || initiatingController.status !== 'active' || initiatingController.locationId !== battlefieldId) return [];
-  return s.players.filter((candidate) => candidate.id !== initiatingControllerId && candidate.status === 'active' &&
-    candidate.locationId === battlefieldId && qualifyingOpponentCloseToOneCardIds(s, candidate.id).length >= 2)
-    .sort((left, right) => left.seat - right.seat)
-    .map((candidate) => candidate.id);
-}
-function opponentCloseToOneQueueMatchesAuthoritativeState(s: GameState, queue: PendingOpponentCloseToOne[]): boolean {
-  const first = queue[0];
-  if (!first) return false;
-  const requiredDecisionPlayerIds = authoritativeOpponentCloseToOneDecisionPlayerIds(s, first.initiatingControllerId, first.battlefieldId);
-  return requiredDecisionPlayerIds.length > 0 && exactPlayerArray(queue.map((entry) => entry.decisionPlayerId), requiredDecisionPlayerIds);
+function opponentCloseToOneQueueMatchesServerAuthority(s: GameState, queue: PendingOpponentCloseToOne[]): boolean {
+  const authority = getOpponentCloseToOneServerAuthority(s);
+  if (!authority || !Number.isSafeInteger(authority.nextIndex) || authority.nextIndex < 0 || authority.nextIndex >= authority.entries.length) return false;
+  const remaining = authority.entries.slice(authority.nextIndex);
+  if (remaining.length !== queue.length) return false;
+  const remainingPlayerIds = remaining.map((entry) => entry.decisionPlayerId);
+  if (!exactPlayerArray(queue.map((entry) => entry.decisionPlayerId), remainingPlayerIds)) return false;
+  return queue.every((entry, index) => {
+    const frozen = remaining[index]!;
+    return entry.initiatingControllerId === frozen.initiatingControllerId &&
+      entry.decisionPlayerId === frozen.decisionPlayerId && entry.sourceCardId === frozen.sourceCardId &&
+      entry.abilityId === frozen.abilityId && entry.battlefieldId === frozen.battlefieldId &&
+      exactFrozenCardIdList(entry.qualifyingCardIds, frozen.qualifyingCardIds) &&
+      exactPlayerOwnerMap(entry.qualifyingCardOwners, frozen.qualifyingCardOwners, frozen.qualifyingCardIds) &&
+      exactPlayerArray(entry.remainingDecisionPlayerIds, remainingPlayerIds.slice(index));
+  });
 }
 function hasExactOpponentCloseToOneDecisionRootKeys(value: unknown): boolean {
   if (!isPlainRecord(value)) return false;
@@ -1979,9 +1987,13 @@ function qualifyingOpponentCloseToOneCardIds(s: GameState, decisionPlayerId: str
   const r = runtime(s);
   return s.cards.filter((candidate) => {
     if (candidate.controllerPlayerId !== decisionPlayerId || candidate.zone !== 'attack_area') return false;
-    const state = r.cardState[candidate.instanceId];
     const cardDefinition = r.pack.cards[candidate.definitionId];
-    return state?.active === true && state.faceDown !== true && !!cardDefinition && !isResidualAttackCardDefinition(cardDefinition);
+    if (!cardDefinition || isResidualAttackCardDefinition(cardDefinition)) return false;
+    const state: unknown = r.cardState[candidate.instanceId];
+    if (!isValidOpponentCloseToOneSourceCardState(state)) {
+      reject('resolution_failed', 'Malformed opponent close-to-one qualifying card runtime state');
+    }
+    return state.active === true && state.faceDown === false;
   }).map((candidate) => candidate.instanceId);
 }
 function stageNextOpponentCloseToOneDecision(s: GameState): void {
@@ -1992,8 +2004,8 @@ function stageNextOpponentCloseToOneDecision(s: GameState): void {
   if (!Array.isArray(queue)) reject('resolution_failed', 'Corrupt opponent close-to-one queue state');
   if (queue.length === 0) return;
   if (!isExactOpponentCloseToOneQueue(s, queue)) reject('resolution_failed', 'Corrupt or stale opponent close-to-one queue state');
-  if (!opponentCloseToOneQueueMatchesAuthoritativeState(s, queue)) {
-    reject('resolution_failed', 'Corrupt or stale opponent close-to-one authoritative continuation');
+  if (!opponentCloseToOneQueueMatchesServerAuthority(s, queue)) {
+    reject('resolution_failed', 'Corrupt or stale opponent close-to-one server authority');
   }
   const pending = queue[0]!;
   const id = nextId(s, 'opponent-close-to-one');
@@ -2026,6 +2038,7 @@ function stageOpponentCloseToOne(s: GameState, ctx: EffectContext, a: AuthoringA
   const battlefieldId = controller.locationId!;
   const existingQueue: unknown = r.pendingOpponentCloseToOne;
   if (existingQueue !== undefined && !Array.isArray(existingQueue)) reject('resolution_failed', 'Corrupt opponent close-to-one queue state');
+  if (getOpponentCloseToOneServerAuthority(s)) reject('pending_resolution', 'Opponent close-to-one server authority is already active');
   const queue = r.pendingOpponentCloseToOne ??= [];
   if (queue.length) reject('pending_resolution', 'Opponent close-to-one queue is already active');
   const opponents = s.players.filter((candidate) => candidate.id !== controller.id && candidate.status === 'active' &&
@@ -2043,15 +2056,17 @@ function stageOpponentCloseToOne(s: GameState, ctx: EffectContext, a: AuthoringA
   for (const [index, entry] of frozenEntries.entries()) {
     queue.push({ ...entry, remainingDecisionPlayerIds: frozenDecisionPlayerIds.slice(index) });
   }
+  installOpponentCloseToOneServerAuthority(s, queue);
   stageNextOpponentCloseToOneDecision(s);
 }
 function closeOpponentCardForCloseToOne(s: GameState, decisionPlayerId: string, instanceId: string): void {
   const target = card(s, instanceId);
   const r = runtime(s);
   const cardDefinition = r.pack.cards[target.definitionId];
-  const state = r.cardState[instanceId];
+  const state: unknown = r.cardState[instanceId];
   if (target.controllerPlayerId !== decisionPlayerId || target.zone !== 'attack_area' || !cardDefinition ||
-      state?.active !== true || state.faceDown === true || isResidualAttackCardDefinition(cardDefinition) || isCardCloseForbidden(s, instanceId)) {
+      !isValidOpponentCloseToOneSourceCardState(state) || state.active !== true || state.faceDown !== false ||
+      isResidualAttackCardDefinition(cardDefinition) || isCardCloseForbidden(s, instanceId)) {
     reject('resolution_failed', 'Opponent close-to-one target can no longer be closed');
   }
   state.active = false;
@@ -3941,8 +3956,8 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           }
           const pendingQueue = pendingQueueValue;
           const pending = pendingQueue[0]!;
-          if (!opponentCloseToOneQueueMatchesAuthoritativeState(s, pendingQueue)) {
-            reject('resolution_failed', 'Corrupt or stale opponent close-to-one authoritative continuation');
+          if (!opponentCloseToOneQueueMatchesServerAuthority(s, pendingQueue)) {
+            reject('resolution_failed', 'Corrupt or stale opponent close-to-one server authority');
           }
           const source = s.cards.find((candidate) => candidate.instanceId === decisionContext.sourceCardId);
           const sourceState: unknown = source ? r.cardState[source.instanceId] : undefined;
@@ -3985,6 +4000,8 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           for (const instanceId of closeIds) closeOpponentCardForCloseToOne(s, meta.decisionPlayerId, instanceId);
           delete r.pendingDecision;
           pendingQueue.shift();
+          advanceOpponentCloseToOneServerAuthority(s);
+          if (pendingQueue.length === 0) clearOpponentCloseToOneServerAuthority(s);
           for (const instanceId of closeIds) {
             const closed = card(s, instanceId);
             r.events.push({ type: 'opponent_card_closed_to_one', playerId: meta.decisionPlayerId, controllerId: meta.initiatingControllerId,
@@ -4277,8 +4294,10 @@ export function playAbilityCardBatch(s: GameState, playerId: string, choices: Om
 /** Transactional mutation of server state; only a safe DTO is returned, even on rejection. */
 export function dispatchAbilityCommand(s: GameState, playerId: string, command: AbilityCommand): DispatchResult {
   const before = runtime(s).events.length; const beforeCalculations = runtime(s).calculations.length; const copy = structuredClone(s);
+  copyOpponentCloseToOneServerAuthority(s, copy);
   try {
     dispatch(copy, playerId, command); runtime(copy).revision++; Object.assign(s, copy);
+    copyOpponentCloseToOneServerAuthority(copy, s);
     return { ok: true, view: projectAbilityState(s, playerId),
       events: runtime(s).events.slice(before).filter(e => !e.visibility || e.visibility === playerId).map(({ visibility: _, ...e }) => e),
       calculations: runtime(s).calculations.slice(beforeCalculations).filter(c => c.controllerId === playerId).flatMap(c => c.lines) };
@@ -4287,7 +4306,7 @@ export function dispatchAbilityCommand(s: GameState, playerId: string, command: 
     const sourceId = command && 'cardInstanceId' in command ? command.cardInstanceId : undefined;
     const source = s.cards.find(c => c.instanceId === sourceId && c.controllerPlayerId === playerId);
     const blocked = source ? definition(s, source.instanceId)?.abilities.find(a => a.execution.mode === 'host_adjudicated') : undefined;
-    return { ok: false, view: projectAbilityState(s, playerId), events: [], calculations: [], rejection: { code: error.code, message: error.message,
+    return { ok: false, view: projectAbilityState(structuredClone(s), playerId), events: [], calculations: [], rejection: { code: error.code, message: error.message,
       ...(error.code === 'host_adjudicated' && blocked ? { allowedOperations: blocked.execution.allowedOperations } : {}) } };
   }
 }

@@ -5,6 +5,11 @@ import {
   processAbilityEvent,
   projectAbilityState,
 } from './ability/interpreter';
+import {
+  exportOpponentCloseToOneServerAuthority,
+  restoreOpponentCloseToOneServerAuthority,
+  type OpponentCloseToOneServerAuthoritySnapshot,
+} from './ability/opponent-close-to-one-authority';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './ability/deployment-destinations';
@@ -142,6 +147,8 @@ export interface MatchClientState {
 export interface MatchReplayStateSnapshot {
   checkpointId: string;
   state: GameState;
+  /** Server-only FB2-49 frozen continuation authority; never projected to clients. */
+  opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySnapshot;
   logs: MatchSessionLogEntry[];
   battleHistory: GameState['battleResults'];
   consumedDirectiveCount: number;
@@ -156,6 +163,8 @@ export interface MatchSessionSnapshot {
   humanPlayerIds: string[];
   maxActionsPerPlayer: number;
   state: GameState;
+  /** Server-only FB2-49 frozen continuation authority; separate from serialized GameState. */
+  opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySnapshot;
   logs: MatchSessionLogEntry[];
   replay: MatchClientState['replay'];
   replaySnapshots: MatchReplayStateSnapshot[];
@@ -849,6 +858,9 @@ export class MatchSession {
       humanPlayerIds: [...this.humanPlayerIds],
       maxActionsPerPlayer: this.maxActionsPerPlayer,
       state: structuredClone(this.state),
+      ...(exportOpponentCloseToOneServerAuthority(this.state)
+        ? { opponentCloseToOneServerAuthority: exportOpponentCloseToOneServerAuthority(this.state)! }
+        : {}),
       logs: structuredClone(this.logs),
       replay: structuredClone(this.replay),
       replaySnapshots: structuredClone(this.replaySnapshots),
@@ -886,6 +898,7 @@ export class MatchSession {
     const snapshot = this.replaySnapshots.find((candidate) => candidate.checkpointId === checkpointId);
     if (!snapshot) return false;
     this.state = structuredClone(snapshot.state);
+    restoreOpponentCloseToOneServerAuthority(this.state, snapshot.opponentCloseToOneServerAuthority);
     this.logs = structuredClone(snapshot.logs);
     this.battleHistory = structuredClone(snapshot.battleHistory);
     this.consumedDirectiveCount = snapshot.consumedDirectiveCount;
@@ -1542,6 +1555,9 @@ export class MatchSession {
     this.replaySnapshots.push({
       checkpointId: checkpoint.id,
       state: structuredClone(state),
+      ...(exportOpponentCloseToOneServerAuthority(state)
+        ? { opponentCloseToOneServerAuthority: exportOpponentCloseToOneServerAuthority(state)! }
+        : {}),
       logs: structuredClone(this.logs),
       battleHistory: structuredClone(this.battleHistory),
       consumedDirectiveCount: this.consumedDirectiveCount,
@@ -1570,6 +1586,7 @@ export function restoreMatchSession(snapshot: MatchSessionSnapshot): MatchSessio
     maxActionsPerPlayer: snapshot.maxActionsPerPlayer,
   });
   session.state = structuredClone(snapshot.state);
+  restoreOpponentCloseToOneServerAuthority(session.state, snapshot.opponentCloseToOneServerAuthority);
   session.logs = structuredClone(snapshot.logs);
   session.replay = structuredClone(snapshot.replay);
   session.replaySnapshots = structuredClone(snapshot.replaySnapshots ?? []);
