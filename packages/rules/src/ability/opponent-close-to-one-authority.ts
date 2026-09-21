@@ -12,8 +12,17 @@ export interface OpponentCloseToOneServerAuthoritySnapshot {
 export interface OpponentCloseToOneServerAuthoritySeal {
   version: 1;
   transactionId: string;
+  checkpointId: string | null;
   stateBinding: string;
   authority: OpponentCloseToOneServerAuthoritySnapshot;
+  mac: string;
+}
+
+/** Host-authenticated replay lineage; the sealing secret and room scope remain outside snapshots. */
+export interface OpponentCloseToOneReplayManifestSeal {
+  version: 1;
+  stateBinding: string;
+  checkpointIds: string[];
   mac: string;
 }
 
@@ -123,15 +132,52 @@ function stateBinding(state: GameState): string {
   return sha256Hex(JSON.stringify(state));
 }
 
-function sealPayload(persistenceScope: string, transactionId: string, stateHash: string, authority: OpponentCloseToOneServerAuthoritySnapshot): string {
-  return JSON.stringify({ version: 1, persistenceScope, transactionId, stateBinding: stateHash, authority: normalizedAuthority(authority) });
+function sealPayload(
+  persistenceScope: string,
+  transactionId: string,
+  checkpointId: string | null,
+  stateHash: string,
+  authority: OpponentCloseToOneServerAuthoritySnapshot,
+): string {
+  return JSON.stringify({
+    version: 1,
+    persistenceScope,
+    transactionId,
+    checkpointId,
+    stateBinding: stateHash,
+    authority: normalizedAuthority(authority),
+  });
+}
+
+function isCheckpointId(value: unknown): value is string {
+  return typeof value === 'string' && /^checkpoint:\d+$/.test(value);
+}
+
+function isExactCheckpointIdList(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every(isCheckpointId) && new Set(value).size === value.length;
+}
+
+function replayManifestPayload(
+  persistenceScope: string,
+  stateHash: string,
+  checkpointIds: readonly string[],
+): string {
+  return JSON.stringify({ version: 1, persistenceScope, stateBinding: stateHash, checkpointIds: [...checkpointIds] });
 }
 
 function isExactAuthoritySeal(value: unknown): value is OpponentCloseToOneServerAuthoritySeal {
-  return isPlainRecord(value) && exactKeys(value, ['version', 'transactionId', 'stateBinding', 'authority', 'mac']) && value.version === 1 &&
+  return isPlainRecord(value) && exactKeys(value, ['version', 'transactionId', 'checkpointId', 'stateBinding', 'authority', 'mac']) && value.version === 1 &&
     typeof value.transactionId === 'string' && /^fb2-49-transaction:[0-9a-f]{64}$/.test(value.transactionId) &&
+    (value.checkpointId === null || isCheckpointId(value.checkpointId)) &&
     typeof value.stateBinding === 'string' && /^[0-9a-f]{64}$/.test(value.stateBinding) &&
     typeof value.mac === 'string' && /^[0-9a-f]{64}$/.test(value.mac) && isExactAuthoritySnapshot(value.authority);
+}
+
+function isExactReplayManifestSeal(value: unknown): value is OpponentCloseToOneReplayManifestSeal {
+  return isPlainRecord(value) && exactKeys(value, ['version', 'stateBinding', 'checkpointIds', 'mac']) && value.version === 1 &&
+    typeof value.stateBinding === 'string' && /^[0-9a-f]{64}$/.test(value.stateBinding) &&
+    isExactCheckpointIdList(value.checkpointIds) &&
+    typeof value.mac === 'string' && /^[0-9a-f]{64}$/.test(value.mac);
 }
 
 function randomAuthorityHex(prefix: string): string {
@@ -209,6 +255,18 @@ function trustedTransactionForScope(persistenceScope: string): string | undefine
     }
   }
   return processTransactionByScope.get(persistenceScope);
+}
+
+function clearTrustedTransactionForScope(persistenceScope: string): void {
+  const storage = browserPersistenceStorage();
+  if (storage) {
+    try {
+      storage.setItem(transactionStorageKey(persistenceScope), '');
+    } catch {
+      // Process-private trust is still cleared below.
+    }
+  }
+  processTransactionByScope.delete(persistenceScope);
 }
 
 function forgetTrustedTransaction(persistenceScope: string | undefined, transactionId: string): void {
@@ -408,14 +466,55 @@ export function persistOpponentCloseToOneServerAuthority(
   if (replayCheckpointId) rememberTrustedReplayTransaction(persistenceScope, replayCheckpointId, record.transactionId);
   const normalized = normalizedAuthority(record.authority);
   const binding = stateBinding(state);
-  const payload = sealPayload(persistenceScope, record.transactionId, binding, normalized);
+  const checkpointId = replayCheckpointId ?? null;
+  const payload = sealPayload(persistenceScope, record.transactionId, checkpointId, binding, normalized);
   return {
     version: 1,
     transactionId: record.transactionId,
+    checkpointId,
     stateBinding: binding,
     authority: normalized,
     mac: hmacSha256Hex(persistenceSecret, payload),
   };
+}
+
+export function persistOpponentCloseToOneReplayManifest(
+  state: GameState,
+  checkpointIds: readonly string[],
+  persistenceSecret: string,
+  persistenceScope: string,
+): OpponentCloseToOneReplayManifestSeal {
+  if (!isOpponentCloseToOnePersistenceSecret(persistenceSecret)) throw new Error('Invalid FB2-49 persistence sealing secret');
+  if (!isOpponentCloseToOnePersistenceScope(persistenceScope)) throw new Error('Invalid FB2-49 persistence scope');
+  if (!isExactCheckpointIdList(checkpointIds)) throw new Error('Invalid FB2-49 replay checkpoint lineage');
+  const binding = stateBinding(state);
+  const normalizedIds = [...checkpointIds];
+  return {
+    version: 1,
+    stateBinding: binding,
+    checkpointIds: normalizedIds,
+    mac: hmacSha256Hex(persistenceSecret, replayManifestPayload(persistenceScope, binding, normalizedIds)),
+  };
+}
+
+export function verifyOpponentCloseToOneReplayManifest(
+  state: GameState,
+  checkpointIds: readonly string[],
+  seal: unknown,
+  persistenceSecret: string,
+  persistenceScope: string,
+): boolean {
+  if (!isOpponentCloseToOnePersistenceSecret(persistenceSecret) ||
+      !isOpponentCloseToOnePersistenceScope(persistenceScope) || !isExactReplayManifestSeal(seal) ||
+      !isExactCheckpointIdList(checkpointIds)) return false;
+  if (seal.checkpointIds.length !== checkpointIds.length ||
+      !seal.checkpointIds.every((checkpointId, index) => checkpointId === checkpointIds[index])) return false;
+  const binding = stateBinding(state);
+  if (seal.stateBinding !== binding) return false;
+  return seal.mac === hmacSha256Hex(
+    persistenceSecret,
+    replayManifestPayload(persistenceScope, binding, checkpointIds),
+  );
 }
 
 /**
@@ -439,15 +538,25 @@ export function restoreOpponentCloseToOneServerAuthority(
   }
   if (!isOpponentCloseToOnePersistenceSecret(persistenceSecret) ||
       !isOpponentCloseToOnePersistenceScope(persistenceScope) || !isExactAuthoritySeal(seal)) return false;
+  if (seal.checkpointId !== (replayCheckpointId ?? null)) return false;
   if (trustedTransaction !== seal.transactionId) return false;
   const binding = stateBinding(state);
   if (seal.stateBinding !== binding) return false;
   const authority = normalizedAuthority(seal.authority);
   const expectedMac = hmacSha256Hex(
     persistenceSecret,
-    sealPayload(persistenceScope, seal.transactionId, binding, authority),
+    sealPayload(persistenceScope, seal.transactionId, seal.checkpointId, binding, authority),
   );
   if (seal.mac !== expectedMac) return false;
   authorityByState.set(state, { authority: cloneAuthority(authority), transactionId: seal.transactionId, persistenceScope });
   return true;
+}
+
+/** Make the committed replay state the exact current trust owner for this scope. */
+export function synchronizeOpponentCloseToOneCurrentTrust(state: GameState, persistenceScope: string): void {
+  clearTrustedTransactionForScope(persistenceScope);
+  const record = authorityByState.get(state);
+  if (!record) return;
+  record.persistenceScope = persistenceScope;
+  rememberTrustedTransaction(persistenceScope, record.transactionId);
 }

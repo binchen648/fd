@@ -8,9 +8,13 @@ import {
 import {
   createOpponentCloseToOnePersistenceScope,
   resolveOpponentCloseToOnePersistenceSecret,
+  persistOpponentCloseToOneReplayManifest,
   persistOpponentCloseToOneServerAuthority,
   pruneOpponentCloseToOneTrustedReplayTransactions,
   restoreOpponentCloseToOneServerAuthority,
+  synchronizeOpponentCloseToOneCurrentTrust,
+  verifyOpponentCloseToOneReplayManifest,
+  type OpponentCloseToOneReplayManifestSeal,
   type OpponentCloseToOneServerAuthoritySeal,
 } from './ability/opponent-close-to-one-authority';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
@@ -172,6 +176,8 @@ export interface MatchSessionSnapshot {
   state: GameState;
   /** Authenticated FB2-49 frozen continuation; sealing secret is outside this snapshot. */
   opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySeal;
+  /** Authenticated replay membership for durable host/room persistence; host scope and secret remain external. */
+  opponentCloseToOneReplayManifest?: OpponentCloseToOneReplayManifestSeal;
   logs: MatchSessionLogEntry[];
   replay: MatchClientState['replay'];
   replaySnapshots: MatchReplayStateSnapshot[];
@@ -494,9 +500,15 @@ export class MatchSession {
   private consumedDirectiveCount = 0;
   private seenFingerprints = new Map<string, number>();
   private replayCaptureEnabled = true;
+  private replayManifestEnabled: boolean;
 
-  constructor(config: MatchSessionConfig = {}, initializeReplay = true) {
+  constructor(
+    config: MatchSessionConfig = {},
+    initializeReplay = true,
+    replayManifestEnabled = config.persistenceScope !== undefined,
+  ) {
     this.replayCaptureEnabled = initializeReplay;
+    this.replayManifestEnabled = replayManifestEnabled;
     this.seed = config.seed ?? 20260904;
     this.humanPlayerId = config.humanPlayerId ?? 'p1';
     this.humanPlayerIds = [...new Set(config.humanPlayerIds ?? [this.humanPlayerId])];
@@ -890,6 +902,14 @@ export class MatchSession {
       maxActionsPerPlayer: this.maxActionsPerPlayer,
       state: structuredClone(this.state),
       ...persistedOpponentCloseToOneAuthorityField(this.state, this.persistenceSecret, this.persistenceScope),
+      ...(this.replayManifestEnabled ? {
+        opponentCloseToOneReplayManifest: persistOpponentCloseToOneReplayManifest(
+          this.state,
+          this.replaySnapshots.map((candidate) => candidate.checkpointId),
+          this.persistenceSecret,
+          this.persistenceScope,
+        ),
+      } : {}),
       logs: structuredClone(this.logs),
       replay: structuredClone(this.replay),
       replaySnapshots: structuredClone(this.replaySnapshots),
@@ -927,6 +947,9 @@ export class MatchSession {
     const snapshot = this.replaySnapshots.find((candidate) => candidate.checkpointId === checkpointId);
     if (!snapshot) return false;
     const candidateState = structuredClone(snapshot.state);
+    const candidateLogs = structuredClone(snapshot.logs);
+    const candidateBattleHistory = structuredClone(snapshot.battleHistory);
+    const candidateRejection = snapshot.rejection ? structuredClone(snapshot.rejection) : undefined;
     if (!restoreOpponentCloseToOneServerAuthority(
       candidateState,
       snapshot.opponentCloseToOneServerAuthority,
@@ -935,11 +958,12 @@ export class MatchSession {
       checkpointId,
     )) return false;
     this.state = candidateState;
-    this.logs = structuredClone(snapshot.logs);
-    this.battleHistory = structuredClone(snapshot.battleHistory);
+    this.logs = candidateLogs;
+    this.battleHistory = candidateBattleHistory;
     this.consumedDirectiveCount = snapshot.consumedDirectiveCount;
     this.stopReason = snapshot.stopReason;
-    this.rejection = snapshot.rejection ? structuredClone(snapshot.rejection) : undefined;
+    this.rejection = candidateRejection;
+    synchronizeOpponentCloseToOneCurrentTrust(this.state, this.persistenceScope);
     this.record('replay_restored', checkpointId);
     return true;
   }
@@ -1624,6 +1648,8 @@ export function restoreMatchSession(
   if (snapshot.version !== 1) throw new Error(`Unsupported MatchSession snapshot version: ${snapshot.version}`);
   const persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
   const persistenceScope = config.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
+  const replayManifestRequired = config.persistenceScope !== undefined || snapshot.opponentCloseToOneReplayManifest !== undefined;
+  const replayCheckpointIds = (snapshot.replaySnapshots ?? []).map((candidate) => candidate.checkpointId);
   const candidateState = structuredClone(snapshot.state);
   if (!restoreOpponentCloseToOneServerAuthority(
     candidateState,
@@ -1631,6 +1657,13 @@ export function restoreMatchSession(
     persistenceSecret,
     persistenceScope,
   )) throw new Error('Invalid or missing FB2-49 persisted authority');
+  if (replayManifestRequired && !verifyOpponentCloseToOneReplayManifest(
+    candidateState,
+    replayCheckpointIds,
+    snapshot.opponentCloseToOneReplayManifest,
+    persistenceSecret,
+    persistenceScope,
+  )) throw new Error('Invalid or missing FB2-49 replay manifest');
   const session = new MatchSession({
     seed: snapshot.seed,
     humanPlayerId: snapshot.humanPlayerId,
@@ -1638,7 +1671,7 @@ export function restoreMatchSession(
     maxActionsPerPlayer: snapshot.maxActionsPerPlayer,
     persistenceSecret,
     persistenceScope,
-  }, false);
+  }, false, replayManifestRequired);
   session.state = candidateState;
   session.logs = structuredClone(snapshot.logs);
   session.replay = structuredClone(snapshot.replay);

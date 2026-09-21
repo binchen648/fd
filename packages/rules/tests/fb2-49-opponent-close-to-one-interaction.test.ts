@@ -627,15 +627,11 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2'); add(state, 'p3-a', 'p3'); add(state, 'p3-b', 'p3');
     expect(activate(state).ok).toBe(true);
     const firstDecisionId = state.abilityRuntime!.pendingDecision!.id;
-    const seal = persistOpponentCloseToOneServerAuthority(state, PERSISTENCE_SECRET, PERSISTENCE_SCOPE)!;
-    const baseSnapshot = rules.createMatchSession({
+    const liveSession = rules.createMatchSession({
       humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
-    }).serializeSession();
-    const durableSnapshot = JSON.parse(JSON.stringify({
-      ...baseSnapshot,
-      state: structuredClone(state),
-      opponentCloseToOneServerAuthority: structuredClone(seal),
-    }));
+    });
+    liveSession.state = state;
+    const durableSnapshot = JSON.parse(JSON.stringify(liveSession.serializeSession()));
 
     expect(exportOpponentCloseToOneServerAuthority(durableSnapshot.state)).toBeUndefined();
     const restored = rules.restoreMatchSession(durableSnapshot, { persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE });
@@ -904,6 +900,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
       humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: goodScope,
     });
     goodRoom.session.state = goodState; goodRoom.status = 'running';
+    const goodOlderRoomSnapshot = structuredClone(goodRoom.serializeRoom());
     expect(goodRoom.session.dispatchPlayerAction('p1', { type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID }).ok).toBe(true);
     const goodLiveCheckpointId = goodRoom.session.replay.at(-1)!.id;
     const goodDecisionId = goodRoom.session.state.abilityRuntime!.pendingDecision!.id;
@@ -918,11 +915,8 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(badRoom.session.dispatchPlayerAction('p1', { type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID }).ok).toBe(true);
 
     const snapshot: any = structuredClone(hub.serialize());
-    const goodSnapshot = snapshot.rooms.find((room: any) => room.roomId === 'fb2-49-hub-good');
-    goodSnapshot.session.replay = goodSnapshot.session.replay.filter((entry: any) => entry.id !== goodLiveCheckpointId);
-    goodSnapshot.session.replaySnapshots = goodSnapshot.session.replaySnapshots.filter(
-      (entry: any) => entry.checkpointId !== goodLiveCheckpointId,
-    );
+    const goodIndex = snapshot.rooms.findIndex((room: any) => room.roomId === 'fb2-49-hub-good');
+    snapshot.rooms[goodIndex] = structuredClone(goodOlderRoomSnapshot);
     const badSnapshot = snapshot.rooms.find((room: any) => room.roomId === 'fb2-49-hub-bad');
     badSnapshot.session.opponentCloseToOneServerAuthority.mac = '0'.repeat(64);
     const goodRoomIdentity = hub.getRoom('fb2-49-hub-good');
@@ -934,6 +928,88 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(hub.version('fb2-49-hub-good')).toBe(goodVersion);
     expect(hub.version('fb2-49-hub-bad')).toBe(badVersion);
     expect(goodRoomIdentity.session!.restoreToCheckpoint(goodLiveCheckpointId)).toBe(true);
+  });
+
+  it('rejects same-transaction replay snapshot substitution across checkpoint ids mutation-free', () => {
+    const scope = 'fb2-49-persistence-scope:' + 'aa'.repeat(32);
+    const state = setup();
+    add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    add(state, 'p3-a', 'p3'); add(state, 'p3-b', 'p3');
+    const session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    session.state = state;
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID,
+    }).ok).toBe(true);
+    const earlierId = session.replay.at(-1)!.id;
+    const earlierSnapshot = structuredClone(session.replaySnapshots.find((entry) => entry.checkpointId === earlierId)!);
+    const p2DecisionId = session.state.abilityRuntime!.pendingDecision!.id;
+    expect(session.dispatchPlayerAction('p2', { type: 'choose_target', decisionId: p2DecisionId, selectedIds: ['p2-a'] }).ok).toBe(true);
+    const laterId = session.replay.at(-1)!.id;
+    expect(laterId).not.toBe(earlierId);
+    expect(session.state.abilityRuntime!.pendingDecision?.controllerId).toBe('p3');
+
+    const laterIndex = session.replaySnapshots.findIndex((entry) => entry.checkpointId === laterId);
+    session.replaySnapshots[laterIndex] = { ...earlierSnapshot, checkpointId: laterId };
+    const beforeState = structuredClone(session.state);
+    const beforeLogs = structuredClone(session.logs);
+    const beforeAuthority = exportOpponentCloseToOneServerAuthority(session.state);
+    expect(session.restoreToCheckpoint(laterId)).toBe(false);
+    expect(session.state).toEqual(beforeState);
+    expect(session.logs).toEqual(beforeLogs);
+    expect(exportOpponentCloseToOneServerAuthority(session.state)).toEqual(beforeAuthority);
+    expect(session.state.abilityRuntime!.pendingDecision?.controllerId).toBe('p3');
+  });
+
+  it('re-establishes current trusted transaction after restoring a historical live checkpoint', () => {
+    const scope = 'fb2-49-persistence-scope:' + 'bb'.repeat(32);
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    const session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    session.state = state;
+    const cleanSnapshot = structuredClone(session.serializeSession());
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID,
+    }).ok).toBe(true);
+    const liveId = session.replay.at(-1)!.id;
+    const decisionId = session.state.abilityRuntime!.pendingDecision!.id;
+    expect(session.dispatchPlayerAction('p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] }).ok).toBe(true);
+    expect(exportOpponentCloseToOneServerAuthority(session.state)).toBeUndefined();
+
+    expect(session.restoreToCheckpoint(liveId)).toBe(true);
+    expect(exportOpponentCloseToOneServerAuthority(session.state)).toBeDefined();
+    expect(() => rules.restoreMatchSession(cleanSnapshot, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    })).toThrow('Invalid or missing FB2-49 persisted authority');
+  });
+
+  it('rejects one-shot older-state plus later-authentic-checkpoint replay-lineage resurrection', () => {
+    const scope = 'fb2-49-persistence-scope:' + 'cc'.repeat(32);
+    const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
+    const session = rules.createMatchSession({
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    });
+    session.state = state;
+    const olderSnapshot: any = structuredClone(session.serializeSession());
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID,
+    }).ok).toBe(true);
+    const liveId = session.replay.at(-1)!.id;
+    const liveReplay = structuredClone(session.replay.find((entry) => entry.id === liveId)!);
+    const liveReplaySnapshot = structuredClone(session.replaySnapshots.find((entry) => entry.checkpointId === liveId)!);
+    const decisionId = session.state.abilityRuntime!.pendingDecision!.id;
+    expect(session.dispatchPlayerAction('p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] }).ok).toBe(true);
+
+    const oneShot: any = structuredClone(olderSnapshot);
+    oneShot.replay.push(liveReplay);
+    oneShot.replaySnapshots.push(liveReplaySnapshot);
+    expect(() => rules.restoreMatchSession(oneShot, {
+      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+    })).toThrow('Invalid or missing FB2-49 replay manifest');
+    expect(session.restoreToCheckpoint(liveId)).toBe(true);
+    expect(session.state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
   });
 
   it('revokes replay trust for a checkpoint removed by a successful older-session restore', () => {
@@ -964,11 +1040,9 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const resurrection: any = structuredClone(restoredOlder.serializeSession());
     resurrection.replay.push(removedReplay);
     resurrection.replaySnapshots.push(removedReplaySnapshot);
-    const restoredResurrection = rules.restoreMatchSession(resurrection, {
+    expect(() => rules.restoreMatchSession(resurrection, {
       persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
-    });
-    expect(restoredResurrection.restoreToCheckpoint(removedCheckpointId)).toBe(false);
-    expect(restoredResurrection.state.abilityRuntime?.pendingDecision).toBeUndefined();
+    })).toThrow('Invalid or missing FB2-49 replay manifest');
   });
 
   it('revokes current and replay trust when a successful Hub restore removes an authoritative room', () => {
