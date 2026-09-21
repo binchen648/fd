@@ -463,3 +463,47 @@ Fresh clean validation was run from detached implementation SHA `8cc86979f2c0972
 - write-producing coverage/audit artifacts were restored byte-for-byte from the exact implementation Git blobs after metrics were recorded; validation worktree is clean.
 
 Accounting remains unchanged: FB2-49 is zero-credit capability work; formal migration remains **151/944**, **793 remaining**.
+
+
+## Revision after fresh Reviewer review on Candidate `b111ab74853029c1e6039e1919b9e0f3e4a8b555`
+
+Fresh Reviewer evidence is canonical GitHub comment `5756084751` on PR #415: `https://github.com/binchen648/fd/pull/415#issuecomment-5756084751`. Verdict: `IMPLEMENTATION_NEEDS_REVISION`. The upgraded Reviewer completed the remaining exact FB2-49 scope after the first blocker and returned two independently reproducible P1 findings in the same review.
+
+Both findings are corrected together in one revision:
+
+1. **Malformed qualifying opponent CardRuntimeState**
+   - FB2-49 now structurally validates every qualifying opponent card runtime-state record at activation/qualification and again before settlement/close.
+   - A qualifying card must have a plain record with boolean `active`, boolean `faceDown`, and safe-integer `playedRound`; only `active === true` and `faceDown === false` may qualify.
+   - wrong primitives/containers, wrong-typed `faceDown`, and missing/malformed required runtime fields fail closed rather than entering or surviving the frozen set.
+   - focused regressions cover malformed qualifying-card state both before activation and after valid staging, proving non-throwing `ok:false`, no card close, and structure-equivalent caller state.
+
+2. **Future frozen-opponent drift hidden by coherent queue truncation**
+   - the prior current-state re-derivation is no longer the authority for the originally frozen continuation.
+   - activation stores the complete frozen eligible-opponent continuation and each frozen qualifying set in a **server-only hidden authority outside serialized `GameState` / `AbilityRuntime`**. Queue, PendingDecision interaction metadata, card runtime state, and legacy mirrors cannot rewrite this authority by mutating the serialized game state.
+   - every FB2-49 dispatch transaction clones the hidden authority alongside the transactional GameState copy and commits it only when the command succeeds, preserving atomic rejection semantics.
+   - settlement validates the entire still-pending frozen authority before closing the current opponent's cards. Future frozen-card owner/controller/zone/active/face/residual drift therefore rejects before current settlement, instead of shrinking the continuation.
+   - serialized queue membership, suffix metadata, and current frozen qualifying sets must match the hidden authority. Coherently truncating `[p2,p3]` to `[p2]` while drifting p3 and rewriting queue/interaction metadata still returns `ok:false`, closes no p2 card, consumes no decision/queue entry, and does not skip p3.
+   - no replacement co-mutable trusted mirror is added to AbilityRuntime.
+   - MatchSession snapshots and replay checkpoints persist/restore the hidden authority separately from GameState, so reconnect/save/restore/replay does not silently lose a live FB2-49 transaction.
+   - activation also rejects if a stale hidden FB2-49 authority exists even when serialized queue metadata has been forged/cleared, preventing authority overwrite/re-staging.
+
+During the new activation malformed-state regression, the generic rejection path exposed that projecting a failed command could lazily create `modeState.stagedAttacks={}` on the caller state. The rejection view is now projected from a clone so FB2-49 fail-closed activation remains structure-equivalent without changing successful command semantics.
+
+Exact implementation before this report-only evidence update: `fce3bba20c5feeee792dff305652f194bf200203`, whose direct parent is rejected Candidate `b111ab74853029c1e6039e1919b9e0f3e4a8b555`. A fresh detached validation worktree at that exact implementation SHA used its own `npm ci --ignore-scripts` dependency tree.
+
+Revision recertification on exact implementation `fce3bba20c5feeee792dff305652f194bf200203`:
+
+- `npm.cmd run typecheck` - PASS;
+- focused FB2-49 - **21/21 PASS**;
+- Reviewer-named adjacent compatibility set - **8 files / 65 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2` - **177 files / 1290 tests PASS**;
+- `npm.cmd run content:validate` - **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated-content determinism PASS with unchanged hashes `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`, `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, and `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`;
+- exact Locked Reference verification PASS at `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- client build PASS from the exact fresh validation worktree, with only existing Vite browser-externalization/chunk-size warnings;
+- `phase3:coverage` PASS: archives=127, cards=169, abilities=281, newRuntimeSemanticRouted=22, legacyExecuteAbility=3, legacyResolveEffect=144, dualRuntime=0, notClassifiable=112, taxonomyWarnings=151;
+- `phase3:automation-audit` PASS: legacyResolveEffect=144, legacyExecuteAbility=3, notClassifiable=112, promotionFindings=20;
+- write-producing coverage/audit artifacts were restored byte-for-byte from the exact implementation Git blobs after metrics were recorded, and the detached validation worktree finished clean;
+- `git diff --check` - PASS.
+
+Accounting remains unchanged: FB2-49 is zero-credit capability work; formal migration remains **151/944**, **793 remaining**. No Astolfo consumer authoring, identity routing, generic each-player authoring API, product/generated/client semantic change, merge, retarget, or migration credit is introduced.
