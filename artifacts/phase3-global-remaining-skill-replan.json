@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "fd-phase3-global-replan-v1",
+  "date": "2026-09-21",
+  "owner": "Codex A",
+  "task": "P3-A-GLOBAL-REMAINING-SKILL-REPLAN",
+  "status": "PLAN_READY",
+  "sourceBaseline": "8b63d3cdd2ae068810805c650dca6903874e825d",
+  "lockedReference": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+  "inventorySha256": "4242922cd047ba3452878ee7dba3d25b2afe3a22294c4a097102997fcfec019f",
+  "authoringFileCount": 127,
+  "authoringFingerprint": "691dc60214db71a0c5bf121f7483c8401b3655858ee222c8562b49ed53913a43",
+  "ledger": {
+    "denominator": 944,
+    "formalAccepted": 151,
+    "authoredFrozen": 151,
+    "remaining": 793,
+    "formalMaterialDrift": 0
+  },
+  "coarseMissingClassification": {
+    "SOURCE_EVIDENCE_REQUIRED": 738,
+    "COMPLETE_CARD_PROBE_REQUIRED": 50,
+    "SPECIAL_HANDLER_REVIEW": 5
+  },
+  "activeReservation": {
+    "task": "P3-FB2-49-OPPONENT-CLOSE-TO-ONE-INTERACTION",
+    "closureTarget": "servant.astolfo.skill.sc-astolfo-1"
+  },
+  "fm09Targets": {
+    "total": 11,
+    "present": [
+      "master.ciel.skill.s2",
+      "master.shiki-ryougi.skill.s3"
+    ],
+    "missing": [
+      "master.bazett.skill.s2",
+      "master.caules-yggdmillennia.skill.s2",
+      "master.caules-yggdmillennia.skill.s3",
+      "master.fujino.skill.s3",
+      "master.shiki-nanaya.skill.s2",
+      "master.shiki-ryougi.skill.s2",
+      "master.shiki-tohno.skill.s2",
+      "master.zouken.skill.s3",
+      "master.zouken.skill.s4"
+    ],
+    "bulkMigrationAuthorized": false
+  },
+  "policy": {
+    "defaultConsumerBatchSize": 1,
+    "maximumParallelDisjointConsumers": 3,
+    "maximumHotRuntimeTasks": 1,
+    "historicalReadyLabelGrantsSReady": false,
+    "fm09MembershipAffectsPriority": false
+  },
+  "nextAction": "Implement the readiness automation plan after the active FB2-49 chain; do not dispatch an FM09 batch."
+}
+

@@ -5858,3 +5858,15 @@ Read: `docs/reports/2026-09-21-p3-a-darius-s1-credit-reconciliation.md`
 Result: independent R reports PASS for the integrated Darius s1 recertification Candidate containing historical S Candidate `776ee46` and accepted B2 typed residual CLOSE Candidate `2c9b19a`. The existing `servant.darius.skill.sc-darius-1` credit changes from included-but-contested to included-and-confirmed. This is a reconciliation of the same frozen identity, so migration credit delta is exactly **`0`** and no duplicate `+1` is permitted.
 
 Formal migration remains **`151/944`**, with **`793`** remaining. This synchronization changes no runtime, authoring, tests, generated product, pack, or client code and grants no Gate C, Phase PASS, or Release Ready promotion.
+
+## TASK P3-A-GLOBAL-REMAINING-SKILL-REPLAN
+
+Owner: Codex A
+Status: `PLAN_READY`
+Branch: `codex/a-p3-global-remaining-skill-replan`
+Baseline: exact Darius credit reconciliation `8b63d3cdd2ae068810805c650dca6903874e825d`
+Read: `docs/plans/2026-09-21-phase3-global-remaining-skill-replan-design.md`, `docs/plans/2026-09-21-phase3-global-remaining-skill-rollout-plan.md`
+
+Result: replace the historical FM09 batch mindset with a fail-closed global queue over all `944` frozen identities. Mechanical baseline is formal/material `151/944`, drift `0`, and `793` remaining. The current coarse missing split is `738 SOURCE_EVIDENCE_REQUIRED`, `50 COMPLETE_CARD_PROBE_REQUIRED`, and `5 SPECIAL_HANDLER_REVIEW`; historical generic-extension labels do not grant `S_READY_NOW`.
+
+The original eleven FM09 targets now have two present and nine missing. The nine missing identities enter the global queue independently and no “complete FM09” batch is authorized. Preserve the active FB2-49 -> R -> A -> Astolfo singleton chain. After that chain, implement and run the global readiness compiler before dispatching another capability or consumer.
