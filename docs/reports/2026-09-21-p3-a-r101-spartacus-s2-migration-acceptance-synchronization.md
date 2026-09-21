@@ -44,4 +44,4 @@ PR #414 remains OPEN, unmerged and unretargeted.
 
 ## Next coordinator action
 
-Continue the frozen migration-credit-first pipeline from formal **`151/944`**. Mechanically probe the current accepted baseline for the first true whole-card `S_READY_NOW`; historical readiness/classification labels are insufficient. If a zero-gap singleton exists, dispatch S immediately. Only if the ready queue is defensibly zero may A dispatch the narrowest identity-free B2 seam needed by the best closure target. Never re-review exact Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`.
+Do not re-review exact Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`. The next coordinator action is governed by `docs/reports/2026-09-21-p3-throughput-scheduler-rebase.md`: after the already-dispatched FB2-49 finishes its exact fresh-R/revision/A-sync cycle, perform a full current-baseline overlay over the complete remaining set before any further S/B2 dispatch. Do not stop at the first singleton; prefer the largest honest zero-gap S batch, and open new B2 only when no zero-gap S work exists.
