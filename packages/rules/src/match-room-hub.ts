@@ -96,7 +96,9 @@ export class MatchRoomHub {
 
   restoreReplay(roomId: string, clientId: string, checkpointId: string): MatchRoomProjection {
     const room = this.getRoom(roomId);
-    room.restoreToReplayCheckpoint(clientId, checkpointId);
+    if (!room.restoreToReplayCheckpoint(clientId, checkpointId)) {
+      throw new Error(`Replay restore failed: ${checkpointId}`);
+    }
     this.bump(roomId, 'replay_restored');
     return room.getProjection(clientId);
   }
@@ -116,15 +118,38 @@ export class MatchRoomHub {
     };
   }
 
+  restoreRoom(roomId: string, snapshot: MatchRoomSnapshot): MatchRoomProjection {
+    if (snapshot.roomId !== roomId) throw new Error(`Restore room id mismatch: expected ${roomId}, got ${snapshot.roomId}`);
+    const existing = this.getRoom(roomId);
+    const restored = restoreMatchRoom(snapshot, existing.getPersistenceContext());
+    this.rooms.set(roomId, restored);
+    this.bump(roomId, 'room_restored');
+    if (!restored.session) existing.revokePersistenceTrust();
+    return restored.getProjection(restored.hostClientId);
+  }
+
   restore(snapshot: MatchRoomHubSnapshot): void {
     if (snapshot.version !== 1) throw new Error(`Unsupported MatchRoomHub snapshot version: ${snapshot.version}`);
-    this.rooms.clear();
-    this.roomVersions.clear();
+    const restoredRooms = new Map<string, MatchRoom>();
     for (const roomSnapshot of snapshot.rooms) {
-      const room = restoreMatchRoom(roomSnapshot);
-      this.rooms.set(room.roomId, room);
-      this.bump(room.roomId, 'room_restored');
+      const existing = this.rooms.get(roomSnapshot.roomId);
+      const room = restoreMatchRoom(roomSnapshot, existing?.getPersistenceContext(), false);
+      if (restoredRooms.has(room.roomId)) throw new Error(`Duplicate room in restore snapshot: ${room.roomId}`);
+      restoredRooms.set(room.roomId, room);
     }
+    const retainedScopes = new Set(
+      [...restoredRooms.values()]
+        .filter((room) => room.session)
+        .map((room) => room.getPersistenceContext().persistenceScope),
+    );
+    const removedRooms = [...this.rooms.values()].filter(
+      (room) => !retainedScopes.has(room.getPersistenceContext().persistenceScope!),
+    );
+    for (const room of restoredRooms.values()) room.reconcilePersistenceTrust();
+    for (const room of removedRooms) room.revokePersistenceTrust();
+    this.rooms = restoredRooms;
+    this.roomVersions = new Map();
+    for (const roomId of this.rooms.keys()) this.bump(roomId, 'room_restored');
   }
 
   private bump(roomId: string, type: MatchRoomHubEvent['type']): MatchRoomHubEvent {
