@@ -1869,6 +1869,14 @@ function isExactNonEmptyPlayerIdList(value: unknown): value is string[] {
   return Array.isArray(value) && value.length >= 1 &&
     value.every((id) => typeof id === 'string' && id.length > 0) && new Set(value).size === value.length;
 }
+function hasExactOpponentCloseToOneDecisionRootKeys(value: unknown): boolean {
+  if (!isPlainRecord(value)) return false;
+  return exactPlayerArray(Object.keys(value).sort(), ['candidates', 'context', 'controllerId', 'id', 'interaction', 'max', 'min', 'remainingEffects', 'target']);
+}
+function hasExactOpponentCloseToOneInteractionRootKeys(value: unknown): boolean {
+  if (!isPlainRecord(value)) return false;
+  return exactPlayerArray(Object.keys(value).sort(), ['abilityId', 'battlefieldId', 'cancelPolicy', 'constraints', 'continuationRef', 'createdRevision', 'decisionPlayerId', 'initiatingControllerId', 'kind', 'qualifyingCardIds', 'qualifyingCardOwners', 'remainingDecisionPlayerIds', 'sourceCardInstanceId', 'template', 'visibility']);
+}
 function isExactOpponentCloseToOneQueueEntry(value: unknown): value is PendingOpponentCloseToOne {
   if (!isPlainRecord(value)) return false;
   const keys = Object.keys(value).sort();
@@ -3893,6 +3901,9 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       if (d.interaction) {
         const meta = d.interaction;
         if (meta.kind === 'opponent_close_non_residual_to_one_v1') {
+          if (!hasExactOpponentCloseToOneDecisionRootKeys(d) || !hasExactOpponentCloseToOneInteractionRootKeys(meta)) {
+            reject('resolution_failed', 'Corrupt or stale opponent close-to-one interaction state');
+          }
           const decisionContext: unknown = d.context;
           const decisionTarget: unknown = d.target;
           if (!isExactOpponentCloseToOneContext(decisionContext) || !isExactOpponentCloseToOneTarget(decisionTarget)) {

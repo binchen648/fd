@@ -339,3 +339,25 @@ Validation after this revision:
 - coverage/audit metrics — unchanged; generated audit artifacts restored to their exact pre-revision Git blobs.
 
 Formal migration remains **`151/944`**, **`793`** remaining.
+
+## Revision after eighth fresh Reviewer finding
+
+- canonical Reviewer evidence: https://github.com/binchen648/fd/pull/415#issuecomment-5754915759
+- exact rejected Candidate: `d457533d8e224cb5f0f5e5530ce1858facbd97f7`.
+- sole new P1: FB2-49 settlement validated nested synthetic metadata but did not reject unknown/extra keys on the enclosing `PendingDecision` root or `OpponentCloseToOneInteractionMetadata` root, allowing forged root metadata to commit settlement.
+- correction stays FB2-49-local: exact key-set guards now bind both root envelopes before any source/queue/card settlement work; existing field-value, target/context, constraints, continuation, queue completeness and owner-provenance validation remains unchanged.
+- focused regression forges one extra root key independently on the pending-decision envelope and interaction envelope; both cases prove no raw throw, `ok:false`, caller state structure-equivalent and no card closure/decision consumption.
+- control-based qualification and identity-free capability scope remain unchanged; no consumer routing or generic vocabulary expansion was added.
+
+Validation after the eighth finding correction:
+- `npm.cmd run typecheck` — PASS;
+- focused FB2-49 — **15/15 PASS**;
+- Reviewer-named adjacent compatibility set — **8 files / 59 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2` — **177 files / 1284 tests PASS**;
+- content validation — **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated-content determinism hashes unchanged;
+- Locked Reference exact verification PASS at `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- client build PASS (existing Vite warnings only);
+- phase3 coverage/audit metrics unchanged; generated audit artifacts restored to the exact pre-revision Git blobs.
+
+Accounting remains unchanged: FB2-49 is zero-credit capability work; formal migration remains **151/944**, **793 remaining**.
