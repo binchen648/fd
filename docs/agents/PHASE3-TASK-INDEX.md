@@ -5798,3 +5798,15 @@ Read: `docs/reports/2026-09-21-p3-a-fb2-48-combat-opponent-power-vp-reward-dispa
 Result required: implement only the exact identity-free authoritative combat-opponent-power VP transaction released by A. On the trusted resolved-battle root at the controller battlefield while the source is active, freeze exact participant ids/powers, offer a server-owned non-cancellable exactly-one choice from that battle's opponents, and reward the controller exactly `floor(selected frozen opponent power / 5)` VP. Fail closed on malformed authoring, battle provenance, pending metadata or stale/forged selection. Do not add generic player selection, generic `event_combat_opponents`, generic selected-player metrics, generic formula/floor-divide execution, identity routing, consumer authoring, or unrelated battle/resource semantics.
 
 This is zero-credit capability work: formal migration remains **`150/944`**, **`794`** remaining. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.spartacus.skill.sc-spartacus-2`; singleton S is allowed only if the whole card is then mechanically zero-gap.
+
+## TASK P3-A-R100-FB2-48-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r100-fb2-48-acceptance-sync`
+Base: exact accepted Candidate `14c8688c201d4d39a85843470be6b79eec01853d`
+Read: `docs/reports/2026-09-21-p3-a-r100-fb2-48-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #413 exact Candidate `14c8688c201d4d39a85843470be6b79eec01853d`, backed by canonical evidence `https://github.com/binchen648/fd/pull/413#issuecomment-5754051359`. Accepted capability remains only the bounded identity-free trusted resolved-battle snapshot -> exactly-one frozen combat opponent choice -> controller VP reward `floor(frozen opponent power / 5)` transaction; the authoritative root producers only add the frozen participant-power field and no generic selector/formula or identity routing is opened.
+
+FB2-48 earns zero migration credit; formal migration remains **`150/944`**, with **`794`** remaining. Material authoring overlap remains **`145/944`**, duplicates **`0`**, and no consumer identity is added. PR #413 remains OPEN, unmerged and unretargeted. Next action is a fresh complete-card reconstruction of `servant.spartacus.skill.sc-spartacus-2` on this synchronized runtime; dispatch singleton S only if the whole card is mechanically zero-gap.
