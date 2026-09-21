@@ -377,6 +377,29 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     }
   });
 
+  it('fails closed atomically when a valid serialized FB2-49 tail is truncated', () => {
+    const state = setup();
+    add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2'); add(state, 'p3-a', 'p3'); add(state, 'p3-b', 'p3');
+    expect(activate(state).ok).toBe(true);
+    expect(state.abilityRuntime!.pendingOpponentCloseToOne?.map((entry) => entry.decisionPlayerId)).toEqual(['p2', 'p3']);
+    expect(state.abilityRuntime!.pendingOpponentCloseToOne?.[0]?.remainingDecisionPlayerIds).toEqual(['p2', 'p3']);
+    expect(state.abilityRuntime!.pendingOpponentCloseToOne?.[1]?.remainingDecisionPlayerIds).toEqual(['p3']);
+    expect((state.abilityRuntime!.pendingDecision!.interaction as any).remainingDecisionPlayerIds).toEqual(['p2', 'p3']);
+    state.abilityRuntime!.pendingOpponentCloseToOne!.splice(1, 1);
+    const before = structuredClone(state);
+    const decisionId = state.abilityRuntime!.pendingDecision!.id;
+    let result: ReturnType<typeof rules.dispatchAbilityCommand> | undefined;
+    expect(() => {
+      result = rules.dispatchAbilityCommand(state, 'p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] });
+    }).not.toThrow();
+    expect(result?.ok).toBe(false);
+    expect(state).toEqual(before);
+    expect(state.abilityRuntime!.cardState['p2-b']).toMatchObject({ active: true, faceDown: false });
+    expect(state.abilityRuntime!.cardState['p3-a']).toMatchObject({ active: true, faceDown: false });
+    expect(state.abilityRuntime!.cardState['p3-b']).toMatchObject({ active: true, faceDown: false });
+    expect(state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
+  });
+
   it('treats a live close-forbid as an atomic failure instead of partially closing the frozen set', () => {
     const state = setup();
     add(state, 'p2-keep', 'p2'); add(state, 'p2-protected', 'p2', PROTECTED_DEF); add(state, 'p2-other', 'p2');

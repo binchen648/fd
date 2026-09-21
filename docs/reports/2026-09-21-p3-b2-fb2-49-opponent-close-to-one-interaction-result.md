@@ -284,3 +284,34 @@ Revision recertification:
 - Phase 3 coverage/audit metrics unchanged and validation artifacts restored byte-for-byte to the rejected Candidate blobs.
 
 Accounting remains unchanged: FB2-49 is zero-credit capability work, formal migration remains **151/944**, **793 remaining**. No consumer authoring, identity routing, product/generated/client scope, merge, or retarget is introduced by this revision.
+
+## Revision after sixth fresh Reviewer finding
+
+Fresh Reviewer evidence for rejected Candidate `cc4df99e06b6b1819a241b48ef5d0947de96f228` is canonical GitHub comment `5754747334` on PR #415: `https://github.com/binchen648/fd/pull/415#issuecomment-5754747334`. Verdict: `IMPLEMENTATION_NEEDS_REVISION`.
+
+The sole new P1 finding was queue-completeness binding: the previous revision validated every surviving serialized queue entry but did not commit the originally frozen remaining eligible-opponent membership, so a forged valid truncation `[p2,p3] -> [p2]` could settle p2 and silently skip p3.
+
+Minimum correction only:
+
+- each frozen FB2-49 queue entry now carries `remainingDecisionPlayerIds`, created once from the complete seat-ordered eligible-opponent queue;
+- the same suffix commitment is copied into the already-issued current `PendingDecision.interaction` metadata, providing an independent authoritative mirror of the current continuation;
+- the head for a two-opponent queue therefore commits `['p2','p3']`, while the next queue entry commits `['p3']`;
+- settlement requires three-way equality between interaction commitment, queue-head commitment and the actual remaining queue decision-player sequence before any card close, queue shift or next-decision staging;
+- a structurally valid tail deletion/truncation therefore rejects through `RuleRejection`, returns `ok:false`, and leaves caller state structure-equivalent with no card mutation and no skipped mandatory decision;
+- existing queue-container/tail-shape, owner-provenance, candidate-list, constraint, target/context and control-based qualification guards remain unchanged;
+- scope remains identity-free FB2-49 capability work with zero migration credit.
+
+Revision recertification:
+
+- `npm.cmd run typecheck` — PASS;
+- focused FB2-49 — **13/13 PASS**;
+- Reviewer-named adjacent compatibility set — **8 files / 57 tests PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2` — **177 files / 1282 tests PASS**;
+- `content:validate` — **7 masters / 7 servants / 20 events / 0 blocking issues**;
+- generated-content determinism hashes unchanged;
+- exact Locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` — PASS;
+- client build — PASS (existing Vite warnings only);
+- Phase 3 coverage and automation-audit metrics unchanged;
+- validation artifacts restored byte-for-byte to the rejected Candidate blobs.
+
+Formal migration remains **151/944**, **793** remaining. FB2-49 remains zero-credit capability work.

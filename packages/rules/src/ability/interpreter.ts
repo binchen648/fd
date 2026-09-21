@@ -1865,16 +1865,21 @@ function livePlayerOwnersMatchFrozen(s: GameState, frozen: unknown, ids: unknown
     return !!current && current.ownerPlayerId === frozen[instanceId];
   });
 }
+function isExactNonEmptyPlayerIdList(value: unknown): value is string[] {
+  return Array.isArray(value) && value.length >= 1 &&
+    value.every((id) => typeof id === 'string' && id.length > 0) && new Set(value).size === value.length;
+}
 function isExactOpponentCloseToOneQueueEntry(value: unknown): value is PendingOpponentCloseToOne {
   if (!isPlainRecord(value)) return false;
   const keys = Object.keys(value).sort();
-  return exactPlayerArray(keys, ['abilityId', 'battlefieldId', 'decisionPlayerId', 'initiatingControllerId', 'qualifyingCardIds', 'qualifyingCardOwners', 'sourceCardId']) &&
+  return exactPlayerArray(keys, ['abilityId', 'battlefieldId', 'decisionPlayerId', 'initiatingControllerId', 'qualifyingCardIds', 'qualifyingCardOwners', 'remainingDecisionPlayerIds', 'sourceCardId']) &&
     typeof value.initiatingControllerId === 'string' && value.initiatingControllerId.length > 0 &&
     typeof value.decisionPlayerId === 'string' && value.decisionPlayerId.length > 0 && value.decisionPlayerId !== value.initiatingControllerId &&
     typeof value.sourceCardId === 'string' && value.sourceCardId.length > 0 &&
     typeof value.abilityId === 'string' && value.abilityId.length > 0 &&
     typeof value.battlefieldId === 'string' && value.battlefieldId.length > 0 &&
-    isExactFrozenCardIdList(value.qualifyingCardIds) && isExactPlayerOwnerMap(value.qualifyingCardOwners, value.qualifyingCardIds);
+    isExactFrozenCardIdList(value.qualifyingCardIds) && isExactPlayerOwnerMap(value.qualifyingCardOwners, value.qualifyingCardIds) &&
+    isExactNonEmptyPlayerIdList(value.remainingDecisionPlayerIds);
 }
 function isExactOpponentCloseToOneQueue(s: GameState, value: unknown): value is PendingOpponentCloseToOne[] {
   if (!Array.isArray(value) || value.length < 1) return false;
@@ -1896,6 +1901,8 @@ function isExactOpponentCloseToOneQueue(s: GameState, value: unknown): value is 
     priorSeat = decisionPlayer.seat;
     decisionPlayerIds.add(entry.decisionPlayerId);
   }
+  const queueDecisionPlayerIds = value.map((entry) => entry.decisionPlayerId);
+  if (value.some((entry, index) => !exactPlayerArray(entry.remainingDecisionPlayerIds, queueDecisionPlayerIds.slice(index)))) return false;
   const initiatingController = s.players.find((candidate) => candidate.id === first!.initiatingControllerId);
   return !!initiatingController && initiatingController.status === 'active' && initiatingController.locationId === first!.battlefieldId;
 }
@@ -1969,7 +1976,7 @@ function stageNextOpponentCloseToOneDecision(s: GameState): void {
       sourceCardInstanceId: pending.sourceCardId, abilityId: pending.abilityId, createdRevision: r.revision + 1,
       continuationRef: `${id}:continuation`, initiatingControllerId: pending.initiatingControllerId,
       decisionPlayerId: pending.decisionPlayerId, battlefieldId: pending.battlefieldId, qualifyingCardIds: [...pending.qualifyingCardIds],
-      qualifyingCardOwners: { ...pending.qualifyingCardOwners },
+      qualifyingCardOwners: { ...pending.qualifyingCardOwners }, remainingDecisionPlayerIds: [...pending.remainingDecisionPlayerIds],
       constraints: { kind: 'target', targetKind: 'card', min: 1, max: 1, distinct: true },
     },
   };
@@ -1990,13 +1997,18 @@ function stageOpponentCloseToOne(s: GameState, ctx: EffectContext, a: AuthoringA
   if (queue.length) reject('pending_resolution', 'Opponent close-to-one queue is already active');
   const opponents = s.players.filter((candidate) => candidate.id !== controller.id && candidate.status === 'active' &&
     candidate.locationId === battlefieldId).sort((left, right) => left.seat - right.seat);
+  const frozenEntries: Array<Omit<PendingOpponentCloseToOne, 'remainingDecisionPlayerIds'>> = [];
   for (const opponent of opponents) {
     const qualifyingCardIds = qualifyingOpponentCloseToOneCardIds(s, opponent.id);
     if (qualifyingCardIds.length < 2) continue;
     const qualifyingCardOwners = Object.fromEntries(qualifyingCardIds.map((instanceId) =>
       [instanceId, card(s, instanceId).ownerPlayerId]));
-    queue.push({ initiatingControllerId: controller.id, decisionPlayerId: opponent.id, sourceCardId: ctx.sourceCardId,
+    frozenEntries.push({ initiatingControllerId: controller.id, decisionPlayerId: opponent.id, sourceCardId: ctx.sourceCardId,
       abilityId: ctx.abilityId, battlefieldId, qualifyingCardIds, qualifyingCardOwners });
+  }
+  const frozenDecisionPlayerIds = frozenEntries.map((entry) => entry.decisionPlayerId);
+  for (const [index, entry] of frozenEntries.entries()) {
+    queue.push({ ...entry, remainingDecisionPlayerIds: frozenDecisionPlayerIds.slice(index) });
   }
   stageNextOpponentCloseToOneDecision(s);
 }
@@ -3900,6 +3912,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           const pendingQualifyingCardIds: unknown = pending?.qualifyingCardIds;
           const metaQualifyingCardIds: unknown = meta.qualifyingCardIds;
           const metaConstraints: unknown = meta.constraints;
+          const metaRemainingDecisionPlayerIds: unknown = meta.remainingDecisionPlayerIds;
           const decisionCandidates: unknown = d.candidates;
           if (!isAcceptedOpponentCloseToOneAbility(a, 'compiled') || !pending || !source || !initiatingController || !decisionPlayer ||
               initiatingController.status !== 'active' || decisionPlayer.status !== 'active' ||
@@ -3911,6 +3924,9 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
               pending.sourceCardId !== meta.sourceCardInstanceId || pending.abilityId !== meta.abilityId ||
               pending.battlefieldId !== meta.battlefieldId || !exactFrozenCardIdList(pendingQualifyingCardIds, metaQualifyingCardIds) ||
               !exactPlayerOwnerMap(pending.qualifyingCardOwners, meta.qualifyingCardOwners, metaQualifyingCardIds) ||
+              !isExactNonEmptyPlayerIdList(metaRemainingDecisionPlayerIds) ||
+              !exactPlayerArray(pending.remainingDecisionPlayerIds, metaRemainingDecisionPlayerIds) ||
+              !exactPlayerArray(metaRemainingDecisionPlayerIds, pendingQueue.map((entry) => entry.decisionPlayerId)) ||
               meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
               meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
               meta.sourceCardInstanceId !== decisionContext.sourceCardId || meta.abilityId !== decisionContext.abilityId ||
