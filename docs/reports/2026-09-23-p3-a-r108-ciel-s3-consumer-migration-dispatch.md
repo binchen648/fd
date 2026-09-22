@@ -1,4 +1,4 @@
-﻿# P3-A R108 Ciel S3 Consumer Migration Dispatch
+# P3-A R108 Ciel S3 Consumer Migration Dispatch
 
 Role: Codex A
 Status: `READY`
@@ -95,19 +95,15 @@ The authorized Ciel s3 exact +1 necessarily makes repository overlap `149/944`. 
 
 No Atalanta production data, runtime behavior, semantic assertion, or other test may change.
 
-## Historical Ciel-s2 test compatibility authorization
+Full-CI recertification on the authorized S3 draft mechanically exposed exactly two additional stale compatibility snapshots caused solely by this rules-only +1:
 
-Focused S validation exposed one additional historical snapshot in `packages/rules/tests/regression/fb2-ciel-s2-support-definition.test.ts`: the recovery-era assertion `expect(raw.cards).toHaveLength(2)` encoded the then-current mixed rules-only archive population rather than an invariant of the accepted Ciel s2 definition. The authorized s3 append makes that archive length `3` without changing s1a or s2 semantics.
+- `packages/rules/tests/fb2-26-provisioning-consumer-migration.test.ts` line-level archive assertion assumes every mixed rules-only owner archive contains exactly the historical provisioning source/target pair. S may narrow only that assertion so the original FB2-26 source/target ids still appear exactly once and in the same order while allowing unrelated additional same-owner rules-only definitions such as s3. All provisioning behavior assertions remain unchanged.
+- `packages/rules/tests/executable-card-pack.test.ts` hard-codes `Object.keys(executable.cards).toHaveLength(76)`. S may remove only this stale repository-wide absolute total-card count. All existing schema/hash/deck/source-map/classification/compiler assertions remain unchanged; do not replace it with another fixed total such as 77.
 
-S is therefore additionally authorized to modify only that one Ciel-s2 test assertion, replacing the absolute archive-length snapshot with stable preservation checks that `master.ciel.skill.s1a` and `master.ciel.skill.s2` are each still present exactly once. No other Ciel-s2 assertion, runtime behavior, production data, or accepted semantic may change.
-## Historical rules-only registration test compatibility authorization
+A subsequent full-CI pass exposed one final stale archive-size snapshot in `packages/rules/tests/regression/fb2-ciel-s2-support-definition.test.ts`: `expect(raw.cards).toHaveLength(2)` assumes the Ciel mixed rules-only archive can never gain another definition. S may replace only that assertion with exact-once presence checks for `master.ciel.skill.s1a` and `master.ciel.skill.s2`; all existing Ciel S2 source hashes, support-definition semantics, loader, play, combat-action, and reward assertions must remain unchanged.
 
-A full-CI probe on the authorized s3 append exposed exactly two further historical absolute snapshots tied to the pre-s3 rules-only definition population:
+No other historical-test compatibility change is authorized by this clarification.
 
-1. `packages/rules/tests/fb2-26-provisioning-consumer-migration.test.ts` assumes every mixed rules-only owner archive is exactly `[sourceId, targetId]`. S may alter only the Ciel branch of that assertion so the original `master.ciel.skill.s1a` source and `master.ciel.skill.s2` deferred target remain each exactly once while allowing the newly authorized `master.ciel.skill.s3`; the Ryougi and Shirou exact two-card assertions must remain unchanged.
-2. `packages/rules/tests/executable-card-pack.test.ts` hard-codes the production executable definition count at `76`. The authorized rules-only s3 definition deterministically changes that count to `77`. S may change only this one absolute count assertion to the new mechanically justified count while retaining the existing deck count, hash, classification, source-map and validation assertions unchanged.
-
-A mechanical scan of `packages/**` and `scripts/**` found no other `76` executable-card snapshot and no other Ciel exact-membership snapshot attributable to this migration. No unrelated compatibility edit is authorized.
 ## S scope
 
 Fresh S is authorized only to:
@@ -115,7 +111,7 @@ Fresh S is authorized only to:
 1. append exactly one new card `master.ciel.skill.s3` to the existing `data/authoring/masters/master.ciel.json`, preserving accepted s1a and s2 semantics unchanged;
 2. encode static metadata, outside-game placement, canonical 8-mana skill-zone requirement, per-game play limiter, and exact FB2-52 compound ability described above;
 3. add `packages/rules/tests/ciel-s3-consumer-migration.test.ts` proving exact source hashes/static metadata, loader/classifier acceptance, 7/8 mana + cost 3, authoritative 7 Power battle inclusion, qualifier/Luck behavior, exact next-round situation suppression, per-game replay rejection, rules-only registration isolation, and frozen accounting `148 -> 149`;
-4. apply only the Atalanta stale-count compatibility edit above;
+4. apply only the four compatibility edits listed above: the Atalanta stale overlap count, the FB2-26 owner-archive exact-card-list assertion, the executable-card-pack absolute total-card assertion, and the Ciel S2 support-test archive-length assertion;
 5. add `docs/reports/2026-09-23-p3-s-r108-ciel-s3-consumer-migration-result.md`.
 
 Forbidden:
@@ -134,7 +130,7 @@ S must prove at minimum:
 
 - Base `148/944` -> Candidate exactly `149/944`, exact +1 target, zero removals, zero duplicates;
 - production runtime source diff empty; manifest diff empty; generated diff restricted to the deterministic existing Ciel rules-only archive/source-map representation, with playable master/ordinary-card/deck/character surfaces unchanged;
-- focused Ciel s3 + FB2-52 + Atalanta accounting compatibility;
+- focused Ciel s3 + FB2-52 + Atalanta accounting + FB2-26 provisioning + executable-card-pack + Ciel S2 support-definition compatibility;
 - typecheck;
 - official `npm run test:ci -- --maxWorkers=2`;
 - content validation;
@@ -147,6 +143,4 @@ S must prove at minimum:
 Formal migration remains `153/944`, with `791` remaining until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A synchronizes that acceptance.
 
 Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
-
-
 
