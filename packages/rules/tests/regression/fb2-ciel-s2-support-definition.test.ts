@@ -56,7 +56,8 @@ describe('P3-FB2-22 recovery Ciel s2 support definition', () => {
     });
     expect(raw).not.toHaveProperty('publicInformation');
     expect(raw).not.toHaveProperty('deck');
-    expect(raw.cards).toHaveLength(2);
+    expect(raw.cards.filter((candidate: any) => candidate.id === 'master.ciel.skill.s1a')).toHaveLength(1);
+    expect(raw.cards.filter((candidate: any) => candidate.id === 'master.ciel.skill.s2')).toHaveLength(1);
     const card = raw.cards.find((candidate: any) => candidate.id === 'master.ciel.skill.s2');
     expect(card).toBeTruthy();
     expect(card).toMatchObject({

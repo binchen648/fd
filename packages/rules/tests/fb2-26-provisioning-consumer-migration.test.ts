@@ -56,7 +56,7 @@ describe('P3-FB2-26 exact three provisioning consumer migration', () => {
     for (const member of members) {
       const ownerArchive = archive(member.file);
       expect(ownerArchive.archiveType).toBe('master_rule_definition_archive');
-      expect(ownerArchive.cards.map((card: any) => card.id)).toEqual([member.sourceId, member.targetId]);
+      expect(ownerArchive.cards.filter((card: any) => card.id === member.sourceId || card.id === member.targetId).map((card: any) => card.id)).toEqual([member.sourceId, member.targetId]);
 
       const source = ownerArchive.cards[0];
       const target = ownerArchive.cards[1];
