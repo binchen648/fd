@@ -303,6 +303,8 @@ export interface AbilityRuntime {
   trustedVictoryPointChanges?: Record<string, { playerId: PlayerId; resource: 'victory_points'; delta: number; before: number; after: number; roundNumber: number; crossed?: boolean }>;
   /** FB2-51 current-round positive VP gain, keyed by affected player. */
   roundPositiveVictoryPointGain?: { round: number; byPlayer: Record<PlayerId, number> };
+  /** FB2-52 exact next-round situation-benefit suppression marker, keyed by affected player. */
+  situationBenefitsSuppressedRoundByPlayer?: Record<PlayerId, number>;
   ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
   pendingDelayedActivations?: PendingDelayedActivation[];
   /** Server-owned pre-scoring battle-local defeat requests staged by the exact Presence Concealment response. */

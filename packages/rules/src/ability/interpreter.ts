@@ -31,6 +31,13 @@ import {
   OPPONENT_ROUND_VP_GAIN_THRESHOLD,
   OPPONENT_ROUND_VP_GAIN_TRIGGER,
 } from './opponent-round-vp-gain-threshold';
+import {
+  NEXT_ROUND_SITUATION_BENEFIT_SUPPRESSION_EFFECT,
+  applyNextRoundSituationBenefitSuppression,
+  isAcceptedNextRoundSituationBenefitSuppressionAbility,
+  isNextRoundSituationBenefitSuppressionCandidate,
+  nextRoundSituationSuppressionQualifyingOpponentIds,
+} from './next-round-situation-benefit-suppression';
 import { isAcceptedPreBattleDefeatAbility, isPreBattleDefeatCandidate, preBattleDefeatAttribute } from './pre-battle-defeat';
 import {
   battleLossVpWinnerRewardAmounts,
@@ -283,6 +290,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
     manaGainedThisRound: { round: s.round.roundNumber, byPlayer: {} },
     trustedVictoryPointChanges: {}, roundPositiveVictoryPointGain: { round: s.round.roundNumber, byPlayer: {} },
+    situationBenefitsSuppressedRoundByPlayer: {},
     playRulesVersion: options.playRulesVersion ?? 'explicit-v1',
     playCounters: { round: s.round.roundNumber, cardsPlayedByPlayer: {}, faceUpCardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} } };
   initializeEventRulePlacements(s, pack);
@@ -871,6 +879,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isCombatOpponentPowerVpRewardCandidate(a) && !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) return false;
   if (isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled') &&
     !trustedCombatOpponentPowerRewardFacts(s, card(s, sourceId).controllerPlayerId, event)) return false;
+  if (isNextRoundSituationBenefitSuppressionCandidate(a) &&
+    !isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
@@ -915,6 +925,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   const activationContext = context(s, sourceId, a.id, event);
   if (isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) return !faceUpEffectPlayLimitReached(s, activationContext, a);
   if (!a.conditions.every(c => condition(s, activationContext, c))) return false;
+  if (isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled') &&
+      nextRoundSituationSuppressionQualifyingOpponentIds(s, activationContext.controllerId).length === 0) return false;
   return !faceUpEffectPlayLimitReached(s, activationContext, a);
 }
 function isGameStartRuleOverrideCandidate(a: AuthoringAbility): boolean {
@@ -1665,6 +1677,17 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       break;
     }
     case 'return_card_by_definition': resolveControllerMasterSkillDefinitionReturn(s, ctx, effect); break;
+    case NEXT_ROUND_SITUATION_BENEFIT_SUPPRESSION_EFFECT: {
+      if (!isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) {
+        reject('resolution_failed', 'Suppression effect requires the exact accepted FB2-52 whole-ability envelope');
+      }
+      try {
+        applyNextRoundSituationBenefitSuppression(s, ctx.controllerId);
+      } catch (error) {
+        reject('invalid_state', error instanceof Error ? error.message : 'Next-round situation-benefit suppression failed');
+      }
+      break;
+    }
     case 'draw_cards': {
       const count = numeric(s, ctx, effect.count);
       if (!Number.isSafeInteger(count) || count < 0) reject('invalid_count', 'Invalid draw count');
@@ -3691,6 +3714,9 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isRulerSealBindingCandidate(a) && !isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
   if (isRulerSealUseCandidate(a) && !isRulerSealUseSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal use semantic shape');
   if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) reject('resolution_failed', 'Unsupported Outer-God-Life relational semantic shape');
+  if (isNextRoundSituationBenefitSuppressionCandidate(a) && !isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) {
+    reject('resolution_failed', 'Unsupported next-round situation-benefit suppression semantic shape');
+  }
   if (isAcceptedOpponentRoundVpGainThresholdAbility(a, 'compiled')) {
     resolveControllerMasterSkillDefinitionReturn(s, ctx, a.effects[0]!);
     return;

@@ -18,6 +18,12 @@ import { isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-roun
 import { isAcceptedCurrentRoundCombatWinAbsenceCondition } from './current-round-combat-win-condition';
 import { isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import { isAcceptedOpponentRoundVpGainThresholdAbility, isOpponentRoundVpGainThresholdCandidate, OPPONENT_ROUND_VP_GAIN_TRIGGER } from './opponent-round-vp-gain-threshold';
+import {
+  NEXT_ROUND_SITUATION_BENEFIT_SUPPRESSION_EFFECT,
+  SITUATION_SUPPRESSION_LUCK_PREDICATE,
+  isAcceptedNextRoundSituationBenefitSuppressionAbility,
+  isNextRoundSituationBenefitSuppressionCandidate,
+} from './next-round-situation-benefit-suppression';
 import { isAcceptedPreBattleDefeatAbility, isPreBattleDefeatCandidate } from './pre-battle-defeat';
 import {
   BATTLE_LOSS_VP_WINNER_REWARD_EFFECT,
@@ -216,6 +222,8 @@ const supportedTypes = new Set([
   // FB2-31 event-player relation conditions
   'event_player_is_controller', 'event_player_is_opponent',
   'event_round_victory_points_gain_crosses',
+  // FB2-52 exact next-round situation-benefit suppression family; whole-envelope gated below.
+  NEXT_ROUND_SITUATION_BENEFIT_SUPPRESSION_EFFECT, SITUATION_SUPPRESSION_LUCK_PREDICATE,
   // FB2-32 source-state conditions
   'source_active', 'source_owned',
   // FB2-33 event combat outcome conditions
@@ -314,7 +322,12 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (n.type === 'add_status' && !path.startsWith('effects')) {
         issue(path, 'Player-status assignment is supported only by the exact game-start effect envelope', abilityId);
       }
-      for (const key of Object.keys(n)) if (!mechanicKeys.has(key)) issue(`${path}.${key}`, 'Unmapped mechanic field', abilityId);
+      const fb252Keys = n.type === NEXT_ROUND_SITUATION_BENEFIT_SUPPRESSION_EFFECT
+        ? ['type', 'target', 'roundOffset', 'benefits']
+        : n.type === SITUATION_SUPPRESSION_LUCK_PREDICATE
+          ? ['type', 'definitionIds', 'zones', 'activeOnly', 'face']
+          : [];
+      for (const key of Object.keys(n)) if (!mechanicKeys.has(key) && !fb252Keys.includes(key)) issue(`${path}.${key}`, 'Unmapped mechanic field', abilityId);
       if (n.type && !supportedTypes.has(str(n.type))) issue(`${path}.type`, `Unmapped type: ${str(n.type)}`, abilityId);
       if (n.op && !formulaOps.has(str(n.op))) issue(`${path}.op`, `Unmapped formula: ${str(n.op)}`, abilityId);
       const serverMetric = ['controller.availableMana', 'controller.deployment_bonus', 'consecutive_play_rounds', 'game.round_number',
@@ -599,6 +612,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (isOpponentRoundVpGainThresholdCandidate(a as unknown as AuthoringAbility) && !isAcceptedOpponentRoundVpGainThresholdAbility(a as unknown as AuthoringAbility, 'authoring')) {
         issue('opponentRoundVpGainThreshold.gateway', 'Unsupported opponent round VP-gain threshold semantic shape', id);
+      }
+      if (isNextRoundSituationBenefitSuppressionCandidate(a as unknown as AuthoringAbility) &&
+          !isAcceptedNextRoundSituationBenefitSuppressionAbility(a as unknown as AuthoringAbility, 'authoring')) {
+        issue('nextRoundSituationBenefitSuppression.gateway', 'Unsupported next-round situation-benefit suppression semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

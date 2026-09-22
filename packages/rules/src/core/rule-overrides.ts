@@ -1,5 +1,6 @@
 import type { GameState, PhaseName } from '../schema/game';
 import type { RuleNode } from '../ability/types';
+import { situationBenefitsSuppressedForPlayer } from '../ability/next-round-situation-benefit-suppression';
 
 export type GameStartRuleOverrideName =
   | 'first_logical_day_total_power_adjustment'
@@ -156,6 +157,7 @@ export function grantMana(state: GameState, playerId: string, requestedAmount: n
   if (!player) throw new Error(`Unknown mana recipient: ${playerId}`);
   const before = player.mana;
   let cappedRequestAmount = requestedAmount;
+  if (options.source === 'situation' && situationBenefitsSuppressedForPlayer(state, playerId)) cappedRequestAmount = 0;
   const overrides = state.ruleOverrides;
   const climax = isClimaxRound(state, options.isClimaxSituation);
   if (options.source === 'situation' && !climax) {
