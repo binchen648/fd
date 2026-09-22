@@ -6008,3 +6008,23 @@ Read: `docs/reports/2026-09-23-p3-a-r109-ciel-s3-migration-acceptance-synchroniz
 Result: synchronize formal fresh independent R `MIGRATION_ACCEPTED` for PR #429 exact Candidate `ae28674acb697beee116a676648ae70e2cd6b1ca`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/429#issuecomment-5785047354`. Exact frozen accounting is `148/944` to `149/944`, exact +1 `master.ciel.skill.s3`, zero removals and zero duplicate frozen ids; `master.ciel.skill.s1b` remains absent. Generated changes are restricted to deterministic rules-only Ciel s3 representation/hashes/source-map, with no production runtime/client or pack-manifest change.
 
 Formal project migration advances exactly one identity to **`154/944`**, with **`790`** remaining; material authoring overlap is **`149/944`**. PR #429 remains OPEN, unmerged and unretargeted. Next action is a fresh complete-card reconstruction of `master.ciel.skill.s1b` on the synchronized FB2-51 runtime with the now-formally-available Ciel s3 target definition. Singleton S may be dispatched only if that whole card is mechanically zero-gap; otherwise dispatch only the minimum missing identity-free B2 seam.
+
+## TASK P3-A-R110-CIEL-S1B-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r110-ciel-s1b-consumer-migration-dispatch`
+Base: exact R109 Ciel S3 acceptance synchronization `f94dd1b1569229d1f4efd02e767ab5804dea786a`
+Read: `docs/reports/2026-09-23-p3-a-r110-ciel-s1b-consumer-migration-dispatch.md`
+
+Result: fresh whole-card reconstruction proves exactly `master.ciel.skill.s1b` mechanically S_READY_NOW. Exact Base recount is `149/944`, s1b absent, s3 present once, duplicate frozen ids zero. F1/Locked Reference source and static metadata are locked; synchronized FB2-51 supplies the exact authoritative opponent current-round positive-VP crossing-7 parent route, FB2-30 the exact controller definition return, and formally accepted s3 now satisfies target-definition availability. A no-file-write synthetic compile passes both authoring/compiled FB2-51 classifiers plus full executable assertion, yielding s1b as an ordinary initial skill-zone master skill. No B2 is required. Candidate material accounting must be exactly `150/944`, exact +1 s1b, zero removals/duplicates; formal migration stays `154/944`, `790` remaining pending fresh R + A sync.
+
+## TASK P3-S-R110-CIEL-S1B-CONSUMER-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Branch: `codex/s-p3-r110-ciel-s1b-consumer-migration`
+Base: exact P3-A-R110 consumer dispatch Candidate
+Read: `docs/reports/2026-09-23-p3-a-r110-ciel-s1b-consumer-migration-dispatch.md`
+
+Goal: migrate exactly `master.ciel.skill.s1b` as the sole new frozen identity in the existing Ciel rules-only archive. Use only synchronized FB2-51 + FB2-30/31 and the formally available s3 definition; no runtime/compiler/client source or manifest change. S may make only the two dispatch-authorized Ciel-S3 historical compatibility edits (archive-exclusivity list and stale absolute overlap 149), preserving all S3 semantics/denominator/duplicate/local-identity invariants. Generated change is limited to deterministic rules-only s1b representation/hashes/source-map. Required material accounting is exact `149/944 -> 150/944`; formal migration remains `154/944`, `790` remaining until fresh independent R `MIGRATION_ACCEPTED` plus A synchronization. Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
