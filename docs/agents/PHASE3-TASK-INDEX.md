@@ -5894,3 +5894,14 @@ Read: `docs/reports/2026-09-22-p3-a-fb2-50-selected-played-attack-copy-dispatch.
 Result required: implement only the identity-free Atalanta-S2-shaped compound transaction that takes an already-authenticated exactly-one controller attack target, revalidates that it is a different attack still in attack area and was actually played this round, then creates exactly one same-definition temporary face-up active attack copy for the controller. The copy costs no extra mana, is not itself a “played” card, does not increment play counters or emit ordinary play semantics, and expires after the current round. Fail closed atomically on malformed authoring, forged/stale selection, provenance/state drift, or unsupported copy parameters. Do not expose a generic clone API or consumer authoring.
 
 This is zero-credit capability work: formal migration remains **`152/944`**, **`792`** remaining. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.atalanta.skill.sc-atalanta-2`; singleton S is allowed only if the whole card is then mechanically zero-gap.
+## TASK P3-A-R104-FB2-50-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r104-fb2-50-acceptance-sync`
+Base: exact accepted Candidate `532fc01f924555d97c4929db6774528648daf520`
+Read: `docs/reports/2026-09-22-p3-a-r104-fb2-50-acceptance-synchronization.md`
+
+Result: synchronize the already-completed fresh independent R verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #425 exact Candidate `532fc01f924555d97c4929db6774528648daf520`. The original Reviewer result's evidence URL was malformed and the original marker comment contained no bound verdict, so Coordinator published an explicit evidence relay at `https://github.com/binchen648/fd/pull/425#issuecomment-5778319463`; no re-review was performed and no Candidate content changed. Accepted capability remains only the bounded identity-free current-round selected-attack temporary-copy transaction, including authenticated persisted-decision provenance and fail-closed malformed-state handling.
+
+FB2-50 earns zero migration credit; formal migration remains **`152/944`**, with **`792`** remaining. Material authoring overlap remains **`147/944`**, duplicates **`0`**, and `servant.atalanta.skill.sc-atalanta-2` remains absent. PR #425 remains OPEN, unmerged and unretargeted. Next action is a fresh complete-card reconstruction of `servant.atalanta.skill.sc-atalanta-2` on this synchronized runtime; dispatch singleton S only if the whole card is mechanically zero-gap.
