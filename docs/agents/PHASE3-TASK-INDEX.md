@@ -5975,3 +5975,23 @@ Read: `docs/reports/2026-09-23-p3-a-r107-fb2-52-acceptance-synchronization.md`
 Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #428 exact Candidate `59d930f9e5a0202e0d1b3d9358e0d35ca3a0d029`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/428#issuecomment-5784412049`. Accepted capability is only the bounded identity-free next-round situation-benefit suppression family: active same-battlefield opponents lacking active face-up runtime Luck are marked for exactly the next round, and only authoritative situation mana plus situation combat-power sources are suppressed during that exact round. No Ciel consumer authoring or generic flag/rule engine is introduced.
 
 FB2-52 earns zero migration credit; formal migration remains **`153/944`**, with **`791`** remaining. Material authoring overlap remains **`148/944`**. PR #428 remains OPEN, unmerged and unretargeted. Next action is a fresh complete-card reconstruction of `master.ciel.skill.s3`; dispatch singleton S only if that whole target definition is mechanically zero-gap. `master.ciel.skill.s1b` remains blocked until s3 is formally available.
+
+## TASK P3-A-R108-CIEL-S3-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r108-ciel-s3-consumer-dispatch`
+Base: exact R107 FB2-52 acceptance synchronization `27cf92467c35b1652ba490746857f0dd3de47ee2`
+Read: `docs/reports/2026-09-23-p3-a-r108-ciel-s3-consumer-migration-dispatch.md`
+
+Result: fresh whole-card reconstruction proves exactly `master.ciel.skill.s3` mechanically S_READY_NOW on the synchronized FB2-52 runtime. Loader `report=[]`; standard master-skill 7/8 mana boundary, printed cost 3, authoritative 7 Power battle inclusion, exact per-game limiter, exact same-battlefield/Luck qualifier and next-round situation mana/power suppression all have accepted executable routes. Base material overlap is `148/944`, duplicates `0`, target count `0`; Candidate must be exactly `149/944`, exact +1 s3, zero removals/duplicates and no s1b. Formal migration remains `153/944`, `791` remaining pending fresh R + A sync.
+
+## TASK P3-S-R108-CIEL-S3-CONSUMER-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Branch: `codex/s-p3-r108-ciel-s3-consumer-migration`
+Base: exact P3-A-R108 consumer dispatch Candidate
+Read: `docs/reports/2026-09-23-p3-a-r108-ciel-s3-consumer-migration-dispatch.md`
+
+Goal: migrate exactly `master.ciel.skill.s3` as the sole new frozen identity by appending it to the existing Ciel archive. Use only synchronized FB2-52 plus accepted generic master-skill play/outside-game/per-game infrastructure. S may remove only Atalanta S2 test's stale absolute `overlap===148` assertion while preserving stable Atalanta identity/denominator/duplicate invariants. No runtime changes, no s1b, no product/generated registration, no merge/retarget. Required material accounting is exact `148/944 -> 149/944`; formal migration stays `153/944` until fresh independent R `MIGRATION_ACCEPTED` plus A synchronization. Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
