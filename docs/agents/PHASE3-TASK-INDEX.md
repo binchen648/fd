@@ -5913,6 +5913,6 @@ Branch: `codex/s-p3-r104-atalanta-s2-consumer-migration`
 Base: exact P3-A-R104 FB2-50 acceptance synchronization / consumer dispatch
 Read: `docs/reports/2026-09-22-p3-a-r104-atalanta-s2-consumer-migration-dispatch.md`
 
-Goal: migrate exactly `servant.atalanta.skill.sc-atalanta-2` as a singleton whole-card consumer using only the synchronized FB2-50 exact selected-played-attack temporary-copy transaction plus already accepted generic servant-skill/visibility vocabulary. No runtime changes, no second frozen identity, no generic clone API, no identity/name/text routing, no merge/retarget.
+Goal: migrate exactly `servant.atalanta.skill.sc-atalanta-2` as the sole new frozen identity by appending it to the existing Atalanta archive, preserving the already accepted Atalanta s3 entry unchanged, and using only the synchronized FB2-50 exact selected-played-attack temporary-copy transaction plus already accepted generic servant-skill/visibility vocabulary. No runtime changes, no second new frozen identity, no generic clone API, no identity/name/text routing, no merge/retarget.
 
 Required accounting: exact Base `147/944` -> Candidate `148/944`, exact +1 Atalanta s2, zero removals, zero duplicate frozen ids. FB2-50 itself remains zero-credit. Formal migration remains `152/944` until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A synchronizes it.

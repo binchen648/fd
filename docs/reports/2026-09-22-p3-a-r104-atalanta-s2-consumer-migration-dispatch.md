@@ -96,7 +96,7 @@ No Astolfo production data, runtime behavior, semantics, or other Astolfo test a
 
 Fresh S is authorized only to:
 
-1. create `data/authoring/servants/servant.atalanta.json` containing exactly one frozen card, `servant.atalanta.skill.sc-atalanta-2`; do not add Atalanta s1/s3 or any other frozen identity;
+1. modify the existing `data/authoring/servants/servant.atalanta.json` only by appending exactly one new frozen card, `servant.atalanta.skill.sc-atalanta-2`; preserve the already accepted Atalanta s3 entry byte-for-semantics and do not add Atalanta s1 or any other frozen identity;
 2. encode the complete card only through the exact normalization above, preserving frozen source evidence and Locked Reference static metadata;
 3. add `packages/rules/tests/atalanta-s2-consumer-migration.test.ts` proving exact text/hash/static metadata, loader/classifier acceptance, real 7/8 mana play boundary and cost 2, deployment gating, target provenance, true-name visibility, exact free temporary copy behavior, non-play accounting, stale/forged rejection, round cleanup, product/generated non-registration, and exact frozen accounting `147/944 -> 148/944`;
 4. apply only the compatibility edit above to `packages/rules/tests/astolfo-s1-consumer-migration.test.ts`;
