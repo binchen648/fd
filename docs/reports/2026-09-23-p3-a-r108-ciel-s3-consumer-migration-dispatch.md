@@ -101,7 +101,7 @@ Fresh S is authorized only to:
 
 1. append exactly one new card `master.ciel.skill.s3` to the existing `data/authoring/masters/master.ciel.json`, preserving accepted s1a and s2 semantics unchanged;
 2. encode static metadata, outside-game placement, canonical 8-mana skill-zone requirement, per-game play limiter, and exact FB2-52 compound ability described above;
-3. add `packages/rules/tests/ciel-s3-consumer-migration.test.ts` proving exact source hashes/static metadata, loader/classifier acceptance, 7/8 mana + cost 3, authoritative 7 Power battle inclusion, qualifier/Luck behavior, exact next-round situation suppression, per-game replay rejection, product/generated non-registration, and frozen accounting `148 -> 149`;
+3. add `packages/rules/tests/ciel-s3-consumer-migration.test.ts` proving exact source hashes/static metadata, loader/classifier acceptance, 7/8 mana + cost 3, authoritative 7 Power battle inclusion, qualifier/Luck behavior, exact next-round situation suppression, per-game replay rejection, rules-only registration isolation, and frozen accounting `148 -> 149`;
 4. apply only the Atalanta stale-count compatibility edit above;
 5. add `docs/reports/2026-09-23-p3-s-r108-ciel-s3-consumer-migration-result.md`.
 
@@ -111,7 +111,7 @@ Forbidden:
 - any second frozen identity, including `master.ciel.skill.s1b` in this S Candidate;
 - Ciel/name/skill-id runtime routing or runtime Chinese parsing;
 - generic flag/rule/target/round-offset widening;
-- product pack/generated product registration;
+- any manifest registration change or generated playable master/ordinary-card/deck/character surface change; the only authorized generated change is the deterministic rules-only archive representation of the appended s3 definition;
 - merge or retarget;
 - formal migration credit before fresh independent R acceptance and A synchronization.
 
@@ -120,7 +120,7 @@ Forbidden:
 S must prove at minimum:
 
 - Base `148/944` -> Candidate exactly `149/944`, exact +1 target, zero removals, zero duplicates;
-- production runtime/product/generated diff empty;
+- production runtime source diff empty; manifest diff empty; generated diff restricted to the deterministic existing Ciel rules-only archive/source-map representation, with playable master/ordinary-card/deck/character surfaces unchanged;
 - focused Ciel s3 + FB2-52 + Atalanta accounting compatibility;
 - typecheck;
 - official `npm run test:ci -- --maxWorkers=2`;
@@ -134,3 +134,4 @@ S must prove at minimum:
 Formal migration remains `153/944`, with `791` remaining until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A synchronizes that acceptance.
 
 Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
+
