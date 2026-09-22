@@ -528,6 +528,19 @@ describe('MatchSession semi-auto runtime', () => {
       corrupt(malformed);
       expect(() => restoreMatchSession(malformed)).toThrow('Invalid MatchSession state container');
     }
+
+    const omittedLiveAuthority: any = structuredClone(durable);
+    delete omittedLiveAuthority.state.abilityRuntime.pendingDecision;
+    delete omittedLiveAuthority.deferredRuntimeStateSeal;
+    expect(() => restoreMatchSession(omittedLiveAuthority)).toThrow('Invalid or missing deferred runtime state authority');
+
+    const omittedReplayAuthority: any = structuredClone(durable);
+    const sensitiveReplay = [...omittedReplayAuthority.replaySnapshots].reverse().find((entry: any) =>
+      entry.state.abilityRuntime?.pendingDecision && entry.deferredRuntimeStateSeal);
+    expect(sensitiveReplay).toBeTruthy();
+    delete sensitiveReplay.state.abilityRuntime.pendingDecision;
+    delete sensitiveReplay.deferredRuntimeStateSeal;
+    expect(() => restoreMatchSession(omittedReplayAuthority)).toThrow('Invalid FB2-49 replay checkpoint lineage');
   });
 
   it('authenticates the resolved prefix behind the production Artoria Caster recon continuation', () => {
@@ -563,7 +576,7 @@ describe('MatchSession semi-auto runtime', () => {
       entry.state.abilityRuntime?.pendingDecision && entry.deferredRuntimeStateSeal);
     expect(sensitiveReplay).toBeTruthy();
     sensitiveReplay.state.players.find((candidate: any) => candidate.id === 'p5').vp = 0;
-    expect(() => restoreMatchSession(forgedReplayPrefix)).toThrow('Invalid or missing replay deferred runtime state authority');
+    expect(() => restoreMatchSession(forgedReplayPrefix)).toThrow('Invalid FB2-49 replay checkpoint lineage');
   });
 
   it('restores a replay checkpoint by id', () => {

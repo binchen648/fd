@@ -238,10 +238,13 @@ export function resolveOpponentCloseToOnePersistenceScope(roomKey: string): stri
       storage.setItem(key, created);
       return created;
     } catch {
-      // Fall through to an in-memory scope when browser host storage is unavailable.
+      // Fall through to the deterministic host room binding when browser storage is unavailable.
     }
   }
-  return createOpponentCloseToOnePersistenceScope();
+  // Node/server hosts need the same external room identity to survive process-local object
+  // reconstruction. The host secret still authenticates persisted authority; this value only
+  // supplies stable per-room domain separation and is never accepted from the snapshot payload.
+  return `${AUTHORITY_SCOPE_PREFIX}${sha256Hex(`room:${roomKey}`)}`;
 }
 
 function transactionStorageKey(persistenceScope: string): string {

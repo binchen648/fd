@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { createMatchRoomHub } from '../src/match-room-hub';
-import { isPresenceConcealmentAssassinationSemantic } from '../src/ability/interpreter';
+import { advanceAbilityPhase, isPresenceConcealmentAssassinationSemantic } from '../src/ability/interpreter';
 import { isRulerSealUseSemantic } from '../src/ability/ruler-seal';
 
 function realUnrelatedAbility(snapshot: any) {
@@ -63,6 +63,54 @@ describe('MatchRoomHub local multiplayer transport layer', () => {
     expect(hub.getRoom(roomId)).toBe(beforeRoom);
     expect(hub.getRoom(roomId).serializeRoom()).toEqual(beforeSnapshot);
     expect(hub.version(roomId)).toBe(beforeVersion);
+  });
+
+  it('rejects deferred runtime state sealed for a different room scope without replacing the target room', () => {
+    const hub = createMatchRoomHub();
+    const persistenceSecret = 'fb2-49-persistence-secret:shared-room-scope-regression';
+    const roomA = hub.createRoom({
+      roomId: 'deferred-scope-room-a',
+      seed: 20260904,
+      hostClientId: 'host-a',
+      persistenceSecret,
+    }).roomId;
+    const roomB = hub.createRoom({
+      roomId: 'deferred-scope-room-b',
+      seed: 20260904,
+      hostClientId: 'host-b',
+      persistenceSecret,
+    }).roomId;
+    hub.startMatch(roomA, 'host-a');
+    hub.startMatch(roomB, 'host-b');
+
+    const sessionA = hub.getRoom(roomA).session!;
+    advanceAbilityPhase(sessionA.state, 'action', sessionA.state.round.roundNumber);
+    sessionA.state.round.prioritySeat = 5;
+    sessionA.state.players.find((player) => player.id === 'p5')!.mana = 12;
+    const staff = sessionA.state.cards.find((card) =>
+      card.ownerPlayerId === 'p5' && card.definitionId === 'servant.artoriac.skill.sc-artoriac-2')!;
+    expect(staff).toBeTruthy();
+    expect(sessionA.dispatchPlayerAction('p5', { type: 'play_card', cardInstanceId: staff.instanceId }).ok).toBe(true);
+    sessionA.state.round.prioritySeat = 5;
+    expect(sessionA.dispatchPlayerAction('p5', {
+      type: 'activate_ability',
+      cardInstanceId: staff.instanceId,
+      abilityId: 'sc-artoriac-2.pay-x-look-x-plus-two',
+      variables: { X: 2 },
+    }).ok).toBe(true);
+
+    const roomASnapshot = structuredClone(hub.getRoom(roomA).serializeRoom());
+    const beforeRoomB = hub.getRoom(roomB);
+    const beforeRoomBSnapshot = structuredClone(beforeRoomB.serializeRoom());
+    const beforeVersionB = hub.version(roomB);
+    const substituted: any = structuredClone(beforeRoomBSnapshot);
+    substituted.session.state = structuredClone(roomASnapshot.session!.state);
+    substituted.session.deferredRuntimeStateSeal = structuredClone(roomASnapshot.session!.deferredRuntimeStateSeal);
+
+    expect(() => hub.restoreRoom(roomB, substituted)).toThrow('Invalid or missing deferred runtime state authority');
+    expect(hub.getRoom(roomB)).toBe(beforeRoomB);
+    expect(hub.getRoom(roomB).serializeRoom()).toEqual(beforeRoomBSnapshot);
+    expect(hub.version(roomB)).toBe(beforeVersionB);
   });
 
   it('rejects referentially invalid restored board state without replacing the room', () => {

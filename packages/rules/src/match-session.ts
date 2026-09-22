@@ -220,6 +220,8 @@ type RuntimeContentLibrary = {
 const uncheckedContent = contentLibrary as unknown as CompiledPlaytestContentLibrary & { rules: unknown };
 assertExecutableCardPack(uncheckedContent.rules, uncheckedContent);
 const runtimeContent: RuntimeContentLibrary = { pack: uncheckedContent.pack, rules: uncheckedContent.rules };
+/** Process-local scope for direct MatchSession use. MatchRoom always supplies its own room-specific scope. */
+const standaloneMatchSessionPersistenceScope = createOpponentCloseToOnePersistenceScope();
 
 function persistedOpponentCloseToOneAuthorityField(
   state: GameState,
@@ -231,23 +233,20 @@ function persistedOpponentCloseToOneAuthorityField(
   return seal ? { opponentCloseToOneServerAuthority: seal } : {};
 }
 
-function hasSensitiveDeferredRuntimeState(state: GameState): boolean {
-  const runtime = state.abilityRuntime;
-  if (!runtime) return false;
-  return (!!runtime.pendingDecision && runtime.pendingDecision.interaction === undefined) ||
-    (runtime.pendingDelayedActivations?.length ?? 0) > 0;
-}
-
-function deferredRuntimeStateSealPayload(checkpointId: string | null, stateDigest: string): string {
-  return `fd-deferred-runtime-state-v1\n${checkpointId ?? ''}\n${stateDigest}`;
+function deferredRuntimeStateSealPayload(
+  persistenceScope: string,
+  checkpointId: string | null,
+  stateDigest: string,
+): string {
+  return `fd-deferred-runtime-state-v1\n${persistenceScope}\n${checkpointId ?? ''}\n${stateDigest}`;
 }
 
 function persistDeferredRuntimeStateSeal(
   state: GameState,
   persistenceSecret: string,
+  persistenceScope: string,
   checkpointId?: string,
-): { deferredRuntimeStateSeal?: DeferredRuntimeStateSeal } {
-  if (!hasSensitiveDeferredRuntimeState(state)) return {};
+): { deferredRuntimeStateSeal: DeferredRuntimeStateSeal } {
   const normalizedCheckpointId = checkpointId ?? null;
   const stateDigest = sha256Hex(JSON.stringify(state));
   return {
@@ -255,7 +254,10 @@ function persistDeferredRuntimeStateSeal(
       version: 1,
       checkpointId: normalizedCheckpointId,
       stateDigest,
-      mac: hmacSha256Hex(persistenceSecret, deferredRuntimeStateSealPayload(normalizedCheckpointId, stateDigest)),
+      mac: hmacSha256Hex(
+        persistenceSecret,
+        deferredRuntimeStateSealPayload(persistenceScope, normalizedCheckpointId, stateDigest),
+      ),
     },
   };
 }
@@ -264,15 +266,18 @@ function verifyDeferredRuntimeStateSeal(
   state: GameState,
   seal: DeferredRuntimeStateSeal | undefined,
   persistenceSecret: string,
+  persistenceScope: string,
   checkpointId?: string,
 ): boolean {
-  if (!hasSensitiveDeferredRuntimeState(state)) return seal === undefined;
   const expectedCheckpointId = checkpointId ?? null;
   if (!seal || seal.version !== 1 || seal.checkpointId !== expectedCheckpointId ||
       typeof seal.stateDigest !== 'string' || typeof seal.mac !== 'string') return false;
   const stateDigest = sha256Hex(JSON.stringify(state));
   return seal.stateDigest === stateDigest &&
-    seal.mac === hmacSha256Hex(persistenceSecret, deferredRuntimeStateSealPayload(expectedCheckpointId, stateDigest));
+    seal.mac === hmacSha256Hex(
+      persistenceSecret,
+      deferredRuntimeStateSealPayload(persistenceScope, expectedCheckpointId, stateDigest),
+    );
 }
 
 function replayCheckpointDigest(snapshot: MatchReplayStateSnapshot): string {
@@ -1603,7 +1608,7 @@ export class MatchSession {
     this.humanPlayerIds = [...new Set(config.humanPlayerIds ?? [this.humanPlayerId])];
     this.maxActionsPerPlayer = config.maxActionsPerPlayer ?? 2;
     this.persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
-    this.persistenceScope = config.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
+    this.persistenceScope = config.persistenceScope ?? standaloneMatchSessionPersistenceScope;
     this.restorePackKind = config.restorePackKind ?? 'production_executable';
     const built = this.buildInitialState();
     this.state = built.state;
@@ -1993,7 +1998,11 @@ export class MatchSession {
 
   serializeSession(): MatchSessionSnapshot {
     const authorityField = persistedOpponentCloseToOneAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
-    const deferredRuntimeField = persistDeferredRuntimeStateSeal(this.state, this.persistenceSecret);
+    const deferredRuntimeField = persistDeferredRuntimeStateSeal(
+      this.state,
+      this.persistenceSecret,
+      this.persistenceScope,
+    );
     const currentSeal = authorityField.opponentCloseToOneServerAuthority;
     const replayEntries = replayManifestEntries(this.replaySnapshots);
     rememberOpponentCloseToOneTrustedReplayLineage(this.persistenceScope, this.state, replayEntries);
@@ -2055,6 +2064,7 @@ export class MatchSession {
       snapshot.state,
       snapshot.deferredRuntimeStateSeal,
       this.persistenceSecret,
+      this.persistenceScope,
       checkpointId,
     )) return false;
     const candidateState = structuredClone(snapshot.state);
@@ -2729,7 +2739,7 @@ export class MatchSession {
     const replaySnapshot: MatchReplayStateSnapshot = {
       checkpointId: checkpoint.id,
       state: structuredClone(state),
-      ...persistDeferredRuntimeStateSeal(state, this.persistenceSecret, checkpoint.id),
+      ...persistDeferredRuntimeStateSeal(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
       ...persistedOpponentCloseToOneAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
       logs: structuredClone(this.logs),
       battleHistory: structuredClone(this.battleHistory),
@@ -2785,16 +2795,7 @@ export function restoreMatchSession(
     throw new Error('Invalid MatchSession snapshot container');
   }
   const persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
-  const persistenceScope = config.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
-  if (!verifyDeferredRuntimeStateSeal(snapshot.state, snapshot.deferredRuntimeStateSeal, persistenceSecret)) {
-    throw new Error('Invalid or missing deferred runtime state authority');
-  }
-  if (!snapshot.replaySnapshots.every((entry) => verifyDeferredRuntimeStateSeal(
-    entry.state,
-    entry.deferredRuntimeStateSeal,
-    persistenceSecret,
-    entry.checkpointId,
-  ))) throw new Error('Invalid or missing replay deferred runtime state authority');
+  const persistenceScope = config.persistenceScope ?? standaloneMatchSessionPersistenceScope;
   const candidateState = structuredClone(snapshot.state);
   if (!restoreOpponentCloseToOneServerAuthority(
     candidateState,
@@ -2824,6 +2825,24 @@ export function restoreMatchSession(
     persistenceSecret,
     persistenceScope,
   )) throw new Error('Invalid or missing FB2-49 replay manifest');
+  // Preserve the dedicated FB2-49 restore error precedence above, then enforce the generic
+  // host-owned state binding for every current/replay state, including snapshots that try to
+  // downgrade by deleting both a continuation and its seal.
+  if (!verifyDeferredRuntimeStateSeal(
+    snapshot.state,
+    snapshot.deferredRuntimeStateSeal,
+    persistenceSecret,
+    persistenceScope,
+  )) {
+    throw new Error('Invalid or missing deferred runtime state authority');
+  }
+  if (!snapshot.replaySnapshots.every((entry) => verifyDeferredRuntimeStateSeal(
+    entry.state,
+    entry.deferredRuntimeStateSeal,
+    persistenceSecret,
+    persistenceScope,
+    entry.checkpointId,
+  ))) throw new Error('Invalid or missing replay deferred runtime state authority');
   const session = new MatchSession({
     seed: snapshot.seed,
     humanPlayerId: snapshot.humanPlayerId,
