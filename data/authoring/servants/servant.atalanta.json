@@ -154,6 +154,160 @@
           "penaltyOnDefeat": "P3-R31/B21/R15"
         }
       }
+    },
+    {
+      "id": "servant.atalanta.skill.sc-atalanta-2",
+      "aliases": [
+        "sc_atalanta_2"
+      ],
+      "legacyId": "sc_atalanta_2",
+      "name": "诉状箭书",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.atalanta"
+      },
+      "printedText": "【真名解放】\n唯一/行动阶段：若你拥有地利，创造并激活一张你本回合打出的其他攻击的临时复制。",
+      "cardFace": {
+        "typeLabel": "迅捷/宝具",
+        "attributes": [
+          "迅捷",
+          "宝具"
+        ],
+        "cost": 2,
+        "basePower": 4
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "appeal-letter-copy",
+          "kind": "phase_action",
+          "printedClause": "【真名解放】\n唯一/行动阶段：若你拥有地利，创造并激活一张你本回合打出的其他攻击的临时复制。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "gt",
+              "left": {
+                "var": "controller.deployment_bonus"
+              },
+              "right": 0
+            }
+          ],
+          "targets": [
+            {
+              "id": "selected_attack",
+              "type": "card_instance",
+              "scope": {
+                "zone": "attack_area",
+                "owner": "controller",
+                "controller": "self"
+              },
+              "constraints": [
+                {
+                  "type": "is_attack"
+                },
+                {
+                  "type": "played_this_round"
+                },
+                {
+                  "type": "not_source_card"
+                }
+              ],
+              "count": {
+                "min": 1,
+                "max": 1
+              }
+            }
+          ],
+          "effects": [
+            {
+              "type": "create_selected_played_attack_temporary_copy",
+              "target": "selected_attack"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "4c67f72828125bc112b23b738948f5533eaceb8c",
+        "f1AuditCommit": "6826dc5b085bf8efa0a53853c0e293e939b0c137",
+        "f1ReviewCommit": "826e6f5b6a92b927800b2b50a6b15898d70befcc",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "阿塔兰忒.htm",
+            "locator": "从者/弓兵/英文版/阿塔兰忒.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/阿塔兰忒.png",
+            "locator": "servant.atalanta/阿塔兰忒"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "sourceAbilityId": "appeal-letter-copy",
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[28].abilities[0].printedClause",
+            "sha256": "93fd375fbcb6d5841a26ebf2c1512b48d94e6b6ed963fd0fcafe7d37c58f501b"
+          }
+        ],
+        "f1FullPrintedTextSha256": "93fd375fbcb6d5841a26ebf2c1512b48d94e6b6ed963fd0fcafe7d37c58f501b",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_atalanta_2",
+          "class": "Archer",
+          "cost": 2,
+          "basePower": 4,
+          "legacyRequirement": 8,
+          "typeLabel": "迅捷/宝具",
+          "attributes": [
+            "迅捷",
+            "宝具"
+          ]
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4"
+        },
+        "acceptedContracts": {
+          "selectedPlayedAttackTemporaryCopy": "P3-A-R104/FB2-50",
+          "skillZonePlayThreshold": "final_rules_9.4",
+          "trueNameRelease": "GENERIC_VISIBILITY structural revealsTrueName/on_use_declared servant-package reveal"
+        }
+      }
     }
   ]
 }
