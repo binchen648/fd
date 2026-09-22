@@ -17,6 +17,7 @@ import { isAcceptedRoundActiveAttackPaidCostCombatPowerAbility, isAcceptedStatic
 import { roundTotalPowerAdjustment } from '../ability/outer-god-life';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { logicalDayForPlayer } from './rule-overrides';
+import { situationBenefitsSuppressedForPlayer } from '../ability/next-round-situation-benefit-suppression';
 import { assignedTerrainSlotIndex, hasRemoteOperationBonus, terrainBonusAt } from './terrain-advantage';
 
 export interface CombatParticipantInput {
@@ -107,6 +108,7 @@ function getSituationBreakdowns(
   state: GameState,
   participant: CombatParticipantInput,
 ): BattleModifierBreakdown[] {
+  if (situationBenefitsSuppressedForPlayer(state, participant.playerId)) return [];
   return getRuleBreakdowns("situation", state.currentSituationModifiers, participant);
 }
 
