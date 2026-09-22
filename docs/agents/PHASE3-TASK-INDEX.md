@@ -6054,3 +6054,17 @@ Read: `docs/reports/2026-09-23-p3-a-fb2-53-basic-strength-opponent-servant-skill
 Result required: implement only the exact identity-free two-stage action envelope released by A: choose one currently playable controller-hand `basic_attack` with literal Strength, play it through existing normal-cost effect-play `playBatch`, then choose exactly one owner-controlled face-up `servant_skill` in a same-location active opponent's skill zone and set that physical skill face down/inactive without moving or closing it. The three new vocabulary tokens are whole-envelope gated and may not become generic selectors/face mutation APIs. No Helena authoring, identity/text routing, product/generated/client changes, merge/retarget, or migration credit.
 
 This is zero-credit capability work: formal migration remains **`155/944`**, **`789`** remaining, material overlap **`150/944`**. After exact fresh R acceptance + A sync, freshly reconstruct `servant.helena.skill.sc-helena-1`; S is allowed only if the whole card is then mechanically zero-gap.
+
+## TASK P3-A-R112-FB2-53-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r112-fb2-53-acceptance-sync`
+Base: exact accepted Candidate `c8fadf19c304a698e7f4c847e376a5ba6609c60e`
+Read: `docs/reports/2026-09-23-p3-a-r112-fb2-53-acceptance-synchronization.md`
+
+Result: synchronize the already-completed fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #431 exact revised Candidate `c8fadf19c304a698e7f4c847e376a5ba6609c60e`. The supplied evidenceRef `https://github.com/binchen648/fd/pull/431#issuecomment-5786314449` was marker-only, so Coordinator used the established evidence-repair precedent and published a bounded relay at `https://github.com/binchen648/fd/pull/431#issuecomment-5786353918`; no re-review or self-review was performed. The prior Candidate `d58aa4684fbc67b6795f8af5313c40cf7a23da25` remains terminal `IMPLEMENTATION_NEEDS_REVISION` evidence.
+
+Accepted capability remains only the bounded identity-free two-stage transaction: successful stage-one selection settles ordinary effect-play `playBatch` before stage two opens; both pending decisions preserve frozen candidate snapshots and require snapshot plus current-live legality with exact fail-closed persisted-continuation validation; stage two remains the exact same-location active-opponent owner-controlled face-up servant-skill selector and physical face-down/inactive mutation without close semantics.
+
+FB2-53 earns zero migration credit; formal migration remains **`155/944`**, with **`789`** remaining. Material authoring overlap remains **`150/944`**. PR #431 remains OPEN, unmerged and unretargeted. Next action is fresh whole-card reconstruction of `servant.helena.skill.sc-helena-1`; singleton S only if the complete frozen card is mechanically zero-gap.
