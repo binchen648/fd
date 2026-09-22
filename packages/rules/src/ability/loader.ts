@@ -54,6 +54,13 @@ import {
   isGameStartPlayerStatusAssignmentCandidate,
   isGameStartPlayerStatusAssignmentSemantic,
 } from './game-start-player-status-assignment';
+import {
+  BASIC_STRENGTH_ATTACK_CONSTRAINT,
+  SAME_LOCATION_OPPONENT_FACE_UP_SERVANT_SKILL_CONSTRAINT,
+  SET_SELECTED_CARD_FACE_DOWN_EFFECT,
+  isAcceptedBasicStrengthOpponentSkillFaceDownAbility,
+  isBasicStrengthOpponentSkillFaceDownCandidate,
+} from './basic-strength-opponent-skill-face-down';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -224,6 +231,8 @@ const supportedTypes = new Set([
   'event_round_victory_points_gain_crosses',
   // FB2-52 exact next-round situation-benefit suppression family; whole-envelope gated below.
   NEXT_ROUND_SITUATION_BENEFIT_SUPPRESSION_EFFECT, SITUATION_SUPPRESSION_LUCK_PREDICATE,
+  // FB2-53 exact two-stage basic-Strength -> opponent servant-skill face-down family; whole-envelope gated below.
+  BASIC_STRENGTH_ATTACK_CONSTRAINT, SAME_LOCATION_OPPONENT_FACE_UP_SERVANT_SKILL_CONSTRAINT, SET_SELECTED_CARD_FACE_DOWN_EFFECT,
   // FB2-32 source-state conditions
   'source_active', 'source_owned',
   // FB2-33 event combat outcome conditions
@@ -616,6 +625,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (isNextRoundSituationBenefitSuppressionCandidate(a as unknown as AuthoringAbility) &&
           !isAcceptedNextRoundSituationBenefitSuppressionAbility(a as unknown as AuthoringAbility, 'authoring')) {
         issue('nextRoundSituationBenefitSuppression.gateway', 'Unsupported next-round situation-benefit suppression semantic shape', id);
+      }
+      if (isBasicStrengthOpponentSkillFaceDownCandidate(a as unknown as AuthoringAbility) &&
+          !isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a as unknown as AuthoringAbility, 'authoring')) {
+        issue('basicStrengthOpponentSkillFaceDown.gateway', 'Unsupported basic-Strength play -> opponent servant-skill face-down semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

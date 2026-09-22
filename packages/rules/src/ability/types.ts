@@ -192,6 +192,18 @@ export interface SelectedPlayedAttackTemporaryCopyInteractionMetadata {
   targetId: 'selected_attack'; candidateIds: string[];
   constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
 }
+export interface BasicStrengthAttackPlayInteractionMetadata {
+  kind: 'basic_strength_attack_play_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  targetId: 'strength_basic_attack'; candidateIds: string[];
+  constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
+}
+export interface BasicStrengthOpponentSkillFaceDownInteractionMetadata {
+  kind: 'basic_strength_opponent_skill_face_down_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  targetId: 'opponent_servant_skill'; candidateIds: string[]; selectedAttackId: string;
+  constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
+}
 export interface PendingOpponentCloseToOne {
   initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; sourceCardId: string; abilityId: string;
   battlefieldId: string; qualifyingCardIds: string[]; qualifyingCardOwners: Record<string, PlayerId>;
@@ -200,7 +212,8 @@ export interface PendingOpponentCloseToOne {
 export type PendingInteractionMetadata =
   PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata | SameBattlefieldPrivateHandReturnInteractionMetadata |
   RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata |
-  OpponentCloseToOneInteractionMetadata | SelectedPlayedAttackTemporaryCopyInteractionMetadata;
+  OpponentCloseToOneInteractionMetadata | SelectedPlayedAttackTemporaryCopyInteractionMetadata |
+  BasicStrengthAttackPlayInteractionMetadata | BasicStrengthOpponentSkillFaceDownInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
