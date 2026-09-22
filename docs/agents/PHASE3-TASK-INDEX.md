@@ -5838,7 +5838,7 @@ Formal project migration advances exactly one identity to **`151/944`**, with **
 ## TASK P3-FB2-49-OPPONENT-CLOSE-TO-ONE-INTERACTION
 
 Owner: Codex B2
-Status: `READY`
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 Branch: `codex/b2-p3-fb2-49-opponent-close-to-one-interaction`
 Base: exact A dispatch Candidate on `codex/a-p3-fb2-49-opponent-close-to-one-dispatch`
 Read: `docs/reports/2026-09-21-p3-a-fb2-49-opponent-close-to-one-dispatch.md`
@@ -5846,3 +5846,15 @@ Read: `docs/reports/2026-09-21-p3-a-fb2-49-opponent-close-to-one-dispatch.md`
 Result required: implement only the exact identity-free compound transaction released by A: a combat phase-action whose source is owned and controller is at a battlefield serializes one non-cancellable exactly-one “keep” decision for each same-battlefield opponent with at least two currently active, face-up, non-residual attack-area cards, then closes every other still-valid card from that opponent's frozen qualifying set. Fail closed atomically on malformed authoring, state/provenance drift or forged/stale selection. Do not expose generic `choose_each_player_cards`, generic `close_matching_cards_except_selected`, arbitrary each-player selectors/mass close, identity routing or consumer authoring.
 
 This is zero-credit capability work: formal migration remains **`151/944`**, **`793`** remaining. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.astolfo.skill.sc-astolfo-1`; singleton S is allowed only if the whole card is then mechanically zero-gap.
+
+## TASK P3-A-FB2-49-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r102-fb2-49-acceptance-sync`
+Base: exact accepted FB2-49 Candidate `f0eb754edb7f7840ceb0121e376d88b7fadfd544`
+Read: `docs/reports/2026-09-22-p3-a-fb2-49-acceptance-synchronization.md`
+
+Result: synchronize fresh independent R verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #415 exact Candidate `f0eb754edb7f7840ceb0121e376d88b7fadfd544`, backed by canonical evidence `https://github.com/binchen648/fd/pull/415#issuecomment-5765967083`. Acceptance is limited to the exact identity-free `opponent_close_non_residual_to_one` compound transaction and its authenticated persistence/replay authority boundary. It grants no generic each-player selector, generic mass-close API, Astolfo identity route, consumer migration, Gate inheritance, merge, or retarget.
+
+FB2-49 earns zero migration credit. Formal migration remains **`151/944`**, with **`793`** remaining; branch-local frozen authoring overlap remains **`146/944`**, with zero duplicate frozen ids. Next action is a fresh complete-card reconstruction of `servant.astolfo.skill.sc-astolfo-1` on this synchronized runtime. Singleton S may be dispatched only if that probe proves the whole card mechanically zero-gap.
