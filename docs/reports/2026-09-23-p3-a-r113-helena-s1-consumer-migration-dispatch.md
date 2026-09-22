@@ -121,3 +121,19 @@ S must prove at minimum:
 - S 完成 recertification 并提交 Exact Base/Candidate.
 
 Formal migration remains **`155/944`**, with **`789`** remaining until fresh R + A synchronization.
+## A clarification after full-CI stale-snapshot discovery
+
+S recertification on the exact dispatched Helena S1 working tree exposed one additional historical repository-wide absolute-count assertion in `packages/rules/tests/ciel-s1b-consumer-migration.test.ts`: the Ciel S1b migration test still hard-codes total frozen authoring overlap `150`, while the authorized Helena S1 singleton correctly raises current material overlap to `151`.
+
+This is a stale repository-total snapshot only; all Ciel S1b card semantics, generated rules-only registration, S3 target behavior, hashes, product isolation, and exact-once identity assertions passed in the same full-CI run.
+
+A therefore grants one narrow compatibility edit only:
+
+- in `packages/rules/tests/ciel-s1b-consumer-migration.test.ts`, remove the brittle assertion that repository-wide `overlap` has absolute length `150`;
+- retain `frozen.size === 944`;
+- retain `duplicateFrozen === []`;
+- retain exact-once assertions for Ciel S1b and Ciel S3;
+- do not replace `150` with another moving absolute repository total;
+- do not modify any Ciel runtime/content/generated/product semantics.
+
+No other historical test modification is authorized. This clarification changes no migration scope, no runtime capability, no product surface, and no credit. Helena S1 Candidate accounting remains exact `150/944 -> 151/944`; formal migration remains `155/944`, with `789` remaining pending fresh R and A synchronization.

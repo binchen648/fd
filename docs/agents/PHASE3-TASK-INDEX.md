@@ -6089,3 +6089,13 @@ Base: exact P3-A-R113 dispatch Candidate
 Read: `docs/reports/2026-09-23-p3-a-r113-helena-s1-consumer-migration-dispatch.md`
 
 Goal: migrate exactly `servant.helena.skill.sc-helena-1` as the sole new frozen identity in the existing Helena standalone servant archive using only synchronized FB2-53. Preserve S3; make only the explicitly authorized S3 archive-exclusivity test compatibility edit. Required material accounting is exact `150/944 -> 151/944`; no runtime/compiler/client/product/generated/pack change and no second identity. Formal migration remains `155/944`, `789` remaining pending fresh independent R and A synchronization. S 完成 recertification 并提交 Exact Base/Candidate.
+## TASK P3-A-R113-HELENA-S1-FULL-CI-CLARIFICATION
+
+Owner: Codex A
+Status: `READY`
+Parent: exact original R113 dispatch `722341d1456bb857eb596f1f5ef81e4313a1db39`
+Read: `docs/reports/2026-09-23-p3-a-r113-helena-s1-consumer-migration-dispatch.md`
+
+Finding: full CI on the authorized Helena S1 singleton exposed exactly one additional stale historical snapshot: `ciel-s1b-consumer-migration.test.ts` hard-codes repository-wide frozen overlap `150`, while the authorized +1 Helena S1 makes current material overlap `151`. All Ciel S1b semantic/product assertions passed.
+
+Clarification: S may remove only that brittle absolute repository-total assertion. Preserve denominator `944`, zero duplicate frozen ids, and exact-once Ciel S1b/S3 assertions. Do not replace it with a new moving absolute count and do not alter Ciel semantics. No other historical-test widening is authorized. Migration scope/credit unchanged: Helena S1 remains exact `150/944 -> 151/944`; formal remains `155/944`, `789` remaining until fresh R + A synchronization.
