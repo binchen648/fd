@@ -5963,3 +5963,15 @@ Read: `docs/reports/2026-09-23-p3-a-fb2-52-next-round-situation-benefit-suppress
 Result required: implement only the bounded identity-free next-round situation-benefit suppression family released by A: combat source active at a battlefield; qualify same-battlefield opponents lacking an active face-up Luck attack; require at least one qualifier; mark exactly those qualifiers for the next round; suppress only their situation mana and situation power during exactly that round. Use a narrow server-owned round map, not a generic flag/rule engine. Do not author Ciel, widen predicates/rules/offsets, modify product/generated/client content, merge/retarget, or claim migration credit.
 
 This is zero-credit capability work: formal migration remains **`153/944`**, **`791`** remaining, material overlap **`148/944`**. After exact fresh R acceptance and A synchronization, freshly reconstruct `master.ciel.skill.s3`; S1b remains blocked until its target definition is formally available.
+
+## TASK P3-A-R107-FB2-52-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r107-fb2-52-acceptance-sync`
+Base: exact accepted Candidate `59d930f9e5a0202e0d1b3d9358e0d35ca3a0d029`
+Read: `docs/reports/2026-09-23-p3-a-r107-fb2-52-acceptance-synchronization.md`
+
+Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #428 exact Candidate `59d930f9e5a0202e0d1b3d9358e0d35ca3a0d029`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/428#issuecomment-5784412049`. Accepted capability is only the bounded identity-free next-round situation-benefit suppression family: active same-battlefield opponents lacking active face-up runtime Luck are marked for exactly the next round, and only authoritative situation mana plus situation combat-power sources are suppressed during that exact round. No Ciel consumer authoring or generic flag/rule engine is introduced.
+
+FB2-52 earns zero migration credit; formal migration remains **`153/944`**, with **`791`** remaining. Material authoring overlap remains **`148/944`**. PR #428 remains OPEN, unmerged and unretargeted. Next action is a fresh complete-card reconstruction of `master.ciel.skill.s3`; dispatch singleton S only if that whole target definition is mechanically zero-gap. `master.ciel.skill.s1b` remains blocked until s3 is formally available.
