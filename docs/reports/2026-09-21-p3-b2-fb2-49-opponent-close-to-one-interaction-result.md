@@ -756,3 +756,21 @@ At the time of this evidence closure there is **no exact fresh-R acceptance resu
 Current `origin/main` is `4b52b3166ed2ba0efaa4569ee95c6513fd26ab2f` and contains the Phase 3 Promotion Lane introduced by PR #405. PR #422 is an older stacked implementation line whose Base predates that governance workflow; it is **not** the final main Promotion PR and must not be merged or retargeted merely to satisfy the new gate.
 
 After exact fresh independent R accepts the final PR #422 Candidate, the repository-defined next steps are: A synchronization, then a separate role-I Promotion PR from the then-current `main` carrying the required `phase3-task-manifest`, machine-readable review attestation, synchronization ancestry, and current Build/Test/Policy checks. FB2-49 remains zero-credit capability work; formal migration remains `151/944`, `793` remaining until the subsequent Astolfo consumer migration is independently accepted and synchronized.
+
+## 2026-09-22 client-build closure after exact Candidate `aebfa6da...`
+
+A fixed-environment exact-Candidate verification of `aebfa6da8d67a8becbf980de18075643cf0e5b0e` found one repository build blocker that the earlier focused evidence did not exercise: `npm.cmd run build --workspace @fd/client` failed TypeScript `noUnusedLocals` because `packages/rules/src/match-session.ts` still contained the now-unused helper `isRestoreRecordArray`.
+
+The implementation correction is intentionally minimal: remove only that dead helper. No runtime path, FB2-49 transaction behavior, persistence authority, replay semantics, room/session lifecycle behavior, authoring, generated product, migration accounting, merge, or retarget behavior changes.
+
+Verification on the corrected fixed Work tree before Candidate commit:
+
+- fixed toolchain bootstrap: `FD_TOOLCHAIN_OK`;
+- `npm.cmd run typecheck` — PASS;
+- `npm.cmd run build --workspace @fd/client` — PASS, with only the pre-existing Vite browser-externalization/chunk-size warnings;
+- affected focused set — **9 files / 152 tests PASS**, including FB2-49 **51/51**, MatchSession **30/30**, MatchRoomHub **8/8**, complex-skills **37/37**;
+- `@fd/server src/match-server.test.ts` — **5/5 PASS**;
+- official `npm.cmd run test:ci -- --maxWorkers=2` — **177 files / 1336 tests PASS**;
+- `git diff --check` — PASS.
+
+This section closes only the client-build hygiene blocker discovered while preparing exact fresh-R evidence. The exact new PR HEAD/Candidate produced by this correction is bound in the PR body and GitHub implementation-evidence comment after commit/push. It remains a Candidate pending fresh independent R; no acceptance, merge, retarget, A synchronization, promotion, or migration credit is claimed here.

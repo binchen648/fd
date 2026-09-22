@@ -389,10 +389,6 @@ function isRestoreLocationConfig(value: unknown): boolean {
   return isRestoreRecord(value) && isRestoreStringArray(value.enabledLocationIds);
 }
 
-function isRestoreRecordArray(value: unknown): boolean {
-  return Array.isArray(value) && value.every(isRestoreRecord);
-}
-
 function isRestoreFiniteNumber(value: unknown): value is number {
   return typeof value === 'number' && Number.isFinite(value);
 }
