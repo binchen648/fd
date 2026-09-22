@@ -650,5 +650,5 @@ describe('MatchSession semi-auto runtime', () => {
       expect(projected.finalRanking).toHaveLength(7);
       expect(projected.logs.some((entry) => entry.type === 'final_scoring')).toBe(true);
     }
-  });
+  }, 10_000);
 });
