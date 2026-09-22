@@ -127,12 +127,14 @@ describe('P3-FB2-53 basic Strength play -> opponent servant-skill face-down',()=
     expect(pendingCandidates(state)).toEqual(['eligible']);
   });
 
-  it('keeps stage one selection mutation-free and offers only the exact same-location opponent face-up servant skill at stage two',()=>{
+  it('settles the normal effect-play transaction on stage one before opening the stage-two target snapshot',()=>{
     const state=setup(); expect(activate(state).ok).toBe(true);
-    const before=structuredClone(state);
     expect(choose(state,['eligible']).ok).toBe(true);
-    expect(state.players[0]!.mana).toBe(before.players[0]!.mana);
-    expect(state.cards.find(c=>c.instanceId==='eligible')!.zone).toBe('hand');
+    expect(state.players[0]!.mana).toBe(3);
+    expect(state.cards.find(c=>c.instanceId==='eligible')).toMatchObject({zone:'attack_area',ownerPlayerId:'p1',controllerPlayerId:'p1'});
+    expect(state.abilityRuntime!.cardState.eligible).toMatchObject({active:true,faceDown:false,paidManaOnPlay:2,playedRound:state.round.roundNumber});
+    expect(state.abilityRuntime!.processedEvents.some((id)=>id.startsWith('declare-'))).toBe(true);
+    expect(state.abilityRuntime!.processedEvents.some((id)=>id.startsWith('play-'))).toBe(true);
     expect(pendingCandidates(state)).toEqual(['target']);
   });
 
@@ -165,12 +167,47 @@ describe('P3-FB2-53 basic Strength play -> opponent servant-skill face-down',()=
     expect(result.ok).toBe(false); expect(state).toEqual(before);
   });
 
-  it('revalidates a stale second-stage target and never leaves a half-played attack behind',()=>{
+  it('revalidates a stale second-stage target without undoing the already-committed stage-one play',()=>{
     const state=setup(); expect(activate(state).ok).toBe(true); expect(choose(state,['eligible']).ok).toBe(true);
     state.players[1]!.locationId='shinto';
     const before=structuredClone(state); const result=choose(state,['target']);
     expect(result.ok).toBe(false); expect(state).toEqual(before);
-    expect(state.cards.find(c=>c.instanceId==='eligible')!.zone).toBe('hand'); expect(state.players[0]!.mana).toBe(5);
+    expect(state.cards.find(c=>c.instanceId==='eligible')!.zone).toBe('attack_area'); expect(state.players[0]!.mana).toBe(3);
+  });
+
+  it('binds stage-one selection to the stored snapshot even when another basic Strength attack becomes newly live',()=>{
+    const state=setup(); expect(activate(state).ok).toBe(true);
+    state.players[0]!.mana=12;
+    expect(pendingCandidates(state)).toEqual(['eligible']);
+    const before=structuredClone(state); const result=choose(state,['expensive']);
+    expect(result.ok).toBe(false); expect(state).toEqual(before);
+  });
+
+  it('binds stage-two selection to its post-play snapshot even when another opponent skill becomes newly live',()=>{
+    const state=setup(); expect(activate(state).ok).toBe(true); expect(choose(state,['eligible']).ok).toBe(true);
+    state.players[2]!.locationId='miyama_town';
+    expect(pendingCandidates(state)).toEqual(['target']);
+    const before=structuredClone(state); const result=choose(state,['remote']);
+    expect(result.ok).toBe(false); expect(state).toEqual(before);
+  });
+
+  it('fails closed before mutation for malformed persisted FB2-53 continuation state or changed whole-envelope semantics',()=>{
+    const corruptions:Array<(state:ReturnType<typeof setup>)=>void>=[
+      state=>{(state.abilityRuntime!.pendingDecision as any).context.sourceCardId='target';},
+      state=>{(state.abilityRuntime!.pendingDecision as any).remainingEffects=[];},
+      state=>{(state.abilityRuntime!.pendingDecision as any).interaction.candidateIds=['eligible','forged'];},
+      state=>{(state.abilityRuntime!.pendingDecision as any).extra='forged';},
+      state=>{(state.abilityRuntime!.pack.cards['skill.source']!.abilities[0]!.effects[1] as any).type='noop';},
+    ];
+    for(const corrupt of corruptions){
+      const state=setup(); expect(activate(state).ok).toBe(true); corrupt(state);
+      const before=structuredClone(state); const result=choose(state,['eligible']);
+      expect(result.ok).toBe(false); expect(state).toEqual(before);
+    }
+    const stageTwo=setup(); expect(activate(stageTwo).ok).toBe(true); expect(choose(stageTwo,['eligible']).ok).toBe(true);
+    (stageTwo.abilityRuntime!.pendingDecision as any).target={id:'forged',type:'card_instance'};
+    const before=structuredClone(stageTwo); const result=choose(stageTwo,['target']);
+    expect(result.ok).toBe(false); expect(stageTwo).toEqual(before);
   });
 
   it('requires both mandatory target classes before offering activation',()=>{

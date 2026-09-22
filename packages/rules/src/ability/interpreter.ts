@@ -1916,6 +1916,49 @@ function findPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility
   return undefined;
 }
 
+function createBasicStrengthAttackPlayDecision(s: GameState, ctx: EffectContext, a: AuthoringAbility): PendingDecision {
+  if (!isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled')) {
+    reject('resolution_failed', 'Unsupported FB2-53 whole-ability semantic shape');
+  }
+  const target = a.targets[0]!;
+  const snapshot = candidates(s, ctx, target);
+  if (snapshot.length < 1) reject('no_legal_target', 'No playable basic Strength attack remains');
+  const id = nextId(s, 'fb2-53-strength');
+  return {
+    id, controllerId: ctx.controllerId, target: structuredClone(target), candidates: [...snapshot], min: 1, max: 1,
+    context: structuredClone(ctx), remainingEffects: structuredClone(a.effects),
+    interaction: {
+      kind: 'basic_strength_attack_play_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`, targetId: 'strength_basic_attack', candidateIds: [...snapshot],
+      constraints: { kind: 'target', targetKind: 'card', min: 1, max: 1, distinct: true },
+    },
+  };
+}
+
+function createBasicStrengthOpponentSkillDecision(
+  s: GameState, ctx: EffectContext, a: AuthoringAbility, selectedAttackId: string,
+): PendingDecision {
+  if (!isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled') ||
+      ctx.selections.strength_basic_attack?.length !== 1 || ctx.selections.strength_basic_attack[0] !== selectedAttackId) {
+    reject('resolution_failed', 'Unsupported FB2-53 stage-two continuation context');
+  }
+  const target = a.targets[1]!;
+  const snapshot = candidates(s, ctx, target);
+  if (snapshot.length < 1) reject('no_legal_target', 'No same-location opponent face-up servant skill remains');
+  const id = nextId(s, 'fb2-53-opponent-skill');
+  return {
+    id, controllerId: ctx.controllerId, target: structuredClone(target), candidates: [...snapshot], min: 1, max: 1,
+    context: structuredClone(ctx), remainingEffects: [structuredClone(a.effects[1]!)],
+    interaction: {
+      kind: 'basic_strength_opponent_skill_face_down_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`, targetId: 'opponent_servant_skill', candidateIds: [...snapshot], selectedAttackId,
+      constraints: { kind: 'target', targetKind: 'card', min: 1, max: 1, distinct: true },
+    },
+  };
+}
+
 function createSameBattlefieldPrivateHandReturnInteraction(s: GameState, ctx: EffectContext, a: AuthoringAbility): PendingDecision {
   if (!isSameBattlefieldPrivateHandReturnInteractionSemantic(a)) reject('resolution_failed', 'Unsupported same-battlefield private hand-return interaction semantic shape');
   const playerTarget = a.targets[0]!;
@@ -2060,6 +2103,41 @@ function isExactOpponentCloseToOneConstraints(value: unknown): boolean {
 }
 function isPlainRecord(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+function hasExactBasicStrengthDecisionRootKeys(value: unknown): boolean {
+  return isPlainRecord(value) &&
+    exactPlayerArray(Object.keys(value).sort(), ['candidates', 'context', 'controllerId', 'id', 'interaction', 'max', 'min', 'remainingEffects', 'target']);
+}
+function isExactBasicStrengthInteractionConstraints(value: unknown): boolean {
+  if (!isPlainRecord(value)) return false;
+  return exactPlayerArray(Object.keys(value).sort(), ['distinct', 'kind', 'max', 'min', 'targetKind']) &&
+    value.kind === 'target' && value.targetKind === 'card' && value.min === 1 && value.max === 1 && value.distinct === true;
+}
+function isExactBasicStrengthCandidateList(value: unknown): value is string[] {
+  return Array.isArray(value) && value.length >= 1 && value.every((id) => typeof id === 'string' && id.length > 0) &&
+    new Set(value).size === value.length;
+}
+function hasExactBasicStrengthStageOneInteractionKeys(value: unknown): boolean {
+  return isPlainRecord(value) && exactPlayerArray(Object.keys(value).sort(), [
+    'abilityId', 'cancelPolicy', 'candidateIds', 'constraints', 'continuationRef', 'createdRevision', 'kind',
+    'sourceCardInstanceId', 'targetId', 'template', 'visibility',
+  ]);
+}
+function hasExactBasicStrengthStageTwoInteractionKeys(value: unknown): boolean {
+  return isPlainRecord(value) && exactPlayerArray(Object.keys(value).sort(), [
+    'abilityId', 'cancelPolicy', 'candidateIds', 'constraints', 'continuationRef', 'createdRevision', 'kind',
+    'selectedAttackId', 'sourceCardInstanceId', 'targetId', 'template', 'visibility',
+  ]);
+}
+function isExactBasicStrengthDecisionContext(value: unknown, selectedAttackId?: string): value is EffectContext {
+  if (!isPlainRecord(value) || !isPlainRecord(value.variables) || !isPlainRecord(value.selections)) return false;
+  if (!exactPlayerArray(Object.keys(value).sort(), ['abilityId', 'controllerId', 'selections', 'sourceCardId', 'variables']) ||
+      Object.keys(value.variables).length !== 0) return false;
+  const selectionKeys = Object.keys(value.selections);
+  if (selectedAttackId === undefined) return selectionKeys.length === 0;
+  const selected = value.selections.strength_basic_attack;
+  return exactPlayerArray(selectionKeys, ['strength_basic_attack']) && Array.isArray(selected) && selected.length === 1 &&
+    selected[0] === selectedAttackId;
 }
 function isExactOpponentCloseToOneContext(value: unknown): value is EffectContext {
   if (!isPlainRecord(value) || !isPlainRecord(value.variables) || !isPlainRecord(value.selections)) return false;
@@ -3462,6 +3540,17 @@ function executeFixedControllerManaCost(s: GameState, ctx: EffectContext, a: Aut
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (isBasicStrengthOpponentSkillFaceDownCandidate(a)) {
+    if (!isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled') ||
+        effects.length !== a.effects.length || effects.some((effect, index) => JSON.stringify(effect) !== JSON.stringify(a.effects[index]))) {
+      reject('resolution_failed', 'Unsupported FB2-53 whole-ability semantic shape');
+    }
+    if (Object.keys(ctx.selections).length !== 0 || Object.keys(ctx.variables).length !== 0) {
+      reject('resolution_failed', 'FB2-53 activation requires a fresh server context');
+    }
+    runtime(s).pendingDecision = createBasicStrengthAttackPlayDecision(s, ctx, a);
+    return;
+  }
   if (isRulerSealBindingCandidate(a)) {
     if (!isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
     const pending = findPendingTarget(s, ctx, a, effects);
@@ -4267,6 +4356,70 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       if (interactionValue !== undefined) {
         if (!isPlainRecord(interactionValue)) reject('resolution_failed', 'Corrupt pending interaction state');
         const meta = interactionValue as unknown as NonNullable<PendingDecision['interaction']>;
+        if (meta.kind === 'basic_strength_attack_play_v1') {
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const a = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+          const currentTarget = a?.targets[0];
+          const currentAllowed = a && currentTarget ? candidates(s, d.context, currentTarget) : [];
+          const exactTarget = !!currentTarget && JSON.stringify(d.target) === JSON.stringify(currentTarget);
+          const exactEffects = !!a && d.remainingEffects.length === 2 &&
+            d.remainingEffects.every((effect, index) => JSON.stringify(effect) === JSON.stringify(a.effects[index]));
+          if (!hasExactBasicStrengthDecisionRootKeys(decisionValue) || !hasExactBasicStrengthStageOneInteractionKeys(interactionValue) ||
+              !a || !isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled') || !source ||
+              source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId || d.controllerId !== playerId ||
+              d.context.controllerId !== playerId || d.context.sourceCardId !== meta.sourceCardInstanceId || d.context.abilityId !== meta.abilityId ||
+              !isExactBasicStrengthDecisionContext(d.context) || !exactTarget || !exactEffects ||
+              meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+              meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
+              meta.targetId !== 'strength_basic_attack' || !isExactBasicStrengthInteractionConstraints(meta.constraints) ||
+              !isExactBasicStrengthCandidateList(meta.candidateIds) || !exactPlayerArray(d.candidates, meta.candidateIds) ||
+              d.min !== 1 || d.max !== 1 || !Array.isArray(selected) || selected.length !== 1 || new Set(selected).size !== 1 ||
+              !meta.candidateIds.includes(selected[0]!) || !currentAllowed.includes(selected[0]!)) {
+            reject('resolution_failed', 'Corrupt or stale FB2-53 stage-one interaction state');
+          }
+          const selectedAttackId = selected[0]!;
+          const authoritativeContext = context(s, meta.sourceCardInstanceId, meta.abilityId);
+          authoritativeContext.selections[meta.targetId] = [selectedAttackId];
+          delete r.pendingDecision;
+          resolveEffect(s, authoritativeContext, a.effects[0]!);
+          r.pendingDecision = createBasicStrengthOpponentSkillDecision(s, authoritativeContext, a, selectedAttackId);
+          break;
+        }
+        if (meta.kind === 'basic_strength_opponent_skill_face_down_v1') {
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const a = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+          const currentTarget = a?.targets[1];
+          const currentAllowed = a && currentTarget ? candidates(s, d.context, currentTarget) : [];
+          const exactTarget = !!currentTarget && JSON.stringify(d.target) === JSON.stringify(currentTarget);
+          const exactEffects = !!a && d.remainingEffects.length === 1 && JSON.stringify(d.remainingEffects[0]) === JSON.stringify(a.effects[1]);
+          const playedCard = s.cards.find((candidate) => candidate.instanceId === meta.selectedAttackId);
+          const playedDefinition = playedCard ? definition(s, playedCard.instanceId) : undefined;
+          const playedState = playedCard ? r.cardState[playedCard.instanceId] : undefined;
+          const printedCost = Number(playedDefinition?.cardFace.cost ?? NaN);
+          const exactPlayedProvenance = !!playedCard && playedCard.ownerPlayerId === playerId && playedCard.controllerPlayerId === playerId &&
+            playedDefinition?.cardType === 'basic_attack' && Number.isSafeInteger(printedCost) && printedCost >= 0 &&
+            !!playedState && playedState.faceDown === false && playedState.playedRound === s.round.roundNumber &&
+            playedState.paidManaOnPlay === printedCost;
+          if (!hasExactBasicStrengthDecisionRootKeys(decisionValue) || !hasExactBasicStrengthStageTwoInteractionKeys(interactionValue) ||
+              !a || !isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled') || !source ||
+              source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId || d.controllerId !== playerId ||
+              d.context.controllerId !== playerId || d.context.sourceCardId !== meta.sourceCardInstanceId || d.context.abilityId !== meta.abilityId ||
+              !isExactBasicStrengthDecisionContext(d.context, meta.selectedAttackId) || !exactPlayedProvenance || !exactTarget || !exactEffects ||
+              meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+              meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
+              meta.targetId !== 'opponent_servant_skill' || !isExactBasicStrengthInteractionConstraints(meta.constraints) ||
+              !isExactBasicStrengthCandidateList(meta.candidateIds) || !exactPlayerArray(d.candidates, meta.candidateIds) ||
+              d.min !== 1 || d.max !== 1 || !Array.isArray(selected) || selected.length !== 1 || new Set(selected).size !== 1 ||
+              !meta.candidateIds.includes(selected[0]!) || !currentAllowed.includes(selected[0]!)) {
+            reject('resolution_failed', 'Corrupt or stale FB2-53 stage-two interaction state');
+          }
+          const authoritativeContext = context(s, meta.sourceCardInstanceId, meta.abilityId);
+          authoritativeContext.selections.strength_basic_attack = [meta.selectedAttackId];
+          authoritativeContext.selections[meta.targetId] = [...selected];
+          delete r.pendingDecision;
+          resolveEffect(s, authoritativeContext, a.effects[1]!);
+          break;
+        }
         if (meta.kind === 'selected_played_attack_temporary_copy_v1') {
           if (!isExactSelectedPlayedAttackTemporaryCopyPersistedDecision(decisionValue)) {
             reject('resolution_failed', 'Corrupt or stale selected played-attack temporary-copy interaction state');
