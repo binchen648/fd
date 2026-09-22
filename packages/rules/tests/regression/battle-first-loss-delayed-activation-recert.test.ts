@@ -4,6 +4,7 @@ import {
   advanceAbilityPhase,
   applyBattleScoring,
   createMatchSession,
+  isDeferredAbilityRuntimeProvenanceValidForRestore,
   processAbilityEvent,
   restoreMatchSession,
   resolveBattlefield,
@@ -195,6 +196,15 @@ describe('P3-B17 Olga first-loss ACTIVATE TO14 recertification', () => {
     ]);
     expect(session.state.cards.find((card) => card.instanceId === trismegistusInstanceId)?.zone).toBe('skill');
     expect(activatedCount(session)).toBe(0);
+
+    const durable = session.serializeSession();
+    const restored = restoreMatchSession(durable);
+    expect(restored.state.abilityRuntime!.pendingDelayedActivations).toEqual(session.state.abilityRuntime!.pendingDelayedActivations);
+    const forged: any = structuredClone(durable);
+    forged.state.abilityRuntime.pendingDelayedActivations[0].triggerEventId = 'review-unrelated-event';
+    forged.state.abilityRuntime.processedEvents.push('review-unrelated-event');
+    expect(isDeferredAbilityRuntimeProvenanceValidForRestore(forged.state)).toBe(false);
+    expect(() => restoreMatchSession(forged)).toThrow('Invalid MatchSession state container');
 
     const stagedSnapshot = JSON.stringify(session.state.abilityRuntime!.pendingDelayedActivations);
     processAbilityEvent(session.state, structuredClone(firstLoss!));

@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
 import contentLibrary from '../../../data/generated/fd-playtest-v1.content-library.json';
-import { createMatchSession, restoreSession } from '../src/match-session';
-import { projectAbilityState } from '../src/ability/interpreter';
+import { createMatchSession, restoreMatchSession, restoreSession } from '../src/match-session';
+import { advanceAbilityPhase, projectAbilityState } from '../src/ability/interpreter';
 import { resolveBattlefield } from '../src/core/combat-resolver';
 import { applyBattleScoring } from '../src/core/scoring-resolver';
 
@@ -491,6 +491,43 @@ describe('MatchSession semi-auto runtime', () => {
       label: 'situation.longing_for_future.same_attribute',
       value: 3,
     }));
+  });
+
+  it('round-trips the production Artoria Caster looked-card continuation and rejects modified continuation state', () => {
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p5', humanPlayerIds: ['p5'] });
+    advanceAbilityPhase(session.state, 'action', session.state.round.roundNumber);
+    session.state.round.prioritySeat = 5;
+    session.state.players.find((player) => player.id === 'p5')!.mana = 12;
+    const staff = session.state.cards.find((card) =>
+      card.ownerPlayerId === 'p5' && card.definitionId === 'servant.artoriac.skill.sc-artoriac-2')!;
+    expect(staff).toBeTruthy();
+    expect(session.dispatchPlayerAction('p5', { type: 'play_card', cardInstanceId: staff.instanceId }).ok).toBe(true);
+    session.state.round.prioritySeat = 5;
+    expect(session.dispatchPlayerAction('p5', {
+      type: 'activate_ability',
+      cardInstanceId: staff.instanceId,
+      abilityId: 'sc-artoriac-2.pay-x-look-x-plus-two',
+      variables: { X: 2 },
+    }).ok).toBe(true);
+
+    const pending = structuredClone(session.state.abilityRuntime!.pendingDecision!);
+    expect(pending.candidates).toHaveLength(4);
+    expect(pending.remainingEffects.map((effect) => effect.type)).toEqual(['move_card', 'move_all_remaining']);
+    const durable = session.serializeSession();
+    const restored = restoreMatchSession(durable);
+    expect(restored.state.abilityRuntime!.pendingDecision).toEqual(pending);
+
+    const corruptions: Array<(snapshot: any) => void> = [
+      snapshot => { snapshot.state.abilityRuntime.pendingDecision.target.id = 'forged_target'; },
+      snapshot => { snapshot.state.abilityRuntime.pendingDecision.candidates = snapshot.state.abilityRuntime.pendingDecision.candidates.slice(1); },
+      snapshot => { snapshot.state.abilityRuntime.pendingDecision.context.variables.X = 3; },
+      snapshot => { snapshot.state.abilityRuntime.pendingDecision.remainingEffects[0] = { type: 'adjust_victory_points', amount: 100 }; },
+    ];
+    for (const corrupt of corruptions) {
+      const malformed: any = structuredClone(durable);
+      corrupt(malformed);
+      expect(() => restoreMatchSession(malformed)).toThrow('Invalid MatchSession state container');
+    }
   });
 
   it('restores a replay checkpoint by id', () => {

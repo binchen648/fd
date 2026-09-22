@@ -1047,6 +1047,54 @@ function stableRestoreUnique(values: readonly string[]): string[] {
   return [...new Set(values)];
 }
 
+function isRestoreDelayedActivationProvenance(
+  state: GameState,
+  battleHistory: GameState['battleResults'],
+  logs: MatchSessionLogEntry[],
+): boolean {
+  const runtime = state.abilityRuntime;
+  if (!runtime) return true;
+  const delayed = runtime.pendingDelayedActivations ?? [];
+  const seen = new Set<string>();
+  for (const entry of delayed) {
+    const key = `${entry.sourceCardId}:${entry.abilityId}:${entry.round}`;
+    if (seen.has(key) || entry.round !== state.round.roundNumber || !runtime.processedEvents.includes(entry.triggerEventId)) return false;
+    seen.add(key);
+
+    const dispatchedIndex = logs.findIndex((log) =>
+      log.type === 'battle_first_loss_event_dispatched' && log.round === entry.round && log.message === entry.triggerEventId);
+    if (dispatchedIndex < 0) return false;
+    const dispatched = logs[dispatchedIndex]!;
+    if (!isRestoreRecord(dispatched.payload)) return false;
+    const phaseId = dispatched.payload.battlePhaseResolutionId;
+    const battleId = dispatched.payload.battleId;
+    const resultId = dispatched.payload.resultId;
+    const battlefieldId = dispatched.payload.battlefieldId;
+    const playerId = dispatched.payload.playerId;
+    if (phaseId !== `battle-phase:${entry.round}` || typeof battleId !== 'string' || typeof resultId !== 'string' ||
+        typeof battlefieldId !== 'string' || playerId !== entry.controllerId ||
+        resultId !== `${battleId}:result` || entry.triggerEventId !== `${resultId}:first-loss:${entry.controllerId}`) return false;
+
+    const battlePrefix = `${phaseId}:battle:${battlefieldId}:`;
+    if (!battleId.startsWith(battlePrefix)) return false;
+    const ordinalText = battleId.slice(battlePrefix.length);
+    if (!/^[1-9]\d*$/.test(ordinalText)) return false;
+    const ordinal = Number(ordinalText);
+    if (!Number.isSafeInteger(ordinal) || ordinal > battleHistory.length) return false;
+    const battle = battleHistory[ordinal - 1];
+    if (!battle || battle.battlefieldId !== battlefieldId || !restoreBattleLoserIds(battle).includes(entry.controllerId)) return false;
+    if (battleHistory.slice(0, ordinal - 1).some((priorBattle) => restoreBattleLoserIds(priorBattle).includes(entry.controllerId))) return false;
+
+    const barrierIndex = logs.findIndex((log) =>
+      log.type === 'battle_post_scoring_barrier_open' && log.round === entry.round && log.message === phaseId &&
+      isRestoreRecord(log.payload) && log.payload.battlePhaseResolutionId === phaseId &&
+      Array.isArray(log.payload.resultIds) && log.payload.resultIds.includes(resultId) &&
+      Array.isArray(log.payload.scoredBattlefieldIds) && log.payload.scoredBattlefieldIds.includes(battlefieldId));
+    if (barrierIndex < 0 || barrierIndex >= dispatchedIndex) return false;
+  }
+  return true;
+}
+
 function isRestoreDeferredBattleProvenance(
   state: GameState,
   battleHistory: GameState['battleResults'],
@@ -1054,6 +1102,7 @@ function isRestoreDeferredBattleProvenance(
 ): boolean {
   const runtime = state.abilityRuntime;
   if (!runtime) return true;
+  if (!isRestoreDelayedActivationProvenance(state, battleHistory, logs)) return false;
   const pending = runtime.pendingPostBattleEvents ?? [];
   const terminal = runtime.pendingBattleTerminalEvent;
   if (!terminal) return pending.length === 0;

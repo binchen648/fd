@@ -1799,8 +1799,31 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
     if (!(r.pendingDelayedActivations ?? []).every((entry) => {
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
       const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
-      return !!source && !!ability && isActivateCardByIdTrigger(ability) &&
-        str(ability.effects[0]?.definitionId) === entry.definitionId && r.processedEvents.includes(entry.triggerEventId);
+      const triggerSuffix = `:first-loss:${entry.controllerId}`;
+      if (!source || !ability || !isActivateCardByIdTrigger(ability) ||
+          str(ability.effects[0]?.definitionId) !== entry.definitionId || entry.round !== s.round.roundNumber ||
+          !r.processedEvents.includes(entry.triggerEventId) || !entry.triggerEventId.endsWith(triggerSuffix)) return false;
+      const resultId = entry.triggerEventId.slice(0, -triggerSuffix.length);
+      const trusted = r.trustedBattleResultSnapshots?.[resultId];
+      if (!trusted || trusted.resultId !== resultId || trusted.battlePhaseResolutionId !== `battle-phase:${entry.round}` ||
+          trusted.loserIds.indexOf(entry.controllerId) < 0 || trusted.battleId.length === 0 || trusted.battlefieldId.length === 0) return false;
+      const orderOf = (candidate: typeof trusted): [number, number] | undefined => {
+        const roundMatch = /^battle-phase:(\d+)$/.exec(candidate.battlePhaseResolutionId);
+        const prefix = `${candidate.battlePhaseResolutionId}:battle:${candidate.battlefieldId}:`;
+        if (!roundMatch || !candidate.battleId.startsWith(prefix)) return undefined;
+        const ordinalText = candidate.battleId.slice(prefix.length);
+        if (!/^[1-9]\d*$/.test(ordinalText)) return undefined;
+        const round = Number(roundMatch[1]); const ordinal = Number(ordinalText);
+        return Number.isSafeInteger(round) && Number.isSafeInteger(ordinal) ? [round, ordinal] : undefined;
+      };
+      const currentOrder = orderOf(trusted);
+      if (!currentOrder || currentOrder[0] !== entry.round) return false;
+      return !Object.values(r.trustedBattleResultSnapshots ?? {}).some((candidate) => {
+        if (candidate.resultId === resultId || !candidate.loserIds.includes(entry.controllerId)) return false;
+        const candidateOrder = orderOf(candidate);
+        return !!candidateOrder && (candidateOrder[0] < currentOrder[0] ||
+          (candidateOrder[0] === currentOrder[0] && candidateOrder[1] < currentOrder[1]));
+      });
     })) return false;
 
     if (!(r.pendingPresenceConcealmentDefeats ?? []).every((entry) => {
@@ -1858,14 +1881,68 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
   }
 }
 
-/** Generic pending decisions are executable continuations; restore only if the current compiled ability would stage the exact same continuation. */
+/** Match only effect suffixes that executeEffects can actually expose as a continuation boundary. */
+function runtimeContinuationSequenceMatches(
+  s: GameState,
+  ctx: EffectContext,
+  effects: RuleNode[],
+  remainingEffects: RuleNode[],
+  depth = 0,
+): boolean {
+  if (depth > 32) return false;
+  for (let index = 0; index < effects.length; index += 1) {
+    const suffix = effects.slice(index);
+    if (exactRestoreValue(suffix, remainingEffects)) return true;
+    const effect = effects[index]!;
+    if (effect.type !== 'branch') continue;
+    const branch = nodes(effect.branches).find((candidate) =>
+      candidate.else !== undefined || condition(s, ctx, node(candidate.if)));
+    if (!branch) continue;
+    const expanded = [...nodes(branch.then ?? branch.else), ...effects.slice(index + 1)];
+    if (runtimeContinuationSequenceMatches(s, ctx, expanded, remainingEffects, depth + 1)) return true;
+  }
+  return false;
+}
+
+function contextVariablesBelongToAbility(ability: AuthoringAbility, ctx: EffectContext): boolean {
+  const allowed = new Set<string>();
+  const visit = (value: unknown): void => {
+    if (Array.isArray(value)) {
+      value.forEach(visit);
+      return;
+    }
+    if (!value || typeof value !== 'object') return;
+    const record = value as Record<string, unknown>;
+    if (typeof record.var === 'string' && record.var.length > 0) allowed.add(record.var);
+    if (typeof record.resultVar === 'string' && record.resultVar.length > 0) allowed.add(record.resultVar);
+    Object.values(record).forEach(visit);
+  };
+  visit(ability);
+  return Object.keys(ctx.variables).every((name) => allowed.has(name));
+}
+
+function inputVariableCalculationsMatch(s: GameState, ability: AuthoringAbility, ctx: EffectContext): boolean {
+  const names = ability.cost
+    .filter((cost) => cost.type === 'pay_mana')
+    .map((cost) => str(node(cost.amount).var))
+    .filter(Boolean);
+  if (!names.length) return true;
+  if (names.some((name) => !Object.prototype.hasOwnProperty.call(ctx.variables, name))) return false;
+  const latest = [...runtime(s).calculations].reverse().find((entry) =>
+    entry.controllerId === ctx.controllerId &&
+    entry.lines.length === names.length &&
+    entry.lines.every((line, index) => line.label === names[index]));
+  return !!latest && latest.lines.every((line) => ctx.variables[line.label] === line.value);
+}
+
+/** Generic pending decisions are executable continuations; restore only if the current compiled ability can stage the exact persisted suffix. */
 export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
   if (decision.interaction) return true;
   try {
     if (decision.controllerId !== decision.context.controllerId) return false;
     const source = restoredPhysicalSource(s, decision.context.sourceCardId);
     if (source) {
-      if (source.controllerPlayerId !== decision.context.controllerId) return false;
+      if (source.controllerPlayerId !== decision.context.controllerId || decision.context.eventSource !== undefined) return false;
     } else {
       const placement = eventRulePlacementByInstance(s, decision.context.sourceCardId);
       const eventSource = decision.context.eventSource;
@@ -1873,8 +1950,14 @@ export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decisi
           eventSource.definitionId !== placement.eventCardId || eventSource.locationId !== placement.locationId) return false;
     }
     const ability = restoredAbility(s, decision.context.sourceCardId, decision.context.abilityId);
-    if (!ability) return false;
-    const expected = findPendingTargetRestoreSpec(s, structuredClone(decision.context), ability, [...ability.effects, ...ability.creates]);
+    if (!ability || !contextVariablesBelongToAbility(ability, decision.context) ||
+        !inputVariableCalculationsMatch(s, ability, decision.context)) return false;
+    const targetIds = new Set(ability.targets.map((target) => str(target.id)).filter(Boolean));
+    if (Object.entries(decision.context.selections).some(([targetId, selectedIds]) =>
+      !targetIds.has(targetId) || !Array.isArray(selectedIds) || new Set(selectedIds).size !== selectedIds.length)) return false;
+    const canonicalEffects = [...ability.effects, ...ability.creates];
+    if (!runtimeContinuationSequenceMatches(s, decision.context, canonicalEffects, decision.remainingEffects)) return false;
+    const expected = findPendingTargetRestoreSpec(s, structuredClone(decision.context), ability, decision.remainingEffects);
     return !!expected && decision.min === expected.min && decision.max === expected.max &&
       exactRestoreValue(decision.target, expected.target) && exactRestoreValue(decision.candidates, expected.candidates) &&
       exactRestoreValue(decision.remainingEffects, expected.remainingEffects);
