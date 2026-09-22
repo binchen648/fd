@@ -5882,3 +5882,15 @@ Read: `docs/reports/2026-09-22-p3-a-r103-astolfo-s1-migration-acceptance-synchro
 Result: synchronize formal fresh independent R `MIGRATION_ACCEPTED` for PR #423 exact Candidate `110257b76a957a5bba39ea1822f7861cecf288a9`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/423#issuecomment-5775187822`. Independent Base-to-Candidate frozen recount is `146/944` to `147/944`, exact +1 `servant.astolfo.skill.sc-astolfo-1`, zero removals and zero duplicate frozen ids. The fourth Candidate path is only the A-authorized compatibility removal of Spartacus S2's stale repository-wide `overlap===146` snapshot; no production runtime/product/generated/client change is present.
 
 Formal project migration advances exactly one identity to **`152/944`**, with **`792`** remaining. PR #423 remains OPEN, unmerged and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the next true `S_READY_NOW`; if no whole card is zero-gap, dispatch only the minimum missing B2 capability.
+
+## TASK P3-FB2-50-SELECTED-PLAYED-ATTACK-TEMPORARY-COPY
+
+Owner: Codex B2
+Status: `READY`
+Branch: `codex/b2-p3-fb2-50-selected-played-attack-copy`
+Base: exact A dispatch Candidate on `codex/a-p3-fb2-50-selected-played-attack-copy-dispatch`
+Read: `docs/reports/2026-09-22-p3-a-fb2-50-selected-played-attack-copy-dispatch.md`
+
+Result required: implement only the identity-free Atalanta-S2-shaped compound transaction that takes an already-authenticated exactly-one controller attack target, revalidates that it is a different attack still in attack area and was actually played this round, then creates exactly one same-definition temporary face-up active attack copy for the controller. The copy costs no extra mana, is not itself a “played” card, does not increment play counters or emit ordinary play semantics, and expires after the current round. Fail closed atomically on malformed authoring, forged/stale selection, provenance/state drift, or unsupported copy parameters. Do not expose a generic clone API or consumer authoring.
+
+This is zero-credit capability work: formal migration remains **`152/944`**, **`792`** remaining. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.atalanta.skill.sc-atalanta-2`; singleton S is allowed only if the whole card is then mechanically zero-gap.
