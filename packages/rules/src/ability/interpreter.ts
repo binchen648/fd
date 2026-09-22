@@ -69,6 +69,13 @@ import {
   isSelectedPlayedAttackTemporaryCopyCandidate,
 } from './selected-played-attack-temporary-copy';
 import {
+  BASIC_STRENGTH_ATTACK_CONSTRAINT,
+  SAME_LOCATION_OPPONENT_FACE_UP_SERVANT_SKILL_CONSTRAINT,
+  SET_SELECTED_CARD_FACE_DOWN_EFFECT,
+  isAcceptedBasicStrengthOpponentSkillFaceDownAbility,
+  isBasicStrengthOpponentSkillFaceDownCandidate,
+} from './basic-strength-opponent-skill-face-down';
+import {
   advanceOpponentCloseToOneServerAuthority,
   clearOpponentCloseToOneServerAuthority,
   copyOpponentCloseToOneServerAuthority,
@@ -337,6 +344,23 @@ function constraint(s: GameState, ctx: EffectContext, candidate: CardInstance, c
     case 'played_this_round': return runtime(s).cardState[candidate.instanceId]?.playedRound === s.round.roundNumber;
     case 'not_card_type': return !!d && d.cardType !== c.cardType;
     case 'is_attack': return isAttack(d) && (c.face !== 'face_down' || runtime(s).cardState[candidate.instanceId]?.faceDown === true);
+    case BASIC_STRENGTH_ATTACK_CONSTRAINT: {
+      const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      return isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled') &&
+        candidate.ownerPlayerId === ctx.controllerId && candidate.controllerPlayerId === ctx.controllerId && candidate.zone === 'hand' &&
+        d?.cardType === 'basic_attack' && getEffectiveCardAttributes(s, candidate.instanceId).includes('力量') &&
+        !playFailure(s, ctx.controllerId, candidate.instanceId, false, true, true, true, false, false);
+    }
+    case SAME_LOCATION_OPPONENT_FACE_UP_SERVANT_SKILL_CONSTRAINT: {
+      const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      const controller = player(s, ctx.controllerId);
+      const targetPlayer = s.players.find((entry) => entry.id === candidate.controllerPlayerId);
+      const state = runtime(s).cardState[candidate.instanceId];
+      return isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled') &&
+        candidate.controllerPlayerId !== ctx.controllerId && candidate.ownerPlayerId === candidate.controllerPlayerId &&
+        !!targetPlayer && targetPlayer.status === 'active' && !!controller.locationId && targetPlayer.locationId === controller.locationId &&
+        candidate.zone === 'skill' && d?.cardType === 'servant_skill' && state?.faceDown === false;
+    }
     case 'or': return nodes(c.conditions).some(x => constraint(s, ctx, candidate, x));
     case 'and': return nodes(c.conditions).every(x => constraint(s, ctx, candidate, x));
     case 'not': return !constraint(s, ctx, candidate, node(c.condition));
@@ -866,7 +890,8 @@ function effectiveActivationPhase(s: GameState, sourceId: string, a: AuthoringAb
 }
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
-  if (isPlayActionStructuralCandidate(a) && !isPlayActionRouteCandidate(a)) return false;
+  if (isPlayActionStructuralCandidate(a) && !isPlayActionRouteCandidate(a) &&
+      !isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled')) return false;
   if (isPlaySourceCardWithCostResponseStructuralCandidate(a) && !isPlaySourceCardWithCostResponseRouteCandidate(a)) return false;
   if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) return false;
@@ -890,6 +915,9 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     (!isGameStartPlayerStatusAssignmentSemantic(a) ||
       !gameStartPlayerStatusAssignments(s, card(s, sourceId).controllerPlayerId, a))) return false;
   if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) return false;
+  if (isBasicStrengthOpponentSkillFaceDownCandidate(a) && !isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled')) return false;
+  if (isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled') &&
+      !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
   if (hasControllerMasterSkillDefinitionReturnCandidate(a) && !isAcceptedOpponentRoundVpGainThresholdAbility(a, 'compiled')) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (isAcceptedPreBattleDefeatAbility(a, 'compiled')) {
@@ -1677,6 +1705,27 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       break;
     }
     case 'return_card_by_definition': resolveControllerMasterSkillDefinitionReturn(s, ctx, effect); break;
+    case SET_SELECTED_CARD_FACE_DOWN_EFFECT: {
+      const accepted = isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled');
+      const selected = ctx.selections['opponent_servant_skill'] ?? [];
+      if (!accepted || effect.target !== 'opponent_servant_skill' || Object.keys(effect).some((key) => !['type', 'target'].includes(key)) ||
+          selected.length !== 1 || new Set(selected).size !== 1) {
+        reject('resolution_failed', 'Unsupported selected opponent servant-skill face-down effect');
+      }
+      const target = card(s, selected[0]!);
+      if (!constraint(s, ctx, target, { type: SAME_LOCATION_OPPONENT_FACE_UP_SERVANT_SKILL_CONSTRAINT })) {
+        reject('illegal_target', 'Selected opponent servant skill is no longer a legal face-down target');
+      }
+      const state = runtime(s).cardState[target.instanceId];
+      if (!state) reject('invalid_state', 'Selected opponent servant skill is missing runtime card state');
+      state.faceDown = true; state.active = false;
+      target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId };
+      runtime(s).events.push({
+        type: 'card_set_face_down', playerId: target.controllerPlayerId, controllerId: ctx.controllerId,
+        sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: target.instanceId,
+      });
+      break;
+    }
     case NEXT_ROUND_SITUATION_BENEFIT_SUPPRESSION_EFFECT: {
       if (!isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) {
         reject('resolution_failed', 'Suppression effect requires the exact accepted FB2-52 whole-ability envelope');
@@ -3442,6 +3491,15 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isSelectedPlayedAttackTemporaryCopyCandidate(a)) {
     reject('resolution_failed', 'Unsupported selected played-attack temporary-copy semantic shape');
   }
+  if (isBasicStrengthOpponentSkillFaceDownCandidate(a)) {
+    if (!isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled')) {
+      reject('resolution_failed', 'Unsupported basic-Strength play -> opponent servant-skill face-down semantic shape');
+    }
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    for (const effect of effects) resolveEffect(s, ctx, effect);
+    return;
+  }
   if (isBattleEndMobilePlayersRewardSemantic(a)) {
     settleBattleEndMobilePlayersReward(s, ctx);
     installOngoing(s, ctx, a);
@@ -3714,6 +3772,9 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isRulerSealBindingCandidate(a) && !isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
   if (isRulerSealUseCandidate(a) && !isRulerSealUseSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal use semantic shape');
   if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) reject('resolution_failed', 'Unsupported Outer-God-Life relational semantic shape');
+  if (isBasicStrengthOpponentSkillFaceDownCandidate(a) && !isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled')) {
+    reject('resolution_failed', 'Unsupported basic-Strength play -> opponent servant-skill face-down semantic shape');
+  }
   if (isNextRoundSituationBenefitSuppressionCandidate(a) && !isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported next-round situation-benefit suppression semantic shape');
   }
