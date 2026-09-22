@@ -5916,3 +5916,15 @@ Read: `docs/reports/2026-09-22-p3-a-r104-atalanta-s2-consumer-migration-dispatch
 Goal: migrate exactly `servant.atalanta.skill.sc-atalanta-2` as the sole new frozen identity by appending it to the existing Atalanta archive, preserving the already accepted Atalanta s3 entry unchanged, and using only the synchronized FB2-50 exact selected-played-attack temporary-copy transaction plus already accepted generic servant-skill/visibility vocabulary. No runtime changes, no second new frozen identity, no generic clone API, no identity/name/text routing, no merge/retarget.
 
 Required accounting: exact Base `147/944` -> Candidate `148/944`, exact +1 Atalanta s2, zero removals, zero duplicate frozen ids. FB2-50 itself remains zero-credit. Formal migration remains `152/944` until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A synchronizes it.
+
+## TASK P3-A-R105-ATALANTA-S2-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r105-atalanta-s2-migration-acceptance-sync`
+Base: exact accepted Candidate `ffdf7ef9f3b3b137d4349a2654935be252462bf2`
+Read: `docs/reports/2026-09-22-p3-a-r105-atalanta-s2-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh independent R `MIGRATION_ACCEPTED` for PR #426 exact Candidate `ffdf7ef9f3b3b137d4349a2654935be252462bf2`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/426#issuecomment-5779296216`. Independent Base-to-Candidate frozen recount is `147/944` to `148/944`, exact +1 `servant.atalanta.skill.sc-atalanta-2`, zero removals and zero duplicate frozen ids. Existing `servant.atalanta.skill.sc-atalanta-3` remains semantically unchanged; the fourth Candidate path is only the A-authorized compatibility removal of Astolfo S1's stale repository-wide absolute-overlap snapshot. No production runtime/product/generated/client change is present.
+
+Formal project migration advances exactly one identity to **`153/944`**, with **`791`** remaining. FB2-50 remains zero-credit. PR #426 remains OPEN, unmerged and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the next true `S_READY_NOW`; if no whole card is zero-gap, dispatch only the minimum missing B2 capability.
