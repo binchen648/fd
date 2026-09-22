@@ -261,6 +261,25 @@ describe('P3-FB2-50 selected played attack temporary copy', () => {
     expect(state).toEqual(before);
   });
 
+  it('rejects malformed persisted pending subobjects with RuleRejection semantics', () => {
+    const corruptions: Array<(pending: any) => void> = [
+      pending => { pending.context = undefined; },
+      pending => { pending.remainingEffects = undefined; },
+      pending => { pending.candidates = 'forged'; },
+      pending => { pending.interaction.constraints = undefined; },
+      pending => { pending.interaction.candidateIds = 'forged'; },
+    ];
+    for (const corrupt of corruptions) {
+      const state = setup(); addAttack(state, 'chosen');
+      expect(activate(state).ok).toBe(true);
+      corrupt(state.abilityRuntime!.pendingDecision as any);
+      const before = structuredClone(state);
+      const result = choose(state, ['chosen']);
+      expect(result.ok).toBe(false);
+      expect(state).toEqual(before);
+    }
+  });
+
   it('fails closed transactionally on corrupted persisted temporary-copy lifecycle state', () => {
     const state = setup(); addAttack(state, 'chosen');
     expect(activate(state).ok).toBe(true); expect(choose(state, ['chosen']).ok).toBe(true);

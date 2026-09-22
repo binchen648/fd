@@ -1260,6 +1260,38 @@ function pushLifecycleTransition(s: GameState, ongoing: OngoingEffect, kind: 'in
     roundId: s.round.roundNumber,
   });
 }
+function isExactSelectedPlayedAttackTemporaryCopyPersistedDecision(value: unknown): value is PendingDecision {
+  if (!isPlainRecord(value)) return false;
+  const contextValue: unknown = value.context;
+  const targetValue: unknown = value.target;
+  const remainingEffectsValue: unknown = value.remainingEffects;
+  const candidatesValue: unknown = value.candidates;
+  const interactionValue: unknown = value.interaction;
+  if (!isPlainRecord(contextValue) || !isPlainRecord(contextValue.variables) || !isPlainRecord(contextValue.selections) ||
+      !isPlainRecord(targetValue) || !Array.isArray(remainingEffectsValue) || !remainingEffectsValue.every(isPlainRecord) ||
+      !Array.isArray(candidatesValue) || !candidatesValue.every((candidate) => typeof candidate === 'string' && candidate.length > 0) ||
+      !isPlainRecord(interactionValue) || interactionValue.kind !== 'selected_played_attack_temporary_copy_v1') return false;
+  const constraintsValue: unknown = interactionValue.constraints;
+  const candidateIdsValue: unknown = interactionValue.candidateIds;
+  if (!isPlainRecord(constraintsValue) || !Array.isArray(candidateIdsValue) ||
+      !candidateIdsValue.every((candidate) => typeof candidate === 'string' && candidate.length > 0)) return false;
+  const rootKeys = Object.keys(value).sort();
+  const interactionKeys = Object.keys(interactionValue).sort();
+  const constraintKeys = Object.keys(constraintsValue).sort();
+  if (!exactPlayerArray(rootKeys, ['candidates', 'context', 'controllerId', 'id', 'interaction', 'max', 'min', 'remainingEffects', 'target']) ||
+      !exactPlayerArray(interactionKeys, ['abilityId', 'cancelPolicy', 'candidateIds', 'constraints', 'continuationRef', 'createdRevision', 'kind', 'sourceCardInstanceId', 'targetId', 'template', 'visibility']) ||
+      !exactPlayerArray(constraintKeys, ['distinct', 'kind', 'max', 'min', 'targetKind'])) return false;
+  return typeof value.id === 'string' && value.id.length > 0 &&
+    typeof value.controllerId === 'string' && value.controllerId.length > 0 &&
+    Number.isSafeInteger(value.min) && Number.isSafeInteger(value.max) &&
+    typeof contextValue.controllerId === 'string' && contextValue.controllerId.length > 0 &&
+    typeof contextValue.sourceCardId === 'string' && contextValue.sourceCardId.length > 0 &&
+    typeof contextValue.abilityId === 'string' && contextValue.abilityId.length > 0 &&
+    typeof interactionValue.sourceCardInstanceId === 'string' && interactionValue.sourceCardInstanceId.length > 0 &&
+    typeof interactionValue.abilityId === 'string' && interactionValue.abilityId.length > 0 &&
+    typeof interactionValue.continuationRef === 'string' && interactionValue.continuationRef.length > 0 &&
+    Number.isSafeInteger(interactionValue.createdRevision);
+}
 function selectedPlayedAttackTemporaryCopyCandidateIds(s: GameState, ctx: EffectContext): string[] {
   return s.cards.filter((candidate) => {
     if (candidate.instanceId === ctx.sourceCardId || candidate.ownerPlayerId !== ctx.controllerId ||
@@ -4032,12 +4064,19 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       executeAbility(s, ctx); break;
     }
     case 'choose_target': {
-      const d = r.pendingDecision;
-      if (!d || d.controllerId !== playerId || d.id !== command.decisionId) reject('illegal_decision', 'Decision is not available');
+      const decisionValue: unknown = r.pendingDecision;
+      if (!isPlainRecord(decisionValue)) reject('illegal_decision', 'Decision is not available');
+      const d = decisionValue as unknown as PendingDecision;
+      if (d.controllerId !== playerId || d.id !== command.decisionId) reject('illegal_decision', 'Decision is not available');
       const selected = command.selectedIds;
-      if (d.interaction) {
-        const meta = d.interaction;
+      const interactionValue: unknown = d.interaction;
+      if (interactionValue !== undefined) {
+        if (!isPlainRecord(interactionValue)) reject('resolution_failed', 'Corrupt pending interaction state');
+        const meta = interactionValue as unknown as NonNullable<PendingDecision['interaction']>;
         if (meta.kind === 'selected_played_attack_temporary_copy_v1') {
+          if (!isExactSelectedPlayedAttackTemporaryCopyPersistedDecision(decisionValue)) {
+            reject('resolution_failed', 'Corrupt or stale selected played-attack temporary-copy interaction state');
+          }
           const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
           const a = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
           const target = a?.targets[0];

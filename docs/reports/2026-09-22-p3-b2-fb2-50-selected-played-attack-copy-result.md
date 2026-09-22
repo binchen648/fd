@@ -67,6 +67,7 @@ The Candidate contains only:
 
 - `packages/rules/src/ability/selected-played-attack-temporary-copy.ts`
 - `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/types.ts`
 - `packages/rules/src/ability/loader.ts`
 - `packages/rules/src/index.ts`
 - `packages/rules/tests/fb2-50-selected-played-attack-copy.test.ts`
@@ -94,3 +95,11 @@ The revision closes that integrity gap without broadening the mechanic:
 - the forged persisted-effect regression is now green and mutation-free.
 
 No consumer authoring, migration credit, generic cloning API, merge, or retarget is added.
+
+## R2 revision: malformed persisted-state fail-closed
+
+Fresh independent R for exact Candidate `cee18930d4d1af0381bcd4720d69cb25ff3cdd58` returned `IMPLEMENTATION_NEEDS_REVISION` with a concrete blocker: malformed persisted FB2-50 pending-decision subobjects could be dereferenced before validation and raise native `TypeError` outside `RuleRejection`.
+
+The repair stays bounded to the existing FB2-50 interaction path. The pending-decision root and required subobjects are treated as `unknown` and validated before property/array use, including `context`, `remainingEffects`, `interaction.constraints`, `candidates`, and `interaction.candidateIds`. Malformed state now rejects through `RuleRejection`, so dispatch returns `ok:false` and leaves the authoritative state unchanged.
+
+Focused red-to-green regressions cover missing `context`, missing `remainingEffects`, non-array `candidates`, missing `interaction.constraints`, and non-array `interaction.candidateIds`. Candidate-scope evidence now also lists `packages/rules/src/ability/types.ts`, correcting the reviewer's non-blocking evidence-hygiene finding.
