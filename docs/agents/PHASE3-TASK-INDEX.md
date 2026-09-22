@@ -6041,3 +6041,16 @@ Read: `docs/reports/2026-09-23-p3-a-r111-ciel-s1b-migration-acceptance-synchroni
 Result: synchronize formal fresh independent R `MIGRATION_ACCEPTED` for PR #430 exact Candidate `7288114e075614cbcd81dcd6de0e637bc52a73df`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/430#issuecomment-5785499523`. Exact frozen accounting is `149/944` to `150/944`, exact +1 `master.ciel.skill.s1b`, zero removals and zero duplicate frozen ids; `master.ciel.skill.s3` remains exactly once. The accepted route is exactly synchronized FB2-51 + FB2-31 + FB2-30, and generated changes remain rules-only with no production runtime/compiler/content/client or manifest change.
 
 Formal project migration advances exactly one identity to **`155/944`**, with **`789`** remaining; material authoring overlap is **`150/944`**. PR #430 remains OPEN, unmerged and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the next true `S_READY_NOW`; if no whole card is zero-gap, dispatch only the minimum missing identity-free B2 capability.
+
+
+## TASK P3-FB2-53-BASIC-STRENGTH-OPPONENT-SERVANT-SKILL-FACE-DOWN
+
+Owner: Codex B2
+Status: `READY`
+Branch: `codex/b2-p3-fb2-53-basic-strength-opponent-skill-face-down`
+Base: exact A dispatch Candidate on `codex/a-p3-fb2-53-basic-strength-opponent-skill-face-down-dispatch`
+Read: `docs/reports/2026-09-23-p3-a-fb2-53-basic-strength-opponent-servant-skill-face-down-dispatch.md`
+
+Result required: implement only the exact identity-free two-stage action envelope released by A: choose one currently playable controller-hand `basic_attack` with literal Strength, play it through existing normal-cost effect-play `playBatch`, then choose exactly one owner-controlled face-up `servant_skill` in a same-location active opponent's skill zone and set that physical skill face down/inactive without moving or closing it. The three new vocabulary tokens are whole-envelope gated and may not become generic selectors/face mutation APIs. No Helena authoring, identity/text routing, product/generated/client changes, merge/retarget, or migration credit.
+
+This is zero-credit capability work: formal migration remains **`155/944`**, **`789`** remaining, material overlap **`150/944`**. After exact fresh R acceptance + A sync, freshly reconstruct `servant.helena.skill.sc-helena-1`; S is allowed only if the whole card is then mechanically zero-gap.
