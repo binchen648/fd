@@ -1660,22 +1660,32 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   r.events.push({ type: 'effect_resolved', playerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, unpreventable,
     ...(effect.type === 'look_at_deck_top' || effect.type === 'move_card' || effect.type === 'move_all_remaining' ? { visibility: p.id } : {}) });
 }
-function findPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): PendingDecision | undefined {
+interface PendingTargetRestoreSpec {
+  target: RuleNode;
+  candidates: string[];
+  min: number;
+  max: number;
+  remainingEffects: RuleNode[];
+}
+
+function findPendingTargetRestoreSpec(
+  s: GameState,
+  ctx: EffectContext,
+  a: AuthoringAbility,
+  effects: RuleNode[],
+): PendingTargetRestoreSpec | undefined {
   for (const target of a.targets.filter(t => t.type === 'choice')) {
     const targetRef = str(target.id);
     if (Object.prototype.hasOwnProperty.call(ctx.selections, targetRef)) continue;
     const count = node(target.count); const min = Number(count.min ?? 1); const max = Number(count.max ?? 1);
     const choices = candidates(s, ctx, target);
     if (choices.length < min) reject('no_legal_target', 'No legal target remains');
-    return { id: nextId(s, 'decision'), controllerId: ctx.controllerId, target, candidates: choices, min, max,
-      context: structuredClone(ctx), remainingEffects: effects };
+    return { target, candidates: choices, min, max, remainingEffects: effects };
   }
   for (const effect of effects) {
     if (effect.type === 'branch') {
       const branch = nodes(effect.branches).find(b => b.else !== undefined || condition(s, ctx, node(b.if)));
-      const pending = branch ? findPendingTarget(s, ctx, a, nodes(branch.then ?? branch.else)) : undefined;
-      if (pending) return pending;
-      return undefined;
+      return branch ? findPendingTargetRestoreSpec(s, ctx, a, nodes(branch.then ?? branch.else)) : undefined;
     }
     const targetRef = effect.type === 'move_player' ? str(effect.to) : str(effect.target);
     const target = a.targets.find(t => t.id === targetRef);
@@ -1684,10 +1694,193 @@ function findPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility
     const count = node(target.count); const min = Number(count.min ?? 1); const max = Number(count.max ?? 1);
     const choices = candidates(s, ctx, target);
     if (choices.length < min) reject('no_legal_target', 'No legal target remains');
-    return { id: nextId(s, 'decision'), controllerId: ctx.controllerId, target, candidates: choices, min, max,
-      context: structuredClone(ctx), remainingEffects: effects };
+    return { target, candidates: choices, min, max, remainingEffects: effects };
   }
   return undefined;
+}
+
+function findPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): PendingDecision | undefined {
+  const pending = findPendingTargetRestoreSpec(s, ctx, a, effects);
+  if (!pending) return undefined;
+  return {
+    id: nextId(s, 'decision'),
+    controllerId: ctx.controllerId,
+    target: pending.target,
+    candidates: pending.candidates,
+    min: pending.min,
+    max: pending.max,
+    context: structuredClone(ctx),
+    remainingEffects: pending.remainingEffects,
+  };
+}
+
+function exactRestoreValue(left: unknown, right: unknown): boolean {
+  if (Array.isArray(left) || Array.isArray(right)) {
+    return Array.isArray(left) && Array.isArray(right) && left.length === right.length &&
+      left.every((entry, index) => exactRestoreValue(entry, right[index]));
+  }
+  if (left && right && typeof left === 'object' && typeof right === 'object') {
+    const leftRecord = left as Record<string, unknown>;
+    const rightRecord = right as Record<string, unknown>;
+    const leftKeys = Object.keys(leftRecord).sort();
+    const rightKeys = Object.keys(rightRecord).sort();
+    return leftKeys.length === rightKeys.length && leftKeys.every((key, index) =>
+      key === rightKeys[index] && exactRestoreValue(leftRecord[key], rightRecord[key]));
+  }
+  return Object.is(left, right);
+}
+
+function restoredPhysicalSource(s: GameState, sourceCardId: string, controllerId?: string): CardInstance | undefined {
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceCardId);
+  if (!source || (controllerId !== undefined && source.controllerPlayerId !== controllerId)) return undefined;
+  return source;
+}
+
+function restoredAbility(s: GameState, sourceCardId: string, abilityId: string): AuthoringAbility | undefined {
+  try {
+    return abilityDefinition(s, sourceCardId, abilityId);
+  } catch {
+    return undefined;
+  }
+}
+
+function exactStringSequence(left: readonly string[], right: readonly string[]): boolean {
+  return left.length === right.length && left.every((entry, index) => entry === right[index]);
+}
+
+function exactNumberMap(left: Record<string, number>, right: Record<string, number>): boolean {
+  const leftKeys = Object.keys(left).sort(); const rightKeys = Object.keys(right).sort();
+  return leftKeys.length === rightKeys.length && leftKeys.every((key, index) =>
+    key === rightKeys[index] && left[key] === right[key]);
+}
+
+/** Restore-time semantic/provenance gate for executable deferred AbilityRuntime state. */
+export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState): boolean {
+  try {
+    const r = runtime(s);
+    const playerIds = new Set(s.players.map((candidate) => candidate.id));
+    const locationIds = new Set<string>(s.map.locations.map((candidate) => candidate.id));
+    const hasPlayers = (ids: readonly string[]) => ids.every((id) => playerIds.has(id)) && new Set(ids).size === ids.length;
+    const exactParticipantPowerMap = (ids: readonly string[], powers: Record<string, number>) =>
+      Object.keys(powers).length === ids.length && Object.keys(powers).every((id) => ids.includes(id)) &&
+      Object.values(powers).every((power) => Number.isFinite(power));
+
+    if (!(r.rulerSealBindings ?? []).every((binding) => {
+      const source = restoredPhysicalSource(s, binding.sourceCardId, binding.issuerPlayerId);
+      const ability = restoredAbility(s, binding.sourceCardId, binding.abilityId);
+      return !!source && !!ability && isRulerSealBindingSemantic(ability) && playerIds.has(binding.boundPlayerId) &&
+        binding.grantedRound <= s.round.roundNumber &&
+        (binding.spent
+          ? binding.spentRound !== undefined && binding.spentRound >= binding.grantedRound && binding.spentRound <= s.round.roundNumber
+          : binding.spentRound === undefined);
+    })) return false;
+
+    const bindingById = new Map((r.rulerSealBindings ?? []).map((binding) => [binding.id, binding] as const));
+    if (bindingById.size !== (r.rulerSealBindings ?? []).length) return false;
+    if (!(r.pendingRulerSealRewards ?? []).every((reward) => {
+      const source = restoredPhysicalSource(s, reward.sourceCardId, reward.issuerPlayerId);
+      const ability = restoredAbility(s, reward.sourceCardId, reward.abilityId);
+      const binding = bindingById.get(reward.sealId);
+      return !!source && !!ability && isRulerSealUseSemantic(ability) && reward.rewardVp === 2 &&
+        reward.round === s.round.roundNumber && !!binding && binding.spent === true && binding.spentRound === reward.round &&
+        binding.issuerPlayerId === reward.issuerPlayerId && binding.boundPlayerId === reward.boundPlayerId;
+    })) return false;
+
+    if (!(r.pendingSourceCardReturns ?? []).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId);
+      const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
+      if (!source || source.generatedBy || !ability || !isOuterGodLifeAbilitySemantic(ability)) return false;
+      const definition = r.pack.cards[source.definitionId] as ExecutableCardDefinition | undefined;
+      const recipient = s.players.find((candidate) => candidate.id === entry.recipientPlayerId);
+      return !!definition && definition.cardType === 'servant_skill' && definition.cardFace.semanticCategory === 'outer_god_life' &&
+        typeof definition.ownerId === 'string' && !!recipient && recipient.servantCardId === definition.ownerId;
+    })) return false;
+
+    if (!(r.pendingDelayedActivations ?? []).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
+      const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
+      return !!source && !!ability && isActivateCardByIdTrigger(ability) &&
+        str(ability.effects[0]?.definitionId) === entry.definitionId && r.processedEvents.includes(entry.triggerEventId);
+    })) return false;
+
+    if (!(r.pendingPresenceConcealmentDefeats ?? []).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
+      const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
+      if (!source || !ability || !isPresenceConcealmentAssassinationSemantic(ability) ||
+          !locationIds.has(entry.battlefieldId) || !hasPlayers(entry.participantIds) || !hasPlayers(entry.targetPlayerIds) ||
+          !entry.participantIds.includes(entry.controllerId) || !exactParticipantPowerMap(entry.participantIds, entry.participantPowers) ||
+          entry.triggerEventId !== `battle-power:${s.round.roundNumber}:${entry.battlefieldId}` ||
+          entry.resultId !== `battle-result:${s.round.roundNumber}:${entry.battlefieldId}` ||
+          !r.processedEvents.includes(entry.triggerEventId)) return false;
+      const opponents = entry.participantIds.filter((id) => id !== entry.controllerId);
+      if (opponents.length < 2) return false;
+      const ownPower = entry.participantPowers[entry.controllerId];
+      const highest = Math.max(...opponents.map((id) => entry.participantPowers[id]!));
+      if (!Number.isFinite(ownPower) || ownPower! >= highest ||
+          opponents.some((id) => entry.participantPowers[id] !== highest && entry.participantPowers[id]! > ownPower!)) return false;
+      const expectedTargets = opponents.filter((id) => entry.participantPowers[id] === highest);
+      return exactStringSequence(entry.targetPlayerIds, expectedTargets);
+    })) return false;
+
+    if (!(r.pendingPreBattleDefeats ?? []).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
+      const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
+      return !!source && !!ability && isAcceptedPreBattleDefeatAbility(ability, 'compiled') &&
+        locationIds.has(entry.battlefieldId) && hasPlayers(entry.targetPlayerIds);
+    })) return false;
+
+    if (!(r.pendingCombatOpponentPowerVpRewards ?? []).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
+      const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
+      const trusted = r.trustedBattleResultSnapshots?.[entry.resultId];
+      const expectedOpponents = entry.participantIds.filter((id) => id !== entry.controllerId);
+      return !!source && !!ability && isAcceptedCombatOpponentPowerVpRewardAbility(ability, 'compiled') &&
+        entry.triggerEventId === entry.resultId && r.processedEvents.includes(entry.triggerEventId) &&
+        locationIds.has(entry.battlefieldId) && hasPlayers(entry.participantIds) && entry.participantIds.includes(entry.controllerId) &&
+        exactStringSequence(entry.opponentIds, expectedOpponents) && exactParticipantPowerMap(entry.participantIds, entry.participantPowers) &&
+        !!trusted && trusted.battlePhaseResolutionId === entry.battlePhaseResolutionId && trusted.battleId === entry.battleId &&
+        trusted.resultId === entry.resultId && trusted.battlefieldId === entry.battlefieldId &&
+        exactStringSequence(trusted.battleParticipantIds, entry.participantIds) && !!trusted.battleParticipantPowers &&
+        exactNumberMap(trusted.battleParticipantPowers, entry.participantPowers);
+    })) return false;
+
+    if (!(r.pendingOpponentCloseToOne ?? []).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, entry.initiatingControllerId);
+      const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
+      return !!source && source.ownerPlayerId === entry.initiatingControllerId && !!ability &&
+        isAcceptedOpponentCloseToOneAbility(ability, 'compiled') && locationIds.has(entry.battlefieldId) &&
+        playerIds.has(entry.decisionPlayerId) && hasPlayers(entry.remainingDecisionPlayerIds);
+    })) return false;
+
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** Generic pending decisions are executable continuations; restore only if the current compiled ability would stage the exact same continuation. */
+export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
+  if (decision.interaction) return true;
+  try {
+    if (decision.controllerId !== decision.context.controllerId) return false;
+    const source = restoredPhysicalSource(s, decision.context.sourceCardId);
+    if (source) {
+      if (source.controllerPlayerId !== decision.context.controllerId) return false;
+    } else {
+      const placement = eventRulePlacementByInstance(s, decision.context.sourceCardId);
+      const eventSource = decision.context.eventSource;
+      if (!placement || !eventSource || eventSource.ruleInstanceId !== decision.context.sourceCardId ||
+          eventSource.definitionId !== placement.eventCardId || eventSource.locationId !== placement.locationId) return false;
+    }
+    const ability = restoredAbility(s, decision.context.sourceCardId, decision.context.abilityId);
+    if (!ability) return false;
+    const expected = findPendingTargetRestoreSpec(s, structuredClone(decision.context), ability, [...ability.effects, ...ability.creates]);
+    return !!expected && decision.min === expected.min && decision.max === expected.max &&
+      exactRestoreValue(decision.target, expected.target) && exactRestoreValue(decision.candidates, expected.candidates) &&
+      exactRestoreValue(decision.remainingEffects, expected.remainingEffects);
+  } catch {
+    return false;
+  }
 }
 
 function createSameBattlefieldPrivateHandReturnInteraction(s: GameState, ctx: EffectContext, a: AuthoringAbility): PendingDecision {

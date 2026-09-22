@@ -5,6 +5,7 @@ import {
   applyBattleScoring,
   createMatchSession,
   processAbilityEvent,
+  restoreMatchSession,
   resolveBattlefield,
 } from '../../src/index';
 
@@ -141,6 +142,10 @@ describe('P3-B17 Olga first-loss ACTIVATE TO14 recertification', () => {
     expect(activatedCount(session)).toBe(0);
 
     bridge.queuePostScoringBattleEvents(resolvedBattles, freshScoringLogs);
+
+    const queuedRestored = restoreMatchSession(session.serializeSession());
+    expect(queuedRestored.state.abilityRuntime!.pendingPostBattleEvents).toEqual(session.state.abilityRuntime!.pendingPostBattleEvents);
+    expect(queuedRestored.state.abilityRuntime!.pendingBattleTerminalEvent).toEqual(session.state.abilityRuntime!.pendingBattleTerminalEvent);
 
     const firstLoss = session.state.abilityRuntime!.pendingPostBattleEvents!.find((event) =>
       event.type === 'after_controller_first_loses_battle' && event.playerId === OLGA_PLAYER_ID);

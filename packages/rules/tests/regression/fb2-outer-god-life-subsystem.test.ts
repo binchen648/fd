@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import * as rules from '../../src/index';
+import { MatchSession } from '../../src/match-session';
 import type { GameState } from '../../src/schema/game';
 import { createSeededGameState } from '../../src/tools/seeded-state';
+import { restoreTrustedAuthoringFixtureSession } from '../trusted-authoring-fixture';
 
 const CARD = 'fixture.outer-god-life';
 const ABILITY = 'outer-life-use';
@@ -75,6 +77,16 @@ describe('P3-FB2-29 Outer-God-Life structural family', () => {
     const same = setup('p1', 'p1');
     expect(activate(same.state).ok).toBe(true);
     expect(same.state.abilityRuntime!.roundTotalPowerAdjustments.byPlayer).toEqual({ p1: 6 });
+  });
+
+  it('round-trips a legitimate pending source-card return through the trusted fixture restore boundary', () => {
+    const { state } = setup();
+    expect(activate(state).ok).toBe(true);
+    expect(state.abilityRuntime!.pendingSourceCardReturns).toHaveLength(1);
+    const session = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'] });
+    session.state = structuredClone(state);
+    const restored = restoreTrustedAuthoringFixtureSession(session.serializeSession());
+    expect(restored.state.abilityRuntime!.pendingSourceCardReturns).toEqual(state.abilityRuntime!.pendingSourceCardReturns);
   });
 
   it('stacks independent source uses and expires the ledger by round identity', () => {

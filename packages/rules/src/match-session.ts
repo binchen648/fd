@@ -2,6 +2,8 @@ import {
   advanceAbilityPhase,
   dispatchAbilityCommand,
   initializeAbilityRuntime,
+  isCanonicalGenericPendingDecisionForRestore,
+  isDeferredAbilityRuntimeProvenanceValidForRestore,
   processAbilityEvent,
   projectAbilityState,
 } from './ability/interpreter';
@@ -993,6 +995,10 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   if (value.scoringBreakdown !== undefined && !isRestoreScoringBreakdown(value.scoringBreakdown, playerIds)) return false;
   if (value.ruleOverrides !== undefined && !isRestoreRuleOverrides(value.ruleOverrides, playerIds, locationIds)) return false;
   if (!value.effectStack.every((entry) => isRestoreEffectStackItem(entry, playerIds))) return false;
+  const restoredState = value as unknown as GameState;
+  if (!isDeferredAbilityRuntimeProvenanceValidForRestore(restoredState)) return false;
+  if (restoredState.abilityRuntime?.pendingDecision &&
+      !isCanonicalGenericPendingDecisionForRestore(restoredState, restoredState.abilityRuntime.pendingDecision)) return false;
   return true;
 }
 
@@ -1007,6 +1013,140 @@ function isRestoreLogEntry(value: unknown): value is MatchSessionLogEntry {
 function isRestoreRejection(value: unknown): value is NonNullable<DispatchResult['rejection']> {
   return isRestoreRecord(value) && typeof value.code === 'string' && typeof value.message === 'string' &&
     (value.allowedOperations === undefined || Array.isArray(value.allowedOperations));
+}
+
+function exactRestoreUnknown(left: unknown, right: unknown): boolean {
+  if (Array.isArray(left) || Array.isArray(right)) {
+    return Array.isArray(left) && Array.isArray(right) && left.length === right.length &&
+      left.every((entry, index) => exactRestoreUnknown(entry, right[index]));
+  }
+  if (left && right && typeof left === 'object' && typeof right === 'object') {
+    const leftRecord = left as Record<string, unknown>;
+    const rightRecord = right as Record<string, unknown>;
+    const leftKeys = Object.keys(leftRecord).sort();
+    const rightKeys = Object.keys(rightRecord).sort();
+    return leftKeys.length === rightKeys.length && leftKeys.every((key, index) =>
+      key === rightKeys[index] && exactRestoreUnknown(leftRecord[key], rightRecord[key]));
+  }
+  return Object.is(left, right);
+}
+
+function restoreBattleLoserIds(battle: GameState['battleResults'][number]): string[] {
+  const suppressed = new Set(battle.lossEffectSuppressedPlayerIds ?? []);
+  if ((battle.participantBreakdowns?.length ?? 0) > 0) {
+    return battle.participantBreakdowns
+      .map((participant) => participant.playerId)
+      .filter((playerId) => !battle.winnerPlayerIds.includes(playerId) && !suppressed.has(playerId));
+  }
+  return battle.militaryAdjustments
+    .filter((adjustment) => adjustment.delta < 0 && !suppressed.has(adjustment.playerId))
+    .map((adjustment) => adjustment.playerId);
+}
+
+function stableRestoreUnique(values: readonly string[]): string[] {
+  return [...new Set(values)];
+}
+
+function isRestoreDeferredBattleProvenance(
+  state: GameState,
+  battleHistory: GameState['battleResults'],
+  logs: MatchSessionLogEntry[],
+): boolean {
+  const runtime = state.abilityRuntime;
+  if (!runtime) return true;
+  const pending = runtime.pendingPostBattleEvents ?? [];
+  const terminal = runtime.pendingBattleTerminalEvent;
+  if (!terminal) return pending.length === 0;
+  if (terminal.type !== 'after_battle_ended' || typeof terminal.battlePhaseResolutionId !== 'string' ||
+      !Array.isArray(terminal.battleIds) || !Array.isArray(terminal.resultIds) || !Array.isArray(terminal.scoringReceiptIds) ||
+      !Array.isArray(terminal.battleParticipantIds) || !Array.isArray(terminal.battleOutcomes) ||
+      runtime.processedEvents.includes(terminal.id)) return false;
+
+  const phaseId = `battle-phase:${state.round.roundNumber}`;
+  if (terminal.battlePhaseResolutionId !== phaseId || terminal.id !== `${phaseId}:after_battle_ended` ||
+      terminal.battleIds.length !== terminal.resultIds.length || terminal.battleIds.length !== terminal.scoringReceiptIds.length ||
+      terminal.battleIds.length !== terminal.battleOutcomes.length) return false;
+
+  const canonicalQueue: AbilityEvent[] = [];
+  const terminalParticipantIds: string[] = [];
+  let firstOrdinal: number | undefined;
+  let priorOrdinal = 0;
+  const battlefieldIds: string[] = [];
+  for (let index = 0; index < terminal.battleIds.length; index += 1) {
+    const battleId = terminal.battleIds[index]!;
+    const resultId = terminal.resultIds[index]!;
+    const receiptId = terminal.scoringReceiptIds[index]!;
+    const outcome = terminal.battleOutcomes[index]!;
+    const battlefieldId = outcome.battlefieldId;
+    if (typeof battlefieldId !== 'string') return false;
+    const prefix = `${phaseId}:battle:${battlefieldId}:`;
+    if (!battleId.startsWith(prefix)) return false;
+    const ordinalText = battleId.slice(prefix.length);
+    if (!/^[1-9]\d*$/.test(ordinalText)) return false;
+    const ordinal = Number(ordinalText);
+    if (!Number.isSafeInteger(ordinal) || ordinal > battleHistory.length || (priorOrdinal !== 0 && ordinal !== priorOrdinal + 1)) return false;
+    firstOrdinal ??= ordinal;
+    priorOrdinal = ordinal;
+    const battle = battleHistory[ordinal - 1];
+    if (!battle || battle.battlefieldId !== battlefieldId || resultId !== `${battleId}:result` ||
+        receiptId !== `${phaseId}:score:${battlefieldId}`) return false;
+    battlefieldIds.push(battlefieldId);
+
+    const loserIds = restoreBattleLoserIds(battle);
+    const participants = stableRestoreUnique([...battle.winnerPlayerIds, ...loserIds]);
+    const participantBreakdownIds = battle.participantBreakdowns?.map((participant) => participant.playerId) ?? [];
+    const terminalParticipants = participantBreakdownIds.length ? participantBreakdownIds : participants;
+    terminalParticipantIds.push(...terminalParticipants);
+    const expectedOutcome = {
+      battlefieldId,
+      participantPlayerIds: stableRestoreUnique(terminalParticipants),
+      winnerPlayerIds: stableRestoreUnique(battle.winnerPlayerIds),
+    };
+    if (!exactRestoreUnknown(outcome, expectedOutcome)) return false;
+
+    const resultEvent: AbilityEvent = {
+      id: resultId,
+      type: 'after_battle_result_determined',
+      battlePhaseResolutionId: phaseId,
+      battleId,
+      resultId,
+      battleParticipantIds: participants,
+      battleParticipantPowers: Object.fromEntries((battle.participantBreakdowns ?? [])
+        .filter((participant) => participants.includes(participant.playerId))
+        .map((participant) => [participant.playerId, participant.effectivePower])),
+      battlefieldId,
+      battleResult: { winners: [...battle.winnerPlayerIds], loserIds },
+    };
+    canonicalQueue.push(resultEvent);
+    for (const playerId of loserIds) {
+      const priorLosses = battleHistory.slice(0, ordinal - 1)
+        .filter((priorBattle) => restoreBattleLoserIds(priorBattle).includes(playerId)).length;
+      if (priorLosses !== 0) continue;
+      canonicalQueue.push({
+        id: `${resultId}:first-loss:${playerId}`,
+        type: 'after_controller_first_loses_battle',
+        battlePhaseResolutionId: phaseId,
+        battleId,
+        resultId,
+        battleParticipantIds: participants,
+        playerId,
+        battlefieldId,
+        lossOrdinal: 1,
+      });
+    }
+  }
+
+  if (terminal.battleIds.length > 0) {
+    if (priorOrdinal !== battleHistory.length || firstOrdinal === undefined) return false;
+    const barrier = [...logs].reverse().find((entry) =>
+      entry.type === 'battle_post_scoring_barrier_open' && entry.round === state.round.roundNumber && entry.message === phaseId);
+    if (!barrier || !isRestoreRecord(barrier.payload) || barrier.payload.battlePhaseResolutionId !== phaseId ||
+        !exactRestoreUnknown(barrier.payload.resultIds, terminal.resultIds) ||
+        !exactRestoreUnknown(barrier.payload.scoredBattlefieldIds, battlefieldIds)) return false;
+  }
+  if (!exactRestoreUnknown(terminal.battleParticipantIds, stableRestoreUnique(terminalParticipantIds))) return false;
+  const remainingCanonical = canonicalQueue.filter((event) => !runtime.processedEvents.includes(event.id));
+  return exactRestoreUnknown(pending, remainingCanonical);
 }
 
 function isRestoreReplayEntry(value: unknown): value is MatchClientState['replay'][number] {
@@ -1024,6 +1164,11 @@ function isRestoreReplaySnapshot(value: unknown, packKind: MatchSessionRestorePa
       !Number.isSafeInteger(value.consumedDirectiveCount) || (value.consumedDirectiveCount as number) < 0) return false;
   if (value.stopReason !== undefined && (typeof value.stopReason !== 'string' || !validPauseReasons.has(value.stopReason))) return false;
   if (value.rejection !== undefined && !isRestoreRejection(value.rejection)) return false;
+  if (!isRestoreDeferredBattleProvenance(
+    value.state as GameState,
+    value.battleHistory as GameState['battleResults'],
+    value.logs as MatchSessionLogEntry[],
+  )) return false;
   return true;
 }
 
@@ -2522,7 +2667,8 @@ export function restoreMatchSession(
       !snapshot.humanPlayerIds.every((playerId) => snapshot.state.players.some((player) => player.id === playerId)) ||
       !Number.isSafeInteger(snapshot.maxActionsPerPlayer) || snapshot.maxActionsPerPlayer < 1 ||
       (snapshot.stopReason !== undefined && (typeof snapshot.stopReason !== 'string' || !validPauseReasons.has(snapshot.stopReason))) ||
-      (snapshot.rejection !== undefined && !isRestoreRejection(snapshot.rejection))) {
+      (snapshot.rejection !== undefined && !isRestoreRejection(snapshot.rejection)) ||
+      !isRestoreDeferredBattleProvenance(snapshot.state, snapshot.battleHistory, snapshot.logs)) {
     throw new Error('Invalid MatchSession snapshot container');
   }
   const persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
