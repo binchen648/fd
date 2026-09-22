@@ -9,6 +9,7 @@ const SOURCE_ID = 'fb2-50-source-p1';
 const ABILITY_ID = 'test.fb2-50.selected-copy';
 const ATTACK_DEF = 'test.fb2-50.attack';
 const OTHER_ATTACK_DEF = 'test.fb2-50.other-attack';
+const MASTER_ATTACK_DEF = 'test.fb2-50.master-attack';
 const NON_ATTACK_DEF = 'test.fb2-50.non-attack';
 
 function ability(): any {
@@ -59,6 +60,7 @@ function setup(): GameState {
   expect(loaded.report).toEqual([]);
   loaded.cards[ATTACK_DEF] = compiledCard(ATTACK_DEF);
   loaded.cards[OTHER_ATTACK_DEF] = compiledCard(OTHER_ATTACK_DEF);
+  loaded.cards[MASTER_ATTACK_DEF] = compiledCard(MASTER_ATTACK_DEF, 'master_deck_card');
   loaded.cards[NON_ATTACK_DEF] = compiledCard(NON_ATTACK_DEF, 'master_skill');
   const state = createSeededGameState({ activeSeats: [1, 2] });
   state.cards = [{
@@ -139,13 +141,14 @@ describe('P3-FB2-50 selected played attack temporary copy', () => {
   it('offers only current-round controller attacks other than the source', () => {
     const state = setup();
     addAttack(state, 'eligible');
+    addAttack(state, 'master-attack', { definitionId: MASTER_ATTACK_DEF });
     addAttack(state, 'previous', { playedRound: state.round.roundNumber - 1 });
     addAttack(state, 'hand', { zone: 'hand' });
     addAttack(state, 'opponent-owned', { owner: 'p2', controller: 'p2' });
     addAttack(state, 'foreign-controlled', { owner: 'p1', controller: 'p2' });
     addAttack(state, 'non-attack', { definitionId: NON_ATTACK_DEF });
     expect(activate(state).ok).toBe(true);
-    expect(state.abilityRuntime!.pendingDecision?.candidates).toEqual(['eligible']);
+    expect(state.abilityRuntime!.pendingDecision?.candidates).toEqual(['eligible', 'master-attack']);
     expect(state.abilityRuntime!.pendingDecision?.min).toBe(1);
     expect(state.abilityRuntime!.pendingDecision?.max).toBe(1);
   });
@@ -246,6 +249,16 @@ describe('P3-FB2-50 selected played attack temporary copy', () => {
     const settled = structuredClone(restored);
     expect(rules.dispatchAbilityCommand(restored, 'p1', { type: 'choose_target', decisionId, selectedIds: ['chosen'] }).ok).toBe(false);
     expect(restored).toEqual(settled);
+  });
+
+  it('rejects forged persisted pending payloads before executing them', () => {
+    const state = setup(); addAttack(state, 'chosen');
+    expect(activate(state).ok).toBe(true);
+    const pending = state.abilityRuntime!.pendingDecision!;
+    pending.remainingEffects = [{ type: 'adjust_victory_points', player: 'controller', amount: 99 }];
+    const before = structuredClone(state);
+    expect(choose(state, ['chosen']).ok).toBe(false);
+    expect(state).toEqual(before);
   });
 
   it('fails closed transactionally on corrupted persisted temporary-copy lifecycle state', () => {

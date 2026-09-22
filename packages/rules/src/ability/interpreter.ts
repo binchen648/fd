@@ -1260,6 +1260,33 @@ function pushLifecycleTransition(s: GameState, ongoing: OngoingEffect, kind: 'in
     roundId: s.round.roundNumber,
   });
 }
+function selectedPlayedAttackTemporaryCopyCandidateIds(s: GameState, ctx: EffectContext): string[] {
+  return s.cards.filter((candidate) => {
+    if (candidate.instanceId === ctx.sourceCardId || candidate.ownerPlayerId !== ctx.controllerId ||
+        candidate.controllerPlayerId !== ctx.controllerId || candidate.zone !== 'attack_area') return false;
+    const definition = runtime(s).pack.cards[candidate.definitionId];
+    const state = runtime(s).cardState[candidate.instanceId];
+    return classifyCardPlay(definition).playKind === 'attack' && state?.playedRound === s.round.roundNumber;
+  }).map((candidate) => candidate.instanceId);
+}
+function createSelectedPlayedAttackTemporaryCopyDecision(s: GameState, ctx: EffectContext, a: AuthoringAbility): PendingDecision {
+  if (!isAcceptedSelectedPlayedAttackTemporaryCopyAbility(a, 'compiled')) {
+    reject('resolution_failed', 'Unsupported selected played-attack temporary-copy semantic shape');
+  }
+  const candidates = selectedPlayedAttackTemporaryCopyCandidateIds(s, ctx);
+  if (!candidates.length) reject('no_legal_target', 'No legal target remains');
+  const id = nextId(s, 'interaction');
+  return {
+    id, controllerId: ctx.controllerId, target: structuredClone(a.targets[0]!), candidates: [...candidates], min: 1, max: 1,
+    context: structuredClone(ctx), remainingEffects: structuredClone(a.effects),
+    interaction: {
+      kind: 'selected_played_attack_temporary_copy_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`, targetId: 'selected_attack', candidateIds: [...candidates],
+      constraints: { kind: 'target', targetKind: 'card', min: 1, max: 1, distinct: true },
+    },
+  };
+}
 function resolveSelectedPlayedAttackTemporaryCopy(s: GameState, ctx: EffectContext, effect: RuleNode): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (!isAcceptedSelectedPlayedAttackTemporaryCopyAbility(a, 'compiled') ||
@@ -1278,7 +1305,7 @@ function resolveSelectedPlayedAttackTemporaryCopy(s: GameState, ctx: EffectConte
   const selectedState = selected ? runtime(s).cardState[selected.instanceId] : undefined;
   if (!selected || !selectedDefinition || selected.instanceId === ctx.sourceCardId ||
       selected.ownerPlayerId !== ctx.controllerId || selected.controllerPlayerId !== ctx.controllerId ||
-      selected.zone !== 'attack_area' || !isAttack(selectedDefinition) ||
+      selected.zone !== 'attack_area' || classifyCardPlay(selectedDefinition).playKind !== 'attack' ||
       selectedState?.playedRound !== s.round.roundNumber) {
     reject('invalid_target', 'Selected attack copy target is stale or no longer eligible');
   }
@@ -3311,10 +3338,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   }
   if (isOpponentCloseToOneCandidate(a)) reject('resolution_failed', 'Unsupported opponent close-to-one interaction semantic shape');
   if (isAcceptedSelectedPlayedAttackTemporaryCopyAbility(a, 'compiled')) {
-    const pending = findPendingTarget(s, ctx, a, effects);
-    if (pending) { runtime(s).pendingDecision = pending; return; }
-    resolveSelectedPlayedAttackTemporaryCopy(s, ctx, a.effects[0]!);
-    cleanupOngoing(s);
+    runtime(s).pendingDecision = createSelectedPlayedAttackTemporaryCopyDecision(s, ctx, a);
     return;
   }
   if (isSelectedPlayedAttackTemporaryCopyCandidate(a)) {
@@ -4013,6 +4037,37 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
+        if (meta.kind === 'selected_played_attack_temporary_copy_v1') {
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const a = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+          const target = a?.targets[0];
+          const effect = a?.effects[0];
+          const currentAllowed = a ? selectedPlayedAttackTemporaryCopyCandidateIds(s, d.context) : [];
+          const contextKeys = Object.keys(d.context).sort();
+          const variables = d.context.variables; const selections = d.context.selections;
+          const exactContext = exactPlayerArray(contextKeys, ['abilityId', 'controllerId', 'selections', 'sourceCardId', 'variables']) &&
+            variables && typeof variables === 'object' && !Array.isArray(variables) && Object.keys(variables).length === 0 &&
+            selections && typeof selections === 'object' && !Array.isArray(selections) && Object.keys(selections).length === 0;
+          const exactTarget = !!target && JSON.stringify(d.target) === JSON.stringify(target);
+          const exactEffects = !!effect && d.remainingEffects.length === 1 && JSON.stringify(d.remainingEffects[0]) === JSON.stringify(effect);
+          if (!a || !isAcceptedSelectedPlayedAttackTemporaryCopyAbility(a, 'compiled') || !source ||
+              source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId || d.controllerId !== playerId ||
+              d.context.controllerId !== playerId || d.context.sourceCardId !== meta.sourceCardInstanceId || d.context.abilityId !== meta.abilityId ||
+              !exactContext || !exactTarget || !exactEffects || meta.template !== 'target' || meta.visibility !== 'owner_only' ||
+              meta.cancelPolicy !== 'forbidden' || meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
+              meta.targetId !== 'selected_attack' || meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' ||
+              meta.constraints.min !== 1 || meta.constraints.max !== 1 || meta.constraints.distinct !== true || d.min !== 1 || d.max !== 1 ||
+              !exactPlayerArray(d.candidates, meta.candidateIds) || new Set(meta.candidateIds).size !== meta.candidateIds.length ||
+              !Array.isArray(selected) || selected.length !== 1 || new Set(selected).size !== 1 ||
+              !meta.candidateIds.includes(selected[0]!) || !currentAllowed.includes(selected[0]!)) {
+            reject('resolution_failed', 'Corrupt or stale selected played-attack temporary-copy interaction state');
+          }
+          const authoritativeContext = context(s, meta.sourceCardInstanceId, meta.abilityId);
+          authoritativeContext.selections[meta.targetId] = [...selected];
+          delete r.pendingDecision;
+          resolveSelectedPlayedAttackTemporaryCopy(s, authoritativeContext, effect);
+          break;
+        }
         if (meta.kind === 'opponent_close_non_residual_to_one_v1') {
           if (!hasExactOpponentCloseToOneDecisionRootKeys(d) || !hasExactOpponentCloseToOneInteractionRootKeys(meta)) {
             reject('resolution_failed', 'Corrupt or stale opponent close-to-one interaction state');

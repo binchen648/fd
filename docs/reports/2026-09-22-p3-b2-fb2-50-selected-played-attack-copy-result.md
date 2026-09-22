@@ -10,73 +10,60 @@ Date: 2026-09-22
 - Exact A dispatch Base: `c6c5470ef944c3c599cc66748a21e7588f2cde11`
 - A dispatch branch: `codex/a-p3-fb2-50-selected-played-attack-copy-dispatch`
 - B2 branch: `codex/b2-p3-fb2-50-selected-played-attack-copy`
-- A dispatch report: `docs/reports/2026-09-22-p3-a-fb2-50-selected-played-attack-copy-dispatch.md`
 - Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 - Formal migration remains **`152/944`**, with **`792`** remaining. FB2-50 earns zero migration credit.
 
 ## Implemented bounded semantic
 
-FB2-50 adds one identity-free whole-ability envelope and one dedicated compound effect token:
+FB2-50 adds one identity-free whole-ability envelope for the exact Atalanta-S2-shaped temporary attack-copy transaction:
 
-`create_selected_played_attack_temporary_copy`
+1. action-phase controller action-window activation;
+2. exact source-active plus positive controller deployment-bonus conditions;
+3. exactly one controller-owned attack-area target, different from the source and played this round;
+4. settlement revalidates exact target provenance, attack classification, active/face-up state, current-round play state, source state and deployment bonus before mutation;
+5. creates exactly one same-definition public active face-up temporary attack copy;
+6. the copy costs no mana, does not route through ordinary play, does not increment play counters and emits no ordinary card-play semantics;
+7. the temporary copy is explicitly non-played (`playedRound: 0`) and therefore cannot recursively qualify as another copy source;
+8. lifecycle is exact `this_round` and removes the generated copy from game on the next round even if the copy was already closed;
+9. malformed authoring, forged/stale selections, provenance drift and unsupported payload fields fail closed without committing partial mutation;
+10. no generic clone API and no consumer authoring are added.
 
-The accepted runtime path is bounded to the dispatched structure:
+## Dedicated gateway
 
-1. automatic Action-phase phase action in `controller_action_window`;
-2. exact source-active condition plus exact `controller.deployment_bonus > 0` server metric condition;
-3. exactly one controller-owned/controller-controlled `attack_area` target;
-4. exact target constraints `is_attack`, `played_this_round`, `not_source_card`;
-5. exact effect payload `{ type: create_selected_played_attack_temporary_copy, target: selected_attack }`;
-6. settlement revalidates source conditions plus selected owner/controller/zone/attack/current-round provenance before mutation;
-7. creates exactly one same-definition controller-owned/controller-controlled public attack-area card;
-8. generated copy is active, face-up, and has `playedRound: 0`, so it is explicitly not a normal card play;
-9. no mana is charged, no ordinary play counter is incremented, and no `on_card_played` event is emitted;
-10. a dedicated round lifecycle removes the temporary copy from play when the next round begins, including if it was already closed before expiry.
+`packages/rules/src/ability/selected-played-attack-temporary-copy.ts` owns the exact whole-ability classifier and reserved compound effect token. `loader.ts` admits the token only through that exact envelope and rejects near-miss authoring at `selectedPlayedAttackTemporaryCopy.gateway`.
 
-The implementation does not add a generic clone API, arbitrary copy count/destination/face/activity parameters, consumer identity routing, or consumer authoring.
+Runtime settlement stays inside the existing ability interpreter and uses the already-authenticated pending target selection. No card id, servant id, localized name or consumer identity routing exists in production runtime.
 
-## Fail-closed boundary
+## Focused regression
 
-`packages/rules/src/ability/selected-played-attack-temporary-copy.ts` owns exact structural admission. The loader reserves only the dedicated compound token and routes malformed near-misses to `selectedPlayedAttackTemporaryCopy.gateway` as unsupported.
+`packages/rules/tests/fb2-50-selected-played-attack-copy.test.ts` covers:
 
-The runtime rejects before mutation when the selected target is stale or forged, including wrong owner, wrong controller, wrong zone, non-attack definition, source selection, or non-current-round `playedRound`. Source-active and deployment-bonus conditions are also re-evaluated at settlement through the authoritative server state.
+- exact raw and compiled admission plus malformed near-miss rejection;
+- candidate filtering to current-round controller attacks only;
+- exactly one free same-definition active face-up temporary copy;
+- no ordinary play counters or play events;
+- next-round expiry/removal including a copy already closed before cleanup;
+- mutation-free rejection on outsider/stale/provenance drift;
+- source/deployment-condition settlement revalidation;
+- structured-clone persistence and exactly-once settlement;
+- generated copy cannot recursively qualify because it is not a played card.
 
-The temporary lifecycle stores exact copied-definition provenance and rejects corrupt lifecycle/card state before round-transition mutation. Existing generic authenticated `PendingDecision` dispatch, structured-clone persistence and replay rejection remain the transport boundary; FB2-50 does not add a new client command or public cloning surface.
+## Validation
 
-## Focused evidence
+Final validation on the exact working tree before commit:
 
-`packages/rules/tests/fb2-50-selected-played-attack-copy.test.ts` covers 8 focused cases:
-
-- exact raw/compiled admission and malformed-shape rejection;
-- exact target eligibility;
-- same-definition copy fidelity;
-- free active face-up attack placement;
-- no mana charge, no play-counter change, and no ordinary play event;
-- round-expiry cleanup even after early close;
-- stale/forged target and source/deployment drift rejection with transactional state preservation;
-- structured-clone persistence, one-shot settlement/replay rejection, and corrupt persisted lifecycle fail-closed behavior.
-
-Affected focused regression run: **7 files / 102 tests PASS**.
-
-## Full validation
-
+- `git diff --check` — PASS.
 - `npm.cmd run typecheck` — PASS.
-- focused FB2-50 + FB2-49 + source-state + interaction projection + room + complex-skill regressions — PASS, **7 files / 102 tests**.
+- focused compatibility suite — PASS, **6 files / 99 tests**.
 - official `npm.cmd run test:ci -- --maxWorkers=2` — PASS, **179 files / 1329 tests**.
 - `npm.cmd run content:validate` — PASS, **7 masters / 7 servants / 20 events / 0 blocking issues**.
-- `npm.cmd run verify:generated-content` — PASS with unchanged hashes:
-  - content library `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`;
-  - fixture `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`;
-  - evidence report `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`.
-- `npm.cmd run build --workspace @fd/client` — PASS; only the existing Vite browser-externalization/chunk-size warnings were emitted.
-- `npm.cmd run phase3:coverage` — PASS: **128 archives / 170 cards / 282 abilities / 0 blocking issues**, `newRuntimeSemanticRouted=22`, `dualRuntime=0`.
-- generated `artifacts/phase3-skill-coverage.json` restored byte-for-byte to exact Base after validation.
-- production Candidate identity audit — PASS: no Atalanta/card/name/text literal routing in changed production files.
-- `git diff --check` — PASS.
+- `npm.cmd run verify:generated-content` — PASS with unchanged deterministic hashes.
+- `npm.cmd run build --workspace @fd/client` — PASS; only pre-existing Vite browser-externalization/chunk-size warnings are emitted.
+- fixed toolchain verification — `FD_TOOLCHAIN_OK`.
 
 ## Candidate scope
 
-The intended Candidate contains exactly these six paths:
+The Candidate contains only:
 
 - `packages/rules/src/ability/selected-played-attack-temporary-copy.ts`
 - `packages/rules/src/ability/interpreter.ts`
@@ -85,10 +72,25 @@ The intended Candidate contains exactly these six paths:
 - `packages/rules/tests/fb2-50-selected-played-attack-copy.test.ts`
 - this result report
 
-There is no `data/authoring/**`, consumer migration, generated product, client production, KPI definition, full-roster count, Task Index, or Reference change.
+There is no `data/authoring/**`, consumer identity, generated product delta, client production change, KPI redefinition, migration credit change, merge or retarget.
 
-## Accounting / next gate
+## Next gate
 
-FB2-50 is zero-credit capability infrastructure. Formal project migration remains **`152/944`**, with **`792`** remaining.
+This is only a B2 implementation Candidate. Fresh independent R must review the exact Base/Candidate pair. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.atalanta.skill.sc-atalanta-2`; singleton S is allowed only if the whole card is mechanically zero-gap.
 
-This is only a B2 implementation Candidate. Fresh independent R must review the exact Base/Candidate pair before capability acceptance synchronization. After exact fresh R acceptance and A synchronization, the coordinator must freshly reconstruct complete `servant.atalanta.skill.sc-atalanta-2`; singleton S is allowed only if that whole-card probe is mechanically zero-gap.
+## R1 revision: pending-decision integrity closure
+
+The first independent-review handoff for PR #425 returned `IMPLEMENTATION_NEEDS_REVISION` for exact remote Candidate `71cf84b67063a2a5a28683a1d29b7078c110f09a`. The linked GitHub evidence comment currently contains only the independent-review marker, so this revision does not invent or attribute unavailable prose findings.
+
+Mechanical re-verification against the dispatch contract's explicit stale/forged-decision requirement produced a concrete red regression: after the exact ability opened its generic pending target decision, replacing persisted `pendingDecision.remainingEffects` with an arbitrary `adjust_victory_points` payload was accepted and executed. The new regression failed before the fix with `choose(...).ok === true`.
+
+The revision closes that integrity gap without broadening the mechanic:
+
+- FB2-50 now stamps its existing `PendingDecision` with dedicated identity-free provenance metadata;
+- settlement verifies source/controller/ability/target/effect/continuation/revision/candidate metadata before mutation;
+- settlement reconstructs the authoritative context/effect from the compiled ability instead of executing mutable persisted `remainingEffects`;
+- current target eligibility is re-derived server-side at settlement;
+- exact attack eligibility uses the stable card-play classification for this bounded transaction, including valid `master_deck_card` attacks, instead of the narrower legacy helper;
+- the forged persisted-effect regression is now green and mutation-free.
+
+No consumer authoring, migration credit, generic cloning API, merge, or retarget is added.
