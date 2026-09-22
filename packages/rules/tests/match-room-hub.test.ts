@@ -49,4 +49,65 @@ describe('MatchRoomHub local multiplayer transport layer', () => {
     expect(hub.version(roomId)).toBe(beforeVersion);
   });
 
+  it('rejects referentially invalid restored board state without replacing the room', () => {
+    const hub = createMatchRoomHub();
+    const roomId = hub.createRoom({ roomId: 'restore-reference-room', seed: 20260905, hostClientId: 'host-a' }).roomId;
+    hub.joinRoom(roomId, { clientId: 'alice', displayName: 'Alice' });
+    hub.joinRoom(roomId, { clientId: 'bob', displayName: 'Bob' });
+    hub.selectSeat(roomId, 'alice', 1);
+    hub.selectSeat(roomId, 'bob', 2);
+    hub.startMatch(roomId, 'host-a');
+
+    const beforeRoom = hub.getRoom(roomId);
+    const beforeSnapshot = structuredClone(beforeRoom.serializeRoom());
+    const beforeVersion = hub.version(roomId);
+    const corruptions: Array<(snapshot: any) => void> = [
+      snapshot => { snapshot.session.state.cards[0].definitionId = 'missing-definition'; },
+      snapshot => { snapshot.session.state.cards[0].controllerPlayerId = 'ghost-player'; },
+      snapshot => { snapshot.session.state.players[0].locationId = 'missing-location'; },
+    ];
+    for (const corrupt of corruptions) {
+      const malformed: any = structuredClone(beforeSnapshot);
+      corrupt(malformed);
+      expect(() => hub.restoreRoom(roomId, malformed)).toThrow('Invalid MatchSession state container');
+      expect(hub.getRoom(roomId)).toBe(beforeRoom);
+      expect(hub.getRoom(roomId).serializeRoom()).toEqual(beforeSnapshot);
+      expect(hub.version(roomId)).toBe(beforeVersion);
+    }
+  });
+
+  it('keeps bulk Hub restore atomic for malformed session logs and event placements', () => {
+    const hub = createMatchRoomHub();
+    const roomId = hub.createRoom({ roomId: 'bulk-restore-atomic-room', seed: 20260905, hostClientId: 'host-a' }).roomId;
+    hub.joinRoom(roomId, { clientId: 'alice', displayName: 'Alice' });
+    hub.selectSeat(roomId, 'alice', 1);
+    hub.startMatch(roomId, 'host-a');
+
+    const beforeRoom = hub.getRoom(roomId);
+    const beforeRoomSnapshot = structuredClone(beforeRoom.serializeRoom());
+    const beforeHubSnapshot = structuredClone(hub.serialize());
+    const beforeVersion = hub.version(roomId);
+
+    const nullLogs: any = structuredClone(beforeHubSnapshot);
+    nullLogs.rooms[0].session.logs = null;
+    expect(() => hub.restore(nullLogs)).toThrow('Invalid MatchSession snapshot container');
+    expect(hub.getRoom(roomId)).toBe(beforeRoom);
+    expect(hub.getRoom(roomId).serializeRoom()).toEqual(beforeRoomSnapshot);
+    expect(hub.version(roomId)).toBe(beforeVersion);
+
+    const emptyPlacement: any = structuredClone(beforeHubSnapshot);
+    emptyPlacement.rooms[0].session.state.eventPlacements = [{}];
+    expect(() => hub.restore(emptyPlacement)).toThrow('Invalid MatchSession state container');
+    expect(hub.getRoom(roomId)).toBe(beforeRoom);
+    expect(hub.getRoom(roomId).serializeRoom()).toEqual(beforeRoomSnapshot);
+    expect(hub.version(roomId)).toBe(beforeVersion);
+
+    const missingHostClient: any = structuredClone(beforeHubSnapshot);
+    missingHostClient.rooms[0].clients = [];
+    expect(() => hub.restore(missingHostClient)).toThrow('Unknown client');
+    expect(hub.getRoom(roomId)).toBe(beforeRoom);
+    expect(hub.getRoom(roomId).serializeRoom()).toEqual(beforeRoomSnapshot);
+    expect(hub.version(roomId)).toBe(beforeVersion);
+  });
+
 });

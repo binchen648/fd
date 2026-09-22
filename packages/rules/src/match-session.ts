@@ -235,6 +235,9 @@ function hasOpponentCloseToOneReplayAuthority(
 const validReplayPhases = new Set<string>([
   'round_start', 'preparation', 'advance', 'action', 'battle', 'cleanup', 'round_end',
 ]);
+const validVisibilityScopes = new Set<string>([
+  'public', 'owner_only', 'battlefield_only', 'hidden_until_trigger', 'revealed_after_declaration',
+]);
 const validPauseReasons = new Set<string>([
   'human_input', 'host_directive', 'backend_rejection', 'round_end', 'match_complete', 'state_loop', 'no_legal_action',
 ]);
@@ -248,7 +251,7 @@ function isRestoreStringArray(value: unknown): value is string[] {
 }
 
 function isRestoreVisibilityState(value: unknown): boolean {
-  if (!isRestoreRecord(value) || typeof value.scope !== 'string') return false;
+  if (!isRestoreRecord(value) || typeof value.scope !== 'string' || !validVisibilityScopes.has(value.scope)) return false;
   if (value.ownerPlayerId !== undefined && typeof value.ownerPlayerId !== 'string') return false;
   if (value.revealedToPlayerIds !== undefined && !isRestoreStringArray(value.revealedToPlayerIds)) return false;
   return value.revealReason === undefined || typeof value.revealReason === 'string';
@@ -348,7 +351,14 @@ function isRestoreAbilityPack(value: unknown): boolean {
         !Object.values(value.characters).every((entry) => isRestoreCharacterDefinition(entry, cards))) return false;
   }
   if (!isRestoreServantPackage(value.servantPackage)) return false;
-  if (value.schemaVersion === 'fd-executable-card-pack-v1') {
+
+  // Production MatchSession state carries the canonical executable pack. Once any
+  // executable-pack discriminator/integrity field is present, it may not be
+  // relabeled or downgraded to the weaker generic authoring-pack boundary.
+  const executablePackExpected = value.definitionHash !== undefined || value.contentIdentity !== undefined ||
+    value.decks !== undefined || value.fallbackCommandSpells !== undefined || value.sourceMap !== undefined;
+  if (executablePackExpected) {
+    if (value.schemaVersion !== 'fd-executable-card-pack-v1') return false;
     try {
       assertExecutableCardPack(value, uncheckedContent);
     } catch {
@@ -390,17 +400,95 @@ function isRestoreAbilityRuntimeBoundary(value: unknown): boolean {
   return true;
 }
 
+function isRestoreEventPlacement(value: unknown, locationIds: Set<string>, playerIds: Set<string>, allowMissingLocation = false): boolean {
+  if (!isRestoreRecord(value) || typeof value.eventCardId !== 'string' || !isRestoreVisibilityState(value.visibility) ||
+      (value.locationId === undefined ? !allowMissingLocation : typeof value.locationId !== 'string' || !locationIds.has(value.locationId)) ||
+      (value.ruleInstanceId !== undefined && typeof value.ruleInstanceId !== 'string') ||
+      (value.ruleControllerPlayerId !== undefined && (typeof value.ruleControllerPlayerId !== 'string' || !playerIds.has(value.ruleControllerPlayerId))) ||
+      (value.victoryPoints !== undefined && (typeof value.victoryPoints !== 'number' || !Number.isFinite(value.victoryPoints))) ||
+      (value.battleModifiers !== undefined && (!Array.isArray(value.battleModifiers) || !value.battleModifiers.every(isRestoreRecord)))) return false;
+  return true;
+}
+
+function isRestoreBattleResult(value: unknown, locationIds?: Set<string>, playerIds?: Set<string>): boolean {
+  if (!isRestoreRecord(value) || typeof value.battlefieldId !== 'string' ||
+      (locationIds && !locationIds.has(value.battlefieldId)) || !isRestoreStringArray(value.winnerPlayerIds) ||
+      typeof value.tied !== 'boolean' || (value.winnerPlayerId !== null && typeof value.winnerPlayerId !== 'string') ||
+      typeof value.margin !== 'number' || !Number.isFinite(value.margin) || typeof value.vpReward !== 'number' || !Number.isFinite(value.vpReward) ||
+      !Array.isArray(value.militaryAdjustments) || !value.militaryAdjustments.every((entry) => isRestoreRecord(entry) &&
+        typeof entry.playerId === 'string' && (!playerIds || playerIds.has(entry.playerId)) &&
+        typeof entry.delta === 'number' && Number.isFinite(entry.delta)) ||
+      !Array.isArray(value.participantBreakdowns) || !value.participantBreakdowns.every((entry) => isRestoreRecord(entry) &&
+        typeof entry.playerId === 'string' && (!playerIds || playerIds.has(entry.playerId)) &&
+        typeof entry.basePower === 'number' && Number.isFinite(entry.basePower) &&
+        typeof entry.totalModifier === 'number' && Number.isFinite(entry.totalModifier) &&
+        typeof entry.effectivePower === 'number' && Number.isFinite(entry.effectivePower) && Array.isArray(entry.modifiers))) return false;
+  const referencedPlayers = [
+    ...value.winnerPlayerIds,
+    ...(value.excludedPlayerIds === undefined ? [] : isRestoreStringArray(value.excludedPlayerIds) ? value.excludedPlayerIds : [null]),
+    ...(value.presenceConcealmentDefeatedPlayerIds === undefined ? [] : isRestoreStringArray(value.presenceConcealmentDefeatedPlayerIds) ? value.presenceConcealmentDefeatedPlayerIds : [null]),
+    ...(value.lossEffectSuppressedPlayerIds === undefined ? [] : isRestoreStringArray(value.lossEffectSuppressedPlayerIds) ? value.lossEffectSuppressedPlayerIds : [null]),
+    ...(value.winnerPlayerId === null ? [] : [value.winnerPlayerId]),
+  ];
+  return referencedPlayers.every((id) => typeof id === 'string' && (!playerIds || playerIds.has(id)));
+}
+
+function isRestoreGameLogEntry(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.type === 'string' && typeof value.message === 'string' &&
+    (value.payload === undefined || isRestoreRecord(value.payload));
+}
+
 function isRestoreGameState(value: unknown): value is GameState {
   if (!isRestoreRecord(value) || typeof value.id !== 'string' || !Array.isArray(value.players) || value.players.length < 1 ||
       !value.players.every(isRestorePlayerState) || !isRestoreRecord(value.round) || !isRestoreMapDefinition(value.map) ||
       !isRestoreLocationConfig(value.locationConfig) || !Array.isArray(value.cards) || !value.cards.every(isRestoreCardInstance) ||
-      !isRestoreRecordArray(value.eventPlacements) || !isRestoreRecordArray(value.battleResults) ||
-      !isRestoreRecordArray(value.effectStack) || !isRestoreRecordArray(value.log)) return false;
+      !Array.isArray(value.eventPlacements) || !Array.isArray(value.battleResults) ||
+      !isRestoreRecordArray(value.effectStack) || !Array.isArray(value.log) || !value.log.every(isRestoreGameLogEntry) ||
+      !isRestoreAbilityRuntimeBoundary(value.abilityRuntime)) return false;
   const round = value.round;
   if (!Number.isSafeInteger(round.roundNumber) || (round.roundNumber as number) < 1 ||
       typeof round.activePhase !== 'string' || !validReplayPhases.has(round.activePhase) ||
       !Number.isSafeInteger(round.prioritySeat) || (round.prioritySeat as number) < 1) return false;
-  return isRestoreAbilityRuntimeBoundary(value.abilityRuntime);
+
+  const players = value.players as Array<Record<string, unknown>>;
+  const playerIds = new Set(players.map((player) => player.id as string));
+  const seats = new Set(players.map((player) => player.seat as number));
+  if (playerIds.size !== players.length || seats.size !== players.length ||
+      !players.some((player) => player.seat === round.prioritySeat)) return false;
+
+  const map = value.map as Record<string, unknown>;
+  const locationConfig = value.locationConfig as Record<string, unknown>;
+  const locations = (map.locations as Array<Record<string, unknown>>);
+  const locationIds = new Set(locations.map((location) => location.id as string));
+  if (locationIds.size !== locations.length) return false;
+  for (const location of locations) {
+    if (!(location.movementLinks as string[]).every((id) => locationIds.has(id))) return false;
+  }
+  const enabledLocationIds = locationConfig.enabledLocationIds as string[];
+  if (new Set(enabledLocationIds).size !== enabledLocationIds.length || !enabledLocationIds.every((id) => locationIds.has(id))) return false;
+  const enabledLocations = new Set(enabledLocationIds);
+  if (!players.every((player) => player.locationId === undefined ||
+      (typeof player.locationId === 'string' && locationIds.has(player.locationId) &&
+        (enabledLocations.size === 0 || enabledLocations.has(player.locationId))))) return false;
+
+  const cards = value.cards as Array<Record<string, unknown>>;
+  const instanceIds = new Set(cards.map((card) => card.instanceId as string));
+  if (instanceIds.size !== cards.length || !cards.every((card) => playerIds.has(card.ownerPlayerId as string) &&
+      playerIds.has(card.controllerPlayerId as string))) return false;
+  if (isRestoreRecord(value.abilityRuntime)) {
+    const abilityRuntime = value.abilityRuntime as Record<string, unknown>;
+    if (isRestoreRecord(abilityRuntime.pack)) {
+      const pack = abilityRuntime.pack as Record<string, unknown>;
+      if (isRestoreRecord(pack.cards) &&
+          !cards.every((card) => Object.prototype.hasOwnProperty.call(pack.cards as Record<string, unknown>, card.definitionId as string))) return false;
+    }
+  }
+
+  if (!value.eventPlacements.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds))) return false;
+  if (value.eventDiscardPile !== undefined && (!Array.isArray(value.eventDiscardPile) ||
+      !value.eventDiscardPile.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, true)))) return false;
+  if (!value.battleResults.every((entry) => isRestoreBattleResult(entry, locationIds, playerIds))) return false;
+  return true;
 }
 
 function isRestoreLogEntry(value: unknown): value is MatchSessionLogEntry {
@@ -427,7 +515,7 @@ function isRestoreReplayEntry(value: unknown): value is MatchClientState['replay
 function isRestoreReplaySnapshot(value: unknown): value is MatchReplayStateSnapshot {
   if (!isRestoreRecord(value) || typeof value.checkpointId !== 'string' || !/^checkpoint:\d+$/.test(value.checkpointId) ||
       !isRestoreGameState(value.state) || !Array.isArray(value.logs) || !value.logs.every(isRestoreLogEntry) ||
-      !Array.isArray(value.battleHistory) || !value.battleHistory.every(isRestoreRecord) ||
+      !Array.isArray(value.battleHistory) || !value.battleHistory.every((entry) => isRestoreBattleResult(entry)) ||
       !Number.isSafeInteger(value.consumedDirectiveCount) || (value.consumedDirectiveCount as number) < 0) return false;
   if (value.stopReason !== undefined && (typeof value.stopReason !== 'string' || !validPauseReasons.has(value.stopReason))) return false;
   if (value.rejection !== undefined && !isRestoreRejection(value.rejection)) return false;
@@ -1913,6 +2001,17 @@ export function restoreMatchSession(
     throw new Error('Invalid FB2-49 replay snapshot container');
   }
   if (!isRestoreGameState(snapshot.state)) throw new Error('Invalid MatchSession state container');
+  if (!Array.isArray(snapshot.logs) || !snapshot.logs.every(isRestoreLogEntry) ||
+      !Array.isArray(snapshot.battleHistory) || !snapshot.battleHistory.every((entry) => isRestoreBattleResult(entry)) ||
+      typeof snapshot.seed !== 'number' || !Number.isFinite(snapshot.seed) || typeof snapshot.humanPlayerId !== 'string' ||
+      !isRestoreStringArray(snapshot.humanPlayerIds) || new Set(snapshot.humanPlayerIds).size !== snapshot.humanPlayerIds.length ||
+      !snapshot.humanPlayerIds.includes(snapshot.humanPlayerId) ||
+      !snapshot.humanPlayerIds.every((playerId) => snapshot.state.players.some((player) => player.id === playerId)) ||
+      !Number.isSafeInteger(snapshot.maxActionsPerPlayer) || snapshot.maxActionsPerPlayer < 1 ||
+      (snapshot.stopReason !== undefined && (typeof snapshot.stopReason !== 'string' || !validPauseReasons.has(snapshot.stopReason))) ||
+      (snapshot.rejection !== undefined && !isRestoreRejection(snapshot.rejection))) {
+    throw new Error('Invalid MatchSession snapshot container');
+  }
   const persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
   const persistenceScope = config.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
   const candidateState = structuredClone(snapshot.state);

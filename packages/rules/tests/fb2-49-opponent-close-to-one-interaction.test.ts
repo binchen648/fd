@@ -1113,6 +1113,15 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(() => rules.restoreMatchSession(malformed)).toThrow('Invalid MatchSession state container');
   });
 
+  it('rejects executable-pack semantic changes even when the schema discriminator is relabeled', () => {
+    const malformed: any = structuredClone(rules.createMatchSession().serializeSession());
+    const physical = malformed.state.cards.find((card: any) => malformed.state.abilityRuntime.pack.cards[card.definitionId]);
+    expect(physical).toBeDefined();
+    malformed.state.abilityRuntime.pack.cards[physical.definitionId].cardFace.basePower = 999999;
+    malformed.state.abilityRuntime.pack.schemaVersion = 'modified-pack-v1';
+    expect(() => rules.restoreMatchSession(malformed)).toThrow('Invalid MatchSession state container');
+  });
+
   it('round-trips ordinary no-FB2 room and fresh-Hub snapshots without persistence-scope coupling', () => {
     const room = rules.createMatchRoom({ roomId: 'fb2-49-ordinary-room', hostClientId: 'host' });
     room.session = rules.createMatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], ...room.getPersistenceContext() });

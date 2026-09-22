@@ -268,6 +268,36 @@ describe('match websocket server', () => {
     expect(serverHandle.hub.version('fb2-49-http-guard')).toBe(beforeVersion);
   });
 
+  it('rejects a relabeled modified executable pack over HTTP without replacing the room', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const httpBase = `http://127.0.0.1:${port}`;
+    await postJson<RoomHttpResponse>(`${httpBase}/rooms`, {
+      roomId: 'pack-http-guard', hostClientId: 'host', hostName: 'Host', seed: 20260905,
+    });
+    const room = serverHandle.hub.getRoom('pack-http-guard');
+    room.session = createMatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], ...room.getPersistenceContext() });
+    room.status = 'running';
+    const beforeRoom = room;
+    const beforeSnapshot = structuredClone(room.serializeRoom());
+    const beforeVersion = serverHandle.hub.version('pack-http-guard');
+    const malformed: any = structuredClone(beforeSnapshot);
+    const physical = malformed.session.state.cards.find((card: any) => malformed.session.state.abilityRuntime.pack.cards[card.definitionId]);
+    expect(physical).toBeDefined();
+    malformed.session.state.abilityRuntime.pack.cards[physical.definitionId].cardFace.basePower = 999999;
+    malformed.session.state.abilityRuntime.pack.schemaVersion = 'modified-pack-v1';
+
+    const response = await fetch(`${httpBase}/rooms/pack-http-guard/restore`, {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot: malformed }),
+    });
+    expect(response.status).toBe(400);
+    const body = await response.json() as { code: string; message: string };
+    expect(body).toEqual({ code: 'bad_request', message: 'Invalid MatchSession state container' });
+    expect(serverHandle.hub.getRoom('pack-http-guard')).toBe(beforeRoom);
+    expect(serverHandle.hub.getRoom('pack-http-guard').serializeRoom()).toEqual(beforeSnapshot);
+    expect(serverHandle.hub.version('pack-http-guard')).toBe(beforeVersion);
+  });
+
   it('syncs room projections across browser clients without leaking private hands', async () => {
     serverHandle = createMatchServer();
     const port = await serverHandle.listen();

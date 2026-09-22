@@ -143,6 +143,10 @@ export class MatchRoomHub {
       restoredRooms.set(room.roomId, room);
     }
 
+    // Every candidate must be fully projectable before any trust/room/version mutation.
+    // This keeps bulk restore atomic with the single-room restore boundary.
+    for (const room of restoredRooms.values()) room.getProjection(room.hostClientId);
+
     // Trust mutation is deliberately deferred until every candidate room has validated.
     const authoritativeSessionScopes = new Set<string>();
     for (const room of restoredRooms.values()) {
