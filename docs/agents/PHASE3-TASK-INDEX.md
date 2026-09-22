@@ -5905,3 +5905,14 @@ Read: `docs/reports/2026-09-22-p3-a-r104-fb2-50-acceptance-synchronization.md`
 Result: synchronize the already-completed fresh independent R verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #425 exact Candidate `532fc01f924555d97c4929db6774528648daf520`. The original Reviewer result's evidence URL was malformed and the original marker comment contained no bound verdict, so Coordinator published an explicit evidence relay at `https://github.com/binchen648/fd/pull/425#issuecomment-5778319463`; no re-review was performed and no Candidate content changed. Accepted capability remains only the bounded identity-free current-round selected-attack temporary-copy transaction, including authenticated persisted-decision provenance and fail-closed malformed-state handling.
 
 FB2-50 earns zero migration credit; formal migration remains **`152/944`**, with **`792`** remaining. Material authoring overlap remains **`147/944`**, duplicates **`0`**, and `servant.atalanta.skill.sc-atalanta-2` remains absent. PR #425 remains OPEN, unmerged and unretargeted. Next action is a fresh complete-card reconstruction of `servant.atalanta.skill.sc-atalanta-2` on this synchronized runtime; dispatch singleton S only if the whole card is mechanically zero-gap.
+## TASK P3-S-R104-ATALANTA-S2-CONSUMER-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Branch: `codex/s-p3-r104-atalanta-s2-consumer-migration`
+Base: exact P3-A-R104 FB2-50 acceptance synchronization / consumer dispatch
+Read: `docs/reports/2026-09-22-p3-a-r104-atalanta-s2-consumer-migration-dispatch.md`
+
+Goal: migrate exactly `servant.atalanta.skill.sc-atalanta-2` as a singleton whole-card consumer using only the synchronized FB2-50 exact selected-played-attack temporary-copy transaction plus already accepted generic servant-skill/visibility vocabulary. No runtime changes, no second frozen identity, no generic clone API, no identity/name/text routing, no merge/retarget.
+
+Required accounting: exact Base `147/944` -> Candidate `148/944`, exact +1 Atalanta s2, zero removals, zero duplicate frozen ids. FB2-50 itself remains zero-credit. Formal migration remains `152/944` until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A synchronizes it.
