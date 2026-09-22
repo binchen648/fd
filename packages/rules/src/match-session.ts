@@ -4,6 +4,7 @@ import {
   initializeAbilityRuntime,
   processAbilityEvent,
   projectAbilityState,
+  recordAuthoritativeVictoryPointChange,
 } from './ability/interpreter';
 import {
   createOpponentCloseToOnePersistenceScope,
@@ -1258,6 +1259,9 @@ export class MatchSession {
   }
 
   private startRound(round: number, targetState = this.state): void {
+    if (targetState.abilityRuntime) {
+      targetState.abilityRuntime.roundPositiveVictoryPointGain = { round, byPlayer: {} };
+    }
     targetState.round = { roundNumber: round, activePhase: 'preparation', prioritySeat: 1 };
     for (const player of targetState.players) {
       delete player.locationId;
@@ -1442,7 +1446,14 @@ export class MatchSession {
     }
     if (!this.state.abilityRuntime?.pendingDecision && !this.state.abilityRuntime?.responseWindows.length) {
       const scoringLogStart = this.state.log.length;
+      const vpBeforeScoring = new Map(this.state.players.map((player) => [player.id, player.vp]));
       Object.assign(this.state, applyBattleScoring(this.state).nextState);
+      for (const scoredPlayer of this.state.players) {
+        const before = vpBeforeScoring.get(scoredPlayer.id);
+        if (before !== undefined && before !== scoredPlayer.vp) {
+          recordAuthoritativeVictoryPointChange(this.state, scoredPlayer.id, before, scoredPlayer.vp, 'battle-scoring-vp');
+        }
+      }
       const freshScoringLogs = this.state.log.slice(scoringLogStart);
       this.queuePostScoringBattleEvents(resolvedBattles, freshScoringLogs);
       this.flushPostScoringBattleEvents();

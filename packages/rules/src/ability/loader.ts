@@ -17,6 +17,7 @@ import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './deployment-
 import { isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 import { isAcceptedCurrentRoundCombatWinAbsenceCondition } from './current-round-combat-win-condition';
 import { isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
+import { isAcceptedOpponentRoundVpGainThresholdAbility, isOpponentRoundVpGainThresholdCandidate, OPPONENT_ROUND_VP_GAIN_TRIGGER } from './opponent-round-vp-gain-threshold';
 import { isAcceptedPreBattleDefeatAbility, isPreBattleDefeatCandidate } from './pre-battle-defeat';
 import {
   BATTLE_LOSS_VP_WINNER_REWARD_EFFECT,
@@ -214,6 +215,7 @@ const supportedTypes = new Set([
   'event_has_tag', 'event_in_set', 'move_event_card',
   // FB2-31 event-player relation conditions
   'event_player_is_controller', 'event_player_is_opponent',
+  'event_round_victory_points_gain_crosses',
   // FB2-32 source-state conditions
   'source_active', 'source_owned',
   // FB2-33 event combat outcome conditions
@@ -240,6 +242,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   'game_start', 'after_controller_enters_location', 'after_controller_loses_all_command_seals',
   'round_end', 'after_controller_first_loses_battle', 'after_battle_power_calculated',
   'before_situation_or_event_resolves', 'when_movement_options_requested',
+  OPPONENT_ROUND_VP_GAIN_TRIGGER,
 ]);
 const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
   'lossAmount', 'winnerRewardAmount',
@@ -342,6 +345,14 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (['event_player_is_controller', 'event_player_is_opponent'].includes(str(n.type)) &&
         !Object.keys(n).every((key) => key === 'type')) {
         issue(path, 'Event-player relation condition must contain only type', abilityId);
+      }
+      if (n.type === 'event_round_victory_points_gain_crosses') {
+        if (path !== 'conditions[1]') {
+          issue(path, 'Round VP-gain crossing condition is supported only in the exact FB2-51 condition slot', abilityId);
+        }
+        if (n.threshold !== 7 || !Object.keys(n).every((key) => ['type', 'threshold'].includes(key))) {
+          issue(path, 'Round VP-gain crossing condition requires the literal threshold 7 and exact shape', abilityId);
+        }
       }
       if (['source_active', 'source_owned'].includes(str(n.type))) {
         if (!path.startsWith('conditions')) issue(path, 'Source-state condition is supported only under ability conditions', abilityId);
@@ -585,6 +596,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (isSelectedPlayedAttackTemporaryCopyCandidate(a) && !isAcceptedSelectedPlayedAttackTemporaryCopyAbility(a, 'authoring')) {
         issue('selectedPlayedAttackTemporaryCopy.gateway', 'Unsupported selected played-attack temporary-copy semantic shape', id);
+      }
+      if (isOpponentRoundVpGainThresholdCandidate(a as unknown as AuthoringAbility) && !isAcceptedOpponentRoundVpGainThresholdAbility(a as unknown as AuthoringAbility, 'authoring')) {
+        issue('opponentRoundVpGainThreshold.gateway', 'Unsupported opponent round VP-gain threshold semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

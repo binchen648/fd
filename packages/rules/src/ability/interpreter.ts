@@ -25,6 +25,12 @@ import { isCardCloseForbidden } from './card-close-forbid';
 import { faceUpCardPlayLimitReached, recordCompletedFaceUpCardPlay } from './face-up-cards-per-round';
 import { currentRoundCombatLossAbsent, isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 import { eventLocationEqualsController, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
+import {
+  isAcceptedOpponentRoundVpGainThresholdAbility,
+  isOpponentRoundVpGainThresholdCondition,
+  OPPONENT_ROUND_VP_GAIN_THRESHOLD,
+  OPPONENT_ROUND_VP_GAIN_TRIGGER,
+} from './opponent-round-vp-gain-threshold';
 import { isAcceptedPreBattleDefeatAbility, isPreBattleDefeatCandidate, preBattleDefeatAttribute } from './pre-battle-defeat';
 import {
   battleLossVpWinnerRewardAmounts,
@@ -276,6 +282,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
     manaGainedThisRound: { round: s.round.roundNumber, byPlayer: {} },
+    trustedVictoryPointChanges: {}, roundPositiveVictoryPointGain: { round: s.round.roundNumber, byPlayer: {} },
     playRulesVersion: options.playRulesVersion ?? 'explicit-v1',
     playCounters: { round: s.round.roundNumber, cardsPlayedByPlayer: {}, faceUpCardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} } };
   initializeEventRulePlacements(s, pack);
@@ -623,6 +630,13 @@ function eventPlayerRelationCondition(s: GameState, ctx: EffectContext, c: RuleN
     : eventPlayerId !== ctx.controllerId;
 }
 
+function roundVpGainCrossingCondition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
+  if (!isOpponentRoundVpGainThresholdCondition(c)) reject('unsupported', 'Unsupported round VP-gain crossing condition shape');
+  const event = ctx.event;
+  return !!event && event.type === OPPONENT_ROUND_VP_GAIN_TRIGGER &&
+    runtime(s).trustedVictoryPointChanges?.[event.id]?.crossed === true;
+}
+
 export function isSourceStateCondition(c: RuleNode): boolean {
   return ['source_active', 'source_owned'].includes(str(c.type)) &&
     Object.keys(c).every((key) => key === 'type');
@@ -698,6 +712,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'controller_sole_winner': return ctx.event?.battleResult?.winners.length === 1 && ctx.event.battleResult.winners[0] === p.id;
     case 'event_player_is_controller':
     case 'event_player_is_opponent': return eventPlayerRelationCondition(s, ctx, c);
+    case 'event_round_victory_points_gain_crosses': return roundVpGainCrossingCondition(s, ctx, c);
     case 'source_active':
     case 'source_owned': return sourceStateCondition(s, ctx, c);
     case 'event_player_won_combat':
@@ -865,7 +880,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     (!isGameStartPlayerStatusAssignmentSemantic(a) ||
       !gameStartPlayerStatusAssignments(s, card(s, sourceId).controllerPlayerId, a))) return false;
   if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) return false;
-  if (hasControllerMasterSkillDefinitionReturnCandidate(a)) return false;
+  if (hasControllerMasterSkillDefinitionReturnCandidate(a) && !isAcceptedOpponentRoundVpGainThresholdAbility(a, 'compiled')) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (isAcceptedPreBattleDefeatAbility(a, 'compiled')) {
     const controller = player(s, card(s, sourceId).controllerPlayerId);
@@ -1518,6 +1533,7 @@ function settleBattleLossVpWinnerReward(s: GameState, ctx: EffectContext, a: Aut
   });
 
   controller.vp = controllerAfter;
+  recordAuthoritativeVictoryPointChange(s, controller.id, controllerBefore, controllerAfter, 'battle-loss-vp');
   r.events.push({
     type: 'victory_points_adjusted', playerId: controller.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
     resource: 'victory_points', delta: actualLoss === 0 ? 0 : -actualLoss, requestedDelta: -amounts.lossAmount, before: controllerBefore, after: controllerAfter,
@@ -1528,6 +1544,7 @@ function settleBattleLossVpWinnerReward(s: GameState, ctx: EffectContext, a: Aut
 
   for (const { winner, before, after } of winnerBalances) {
     winner.vp = after;
+    recordAuthoritativeVictoryPointChange(s, winner.id, before, after, 'battle-loss-winner-vp');
     r.events.push({
       type: 'victory_points_adjusted', playerId: winner.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
       resource: 'victory_points', delta: amounts.winnerRewardAmount, requestedDelta: amounts.winnerRewardAmount,
@@ -1558,6 +1575,7 @@ function settleControllerDefeatedVpReward(s: GameState, ctx: EffectContext, a: A
   if (!Number.isSafeInteger(after)) reject('invalid_state', 'Controller VP reward would exceed safe integer range');
 
   controller.vp = after;
+  recordAuthoritativeVictoryPointChange(s, controller.id, before, after, 'defeated-reward-vp');
   r.events.push({
     type: 'victory_points_adjusted', playerId: controller.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
     resource: 'victory_points', delta: amount, requestedDelta: amount, before, after,
@@ -1603,7 +1621,9 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       const placements = s.eventPlacements.filter(e => e.locationId === p.locationId);
       if (placements.some(e => !Number.isSafeInteger(e.victoryPoints))) reject('missing_event_vp', 'Content layer must supply every event printed VP');
       const total = placements.reduce((sum, e) => sum + e.victoryPoints!, 0);
+      const before = p.vp;
       p.vp = Math.max(0, p.vp + total);
+      recordAuthoritativeVictoryPointChange(s, p.id, before, p.vp, 'event-claim-vp');
       r.calculations.push({ controllerId: p.id, lines: [{ label: '当前战场事件牌战果合计', value: total }] });
       s.eventDiscardPile = [...(s.eventDiscardPile ?? []), ...placements];
       s.eventPlacements = s.eventPlacements.filter(e => e.locationId !== p.locationId);
@@ -1736,7 +1756,12 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       p.mana -= amount;
       break;
     }
-    case 'adjust_victory_points': p.vp = Math.max(0, p.vp + numeric(s, ctx, effect.amount)); break;
+    case 'adjust_victory_points': {
+      const before = p.vp;
+      p.vp = Math.max(0, p.vp + numeric(s, ctx, effect.amount));
+      recordAuthoritativeVictoryPointChange(s, p.id, before, p.vp, 'ability-vp');
+      break;
+    }
     case 'move_player': {
       const to = ctx.selections[str(effect.to)]?.[0];
       if (to) {
@@ -1767,6 +1792,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
         reject('resolution_failed', 'Close source card is forbidden by a live rule modifier.');
       }
       // Try extended effects handler
+      const vpBefore = new Map(s.players.map((candidate) => [candidate.id, candidate.vp]));
       try {
         resolveExtendedEffect(s, ctx.controllerId, effect, {
           sourceCardId: ctx.sourceCardId,
@@ -1776,6 +1802,12 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
         });
       } catch (e) {
         reject('unsupported', `Unsupported effect: ${str(effect.type)}`);
+      }
+      for (const changed of s.players) {
+        const before = vpBefore.get(changed.id);
+        if (before !== undefined && before !== changed.vp) {
+          recordAuthoritativeVictoryPointChange(s, changed.id, before, changed.vp, 'extended-effect-vp');
+        }
       }
     }
   }
@@ -1930,6 +1962,7 @@ function settlePendingRulerSealRewards(s: GameState, event: AbilityEvent): void 
     if (reward.round !== s.round.roundNumber || !participants.has(reward.boundPlayerId)) { remaining.push(reward); continue; }
     if (event.battleResult.winners.includes(reward.boundPlayerId)) {
       const recipient = player(s, reward.issuerPlayerId); const before = recipient.vp; recipient.vp += reward.rewardVp;
+      recordAuthoritativeVictoryPointChange(s, recipient.id, before, recipient.vp, 'ruler-seal-reward-vp');
       r.events.push({ type: 'victory_points_adjusted', playerId: reward.issuerPlayerId, sourceCardId: reward.sourceCardId, abilityId: reward.abilityId, delta: reward.rewardVp, before, after: recipient.vp, triggerEventId: event.id });
     }
   }
@@ -2841,6 +2874,11 @@ function settleBattleEndMobilePlayersReward(s: GameState, ctx: EffectContext): v
     });
     Object.assign(s, result.nextState);
     runtime(s).events.push(...result.emittedEvents);
+    for (const envelope of result.results) {
+      if (envelope.effectType === 'adjust_victory_points') {
+        recordAuthoritativeVictoryPointChange(s, envelope.payload.playerId, envelope.payload.before, envelope.payload.after, 'ability-vp');
+      }
+    }
   }
 
   const afterController = player(s, ctx.controllerId);
@@ -3324,6 +3362,11 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
     Object.assign(s, result.nextState);
     runtime(s).events.push(...result.emittedEvents);
     for (const envelope of result.results) {
+      if (envelope.effectType === 'adjust_victory_points') {
+        recordAuthoritativeVictoryPointChange(s, envelope.payload.playerId, envelope.payload.before, envelope.payload.after, 'ability-vp');
+      }
+    }
+    for (const envelope of result.results) {
       runtime(s).events.push({
         type: 'effect_resolved',
         playerId: ctx.controllerId,
@@ -3648,6 +3691,10 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isRulerSealBindingCandidate(a) && !isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
   if (isRulerSealUseCandidate(a) && !isRulerSealUseSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal use semantic shape');
   if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) reject('resolution_failed', 'Unsupported Outer-God-Life relational semantic shape');
+  if (isAcceptedOpponentRoundVpGainThresholdAbility(a, 'compiled')) {
+    resolveControllerMasterSkillDefinitionReturn(s, ctx, a.effects[0]!);
+    return;
+  }
   if (hasControllerMasterSkillDefinitionReturnCandidate(a)) reject('resolution_failed', 'Definition-return component requires an independently accepted parent route');
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) {
     reject('resolution_failed', 'Unsupported fixed controller advance-draw semantic shape');
@@ -3859,6 +3906,27 @@ function rememberTrustedBattleResultSnapshot(r: AbilityRuntime, event: AbilityEv
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s); if (r.processedEvents.includes(event.id)) return;
   if (!event.id) reject('invalid_event', 'Events require stable ids');
+  if (event.type === OPPONENT_ROUND_VP_GAIN_TRIGGER) {
+    const trusted = r.trustedVictoryPointChanges?.[event.id];
+    const keys = Object.keys(event).sort();
+    const expectedKeys = ['after', 'before', 'delta', 'id', 'playerId', 'resource', 'roundNumber', 'type'].sort();
+    const affected = event.playerId && s.players.find((candidate) => candidate.id === event.playerId);
+    if (!trusted || keys.length !== expectedKeys.length || keys.some((key, index) => key !== expectedKeys[index]) ||
+      !affected || event.resource !== 'victory_points' || event.roundNumber !== s.round.roundNumber ||
+      !Number.isSafeInteger(event.delta) || !Number.isSafeInteger(event.before) || !Number.isSafeInteger(event.after) ||
+      event.before! < 0 || event.after! < 0 || event.before! + event.delta! !== event.after || affected.vp !== event.after ||
+      trusted.playerId !== event.playerId || trusted.resource !== event.resource || trusted.delta !== event.delta ||
+      trusted.before !== event.before || trusted.after !== event.after || trusted.roundNumber !== event.roundNumber) {
+      reject('invalid_event', 'VP-change event lacks exact current authoritative provenance');
+    }
+    const ledger = r.roundPositiveVictoryPointGain ??= { round: s.round.roundNumber, byPlayer: {} };
+    if (ledger.round !== s.round.roundNumber) reject('invalid_state', 'VP-gain ledger round is stale');
+    const previous = ledger.byPlayer[event.playerId!] ?? 0;
+    const next = event.delta! > 0 ? previous + event.delta! : previous;
+    if (!Number.isSafeInteger(next)) reject('invalid_state', 'VP-gain ledger overflow');
+    ledger.byPlayer[event.playerId!] = next;
+    trusted.crossed = previous < OPPONENT_ROUND_VP_GAIN_THRESHOLD && next >= OPPONENT_ROUND_VP_GAIN_THRESHOLD;
+  }
   r.processedEvents.push(event.id);
   rememberTrustedBattleResultSnapshot(r, event);
   settlePendingRulerSealRewards(s, event);
@@ -3917,6 +3985,44 @@ export function processAbilitySystemEvent(s: GameState, label: string, event: Om
   runtime(copy).revision++;
   Object.assign(s, copy);
 }
+
+/** Records and dispatches a VP transition that an existing trusted runtime path has already applied. */
+export function recordAuthoritativeVictoryPointChange(
+  s: GameState, playerId: string, before: number, after: number, label = 'vp-change',
+): string {
+  const affected = player(s, playerId);
+  if (![before, after, affected.vp].every((value) => Number.isSafeInteger(value) && value >= 0) || affected.vp !== after) {
+    reject('invalid_state', 'Authoritative VP transition must match the current nonnegative safe-integer balance');
+  }
+  const delta = after - before;
+  const id = nextId(s, label);
+  const facts = { playerId, resource: 'victory_points' as const, delta, before, after, roundNumber: s.round.roundNumber };
+  const r = runtime(s);
+  if (r.roundPositiveVictoryPointGain?.round !== s.round.roundNumber) {
+    r.roundPositiveVictoryPointGain = { round: s.round.roundNumber, byPlayer: {} };
+  }
+  (r.trustedVictoryPointChanges ??= {})[id] = facts;
+  processEvent(s, { id, type: OPPONENT_ROUND_VP_GAIN_TRIGGER, ...facts });
+  return id;
+}
+
+/** Authoritative server VP producer. External event ingestion cannot manufacture this provenance. */
+export function adjustVictoryPointsAuthoritatively(s: GameState, playerId: string, requestedDelta: number): string {
+  if (!Number.isSafeInteger(requestedDelta)) reject('invalid_amount', 'VP adjustment must be a safe integer');
+  const copy = structuredClone(s);
+  const affected = player(copy, playerId);
+  if (!Number.isSafeInteger(affected.vp) || affected.vp < 0) reject('invalid_state', 'Player VP must be a nonnegative safe integer');
+  const before = affected.vp;
+  const after = Math.max(0, before + requestedDelta);
+  if (!Number.isSafeInteger(after)) reject('invalid_amount', 'VP adjustment result must be a safe integer');
+  affected.vp = after;
+  const delta = after - before;
+  const id = recordAuthoritativeVictoryPointChange(copy, playerId, before, after);
+  runtime(copy).events.push({ type: 'victory_points_adjusted', playerId, resource: 'victory_points', delta, before, after, triggerEventId: id });
+  runtime(copy).revision++;
+  Object.assign(s, copy);
+  return id;
+}
 export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.round.roundNumber): void {
   const r = runtime(s);
   if (r.pendingDecision || r.responseWindows.length || r.hostRequests.length) reject('pending_resolution', 'Resolve the current decision before advancing');
@@ -3930,6 +4036,7 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
     runtime(copy).pendingSourceCardReturns = runtime(copy).pendingSourceCardReturns.filter((entry) => entry.round >= round);
     runtime(copy).pendingPreBattleDefeats = [];
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
+    runtime(copy).roundPositiveVictoryPointGain = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, faceUpCardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
   }
   copy.round.activePhase = next; copy.round.roundNumber = round; cleanupOngoing(copy);
@@ -4220,6 +4327,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           delete r.pendingDecision;
           pendingQueue.shift();
           recipient.vp += rewardVp;
+          recordAuthoritativeVictoryPointChange(s, recipient.id, before, recipient.vp, 'combat-power-reward-vp');
           r.events.push({
             type: 'victory_points_adjusted', playerId: d.controllerId, sourceCardId: meta.sourceCardInstanceId, abilityId: meta.abilityId,
             delta: rewardVp, before, after: recipient.vp, triggerEventId: meta.triggerEventId,

@@ -18,11 +18,22 @@ import { assignInitialPlayerLocations, movePlayer } from "./movement";
 import { resolveBattlefield } from "./combat-resolver";
 import { resolveEffectsForWindow } from "./effect-resolver";
 import { getEnabledLocations } from "./map-engine";
-import { advanceAbilityPhase, processAbilityEvent, processAbilitySystemEvent } from '../ability/interpreter';
+import { advanceAbilityPhase, processAbilityEvent, processAbilitySystemEvent, recordAuthoritativeVictoryPointChange } from '../ability/interpreter';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from '../ability/battle-terminal';
 
 function hasPendingAbilityResolution(state: GameState): boolean {
   return !!state.abilityRuntime && (!!state.abilityRuntime.pendingDecision || state.abilityRuntime.responseWindows.length > 0 || state.abilityRuntime.hostRequests.length > 0);
+}
+
+function dispatchScoringVictoryPointChanges(before: GameState, after: GameState, label: string): GameState {
+  if (!after.abilityRuntime) return after;
+  for (const current of after.players) {
+    const prior = before.players.find((candidate) => candidate.id === current.id);
+    if (prior && prior.vp !== current.vp) {
+      recordAuthoritativeVictoryPointChange(after, current.id, prior.vp, current.vp, label);
+    }
+  }
+  return after;
 }
 
 export interface GameLoopResult {
@@ -241,8 +252,12 @@ function runRoundStartSystems(
   state: GameState,
   input?: GameLoopInput,
 ): GameState {
+  if (state.abilityRuntime && state.abilityRuntime.roundPositiveVictoryPointGain?.round !== state.round.roundNumber) {
+    state.abilityRuntime.roundPositiveVictoryPointGain = { round: state.round.roundNumber, byPlayer: {} };
+  }
   let nextState = applyEliminationAndThresholdLog(state).nextState;
-  nextState = applyOccupiedLocationRewards(nextState).nextState;
+  const beforeLocationRewards = nextState;
+  nextState = dispatchScoringVictoryPointChanges(beforeLocationRewards, applyOccupiedLocationRewards(nextState).nextState, 'location-reward-vp');
   const activePlayers = nextState.players.filter((player) => player.status === "active").length;
   const situationCard = input?.situationCard ?? getScheduledSituationForRound(nextState);
 
@@ -430,13 +445,15 @@ function runBattlePhase(state: GameState): GameState {
     queuePostScoringBattleResultEvents(cleanedState, resolvedBattles);
     return flushPostScoringBattleResultEvents(cleanedState);
   }
-  const scoredState = applyBattleScoring(cleanedState).nextState;
+  const scoredState = dispatchScoringVictoryPointChanges(cleanedState, applyBattleScoring(cleanedState).nextState, 'battle-scoring-vp');
   queuePostScoringBattleResultEvents(scoredState, resolvedBattles);
   return flushPostScoringBattleResultEvents(scoredState);
 }
 
 function runCleanupPhase(state: GameState): GameState {
-  const scoredState = state.battleResults.length > 0 ? applyBattleScoring(state).nextState : state;
+  const scoredState = state.battleResults.length > 0
+    ? dispatchScoringVictoryPointChanges(state, applyBattleScoring(state).nextState, 'battle-scoring-vp')
+    : state;
   return {
     ...scoredState,
     battleSkillEffects: [],
