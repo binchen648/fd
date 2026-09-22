@@ -181,6 +181,12 @@ export interface OpponentCloseToOneInteractionMetadata {
   qualifyingCardOwners: Record<string, PlayerId>; remainingDecisionPlayerIds: PlayerId[];
   constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
 }
+export interface SelectedPlayedAttackTemporaryCopyInteractionMetadata {
+  kind: 'selected_played_attack_temporary_copy_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  targetId: 'selected_attack'; candidateIds: string[];
+  constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
+}
 export interface PendingOpponentCloseToOne {
   initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; sourceCardId: string; abilityId: string;
   battlefieldId: string; qualifyingCardIds: string[]; qualifyingCardOwners: Record<string, PlayerId>;
@@ -189,7 +195,7 @@ export interface PendingOpponentCloseToOne {
 export type PendingInteractionMetadata =
   PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata | SameBattlefieldPrivateHandReturnInteractionMetadata |
   RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata |
-  OpponentCloseToOneInteractionMetadata;
+  OpponentCloseToOneInteractionMetadata | SelectedPlayedAttackTemporaryCopyInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];

@@ -50,6 +50,12 @@ import {
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
 import {
+  SELECTED_PLAYED_ATTACK_TEMPORARY_COPY_EFFECT,
+  SELECTED_PLAYED_ATTACK_TEMPORARY_COPY_POLICY,
+  isAcceptedSelectedPlayedAttackTemporaryCopyAbility,
+  isSelectedPlayedAttackTemporaryCopyCandidate,
+} from './selected-played-attack-temporary-copy';
+import {
   advanceOpponentCloseToOneServerAuthority,
   clearOpponentCloseToOneServerAuthority,
   copyOpponentCloseToOneServerAuthority,
@@ -1254,6 +1260,102 @@ function pushLifecycleTransition(s: GameState, ongoing: OngoingEffect, kind: 'in
     roundId: s.round.roundNumber,
   });
 }
+function isExactSelectedPlayedAttackTemporaryCopyPersistedDecision(value: unknown): value is PendingDecision {
+  if (!isPlainRecord(value)) return false;
+  const contextValue: unknown = value.context;
+  const targetValue: unknown = value.target;
+  const remainingEffectsValue: unknown = value.remainingEffects;
+  const candidatesValue: unknown = value.candidates;
+  const interactionValue: unknown = value.interaction;
+  if (!isPlainRecord(contextValue) || !isPlainRecord(contextValue.variables) || !isPlainRecord(contextValue.selections) ||
+      !isPlainRecord(targetValue) || !Array.isArray(remainingEffectsValue) || !remainingEffectsValue.every(isPlainRecord) ||
+      !Array.isArray(candidatesValue) || !candidatesValue.every((candidate) => typeof candidate === 'string' && candidate.length > 0) ||
+      !isPlainRecord(interactionValue) || interactionValue.kind !== 'selected_played_attack_temporary_copy_v1') return false;
+  const constraintsValue: unknown = interactionValue.constraints;
+  const candidateIdsValue: unknown = interactionValue.candidateIds;
+  if (!isPlainRecord(constraintsValue) || !Array.isArray(candidateIdsValue) ||
+      !candidateIdsValue.every((candidate) => typeof candidate === 'string' && candidate.length > 0)) return false;
+  const rootKeys = Object.keys(value).sort();
+  const interactionKeys = Object.keys(interactionValue).sort();
+  const constraintKeys = Object.keys(constraintsValue).sort();
+  if (!exactPlayerArray(rootKeys, ['candidates', 'context', 'controllerId', 'id', 'interaction', 'max', 'min', 'remainingEffects', 'target']) ||
+      !exactPlayerArray(interactionKeys, ['abilityId', 'cancelPolicy', 'candidateIds', 'constraints', 'continuationRef', 'createdRevision', 'kind', 'sourceCardInstanceId', 'targetId', 'template', 'visibility']) ||
+      !exactPlayerArray(constraintKeys, ['distinct', 'kind', 'max', 'min', 'targetKind'])) return false;
+  return typeof value.id === 'string' && value.id.length > 0 &&
+    typeof value.controllerId === 'string' && value.controllerId.length > 0 &&
+    Number.isSafeInteger(value.min) && Number.isSafeInteger(value.max) &&
+    typeof contextValue.controllerId === 'string' && contextValue.controllerId.length > 0 &&
+    typeof contextValue.sourceCardId === 'string' && contextValue.sourceCardId.length > 0 &&
+    typeof contextValue.abilityId === 'string' && contextValue.abilityId.length > 0 &&
+    typeof interactionValue.sourceCardInstanceId === 'string' && interactionValue.sourceCardInstanceId.length > 0 &&
+    typeof interactionValue.abilityId === 'string' && interactionValue.abilityId.length > 0 &&
+    typeof interactionValue.continuationRef === 'string' && interactionValue.continuationRef.length > 0 &&
+    Number.isSafeInteger(interactionValue.createdRevision);
+}
+function selectedPlayedAttackTemporaryCopyCandidateIds(s: GameState, ctx: EffectContext): string[] {
+  return s.cards.filter((candidate) => {
+    if (candidate.instanceId === ctx.sourceCardId || candidate.ownerPlayerId !== ctx.controllerId ||
+        candidate.controllerPlayerId !== ctx.controllerId || candidate.zone !== 'attack_area') return false;
+    const definition = runtime(s).pack.cards[candidate.definitionId];
+    const state = runtime(s).cardState[candidate.instanceId];
+    return classifyCardPlay(definition).playKind === 'attack' && state?.playedRound === s.round.roundNumber;
+  }).map((candidate) => candidate.instanceId);
+}
+function createSelectedPlayedAttackTemporaryCopyDecision(s: GameState, ctx: EffectContext, a: AuthoringAbility): PendingDecision {
+  if (!isAcceptedSelectedPlayedAttackTemporaryCopyAbility(a, 'compiled')) {
+    reject('resolution_failed', 'Unsupported selected played-attack temporary-copy semantic shape');
+  }
+  const candidates = selectedPlayedAttackTemporaryCopyCandidateIds(s, ctx);
+  if (!candidates.length) reject('no_legal_target', 'No legal target remains');
+  const id = nextId(s, 'interaction');
+  return {
+    id, controllerId: ctx.controllerId, target: structuredClone(a.targets[0]!), candidates: [...candidates], min: 1, max: 1,
+    context: structuredClone(ctx), remainingEffects: structuredClone(a.effects),
+    interaction: {
+      kind: 'selected_played_attack_temporary_copy_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`, targetId: 'selected_attack', candidateIds: [...candidates],
+      constraints: { kind: 'target', targetKind: 'card', min: 1, max: 1, distinct: true },
+    },
+  };
+}
+function resolveSelectedPlayedAttackTemporaryCopy(s: GameState, ctx: EffectContext, effect: RuleNode): void {
+  const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (!isAcceptedSelectedPlayedAttackTemporaryCopyAbility(a, 'compiled') ||
+      effect.type !== SELECTED_PLAYED_ATTACK_TEMPORARY_COPY_EFFECT || effect.target !== 'selected_attack' ||
+      Object.keys(effect).some((key) => !['type', 'target'].includes(key))) {
+    reject('resolution_failed', 'Unsupported selected played-attack temporary-copy semantic shape');
+  }
+  if (!a.conditions.every((candidate) => condition(s, ctx, candidate))) {
+    reject('invalid_state', 'Selected attack copy source conditions no longer hold');
+  }
+  const selectedIds = ctx.selections[str(effect.target)] ?? [];
+  if (selectedIds.length !== 1 || new Set(selectedIds).size !== 1) reject('invalid_target', 'Selected attack copy requires exactly one target');
+  const selectedId = selectedIds[0]!;
+  const selected = s.cards.find((candidate) => candidate.instanceId === selectedId);
+  const selectedDefinition = selected ? runtime(s).pack.cards[selected.definitionId] : undefined;
+  const selectedState = selected ? runtime(s).cardState[selected.instanceId] : undefined;
+  if (!selected || !selectedDefinition || selected.instanceId === ctx.sourceCardId ||
+      selected.ownerPlayerId !== ctx.controllerId || selected.controllerPlayerId !== ctx.controllerId ||
+      selected.zone !== 'attack_area' || classifyCardPlay(selectedDefinition).playKind !== 'attack' ||
+      selectedState?.playedRound !== s.round.roundNumber) {
+    reject('invalid_target', 'Selected attack copy target is stale or no longer eligible');
+  }
+
+  const copyId = nextId(s, 'temporary-attack-copy');
+  s.cards.push({
+    instanceId: copyId, definitionId: selected.definitionId, ownerPlayerId: ctx.controllerId, controllerPlayerId: ctx.controllerId,
+    zone: 'attack_area', visibility: { scope: 'public' }, generatedBy: ctx.sourceCardId,
+  });
+  runtime(s).cardState[copyId] = { active: true, faceDown: false, playedRound: 0 };
+  runtime(s).ongoingEffects.push({
+    id: `temporary-copy:${copyId}`, sourceCardId: copyId, abilityId: ctx.abilityId, controllerId: ctx.controllerId,
+    starts: 'immediate', duration: 'this_round', startRound: s.round.roundNumber, expiresAtRound: s.round.roundNumber + 1,
+    cleanup: 'remove_from_game', ruleModifiers: [], publicZones: [], sourceMustRemainActive: false,
+    policyKey: SELECTED_PLAYED_ATTACK_TEMPORARY_COPY_POLICY, sourceDefinitionIdAtInstall: selected.definitionId, installedRevision: runtime(s).revision,
+  });
+}
+
 function installOngoing(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
   const applicableModifiers = a.ruleModifiers.filter(m => m.rule !== 'effect_prevention' && nodes(m.conditions).every(c => condition(s, ctx, c)));
   const duration = str(a.lifecycle.duration) || str(node(applicableModifiers[0]?.lifecycle).duration);
@@ -1313,6 +1415,22 @@ function installOngoing(s: GameState, ctx: EffectContext, a: AuthoringAbility): 
 function cleanupOngoing(s: GameState): void {
   const r = runtime(s);
   for (const o of r.ongoingEffects) {
+    if (o.policyKey === SELECTED_PLAYED_ATTACK_TEMPORARY_COPY_POLICY) {
+      if (o.duration !== 'this_round' || o.cleanup !== 'remove_from_game' || o.sourceMustRemainActive !== false ||
+          o.expiresAtRound !== o.startRound + 1) reject('resolution_failed', 'Corrupt temporary attack-copy lifecycle state');
+      if (s.round.roundNumber >= o.expiresAtRound) {
+        const temporary = s.cards.find((candidate) => candidate.instanceId === o.sourceCardId);
+        const generator = temporary?.generatedBy ? s.cards.find((candidate) => candidate.instanceId === temporary.generatedBy) : undefined;
+        const generatorAbility = generator ? runtime(s).pack.cards[generator.definitionId]?.abilities.find((candidate) => candidate.id === o.abilityId) : undefined;
+        if (!temporary || !generator || !generatorAbility || !isAcceptedSelectedPlayedAttackTemporaryCopyAbility(generatorAbility, 'compiled') ||
+            temporary.definitionId !== o.sourceDefinitionIdAtInstall || temporary.controllerPlayerId !== o.controllerId ||
+            temporary.ownerPlayerId !== o.controllerId || !Number.isInteger(o.installedRevision) || o.installedRevision! < 0) {
+          reject('resolution_failed', 'Corrupt temporary attack-copy card state');
+        }
+        if (temporary.zone !== 'removed_from_game') moveCard(s, temporary.instanceId, 'removed_from_game');
+      }
+      continue;
+    }
     if (o.sourceValidityPolicyId) {
       if (!o.sourceDefinitionIdAtInstall || !o.policyKey) reject('resolution_failed', 'Corrupt source-bound lifecycle state');
       const validity = evaluateCardSourceValidity(s, {
@@ -1633,6 +1751,10 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === node(effect.from).zone).forEach(c => moveCard(s, c.instanceId, 'deck'));
       shuffle(s, p.id); break;
     case 'shuffle_deck': shuffle(s, p.id); break;
+    case SELECTED_PLAYED_ATTACK_TEMPORARY_COPY_EFFECT: {
+      resolveSelectedPlayedAttackTemporaryCopy(s, ctx, effect);
+      break;
+    }
     case 'create_card': {
       const id = nextId(s, 'created'); const zone = str(node(effect.to).zone);
       s.cards.push({ instanceId: id, definitionId: str(effect.cardId), ownerPlayerId: p.id, controllerPlayerId: p.id,
@@ -3247,6 +3369,13 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     return;
   }
   if (isOpponentCloseToOneCandidate(a)) reject('resolution_failed', 'Unsupported opponent close-to-one interaction semantic shape');
+  if (isAcceptedSelectedPlayedAttackTemporaryCopyAbility(a, 'compiled')) {
+    runtime(s).pendingDecision = createSelectedPlayedAttackTemporaryCopyDecision(s, ctx, a);
+    return;
+  }
+  if (isSelectedPlayedAttackTemporaryCopyCandidate(a)) {
+    reject('resolution_failed', 'Unsupported selected played-attack temporary-copy semantic shape');
+  }
   if (isBattleEndMobilePlayersRewardSemantic(a)) {
     settleBattleEndMobilePlayersReward(s, ctx);
     installOngoing(s, ctx, a);
@@ -3935,11 +4064,49 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       executeAbility(s, ctx); break;
     }
     case 'choose_target': {
-      const d = r.pendingDecision;
-      if (!d || d.controllerId !== playerId || d.id !== command.decisionId) reject('illegal_decision', 'Decision is not available');
+      const decisionValue: unknown = r.pendingDecision;
+      if (!isPlainRecord(decisionValue)) reject('illegal_decision', 'Decision is not available');
+      const d = decisionValue as unknown as PendingDecision;
+      if (d.controllerId !== playerId || d.id !== command.decisionId) reject('illegal_decision', 'Decision is not available');
       const selected = command.selectedIds;
-      if (d.interaction) {
-        const meta = d.interaction;
+      const interactionValue: unknown = d.interaction;
+      if (interactionValue !== undefined) {
+        if (!isPlainRecord(interactionValue)) reject('resolution_failed', 'Corrupt pending interaction state');
+        const meta = interactionValue as unknown as NonNullable<PendingDecision['interaction']>;
+        if (meta.kind === 'selected_played_attack_temporary_copy_v1') {
+          if (!isExactSelectedPlayedAttackTemporaryCopyPersistedDecision(decisionValue)) {
+            reject('resolution_failed', 'Corrupt or stale selected played-attack temporary-copy interaction state');
+          }
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const a = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+          const target = a?.targets[0];
+          const effect = a?.effects[0];
+          const currentAllowed = a ? selectedPlayedAttackTemporaryCopyCandidateIds(s, d.context) : [];
+          const contextKeys = Object.keys(d.context).sort();
+          const variables = d.context.variables; const selections = d.context.selections;
+          const exactContext = exactPlayerArray(contextKeys, ['abilityId', 'controllerId', 'selections', 'sourceCardId', 'variables']) &&
+            variables && typeof variables === 'object' && !Array.isArray(variables) && Object.keys(variables).length === 0 &&
+            selections && typeof selections === 'object' && !Array.isArray(selections) && Object.keys(selections).length === 0;
+          const exactTarget = !!target && JSON.stringify(d.target) === JSON.stringify(target);
+          const exactEffects = !!effect && d.remainingEffects.length === 1 && JSON.stringify(d.remainingEffects[0]) === JSON.stringify(effect);
+          if (!a || !isAcceptedSelectedPlayedAttackTemporaryCopyAbility(a, 'compiled') || !source ||
+              source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId || d.controllerId !== playerId ||
+              d.context.controllerId !== playerId || d.context.sourceCardId !== meta.sourceCardInstanceId || d.context.abilityId !== meta.abilityId ||
+              !exactContext || !exactTarget || !exactEffects || meta.template !== 'target' || meta.visibility !== 'owner_only' ||
+              meta.cancelPolicy !== 'forbidden' || meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
+              meta.targetId !== 'selected_attack' || meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' ||
+              meta.constraints.min !== 1 || meta.constraints.max !== 1 || meta.constraints.distinct !== true || d.min !== 1 || d.max !== 1 ||
+              !exactPlayerArray(d.candidates, meta.candidateIds) || new Set(meta.candidateIds).size !== meta.candidateIds.length ||
+              !Array.isArray(selected) || selected.length !== 1 || new Set(selected).size !== 1 ||
+              !meta.candidateIds.includes(selected[0]!) || !currentAllowed.includes(selected[0]!)) {
+            reject('resolution_failed', 'Corrupt or stale selected played-attack temporary-copy interaction state');
+          }
+          const authoritativeContext = context(s, meta.sourceCardInstanceId, meta.abilityId);
+          authoritativeContext.selections[meta.targetId] = [...selected];
+          delete r.pendingDecision;
+          resolveSelectedPlayedAttackTemporaryCopy(s, authoritativeContext, effect);
+          break;
+        }
         if (meta.kind === 'opponent_close_non_residual_to_one_v1') {
           if (!hasExactOpponentCloseToOneDecisionRootKeys(d) || !hasExactOpponentCloseToOneInteractionRootKeys(meta)) {
             reject('resolution_failed', 'Corrupt or stale opponent close-to-one interaction state');
