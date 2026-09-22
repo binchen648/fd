@@ -1,0 +1,169 @@
+{
+  "schemaVersion": "fd-phase3-ledger-92-review-overlay-v1",
+  "task": "P3-A-LEDGER-92-R-VERDICT-SYNC",
+  "baselineCandidate": "6abf5a80b251eaf4009bc01ed7377574c2191c1e",
+  "baselineReviewSync": "4f3d469390c01aea591279e49d770ae9fda11609",
+  "verdictScope": "12_NEW_RUNTIME_SEMANTIC_ROUTED_ROWS",
+  "reviewedEffectiveCounts": {
+    "NEW_RUNTIME_SEMANTIC_ROUTED": 9,
+    "LEGACY_RESOLVE_EFFECT": 52,
+    "LEGACY_EXECUTE_ABILITY": 3,
+    "NOT_CLASSIFIABLE": 28,
+    "totalAbilities": 92
+  },
+  "reviewedGateCounts": {
+    "gateAPass": 9,
+    "gateBPass": 9,
+    "gateCPass": 6,
+    "gateCRepairRequired": 1,
+    "gateCNotVerified": 5
+  },
+  "verdictCounts": {
+    "ACCEPTED": 6,
+    "AB_ACCEPTED": 2,
+    "EVIDENCE_REPAIR_REQUIRED": 1,
+    "RUNTIME_REPAIR_REQUIRED": 3
+  },
+  "findings": [
+    {
+      "severity": "P1",
+      "id": "SETUP_CREATE_TO_SKILL_FALSE_NEW_RUNTIME_CLASSIFICATION",
+      "affectedAbilityKeys": [
+        "master.maiya/master.maiya.skill.military/military.has-support-shot",
+        "master.olga-marie/master.olga-marie.skill.astronomical-science/astronomical-science.has-chaldeas",
+        "master.shinji/master.shinji.skill.useless-person/useless-person.setup"
+      ],
+      "effectiveRouteUntilRepairAcceptance": "LEGACY_RESOLVE_EFFECT",
+      "requiredRepair": "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL_CURRENT_LINEAGE_REPAIR",
+      "nextOwner": "B",
+      "boundary": "The repair is limited to the three exact game_start + create_card(to=skill) abilities."
+    },
+    {
+      "severity": "P2",
+      "id": "MAIYA_ADD_TO_ATTACK_GATE_C_FIXTURE_DRIFT",
+      "affectedAbilityKeys": [
+        "master.maiya/master.maiya.skill.military/military.attach-support-shot"
+      ],
+      "runtimeStatus": "NO_RUNTIME_DEFECT_FOUND",
+      "requiredRepair": "Replace the stale deterministic fixture expectation created-4 with the authoritative created-3 identity and rerun Gate C.",
+      "nextOwner": "EVIDENCE_REPAIR",
+      "boundary": "Must not be included in the setup runtime repair slice."
+    }
+  ],
+  "abilities": [
+    {
+      "abilityKey": "master.gatou/master.gatou.command-spell/command-spell.gain-mana",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "PASS",
+      "rVerdict": "ACCEPTED",
+      "nextOwner": "NONE"
+    },
+    {
+      "abilityKey": "master.irisviel/master.irisviel.skill.conversion-magic/conversion-magic.preparation",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "PASS",
+      "rVerdict": "ACCEPTED",
+      "nextOwner": "NONE"
+    },
+    {
+      "abilityKey": "master.kayneth/master.kayneth.deck.volumen-hydrargyrum/volumen.extra-play",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "PASS",
+      "rVerdict": "ACCEPTED",
+      "nextOwner": "NONE"
+    },
+    {
+      "abilityKey": "master.kiritsugu/master.kiritsugu.skill.time-alter/time-alter.action",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "PASS",
+      "rVerdict": "ACCEPTED",
+      "nextOwner": "NONE"
+    },
+    {
+      "abilityKey": "master.maiya/master.maiya.skill.military/military.attach-support-shot",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "REPAIR",
+      "rVerdict": "EVIDENCE_REPAIR_REQUIRED",
+      "nextOwner": "EVIDENCE_REPAIR"
+    },
+    {
+      "abilityKey": "master.maiya/master.maiya.skill.military/military.has-support-shot",
+      "effectiveRoute": "LEGACY_RESOLVE_EFFECT",
+      "gateA": "FAIL",
+      "gateB": "FAIL",
+      "gateC": "NOT_VERIFIED",
+      "rVerdict": "RUNTIME_REPAIR_REQUIRED",
+      "nextOwner": "B"
+    },
+    {
+      "abilityKey": "master.olga-marie/master.olga-marie.command-spell/command-spell.gain-mana",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "NOT_VERIFIED",
+      "rVerdict": "AB_ACCEPTED",
+      "nextOwner": "GATE_C_EVIDENCE"
+    },
+    {
+      "abilityKey": "master.olga-marie/master.olga-marie.skill.astronomical-science/astronomical-science.first-loss",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "PASS",
+      "rVerdict": "ACCEPTED",
+      "nextOwner": "NONE"
+    },
+    {
+      "abilityKey": "master.olga-marie/master.olga-marie.skill.astronomical-science/astronomical-science.has-chaldeas",
+      "effectiveRoute": "LEGACY_RESOLVE_EFFECT",
+      "gateA": "FAIL",
+      "gateB": "FAIL",
+      "gateC": "NOT_VERIFIED",
+      "rVerdict": "RUNTIME_REPAIR_REQUIRED",
+      "nextOwner": "B"
+    },
+    {
+      "abilityKey": "master.shinji/master.shinji.skill.useless-person/useless-person.setup",
+      "effectiveRoute": "LEGACY_RESOLVE_EFFECT",
+      "gateA": "FAIL",
+      "gateB": "FAIL",
+      "gateC": "NOT_VERIFIED",
+      "rVerdict": "RUNTIME_REPAIR_REQUIRED",
+      "nextOwner": "B"
+    },
+    {
+      "abilityKey": "servant.artoria-alt/servant.artoria-alt.skill.sc-artoria-alt-2/sc-artoria-alt-2.angra-mainyu-embrace",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "PASS",
+      "rVerdict": "ACCEPTED",
+      "nextOwner": "NONE"
+    },
+    {
+      "abilityKey": "servant.tomoe/servant.tomoe.skill.sc-tomoe-1/sc-tomoe-1.independent-action",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "NOT_VERIFIED",
+      "rVerdict": "AB_ACCEPTED",
+      "nextOwner": "GATE_C_EVIDENCE"
+    }
+  ],
+  "nonClaims": [
+    "The accepted 6abf5a8 automation baseline is not rewritten.",
+    "The three setup abilities do not receive new-runtime credit until B repair and fresh R acceptance.",
+    "Maiya Gate C fixture repair does not authorize runtime changes.",
+    "No Phase 3 or Release promotion is granted."
+  ]
+}
