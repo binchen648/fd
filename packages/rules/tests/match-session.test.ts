@@ -530,6 +530,42 @@ describe('MatchSession semi-auto runtime', () => {
     }
   });
 
+  it('authenticates the resolved prefix behind the production Artoria Caster recon continuation', () => {
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p5', humanPlayerIds: ['p5'] });
+    advanceAbilityPhase(session.state, 'action', session.state.round.roundNumber);
+    session.state.round.prioritySeat = 5;
+    const player = session.state.players.find((candidate) => candidate.id === 'p5')!;
+    player.mana = 12;
+    player.locationId = 'recon';
+    const source = session.state.cards.find((card) =>
+      card.ownerPlayerId === 'p5' && card.definitionId === 'servant.artoriac.skill.sc-artoriac-4')!;
+    expect(source).toBeTruthy();
+    expect(session.dispatchPlayerAction('p5', { type: 'play_card', cardInstanceId: source.instanceId }).ok).toBe(true);
+    session.state.round.prioritySeat = 5;
+    expect(session.dispatchPlayerAction('p5', {
+      type: 'activate_ability',
+      cardInstanceId: source.instanceId,
+      abilityId: 'sc-artoriac-4.recon-gain-vp-and-move',
+    }).ok).toBe(true);
+    expect(session.state.players.find((candidate) => candidate.id === 'p5')!.vp).toBe(2);
+    expect(session.state.abilityRuntime!.pendingDecision!.remainingEffects.map((effect) => effect.type)).toEqual(['move_player']);
+
+    const durable = session.serializeSession();
+    expect(durable.deferredRuntimeStateSeal).toBeDefined();
+    expect(restoreMatchSession(durable).state.players.find((candidate) => candidate.id === 'p5')!.vp).toBe(2);
+
+    const erasedPrefix: any = structuredClone(durable);
+    erasedPrefix.state.players.find((candidate: any) => candidate.id === 'p5').vp = 0;
+    expect(() => restoreMatchSession(erasedPrefix)).toThrow('Invalid or missing deferred runtime state authority');
+
+    const forgedReplayPrefix: any = structuredClone(durable);
+    const sensitiveReplay = [...forgedReplayPrefix.replaySnapshots].reverse().find((entry: any) =>
+      entry.state.abilityRuntime?.pendingDecision && entry.deferredRuntimeStateSeal);
+    expect(sensitiveReplay).toBeTruthy();
+    sensitiveReplay.state.players.find((candidate: any) => candidate.id === 'p5').vp = 0;
+    expect(() => restoreMatchSession(forgedReplayPrefix)).toThrow('Invalid or missing replay deferred runtime state authority');
+  });
+
   it('restores a replay checkpoint by id', () => {
     const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
     const firstCheckpoint = session.projectToClientState('p1').replay[0]!;

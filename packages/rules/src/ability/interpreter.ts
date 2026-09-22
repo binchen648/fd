@@ -1800,7 +1800,8 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
       const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
       const triggerSuffix = `:first-loss:${entry.controllerId}`;
-      if (!source || !ability || !isActivateCardByIdTrigger(ability) ||
+      if (!source || source.ownerPlayerId !== entry.controllerId || !ability || !isActivateCardByIdTrigger(ability) ||
+          (source.visibility.scope === 'owner_only' && source.visibility.ownerPlayerId !== entry.controllerId) ||
           str(ability.effects[0]?.definitionId) !== entry.definitionId || entry.round !== s.round.roundNumber ||
           !r.processedEvents.includes(entry.triggerEventId) || !entry.triggerEventId.endsWith(triggerSuffix)) return false;
       const resultId = entry.triggerEventId.slice(0, -triggerSuffix.length);

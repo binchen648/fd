@@ -27,7 +27,7 @@ import {
   type OpponentCloseToOneReplayManifestSeal,
   type OpponentCloseToOneServerAuthoritySeal,
 } from './ability/opponent-close-to-one-authority';
-import { sha256Hex } from './ability/portable-sha256';
+import { hmacSha256Hex, sha256Hex } from './ability/portable-sha256';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './ability/deployment-destinations';
@@ -170,9 +170,18 @@ export interface MatchClientState {
   rejection?: DispatchResult['rejection'];
 }
 
+export interface DeferredRuntimeStateSeal {
+  version: 1;
+  checkpointId: string | null;
+  stateDigest: string;
+  mac: string;
+}
+
 export interface MatchReplayStateSnapshot {
   checkpointId: string;
   state: GameState;
+  /** Host-authenticated binding for generic continuations / delayed executable authority. */
+  deferredRuntimeStateSeal?: DeferredRuntimeStateSeal;
   /** Authenticated FB2-49 frozen continuation; sealing secret is outside this snapshot. */
   opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySeal;
   logs: MatchSessionLogEntry[];
@@ -189,6 +198,8 @@ export interface MatchSessionSnapshot {
   humanPlayerIds: string[];
   maxActionsPerPlayer: number;
   state: GameState;
+  /** Host-authenticated binding for generic continuations / delayed executable authority. */
+  deferredRuntimeStateSeal?: DeferredRuntimeStateSeal;
   /** Authenticated FB2-49 frozen continuation; sealing secret is outside this snapshot. */
   opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySeal;
   /** Authenticated replay membership for durable host/room persistence; host scope and secret remain external. */
@@ -218,6 +229,50 @@ function persistedOpponentCloseToOneAuthorityField(
 ): { opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySeal } {
   const seal = persistOpponentCloseToOneServerAuthority(state, persistenceSecret, persistenceScope, replayCheckpointId);
   return seal ? { opponentCloseToOneServerAuthority: seal } : {};
+}
+
+function hasSensitiveDeferredRuntimeState(state: GameState): boolean {
+  const runtime = state.abilityRuntime;
+  if (!runtime) return false;
+  return (!!runtime.pendingDecision && runtime.pendingDecision.interaction === undefined) ||
+    (runtime.pendingDelayedActivations?.length ?? 0) > 0;
+}
+
+function deferredRuntimeStateSealPayload(checkpointId: string | null, stateDigest: string): string {
+  return `fd-deferred-runtime-state-v1\n${checkpointId ?? ''}\n${stateDigest}`;
+}
+
+function persistDeferredRuntimeStateSeal(
+  state: GameState,
+  persistenceSecret: string,
+  checkpointId?: string,
+): { deferredRuntimeStateSeal?: DeferredRuntimeStateSeal } {
+  if (!hasSensitiveDeferredRuntimeState(state)) return {};
+  const normalizedCheckpointId = checkpointId ?? null;
+  const stateDigest = sha256Hex(JSON.stringify(state));
+  return {
+    deferredRuntimeStateSeal: {
+      version: 1,
+      checkpointId: normalizedCheckpointId,
+      stateDigest,
+      mac: hmacSha256Hex(persistenceSecret, deferredRuntimeStateSealPayload(normalizedCheckpointId, stateDigest)),
+    },
+  };
+}
+
+function verifyDeferredRuntimeStateSeal(
+  state: GameState,
+  seal: DeferredRuntimeStateSeal | undefined,
+  persistenceSecret: string,
+  checkpointId?: string,
+): boolean {
+  if (!hasSensitiveDeferredRuntimeState(state)) return seal === undefined;
+  const expectedCheckpointId = checkpointId ?? null;
+  if (!seal || seal.version !== 1 || seal.checkpointId !== expectedCheckpointId ||
+      typeof seal.stateDigest !== 'string' || typeof seal.mac !== 'string') return false;
+  const stateDigest = sha256Hex(JSON.stringify(state));
+  return seal.stateDigest === stateDigest &&
+    seal.mac === hmacSha256Hex(persistenceSecret, deferredRuntimeStateSealPayload(expectedCheckpointId, stateDigest));
 }
 
 function replayCheckpointDigest(snapshot: MatchReplayStateSnapshot): string {
@@ -1938,6 +1993,7 @@ export class MatchSession {
 
   serializeSession(): MatchSessionSnapshot {
     const authorityField = persistedOpponentCloseToOneAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
+    const deferredRuntimeField = persistDeferredRuntimeStateSeal(this.state, this.persistenceSecret);
     const currentSeal = authorityField.opponentCloseToOneServerAuthority;
     const replayEntries = replayManifestEntries(this.replaySnapshots);
     rememberOpponentCloseToOneTrustedReplayLineage(this.persistenceScope, this.state, replayEntries);
@@ -1949,6 +2005,7 @@ export class MatchSession {
       humanPlayerIds: [...this.humanPlayerIds],
       maxActionsPerPlayer: this.maxActionsPerPlayer,
       state: structuredClone(this.state),
+      ...deferredRuntimeField,
       ...authorityField,
       ...(replaySensitive ? {
         opponentCloseToOneReplayManifest: persistOpponentCloseToOneReplayManifest(
@@ -1994,6 +2051,12 @@ export class MatchSession {
   restoreToCheckpoint(checkpointId: string): boolean {
     const snapshot = this.replaySnapshots.find((candidate) => candidate.checkpointId === checkpointId);
     if (!snapshot) return false;
+    if (!verifyDeferredRuntimeStateSeal(
+      snapshot.state,
+      snapshot.deferredRuntimeStateSeal,
+      this.persistenceSecret,
+      checkpointId,
+    )) return false;
     const candidateState = structuredClone(snapshot.state);
     const candidateLogs = structuredClone(snapshot.logs);
     const candidateBattleHistory = structuredClone(snapshot.battleHistory);
@@ -2666,6 +2729,7 @@ export class MatchSession {
     const replaySnapshot: MatchReplayStateSnapshot = {
       checkpointId: checkpoint.id,
       state: structuredClone(state),
+      ...persistDeferredRuntimeStateSeal(state, this.persistenceSecret, checkpoint.id),
       ...persistedOpponentCloseToOneAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
       logs: structuredClone(this.logs),
       battleHistory: structuredClone(this.battleHistory),
@@ -2722,6 +2786,15 @@ export function restoreMatchSession(
   }
   const persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
   const persistenceScope = config.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
+  if (!verifyDeferredRuntimeStateSeal(snapshot.state, snapshot.deferredRuntimeStateSeal, persistenceSecret)) {
+    throw new Error('Invalid or missing deferred runtime state authority');
+  }
+  if (!snapshot.replaySnapshots.every((entry) => verifyDeferredRuntimeStateSeal(
+    entry.state,
+    entry.deferredRuntimeStateSeal,
+    persistenceSecret,
+    entry.checkpointId,
+  ))) throw new Error('Invalid or missing replay deferred runtime state authority');
   const candidateState = structuredClone(snapshot.state);
   if (!restoreOpponentCloseToOneServerAuthority(
     candidateState,

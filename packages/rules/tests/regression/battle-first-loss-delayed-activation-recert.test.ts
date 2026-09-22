@@ -206,6 +206,11 @@ describe('P3-B17 Olga first-loss ACTIVATE TO14 recertification', () => {
     expect(isDeferredAbilityRuntimeProvenanceValidForRestore(forged.state)).toBe(false);
     expect(() => restoreMatchSession(forged)).toThrow('Invalid MatchSession state container');
 
+    const wrongOwner: any = structuredClone(durable);
+    wrongOwner.state.cards.find((card: any) => card.instanceId === astronomyInstanceId).ownerPlayerId = 'p1';
+    expect(isDeferredAbilityRuntimeProvenanceValidForRestore(wrongOwner.state)).toBe(false);
+    expect(() => restoreMatchSession(wrongOwner)).toThrow('Invalid MatchSession state container');
+
     const stagedSnapshot = JSON.stringify(session.state.abilityRuntime!.pendingDelayedActivations);
     processAbilityEvent(session.state, structuredClone(firstLoss!));
     expect(JSON.stringify(session.state.abilityRuntime!.pendingDelayedActivations)).toBe(stagedSnapshot);
