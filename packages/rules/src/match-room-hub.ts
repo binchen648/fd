@@ -124,12 +124,13 @@ export class MatchRoomHub {
     const existing = this.getRoom(roomId);
     const existingPersistence = existing.getPersistenceContext();
     const restored = restoreMatchRoom(snapshot, existingPersistence);
+    const projection = restored.getProjection(restored.hostClientId);
     if (!restored.session && existingPersistence.persistenceScope) {
       revokeOpponentCloseToOnePersistenceTrust(existingPersistence.persistenceScope);
     }
     this.rooms.set(roomId, restored);
     this.bump(roomId, 'room_restored');
-    return restored.getProjection(restored.hostClientId);
+    return projection;
   }
 
   restore(snapshot: MatchRoomHubSnapshot): void {

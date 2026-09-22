@@ -293,15 +293,91 @@ function isRestoreRecordArray(value: unknown): boolean {
   return Array.isArray(value) && value.every(isRestoreRecord);
 }
 
+function isRestoreCardRuntimeState(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.active === 'boolean' && typeof value.faceDown === 'boolean' &&
+    Number.isSafeInteger(value.playedRound) && (value.paidManaOnPlay === undefined ||
+      (typeof value.paidManaOnPlay === 'number' && Number.isFinite(value.paidManaOnPlay))) &&
+    (value.reversed === undefined || typeof value.reversed === 'boolean') &&
+    (value.attributeOverrides === undefined || isRestoreStringArray(value.attributeOverrides));
+}
+
+function isRestoreAbilityDefinition(value: unknown): boolean {
+  if (!isRestoreRecord(value) || typeof value.id !== 'string' || typeof value.kind !== 'string' ||
+      typeof value.printedClause !== 'string' || !isRestoreRecord(value.activation) ||
+      !Array.isArray(value.conditions) || !value.conditions.every(isRestoreRecord) ||
+      !Array.isArray(value.targets) || !value.targets.every(isRestoreRecord) ||
+      !Array.isArray(value.effects) || !value.effects.every(isRestoreRecord) ||
+      !Array.isArray(value.cost) || !value.cost.every(isRestoreRecord) ||
+      !Array.isArray(value.ruleModifiers) || !value.ruleModifiers.every(isRestoreRecord) ||
+      !Array.isArray(value.creates) || !value.creates.every(isRestoreRecord) ||
+      !isRestoreRecord(value.lifecycle) || !isRestoreRecord(value.responseWindow) ||
+      !isRestoreRecord(value.limit) || !isRestoreRecord(value.visibility) || !isRestoreRecord(value.execution)) return false;
+  return typeof value.execution.mode === 'string' && isRestoreStringArray(value.execution.allowedOperations);
+}
+
+function isRestoreAbilityCardDefinition(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.id === 'string' && typeof value.name === 'string' &&
+    typeof value.cardType === 'string' && isRestoreRecord(value.cardFace) && isRestoreRecord(value.playTiming) &&
+    Array.isArray(value.playRequirements) && value.playRequirements.every(isRestoreRecord) &&
+    Array.isArray(value.abilities) && value.abilities.every(isRestoreAbilityDefinition);
+}
+
+function isRestoreCharacterDefinition(value: unknown, cards: Record<string, unknown>): boolean {
+  if (!isRestoreRecord(value) || typeof value.id !== 'string' || typeof value.name !== 'string' ||
+      (value.kind !== 'master' && value.kind !== 'servant') || !isRestoreStringArray(value.cardIds) ||
+      !isRestoreRecord(value.publicInformation) || (value.class !== undefined && typeof value.class !== 'string')) return false;
+  return value.cardIds.every((cardId) => isRestoreAbilityCardDefinition(cards[cardId]));
+}
+
+function isRestoreServantPackage(value: unknown): boolean {
+  if (value === undefined) return true;
+  if (!isRestoreRecord(value) || typeof value.id !== 'string' || typeof value.name !== 'string' ||
+      typeof value.class !== 'string' || !isRestoreRecord(value.publicInformation) ||
+      !Array.isArray(value.skillCards) || !Array.isArray(value.knownCardDefinitions)) return false;
+  const validCard = (entry: unknown) => isRestoreRecord(entry) && typeof entry.id === 'string' &&
+    typeof entry.name === 'string' && typeof entry.printedText === 'string' && isRestoreRecord(entry.cardFace);
+  return value.skillCards.every(validCard) && value.knownCardDefinitions.every(validCard);
+}
+
+function isRestoreAbilityPack(value: unknown): boolean {
+  if (!isRestoreRecord(value) || !isRestoreRecord(value.cards)) return false;
+  const cards = value.cards;
+  if (!Object.values(cards).every(isRestoreAbilityCardDefinition)) return false;
+  if (value.characters !== undefined) {
+    if (!isRestoreRecord(value.characters) ||
+        !Object.values(value.characters).every((entry) => isRestoreCharacterDefinition(entry, cards))) return false;
+  }
+  if (!isRestoreServantPackage(value.servantPackage)) return false;
+  if (value.schemaVersion === 'fd-executable-card-pack-v1') {
+    try {
+      assertExecutableCardPack(value, uncheckedContent);
+    } catch {
+      return false;
+    }
+  }
+  return true;
+}
+
+function isRestoreRoundPlayCounters(value: unknown): boolean {
+  if (!isRestoreRecord(value) || !Number.isSafeInteger(value.round) || !isRestoreRecord(value.cardsPlayedByPlayer) ||
+      !isRestoreRecord(value.attacksDeclaredByPlayer) ||
+      (value.faceUpCardsPlayedByPlayer !== undefined && !isRestoreRecord(value.faceUpCardsPlayedByPlayer))) return false;
+  const isCountMap = (candidate: Record<string, unknown>) => Object.values(candidate)
+    .every((count) => Number.isSafeInteger(count) && (count as number) >= 0);
+  return isCountMap(value.cardsPlayedByPlayer) && isCountMap(value.attacksDeclaredByPlayer) &&
+    (value.faceUpCardsPlayedByPlayer === undefined || isCountMap(value.faceUpCardsPlayedByPlayer));
+}
+
 function isRestoreAbilityRuntimeBoundary(value: unknown): boolean {
   if (value === undefined) return true;
-  if (!isRestoreRecord(value) || !isRestoreRecord(value.pack) || !isRestoreRecord(value.pack.cards) ||
-      !isRestoreRecord(value.cardState) || !Number.isSafeInteger(value.revision) || !Number.isSafeInteger(value.sequence) ||
+  if (!isRestoreRecord(value) || !isRestoreAbilityPack(value.pack) || !isRestoreRecord(value.cardState) ||
+      !Object.values(value.cardState).every(isRestoreCardRuntimeState) ||
+      !Number.isSafeInteger(value.revision) || !Number.isSafeInteger(value.sequence) ||
       typeof value.randomState !== 'number' || !Number.isFinite(value.randomState) ||
       !isRestoreRecordArray(value.ongoingEffects) || !isRestoreRecordArray(value.responseWindows) ||
       !isRestoreStringArray(value.revealedServants) || !isRestoreRecordArray(value.events) ||
       !isRestoreRecordArray(value.calculations) || !isRestoreRecordArray(value.hostRequests) ||
-      !isRestoreRecord(value.playCounters)) return false;
+      !isRestoreRoundPlayCounters(value.playCounters)) return false;
   if (value.pendingDecision !== undefined) {
     const decision = value.pendingDecision;
     if (!isRestoreRecord(decision) || typeof decision.id !== 'string' || typeof decision.controllerId !== 'string' ||
@@ -1836,6 +1912,7 @@ export function restoreMatchSession(
   if (!hasCoherentReplayRestoreEnvelope(snapshot.replay, snapshot.replaySnapshots)) {
     throw new Error('Invalid FB2-49 replay snapshot container');
   }
+  if (!isRestoreGameState(snapshot.state)) throw new Error('Invalid MatchSession state container');
   const persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
   const persistenceScope = config.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
   const candidateState = structuredClone(snapshot.state);

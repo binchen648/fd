@@ -27,4 +27,26 @@ describe('MatchRoomHub local multiplayer transport layer', () => {
     restoredHub.restore(snapshot);
     expect(restoredHub.project(roomId, 'bob').viewer.playerId).toBe('p2');
   });
+
+  it('keeps room identity, state, and Hub version unchanged when top-level restored GameState is malformed', () => {
+    const hub = createMatchRoomHub();
+    const roomId = hub.createRoom({ roomId: 'restore-atomic-room', seed: 20260905, hostClientId: 'host-a' }).roomId;
+    hub.joinRoom(roomId, { clientId: 'alice', displayName: 'Alice' });
+    hub.joinRoom(roomId, { clientId: 'bob', displayName: 'Bob' });
+    hub.selectSeat(roomId, 'alice', 1);
+    hub.selectSeat(roomId, 'bob', 2);
+    hub.startMatch(roomId, 'host-a');
+
+    const beforeRoom = hub.getRoom(roomId);
+    const beforeSnapshot = structuredClone(beforeRoom.serializeRoom());
+    const beforeVersion = hub.version(roomId);
+    const malformed: any = structuredClone(beforeSnapshot);
+    malformed.session.state.players = [null];
+
+    expect(() => hub.restoreRoom(roomId, malformed)).toThrow('Invalid MatchSession state container');
+    expect(hub.getRoom(roomId)).toBe(beforeRoom);
+    expect(hub.getRoom(roomId).serializeRoom()).toEqual(beforeSnapshot);
+    expect(hub.version(roomId)).toBe(beforeVersion);
+  });
+
 });

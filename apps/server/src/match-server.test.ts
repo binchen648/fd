@@ -219,6 +219,7 @@ describe('match websocket server', () => {
     delete mixedPrefix.session.opponentCloseToOneReplayManifest;
     const beforeRoom = serverHandle.hub.getRoom('fb2-49-http-guard');
     const beforeVersion = serverHandle.hub.version('fb2-49-http-guard');
+    const beforeRoomSnapshot = structuredClone(beforeRoom.serializeRoom());
     const mixedResponse = await fetch(`${httpBase}/rooms/fb2-49-http-guard/restore`, {
       method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot: mixedPrefix }),
     });
@@ -252,6 +253,18 @@ describe('match websocket server', () => {
     const malformedBody = await malformedResponse.json() as { code: string; message: string };
     expect(malformedBody).toEqual({ code: 'bad_request', message: 'Invalid FB2-49 replay snapshot container' });
     expect(serverHandle.hub.getRoom('fb2-49-http-guard')).toBe(beforeRoom);
+    expect(serverHandle.hub.version('fb2-49-http-guard')).toBe(beforeVersion);
+
+    const malformedTopLevel: any = structuredClone(beforeRoom.serializeRoom());
+    malformedTopLevel.session.state.players = [null];
+    const malformedTopLevelResponse = await fetch(`${httpBase}/rooms/fb2-49-http-guard/restore`, {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot: malformedTopLevel }),
+    });
+    expect(malformedTopLevelResponse.status).toBe(400);
+    const malformedTopLevelBody = await malformedTopLevelResponse.json() as { code: string; message: string };
+    expect(malformedTopLevelBody).toEqual({ code: 'bad_request', message: 'Invalid MatchSession state container' });
+    expect(serverHandle.hub.getRoom('fb2-49-http-guard')).toBe(beforeRoom);
+    expect(serverHandle.hub.getRoom('fb2-49-http-guard').serializeRoom()).toEqual(beforeRoomSnapshot);
     expect(serverHandle.hub.version('fb2-49-http-guard')).toBe(beforeVersion);
   });
 

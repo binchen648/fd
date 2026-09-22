@@ -1096,6 +1096,21 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const malformedPlayer: any = structuredClone(rules.createMatchSession().serializeSession());
     malformedPlayer.replaySnapshots[0].state.players = [null];
     expect(() => rules.restoreMatchSession(malformedPlayer)).toThrow('Invalid FB2-49 replay snapshot container');
+
+    const malformedCharacter: any = structuredClone(rules.createMatchSession().serializeSession());
+    const servantId = malformedCharacter.replaySnapshots[0].state.players[0].servantCardId;
+    malformedCharacter.replaySnapshots[0].state.abilityRuntime.pack.characters[servantId] = {};
+    expect(() => rules.restoreMatchSession(malformedCharacter)).toThrow('Invalid FB2-49 replay snapshot container');
+
+    const malformedCardState: any = structuredClone(rules.createMatchSession().serializeSession());
+    malformedCardState.replaySnapshots[0].state.abilityRuntime.cardState['malformed-runtime-card'] = { active: true };
+    expect(() => rules.restoreMatchSession(malformedCardState)).toThrow('Invalid FB2-49 replay snapshot container');
+  });
+
+  it('rejects a malformed top-level restored GameState before any session state is constructed', () => {
+    const malformed: any = structuredClone(rules.createMatchSession().serializeSession());
+    malformed.state.players = [null];
+    expect(() => rules.restoreMatchSession(malformed)).toThrow('Invalid MatchSession state container');
   });
 
   it('round-trips ordinary no-FB2 room and fresh-Hub snapshots without persistence-scope coupling', () => {
