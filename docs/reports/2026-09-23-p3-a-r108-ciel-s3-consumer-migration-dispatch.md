@@ -95,6 +95,11 @@ The authorized Ciel s3 exact +1 necessarily makes repository overlap `149/944`. 
 
 No Atalanta production data, runtime behavior, semantic assertion, or other test may change.
 
+## Historical Ciel-s2 test compatibility authorization
+
+Focused S validation exposed one additional historical snapshot in `packages/rules/tests/regression/fb2-ciel-s2-support-definition.test.ts`: the recovery-era assertion `expect(raw.cards).toHaveLength(2)` encoded the then-current mixed rules-only archive population rather than an invariant of the accepted Ciel s2 definition. The authorized s3 append makes that archive length `3` without changing s1a or s2 semantics.
+
+S is therefore additionally authorized to modify only that one Ciel-s2 test assertion, replacing the absolute archive-length snapshot with stable preservation checks that `master.ciel.skill.s1a` and `master.ciel.skill.s2` are each still present exactly once. No other Ciel-s2 assertion, runtime behavior, production data, or accepted semantic may change.
 ## S scope
 
 Fresh S is authorized only to:
@@ -134,4 +139,5 @@ S must prove at minimum:
 Formal migration remains `153/944`, with `791` remaining until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A synchronizes that acceptance.
 
 Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
+
 
