@@ -50,6 +50,12 @@ import {
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
 import {
+  SELECTED_PLAYED_ATTACK_TEMPORARY_COPY_EFFECT,
+  SELECTED_PLAYED_ATTACK_TEMPORARY_COPY_POLICY,
+  isAcceptedSelectedPlayedAttackTemporaryCopyAbility,
+  isSelectedPlayedAttackTemporaryCopyCandidate,
+} from './selected-played-attack-temporary-copy';
+import {
   advanceOpponentCloseToOneServerAuthority,
   clearOpponentCloseToOneServerAuthority,
   copyOpponentCloseToOneServerAuthority,
@@ -1254,6 +1260,43 @@ function pushLifecycleTransition(s: GameState, ongoing: OngoingEffect, kind: 'in
     roundId: s.round.roundNumber,
   });
 }
+function resolveSelectedPlayedAttackTemporaryCopy(s: GameState, ctx: EffectContext, effect: RuleNode): void {
+  const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (!isAcceptedSelectedPlayedAttackTemporaryCopyAbility(a, 'compiled') ||
+      effect.type !== SELECTED_PLAYED_ATTACK_TEMPORARY_COPY_EFFECT || effect.target !== 'selected_attack' ||
+      Object.keys(effect).some((key) => !['type', 'target'].includes(key))) {
+    reject('resolution_failed', 'Unsupported selected played-attack temporary-copy semantic shape');
+  }
+  if (!a.conditions.every((candidate) => condition(s, ctx, candidate))) {
+    reject('invalid_state', 'Selected attack copy source conditions no longer hold');
+  }
+  const selectedIds = ctx.selections[str(effect.target)] ?? [];
+  if (selectedIds.length !== 1 || new Set(selectedIds).size !== 1) reject('invalid_target', 'Selected attack copy requires exactly one target');
+  const selectedId = selectedIds[0]!;
+  const selected = s.cards.find((candidate) => candidate.instanceId === selectedId);
+  const selectedDefinition = selected ? runtime(s).pack.cards[selected.definitionId] : undefined;
+  const selectedState = selected ? runtime(s).cardState[selected.instanceId] : undefined;
+  if (!selected || !selectedDefinition || selected.instanceId === ctx.sourceCardId ||
+      selected.ownerPlayerId !== ctx.controllerId || selected.controllerPlayerId !== ctx.controllerId ||
+      selected.zone !== 'attack_area' || !isAttack(selectedDefinition) ||
+      selectedState?.playedRound !== s.round.roundNumber) {
+    reject('invalid_target', 'Selected attack copy target is stale or no longer eligible');
+  }
+
+  const copyId = nextId(s, 'temporary-attack-copy');
+  s.cards.push({
+    instanceId: copyId, definitionId: selected.definitionId, ownerPlayerId: ctx.controllerId, controllerPlayerId: ctx.controllerId,
+    zone: 'attack_area', visibility: { scope: 'public' }, generatedBy: ctx.sourceCardId,
+  });
+  runtime(s).cardState[copyId] = { active: true, faceDown: false, playedRound: 0 };
+  runtime(s).ongoingEffects.push({
+    id: `temporary-copy:${copyId}`, sourceCardId: copyId, abilityId: ctx.abilityId, controllerId: ctx.controllerId,
+    starts: 'immediate', duration: 'this_round', startRound: s.round.roundNumber, expiresAtRound: s.round.roundNumber + 1,
+    cleanup: 'remove_from_game', ruleModifiers: [], publicZones: [], sourceMustRemainActive: false,
+    policyKey: SELECTED_PLAYED_ATTACK_TEMPORARY_COPY_POLICY, sourceDefinitionIdAtInstall: selected.definitionId, installedRevision: runtime(s).revision,
+  });
+}
+
 function installOngoing(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
   const applicableModifiers = a.ruleModifiers.filter(m => m.rule !== 'effect_prevention' && nodes(m.conditions).every(c => condition(s, ctx, c)));
   const duration = str(a.lifecycle.duration) || str(node(applicableModifiers[0]?.lifecycle).duration);
@@ -1313,6 +1356,22 @@ function installOngoing(s: GameState, ctx: EffectContext, a: AuthoringAbility): 
 function cleanupOngoing(s: GameState): void {
   const r = runtime(s);
   for (const o of r.ongoingEffects) {
+    if (o.policyKey === SELECTED_PLAYED_ATTACK_TEMPORARY_COPY_POLICY) {
+      if (o.duration !== 'this_round' || o.cleanup !== 'remove_from_game' || o.sourceMustRemainActive !== false ||
+          o.expiresAtRound !== o.startRound + 1) reject('resolution_failed', 'Corrupt temporary attack-copy lifecycle state');
+      if (s.round.roundNumber >= o.expiresAtRound) {
+        const temporary = s.cards.find((candidate) => candidate.instanceId === o.sourceCardId);
+        const generator = temporary?.generatedBy ? s.cards.find((candidate) => candidate.instanceId === temporary.generatedBy) : undefined;
+        const generatorAbility = generator ? runtime(s).pack.cards[generator.definitionId]?.abilities.find((candidate) => candidate.id === o.abilityId) : undefined;
+        if (!temporary || !generator || !generatorAbility || !isAcceptedSelectedPlayedAttackTemporaryCopyAbility(generatorAbility, 'compiled') ||
+            temporary.definitionId !== o.sourceDefinitionIdAtInstall || temporary.controllerPlayerId !== o.controllerId ||
+            temporary.ownerPlayerId !== o.controllerId || !Number.isInteger(o.installedRevision) || o.installedRevision! < 0) {
+          reject('resolution_failed', 'Corrupt temporary attack-copy card state');
+        }
+        if (temporary.zone !== 'removed_from_game') moveCard(s, temporary.instanceId, 'removed_from_game');
+      }
+      continue;
+    }
     if (o.sourceValidityPolicyId) {
       if (!o.sourceDefinitionIdAtInstall || !o.policyKey) reject('resolution_failed', 'Corrupt source-bound lifecycle state');
       const validity = evaluateCardSourceValidity(s, {
@@ -1633,6 +1692,10 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === node(effect.from).zone).forEach(c => moveCard(s, c.instanceId, 'deck'));
       shuffle(s, p.id); break;
     case 'shuffle_deck': shuffle(s, p.id); break;
+    case SELECTED_PLAYED_ATTACK_TEMPORARY_COPY_EFFECT: {
+      resolveSelectedPlayedAttackTemporaryCopy(s, ctx, effect);
+      break;
+    }
     case 'create_card': {
       const id = nextId(s, 'created'); const zone = str(node(effect.to).zone);
       s.cards.push({ instanceId: id, definitionId: str(effect.cardId), ownerPlayerId: p.id, controllerPlayerId: p.id,
@@ -3247,6 +3310,16 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     return;
   }
   if (isOpponentCloseToOneCandidate(a)) reject('resolution_failed', 'Unsupported opponent close-to-one interaction semantic shape');
+  if (isAcceptedSelectedPlayedAttackTemporaryCopyAbility(a, 'compiled')) {
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    resolveSelectedPlayedAttackTemporaryCopy(s, ctx, a.effects[0]!);
+    cleanupOngoing(s);
+    return;
+  }
+  if (isSelectedPlayedAttackTemporaryCopyCandidate(a)) {
+    reject('resolution_failed', 'Unsupported selected played-attack temporary-copy semantic shape');
+  }
   if (isBattleEndMobilePlayersRewardSemantic(a)) {
     settleBattleEndMobilePlayersReward(s, ctx);
     installOngoing(s, ctx, a);
