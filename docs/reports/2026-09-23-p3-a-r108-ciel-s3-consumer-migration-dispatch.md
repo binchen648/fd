@@ -100,6 +100,14 @@ No Atalanta production data, runtime behavior, semantic assertion, or other test
 Focused S validation exposed one additional historical snapshot in `packages/rules/tests/regression/fb2-ciel-s2-support-definition.test.ts`: the recovery-era assertion `expect(raw.cards).toHaveLength(2)` encoded the then-current mixed rules-only archive population rather than an invariant of the accepted Ciel s2 definition. The authorized s3 append makes that archive length `3` without changing s1a or s2 semantics.
 
 S is therefore additionally authorized to modify only that one Ciel-s2 test assertion, replacing the absolute archive-length snapshot with stable preservation checks that `master.ciel.skill.s1a` and `master.ciel.skill.s2` are each still present exactly once. No other Ciel-s2 assertion, runtime behavior, production data, or accepted semantic may change.
+## Historical rules-only registration test compatibility authorization
+
+A full-CI probe on the authorized s3 append exposed exactly two further historical absolute snapshots tied to the pre-s3 rules-only definition population:
+
+1. `packages/rules/tests/fb2-26-provisioning-consumer-migration.test.ts` assumes every mixed rules-only owner archive is exactly `[sourceId, targetId]`. S may alter only the Ciel branch of that assertion so the original `master.ciel.skill.s1a` source and `master.ciel.skill.s2` deferred target remain each exactly once while allowing the newly authorized `master.ciel.skill.s3`; the Ryougi and Shirou exact two-card assertions must remain unchanged.
+2. `packages/rules/tests/executable-card-pack.test.ts` hard-codes the production executable definition count at `76`. The authorized rules-only s3 definition deterministically changes that count to `77`. S may change only this one absolute count assertion to the new mechanically justified count while retaining the existing deck count, hash, classification, source-map and validation assertions unchanged.
+
+A mechanical scan of `packages/**` and `scripts/**` found no other `76` executable-card snapshot and no other Ciel exact-membership snapshot attributable to this migration. No unrelated compatibility edit is authorized.
 ## S scope
 
 Fresh S is authorized only to:
@@ -139,5 +147,6 @@ S must prove at minimum:
 Formal migration remains `153/944`, with `791` remaining until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A synchronizes that acceptance.
 
 Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
+
 
 
