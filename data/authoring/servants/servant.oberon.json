@@ -1,0 +1,252 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.oberon",
+  "name": "奥伯龙·伏提庚",
+  "class": "Pretender",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen F1 printed evidence plus accepted P3-R58/FB2-27 Ruler seal runtime semantics are authoritative. Locked Reference supplies static owner/card metadata only; Reference handler IDs are not runtime routing."
+  },
+  "cards": [
+    {
+      "id": "servant.oberon.skill.sc-oberon-3",
+      "aliases": [
+        "sc_oberon_3"
+      ],
+      "legacyId": "sc_oberon_3",
+      "name": "裁决者",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.oberon"
+      },
+      "printedText": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 1,
+        "basePower": 1
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-oberon-3.ruler-binding",
+          "kind": "phase_action",
+          "printedClause": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "bound_players",
+              "type": "player",
+              "count": {
+                "min": 2,
+                "max": 2
+              },
+              "constraints": [
+                {
+                  "type": "not_controller"
+                },
+                {
+                  "type": "least_ruler_binding_count"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "grant_ruler_seals",
+              "target": "bound_players"
+            },
+            {
+              "type": "ruler_copy_steal_guard",
+              "policy": "forbid_source_and_effects"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {
+            "type": "per_game",
+            "uses": 3,
+            "scope": "this_card"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          {
+            "sha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137",
+            "line": 1
+          }
+        ],
+        "sourceTextSha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_oberon_3",
+          "cost": 1,
+          "basePower": 1,
+          "legacyRequirement": 1,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "rulerSealSubsystem": "P3-R58/FB2-27"
+        }
+      }
+    },
+    {
+      "id": "servant.oberon.skill.sc-oberon-4",
+      "aliases": [
+        "sc_oberon_4"
+      ],
+      "legacyId": "sc_oberon_4",
+      "name": "裁决者令咒",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.oberon"
+      },
+      "printedText": "行动阶段：令被束缚者（限一项）：<每局游戏限一次>\n1.移动至【深山町】或【新都】。\n2.无法移动至本回合结束。\n3.免费打出一张手牌。无论其是否打出，若他获胜，你获得2点战果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-oberon-4.ruler-seal-use",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：令被束缚者（限一项）：<每局游戏限一次>\n1.移动至【深山町】或【新都】。\n2.无法移动至本回合结束。\n3.免费打出一张手牌。无论其是否打出，若他获胜，你获得2点战果。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "ruler_seal_option",
+              "type": "choice",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "options": [
+                {
+                  "id": "move"
+                },
+                {
+                  "id": "lock_movement"
+                },
+                {
+                  "id": "free_play_reward"
+                }
+              ]
+            },
+            {
+              "id": "bound_player",
+              "type": "player",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "bound_by_controller_ruler_seal"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "use_ruler_seal",
+              "target": "bound_player",
+              "option": "ruler_seal_option",
+              "moveDestinations": [
+                "miyama_town",
+                "shinto"
+              ],
+              "rewardVp": 2
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          {
+            "sha256": "e582bcd3565fd3cc70fd05c1f7a6f0c2b9adeb6c29c29b7883b80806b07ceb98",
+            "line": 1
+          },
+          {
+            "sha256": "e31a036f016aab3ce4b3ee954ce006ed1cb2e06f3c94af16930ae0bf0a4eaf46",
+            "line": 2
+          },
+          {
+            "sha256": "2bf5e67b4ed31e19108dbd6796d04dbc2440d95a8813d727877728647eb1d95d",
+            "line": 3
+          },
+          {
+            "sha256": "d159e931a4573863ddfe89af916aa90e5389326f0b86465b14d46b43063d3a52",
+            "line": 4
+          }
+        ],
+        "sourceTextSha256": "125082e75869375ea276d98ddfe24549144efbc1525a5e7a54acac179e1beb3c",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_oberon_4",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": 0,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "rulerSealSubsystem": "P3-R58/FB2-27"
+        }
+      }
+    }
+  ]
+}

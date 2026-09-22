@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.clytie",
+  "name": "克吕提厄·梵高",
+  "class": "Foreigner",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen F1 printed evidence plus accepted P3-R67/FB2-29 Outer-God-Life structural runtime semantics are authoritative. Locked Reference supplies static owner/card metadata only; Reference handler IDs are not runtime routing."
+  },
+  "cards": [
+    {
+      "id": "servant.clytie.skill.sc-clytie-4",
+      "aliases": [
+        "sc_clytie_4"
+      ],
+      "legacyId": "sc_clytie_4",
+      "name": "领域外生命",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.clytie"
+      },
+      "printedText": "【真名解放】\n你和梵高各获得+6合计威力（若你是梵高，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入梵高的弃牌堆。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 1,
+        "basePower": 0,
+        "semanticCategory": "outer_god_life"
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-clytie-4.outer-god-life",
+          "kind": "phase_action",
+          "printedClause": "【真名解放】\n你和梵高各获得+6合计威力（若你是梵高，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入梵高的弃牌堆。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "adjust_round_total_power",
+              "recipients": [
+                "controller",
+                "source_servant_owner"
+              ],
+              "amount": 6,
+              "dedupe": true
+            },
+            {
+              "type": "schedule_source_card_return",
+              "recipient": "source_servant_owner"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[181].skills[3].text#line=1",
+            "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[181].skills[3].text#line=2",
+            "sha256": "5434a8e464fc867ba19bbaf86a4f1ea41408539d0892d133bf0f1e4b6a2e254c"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[181].skills[3].text#line=3",
+            "sha256": "f0333af1b37a46dbc8e0865bb607a787a25dfc5bb2f8539527ba9a364068ef0e"
+          }
+        ],
+        "sourceTextSha256": "146c26d2ca823f92c1a758e9e23c37f6d8f88c54e3818164b153af19260d464f",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_clytie_4",
+          "cost": 1,
+          "basePower": 0,
+          "legacyRequirement": 0,
+          "typeLabel": "特殊"
+        },
+        "acceptedContracts": {
+          "outerGodLifeSubsystem": "P3-R67/FB2-29"
+        }
+      }
+    }
+  ]
+}

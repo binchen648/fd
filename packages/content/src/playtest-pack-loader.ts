@@ -38,6 +38,8 @@ export interface PlaytestPackManifest {
   authoringServantFiles?: string[];
   authoringMasterFiles?: string[];
   authoringMasterSupportFiles?: string[];
+  authoringMasterRuleFiles?: string[];
+  authoringEventRuleFiles?: string[];
   eventSetFiles: string[];
   eventCardFiles: string[];
 }
@@ -79,6 +81,7 @@ export interface CompiledPlaytestContentLibrary {
     definitionHash: string;
     archives: AuthoringArchive[];
     cards?: Record<string, unknown>;
+    eventRules?: Record<string, unknown>;
     decks?: Record<string, string[]>;
     fallbackCommandSpells?: Record<string, string>;
     sourceMap?: Record<string, unknown>;
@@ -165,9 +168,39 @@ export interface AuthoringArchive {
 }
 
 const MASTER_SUPPORT_ARCHIVE_TYPE = 'master_support_definition_archive';
+const MASTER_RULE_ARCHIVE_TYPE = 'master_rule_definition_archive';
+const EVENT_RULE_ARCHIVE_TYPE = 'event_rule_definition_archive';
 
 function isMasterSupportArchive(archive: AuthoringArchive): boolean {
   return archive.archiveType === MASTER_SUPPORT_ARCHIVE_TYPE;
+}
+
+function isMasterRuleArchive(archive: AuthoringArchive): boolean {
+  return archive.archiveType === MASTER_RULE_ARCHIVE_TYPE;
+}
+
+function isEventRuleArchive(archive: AuthoringArchive): boolean {
+  return archive.archiveType === EVENT_RULE_ARCHIVE_TYPE;
+}
+
+function hasMasterSupportArchiveShape(archive: AuthoringArchive): boolean {
+  return Array.isArray(archive.cards) && archive.cards.length > 0 &&
+    archive.cards.every((card) => card.cardType === 'master_skill' && card.initialPlacement === 'outside_game') &&
+    !Object.prototype.hasOwnProperty.call(archive, 'deck') &&
+    !Object.prototype.hasOwnProperty.call(archive, 'publicInformation');
+}
+
+function hasMasterRuleArchiveShape(archive: AuthoringArchive): boolean {
+  if (!Array.isArray(archive.cards) || archive.cards.length < 2 ||
+    !archive.cards.every((card) => card.cardType === 'master_skill' &&
+      (card.initialPlacement === undefined || card.initialPlacement === 'outside_game'))) return false;
+  return archive.cards.some((card) => card.initialPlacement === 'outside_game') &&
+    archive.cards.some((card) => card.initialPlacement === undefined);
+}
+
+function hasEventRuleArchiveShape(archive: AuthoringArchive): boolean {
+  return Array.isArray(archive.cards) && archive.cards.length > 0 &&
+    archive.cards.some((card) => card.cardType === 'event');
 }
 
 function assertMasterSupportArchive(archive: AuthoringArchive): void {
@@ -196,9 +229,110 @@ function assertMasterSupportArchive(archive: AuthoringArchive): void {
   }
 }
 
+function assertMasterRuleArchive(archive: AuthoringArchive): void {
+  if (!isMasterRuleArchive(archive)) {
+    throw new Error(`Master rule archive requires archiveType=${MASTER_RULE_ARCHIVE_TYPE}: ${archive.id || '<missing-id>'}`);
+  }
+  if (typeof archive.id !== 'string' || !archive.id.startsWith('master.')) {
+    throw new Error(`Master rule archive id must start with master.: ${String(archive.id)}`);
+  }
+  if (!Array.isArray(archive.cards) || archive.cards.length < 2) {
+    throw new Error(`Master rule archive must contain at least two cards: ${archive.id}`);
+  }
+  if (Object.prototype.hasOwnProperty.call(archive, 'deck')) {
+    throw new Error(`Master rule archive cannot define a deck: ${archive.id}`);
+  }
+  if (Object.prototype.hasOwnProperty.call(archive, 'publicInformation')) {
+    throw new Error(`Master rule archive cannot define playable master publicInformation: ${archive.id}`);
+  }
+  let outsideGame = 0;
+  let ordinary = 0;
+  for (const card of archive.cards) {
+    if (card.cardType !== 'master_skill') {
+      throw new Error(`Master rule archive may contain only master_skill cards: ${archive.id}:${card.id}`);
+    }
+    const owner = card.owner as Record<string, unknown> | undefined;
+    if (owner?.type !== 'master' || owner.id !== archive.id) {
+      throw new Error(`Master rule archive card owner must match archive id: ${archive.id}:${card.id}`);
+    }
+    if (card.initialPlacement === 'outside_game') outsideGame += 1;
+    else if (card.initialPlacement === undefined) ordinary += 1;
+    else throw new Error(`Master rule archive card has unsupported initialPlacement: ${archive.id}:${card.id}`);
+  }
+  if (outsideGame === 0) {
+    throw new Error(`Master rule archive requires at least one initialPlacement=outside_game card: ${archive.id}`);
+  }
+  if (ordinary === 0) {
+    throw new Error(`Master rule archive requires at least one ordinary non-deferred master_skill: ${archive.id}`);
+  }
+}
+
+function assertEventRuleArchive(archive: AuthoringArchive): void {
+  if (!isEventRuleArchive(archive)) {
+    throw new Error(`Event rule archive requires archiveType=${EVENT_RULE_ARCHIVE_TYPE}: ${archive.id || '<missing-id>'}`);
+  }
+  if (!Array.isArray(archive.cards) || archive.cards.length === 0) {
+    throw new Error(`Event rule archive must contain at least one card: ${archive.id}`);
+  }
+  if (Object.prototype.hasOwnProperty.call(archive, 'deck')) {
+    throw new Error(`Event rule archive cannot define a deck: ${archive.id}`);
+  }
+  if (Object.prototype.hasOwnProperty.call(archive, 'publicInformation')) {
+    throw new Error(`Event rule archive cannot define playable publicInformation: ${archive.id}`);
+  }
+  for (const card of archive.cards) {
+    if (card.cardType !== 'event') {
+      throw new Error(`Event rule archive may contain only event cards: ${archive.id}:${card.id}`);
+    }
+    if (card.initialPlacement !== undefined) {
+      throw new Error(`Event rule archive card cannot define player-card initialPlacement: ${archive.id}:${card.id}`);
+    }
+    const face = (card.cardFace ?? {}) as Record<string, unknown>;
+    for (const field of ['eventTags', 'eventSetIds', 'applicableLocations'] as const) {
+      const value = face[field];
+      if (value !== undefined && (!Array.isArray(value) || value.some((entry) => typeof entry !== 'string' || !entry.trim()))) {
+        throw new Error(`Event rule card ${field} must be an array of nonempty strings: ${archive.id}:${card.id}`);
+      }
+    }
+    if (face.printedReward !== undefined && (!Number.isSafeInteger(face.printedReward) || Number(face.printedReward) < 0)) {
+      throw new Error(`Event rule card printedReward must be a nonnegative integer: ${archive.id}:${card.id}`);
+    }
+    for (const ability of card.abilities ?? []) {
+      const activation = ability.activation && typeof ability.activation === 'object'
+        ? ability.activation as Record<string, unknown>
+        : {};
+      const eventController = activation.eventController;
+      if (typeof activation.trigger !== 'string' || !activation.trigger.trim()) {
+        throw new Error(`Event rule ability trigger is required: ${archive.id}:${card.id}`);
+      }
+      if (eventController === undefined) {
+        throw new Error(`Event rule ability eventController is required: ${archive.id}:${card.id}`);
+      }
+      if (!['placement_controller', 'event_player'].includes(String(eventController))) {
+        throw new Error(`Event rule ability eventController is unsupported: ${archive.id}:${card.id}`);
+      }
+    }
+  }
+}
+
 function assertNormalAuthoringArchive(archive: AuthoringArchive): void {
   if (isMasterSupportArchive(archive)) {
     throw new Error(`Master support archive must be registered through authoringMasterSupportFiles: ${archive.id}`);
+  }
+  if (isMasterRuleArchive(archive)) {
+    throw new Error(`Master rule archive must be registered through authoringMasterRuleFiles: ${archive.id}`);
+  }
+  if (isEventRuleArchive(archive)) {
+    throw new Error(`Event rule archive must be registered through authoringEventRuleFiles: ${archive.id}`);
+  }
+  if (hasMasterSupportArchiveShape(archive)) {
+    throw new Error(`Master support-shaped archive requires archiveType=${MASTER_SUPPORT_ARCHIVE_TYPE} and authoringMasterSupportFiles registration: ${archive.id}`);
+  }
+  if (hasMasterRuleArchiveShape(archive)) {
+    throw new Error(`Master rule-shaped archive requires archiveType=${MASTER_RULE_ARCHIVE_TYPE} and authoringMasterRuleFiles registration: ${archive.id}`);
+  }
+  if (hasEventRuleArchiveShape(archive)) {
+    throw new Error(`Event rule-shaped archive requires archiveType=${EVENT_RULE_ARCHIVE_TYPE} and authoringEventRuleFiles registration: ${archive.id}`);
   }
 }
 
@@ -492,9 +626,15 @@ export function loadPlaytestContentPack(
     .map((path) => readWorkspaceJson<AuthoringArchive>(options.workspaceRoot, path));
   const authoringMasterSupportArchives = (manifest.authoringMasterSupportFiles ?? [])
     .map((path) => readWorkspaceJson<AuthoringArchive>(options.workspaceRoot, path));
+  const authoringMasterRuleArchives = (manifest.authoringMasterRuleFiles ?? [])
+    .map((path) => readWorkspaceJson<AuthoringArchive>(options.workspaceRoot, path));
+  const authoringEventRuleArchives = (manifest.authoringEventRuleFiles ?? [])
+    .map((path) => readWorkspaceJson<AuthoringArchive>(options.workspaceRoot, path));
   authoringServantArchives.forEach(assertNormalAuthoringArchive);
   authoringMasterArchives.forEach(assertNormalAuthoringArchive);
   authoringMasterSupportArchives.forEach(assertMasterSupportArchive);
+  authoringMasterRuleArchives.forEach(assertMasterRuleArchive);
+  authoringEventRuleArchives.forEach(assertEventRuleArchive);
   const authoringServants = authoringServantArchives
     .map((archive) => convertAuthoringServant(archive, options.workspaceRoot));
   const authoringMasters = authoringMasterArchives
@@ -514,7 +654,7 @@ export function loadPlaytestContentPack(
     name: manifest.name,
     version: manifest.version,
     manifest,
-    authoringArchives: [...authoringMasterArchives, ...authoringServantArchives, ...authoringMasterSupportArchives],
+    authoringArchives: [...authoringMasterArchives, ...authoringServantArchives, ...authoringMasterSupportArchives, ...authoringMasterRuleArchives, ...authoringEventRuleArchives],
     dictionaries: {
       basicAttacks: readWorkspaceJson<BasicAttackDictionary>(
         options.workspaceRoot,

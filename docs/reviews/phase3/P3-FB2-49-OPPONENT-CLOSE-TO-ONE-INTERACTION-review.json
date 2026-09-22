@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-FB2-49-OPPONENT-CLOSE-TO-ONE-INTERACTION",
+  "reviewer": "github:fengling20011118-dotcom",
+  "reviewThread": "https://github.com/binchen648/fd/pull/422#issuecomment-5775423822",
+  "candidateSha": "aa04a12e1647560374e09f7e2b6e62a5dccd0954",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE"
+}

@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.spartacus",
+  "name": "斯巴达克斯",
+  "class": "Berserker",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "80aaa029ff20448b92afc4fd115080cd3f34a60c",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from accepted F1 evidence plus accepted FB2-48; locked Reference is used for owner/static metadata and matching requirement 8."
+  },
+  "cards": [
+    {
+      "id": "servant.spartacus.skill.sc-spartacus-2",
+      "aliases": [
+        "sc_spartacus_2"
+      ],
+      "legacyId": "sc_spartacus_2",
+      "name": "伤兽的咆哮",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.spartacus"
+      },
+      "printedText": "受虐之荣光-战斗阶段：战斗后获得X点战果，X为与你交战的任意一名对手的合计威力的五分之一（向下取整）。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "attributes": [
+          "宝具"
+        ],
+        "cost": 3,
+        "basePower": 4
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "wounded-beast-roar-reward",
+          "kind": "residual",
+          "printedClause": "受虐之荣光-战斗阶段：战斗后获得X点战果，X为与你交战的任意一名对手的合计威力的五分之一（向下取整）。",
+          "activation": {
+            "trigger": "after_battle_result_determined",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "event_location_equals_controller"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "combat_opponent_power_vp_reward"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {
+            "duration": "while_active"
+          },
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "80aaa029ff20448b92afc4fd115080cd3f34a60c",
+        "f1AuditCommit": "4961de83468716cc748f16faf9f03212c47a8713",
+        "f1ReviewCommit": "9d92b036332fc22df07ccb8f26af0bc69c066b34",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "斯巴达克斯.htm",
+            "locator": "从者/狂战士/英文版/斯巴达克斯.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/斯巴达克斯.png",
+            "locator": "servant.spartacus/斯巴达克斯"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "sourceAbilityId": "wounded-beast-roar-reward",
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[24].abilities[0].printedClause",
+            "sha256": "cc5be3d123f96a8199e6c07bdae9161b93829c7b52cab2e838cb2a19b592996e"
+          }
+        ],
+        "f1FullPrintedTextSha256": "cc5be3d123f96a8199e6c07bdae9161b93829c7b52cab2e838cb2a19b592996e",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_spartacus_2",
+          "class": "Berserker",
+          "cost": 3,
+          "basePower": 4,
+          "legacyRequirement": 8,
+          "typeLabel": "宝具",
+          "attributes": [
+            "宝具"
+          ]
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4"
+        },
+        "acceptedContracts": {
+          "combatOpponentPowerVpReward": "P3-R100/FB2-48",
+          "skillZonePlayThreshold": "final_rules_9.4"
+        }
+      }
+    }
+  ]
+}

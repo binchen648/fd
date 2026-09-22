@@ -140,6 +140,155 @@
           "presenceConcealment": "P3-R35/FB2-12"
         }
       }
+    },
+    {
+      "id": "servant.stheno.skill.sc-stheno-2",
+      "aliases": [
+        "sc_stheno_2"
+      ],
+      "legacyId": "sc_stheno_2",
+      "name": "女神的微笑",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.stheno"
+      },
+      "printedText": "【真名解放】\n被动：若你赢得战斗时，此战斗的胜利者不均分战果，改为一同获得相应战果。（减少战果获得的能力仍然生效）\n战斗阶段：若你赢得一场战斗，获得1点战果。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "attributes": [
+          "宝具"
+        ],
+        "cost": 0,
+        "basePower": 3
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "true-name-release",
+          "kind": "passive",
+          "printedClause": "【真名解放】",
+          "markers": [
+            "真名解放"
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "goddess-smile-reward-distribution",
+          "kind": "passive",
+          "printedClause": "被动：若你赢得战斗时，此战斗的胜利者不均分战果，改为一同获得相应战果。（减少战果获得的能力仍然生效）",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "ruleModifiers": [
+            {
+              "id": "stheno-full-reward-each",
+              "printedClause": "被动：若你赢得战斗时，此战斗的胜利者不均分战果，改为一同获得相应战果。（减少战果获得的能力仍然生效）",
+              "operation": "replace",
+              "rule": "combat_reward_distribution",
+              "scope": {
+                "subject": "controller",
+                "whenControllerWins": true,
+                "mode": "full_reward_each"
+              }
+            }
+          ],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "goddess-smile-win-reward",
+          "kind": "forced_trigger",
+          "printedClause": "战斗阶段：若你赢得一场战斗，获得1点战果",
+          "activation": {
+            "trigger": "after_controller_wins_battle",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "player": "controller",
+              "amount": 1
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[10].abilities[0].printedClause",
+            "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+          },
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[10].abilities[1].printedClause",
+            "sha256": "45fbb637d015849fc9403a5e28561b067a07b92a583e324a1175bbc300da79d6"
+          },
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[10].abilities[2].printedClause",
+            "sha256": "d975b3ebb616a10292d326140d2d1fe5d510bb7b80092d57465c0637b0e13d72"
+          }
+        ],
+        "sourceTextSha256": "edc8e5b95f81153ebace50f23ed1e9a1342bd380891b07b35f74c1948eaac702",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_stheno_2",
+          "class": "Assassin",
+          "cost": 0,
+          "basePower": 3,
+          "legacyRequirement": 8,
+          "typeLabel": "宝具",
+          "attributes": [
+            "宝具"
+          ]
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is retained as evidence metadata only."
+        },
+        "acceptedContracts": {
+          "combatRewardDistribution": "P3-R73/FB2-34",
+          "battleWinTrigger": "accepted after_controller_wins_battle gateway",
+          "victoryPointResource": "accepted adjust_victory_points Resource Numeric"
+        }
+      }
     }
   ]
 }

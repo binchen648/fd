@@ -6,6 +6,7 @@ import type { AuthoringAbility, RuleNode } from '../../src/ability/types';
 import type { GameState } from '../../src/schema/game';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 import { createMatchSession, restoreMatchSession } from '../../src/match-session';
+import { restoreTrustedAuthoringFixtureSession } from '../trusted-authoring-fixture';
 
 const SETUP_DEF = 'fixture.game-start-rules';
 const SETUP_ID = 'fixture-game-start-rules';
@@ -245,7 +246,7 @@ describe('P3-FB2-14 identity-free game-start RuleOverride runtime', () => {
     expect(session.state.abilityRuntime!.manaGainedThisRound.byPlayer[controller.id]).toBe(2);
     expect(session.state.abilityRuntime!.processedEvents.filter((id) => id === 'match-session-game-start')).toHaveLength(1);
 
-    const restored = restoreMatchSession(session.serializeSession());
+    const restored = restoreTrustedAuthoringFixtureSession(session.serializeSession());
     expect(restored.state.players.find((player) => player.id === controller.id)?.mana).toBe(6);
     expect(restored.state.abilityRuntime!.manaGainedThisRound.byPlayer[controller.id]).toBe(2);
     expect(restored.state.abilityRuntime!.processedEvents.filter((id) => id === 'match-session-game-start')).toHaveLength(1);

@@ -304,6 +304,7 @@ function queuePostScoringBattleResultEvents(
         battleId,
         resultId,
         battleParticipantIds: participants,
+        battleParticipantPowers: Object.fromEntries(result.participantBreakdowns.map((participant) => [participant.playerId, participant.effectivePower])),
         battlefieldId: result.battlefieldId,
         battleResult: { winners: [...result.winnerPlayerIds], loserIds },
       });
@@ -327,7 +328,11 @@ function queuePostScoringBattleResultEvents(
     resultIds,
     scoringReceiptIds: results.map((result) => `${battlePhaseResolutionId}:score:${result.battlefieldId}`),
     battleParticipantIds: [...new Set(battleParticipantIds)],
-    battleOutcomes: results.map((result) => ({ battlefieldId: result.battlefieldId, winnerPlayerIds: [...result.winnerPlayerIds] })),
+    battleOutcomes: results.map((result) => ({
+      battlefieldId: result.battlefieldId,
+      participantPlayerIds: result.participantBreakdowns.map((participant) => participant.playerId),
+      winnerPlayerIds: [...result.winnerPlayerIds],
+    })),
   });
   return state;
 }

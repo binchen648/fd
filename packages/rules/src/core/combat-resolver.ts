@@ -12,9 +12,12 @@ import type { LocationDefinition } from "../schema/location";
 import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
-import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
+import { calculateCardPower, classifyCardPlay, processAbilityEvent } from '../ability/interpreter';
+import { isAcceptedRoundActiveAttackPaidCostCombatPowerAbility, isAcceptedStaticCombatRewardDistributionAbility } from '../ability/loader';
+import { roundTotalPowerAdjustment } from '../ability/outer-god-life';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { logicalDayForPlayer } from './rule-overrides';
+import { assignedTerrainSlotIndex, hasRemoteOperationBonus, terrainBonusAt } from './terrain-advantage';
 
 export interface CombatParticipantInput {
   playerId: string;
@@ -155,17 +158,11 @@ function getTerrainBreakdowns(
   battlefieldId: CombatResolutionInput["battlefieldId"],
   participant: CombatParticipantInput,
 ): BattleModifierBreakdown[] {
-  const location = getLocationById(state.map, state.locationConfig, battlefieldId);
-  if (!location?.terrainBonuses?.length || participant.terrainSlotIndex === undefined) {
+  if (participant.terrainSlotIndex === undefined) {
     return [];
   }
-  if (isTerrainSuppressedByAuthoredDuel(state, battlefieldId, participant.playerId)) {
-    return [];
-  }
-
-  const baseValue = location.terrainBonuses[participant.terrainSlotIndex];
-  const value = typeof baseValue === "number" ? baseValue * terrainMultiplierForPlayer(state, participant.playerId) : baseValue;
-  if (typeof value !== "number") {
+  const value = terrainBonusAt(state, battlefieldId, participant.playerId, participant.terrainSlotIndex);
+  if (value === undefined) {
     return [];
   }
 
@@ -174,17 +171,6 @@ function getTerrainBreakdowns(
 
 function modeState(state: GameState): Record<string, unknown> {
   return (state as unknown as { modeState?: Record<string, unknown> }).modeState ?? {};
-}
-
-function assignedTerrainSlotIndex(state: GameState, battlefieldId: CombatResolutionInput["battlefieldId"], playerId: string): number | undefined {
-  const assignments = modeState(state).terrainAssignments;
-  if (!assignments || typeof assignments !== "object") return undefined;
-  const assigned = (assignments as Partial<Record<string, string[]>>)[battlefieldId];
-  if (!Array.isArray(assigned)) return undefined;
-  const index = assigned.indexOf(playerId);
-  if (index < 0) return undefined;
-  const location = getLocationById(state.map, state.locationConfig, battlefieldId);
-  return index < (location?.terrainBonuses?.length ?? 0) ? index : undefined;
 }
 
 function cannotWinBattleThisRound(state: GameState, playerId: string): boolean {
@@ -211,10 +197,6 @@ function hasActiveBasicCardAtBattlefield(
 
 function ignoresBattleLossEffects(state: GameState, playerId: string, battlefieldId: CombatResolutionInput["battlefieldId"]): boolean {
   return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, "basic.luck");
-}
-
-function hasRemoteOperationBonus(state: GameState, playerId: string, battlefieldId: CombatResolutionInput["battlefieldId"]): boolean {
-  return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, "basic.preparation");
 }
 
 function returnSilenceSources(state: GameState): Array<{ sourceCardId: string; playerId: string }> {
@@ -248,44 +230,6 @@ function isAuthoredLegacyAttack(state: GameState, card: GameState["cards"][numbe
 
 function isCombatCardZone(state: GameState, card: GameState["cards"][number]): boolean {
   return card.zone === "attack_area" || isLegacyCombatCard(state, card);
-}
-
-function terrainMultiplierForPlayer(state: GameState, playerId: string): number {
-  const entries = modeState(state).terrainMultipliers;
-  const authoredMultiplier = !Array.isArray(entries) ? 1 : entries.reduce((multiplier, entry) => {
-    if (!entry || typeof entry !== "object") return multiplier;
-    const candidate = entry as { playerId?: string; multiplier?: number };
-    return candidate.playerId === playerId && typeof candidate.multiplier === "number"
-      ? multiplier * candidate.multiplier
-      : multiplier;
-  }, 1);
-  const currentBattlefieldId = state.players.find((player) => player.id === playerId)?.locationId;
-  return currentBattlefieldId && hasRemoteOperationBonus(state, playerId, currentBattlefieldId as CombatResolutionInput["battlefieldId"])
-    ? authoredMultiplier * 2
-    : authoredMultiplier;
-}
-
-function isTerrainSuppressedByAuthoredDuel(
-  state: GameState,
-  battlefieldId: CombatResolutionInput["battlefieldId"],
-  playerId: string,
-): boolean {
-  const runtime = state.abilityRuntime;
-  if (!runtime) return false;
-  for (const ongoing of runtime.ongoingEffects) {
-    const sourceCard = state.cards.find((card) => card.instanceId === ongoing.sourceCardId);
-    const controller = state.players.find((player) => player.id === ongoing.controllerId);
-    if (!sourceCard || !["field", "attack_area"].includes(sourceCard.zone) || !runtime.cardState[sourceCard.instanceId]?.active) continue;
-    if (controller?.locationId !== battlefieldId) continue;
-    const blocksTerrain = ongoing.ruleModifiers.some((modifier) =>
-      modifier.definition.operation === "ignore" &&
-      modifier.definition.rule === "terrain_and_external_servant_or_npc_effects");
-    if (!blocksTerrain) continue;
-    if (playerId === ongoing.controllerId) return true;
-    const player = state.players.find((candidate) => candidate.id === playerId);
-    if (player?.locationId === battlefieldId) return true;
-  }
-  return false;
 }
 
 function reverseSituationAndEventIfNeeded(
@@ -391,7 +335,8 @@ export function deriveBattleParticipantsFromState(
       const authoredPower = authoredAttacks.reduce((sum, card) => sum + calculateCardPower(state, card.instanceId).value, 0);
 
       const terrainSlotIndex = assignedTerrainSlotIndex(state, battlefieldId, player.id);
-      let persistentPowerAdjustment = 0;
+      let persistentPowerAdjustment = roundTotalPowerAdjustment(state, player.id);
+      persistentPowerAdjustment += roundActiveAttackPaidCostCombatPowerAdjustment(state, battlefieldId, player.id);
       if (logicalDayForPlayer(state, player.id) === 1) {
         persistentPowerAdjustment += state.ruleOverrides?.firstLogicalDayTotalPowerAdjustmentByPlayer?.[player.id] ?? 0;
       }
@@ -454,17 +399,74 @@ function splitVpPoolPerWinner(pool: number, winnerCount: number): number {
   return winnerCount > 0 && pool > 0 ? Math.ceil(pool / winnerCount) : 0;
 }
 
+function currentRoundActiveAttackPaidCost(state: GameState, playerId: string): { hasAttack: boolean; total: number } {
+  const runtime = state.abilityRuntime;
+  if (!runtime) return { hasAttack: false, total: 0 };
+  let hasAttack = false;
+  let total = 0;
+  for (const attack of state.cards) {
+    if (attack.controllerPlayerId !== playerId || attack.zone !== 'attack_area') continue;
+    const sourceState = runtime.cardState[attack.instanceId];
+    if (!sourceState || sourceState.active !== true || sourceState.faceDown === true || sourceState.playedRound !== state.round.roundNumber) continue;
+    const definition = runtime.pack.cards[attack.definitionId];
+    const playClassification = classifyCardPlay(definition);
+    if (!definition || playClassification.playKind !== 'attack' || playClassification.destinationZone !== 'attack_area') continue;
+    const paid = sourceState.paidManaOnPlay;
+    if (!Number.isSafeInteger(paid) || paid! < 0) continue;
+    hasAttack = true;
+    total += paid!;
+  }
+  return { hasAttack, total };
+}
+
+function roundActiveAttackPaidCostCombatPowerAdjustment(state: GameState, battlefieldId: string, playerId: string): number {
+  const runtime = state.abilityRuntime;
+  if (!runtime) return 0;
+  const battlefieldPlayers = state.players.filter((candidate) => candidate.status === 'active' && candidate.locationId === battlefieldId);
+  if (!battlefieldPlayers.some((candidate) => candidate.id === playerId)) return 0;
+  const paid = battlefieldPlayers.map((candidate) => ({ playerId: candidate.id, ...currentRoundActiveAttackPaidCost(state, candidate.id) }))
+    .filter((entry) => entry.hasAttack);
+  if (!paid.length) return 0;
+  const highest = Math.max(...paid.map((entry) => entry.total));
+  if (!paid.some((entry) => entry.playerId === playerId && entry.total === highest)) return 0;
+  const sources = state.cards.filter((source) => {
+    if (source.ownerPlayerId !== source.controllerPlayerId) return false;
+    const sourceController = state.players.find((candidate) => candidate.id === source.controllerPlayerId);
+    if (!sourceController || sourceController.status !== 'active' || sourceController.locationId !== battlefieldId) return false;
+    const definition = runtime.pack.cards[source.definitionId];
+    return definition?.abilities.some((ability) =>
+      isAcceptedRoundActiveAttackPaidCostCombatPowerAbility(ability as unknown as Record<string, unknown>, 'compiled')) === true;
+  });
+  // The accepted seam is one exact modifier source; ambiguous duplicate sources fail closed rather than stack implicitly.
+  return sources.length === 1 ? 6 : 0;
+}
+
+function hasWinningFullRewardEachModifier(state: GameState, winnerPlayerIds: string[]): boolean {
+  const runtime = state.abilityRuntime;
+  if (!runtime || winnerPlayerIds.length === 0) return false;
+  const winners = new Set(winnerPlayerIds);
+  return state.cards.some((source) => {
+    if (!winners.has(source.controllerPlayerId) || !['field', 'attack_area'].includes(source.zone)) return false;
+    const sourceState = runtime.cardState[source.instanceId];
+    if (sourceState?.active !== true || sourceState.faceDown === true) return false;
+    const definition = runtime.pack.cards[source.definitionId];
+    return definition?.abilities.some((ability) => isAcceptedStaticCombatRewardDistributionAbility(ability as unknown as Record<string, unknown>, 'compiled')) === true;
+  });
+}
+
 function buildBattleResultFromRanked(
   state: GameState,
   battlefieldId: CombatResolutionInput["battlefieldId"],
   ranked: BattleParticipantBreakdown[],
   presenceConcealmentDefeatedPlayerIds: string[] = [],
+  preBattleDefeatedPlayerIds: string[] = [],
 ): GameState["battleResults"][number] | null {
   if (!ranked.length) return null;
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   const excludedPlayerIds = [...new Set([
     ...ranked.filter((participant) => cannotWinBattleThisRound(state, participant.playerId)).map((participant) => participant.playerId),
     ...presenceConcealmentDefeatedPlayerIds.filter((playerId) => ranked.some((participant) => participant.playerId === playerId)),
+    ...preBattleDefeatedPlayerIds.filter((playerId) => ranked.some((participant) => participant.playerId === playerId)),
   ])];
   const eligible = ranked.filter((participant) => !excludedPlayerIds.includes(participant.playerId));
   const highestEligiblePower = eligible[0]?.effectivePower;
@@ -483,10 +485,19 @@ function buildBattleResultFromRanked(
   const hasLocationReward = location?.rewardHooks.includes("location_rewards") === true &&
     typeof location.vpRewardRules?.location === "number";
   const locationVpPool = hasLocationReward ? location!.vpRewardRules!.location! : 0;
-  const baseVpPerWinner = splitVpPoolPerWinner(eventVpPool + competitionVpPool, winnerPlayerIds.length);
-  const vpReward = Math.min(splitVpPoolPerWinner(eventVpPool, winnerPlayerIds.length), baseVpPerWinner);
-  const competitionVpPerWinner = Math.max(0, baseVpPerWinner - vpReward);
-  const locationVpPerWinner = splitVpPoolPerWinner(locationVpPool, winnerPlayerIds.length);
+  const fullRewardEach = hasWinningFullRewardEachModifier(state, winnerPlayerIds);
+  const baseVpPerWinner = fullRewardEach
+    ? eventVpPool + competitionVpPool
+    : splitVpPoolPerWinner(eventVpPool + competitionVpPool, winnerPlayerIds.length);
+  const vpReward = fullRewardEach
+    ? eventVpPool
+    : Math.min(splitVpPoolPerWinner(eventVpPool, winnerPlayerIds.length), baseVpPerWinner);
+  const competitionVpPerWinner = fullRewardEach
+    ? competitionVpPool
+    : Math.max(0, baseVpPerWinner - vpReward);
+  const locationVpPerWinner = fullRewardEach
+    ? locationVpPool
+    : splitVpPoolPerWinner(locationVpPool, winnerPlayerIds.length);
   const defaultVpAdjustments = buildDefaultVpAdjustments(
     location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner,
   );
@@ -572,12 +583,25 @@ export function resolveBattlefield(
     const ranked = [...participants]
       .map((participant) => buildParticipantBreakdown(state, input.battlefieldId, participant))
       .sort((left, right) => right.effectivePower - left.effectivePower);
-    const loserIds = participants.map((participant) => participant.playerId).filter((playerId) => playerId !== returnSilenceController);
+    const allPendingPreBattle = state.abilityRuntime?.pendingPreBattleDefeats ?? [];
+    const matchingPendingPreBattle = allPendingPreBattle.filter((entry) =>
+      entry.round === state.round.roundNumber && entry.battlefieldId === input.battlefieldId);
+    const participantIds = new Set(participants.map((participant) => participant.playerId));
+    const preBattleTargets = [...new Set(matchingPendingPreBattle.flatMap((entry) => entry.targetPlayerIds))]
+      .filter((playerId) => participantIds.has(playerId));
+    const ignoredPreBattleTargets = preBattleTargets.filter((playerId) =>
+      ignoresBattleLossEffects(state, playerId, input.battlefieldId));
+    const defeatedPreBattleTargets = preBattleTargets.filter((playerId) => !ignoredPreBattleTargets.includes(playerId));
+    const returnSilenceControllerDefeated = defeatedPreBattleTargets.includes(returnSilenceController);
+    const winnerPlayerIds = returnSilenceControllerDefeated ? [] : [returnSilenceController];
+    const loserIds = participants.map((participant) => participant.playerId)
+      .filter((playerId) => returnSilenceControllerDefeated || playerId !== returnSilenceController);
     const battleResult: GameState["battleResults"][number] = {
       battlefieldId: input.battlefieldId,
-      winnerPlayerIds: [returnSilenceController],
+      winnerPlayerIds,
       tied: false,
-      winnerPlayerId: returnSilenceController,
+      ...(defeatedPreBattleTargets.length ? { excludedPlayerIds: defeatedPreBattleTargets } : {}),
+      winnerPlayerId: winnerPlayerIds.length === 1 ? winnerPlayerIds[0]! : null,
       margin: 8,
       vpReward: 0,
       baseVpPerWinner: 0,
@@ -593,9 +617,29 @@ export function resolveBattlefield(
       log: state.log.concat({
         type: "battle_resolved",
         message: `return_silence:${input.battlefieldId}`,
-        payload: { winnerPlayerIds: [returnSilenceController], tied: false, winnerPlayerId: returnSilenceController, loserIds, sourceCardId },
+        payload: { winnerPlayerIds, tied: false, winnerPlayerId: battleResult.winnerPlayerId, loserIds, sourceCardId },
       }),
     };
+    if (nextState.abilityRuntime && matchingPendingPreBattle.length) {
+      const consumed = new Set(matchingPendingPreBattle.map((entry) =>
+        `${entry.round}:${entry.battlefieldId}:${entry.controllerId}:${entry.sourceCardId}:${entry.abilityId}`));
+      nextState.abilityRuntime.pendingPreBattleDefeats = allPendingPreBattle.filter((entry) =>
+        !consumed.has(`${entry.round}:${entry.battlefieldId}:${entry.controllerId}:${entry.sourceCardId}:${entry.abilityId}`));
+    }
+    for (const playerId of defeatedPreBattleTargets) {
+      nextState.log.push({
+        type: 'prebattle_defeat_applied',
+        message: `${input.battlefieldId}:${playerId}`,
+        payload: { playerId, battlefieldId: input.battlefieldId, roundNumber: state.round.roundNumber },
+      });
+    }
+    for (const playerId of ignoredPreBattleTargets) {
+      nextState.log.push({
+        type: 'prebattle_defeat_ignored',
+        message: `${input.battlefieldId}:${playerId}`,
+        payload: { playerId, battlefieldId: input.battlefieldId, roundNumber: state.round.roundNumber, sourceCardDefinitionId: 'basic.luck' },
+      });
+    }
     const source = nextState.cards.find((card) => card.instanceId === sourceCardId);
     if (source) source.zone = "removed_from_game";
     if (nextState.abilityRuntime?.cardState[sourceCardId]) nextState.abilityRuntime.cardState[sourceCardId]!.active = false;
@@ -665,8 +709,18 @@ export function resolveBattlefield(
     ignoresBattleLossEffects(settlementState, playerId, input.battlefieldId));
   const defeatedPresenceTargets = presenceTargets.filter((playerId) => !ignoredPresenceTargets.includes(playerId));
 
+  const allPendingPreBattle = settlementState.abilityRuntime?.pendingPreBattleDefeats ?? [];
+  const matchingPendingPreBattle = allPendingPreBattle.filter((entry) =>
+    entry.round === settlementState.round.roundNumber && entry.battlefieldId === input.battlefieldId);
+  const participantIds = new Set(ranked.map((participant) => participant.playerId));
+  const preBattleTargets = [...new Set(matchingPendingPreBattle.flatMap((entry) => entry.targetPlayerIds))]
+    .filter((playerId) => participantIds.has(playerId));
+  const ignoredPreBattleTargets = preBattleTargets.filter((playerId) =>
+    ignoresBattleLossEffects(settlementState, playerId, input.battlefieldId));
+  const defeatedPreBattleTargets = preBattleTargets.filter((playerId) => !ignoredPreBattleTargets.includes(playerId));
+
   const battleResult = buildBattleResultFromRanked(
-    settlementState, input.battlefieldId, ranked, defeatedPresenceTargets);
+    settlementState, input.battlefieldId, ranked, defeatedPresenceTargets, defeatedPreBattleTargets);
   const nextBattleResults = battleResult
     ? settlementState.battleResults.concat(battleResult)
     : settlementState.battleResults;
@@ -717,6 +771,26 @@ export function resolveBattlefield(
       type: 'presence_concealment_defeat_ignored',
       message: `${input.battlefieldId}:${playerId}`,
       payload: { playerId, battlefieldId: input.battlefieldId, resultId, sourceCardDefinitionId: 'basic.luck' },
+    });
+  }
+  if (nextState.abilityRuntime && matchingPendingPreBattle.length) {
+    const consumed = new Set(matchingPendingPreBattle.map((entry) =>
+      `${entry.round}:${entry.battlefieldId}:${entry.controllerId}:${entry.sourceCardId}:${entry.abilityId}`));
+    nextState.abilityRuntime.pendingPreBattleDefeats = allPendingPreBattle.filter((entry) =>
+      !consumed.has(`${entry.round}:${entry.battlefieldId}:${entry.controllerId}:${entry.sourceCardId}:${entry.abilityId}`));
+  }
+  for (const playerId of defeatedPreBattleTargets) {
+    nextState.log.push({
+      type: 'prebattle_defeat_applied',
+      message: `${input.battlefieldId}:${playerId}`,
+      payload: { playerId, battlefieldId: input.battlefieldId, roundNumber: settlementState.round.roundNumber },
+    });
+  }
+  for (const playerId of ignoredPreBattleTargets) {
+    nextState.log.push({
+      type: 'prebattle_defeat_ignored',
+      message: `${input.battlefieldId}:${playerId}`,
+      payload: { playerId, battlefieldId: input.battlefieldId, roundNumber: settlementState.round.roundNumber, sourceCardDefinitionId: 'basic.luck' },
     });
   }
   if (settlementState.abilityRuntime && battleResult) {
