@@ -6527,46 +6527,114 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Army of One"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "ACTION"
+          ],
           "trigger": [],
           "condition": [],
-          "cost": [],
+          "cost": [
+            "MANA"
+          ],
           "target": [],
-          "effect": [],
+          "effect": [
+            "DRAW_CARDS"
+          ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:skill_use_limit:set_unlimited"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.army-of-one.outpost-unlimited",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/Army of One#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:skill_use_limit:set_unlimited"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "chaos.army-of-one.draw-beast",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/Army of One#ability-2"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [
+                "MANA"
+              ],
+              "target": [],
+              "effect": [
+                "DRAW_CARDS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.chaos-beast-engine"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "COST_PAYMENT",
+          "MODIFIER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
+          "GENERIC_COST_PAYMENT",
+          "GENERIC_MODIFIER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -6627,46 +6695,177 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos"
+        },
         "axes": {
-          "timing": [],
-          "trigger": [],
-          "condition": [],
-          "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
-          "lifecycle": [],
+          "timing": [
+            "OUTPOST"
+          ],
+          "trigger": [
+            "player.mana.changed"
+          ],
+          "condition": [
+            "EVENT_NUMBER_COMPARE",
+            "EVENT_PLAYER_IS_CONTROLLER"
+          ],
+          "cost": [
+            "DISCARD_CARDS"
+          ],
+          "target": [
+            "CHOOSE_ONE_CARD"
+          ],
+          "effect": [
+            "ADD_STATUS",
+            "DRAW_CARDS",
+            "PLAY_SELECTED_CARDS"
+          ],
+          "interaction": [
+            "CHOOSE_ONE_CARD"
+          ],
+          "lifecycle": [
+            "duration:permanent"
+          ],
           "modifier": [],
           "visibility": [],
-          "binding": [],
+          "binding": [
+            "payload:selectedBeastIds"
+          ],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.the-666.mana-gain-draw",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "player.mana.changed"
+              ],
+              "condition": [
+                "EVENT_NUMBER_COMPARE",
+                "EVENT_PLAYER_IS_CONTROLLER"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "DRAW_CARDS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "chaos.the-666.scrambled-seals",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "ADD_STATUS"
+              ],
+              "interaction": [],
+              "lifecycle": [
+                "duration:permanent"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "chaos.the-666.outpost-play-beast",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos#ability-3"
+            },
+            "axes": {
+              "timing": [
+                "OUTPOST"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [
+                "DISCARD_CARDS"
+              ],
+              "target": [
+                "CHOOSE_ONE_CARD"
+              ],
+              "effect": [
+                "PLAY_SELECTED_CARDS"
+              ],
+              "interaction": [
+                "CHOOSE_ONE_CARD"
+              ],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:selectedBeastIds"
+              ],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.chaos-beast-engine"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ACTION_SEMANTICS",
+          "CARD_ZONE",
+          "CONDITION",
+          "COST_PAYMENT",
+          "INTERACTION",
+          "LIFECYCLE",
+          "RESULT_BINDING",
+          "TARGET_SELECTION",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "CARD_ACTION_PLAY",
+          "GENERIC_CARD_ZONE",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_COST_PAYMENT",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_STATUS_STATE",
+          "GENERIC_TARGET_SELECTION",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -6727,13 +6926,18 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Sentinels"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "ACTION"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
@@ -6741,32 +6945,61 @@
           "effect": [],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:deployment_advantage:multiply"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.sentinels.turn-back",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Sentinels#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:deployment_advantage:multiply"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.double-deployment-bonus"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "MODIFIER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_MODIFIER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -6827,46 +7060,124 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Emperor"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "command-seal.spent"
+          ],
+          "condition": [
+            "EVENT_PLAYER_IS_CONTROLLER",
+            "SOURCE_ACTIVE"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "CLOSE_SOURCE_CARD"
+          ],
           "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
+          "lifecycle": [
+            "duration:while_active"
+          ],
+          "modifier": [
+            "rule:scrambled_seal_type:replace"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.emperor.bend-the-knee-permanent",
+            "kind": "PASSIVE",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Emperor#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:while_active"
+              ],
+              "modifier": [
+                "rule:scrambled_seal_type:replace"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          },
+          {
+            "sourceAbilityId": "chaos.emperor.close-after-seal",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Emperor#ability-2"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "command-seal.spent"
+              ],
+              "condition": [
+                "EVENT_PLAYER_IS_CONTROLLER",
+                "SOURCE_ACTIVE"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "CLOSE_SOURCE_CARD"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.chaos-beast-engine"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ACTION_SEMANTICS",
+          "CONDITION",
+          "LIFECYCLE",
+          "MODIFIER",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "CARD_ACTION_CLOSE",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -6927,46 +7238,108 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Breaker"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "ACTION"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
+          "target": [
+            "CHOOSE_NUMBER"
+          ],
+          "effect": [
+            "MOVE_PLAYER",
+            "SOURCE_CARD_POWER_BONUS"
+          ],
+          "interaction": [
+            "CHOOSE_NUMBER"
+          ],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "effect:source_card_power_bonus"
+          ],
           "visibility": [],
-          "binding": [],
+          "binding": [
+            "payload:x"
+          ],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.breaker.make-way",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Breaker#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [
+                "CHOOSE_NUMBER"
+              ],
+              "effect": [
+                "MOVE_PLAYER",
+                "SOURCE_CARD_POWER_BONUS"
+              ],
+              "interaction": [
+                "CHOOSE_NUMBER"
+              ],
+              "lifecycle": [],
+              "modifier": [
+                "effect:source_card_power_bonus"
+              ],
+              "visibility": [],
+              "binding": [
+                "payload:x"
+              ],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.structured-skill"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "INTERACTION",
+          "MODIFIER",
+          "MOVEMENT",
+          "POWER",
+          "RESULT_BINDING",
+          "TARGET_SELECTION"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_MODIFIER",
+          "GENERIC_MOVEMENT",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_POWER",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TARGET_SELECTION"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -7027,46 +7400,106 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Scourge"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "ACTION"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
+          "target": [
+            "CHOOSE_NUMBER",
+            "CHOOSE_ONE_EVENT"
+          ],
+          "effect": [
+            "MOVE_SELECTED_EVENTS"
+          ],
+          "interaction": [
+            "CHOOSE_NUMBER",
+            "CHOOSE_ONE_EVENT"
+          ],
           "lifecycle": [],
           "modifier": [],
           "visibility": [],
-          "binding": [],
+          "binding": [
+            "payload:selectedEventIds",
+            "payload:x"
+          ],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.scourge.pray-for-mercy",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Scourge#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [
+                "CHOOSE_NUMBER",
+                "CHOOSE_ONE_EVENT"
+              ],
+              "effect": [
+                "MOVE_SELECTED_EVENTS"
+              ],
+              "interaction": [
+                "CHOOSE_NUMBER",
+                "CHOOSE_ONE_EVENT"
+              ],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:selectedEventIds",
+                "payload:x"
+              ],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.structured-skill"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "INTERACTION",
+          "RESULT_BINDING",
+          "SPECIAL_SUBSYSTEM",
+          "TARGET_SELECTION"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
+          "GENERIC_EVENT_DECK",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TARGET_SELECTION"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -7127,13 +7560,18 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Phantasm"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "COMBAT"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
@@ -7141,32 +7579,61 @@
           "effect": [],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:card_power:add"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.phantasm.become-dust",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Phantasm#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "COMBAT"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:card_power:add"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.chaos-phantom"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "MODIFIER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_MODIFIER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -7227,13 +7694,18 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Primordial"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "COMBAT"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
@@ -7241,32 +7713,61 @@
           "effect": [],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:total_power:add"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.primordial.face-your-maker",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Primordial#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "COMBAT"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:total_power:add"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.same-battlefield-opponent-power"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "MODIFIER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_MODIFIER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -7327,46 +7828,106 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The 999th"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "card.played"
+          ],
+          "condition": [
+            "EVENT_DEFINITION_IS_SELF",
+            "EVENT_PLAYER_IS_CONTROLLER"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "MOVE_MATCHING_CARDS",
+            "SOURCE_CARD_POWER_BONUS"
+          ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "effect:source_card_power_bonus"
+          ],
           "visibility": [],
-          "binding": [],
+          "binding": [
+            "binding:discardedCount",
+            "result:discardedCount"
+          ],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.999th.despair",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The 999th#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "card.played"
+              ],
+              "condition": [
+                "EVENT_DEFINITION_IS_SELF",
+                "EVENT_PLAYER_IS_CONTROLLER"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "MOVE_MATCHING_CARDS",
+                "SOURCE_CARD_POWER_BONUS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "effect:source_card_power_bonus"
+              ],
+              "visibility": [],
+              "binding": [
+                "binding:discardedCount",
+                "result:discardedCount"
+              ],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.chaos-beast-engine"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CONDITION",
+          "MODIFIER",
+          "POWER",
+          "RESULT_BINDING",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -7567,46 +8128,92 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Stalker"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "COMBAT"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "COMBAT_POWER_BONUS"
+          ],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "effect:combat_power_bonus"
+          ],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_EFFECT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.stalker.watch-your-back",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Stalker#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "COMBAT"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "COMBAT_POWER_BONUS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "effect:combat_power_bonus"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_EFFECT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.chaos-hunter"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "MODIFIER",
+          "POWER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_MODIFIER",
+          "GENERIC_POWER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -7667,46 +8274,104 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Devourer"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "ACTION"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
+          "target": [
+            "CHOOSE_N_CARDS"
+          ],
+          "effect": [
+            "GAIN_MANA",
+            "MOVE_SELECTED_CARDS"
+          ],
+          "interaction": [
+            "CHOOSE_N_CARDS"
+          ],
           "lifecycle": [],
           "modifier": [],
           "visibility": [],
-          "binding": [],
+          "binding": [
+            "payload:selectedBeastIds",
+            "result:discardedCount"
+          ],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.devourer.offer-your-lives",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Devourer#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "ACTION"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [
+                "CHOOSE_N_CARDS"
+              ],
+              "effect": [
+                "GAIN_MANA",
+                "MOVE_SELECTED_CARDS"
+              ],
+              "interaction": [
+                "CHOOSE_N_CARDS"
+              ],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:selectedBeastIds",
+                "result:discardedCount"
+              ],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.chaos-beast-engine"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "INTERACTION",
+          "RESOURCE_NUMERIC",
+          "RESULT_BINDING",
+          "TARGET_SELECTION"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TARGET_SELECTION"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -7767,46 +8432,118 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Watcher"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "card.played"
+          ],
+          "condition": [
+            "EVENT_DEFINITION_IS_SELF",
+            "EVENT_PLAYER_IS_CONTROLLER"
+          ],
           "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
-          "lifecycle": [],
+          "target": [
+            "CHOOSE_N_CARDS"
+          ],
+          "effect": [
+            "DRAW_CARDS",
+            "MOVE_SELECTED_CARDS",
+            "SCHEDULE_EFFECT"
+          ],
+          "interaction": [
+            "CHOOSE_N_CARDS"
+          ],
+          "lifecycle": [
+            "duration:until_next_preparation"
+          ],
           "modifier": [],
           "visibility": [],
-          "binding": [],
+          "binding": [
+            "payload:discardBeastIds"
+          ],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.watcher.hide-your-fears",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Watcher#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "card.played"
+              ],
+              "condition": [
+                "EVENT_DEFINITION_IS_SELF",
+                "EVENT_PLAYER_IS_CONTROLLER"
+              ],
+              "cost": [],
+              "target": [
+                "CHOOSE_N_CARDS"
+              ],
+              "effect": [
+                "DRAW_CARDS",
+                "MOVE_SELECTED_CARDS",
+                "SCHEDULE_EFFECT"
+              ],
+              "interaction": [
+                "CHOOSE_N_CARDS"
+              ],
+              "lifecycle": [
+                "duration:until_next_preparation"
+              ],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:discardBeastIds"
+              ],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.chaos-beast-engine"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CARD_ZONE",
+          "CONDITION",
+          "INTERACTION",
+          "LIFECYCLE",
+          "RESULT_BINDING",
+          "TARGET_SELECTION",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CARD_ZONE",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TARGET_SELECTION",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -7867,46 +8604,96 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Lurker"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "player.entered-location"
+          ],
+          "condition": [
+            "EVENT_LOCATION_EQUALS_CONTROLLER",
+            "EVENT_PLAYER_IS_OPPONENT"
+          ],
           "cost": [],
           "target": [],
           "effect": [],
           "interaction": [],
-          "lifecycle": [],
-          "modifier": [],
+          "lifecycle": [
+            "duration:this_round"
+          ],
+          "modifier": [
+            "rule:total_power:add"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.lurker.stay-on-the-path",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Lurker#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "player.entered-location"
+              ],
+              "condition": [
+                "EVENT_LOCATION_EQUALS_CONTROLLER",
+                "EVENT_PLAYER_IS_OPPONENT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [
+                "duration:this_round"
+              ],
+              "modifier": [
+                "rule:total_power:add"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.chaos-shadow-trap"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "CONDITION",
+          "LIFECYCLE",
+          "MODIFIER",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_LIFECYCLE_POLICY",
+          "GENERIC_MODIFIER",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -7967,46 +8754,96 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Colossus"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.resolved"
+          ],
+          "condition": [
+            "EVENT_PLAYER_LOST_COMBAT"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "DRAW_CARDS"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.colossus.cover-your-ears",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Colossus#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "EVENT_PLAYER_LOST_COMBAT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "DRAW_CARDS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "shared_handler",
           "handlerId": "core.chaos-beast-engine"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CARD_ZONE",
+          "CONDITION",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CARD_ZONE",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "shared_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -8067,46 +8904,98 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Violator"
+        },
         "axes": {
           "timing": [],
-          "trigger": [],
-          "condition": [],
+          "trigger": [
+            "combat.resolved"
+          ],
+          "condition": [
+            "EVENT_PLAYER_WON_COMBAT"
+          ],
           "cost": [],
           "target": [],
-          "effect": [],
+          "effect": [
+            "GAIN_VICTORY_POINTS",
+            "LOSE_VICTORY_POINTS"
+          ],
           "interaction": [],
           "lifecycle": [],
           "modifier": [],
           "visibility": [],
           "binding": [],
-          "battle": []
+          "battle": [
+            "COMBAT_CONDITION",
+            "COMBAT_EVENT"
+          ]
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.violator.save-your-flesh",
+            "kind": "TRIGGERED",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Violator#ability-1"
+            },
+            "axes": {
+              "timing": [],
+              "trigger": [
+                "combat.resolved"
+              ],
+              "condition": [
+                "EVENT_PLAYER_WON_COMBAT"
+              ],
+              "cost": [],
+              "target": [],
+              "effect": [
+                "GAIN_VICTORY_POINTS",
+                "LOSE_VICTORY_POINTS"
+              ],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [],
+              "battle": [
+                "COMBAT_CONDITION",
+                "COMBAT_EVENT"
+              ]
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.chaos-sacrifice"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "BATTLE_RESULT",
+          "CONDITION",
+          "RESOURCE_NUMERIC",
+          "TRIGGER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_BATTLE_INTEGRATION",
+          "GENERIC_CONDITION_EVALUATION",
+          "GENERIC_RESOURCE_NUMERIC",
+          "GENERIC_TRIGGER_GATEWAY"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -8167,45 +9056,99 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Hunter"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "COMBAT"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
-          "target": [],
-          "effect": [],
-          "interaction": [],
+          "target": [
+            "CHOOSE_ONE_PLAYER"
+          ],
+          "effect": [
+            "DEFEAT_PLAYER"
+          ],
+          "interaction": [
+            "CHOOSE_ONE_PLAYER"
+          ],
           "lifecycle": [],
           "modifier": [],
           "visibility": [],
-          "binding": [],
+          "binding": [
+            "payload:selectedPlayerIds"
+          ],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.hunter.run-like-hell",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Hunter#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "COMBAT"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [
+                "CHOOSE_ONE_PLAYER"
+              ],
+              "effect": [
+                "DEFEAT_PLAYER"
+              ],
+              "interaction": [
+                "CHOOSE_ONE_PLAYER"
+              ],
+              "lifecycle": [],
+              "modifier": [],
+              "visibility": [],
+              "binding": [
+                "payload:selectedPlayerIds"
+              ],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.chaos-giant-shark"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "INTERACTION",
+          "RESULT_BINDING",
+          "SPECIAL_SUBSYSTEM",
+          "TARGET_SELECTION"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_PENDING_INTERACTION",
+          "GENERIC_RESULT_BINDING",
+          "GENERIC_TARGET_SELECTION",
+          "REVIEWED_SPECIAL_HANDLER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
+        "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+        "mappingStatus": "CONTRACT_MAPPED",
         "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
+          "SPECIAL_EFFECT:defeat_player"
         ],
         "routeEvidence": {
           "currentAbilityIds": [],
@@ -8267,13 +9210,18 @@
         "hasConfirmedOverride": true,
         "dynamic": false
       },
-      "classification": "DISCOVERED",
+      "classification": "CONTRACT_MAPPED",
       "blockedBy": [],
       "semanticNormalization": {
-        "status": "BLOCKED",
-        "source": null,
+        "status": "SOURCE_GROUNDED",
+        "source": {
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Horror"
+        },
         "axes": {
-          "timing": [],
+          "timing": [
+            "COMBAT"
+          ],
           "trigger": [],
           "condition": [],
           "cost": [],
@@ -8281,32 +9229,61 @@
           "effect": [],
           "interaction": [],
           "lifecycle": [],
-          "modifier": [],
+          "modifier": [
+            "rule:card_power:set"
+          ],
           "visibility": [],
           "binding": [],
           "battle": []
         },
-        "abilities": [],
-        "blocks": [
-          "SEMANTIC_SOURCE_REQUIRED"
+        "abilities": [
+          {
+            "sourceAbilityId": "chaos.horror.avert-your-eyes",
+            "kind": "PHASE_ACTION",
+            "source": {
+              "document": "Fate/Domination Wiki",
+              "locator": "Nrvnqsr Chaos#Cards/The Horror#ability-1"
+            },
+            "axes": {
+              "timing": [
+                "COMBAT"
+              ],
+              "trigger": [],
+              "condition": [],
+              "cost": [],
+              "target": [],
+              "effect": [],
+              "interaction": [],
+              "lifecycle": [],
+              "modifier": [
+                "rule:card_power:set"
+              ],
+              "visibility": [],
+              "binding": [],
+              "battle": []
+            }
+          }
         ],
+        "blocks": [],
         "observedBehavior": {
           "executionRoute": "specific_handler",
           "handlerId": "core.chaos-fear"
         }
       },
       "phase3": {
-        "mechanicFamilies": [],
-        "requiredCapabilities": [],
+        "mechanicFamilies": [
+          "MODIFIER"
+        ],
+        "requiredCapabilities": [
+          "GENERIC_MODIFIER"
+        ],
         "currentRoute": "none",
         "referenceRoute": "specific_handler",
         "inheritedAcceptanceContracts": [],
         "partialAcceptanceContracts": [],
-        "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
-        "mappingStatus": "EXPLICIT_BLOCK",
-        "blockedBy": [
-          "SEMANTIC_SOURCE_REQUIRED"
-        ],
+        "classificationRoute": "READY_GENERIC_EXTENSION",
+        "mappingStatus": "CONTRACT_MAPPED",
+        "blockedBy": [],
         "routeEvidence": {
           "currentAbilityIds": [],
           "currentAcceptanceContracts": [],
@@ -100967,15 +101944,15 @@
   ],
   "semanticSummary": {
     "totalIdentityCount": 944,
-    "sourceGroundedCount": 72,
-    "blockedCount": 872,
+    "sourceGroundedCount": 89,
+    "blockedCount": 855,
     "unclassifiedCount": 0,
-    "structuredAbilityCount": 117
+    "structuredAbilityCount": 138
   },
   "capabilitySummary": {
     "totalIdentityCount": 944,
-    "contractMappedCount": 72,
-    "explicitBlockCount": 872,
+    "contractMappedCount": 89,
+    "explicitBlockCount": 855,
     "currentRouteCounts": {
       "legacy": 33,
       "new": 2,
@@ -100990,10 +101967,10 @@
     },
     "classificationRouteCounts": {
       "READY_EXISTING_CONTRACT": 0,
-      "READY_GENERIC_EXTENSION": 66,
-      "SPECIAL_HANDLER_CANDIDATE": 6,
+      "READY_GENERIC_EXTENSION": 82,
+      "SPECIAL_HANDLER_CANDIDATE": 7,
       "RULE_DECISION_REQUIRED": 0,
-      "SOURCE_EVIDENCE_REQUIRED": 872,
+      "SOURCE_EVIDENCE_REQUIRED": 855,
       "PHASE_DEPENDENCY_BLOCKED": 0,
       "REFERENCE_RUNTIME_CONFLICT": 0
     },
