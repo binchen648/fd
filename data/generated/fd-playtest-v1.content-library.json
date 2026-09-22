@@ -9049,6 +9049,135 @@
         "playKind": "support",
         "destinationZone": "field"
       },
+      "master.ciel.skill.s3": {
+        "id": "master.ciel.skill.s3",
+        "name": "第七圣典",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "力量",
+          "cost": 3,
+          "basePower": 7,
+          "attributes": [
+            "力量"
+          ]
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
+        "abilities": [
+          {
+            "id": "seventh-scripture.once-per-game",
+            "kind": "passive",
+            "printedClause": "<每局游戏限一次>",
+            "activation": {
+              "trigger": "when_play_requirements_checked"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {
+              "type": "per_game",
+              "uses": 1,
+              "scope": "this_card"
+            },
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
+            "id": "seventh-scripture-soul-crush",
+            "kind": "phase_action",
+            "printedClause": "粉碎灵魂-战斗阶段：你的交战对手若未控制【幸运】，其下回合无法从局势牌获得魔力和威力加成。",
+            "activation": {
+              "phase": "combat",
+              "opens": "controller_combat_action_window"
+            },
+            "conditions": [
+              {
+                "type": "source_active"
+              },
+              {
+                "type": "at_battlefield"
+              }
+            ],
+            "targets": [],
+            "effects": [
+              {
+                "type": "suppress_next_round_situation_benefits",
+                "target": {
+                  "scope": "same_battlefield_opponents",
+                  "where": [
+                    {
+                      "type": "does_not_control_card_definition",
+                      "definitionIds": [
+                        "card.cardluck"
+                      ],
+                      "zones": [
+                        "attack"
+                      ],
+                      "activeOnly": true,
+                      "face": "up"
+                    }
+                  ]
+                },
+                "roundOffset": 1,
+                "benefits": [
+                  "situation_mana_gain",
+                  "situation_power_bonus"
+                ]
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.ciel",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
       "master.shiki-ryougi.skill.s1a": {
         "id": "master.shiki-ryougi.skill.s1a",
         "name": "欠损",
@@ -10918,11 +11047,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "7f5f8b8aa6f0abbe060b611189d4c104481486aa50435f4b73a8be7c7890bde1",
+    "definitionHash": "8c7b47ae26b921894643a4f504521dd695fb8b6ecaad9a822051e94d28d411a0",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "7f5f8b8aa6f0abbe060b611189d4c104481486aa50435f4b73a8be7c7890bde1"
+      "definitionHash": "8c7b47ae26b921894643a4f504521dd695fb8b6ecaad9a822051e94d28d411a0"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -11877,6 +12006,26 @@
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[14].cards[1].abilities[1]"
+      },
+      "master.ciel.skill.s3": {
+        "archiveId": "master.ciel",
+        "archiveIndex": 14,
+        "cardIndex": 2,
+        "path": "archives[14].cards[2]"
+      },
+      "master.ciel.skill.s3#seventh-scripture.once-per-game": {
+        "archiveId": "master.ciel",
+        "archiveIndex": 14,
+        "cardIndex": 2,
+        "abilityIndex": 0,
+        "path": "archives[14].cards[2].abilities[0]"
+      },
+      "master.ciel.skill.s3#seventh-scripture-soul-crush": {
+        "archiveId": "master.ciel",
+        "archiveIndex": 14,
+        "cardIndex": 2,
+        "abilityIndex": 1,
+        "path": "archives[14].cards[2].abilities[1]"
       },
       "master.shiki-ryougi.skill.s1a": {
         "archiveId": "master.shiki-ryougi",
