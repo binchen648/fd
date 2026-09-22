@@ -6068,3 +6068,24 @@ Result: synchronize the already-completed fresh independent R `IMPLEMENTATION_AC
 Accepted capability remains only the bounded identity-free two-stage transaction: successful stage-one selection settles ordinary effect-play `playBatch` before stage two opens; both pending decisions preserve frozen candidate snapshots and require snapshot plus current-live legality with exact fail-closed persisted-continuation validation; stage two remains the exact same-location active-opponent owner-controlled face-up servant-skill selector and physical face-down/inactive mutation without close semantics.
 
 FB2-53 earns zero migration credit; formal migration remains **`155/944`**, with **`789`** remaining. Material authoring overlap remains **`150/944`**. PR #431 remains OPEN, unmerged and unretargeted. Next action is fresh whole-card reconstruction of `servant.helena.skill.sc-helena-1`; singleton S only if the complete frozen card is mechanically zero-gap.
+## TASK P3-A-R113-HELENA-S1-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r113-helena-s1-consumer-migration-dispatch`
+Base: exact R112 FB2-53 acceptance synchronization `a5f475dece21eac9d8a36a6d566e1402da6d33f9`
+Read: `docs/reports/2026-09-23-p3-a-r113-helena-s1-consumer-migration-dispatch.md`
+
+Result: fresh whole-card reconstruction proves exactly `servant.helena.skill.sc-helena-1` mechanically S_READY_NOW on synchronized FB2-53. Frozen F1 source hash is `abc76e38254ac8688fa7caef5392e28a7b8baa507479231db743a638e9f3fc52`; static metadata is passive servant skill / cost 0 / basePower 0 / legacy requirement 0, with canonical servant skill-zone threshold 8. A no-file-write probe appending the normalized card to the existing Helena archive returns loader `report=[]` and authoring/compiled FB2-53 classifiers true. Base material is `150/944`, target absent, Helena S3 present once, duplicates 0; Candidate must be exactly `151/944`, exact +1 S1, zero removals/duplicates.
+
+S may only change the old `helena-consumer-migration.test.ts` archive-exclusive assertion so S3 remains exact-once and is found by id; all prior S3 semantics and product-isolation assertions must remain. No runtime/compiler/client/product/generated/pack change. Formal migration remains **`155/944`**, **`789`** remaining until fresh R `MIGRATION_ACCEPTED` plus A synchronization. Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**.
+
+## TASK P3-S-R113-HELENA-S1-CONSUMER-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Branch: `codex/s-p3-r113-helena-s1-consumer-migration`
+Base: exact P3-A-R113 dispatch Candidate
+Read: `docs/reports/2026-09-23-p3-a-r113-helena-s1-consumer-migration-dispatch.md`
+
+Goal: migrate exactly `servant.helena.skill.sc-helena-1` as the sole new frozen identity in the existing Helena standalone servant archive using only synchronized FB2-53. Preserve S3; make only the explicitly authorized S3 archive-exclusivity test compatibility edit. Required material accounting is exact `150/944 -> 151/944`; no runtime/compiler/client/product/generated/pack change and no second identity. Formal migration remains `155/944`, `789` remaining pending fresh independent R and A synchronization. S 完成 recertification 并提交 Exact Base/Candidate.
