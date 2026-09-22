@@ -70,6 +70,26 @@ describe('MatchRoomHub local multiplayer transport layer', () => {
       snapshot => { snapshot.session.state.eventPlacements[0].eventCardId = 'event.missing'; },
       snapshot => { snapshot.session.state.map.playerCount = 999; },
       snapshot => { snapshot.session.state.players[0].seat = 999; },
+      snapshot => {
+        snapshot.session.state.abilityRuntime.pendingPreBattleDefeats = [{
+          round: snapshot.session.state.round.roundNumber,
+          battlefieldId: 'miyama_town',
+          controllerId: 'ghost-player',
+          sourceCardId: 'missing-card',
+          abilityId: 'missing-ability',
+          targetPlayerIds: ['p2'],
+        }];
+      },
+      snapshot => {
+        snapshot.session.state.abilityRuntime.pendingDelayedActivations = [{
+          controllerId: 'p1',
+          sourceCardId: 'missing-card',
+          abilityId: 'missing-ability',
+          definitionId: 'basic.strength.5',
+          triggerEventId: 'forged-trigger',
+          round: snapshot.session.state.round.roundNumber,
+        }];
+      },
     ];
     for (const corrupt of corruptions) {
       const malformed: any = structuredClone(beforeSnapshot);

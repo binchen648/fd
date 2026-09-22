@@ -755,7 +755,81 @@ function isRestoreRuleOverrides(value: unknown, playerIds: Set<string>, location
   return true;
 }
 
-function isRestoreAbilityRuntimeReferences(value: Record<string, unknown>, playerIds: Set<string>): boolean {
+function restoreSourceDefinition(
+  pack: Record<string, unknown>,
+  cardsByInstance: Map<string, Record<string, unknown>>,
+  eventPlacements: Array<Record<string, unknown>>,
+  sourceCardId: string,
+): Record<string, unknown> | undefined {
+  const physical = cardsByInstance.get(sourceCardId);
+  if (physical && isRestoreRecord(pack.cards)) {
+    const definition = pack.cards[physical.definitionId as string];
+    if (isRestoreRecord(definition)) return definition;
+  }
+  const placement = eventPlacements.find((entry) => entry.ruleInstanceId === sourceCardId);
+  if (placement && isRestoreRecord(pack.eventRules)) {
+    const definition = pack.eventRules[placement.eventCardId as string];
+    if (isRestoreRecord(definition)) return definition;
+  }
+  return undefined;
+}
+
+function restoreSourceHasAbility(
+  pack: Record<string, unknown>,
+  cardsByInstance: Map<string, Record<string, unknown>>,
+  eventPlacements: Array<Record<string, unknown>>,
+  sourceCardId: string,
+  abilityId: string,
+): boolean {
+  const definition = restoreSourceDefinition(pack, cardsByInstance, eventPlacements, sourceCardId);
+  return !!definition && Array.isArray(definition.abilities) && definition.abilities.some((ability) =>
+    isRestoreRecord(ability) && ability.id === abilityId);
+}
+
+function restoreSourceControllerMatches(
+  cardsByInstance: Map<string, Record<string, unknown>>,
+  eventPlacements: Array<Record<string, unknown>>,
+  sourceCardId: string,
+  controllerId: string,
+): boolean {
+  const physical = cardsByInstance.get(sourceCardId);
+  if (physical) return physical.controllerPlayerId === controllerId;
+  const placement = eventPlacements.find((entry) => entry.ruleInstanceId === sourceCardId);
+  return !!placement && (placement.ruleControllerPlayerId === undefined || placement.ruleControllerPlayerId === controllerId);
+}
+
+function restoreIdsBelongTo(ids: unknown, allowed: Set<string>): boolean {
+  return isRestoreStringArray(ids) && new Set(ids).size === ids.length && ids.every((id) => allowed.has(id));
+}
+
+function isRestoreAbilityEventReferences(
+  event: Record<string, unknown>,
+  playerIds: Set<string>,
+  locationIds: Set<string>,
+): boolean {
+  if (event.playerId !== undefined && !playerIds.has(event.playerId as string)) return false;
+  if (event.battlefieldId !== undefined && !locationIds.has(event.battlefieldId as string)) return false;
+  if (event.locationId !== undefined && !locationIds.has(event.locationId as string)) return false;
+  if (event.battleParticipantIds !== undefined && !restoreIdsBelongTo(event.battleParticipantIds, playerIds)) return false;
+  if (event.battleParticipantPowers !== undefined && (!isRestoreFiniteNumberMap(event.battleParticipantPowers) ||
+      !restoreRecordKeysBelongTo(event.battleParticipantPowers, playerIds))) return false;
+  if (Array.isArray(event.battleOutcomes) && !event.battleOutcomes.every((outcome) =>
+      isRestoreRecord(outcome) && locationIds.has(outcome.battlefieldId as string) &&
+      (outcome.participantPlayerIds === undefined || restoreIdsBelongTo(outcome.participantPlayerIds, playerIds)) &&
+      restoreIdsBelongTo(outcome.winnerPlayerIds, playerIds))) return false;
+  if (Array.isArray(event.playedCards) && !event.playedCards.every((played) =>
+      isRestoreRecord(played) && playerIds.has(played.controllerId as string))) return false;
+  return true;
+}
+
+function isRestoreAbilityRuntimeReferences(
+  value: Record<string, unknown>,
+  playerIds: Set<string>,
+  locationIds: Set<string>,
+  cardsByInstance: Map<string, Record<string, unknown>>,
+  pack: Record<string, unknown>,
+  eventPlacements: Array<Record<string, unknown>>,
+): boolean {
   const playerKeyedMaps = [
     'playerStatusKeysByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
     'battlefieldsPassedOrStayedThisRound',
@@ -773,14 +847,69 @@ function isRestoreAbilityRuntimeReferences(value: Record<string, unknown>, playe
   const bindingHistory = value.rulerSealBindingHistory as Record<string, unknown>;
   if (!restoreRecordKeysBelongTo(bindingHistory, playerIds) || !Object.values(bindingHistory).every((entry) => restoreRecordKeysBelongTo(entry, playerIds))) return false;
   if (!(value.rulerSealBindings as Array<Record<string, unknown>>).every((entry) =>
-      playerIds.has(entry.issuerPlayerId as string) && playerIds.has(entry.boundPlayerId as string))) return false;
+      playerIds.has(entry.issuerPlayerId as string) && playerIds.has(entry.boundPlayerId as string) &&
+      restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string))) return false;
   if (!(value.pendingRulerSealRewards as Array<Record<string, unknown>>).every((entry) =>
-      playerIds.has(entry.issuerPlayerId as string) && playerIds.has(entry.boundPlayerId as string))) return false;
-  if (!(value.pendingSourceCardReturns as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.recipientPlayerId as string))) return false;
+      playerIds.has(entry.issuerPlayerId as string) && playerIds.has(entry.boundPlayerId as string) &&
+      restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string))) return false;
+  if (!(value.pendingSourceCardReturns as Array<Record<string, unknown>>).every((entry) =>
+      playerIds.has(entry.recipientPlayerId as string) &&
+      restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string))) return false;
   if (!(value.calculations as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.hostRequests as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.ongoingEffects as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.responseWindows as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
+
+  if (value.pendingDelayedActivations !== undefined && !(value.pendingDelayedActivations as Array<Record<string, unknown>>).every((entry) =>
+      playerIds.has(entry.controllerId as string) &&
+      restoreSourceControllerMatches(cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.controllerId as string) &&
+      restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string) &&
+      isRestoreRecord(pack.cards) && Object.prototype.hasOwnProperty.call(pack.cards, entry.definitionId as string))) return false;
+  if (value.pendingPresenceConcealmentDefeats !== undefined && !(value.pendingPresenceConcealmentDefeats as Array<Record<string, unknown>>).every((entry) => {
+    if (!playerIds.has(entry.controllerId as string) || !locationIds.has(entry.battlefieldId as string) ||
+        !restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string) ||
+        !restoreIdsBelongTo(entry.participantIds, playerIds) || !restoreIdsBelongTo(entry.targetPlayerIds, playerIds)) return false;
+    const participants = entry.participantIds as string[];
+    if ((entry.targetPlayerIds as string[]).some((id) => !participants.includes(id))) return false;
+    return isRestoreFiniteNumberMap(entry.participantPowers) &&
+      restoreRecordKeysBelongTo(entry.participantPowers, new Set(participants)) && Object.keys(entry.participantPowers).length === participants.length;
+  })) return false;
+  if (value.pendingPreBattleDefeats !== undefined && !(value.pendingPreBattleDefeats as Array<Record<string, unknown>>).every((entry) =>
+      playerIds.has(entry.controllerId as string) && locationIds.has(entry.battlefieldId as string) &&
+      restoreSourceControllerMatches(cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.controllerId as string) &&
+      restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string) &&
+      restoreIdsBelongTo(entry.targetPlayerIds, playerIds))) return false;
+  if (value.pendingPostBattleEvents !== undefined && !(value.pendingPostBattleEvents as Array<Record<string, unknown>>).every((entry) =>
+      isRestoreAbilityEventReferences(entry, playerIds, locationIds))) return false;
+  if (value.pendingCombatOpponentPowerVpRewards !== undefined && !(value.pendingCombatOpponentPowerVpRewards as Array<Record<string, unknown>>).every((entry) => {
+    if (!playerIds.has(entry.controllerId as string) || !locationIds.has(entry.battlefieldId as string) ||
+        !restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string) ||
+        !restoreIdsBelongTo(entry.participantIds, playerIds) || !restoreIdsBelongTo(entry.opponentIds, playerIds)) return false;
+    const participants = entry.participantIds as string[];
+    const opponents = entry.opponentIds as string[];
+    if (!participants.includes(entry.controllerId as string) || opponents.includes(entry.controllerId as string) ||
+        opponents.some((id) => !participants.includes(id))) return false;
+    return isRestoreFiniteNumberMap(entry.participantPowers) &&
+      restoreRecordKeysBelongTo(entry.participantPowers, new Set(participants)) && Object.keys(entry.participantPowers).length === participants.length;
+  })) return false;
+  if (value.pendingOpponentCloseToOne !== undefined && !(value.pendingOpponentCloseToOne as Array<Record<string, unknown>>).every((entry) =>
+      playerIds.has(entry.initiatingControllerId as string) && playerIds.has(entry.decisionPlayerId as string) &&
+      locationIds.has(entry.battlefieldId as string) &&
+      restoreSourceControllerMatches(cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.initiatingControllerId as string) &&
+      restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string) &&
+      restoreIdsBelongTo(entry.remainingDecisionPlayerIds, playerIds) &&
+      (entry.qualifyingCardIds as string[]).every((id) => cardsByInstance.has(id)) &&
+      Object.values(entry.qualifyingCardOwners as Record<string, unknown>).every((owner) => playerIds.has(owner as string)))) return false;
+  if (value.pendingBattleTerminalEvent !== undefined && (!isRestoreRecord(value.pendingBattleTerminalEvent) ||
+      !isRestoreAbilityEventReferences(value.pendingBattleTerminalEvent, playerIds, locationIds))) return false;
+  if (value.transformedReturnSilenceSourceCardIds !== undefined &&
+      !(value.transformedReturnSilenceSourceCardIds as string[]).every((id) => cardsByInstance.has(id))) return false;
+  if (value.trustedBattleResultSnapshots !== undefined && !Object.values(value.trustedBattleResultSnapshots as Record<string, unknown>).every((entry) =>
+      isRestoreRecord(entry) && locationIds.has(entry.battlefieldId as string) &&
+      restoreIdsBelongTo(entry.battleParticipantIds, playerIds) && restoreIdsBelongTo(entry.winners, playerIds) &&
+      restoreIdsBelongTo(entry.loserIds, playerIds) &&
+      (entry.battleParticipantPowers === undefined || (isRestoreFiniteNumberMap(entry.battleParticipantPowers) &&
+        restoreRecordKeysBelongTo(entry.battleParticipantPowers, new Set(entry.battleParticipantIds as string[])))))) return false;
   return value.pendingDecision === undefined || playerIds.has((value.pendingDecision as Record<string, unknown>).controllerId as string);
 }
 
@@ -804,7 +933,6 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
       !players.some((player) => player.seat === round.prioritySeat)) return false;
 
   const abilityRuntime = value.abilityRuntime as Record<string, unknown>;
-  if (!isRestoreAbilityRuntimeReferences(abilityRuntime, playerIds)) return false;
   const pack = abilityRuntime.pack as Record<string, unknown>;
   if (packKind === 'production_executable') {
     const characters = pack.characters as Record<string, unknown>;
@@ -833,7 +961,8 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   const instanceIds = new Set(cards.map((card) => card.instanceId as string));
   const definitions = pack.cards as Record<string, unknown>;
   if (instanceIds.size !== cards.length || !cards.every((card) => playerIds.has(card.ownerPlayerId as string) &&
-      playerIds.has(card.controllerPlayerId as string) && Object.prototype.hasOwnProperty.call(definitions, card.definitionId as string))) return false;
+      playerIds.has(card.controllerPlayerId as string) && (packKind === 'trusted_authoring_fixture' ||
+        Object.prototype.hasOwnProperty.call(definitions, card.definitionId as string)))) return false;
 
   const eventCatalog = isRestoreRecord(pack.eventCatalog) ? pack.eventCatalog : {};
   const eventIds = new Set([...eventCardById.keys(), ...Object.keys(eventCatalog)]);
@@ -848,6 +977,9 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   if (value.currentSituationModifiers !== undefined && (!Array.isArray(value.currentSituationModifiers) || !value.currentSituationModifiers.every(isRestoreRecord))) return false;
 
   if (!value.eventPlacements.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, eventIds))) return false;
+  const cardsByInstance = new Map(cards.map((card) => [card.instanceId as string, card] as const));
+  const restoredEventPlacements = value.eventPlacements as Array<Record<string, unknown>>;
+  if (!isRestoreAbilityRuntimeReferences(abilityRuntime, playerIds, locationIds, cardsByInstance, pack, restoredEventPlacements)) return false;
   if (value.eventDiscardPile !== undefined && (!Array.isArray(value.eventDiscardPile) ||
       !value.eventDiscardPile.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, eventIds, true)))) return false;
   if (value.battleDeclarations !== undefined && (!Array.isArray(value.battleDeclarations) || !value.battleDeclarations.every((entry) =>
