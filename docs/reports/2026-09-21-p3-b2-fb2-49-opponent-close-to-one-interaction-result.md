@@ -701,3 +701,58 @@ Focused verification for this revision under the restored implementation/review 
 - no repository-wide CI/build/content/coverage/audit rerun was performed for this intermediate revision because neither exact finding requires those surfaces before fresh R.
 
 Scope remains identity-free FB2-49 capability work. No Astolfo consumer migration, client production change, authoring vocabulary expansion, migration credit, merge, or retarget is introduced.
+## 2026-09-22 evidence closure for formal PR #422 lineage
+
+This section supersedes the stale evidence tail above for the current formal independent-repair line. It does **not** claim acceptance, merge authorization, retarget authorization, A synchronization, or migration credit.
+
+### Formal lineage after the prior report tail
+
+- Exact task Base remains `822b5f9dfd05a64a5707fcb945b8b85eff2238e6`.
+- Formal repair PR: `#422`, branch `codex/b2-p3-fb2-49-independent-lifecycle-repair`.
+- PR #422 intentionally remains separate from the later PR #415 `97947f15...` / `f0eb754e...` commits and does not reuse them as formal Candidate lineage.
+- Exact fresh-R results on PR #422 before the current implementation candidate:
+  - `bdf6a728efadef86c43d3d863547ff8b6796feea` — `IMPLEMENTATION_NEEDS_REVISION` — https://github.com/binchen648/fd/pull/422#issuecomment-5766273783
+  - `c5748a9f7e9d8b4bc8e3786ac6aec280818a5e0b` — `IMPLEMENTATION_NEEDS_REVISION` — https://github.com/binchen648/fd/pull/422#issuecomment-5766853053
+  - `686566a52cc5929c4c2b33a17fc7dd384f5b8208` — `IMPLEMENTATION_NEEDS_REVISION` — https://github.com/binchen648/fd/pull/422#issuecomment-5767403530
+  - `c18b061d845cbd2c891ca21cd205433f2807ab45` — `IMPLEMENTATION_NEEDS_REVISION` — https://github.com/binchen648/fd/pull/422#issuecomment-5768450905
+  - `13d96e466186848601a07aa19ff93026494d5c56` — `IMPLEMENTATION_NEEDS_REVISION` — https://github.com/binchen648/fd/pull/422#issuecomment-5769155392
+  - `c72cfc8b44a1c77f46364b77578ca0f0ab67f8d7` — `IMPLEMENTATION_NEEDS_REVISION` — https://github.com/binchen648/fd/pull/422#issuecomment-5769474044
+  - `8ffdb3f21e6191aa316e00cabd601c9d96240769` — `IMPLEMENTATION_NEEDS_REVISION` — https://github.com/binchen648/fd/pull/422#issuecomment-5769720937
+  - `fa857053326eec75062e844f779d41a1d0126387` — `IMPLEMENTATION_NEEDS_REVISION` — https://github.com/binchen648/fd/pull/422#issuecomment-5769968487
+  - `88c2b147e157dc9ed98df96a53cbfb4237c37e09` — `IMPLEMENTATION_NEEDS_REVISION` — https://github.com/binchen648/fd/pull/422#issuecomment-5770241631
+  - `85386176b874dff68cbe962980837e5d787476d0` — `IMPLEMENTATION_NEEDS_REVISION` — https://github.com/binchen648/fd/pull/422#issuecomment-5770554921
+  - `caa4cccd747ebf50bb18e4280762556e29226a01` — `IMPLEMENTATION_NEEDS_REVISION` — https://github.com/binchen648/fd/pull/422#issuecomment-5770701199
+  - `e5b49a7c63bf0399d2f54833996efc03b878bb5a` — `IMPLEMENTATION_NEEDS_REVISION` — https://github.com/binchen648/fd/pull/422#issuecomment-5770835391
+  - `cca9d9cc4f4d4367a029d94cd63ff33430df1d4f` — `IMPLEMENTATION_NEEDS_REVISION` — https://github.com/binchen648/fd/pull/422#issuecomment-5770951032
+
+### Current implementation candidate before this evidence-only closure
+
+Implementation SHA: `5d1b133fb782b7aff58c743fba56914bfb4e0bb0`
+Parent: `cca9d9cc4f4d4367a029d94cd63ff33430df1d4f`
+Tree: `f9cf7c45d2c192957d7e927f41ccee4515b70370`
+
+It addresses both findings in reviewer evidence `#5770951032`:
+
+1. generic deferred-state authentication covers gameplay-affecting `MatchSession` persistence fields outside `GameState`, including the reviewed `maxActionsPerPlayer` and `battleHistory` mutation cases, and applies the corresponding binding to replay checkpoint execution metadata;
+2. deferred authority is separated by a host-owned lifecycle identity: independent direct `MatchSession` instances do not silently share one default acceptance scope, and replacement of a room lifecycle under the same public room id rotates/revokes the old scope.
+
+Exact implementation validation already published for `5d1b133...`:
+
+- `npm.cmd run typecheck` — PASS;
+- affected focused rules — **15 files / 215 tests PASS**;
+- FB2-49 focused — **51/51 PASS**;
+- MatchSession — **30/30 PASS**;
+- MatchRoomHub — **8/8 PASS**;
+- complex-skills regression — **37/37 PASS**;
+- `@fd/server` `src/match-server.test.ts` — **5/5 PASS**;
+- `git diff --check` — PASS.
+
+Implementation evidence: https://github.com/binchen648/fd/pull/422#issuecomment-5771144801
+
+At the time of this evidence closure there is **no exact fresh-R acceptance result for `5d1b133...`**. Therefore this remains `CANDIDATE_READY_FOR_FRESH_R`, not an accepted implementation.
+
+### Current-main governance boundary
+
+Current `origin/main` is `4b52b3166ed2ba0efaa4569ee95c6513fd26ab2f` and contains the Phase 3 Promotion Lane introduced by PR #405. PR #422 is an older stacked implementation line whose Base predates that governance workflow; it is **not** the final main Promotion PR and must not be merged or retargeted merely to satisfy the new gate.
+
+After exact fresh independent R accepts the final PR #422 Candidate, the repository-defined next steps are: A synchronization, then a separate role-I Promotion PR from the then-current `main` carrying the required `phase3-task-manifest`, machine-readable review attestation, synchronization ancestry, and current Build/Test/Policy checks. FB2-49 remains zero-credit capability work; formal migration remains `151/944`, `793` remaining until the subsequent Astolfo consumer migration is independently accepted and synchronized.
