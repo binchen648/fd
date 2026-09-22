@@ -67,6 +67,22 @@ describe('P3-FB2-51 opponent current-round positive VP gain crossing 7', () => {
     }
   });
 
+  it('rejects the FB2-51 threshold vocabulary in the wrong loader slot or unrelated whole envelope', () => {
+    const wrongPosition = ability();
+    wrongPosition.activation = { trigger: 'after_controller_gains_victory' };
+    wrongPosition.conditions = [{ type: 'source_active' }];
+    wrongPosition.effects = [{ type: 'event_round_victory_points_gain_crosses', threshold: 7 }];
+
+    expect(rules.isOpponentRoundVpGainThresholdCandidate(wrongPosition)).toBe(true);
+    expect(rules.isAcceptedOpponentRoundVpGainThresholdAbility(wrongPosition, 'authoring')).toBe(false);
+    const loaded = rules.loadAuthoringJson(archive(wrongPosition));
+    expect(loaded.report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ abilityId: 'threshold', path: 'effects[0]', status: 'unsupported' }),
+      expect.objectContaining({ abilityId: 'threshold', path: 'opponentRoundVpGainThreshold.gateway', status: 'unsupported' }),
+    ]));
+    expect(loaded.cards['skill.source']!.abilities[0]!.execution.mode).toBe('unsupported');
+  });
+
   it('fails closed with loader issues for malformed exact-trigger envelopes', () => {
     const malformed: AuthoringAbility[] = ['conditions', 'effects', 'execution'].map((field) => {
       const value = ability() as unknown as Record<string, unknown>;
@@ -158,6 +174,17 @@ describe('P3-FB2-51 opponent current-round positive VP gain crossing 7', () => {
     expect(state.abilityRuntime!.roundPositiveVictoryPointGain).toEqual({ round: state.round.roundNumber, byPlayer: {} });
     rules.adjustVictoryPointsAuthoritatively(state, 'p2', 7);
     expect(state.cards.find((card) => card.instanceId === first.instanceId)?.zone).toBe('skill');
+  });
+
+  it('resets the ledger on the production MatchSession startRound boundary', () => {
+    const session = rules.createMatchSession({ seed: 20260922, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
+    session.state.abilityRuntime!.roundPositiveVictoryPointGain = { round: 1, byPlayer: { p2: 7 } };
+    const controller = session as unknown as { startRound: (round: number) => void };
+
+    controller.startRound(2);
+
+    expect(session.state.round.roundNumber).toBe(2);
+    expect(session.state.abilityRuntime!.roundPositiveVictoryPointGain).toEqual({ round: 2, byPlayer: {} });
   });
 
   it('is idempotent for duplicate event ids', () => {

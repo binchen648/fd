@@ -1259,6 +1259,9 @@ export class MatchSession {
   }
 
   private startRound(round: number, targetState = this.state): void {
+    if (targetState.abilityRuntime) {
+      targetState.abilityRuntime.roundPositiveVictoryPointGain = { round, byPlayer: {} };
+    }
     targetState.round = { roundNumber: round, activePhase: 'preparation', prioritySeat: 1 };
     for (const player of targetState.players) {
       delete player.locationId;

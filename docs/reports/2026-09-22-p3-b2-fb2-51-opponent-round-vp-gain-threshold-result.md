@@ -40,4 +40,16 @@ No Ciel/consumer authoring, identity/name/text routing, arbitrary threshold/reso
 - `npm run phase3:automation-audit`: passed; generated artifact restored from exact Base.
 - `git diff --check`: passed.
 
+## R1 Revision Closure
+
+Fresh independent R on exact Candidate `d15008a9613d21fcc425a0f85bda5fcb956d9ff8` returned `IMPLEMENTATION_NEEDS_REVISION` at PR #427 evidence `https://github.com/binchen648/fd/pull/427#issuecomment-5783718666` with two exact-scope findings. Both are closed in this revision:
+
+- loader/compilation now treats any occurrence of `event_round_victory_points_gain_crosses` as FB2-51 candidate vocabulary, rejects use outside exact `conditions[1]`, and routes unrelated/wrong-position whole envelopes through the bounded FB2-51 gateway as unsupported;
+- the production `MatchSession.startRound(...)` boundary now resets `roundPositiveVictoryPointGain` to the authoritative new round before round-start processing, covering the real session transition rather than only direct `advanceAbilityPhase(...)` calls.
+
+Post-revision validation:
+
+- focused FB2-51 + accepted FB2-30/FB2-31 compatibility: `3` files / `28` tests passed (`14 + 8 + 6`), including new wrong-position loader rejection and real `MatchSession.startRound(2)` ledger reset regressions;
+- typecheck: passed;
+- `git diff --check`: passed.
 Formal migration remains `153/944`; material overlap remains `148/944`. This capability earns zero migration credit.

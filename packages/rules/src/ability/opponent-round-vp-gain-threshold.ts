@@ -15,12 +15,20 @@ export function isOpponentRoundVpGainThresholdCondition(value: RuleNode): boolea
 
 function exactEmpty(value: RuleNode): boolean { return Object.keys(value).length === 0; }
 
+function containsOpponentRoundVpGainThresholdVocabulary(value: unknown): boolean {
+  if (Array.isArray(value)) return value.some(containsOpponentRoundVpGainThresholdVocabulary);
+  if (!value || typeof value !== 'object') return false;
+  const record = value as Record<string, unknown>;
+  if (record.type === 'event_round_victory_points_gain_crosses') return true;
+  return Object.values(record).some(containsOpponentRoundVpGainThresholdVocabulary);
+}
+
 export function isOpponentRoundVpGainThresholdCandidate(ability: AuthoringAbility): boolean {
-  const raw = ability as unknown as { activation?: unknown; conditions?: unknown };
-  const activation = raw.activation && typeof raw.activation === 'object' ? raw.activation as Record<string, unknown> : {};
-  const conditions = Array.isArray(raw.conditions) ? raw.conditions : [];
-  return activation.trigger === OPPONENT_ROUND_VP_GAIN_TRIGGER ||
-    conditions.some((entry) => !!entry && typeof entry === 'object' && (entry as Record<string, unknown>).type === 'event_round_victory_points_gain_crosses');
+  const raw = ability as unknown as Record<string, unknown>;
+  const activation = raw.activation && typeof raw.activation === 'object' && !Array.isArray(raw.activation)
+    ? raw.activation as Record<string, unknown>
+    : {};
+  return activation.trigger === OPPONENT_ROUND_VP_GAIN_TRIGGER || containsOpponentRoundVpGainThresholdVocabulary(raw);
 }
 
 export function isAcceptedOpponentRoundVpGainThresholdAbility(

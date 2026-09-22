@@ -346,9 +346,13 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         !Object.keys(n).every((key) => key === 'type')) {
         issue(path, 'Event-player relation condition must contain only type', abilityId);
       }
-      if (n.type === 'event_round_victory_points_gain_crosses' &&
-        (n.threshold !== 7 || !Object.keys(n).every((key) => ['type', 'threshold'].includes(key)))) {
-        issue(path, 'Round VP-gain crossing condition requires the literal threshold 7 and exact shape', abilityId);
+      if (n.type === 'event_round_victory_points_gain_crosses') {
+        if (path !== 'conditions[1]') {
+          issue(path, 'Round VP-gain crossing condition is supported only in the exact FB2-51 condition slot', abilityId);
+        }
+        if (n.threshold !== 7 || !Object.keys(n).every((key) => ['type', 'threshold'].includes(key))) {
+          issue(path, 'Round VP-gain crossing condition requires the literal threshold 7 and exact shape', abilityId);
+        }
       }
       if (['source_active', 'source_owned'].includes(str(n.type))) {
         if (!path.startsWith('conditions')) issue(path, 'Source-state condition is supported only under ability conditions', abilityId);
