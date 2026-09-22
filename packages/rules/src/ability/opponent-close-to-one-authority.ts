@@ -39,6 +39,7 @@ const AUTHORITY_BROWSER_SCOPE_KEY_PREFIX = 'fd.rules.fb2-49.persistence-scope.v1
 const AUTHORITY_BROWSER_TRANSACTION_KEY_PREFIX = 'fd.rules.fb2-49.transaction.v1:';
 const AUTHORITY_BROWSER_REPLAY_TRANSACTION_KEY_PREFIX = 'fd.rules.fb2-49.replay-transactions.v1:';
 const AUTHORITY_BROWSER_REPLAY_LINEAGE_KEY_PREFIX = 'fd.rules.fb2-49.replay-lineages.v1:';
+const processPersistenceScopeByRoomKey = new Map<string, string>();
 const processTransactionByScope = new Map<string, string>();
 interface TrustedReplayBinding {
   transactionId: string | null;
@@ -236,15 +237,34 @@ export function resolveOpponentCloseToOnePersistenceScope(roomKey: string): stri
       if (isOpponentCloseToOnePersistenceScope(existing)) return existing;
       const created = createOpponentCloseToOnePersistenceScope();
       storage.setItem(key, created);
+      processPersistenceScopeByRoomKey.set(roomKey, created);
       return created;
     } catch {
-      // Fall through to the deterministic host room binding when browser storage is unavailable.
+      // Fall through to process-local host state when browser storage is unavailable.
     }
   }
-  // Node/server hosts need the same external room identity to survive process-local object
-  // reconstruction. The host secret still authenticates persisted authority; this value only
-  // supplies stable per-room domain separation and is never accepted from the snapshot payload.
-  return `${AUTHORITY_SCOPE_PREFIX}${sha256Hex(`room:${roomKey}`)}`;
+  const existing = processPersistenceScopeByRoomKey.get(roomKey);
+  if (existing) return existing;
+  const created = createOpponentCloseToOnePersistenceScope();
+  processPersistenceScopeByRoomKey.set(roomKey, created);
+  return created;
+}
+
+/** Start a fresh room lifecycle even when the public room id is reused. */
+export function rotateOpponentCloseToOnePersistenceScope(roomKey: string): string {
+  if (!roomKey) throw new Error('FB2-49 persistence scope requires a non-empty room key');
+  const created = createOpponentCloseToOnePersistenceScope();
+  processPersistenceScopeByRoomKey.set(roomKey, created);
+  const storage = browserPersistenceStorage();
+  if (storage) {
+    try {
+      const key = AUTHORITY_BROWSER_SCOPE_KEY_PREFIX + sha256Hex(roomKey);
+      storage.setItem(key, created);
+    } catch {
+      // Process-local lifecycle identity remains authoritative for this host session.
+    }
+  }
+  return created;
 }
 
 function transactionStorageKey(persistenceScope: string): string {

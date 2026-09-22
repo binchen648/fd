@@ -113,6 +113,28 @@ describe('MatchRoomHub local multiplayer transport layer', () => {
     expect(hub.version(roomB)).toBe(beforeVersionB);
   });
 
+  it('rotates deferred authority when a fresh room lifecycle reuses the same public room id', () => {
+    const hub = createMatchRoomHub();
+    const roomId = 'deferred-same-id-lifecycle';
+    hub.createRoom({ roomId, seed: 111, hostClientId: 'host-old' });
+    hub.startMatch(roomId, 'host-old');
+    const oldSnapshot = structuredClone(hub.getRoom(roomId).serializeRoom());
+
+    hub.createRoom({ roomId, seed: 222, hostClientId: 'host-fresh' });
+    hub.startMatch(roomId, 'host-fresh');
+    const beforeRoom = hub.getRoom(roomId);
+    const beforeSnapshot = structuredClone(beforeRoom.serializeRoom());
+    const beforeVersion = hub.version(roomId);
+    const mixed: any = structuredClone(beforeSnapshot);
+    mixed.session.state = structuredClone(oldSnapshot.session!.state);
+    mixed.session.deferredRuntimeStateSeal = structuredClone(oldSnapshot.session!.deferredRuntimeStateSeal);
+
+    expect(() => hub.restoreRoom(roomId, mixed)).toThrow('Invalid or missing deferred runtime state authority');
+    expect(hub.getRoom(roomId)).toBe(beforeRoom);
+    expect(hub.getRoom(roomId).serializeRoom()).toEqual(beforeSnapshot);
+    expect(hub.version(roomId)).toBe(beforeVersion);
+  });
+
   it('rejects referentially invalid restored board state without replacing the room', () => {
     const hub = createMatchRoomHub();
     const roomId = hub.createRoom({ roomId: 'restore-reference-room', seed: 20260905, hostClientId: 'host-a' }).roomId;

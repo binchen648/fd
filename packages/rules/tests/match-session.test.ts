@@ -310,6 +310,32 @@ describe('MatchSession semi-auto runtime', () => {
     expect(restored.getClientProjection('p1').view.legalActions).toEqual(session.getClientProjection('p1').view.legalActions);
   });
 
+  it('authenticates gameplay-affecting MatchSession fields outside GameState', () => {
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1', maxActionsPerPlayer: 2 });
+    expect(session.runFullMatch({ maxRounds: 1 })).toBe('match_complete');
+    const durable = session.serializeSession();
+    expect(durable.battleHistory.length).toBeGreaterThan(0);
+
+    const widenedActions: any = structuredClone(durable);
+    widenedActions.maxActionsPerPlayer = 99;
+    expect(() => restoreMatchSession(widenedActions)).toThrow('Invalid or missing deferred runtime state authority');
+
+    const erasedHistory: any = structuredClone(durable);
+    erasedHistory.battleHistory = [];
+    expect(() => restoreMatchSession(erasedHistory)).toThrow('Invalid or missing deferred runtime state authority');
+  });
+
+  it('keeps independent direct MatchSession lifecycles isolated even under one host secret', () => {
+    const older = createMatchSession({ seed: 111, humanPlayerId: 'p1' });
+    const newer = createMatchSession({ seed: 222, humanPlayerId: 'p1' });
+    const olderSnapshot = older.serializeSession();
+    const newerSnapshot: any = newer.serializeSession();
+    newerSnapshot.state = structuredClone(olderSnapshot.state);
+    newerSnapshot.deferredRuntimeStateSeal = structuredClone(olderSnapshot.deferredRuntimeStateSeal);
+
+    expect(() => restoreMatchSession(newerSnapshot)).toThrow(/Invalid (FB2-49 replay checkpoint lineage|or missing deferred runtime state authority)/);
+  });
+
   it('lets the current human end their action decision and advances priority to the next seat', () => {
     const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
     expect(session.runUntilHumanInputOrRoundEnd()).toBe('human_input');

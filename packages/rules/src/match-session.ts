@@ -171,9 +171,9 @@ export interface MatchClientState {
 }
 
 export interface DeferredRuntimeStateSeal {
-  version: 1;
+  version: 2;
   checkpointId: string | null;
-  stateDigest: string;
+  authorityDigest: string;
   mac: string;
 }
 
@@ -220,8 +220,7 @@ type RuntimeContentLibrary = {
 const uncheckedContent = contentLibrary as unknown as CompiledPlaytestContentLibrary & { rules: unknown };
 assertExecutableCardPack(uncheckedContent.rules, uncheckedContent);
 const runtimeContent: RuntimeContentLibrary = { pack: uncheckedContent.pack, rules: uncheckedContent.rules };
-/** Process-local scope for direct MatchSession use. MatchRoom always supplies its own room-specific scope. */
-const standaloneMatchSessionPersistenceScope = createOpponentCloseToOnePersistenceScope();
+const trustedDeferredRestoreContextByMac = new Map<string, { persistenceSecret: string; persistenceScope: string }>();
 
 function persistedOpponentCloseToOneAuthorityField(
   state: GameState,
@@ -236,48 +235,80 @@ function persistedOpponentCloseToOneAuthorityField(
 function deferredRuntimeStateSealPayload(
   persistenceScope: string,
   checkpointId: string | null,
-  stateDigest: string,
+  authorityDigest: string,
 ): string {
-  return `fd-deferred-runtime-state-v1\n${persistenceScope}\n${checkpointId ?? ''}\n${stateDigest}`;
+  return `fd-deferred-runtime-state-v2\n${persistenceScope}\n${checkpointId ?? ''}\n${authorityDigest}`;
 }
 
 function persistDeferredRuntimeStateSeal(
-  state: GameState,
+  authorityPayload: unknown,
   persistenceSecret: string,
   persistenceScope: string,
   checkpointId?: string,
 ): { deferredRuntimeStateSeal: DeferredRuntimeStateSeal } {
   const normalizedCheckpointId = checkpointId ?? null;
-  const stateDigest = sha256Hex(JSON.stringify(state));
+  const authorityDigest = sha256Hex(JSON.stringify(authorityPayload));
+  const mac = hmacSha256Hex(
+    persistenceSecret,
+    deferredRuntimeStateSealPayload(persistenceScope, normalizedCheckpointId, authorityDigest),
+  );
+  trustedDeferredRestoreContextByMac.set(mac, { persistenceSecret, persistenceScope });
   return {
     deferredRuntimeStateSeal: {
-      version: 1,
+      version: 2,
       checkpointId: normalizedCheckpointId,
-      stateDigest,
-      mac: hmacSha256Hex(
-        persistenceSecret,
-        deferredRuntimeStateSealPayload(persistenceScope, normalizedCheckpointId, stateDigest),
-      ),
+      authorityDigest,
+      mac,
     },
   };
 }
 
 function verifyDeferredRuntimeStateSeal(
-  state: GameState,
+  authorityPayload: unknown,
   seal: DeferredRuntimeStateSeal | undefined,
   persistenceSecret: string,
   persistenceScope: string,
   checkpointId?: string,
 ): boolean {
   const expectedCheckpointId = checkpointId ?? null;
-  if (!seal || seal.version !== 1 || seal.checkpointId !== expectedCheckpointId ||
-      typeof seal.stateDigest !== 'string' || typeof seal.mac !== 'string') return false;
-  const stateDigest = sha256Hex(JSON.stringify(state));
-  return seal.stateDigest === stateDigest &&
+  if (!seal || seal.version !== 2 || seal.checkpointId !== expectedCheckpointId ||
+      typeof seal.authorityDigest !== 'string' || typeof seal.mac !== 'string') return false;
+  const authorityDigest = sha256Hex(JSON.stringify(authorityPayload));
+  return seal.authorityDigest === authorityDigest &&
     seal.mac === hmacSha256Hex(
       persistenceSecret,
-      deferredRuntimeStateSealPayload(persistenceScope, expectedCheckpointId, stateDigest),
+      deferredRuntimeStateSealPayload(persistenceScope, expectedCheckpointId, authorityDigest),
     );
+}
+
+function currentDeferredAuthorityPayload(input: Pick<MatchSessionSnapshot,
+  'version' | 'seed' | 'humanPlayerId' | 'humanPlayerIds' | 'maxActionsPerPlayer' |
+  'state' | 'logs' | 'battleHistory' | 'stopReason' | 'rejection'>): unknown {
+  return {
+    version: input.version,
+    seed: input.seed,
+    humanPlayerId: input.humanPlayerId,
+    humanPlayerIds: input.humanPlayerIds,
+    maxActionsPerPlayer: input.maxActionsPerPlayer,
+    state: input.state,
+    logs: input.logs,
+    battleHistory: input.battleHistory,
+    stopReason: input.stopReason ?? null,
+    rejection: input.rejection ?? null,
+  };
+}
+
+function replayDeferredAuthorityPayload(input: Pick<MatchReplayStateSnapshot,
+  'checkpointId' | 'state' | 'logs' | 'battleHistory' | 'consumedDirectiveCount' | 'stopReason' | 'rejection'>): unknown {
+  return {
+    checkpointId: input.checkpointId,
+    state: input.state,
+    logs: input.logs,
+    battleHistory: input.battleHistory,
+    consumedDirectiveCount: input.consumedDirectiveCount,
+    stopReason: input.stopReason ?? null,
+    rejection: input.rejection ?? null,
+  };
 }
 
 function replayCheckpointDigest(snapshot: MatchReplayStateSnapshot): string {
@@ -1608,7 +1639,7 @@ export class MatchSession {
     this.humanPlayerIds = [...new Set(config.humanPlayerIds ?? [this.humanPlayerId])];
     this.maxActionsPerPlayer = config.maxActionsPerPlayer ?? 2;
     this.persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
-    this.persistenceScope = config.persistenceScope ?? standaloneMatchSessionPersistenceScope;
+    this.persistenceScope = config.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
     this.restorePackKind = config.restorePackKind ?? 'production_executable';
     const built = this.buildInitialState();
     this.state = built.state;
@@ -1998,23 +2029,17 @@ export class MatchSession {
 
   serializeSession(): MatchSessionSnapshot {
     const authorityField = persistedOpponentCloseToOneAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
-    const deferredRuntimeField = persistDeferredRuntimeStateSeal(
-      this.state,
-      this.persistenceSecret,
-      this.persistenceScope,
-    );
     const currentSeal = authorityField.opponentCloseToOneServerAuthority;
     const replayEntries = replayManifestEntries(this.replaySnapshots);
     rememberOpponentCloseToOneTrustedReplayLineage(this.persistenceScope, this.state, replayEntries);
     const replaySensitive = hasOpponentCloseToOneReplayAuthority(currentSeal, this.replaySnapshots);
-    return {
+    const snapshot: MatchSessionSnapshot = {
       version: 1,
       seed: this.seed,
       humanPlayerId: this.humanPlayerId,
       humanPlayerIds: [...this.humanPlayerIds],
       maxActionsPerPlayer: this.maxActionsPerPlayer,
       state: structuredClone(this.state),
-      ...deferredRuntimeField,
       ...authorityField,
       ...(replaySensitive ? {
         opponentCloseToOneReplayManifest: persistOpponentCloseToOneReplayManifest(
@@ -2030,6 +2055,14 @@ export class MatchSession {
       battleHistory: structuredClone(this.battleHistory),
       ...(this.stopReason ? { stopReason: this.stopReason } : {}),
       ...(this.rejection ? { rejection: structuredClone(this.rejection) } : {}),
+    };
+    return {
+      ...snapshot,
+      ...persistDeferredRuntimeStateSeal(
+        currentDeferredAuthorityPayload(snapshot),
+        this.persistenceSecret,
+        this.persistenceScope,
+      ),
     };
   }
 
@@ -2061,7 +2094,7 @@ export class MatchSession {
     const snapshot = this.replaySnapshots.find((candidate) => candidate.checkpointId === checkpointId);
     if (!snapshot) return false;
     if (!verifyDeferredRuntimeStateSeal(
-      snapshot.state,
+      replayDeferredAuthorityPayload(snapshot),
       snapshot.deferredRuntimeStateSeal,
       this.persistenceSecret,
       this.persistenceScope,
@@ -2736,16 +2769,24 @@ export class MatchSession {
       label,
     };
     this.replay.push(checkpoint);
-    const replaySnapshot: MatchReplayStateSnapshot = {
+    const replaySnapshotBase: MatchReplayStateSnapshot = {
       checkpointId: checkpoint.id,
       state: structuredClone(state),
-      ...persistDeferredRuntimeStateSeal(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
       ...persistedOpponentCloseToOneAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
       logs: structuredClone(this.logs),
       battleHistory: structuredClone(this.battleHistory),
       consumedDirectiveCount: this.consumedDirectiveCount,
       ...(this.stopReason ? { stopReason: this.stopReason } : {}),
       ...(this.rejection ? { rejection: structuredClone(this.rejection) } : {}),
+    };
+    const replaySnapshot: MatchReplayStateSnapshot = {
+      ...replaySnapshotBase,
+      ...persistDeferredRuntimeStateSeal(
+        replayDeferredAuthorityPayload(replaySnapshotBase),
+        this.persistenceSecret,
+        this.persistenceScope,
+        checkpoint.id,
+      ),
     };
     this.replaySnapshots.push(replaySnapshot);
     rememberOpponentCloseToOneTrustedReplayCheckpoint(
@@ -2794,8 +2835,11 @@ export function restoreMatchSession(
       !isRestoreDeferredBattleProvenance(snapshot.state, snapshot.battleHistory, snapshot.logs)) {
     throw new Error('Invalid MatchSession snapshot container');
   }
-  const persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
-  const persistenceScope = config.persistenceScope ?? standaloneMatchSessionPersistenceScope;
+  const trustedDeferredContext = snapshot.deferredRuntimeStateSeal
+    ? trustedDeferredRestoreContextByMac.get(snapshot.deferredRuntimeStateSeal.mac)
+    : undefined;
+  const persistenceSecret = config.persistenceSecret ?? trustedDeferredContext?.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
+  const persistenceScope = config.persistenceScope ?? trustedDeferredContext?.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
   const candidateState = structuredClone(snapshot.state);
   if (!restoreOpponentCloseToOneServerAuthority(
     candidateState,
@@ -2829,7 +2873,7 @@ export function restoreMatchSession(
   // host-owned state binding for every current/replay state, including snapshots that try to
   // downgrade by deleting both a continuation and its seal.
   if (!verifyDeferredRuntimeStateSeal(
-    snapshot.state,
+    currentDeferredAuthorityPayload(snapshot),
     snapshot.deferredRuntimeStateSeal,
     persistenceSecret,
     persistenceScope,
@@ -2837,7 +2881,7 @@ export function restoreMatchSession(
     throw new Error('Invalid or missing deferred runtime state authority');
   }
   if (!snapshot.replaySnapshots.every((entry) => verifyDeferredRuntimeStateSeal(
-    entry.state,
+    replayDeferredAuthorityPayload(entry),
     entry.deferredRuntimeStateSeal,
     persistenceSecret,
     persistenceScope,

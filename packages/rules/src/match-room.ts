@@ -10,6 +10,7 @@ import type { AbilityCommand, DispatchResult } from './ability/types';
 import {
   resolveOpponentCloseToOnePersistenceScope,
   resolveOpponentCloseToOnePersistenceSecret,
+  rotateOpponentCloseToOnePersistenceScope,
 } from './ability/opponent-close-to-one-authority';
 
 export type RoomStatus = 'lobby' | 'running' | 'ended';
@@ -97,7 +98,7 @@ export class MatchRoom {
     this.seed = config.seed ?? 20260904;
     this.hostClientId = config.hostClientId ?? 'host';
     this.persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
-    this.persistenceScope = config.persistenceScope ?? resolveOpponentCloseToOnePersistenceScope(this.roomId);
+    this.persistenceScope = config.persistenceScope ?? rotateOpponentCloseToOnePersistenceScope(this.roomId);
     this.restorePackKind = config.restorePackKind ?? 'production_executable';
     this.clients = [{
       id: this.hostClientId,
@@ -297,11 +298,13 @@ export function restoreMatchRoom(
   reconcileReplayTrust = true,
 ): MatchRoom {
   if (snapshot.version !== 1) throw new Error(`Unsupported MatchRoom snapshot version: ${snapshot.version}`);
+  const persistenceScope = persistence.persistenceScope ?? resolveOpponentCloseToOnePersistenceScope(snapshot.roomId);
   const room = new MatchRoom({
     roomId: snapshot.roomId,
     seed: snapshot.seed,
     hostClientId: snapshot.hostClientId,
     ...persistence,
+    persistenceScope,
   });
   const persistenceContext = room.getPersistenceContext();
   const restoredSession = snapshot.session
