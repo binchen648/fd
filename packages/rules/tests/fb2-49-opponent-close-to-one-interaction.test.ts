@@ -628,13 +628,13 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(activate(state).ok).toBe(true);
     const firstDecisionId = state.abilityRuntime!.pendingDecision!.id;
     const liveSession = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     });
     liveSession.state = state;
     const durableSnapshot = JSON.parse(JSON.stringify(liveSession.serializeSession()));
 
     expect(exportOpponentCloseToOneServerAuthority(durableSnapshot.state)).toBeUndefined();
-    const restored = rules.restoreMatchSession(durableSnapshot, { persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE });
+    const restored = rules.restoreMatchSession(durableSnapshot, { persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE });
     expect(exportOpponentCloseToOneServerAuthority(restored.state)?.entries.map((entry) => entry.decisionPlayerId)).toEqual(['p2', 'p3']);
     expect(restored.dispatchPlayerAction('p2', { type: 'choose_target', decisionId: firstDecisionId, selectedIds: ['p2-a'] }).ok).toBe(true);
     const secondDecisionId = restored.state.abilityRuntime!.pendingDecision!.id;
@@ -674,7 +674,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
       expect(serialized).not.toContain(PERSISTENCE_SECRET);
       expect(serialized).not.toContain(PERSISTENCE_SCOPE);
 
-      const restoredRoom = rules.restoreMatchRoom(durableRoom);
+      const restoredRoom = rules.restoreMatchRoom(durableRoom, { restorePackKind: 'trusted_authoring_fixture' });
       const restored = restoredRoom.session!;
       expect(restored.dispatchPlayerAction('p2', { type: 'choose_target', decisionId: firstDecisionId, selectedIds: ['p2-a'] }).ok).toBe(true);
       const secondDecisionId = restored.state.abilityRuntime!.pendingDecision!.id;
@@ -692,7 +692,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(activate(state).ok).toBe(true);
     const seal = persistOpponentCloseToOneServerAuthority(state, PERSISTENCE_SECRET, PERSISTENCE_SCOPE)!;
     const baseSnapshot = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     }).serializeSession();
     const snapshot: any = { ...baseSnapshot, state: structuredClone(state), opponentCloseToOneServerAuthority: structuredClone(seal) };
     snapshot.state.abilityRuntime.cardState['p3-b'].faceDown = true;
@@ -704,7 +704,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     snapshot.opponentCloseToOneServerAuthority.stateBinding = sha256Hex(JSON.stringify(snapshot.state));
     const before = structuredClone(snapshot);
     expect(() => rules.restoreMatchSession(snapshot, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     })).toThrow('Invalid or missing FB2-49 persisted authority');
     expect(snapshot).toEqual(before);
   });
@@ -713,12 +713,12 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     expect(activate(state).ok).toBe(true);
     const baseSnapshot = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     }).serializeSession();
     const snapshot: any = { ...baseSnapshot, state: structuredClone(state) };
     delete snapshot.opponentCloseToOneServerAuthority;
     expect(() => rules.restoreMatchSession(snapshot, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     })).toThrow('Invalid or missing FB2-49 persisted authority');
   });
 
@@ -731,11 +731,11 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const donorSeal = persistOpponentCloseToOneServerAuthority(donor, PERSISTENCE_SECRET, PERSISTENCE_SCOPE)!;
     persistOpponentCloseToOneServerAuthority(target, PERSISTENCE_SECRET, OTHER_PERSISTENCE_SCOPE);
     const baseSnapshot = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: OTHER_PERSISTENCE_SCOPE,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: OTHER_PERSISTENCE_SCOPE,
     }).serializeSession();
     const snapshot: any = { ...baseSnapshot, state: structuredClone(target), opponentCloseToOneServerAuthority: structuredClone(donorSeal) };
     expect(() => rules.restoreMatchSession(snapshot, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: OTHER_PERSISTENCE_SCOPE,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: OTHER_PERSISTENCE_SCOPE,
     })).toThrow('Invalid or missing FB2-49 persisted authority');
   });
 
@@ -749,11 +749,11 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const targetSeal = persistOpponentCloseToOneServerAuthority(target, PERSISTENCE_SECRET, PERSISTENCE_SCOPE)!;
     expect(targetSeal.transactionId).not.toBe(donorSeal.transactionId);
     const baseSnapshot = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     }).serializeSession();
     const snapshot: any = { ...baseSnapshot, state: structuredClone(target), opponentCloseToOneServerAuthority: structuredClone(donorSeal) };
     expect(() => rules.restoreMatchSession(snapshot, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     })).toThrow('Invalid or missing FB2-49 persisted authority');
   });
 
@@ -767,11 +767,11 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
       const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
       expect(activate(state).ok).toBe(true);
       const baseSnapshot = rules.createMatchSession({
-        humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+        humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
       }).serializeSession();
       const snapshot: any = { ...baseSnapshot, state: structuredClone(state), opponentCloseToOneServerAuthority: structuredClone(malformed) };
       expect(() => rules.restoreMatchSession(snapshot, {
-        persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+        persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
       })).toThrow('Invalid or missing FB2-49 persisted authority');
     }
   });
@@ -780,7 +780,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     expect(activate(state).ok).toBe(true);
     const session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     });
     session.state = state;
     const serialized = session.serializeSession();
@@ -806,12 +806,12 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
   it('validates every Hub restore candidate before replacing any authoritative room', () => {
     const roomId = 'fb2-49-hub-room';
     const hub = rules.createMatchRoomHub();
-    hub.createRoom({ roomId, hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE });
+    hub.createRoom({ roomId, hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE });
     const room = hub.getRoom(roomId);
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     expect(activate(state).ok).toBe(true);
     room.session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     });
     room.session.state = state;
     room.status = 'running';
@@ -831,21 +831,21 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(activate(state).ok).toBe(true);
     const seal = persistOpponentCloseToOneServerAuthority(state, PERSISTENCE_SECRET, PERSISTENCE_SCOPE)!;
     const baseSnapshot = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     }).serializeSession();
     const snapshot: any = { ...baseSnapshot, state: structuredClone(state), opponentCloseToOneServerAuthority: structuredClone(seal) };
     delete snapshot.opponentCloseToOneServerAuthority;
     snapshot.state.abilityRuntime.pendingOpponentCloseToOne = [];
     delete snapshot.state.abilityRuntime.pendingDecision;
     expect(() => rules.restoreMatchSession(snapshot, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     })).toThrow('Invalid or missing FB2-49 persisted authority');
   });
 
   it('restores a legitimate live replay checkpoint after the transaction has completed and current binding was consumed', () => {
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     const session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     });
     session.state = state;
     expect(session.dispatchPlayerAction('p1', {
@@ -867,7 +867,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
   it('preserves a live replay trust binding across durable MatchSession restore after the transaction completes', () => {
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     const session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     });
     session.state = state;
     expect(session.dispatchPlayerAction('p1', {
@@ -880,7 +880,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
 
     const durable = structuredClone(session.serializeSession());
     const restored = rules.restoreMatchSession(durable, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     });
     expect(restored.restoreToCheckpoint(liveCheckpointId)).toBe(true);
     expect(restored.state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
@@ -891,13 +891,13 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const goodScope = 'fb2-49-persistence-scope:' + '44'.repeat(32);
     const badScope = 'fb2-49-persistence-scope:' + '55'.repeat(32);
     const hub = rules.createMatchRoomHub();
-    hub.createRoom({ roomId: 'fb2-49-hub-good', hostClientId: 'host-good', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: goodScope });
-    hub.createRoom({ roomId: 'fb2-49-hub-bad', hostClientId: 'host-bad', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: badScope });
+    hub.createRoom({ roomId: 'fb2-49-hub-good', hostClientId: 'host-good', persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: goodScope });
+    hub.createRoom({ roomId: 'fb2-49-hub-bad', hostClientId: 'host-bad', persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: badScope });
 
     const goodRoom = hub.getRoom('fb2-49-hub-good');
     const goodState = setup(); add(goodState, 'p2-a', 'p2'); add(goodState, 'p2-b', 'p2');
     goodRoom.session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: goodScope,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: goodScope,
     });
     goodRoom.session.state = goodState; goodRoom.status = 'running';
     const goodOlderRoomSnapshot = structuredClone(goodRoom.serializeRoom());
@@ -909,7 +909,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const badRoom = hub.getRoom('fb2-49-hub-bad');
     const badState = setup(); add(badState, 'p2-a', 'p2'); add(badState, 'p2-b', 'p2');
     badRoom.session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: badScope,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: badScope,
     });
     badRoom.session.state = badState; badRoom.status = 'running';
     expect(badRoom.session.dispatchPlayerAction('p1', { type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID }).ok).toBe(true);
@@ -936,7 +936,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     add(state, 'p3-a', 'p3'); add(state, 'p3-b', 'p3');
     const session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     });
     session.state = state;
     expect(session.dispatchPlayerAction('p1', {
@@ -966,7 +966,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const scope = 'fb2-49-persistence-scope:' + 'bb'.repeat(32);
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     const session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     });
     session.state = state;
     const cleanSnapshot = structuredClone(session.serializeSession());
@@ -981,7 +981,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(session.restoreToCheckpoint(liveId)).toBe(true);
     expect(exportOpponentCloseToOneServerAuthority(session.state)).toBeDefined();
     expect(() => rules.restoreMatchSession(cleanSnapshot, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     })).toThrow('Invalid or missing FB2-49 persisted authority');
   });
 
@@ -989,7 +989,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const scope = 'fb2-49-persistence-scope:' + 'cc'.repeat(32);
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     const session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     });
     session.state = state;
     const olderSnapshot: any = structuredClone(session.serializeSession());
@@ -1006,7 +1006,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     oneShot.replay.push(liveReplay);
     oneShot.replaySnapshots.push(liveReplaySnapshot);
     expect(() => rules.restoreMatchSession(oneShot, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     })).toThrow('Invalid or missing FB2-49 replay manifest');
     expect(session.restoreToCheckpoint(liveId)).toBe(true);
     expect(session.state.abilityRuntime!.pendingDecision?.controllerId).toBe('p2');
@@ -1016,7 +1016,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const scope = 'fb2-49-persistence-scope:' + 'de'.repeat(32);
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     const session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     });
     session.state = state;
     expect(session.dispatchPlayerAction('p1', {
@@ -1034,7 +1034,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     delete forged.opponentCloseToOneReplayManifest;
 
     expect(() => rules.restoreMatchSession(forged, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     })).toThrow('Invalid FB2-49 replay checkpoint lineage');
     expect(session.restoreToCheckpoint(liveId)).toBe(true);
     expect(session.state.abilityRuntime?.pendingDecision?.controllerId).toBe('p2');
@@ -1044,7 +1044,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const scope = 'fb2-49-persistence-scope:' + 'e1'.repeat(32);
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     const session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     });
     session.state = state;
     const olderPrefix: any = structuredClone(session.serializeSession());
@@ -1062,7 +1062,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     delete forged.opponentCloseToOneReplayManifest;
 
     expect(() => rules.restoreMatchSession(forged, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     })).toThrow('Invalid FB2-49 replay checkpoint lineage');
     expect(session.restoreToCheckpoint(liveId)).toBe(true);
     expect(session.state.abilityRuntime?.pendingDecision?.controllerId).toBe('p2');
@@ -1071,7 +1071,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const scope = 'fb2-49-persistence-scope:' + 'df'.repeat(32);
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     const session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     });
     session.state = state;
     expect(session.dispatchPlayerAction('p1', {
@@ -1084,7 +1084,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(forged.opponentCloseToOneReplayManifest).toBeDefined();
     forged.replay.pop();
     expect(() => rules.restoreMatchSession(forged, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     })).toThrow('Invalid FB2-49 replay snapshot container');
   });
 
@@ -1113,13 +1113,23 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(() => rules.restoreMatchSession(malformed)).toThrow('Invalid MatchSession state container');
   });
 
-  it('rejects executable-pack semantic changes even when the schema discriminator is relabeled', () => {
-    const malformed: any = structuredClone(rules.createMatchSession().serializeSession());
-    const physical = malformed.state.cards.find((card: any) => malformed.state.abilityRuntime.pack.cards[card.definitionId]);
+  it('rejects executable-pack semantic changes even when integrity markers are relabeled or removed', () => {
+    const base: any = structuredClone(rules.createMatchSession().serializeSession());
+    const physical = base.state.cards.find((card: any) => base.state.abilityRuntime.pack.cards[card.definitionId]);
     expect(physical).toBeDefined();
-    malformed.state.abilityRuntime.pack.cards[physical.definitionId].cardFace.basePower = 999999;
-    malformed.state.abilityRuntime.pack.schemaVersion = 'modified-pack-v1';
-    expect(() => rules.restoreMatchSession(malformed)).toThrow('Invalid MatchSession state container');
+
+    const relabeled = structuredClone(base);
+    relabeled.state.abilityRuntime.pack.cards[physical.definitionId].cardFace.basePower = 999999;
+    relabeled.state.abilityRuntime.pack.schemaVersion = 'modified-pack-v1';
+    expect(() => rules.restoreMatchSession(relabeled)).toThrow('Invalid MatchSession state container');
+
+    const stripped = structuredClone(base);
+    stripped.state.abilityRuntime.pack.cards[physical.definitionId].cardFace.basePower = 999999;
+    stripped.state.abilityRuntime.pack.schemaVersion = 'modified-pack-v1';
+    for (const field of ['definitionHash', 'contentIdentity', 'decks', 'fallbackCommandSpells', 'sourceMap']) {
+      delete stripped.state.abilityRuntime.pack[field];
+    }
+    expect(() => rules.restoreMatchSession(stripped)).toThrow('Invalid MatchSession state container');
   });
 
   it('round-trips ordinary no-FB2 room and fresh-Hub snapshots without persistence-scope coupling', () => {
@@ -1146,7 +1156,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const scope = 'fb2-49-persistence-scope:' + 'dd'.repeat(32);
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     const original = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     });
     original.state = state;
     const branchPoint = structuredClone(original.serializeSession());
@@ -1160,7 +1170,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(original.dispatchPlayerAction('p2', { type: 'choose_target', decisionId: transactionOneDecision, selectedIds: ['p2-a'] }).ok).toBe(true);
     const transactionOneSnapshot = structuredClone(original.serializeSession());
 
-    const branched = rules.restoreMatchSession(branchPoint, { persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope });
+    const branched = rules.restoreMatchSession(branchPoint, { persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope });
     expect(branched.dispatchPlayerAction('p1', { type: 'activate_ability', cardInstanceId: SOURCE_ID, abilityId: ABILITY_ID }).ok).toBe(true);
     const transactionTwoId = branched.replay.at(-1)!.id;
     const transactionTwoReplay = structuredClone(
@@ -1173,13 +1183,13 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(branched.dispatchPlayerAction('p2', { type: 'choose_target', decisionId: transactionTwoDecision, selectedIds: ['p2-a'] }).ok).toBe(true);
 
     const restoredTransactionOne = rules.restoreMatchSession(transactionOneSnapshot, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     });
     const forged: any = structuredClone(transactionOneSnapshot);
     const reusedIndex = forged.replaySnapshots.findIndex((entry: any) => entry.checkpointId === transactionOneId);
     forged.replaySnapshots[reusedIndex] = transactionTwoReplay;
     expect(() => rules.restoreMatchSession(forged, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     })).toThrow('Invalid or missing FB2-49 replay manifest');
     expect(restoredTransactionOne.restoreToCheckpoint(transactionOneId)).toBe(true);
     expect(restoredTransactionOne.state.abilityRuntime?.pendingDecision?.controllerId).toBe('p2');
@@ -1198,7 +1208,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const scope = 'fb2-49-persistence-scope:' + '66'.repeat(32);
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     const session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     });
     session.state = state;
     const olderSnapshot = structuredClone(session.serializeSession());
@@ -1215,7 +1225,7 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(session.dispatchPlayerAction('p2', { type: 'choose_target', decisionId, selectedIds: ['p2-a'] }).ok).toBe(true);
 
     const restoredOlder = rules.restoreMatchSession(olderSnapshot, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     });
     expect(restoredOlder.replaySnapshots.some((entry) => entry.checkpointId === removedCheckpointId)).toBe(false);
 
@@ -1223,18 +1233,18 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     resurrection.replay.push(removedReplay);
     resurrection.replaySnapshots.push(removedReplaySnapshot);
     expect(() => rules.restoreMatchSession(resurrection, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     })).toThrow('Invalid or missing FB2-49 replay manifest');
   });
 
   it('revokes current and replay trust when a successful Hub restore removes an authoritative room', () => {
     const scope = 'fb2-49-persistence-scope:' + '77'.repeat(32);
     const hub = rules.createMatchRoomHub();
-    hub.createRoom({ roomId: 'fb2-49-remove-room', hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope });
+    hub.createRoom({ roomId: 'fb2-49-remove-room', hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope });
     const room = hub.getRoom('fb2-49-remove-room');
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     room.session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     });
     room.session.state = state;
     room.status = 'running';
@@ -1246,10 +1256,10 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(() => hub.getRoom('fb2-49-remove-room')).toThrow('Unknown room');
 
     const cleanSnapshot = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     }).serializeSession();
     expect(() => rules.restoreMatchSession(cleanSnapshot, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     })).not.toThrow();
   });
 
@@ -1257,11 +1267,11 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     const scope = 'fb2-49-persistence-scope:' + '88'.repeat(32);
     const roomId = 'fb2-49-replace-room';
     const hub = rules.createMatchRoomHub();
-    hub.createRoom({ roomId, hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope });
+    hub.createRoom({ roomId, hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope });
     const room = hub.getRoom(roomId);
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     room.session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     });
     room.session.state = state;
     room.status = 'running';
@@ -1276,18 +1286,18 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
     expect(hub.getRoom(roomId).session).toBeUndefined();
 
     const cleanSnapshot = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     }).serializeSession();
     expect(() => rules.restoreMatchSession(cleanSnapshot, {
-      persistenceSecret: PERSISTENCE_SECRET, persistenceScope: scope,
+      persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: scope,
     })).not.toThrow();
   });
 
   it('does not commit replay_restored or bump Hub version when the checkpoint restore returns false', () => {
     const hub = rules.createMatchRoomHub();
-    hub.createRoom({ roomId: 'fb2-49-replay-fail', hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE });
+    hub.createRoom({ roomId: 'fb2-49-replay-fail', hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE });
     const room = hub.getRoom('fb2-49-replay-fail');
-    room.session = rules.createMatchSession({ persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE });
+    room.session = rules.createMatchSession({ persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE });
     room.status = 'running';
     const beforeVersion = hub.version('fb2-49-replay-fail');
     const beforeProjection = structuredClone(hub.project('fb2-49-replay-fail', 'host'));
@@ -1300,18 +1310,18 @@ describe('P3-FB2-49 opponent close non-residual cards to one', () => {
   it('restores a legal live room through Hub trusted context while direct Node restore with a fresh scope fails closed', () => {
     const roomId = 'fb2-49-context-room';
     const hub = rules.createMatchRoomHub();
-    hub.createRoom({ roomId, hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE });
+    hub.createRoom({ roomId, hostClientId: 'host', persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE });
     const room = hub.getRoom(roomId);
     const state = setup(); add(state, 'p2-a', 'p2'); add(state, 'p2-b', 'p2');
     expect(activate(state).ok).toBe(true);
     room.session = rules.createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, persistenceScope: PERSISTENCE_SCOPE,
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], persistenceSecret: PERSISTENCE_SECRET, restorePackKind: 'trusted_authoring_fixture', persistenceScope: PERSISTENCE_SCOPE,
     });
     room.session.state = state;
     room.status = 'running';
     const snapshot = room.serializeRoom();
 
-    expect(() => rules.restoreMatchRoom(snapshot)).toThrow('Invalid or missing FB2-49 persisted authority');
+    expect(() => rules.restoreMatchRoom(snapshot, { restorePackKind: 'trusted_authoring_fixture' })).toThrow('Invalid or missing FB2-49 persisted authority');
     const restoredProjection = hub.restoreRoom(roomId, snapshot);
     expect(restoredProjection.roomId).toBe(roomId);
     expect(hub.getRoom(roomId).session?.state.abilityRuntime?.pendingDecision?.controllerId).toBe('p2');

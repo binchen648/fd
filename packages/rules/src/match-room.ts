@@ -90,6 +90,7 @@ export class MatchRoom {
   session: MatchSession | undefined;
   private readonly persistenceSecret: string;
   private readonly persistenceScope: string;
+  private readonly restorePackKind: NonNullable<MatchSessionConfig['restorePackKind']>;
 
   constructor(config: MatchRoomConfig = {}) {
     this.roomId = config.roomId ?? `fd-room-${config.seed ?? 20260904}`;
@@ -97,6 +98,7 @@ export class MatchRoom {
     this.hostClientId = config.hostClientId ?? 'host';
     this.persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
     this.persistenceScope = config.persistenceScope ?? resolveOpponentCloseToOnePersistenceScope(this.roomId);
+    this.restorePackKind = config.restorePackKind ?? 'production_executable';
     this.clients = [{
       id: this.hostClientId,
       displayName: config.hostName ?? '房主',
@@ -253,8 +255,12 @@ export class MatchRoom {
     };
   }
 
-  getPersistenceContext(): Pick<MatchSessionConfig, 'persistenceSecret' | 'persistenceScope'> {
-    return { persistenceSecret: this.persistenceSecret, persistenceScope: this.persistenceScope };
+  getPersistenceContext(): Pick<MatchSessionConfig, 'persistenceSecret' | 'persistenceScope' | 'restorePackKind'> {
+    return {
+      persistenceSecret: this.persistenceSecret,
+      persistenceScope: this.persistenceScope,
+      restorePackKind: this.session?.getRestorePackKind() ?? this.restorePackKind,
+    };
   }
 
   serializeRoom(): MatchRoomSnapshot {
@@ -287,7 +293,7 @@ export function createMatchRoom(config?: MatchRoomConfig): MatchRoom {
 
 export function restoreMatchRoom(
   snapshot: MatchRoomSnapshot,
-  persistence: Pick<MatchSessionConfig, 'persistenceSecret' | 'persistenceScope'> = {},
+  persistence: Pick<MatchSessionConfig, 'persistenceSecret' | 'persistenceScope' | 'restorePackKind'> = {},
   reconcileReplayTrust = true,
 ): MatchRoom {
   if (snapshot.version !== 1) throw new Error(`Unsupported MatchRoom snapshot version: ${snapshot.version}`);

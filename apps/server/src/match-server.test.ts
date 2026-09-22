@@ -199,7 +199,7 @@ describe('match websocket server', () => {
     });
     const room = serverHandle.hub.getRoom('fb2-49-http-guard');
     room.session = createMatchSession({
-      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], ...room.getPersistenceContext(),
+      humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'], ...room.getPersistenceContext(), restorePackKind: 'trusted_authoring_fixture',
     });
     room.session.state = createServerFb249State();
     room.status = 'running';
@@ -286,6 +286,9 @@ describe('match websocket server', () => {
     expect(physical).toBeDefined();
     malformed.session.state.abilityRuntime.pack.cards[physical.definitionId].cardFace.basePower = 999999;
     malformed.session.state.abilityRuntime.pack.schemaVersion = 'modified-pack-v1';
+    for (const field of ['definitionHash', 'contentIdentity', 'decks', 'fallbackCommandSpells', 'sourceMap']) {
+      delete malformed.session.state.abilityRuntime.pack[field];
+    }
 
     const response = await fetch(`${httpBase}/rooms/pack-http-guard/restore`, {
       method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot: malformed }),

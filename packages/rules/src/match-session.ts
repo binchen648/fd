@@ -77,6 +77,8 @@ interface RuntimeEventCard {
   effects?: Array<Record<string, unknown>>;
 }
 
+export type MatchSessionRestorePackKind = 'production_executable' | 'trusted_authoring_fixture';
+
 export interface MatchSessionConfig {
   seed?: number;
   humanPlayerId?: string;
@@ -86,6 +88,8 @@ export interface MatchSessionConfig {
   persistenceSecret?: string;
   /** Server-authoritative room/match scope; never serialized inside MatchSessionSnapshot. */
   persistenceScope?: string;
+  /** Server-owned restore context. Production defaults to canonical executable-pack validation; tests may bind an authoring fixture explicitly. Never serialized. */
+  restorePackKind?: MatchSessionRestorePackKind;
 }
 
 export type MatchPauseReason =
@@ -296,6 +300,206 @@ function isRestoreRecordArray(value: unknown): boolean {
   return Array.isArray(value) && value.every(isRestoreRecord);
 }
 
+function isRestoreFiniteNumber(value: unknown): value is number {
+  return typeof value === 'number' && Number.isFinite(value);
+}
+
+function isRestoreSafeInteger(value: unknown, minimum = 0): value is number {
+  return Number.isSafeInteger(value) && (value as number) >= minimum;
+}
+
+function isRestoreFiniteNumberMap(value: unknown): value is Record<string, number> {
+  return isRestoreRecord(value) && Object.values(value).every(isRestoreFiniteNumber);
+}
+
+function isRestoreNonNegativeIntegerMap(value: unknown): value is Record<string, number> {
+  return isRestoreRecord(value) && Object.values(value).every((entry) => isRestoreSafeInteger(entry));
+}
+
+function isRestoreStringArrayMap(value: unknown): value is Record<string, string[]> {
+  return isRestoreRecord(value) && Object.values(value).every(isRestoreStringArray);
+}
+
+function isRestoreNestedNonNegativeIntegerMap(value: unknown): boolean {
+  return isRestoreRecord(value) && Object.values(value).every(isRestoreNonNegativeIntegerMap);
+}
+
+function isRestoreRoundByPlayerNumberState(value: unknown): boolean {
+  return isRestoreRecord(value) && isRestoreSafeInteger(value.round, 1) && isRestoreFiniteNumberMap(value.byPlayer);
+}
+
+function isRestoreAbilityEvent(value: unknown): boolean {
+  if (!isRestoreRecord(value) || typeof value.id !== 'string' || typeof value.type !== 'string') return false;
+  const optionalStrings = ['playerId', 'sourceCardId', 'battlePhaseResolutionId', 'battleId', 'resultId', 'battlefieldId', 'revealedId', 'locationId'];
+  if (optionalStrings.some((key) => value[key] !== undefined && typeof value[key] !== 'string')) return false;
+  if (value.revealedKind !== undefined && value.revealedKind !== 'situation' && value.revealedKind !== 'event') return false;
+  if (value.lossOrdinal !== undefined && !isRestoreSafeInteger(value.lossOrdinal)) return false;
+  for (const key of ['battleIds', 'resultIds', 'scoringReceiptIds', 'battleParticipantIds'] as const) {
+    if (value[key] !== undefined && !isRestoreStringArray(value[key])) return false;
+  }
+  if (value.battleParticipantPowers !== undefined && !isRestoreFiniteNumberMap(value.battleParticipantPowers)) return false;
+  if (value.battleResult !== undefined) {
+    if (!isRestoreRecord(value.battleResult) || !isRestoreStringArray(value.battleResult.winners) || !isRestoreStringArray(value.battleResult.loserIds)) return false;
+  }
+  if (value.battleOutcomes !== undefined && (!Array.isArray(value.battleOutcomes) || !value.battleOutcomes.every((entry) =>
+      isRestoreRecord(entry) && typeof entry.battlefieldId === 'string' && isRestoreStringArray(entry.winnerPlayerIds) &&
+      (entry.participantPlayerIds === undefined || isRestoreStringArray(entry.participantPlayerIds))))) return false;
+  if (value.playedCards !== undefined && (!Array.isArray(value.playedCards) || !value.playedCards.every((entry) =>
+      isRestoreRecord(entry) && typeof entry.instanceId === 'string' && typeof entry.controllerId === 'string' &&
+      typeof entry.cardType === 'string' && typeof entry.faceDown === 'boolean'))) return false;
+  return true;
+}
+
+function isRestoreOngoingEffect(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.id === 'string' && typeof value.sourceCardId === 'string' &&
+    typeof value.abilityId === 'string' && typeof value.controllerId === 'string' && value.starts === 'immediate' &&
+    typeof value.duration === 'string' && isRestoreSafeInteger(value.startRound, 1) &&
+    (value.expiresAtRound === undefined || isRestoreSafeInteger(value.expiresAtRound, 1)) &&
+    typeof value.cleanup === 'string' && Array.isArray(value.ruleModifiers) && value.ruleModifiers.every((entry) =>
+      isRestoreRecord(entry) && typeof entry.sourceCardId === 'string' && typeof entry.controllerId === 'string' && isRestoreRecord(entry.definition)) &&
+    isRestoreStringArray(value.publicZones) &&
+    (value.sourceMustRemainActive === undefined || typeof value.sourceMustRemainActive === 'boolean') &&
+    (value.policyKey === undefined || typeof value.policyKey === 'string') &&
+    (value.sourceDefinitionIdAtInstall === undefined || typeof value.sourceDefinitionIdAtInstall === 'string') &&
+    (value.sourceValidityPolicyId === undefined || typeof value.sourceValidityPolicyId === 'string') &&
+    (value.installedRevision === undefined || isRestoreSafeInteger(value.installedRevision));
+}
+
+function isRestoreLifecycleTransition(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.transitionId === 'string' && typeof value.lifecycleId === 'string' &&
+    (value.kind === 'install' || value.kind === 'source_invalidated') && typeof value.causationId === 'string' &&
+    isRestoreSafeInteger(value.createdRevision) && isRestoreSafeInteger(value.roundId, 1);
+}
+
+function isRestoreResponseWindow(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.id === 'string' && (value.kind === 'choose_unique_trigger' || value.kind === 'response') &&
+    typeof value.opens === 'string' && typeof value.controllerId === 'string' && Array.isArray(value.choices) && value.choices.every((choice) =>
+      isRestoreRecord(choice) && typeof choice.cardInstanceId === 'string' && typeof choice.abilityId === 'string' && typeof choice.controllerId === 'string') &&
+    (value.group === undefined || (isRestoreRecord(value.group) && typeof value.group.groupId === 'string' &&
+      value.group.policy === 'only_one_effect_may_activate_per_window')) && isRestoreAbilityEvent(value.event) &&
+    value.passBehavior === 'decline_this_window' && value.order === 'turn_order';
+}
+
+function isRestoreSafeEvent(value: unknown): boolean {
+  if (!isRestoreRecord(value) || typeof value.type !== 'string') return false;
+  for (const key of ['playerId','sourceCardId','abilityId','visibility','sourceAbilityId','controllerId','battlePhaseResolutionId','battleId','battlefieldId','resultId','triggerEventId','fromState','toState','cardInstanceId','fromZone','toZone'] as const) {
+    if (value[key] !== undefined && typeof value[key] !== 'string') return false;
+  }
+  if (value.unpreventable !== undefined && typeof value.unpreventable !== 'boolean') return false;
+  if (value.resource !== undefined && !['mana','command_seals','victory_points'].includes(String(value.resource))) return false;
+  if (value.rewardBranch !== undefined && value.rewardBranch !== 'mana' && value.rewardBranch !== 'victory_points') return false;
+  for (const key of ['delta','before','after','requestedDelta'] as const) if (value[key] !== undefined && !isRestoreFiniteNumber(value[key])) return false;
+  for (const key of ['revision','movedCount'] as const) if (value[key] !== undefined && !isRestoreSafeInteger(value[key])) return false;
+  if (value.qualifyingPlayerIds !== undefined && !isRestoreStringArray(value.qualifyingPlayerIds)) return false;
+  return true;
+}
+
+function isRestoreCalculation(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.controllerId === 'string' && Array.isArray(value.lines) &&
+    value.lines.every((line) => isRestoreRecord(line) && typeof line.label === 'string' && isRestoreFiniteNumber(line.value));
+}
+
+function isRestoreRulerSealBinding(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.id === 'string' && typeof value.issuerPlayerId === 'string' &&
+    typeof value.boundPlayerId === 'string' && typeof value.sourceCardId === 'string' && typeof value.abilityId === 'string' &&
+    isRestoreSafeInteger(value.grantedRound, 1) && typeof value.spent === 'boolean' &&
+    (value.spentRound === undefined || isRestoreSafeInteger(value.spentRound, 1));
+}
+
+function isRestoreRulerSealReward(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.sealId === 'string' && typeof value.issuerPlayerId === 'string' &&
+    typeof value.boundPlayerId === 'string' && typeof value.sourceCardId === 'string' && typeof value.abilityId === 'string' &&
+    isRestoreSafeInteger(value.round, 1) && isRestoreFiniteNumber(value.rewardVp);
+}
+
+function isRestoreSourceCardReturn(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.sourceCardId === 'string' && typeof value.abilityId === 'string' &&
+    typeof value.recipientPlayerId === 'string' && isRestoreSafeInteger(value.round, 1);
+}
+
+function isRestorePendingDelayedActivation(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.controllerId === 'string' && typeof value.sourceCardId === 'string' &&
+    typeof value.abilityId === 'string' && typeof value.definitionId === 'string' && typeof value.triggerEventId === 'string' &&
+    isRestoreSafeInteger(value.round, 1);
+}
+
+function isRestorePendingPresenceConcealmentDefeat(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.controllerId === 'string' && typeof value.sourceCardId === 'string' &&
+    typeof value.abilityId === 'string' && typeof value.triggerEventId === 'string' && typeof value.resultId === 'string' &&
+    typeof value.battlefieldId === 'string' && isRestoreStringArray(value.participantIds) &&
+    isRestoreFiniteNumberMap(value.participantPowers) && isRestoreStringArray(value.targetPlayerIds);
+}
+
+function isRestorePendingPreBattleDefeat(value: unknown): boolean {
+  return isRestoreRecord(value) && isRestoreSafeInteger(value.round, 1) && typeof value.battlefieldId === 'string' &&
+    typeof value.controllerId === 'string' && typeof value.sourceCardId === 'string' && typeof value.abilityId === 'string' &&
+    isRestoreStringArray(value.targetPlayerIds);
+}
+
+function isRestorePendingCombatOpponentPowerVpReward(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.controllerId === 'string' && typeof value.sourceCardId === 'string' &&
+    typeof value.abilityId === 'string' && typeof value.triggerEventId === 'string' && typeof value.battlePhaseResolutionId === 'string' &&
+    typeof value.battleId === 'string' && typeof value.resultId === 'string' && typeof value.battlefieldId === 'string' &&
+    isRestoreStringArray(value.participantIds) && isRestoreFiniteNumberMap(value.participantPowers) && isRestoreStringArray(value.opponentIds);
+}
+
+function isRestorePendingOpponentCloseToOne(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.initiatingControllerId === 'string' && typeof value.decisionPlayerId === 'string' &&
+    typeof value.sourceCardId === 'string' && typeof value.abilityId === 'string' && typeof value.battlefieldId === 'string' &&
+    isRestoreStringArray(value.qualifyingCardIds) && new Set(value.qualifyingCardIds).size === value.qualifyingCardIds.length &&
+    isRestoreRecord(value.qualifyingCardOwners) && Object.values(value.qualifyingCardOwners).every((owner) => typeof owner === 'string') &&
+    Object.keys(value.qualifyingCardOwners).length === value.qualifyingCardIds.length &&
+    value.qualifyingCardIds.every((id) => Object.prototype.hasOwnProperty.call(value.qualifyingCardOwners, id)) &&
+    isRestoreStringArray(value.remainingDecisionPlayerIds);
+}
+
+function isRestoreInteractionConstraints(value: unknown, targetKinds: readonly string[]): boolean {
+  return isRestoreRecord(value) && value.kind === 'target' && typeof value.targetKind === 'string' && targetKinds.includes(value.targetKind) &&
+    isRestoreFiniteNumber(value.min) && isRestoreFiniteNumber(value.max) && value.distinct === true;
+}
+
+function isRestorePendingInteraction(value: unknown): boolean {
+  if (!isRestoreRecord(value) || value.template !== 'target' || value.visibility !== 'owner_only' || value.cancelPolicy !== 'forbidden' ||
+      typeof value.kind !== 'string' || typeof value.sourceCardInstanceId !== 'string' || typeof value.abilityId !== 'string' ||
+      !isRestoreSafeInteger(value.createdRevision) || typeof value.continuationRef !== 'string') return false;
+  switch (value.kind) {
+    case 'private_optional_hand_play_v1':
+      return isRestoreInteractionConstraints(value.constraints, ['card']);
+    case 'alter_ego_attribute_choice_v1':
+      return typeof value.triggerEventId === 'string' && typeof value.targetCardInstanceId === 'string' &&
+        (value.variant === 'regular' || value.variant === 'ex') && isRestoreInteractionConstraints(value.constraints, ['attribute']);
+    case 'same_battlefield_private_hand_return_v1':
+      return typeof value.playerTargetId === 'string' && typeof value.selectedPlayerId === 'string' &&
+        isRestoreInteractionConstraints(value.constraints, ['card']);
+    case 'ruler_seal_move_v1':
+      return typeof value.sealId === 'string' && typeof value.issuerPlayerId === 'string' && typeof value.boundPlayerId === 'string' &&
+        isRestoreStringArray(value.destinations) && isRestoreInteractionConstraints(value.constraints, ['location']);
+    case 'ruler_seal_free_play_v1':
+      return typeof value.sealId === 'string' && typeof value.issuerPlayerId === 'string' && typeof value.boundPlayerId === 'string' &&
+        isRestoreFiniteNumber(value.rewardVp) && isRestoreInteractionConstraints(value.constraints, ['card']);
+    case 'combat_opponent_power_vp_reward_v1':
+      return typeof value.triggerEventId === 'string' && typeof value.battlePhaseResolutionId === 'string' && typeof value.battleId === 'string' &&
+        typeof value.resultId === 'string' && typeof value.battlefieldId === 'string' && isRestoreStringArray(value.participantIds) &&
+        isRestoreFiniteNumberMap(value.participantPowers) && isRestoreStringArray(value.opponentIds) && value.divisor === 5 &&
+        isRestoreInteractionConstraints(value.constraints, ['player']);
+    case 'opponent_close_non_residual_to_one_v1':
+      return typeof value.initiatingControllerId === 'string' && typeof value.decisionPlayerId === 'string' &&
+        typeof value.battlefieldId === 'string' && isRestoreStringArray(value.qualifyingCardIds) &&
+        isRestoreRecord(value.qualifyingCardOwners) && Object.values(value.qualifyingCardOwners).every((owner) => typeof owner === 'string') &&
+        isRestoreStringArray(value.remainingDecisionPlayerIds) && isRestoreInteractionConstraints(value.constraints, ['card']);
+    default:
+      return false;
+  }
+}
+
+function isRestoreEffectContext(value: unknown): boolean {
+  if (!isRestoreRecord(value) || typeof value.controllerId !== 'string' || typeof value.sourceCardId !== 'string' ||
+      typeof value.abilityId !== 'string' || !isRestoreFiniteNumberMap(value.variables) || !isRestoreStringArrayMap(value.selections)) return false;
+  if (value.event !== undefined && !isRestoreAbilityEvent(value.event)) return false;
+  return value.eventSource === undefined || (isRestoreRecord(value.eventSource) && typeof value.eventSource.ruleInstanceId === 'string' &&
+    typeof value.eventSource.definitionId === 'string' && typeof value.eventSource.locationId === 'string');
+}
+
 function isRestoreCardRuntimeState(value: unknown): boolean {
   return isRestoreRecord(value) && typeof value.active === 'boolean' && typeof value.faceDown === 'boolean' &&
     Number.isSafeInteger(value.playedRound) && (value.paidManaOnPlay === undefined ||
@@ -342,30 +546,25 @@ function isRestoreServantPackage(value: unknown): boolean {
   return value.skillCards.every(validCard) && value.knownCardDefinitions.every(validCard);
 }
 
-function isRestoreAbilityPack(value: unknown): boolean {
-  if (!isRestoreRecord(value) || !isRestoreRecord(value.cards)) return false;
-  const cards = value.cards;
-  if (!Object.values(cards).every(isRestoreAbilityCardDefinition)) return false;
-  if (value.characters !== undefined) {
-    if (!isRestoreRecord(value.characters) ||
-        !Object.values(value.characters).every((entry) => isRestoreCharacterDefinition(entry, cards))) return false;
-  }
-  if (!isRestoreServantPackage(value.servantPackage)) return false;
-
-  // Production MatchSession state carries the canonical executable pack. Once any
-  // executable-pack discriminator/integrity field is present, it may not be
-  // relabeled or downgraded to the weaker generic authoring-pack boundary.
-  const executablePackExpected = value.definitionHash !== undefined || value.contentIdentity !== undefined ||
-    value.decks !== undefined || value.fallbackCommandSpells !== undefined || value.sourceMap !== undefined;
-  if (executablePackExpected) {
-    if (value.schemaVersion !== 'fd-executable-card-pack-v1') return false;
+function isRestoreAbilityPack(value: unknown, packKind: MatchSessionRestorePackKind): boolean {
+  if (packKind === 'production_executable') {
+    // Production MatchSession snapshots always carry the canonical executable pack.
+    // Restore input cannot downgrade this boundary by deleting discriminator or integrity fields.
     try {
       assertExecutableCardPack(value, uncheckedContent);
+      return true;
     } catch {
       return false;
     }
   }
-  return true;
+  // The only non-production route is an explicit server-owned test context. It is
+  // intentionally not inferred from snapshot bytes and is never serialized.
+  if (!isRestoreRecord(value) || !isRestoreRecord(value.cards)) return false;
+  const cards = value.cards;
+  if (!Object.values(cards).every(isRestoreAbilityCardDefinition)) return false;
+  if (value.characters !== undefined && (!isRestoreRecord(value.characters) ||
+      !Object.values(value.characters).every((entry) => isRestoreCharacterDefinition(entry, cards)))) return false;
+  return isRestoreServantPackage(value.servantPackage);
 }
 
 function isRestoreRoundPlayCounters(value: unknown): boolean {
@@ -378,30 +577,68 @@ function isRestoreRoundPlayCounters(value: unknown): boolean {
     (value.faceUpCardsPlayedByPlayer === undefined || isCountMap(value.faceUpCardsPlayedByPlayer));
 }
 
-function isRestoreAbilityRuntimeBoundary(value: unknown): boolean {
+function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionRestorePackKind): boolean {
   if (value === undefined) return true;
-  if (!isRestoreRecord(value) || !isRestoreAbilityPack(value.pack) || !isRestoreRecord(value.cardState) ||
+  if (!isRestoreRecord(value) || !isRestoreAbilityPack(value.pack, packKind) || !isRestoreRecord(value.cardState) ||
       !Object.values(value.cardState).every(isRestoreCardRuntimeState) ||
-      !Number.isSafeInteger(value.revision) || !Number.isSafeInteger(value.sequence) ||
+      !isRestoreSafeInteger(value.revision) || !isRestoreSafeInteger(value.sequence) ||
       typeof value.randomState !== 'number' || !Number.isFinite(value.randomState) ||
-      !isRestoreRecordArray(value.ongoingEffects) || !isRestoreRecordArray(value.responseWindows) ||
-      !isRestoreStringArray(value.revealedServants) || !isRestoreRecordArray(value.events) ||
-      !isRestoreRecordArray(value.calculations) || !isRestoreRecordArray(value.hostRequests) ||
+      !Array.isArray(value.ongoingEffects) || !value.ongoingEffects.every(isRestoreOngoingEffect) ||
+      !Array.isArray(value.responseWindows) || !value.responseWindows.every(isRestoreResponseWindow) ||
+      !isRestoreSafeInteger(value.eventRuleZoneRevision) ||
+      !Array.isArray(value.rulerSealBindings) || !value.rulerSealBindings.every(isRestoreRulerSealBinding) ||
+      !isRestoreNestedNonNegativeIntegerMap(value.rulerSealBindingHistory) ||
+      !Array.isArray(value.pendingRulerSealRewards) || !value.pendingRulerSealRewards.every(isRestoreRulerSealReward) ||
+      !isRestoreRoundByPlayerNumberState(value.roundTotalPowerAdjustments) ||
+      !Array.isArray(value.pendingSourceCardReturns) || !value.pendingSourceCardReturns.every(isRestoreSourceCardReturn) ||
+      !isRestoreNonNegativeIntegerMap(value.usedAbilities) || !isRestoreStringArray(value.processedEvents) ||
+      !isRestoreStringArray(value.revealedServants) || !Array.isArray(value.events) || !value.events.every(isRestoreSafeEvent) ||
+      !Array.isArray(value.calculations) || !value.calculations.every(isRestoreCalculation) ||
+      typeof value.preventEffects !== 'boolean' || !isRestoreFiniteNumberMap(value.manaCaps) ||
+      !isRestoreStringArray(value.manaGainBlocked) || !Array.isArray(value.hostRequests) || !value.hostRequests.every((entry) =>
+        isRestoreRecord(entry) && typeof entry.controllerId === 'string' && typeof entry.sourceCardId === 'string' &&
+        typeof entry.abilityId === 'string' && isRestoreStringArray(entry.allowedOperations) && entry.allowedOperations.every((op) =>
+          ['adjust-mana','adjust-victory-points','move-card','create-status','skip-ability'].includes(op))) ||
+      (value.roomMode !== 'standard' && value.roomMode !== 'development') ||
+      !isRestoreNonNegativeIntegerMap(value.abilityUsage) || !isRestoreRecord(value.noblePhantasmCostsThisRound) ||
+      !Object.values(value.noblePhantasmCostsThisRound).every((entries) => Array.isArray(entries) && entries.every((entry) =>
+        isRestoreRecord(entry) && typeof entry.cardId === 'string' && isRestoreFiniteNumber(entry.cost))) ||
+      !isRestoreNonNegativeIntegerMap(value.consecutivePlayRounds) || !isRestoreNonNegativeIntegerMap(value.movementDistanceThisRound) ||
+      !isRestoreNonNegativeIntegerMap(value.battlefieldsPassedOrStayedThisRound) || !isRestoreRoundByPlayerNumberState(value.manaGainedThisRound) ||
+      (value.playRulesVersion !== 'legacy-v0' && value.playRulesVersion !== 'explicit-v1') ||
       !isRestoreRoundPlayCounters(value.playCounters)) return false;
+
+  if (value.playerStatusKeysByPlayer !== undefined && !isRestoreStringArrayMap(value.playerStatusKeysByPlayer)) return false;
+  if (value.combatWinRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.combatWinRoundByPlayer)) return false;
+  if (value.lifecycleTransitions !== undefined && (!Array.isArray(value.lifecycleTransitions) || !value.lifecycleTransitions.every(isRestoreLifecycleTransition))) return false;
+  if (value.pendingDelayedActivations !== undefined && (!Array.isArray(value.pendingDelayedActivations) || !value.pendingDelayedActivations.every(isRestorePendingDelayedActivation))) return false;
+  if (value.pendingPresenceConcealmentDefeats !== undefined && (!Array.isArray(value.pendingPresenceConcealmentDefeats) || !value.pendingPresenceConcealmentDefeats.every(isRestorePendingPresenceConcealmentDefeat))) return false;
+  if (value.pendingPreBattleDefeats !== undefined && (!Array.isArray(value.pendingPreBattleDefeats) || !value.pendingPreBattleDefeats.every(isRestorePendingPreBattleDefeat))) return false;
+  if (value.pendingPostBattleEvents !== undefined && (!Array.isArray(value.pendingPostBattleEvents) || !value.pendingPostBattleEvents.every(isRestoreAbilityEvent))) return false;
+  if (value.pendingCombatOpponentPowerVpRewards !== undefined && (!Array.isArray(value.pendingCombatOpponentPowerVpRewards) || !value.pendingCombatOpponentPowerVpRewards.every(isRestorePendingCombatOpponentPowerVpReward))) return false;
+  if (value.pendingOpponentCloseToOne !== undefined && (!Array.isArray(value.pendingOpponentCloseToOne) || !value.pendingOpponentCloseToOne.every(isRestorePendingOpponentCloseToOne))) return false;
+  if (value.pendingBattleTerminalEvent !== undefined && !isRestoreAbilityEvent(value.pendingBattleTerminalEvent)) return false;
+  if (value.transformedReturnSilenceSourceCardIds !== undefined && !isRestoreStringArray(value.transformedReturnSilenceSourceCardIds)) return false;
+  if (value.trustedBattleResultSnapshots !== undefined && (!isRestoreRecord(value.trustedBattleResultSnapshots) ||
+      !Object.values(value.trustedBattleResultSnapshots).every((entry) => isRestoreRecord(entry) &&
+        typeof entry.battlePhaseResolutionId === 'string' && typeof entry.battleId === 'string' && typeof entry.resultId === 'string' &&
+        typeof entry.battlefieldId === 'string' && isRestoreStringArray(entry.battleParticipantIds) &&
+        (entry.battleParticipantPowers === undefined || isRestoreFiniteNumberMap(entry.battleParticipantPowers)) &&
+        isRestoreStringArray(entry.winners) && isRestoreStringArray(entry.loserIds)))) return false;
+
   if (value.pendingDecision !== undefined) {
     const decision = value.pendingDecision;
     if (!isRestoreRecord(decision) || typeof decision.id !== 'string' || typeof decision.controllerId !== 'string' ||
         !isRestoreRecord(decision.target) || !isRestoreStringArray(decision.candidates) ||
-        typeof decision.min !== 'number' || typeof decision.max !== 'number' || !isRestoreRecord(decision.context) ||
+        !isRestoreFiniteNumber(decision.min) || !isRestoreFiniteNumber(decision.max) || !isRestoreEffectContext(decision.context) ||
         !Array.isArray(decision.remainingEffects) || !decision.remainingEffects.every(isRestoreRecord) ||
-        (decision.interaction !== undefined && !isRestoreRecord(decision.interaction))) return false;
+        (decision.interaction !== undefined && !isRestorePendingInteraction(decision.interaction))) return false;
   }
-  if (value.pendingOpponentCloseToOne !== undefined && !isRestoreRecordArray(value.pendingOpponentCloseToOne)) return false;
   return true;
 }
 
-function isRestoreEventPlacement(value: unknown, locationIds: Set<string>, playerIds: Set<string>, allowMissingLocation = false): boolean {
-  if (!isRestoreRecord(value) || typeof value.eventCardId !== 'string' || !isRestoreVisibilityState(value.visibility) ||
+function isRestoreEventPlacement(value: unknown, locationIds: Set<string>, playerIds: Set<string>, eventIds: Set<string>, allowMissingLocation = false): boolean {
+  if (!isRestoreRecord(value) || typeof value.eventCardId !== 'string' || !eventIds.has(value.eventCardId) || !isRestoreVisibilityState(value.visibility) ||
       (value.locationId === undefined ? !allowMissingLocation : typeof value.locationId !== 'string' || !locationIds.has(value.locationId)) ||
       (value.ruleInstanceId !== undefined && typeof value.ruleInstanceId !== 'string') ||
       (value.ruleControllerPlayerId !== undefined && (typeof value.ruleControllerPlayerId !== 'string' || !playerIds.has(value.ruleControllerPlayerId))) ||
@@ -438,25 +675,146 @@ function isRestoreGameLogEntry(value: unknown): boolean {
     (value.payload === undefined || isRestoreRecord(value.payload));
 }
 
-function isRestoreGameState(value: unknown): value is GameState {
+function restoreRecordKeysBelongTo(value: unknown, allowed: Set<string>): boolean {
+  return isRestoreRecord(value) && Object.keys(value).every((key) => allowed.has(key));
+}
+
+function isRestoreEffectStackItem(value: unknown, playerIds: Set<string>): boolean {
+  if (!isRestoreRecord(value) || typeof value.sourceCardId !== 'string' || typeof value.controllerPlayerId !== 'string' ||
+      !playerIds.has(value.controllerPlayerId) || !isRestoreRecord(value.effect)) return false;
+  const effect = value.effect;
+  const timings = new Set(['round_start','preparation','advance','action','battle','after_battle','cleanup','round_end']);
+  if (typeof effect.id !== 'string' || typeof effect.timing !== 'string' || !timings.has(effect.timing) || typeof effect.handler !== 'string') return false;
+  if (effect.conditions !== undefined && (!Array.isArray(effect.conditions) || !effect.conditions.every((entry) =>
+      entry === 'same_battlefield' || entry === 'requires_public_attack' || entry === 'requires_declared_battle'))) return false;
+  return effect.payload === undefined || isRestoreRecord(effect.payload);
+}
+
+function isRestoreContentRuntime(value: unknown, locationIds: Set<string>, eventIds: Set<string>): boolean {
+  if (!isRestoreRecord(value) || !Array.isArray(value.situations) || !Array.isArray(value.eventDraws)) return false;
+  if (!value.situations.every((entry) => isRestoreRecord(entry) && isRestoreSafeInteger(entry.round, 1) &&
+      typeof entry.cardId === 'string' &&
+      (entry.minimumRemainingPlayers === undefined || isRestoreSafeInteger(entry.minimumRemainingPlayers)) &&
+      (entry.sharedManaReward === undefined || isRestoreFiniteNumber(entry.sharedManaReward)) &&
+      (entry.battleModifiers === undefined || (Array.isArray(entry.battleModifiers) && entry.battleModifiers.every(isRestoreRecord))) &&
+      (entry.notes === undefined || isRestoreStringArray(entry.notes)))) return false;
+  return value.eventDraws.every((entry) => isRestoreRecord(entry) && isRestoreSafeInteger(entry.round, 1) &&
+    typeof entry.locationId === 'string' && locationIds.has(entry.locationId) && typeof entry.eventCardId === 'string' &&
+    eventIds.has(entry.eventCardId) && (entry.victoryPoints === undefined || isRestoreFiniteNumber(entry.victoryPoints)) &&
+    (entry.battleModifiers === undefined || (Array.isArray(entry.battleModifiers) && entry.battleModifiers.every(isRestoreRecord))) &&
+    (entry.notes === undefined || isRestoreStringArray(entry.notes)));
+}
+
+function isRestoreScoringBreakdown(value: unknown, playerIds: Set<string>): boolean {
+  const validReasons = new Set(['battle_vp','location_vp','recon_vp','competition_vp','military_result','elimination']);
+  return Array.isArray(value) && value.every((entry) => isRestoreRecord(entry) && typeof entry.playerId === 'string' &&
+    playerIds.has(entry.playerId) && isRestoreFiniteNumber(entry.vpDelta) && isRestoreFiniteNumber(entry.militaryDelta) &&
+    typeof entry.eliminated === 'boolean' && (entry.eliminationOrder === undefined || isRestoreSafeInteger(entry.eliminationOrder)) &&
+    Array.isArray(entry.reasons) && entry.reasons.every((reason) => isRestoreRecord(reason) && typeof reason.source === 'string' &&
+      validReasons.has(reason.source) && typeof reason.label === 'string' && isRestoreFiniteNumber(reason.value)));
+}
+
+function isRestoreRuleOverrides(value: unknown, playerIds: Set<string>, locationIds: Set<string>): boolean {
+  if (!isRestoreRecord(value)) return false;
+  if (value.occupancyLimitByLocation !== undefined) {
+    if (!isRestoreRecord(value.occupancyLimitByLocation) || !Object.entries(value.occupancyLimitByLocation).every(([id, limit]) =>
+      locationIds.has(id) && (limit === null || isRestoreSafeInteger(limit)))) return false;
+  }
+  const playerLists = [
+    'ignoreMovementLinkPlayerIds','reverseArrowMovementPlayerIds','ignoreOccupancyLimitPlayerIds','engagedPlayerIds',
+    'ignoreEngagementForMovementPlayerIds','mustDeployToBattlefieldPlayerIds','movementLockedOwnActionCombatPlayerIds',
+    'viewOpponentDiscardPlayerIds','viewFaceDownEventsPlayerIds',
+  ] as const;
+  for (const key of playerLists) {
+    if (value[key] !== undefined && (!isRestoreStringArray(value[key]) || !(value[key] as string[]).every((id) => playerIds.has(id)))) return false;
+  }
+  const numberMaps = [
+    'logicalDayByPlayer','firstLogicalDayTotalPowerAdjustmentByPlayer','nonClimaxSituationManaGainCapByPlayer',
+    'lowerVpBattleTotalPowerAdjustmentByPlayer','rulerSealMovementLockRoundByPlayer',
+  ] as const;
+  for (const key of numberMaps) {
+    if (value[key] !== undefined && (!isRestoreFiniteNumberMap(value[key]) || !restoreRecordKeysBelongTo(value[key], playerIds))) return false;
+  }
+  if (value.roundTotalManaGainCapByPlayer !== undefined && (!isRestoreRecord(value.roundTotalManaGainCapByPlayer) ||
+      !restoreRecordKeysBelongTo(value.roundTotalManaGainCapByPlayer, playerIds) ||
+      !Object.values(value.roundTotalManaGainCapByPlayer).every((entry) => isRestoreRecord(entry) &&
+        isRestoreFiniteNumber(entry.regular) && isRestoreFiniteNumber(entry.climax)))) return false;
+  if (value.masterSkillPowerLockIfSituationForbidsByPlayer !== undefined && (!isRestoreRecord(value.masterSkillPowerLockIfSituationForbidsByPlayer) ||
+      !restoreRecordKeysBelongTo(value.masterSkillPowerLockIfSituationForbidsByPlayer, playerIds) ||
+      !Object.values(value.masterSkillPowerLockIfSituationForbidsByPlayer).every((entry) => isRestoreRecord(entry) &&
+        typeof entry.attribute === 'string' && isRestoreFiniteNumber(entry.value)))) return false;
+  if (value.commandSpellPhaseOverrideByPlayer !== undefined && (!isRestoreRecord(value.commandSpellPhaseOverrideByPlayer) ||
+      !restoreRecordKeysBelongTo(value.commandSpellPhaseOverrideByPlayer, playerIds) ||
+      !Object.values(value.commandSpellPhaseOverrideByPlayer).every((phase) => typeof phase === 'string' && validReplayPhases.has(phase)))) return false;
+  if (value.extraAttackPlayAllowanceByManaByPlayer !== undefined && (!isRestoreRecord(value.extraAttackPlayAllowanceByManaByPlayer) ||
+      !restoreRecordKeysBelongTo(value.extraAttackPlayAllowanceByManaByPlayer, playerIds) ||
+      !Object.values(value.extraAttackPlayAllowanceByManaByPlayer).every((entry) => isRestoreRecord(entry) &&
+        isRestoreFiniteNumber(entry.threshold) && isRestoreFiniteNumber(entry.amount)))) return false;
+  if (value.ignoreSituationPlayForbidAttributesByPlayer !== undefined && (!isRestoreStringArrayMap(value.ignoreSituationPlayForbidAttributesByPlayer) ||
+      !restoreRecordKeysBelongTo(value.ignoreSituationPlayForbidAttributesByPlayer, playerIds))) return false;
+  return true;
+}
+
+function isRestoreAbilityRuntimeReferences(value: Record<string, unknown>, playerIds: Set<string>): boolean {
+  const playerKeyedMaps = [
+    'playerStatusKeysByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
+    'battlefieldsPassedOrStayedThisRound',
+  ] as const;
+  for (const key of playerKeyedMaps) if (value[key] !== undefined && !restoreRecordKeysBelongTo(value[key], playerIds)) return false;
+  for (const key of ['revealedServants','manaGainBlocked'] as const) {
+    if (!(value[key] as string[]).every((id) => playerIds.has(id))) return false;
+  }
+  for (const key of ['roundTotalPowerAdjustments','manaGainedThisRound','playCounters'] as const) {
+    const container = value[key] as Record<string, unknown>;
+    for (const child of key === 'playCounters' ? ['cardsPlayedByPlayer','attacksDeclaredByPlayer','faceUpCardsPlayedByPlayer'] : ['byPlayer']) {
+      if (container[child] !== undefined && !restoreRecordKeysBelongTo(container[child], playerIds)) return false;
+    }
+  }
+  const bindingHistory = value.rulerSealBindingHistory as Record<string, unknown>;
+  if (!restoreRecordKeysBelongTo(bindingHistory, playerIds) || !Object.values(bindingHistory).every((entry) => restoreRecordKeysBelongTo(entry, playerIds))) return false;
+  if (!(value.rulerSealBindings as Array<Record<string, unknown>>).every((entry) =>
+      playerIds.has(entry.issuerPlayerId as string) && playerIds.has(entry.boundPlayerId as string))) return false;
+  if (!(value.pendingRulerSealRewards as Array<Record<string, unknown>>).every((entry) =>
+      playerIds.has(entry.issuerPlayerId as string) && playerIds.has(entry.boundPlayerId as string))) return false;
+  if (!(value.pendingSourceCardReturns as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.recipientPlayerId as string))) return false;
+  if (!(value.calculations as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
+  if (!(value.hostRequests as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
+  if (!(value.ongoingEffects as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
+  if (!(value.responseWindows as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
+  return value.pendingDecision === undefined || playerIds.has((value.pendingDecision as Record<string, unknown>).controllerId as string);
+}
+
+function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKind = 'production_executable'): value is GameState {
   if (!isRestoreRecord(value) || typeof value.id !== 'string' || !Array.isArray(value.players) || value.players.length < 1 ||
       !value.players.every(isRestorePlayerState) || !isRestoreRecord(value.round) || !isRestoreMapDefinition(value.map) ||
       !isRestoreLocationConfig(value.locationConfig) || !Array.isArray(value.cards) || !value.cards.every(isRestoreCardInstance) ||
       !Array.isArray(value.eventPlacements) || !Array.isArray(value.battleResults) ||
-      !isRestoreRecordArray(value.effectStack) || !Array.isArray(value.log) || !value.log.every(isRestoreGameLogEntry) ||
-      !isRestoreAbilityRuntimeBoundary(value.abilityRuntime)) return false;
+      !Array.isArray(value.effectStack) || !Array.isArray(value.log) || !value.log.every(isRestoreGameLogEntry) ||
+      !isRestoreRecord(value.abilityRuntime) || !isRestoreAbilityRuntimeBoundary(value.abilityRuntime, packKind)) return false;
   const round = value.round;
-  if (!Number.isSafeInteger(round.roundNumber) || (round.roundNumber as number) < 1 ||
-      typeof round.activePhase !== 'string' || !validReplayPhases.has(round.activePhase) ||
-      !Number.isSafeInteger(round.prioritySeat) || (round.prioritySeat as number) < 1) return false;
+  if (!isRestoreSafeInteger(round.roundNumber, 1) || typeof round.activePhase !== 'string' || !validReplayPhases.has(round.activePhase) ||
+      !isRestoreSafeInteger(round.prioritySeat, 1)) return false;
 
   const players = value.players as Array<Record<string, unknown>>;
   const playerIds = new Set(players.map((player) => player.id as string));
   const seats = new Set(players.map((player) => player.seat as number));
-  if (playerIds.size !== players.length || seats.size !== players.length ||
+  const map = value.map as Record<string, unknown>;
+  if (playerIds.size !== players.length || seats.size !== players.length || map.playerCount !== players.length ||
+      !players.every((player) => (player.seat as number) <= (map.playerCount as number)) ||
       !players.some((player) => player.seat === round.prioritySeat)) return false;
 
-  const map = value.map as Record<string, unknown>;
+  const abilityRuntime = value.abilityRuntime as Record<string, unknown>;
+  if (!isRestoreAbilityRuntimeReferences(abilityRuntime, playerIds)) return false;
+  const pack = abilityRuntime.pack as Record<string, unknown>;
+  if (packKind === 'production_executable') {
+    const characters = pack.characters as Record<string, unknown>;
+    for (const player of players) {
+      const master = characters[player.masterCardId as string];
+      const servant = characters[player.servantCardId as string];
+      if (!isRestoreRecord(master) || master.kind !== 'master' || !isRestoreRecord(servant) || servant.kind !== 'servant') return false;
+    }
+  }
+
   const locationConfig = value.locationConfig as Record<string, unknown>;
   const locations = (map.locations as Array<Record<string, unknown>>);
   const locationIds = new Set(locations.map((location) => location.id as string));
@@ -473,21 +831,36 @@ function isRestoreGameState(value: unknown): value is GameState {
 
   const cards = value.cards as Array<Record<string, unknown>>;
   const instanceIds = new Set(cards.map((card) => card.instanceId as string));
+  const definitions = pack.cards as Record<string, unknown>;
   if (instanceIds.size !== cards.length || !cards.every((card) => playerIds.has(card.ownerPlayerId as string) &&
-      playerIds.has(card.controllerPlayerId as string))) return false;
-  if (isRestoreRecord(value.abilityRuntime)) {
-    const abilityRuntime = value.abilityRuntime as Record<string, unknown>;
-    if (isRestoreRecord(abilityRuntime.pack)) {
-      const pack = abilityRuntime.pack as Record<string, unknown>;
-      if (isRestoreRecord(pack.cards) &&
-          !cards.every((card) => Object.prototype.hasOwnProperty.call(pack.cards as Record<string, unknown>, card.definitionId as string))) return false;
-    }
-  }
+      playerIds.has(card.controllerPlayerId as string) && Object.prototype.hasOwnProperty.call(definitions, card.definitionId as string))) return false;
 
-  if (!value.eventPlacements.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds))) return false;
+  const eventCatalog = isRestoreRecord(pack.eventCatalog) ? pack.eventCatalog : {};
+  const eventIds = new Set([...eventCardById.keys(), ...Object.keys(eventCatalog)]);
+  const eventArrays = ['eventDeck','eventOutsideGame'] as const;
+  for (const key of eventArrays) {
+    if (value[key] !== undefined && (!isRestoreStringArray(value[key]) || !(value[key] as string[]).every((id) => eventIds.has(id)))) return false;
+  }
+  for (const key of ['situationDeck','situationDiscardPile','burnedSituationCardIds'] as const) {
+    if (value[key] !== undefined && !isRestoreStringArray(value[key])) return false;
+  }
+  if (value.currentSituationCardId !== undefined && typeof value.currentSituationCardId !== 'string') return false;
+  if (value.currentSituationModifiers !== undefined && (!Array.isArray(value.currentSituationModifiers) || !value.currentSituationModifiers.every(isRestoreRecord))) return false;
+
+  if (!value.eventPlacements.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, eventIds))) return false;
   if (value.eventDiscardPile !== undefined && (!Array.isArray(value.eventDiscardPile) ||
-      !value.eventDiscardPile.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, true)))) return false;
+      !value.eventDiscardPile.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, eventIds, true)))) return false;
+  if (value.battleDeclarations !== undefined && (!Array.isArray(value.battleDeclarations) || !value.battleDeclarations.every((entry) =>
+      isRestoreRecord(entry) && typeof entry.battlefieldId === 'string' && locationIds.has(entry.battlefieldId)))) return false;
+  if (value.battleSkillEffects !== undefined && (!Array.isArray(value.battleSkillEffects) || !value.battleSkillEffects.every((entry) =>
+      isRestoreRecord(entry) && typeof entry.sourceCardDefinitionId === 'string' && Object.prototype.hasOwnProperty.call(definitions, entry.sourceCardDefinitionId) &&
+      typeof entry.ownerPlayerId === 'string' && playerIds.has(entry.ownerPlayerId) && typeof entry.skillId === 'string' &&
+      (entry.combatModifiers === undefined || (Array.isArray(entry.combatModifiers) && entry.combatModifiers.every(isRestoreRecord)))))) return false;
   if (!value.battleResults.every((entry) => isRestoreBattleResult(entry, locationIds, playerIds))) return false;
+  if (value.contentRuntime !== undefined && !isRestoreContentRuntime(value.contentRuntime, locationIds, eventIds)) return false;
+  if (value.scoringBreakdown !== undefined && !isRestoreScoringBreakdown(value.scoringBreakdown, playerIds)) return false;
+  if (value.ruleOverrides !== undefined && !isRestoreRuleOverrides(value.ruleOverrides, playerIds, locationIds)) return false;
+  if (!value.effectStack.every((entry) => isRestoreEffectStackItem(entry, playerIds))) return false;
   return true;
 }
 
@@ -512,9 +885,9 @@ function isRestoreReplayEntry(value: unknown): value is MatchClientState['replay
     typeof value.label === 'string';
 }
 
-function isRestoreReplaySnapshot(value: unknown): value is MatchReplayStateSnapshot {
+function isRestoreReplaySnapshot(value: unknown, packKind: MatchSessionRestorePackKind): value is MatchReplayStateSnapshot {
   if (!isRestoreRecord(value) || typeof value.checkpointId !== 'string' || !/^checkpoint:\d+$/.test(value.checkpointId) ||
-      !isRestoreGameState(value.state) || !Array.isArray(value.logs) || !value.logs.every(isRestoreLogEntry) ||
+      !isRestoreGameState(value.state, packKind) || !Array.isArray(value.logs) || !value.logs.every(isRestoreLogEntry) ||
       !Array.isArray(value.battleHistory) || !value.battleHistory.every((entry) => isRestoreBattleResult(entry)) ||
       !Number.isSafeInteger(value.consumedDirectiveCount) || (value.consumedDirectiveCount as number) < 0) return false;
   if (value.stopReason !== undefined && (typeof value.stopReason !== 'string' || !validPauseReasons.has(value.stopReason))) return false;
@@ -525,9 +898,10 @@ function isRestoreReplaySnapshot(value: unknown): value is MatchReplayStateSnaps
 function hasCoherentReplayRestoreEnvelope(
   replay: unknown,
   replaySnapshots: unknown,
+  packKind: MatchSessionRestorePackKind,
 ): replay is MatchClientState['replay'] {
   if (!Array.isArray(replay) || !Array.isArray(replaySnapshots) || replay.length !== replaySnapshots.length) return false;
-  if (!replay.every(isRestoreReplayEntry) || !replaySnapshots.every(isRestoreReplaySnapshot)) return false;
+  if (!replay.every(isRestoreReplayEntry) || !replaySnapshots.every((entry) => isRestoreReplaySnapshot(entry, packKind))) return false;
   for (let index = 0; index < replay.length; index++) {
     const replayEntry = replay[index]!;
     const replaySnapshot = replaySnapshots[index]! as MatchReplayStateSnapshot;
@@ -824,6 +1198,7 @@ export class MatchSession {
   readonly maxActionsPerPlayer: number;
   private readonly persistenceSecret: string;
   private readonly persistenceScope: string;
+  private readonly restorePackKind: MatchSessionRestorePackKind;
   state: GameState;
   pairings: Array<{ playerId: string; seat: number; master: ExecutableCharacterDefinition; servant: ExecutableCharacterDefinition }>;
   rawCards: Map<string, RuntimeRawCard>;
@@ -848,6 +1223,7 @@ export class MatchSession {
     this.maxActionsPerPlayer = config.maxActionsPerPlayer ?? 2;
     this.persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
     this.persistenceScope = config.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
+    this.restorePackKind = config.restorePackKind ?? 'production_executable';
     const built = this.buildInitialState();
     this.state = built.state;
     this.pairings = built.pairings;
@@ -864,6 +1240,10 @@ export class MatchSession {
 
   getState(): GameState {
     return structuredClone(this.state);
+  }
+
+  getRestorePackKind(): MatchSessionRestorePackKind {
+    return this.restorePackKind;
   }
 
   getClientProjection(playerId = this.humanPlayerId): MatchClientState {
@@ -1993,14 +2373,15 @@ export function createMatchSession(config?: MatchSessionConfig): MatchSession {
 
 export function restoreMatchSession(
   snapshot: MatchSessionSnapshot,
-  config: Pick<MatchSessionConfig, 'persistenceSecret' | 'persistenceScope'> = {},
+  config: Pick<MatchSessionConfig, 'persistenceSecret' | 'persistenceScope' | 'restorePackKind'> = {},
   reconcileReplayTrust = true,
 ): MatchSession {
   if (snapshot.version !== 1) throw new Error(`Unsupported MatchSession snapshot version: ${snapshot.version}`);
-  if (!hasCoherentReplayRestoreEnvelope(snapshot.replay, snapshot.replaySnapshots)) {
+  const restorePackKind = config.restorePackKind ?? 'production_executable';
+  if (!hasCoherentReplayRestoreEnvelope(snapshot.replay, snapshot.replaySnapshots, restorePackKind)) {
     throw new Error('Invalid FB2-49 replay snapshot container');
   }
-  if (!isRestoreGameState(snapshot.state)) throw new Error('Invalid MatchSession state container');
+  if (!isRestoreGameState(snapshot.state, restorePackKind)) throw new Error('Invalid MatchSession state container');
   if (!Array.isArray(snapshot.logs) || !snapshot.logs.every(isRestoreLogEntry) ||
       !Array.isArray(snapshot.battleHistory) || !snapshot.battleHistory.every((entry) => isRestoreBattleResult(entry)) ||
       typeof snapshot.seed !== 'number' || !Number.isFinite(snapshot.seed) || typeof snapshot.humanPlayerId !== 'string' ||
@@ -2050,6 +2431,7 @@ export function restoreMatchSession(
     maxActionsPerPlayer: snapshot.maxActionsPerPlayer,
     persistenceSecret,
     persistenceScope,
+    restorePackKind,
   }, false);
   session.state = candidateState;
   session.logs = structuredClone(snapshot.logs);

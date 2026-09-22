@@ -65,6 +65,39 @@ describe('MatchRoomHub local multiplayer transport layer', () => {
       snapshot => { snapshot.session.state.cards[0].definitionId = 'missing-definition'; },
       snapshot => { snapshot.session.state.cards[0].controllerPlayerId = 'ghost-player'; },
       snapshot => { snapshot.session.state.players[0].locationId = 'missing-location'; },
+      snapshot => { snapshot.session.state.players[0].servantCardId = 'servant.missing'; },
+      snapshot => { snapshot.session.state.players[0].masterCardId = snapshot.session.state.players[0].servantCardId; },
+      snapshot => { snapshot.session.state.eventPlacements[0].eventCardId = 'event.missing'; },
+      snapshot => { snapshot.session.state.map.playerCount = 999; },
+      snapshot => { snapshot.session.state.players[0].seat = 999; },
+    ];
+    for (const corrupt of corruptions) {
+      const malformed: any = structuredClone(beforeSnapshot);
+      corrupt(malformed);
+      expect(() => hub.restoreRoom(roomId, malformed)).toThrow('Invalid MatchSession state container');
+      expect(hub.getRoom(roomId)).toBe(beforeRoom);
+      expect(hub.getRoom(roomId).serializeRoom()).toEqual(beforeSnapshot);
+      expect(hub.version(roomId)).toBe(beforeVersion);
+    }
+  });
+
+  it('rejects malformed required AbilityRuntime and optional GameState containers before replacing the room', () => {
+    const hub = createMatchRoomHub();
+    const roomId = hub.createRoom({ roomId: 'restore-runtime-boundary-room', seed: 20260905, hostClientId: 'host-a' }).roomId;
+    hub.joinRoom(roomId, { clientId: 'alice', displayName: 'Alice' });
+    hub.selectSeat(roomId, 'alice', 1);
+    hub.startMatch(roomId, 'host-a');
+
+    const beforeRoom = hub.getRoom(roomId);
+    const beforeSnapshot = structuredClone(beforeRoom.serializeRoom());
+    const beforeVersion = hub.version(roomId);
+    const corruptions: Array<(snapshot: any) => void> = [
+      snapshot => { snapshot.session.state.abilityRuntime.processedEvents = null; },
+      snapshot => { snapshot.session.state.abilityRuntime.roomMode = 'invalid-mode'; },
+      snapshot => { snapshot.session.state.abilityRuntime.manaCaps = null; },
+      snapshot => { snapshot.session.state.abilityRuntime.eventRuleZoneRevision = 'bad'; },
+      snapshot => { snapshot.session.state.eventDeck = [123]; },
+      snapshot => { snapshot.session.state.ruleOverrides = []; },
     ];
     for (const corrupt of corruptions) {
       const malformed: any = structuredClone(beforeSnapshot);
