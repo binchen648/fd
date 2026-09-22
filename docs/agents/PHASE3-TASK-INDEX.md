@@ -5951,3 +5951,15 @@ Read: `docs/reports/2026-09-23-p3-a-r106-fb2-51-acceptance-synchronization.md`
 Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #427 exact Candidate `d3ed651db4ba6ca26f9a715a87840065f3db6fd7`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/427#issuecomment-5783968963`. Both prior exact-scope findings are closed: wrong-position threshold vocabulary now fails closed at loader/whole-envelope admission, and the real `MatchSession.startRound(...)` boundary resets the current-round positive VP ledger. The accepted capability remains identity-free and contains no Ciel consumer authoring.
 
 FB2-51 earns zero migration credit; formal migration remains **`153/944`**, with **`791`** remaining. Material authoring overlap remains **`148/944`**. PR #427 remains OPEN, unmerged and unretargeted. Next action is a fresh complete-card reconstruction of `master.ciel.skill.s1b`; dispatch singleton S only if the whole card is mechanically zero-gap including target-definition availability, otherwise dispatch only the minimum missing B2 capability.
+
+## TASK P3-FB2-52-NEXT-ROUND-SITUATION-BENEFIT-SUPPRESSION
+
+Owner: Codex B2
+Status: `READY`
+Branch: `codex/b2-p3-fb2-52-next-round-situation-benefit-suppression`
+Base: exact A dispatch Candidate on `codex/a-p3-fb2-52-next-round-situation-benefit-suppression-dispatch`
+Read: `docs/reports/2026-09-23-p3-a-fb2-52-next-round-situation-benefit-suppression-dispatch.md`
+
+Result required: implement only the bounded identity-free next-round situation-benefit suppression family released by A: combat source active at a battlefield; qualify same-battlefield opponents lacking an active face-up Luck attack; require at least one qualifier; mark exactly those qualifiers for the next round; suppress only their situation mana and situation power during exactly that round. Use a narrow server-owned round map, not a generic flag/rule engine. Do not author Ciel, widen predicates/rules/offsets, modify product/generated/client content, merge/retarget, or claim migration credit.
+
+This is zero-credit capability work: formal migration remains **`153/944`**, **`791`** remaining, material overlap **`148/944`**. After exact fresh R acceptance and A synchronization, freshly reconstruct `master.ciel.skill.s3`; S1b remains blocked until its target definition is formally available.
