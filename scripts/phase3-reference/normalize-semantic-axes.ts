@@ -1,4 +1,5 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -16,6 +17,28 @@ import { verifyReferenceRoot } from './verify-reference';
 const AUTHORING_CARDS_PATH = 'src/content/authoring/cards.json';
 const DEFAULT_INVENTORY_PATH = 'data/phase3/full-roster-ability-inventory.json';
 const DEFAULT_MARKDOWN_PATH = 'docs/audits/fd-full-roster-semantic-axis-matrix.md';
+const DEFAULT_SOURCE_EVIDENCE_OVERLAY_PATH = 'data/phase3/full-roster-source-evidence-overlays.json';
+
+export type StructuredSourceEvidence =
+  | {
+      authority: 'FATE_DOMINATION_WIKI';
+      document: 'Fate/Domination Wiki';
+      locator: string;
+      url: string;
+    }
+  | {
+      authority: 'DEVELOPMENT_TEXT';
+      document:
+        | 'Fate_Domination-开发版/data_masters.js'
+        | 'Fate_Domination-开发版/data_servants.js'
+        | 'Fate_Domination-开发版/batch_caster_assassin.js'
+        | 'Fate_Domination-开发版/batch_berserker_extra.js'
+        | 'Fate_Domination-开发版/index.html';
+      locator: string;
+      sourceFileSha256: string;
+      sourceText: string;
+      sourceTextSha256: string;
+    };
 
 export interface StructuredAbility {
   id: string;
@@ -32,6 +55,7 @@ export interface StructuredAbility {
   creates?: unknown[];
   transforms?: unknown[];
   execution?: Record<string, unknown>;
+  source?: StructuredSourceEvidence;
   [key: string]: unknown;
 }
 
@@ -40,6 +64,14 @@ export interface StructuredAuthoringCard {
   printedText: string;
   abilities: StructuredAbility[];
   sourceIndex?: number;
+  source?: StructuredSourceEvidence;
+  referencePrintedTextSha256?: string;
+}
+
+interface SourceEvidenceOverlayFile {
+  schemaVersion: 1;
+  kind: 'phase3-full-roster-source-evidence-overlays';
+  cards: StructuredAuthoringCard[];
 }
 
 interface AuthoringCardsFile {
@@ -294,6 +326,7 @@ function selectionShape(effect: Record<string, unknown>): string | undefined {
   if (type === 'choose_players') return exactlyOne ? 'CHOOSE_ONE_PLAYER' : 'CHOOSE_N_PLAYERS';
   if (type === 'choose_locations') return exactlyOne ? 'CHOOSE_ONE_LOCATION' : 'CHOOSE_N_LOCATIONS';
   if (type === 'choose_events') return exactlyOne ? 'CHOOSE_ONE_EVENT' : 'CHOOSE_N_EVENTS';
+  if (type === 'choose_number') return 'CHOOSE_NUMBER';
   if (type === 'choose_each_player_cards') return 'CHOOSE_EACH_PLAYER_CARDS';
   if (type === 'choose_each_player_option') return 'CHOOSE_EACH_PLAYER_OPTION';
   if (type === 'choose_one') return 'BRANCH_CHOICE';
@@ -308,6 +341,21 @@ export function normalizeStructuredAbility(ability: StructuredAbility): Semantic
   const axes = emptyAxes();
   const activation = isRecord(ability.activation) ? ability.activation : {};
 
+  const addConditionAxes = (condition: Record<string, unknown>): void => {
+    const type = stringValue(condition.type);
+    if (!type) return;
+    if (type === 'event_type_is') {
+      const eventType = stringValue(condition.eventType);
+      if (eventType) {
+        axes.trigger.push(eventType);
+        if (eventType.startsWith('combat.')) axes.battle.push('COMBAT_EVENT');
+      }
+      return;
+    }
+    axes.condition.push(token(type));
+    if (/combat|battle/i.test(type)) axes.battle.push('COMBAT_CONDITION');
+  };
+
   const phase = stringValue(activation.phase);
   if (phase) axes.timing.push(token(phase));
   if (Array.isArray(activation.phases)) {
@@ -319,24 +367,17 @@ export function normalizeStructuredAbility(ability: StructuredAbility): Semantic
 
   const conditionRecords = collectConditionRecords(ability.conditions ?? []);
   for (const condition of conditionRecords) {
-    const type = stringValue(condition.type);
-    if (!type) continue;
-    if (type === 'event_type_is') {
-      const eventType = stringValue(condition.eventType);
-      if (eventType) {
-        axes.trigger.push(eventType);
-        if (eventType.startsWith('combat.')) axes.battle.push('COMBAT_EVENT');
-      }
-      continue;
-    }
-    axes.condition.push(token(type));
-    if (/combat|battle/i.test(type)) axes.battle.push('COMBAT_CONDITION');
+    addConditionAxes(condition);
   }
 
   const effects = collectEffectRecords(ability.effects ?? []);
   for (const effect of effects) {
     const type = stringValue(effect.type);
     if (!type) continue;
+
+    for (const condition of collectConditionRecords([effect.conditions, effect.condition])) {
+      addConditionAxes(condition);
+    }
 
     const shape = selectionShape(effect);
     if (shape) {
@@ -347,6 +388,7 @@ export function normalizeStructuredAbility(ability: StructuredAbility): Semantic
     if (type === 'pay_mana') axes.cost.push('MANA');
     if (type === 'pay_command_seals') axes.cost.push('COMMAND_SEAL');
     if (type === 'pay_victory_points') axes.cost.push('VICTORY_POINTS');
+    if (type === 'pay_discard_cards') axes.cost.push('DISCARD_CARDS');
 
     if (!type.startsWith('choose_') && !type.startsWith('pay_')) {
       axes.effect.push(token(type));
@@ -389,6 +431,12 @@ export function normalizeStructuredAbility(ability: StructuredAbility): Semantic
     const revealScope = stringValue(ability.visibility.revealScope);
     if (revealTiming) axes.visibility.push(`revealTiming:${revealTiming}`);
     if (revealScope) axes.visibility.push(`revealScope:${revealScope}`);
+    if (Array.isArray(ability.visibility.inspectZones)) {
+      for (const value of ability.visibility.inspectZones) {
+        const zone = stringValue(value);
+        if (zone) axes.visibility.push(`inspectZone:${zone}`);
+      }
+    }
   }
 
   collectBindings(ability, axes.binding);
@@ -444,7 +492,20 @@ function normalizeStaticEntry(
     };
   }
 
-  if (!entry.reference.hasAuthoringCard || card.printedText !== entry.printedText) {
+  const externalEvidence = card.source !== undefined;
+  if (externalEvidence) {
+    const expectedReferenceHash = createHash('sha256').update(entry.printedText, 'utf8').digest('hex');
+    if (card.referencePrintedTextSha256 !== expectedReferenceHash) {
+      return {
+        ...entry,
+        semanticNormalization: blockedRecord(entry, [
+          ...entry.blockedBy,
+          'SEMANTIC_SOURCE_CONFLICT',
+        ]),
+      };
+    }
+  }
+  if (!externalEvidence && (!entry.reference.hasAuthoringCard || card.printedText !== entry.printedText)) {
     return {
       ...entry,
       semanticNormalization: blockedRecord(entry, [
@@ -455,13 +516,17 @@ function normalizeStaticEntry(
   }
 
   const cardIndex = card.sourceIndex ?? sourceIndex ?? 0;
+  const cardSource = externalEvidence
+    ? { document: card.source!.document, locator: card.source!.locator }
+    : { document: AUTHORING_CARDS_PATH, locator: `skillCards[${cardIndex}]` };
   const abilities: NormalizedStructuredAbility[] = card.abilities.map((ability, abilityIndex) => ({
     sourceAbilityId: ability.id,
     kind: stringValue(ability.kind)?.toUpperCase() ?? 'UNSPECIFIED',
-    source: {
-      document: AUTHORING_CARDS_PATH,
-      locator: `skillCards[${cardIndex}].abilities[${abilityIndex}]`,
-    },
+    source: ability.source
+      ? { document: ability.source.document, locator: ability.source.locator }
+      : externalEvidence
+        ? { document: card.source!.document, locator: `${card.source!.locator}#ability-${abilityIndex + 1}` }
+        : { document: AUTHORING_CARDS_PATH, locator: `skillCards[${cardIndex}].abilities[${abilityIndex}]` },
     axes: normalizeStructuredAbility(ability),
   }));
 
@@ -479,16 +544,146 @@ function normalizeStaticEntry(
     ...entry,
     semanticNormalization: {
       status: 'SOURCE_GROUNDED',
-      source: {
-        document: AUTHORING_CARDS_PATH,
-        locator: `skillCards[${cardIndex}]`,
-      },
+      source: cardSource,
       axes: mergeAxes(abilities),
       abilities,
       blocks: [],
       observedBehavior: observedBehavior(entry),
     },
   };
+}
+
+function normalizeDynamicEntry(
+  entry: FullRosterDynamicSkillEntry,
+  card: StructuredAuthoringCard | undefined,
+): SemanticDynamicSkillEntry {
+  if (!card?.source) {
+    return {
+      ...entry,
+      semanticNormalization: blockedRecord(entry, [
+        ...entry.blockedBy,
+        'SEMANTIC_SOURCE_REQUIRED',
+      ]),
+    };
+  }
+
+  const expectedEvidenceHash = createHash('sha256').update(card.printedText, 'utf8').digest('hex');
+  if (card.referencePrintedTextSha256 !== expectedEvidenceHash) {
+    return {
+      ...entry,
+      semanticNormalization: blockedRecord(entry, [
+        ...entry.blockedBy,
+        'SEMANTIC_SOURCE_CONFLICT',
+      ]),
+    };
+  }
+
+  const abilities: NormalizedStructuredAbility[] = card.abilities.map((ability, abilityIndex) => ({
+    sourceAbilityId: ability.id,
+    kind: stringValue(ability.kind)?.toUpperCase() ?? 'UNSPECIFIED',
+    source: ability.source
+      ? { document: ability.source.document, locator: ability.source.locator }
+      : { document: card.source!.document, locator: `${card.source!.locator}#ability-${abilityIndex + 1}` },
+    axes: normalizeStructuredAbility(ability),
+  }));
+
+  if (abilities.length === 0) {
+    return {
+      ...entry,
+      semanticNormalization: blockedRecord(entry, [
+        ...entry.blockedBy,
+        'SEMANTIC_SOURCE_REQUIRED',
+      ]),
+    };
+  }
+
+  return {
+    ...entry,
+    semanticNormalization: {
+      status: 'SOURCE_GROUNDED',
+      source: { document: card.source.document, locator: card.source.locator },
+      axes: mergeAxes(abilities),
+      abilities,
+      blocks: [],
+      observedBehavior: observedBehavior(entry),
+    },
+  };
+}
+
+export function loadSourceEvidenceOverlayCards(
+  projectRoot = process.cwd(),
+  overlayPath = DEFAULT_SOURCE_EVIDENCE_OVERLAY_PATH,
+): StructuredAuthoringCard[] {
+  const absolutePath = resolve(projectRoot, overlayPath);
+  if (!existsSync(absolutePath)) return [];
+
+  const file = JSON.parse(readFileSync(absolutePath, 'utf8')) as SourceEvidenceOverlayFile;
+  if (file.schemaVersion !== 1 || file.kind !== 'phase3-full-roster-source-evidence-overlays' || !Array.isArray(file.cards)) {
+    throw new Error('Unsupported full-roster source-evidence overlay schema.');
+  }
+
+  const seen = new Set<string>();
+  for (const card of file.cards) {
+    if (!card || typeof card.id !== 'string' || card.id.length === 0 || seen.has(card.id)) {
+      throw new Error(`Invalid or duplicate source-evidence overlay card ID: ${String(card?.id ?? '<missing>')}`);
+    }
+    seen.add(card.id);
+    if (typeof card.printedText !== 'string' || card.printedText.length === 0 || !Array.isArray(card.abilities) || card.abilities.length === 0) {
+      throw new Error(`Source-evidence overlay must preserve printed text and structured abilities: ${card.id}`);
+    }
+    const source = card.source;
+    if (typeof source?.locator !== 'string' || source.locator.length === 0) {
+      throw new Error(`Source-evidence overlay has no stable locator: ${card.id}`);
+    }
+    if (typeof card.referencePrintedTextSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(card.referencePrintedTextSha256)) {
+      throw new Error(`Source-evidence overlay is not bound to locked Reference text: ${card.id}`);
+    }
+
+    if (source.authority === 'FATE_DOMINATION_WIKI') {
+      let parsedUrl: URL | undefined;
+      try {
+        parsedUrl = new URL(source.url);
+      } catch {
+        parsedUrl = undefined;
+      }
+      if (
+        source.document !== 'Fate/Domination Wiki' ||
+        parsedUrl?.protocol !== 'https:' ||
+        parsedUrl.hostname !== 'fatedomination.fandom.com' ||
+        !parsedUrl.pathname.startsWith('/wiki/')
+      ) {
+        throw new Error(`Source-evidence overlay is not from the allowed Fate/Domination Wiki: ${card.id}`);
+      }
+    } else if (source.authority === 'DEVELOPMENT_TEXT') {
+      const allowedDevelopmentDocuments = new Set([
+        'Fate_Domination-开发版/data_masters.js',
+        'Fate_Domination-开发版/data_servants.js',
+        'Fate_Domination-开发版/batch_caster_assassin.js',
+        'Fate_Domination-开发版/batch_berserker_extra.js',
+        'Fate_Domination-开发版/index.html',
+      ]);
+      if (
+        !allowedDevelopmentDocuments.has(source.document) ||
+        !/^[a-f0-9]{64}$/.test(source.sourceFileSha256) ||
+        typeof source.sourceText !== 'string' ||
+        source.sourceText.length === 0 ||
+        !/^[a-f0-9]{64}$/.test(source.sourceTextSha256) ||
+        createHash('sha256').update(source.sourceText, 'utf8').digest('hex') !== source.sourceTextSha256 ||
+        source.sourceText !== card.printedText ||
+        source.sourceTextSha256 !== card.referencePrintedTextSha256
+      ) {
+        throw new Error(`Source-evidence overlay is not a valid locked development-text snapshot: ${card.id}`);
+      }
+    } else {
+      throw new Error(`Unsupported source-evidence authority: ${card.id}`);
+    }
+    for (const ability of card.abilities) {
+      if (typeof ability.id !== 'string' || ability.id.length === 0 || typeof ability.printedClause !== 'string' || ability.printedClause.length === 0) {
+        throw new Error(`Source-evidence overlay has an invalid structured ability: ${card.id}`);
+      }
+    }
+  }
+  return file.cards;
 }
 
 export function normalizeFullRosterSemantics(
@@ -508,13 +703,10 @@ export function normalizeFullRosterSemantics(
     return normalizeStaticEntry(entry, source?.card, source?.index);
   });
 
-  const dynamicSkills = inventory.dynamicSkills.map((entry) => ({
-    ...entry,
-    semanticNormalization: blockedRecord(entry, [
-      ...entry.blockedBy,
-      'SEMANTIC_SOURCE_REQUIRED',
-    ]),
-  }));
+  const dynamicSkills = inventory.dynamicSkills.map((entry) => {
+    const source = authoringById.get(entry.reference.skillId);
+    return normalizeDynamicEntry(entry, source?.card);
+  });
 
   const all = [...staticSkills, ...dynamicSkills];
   const sourceGroundedCount = all.filter(
@@ -613,7 +805,7 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const referenceRootArgument = parseArgument(args, '--reference-root');
   if (!referenceRootArgument) {
-    throw new Error('Usage: normalize-semantic-axes --reference-root <clean-reference-checkout> [--inventory <inventory.json>] [--output <inventory.json>] [--markdown-output <matrix.md>]');
+    throw new Error('Usage: normalize-semantic-axes --reference-root <clean-reference-checkout> [--inventory <inventory.json>] [--output <inventory.json>] [--markdown-output <matrix.md>] [--source-evidence-overlay <overlay.json>]');
   }
 
   const referenceRoot = resolve(referenceRootArgument);
@@ -641,7 +833,11 @@ async function main(): Promise<void> {
   }
 
   const cards = authoringFile.skillCards.map((card, sourceIndex) => ({ ...card, sourceIndex }));
-  const normalized = normalizeFullRosterSemantics(inventory, cards);
+  const overlayCards = loadSourceEvidenceOverlayCards(
+    process.cwd(),
+    parseArgument(args, '--source-evidence-overlay') ?? DEFAULT_SOURCE_EVIDENCE_OVERLAY_PATH,
+  );
+  const normalized = normalizeFullRosterSemantics(inventory, [...cards, ...overlayCards]);
   const serialized = `${JSON.stringify(normalized, null, 2)}\n`;
   const markdown = renderSemanticAxisMatrix(normalized);
 
