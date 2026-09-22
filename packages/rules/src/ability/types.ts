@@ -107,6 +107,11 @@ export interface AbilityEvent {
   revealedKind?: 'situation' | 'event';
   revealedId?: string;
   locationId?: string;
+  resource?: 'victory_points';
+  delta?: number;
+  before?: number;
+  after?: number;
+  roundNumber?: number;
 }
 export interface TriggeredAbility { cardInstanceId: string; abilityId: string; controllerId: PlayerId }
 export interface UniqueTriggerGroup { groupId: string; policy: 'only_one_effect_may_activate_per_window' }
@@ -294,6 +299,10 @@ export interface AbilityRuntime {
   playerStatusKeysByPlayer?: Record<PlayerId, string[]>;
   /** Narrow identity-free last combat-win round ledger, written only from authoritative battle-result events. */
   combatWinRoundByPlayer?: Record<PlayerId, number>;
+  /** FB2-51 server-owned provenance for authoritative VP adjustments. */
+  trustedVictoryPointChanges?: Record<string, { playerId: PlayerId; resource: 'victory_points'; delta: number; before: number; after: number; roundNumber: number; crossed?: boolean }>;
+  /** FB2-51 current-round positive VP gain, keyed by affected player. */
+  roundPositiveVictoryPointGain?: { round: number; byPlayer: Record<PlayerId, number> };
   ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
   pendingDelayedActivations?: PendingDelayedActivation[];
   /** Server-owned pre-scoring battle-local defeat requests staged by the exact Presence Concealment response. */
