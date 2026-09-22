@@ -9178,6 +9178,78 @@
         "playKind": "support",
         "destinationZone": "field"
       },
+      "master.ciel.skill.s1b": {
+        "id": "master.ciel.skill.s1b",
+        "name": "外典",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "被动",
+          "cost": 0,
+          "basePower": 0,
+          "attributes": []
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "seventh-scripture-return",
+            "kind": "forced_trigger",
+            "printedClause": "当一名对手于一回合内获得7点及以上的战果时，令【第七圣典】加入或返回你的技能区",
+            "activation": {
+              "trigger": "player.victory-points.changed"
+            },
+            "conditions": [
+              {
+                "type": "event_player_is_opponent"
+              },
+              {
+                "type": "event_round_victory_points_gain_crosses",
+                "threshold": 7
+              }
+            ],
+            "targets": [],
+            "effects": [
+              {
+                "type": "return_card_by_definition",
+                "target": "controller",
+                "definitionId": "master.ciel.skill.s3",
+                "destination": "master-skills",
+                "createIfMissing": true,
+                "face": "up",
+                "active": false
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.ciel",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
       "master.shiki-ryougi.skill.s1a": {
         "id": "master.shiki-ryougi.skill.s1a",
         "name": "欠损",
@@ -11047,11 +11119,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "8c7b47ae26b921894643a4f504521dd695fb8b6ecaad9a822051e94d28d411a0",
+    "definitionHash": "aff68677dd8409dfc69792ed792da6a482127984b3476775948e0b46a7f915dd",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "8c7b47ae26b921894643a4f504521dd695fb8b6ecaad9a822051e94d28d411a0"
+      "definitionHash": "aff68677dd8409dfc69792ed792da6a482127984b3476775948e0b46a7f915dd"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -12026,6 +12098,19 @@
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[14].cards[2].abilities[1]"
+      },
+      "master.ciel.skill.s1b": {
+        "archiveId": "master.ciel",
+        "archiveIndex": 14,
+        "cardIndex": 3,
+        "path": "archives[14].cards[3]"
+      },
+      "master.ciel.skill.s1b#seventh-scripture-return": {
+        "archiveId": "master.ciel",
+        "archiveIndex": 14,
+        "cardIndex": 3,
+        "abilityIndex": 0,
+        "path": "archives[14].cards[3].abilities[0]"
       },
       "master.shiki-ryougi.skill.s1a": {
         "archiveId": "master.shiki-ryougi",
