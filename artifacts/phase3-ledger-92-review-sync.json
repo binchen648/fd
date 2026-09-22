@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "fd-phase3-ledger-92-review-sync-v1",
+  "task": "P3-A-LEDGER-92-RECALC",
+  "candidate": "6abf5a80b251eaf4009bc01ed7377574c2191c1e",
+  "verdict": "AUTOMATION_BASELINE_CANDIDATE_ACCEPTED",
+  "blockingFindings": [],
+  "verified": {
+    "archives": 14,
+    "cards": 46,
+    "abilities": 92,
+    "uniqueAbilityKeys": 92,
+    "runtimeRoutes": {
+      "NEW_RUNTIME_SEMANTIC_ROUTED": 12,
+      "LEGACY_RESOLVE_EFFECT": 49,
+      "LEGACY_EXECUTE_ABILITY": 3,
+      "NOT_CLASSIFIABLE": 28
+    },
+    "nextOwners": {
+      "R": 12,
+      "B": 80
+    },
+    "gatePromotions": 0,
+    "machineVerifiedAbilityVerdicts": 0,
+    "artifactReproduction": "SHA256_IDENTICAL",
+    "tamperRejection": "PASS",
+    "automationTests": "24/24_PASS",
+    "typecheck": "PASS",
+    "artifactValidation": "PASS",
+    "diffCheck": "PASS"
+  },
+  "acceptanceBoundary": {
+    "taskLevelAutomationBaselineAccepted": true,
+    "abilityGateAcceptanceGranted": false,
+    "abilityRVerdictGranted": false,
+    "phasePromotionGranted": false,
+    "releasePromotionGranted": false
+  },
+  "nextQueue": [
+    {
+      "owner": "R",
+      "scope": "Review the 12 NEW_RUNTIME_SEMANTIC_ROUTED rows and bind exact structured per-ability verdicts."
+    },
+    {
+      "owner": "B",
+      "scope": "Take one exact shared contract from the 80 B-owned rows; no roster-wide batch."
+    },
+    {
+      "owner": "A",
+      "scope": "Recalculate and synchronize only after accepted R or B integration changes machine evidence."
+    }
+  ]
+}
