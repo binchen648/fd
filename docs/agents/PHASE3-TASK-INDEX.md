@@ -5928,3 +5928,15 @@ Read: `docs/reports/2026-09-22-p3-a-r105-atalanta-s2-migration-acceptance-synchr
 Result: synchronize formal fresh independent R `MIGRATION_ACCEPTED` for PR #426 exact Candidate `ffdf7ef9f3b3b137d4349a2654935be252462bf2`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/426#issuecomment-5779296216`. Independent Base-to-Candidate frozen recount is `147/944` to `148/944`, exact +1 `servant.atalanta.skill.sc-atalanta-2`, zero removals and zero duplicate frozen ids. Existing `servant.atalanta.skill.sc-atalanta-3` remains semantically unchanged; the fourth Candidate path is only the A-authorized compatibility removal of Astolfo S1's stale repository-wide absolute-overlap snapshot. No production runtime/product/generated/client change is present.
 
 Formal project migration advances exactly one identity to **`153/944`**, with **`791`** remaining. FB2-50 remains zero-credit. PR #426 remains OPEN, unmerged and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the next true `S_READY_NOW`; if no whole card is zero-gap, dispatch only the minimum missing B2 capability.
+
+## TASK P3-FB2-51-OPPONENT-ROUND-VP-GAIN-THRESHOLD
+
+Owner: Codex B2
+Status: `READY`
+Branch: `codex/b2-p3-fb2-51-opponent-round-vp-gain-threshold`
+Base: exact A dispatch Candidate on `codex/a-p3-fb2-51-opponent-round-vp-gain-threshold-dispatch`
+Read: `docs/reports/2026-09-22-p3-a-fb2-51-opponent-round-vp-gain-threshold-dispatch.md`
+
+Result required: implement only the exact identity-free authoritative `player.victory-points.changed` -> per-opponent current-round positive VP gain crossing-7 parent route released by A. Reuse accepted FB2-31 event-player relation and FB2-30 controller master-skill definition-return component; do not author Ciel, expose arbitrary resource/threshold/cumulative-metric infrastructure, route by identity/text, merge, or retarget.
+
+This is zero-credit capability work: formal migration remains **`153/944`**, **`791`** remaining, material overlap `148/944`. After exact fresh R acceptance and A synchronization, freshly re-overlay complete `master.ciel.skill.s1b`; singleton S is allowed only if the whole card is then mechanically zero-gap, including target-definition availability.
