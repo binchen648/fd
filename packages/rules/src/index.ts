@@ -42,6 +42,7 @@ export * from './ability/pre-battle-defeat';
 export * from './ability/battle-loss-vp-winner-reward';
 export * from './ability/controller-defeated-vp-reward';
 export * from './ability/combat-opponent-power-vp-reward';
+export * from './ability/opponent-close-to-one';
 export * from './ability/deployment-destinations';
 export * from './ability/current-round-combat-loss-condition';
 export * from './ability/current-round-combat-win-condition';

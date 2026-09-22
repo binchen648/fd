@@ -3,6 +3,7 @@
 import * as rules from '../../src/index';
 import { MatchSession } from '../../src/match-session';
 import type { GameState } from '../../src/schema/game';
+import { restoreTrustedAuthoringFixtureSession } from '../trusted-authoring-fixture';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 
 const PARENT = 'fixture.ruler.parent';
@@ -328,6 +329,29 @@ describe('P3-FB2-27 Ruler seal relationship subsystem', () => {
     const replayedChoice = rules.dispatchAbilityCommand(state, 'p2', { type: 'choose_target', decisionId: freePlay.id, selectedIds: [FREE_INSTANCE] });
     expect(replayedChoice.ok).toBe(false);
     expect(state).toEqual(after);
+  });
+
+  it('round-trips a legitimate armed Ruler reward and its private continuation through restore', () => {
+    const state = setup(); grantToP2P3(state);
+    openUse(state, 'free_play_reward');
+    expect(choose(state, 'p1', ['p2']).ok).toBe(true);
+    expect(state.abilityRuntime!.pendingRulerSealRewards).toHaveLength(1);
+    expect(state.abilityRuntime!.pendingDecision?.interaction?.kind).toBe('ruler_seal_free_play_v1');
+
+    const session = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3', 'p4'] });
+    session.state = structuredClone(state);
+    const durable = session.serializeSession();
+    const restored = restoreTrustedAuthoringFixtureSession(durable);
+    expect(restored.state.abilityRuntime!.pendingRulerSealRewards).toEqual(state.abilityRuntime!.pendingRulerSealRewards);
+    expect(restored.state.abilityRuntime!.pendingDecision).toEqual(state.abilityRuntime!.pendingDecision);
+    const wrongReward: any = structuredClone(durable);
+    wrongReward.state.abilityRuntime.pendingRulerSealRewards[0].rewardVp = 777;
+    expect(() => restoreTrustedAuthoringFixtureSession(wrongReward)).toThrow('Invalid MatchSession state container');
+    expect(rules.dispatchAbilityCommand(restored.state, 'p2', {
+      type: 'choose_target',
+      decisionId: restored.state.abilityRuntime!.pendingDecision!.id,
+      selectedIds: [],
+    }).ok).toBe(true);
   });
 
   it('fails closed mutation-free when a Ruler private continuation is stale or corrupt', () => {

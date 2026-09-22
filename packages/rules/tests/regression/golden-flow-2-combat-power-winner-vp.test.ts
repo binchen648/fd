@@ -17,9 +17,11 @@ function buildGoldenFlow2Room(roomId = 'golden-flow-2-regression') {
   state.round.activePhase = 'action';
   state.round.prioritySeat = 5;
   state.currentSituationModifiers = [];
+  const [eventOne, eventTwo] = state.eventDeck ?? [];
+  if (!eventOne || !eventTwo) throw new Error('Golden Flow 2 fixture requires two canonical event definitions');
   state.eventPlacements = [
-    { locationId: 'miyama_town', eventCardId: 'event.gf2.one', victoryPoints: 3, visibility: { scope: 'public' } },
-    { locationId: 'miyama_town', eventCardId: 'event.gf2.two', victoryPoints: 2, visibility: { scope: 'public' } },
+    { locationId: 'miyama_town', eventCardId: eventOne, victoryPoints: 3, visibility: { scope: 'public' } },
+    { locationId: 'miyama_town', eventCardId: eventTwo, victoryPoints: 2, visibility: { scope: 'public' } },
   ];
 
   if (state.abilityRuntime) {

@@ -5,7 +5,8 @@ import {
   isSameBattlefieldPrivateHandReturnInteractionCandidate,
   isSameBattlefieldPrivateHandReturnInteractionSemantic,
 } from '../../src/ability/interaction-gateway';
-import { MatchSession, restoreMatchSession } from '../../src/match-session';
+import { MatchSession } from '../../src/match-session';
+import { restoreTrustedAuthoringFixtureSession } from '../trusted-authoring-fixture';
 import type { GameState } from '../../src/schema/game';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 
@@ -266,7 +267,7 @@ describe('P3-FB2-23 same-battlefield private hand return interaction', () => {
     selectPlayer(state, 'p2');
     const session = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'] });
     session.state = structuredClone(state);
-    const restored = restoreMatchSession(session.serializeSession());
+    const restored = restoreTrustedAuthoringFixtureSession(session.serializeSession());
 
     const controller = restored.getClientProjection('p1').view;
     const observer = restored.getClientProjection('p3').view;

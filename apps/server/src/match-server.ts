@@ -3,7 +3,6 @@ import { URL } from 'node:url';
 import { WebSocket, WebSocketServer, type RawData } from 'ws';
 import {
   createMatchRoomHub,
-  restoreMatchRoom,
   type ClientRoomMessage,
   type CreateRoomHttpRequest,
   type JoinRoomHttpRequest,
@@ -129,11 +128,9 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
       }
       if (request.method === 'POST' && roomPath?.action === 'restore') {
         const body = await readBody(request) as PersistedRoomHttpRequest;
-        const room = restoreMatchRoom(body.snapshot);
-        hub.restore({ version: 1, rooms: [room.serializeRoom()] });
-        const projection = hub.project(room.roomId, room.hostClientId);
+        const projection = hub.restoreRoom(roomPath.roomId, body.snapshot);
         sendJson(response, 200, roomResponse(projection));
-        broadcastRoom(room.roomId, 'room_restored');
+        broadcastRoom(roomPath.roomId, 'room_restored');
         return;
       }
       sendJson(response, 404, { code: 'not_found', message: 'Unknown route' });

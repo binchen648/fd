@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
 import * as rules from '../../src/index';
+import { MatchSession } from '../../src/match-session';
 import type { AuthoringAbility } from '../../src/ability/types';
 import type { GameState } from '../../src/schema/game';
 import { createSeededGameState } from '../../src/tools/seeded-state';
+import { restoreTrustedAuthoringFixtureSession } from '../trusted-authoring-fixture';
 
 const definitionId = 'fixture.presence-concealment';
 const abilityId = 'renamed.presence-concealment';
@@ -145,6 +147,11 @@ describe('P3-FB2-12 Presence Concealment pre-scoring response', () => {
     expect(rules.dispatchAbilityCommand(pending, 'p1', action).ok).toBe(true);
     expect(pending.abilityRuntime!.pendingPresenceConcealmentDefeats).toHaveLength(1);
     expect(pending.battleResults).toHaveLength(0);
+    const session = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'] });
+    session.state = structuredClone(pending);
+    const restored = restoreTrustedAuthoringFixtureSession(session.serializeSession());
+    expect(restored.state.abilityRuntime!.pendingPresenceConcealmentDefeats)
+      .toEqual(pending.abilityRuntime!.pendingPresenceConcealmentDefeats);
 
     const settled = battle(pending, [5, 10, 10]);
     const result = settled.battleResults[0]!;
