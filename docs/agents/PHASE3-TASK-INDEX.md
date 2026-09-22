@@ -5846,3 +5846,13 @@ Read: `docs/reports/2026-09-21-p3-a-fb2-49-opponent-close-to-one-dispatch.md`
 Result required: implement only the exact identity-free compound transaction released by A: a combat phase-action whose source is owned and controller is at a battlefield serializes one non-cancellable exactly-one “keep” decision for each same-battlefield opponent with at least two currently active, face-up, non-residual attack-area cards, then closes every other still-valid card from that opponent's frozen qualifying set. Fail closed atomically on malformed authoring, state/provenance drift or forged/stale selection. Do not expose generic `choose_each_player_cards`, generic `close_matching_cards_except_selected`, arbitrary each-player selectors/mass close, identity routing or consumer authoring.
 
 This is zero-credit capability work: formal migration remains **`151/944`**, **`793`** remaining. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.astolfo.skill.sc-astolfo-1`; singleton S is allowed only if the whole card is then mechanically zero-gap.
+
+## TASK P3-A-R103-FB2-49-INDEPENDENT-REPAIR-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: SYNCHRONIZED
+Branch: codex/a-p3-r103-fb2-49-independent-repair-acceptance-sync
+Base: exact accepted PR #422 Candidate $candidate
+Read: $report
+
+Result: synchronize formal fresh R IMPLEMENTATION_ACCEPTED_CANDIDATE for PR #422 exact Candidate $candidate, backed by canonical evidence https://github.com/binchen648/fd/pull/422#issuecomment-5775423822 and machine-readable attestation commit $reviewSha. This synchronization grants zero migration credit, does not merge or retarget #422, and sends the accepted repair lineage to the repository-defined role-I Promotion gate from current main.
