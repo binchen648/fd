@@ -5870,3 +5870,15 @@ Read: `docs/reports/2026-09-22-p3-a-r102-astolfo-s1-consumer-migration-dispatch.
 Result: dispatch exactly one frozen identity, `servant.astolfo.skill.sc-astolfo-1` (`唤起恐慌之魔笛`), after a fresh complete-card in-memory reconstruction returned loader `report=[]`, accepted exact FB2-49 classifier admission, real 7/8-mana skill-zone boundary with printed cost 4, active played source, combat phase action, true-name reveal and the private non-cancellable keep-one settlement. The focused baseline completed 57/57 tests and found no new runtime semantic gap.
 
 Base frozen authoring overlap is **`146/944`**, duplicates **`0`**; Candidate must be exactly **`147/944`**, exact +1 Astolfo S1 with zero removals/duplicates and no second frozen identity. S may remove only the stale absolute repository-wide `overlap===146` assertion from the Spartacus S2 migration test while retaining its stable identity/denominator/duplicate invariants. Formal migration remains **`151/944`**, **`793`** remaining until fresh R `MIGRATION_ACCEPTED` plus A synchronization. Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
+
+## TASK P3-A-R103-ASTOLFO-S1-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r103-astolfo-s1-migration-acceptance-sync`
+Base: exact accepted Candidate `110257b76a957a5bba39ea1822f7861cecf288a9`
+Read: `docs/reports/2026-09-22-p3-a-r103-astolfo-s1-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh independent R `MIGRATION_ACCEPTED` for PR #423 exact Candidate `110257b76a957a5bba39ea1822f7861cecf288a9`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/423#issuecomment-5775187822`. Independent Base-to-Candidate frozen recount is `146/944` to `147/944`, exact +1 `servant.astolfo.skill.sc-astolfo-1`, zero removals and zero duplicate frozen ids. The fourth Candidate path is only the A-authorized compatibility removal of Spartacus S2's stale repository-wide `overlap===146` snapshot; no production runtime/product/generated/client change is present.
+
+Formal project migration advances exactly one identity to **`152/944`**, with **`792`** remaining. PR #423 remains OPEN, unmerged and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the next true `S_READY_NOW`; if no whole card is zero-gap, dispatch only the minimum missing B2 capability.
