@@ -6213,3 +6213,15 @@ Base: exact R118 F4 B03 acceptance synchronization `c75ff0a7e8f514c529c08a7c214b
 Read: `docs/reports/2026-09-23-p3-f4-b04-event-source-power-resource-migrations-result.md`
 
 Result required: review one BATCH-FIRST Candidate containing exactly two fresh frozen identities, `servant.albion.skill.sc-albion-2` and `servant.ozymandias.skill.sc-ozymandias-2`, implemented through bounded identity-free event/source-power/resource gateways. Candidate material accounting must be exact `159/944 -> 161/944`, zero removals and zero duplicate frozen IDs. Formal migration remains `163/944` before fresh R. On exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, award exactly +2 fresh formal identities => `165/944`, `779` remaining. Do not merge/retarget and do not split the exact batch into per-skill reviews.
+
+## TASK P3-A-R119-F4-B04-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r119-f4-b04-acceptance-sync`
+Base: exact accepted Candidate `aebb2581b7172ca213371580e30c0c7e958606f8`
+Read: `docs/reports/2026-09-23-p3-a-r119-f4-b04-acceptance-synchronization.md`
+
+Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #437 exact Candidate `aebb2581b7172ca213371580e30c0c7e958606f8`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/437#issuecomment-5791124950`. Exact material accounting is `159/944 -> 161/944`, with exact fresh additions `servant.albion.skill.sc-albion-2` and `servant.ozymandias.skill.sc-ozymandias-2`, zero removals and zero duplicate frozen IDs.
+
+Formal project migration advances exactly two fresh identities to **`165/944`**, with **`779`** remaining; material authoring overlap is **`161/944`**. PR #437 remains OPEN, unmerged and unretargeted. Continue user-authorized BATCH-FIRST F4 from this synchronized baseline: reuse existing F1/capability evidence, prioritize adjacent accepted event/resource/lifecycle capability families, do not redo whole-roster classification, and submit the next coherent multi-consumer batch as one Candidate for one fresh independent R.
