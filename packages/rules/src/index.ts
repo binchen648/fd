@@ -52,3 +52,4 @@ export * from './ability/event-location-equals-controller';
 export * from './ability/opponent-round-vp-gain-threshold';
 export * from './ability/next-round-situation-benefit-suppression';
 export * from './ability/basic-strength-opponent-skill-face-down';
+export * from './ability/event-power-uncontested-win-reward';

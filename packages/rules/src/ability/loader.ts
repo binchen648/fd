@@ -61,6 +61,12 @@ import {
   isAcceptedBasicStrengthOpponentSkillFaceDownAbility,
   isBasicStrengthOpponentSkillFaceDownCandidate,
 } from './basic-strength-opponent-skill-face-down';
+import {
+  EVENT_BATTLE_OPPONENT_COUNT_EQUALS_CONDITION,
+  SOURCE_CARD_COMBAT_POWER_BONUS_EFFECT,
+  isAcceptedEventPowerUncontestedWinRewardAbility,
+  isEventPowerUncontestedWinRewardCandidate,
+} from './event-power-uncontested-win-reward';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -233,6 +239,8 @@ const supportedTypes = new Set([
   NEXT_ROUND_SITUATION_BENEFIT_SUPPRESSION_EFFECT, SITUATION_SUPPRESSION_LUCK_PREDICATE,
   // FB2-53 exact two-stage basic-Strength -> opponent servant-skill face-down family; whole-envelope gated below.
   BASIC_STRENGTH_ATTACK_CONSTRAINT, SAME_LOCATION_OPPONENT_FACE_UP_SERVANT_SKILL_CONSTRAINT, SET_SELECTED_CARD_FACE_DOWN_EFFECT,
+  // FB2-54 exact event-power / uncontested-win reward family; whole-envelope gated below.
+  SOURCE_CARD_COMBAT_POWER_BONUS_EFFECT, EVENT_BATTLE_OPPONENT_COUNT_EQUALS_CONDITION,
   // FB2-32 source-state conditions
   'source_active', 'source_owned',
   // FB2-33 event combat outcome conditions
@@ -387,6 +395,18 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (str(n.type) === 'event_location_equals_controller') {
         if (!path.startsWith('conditions')) issue(path, 'Event-location relation condition is supported only under ability conditions', abilityId);
         if (!isAcceptedEventLocationEqualsControllerCondition(n)) issue(path, 'Event-location relation condition must contain only type', abilityId);
+      }
+      if (n.type === SOURCE_CARD_COMBAT_POWER_BONUS_EFFECT) {
+        if (path !== 'effects[0]') issue(path, 'FB2-54 source-card combat-power bonus is supported only in the exact effect slot', abilityId);
+        if (n.amount !== 2 || !Object.keys(n).every((key) => ['type', 'amount'].includes(key))) {
+          issue(path, 'FB2-54 source-card combat-power bonus requires literal amount 2 and exact shape', abilityId);
+        }
+      }
+      if (n.type === EVENT_BATTLE_OPPONENT_COUNT_EQUALS_CONDITION) {
+        if (path !== 'conditions[2]') issue(path, 'FB2-54 battle opponent-count condition is supported only in the exact condition slot', abilityId);
+        if (n.count !== 0 || !Object.keys(n).every((key) => ['type', 'count'].includes(key))) {
+          issue(path, 'FB2-54 battle opponent-count condition requires literal count 0 and exact shape', abilityId);
+        }
       }
       if (n.type === 'base_power_at_most' && (typeof n.value !== 'number' || !Number.isFinite(n.value))) issue(`${path}.value`, 'Base power bound must be finite', abilityId);
       if (['move_card', 'move_source_card', 'move_all_remaining', 'create_card'].includes(str(n.type)) &&
@@ -629,6 +649,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (isBasicStrengthOpponentSkillFaceDownCandidate(a as unknown as AuthoringAbility) &&
           !isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a as unknown as AuthoringAbility, 'authoring')) {
         issue('basicStrengthOpponentSkillFaceDown.gateway', 'Unsupported basic-Strength play -> opponent servant-skill face-down semantic shape', id);
+      }
+      if (isEventPowerUncontestedWinRewardCandidate(a as unknown as AuthoringAbility) &&
+          !isAcceptedEventPowerUncontestedWinRewardAbility(a as unknown as AuthoringAbility, 'authoring')) {
+        issue('eventPowerUncontestedWinReward.gateway', 'Unsupported FB2-54 event-power / uncontested-win reward semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

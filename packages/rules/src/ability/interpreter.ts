@@ -76,6 +76,16 @@ import {
   isBasicStrengthOpponentSkillFaceDownCandidate,
 } from './basic-strength-opponent-skill-face-down';
 import {
+  EVENT_BATTLE_OPPONENT_COUNT_EQUALS_CONDITION,
+  EVENT_POWER_ENTRY_TRIGGERS,
+  EVENT_POWER_SOURCE_BONUS_POLICY,
+  SOURCE_CARD_COMBAT_POWER_BONUS_EFFECT,
+  classifyAcceptedEventPowerUncontestedWinRewardAbility,
+  isAcceptedEventBattleOpponentCountEqualsCondition,
+  isAcceptedEventPowerUncontestedWinRewardAbility,
+  isEventPowerUncontestedWinRewardCandidate,
+} from './event-power-uncontested-win-reward';
+import {
   advanceOpponentCloseToOneServerAuthority,
   clearOpponentCloseToOneServerAuthority,
   copyOpponentCloseToOneServerAuthority,
@@ -465,10 +475,36 @@ function sourceBoundOngoingIsLive(s: GameState, ongoing: OngoingEffect): boolean
   if (!validity.supported) reject('resolution_failed', 'Unknown lifecycle source-validity policy');
   return validity.valid;
 }
+function assertFb254SourcePowerOngoingState(s: GameState, ongoing: OngoingEffect): void {
+  if (ongoing.policyKey !== EVENT_POWER_SOURCE_BONUS_POLICY) return;
+  const source = s.cards.find((candidate) => candidate.instanceId === ongoing.sourceCardId);
+  const sourceDefinition = source ? runtime(s).pack.cards[source.definitionId] : undefined;
+  const sourceAbility = sourceDefinition?.abilities.find((ability) => ability.id === ongoing.abilityId);
+  const modifier = ongoing.ruleModifiers[0];
+  const definition = modifier?.definition ?? {};
+  const scope = node(definition.scope);
+  const definitionKeys = Object.keys(definition).sort();
+  const expectedDefinitionKeys = ['id', 'operation', 'rule', 'scope', 'value'].sort();
+  if (!source || source.controllerPlayerId !== ongoing.controllerId ||
+      source.definitionId !== ongoing.sourceDefinitionIdAtInstall || !sourceAbility ||
+      classifyAcceptedEventPowerUncontestedWinRewardAbility(sourceAbility, 'compiled') !== 'opponent_entry_power' ||
+      ongoing.starts !== 'immediate' || ongoing.duration !== 'while_active' || ongoing.cleanup !== 'remain_active' ||
+      ongoing.sourceMustRemainActive !== true || ongoing.expiresAtRound !== undefined ||
+      !Number.isInteger(ongoing.installedRevision) || ongoing.installedRevision! < 0 ||
+      ongoing.publicZones.length !== 0 || ongoing.ruleModifiers.length !== 1 || !modifier ||
+      modifier.sourceCardId !== ongoing.sourceCardId || modifier.controllerId !== ongoing.controllerId ||
+      definitionKeys.length !== expectedDefinitionKeys.length || definitionKeys.some((key, index) => key !== expectedDefinitionKeys[index]) ||
+      definition.id !== EVENT_POWER_SOURCE_BONUS_POLICY || definition.operation !== 'add' || definition.rule !== 'card.currentPower' ||
+      definition.value !== 2 || scope.object !== 'source_card' || Object.keys(scope).length !== 1) {
+    reject('invalid_state', 'Malformed FB2-54 source-card combat-power bonus state');
+  }
+}
 function liveOngoing(s: GameState): OngoingEffect[] {
-  return runtime(s).ongoingEffects.filter(o =>
-    sourceBoundOngoingIsLive(s, o) &&
-    (o.expiresAtRound === undefined || s.round.roundNumber < o.expiresAtRound));
+  return runtime(s).ongoingEffects.filter((ongoing) => {
+    assertFb254SourcePowerOngoingState(s, ongoing);
+    return sourceBoundOngoingIsLive(s, ongoing) &&
+      (ongoing.expiresAtRound === undefined || s.round.roundNumber < ongoing.expiresAtRound);
+  });
 }
 function modifierControllerApplies(s: GameState, modifierControllerId: string, source: CardInstance, scope: RuleNode): boolean {
   const scoped = str(scope.controller);
@@ -662,6 +698,101 @@ function eventPlayerRelationCondition(s: GameState, ctx: EffectContext, c: RuleN
     : eventPlayerId !== ctx.controllerId;
 }
 
+function isFb254EntryEventType(type: unknown): type is (typeof EVENT_POWER_ENTRY_TRIGGERS)[number] {
+  return EVENT_POWER_ENTRY_TRIGGERS.includes(type as (typeof EVENT_POWER_ENTRY_TRIGGERS)[number]);
+}
+function rememberTrustedFb254EntryEvent(s: GameState, event: AbilityEvent): void {
+  if (!isFb254EntryEventType(event.type)) reject('invalid_event', 'FB2-54 trusted entry producer received an unsupported event type');
+  const keys = Object.keys(event).sort();
+  const expectedKeys = ['id', 'locationId', 'playerId', 'type'].sort();
+  if (keys.length !== expectedKeys.length || keys.some((key, index) => key !== expectedKeys[index]) ||
+      typeof event.id !== 'string' || event.id.length === 0 || typeof event.playerId !== 'string' ||
+      typeof event.locationId !== 'string' || event.locationId.length === 0) {
+    reject('invalid_event', 'FB2-54 trusted entry producer requires exact event shape');
+  }
+  const snapshots = runtime(s).trustedEntryEventSnapshots ??= {};
+  const existing = snapshots[event.id];
+  if (existing && (existing.type !== event.type || existing.playerId !== event.playerId || existing.locationId !== event.locationId)) {
+    reject('invalid_state', 'FB2-54 trusted entry event id is already bound to different facts');
+  }
+  snapshots[event.id] = { type: event.type, playerId: event.playerId, locationId: event.locationId };
+}
+function forgetTrustedFb254EntryEvent(s: GameState, eventId: string): void {
+  const snapshots = runtime(s).trustedEntryEventSnapshots;
+  if (!snapshots) return;
+  delete snapshots[eventId];
+  if (Object.keys(snapshots).length === 0) delete runtime(s).trustedEntryEventSnapshots;
+}
+function fb254EntryEventMatches(s: GameState, ctx: EffectContext, ability: AuthoringAbility): boolean {
+  const event = ctx.event;
+  if (!event || !isFb254EntryEventType(event.type) || event.type !== ability.activation.trigger) return false;
+  const keys = Object.keys(event).sort();
+  const expectedKeys = ['id', 'locationId', 'playerId', 'type'].sort();
+  if (keys.length !== expectedKeys.length || keys.some((key, index) => key !== expectedKeys[index]) ||
+      typeof event.id !== 'string' || event.id.length === 0 || typeof event.playerId !== 'string' ||
+      typeof event.locationId !== 'string' || event.locationId.length === 0 || event.playerId === ctx.controllerId) return false;
+  const trusted = runtime(s).trustedEntryEventSnapshots?.[event.id];
+  const affected = s.players.find((candidate) => candidate.id === event.playerId);
+  const controller = s.players.find((candidate) => candidate.id === ctx.controllerId);
+  if (!trusted || trusted.type !== event.type || trusted.playerId !== event.playerId || trusted.locationId !== event.locationId ||
+      !affected || !controller || affected.status !== 'active' || controller.status !== 'active' ||
+      affected.locationId !== event.locationId || controller.locationId !== event.locationId || !isBattlefield(s, event.locationId)) return false;
+  return true;
+}
+
+function exactStringArray(left: unknown, right: unknown): boolean {
+  return Array.isArray(left) && Array.isArray(right) && left.length === right.length &&
+    left.every((value, index) => typeof value === 'string' && value === right[index]);
+}
+function exactPowerSnapshot(left: unknown, right: unknown): boolean {
+  if (!left || !right || typeof left !== 'object' || typeof right !== 'object' || Array.isArray(left) || Array.isArray(right)) return false;
+  const a = left as Record<string, unknown>; const b = right as Record<string, unknown>;
+  const aKeys = Object.keys(a).sort(); const bKeys = Object.keys(b).sort();
+  return aKeys.length === bKeys.length && aKeys.every((key, index) => key === bKeys[index] &&
+    Number.isFinite(a[key]) && a[key] === b[key]);
+}
+function fb254TrustedControllerWinEventMatches(s: GameState, ctx: EffectContext): boolean {
+  const event = ctx.event;
+  if (!event || event.type !== 'after_controller_wins_battle' || event.playerId !== ctx.controllerId ||
+      typeof event.resultId !== 'string' || typeof event.battleId !== 'string' ||
+      typeof event.battlePhaseResolutionId !== 'string' || typeof event.battlefieldId !== 'string' ||
+      event.id !== `${event.resultId}:win:${ctx.controllerId}`) return false;
+  const keys = Object.keys(event).sort();
+  const expectedKeys = ['battleId', 'battleParticipantIds', 'battleParticipantPowers', 'battlePhaseResolutionId', 'battleResult', 'battlefieldId', 'id', 'playerId', 'resultId', 'type'].sort();
+  if (keys.length !== expectedKeys.length || keys.some((key, index) => key !== expectedKeys[index])) return false;
+  const trusted = runtime(s).trustedBattleResultSnapshots?.[event.resultId];
+  const knownPlayerIds = new Set(s.players.map((candidate) => candidate.id));
+  if (!trusted || trusted.battlePhaseResolutionId !== event.battlePhaseResolutionId || trusted.battleId !== event.battleId ||
+      trusted.resultId !== event.resultId || trusted.battlefieldId !== event.battlefieldId ||
+      !exactStringArray(event.battleParticipantIds, trusted.battleParticipantIds) ||
+      !exactStringArray(event.battleResult?.winners, trusted.winners) || !exactStringArray(event.battleResult?.loserIds, trusted.loserIds) ||
+      !exactPowerSnapshot(event.battleParticipantPowers, trusted.battleParticipantPowers) ||
+      !Array.isArray(event.battleParticipantIds) || new Set(event.battleParticipantIds).size !== event.battleParticipantIds.length ||
+      event.battleParticipantIds.some((playerId) => !knownPlayerIds.has(playerId)) ||
+      !event.battleParticipantIds.includes(ctx.controllerId) || !trusted.winners.includes(ctx.controllerId)) return false;
+  const controller = s.players.find((candidate) => candidate.id === ctx.controllerId);
+  return !!controller && controller.locationId === event.battlefieldId && isBattlefield(s, event.battlefieldId);
+}
+
+function fb254LocationCondition(s: GameState, ctx: EffectContext, ability: AuthoringAbility): boolean {
+  const variant = classifyAcceptedEventPowerUncontestedWinRewardAbility(ability, 'compiled');
+  if (variant === 'opponent_entry_power') return fb254EntryEventMatches(s, ctx, ability);
+  if (variant === 'uncontested_win_reward') return fb254TrustedControllerWinEventMatches(s, ctx);
+  return eventLocationEqualsController(s, ctx.controllerId, ctx.event);
+}
+
+function fb254BattleOpponentCountCondition(s: GameState, ctx: EffectContext, conditionNode: RuleNode): boolean {
+  if (!isAcceptedEventBattleOpponentCountEqualsCondition(conditionNode)) {
+    reject('unsupported', 'Unsupported FB2-54 battle opponent-count condition shape');
+  }
+  const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (classifyAcceptedEventPowerUncontestedWinRewardAbility(ability, 'compiled') !== 'uncontested_win_reward') {
+    reject('unsupported', 'FB2-54 battle opponent-count condition requires the exact uncontested-win parent');
+  }
+  if (!fb254TrustedControllerWinEventMatches(s, ctx) || !Array.isArray(ctx.event?.battleParticipantIds)) return false;
+  return ctx.event.battleParticipantIds.filter((playerId) => playerId !== ctx.controllerId).length === 0;
+}
+
 function roundVpGainCrossingCondition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (!isOpponentRoundVpGainThresholdCondition(c)) reject('unsupported', 'Unsupported round VP-gain crossing condition shape');
   const event = ctx.event;
@@ -753,8 +884,13 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
       if (!isAcceptedEventLocationEqualsControllerCondition(c)) {
         return reject('unsupported', 'Unsupported event-location relation condition shape');
       }
-      return eventLocationEqualsController(s, ctx.controllerId, ctx.event);
+      const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      return isAcceptedEventPowerUncontestedWinRewardAbility(ability, 'compiled')
+        ? fb254LocationCondition(s, ctx, ability)
+        : eventLocationEqualsController(s, ctx.controllerId, ctx.event);
     }
+    case EVENT_BATTLE_OPPONENT_COUNT_EQUALS_CONDITION:
+      return fb254BattleOpponentCountCondition(s, ctx, c);
     case 'player_flag_number_not_current_round': {
       if (isAcceptedCurrentRoundCombatLossAbsenceCondition(c)) return currentRoundCombatLossAbsent(s, ctx.controllerId, ctx.event);
       if (isAcceptedCurrentRoundCombatWinAbsenceCondition(c)) return currentRoundCombatWinAbsent(s, ctx.controllerId, ctx.event);
@@ -916,6 +1052,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
       !gameStartPlayerStatusAssignments(s, card(s, sourceId).controllerPlayerId, a))) return false;
   if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) return false;
   if (isBasicStrengthOpponentSkillFaceDownCandidate(a) && !isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled')) return false;
+  if (isEventPowerUncontestedWinRewardCandidate(a) && !isAcceptedEventPowerUncontestedWinRewardAbility(a, 'compiled')) return false;
   if (isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled') &&
       !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
   if (hasControllerMasterSkillDefinitionReturnCandidate(a) && !isAcceptedOpponentRoundVpGainThresholdAbility(a, 'compiled')) return false;
@@ -1726,6 +1863,28 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       });
       break;
     }
+    case SOURCE_CARD_COMBAT_POWER_BONUS_EFFECT: {
+      if (classifyAcceptedEventPowerUncontestedWinRewardAbility(a, 'compiled') !== 'opponent_entry_power' ||
+          effect.amount !== 2 || Object.keys(effect).some((key) => !['type', 'amount'].includes(key)) ||
+          !fb254EntryEventMatches(s, ctx, a)) {
+        reject('resolution_failed', 'FB2-54 source-card combat-power bonus requires exact accepted event provenance');
+      }
+      const source = card(s, ctx.sourceCardId);
+      const r = runtime(s);
+      r.ongoingEffects.push({
+        id: `${EVENT_POWER_SOURCE_BONUS_POLICY}:${ctx.event!.id}:${source.instanceId}`,
+        sourceCardId: source.instanceId, abilityId: a.id, controllerId: ctx.controllerId,
+        starts: 'immediate', duration: 'while_active', startRound: s.round.roundNumber, cleanup: 'remain_active',
+        sourceMustRemainActive: true, policyKey: EVENT_POWER_SOURCE_BONUS_POLICY,
+        sourceDefinitionIdAtInstall: source.definitionId, installedRevision: r.revision,
+        ruleModifiers: [{
+          sourceCardId: source.instanceId, controllerId: ctx.controllerId,
+          definition: { id: EVENT_POWER_SOURCE_BONUS_POLICY, operation: 'add', rule: 'card.currentPower', scope: { object: 'source_card' }, value: 2 },
+        }],
+        publicZones: [],
+      });
+      break;
+    }
     case NEXT_ROUND_SITUATION_BENEFIT_SUPPRESSION_EFFECT: {
       if (!isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) {
         reject('resolution_failed', 'Suppression effect requires the exact accepted FB2-52 whole-ability envelope');
@@ -1840,7 +1999,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
         const from = p.locationId;
         p.locationId = to as LocationId;
         recordMovementForAbilityRuntime(s, p.id, from, to);
-        processEvent(s, { id: nextId(s, 'enter-location'), type: 'after_controller_enters_location', playerId: p.id, locationId: to });
+        processTrustedFb254EntryEvent(s, { id: nextId(s, 'enter-location'), type: 'after_controller_enters_location', playerId: p.id, locationId: to });
       }
       break;
     }
@@ -3489,7 +3648,7 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
           movingPlayer.locationId = toLocationId as LocationId;
           recordMovementForAbilityRuntime(state, playerId, fromLocationId, toLocationId);
           const enterEventId = nextId(state, 'enter-location');
-          processEvent(state, { id: enterEventId, type: 'after_controller_enters_location', playerId, locationId: toLocationId });
+          processTrustedFb254EntryEvent(state, { id: enterEventId, type: 'after_controller_enters_location', playerId, locationId: toLocationId });
           return { fromLocationId, toLocationId, movedCount: 1, emittedEventIds: [enterEventId] };
         },
         playSelectedCards: ({ state, playerId, cardInstanceIds, faceDown }) => {
@@ -3864,6 +4023,9 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isBasicStrengthOpponentSkillFaceDownCandidate(a) && !isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported basic-Strength play -> opponent servant-skill face-down semantic shape');
   }
+  if (isEventPowerUncontestedWinRewardCandidate(a) && !isAcceptedEventPowerUncontestedWinRewardAbility(a, 'compiled')) {
+    reject('resolution_failed', 'Unsupported FB2-54 event-power / uncontested-win reward semantic shape');
+  }
   if (isNextRoundSituationBenefitSuppressionCandidate(a) && !isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported next-round situation-benefit suppression semantic shape');
   }
@@ -4079,6 +4241,11 @@ function rememberTrustedBattleResultSnapshot(r: AbilityRuntime, event: AbilityEv
   };
 }
 
+function processTrustedFb254EntryEvent(s: GameState, event: AbilityEvent): void {
+  rememberTrustedFb254EntryEvent(s, event);
+  try { processEvent(s, event); } finally { forgetTrustedFb254EntryEvent(s, event.id); }
+}
+
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s); if (r.processedEvents.includes(event.id)) return;
   if (!event.id) reject('invalid_event', 'Events require stable ids');
@@ -4151,13 +4318,29 @@ function processEvent(s: GameState, event: AbilityEvent): void {
 /** Trusted backend event hook. Events are not part of AbilityCommand. */
 export function processAbilityEvent(s: GameState, event: AbilityEvent): void {
   if (runtime(s).processedEvents.includes(event.id)) return;
-  const copy = structuredClone(s); processEvent(copy, event); runtime(copy).revision++;
+  const copy = structuredClone(s);
+  // FB2-54 entry provenance is transaction-local server authority, never replay/persistence authority.
+  delete runtime(copy).trustedEntryEventSnapshots;
+  processEvent(copy, event); runtime(copy).revision++;
   Object.assign(s, copy);
 }
 /** Trusted backend producer helper. Allocates event identity inside the same cloned transaction. */
 export function processAbilitySystemEvent(s: GameState, label: string, event: Omit<AbilityEvent, 'id'>): void {
   const copy = structuredClone(s);
-  processEvent(copy, { ...event, id: nextId(copy, label) });
+  delete runtime(copy).trustedEntryEventSnapshots;
+  const fullEvent = { ...event, id: nextId(copy, label) } as AbilityEvent;
+  if (isFb254EntryEventType(fullEvent.type)) processTrustedFb254EntryEvent(copy, fullEvent);
+  else processEvent(copy, fullEvent);
+  runtime(copy).revision++;
+  Object.assign(s, copy);
+}
+/** FB2-54 trusted backend producer for an already-applied exact movement/deployment entry. */
+export function processAuthoritativeEntryAbilityEvent(s: GameState, event: AbilityEvent): void {
+  if (!isFb254EntryEventType(event.type)) reject('invalid_event', 'Authoritative entry helper accepts only FB2-54 entry roots');
+  if (runtime(s).processedEvents.includes(event.id)) return;
+  const copy = structuredClone(s);
+  delete runtime(copy).trustedEntryEventSnapshots;
+  processTrustedFb254EntryEvent(copy, event);
   runtime(copy).revision++;
   Object.assign(s, copy);
 }
@@ -4596,7 +4779,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           if (!canOccupyLocation({ map: s.map, config: s.locationConfig, locationId: to, movingPlayerId: meta.boundPlayerId, occupyingPlayerIds,
             ...(s.ruleOverrides ? { ruleOverrides: s.ruleOverrides } : {}) })) reject('illegal_target', 'Ruler seal movement destination is not occupiable');
           delete r.pendingDecision; targetPlayer.locationId = to; recordMovementForAbilityRuntime(s, meta.boundPlayerId, from, to);
-          processEvent(s, { id: nextId(s, 'ruler-seal-enter-location'), type: 'after_controller_enters_location', playerId: meta.boundPlayerId, locationId: to });
+          processTrustedFb254EntryEvent(s, { id: nextId(s, 'ruler-seal-enter-location'), type: 'after_controller_enters_location', playerId: meta.boundPlayerId, locationId: to });
           break;
         }
         if (meta.kind === 'ruler_seal_free_play_v1') {
