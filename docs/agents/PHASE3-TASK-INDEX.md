@@ -6122,3 +6122,16 @@ Implement only the bounded identity-free FB2-54 family dispatched above: exact o
 ### P3-FB2-54 A clarification
 
 Before B2 production implementation, A mechanically verified that advance-phase `deploy_player` changes authoritative `player.locationId` and emits `after_player_deployed_to_battlefield`. The first FB2-54 ability therefore accepts exactly either existing authoritative entry root (`after_controller_enters_location` or `after_player_deployed_to_battlefield`) with the same ordered opponent/location conditions and literal source-card +2 effect. No other FB2-54 scope changes; zero credit remains `156/944`, `788` remaining, material `151/944`.
+## TASK P3-A-R115-FB2-54-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r115-fb2-54-acceptance-sync`
+Base: exact accepted Candidate `420f54df880bbad4816166c9cc94f2922248308b`
+Read: `docs/reports/2026-09-23-p3-a-r115-fb2-54-acceptance-synchronization.md`
+
+Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #433 exact Candidate `420f54df880bbad4816166c9cc94f2922248308b`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/433#issuecomment-5788185150`. R2 closes the remaining persisted-root provenance gap: generic `processedEvents` membership is no longer sufficient; accepted FB2-54 source-power ongoing state must match a dedicated server-owned install receipt written only by a trusted qualifying entry transaction, while preserving canonical root/source/ability linkage, duplicate/collision rejection, source liveness and the authoritative uncontested-win +4 VP path.
+
+FB2-54 earns zero migration credit. Formal migration remains **`156/944`**, with **`788`** remaining; material authoring overlap remains **`151/944`**. PR #433 remains OPEN, unmerged and unretargeted.
+
+Next action follows the user's latest BATCH-FIRST F4 authorization: reuse existing F1/capability evidence, do not redo whole-roster classification, select the largest mechanically coherent current-baseline consumer batch, implement shared bounded runtime support once where needed, migrate all compatible consumers in that batch, and submit one exact batch Candidate for one fresh independent R.
