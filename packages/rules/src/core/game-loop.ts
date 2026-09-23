@@ -21,6 +21,7 @@ import { getEnabledLocations } from "./map-engine";
 import { advanceAbilityPhase, processAbilityEvent, processAuthoritativeMovementAbilityEvent, recordAuthoritativeVictoryPointChange } from '../ability/interpreter';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from '../ability/battle-terminal';
 import { rememberB03BattleAttributeSnapshot } from '../ability/batch-modifier-lifecycle-rules';
+import { rememberB06BattleEventVpSnapshot } from '../ability/batch-card-play-combat-event-burst-rules';
 
 function hasPendingAbilityResolution(state: GameState): boolean {
   return !!state.abilityRuntime && (!!state.abilityRuntime.pendingDecision || state.abilityRuntime.responseWindows.length > 0 || state.abilityRuntime.hostRequests.length > 0);
@@ -316,6 +317,9 @@ function queuePostScoringBattleResultEvents(
       rememberB03BattleAttributeSnapshot(state, battlePhaseResolutionId, battleId, resultId, result.battlefieldId, participants, participants, result.participantAttackAttributes);
     }
     if (!runtime.processedEvents.includes(resultId) && !pending.some((event) => event.id === resultId)) {
+      if (result.printedEventVpTotal !== undefined) rememberB06BattleEventVpSnapshot(state, { battlePhaseResolutionId, battleId, resultId, battlefieldId: result.battlefieldId,
+        battleParticipantIds: participants, winners: [...result.winnerPlayerIds], loserIds: participants.filter((playerId) => !result.winnerPlayerIds.includes(playerId)),
+        printedEventVpTotal: result.printedEventVpTotal });
       pending.push({
         id: resultId,
         type: 'after_battle_result_determined',

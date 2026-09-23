@@ -21,6 +21,7 @@ import { assertExecutableCardPack, type ExecutableCardPack } from './ability/exe
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './ability/deployment-destinations';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
 import { advanceB03RoundSchedules, rememberB03BattleAttributeSnapshot } from './ability/batch-modifier-lifecycle-rules';
+import { rememberB06BattleEventVpSnapshot } from './ability/batch-card-play-combat-event-burst-rules';
 import type {
   AbilityCommand,
   AbilityEvent,
@@ -1346,6 +1347,9 @@ export class MatchSession {
         battleResult: { winners: [...battle.winnerPlayerIds], loserIds },
       };
       if (!runtime.processedEvents.includes(resultId) && !pending.some((event) => event.id === resultId)) {
+        if (battle.printedEventVpTotal !== undefined) rememberB06BattleEventVpSnapshot(this.state, { battlePhaseResolutionId, battleId, resultId, battlefieldId: battle.battlefieldId,
+          battleParticipantIds: terminalParticipants, winners: [...battle.winnerPlayerIds],
+          loserIds: terminalParticipants.filter((playerId) => !battle.winnerPlayerIds.includes(playerId)), printedEventVpTotal: battle.printedEventVpTotal });
         pending.push(resultEvent);
       }
 

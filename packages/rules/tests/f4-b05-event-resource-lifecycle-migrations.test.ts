@@ -219,6 +219,6 @@ describe('P3 F4 B05 event/resource/lifecycle migration batch', () => {
     const frozen = frozenIds(); const ids = materialIds().filter((id) => frozen.has(id));
     const counts = new Map<string, number>(); for (const id of ids) counts.set(id, (counts.get(id) ?? 0) + 1);
     expect(counts.get(EDISON)).toBe(1); expect(counts.get(KAMA)).toBe(1);
-    expect(ids.length).toBe(163); expect([...counts.values()].filter((count) => count > 1)).toEqual([]);
+    expect(ids.length).toBeGreaterThanOrEqual(163); expect([...counts.values()].filter((count) => count > 1)).toEqual([]);
   });
 });

@@ -370,6 +370,14 @@ export interface AbilityRuntime {
   b05TrustedDeploymentEntryRoots?: Record<string, { eventId: string; eventType: 'after_player_deployed_to_battlefield'; playerId: PlayerId; locationId: string; round: number }>;
   /** F4 B05 source-bound round-close arms installed only by exact trusted qualifying entry events. */
   b05RoundCloseArms?: Array<{ sourceCardId: string; sourceDefinitionId: string; controllerId: PlayerId; entryAbilityId: string; closeAbilityId: string; rootEventId: string; eventType: 'after_controller_enters_location' | 'after_player_deployed_to_battlefield'; eventPlayerId: PlayerId; eventLocationId: string; round: number }>;
+  /** F4 B06 source-play arms retained for same-round post-battle punishment. */
+  b06RoundPunishmentArms?: Array<{ sourceCardId: string; sourceDefinitionId: string; controllerId: PlayerId; armAbilityId: string; punishAbilityId: string; rootEventId: string; round: number }>;
+  /** F4 B06 server-authored result snapshots binding exact battle roots to printed event VP. */
+  b06BattleEventVpSnapshots?: Record<string, { battlePhaseResolutionId: string; battleId: string; resultId: string; battlefieldId: string; round: number; battleParticipantIds: PlayerId[]; winners: PlayerId[]; loserIds: PlayerId[]; eventVpTotal: number; placementFacts: Array<{ eventCardId: string; locationId: string; ruleInstanceId?: string; victoryPoints: number }>; battleLogKind: 'standard' | 'return_silence'; returnSilenceSourceCardId?: string; battleLogIndex: number; snapshotLogIndex: number }>;
+  /** F4 B06 server-owned roots freezing the exact public event cards moved by a source-play burst. */
+  b06TrustedEventBurstRoots?: Record<string, { sourceCardId: string; sourceDefinitionId: string; controllerId: PlayerId; abilityId: string; rootEventId: string; round: number; amount: number; sourceTokens: string[]; movedEvents: Array<{ eventCardId: string; locationId: string; ruleInstanceId?: string; victoryPoints: number }>; eventRuleZoneRevisionBefore: number; eventRuleZoneRevisionAfter: number }>;
+  /** F4 B06 source-play event-burst round power receipts. */
+  b06EventBurstBonuses?: Array<{ sourceCardId: string; sourceDefinitionId: string; controllerId: PlayerId; abilityId: string; rootEventId: string; round: number; amount: number; sourceTokens: string[]; movedEvents: Array<{ eventCardId: string; locationId: string; ruleInstanceId?: string; victoryPoints: number }>; eventRuleZoneRevisionBefore: number; eventRuleZoneRevisionAfter: number; logIndex: number }>;
   /** FB2-48 serialized frozen-battle opponent-power rewards awaiting owner choice. */
   pendingCombatOpponentPowerVpRewards?: PendingCombatOpponentPowerVpReward[];
   /** FB2-49 serialized same-battlefield opponent keep-one card decisions. */

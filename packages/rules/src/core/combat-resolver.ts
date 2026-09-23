@@ -36,14 +36,17 @@ export interface CombatResolutionInput {
   participants?: CombatParticipantInput[];
 }
 
+function getPrintedEventVpTotal(state: GameState, battlefieldId: CombatResolutionInput["battlefieldId"]): number {
+  return state.eventPlacements
+    .filter((placement) => placement.locationId === battlefieldId)
+    .reduce((sum, placement) => sum + (placement.victoryPoints ?? 0), 0);
+}
 function getBattleVpReward(
   state: GameState,
   battlefieldId: CombatResolutionInput["battlefieldId"],
   location: LocationDefinition | undefined,
 ): number {
-  const eventVp = state.eventPlacements
-    .filter((placement) => placement.locationId === battlefieldId)
-    .reduce((sum, placement) => sum + (placement.victoryPoints ?? 0), 0);
+  const eventVp = getPrintedEventVpTotal(state, battlefieldId);
   if (eventVp) return eventVp;
   return location?.vpRewardRules?.battle ?? (battlefieldId === "moon_holy_grail" ? 2 : 1);
 }
@@ -530,7 +533,7 @@ function buildBattleResultFromRanked(
     ...(presenceConcealmentDefeatedPlayerIds.length ? { presenceConcealmentDefeatedPlayerIds: [...new Set(presenceConcealmentDefeatedPlayerIds)] } : {}),
     ...(lossEffectSuppressedPlayerIds.length ? { lossEffectSuppressedPlayerIds } : {}),
     winnerPlayerId: winnerPlayerIds.length === 1 ? winnerPlayerIds[0]! : null,
-    margin, vpReward, baseVpPerWinner, eventVpPool, competitionVpPool,
+    margin, vpReward, baseVpPerWinner, eventVpPool, printedEventVpTotal: getPrintedEventVpTotal(state, battlefieldId), competitionVpPool,
     ...(vpAdjustments.length ? { vpAdjustments } : {}),
     militaryAdjustments: ranked.map((participant) => {
       const delta = winnerPlayerIds.includes(participant.playerId)
@@ -619,6 +622,7 @@ export function resolveBattlefield(
       vpReward: 0,
       baseVpPerWinner: 0,
       eventVpPool: 0,
+      printedEventVpTotal: getPrintedEventVpTotal(state, input.battlefieldId),
       competitionVpPool: 0,
       militaryAdjustments: loserIds.map((playerId) => ({ playerId, delta: -8 })),
       participantBreakdowns: ranked,
@@ -754,6 +758,7 @@ export function resolveBattlefield(
           vpAdjustments: battleResult.vpAdjustments,
           baseVpPerWinner: battleResult.baseVpPerWinner,
           eventVpPool: battleResult.eventVpPool,
+          printedEventVpTotal: battleResult.printedEventVpTotal,
           competitionVpPool: battleResult.competitionVpPool,
         },
       } satisfies GameState["log"][number])
