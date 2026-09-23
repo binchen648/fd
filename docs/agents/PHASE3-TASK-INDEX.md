@@ -6148,3 +6148,15 @@ Read: `docs/reports/2026-09-23-p3-f4-b01-passive-modifier-migrations-result.md`
 Result required: review one BATCH-FIRST Candidate containing four material identities: fresh-credit candidates `servant.mechaeli.skill.sc-mechaeli-2`, `servant.atalanta.skill.sc-atalanta-1`, and `servant.gorgon.skill.sc-gorgon-2`, plus exact historical material reconciliation `servant.ibaraki.skill.sc-ibaraki-1`. Ibaraki was already independently accepted on PR #381 Candidate `78ab99ce3136f654e53ec922466c26d4751b1917` and historically credited through `51f8af150f10a249ba471aaa65d7d7b49cabc98e`; it earns **zero new formal credit** here.
 
 Candidate material accounting must be exact `151/944 -> 155/944`, zero removals and zero duplicate frozen IDs. Formal migration remains `156/944` before fresh R. On exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, award exactly +3 fresh formal identities => `159/944`, `785` remaining. Do not merge/retarget, do not double-credit Ibaraki, and do not split the exact batch into per-skill reviews.
+
+## TASK P3-A-R116-F4-B01-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r116-f4-b01-acceptance-sync`
+Base: exact accepted Candidate `2128ae7fc51cdaf0d9ae1a3cc37c46fe699b83b4`
+Read: `docs/reports/2026-09-23-p3-a-r116-f4-b01-acceptance-synchronization.md`
+
+Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #434 exact Candidate `2128ae7fc51cdaf0d9ae1a3cc37c46fe699b83b4`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/434#issuecomment-5788842488`. Exact material accounting is `151/944 -> 155/944`, with exact additions `servant.mechaeli.skill.sc-mechaeli-2`, `servant.atalanta.skill.sc-atalanta-1`, `servant.gorgon.skill.sc-gorgon-2`, and historical-material-only `servant.ibaraki.skill.sc-ibaraki-1`; zero removals and zero duplicate frozen IDs. Ibaraki is already formally credited through historical sync `51f8af150f10a249ba471aaa65d7d7b49cabc98e` and receives no new credit here.
+
+Formal project migration advances exactly three fresh identities to **`159/944`**, with **`785`** remaining; material authoring overlap is **`155/944`**. PR #434 remains OPEN, unmerged and unretargeted. Continue user-authorized BATCH-FIRST F4 from this synchronized baseline: reuse existing F1/capability evidence, prioritize the same accepted capability families, do not redo whole-roster classification, and submit the next coherent multi-consumer batch as one Candidate for one fresh independent R.
