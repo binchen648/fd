@@ -150,6 +150,8 @@ export interface BattleResultState {
   vpReward: number;
   baseVpPerWinner?: number;
   eventVpPool?: number;
+  /** Frozen sum of printed VP on event cards at this battlefield; unlike eventVpPool this never falls back to location reward. */
+  printedEventVpTotal?: number;
   competitionVpPool?: number;
   vpAdjustments?: VpAdjustment[];
   militaryAdjustments: BattleAdjustment[];

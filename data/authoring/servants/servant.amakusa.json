@@ -115,6 +115,127 @@
           "rulerSealSubsystem": "P3-R58/FB2-27"
         }
       }
+    },
+    {
+      "id": "servant.amakusa.skill.sc-amakusa-1",
+      "aliases": [
+        "sc_amakusa_1"
+      ],
+      "legacyId": "sc_amakusa_1",
+      "name": "双腕·零次集束",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.amakusa"
+      },
+      "printedText": "【真名解放】<每局游戏限一次>X=以此牌效果移除的事件牌的印刷战果数总和的2倍。\n打出时：将所有正面向上的事件牌移除游戏。",
+      "cardFace": {
+        "typeLabel": "魔术/宝具",
+        "attributes": [
+          "魔术",
+          "宝具"
+        ],
+        "cost": 7,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "twin-arm-zero-event-burst",
+          "kind": "forced_trigger",
+          "printedClause": "X=以此牌效果移除的事件牌的印刷战果数总和的2倍。打出时：将所有正面向上的事件牌移除游戏。",
+          "activation": {
+            "trigger": "on_card_played"
+          },
+          "conditions": [
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "b06_source_played_face_up"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "b06_event_burst_source_power_and_remove"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {
+            "type": "per_game",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "天草四郎时贞.htm",
+            "locator": "从者/裁定者/英文版/天草四郎时贞.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/天草四郎时贞.png",
+            "locator": "servant.amakusa/天草四郎时贞"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[45].abilities[0].printedClause",
+            "sha256": "40ca176f770bc55f453580c51729752eebcab51af6377ac7ca893764bb7027af"
+          }
+        ],
+        "f1FullPrintedTextSha256": "0433a725f2387014fcf77515757e539e1718da23952014515e7f2bd3ba7d4b88",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_amakusa_1",
+          "class": "Ruler",
+          "cost": 7,
+          "basePower": 0,
+          "legacyRequirement": 8,
+          "typeLabel": "魔术/宝具",
+          "attributes": [
+            "魔术",
+            "宝具"
+          ]
+        },
+        "acceptedContracts": {
+          "batch": "P3-F4-B06",
+          "eventBurst": "F4-B06 exact trusted face-up source play -> all public event removal + printed-VP x2 round source power",
+          "usageLimit": "Reference per-game once mapped to exact this-card per_game ability limit"
+        }
+      }
     }
   ]
 }

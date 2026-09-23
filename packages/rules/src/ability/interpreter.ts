@@ -116,6 +116,12 @@ import {
   isAcceptedB05RoundEndCloseAbility, isAcceptedB05WorkshopDeploymentExchangeAbility, isB05EventResourceLifecycleCandidate, rememberB05DeploymentEntryReceipt,
 } from './batch-event-resource-lifecycle-rules';
 import {
+  B06_SOURCE_PLAYED_FACE_UP_CONDITION, B06_ARM_ROUND_PUNISHMENT_EFFECT, B06_SOURCE_ARMED_THIS_ROUND_CONDITION,
+  B06_PUNISH_BATTLE_LOSERS_EFFECT, B06_EVENT_BURST_EFFECT, armB06RoundPunishment, b06BattleLoserPenaltyFacts,
+  b06SourceArmedThisRound, b06SourcePlayedFaceUp, b06SourcePowerBonus, installB06EventBurst,
+  isAcceptedB06RoundArmAbility, isAcceptedB06BattlePunishAbility, isAcceptedB06EventBurstAbility,
+} from './batch-card-play-combat-event-burst-rules';
+import {
   advanceOpponentCloseToOneServerAuthority,
   clearOpponentCloseToOneServerAuthority,
   copyOpponentCloseToOneServerAuthority,
@@ -621,6 +627,8 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   if (scheduledB03Bonus !== 0) { result.value += scheduledB03Bonus; result.lines.push({ label: 'f4_b03_scheduled_card_power', value: result.value }); }
   const b04Bonus = b04SourcePowerBonus(s, sourceId);
   if (b04Bonus !== 0) { result.value += b04Bonus; result.lines.push({ label: 'f4_b04_source_power', value: result.value }); }
+  const b06Bonus = b06SourcePowerBonus(s, sourceId);
+  if (b06Bonus !== 0) { result.value += b06Bonus; result.lines.push({ label: 'f4_b06_event_burst_source_power', value: result.value }); }
   const modifiers = liveOngoing(s).flatMap(o => o.ruleModifiers).sort((a, b) =>
     Number(node(a.definition.priority).tier === 'explicit_exception') - Number(node(b.definition.priority).tier === 'explicit_exception'));
   for (const modifier of modifiers) {
@@ -1000,6 +1008,17 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
       if (!isAcceptedB05RoundEndCloseAbility(ability) || Object.keys(c).some((key) => key !== 'type')) reject('unsupported', 'Unsupported F4 B05 round-close condition shape');
       try { return b05SourceTriggeredThisRound(s, ctx.controllerId, ctx.sourceCardId, ability); }
       catch (error) { return reject('invalid_state', error instanceof Error ? error.message : 'F4 B05 round-close arm invalid'); }
+    }
+    case B06_SOURCE_PLAYED_FACE_UP_CONDITION: {
+      const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      if ((!isAcceptedB06RoundArmAbility(ability) && !isAcceptedB06EventBurstAbility(ability)) || Object.keys(c).some((key) => key !== 'type')) reject('unsupported', 'Unsupported F4 B06 source-play condition shape');
+      return b06SourcePlayedFaceUp(s, ctx.controllerId, ctx.sourceCardId, ability, ctx.event);
+    }
+    case B06_SOURCE_ARMED_THIS_ROUND_CONDITION: {
+      const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      if (!isAcceptedB06BattlePunishAbility(ability) || Object.keys(c).some((key) => key !== 'type')) reject('unsupported', 'Unsupported F4 B06 armed-round condition shape');
+      try { return b06SourceArmedThisRound(s, ctx.controllerId, ctx.sourceCardId, ability); }
+      catch (error) { return reject('invalid_state', error instanceof Error ? error.message : 'F4 B06 round arm invalid'); }
     }
     case B04_FIRST_MOVEMENT_CONDITION: {
       const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
@@ -1407,8 +1426,10 @@ function battleEventControllerEligibleAfterScoring(s: GameState, event: AbilityE
 export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): TriggeredAbility[] {
   const found: TriggeredAbility[] = [];
   for (const c of s.cards) {
-    if (!battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId)) continue;
-    for (const a of definition(s, c.instanceId)?.abilities ?? []) {
+    const sourceAbilities = definition(s, c.instanceId)?.abilities ?? [];
+    const b06GlobalBattleObserver = event.type === 'after_battle_result_determined' && sourceAbilities.some(isAcceptedB06BattlePunishAbility);
+    if (!b06GlobalBattleObserver && !battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId)) continue;
+    for (const a of sourceAbilities) {
       const b04DeploymentEntryAlias = event.type === 'after_player_deployed_to_battlefield' && isAcceptedB04OpponentEntryManaDrainAbility(a);
       const b05DeploymentEntryAlias = event.type === 'after_player_deployed_to_battlefield' && isAcceptedB05OtherBattlefieldVpTransferAbility(a);
       const matches = a.activation.trigger === event.type || b04DeploymentEntryAlias || b05DeploymentEntryAlias || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
@@ -2089,7 +2110,33 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
         reject('invalid_state', error instanceof Error ? error.message : 'F4 B05 triggered close failed');
       }
       break;
-    }    case SOURCE_CARD_COMBAT_POWER_BONUS_EFFECT: {
+    }
+    case B06_ARM_ROUND_PUNISHMENT_EFFECT: {
+      if (!isAcceptedB06RoundArmAbility(a) || Object.keys(effect).some((key) => key !== 'type')) reject('resolution_failed', 'Unsupported F4 B06 round-arm envelope');
+      try { armB06RoundPunishment(s, ctx.controllerId, ctx.sourceCardId, a, ctx.event); }
+      catch (error) { reject('invalid_state', error instanceof Error ? error.message : 'F4 B06 round arm failed'); }
+      break;
+    }
+    case B06_EVENT_BURST_EFFECT: {
+      if (!isAcceptedB06EventBurstAbility(a) || Object.keys(effect).some((key) => key !== 'type')) reject('resolution_failed', 'Unsupported F4 B06 event-burst envelope');
+      try { installB06EventBurst(s, ctx.controllerId, ctx.sourceCardId, a, ctx.event); }
+      catch (error) { reject('invalid_state', error instanceof Error ? error.message : 'F4 B06 event burst failed'); }
+      break;
+    }
+    case B06_PUNISH_BATTLE_LOSERS_EFFECT: {
+      if (!isAcceptedB06BattlePunishAbility(a) || Object.keys(effect).some((key) => key !== 'type')) reject('resolution_failed', 'Unsupported F4 B06 battle-punishment envelope');
+      let facts: ReturnType<typeof b06BattleLoserPenaltyFacts>;
+      try { facts = b06BattleLoserPenaltyFacts(s, ctx.controllerId, ctx.sourceCardId, a, ctx.event); }
+      catch (error) { reject('invalid_state', error instanceof Error ? error.message : 'F4 B06 battle-punishment provenance invalid'); }
+      for (const playerId of facts.loserIds) {
+        const target = player(s, playerId);
+        if (!Number.isSafeInteger(target.vp) || target.vp < 0) reject('invalid_state', 'F4 B06 loser VP must be a nonnegative safe integer');
+        const before = target.vp; const after = Math.max(0, before - facts.amount);
+        if (after !== before) { target.vp = after; recordAuthoritativeVictoryPointChange(s, target.id, before, after, 'b06-battle-event-vp-penalty'); }
+      }
+      break;
+    }
+    case SOURCE_CARD_COMBAT_POWER_BONUS_EFFECT: {
       if (classifyAcceptedEventPowerUncontestedWinRewardAbility(a, 'compiled') !== 'opponent_entry_power' ||
           effect.amount !== 2 || Object.keys(effect).some((key) => !['type', 'amount'].includes(key)) ||
           !fb254EntryEventMatches(s, ctx, a)) {

@@ -90,6 +90,11 @@ import {
   B05_DEPLOYMENT_RESOURCE_EXCHANGE_EFFECT, B05_TRANSFER_VP_ARM_ROUND_CLOSE_EFFECT, B05_SOURCE_TRIGGERED_THIS_ROUND_CONDITION, B05_CLOSE_TRIGGERED_SOURCE_EFFECT,
   isAcceptedB05EventResourceLifecycleAbility, isB05EventResourceLifecycleCandidate,
 } from './batch-event-resource-lifecycle-rules';
+import {
+  B06_SOURCE_PLAYED_FACE_UP_CONDITION, B06_ARM_ROUND_PUNISHMENT_EFFECT, B06_SOURCE_ARMED_THIS_ROUND_CONDITION,
+  B06_PUNISH_BATTLE_LOSERS_EFFECT, B06_EVENT_BURST_EFFECT,
+  isAcceptedB06CardPlayCombatEventBurstAbility, isB06CardPlayCombatEventBurstCandidate,
+} from './batch-card-play-combat-event-burst-rules';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -275,6 +280,9 @@ const supportedTypes = new Set([
   // F4 B05 bounded event/resource/lifecycle vocabulary; whole-envelope gated below.
   B05_CONTROLLER_MANA_BELOW_TWO_CONDITION, B05_EVENT_LOCATION_IS_WORKSHOP_CONDITION, B05_OTHER_NON_WORKSHOP_BATTLEFIELD_ENTRY_CONDITION,
   B05_DEPLOYMENT_RESOURCE_EXCHANGE_EFFECT, B05_TRANSFER_VP_ARM_ROUND_CLOSE_EFFECT, B05_SOURCE_TRIGGERED_THIS_ROUND_CONDITION, B05_CLOSE_TRIGGERED_SOURCE_EFFECT,
+  // F4 B06 bounded card-play/combat/event-burst vocabulary; whole-envelope gated below.
+  B06_SOURCE_PLAYED_FACE_UP_CONDITION, B06_ARM_ROUND_PUNISHMENT_EFFECT, B06_SOURCE_ARMED_THIS_ROUND_CONDITION,
+  B06_PUNISH_BATTLE_LOSERS_EFFECT, B06_EVENT_BURST_EFFECT,
   // FB2-32 source-state conditions
   'source_active', 'source_owned',
   // FB2-33 event combat outcome conditions
@@ -732,6 +740,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }      if (isB05EventResourceLifecycleCandidate(a as unknown as AuthoringAbility) &&
           !isAcceptedB05EventResourceLifecycleAbility(a as unknown as AuthoringAbility)) {
         issue('batchEventResourceLifecycle.gateway', 'Unsupported F4 B05 event/resource/lifecycle semantic shape', id);
+      }
+      if (isB06CardPlayCombatEventBurstCandidate(a as unknown as AuthoringAbility) &&
+          !isAcceptedB06CardPlayCombatEventBurstAbility(a as unknown as AuthoringAbility)) {
+        issue('batchCardPlayCombatEventBurst.gateway', 'Unsupported F4 B06 card-play/combat/event-burst semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

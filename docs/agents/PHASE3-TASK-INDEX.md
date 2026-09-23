@@ -6246,3 +6246,13 @@ Read: `docs/reports/2026-09-23-p3-a-r120-f4-b05-acceptance-synchronization.md`
 Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #438 exact Candidate `14aee956ac561c4460dd7923d6155b26b7ee822c`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/438#issuecomment-5793354298`. Exact material accounting is `161/944 -> 163/944`, with exact fresh additions `servant.edison.skill.sc-edison-2` and `servant.kama.skill.sc-kama-2`, zero removals and zero duplicate frozen IDs. The final accepted Candidate also preserves historical battlefield-only deployment consumers while routing Magic Workshop support deployment only through the bounded exact B05 consumer path.
 
 Formal project migration advances exactly two fresh identities to **`167/944`**, with **`777`** remaining; material authoring overlap is **`163/944`**. PR #438 remains OPEN, unmerged and unretargeted. Continue user-authorized BATCH-FIRST F4 from this synchronized baseline: reuse existing F1/capability evidence, prioritize adjacent accepted event/resource/lifecycle capability families, do not redo whole-roster classification, and submit the next coherent multi-consumer batch as one Candidate for one fresh independent R.
+
+## TASK P3-F4-B06-CARD-PLAY-COMBAT-EVENT-BURST-MIGRATION-BATCH
+
+Owner: Codex Batch
+Status: `READY_FOR_FRESH_R`
+Branch: `codex/batch-p3-f4-b06-card-play-combat-event-burst-migrations`
+Base: exact R120 F4 B05 acceptance synchronization `819f88e84148513d87766cf39db7ae8d1c0c995f`
+Read: `docs/reports/2026-09-23-p3-f4-b06-card-play-combat-event-burst-migrations-result.md`
+
+Result required: review one BATCH-FIRST Candidate containing exactly two fresh frozen identities, `servant.mozart.skill.sc-mozart-2` and `servant.amakusa.skill.sc-amakusa-1`, implemented through bounded identity-free trusted source-play / combat-result / event-burst gateways. Candidate frozen material accounting must be exact `163/944 -> 165/944`, zero removals and zero duplicate frozen IDs. Formal migration remains `167/944` before fresh R. On exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, award exactly +2 fresh formal identities => `169/944`, `775` remaining. Do not merge/retarget and do not split the exact batch into per-skill reviews.
