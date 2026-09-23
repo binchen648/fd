@@ -57,3 +57,21 @@ Shared production runtime is bounded and identity-free. No consumer identity/nam
 Before fresh independent R, formal migration remains **`167/944`**, with **`777`** remaining. Material authoring overlap is **`165/944`**.
 
 Only an exact fresh `IMPLEMENTATION_ACCEPTED_CANDIDATE` for the final B06 Candidate plus A synchronization may award these two fresh identities, advancing formal migration exactly to **`169/944`**, with **`775`** remaining. This is one batch Candidate and must not be split into per-skill reviews.
+
+## R1 fresh-review closure
+
+Fresh independent R evidence: https://github.com/binchen648/fd/pull/439#issuecomment-5794143500
+
+The rejected Candidate `b5bd5892df75e2a5d99ac08023ccee047c37d370` exposed one exact-scope blocker: B06 battle/event-VP provenance accepted only the ordinary `battlefield:<id>` authoritative `battle_resolved` lineage and rejected the pre-existing authoritative Return Silence branch (`return_silence:<id>`).
+
+The successor revision keeps the ordinary lineage strict and adds a separately typed `return_silence` lineage. The B06 snapshot now freezes and revalidates the exact lineage kind, Return Silence source instance, winners/full frozen combat losers, battlefield event facts, and the authoritative Return Silence source transition to `removed_from_game`. It does not widen acceptance to arbitrary battle logs.
+
+Regression evidence:
+- B06 focused: **15/15 PASS**, including Mozart armed + Return Silence through both the core game-loop producer and the MatchSession post-scoring producer.
+- Reviewer-targeted B06 + Return Silence + MatchSession + battle cleanup: **4 files / 41 tests PASS**.
+- Affected B01-B06 + event/deployment + combat/scoring + movement/game-loop + MatchSession + authoring/replay + Return Silence: **19 files / 191 tests PASS**.
+- `npm run typecheck`: PASS.
+- `npm run content:validate`: PASS, 0 blocking issues.
+- `git diff --check`: PASS.
+
+Accounting is unchanged by the revision: frozen material remains **165/944** with the same two B06 identities exact-once; formal migration remains **167/944** pending a fresh exact-Candidate `IMPLEMENTATION_ACCEPTED_CANDIDATE` and A synchronization.

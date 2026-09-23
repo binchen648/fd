@@ -74,6 +74,10 @@ function sourceAndAbility(state: GameState, sourceCardId: string, abilityId: str
 function sameStrings(left: readonly string[], right: readonly string[]): boolean {
   return left.length === right.length && left.every((value, index) => value === right[index]);
 }
+function sameStringSet(left: readonly string[], right: readonly string[]): boolean {
+  return left.length === right.length && new Set(left).size === left.length && new Set(right).size === right.length &&
+    left.every((value) => right.includes(value));
+}
 function trustedFaceUpSourcePlay(state: GameState, controllerId: string, sourceCardId: string, event: AbilityEvent | undefined) {
   const runtime = state.abilityRuntime;
   if (!runtime || !event || event.type !== 'on_card_played' || event.playerId !== controllerId || event.sourceCardId !== sourceCardId || !/^play-[1-9]\d*$/.test(event.id)) return undefined;
@@ -145,33 +149,46 @@ export function rememberB06BattleEventVpSnapshot(state: GameState, input: B06Bat
   if (placements.some((placement) => !Number.isSafeInteger(placement.victoryPoints) || Number(placement.victoryPoints) < 0)) throw new Error('B06_BATTLE_EVENT_VP_SNAPSHOT_INVALID');
   const eventVpTotal = placements.reduce((sum, placement) => sum + Number(placement.victoryPoints), 0);
   if (!Number.isSafeInteger(eventVpTotal) || !Number.isSafeInteger(input.printedEventVpTotal) || input.printedEventVpTotal < 0 || input.printedEventVpTotal !== eventVpTotal) throw new Error('B06_BATTLE_EVENT_VP_SNAPSHOT_INVALID');
-  let battleLogIndex = -1;
+  let battleLogIndex = -1; let battleLogKind: 'standard' | 'return_silence' | undefined;
   for (let index = state.log.length - 1; index >= 0; index--) {
     const entry = state.log[index]!;
-    if (entry.type === 'battle_resolved' && entry.message === `battlefield:${input.battlefieldId}`) { battleLogIndex = index; break; }
+    if (entry.type !== 'battle_resolved') continue;
+    if (entry.message === `battlefield:${input.battlefieldId}`) { battleLogIndex = index; battleLogKind = 'standard'; break; }
+    if (entry.message === `return_silence:${input.battlefieldId}`) { battleLogIndex = index; battleLogKind = 'return_silence'; break; }
   }
   const battleLog = state.log[battleLogIndex]; const battlePayload = battleLog?.payload ?? {};
-  const breakdowns = Array.isArray(battlePayload.participantBreakdowns) ? battlePayload.participantBreakdowns as Array<Record<string, unknown>> : [];
-  const loggedParticipants = breakdowns.map((entry) => String(entry.playerId ?? ''));
-  const loggedLosers = loggedParticipants.filter((playerId) => !input.winners.includes(playerId));
-  if (battleLogIndex < 0 || loggedParticipants.some((id) => !id) || new Set(loggedParticipants).size !== loggedParticipants.length ||
-      !Array.isArray(battlePayload.winnerPlayerIds) || !sameStrings(battlePayload.winnerPlayerIds.map(String), input.winners) ||
-      !sameStrings(loggedParticipants, input.battleParticipantIds) || !sameStrings(loggedLosers, input.loserIds) ||
-      battlePayload.printedEventVpTotal !== eventVpTotal) {
-    throw new Error('B06_BATTLE_EVENT_VP_SNAPSHOT_INVALID');
+  let returnSilenceSourceCardId: string | undefined;
+  if (battleLogIndex < 0 || !battleLogKind || !Array.isArray(battlePayload.winnerPlayerIds) ||
+      !sameStrings(battlePayload.winnerPlayerIds.map(String), input.winners)) throw new Error('B06_BATTLE_EVENT_VP_SNAPSHOT_INVALID');
+  if (battleLogKind === 'standard') {
+    const breakdowns = Array.isArray(battlePayload.participantBreakdowns) ? battlePayload.participantBreakdowns as Array<Record<string, unknown>> : [];
+    const loggedParticipants = breakdowns.map((entry) => String(entry.playerId ?? ''));
+    const loggedLosers = loggedParticipants.filter((playerId) => !input.winners.includes(playerId));
+    if (loggedParticipants.some((id) => !id) || new Set(loggedParticipants).size !== loggedParticipants.length ||
+        !sameStrings(loggedParticipants, input.battleParticipantIds) || !sameStrings(loggedLosers, input.loserIds) ||
+        battlePayload.printedEventVpTotal !== eventVpTotal) throw new Error('B06_BATTLE_EVENT_VP_SNAPSHOT_INVALID');
+  } else {
+    const loggedLosers = Array.isArray(battlePayload.loserIds) ? battlePayload.loserIds.map(String) : [];
+    returnSilenceSourceCardId = typeof battlePayload.sourceCardId === 'string' ? battlePayload.sourceCardId : undefined;
+    const source = returnSilenceSourceCardId ? state.cards.find((card) => card.instanceId === returnSilenceSourceCardId) : undefined;
+    if (battlePayload.tied !== false || !sameStringSet(loggedLosers, input.loserIds) ||
+        !sameStringSet([...input.winners, ...loggedLosers], input.battleParticipantIds) || !returnSilenceSourceCardId ||
+        !source || source.zone !== 'removed_from_game') throw new Error('B06_BATTLE_EVENT_VP_SNAPSHOT_INVALID');
   }
   const snapshots = runtime.b06BattleEventVpSnapshots ??= {};
   const placementFacts = placements.map((placement) => ({ eventCardId: placement.eventCardId, locationId: placement.locationId,
     ...(placement.ruleInstanceId ? { ruleInstanceId: placement.ruleInstanceId } : {}), victoryPoints: Number(placement.victoryPoints) }));
   const next = { battlePhaseResolutionId: input.battlePhaseResolutionId, battleId: input.battleId, resultId: input.resultId,
     battlefieldId: input.battlefieldId, round: state.round.roundNumber, battleParticipantIds: [...input.battleParticipantIds],
-    winners: [...input.winners], loserIds: [...input.loserIds], eventVpTotal, placementFacts, battleLogIndex, snapshotLogIndex: state.log.length };
+    winners: [...input.winners], loserIds: [...input.loserIds], eventVpTotal, placementFacts, battleLogKind,
+    ...(returnSilenceSourceCardId ? { returnSilenceSourceCardId } : {}), battleLogIndex, snapshotLogIndex: state.log.length };
   const prior = snapshots[input.resultId];
   if (prior && JSON.stringify(prior) !== JSON.stringify(next)) throw new Error('B06_BATTLE_EVENT_VP_SNAPSHOT_COLLISION');
   state.log.push({ type: 'b06_battle_event_vp_snapshot', message: input.resultId, payload: {
     battlePhaseResolutionId: input.battlePhaseResolutionId, battleId: input.battleId, resultId: input.resultId, battlefieldId: input.battlefieldId,
     round: state.round.roundNumber, battleParticipantIds: [...input.battleParticipantIds], winners: [...input.winners], loserIds: [...input.loserIds],
-    eventVpTotal, placementFacts: structuredClone(placementFacts), battleLogIndex } });
+    eventVpTotal, placementFacts: structuredClone(placementFacts), battleLogKind,
+    ...(returnSilenceSourceCardId ? { returnSilenceSourceCardId } : {}), battleLogIndex } });
   snapshots[input.resultId] = next;
 }
 
@@ -198,11 +215,22 @@ function validatedBattleSnapshot(state: GameState, event: AbilityEvent | undefin
   if (JSON.stringify(currentPlacementFacts) !== JSON.stringify(snapshot.placementFacts)) throw new Error('B06_BATTLE_EVENT_VP_STATE_INVALID');
   const battleLog = state.log[snapshot.battleLogIndex]; const battlePayload = battleLog?.payload ?? {};
   const snapshotLog = state.log[snapshot.snapshotLogIndex]; const snapshotPayload = snapshotLog?.payload ?? {};
-  if (battleLog?.type !== 'battle_resolved' || battleLog.message !== `battlefield:${snapshot.battlefieldId}` ||
-      !Array.isArray(battlePayload.winnerPlayerIds) || !sameStrings(battlePayload.winnerPlayerIds.map(String), snapshot.winners) || battlePayload.printedEventVpTotal !== snapshot.eventVpTotal ||
+  const standardBattleLogValid = snapshot.battleLogKind === 'standard' && !snapshot.returnSilenceSourceCardId &&
+    battleLog?.type === 'battle_resolved' && battleLog.message === `battlefield:${snapshot.battlefieldId}` &&
+    Array.isArray(battlePayload.winnerPlayerIds) && sameStrings(battlePayload.winnerPlayerIds.map(String), snapshot.winners) &&
+    battlePayload.printedEventVpTotal === snapshot.eventVpTotal;
+  const returnSilenceSource = snapshot.returnSilenceSourceCardId
+    ? state.cards.find((card) => card.instanceId === snapshot.returnSilenceSourceCardId) : undefined;
+  const returnSilenceBattleLogValid = snapshot.battleLogKind === 'return_silence' && !!snapshot.returnSilenceSourceCardId &&
+    battleLog?.type === 'battle_resolved' && battleLog.message === `return_silence:${snapshot.battlefieldId}` &&
+    Array.isArray(battlePayload.winnerPlayerIds) && sameStrings(battlePayload.winnerPlayerIds.map(String), snapshot.winners) &&
+    Array.isArray(battlePayload.loserIds) && sameStringSet(battlePayload.loserIds.map(String), snapshot.loserIds) &&
+    battlePayload.tied === false && battlePayload.sourceCardId === snapshot.returnSilenceSourceCardId && returnSilenceSource?.zone === 'removed_from_game';
+  if ((!standardBattleLogValid && !returnSilenceBattleLogValid) ||
       snapshotLog?.type !== 'b06_battle_event_vp_snapshot' || snapshotLog.message !== snapshot.resultId ||
       snapshotPayload.resultId !== snapshot.resultId || snapshotPayload.battleId !== snapshot.battleId || snapshotPayload.battlePhaseResolutionId !== snapshot.battlePhaseResolutionId ||
       snapshotPayload.battlefieldId !== snapshot.battlefieldId || snapshotPayload.round !== snapshot.round || snapshotPayload.eventVpTotal !== snapshot.eventVpTotal ||
+      snapshotPayload.battleLogKind !== snapshot.battleLogKind || snapshotPayload.returnSilenceSourceCardId !== snapshot.returnSilenceSourceCardId ||
       snapshotPayload.battleLogIndex !== snapshot.battleLogIndex || JSON.stringify(snapshotPayload.placementFacts) !== JSON.stringify(snapshot.placementFacts) ||
       JSON.stringify(snapshotPayload.battleParticipantIds) !== JSON.stringify(snapshot.battleParticipantIds) || JSON.stringify(snapshotPayload.winners) !== JSON.stringify(snapshot.winners) ||
       JSON.stringify(snapshotPayload.loserIds) !== JSON.stringify(snapshot.loserIds)) throw new Error('B06_BATTLE_EVENT_VP_STATE_INVALID');

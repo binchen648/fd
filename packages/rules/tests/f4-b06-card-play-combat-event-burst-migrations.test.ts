@@ -9,6 +9,7 @@ import { createSeededGameState } from '../src/tools/seeded-state';
 
 const MOZART = 'servant.mozart.skill.sc-mozart-2';
 const AMAKUSA = 'servant.amakusa.skill.sc-amakusa-1';
+const RETURN_SILENCE = 'master.olga-marie.skill.trismegistus-grief';
 const SHINTO = 'shinto';
 const MIYAMA = 'miyama_town';
 const E1 = 'event.b06.one';
@@ -24,8 +25,9 @@ function loaded(file: string) {
 function pack(): AbilityDefinitionPack {
   const mozart = loaded('data/authoring/servants/servant.mozart.json');
   const amakusa = loaded('data/authoring/servants/servant.amakusa.json');
+  const olga = loaded('data/authoring/masters/master.olga-marie.json');
   return {
-    cards: { ...mozart.cards, ...amakusa.cards },
+    cards: { ...mozart.cards, ...amakusa.cards, ...olga.cards },
     eventCatalog: {
       [E1]: { id: E1, tags: [], eventSetIds: ['b06'], printedReward: 2 },
       [E2]: { id: E2, tags: [], eventSetIds: ['b06'], printedReward: 6 },
@@ -222,6 +224,53 @@ describe('P3 F4 B06 card-play/combat/event-burst migration batch', () => {
     expect(queued.session.state.players.find((p) => p.id === 'p3')!.vp).toBe(Math.max(0, before - 2));
   });
 
+
+  it('Mozart accepts authoritative Return Silence through the MatchSession post-scoring producer', () => {
+    const state = setup([
+      physical('mozart-source', MOZART),
+      physical('return-silence-source', RETURN_SILENCE, 'p2', 'field'),
+    ], [{ locationId: MIYAMA as any, eventCardId: E1, victoryPoints: 2, visibility: { scope: 'public' } }]);
+    state.players.find((p) => p.id === 'p1')!.locationId = SHINTO as any;
+    state.players.find((p) => p.id === 'p2')!.locationId = MIYAMA as any;
+    state.players.find((p) => p.id === 'p3')!.locationId = MIYAMA as any;
+    rules.playAbilityCardBatch(state, 'p1', [{ cardInstanceId: 'mozart-source' }]);
+    state.abilityRuntime!.transformedReturnSilenceSourceCardIds = ['return-silence-source'];
+    state.round.activePhase = 'battle';
+    const resolved = rules.resolveBattlefield(state, { battlefieldId: MIYAMA as any, participants: [
+      { playerId: 'p2', totalPower: 1 }, { playerId: 'p3', totalPower: 99 },
+    ] }).nextState;
+    expect(resolved.log.findLast((entry) => entry.type === 'battle_resolved')?.message).toBe(`return_silence:${MIYAMA}`);
+    const battles = structuredClone(resolved.battleResults);
+    const priorLogLength = resolved.log.length;
+    const scored = rules.applyBattleScoring(resolved).nextState;
+    const session = bridgeSession(scored);
+    expect(() => session.queuePostScoringBattleEvents(battles, scored.log.slice(priorLogLength))).not.toThrow();
+    const snapshot = Object.values(session.state.abilityRuntime!.b06BattleEventVpSnapshots ?? {})[0]!;
+    expect(snapshot).toMatchObject({ battleLogKind: 'return_silence', returnSilenceSourceCardId: 'return-silence-source', eventVpTotal: 2 });
+    const before = session.state.players.find((p) => p.id === 'p3')!.vp;
+    session.flushPostScoringBattleEvents();
+    expect(session.state.players.find((p) => p.id === 'p3')!.vp).toBe(Math.max(0, before - 2));
+  });
+
+  it('Mozart accepts authoritative Return Silence through the core game-loop producer', () => {
+    const state = setup([
+      physical('mozart-source', MOZART),
+      physical('return-silence-source', RETURN_SILENCE, 'p2', 'field'),
+    ], [{ locationId: MIYAMA as any, eventCardId: E1, victoryPoints: 2, visibility: { scope: 'public' } }]);
+    state.players.find((p) => p.id === 'p1')!.locationId = SHINTO as any;
+    state.players.find((p) => p.id === 'p2')!.locationId = MIYAMA as any;
+    state.players.find((p) => p.id === 'p3')!.locationId = MIYAMA as any;
+    rules.playAbilityCardBatch(state, 'p1', [{ cardInstanceId: 'mozart-source' }]);
+    state.abilityRuntime!.transformedReturnSilenceSourceCardIds = ['return-silence-source'];
+    state.round.activePhase = 'battle';
+    const before = state.players.find((p) => p.id === 'p3')!.vp;
+    const next = rules.stepGameLoop(state).nextState;
+    expect(next.log.some((entry) => entry.type === 'battle_resolved' && entry.message === `return_silence:${MIYAMA}`)).toBe(true);
+    expect(Object.values(next.abilityRuntime!.b06BattleEventVpSnapshots ?? {})).toContainEqual(expect.objectContaining({
+      battleLogKind: 'return_silence', returnSilenceSourceCardId: 'return-silence-source', eventVpTotal: 2,
+    }));
+    expect(next.players.find((p) => p.id === 'p3')!.vp).toBe(Math.max(0, before - 2));
+  });
   it('Mozart does not leak its play-round arm into the next round', () => {
     const state = setup([physical('mozart-source', MOZART)], [
       { locationId: MIYAMA as any, eventCardId: E1, victoryPoints: 2, visibility: { scope: 'public' } },
