@@ -124,6 +124,26 @@ describe('P3 F4 B05 event/resource/lifecycle migration batch', () => {
     expect(state.abilityRuntime!.b05RoundCloseArms ?? []).toEqual([]);
   });
 
+  it('Kama valid trusted deployment arm survives transient entry cleanup and closes at round end', () => {
+    const state = setup([physical('kama-source', KAMA)], { p1: SHINTO, p2: MIYAMA });
+    state.players[0]!.vp = 2; state.players[1]!.vp = 3;
+    const rootId = `deploy:${state.round.roundNumber}:p2`;
+    rules.processAuthoritativeEntryAbilityEvent(state, {
+      id: rootId, type: 'after_player_deployed_to_battlefield', playerId: 'p2', locationId: MIYAMA,
+    });
+    expect(state.players[0]!.vp).toBe(3);
+    expect(state.players[1]!.vp).toBe(2);
+    expect(state.abilityRuntime!.trustedEntryEventSnapshots?.[rootId]).toBeUndefined();
+    expect(state.abilityRuntime!.b05TrustedDeploymentEntryRoots?.[rootId]).toMatchObject({
+      eventId: rootId, eventType: 'after_player_deployed_to_battlefield', playerId: 'p2', locationId: MIYAMA, round: state.round.roundNumber,
+    });
+    expect(state.abilityRuntime!.b05RoundCloseArms).toHaveLength(1);
+    rules.advanceAbilityPhase(state, 'round_end', state.round.roundNumber);
+    expect(state.cards.find((c) => c.instanceId === 'kama-source')!.zone).toBe('skill');
+    expect(state.abilityRuntime!.cardState['kama-source']).toMatchObject({ active: false, faceDown: false });
+    expect(state.abilityRuntime!.b05RoundCloseArms ?? []).toEqual([]);
+  });
+
   it('Kama can arm from a trusted deployment root and binds that arm to the trusted entry snapshot', () => {
     const state = setup([physical('kama-source', KAMA)], { p1: SHINTO, p2: MIYAMA });
     state.players[0]!.vp = 2; state.players[1]!.vp = 3;
@@ -146,6 +166,21 @@ describe('P3 F4 B05 event/resource/lifecycle migration batch', () => {
     state = rules.stepGameLoop(state, { action: { type: 'move', playerId: 'p2', to: MIYAMA, movementKind: 'normal' } }).nextState;
     state.abilityRuntime!.b05RoundCloseArms!.push(structuredClone(state.abilityRuntime!.b05RoundCloseArms![0]!));
     expect(() => rules.advanceAbilityPhase(state, 'round_end', state.round.roundNumber)).toThrow(/B05_ROUND_CLOSE_ARM_DUPLICATE/);
+  });
+
+  it('Kama movement arm rejects a substituted processed root whose receipt still names the original event', () => {
+    let state = setup([physical('kama-source', KAMA)], { p1: SHINTO, p2: WORKSHOP });
+    state.round.prioritySeat = state.players.find((p) => p.id === 'p2')!.seat;
+    state.players[1]!.mana = 20;
+    state = rules.stepGameLoop(state, { action: { type: 'move', playerId: 'p2', to: MIYAMA, movementKind: 'normal' } }).nextState;
+    const arm = state.abilityRuntime!.b05RoundCloseArms![0]!;
+    const originalRoot = arm.rootEventId;
+    const substitutedRoot = 'enter-location-999999';
+    state.abilityRuntime!.b04MovementEventReceipts![substitutedRoot] = structuredClone(state.abilityRuntime!.b04MovementEventReceipts![originalRoot]!);
+    state.abilityRuntime!.processedEvents.push(substitutedRoot);
+    arm.rootEventId = substitutedRoot;
+    expect(() => rules.advanceAbilityPhase(state, 'round_end', state.round.roundNumber)).toThrow(/B05_ROUND_CLOSE_ARM_STATE_INVALID/);
+    expect(state.abilityRuntime!.cardState['kama-source']).toMatchObject({ active: true, faceDown: false });
   });
 
   it('raises frozen material overlap exactly 161 -> 163 with both B05 identities exact-once', () => {

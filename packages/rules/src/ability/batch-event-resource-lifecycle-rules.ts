@@ -1,6 +1,7 @@
 import type { GameState } from '../schema/game';
 import { getEnabledLocations } from '../core/map-engine';
 import type { AbilityEvent, AuthoringAbility, RuleNode } from './types';
+import { validatedB04MovementReceipt } from './batch-event-source-power-rules';
 
 export const B05_CONTROLLER_MANA_BELOW_TWO_CONDITION = 'b05_controller_mana_below_two';
 export const B05_EVENT_LOCATION_IS_WORKSHOP_CONDITION = 'b05_event_location_is_workshop';
@@ -120,20 +121,28 @@ export function rememberB05DeploymentEntryReceipt(state: GameState, event: Abili
   const player = state.players.find((candidate) => candidate.id === event.playerId);
   if (!player || player.status !== 'active' || player.locationId !== event.locationId) throw new Error('B05_DEPLOYMENT_RECEIPT_INVALID');
   runtime.b05DeploymentEntryReceipts ??= {};
+  runtime.b05TrustedDeploymentEntryRoots ??= {};
   const next = { eventId: event.id, eventType: 'after_player_deployed_to_battlefield' as const, playerId: event.playerId, locationId: event.locationId, round: state.round.roundNumber };
   const prior = runtime.b05DeploymentEntryReceipts[event.id];
-  if (prior && JSON.stringify(prior) !== JSON.stringify(next)) throw new Error('B05_DEPLOYMENT_RECEIPT_COLLISION');
-  runtime.b05DeploymentEntryReceipts[event.id] = next;
+  const priorRoot = runtime.b05TrustedDeploymentEntryRoots[event.id];
+  if ((prior && JSON.stringify(prior) !== JSON.stringify(next)) || (priorRoot && JSON.stringify(priorRoot) !== JSON.stringify(next))) {
+    throw new Error('B05_DEPLOYMENT_RECEIPT_COLLISION');
+  }
+  runtime.b05DeploymentEntryReceipts[event.id] = { ...next };
+  runtime.b05TrustedDeploymentEntryRoots[event.id] = { ...next };
 }
 
 function validatedDeploymentReceipt(state: GameState, rootEventId: string) {
-  const receipt = state.abilityRuntime?.b05DeploymentEntryReceipts?.[rootEventId];
-  const trusted = state.abilityRuntime?.trustedEntryEventSnapshots?.[rootEventId];
-  if (!receipt || receipt.eventId !== rootEventId || receipt.eventType !== 'after_player_deployed_to_battlefield' ||
-      rootEventId !== `deploy:${receipt.round}:${receipt.playerId}` || !Number.isSafeInteger(receipt.round) || receipt.round < 1 ||
+  const runtime = state.abilityRuntime;
+  const receipt = runtime?.b05DeploymentEntryReceipts?.[rootEventId];
+  const trustedRoot = runtime?.b05TrustedDeploymentEntryRoots?.[rootEventId];
+  if (!receipt || !trustedRoot || receipt.eventId !== rootEventId || trustedRoot.eventId !== rootEventId ||
+      receipt.eventType !== 'after_player_deployed_to_battlefield' || trustedRoot.eventType !== receipt.eventType ||
+      rootEventId !== `deploy:${receipt.round}:${receipt.playerId}` || rootEventId !== `deploy:${trustedRoot.round}:${trustedRoot.playerId}` ||
+      !Number.isSafeInteger(receipt.round) || receipt.round < 1 || trustedRoot.round !== receipt.round ||
+      trustedRoot.playerId !== receipt.playerId || trustedRoot.locationId !== receipt.locationId ||
       !state.players.some((player) => player.id === receipt.playerId) || !isBattlefield(state, receipt.locationId) ||
-      !state.abilityRuntime?.processedEvents.includes(rootEventId) || !trusted || trusted.type !== receipt.eventType ||
-      trusted.playerId !== receipt.playerId || trusted.locationId !== receipt.locationId) throw new Error('B05_DEPLOYMENT_RECEIPT_STATE_INVALID');
+      !runtime?.processedEvents.includes(rootEventId)) throw new Error('B05_DEPLOYMENT_RECEIPT_STATE_INVALID');
   return receipt;
 }
 
@@ -171,8 +180,10 @@ function validateArm(state: GameState, arm: NonNullable<NonNullable<GameState['a
     throw new Error('B05_ROUND_CLOSE_ARM_STATE_INVALID');
   }
   if (arm.eventType === 'after_controller_enters_location') {
-    const receipt = state.abilityRuntime?.b04MovementEventReceipts?.[arm.rootEventId];
-    if (!receipt || receipt.playerId !== arm.eventPlayerId || receipt.toLocationId !== arm.eventLocationId || receipt.round !== arm.round) {
+    let receipt: ReturnType<typeof validatedB04MovementReceipt>;
+    try { receipt = validatedB04MovementReceipt(state, arm.rootEventId); }
+    catch { throw new Error('B05_ROUND_CLOSE_ARM_STATE_INVALID'); }
+    if (receipt.eventId !== arm.rootEventId || receipt.playerId !== arm.eventPlayerId || receipt.toLocationId !== arm.eventLocationId || receipt.round !== arm.round) {
       throw new Error('B05_ROUND_CLOSE_ARM_STATE_INVALID');
     }
   } else if (arm.eventType === 'after_player_deployed_to_battlefield') {

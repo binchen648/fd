@@ -54,3 +54,19 @@ Kama S2:
 Before fresh independent R, formal migration remains `165/944` with `779` remaining.
 
 Only an exact fresh `IMPLEMENTATION_ACCEPTED_CANDIDATE` for the final B05 Candidate plus A synchronization may award the two fresh identities, advancing formal migration exactly to `167/944` with `777` remaining. B05 is one batch Candidate and must not be split into per-skill reviews.
+
+## R1 Fresh Reviewer Finding Closure
+
+Fresh independent R on Candidate `10d0ea111817474bdf654d9a5f18844cae25b909` returned `IMPLEMENTATION_NEEDS_REVISION` with canonical evidence `https://github.com/binchen648/fd/pull/438#issuecomment-5791944734`. Both exact-scope blockers are closed together in the successor Candidate:
+
+- Deployment-origin round-close arms no longer depend on transaction-local `trustedEntryEventSnapshots` after dispatch. The authoritative deployment producer now persists an independent durable exact root fact alongside the B05 deployment receipt; round-end validation cross-checks root id/type/player/location/round, canonical deployment id, processed-event history, battlefield validity, and the independent durable root. A positive regression proves a valid trusted deployment survives transient snapshot cleanup and closes the source normally at authoritative `round_end`.
+- Movement-origin round-close arms now reuse the full accepted B04 persisted movement-receipt validator before accepting the arm root. The arm is bound to `receipt.eventId === arm.rootEventId` plus the authoritative movement log/map/round/distance invariants. A negative regression copies a legitimate receipt under a substituted processed root id and proves `round_end` fails closed without closing the source.
+
+R1 verification:
+- B05 focused: 1 file / 10 tests PASS.
+- Reviewer-targeted B05 + B04 + MatchSession: 3 files / 34 tests PASS.
+- affected B01-B05 + movement + game-loop + MatchSession + authoring + replay: 14 files / 143 tests PASS.
+- `npm run typecheck`: PASS.
+- `npm run content:validate`: PASS, 0 blocking issues.
+- `git diff --check`: PASS.
+- frozen material accounting remains `163/944`; formal migration remains `165/944` pending fresh independent R on the successor Candidate.

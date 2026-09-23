@@ -364,8 +364,10 @@ export interface AbilityRuntime {
   trustedCardPlaySnapshots?: Record<string, { eventId: string; playerId: PlayerId; sourceCardId: string; round: number; faceDown: boolean }>;
   /** F4 B04 round-bound source-card power bonuses installed by exact source-play triggers. */
   b04RoundSourcePowerBonuses?: Array<{ sourceCardId: string; sourceDefinitionId: string; controllerId: PlayerId; abilityId: string; rootEventId: string; round: number; amount: number }>;
-  /** F4 B05 server-authored deployment roots retained only while an exact persistent entry consumer exists. */
+  /** F4 B05 server-authored deployment receipts retained for exact persistent entry consumers. */
   b05DeploymentEntryReceipts?: Record<string, { eventId: string; eventType: 'after_player_deployed_to_battlefield'; playerId: PlayerId; locationId: string; round: number }>;
+  /** F4 B05 durable server-owned deployment root facts; independent of transaction-local trusted entry snapshots. */
+  b05TrustedDeploymentEntryRoots?: Record<string, { eventId: string; eventType: 'after_player_deployed_to_battlefield'; playerId: PlayerId; locationId: string; round: number }>;
   /** F4 B05 source-bound round-close arms installed only by exact trusted qualifying entry events. */
   b05RoundCloseArms?: Array<{ sourceCardId: string; sourceDefinitionId: string; controllerId: PlayerId; entryAbilityId: string; closeAbilityId: string; rootEventId: string; eventType: 'after_controller_enters_location' | 'after_player_deployed_to_battlefield'; eventPlayerId: PlayerId; eventLocationId: string; round: number }>;
   /** FB2-48 serialized frozen-battle opponent-power rewards awaiting owner choice. */
