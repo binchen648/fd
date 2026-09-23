@@ -67,6 +67,12 @@ import {
   isAcceptedEventPowerUncontestedWinRewardAbility,
   isEventPowerUncontestedWinRewardCandidate,
 } from './event-power-uncontested-win-reward';
+import {
+  BATCH_EVENT_BATTLEFIELD_EQUALS_CONTROLLER,
+  BATCH_EVENT_BATTLE_OPPONENT_COUNT_AT_LEAST,
+  isAcceptedBatchPassiveFamilyAbility,
+  isBatchPassiveFamilyCandidate,
+} from './batch-passive-card-rules';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -241,6 +247,8 @@ const supportedTypes = new Set([
   BASIC_STRENGTH_ATTACK_CONSTRAINT, SAME_LOCATION_OPPONENT_FACE_UP_SERVANT_SKILL_CONSTRAINT, SET_SELECTED_CARD_FACE_DOWN_EFFECT,
   // FB2-54 exact event-power / uncontested-win reward family; whole-envelope gated below.
   SOURCE_CARD_COMBAT_POWER_BONUS_EFFECT, EVENT_BATTLE_OPPONENT_COUNT_EQUALS_CONDITION,
+  // F4 B01 bounded passive/modifier batch vocabulary; whole-envelope gated below.
+  BATCH_EVENT_BATTLEFIELD_EQUALS_CONTROLLER, BATCH_EVENT_BATTLE_OPPONENT_COUNT_AT_LEAST, 'target_printed_base_power',
   // FB2-32 source-state conditions
   'source_active', 'source_owned',
   // FB2-33 event combat outcome conditions
@@ -396,6 +404,17 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (!path.startsWith('conditions')) issue(path, 'Event-location relation condition is supported only under ability conditions', abilityId);
         if (!isAcceptedEventLocationEqualsControllerCondition(n)) issue(path, 'Event-location relation condition must contain only type', abilityId);
       }
+      if (str(n.type) === BATCH_EVENT_BATTLEFIELD_EQUALS_CONTROLLER) {
+        if (!path.startsWith('conditions') || Object.keys(n).length !== 1) issue(path, 'Battlefield/controller relation requires exact condition shape', abilityId);
+      }
+      if (str(n.type) === BATCH_EVENT_BATTLE_OPPONENT_COUNT_AT_LEAST) {
+        if (!path.startsWith('conditions') || n.count !== 2 || !Object.keys(n).every((key) => ['type', 'count'].includes(key))) {
+          issue(path, 'Battle opponent-count condition requires literal count 2 and exact shape', abilityId);
+        }
+      }
+      if (str(n.type) === 'target_printed_base_power') {
+        if (!path.startsWith('ruleModifiers.value') || Object.keys(n).length !== 1) issue(path, 'Target printed-base-power metric is reserved to exact batch modifier value', abilityId);
+      }
       if (n.type === SOURCE_CARD_COMBAT_POWER_BONUS_EFFECT) {
         if (path !== 'effects[0]') issue(path, 'FB2-54 source-card combat-power bonus is supported only in the exact effect slot', abilityId);
         if (n.amount !== 2 || !Object.keys(n).every((key) => ['type', 'amount'].includes(key))) {
@@ -527,6 +546,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       const acceptedPaidCostCombatPower = isAcceptedRoundActiveAttackPaidCostCombatPowerAbility(a);
       const acceptedDeploymentDestinationReplacement = isAcceptedLowerVpLoneBattlefieldDeploymentAbility(a);
       const acceptedFaceUpCardsPerRound = isAcceptedStaticFaceUpCardsPerRoundAbility(a, 'authoring');
+      const acceptedBatchPassiveFamily = isAcceptedBatchPassiveFamilyAbility(a as unknown as AuthoringAbility);
       for (const m of nodes(a.ruleModifiers)) {
         const acceptedRewardModifier = acceptedStaticCombatRewardDistribution && m === nodes(a.ruleModifiers)[0];
         const acceptedPaidCostModifier = acceptedPaidCostCombatPower && m === nodes(a.ruleModifiers)[0];
@@ -544,9 +564,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
           (acceptedDeploymentModifier && m.rule === 'deployment_destinations') ||
           (acceptedSkillUseForbid !== undefined && m.rule === 'skill_use') ||
           (acceptedCardCloseForbid && m.rule === 'card_close') ||
-          (acceptedFaceUpPlayLimit && m.rule === 'face_up_cards_per_round');
+          (acceptedFaceUpPlayLimit && m.rule === 'face_up_cards_per_round') ||
+          (acceptedBatchPassiveFamily && ['skill_use', 'card_base_power', 'card_cost', 'card_play_with_others', 'defeat'].includes(str(m.rule)));
         if (!operationSupported || !ruleSupported) issue('ruleModifiers', 'Unmapped rule or operation', id);
-        if (m.rule === 'skill_use' && acceptedSkillUseForbid === undefined) issue('ruleModifiers', 'Unsupported skill-use forbid selector shape', id);
+        if (m.rule === 'skill_use' && acceptedSkillUseForbid === undefined && !acceptedBatchPassiveFamily) issue('ruleModifiers', 'Unsupported skill-use forbid selector shape', id);
         if (m.rule === 'card_close' && !acceptedCardCloseForbid) issue('ruleModifiers', 'Unsupported card-close forbid selector shape', id);
         if (m.rule === 'face_up_cards_per_round' && !acceptedFaceUpPlayLimit) issue('ruleModifiers', 'Unsupported face-up cards-per-round selector shape', id);
         if (m.rule === 'deployment_destinations' && !acceptedDeploymentModifier) issue('ruleModifiers', 'Unsupported deployment-destination replacement shape', id);
@@ -554,13 +575,13 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (m.rule === 'effect_prevention' && (m.operation !== 'ignore' || node(m.priority).tier !== 'explicit_exception')) issue('ruleModifiers.priority', 'Prevention exception requires explicit_exception', id);
         const ruleIsPlayException = m.operation === 'ignore' && ['situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least'].includes(str(m.rule));
         const ruleIsStaticException = m.operation === 'ignore' && m.rule === 'netherworld_protection';
-        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !acceptedRewardModifier && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
+        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !acceptedRewardModifier && !acceptedBatchPassiveFamily && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
         if (!acceptedPaidCostModifier) scan(m.value, 'ruleModifiers.value', id);
         scan(node(m.scope).constraints, 'ruleModifiers.scope.constraints', id);
         if (node(m.scope).object && !['source_card', 'this_card', 'attack_card', 'this_effect', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield', 'all_players'].includes(str(node(m.scope).object))) issue('ruleModifiers.scope.object', 'Unmapped modifier scope', id);
         if (node(m.scope).controller && !['self', 'controller', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield'].includes(str(node(m.scope).controller))) issue('ruleModifiers.scope.controller', 'Unmapped modifier controller', id);
         if (m.lifecycle && a.lifecycle && JSON.stringify(m.lifecycle) !== JSON.stringify(a.lifecycle) &&
-          !isAcceptedMagicResistanceIndependentModifierLifecycle(a, m) && !acceptedPaidCostModifier && !acceptedDeploymentModifier) {
+          !isAcceptedMagicResistanceIndependentModifierLifecycle(a, m) && !acceptedPaidCostModifier && !acceptedDeploymentModifier && !acceptedBatchPassiveFamily) {
           issue('ruleModifiers.lifecycle', 'Independent modifier lifecycles require a separate ongoing handler', id);
         }
       }
@@ -653,6 +674,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (isEventPowerUncontestedWinRewardCandidate(a as unknown as AuthoringAbility) &&
           !isAcceptedEventPowerUncontestedWinRewardAbility(a as unknown as AuthoringAbility, 'authoring')) {
         issue('eventPowerUncontestedWinReward.gateway', 'Unsupported FB2-54 event-power / uncontested-win reward semantic shape', id);
+      }
+      if (isBatchPassiveFamilyCandidate(a as unknown as AuthoringAbility) &&
+          !isAcceptedBatchPassiveFamilyAbility(a as unknown as AuthoringAbility)) {
+        issue('batchPassive.gateway', 'Unsupported F4 B01 passive/modifier semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;
