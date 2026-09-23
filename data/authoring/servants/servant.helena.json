@@ -129,6 +129,133 @@
           "skillUseForbidSelectors": "P3-R76/FB2-36"
         }
       }
+    },
+    {
+      "id": "servant.helena.skill.sc-helena-1",
+      "aliases": [
+        "sc_helena_1"
+      ],
+      "legacyId": "sc_helena_1",
+      "name": "奥尔科特上校",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.helena"
+      },
+      "printedText": "被动/行动阶段：从手牌打出一张力量基础攻击，若如此做，将一名你所在地点的对手技能区明置的一张从者技能暗置。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "colonel-olcott-action",
+          "kind": "phase_action",
+          "printedClause": "被动/行动阶段：从手牌打出一张力量基础攻击，若如此做，将一名你所在地点的对手技能区明置的一张从者技能暗置。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "strength_basic_attack",
+              "type": "card_instance",
+              "scope": {
+                "zone": "hand",
+                "controller": "self"
+              },
+              "constraints": [
+                {
+                  "type": "basic_strength_attack"
+                }
+              ],
+              "count": {
+                "min": 1,
+                "max": 1
+              }
+            },
+            {
+              "id": "opponent_servant_skill",
+              "type": "card_instance",
+              "scope": {
+                "zone": "skill",
+                "controller": "any"
+              },
+              "constraints": [
+                {
+                  "type": "same_location_opponent_face_up_servant_skill"
+                }
+              ],
+              "count": {
+                "min": 1,
+                "max": 1
+              }
+            }
+          ],
+          "effects": [
+            {
+              "type": "play_selected_cards",
+              "target": "strength_basic_attack"
+            },
+            {
+              "type": "set_selected_card_face_down",
+              "target": "opponent_servant_skill"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[31].abilities[0].printedClause",
+            "sha256": "abc76e38254ac8688fa7caef5392e28a7b8baa507479231db743a638e9f3fc52"
+          }
+        ],
+        "f1FullPrintedTextSha256": "abc76e38254ac8688fa7caef5392e28a7b8baa507479231db743a638e9f3fc52",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_helena_1",
+          "class": "Caster",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": 0,
+          "typeLabel": "被动",
+          "attributes": []
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is retained as evidence metadata only and does not override the final-rule servant skill-zone threshold."
+        },
+        "acceptedContracts": {
+          "basicStrengthOpponentServantSkillFaceDown": "P3-R112/FB2-53"
+        }
+      }
     }
   ]
 }

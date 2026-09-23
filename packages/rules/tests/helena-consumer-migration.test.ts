@@ -124,8 +124,9 @@ describe('P3 S R77 Helena consumer migration', () => {
         referenceMetadataCommit: 'b2f9fa15fba07c63530bbf4612b03b8b704755f9',
       },
     });
-    expect(raw.cards.map((card: any) => card.id)).toEqual([ID]);
-    const authored = raw.cards[0];
+    expect(raw.cards.filter((card: any) => card.id === ID)).toHaveLength(1);
+    const authored = raw.cards.find((card: any) => card.id === ID);
+    expect(authored).toBeDefined();
     expect(authored).toMatchObject({
       id: ID,
       aliases: ['sc_helena_3'],

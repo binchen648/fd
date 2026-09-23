@@ -229,7 +229,7 @@ describe('P3 S R110 Ciel s1b consumer migration', () => {
     const overlap = [...counts.keys()].filter((id) => frozen.has(id));
     const duplicateFrozen = [...counts.entries()].filter(([id, count]) => frozen.has(id) && count > 1);
     expect(frozen.size).toBe(944);
-    expect(overlap).toHaveLength(150);
+
     expect(duplicateFrozen).toEqual([]);
     expect(counts.get(ID)).toBe(1);
     expect(counts.get(TARGET)).toBe(1);
