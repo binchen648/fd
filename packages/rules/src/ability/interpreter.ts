@@ -108,7 +108,13 @@ import {
   installB04FirstMovementSourcePower, installB04RoundDouble, isAcceptedB04FirstMovementSourcePowerAbility, isAcceptedB04EventSourcePowerAbility,
   isAcceptedB04ControllerDefeatManaReleaseAbility, isAcceptedB04OpponentEntryManaDrainAbility, isAcceptedB04SourcePlayRoundDoubleAbility, isB04EventSourcePowerCandidate,
   rememberB04MovementReceipt,
-} from './batch-event-source-power-rules';
+} from './batch-event-source-power-rules';import {
+  B05_CONTROLLER_MANA_BELOW_TWO_CONDITION, B05_EVENT_LOCATION_IS_WORKSHOP_CONDITION, B05_OTHER_NON_WORKSHOP_BATTLEFIELD_ENTRY_CONDITION,
+  B05_DEPLOYMENT_RESOURCE_EXCHANGE_EFFECT, B05_TRANSFER_VP_ARM_ROUND_CLOSE_EFFECT, B05_SOURCE_TRIGGERED_THIS_ROUND_CONDITION, B05_CLOSE_TRIGGERED_SOURCE_EFFECT,
+  armB05RoundClose, b05OtherBattlefieldEntryTarget, b05SourceTriggeredThisRound, b05WorkshopDeploymentTarget, consumeB05RoundCloseArm,
+  isAcceptedB05EventResourceLifecycleAbility, isAcceptedB05LowManaCloseAbility, isAcceptedB05OtherBattlefieldVpTransferAbility,
+  isAcceptedB05RoundEndCloseAbility, isAcceptedB05WorkshopDeploymentExchangeAbility, isB05EventResourceLifecycleCandidate, rememberB05DeploymentEntryReceipt,
+} from './batch-event-resource-lifecycle-rules';
 import {
   advanceOpponentCloseToOneServerAuthority,
   clearOpponentCloseToOneServerAuthority,
@@ -973,7 +979,28 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'event_player_is_opponent': return eventPlayerRelationCondition(s, ctx, c);
     case 'event_round_victory_points_gain_crosses': return roundVpGainCrossingCondition(s, ctx, c);
     case 'source_active':
-    case 'source_owned': return sourceStateCondition(s, ctx, c);
+    case 'source_owned': return sourceStateCondition(s, ctx, c);    case B05_CONTROLLER_MANA_BELOW_TWO_CONDITION: {
+      const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      if (!isAcceptedB05LowManaCloseAbility(ability) || Object.keys(c).some((key) => key !== 'type')) reject('unsupported', 'Unsupported F4 B05 low-mana condition shape');
+      return p.mana < 2;
+    }
+    case B05_EVENT_LOCATION_IS_WORKSHOP_CONDITION: {
+      const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      if (!isAcceptedB05WorkshopDeploymentExchangeAbility(ability) || Object.keys(c).some((key) => key !== 'type')) reject('unsupported', 'Unsupported F4 B05 workshop-deployment condition shape');
+      return !!b05WorkshopDeploymentTarget(s, ctx.controllerId, ability, ctx.event);
+    }
+    case B05_OTHER_NON_WORKSHOP_BATTLEFIELD_ENTRY_CONDITION: {
+      const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      if (!isAcceptedB05OtherBattlefieldVpTransferAbility(ability) || Object.keys(c).some((key) => key !== 'type')) reject('unsupported', 'Unsupported F4 B05 other-battlefield entry condition shape');
+      try { return !!b05OtherBattlefieldEntryTarget(s, ctx.controllerId, ability, ctx.event); }
+      catch (error) { return reject('invalid_state', error instanceof Error ? error.message : 'F4 B05 entry provenance invalid'); }
+    }
+    case B05_SOURCE_TRIGGERED_THIS_ROUND_CONDITION: {
+      const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      if (!isAcceptedB05RoundEndCloseAbility(ability) || Object.keys(c).some((key) => key !== 'type')) reject('unsupported', 'Unsupported F4 B05 round-close condition shape');
+      try { return b05SourceTriggeredThisRound(s, ctx.controllerId, ctx.sourceCardId, ability); }
+      catch (error) { return reject('invalid_state', error instanceof Error ? error.message : 'F4 B05 round-close arm invalid'); }
+    }
     case B04_FIRST_MOVEMENT_CONDITION: {
       const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
       if (!isAcceptedB04FirstMovementSourcePowerAbility(ability) || Object.keys(c).some((key) => key !== 'type')) reject('unsupported', 'Unsupported F4 B04 first-movement condition shape');
@@ -1383,7 +1410,8 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
     if (!battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId)) continue;
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
       const b04DeploymentEntryAlias = event.type === 'after_player_deployed_to_battlefield' && isAcceptedB04OpponentEntryManaDrainAbility(a);
-      const matches = a.activation.trigger === event.type || b04DeploymentEntryAlias || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
+      const b05DeploymentEntryAlias = event.type === 'after_player_deployed_to_battlefield' && isAcceptedB05OtherBattlefieldVpTransferAbility(a);
+      const matches = a.activation.trigger === event.type || b04DeploymentEntryAlias || b05DeploymentEntryAlias || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
       if (event.type === 'while_active') {
         const transformed = runtime(s).transformedReturnSilenceSourceCardIds?.includes(c.instanceId) === true;
         const isSoulDragState = a.effects.some((effect) => effect.type === 'soul_drag_power_bonus');
@@ -2015,7 +2043,53 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       for (const playerId of b04SameLocationDefeatPlayerIds(s, ctx.controllerId, a, ctx.event)) grantMana(s, playerId, 3, { source: 'generic' });
       break;
     }
-    case SOURCE_CARD_COMBAT_POWER_BONUS_EFFECT: {
+    case B05_DEPLOYMENT_RESOURCE_EXCHANGE_EFFECT: {
+      if (!isAcceptedB05WorkshopDeploymentExchangeAbility(a) || Object.keys(effect).some((key) => key !== 'type')) reject('resolution_failed', 'Unsupported F4 B05 deployment-resource envelope');
+      let affectedId: string | undefined;
+      try { affectedId = b05WorkshopDeploymentTarget(s, ctx.controllerId, a, ctx.event); }
+      catch (error) { reject('invalid_state', error instanceof Error ? error.message : 'F4 B05 deployment provenance invalid'); }
+      if (!affectedId) reject('resolution_failed', 'F4 B05 deployment exchange lacks authoritative provenance');
+      grantMana(s, affectedId, 1, { source: 'generic' });
+      if (!Number.isSafeInteger(p.vp) || p.vp < 0 || !Number.isSafeInteger(p.mana) || p.mana < 0) reject('invalid_state', 'F4 B05 controller resources must be nonnegative safe integers');
+      const vpBefore = p.vp; const vpAfter = vpBefore + 2;
+      if (!Number.isSafeInteger(vpAfter)) reject('invalid_state', 'F4 B05 controller VP reward would exceed safe integer range');
+      p.vp = vpAfter; recordAuthoritativeVictoryPointChange(s, p.id, vpBefore, vpAfter, 'b05-deployment-vp');
+      p.mana = Math.max(0, p.mana - 3);
+      break;
+    }
+    case B05_TRANSFER_VP_ARM_ROUND_CLOSE_EFFECT: {
+      if (!isAcceptedB05OtherBattlefieldVpTransferAbility(a) || effect.amount !== 1 || Object.keys(effect).some((key) => !['type', 'amount'].includes(key))) reject('resolution_failed', 'Unsupported F4 B05 VP-transfer envelope');
+      let affectedId: string | undefined;
+      try { affectedId = b05OtherBattlefieldEntryTarget(s, ctx.controllerId, a, ctx.event); }
+      catch (error) { reject('invalid_state', error instanceof Error ? error.message : 'F4 B05 entry provenance invalid'); }
+      if (!affectedId) reject('resolution_failed', 'F4 B05 VP transfer lacks authoritative entry provenance');
+      const affected = player(s, affectedId);
+      if (![affected.vp, p.vp].every((value) => Number.isSafeInteger(value) && value >= 0)) reject('invalid_state', 'F4 B05 VP balances must be nonnegative safe integers');
+      const actual = Math.min(1, affected.vp);
+      if (actual > 0) {
+        const fromBefore = affected.vp; const toBefore = p.vp; const toAfter = toBefore + actual;
+        if (!Number.isSafeInteger(toAfter)) reject('invalid_state', 'F4 B05 VP transfer would exceed safe integer range');
+        affected.vp = fromBefore - actual; p.vp = toAfter;
+        recordAuthoritativeVictoryPointChange(s, affected.id, fromBefore, affected.vp, 'b05-transfer-vp-out');
+        recordAuthoritativeVictoryPointChange(s, p.id, toBefore, p.vp, 'b05-transfer-vp-in');
+      }
+      try { armB05RoundClose(s, ctx.controllerId, ctx.sourceCardId, a, ctx.event); }
+      catch (error) { reject('invalid_state', error instanceof Error ? error.message : 'F4 B05 round-close arm failed'); }
+      break;
+    }
+    case B05_CLOSE_TRIGGERED_SOURCE_EFFECT: {
+      if (!isAcceptedB05RoundEndCloseAbility(a) || Object.keys(effect).some((key) => key !== 'type')) reject('resolution_failed', 'Unsupported F4 B05 triggered-close envelope');
+      try {
+        if (!b05SourceTriggeredThisRound(s, ctx.controllerId, ctx.sourceCardId, a)) reject('resolution_failed', 'F4 B05 source was not armed this round');
+        if (isCardCloseForbidden(s, ctx.sourceCardId)) reject('resolution_failed', 'Close source card is forbidden by a live rule modifier.');
+        resolveExtendedEffect(s, ctx.controllerId, { type: 'close_source_card' }, { sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, selections: ctx.selections, ...(ctx.event ? { event: ctx.event } : {}) });
+        consumeB05RoundCloseArm(s, ctx.controllerId, ctx.sourceCardId, a);
+      } catch (error) {
+        if (error instanceof RuleRejection) throw error;
+        reject('invalid_state', error instanceof Error ? error.message : 'F4 B05 triggered close failed');
+      }
+      break;
+    }    case SOURCE_CARD_COMBAT_POWER_BONUS_EFFECT: {
       if (classifyAcceptedEventPowerUncontestedWinRewardAbility(a, 'compiled') !== 'opponent_entry_power' ||
           effect.amount !== 2 || Object.keys(effect).some((key) => !['type', 'amount'].includes(key)) ||
           !fb254EntryEventMatches(s, ctx, a)) {
@@ -4191,6 +4265,8 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   }
   if (isB04EventSourcePowerCandidate(a) && !isAcceptedB04EventSourcePowerAbility(a)) {
     reject('resolution_failed', 'Unsupported F4 B04 event/source-power semantic shape');
+  }  if (isB05EventResourceLifecycleCandidate(a) && !isAcceptedB05EventResourceLifecycleAbility(a)) {
+    reject('resolution_failed', 'Unsupported F4 B05 event/resource/lifecycle semantic shape');
   }
   if (isNextRoundSituationBenefitSuppressionCandidate(a) && !isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported next-round situation-benefit suppression semantic shape');
@@ -4431,6 +4507,16 @@ function processTrustedCardPlayEvent(s: GameState, event: AbilityEvent): void {
   processEvent(s, event);
 }
 
+function reconcileB05LowManaClosures(s: GameState): void {
+  for (const source of s.cards) {
+    if (!active(s, source.instanceId)) continue;
+    const controller = s.players.find((player) => player.id === source.controllerPlayerId);
+    if (!controller || controller.status !== 'active' || !Number.isSafeInteger(controller.mana) || controller.mana < 0 || controller.mana >= 2) continue;
+    const ability = definition(s, source.instanceId)?.abilities.find(isAcceptedB05LowManaCloseAbility);
+    if (!ability || isCardCloseForbidden(s, source.instanceId)) continue;
+    resolveEffect(s, context(s, source.instanceId, ability.id), ability.effects[0]!);
+  }
+}
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s); if (r.processedEvents.includes(event.id)) return;
   if (!event.id) reject('invalid_event', 'Events require stable ids');
@@ -4498,6 +4584,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
     for (const id of winners) processEvent(s, { ...event, id: `${event.id}:victory:${id}`, type: 'after_controller_gains_victory', playerId: id });
     for (const id of losers) processEvent(s, { ...event, id: `${event.id}:lose:${id}`, type: 'after_controller_loses_battle', playerId: id });
   }
+  reconcileB05LowManaClosures(s);
   checkFormulaTriggers(s);
 }
 /** Trusted backend event hook. Events are not part of AbilityCommand. */
@@ -4543,6 +4630,7 @@ export function processAuthoritativeEntryAbilityEvent(s: GameState, event: Abili
   if (runtime(s).processedEvents.includes(event.id)) return;
   const copy = structuredClone(s);
   delete runtime(copy).trustedEntryEventSnapshots;
+  try { rememberB05DeploymentEntryReceipt(copy, event); } catch (error) { reject('invalid_event', error instanceof Error ? error.message : 'F4 B05 deployment receipt failed'); }
   processTrustedFb254EntryEvent(copy, event);
   runtime(copy).revision++;
   Object.assign(s, copy);
@@ -5098,7 +5186,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
     }
     default: reject('illegal_action', 'Unsupported client command');
   }
-  cleanupOngoing(s); checkFormulaTriggers(s);
+  reconcileB05LowManaClosures(s); cleanupOngoing(s); checkFormulaTriggers(s);
 }
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
 function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false): void {
