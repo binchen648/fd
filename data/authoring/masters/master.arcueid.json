@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.arcueid",
+  "name": "爱尔奎特·布伦史塔德(御主)",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen F1 source-grounded semantics; Locked Reference supplies exact structured authoring and static metadata. F4 B02 adds only bounded identity-free source-owned passive/modifier execution."
+  },
+  "cards": [
+    {
+      "id": "master.arcueid.skill.s3",
+      "aliases": ["s3"],
+      "legacyId": "s3",
+      "name": "血之渴望",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.arcueid" },
+      "printedText": "你的基础攻击+1魔力消耗并+2威力。你无法使用【空想具现化】，回合结束时，你失去2点战果。",
+      "cardFace": { "typeLabel": "被动", "cost": 0, "basePower": 0, "attributes": [] },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "blood-thirst-basic-attacks",
+          "printedClause": "你的基础攻击+1魔力消耗并+2威力",
+          "kind": "passive",
+          "activation": {}, "conditions": [], "targets": [], "effects": [], "cost": [], "creates": [],
+          "ruleModifiers": [
+            {
+              "id": "blood-thirst-basic-cost", "printedClause": "你的基础攻击+1魔力消耗并+2威力",
+              "operation": "add", "rule": "card_cost",
+              "scope": { "subject": "controller", "cards": { "basic": true } }, "value": 1
+            },
+            {
+              "id": "blood-thirst-basic-power", "printedClause": "你的基础攻击+1魔力消耗并+2威力",
+              "operation": "add", "rule": "card_power",
+              "scope": { "subject": "controller", "cards": { "basic": true } }, "value": 2
+            }
+          ],
+          "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "blood-thirst-forbid-marble",
+          "printedClause": "你无法使用【空想具现化】",
+          "kind": "passive",
+          "activation": {}, "conditions": [], "targets": [], "effects": [], "cost": [], "creates": [],
+          "ruleModifiers": [
+            {
+              "id": "blood-thirst-forbid-marble", "printedClause": "你无法使用【空想具现化】",
+              "operation": "forbid", "rule": "skill_use",
+              "scope": { "subject": "controller", "skillDefinitionIds": ["master.arcueid.skill.s2"] }
+            }
+          ],
+          "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "blood-thirst-round-loss",
+          "printedClause": "回合结束时，你失去2点战果",
+          "kind": "forced_trigger",
+          "activation": { "trigger": "round_end" },
+          "conditions": [{ "type": "source_owned" }], "targets": [],
+          "effects": [{ "type": "adjust_victory_points", "player": "controller", "amount": -2 }],
+          "cost": [], "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1FullPrintedTextSha256": "ec1d31fc8a03410b65ebfb1d740a036a88908f6c4a603ab4ee312398c3c4eced",
+        "f1ClauseSources": [
+          { "sourceAbilityId": "blood-thirst-basic-attacks", "locator": "skillCards[4].abilities[0].printedClause", "sha256": "bc966891179694ca54403bcda1794b419e27b6764a115f639f6fc4cc36a44aec" },
+          { "sourceAbilityId": "blood-thirst-forbid-marble", "locator": "skillCards[4].abilities[1].printedClause", "sha256": "b2269b7e3a92724d14cd850c33cef96200c06dc1aa643f6ed386c5a163704d7a" },
+          { "sourceAbilityId": "blood-thirst-round-loss", "locator": "skillCards[4].abilities[2].printedClause", "sha256": "a09444dfc4fed4ad286034f9b8486780a2a61ce6c447d973a022956c05865025" }
+        ],
+        "f1SourceReferences": [
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/爱尔奎特·布伦史塔德(御主).png", "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)" },
+          { "kind": "legacy", "document": "legacy-content.json", "locator": "master/master.arcueid/s3" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "s3", "typeLabel": "被动", "cost": 0, "basePower": 0, "attributes": [], "initiallyOwned": false },
+        "candidateContract": "P3-F4-B02 source-owned passive/modifier family"
+      }
+    }
+  ]
+}

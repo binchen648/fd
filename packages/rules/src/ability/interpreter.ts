@@ -96,6 +96,7 @@ import {
   skillDefinitionForbiddenByOwnedDefinitionCardRule,
   trustedCrowdedBattleEventMatches,
 } from './batch-passive-card-rules';
+import { b02OwnedBasicAttackAdjustment, b02SkillDefinitionForbidden, b02SourceOwned, isAcceptedB02RoundEndVpLossAbility } from './batch-owned-passive-rules';
 import {
   advanceOpponentCloseToOneServerAuthority,
   clearOpponentCloseToOneServerAuthority,
@@ -580,9 +581,14 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
   const ownedDefinitionAdjustment = ownedDefinitionCardRuleAdjustment(s, sourceId);
+  const b02BasicAdjustment = b02OwnedBasicAttackAdjustment(s, sourceId);
   if (ownedDefinitionAdjustment.power !== 0) {
     result.value += ownedDefinitionAdjustment.power;
     result.lines.push({ label: 'active_source_owned_definition_base_power', value: result.value });
+  }
+  if (b02BasicAdjustment.power !== 0) {
+    result.value += b02BasicAdjustment.power;
+    result.lines.push({ label: 'owned_passive_basic_attack_power', value: result.value });
   }
   for (const modifier of ((source as unknown as { powerModifiers?: Array<Record<string, unknown>> }).powerModifiers ?? [])) {
     const value = Number(modifier.value ?? 0);
@@ -870,8 +876,10 @@ function sourceStateCondition(s: GameState, ctx: EffectContext, c: RuleNode): bo
   if (!isSourceStateCondition(c)) reject('unsupported', 'Unsupported source-state condition shape');
   const source = s.cards.find((candidate) => candidate.instanceId === ctx.sourceCardId);
   if (!source) return false;
-  return c.type === 'source_active'
-    ? active(s, source.instanceId)
+  if (c.type === 'source_active') return active(s, source.instanceId);
+  const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  return isAcceptedB02RoundEndVpLossAbility(ability)
+    ? b02SourceOwned(s, source.instanceId, ctx.controllerId)
     : source.ownerPlayerId === ctx.controllerId;
 }
 
@@ -1135,7 +1143,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   }
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const sourceDefinitionForForbid = definition(s, sourceId);
-  if (sourceDefinitionForForbid && skillDefinitionForbiddenByOwnedDefinitionCardRule(s, card(s, sourceId).controllerPlayerId, sourceDefinitionForForbid.id)) return false;
+  if (sourceDefinitionForForbid && (skillDefinitionForbiddenByOwnedDefinitionCardRule(s, card(s, sourceId).controllerPlayerId, sourceDefinitionForForbid.id) ||
+      b02SkillDefinitionForbidden(s, card(s, sourceId).controllerPlayerId, sourceDefinitionForForbid.id))) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
   if (activationPhase && activationPhase !== phase(s)) return false;
   if (definition(s, sourceId)?.cardType === 'command_spell' &&
@@ -1257,7 +1266,7 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
     str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && hasPlayRuleException(d, 'skill_zone_mana_at_least')));
   if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
   
-  const effectiveManaCost = Number(d.cardFace.cost ?? 0) + ownedDefinitionCardRuleAdjustment(s, sourceId).cost;
+  const effectiveManaCost = Number(d.cardFace.cost ?? 0) + ownedDefinitionCardRuleAdjustment(s, sourceId).cost + b02OwnedBasicAttackAdjustment(s, sourceId).cost;
   if (!Number.isSafeInteger(effectiveManaCost) || effectiveManaCost < 0) return 'invalid_cost';
   if (!ignoreManaCost && !faceDown && player(s, p).mana < effectiveManaCost) return 'insufficient_mana';
   const unconfirmed = d.abilities.find(a => ['unsupported', 'text_unconfirmed'].includes(a.execution.mode));
@@ -5009,7 +5018,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost);
     if (failure) reject(failure, 'Card cannot be played in this batch');
     const printedCost = Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0);
-    const paidMana = !waiveManaCost && !c.faceDown ? printedCost + ownedDefinitionCardRuleAdjustment(s, c.cardInstanceId).cost : 0;
+    const paidMana = !waiveManaCost && !c.faceDown ? printedCost + ownedDefinitionCardRuleAdjustment(s, c.cardInstanceId).cost + b02OwnedBasicAttackAdjustment(s, c.cardInstanceId).cost : 0;
     if (!Number.isSafeInteger(paidMana) || paidMana < 0) reject('invalid_cost', 'Card paid mana provenance must be a nonnegative safe integer');
     paidManaByCard.set(c.cardInstanceId, paidMana);
     cost += paidMana;

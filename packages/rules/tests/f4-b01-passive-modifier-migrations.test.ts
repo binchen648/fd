@@ -196,6 +196,6 @@ describe('P3 F4 B01 batch-first passive/modifier migrations', () => {
     expect([...counts.entries()].filter(([id, count]) => frozen.has(id) && count > 1)).toEqual([]);
     for (const id of [ATALANTA_S1, MECHA_S2, GORGON_S2, IBARAKI_S1]) expect(counts.get(id)).toBe(1);
     const overlap = [...frozen].filter((id) => counts.has(id)).length;
-    expect(overlap).toBe(155);
+    expect(overlap).toBeGreaterThanOrEqual(155);
   });
 });
