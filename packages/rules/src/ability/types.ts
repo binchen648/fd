@@ -126,6 +126,8 @@ export interface OngoingEffect {
   starts: 'immediate'; duration: string; startRound: number; expiresAtRound?: number;
   cleanup: string; ruleModifiers: RuleModifier[]; publicZones: string[]; sourceMustRemainActive?: boolean;
   policyKey?: string; sourceDefinitionIdAtInstall?: string; sourceValidityPolicyId?: string; installedRevision?: number;
+  /** FB2-54-only persisted authoritative entry root, cross-checked against canonical id + processed event history. */
+  fb254EntryRootEventId?: string;
 }
 export interface LifecycleTransition {
   transitionId: string; lifecycleId: string; kind: 'install' | 'source_invalidated';

@@ -63,3 +63,26 @@ Existing FB2-43 remains movement-only outside the exact FB2-54 parent. FB2-31 ev
 FB2-54 is zero-credit capability infrastructure. Formal migration remains **`156/944`**, with **`788`** remaining; material authoring overlap remains **`151/944`**.
 
 After exact fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, A must freshly reconstruct the complete frozen `servant.mechaeli.skill.sc-mechaeli-2` against that synchronized runtime. Dispatch singleton S only if the whole card is then mechanically zero-gap; otherwise dispatch only the minimum residual identity-free seam.
+
+## R1 Revision Closure
+
+Fresh independent R rejected exact Candidate `d53c8ac71c605f944a58dd3b907549813b646761` at canonical evidence https://github.com/binchen648/fd/pull/433#issuecomment-5787315627 for one bounded persisted-state invariant: a duplicated otherwise-valid FB2-54 source-power ongoing record could stack the same trusted entry root twice.
+
+The successor revision remains inside FB2-54 only:
+
+- source-power ongoing ids are now canonical encodings of `[rootEventId, physicalSourceCardId, abilityId]`;
+- the persisted FB2-54 root field must exact-match that canonical id and must name an event already present in server-owned `processedEvents`;
+- the physical source and ability embedded in the id must exact-match the ongoing record;
+- duplicate canonical root/source/ability records fail closed before power calculation;
+- FB2-54 root metadata is forbidden on unrelated ongoing policies;
+- no generic ledger/counter/power architecture or consumer identity route was added.
+
+Revision validation on the successor working tree:
+
+- FB2-54 + inherited FB2-31/33/43/51: **5 files / 53 tests PASS** (FB2-54 **16/16**), including exact duplicate-clone, root/id mismatch, and canonical forged-unprocessed-root rejection;
+- movement/session affected regressions: **5 files / 62 tests PASS**;
+- `npm run typecheck`: PASS;
+- official `npm run test:ci -- --maxWorkers=2`: **187 files / 1409 tests PASS**;
+- `git diff --check`: PASS.
+
+FB2-54 remains zero-credit. Formal migration remains `156/944`, remaining `788`; material overlap remains `151/944`.

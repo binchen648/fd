@@ -242,6 +242,30 @@ describe('P3-FB2-54 event power / uncontested-win reward family', () => {
     expect(() => sourcePower(state)).toThrow(/Malformed FB2-54/);
   });
 
+  it('fails closed when persisted state duplicates one trusted entry root for the same physical source ability', () => {
+    const state = setup([powerAbility()]);
+    rules.processAuthoritativeEntryAbilityEvent(state, entryEvent('enter-duplicate'));
+    expect(sourcePower(state)).toBe(7);
+    const ongoing = state.abilityRuntime!.ongoingEffects.find((entry) => entry.policyKey === rules.EVENT_POWER_SOURCE_BONUS_POLICY)!;
+    state.abilityRuntime!.ongoingEffects.push(structuredClone(ongoing));
+    expect(() => sourcePower(state)).toThrow(/Duplicate FB2-54 trusted entry root/);
+  });
+
+  it('fails closed when persisted root metadata and canonical id diverge or point at an unprocessed forged root', () => {
+    const mismatched = setup([powerAbility()]);
+    rules.processAuthoritativeEntryAbilityEvent(mismatched, entryEvent('enter-root'));
+    const ongoing = mismatched.abilityRuntime!.ongoingEffects.find((entry) => entry.policyKey === rules.EVENT_POWER_SOURCE_BONUS_POLICY)!;
+    ongoing.fb254EntryRootEventId = 'forged-root';
+    expect(() => sourcePower(mismatched)).toThrow(/Malformed FB2-54/);
+
+    const forged = setup([powerAbility()]);
+    rules.processAuthoritativeEntryAbilityEvent(forged, entryEvent('enter-root-2'));
+    const forgedOngoing = forged.abilityRuntime!.ongoingEffects.find((entry) => entry.policyKey === rules.EVENT_POWER_SOURCE_BONUS_POLICY)!;
+    forgedOngoing.fb254EntryRootEventId = 'never-processed';
+    forgedOngoing.id = `${rules.EVENT_POWER_SOURCE_BONUS_POLICY}:${JSON.stringify(['never-processed', SOURCE_ID, powerAbility().id])}`;
+    expect(() => sourcePower(forged)).toThrow(/Malformed FB2-54/);
+  });
+
   it('rewards exactly +4 through the authoritative VP path when the controller is the sole trusted battle participant and winner', () => {
     const state = setup([winAbility()]);
     state.players[0]!.vp = 2;

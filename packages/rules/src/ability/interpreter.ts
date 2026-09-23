@@ -475,11 +475,27 @@ function sourceBoundOngoingIsLive(s: GameState, ongoing: OngoingEffect): boolean
   if (!validity.supported) reject('resolution_failed', 'Unknown lifecycle source-validity policy');
   return validity.valid;
 }
+function fb254SourcePowerOngoingId(rootEventId: string, sourceCardId: string, abilityId: string): string {
+  return `${EVENT_POWER_SOURCE_BONUS_POLICY}:${JSON.stringify([rootEventId, sourceCardId, abilityId])}`;
+}
+function parseFb254SourcePowerOngoingId(id: string): [string, string, string] | undefined {
+  const prefix = `${EVENT_POWER_SOURCE_BONUS_POLICY}:`;
+  if (!id.startsWith(prefix)) return undefined;
+  try {
+    const parsed = JSON.parse(id.slice(prefix.length));
+    if (!Array.isArray(parsed) || parsed.length !== 3 || parsed.some((value) => typeof value !== 'string' || value.length === 0)) return undefined;
+    const tuple = parsed as [string, string, string];
+    return id === fb254SourcePowerOngoingId(tuple[0], tuple[1], tuple[2]) ? tuple : undefined;
+  } catch {
+    return undefined;
+  }
+}
 function assertFb254SourcePowerOngoingState(s: GameState, ongoing: OngoingEffect): void {
   if (ongoing.policyKey !== EVENT_POWER_SOURCE_BONUS_POLICY) return;
   const source = s.cards.find((candidate) => candidate.instanceId === ongoing.sourceCardId);
   const sourceDefinition = source ? runtime(s).pack.cards[source.definitionId] : undefined;
   const sourceAbility = sourceDefinition?.abilities.find((ability) => ability.id === ongoing.abilityId);
+  const rootIdentity = parseFb254SourcePowerOngoingId(ongoing.id);
   const modifier = ongoing.ruleModifiers[0];
   const definition = modifier?.definition ?? {};
   const scope = node(definition.scope);
@@ -491,6 +507,9 @@ function assertFb254SourcePowerOngoingState(s: GameState, ongoing: OngoingEffect
       ongoing.starts !== 'immediate' || ongoing.duration !== 'while_active' || ongoing.cleanup !== 'remain_active' ||
       ongoing.sourceMustRemainActive !== true || ongoing.expiresAtRound !== undefined ||
       !Number.isInteger(ongoing.installedRevision) || ongoing.installedRevision! < 0 ||
+      !rootIdentity || typeof ongoing.fb254EntryRootEventId !== 'string' || ongoing.fb254EntryRootEventId.length === 0 ||
+      rootIdentity[0] !== ongoing.fb254EntryRootEventId || rootIdentity[1] !== ongoing.sourceCardId || rootIdentity[2] !== ongoing.abilityId ||
+      !runtime(s).processedEvents.includes(ongoing.fb254EntryRootEventId) ||
       ongoing.publicZones.length !== 0 || ongoing.ruleModifiers.length !== 1 || !modifier ||
       modifier.sourceCardId !== ongoing.sourceCardId || modifier.controllerId !== ongoing.controllerId ||
       definitionKeys.length !== expectedDefinitionKeys.length || definitionKeys.some((key, index) => key !== expectedDefinitionKeys[index]) ||
@@ -500,11 +519,19 @@ function assertFb254SourcePowerOngoingState(s: GameState, ongoing: OngoingEffect
   }
 }
 function liveOngoing(s: GameState): OngoingEffect[] {
-  return runtime(s).ongoingEffects.filter((ongoing) => {
+  const seenFb254Roots = new Set<string>();
+  for (const ongoing of runtime(s).ongoingEffects) {
+    if (ongoing.policyKey !== EVENT_POWER_SOURCE_BONUS_POLICY && ongoing.fb254EntryRootEventId !== undefined) {
+      reject('invalid_state', 'FB2-54 entry-root metadata is forbidden on unrelated ongoing state');
+    }
     assertFb254SourcePowerOngoingState(s, ongoing);
-    return sourceBoundOngoingIsLive(s, ongoing) &&
-      (ongoing.expiresAtRound === undefined || s.round.roundNumber < ongoing.expiresAtRound);
-  });
+    if (ongoing.policyKey !== EVENT_POWER_SOURCE_BONUS_POLICY) continue;
+    if (seenFb254Roots.has(ongoing.id)) reject('invalid_state', 'Duplicate FB2-54 trusted entry root for source ability');
+    seenFb254Roots.add(ongoing.id);
+  }
+  return runtime(s).ongoingEffects.filter((ongoing) =>
+    sourceBoundOngoingIsLive(s, ongoing) &&
+    (ongoing.expiresAtRound === undefined || s.round.roundNumber < ongoing.expiresAtRound));
 }
 function modifierControllerApplies(s: GameState, modifierControllerId: string, source: CardInstance, scope: RuleNode): boolean {
   const scoped = str(scope.controller);
@@ -1872,11 +1899,12 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       const source = card(s, ctx.sourceCardId);
       const r = runtime(s);
       r.ongoingEffects.push({
-        id: `${EVENT_POWER_SOURCE_BONUS_POLICY}:${ctx.event!.id}:${source.instanceId}`,
+        id: fb254SourcePowerOngoingId(ctx.event!.id, source.instanceId, a.id),
         sourceCardId: source.instanceId, abilityId: a.id, controllerId: ctx.controllerId,
         starts: 'immediate', duration: 'while_active', startRound: s.round.roundNumber, cleanup: 'remain_active',
         sourceMustRemainActive: true, policyKey: EVENT_POWER_SOURCE_BONUS_POLICY,
         sourceDefinitionIdAtInstall: source.definitionId, installedRevision: r.revision,
+        fb254EntryRootEventId: ctx.event!.id,
         ruleModifiers: [{
           sourceCardId: source.instanceId, controllerId: ctx.controllerId,
           definition: { id: EVENT_POWER_SOURCE_BONUS_POLICY, operation: 'add', rule: 'card.currentPower', scope: { object: 'source_card' }, value: 2 },
