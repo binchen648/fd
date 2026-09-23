@@ -6110,3 +6110,12 @@ Read: `docs/reports/2026-09-23-p3-a-r114-helena-s1-migration-acceptance-synchron
 Result: synchronize formal fresh independent R `MIGRATION_ACCEPTED` for PR #432 exact Candidate `a0ae27c1ae45acdb48323e51bf61996f6b090207`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/432#issuecomment-5786688839`. Exact frozen accounting is `150/944` to `151/944`, exact +1 `servant.helena.skill.sc-helena-1`, zero removals and zero duplicate frozen ids; `servant.helena.skill.sc-helena-3` remains exactly once and semantically unchanged. The accepted route is synchronized FB2-53 plus the exact A-authorized historical-test compatibility edits, with no runtime/compiler/client/product/generated/pack/phase3 inventory widening.
 
 Formal project migration advances exactly one identity to **`156/944`**, with **`788`** remaining; material authoring overlap is **`151/944`**. PR #432 remains OPEN, unmerged and unretargeted. Next action is a fresh migration-credit-first current-baseline whole-card reconstruction; dispatch singleton S only for a true zero-gap card, otherwise dispatch only the minimum missing identity-free B2 capability.
+## TASK P3-FB2-54-EVENT-POWER-UNCONTESTED-WIN-REWARD
+
+Owner: Codex B2
+Status: `READY`
+Branch: `codex/b2-p3-fb2-54-event-power-uncontested-win-reward`
+Base: exact A dispatch Candidate on `codex/a-p3-fb2-54-event-power-uncontested-win-reward-dispatch`
+Read: `docs/reports/2026-09-23-p3-a-fb2-54-event-power-uncontested-win-reward-dispatch.md`
+
+Implement only the bounded identity-free FB2-54 family dispatched above: exact opponent-enter source-card +2 accumulation and exact authoritative uncontested controller-win +4 VP reward. Reuse accepted FB2-31/33/43/51 facts; reserve new vocabulary to the exact whole-family envelopes; fail closed on malformed/widened/provenance-mismatched state. No consumer authoring, generic metric/counter/flag engine, product/generated/client change, merge/retarget or migration credit. Formal migration remains `156/944`, `788` remaining; material overlap `151/944`.
