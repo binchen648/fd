@@ -98,6 +98,11 @@ import {
 } from './batch-passive-card-rules';
 import { b02OwnedBasicAttackAdjustment, b02SkillDefinitionForbidden, b02SourceOwned, isAcceptedB02RoundEndVpLossAbility } from './batch-owned-passive-rules';
 import {
+  B03_EVENT_COMBAT_HAS_ATTRIBUTE, B03_SCHEDULE_EFFECT, advanceB03RoundSchedules, armB03NextRoundCardPowerSchedule,
+  b03OpponentCardPowerSetZero, b03ScheduledCardPowerBonus, b03TrustedBattlefieldEqualsController, b03TrustedCombatHasAttribute,
+  isAcceptedB03CombatAttributeCloseAbility, isAcceptedB03ModifierLifecycleAbility, isB03ModifierLifecycleCandidate,
+} from './batch-modifier-lifecycle-rules';
+import {
   advanceOpponentCloseToOneServerAuthority,
   clearOpponentCloseToOneServerAuthority,
   copyOpponentCloseToOneServerAuthority,
@@ -599,10 +604,12 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     else reject('unsupported', `Unsupported card power modifier: ${str(modifier.kind)}`);
     result.lines.push({ label: str(modifier.sourceId) || str(modifier.id) || 'card_power_modifier', value: result.value });
   }
+  const scheduledB03Bonus = b03ScheduledCardPowerBonus(s, sourceId);
+  if (scheduledB03Bonus !== 0) { result.value += scheduledB03Bonus; result.lines.push({ label: 'f4_b03_scheduled_card_power', value: result.value }); }
   const modifiers = liveOngoing(s).flatMap(o => o.ruleModifiers).sort((a, b) =>
     Number(node(a.definition.priority).tier === 'explicit_exception') - Number(node(b.definition.priority).tier === 'explicit_exception'));
   for (const modifier of modifiers) {
-    const m = modifier.definition; const scope = node(m.scope); if (m.rule === 'effect_prevention' || m.rule === 'card_close') continue;
+    const m = modifier.definition; const scope = node(m.scope); if (m.rule === 'effect_prevention' || m.rule === 'card_close' || m.rule === 'movement_destinations') continue;
     if (!modifierControllerApplies(s, modifier.controllerId, source, scope)) continue;
     if (scope.object === 'source_card' && modifier.sourceCardId !== sourceId) continue;
     if (scope.object === 'attack_card' && !isAttack(d)) continue;
@@ -614,6 +621,7 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     else reject('unsupported', 'Unsupported power operation');
     result.lines.push({ label: str(m.printedClause) || str(m.id), value: result.value });
   }
+  if (b03OpponentCardPowerSetZero(s, sourceId)) { result.value = 0; result.lines.push({ label: 'f4_b03_opponent_card_power_set_zero', value: 0 }); }
   return result;
 }
 
@@ -959,11 +967,19 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'source_owned': return sourceStateCondition(s, ctx, c);
     case 'event_player_won_combat':
     case 'event_player_lost_combat': return eventCombatOutcomeCondition(s, ctx, c);
+    case B03_EVENT_COMBAT_HAS_ATTRIBUTE: {
+      const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      if (!isAcceptedB03CombatAttributeCloseAbility(ability) || c.attribute !== '魔术' || Object.keys(c).some((key) => !['type', 'attribute'].includes(key))) {
+        return reject('unsupported', 'Unsupported F4 B03 combat-attribute condition shape');
+      }
+      return b03TrustedCombatHasAttribute(s, ctx.event, '魔术');
+    }
     case 'event_location_equals_controller': {
       if (!isAcceptedEventLocationEqualsControllerCondition(c)) {
         return reject('unsupported', 'Unsupported event-location relation condition shape');
       }
       const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      if (isAcceptedB03CombatAttributeCloseAbility(ability)) return b03TrustedBattlefieldEqualsController(s, ctx.controllerId, ctx.event);
       return isAcceptedEventPowerUncontestedWinRewardAbility(ability, 'compiled')
         ? fb254LocationCondition(s, ctx, ability)
         : eventLocationEqualsController(s, ctx.controllerId, ctx.event);
@@ -1946,6 +1962,11 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
         type: 'card_set_face_down', playerId: target.controllerPlayerId, controllerId: ctx.controllerId,
         sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: target.instanceId,
       });
+      break;
+    }
+    case B03_SCHEDULE_EFFECT: {
+      if (!isAcceptedB03ModifierLifecycleAbility(a) || !isB03ModifierLifecycleCandidate(a)) reject('resolution_failed', 'Unsupported F4 B03 schedule parent');
+      armB03NextRoundCardPowerSchedule(s, ctx.sourceCardId, ctx.controllerId, a, effect);
       break;
     }
     case SOURCE_CARD_COMBAT_POWER_BONUS_EFFECT: {
@@ -4121,6 +4142,9 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isEventPowerUncontestedWinRewardCandidate(a) && !isAcceptedEventPowerUncontestedWinRewardAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported FB2-54 event-power / uncontested-win reward semantic shape');
   }
+  if (isB03ModifierLifecycleCandidate(a) && !isAcceptedB03ModifierLifecycleAbility(a)) {
+    reject('resolution_failed', 'Unsupported F4 B03 modifier/lifecycle semantic shape');
+  }
   if (isNextRoundSituationBenefitSuppressionCandidate(a) && !isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported next-round situation-benefit suppression semantic shape');
   }
@@ -4493,7 +4517,9 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
     runtime(copy).roundPositiveVictoryPointGain = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, faceUpCardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
   }
-  copy.round.activePhase = next; copy.round.roundNumber = round; cleanupOngoing(copy);
+  copy.round.activePhase = next; copy.round.roundNumber = round;
+  if (round > s.round.roundNumber) advanceB03RoundSchedules(copy, round);
+  cleanupOngoing(copy);
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
   processEvent(copy, { id: nextId(copy, 'phase'), type }); runtime(copy).revision++; Object.assign(s, copy);
 }

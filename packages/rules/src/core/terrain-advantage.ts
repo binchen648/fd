@@ -1,6 +1,7 @@
 import type { GameState } from '../schema/game';
 import type { LocationId } from '../schema/location';
 import { getLocationById } from './map-engine';
+import { b03DeploymentAdvantageBonus } from '../ability/batch-modifier-lifecycle-rules';
 
 function modeState(state: GameState): Record<string, unknown> {
   return (state as unknown as { modeState?: Record<string, unknown> }).modeState ?? {};
@@ -79,7 +80,9 @@ export function terrainBonusAt(
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   if (!location?.terrainBonuses?.length || isTerrainSuppressedByAuthoredDuel(state, battlefieldId, playerId)) return undefined;
   const baseValue = location.terrainBonuses[terrainSlotIndex];
-  return typeof baseValue === 'number' ? baseValue * terrainMultiplierForPlayer(state, playerId) : undefined;
+  return typeof baseValue === 'number'
+    ? (baseValue + b03DeploymentAdvantageBonus(state, playerId)) * terrainMultiplierForPlayer(state, playerId)
+    : undefined;
 }
 
 export function currentDeploymentBonus(state: GameState, playerId: string): number {
@@ -88,6 +91,8 @@ export function currentDeploymentBonus(state: GameState, playerId: string): numb
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   if (!location?.tags.includes('battlefield')) return 0;
   const terrainSlotIndex = assignedTerrainSlotIndex(state, battlefieldId, playerId);
-  if (terrainSlotIndex === undefined) return 0;
+  if (terrainSlotIndex === undefined) {
+    return b03DeploymentAdvantageBonus(state, playerId) * terrainMultiplierForPlayer(state, playerId);
+  }
   return terrainBonusAt(state, battlefieldId, playerId, terrainSlotIndex) ?? 0;
 }

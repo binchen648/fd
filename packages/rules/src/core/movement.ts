@@ -3,6 +3,7 @@ import type { LocationId, MapDefinition, MatchLocationConfig } from "../schema/l
 
 import { canOccupyLocation, getLocationById } from "./map-engine";
 import { movementLockedByPersistentRule, rulerSealMovementLocked } from "./rule-overrides";
+import { b03WorkshopExitForbidden } from '../ability/batch-modifier-lifecycle-rules';
 
 const STARTING_LOCATION_BY_SEAT: Record<number, LocationId> = {
   1: "miyama_town",
@@ -96,7 +97,7 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
     return failure(state, "not_in_action_phase");
   }
 
-  if ((movementLockedByPersistentRule(state, player.id) || rulerSealMovementLocked(state, player.id)) && input.ignoreCardMovementRestrictions !== true) {
+  if ((movementLockedByPersistentRule(state, player.id) || rulerSealMovementLocked(state, player.id) || b03WorkshopExitForbidden(state, player.id)) && input.ignoreCardMovementRestrictions !== true) {
     return failure(state, "movement_locked");
   }
   if (input.movementKind === "normal" && isPlayerEngaged(state, player.id)) {

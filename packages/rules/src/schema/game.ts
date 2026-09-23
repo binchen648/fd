@@ -154,6 +154,8 @@ export interface BattleResultState {
   vpAdjustments?: VpAdjustment[];
   militaryAdjustments: BattleAdjustment[];
   participantBreakdowns: BattleParticipantBreakdown[];
+  /** Server-derived attack attributes frozen at battle resolution for exact post-scoring consumers. */
+  participantAttackAttributes?: Record<string, string[]>;
 }
 
 export interface ScoringReasonBreakdown {

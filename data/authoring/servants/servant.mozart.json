@@ -145,6 +145,228 @@
           "deploymentReward": "P3-R19/FB2-02"
         }
       }
+    },
+    {
+      "id": "servant.mozart.skill.sc-mozart-1",
+      "aliases": [
+        "sc_mozart_1"
+      ],
+      "legacyId": "sc_mozart_1",
+      "name": "小夜曲",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.mozart"
+      },
+      "printedText": "【真名解放】\n摇篮曲-行动阶段：其他玩家本回合不能离开【魔术工房】。\n行动阶段：下一回合【献给死神的安魂曲】获得威力+3。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 4,
+        "basePower": 4
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 4
+        }
+      ],
+      "abilities": [
+        {
+          "id": "lullaby-lock-workshop",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：其他玩家本回合不能离开【魔术工房】。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [
+            {
+              "id": "opponents-cannot-leave-workshop",
+              "printedClause": "其他玩家本回合不能离开【魔术工房】。",
+              "operation": "forbid",
+              "rule": "movement_destinations",
+              "scope": {
+                "subject": "opponents",
+                "fromLocationIds": [
+                  "magic_workshop"
+                ]
+              },
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          },
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "serenade-arm-next-round-requiem",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：下一回合【献给死神的安魂曲】获得威力+3。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "schedule_effect",
+              "abilityId": "serenade-next-round-requiem-boost",
+              "triggerEventType": "round.started",
+              "triggerRoundOffset": 1
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "serenade-next-round-requiem-boost",
+          "kind": "passive",
+          "printedClause": "下一回合【献给死神的安魂曲】获得威力+3。",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [
+            {
+              "id": "dies-irae-plus-three",
+              "printedClause": "下一回合【献给死神的安魂曲】获得威力+3。",
+              "operation": "add",
+              "rule": "card_power",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "definitionIds": [
+                    "servant.mozart.skill.sc-mozart-2",
+                    "card.skill.servant.mozart.skill.sc-mozart-2"
+                  ]
+                }
+              },
+              "value": 3,
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          },
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "莫扎特.htm",
+            "locator": "从者/魔术师/英文版/莫扎特.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/莫扎特.png",
+            "locator": "servant.mozart/莫扎特"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[62].abilities[0].printedClause",
+            "sha256": "8ec7ef41db2b42eadd9013f446716244a303d29e1adcfb7daee35d0adbb7809f"
+          },
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[62].abilities[1].printedClause",
+            "sha256": "192d19b3efd2030d6e28b46ef1dfd06f9b0e8cd4d45b3e5b0cbd26522f801085"
+          },
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[62].abilities[2].printedClause",
+            "sha256": "1f8715720114bd77fd897009e7db293c5b861139531109b4bc0849a9abdd7451"
+          }
+        ],
+        "f1FullPrintedTextSha256": "b7a4cb8c7bbb44e04a764b975747f59a54b5ad52c40ebf35792388b7c789419c",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_mozart_1",
+          "class": "Caster",
+          "cost": 4,
+          "basePower": 4,
+          "legacyRequirement": 4,
+          "typeLabel": "魔术",
+          "attributes": [
+            "魔术"
+          ]
+        },
+        "acceptedContracts": {
+          "batch": "P3-F4-B03",
+          "movementLock": "F4-B03 exact this-round movement-destination forbid",
+          "schedule": "F4-B03 exact next-round card-power schedule",
+          "scheduledPower": "F4-B03 exact this-round definition-scoped +3"
+        }
+      }
     }
   ]
 }

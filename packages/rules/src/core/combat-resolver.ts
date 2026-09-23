@@ -20,7 +20,7 @@ import { logicalDayForPlayer } from './rule-overrides';
 import { situationBenefitsSuppressedForPlayer } from '../ability/next-round-situation-benefit-suppression';
 import { controllerHasActiveDefeatIgnore } from '../ability/batch-passive-card-rules';
 import { b02LowestVictoryCombatPowerAdjustment } from '../ability/batch-owned-passive-rules';
-import { assignedTerrainSlotIndex, hasRemoteOperationBonus, terrainBonusAt } from './terrain-advantage';
+import { assignedTerrainSlotIndex, currentDeploymentBonus, hasRemoteOperationBonus, terrainBonusAt } from './terrain-advantage';
 
 export interface CombatParticipantInput {
   playerId: string;
@@ -163,7 +163,12 @@ function getTerrainBreakdowns(
   participant: CombatParticipantInput,
 ): BattleModifierBreakdown[] {
   if (participant.terrainSlotIndex === undefined) {
-    return [];
+    const value = currentDeploymentBonus(state, participant.playerId);
+    if (value === 0) return [];
+    return [{
+      source: 'skill', label: 'f4_b03_deployment_advantage', value,
+      payload: { kind: 'modifier', sourceType: 'skill', sourceId: 'f4_b03_deployment_advantage', targetTag: 'terrain' },
+    }];
   }
   const value = terrainBonusAt(state, battlefieldId, participant.playerId, participant.terrainSlotIndex);
   if (value === undefined) {
@@ -466,6 +471,7 @@ function buildBattleResultFromRanked(
   ranked: BattleParticipantBreakdown[],
   presenceConcealmentDefeatedPlayerIds: string[] = [],
   preBattleDefeatedPlayerIds: string[] = [],
+  participantAttackAttributes: Record<string, string[]> = {},
 ): GameState["battleResults"][number] | null {
   if (!ranked.length) return null;
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
@@ -533,6 +539,7 @@ function buildBattleResultFromRanked(
       return { playerId: participant.playerId, delta: Object.is(delta, -0) ? 0 : delta };
     }),
     participantBreakdowns: ranked,
+    participantAttackAttributes: Object.fromEntries(ranked.map((participant) => [participant.playerId, [...new Set(participantAttackAttributes[participant.playerId] ?? [])]])),
   };
 }
 
@@ -615,6 +622,7 @@ export function resolveBattlefield(
       competitionVpPool: 0,
       militaryAdjustments: loserIds.map((playerId) => ({ playerId, delta: -8 })),
       participantBreakdowns: ranked,
+      participantAttackAttributes: Object.fromEntries(participants.map((participant) => [participant.playerId, [...new Set(participant.attackTags ?? [])]])),
     };
     const nextState: GameState = {
       ...state,
@@ -726,7 +734,8 @@ export function resolveBattlefield(
   const defeatedPreBattleTargets = preBattleTargets.filter((playerId) => !ignoredPreBattleTargets.includes(playerId));
 
   const battleResult = buildBattleResultFromRanked(
-    settlementState, input.battlefieldId, ranked, defeatedPresenceTargets, defeatedPreBattleTargets);
+    settlementState, input.battlefieldId, ranked, defeatedPresenceTargets, defeatedPreBattleTargets,
+    Object.fromEntries(participants.map((participant) => [participant.playerId, [...new Set(participant.attackTags ?? [])]])));
   const nextBattleResults = battleResult
     ? settlementState.battleResults.concat(battleResult)
     : settlementState.battleResults;

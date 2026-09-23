@@ -20,6 +20,7 @@ import { resolveEffectsForWindow } from "./effect-resolver";
 import { getEnabledLocations } from "./map-engine";
 import { advanceAbilityPhase, processAbilityEvent, processAbilitySystemEvent, recordAuthoritativeVictoryPointChange } from '../ability/interpreter';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from '../ability/battle-terminal';
+import { rememberB03BattleAttributeSnapshot } from '../ability/batch-modifier-lifecycle-rules';
 
 function hasPendingAbilityResolution(state: GameState): boolean {
   return !!state.abilityRuntime && (!!state.abilityRuntime.pendingDecision || state.abilityRuntime.responseWindows.length > 0 || state.abilityRuntime.hostRequests.length > 0);
@@ -311,6 +312,9 @@ function queuePostScoringBattleResultEvents(
     const loserIds = battleResultLoserIds(result);
     const participants = result.participantBreakdowns.map((participant) => participant.playerId);
     battleParticipantIds.push(...participants);
+    if (result.participantAttackAttributes) {
+      rememberB03BattleAttributeSnapshot(state, battlePhaseResolutionId, battleId, resultId, result.battlefieldId, participants, participants, result.participantAttackAttributes);
+    }
     if (!runtime.processedEvents.includes(resultId) && !pending.some((event) => event.id === resultId)) {
       pending.push({
         id: resultId,

@@ -351,6 +351,11 @@ export interface AbilityRuntime {
   pendingPostBattleEvents?: AbilityEvent[];
   /** FB2-47 immutable first-seen authoritative root result facts, keyed by exact result id. */
   trustedBattleResultSnapshots?: Record<string, TrustedBattleResultSnapshot>;
+  /** F4 B03 server-authored combat-attribute facts frozen from resolved battle participants. */
+  b03BattleAttributeSnapshots?: Record<string, { battlePhaseResolutionId: string; battleId: string; resultId: string; battlefieldId: string; rootParticipantIds: PlayerId[]; participantIds: PlayerId[]; attributes: Record<PlayerId, string[]> }>;
+  /** F4 B03 next-round card-power schedule state. */
+  pendingB03CardPowerBoosts?: Array<{ controllerId: PlayerId; sourceCardId: string; sourceDefinitionId: string; abilityId: string; targetAbilityId: string; armedRound: number; dueRound: number }>;
+  activeB03CardPowerBoosts?: Array<{ controllerId: PlayerId; sourceCardId: string; sourceDefinitionId: string; armAbilityId: string; targetAbilityId: string; round: number; definitionIds: string[]; amount: number }>;
   /** FB2-48 serialized frozen-battle opponent-power rewards awaiting owner choice. */
   pendingCombatOpponentPowerVpRewards?: PendingCombatOpponentPowerVpReward[];
   /** FB2-49 serialized same-battlefield opponent keep-one card decisions. */

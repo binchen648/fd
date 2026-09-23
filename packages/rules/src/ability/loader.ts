@@ -78,6 +78,10 @@ import {
   isAcceptedB02OwnedPassiveAbility,
   isB02OwnedPassiveCandidate,
 } from './batch-owned-passive-rules';
+import {
+  B03_EVENT_COMBAT_HAS_ATTRIBUTE, B03_SCHEDULE_EFFECT,
+  isAcceptedB03ModifierLifecycleAbility, isB03ModifierLifecycleCandidate,
+} from './batch-modifier-lifecycle-rules';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -256,6 +260,8 @@ const supportedTypes = new Set([
   BATCH_EVENT_BATTLEFIELD_EQUALS_CONTROLLER, BATCH_EVENT_BATTLE_OPPONENT_COUNT_AT_LEAST, 'target_printed_base_power',
   // F4 B02 source-owned passive/modifier batch vocabulary; whole-envelope gated below.
   B02_VICTORY_POINTS_IS_LOWEST,
+  // F4 B03 bounded modifier/lifecycle batch vocabulary; whole-envelope gated below.
+  B03_SCHEDULE_EFFECT, B03_EVENT_COMBAT_HAS_ATTRIBUTE,
   // FB2-32 source-state conditions
   'source_active', 'source_owned',
   // FB2-33 event combat outcome conditions
@@ -359,7 +365,11 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         : n.type === SITUATION_SUPPRESSION_LUCK_PREDICATE
           ? ['type', 'definitionIds', 'zones', 'activeOnly', 'face']
           : [];
-      for (const key of Object.keys(n)) if (!mechanicKeys.has(key) && !fb252Keys.includes(key)) issue(`${path}.${key}`, 'Unmapped mechanic field', abilityId);
+      const rawAbility = abilityId ? nodes(raw.abilities).find((candidate) => str(candidate.id) === abilityId) : undefined;
+      const b03ExtraKeys = rawAbility && isB03ModifierLifecycleCandidate(rawAbility as unknown as AuthoringAbility)
+        ? ['abilityId', 'triggerEventType', 'triggerRoundOffset', 'fromLocationIds', 'definitionIds', 'attributesAny']
+        : [];
+      for (const key of Object.keys(n)) if (!mechanicKeys.has(key) && !fb252Keys.includes(key) && !b03ExtraKeys.includes(key)) issue(`${path}.${key}`, 'Unmapped mechanic field', abilityId);
       if (n.type && !supportedTypes.has(str(n.type))) issue(`${path}.type`, `Unmapped type: ${str(n.type)}`, abilityId);
       if (n.op && !formulaOps.has(str(n.op))) issue(`${path}.op`, `Unmapped formula: ${str(n.op)}`, abilityId);
       const serverMetric = ['controller.availableMana', 'controller.deployment_bonus', 'consecutive_play_rounds', 'game.round_number',
@@ -558,6 +568,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       const acceptedFaceUpCardsPerRound = isAcceptedStaticFaceUpCardsPerRoundAbility(a, 'authoring');
       const acceptedBatchPassiveFamily = isAcceptedBatchPassiveFamilyAbility(a as unknown as AuthoringAbility);
       const acceptedB02OwnedPassive = isAcceptedB02OwnedPassiveAbility(a as unknown as AuthoringAbility);
+      const acceptedB03ModifierLifecycle = isAcceptedB03ModifierLifecycleAbility(a as unknown as AuthoringAbility);
       for (const m of nodes(a.ruleModifiers)) {
         const acceptedRewardModifier = acceptedStaticCombatRewardDistribution && m === nodes(a.ruleModifiers)[0];
         const acceptedPaidCostModifier = acceptedPaidCostCombatPower && m === nodes(a.ruleModifiers)[0];
@@ -578,7 +589,8 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
           (acceptedCardCloseForbid && m.rule === 'card_close') ||
           (acceptedFaceUpPlayLimit && m.rule === 'face_up_cards_per_round') ||
           (acceptedBatchPassiveFamily && ['skill_use', 'card_base_power', 'card_cost', 'card_play_with_others', 'defeat'].includes(str(m.rule))) ||
-          (acceptedB02OwnedPassive && ['skill_use', 'card_power', 'card_cost', 'combat_power', 'elimination'].includes(str(m.rule)));
+          (acceptedB02OwnedPassive && ['skill_use', 'card_power', 'card_cost', 'combat_power', 'elimination'].includes(str(m.rule))) ||
+          (acceptedB03ModifierLifecycle && ['movement_destinations', 'card_power', 'deployment_advantage'].includes(str(m.rule)));
         if (!operationSupported || !ruleSupported) issue('ruleModifiers', 'Unmapped rule or operation', id);
         if (m.rule === 'skill_use' && acceptedSkillUseForbid === undefined && !acceptedBatchPassiveFamily && !acceptedB02OwnedPassive) issue('ruleModifiers', 'Unsupported skill-use forbid selector shape', id);
         if (m.rule === 'card_close' && !acceptedCardCloseForbid) issue('ruleModifiers', 'Unsupported card-close forbid selector shape', id);
@@ -588,13 +600,13 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (m.rule === 'effect_prevention' && (m.operation !== 'ignore' || node(m.priority).tier !== 'explicit_exception')) issue('ruleModifiers.priority', 'Prevention exception requires explicit_exception', id);
         const ruleIsPlayException = m.operation === 'ignore' && ['situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least'].includes(str(m.rule));
         const ruleIsStaticException = m.operation === 'ignore' && m.rule === 'netherworld_protection';
-        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !acceptedRewardModifier && !acceptedBatchPassiveFamily && !acceptedB02OwnedPassive && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
+        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !acceptedRewardModifier && !acceptedBatchPassiveFamily && !acceptedB02OwnedPassive && !acceptedB03ModifierLifecycle && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
         if (!acceptedPaidCostModifier) scan(m.value, 'ruleModifiers.value', id);
         scan(node(m.scope).constraints, 'ruleModifiers.scope.constraints', id);
         if (node(m.scope).object && !['source_card', 'this_card', 'attack_card', 'this_effect', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield', 'all_players'].includes(str(node(m.scope).object))) issue('ruleModifiers.scope.object', 'Unmapped modifier scope', id);
         if (node(m.scope).controller && !['self', 'controller', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield'].includes(str(node(m.scope).controller))) issue('ruleModifiers.scope.controller', 'Unmapped modifier controller', id);
         if (m.lifecycle && a.lifecycle && JSON.stringify(m.lifecycle) !== JSON.stringify(a.lifecycle) &&
-          !isAcceptedMagicResistanceIndependentModifierLifecycle(a, m) && !acceptedPaidCostModifier && !acceptedDeploymentModifier && !acceptedBatchPassiveFamily && !acceptedB02OwnedPassive) {
+          !isAcceptedMagicResistanceIndependentModifierLifecycle(a, m) && !acceptedPaidCostModifier && !acceptedDeploymentModifier && !acceptedBatchPassiveFamily && !acceptedB02OwnedPassive && !acceptedB03ModifierLifecycle) {
           issue('ruleModifiers.lifecycle', 'Independent modifier lifecycles require a separate ongoing handler', id);
         }
       }
@@ -695,6 +707,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (isB02OwnedPassiveCandidate(a as unknown as AuthoringAbility) &&
           !isAcceptedB02OwnedPassiveAbility(a as unknown as AuthoringAbility)) {
         issue('batchOwnedPassive.gateway', 'Unsupported F4 B02 source-owned passive/modifier semantic shape', id);
+      }
+      if (isB03ModifierLifecycleCandidate(a as unknown as AuthoringAbility) &&
+          !isAcceptedB03ModifierLifecycleAbility(a as unknown as AuthoringAbility)) {
+        issue('batchModifierLifecycle.gateway', 'Unsupported F4 B03 modifier/lifecycle semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;
