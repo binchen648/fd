@@ -6099,3 +6099,14 @@ Read: `docs/reports/2026-09-23-p3-a-r113-helena-s1-consumer-migration-dispatch.m
 Finding: full CI on the authorized Helena S1 singleton exposed exactly one additional stale historical snapshot: `ciel-s1b-consumer-migration.test.ts` hard-codes repository-wide frozen overlap `150`, while the authorized +1 Helena S1 makes current material overlap `151`. All Ciel S1b semantic/product assertions passed.
 
 Clarification: S may remove only that brittle absolute repository-total assertion. Preserve denominator `944`, zero duplicate frozen ids, and exact-once Ciel S1b/S3 assertions. Do not replace it with a new moving absolute count and do not alter Ciel semantics. No other historical-test widening is authorized. Migration scope/credit unchanged: Helena S1 remains exact `150/944 -> 151/944`; formal remains `155/944`, `789` remaining until fresh R + A synchronization.
+## TASK P3-A-R114-HELENA-S1-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r114-helena-s1-migration-acceptance-sync`
+Base: exact accepted Candidate `a0ae27c1ae45acdb48323e51bf61996f6b090207`
+Read: `docs/reports/2026-09-23-p3-a-r114-helena-s1-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh independent R `MIGRATION_ACCEPTED` for PR #432 exact Candidate `a0ae27c1ae45acdb48323e51bf61996f6b090207`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/432#issuecomment-5786688839`. Exact frozen accounting is `150/944` to `151/944`, exact +1 `servant.helena.skill.sc-helena-1`, zero removals and zero duplicate frozen ids; `servant.helena.skill.sc-helena-3` remains exactly once and semantically unchanged. The accepted route is synchronized FB2-53 plus the exact A-authorized historical-test compatibility edits, with no runtime/compiler/client/product/generated/pack/phase3 inventory widening.
+
+Formal project migration advances exactly one identity to **`156/944`**, with **`788`** remaining; material authoring overlap is **`151/944`**. PR #432 remains OPEN, unmerged and unretargeted. Next action is a fresh migration-credit-first current-baseline whole-card reconstruction; dispatch singleton S only for a true zero-gap card, otherwise dispatch only the minimum missing identity-free B2 capability.
