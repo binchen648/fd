@@ -1,4 +1,4 @@
-﻿import type { PhaseName } from '../schema/game';
+import type { PhaseName } from '../schema/game';
 
 export type PlayerId = string;
 /** Raw JSON nodes are inspected by the loader, never evaluated as executable text. */
@@ -356,6 +356,14 @@ export interface AbilityRuntime {
   /** F4 B03 next-round card-power schedule state. */
   pendingB03CardPowerBoosts?: Array<{ controllerId: PlayerId; sourceCardId: string; sourceDefinitionId: string; abilityId: string; targetAbilityId: string; armedRound: number; dueRound: number }>;
   activeB03CardPowerBoosts?: Array<{ controllerId: PlayerId; sourceCardId: string; sourceDefinitionId: string; armAbilityId: string; targetAbilityId: string; round: number; definitionIds: string[]; amount: number }>;
+  /** F4 B04 authoritative movement facts retained for exact first-movement consumers. */
+  b04MovementEventReceipts?: Record<string, { eventId: string; eventType: 'after_controller_enters_location'; playerId: PlayerId; fromLocationId: string; toLocationId: string; distance: number; cumulativeDistance: number; round: number; movementKind: 'normal' | 'effect'; manaSpent: number; movementLogIndex: number }>;
+  /** F4 B04 permanent source-card power receipts, one exact trusted first movement per source/round. */
+  b04FirstMovementSourcePowerReceipts?: Array<{ sourceCardId: string; sourceDefinitionId: string; controllerId: PlayerId; abilityId: string; round: number; rootEventId: string; amount: number }>;
+  /** Server-authored exact card-play roots used as persisted provenance by bounded consumers. */
+  trustedCardPlaySnapshots?: Record<string, { eventId: string; playerId: PlayerId; sourceCardId: string; round: number; faceDown: boolean }>;
+  /** F4 B04 round-bound source-card power bonuses installed by exact source-play triggers. */
+  b04RoundSourcePowerBonuses?: Array<{ sourceCardId: string; sourceDefinitionId: string; controllerId: PlayerId; abilityId: string; rootEventId: string; round: number; amount: number }>;
   /** FB2-48 serialized frozen-battle opponent-power rewards awaiting owner choice. */
   pendingCombatOpponentPowerVpRewards?: PendingCombatOpponentPowerVpReward[];
   /** FB2-49 serialized same-battlefield opponent keep-one card decisions. */

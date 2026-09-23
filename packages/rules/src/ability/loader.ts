@@ -82,6 +82,10 @@ import {
   B03_EVENT_COMBAT_HAS_ATTRIBUTE, B03_SCHEDULE_EFFECT,
   isAcceptedB03ModifierLifecycleAbility, isB03ModifierLifecycleCandidate,
 } from './batch-modifier-lifecycle-rules';
+import {
+  B04_FIRST_MOVEMENT_SOURCE_POWER_EFFECT, B04_EVENT_PLAYER_MANA_EFFECT, B04_FIRST_MOVEMENT_CONDITION, B04_ROUND_DOUBLE_EFFECT, B04_SAME_LOCATION_MANA_EFFECT,
+  isAcceptedB04EventSourcePowerAbility, isAcceptedB04ControllerDefeatManaReleaseAbility, isB04EventSourcePowerCandidate,
+} from './batch-event-source-power-rules';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -262,6 +266,8 @@ const supportedTypes = new Set([
   B02_VICTORY_POINTS_IS_LOWEST,
   // F4 B03 bounded modifier/lifecycle batch vocabulary; whole-envelope gated below.
   B03_SCHEDULE_EFFECT, B03_EVENT_COMBAT_HAS_ATTRIBUTE,
+  // F4 B04 bounded event/source-power/resource vocabulary; whole-envelope gated below.
+  B04_FIRST_MOVEMENT_CONDITION, B04_FIRST_MOVEMENT_SOURCE_POWER_EFFECT, B04_ROUND_DOUBLE_EFFECT, B04_EVENT_PLAYER_MANA_EFFECT, B04_SAME_LOCATION_MANA_EFFECT,
   // FB2-32 source-state conditions
   'source_active', 'source_owned',
   // FB2-33 event combat outcome conditions
@@ -673,7 +679,8 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (isBattleLossVpWinnerRewardCandidate(a) && !isAcceptedBattleLossVpWinnerRewardAbility(a, 'authoring')) {
         issue('battleLossVpWinnerReward.gateway', 'Unsupported battle-loss VP winner-reward semantic shape', id);
       }
-      if (isControllerDefeatedVpRewardCandidate(a) && !isAcceptedControllerDefeatedVpRewardAbility(a, 'authoring')) {
+      if (isControllerDefeatedVpRewardCandidate(a) && !isAcceptedControllerDefeatedVpRewardAbility(a, 'authoring') &&
+          !isAcceptedB04ControllerDefeatManaReleaseAbility(a as unknown as AuthoringAbility)) {
         issue('controllerDefeatedVpReward.gateway', 'Unsupported controller-defeated VP reward semantic shape', id);
       }
       if (isCombatOpponentPowerVpRewardCandidate(a) && !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'authoring')) {
@@ -711,6 +718,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (isB03ModifierLifecycleCandidate(a as unknown as AuthoringAbility) &&
           !isAcceptedB03ModifierLifecycleAbility(a as unknown as AuthoringAbility)) {
         issue('batchModifierLifecycle.gateway', 'Unsupported F4 B03 modifier/lifecycle semantic shape', id);
+      }
+      if (isB04EventSourcePowerCandidate(a as unknown as AuthoringAbility) &&
+          !isAcceptedB04EventSourcePowerAbility(a as unknown as AuthoringAbility)) {
+        issue('batchEventSourcePower.gateway', 'Unsupported F4 B04 event/source-power/resource semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

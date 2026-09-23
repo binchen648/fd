@@ -6190,7 +6190,9 @@ Branch: `codex/batch-p3-f4-b03-modifier-lifecycle-migrations`
 Base: exact R117 F4 B02 acceptance synchronization `9cb15f78513bb2281fef03d5fa5ce172ee0ea4b6`
 Read: `docs/reports/2026-09-23-p3-f4-b03-modifier-lifecycle-migrations-result.md`
 
-Result required: review one BATCH-FIRST Candidate containing exactly two fresh frozen identities, `servant.mozart.skill.sc-mozart-1` and `servant.edison.skill.sc-edison-3`, implemented through bounded identity-free modifier/lifecycle gateways. Candidate material accounting must be exact `157/944 -> 159/944`, zero removals and zero duplicate frozen IDs. Formal migration remains `161/944` before fresh R. On exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, award exactly +2 fresh formal identities => `163/944`, `781` remaining. Do not merge/retarget and do not split the exact batch into per-skill reviews.`r`n`r`n## TASK P3-A-R118-F4-B03-ACCEPTANCE-SYNC
+Result required: review one BATCH-FIRST Candidate containing exactly two fresh frozen identities, `servant.mozart.skill.sc-mozart-1` and `servant.edison.skill.sc-edison-3`, implemented through bounded identity-free modifier/lifecycle gateways. Candidate material accounting must be exact `157/944 -> 159/944`, zero removals and zero duplicate frozen IDs. Formal migration remains `161/944` before fresh R. On exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, award exactly +2 fresh formal identities => `163/944`, `781` remaining. Do not merge/retarget and do not split the exact batch into per-skill reviews.
+
+## TASK P3-A-R118-F4-B03-ACCEPTANCE-SYNC
 
 Owner: Codex A
 Status: `SYNCHRONIZED`
@@ -6201,3 +6203,13 @@ Read: `docs/reports/2026-09-23-p3-a-r118-f4-b03-acceptance-synchronization.md`
 Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #436 exact Candidate `4589924f0cae86dc58bd75a4794e2b2caef0f3ec`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/436#issuecomment-5789960451`. Exact material accounting is `157/944 -> 159/944`, with exact fresh additions `servant.mozart.skill.sc-mozart-1` and `servant.edison.skill.sc-edison-3`, zero removals and zero duplicate frozen IDs.
 
 Formal project migration advances exactly two fresh identities to **`163/944`**, with **`781`** remaining; material authoring overlap is **`159/944`**. PR #436 remains OPEN, unmerged and unretargeted. Continue user-authorized BATCH-FIRST F4 from this synchronized baseline: reuse existing F1/capability evidence, prioritize adjacent accepted modifier/lifecycle capability families, do not redo whole-roster classification, and submit the next coherent multi-consumer batch as one Candidate for one fresh independent R.
+
+## TASK P3-F4-B04-EVENT-SOURCE-POWER-RESOURCE-MIGRATION-BATCH
+
+Owner: Codex Batch
+Status: `READY_FOR_FRESH_R`
+Branch: `codex/batch-p3-f4-b04-event-source-power-resource-migrations`
+Base: exact R118 F4 B03 acceptance synchronization `c75ff0a7e8f514c529c08a7c214b4cd989ea0b00`
+Read: `docs/reports/2026-09-23-p3-f4-b04-event-source-power-resource-migrations-result.md`
+
+Result required: review one BATCH-FIRST Candidate containing exactly two fresh frozen identities, `servant.albion.skill.sc-albion-2` and `servant.ozymandias.skill.sc-ozymandias-2`, implemented through bounded identity-free event/source-power/resource gateways. Candidate material accounting must be exact `159/944 -> 161/944`, zero removals and zero duplicate frozen IDs. Formal migration remains `163/944` before fresh R. On exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, award exactly +2 fresh formal identities => `165/944`, `779` remaining. Do not merge/retarget and do not split the exact batch into per-skill reviews.

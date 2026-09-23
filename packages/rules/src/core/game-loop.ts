@@ -18,7 +18,7 @@ import { assignInitialPlayerLocations, movePlayer } from "./movement";
 import { resolveBattlefield } from "./combat-resolver";
 import { resolveEffectsForWindow } from "./effect-resolver";
 import { getEnabledLocations } from "./map-engine";
-import { advanceAbilityPhase, processAbilityEvent, processAbilitySystemEvent, recordAuthoritativeVictoryPointChange } from '../ability/interpreter';
+import { advanceAbilityPhase, processAbilityEvent, processAuthoritativeMovementAbilityEvent, recordAuthoritativeVictoryPointChange } from '../ability/interpreter';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from '../ability/battle-terminal';
 import { rememberB03BattleAttributeSnapshot } from '../ability/batch-modifier-lifecycle-rules';
 
@@ -495,18 +495,19 @@ export function stepGameLoop(
   }
 
   if (state.round.activePhase === "action" && input?.action?.type === "move") {
+    const fromLocationId = state.players.find((player) => player.id === input.action!.playerId)?.locationId;
     const movement = movePlayer(state, {
       playerId: input.action.playerId,
       to: input.action.to,
       movementKind: input.action.movementKind,
     });
     nextState = movement.nextState;
-    if (movement.moved && nextState.abilityRuntime) {
-      processAbilitySystemEvent(nextState, 'enter-location', {
+    if (movement.moved && nextState.abilityRuntime && fromLocationId) {
+      processAuthoritativeMovementAbilityEvent(nextState, {
         type: 'after_controller_enters_location',
         playerId: input.action.playerId,
         locationId: input.action.to,
-      });
+      }, fromLocationId, input.action.to, input.action.movementKind);
     }
     nextState = {
       ...nextState,
