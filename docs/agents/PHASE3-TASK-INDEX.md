@@ -6170,3 +6170,15 @@ Base: exact R116 F4 B01 acceptance synchronization `8e88fdb5290a6635cb4b9f8d887b
 Read: `docs/reports/2026-09-23-p3-f4-b02-owned-passive-modifier-migrations-result.md`
 
 Result required: review one BATCH-FIRST Candidate containing exactly two fresh frozen identities, `master.arcueid.skill.s3` and `master.twice.skill.ascension`, implemented through bounded identity-free source-owned passive/modifier gateways. Candidate material accounting must be exact `155/944 -> 157/944`, zero removals and zero duplicate frozen IDs. Formal migration remains `159/944` before fresh R. On exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, award exactly +2 fresh formal identities => `161/944`, `783` remaining. Do not merge/retarget and do not split the exact batch into per-skill reviews.
+
+## TASK P3-A-R117-F4-B02-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r117-f4-b02-acceptance-sync`
+Base: exact accepted Candidate `156c66ce5f87038b139b2a0ad5916b4a4078f17a`
+Read: `docs/reports/2026-09-23-p3-a-r117-f4-b02-acceptance-synchronization.md`
+
+Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #435 exact Candidate `156c66ce5f87038b139b2a0ad5916b4a4078f17a`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/435#issuecomment-5789162520`. Exact material accounting is `155/944 -> 157/944`, with exact fresh additions `master.arcueid.skill.s3` and `master.twice.skill.ascension`, zero removals and zero duplicate frozen IDs.
+
+Formal project migration advances exactly two fresh identities to **`161/944`**, with **`783`** remaining; material authoring overlap is **`157/944`**. PR #435 remains OPEN, unmerged and unretargeted. Continue user-authorized BATCH-FIRST F4 from this synchronized baseline: reuse existing F1/capability evidence, prioritize the same accepted passive/modifier capability families, do not redo whole-roster classification, and submit the next coherent multi-consumer batch as one Candidate for one fresh independent R.
