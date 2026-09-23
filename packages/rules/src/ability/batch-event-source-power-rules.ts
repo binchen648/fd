@@ -1,6 +1,6 @@
 import type { GameState } from '../schema/game';
 import type { LocationId } from '../schema/location';
-import { getLocationById } from '../core/map-engine';
+import { getEnabledLocations, getLocationById } from '../core/map-engine';
 import type { AbilityEvent, AuthoringAbility, RuleNode } from './types';
 import { trustedControllerDefeatedFacts } from './controller-defeated-vp-reward';
 
@@ -91,6 +91,42 @@ function sourceAndAbility(state: GameState, sourceCardId: string, abilityId: str
   return { source, def, ability };
 }
 
+function authoritativeMovementDistance(state: GameState, from: string, to: string): number | undefined {
+  if (!from || !to || from === to) return undefined;
+  const locations = getEnabledLocations(state.map, state.locationConfig);
+  if (!locations.some((location) => location.id === from) || !locations.some((location) => location.id === to)) return undefined;
+  const queue: Array<{ id: string; distance: number }> = [{ id: from, distance: 0 }];
+  const seen = new Set([from]);
+  for (let i = 0; i < queue.length; i++) {
+    const current = queue[i]!;
+    for (const next of locations.find((location) => location.id === current.id)?.movementLinks ?? []) {
+      if (seen.has(next) || !locations.some((location) => location.id === next)) continue;
+      if (next === to) return current.distance + 1;
+      seen.add(next); queue.push({ id: next, distance: current.distance + 1 });
+    }
+  }
+  // Existing trusted effect-movement semantics treat an otherwise unreachable explicit relocation as one movement.
+  return 1;
+}
+
+function authoritativeRoundMovementDistanceThroughLog(state: GameState, playerId: string, round: number, throughIndex: number): number | undefined {
+  let total = 0;
+  for (let index = 0; index <= throughIndex; index++) {
+    const log = state.log[index];
+    if (log?.type !== 'movement') continue;
+    const payload = log.payload ?? {};
+    if (payload.playerId !== playerId || payload.roundNumber !== round) continue;
+    if (typeof payload.from !== 'string' || typeof payload.to !== 'string' ||
+        (payload.movementKind !== 'normal' && payload.movementKind !== 'effect') ||
+        !Number.isSafeInteger(payload.manaSpent) || Number(payload.manaSpent) < 0) return undefined;
+    const distance = authoritativeMovementDistance(state, payload.from, payload.to);
+    if (!distance) return undefined;
+    total += distance;
+    if (!Number.isSafeInteger(total)) return undefined;
+  }
+  return total;
+}
+
 export function rememberB04MovementReceipt(
   state: GameState,
   event: AbilityEvent,
@@ -113,6 +149,8 @@ export function rememberB04MovementReceipt(
   if (lastLog?.type !== 'movement' || lastLog.message !== `player:${event.playerId}:${movementKind}_move:${fromLocationId}->${toLocationId}` ||
       payload.playerId !== event.playerId || payload.from !== fromLocationId || payload.to !== toLocationId ||
       (movementKind !== 'normal' && movementKind !== 'effect') || !Number.isSafeInteger(manaSpent) || Number(manaSpent) < 0 ||
+      payload.roundNumber !== state.round.roundNumber || authoritativeMovementDistance(state, fromLocationId, toLocationId) !== distance ||
+      authoritativeRoundMovementDistanceThroughLog(state, event.playerId, state.round.roundNumber, movementLogIndex) !== cumulativeDistance ||
       !Number.isSafeInteger(cumulativeDistance) || Number(cumulativeDistance) < distance || movementLogIndex < 0) {
     throw new Error('B04_MOVEMENT_RECEIPT_LOG_INVALID');
   }
@@ -158,10 +196,13 @@ export function installB04RoundDouble(state: GameState, controllerId: string, so
   const { source, def } = sourceAndAbility(state, sourceCardId, ability.id);
   const base = Number(def?.cardFace.basePower);
   if (!source || !def || source.controllerPlayerId !== controllerId || !Number.isSafeInteger(base) || base < 0) throw new Error('B04_ROUND_DOUBLE_SOURCE_INVALID');
+  const trustedPlay = state.abilityRuntime!.trustedCardPlaySnapshots?.[event.id];
+  if (!trustedPlay || trustedPlay.eventId !== event.id || trustedPlay.playerId !== controllerId || trustedPlay.sourceCardId !== sourceCardId ||
+      trustedPlay.round !== state.round.roundNumber || trustedPlay.faceDown) throw new Error('B04_ROUND_DOUBLE_PROVENANCE_INVALID');
   const bonuses = state.abilityRuntime!.b04RoundSourcePowerBonuses ??= [];
-  const key = bonuses.find((entry) => entry.sourceCardId === sourceCardId && entry.abilityId === ability.id && entry.round === state.round.roundNumber);
+  const key = bonuses.find((entry) => entry.sourceCardId === sourceCardId && entry.abilityId === ability.id && entry.rootEventId === event.id);
   if (key) throw new Error('B04_ROUND_DOUBLE_DUPLICATE');
-  bonuses.push({ sourceCardId, sourceDefinitionId: source.definitionId, controllerId, abilityId: ability.id, round: state.round.roundNumber, amount: base });
+  bonuses.push({ sourceCardId, sourceDefinitionId: source.definitionId, controllerId, abilityId: ability.id, rootEventId: event.id, round: trustedPlay.round, amount: base });
 }
 
 function validatePowerState(state: GameState): void {
@@ -169,6 +210,8 @@ function validatePowerState(state: GameState): void {
   const seenMovement = new Set<string>(); const seenMovementLogs = new Set<number>();
   for (const [id, receipt] of Object.entries(runtime.b04MovementEventReceipts ?? {})) {
     const log = state.log[receipt.movementLogIndex]; const payload = log?.payload ?? {};
+    const derivedDistance = authoritativeMovementDistance(state, receipt.fromLocationId, receipt.toLocationId);
+    const derivedCumulative = authoritativeRoundMovementDistanceThroughLog(state, receipt.playerId, receipt.round, receipt.movementLogIndex);
     const canonicalId = /^(?:enter-location|ruler-seal-enter-location)-[1-9]\d*$/.test(id);
     if (id !== receipt.eventId || receipt.eventType !== 'after_controller_enters_location' || !canonicalId || seenMovement.has(id) ||
         seenMovementLogs.has(receipt.movementLogIndex) || !runtime.processedEvents.includes(id) || !state.players.some((player) => player.id === receipt.playerId) ||
@@ -178,7 +221,8 @@ function validatePowerState(state: GameState): void {
         !Number.isSafeInteger(receipt.movementLogIndex) || receipt.movementLogIndex < 0 || log?.type !== 'movement' ||
         log.message !== `player:${receipt.playerId}:${receipt.movementKind}_move:${receipt.fromLocationId}->${receipt.toLocationId}` ||
         payload.playerId !== receipt.playerId || payload.from !== receipt.fromLocationId || payload.to !== receipt.toLocationId ||
-        payload.movementKind !== receipt.movementKind || payload.manaSpent !== receipt.manaSpent) throw new Error('B04_MOVEMENT_RECEIPT_STATE_INVALID');
+        payload.movementKind !== receipt.movementKind || payload.manaSpent !== receipt.manaSpent || payload.roundNumber !== receipt.round ||
+        derivedDistance !== receipt.distance || derivedCumulative !== receipt.cumulativeDistance) throw new Error('B04_MOVEMENT_RECEIPT_STATE_INVALID');
     seenMovement.add(id); seenMovementLogs.add(receipt.movementLogIndex);
   }
   const seenFirstMovementSourcePower = new Set<string>();
@@ -194,9 +238,12 @@ function validatePowerState(state: GameState): void {
   const seenRound = new Set<string>();
   for (const bonus of runtime.b04RoundSourcePowerBonuses ?? []) {
     const { source, def, ability } = sourceAndAbility(state, bonus.sourceCardId, bonus.abilityId);
-    const base = Number(def?.cardFace.basePower); const key = JSON.stringify([bonus.sourceCardId, bonus.abilityId, bonus.round]);
+    const trustedPlay = runtime.trustedCardPlaySnapshots?.[bonus.rootEventId];
+    const base = Number(def?.cardFace.basePower); const key = JSON.stringify([bonus.sourceCardId, bonus.abilityId, bonus.rootEventId]);
     if (seenRound.has(key) || !source || !def || !ability || source.definitionId !== bonus.sourceDefinitionId || source.controllerPlayerId !== bonus.controllerId ||
-        !isAcceptedB04SourcePlayRoundDoubleAbility(ability) || !Number.isSafeInteger(bonus.round) || bonus.round < 1 || !Number.isSafeInteger(base) || bonus.amount !== base) {
+        !isAcceptedB04SourcePlayRoundDoubleAbility(ability) || !/^play-[1-9]\d*$/.test(bonus.rootEventId) || !runtime.processedEvents.includes(bonus.rootEventId) ||
+        !trustedPlay || trustedPlay.eventId !== bonus.rootEventId || trustedPlay.playerId !== bonus.controllerId || trustedPlay.sourceCardId !== bonus.sourceCardId || trustedPlay.faceDown ||
+        trustedPlay.round !== bonus.round || !Number.isSafeInteger(bonus.round) || bonus.round < 1 || !Number.isSafeInteger(base) || bonus.amount !== base) {
       throw new Error('B04_ROUND_POWER_STATE_INVALID');
     }
     seenRound.add(key);

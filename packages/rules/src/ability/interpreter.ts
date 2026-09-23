@@ -2084,7 +2084,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       if (effect.face === 'face_down') source.visibility = { scope: 'owner_only', ownerPlayerId: p.id };
       else recordCompletedFaceUpCardPlay(s, p.id);
       processEvent(s, { id: nextId(s, 'declare'), type: 'on_use_declared', playerId: p.id, sourceCardId: ctx.sourceCardId, playedCards: [{ instanceId: ctx.sourceCardId, controllerId: p.id, cardType: definition(s, ctx.sourceCardId)!.cardType, faceDown: effect.face === 'face_down' }] });
-      processEvent(s, { id: nextId(s, 'play'), type: 'on_card_played', playerId: p.id, sourceCardId: ctx.sourceCardId, playedCards: [{ instanceId: ctx.sourceCardId, controllerId: p.id, cardType: definition(s, ctx.sourceCardId)!.cardType, faceDown: effect.face === 'face_down' }] });
+      processTrustedCardPlayEvent(s, { id: nextId(s, 'play'), type: 'on_card_played', playerId: p.id, sourceCardId: ctx.sourceCardId, playedCards: [{ instanceId: ctx.sourceCardId, controllerId: p.id, cardType: definition(s, ctx.sourceCardId)!.cardType, faceDown: effect.face === 'face_down' }] });
       break;
     }
     case 'reveal_information': if (effect.scope !== 'servant_package') reject('unsupported', 'Unknown reveal scope'); reveal(s, p.id); break;
@@ -4412,6 +4412,25 @@ function processTrustedFb254EntryEvent(s: GameState, event: AbilityEvent): void 
   try { processEvent(s, event); } finally { forgetTrustedFb254EntryEvent(s, event.id); }
 }
 
+function processTrustedCardPlayEvent(s: GameState, event: AbilityEvent): void {
+  if (event.type !== 'on_card_played' || !/^play-[1-9]\d*$/.test(event.id) || typeof event.playerId !== 'string' || typeof event.sourceCardId !== 'string') {
+    reject('invalid_event', 'Trusted card-play producer received malformed event');
+  }
+  const source = s.cards.find((candidate) => candidate.instanceId === event.sourceCardId);
+  const sourceState = source ? runtime(s).cardState[source.instanceId] : undefined;
+  const played = event.playedCards?.find((entry) => entry.instanceId === event.sourceCardId);
+  if (!source || source.controllerPlayerId !== event.playerId || !sourceState || sourceState.playedRound !== s.round.roundNumber ||
+      !played || played.controllerId !== event.playerId || typeof played.faceDown !== 'boolean') {
+    reject('invalid_event', 'Trusted card-play event lacks exact applied source-play facts');
+  }
+  const snapshots = runtime(s).trustedCardPlaySnapshots ??= {};
+  const next = { eventId: event.id, playerId: event.playerId, sourceCardId: event.sourceCardId, round: s.round.roundNumber, faceDown: played.faceDown };
+  const prior = snapshots[event.id];
+  if (prior && JSON.stringify(prior) !== JSON.stringify(next)) reject('invalid_state', 'Trusted card-play event id collision');
+  snapshots[event.id] = next;
+  processEvent(s, event);
+}
+
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s); if (r.processedEvents.includes(event.id)) return;
   if (!event.id) reject('invalid_event', 'Events require stable ids');
@@ -5168,7 +5187,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   }
   for (const c of choices.filter(c => !c.faceDown)) {
     processEvent(s, { id: nextId(s, 'declare'), type: 'on_use_declared', playerId, sourceCardId: c.cardInstanceId, playedCards });
-    processEvent(s, { id: nextId(s, 'play'), type: 'on_card_played', playerId, sourceCardId: c.cardInstanceId, playedCards });
+    processTrustedCardPlayEvent(s, { id: nextId(s, 'play'), type: 'on_card_played', playerId, sourceCardId: c.cardInstanceId, playedCards });
   }
 }
 /** Trusted server hook after the enclosing action validates its normal/effect play quota. Not an AbilityCommand. */

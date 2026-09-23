@@ -65,3 +65,29 @@ The focused batch test re-hashes the actual archived `printedText` / `printedCla
 Before fresh independent R, formal migration remains **`163/944`** with **`781`** remaining. Material authoring overlap is **`161/944`**.
 
 Only an exact fresh `IMPLEMENTATION_ACCEPTED_CANDIDATE` for this Candidate plus A synchronization may award the two fresh identities, producing **`165/944`** formal and **`779`** remaining. This batch does not merge or retarget prior stacked PRs.
+
+## R1 reviewer closure
+
+Fresh R on exact Candidate `3b1d29763f0b03642ed1ec0135b2b894342a3c2b` returned `IMPLEMENTATION_NEEDS_REVISION` with canonical evidence `https://github.com/binchen648/fd/pull/437#issuecomment-5790854821`.
+
+Both exact-scope blockers are closed in the successor Candidate:
+
+1. **Source-play round power provenance**
+   - real server card-play paths now author persistent exact `trustedCardPlaySnapshots`;
+   - B04 round-power rows bind to exact `play-*` root identity, processed-event membership, source/controller identity, face-up state, and authoritative play round;
+   - mutating only persisted bonus `round` after expiration now fails closed and cannot resurrect doubled power.
+
+2. **Movement/source-power provenance**
+   - authoritative movement logs now retain the round number;
+   - persisted B04 movement distance is re-derived from the enabled map graph and exact from/to facts;
+   - cumulative movement is re-derived from authoritative same-player/same-round movement-log history through the exact root log index;
+   - coordinated mutation of movement `distance`, `cumulativeDistance`, and source-power `amount` now fails closed.
+
+R1 verification:
+- B04 focused: `1 file / 17 tests PASS`;
+- affected regression bundle: `18 files / 200 tests PASS`;
+- `npm run typecheck`: PASS;
+- `npm run content:validate`: PASS, zero blocking issues;
+- `git diff --check`: PASS.
+
+Formal migration remains `163/944` before a fresh independent R accepts the successor Candidate. Material authoring remains `161/944` with zero duplicate frozen identities.

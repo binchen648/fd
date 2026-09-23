@@ -192,6 +192,17 @@ describe('P3 F4 B04 event/source-power/resource migration batch', () => {
     expect(() => rules.calculateCardPower(state, 'albion-source')).toThrow(/B04_MOVEMENT_RECEIPT_STATE_INVALID|B04_FIRST_MOVEMENT_SOURCE_POWER_STATE_INVALID/);
   });
 
+  it('Albion rejects coordinated persisted movement/source-power inflation', () => {
+    let state = setup([physical('albion-source', ALBION)], { p1: WORKSHOP, p2: BATTLEFIELD });
+    state = rules.stepGameLoop(state, { action: { type: 'move', playerId: 'p1', to: RECON, movementKind: 'normal' } }).nextState;
+    const before = rules.calculateCardPower(state, 'albion-source').value;
+    expect(before).toBeGreaterThan(7);
+    const receipt = state.abilityRuntime!.b04FirstMovementSourcePowerReceipts![0]!;
+    const movement = state.abilityRuntime!.b04MovementEventReceipts![receipt.rootEventId]!;
+    movement.distance += 5; movement.cumulativeDistance += 5; receipt.amount += 5;
+    expect(() => rules.calculateCardPower(state, 'albion-source')).toThrow(/B04_MOVEMENT_RECEIPT_STATE_INVALID/);
+  });
+
   it('Albion physical skill is playable only once per game', () => {
     const state = setup([physical('albion-source', ALBION, 'p1', 'skill')]);
     state.players[0]!.mana = 20;
@@ -212,6 +223,18 @@ describe('P3 F4 B04 event/source-power/resource migration batch', () => {
     rules.advanceAbilityPhase(state, 'preparation', state.round.roundNumber + 1);
     expect(rules.calculateCardPower(state, 'ozy-source').value).toBe(4);
     state.abilityRuntime!.b04RoundSourcePowerBonuses![0]!.amount = 5;
+    expect(() => rules.calculateCardPower(state, 'ozy-source')).toThrow(/B04_ROUND_POWER_STATE_INVALID/);
+  });
+
+  it('Ozymandias persisted round bonus cannot be retimed after expiration', () => {
+    const state = setup([physical('ozy-source', OZY, 'p1', 'skill')]);
+    state.players[0]!.mana = 20;
+    rules.playAbilityCardBatch(state, 'p1', [{ cardInstanceId: 'ozy-source' }]);
+    expect(rules.calculateCardPower(state, 'ozy-source').value).toBe(8);
+    const originalRound = state.round.roundNumber;
+    rules.advanceAbilityPhase(state, 'preparation', originalRound + 1);
+    expect(rules.calculateCardPower(state, 'ozy-source').value).toBe(4);
+    state.abilityRuntime!.b04RoundSourcePowerBonuses![0]!.round = state.round.roundNumber;
     expect(() => rules.calculateCardPower(state, 'ozy-source')).toThrow(/B04_ROUND_POWER_STATE_INVALID/);
   });
 

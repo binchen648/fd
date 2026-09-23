@@ -154,6 +154,7 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
         to: input.to,
         movementKind: input.movementKind,
         manaSpent,
+        roundNumber: state.round.roundNumber,
       },
     }),
   };

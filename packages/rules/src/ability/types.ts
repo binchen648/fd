@@ -360,8 +360,10 @@ export interface AbilityRuntime {
   b04MovementEventReceipts?: Record<string, { eventId: string; eventType: 'after_controller_enters_location'; playerId: PlayerId; fromLocationId: string; toLocationId: string; distance: number; cumulativeDistance: number; round: number; movementKind: 'normal' | 'effect'; manaSpent: number; movementLogIndex: number }>;
   /** F4 B04 permanent source-card power receipts, one exact trusted first movement per source/round. */
   b04FirstMovementSourcePowerReceipts?: Array<{ sourceCardId: string; sourceDefinitionId: string; controllerId: PlayerId; abilityId: string; round: number; rootEventId: string; amount: number }>;
+  /** Server-authored exact card-play roots used as persisted provenance by bounded consumers. */
+  trustedCardPlaySnapshots?: Record<string, { eventId: string; playerId: PlayerId; sourceCardId: string; round: number; faceDown: boolean }>;
   /** F4 B04 round-bound source-card power bonuses installed by exact source-play triggers. */
-  b04RoundSourcePowerBonuses?: Array<{ sourceCardId: string; sourceDefinitionId: string; controllerId: PlayerId; abilityId: string; round: number; amount: number }>;
+  b04RoundSourcePowerBonuses?: Array<{ sourceCardId: string; sourceDefinitionId: string; controllerId: PlayerId; abilityId: string; rootEventId: string; round: number; amount: number }>;
   /** FB2-48 serialized frozen-battle opponent-power rewards awaiting owner choice. */
   pendingCombatOpponentPowerVpRewards?: PendingCombatOpponentPowerVpReward[];
   /** FB2-49 serialized same-battlefield opponent keep-one card decisions. */
