@@ -6119,3 +6119,6 @@ Base: exact A dispatch Candidate on `codex/a-p3-fb2-54-event-power-uncontested-w
 Read: `docs/reports/2026-09-23-p3-a-fb2-54-event-power-uncontested-win-reward-dispatch.md`
 
 Implement only the bounded identity-free FB2-54 family dispatched above: exact opponent-enter source-card +2 accumulation and exact authoritative uncontested controller-win +4 VP reward. Reuse accepted FB2-31/33/43/51 facts; reserve new vocabulary to the exact whole-family envelopes; fail closed on malformed/widened/provenance-mismatched state. No consumer authoring, generic metric/counter/flag engine, product/generated/client change, merge/retarget or migration credit. Formal migration remains `156/944`, `788` remaining; material overlap `151/944`.
+### P3-FB2-54 A clarification
+
+Before B2 production implementation, A mechanically verified that advance-phase `deploy_player` changes authoritative `player.locationId` and emits `after_player_deployed_to_battlefield`. The first FB2-54 ability therefore accepts exactly either existing authoritative entry root (`after_controller_enters_location` or `after_player_deployed_to_battlefield`) with the same ordered opponent/location conditions and literal source-card +2 effect. No other FB2-54 scope changes; zero credit remains `156/944`, `788` remaining, material `151/944`.

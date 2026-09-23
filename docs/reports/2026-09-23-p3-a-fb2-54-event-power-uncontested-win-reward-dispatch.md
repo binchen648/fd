@@ -62,7 +62,7 @@ Accepted normalized ability shape only:
 
 Runtime semantics:
 
-- only a trusted movement event for an active opponent whose authoritative destination equals the source controller's current battlefield qualifies;
+- only a trusted ordinary-movement or advance-deployment event for an active opponent whose authoritative destination equals the source controller's current battlefield qualifies;
 - controller movement, other-location movement, inactive/face-down/invalid source and forged/malformed events do not qualify;
 - each distinct trusted qualifying movement root contributes exactly +2 to the source physical card's current combat power;
 - distinct qualifying events stack additively;
@@ -126,7 +126,7 @@ At minimum prove:
 
 - authoring and compiled exact-family classifiers accept only both exact shapes;
 - malformed/widened/wrong-position reserved vocabulary fails closed;
-- opponent movement into controller battlefield installs +2 only on the exact active source, repeated distinct trusted events stack, duplicate id does not;
+- opponent ordinary movement **and** opponent advance-phase deployment into controller battlefield each install +2 only on the exact active source; repeated distinct trusted events stack and duplicate ids do not;
 - controller/other-location/unknown/forged movement does not add power;
 - source deactivation/face-down/zone invalidation stops accumulated bonus contribution without mutating other cards;
 - controller wins an authoritative battle alone -> exactly +4 VP through normal authoritative provenance;
@@ -140,3 +140,13 @@ At minimum prove:
 FB2-54 remains **zero-credit**. Formal migration stays **`156/944`**, `788` remaining; material overlap stays **`151/944`**.
 
 After exact fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, A must freshly reconstruct the whole `servant.mechaeli.skill.sc-mechaeli-2`. Dispatch singleton S only if the complete frozen card is then zero-gap; otherwise dispatch only the minimum residual seam.
+## A clarification — authoritative entry roots
+
+During pre-implementation production-path verification, A confirmed `MatchSession.dispatchDeployPlayer` changes `player.locationId` and emits server-owned `after_player_deployed_to_battlefield` for battlefield deployment. Locked Reference uses the broader source event concept `player.entered-location`; therefore accepting only `after_controller_enters_location` would incorrectly miss a real opponent entry path.
+
+This clarification changes no other scope and adds no new event protocol. FB2-54 power accumulation accepts exactly either existing authoritative entry trigger:
+
+- `after_controller_enters_location` for ordinary movement; or
+- `after_player_deployed_to_battlefield` for advance-phase deployment.
+
+Both triggers require the same exact ordered conditions (`source_active`, `event_player_is_opponent`, `event_location_equals_controller`) and the same exact `source_card_combat_power_bonus: 2` effect. The event must have exact server-owned player/location facts consistent with current authoritative state. No other trigger, generic location hook, or client-supplied event is accepted. Focused production evidence must exercise both roots.
