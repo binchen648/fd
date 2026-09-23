@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.twice",
+  "name": "特维斯·I·皮斯曼",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen F1 source-grounded semantics; Locked Reference supplies exact structured authoring and elimination-replacement behavior. F4 B02 adds only bounded identity-free source-owned passive/modifier execution."
+  },
+  "cards": [
+    {
+      "id": "master.twice.skill.ascension",
+      "aliases": ["ascension"],
+      "legacyId": "ascension",
+      "name": "救世主",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.twice" },
+      "printedText": "当你在游戏中拥有最少的战果时，合计威力+12。\n当你即将被淘汰时，将此牌移除游戏取代淘汰。",
+      "cardFace": { "typeLabel": "升华技" },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "savior-lowest-victory-power",
+          "printedClause": "当你在游戏中拥有最少的战果时，合计威力+12。",
+          "kind": "passive",
+          "activation": {},
+          "conditions": [{ "type": "source_owned" }, { "type": "victory_points_is_lowest" }],
+          "targets": [], "effects": [], "cost": [], "creates": [],
+          "ruleModifiers": [
+            {
+              "id": "lowest-victory-plus-twelve", "printedClause": "当你在游戏中拥有最少的战果时，合计威力+12。",
+              "operation": "add", "rule": "combat_power", "scope": { "subject": "controller" }, "value": 12
+            }
+          ],
+          "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "savior-replace-elimination",
+          "printedClause": "当你即将被淘汰时，将此牌移除游戏取代淘汰。",
+          "kind": "passive",
+          "activation": {}, "conditions": [{ "type": "source_owned" }], "targets": [], "effects": [], "cost": [], "creates": [],
+          "ruleModifiers": [
+            {
+              "id": "replace-elimination-by-removing-source", "printedClause": "当你即将被淘汰时，将此牌移除游戏取代淘汰。",
+              "operation": "replace", "rule": "elimination",
+              "scope": { "subject": "controller", "replacement": "remove_source_card" },
+              "priority": { "tier": "card_text", "specificity": "explicit_exception" },
+              "conflictPolicy": "higher_priority_wins"
+            }
+          ],
+          "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1FullPrintedTextSha256": "b9755caf9b308f865e1a49f0ed0d0764d6b893a738cee40a8f15990cbb971e2b",
+        "f1ClauseSources": [
+          { "sourceAbilityId": "savior-lowest-victory-power", "locator": "skillCards[65].abilities[0].printedClause", "sha256": "d3d645d77030cab67a7014375c03635eb02d2cabf0be2eb4cc6917cbb1a5c7f8" },
+          { "sourceAbilityId": "savior-replace-elimination", "locator": "skillCards[65].abilities[1].printedClause", "sha256": "8ecb762f99c38bb995a2665d5923c3f169a080598d4f64346b74739160ba365b" }
+        ],
+        "f1SourceReferences": [
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/特维斯·I·皮斯曼.png", "locator": "master.twice/特维斯·I·皮斯曼" },
+          { "kind": "legacy", "document": "legacy-content.json", "locator": "master/master.twice/ascension" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "ascension", "typeLabel": "升华技", "cost": null, "basePower": null, "attributes": [], "initiallyOwned": false },
+        "candidateContract": "P3-F4-B02 source-owned passive/modifier family"
+      }
+    }
+  ]
+}

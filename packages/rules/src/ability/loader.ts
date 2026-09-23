@@ -73,6 +73,11 @@ import {
   isAcceptedBatchPassiveFamilyAbility,
   isBatchPassiveFamilyCandidate,
 } from './batch-passive-card-rules';
+import {
+  B02_VICTORY_POINTS_IS_LOWEST,
+  isAcceptedB02OwnedPassiveAbility,
+  isB02OwnedPassiveCandidate,
+} from './batch-owned-passive-rules';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -249,6 +254,8 @@ const supportedTypes = new Set([
   SOURCE_CARD_COMBAT_POWER_BONUS_EFFECT, EVENT_BATTLE_OPPONENT_COUNT_EQUALS_CONDITION,
   // F4 B01 bounded passive/modifier batch vocabulary; whole-envelope gated below.
   BATCH_EVENT_BATTLEFIELD_EQUALS_CONTROLLER, BATCH_EVENT_BATTLE_OPPONENT_COUNT_AT_LEAST, 'target_printed_base_power',
+  // F4 B02 source-owned passive/modifier batch vocabulary; whole-envelope gated below.
+  B02_VICTORY_POINTS_IS_LOWEST,
   // FB2-32 source-state conditions
   'source_active', 'source_owned',
   // FB2-33 event combat outcome conditions
@@ -391,6 +398,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (n.threshold !== 7 || !Object.keys(n).every((key) => ['type', 'threshold'].includes(key))) {
           issue(path, 'Round VP-gain crossing condition requires the literal threshold 7 and exact shape', abilityId);
         }
+      }
+      if (str(n.type) === B02_VICTORY_POINTS_IS_LOWEST) {
+        if (path !== 'conditions[1]' || Object.keys(n).length !== 1) issue(path, 'Lowest-VP condition is reserved to the exact F4 B02 condition slot', abilityId);
       }
       if (['source_active', 'source_owned'].includes(str(n.type))) {
         if (!path.startsWith('conditions')) issue(path, 'Source-state condition is supported only under ability conditions', abilityId);
@@ -547,6 +557,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       const acceptedDeploymentDestinationReplacement = isAcceptedLowerVpLoneBattlefieldDeploymentAbility(a);
       const acceptedFaceUpCardsPerRound = isAcceptedStaticFaceUpCardsPerRoundAbility(a, 'authoring');
       const acceptedBatchPassiveFamily = isAcceptedBatchPassiveFamilyAbility(a as unknown as AuthoringAbility);
+      const acceptedB02OwnedPassive = isAcceptedB02OwnedPassiveAbility(a as unknown as AuthoringAbility);
       for (const m of nodes(a.ruleModifiers)) {
         const acceptedRewardModifier = acceptedStaticCombatRewardDistribution && m === nodes(a.ruleModifiers)[0];
         const acceptedPaidCostModifier = acceptedPaidCostCombatPower && m === nodes(a.ruleModifiers)[0];
@@ -557,7 +568,8 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         const acceptedFaceUpPlayLimit = acceptedFaceUpCardsPerRound && m === nodes(a.ruleModifiers)[0];
         const operationSupported = ['add', 'set', 'ignore', 'lock', 'exclude', 'forbid'].includes(str(m.operation)) ||
           (acceptedRewardModifier && m.operation === 'replace') ||
-          (acceptedDeploymentModifier && m.operation === 'replace');
+          (acceptedDeploymentModifier && m.operation === 'replace') ||
+          (acceptedB02OwnedPassive && m.rule === 'elimination' && m.operation === 'replace');
         const ruleSupported = ['attack.currentPower', 'card.currentPower', 'effect_prevention', 'battlefield', 'terrain_and_external_effects', 'use_skill_card', 'play_card_attribute', 'enter_or_leave_current_battlefield', 'terrain_and_external_effects_for_controller_and_opponents', 'terrain_and_external_servant_or_npc_effects', 'situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least', 'netherworld_protection'].includes(str(m.rule)) ||
           (acceptedRewardModifier && m.rule === 'combat_reward_distribution') ||
           (acceptedPaidCostModifier && m.rule === 'combat_power') ||
@@ -565,9 +577,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
           (acceptedSkillUseForbid !== undefined && m.rule === 'skill_use') ||
           (acceptedCardCloseForbid && m.rule === 'card_close') ||
           (acceptedFaceUpPlayLimit && m.rule === 'face_up_cards_per_round') ||
-          (acceptedBatchPassiveFamily && ['skill_use', 'card_base_power', 'card_cost', 'card_play_with_others', 'defeat'].includes(str(m.rule)));
+          (acceptedBatchPassiveFamily && ['skill_use', 'card_base_power', 'card_cost', 'card_play_with_others', 'defeat'].includes(str(m.rule))) ||
+          (acceptedB02OwnedPassive && ['skill_use', 'card_power', 'card_cost', 'combat_power', 'elimination'].includes(str(m.rule)));
         if (!operationSupported || !ruleSupported) issue('ruleModifiers', 'Unmapped rule or operation', id);
-        if (m.rule === 'skill_use' && acceptedSkillUseForbid === undefined && !acceptedBatchPassiveFamily) issue('ruleModifiers', 'Unsupported skill-use forbid selector shape', id);
+        if (m.rule === 'skill_use' && acceptedSkillUseForbid === undefined && !acceptedBatchPassiveFamily && !acceptedB02OwnedPassive) issue('ruleModifiers', 'Unsupported skill-use forbid selector shape', id);
         if (m.rule === 'card_close' && !acceptedCardCloseForbid) issue('ruleModifiers', 'Unsupported card-close forbid selector shape', id);
         if (m.rule === 'face_up_cards_per_round' && !acceptedFaceUpPlayLimit) issue('ruleModifiers', 'Unsupported face-up cards-per-round selector shape', id);
         if (m.rule === 'deployment_destinations' && !acceptedDeploymentModifier) issue('ruleModifiers', 'Unsupported deployment-destination replacement shape', id);
@@ -575,13 +588,13 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (m.rule === 'effect_prevention' && (m.operation !== 'ignore' || node(m.priority).tier !== 'explicit_exception')) issue('ruleModifiers.priority', 'Prevention exception requires explicit_exception', id);
         const ruleIsPlayException = m.operation === 'ignore' && ['situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least'].includes(str(m.rule));
         const ruleIsStaticException = m.operation === 'ignore' && m.rule === 'netherworld_protection';
-        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !acceptedRewardModifier && !acceptedBatchPassiveFamily && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
+        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !acceptedRewardModifier && !acceptedBatchPassiveFamily && !acceptedB02OwnedPassive && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
         if (!acceptedPaidCostModifier) scan(m.value, 'ruleModifiers.value', id);
         scan(node(m.scope).constraints, 'ruleModifiers.scope.constraints', id);
         if (node(m.scope).object && !['source_card', 'this_card', 'attack_card', 'this_effect', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield', 'all_players'].includes(str(node(m.scope).object))) issue('ruleModifiers.scope.object', 'Unmapped modifier scope', id);
         if (node(m.scope).controller && !['self', 'controller', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield'].includes(str(node(m.scope).controller))) issue('ruleModifiers.scope.controller', 'Unmapped modifier controller', id);
         if (m.lifecycle && a.lifecycle && JSON.stringify(m.lifecycle) !== JSON.stringify(a.lifecycle) &&
-          !isAcceptedMagicResistanceIndependentModifierLifecycle(a, m) && !acceptedPaidCostModifier && !acceptedDeploymentModifier && !acceptedBatchPassiveFamily) {
+          !isAcceptedMagicResistanceIndependentModifierLifecycle(a, m) && !acceptedPaidCostModifier && !acceptedDeploymentModifier && !acceptedBatchPassiveFamily && !acceptedB02OwnedPassive) {
           issue('ruleModifiers.lifecycle', 'Independent modifier lifecycles require a separate ongoing handler', id);
         }
       }
@@ -676,8 +689,12 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         issue('eventPowerUncontestedWinReward.gateway', 'Unsupported FB2-54 event-power / uncontested-win reward semantic shape', id);
       }
       if (isBatchPassiveFamilyCandidate(a as unknown as AuthoringAbility) &&
-          !isAcceptedBatchPassiveFamilyAbility(a as unknown as AuthoringAbility)) {
+          !isAcceptedBatchPassiveFamilyAbility(a as unknown as AuthoringAbility) && !acceptedB02OwnedPassive) {
         issue('batchPassive.gateway', 'Unsupported F4 B01 passive/modifier semantic shape', id);
+      }
+      if (isB02OwnedPassiveCandidate(a as unknown as AuthoringAbility) &&
+          !isAcceptedB02OwnedPassiveAbility(a as unknown as AuthoringAbility)) {
+        issue('batchOwnedPassive.gateway', 'Unsupported F4 B02 source-owned passive/modifier semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

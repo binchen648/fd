@@ -1,6 +1,7 @@
 import type { GameState, PlayerScoringBreakdown } from "../schema/game";
 import type { ResolverResult } from "./resolver-contracts";
 import { resolveEliminationBatch } from "./elimination-resolver";
+import { consumeB02EliminationReplacement } from "../ability/batch-owned-passive-rules";
 
 export const ELIMINATION_MILITARY_THRESHOLD = -8;
 
@@ -126,6 +127,11 @@ export function applyOccupiedLocationRewards(state: GameState): ResolverResult {
 
 export function applyBattleScoring(state: GameState): ResolverResult {
   const scoringBreakdown: PlayerScoringBreakdown[] = [];
+  const replacementState: GameState = {
+    ...state,
+    cards: structuredClone(state.cards),
+    ...(state.abilityRuntime ? { abilityRuntime: structuredClone(state.abilityRuntime) } : {}),
+  };
   const eliminationCandidates: Array<{ playerId: string; seat: number; militaryResult: number }> = [];
 
   const nextPlayers = state.players.map((player) => {
@@ -178,7 +184,11 @@ export function applyBattleScoring(state: GameState): ResolverResult {
           label: `${result.battlefieldId}.margin`,
         });
         const militaryResult = nextPlayer.militaryResult + adjustment.delta;
-        const eliminated = militaryResult <= ELIMINATION_MILITARY_THRESHOLD;
+        const reachedEliminationThreshold = militaryResult <= ELIMINATION_MILITARY_THRESHOLD;
+        const replacementConsumed = reachedEliminationThreshold && nextPlayer.status !== "eliminated"
+          ? consumeB02EliminationReplacement(replacementState, nextPlayer.id)
+          : false;
+        const eliminated = reachedEliminationThreshold && !replacementConsumed;
         const newlyEliminated = eliminated && nextPlayer.status !== "eliminated";
         nextPlayer = {
           ...nextPlayer,
@@ -279,6 +289,8 @@ export function applyBattleScoring(state: GameState): ResolverResult {
 
   const scoredState: GameState = {
     ...state,
+    cards: replacementState.cards,
+    ...(replacementState.abilityRuntime ? { abilityRuntime: replacementState.abilityRuntime } : {}),
     players: orderedPlayers,
     battleResults: [],
     scoringBreakdown: orderedScoringBreakdown,

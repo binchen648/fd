@@ -19,6 +19,7 @@ import { clearTransientCardTransformState, getEffectiveCardAttributes } from '..
 import { logicalDayForPlayer } from './rule-overrides';
 import { situationBenefitsSuppressedForPlayer } from '../ability/next-round-situation-benefit-suppression';
 import { controllerHasActiveDefeatIgnore } from '../ability/batch-passive-card-rules';
+import { b02LowestVictoryCombatPowerAdjustment } from '../ability/batch-owned-passive-rules';
 import { assignedTerrainSlotIndex, hasRemoteOperationBonus, terrainBonusAt } from './terrain-advantage';
 
 export interface CombatParticipantInput {
@@ -341,6 +342,7 @@ export function deriveBattleParticipantsFromState(
       const terrainSlotIndex = assignedTerrainSlotIndex(state, battlefieldId, player.id);
       let persistentPowerAdjustment = roundTotalPowerAdjustment(state, player.id);
       persistentPowerAdjustment += roundActiveAttackPaidCostCombatPowerAdjustment(state, battlefieldId, player.id);
+      persistentPowerAdjustment += b02LowestVictoryCombatPowerAdjustment(state, player.id);
       if (logicalDayForPlayer(state, player.id) === 1) {
         persistentPowerAdjustment += state.ruleOverrides?.firstLogicalDayTotalPowerAdjustmentByPlayer?.[player.id] ?? 0;
       }

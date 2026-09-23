@@ -6160,3 +6160,13 @@ Read: `docs/reports/2026-09-23-p3-a-r116-f4-b01-acceptance-synchronization.md`
 Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #434 exact Candidate `2128ae7fc51cdaf0d9ae1a3cc37c46fe699b83b4`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/434#issuecomment-5788842488`. Exact material accounting is `151/944 -> 155/944`, with exact additions `servant.mechaeli.skill.sc-mechaeli-2`, `servant.atalanta.skill.sc-atalanta-1`, `servant.gorgon.skill.sc-gorgon-2`, and historical-material-only `servant.ibaraki.skill.sc-ibaraki-1`; zero removals and zero duplicate frozen IDs. Ibaraki is already formally credited through historical sync `51f8af150f10a249ba471aaa65d7d7b49cabc98e` and receives no new credit here.
 
 Formal project migration advances exactly three fresh identities to **`159/944`**, with **`785`** remaining; material authoring overlap is **`155/944`**. PR #434 remains OPEN, unmerged and unretargeted. Continue user-authorized BATCH-FIRST F4 from this synchronized baseline: reuse existing F1/capability evidence, prioritize the same accepted capability families, do not redo whole-roster classification, and submit the next coherent multi-consumer batch as one Candidate for one fresh independent R.
+
+## TASK P3-F4-B02-OWNED-PASSIVE-MODIFIER-MIGRATION-BATCH
+
+Owner: Codex Batch
+Status: `READY_FOR_FRESH_R`
+Branch: `codex/batch-p3-f4-b02-owned-passive-modifier-migrations`
+Base: exact R116 F4 B01 acceptance synchronization `8e88fdb5290a6635cb4b9f8d887bb0921d5a3c1e`
+Read: `docs/reports/2026-09-23-p3-f4-b02-owned-passive-modifier-migrations-result.md`
+
+Result required: review one BATCH-FIRST Candidate containing exactly two fresh frozen identities, `master.arcueid.skill.s3` and `master.twice.skill.ascension`, implemented through bounded identity-free source-owned passive/modifier gateways. Candidate material accounting must be exact `155/944 -> 157/944`, zero removals and zero duplicate frozen IDs. Formal migration remains `159/944` before fresh R. On exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, award exactly +2 fresh formal identities => `161/944`, `783` remaining. Do not merge/retarget and do not split the exact batch into per-skill reviews.
