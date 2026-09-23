@@ -302,6 +302,18 @@ export interface TrustedEntryEventSnapshot {
   playerId: PlayerId;
   locationId: string;
 }
+export interface Fb254SourcePowerInstallReceipt {
+  ongoingId: string;
+  rootEventId: string;
+  eventType: TrustedEntryEventSnapshot['type'];
+  eventPlayerId: PlayerId;
+  eventLocationId: string;
+  sourceCardId: string;
+  sourceDefinitionId: string;
+  abilityId: string;
+  controllerId: PlayerId;
+  installedRevision: number;
+}
 export interface TrustedBattleResultSnapshot {
   battlePhaseResolutionId: string;
   battleId: string;
@@ -321,6 +333,8 @@ export interface AbilityRuntime {
   combatWinRoundByPlayer?: Record<PlayerId, number>;
   /** FB2-54 transient server-owned provenance for authoritative movement/deployment entry events. */
   trustedEntryEventSnapshots?: Record<string, TrustedEntryEventSnapshot>;
+  /** FB2-54 persisted server-owned receipts written only when a trusted qualifying entry installs +2. */
+  fb254SourcePowerInstallReceipts?: Record<string, Fb254SourcePowerInstallReceipt>;
   /** FB2-51 server-owned provenance for authoritative VP adjustments. */
   trustedVictoryPointChanges?: Record<string, { playerId: PlayerId; resource: 'victory_points'; delta: number; before: number; after: number; roundNumber: number; crossed?: boolean }>;
   /** FB2-51 current-round positive VP gain, keyed by affected player. */

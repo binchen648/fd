@@ -266,6 +266,21 @@ describe('P3-FB2-54 event power / uncontested-win reward family', () => {
     expect(() => sourcePower(forged)).toThrow(/Malformed FB2-54/);
   });
 
+  it('fails closed when a canonical persisted +2 record points at an unrelated processed event id with no trusted qualifying install receipt', () => {
+    const state = setup([powerAbility()]);
+    rules.processAbilityEvent(state, { id: 'unrelated-root', type: 'totally_unrelated' } as AbilityEvent);
+    expect(state.abilityRuntime!.processedEvents).toContain('unrelated-root');
+
+    const template = setup([powerAbility()]);
+    rules.processAuthoritativeEntryAbilityEvent(template, entryEvent('trusted-template-root'));
+    const forged = structuredClone(template.abilityRuntime!.ongoingEffects.find((entry) => entry.policyKey === rules.EVENT_POWER_SOURCE_BONUS_POLICY)!);
+    forged.fb254EntryRootEventId = 'unrelated-root';
+    forged.id = `${rules.EVENT_POWER_SOURCE_BONUS_POLICY}:${JSON.stringify(['unrelated-root', SOURCE_ID, powerAbility().id])}`;
+    state.abilityRuntime!.ongoingEffects.push(forged);
+
+    expect(() => sourcePower(state)).toThrow(/Malformed FB2-54/);
+  });
+
   it('rewards exactly +4 through the authoritative VP path when the controller is the sole trusted battle participant and winner', () => {
     const state = setup([winAbility()]);
     state.players[0]!.vp = 2;

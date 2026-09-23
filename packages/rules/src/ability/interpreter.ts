@@ -492,10 +492,14 @@ function parseFb254SourcePowerOngoingId(id: string): [string, string, string] | 
 }
 function assertFb254SourcePowerOngoingState(s: GameState, ongoing: OngoingEffect): void {
   if (ongoing.policyKey !== EVENT_POWER_SOURCE_BONUS_POLICY) return;
+  const r = runtime(s);
   const source = s.cards.find((candidate) => candidate.instanceId === ongoing.sourceCardId);
-  const sourceDefinition = source ? runtime(s).pack.cards[source.definitionId] : undefined;
+  const sourceDefinition = source ? r.pack.cards[source.definitionId] : undefined;
   const sourceAbility = sourceDefinition?.abilities.find((ability) => ability.id === ongoing.abilityId);
   const rootIdentity = parseFb254SourcePowerOngoingId(ongoing.id);
+  const receipt = r.fb254SourcePowerInstallReceipts?.[ongoing.id];
+  const receiptKeys = receipt ? Object.keys(receipt).sort() : [];
+  const expectedReceiptKeys = ['abilityId', 'controllerId', 'eventLocationId', 'eventPlayerId', 'eventType', 'installedRevision', 'ongoingId', 'rootEventId', 'sourceCardId', 'sourceDefinitionId'].sort();
   const modifier = ongoing.ruleModifiers[0];
   const definition = modifier?.definition ?? {};
   const scope = node(definition.scope);
@@ -509,7 +513,16 @@ function assertFb254SourcePowerOngoingState(s: GameState, ongoing: OngoingEffect
       !Number.isInteger(ongoing.installedRevision) || ongoing.installedRevision! < 0 ||
       !rootIdentity || typeof ongoing.fb254EntryRootEventId !== 'string' || ongoing.fb254EntryRootEventId.length === 0 ||
       rootIdentity[0] !== ongoing.fb254EntryRootEventId || rootIdentity[1] !== ongoing.sourceCardId || rootIdentity[2] !== ongoing.abilityId ||
-      !runtime(s).processedEvents.includes(ongoing.fb254EntryRootEventId) ||
+      !r.processedEvents.includes(ongoing.fb254EntryRootEventId) || !receipt ||
+      receiptKeys.length !== expectedReceiptKeys.length || receiptKeys.some((key, index) => key !== expectedReceiptKeys[index]) ||
+      receipt.ongoingId !== ongoing.id || receipt.rootEventId !== ongoing.fb254EntryRootEventId ||
+      !isFb254EntryEventType(receipt.eventType) || receipt.eventType !== sourceAbility.activation.trigger ||
+      typeof receipt.eventPlayerId !== 'string' || receipt.eventPlayerId.length === 0 || receipt.eventPlayerId === ongoing.controllerId ||
+      !s.players.some((candidate) => candidate.id === receipt.eventPlayerId) ||
+      typeof receipt.eventLocationId !== 'string' || receipt.eventLocationId.length === 0 || !isBattlefield(s, receipt.eventLocationId) ||
+      receipt.sourceCardId !== ongoing.sourceCardId || receipt.sourceDefinitionId !== ongoing.sourceDefinitionIdAtInstall ||
+      receipt.abilityId !== ongoing.abilityId || receipt.controllerId !== ongoing.controllerId ||
+      receipt.installedRevision !== ongoing.installedRevision ||
       ongoing.publicZones.length !== 0 || ongoing.ruleModifiers.length !== 1 || !modifier ||
       modifier.sourceCardId !== ongoing.sourceCardId || modifier.controllerId !== ongoing.controllerId ||
       definitionKeys.length !== expectedDefinitionKeys.length || definitionKeys.some((key, index) => key !== expectedDefinitionKeys[index]) ||
@@ -528,6 +541,11 @@ function liveOngoing(s: GameState): OngoingEffect[] {
     if (ongoing.policyKey !== EVENT_POWER_SOURCE_BONUS_POLICY) continue;
     if (seenFb254Roots.has(ongoing.id)) reject('invalid_state', 'Duplicate FB2-54 trusted entry root for source ability');
     seenFb254Roots.add(ongoing.id);
+  }
+  for (const [ongoingId, receipt] of Object.entries(runtime(s).fb254SourcePowerInstallReceipts ?? {})) {
+    if (receipt.ongoingId !== ongoingId || !runtime(s).ongoingEffects.some((ongoing) => ongoing.id === ongoingId && ongoing.policyKey === EVENT_POWER_SOURCE_BONUS_POLICY)) {
+      reject('invalid_state', 'Malformed FB2-54 source-power install receipt state');
+    }
   }
   return runtime(s).ongoingEffects.filter((ongoing) =>
     sourceBoundOngoingIsLive(s, ongoing) &&
@@ -1898,8 +1916,17 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       }
       const source = card(s, ctx.sourceCardId);
       const r = runtime(s);
+      const trusted = r.trustedEntryEventSnapshots?.[ctx.event!.id];
+      if (!trusted) reject('resolution_failed', 'FB2-54 trusted qualifying entry provenance disappeared before install');
+      const ongoingId = fb254SourcePowerOngoingId(ctx.event!.id, source.instanceId, a.id);
+      const receipts = r.fb254SourcePowerInstallReceipts ??= {};
+      if (receipts[ongoingId]) reject('invalid_state', 'FB2-54 trusted entry root install receipt collision');
+      receipts[ongoingId] = {
+        ongoingId, rootEventId: ctx.event!.id, eventType: trusted.type, eventPlayerId: trusted.playerId, eventLocationId: trusted.locationId,
+        sourceCardId: source.instanceId, sourceDefinitionId: source.definitionId, abilityId: a.id, controllerId: ctx.controllerId, installedRevision: r.revision,
+      };
       r.ongoingEffects.push({
-        id: fb254SourcePowerOngoingId(ctx.event!.id, source.instanceId, a.id),
+        id: ongoingId,
         sourceCardId: source.instanceId, abilityId: a.id, controllerId: ctx.controllerId,
         starts: 'immediate', duration: 'while_active', startRound: s.round.roundNumber, cleanup: 'remain_active',
         sourceMustRemainActive: true, policyKey: EVENT_POWER_SOURCE_BONUS_POLICY,

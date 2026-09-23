@@ -86,3 +86,25 @@ Revision validation on the successor working tree:
 - `git diff --check`: PASS.
 
 FB2-54 remains zero-credit. Formal migration remains `156/944`, remaining `788`; material overlap remains `151/944`.
+
+## R2 Revision Closure
+
+Fresh independent R rejected exact Candidate `42c4d3a75a4a41eef421ad5566e14e002bebd25c` at canonical evidence https://github.com/binchen648/fd/pull/433#issuecomment-5788087255 for one remaining persisted-provenance gap: `processedEvents` proved only that an id had been processed, not that the id was a trusted qualifying FB2-54 entry root.
+
+The successor revision remains bounded to FB2-54:
+
+- a dedicated persisted server-owned `fb254SourcePowerInstallReceipts` receipt is now written only inside the already-trusted qualifying +2 install transaction;
+- each receipt binds the canonical ongoing id, trusted root id/type/player/location facts, physical source id/definition, ability id, controller id, and install revision;
+- persisted source-power state must exact-match that receipt plus the existing canonical root/source/ability id tuple and generic processed-id ledger;
+- an unrelated processed event id therefore cannot authorize a +2 record merely by appearing in `processedEvents`;
+- orphan/mismatched receipt state fails closed; existing duplicate/collision rejection and source liveness remain unchanged;
+- no generic event ledger, counter, power API, consumer route, product/generated/client change, merge/retarget, or migration credit is introduced.
+
+Revision validation on the successor working tree:
+
+- FB2-54 + inherited FB2-31/33/43/51: **5 files / 54 tests PASS** (FB2-54 **17/17**), including the exact Reviewer reproduction where `processedEvents` contains an unrelated event id and a forged canonical FB2-54 ongoing record points to it;
+- affected movement/session regressions: **5 files / 62 tests PASS**;
+- `npm run typecheck`: PASS;
+- `git diff --check`: PASS.
+
+FB2-54 remains zero-credit. Formal migration remains `156/944`, remaining `788`; material overlap remains `151/944`.
