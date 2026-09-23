@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.araya",
+  "name": "荒耶宗莲",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.araya.skill.s1a",
+      "aliases": [
+        "card.skill.master.araya.skill.s1a",
+        "s1a"
+      ],
+      "legacyId": "s1a",
+      "name": "起源：静止",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.araya"
+      },
+      "printedText": "战斗阶段结束后，将一张你激活的基础攻击洗回牌库，然后你获得该牌印刷魔力消耗两倍的魔力。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "origin-stillness-combat-end",
+          "printedClause": "战斗阶段结束后，将一张你激活的基础攻击洗回牌库，然后你获得该牌印刷魔力消耗两倍的魔力。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "target": "controller",
+              "zone": "attack_area",
+              "basicOnly": true,
+              "activeOnly": true,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedInstanceIds",
+              "skipIfNoCandidates": true
+            },
+            {
+              "type": "move_selected_cards",
+              "target": "controller",
+              "zone": "attack_area",
+              "basicOnly": true,
+              "activeOnly": true,
+              "payloadKey": "selectedInstanceIds",
+              "destination": "deck",
+              "position": "shuffle",
+              "count": 1
+            },
+            {
+              "type": "gain_mana",
+              "target": "controller",
+              "amount": {
+                "type": "formula",
+                "op": "multiply",
+                "args": [
+                  {
+                    "type": "metric",
+                    "metric": "selected_card_printed_cost",
+                    "source": "selected_card",
+                    "payloadKey": "selectedInstanceIds"
+                  },
+                  {
+                    "type": "constant",
+                    "value": 2
+                  }
+                ]
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "after_battle_ended"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "master.araya/荒耶宗莲",
+          "master/master.araya/s1a"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

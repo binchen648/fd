@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.arthur",
+  "name": "亚瑟·潘德拉贡[Prototype]",
+  "class": "Saber",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.arthur.skill.sc-arthur-1",
+      "aliases": [
+        "card.skill.servant.arthur.skill.sc-arthur-1",
+        "sc_arthur_1"
+      ],
+      "legacyId": "sc_arthur_1",
+      "name": "契约胜利之剑",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.arthur"
+      },
+      "printedText": "【真名解放】\n行动阶段：将任意数量亚瑟的技能移出游戏。每张移除的技能为[契约胜利之剑]增加5点威力以及2点消耗持续到游戏结束。",
+      "cardFace": {
+        "typeLabel": "力量/宝具",
+        "cost": 4,
+        "basePower": 7,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "contract-victory-sword",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "requiresSourceState": "active",
+            "opens": "controller_action_window"
+          },
+          "printedClause": "【真名解放】\n行动阶段：将任意数量亚瑟的技能移出游戏。每张移除的技能为[契约胜利之剑]增加5点威力以及2点消耗持续到游戏结束。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "target": "controller",
+              "zone": "skill",
+              "definitionIds": [
+                "servant.arthur.skill.sc-arthur-2",
+                "servant.arthur.skill.sc-arthur-3"
+              ],
+              "minCount": 0,
+              "maxCount": 99,
+              "payloadKey": "arthurRemovedSkillIds",
+              "then": [
+                {
+                  "type": "remove_selected_cards",
+                  "zone": "skill",
+                  "payloadKey": "arthurRemovedSkillIds",
+                  "minCount": 1,
+                  "maxCount": 99
+                },
+                {
+                  "type": "source_card_power_bonus",
+                  "id": "contract-victory-sword-power",
+                  "amount": {
+                    "type": "payload_count",
+                    "key": "arthurRemovedSkillIds",
+                    "multiply": 5
+                  },
+                  "duration": "game"
+                },
+                {
+                  "type": "add_card_cost_modifier",
+                  "id": "contract-victory-sword-cost",
+                  "definitionId": "servant.arthur.skill.sc-arthur-1",
+                  "amount": {
+                    "type": "payload_count",
+                    "key": "arthurRemovedSkillIds",
+                    "multiply": 2
+                  },
+                  "duration": "game"
+                }
+              ]
+            }
+          ],
+          "creates": [],
+          "conditions": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "亚瑟·潘德拉贡[Prototype].htm",
+            "locator": "从者/剑士/英文版/亚瑟·潘德拉贡[Prototype].htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/亚瑟·潘德拉贡[Prototype].png",
+            "locator": "servant.arthur/亚瑟·潘德拉贡[Prototype]"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

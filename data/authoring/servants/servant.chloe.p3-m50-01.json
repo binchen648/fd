@@ -1,0 +1,181 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.chloe",
+  "name": "克洛伊·冯·爱因兹贝伦",
+  "class": "Archer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.chloe.skill.sc-chloe-1",
+      "aliases": [
+        "card.skill.servant.chloe.skill.sc-chloe-1",
+        "sc_chloe_1"
+      ],
+      "legacyId": "sc_chloe_1",
+      "name": "无限剑制",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.chloe"
+      },
+      "printedText": "【真名解放】\n残留：于你的行动阶段中关闭一张自己控制的攻击，从你的手牌或牌库中打出至多2张基本威力与之印刷基本威力相同的牌，若你打出的牌少于两张，关闭此【无限剑制】。",
+      "cardFace": {
+        "cost": 2,
+        "basePower": 1,
+        "attributes": [
+          "特殊"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 2
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "unlimited-blade-works-residual",
+          "printedClause": "【真名解放】\n残留",
+          "markers": [
+            "真名解放",
+            "m50_structured_v1"
+          ],
+          "kind": "residual",
+          "lifecycle": {
+            "duration": "while_active"
+          },
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "conditions": [],
+          "activation": {},
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "responseWindow": {},
+          "limit": {}
+        },
+        {
+          "id": "unlimited-blade-works-action",
+          "printedClause": "于你的行动阶段中关闭一张自己控制的攻击，从你的手牌或牌库中打出至多2张基本威力与之印刷基本威力相同的牌，若你打出的牌少于两张，关闭此【无限剑制】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "target": "controller",
+              "zone": "attack_area",
+              "activeOnly": true,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "closedAttackIds"
+            },
+            {
+              "type": "close_selected_card",
+              "payloadKey": "closedAttackIds",
+              "zone": "attack_area",
+              "count": 1
+            },
+            {
+              "type": "choose_cards",
+              "target": "controller",
+              "zones": [
+                "hand",
+                "deck"
+              ],
+              "sameBasePowerAsPayloadKey": "closedAttackIds",
+              "playableOnly": true,
+              "minCount": 0,
+              "maxCount": 2,
+              "payloadKey": "selectedInstanceIds"
+            },
+            {
+              "type": "play_selected_cards",
+              "target": "controller",
+              "sourceZones": [
+                "hand",
+                "deck"
+              ],
+              "minCount": 0,
+              "maxCount": 2,
+              "payloadKey": "selectedInstanceIds",
+              "payCost": true
+            },
+            {
+              "type": "if_condition",
+              "conditions": [
+                {
+                  "type": "metric_compare",
+                  "left": {
+                    "type": "metric",
+                    "metric": "selected_card_count",
+                    "source": "selected_card",
+                    "payloadKey": "selectedInstanceIds"
+                  },
+                  "operator": "lt",
+                  "right": {
+                    "type": "constant",
+                    "value": 2
+                  }
+                }
+              ],
+              "then": [
+                {
+                  "type": "close_source_card"
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/弓兵/英文版/克洛伊·冯·爱因兹贝伦1.htm",
+          "servant.chloe/克洛伊·冯·爱因兹贝伦"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

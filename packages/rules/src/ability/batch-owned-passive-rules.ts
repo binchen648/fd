@@ -150,6 +150,40 @@ export function b02LowestVictoryCombatPowerAdjustment(state: GameState, playerId
   return adjustment;
 }
 
+export function isAcceptedM50NextRoundVpEliminationReplacementAbility(ability: AuthoringAbility | RuleNode): boolean {
+  if (!commonPassive(ability)) return false;
+  const a = ability as AuthoringAbility;
+  if (!a.markers?.includes('m50_structured_v1')) return false;
+  const conditions = fields(ability, 'conditions'); const modifiers = fields(ability, 'ruleModifiers');
+  if (conditions.length !== 1 || !exactKeys(conditions[0]!, ['type']) || conditions[0]!.type !== 'source_owned' || modifiers.length !== 1) return false;
+  const modifier = modifiers[0]!; const scope = record(modifier.scope); const lifecycle = record(modifier.lifecycle);
+  return exactKeys(modifier, ['id', 'operation', 'rule', 'scope', 'lifecycle']) && modifier.operation === 'replace' && modifier.rule === 'elimination' &&
+    exactKeys(scope, ['subject', 'replacement', 'nextRoundVictoryPointGainMultiplier']) && scope.subject === 'controller' &&
+    scope.replacement === 'remove_source_card' && scope.nextRoundVictoryPointGainMultiplier === 2 &&
+    exactKeys(lifecycle, ['duration']) && lifecycle.duration === 'permanent';
+}
+
+export function consumeM50NextRoundVpEliminationReplacement(state: GameState, playerId: string): boolean {
+  const player = state.players.find((candidate) => candidate.id === playerId);
+  if (!player || player.status === 'eliminated' || !state.abilityRuntime) return false;
+  const sources = ownedPassiveSources(state, playerId).filter((source) =>
+    definition(state, source.instanceId)?.abilities.some(isAcceptedM50NextRoundVpEliminationReplacementAbility));
+  if (!sources.length) return false;
+  if (sources.length > 1) throw new Error('M50_ELIMINATION_REPLACEMENT_CONFLICT');
+  const source = sources[0]!;
+  if (source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId) throw new Error('M50_ELIMINATION_REPLACEMENT_SOURCE_INVALID');
+  const existing = state.abilityRuntime.structuredNextRoundVpGainMultipliers?.[playerId];
+  const nextRound = state.round.roundNumber + 1;
+  if (existing && (existing.round !== nextRound || existing.multiplier !== 2 || existing.sourceCardId !== source.instanceId)) {
+    throw new Error('M50_NEXT_ROUND_VP_MULTIPLIER_CONFLICT');
+  }
+  source.zone = 'removed_from_game'; source.visibility = { scope: 'public' };
+  const sourceState = state.abilityRuntime.cardState[source.instanceId];
+  if (sourceState) { sourceState.active = false; sourceState.faceDown = true; }
+  (state.abilityRuntime.structuredNextRoundVpGainMultipliers ??= {})[playerId] = { round: nextRound, multiplier: 2, sourceCardId: source.instanceId };
+  return true;
+}
+
 export function consumeB02EliminationReplacement(state: GameState, playerId: string): boolean {
   const player = state.players.find((candidate) => candidate.id === playerId);
   if (!player || player.status === 'eliminated') return false;

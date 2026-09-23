@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.napoleon",
+  "name": "拿破仑",
+  "class": "Archer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.napoleon.skill.sc-napoleon-2",
+      "aliases": [
+        "card.skill.servant.napoleon.skill.sc-napoleon-2",
+        "sc_napoleon_2"
+      ],
+      "legacyId": "sc_napoleon_2",
+      "name": "高歌凯旋之虹弓",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.napoleon"
+      },
+      "printedText": "【真名解放】\n可能性之光-战斗阶段：若一名战果比你多的对手与你交战，抽一张牌并打出一张手牌。",
+      "cardFace": {
+        "cost": 6,
+        "basePower": 10,
+        "attributes": [
+          "力量",
+          "宝具"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 8
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "light-of-possibility",
+          "printedClause": "可能性之光-战斗阶段：若一名战果比你多的对手与你交战，抽一张牌并打出一张手牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "engaged_opponent_victory_points_greater_than_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "target": "controller",
+              "amount": 1
+            },
+            {
+              "type": "choose_cards",
+              "target": "controller",
+              "zone": "hand",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedInstanceIds",
+              "skipIfNoCandidates": true
+            },
+            {
+              "type": "play_selected_cards",
+              "target": "controller",
+              "payloadKey": "selectedInstanceIds",
+              "count": 1,
+              "payCost": true
+            }
+          ],
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/弓兵/英文版/拿破仑.htm",
+          "servant.napoleon/拿破仑"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

@@ -39,7 +39,10 @@ export function isBattleLossVpWinnerRewardCandidate(ability: AuthoringAbility | 
     if (Array.isArray(value)) return value.some(visit);
     if (!value || typeof value !== 'object') return false;
     const current = node(value);
-    if (current.type === BATTLE_LOSS_VP_WINNER_REWARD_EFFECT || current.type === 'lose_victory_points' ||
+    // M50 adds a bounded generic VP-loss primitive. Keep FB2-46 candidate discovery
+    // focused on its dedicated transaction and the forbidden historical continuation
+    // vocabulary; a plain lose_victory_points node is no longer, by itself, FB2-46.
+    if (current.type === BATTLE_LOSS_VP_WINNER_REWARD_EFFECT ||
         current.scope === 'event_combat_winners' || Object.prototype.hasOwnProperty.call(current, 'thenIfAnyLost')) return true;
     return Object.values(current).some(visit);
   };

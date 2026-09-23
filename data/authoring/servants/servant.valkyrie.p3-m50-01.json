@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.valkyrie",
+  "name": "瓦尔基里",
+  "class": "Lancer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.valkyrie.skill.sc-valkyrie-3",
+      "aliases": [
+        "card.skill.servant.valkyrie.skill.sc-valkyrie-3",
+        "sc_valkyrie_3"
+      ],
+      "legacyId": "sc_valkyrie_3",
+      "name": "伪·大神宣言",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.valkyrie"
+      },
+      "printedText": "【真名解放】\n行动阶段：重新触发你所有激活的【指挥官】的“打出时”效果。",
+      "cardFace": {
+        "typeLabel": "迅捷/宝具",
+        "cost": 6,
+        "basePower": 6,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "false-gungnir-retrigger-commanders",
+          "printedClause": "行动阶段：重新触发你所有激活的【指挥官】的“打出时”效果。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "card_count_at_least",
+              "target": "controller",
+              "zone": "attack_area",
+              "activeOnly": true,
+              "face": "up",
+              "definitionIds": [
+                "card.x-commanderortlinde",
+                "card.x-commanderhildr",
+                "card.x-commanderthrud"
+              ],
+              "value": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "retrigger_card_play_effects",
+              "definitionIds": [
+                "card.x-commanderortlinde",
+                "card.x-commanderhildr",
+                "card.x-commanderthrud"
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "瓦尔基里.htm",
+            "locator": "从者/枪兵/英文版/瓦尔基里.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/瓦尔基里.png",
+            "locator": "servant.valkyrie/瓦尔基里"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

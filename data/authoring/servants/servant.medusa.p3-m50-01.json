@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.medusa",
+  "name": "美杜莎",
+  "class": "Rider",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.medusa.skill.sc-medusa-np",
+      "aliases": [
+        "card.skill.servant.medusa.skill.sc-medusa-np",
+        "sc_medusa_np"
+      ],
+      "legacyId": "sc_medusa_np",
+      "name": "骑英之缰绳",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.medusa"
+      },
+      "printedText": "【真名解放】\n行动阶段：移动到任一地点，若为战场，重新部署于该地点的2个地利，原地利的占领者失去该地利。",
+      "cardFace": {
+        "cost": 9,
+        "basePower": 8,
+        "attributes": [
+          "宝具"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 9
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "bellerophon-relocate",
+          "printedClause": "行动阶段：移动到任一地点，若为战场，重新部署于该地点的2个地利，原地利的占领者失去该地利。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_locations",
+              "allowedLocationIds": [
+                "workshop",
+                "mountain",
+                "city",
+                "scouting"
+              ],
+              "excludeCurrent": true,
+              "payloadKey": "targetLocationId",
+              "minCount": 1,
+              "maxCount": 1,
+              "allowCancel": false,
+              "then": [
+                {
+                  "type": "move_player",
+                  "target": "controller",
+                  "to": "targetLocationId"
+                },
+                {
+                  "type": "if_condition",
+                  "conditions": [
+                    {
+                      "type": "location_in",
+                      "locationIds": [
+                        "mountain",
+                        "city"
+                      ]
+                    }
+                  ],
+                  "then": [
+                    {
+                      "type": "claim_all_location_advantages",
+                      "target": "controller"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/骑兵/英文版/美杜莎.htm",
+          "servant.medusa/美杜莎"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

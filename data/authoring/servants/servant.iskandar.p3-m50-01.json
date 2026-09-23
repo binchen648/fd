@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.iskandar",
+  "name": "伊斯坎达尔",
+  "class": "Rider",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.iskandar.skill.sc-iskandar-2",
+      "aliases": [
+        "card.skill.servant.iskandar.skill.sc-iskandar-2",
+        "sc_iskandar_2"
+      ],
+      "legacyId": "sc_iskandar_2",
+      "name": "神威车轮",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.iskandar"
+      },
+      "printedText": "【真名解放】\n行动阶段：将你所在地点的一张事件牌弃置，然后抽2张新的事件牌。将其中1张作为新的事件牌，另一张洗回牌堆。",
+      "cardFace": {
+        "cost": 4,
+        "basePower": 7,
+        "attributes": [
+          "力量",
+          "宝具"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 4
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "gordius-wheel-event-replacement",
+          "printedClause": "行动阶段：将你所在地点的一张事件牌弃置，然后抽2张新的事件牌。将其中1张作为新的事件牌，另一张洗回牌堆。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "at_battlefield"
+            },
+            {
+              "type": "event_count_at_least",
+              "sourceZone": "current",
+              "locationId": "controller_location",
+              "value": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_events",
+              "sourceZone": "current",
+              "locationId": "controller_location",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "discardedEventIds"
+            },
+            {
+              "type": "move_selected_events",
+              "payloadKey": "discardedEventIds",
+              "destination": "discard"
+            },
+            {
+              "type": "ensure_event_deck_count",
+              "count": 2,
+              "deferPreflight": true
+            },
+            {
+              "type": "choose_events",
+              "sourceZone": "deck",
+              "topCount": 2,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "replacementEventIds"
+            },
+            {
+              "type": "move_selected_events",
+              "payloadKey": "replacementEventIds",
+              "destination": "current",
+              "locationId": "controller_location",
+              "visibility": "up"
+            },
+            {
+              "type": "shuffle_event_deck"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/骑兵/英文版/伊斯坎达尔.htm",
+          "servant.iskandar/伊斯坎达尔"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

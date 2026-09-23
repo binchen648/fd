@@ -89,7 +89,7 @@ describe('P3 Ruler consumer migration', () => {
       const archive = readArchive(owner);
       const loaded = rules.loadAuthoringJson(archive);
       expect(loaded.report).toEqual([]);
-      cards.push(...archive.cards);
+      cards.push(...archive.cards.filter((card: any) => (IDS as readonly string[]).includes(String(card.id))));
     }
     expect(cards.map(card => card.id).sort()).toEqual([...IDS].sort());
     for (const card of cards.filter(card => card.id !== USE)) {

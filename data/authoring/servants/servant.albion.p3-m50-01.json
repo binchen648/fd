@@ -1,0 +1,180 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.albion",
+  "name": "阿尔比恩之骸",
+  "class": "Lancer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.albion.skill.sc-albion-1",
+      "aliases": [
+        "card.skill.servant.albion.skill.sc-albion-1",
+        "sc_albion_1"
+      ],
+      "legacyId": "sc_albion_1",
+      "name": "未能回归于星的龙",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.albion"
+      },
+      "printedText": "星陨-被动：当你进入侦查时，你可以将此牌加入攻击。若如此做，你获得4点魔力与2点战果并移动至除侦查外的任意地点且你于战斗阶段结束后失去8点魔力。",
+      "cardFace": {
+        "cost": 13,
+        "basePower": 3,
+        "attributes": [
+          "特殊"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 13
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "starfall-enter-scouting",
+          "printedClause": "被动：当你进入侦查时，你可以将此牌加入攻击。若如此做，你获得4点魔力与2点战果并移动至除侦查外的任意地点且你于战斗阶段结束后失去8点魔力。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_location_is",
+              "locationId": "scouting"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_one",
+              "options": [
+                {
+                  "id": "use",
+                  "label": "发动星陨",
+                  "effects": [
+                    {
+                      "type": "return_card_by_definition",
+                      "linkedSkillId": "servant.albion.skill.sc-albion-1",
+                      "fromZone": "skill",
+                      "destination": "attack_area",
+                      "face": "up",
+                      "active": true,
+                      "residual": false
+                    },
+                    {
+                      "type": "gain_mana",
+                      "amount": 4
+                    },
+                    {
+                      "type": "gain_victory_points",
+                      "amount": 2
+                    },
+                    {
+                      "type": "schedule_effect",
+                      "abilityId": "starfall-combat-end-mana-loss",
+                      "triggerEventType": "combat.ending",
+                      "triggerRoundOffset": 0
+                    },
+                    {
+                      "type": "choose_locations",
+                      "allowedLocationIds": [
+                        "workshop",
+                        "mountain",
+                        "city"
+                      ],
+                      "minCount": 1,
+                      "maxCount": 1,
+                      "then": [
+                        {
+                          "type": "move_player",
+                          "target": "controller",
+                          "to": "targetLocationId"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "skip",
+                  "label": "不发动",
+                  "effects": []
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "after_controller_enters_location"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "starfall-combat-end-mana-loss",
+          "printedClause": "你于战斗阶段结束后失去8点魔力。",
+          "kind": "passive",
+          "activation": {
+            "phase": "combat",
+            "trigger": "after_battle_ended"
+          },
+          "conditions": [],
+          "effects": [
+            {
+              "type": "lose_mana",
+              "amount": 8
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "servant.albion/阿尔比恩之骸",
+          "servant/servant.albion/sc_albion_1"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

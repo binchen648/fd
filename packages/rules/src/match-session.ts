@@ -1,4 +1,5 @@
 import {
+  adjustVictoryPointsAuthoritatively,
   advanceAbilityPhase,
   dispatchAbilityCommand,
   initializeAbilityRuntime,
@@ -36,7 +37,7 @@ import type { CompiledPlaytestContentLibrary } from '@fd/content';
 import { resolveBattlefield } from './core/combat-resolver';
 import { applyBattleScoring } from './core/scoring-resolver';
 import { canOccupyLocation, getEnabledLocations } from './core/map-engine';
-import { canViewFaceDownEvents, canViewOpponentDiscard, grantMana, rulerSealMovementLocked } from './core/rule-overrides';
+import { canViewFaceDownEvents, canViewOpponentDiscard, grantMana, rulerSealMovementLocked, structuredCardDrawForbidden } from './core/rule-overrides';
 import { createSeededGameState } from './tools/seeded-state';
 
 import contentLibrary from '../../../data/generated/fd-playtest-v1.content-library.json';
@@ -767,8 +768,10 @@ export class MatchSession {
       this.seenFingerprints.set(fingerprint, seen);
       if (seen > 3) return this.pause('state_loop');
 
+      if (this.state.abilityRuntime?.structuredInstantVictory) return this.pause('match_complete');
       const windowPause = this.autoResolveNonInteractiveWindows();
       if (windowPause) return this.pause(windowPause);
+      if (this.state.abilityRuntime?.structuredInstantVictory) return this.pause('match_complete');
       if (this.state.round.activePhase === 'round_end') return this.pause('round_end');
       if (this.state.round.roundNumber > 11) return this.pause('match_complete');
 
@@ -1230,6 +1233,7 @@ export class MatchSession {
   }
 
   private drawToHandLimit(targetState: GameState, playerId: string, limit = 3): void {
+    if (structuredCardDrawForbidden(targetState, playerId)) return;
     const handCount = targetState.cards.filter((card) => card.ownerPlayerId === playerId && card.zone === 'hand').length;
     const drawCount = Math.max(0, limit - handCount);
     if (!drawCount) return;
@@ -1287,6 +1291,24 @@ export class MatchSession {
     this.checkpoint(`round ${round} start`, targetState);
   }
 
+  private settleScoutingReward(): void {
+    const runtime = this.state.abilityRuntime;
+    if (!runtime) return;
+    const round = this.state.round.roundNumber;
+    if (runtime.structuredScoutingReward?.round === round) return;
+    const scoutingPlayer = this.state.players
+      .filter((candidate) => candidate.status === 'active' && candidate.locationId === 'recon')
+      .sort((left, right) => left.seat - right.seat)[0];
+    if (!scoutingPlayer) return;
+    const before = scoutingPlayer.vp;
+    adjustVictoryPointsAuthoritatively(this.state, scoutingPlayer.id, 2);
+    const after = this.state.players.find((candidate) => candidate.id === scoutingPlayer.id)?.vp ?? before;
+    const victoryPoints = after - before;
+    if (!Number.isSafeInteger(victoryPoints) || victoryPoints < 0) throw new Error('Authoritative scouting reward produced an invalid VP delta');
+    this.state.abilityRuntime!.structuredScoutingReward = { round, playerId: scoutingPlayer.id, victoryPoints };
+    this.record('scouting_reward_awarded', `${scoutingPlayer.id}:+${victoryPoints} VP`, { playerId: scoutingPlayer.id, victoryPoints, round });
+  }
+
   private battleLoserIds(battle: GameState['battleResults'][number]): string[] {
     const suppressed = new Set(battle.lossEffectSuppressedPlayerIds ?? []);
     if ((battle.participantBreakdowns?.length ?? 0) > 0) {
@@ -1335,6 +1357,9 @@ export class MatchSession {
       if (battle.participantAttackAttributes) {
         rememberB03BattleAttributeSnapshot(this.state, battlePhaseResolutionId, battleId, resultId, battle.battlefieldId, terminalParticipants, terminalParticipants, battle.participantAttackAttributes);
       }
+      const scoutingReward = index === 0 && runtime.structuredScoutingReward?.round === round
+        ? runtime.structuredScoutingReward
+        : undefined;
       const resultEvent: AbilityEvent = {
         id: resultId,
         type: 'after_battle_result_determined',
@@ -1345,6 +1370,7 @@ export class MatchSession {
         battleParticipantPowers: Object.fromEntries((battle.participantBreakdowns ?? []).filter((participant) => participants.includes(participant.playerId)).map((participant) => [participant.playerId, participant.effectivePower])),
         battlefieldId: battle.battlefieldId,
         battleResult: { winners: [...battle.winnerPlayerIds], loserIds },
+        ...(scoutingReward ? { scoutingPlayerId: scoutingReward.playerId, victoryPoints: { [scoutingReward.playerId]: scoutingReward.victoryPoints } } : {}),
       };
       if (!runtime.processedEvents.includes(resultId) && !pending.some((event) => event.id === resultId)) {
         if (battle.printedEventVpTotal !== undefined) rememberB06BattleEventVpSnapshot(this.state, { battlePhaseResolutionId, battleId, resultId, battlefieldId: battle.battlefieldId,
@@ -1468,6 +1494,7 @@ export class MatchSession {
           recordAuthoritativeVictoryPointChange(this.state, scoredPlayer.id, before, scoredPlayer.vp, 'battle-scoring-vp');
         }
       }
+      if (resolvedBattles.length > 0) this.settleScoutingReward();
       const freshScoringLogs = this.state.log.slice(scoringLogStart);
       this.queuePostScoringBattleEvents(resolvedBattles, freshScoringLogs);
       this.flushPostScoringBattleEvents();

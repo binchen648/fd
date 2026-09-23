@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.illya",
+  "name": "伊莉雅丝菲尔",
+  "class": "Caster",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.illya.skill.sc-illya-2",
+      "aliases": [
+        "card.skill.servant.illya.skill.sc-illya-2",
+        "sc_illya_2"
+      ],
+      "legacyId": "sc_illya_2",
+      "name": "魔力斩击",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.illya"
+      },
+      "printedText": "你拥有的魔力少于8点也可使用此牌。\n打出时：若你在打出此牌时拥有至少8点魔力，此牌获得威力+3。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "cost": 1,
+        "basePower": 3,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "mana-slash-boost",
+          "printedClause": "打出时：若你在打出此牌时拥有至少8点魔力，此牌获得威力+3。",
+          "activation": {
+            "phase": "action",
+            "trigger": "on_card_played"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_face_is",
+              "face": "up"
+            },
+            {
+              "type": "player_flag_number_at_least",
+              "key": "lastAttackCommitManaBefore",
+              "value": 8
+            }
+          ],
+          "effects": [
+            {
+              "type": "source_card_power_bonus",
+              "amount": 3
+            }
+          ],
+          "kind": "forced_trigger",
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "伊莉雅丝菲尔.htm",
+            "locator": "从者/魔术师/英文版/伊莉雅丝菲尔.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/伊莉雅丝菲尔.png",
+            "locator": "servant.illya/伊莉雅丝菲尔"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

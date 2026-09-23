@@ -119,8 +119,62 @@ export function persistentExtraAttackAllowance(state: GameState, playerId: strin
   return rule && mana >= rule.threshold ? rule.amount : 0;
 }
 
+function m50OwnedRuleModifiers(state: GameState, playerId: string): Array<{ sourceCardId: string; modifier: RuleNode }> {
+  const runtime = state.abilityRuntime;
+  if (!runtime) return [];
+  const result: Array<{ sourceCardId: string; modifier: RuleNode }> = [];
+  for (const source of state.cards) {
+    if (source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId || source.zone === 'removed_from_game') continue;
+    const definition = runtime.pack.cards[source.definitionId];
+    if (!definition) continue;
+    for (const ability of definition.abilities) {
+      if (!ability.markers?.includes('m50_structured_v1') || !ability.ruleModifiers.length) continue;
+      const exactSourceOwned = ability.conditions.length === 1 && ability.conditions[0]?.type === 'source_owned';
+      const exactSourceActive = ability.conditions.length === 1 && ability.conditions[0]?.type === 'source_active';
+      if (!exactSourceOwned && !exactSourceActive) continue;
+      if (exactSourceActive && runtime.cardState[source.instanceId]?.active !== true) continue;
+      for (const modifier of ability.ruleModifiers) result.push({ sourceCardId: source.instanceId, modifier });
+    }
+  }
+  return result;
+}
+
+export function structuredStandardAttackCardMaximum(state: GameState, playerId: string): number | undefined {
+  const values = m50OwnedRuleModifiers(state, playerId).flatMap(({ modifier }) => {
+    const scope = modifier.scope && typeof modifier.scope === 'object' ? modifier.scope as Record<string, unknown> : {};
+    if (modifier.operation !== 'replace' || modifier.rule !== 'standard_attack_card_count' || scope.subject !== 'controller' ||
+        scope.minCount !== 0 || !Number.isSafeInteger(scope.maxCount) || Number(scope.maxCount) < 0 || scope.closeSourceWhenHandEmpty !== true) return [];
+    return [Number(scope.maxCount)];
+  });
+  return values.length ? Math.min(...values) : undefined;
+}
+
+export function structuredCardDrawForbidden(state: GameState, playerId: string): boolean {
+  return m50OwnedRuleModifiers(state, playerId).some(({ modifier }) => {
+    const scope = modifier.scope && typeof modifier.scope === 'object' ? modifier.scope as Record<string, unknown> : {};
+    return modifier.operation === 'forbid' && modifier.rule === 'card_draw' && scope.subject === 'controller';
+  });
+}
+
+export function structuredCloseWhenHandEmptySources(state: GameState, playerId: string): string[] {
+  if (state.cards.some((card) => card.ownerPlayerId === playerId && card.zone === 'hand')) return [];
+  return [...new Set(m50OwnedRuleModifiers(state, playerId).flatMap(({ sourceCardId, modifier }) => {
+    const scope = modifier.scope && typeof modifier.scope === 'object' ? modifier.scope as Record<string, unknown> : {};
+    return modifier.operation === 'replace' && modifier.rule === 'standard_attack_card_count' && scope.subject === 'controller' &&
+      scope.minCount === 0 && scope.maxCount === 4 && scope.closeSourceWhenHandEmpty === true ? [sourceCardId] : [];
+  }))];
+}
+
 export function ignoresSituationPlayForbid(state: GameState, playerId: string, attribute: string): boolean {
-  return state.ruleOverrides?.ignoreSituationPlayForbidAttributesByPlayer?.[playerId]?.includes(attribute) === true;
+  if (state.ruleOverrides?.ignoreSituationPlayForbidAttributesByPlayer?.[playerId]?.includes(attribute) === true) return true;
+  return m50OwnedRuleModifiers(state, playerId).some(({ modifier }) => {
+    const scope = modifier.scope && typeof modifier.scope === 'object' ? modifier.scope as Record<string, unknown> : {};
+    const cards = scope.cards && typeof scope.cards === 'object' ? scope.cards as Record<string, unknown> : {};
+    const attributes = Array.isArray(cards.attributesAny) ? cards.attributesAny : [];
+    const lifecycle = modifier.lifecycle && typeof modifier.lifecycle === 'object' ? modifier.lifecycle as Record<string, unknown> : {};
+    return modifier.operation === 'ignore' && modifier.rule === 'situation_card_play' && scope.subject === 'controller' &&
+      attributes.length === 1 && attributes[0] === attribute && lifecycle.duration === 'permanent';
+  });
 }
 
 export function canViewFaceDownEvents(state: GameState, viewerId: string): boolean {

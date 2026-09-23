@@ -1,0 +1,467 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.sion",
+  "name": "紫苑·艾尔特纳姆",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.sion.skill.s6",
+      "aliases": [
+        "card.skill.master.sion.skill.s6",
+        "s6"
+      ],
+      "legacyId": "s6",
+      "name": "战斗续行 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "printedText": "追猎-行动阶段：重新部署至一处战场或花费1点魔力，移动至侦查。",
+      "cardFace": {
+        "typeLabel": "迅捷",
+        "cost": 2,
+        "basePower": 5,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 2
+        }
+      ],
+      "abilities": [
+        {
+          "id": "hunt",
+          "printedClause": "追猎-行动阶段：重新部署至一处战场或花费1点魔力，移动至侦查。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "phase_is",
+              "phase": "action"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_one",
+              "id": "hunt-choice",
+              "options": [
+                {
+                  "id": "battlefield",
+                  "label": "追猎-行动阶段：重新部署至一处战场或花费1点魔力，移动至侦查。",
+                  "effects": [
+                    {
+                      "type": "choose_locations",
+                      "allowedLocationIds": [
+                        "mountain",
+                        "city"
+                      ],
+                      "minCount": 1,
+                      "maxCount": 1,
+                      "payloadKey": "targetLocationId",
+                      "then": [
+                        {
+                          "type": "move_player",
+                          "target": "controller",
+                          "to": "targetLocationId"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "scouting",
+                  "label": "追猎-行动阶段：重新部署至一处战场或花费1点魔力，移动至侦查。",
+                  "effects": [
+                    {
+                      "type": "pay_mana",
+                      "amount": 1
+                    },
+                    {
+                      "type": "move_player",
+                      "target": "controller",
+                      "locationId": "scouting",
+                      "ignoreEngagement": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/紫苑·艾尔特纳姆.png",
+            "locator": "master.sion/紫苑·艾尔特纳姆"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.sion/s6"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.sion.skill.s11",
+      "aliases": [
+        "card.skill.master.sion.skill.s11",
+        "s11"
+      ],
+      "legacyId": "s11",
+      "name": "狂战士 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "printedText": "你拥有的魔力少于8点也可使用此牌。\n狂化-行动阶段：以背面朝上抽取至多三张牌并将其移除（以此方法被移除的牌不触发任何卡牌效果），你每以此法抽一张牌，此牌+4威力。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "madness-enhancement",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "printedClause": "狂化-行动阶段：以背面朝上抽取至多三张牌并将其移除（以此方法被移除的牌不触发任何卡牌效果），你每以此法抽一张牌，此牌+4威力。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "target": "controller",
+              "zone": "deck",
+              "visibility": "private_to_controller",
+              "minCount": 0,
+              "maxCount": 3,
+              "payloadKey": "madnessRemovedInstanceIds",
+              "then": [
+                {
+                  "type": "remove_selected_cards",
+                  "zone": "deck",
+                  "payloadKey": "madnessRemovedInstanceIds",
+                  "minCount": 0,
+                  "maxCount": 3
+                },
+                {
+                  "type": "source_card_power_bonus",
+                  "id": "madness-enhancement",
+                  "amount": {
+                    "type": "payload_count",
+                    "key": "madnessRemovedInstanceIds",
+                    "multiply": 4
+                  },
+                  "duration": "game"
+                }
+              ]
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/紫苑·艾尔特纳姆.png",
+            "locator": "master.sion/紫苑·艾尔特纳姆"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.sion/s11"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.sion.skill.s16",
+      "aliases": [
+        "card.skill.master.sion.skill.s16",
+        "s16"
+      ],
+      "legacyId": "s16",
+      "name": "领域外生命 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "printedText": "凝视深渊-行动阶段：你所在地点的所有玩家弃置所有手牌。你可花费2点魔力，将目标更改为\"游戏内的所有玩家\"。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "cost": 3,
+        "basePower": 6,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 3
+        }
+      ],
+      "abilities": [
+        {
+          "id": "abyss-gaze",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "printedClause": "凝视深渊-行动阶段：你所在地点的所有玩家弃置所有手牌。你可花费2点魔力，将目标更改为\"游戏内的所有玩家\"。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "choose_one",
+              "options": [
+                {
+                  "id": "same-location",
+                  "effects": [
+                    {
+                      "type": "discard_all_hand",
+                      "target": {
+                        "scope": "same_location_players"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "all-players",
+                  "effects": [
+                    {
+                      "type": "pay_mana",
+                      "amount": 2
+                    },
+                    {
+                      "type": "discard_all_hand",
+                      "target": {
+                        "scope": "all_players"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "creates": [],
+          "conditions": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/紫苑·艾尔特纳姆.png",
+            "locator": "master.sion/紫苑·艾尔特纳姆"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.sion/s16"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.sion.skill.s13",
+      "aliases": [
+        "card.skill.master.sion.skill.s13",
+        "s13"
+      ],
+      "legacyId": "s13",
+      "name": "复仇者 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "printedText": "滔天怨焰-被动/行动阶段：花费2点战果，从你的弃牌堆打出一张牌。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "avenger-ex-blazing-grudge",
+          "printedClause": "滔天怨焰-被动/行动阶段：花费2点战果，从你的弃牌堆打出一张牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "metric_compare",
+              "left": {
+                "type": "metric",
+                "metric": "victory_points",
+                "source": "controller"
+              },
+              "operator": "gte",
+              "right": {
+                "type": "constant",
+                "value": 2
+              }
+            }
+          ],
+          "effects": [
+            {
+              "type": "pay_victory_points",
+              "target": "controller",
+              "amount": 2
+            },
+            {
+              "type": "choose_cards",
+              "target": "controller",
+              "zone": "discard",
+              "playableOnly": true,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedInstanceIds"
+            },
+            {
+              "type": "play_selected_cards",
+              "target": "controller",
+              "sourceZone": "discard",
+              "payloadKey": "selectedInstanceIds",
+              "count": 1,
+              "payCost": true
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "master.sion/紫苑·艾尔特纳姆",
+          "master/master.sion/s13"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

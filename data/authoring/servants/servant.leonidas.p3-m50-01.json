@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.leonidas",
+  "name": "列奥尼达一世",
+  "class": "Lancer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.leonidas.skill.sc-leonidas-2",
+      "aliases": [
+        "card.skill.servant.leonidas.skill.sc-leonidas-2",
+        "sc_leonidas_2"
+      ],
+      "legacyId": "sc_leonidas_2",
+      "name": "战士的雄叫",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.leonidas"
+      },
+      "printedText": "【真名解放】\n战斗阶段：选择一张此战斗中对手的攻击，于下回合获得该牌的攻击数值的合计威力。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "cost": 2,
+        "basePower": 2,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "warrior-roar",
+          "printedClause": "战斗阶段：选择一张此战斗中对手的攻击，于下回合获得该牌的攻击数值的合计威力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "phase_is",
+              "phase": "combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "target": {
+                "scope": "same_battlefield_opponents"
+              },
+              "zone": "attack_area",
+              "activeOnly": true,
+              "attackOnly": true,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "targetInstanceId",
+              "then": [
+                {
+                  "type": "schedule_effect",
+                  "abilityId": "warrior-roar-next-round",
+                  "triggerEventType": "round.started",
+                  "triggerRoundOffset": 1,
+                  "captureCardPowerFromPayloadKey": "targetInstanceId",
+                  "payloadVariableKey": "amount"
+                }
+              ]
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "warrior-roar-next-round",
+          "printedClause": "战斗阶段：选择一张此战斗中对手的攻击，于下回合获得该牌的攻击数值的合计威力。",
+          "kind": "passive",
+          "activation": {
+            "phase": "preparation",
+            "trigger": "m50_round_started"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [],
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "target": "controller",
+              "amount": {
+                "type": "payload_number",
+                "key": "amount",
+                "min": 0
+              }
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "列奥尼达一世.htm",
+            "locator": "从者/枪兵/英文版/列奥尼达一世.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/列奥尼达一世.png",
+            "locator": "servant.leonidas/列奥尼达一世"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

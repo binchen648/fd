@@ -20,7 +20,7 @@ import { logicalDayForPlayer } from './rule-overrides';
 import { situationBenefitsSuppressedForPlayer } from '../ability/next-round-situation-benefit-suppression';
 import { controllerHasActiveDefeatIgnore } from '../ability/batch-passive-card-rules';
 import { b02LowestVictoryCombatPowerAdjustment } from '../ability/batch-owned-passive-rules';
-import { assignedTerrainSlotIndex, currentDeploymentBonus, hasRemoteOperationBonus, terrainBonusAt } from './terrain-advantage';
+import { assignedTerrainSlotIndex, assignedTerrainSlotIndexes, currentDeploymentBonus, hasRemoteOperationBonus, terrainBonusAt } from './terrain-advantage';
 
 export interface CombatParticipantInput {
   playerId: string;
@@ -165,6 +165,15 @@ function getTerrainBreakdowns(
   battlefieldId: CombatResolutionInput["battlefieldId"],
   participant: CombatParticipantInput,
 ): BattleModifierBreakdown[] {
+  const assignedSlots = assignedTerrainSlotIndexes(state, battlefieldId, participant.playerId);
+  if (assignedSlots.length > 1) {
+    const value = currentDeploymentBonus(state, participant.playerId);
+    if (value === 0) return [];
+    return [{
+      source: 'location', label: `${battlefieldId}.terrain_all`, value,
+      payload: { kind: 'modifier', sourceType: 'location', sourceId: `${battlefieldId}.terrain.all`, targetTag: 'terrain' },
+    }];
+  }
   if (participant.terrainSlotIndex === undefined) {
     const value = currentDeploymentBonus(state, participant.playerId);
     if (value === 0) return [];
@@ -186,6 +195,7 @@ function modeState(state: GameState): Record<string, unknown> {
 }
 
 function cannotWinBattleThisRound(state: GameState, playerId: string): boolean {
+  if (state.abilityRuntime?.structuredDefeatRoundByPlayer?.[playerId] === state.round.roundNumber) return true;
   const statuses = (state as unknown as { activeStatuses?: Array<Record<string, unknown>> }).activeStatuses ?? [];
   return statuses.some((status) =>
     status.id === "maiya_cannot_win_battle_this_round" &&

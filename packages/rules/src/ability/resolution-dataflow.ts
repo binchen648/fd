@@ -3,7 +3,7 @@ import type { LocationId } from '../schema/location';
 import type { PlayerId, SafeEvent } from './types';
 import { clearTransientCardTransformState } from './card-instance-state';
 import { isCardCloseForbidden } from './card-close-forbid';
-import { grantMana } from '../core/rule-overrides';
+import { grantMana, structuredCardDrawForbidden } from '../core/rule-overrides';
 
 export type EffectExecutionStatus = 'applied' | 'no_op';
 export type BindingFieldType = 'number' | 'player_ids' | 'boolean' | 'status';
@@ -1226,6 +1226,16 @@ function drawCards(
   const count = evaluateIntegerAmount(transaction, effect.count, 'draw_cards');
   if (count < 0) throw new ResolutionRuntimeError('invalid_count', 'Draw count must be nonnegative.');
   const movedCardIds: string[] = [];
+  if (structuredCardDrawForbidden(transaction.workingState, transaction.context.controllerId)) {
+    return {
+      effectId: effect.id,
+      effectType: 'draw_cards',
+      status: 'no_op',
+      affectedEntities: [],
+      payload: { playerId: transaction.context.controllerId, requestedCount: count, actualCount: 0, movedCardIds },
+      emittedEventIds: [],
+    };
+  }
   for (let index = 0; index < count; index += 1) {
     if (!transaction.workingState.cards.some((candidate) =>
       candidate.ownerPlayerId === transaction.context.controllerId && candidate.zone === 'deck')) {

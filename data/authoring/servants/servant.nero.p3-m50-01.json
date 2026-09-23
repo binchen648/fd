@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.nero",
+  "name": "尼禄·克劳狄乌斯",
+  "class": "Saber",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.nero.skill.sc-nero-2",
+      "aliases": [
+        "card.skill.servant.nero.skill.sc-nero-2",
+        "sc_nero_2"
+      ],
+      "legacyId": "sc_nero_2",
+      "name": "陨铁之鞴",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.nero"
+      },
+      "printedText": "【真名解放】\n原初之火-行动阶段：抽2张牌，从手牌中打出任意张基础威力不同的攻击，然后将手牌中剩余的牌移除游戏。",
+      "cardFace": {
+        "cost": 4,
+        "basePower": 1,
+        "attributes": [
+          "迅捷",
+          "宝具"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 8
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "primordial-fire",
+          "printedClause": "原初之火-行动阶段：抽2张牌，从手牌中打出任意张基础威力不同的攻击，然后将手牌中剩余的牌移除游戏。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "target": "controller",
+              "amount": 2
+            },
+            {
+              "type": "choose_cards",
+              "target": "controller",
+              "zone": "hand",
+              "playableOnly": true,
+              "distinctBasePower": true,
+              "minCount": 0,
+              "maxCount": "all",
+              "payloadKey": "selectedInstanceIds"
+            },
+            {
+              "type": "play_selected_cards",
+              "target": "controller",
+              "sourceZone": "hand",
+              "minCount": 0,
+              "maxCount": "all",
+              "payloadKey": "selectedInstanceIds",
+              "payCost": true
+            },
+            {
+              "type": "remove_cards_in_zone",
+              "target": "controller",
+              "zone": "hand"
+            }
+          ],
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/剑士/英文版/尼禄·克劳狄乌斯.htm",
+          "servant.nero/尼禄·克劳狄乌斯"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}
