@@ -110,6 +110,38 @@ describe('P3 F4 B05 event/resource/lifecycle migration batch', () => {
     expect(state.players[0]!.mana).toBe(7);
   });
 
+  it('MatchSession keeps support deployment bounded to B05 workshop consumers without firing historical battlefield deployment triggers', () => {
+    const session = rules.createMatchSession({ seed: 20260923, humanPlayerId: 'p1' });
+    const state = (session as unknown as { state: GameState }).state;
+    const edisonPack = loaded('data/authoring/servants/servant.edison.json');
+    const ereshDefinitionId = 'servant.ereshkigal.skill.sc-ereshkigal-2';
+    const ereshAbilityId = 'sc-ereshkigal-2.gain-mana-on-deploy';
+    expect(state.abilityRuntime!.pack.cards[ereshDefinitionId]).toBeDefined();
+    state.abilityRuntime!.pack.cards[EDISON] = structuredClone(edisonPack.cards[EDISON]!);
+
+    state.cards.push(
+      physical('b05-match-edison-source', EDISON, 'p1', 'field'),
+      physical('b05-match-eresh-source', ereshDefinitionId, 'p1', 'field'),
+    );
+    state.abilityRuntime!.cardState['b05-match-edison-source'] = { active: true, faceDown: false, playedRound: state.round.roundNumber };
+    state.abilityRuntime!.cardState['b05-match-eresh-source'] = { active: true, faceDown: false, playedRound: state.round.roundNumber };
+    state.players.find((player) => player.id === 'p1')!.locationId = SHINTO as any;
+    state.players.find((player) => player.id === 'p1')!.mana = 10;
+    state.players.find((player) => player.id === 'p1')!.vp = 4;
+    const deploying = state.players.find((player) => player.id === 'p2')!;
+    delete deploying.locationId;
+    deploying.mana = 5;
+    state.round.activePhase = 'advance';
+    state.round.prioritySeat = deploying.seat;
+
+    const result = session.dispatchPlayerAction('p2', { type: 'deploy_player', locationId: WORKSHOP });
+    expect(result.ok).toBe(true);
+    expect(state.abilityRuntime!.events.some((event) =>
+      event.sourceCardId === 'b05-match-edison-source' && event.abilityId === 'mass-production-workshop-deployment')).toBe(true);
+    expect(state.abilityRuntime!.events.some((event) =>
+      event.sourceCardId === 'b05-match-eresh-source' && event.abilityId === ereshAbilityId)).toBe(false);
+  });
+
   it('Kama steals on a real opponent move to another non-workshop battlefield, arms once, and closes at round end', () => {
     let state = setup([physical('kama-source', KAMA)], { p1: SHINTO, p2: WORKSHOP });
     state.round.prioritySeat = state.players.find((p) => p.id === 'p2')!.seat;

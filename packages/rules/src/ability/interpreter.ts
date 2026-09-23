@@ -4636,6 +4636,39 @@ export function processAuthoritativeEntryAbilityEvent(s: GameState, event: Abili
   Object.assign(s, copy);
 }
 
+/** B05-only server route for support-location deployment. Historical generic deployment triggers remain battlefield-only. */
+export function processAuthoritativeB05SupportDeploymentAbilityEvent(s: GameState, event: AbilityEvent): void {
+  if (event.type !== 'after_player_deployed_to_battlefield' || typeof event.playerId !== 'string' || typeof event.locationId !== 'string' ||
+      event.id !== `deploy:${s.round.roundNumber}:${event.playerId}`) {
+    reject('invalid_event', 'F4 B05 support deployment event is malformed');
+  }
+  const entered = s.players.find((candidate) => candidate.id === event.playerId);
+  const location = getEnabledLocations(s.map, s.locationConfig).find((candidate) => candidate.id === event.locationId);
+  if (!entered || entered.status !== 'active' || entered.locationId !== event.locationId || !location || location.tags.includes('battlefield')) {
+    reject('invalid_event', 'F4 B05 support deployment event lacks exact support-location provenance');
+  }
+  if (runtime(s).processedEvents.includes(event.id)) return;
+  const copy = structuredClone(s);
+  delete runtime(copy).trustedEntryEventSnapshots;
+  rememberTrustedFb254EntryEvent(copy, event);
+  try {
+    const r = runtime(copy);
+    r.processedEvents.push(event.id);
+    for (const c of copy.cards) {
+      for (const a of definition(copy, c.instanceId)?.abilities ?? []) {
+        if (!isAcceptedB05WorkshopDeploymentExchangeAbility(a) || a.activation.trigger !== event.type) continue;
+        if (!canActivate(copy, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
+        executeAbility(copy, context(copy, c.instanceId, a.id, event));
+      }
+    }
+    reconcileB05LowManaClosures(copy);
+  } finally {
+    forgetTrustedFb254EntryEvent(copy, event.id);
+  }
+  runtime(copy).revision++;
+  Object.assign(s, copy);
+}
+
 /** Records and dispatches a VP transition that an existing trusted runtime path has already applied. */
 export function recordAuthoritativeVictoryPointChange(
   s: GameState, playerId: string, before: number, after: number, label = 'vp-change',

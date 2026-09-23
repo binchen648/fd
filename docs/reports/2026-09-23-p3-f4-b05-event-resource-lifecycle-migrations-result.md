@@ -34,7 +34,7 @@ Kama S2:
 - Trusted opponent deployment to `magic_workshop` grants the event player +1 mana, then grants the controller +2 VP and removes up to 3 controller mana.
 - Kama S2 consumes trusted movement/deployment entry provenance only; public/forged events cannot install a round-close arm.
 - Kama transfers up to 1 VP from the qualifying opponent, installs a source-bound same-round close arm, and closes at authoritative `round_end` only when that exact arm validates.
-- Deployment arms are rebound to the exact `trustedEntryEventSnapshots` root in addition to canonical deploy id, processed-event membership, player/location/round, and source/ability bindings.
+- Deployment-origin arms are bound to durable server-authored B05 deployment-root facts plus canonical deploy id, processed-event membership, player/location/round, and source/ability bindings; transaction-local entry snapshots are not used as round-end persistence authority.
 - Duplicate/tampered persisted round-close state fails closed.
 - B04 historical frozen-material assertion was widened only from an eternal exact repository total to `>= 161`; B04 identities remain exact-once and B04 semantics are unchanged.
 
@@ -66,6 +66,23 @@ R1 verification:
 - B05 focused: 1 file / 10 tests PASS.
 - Reviewer-targeted B05 + B04 + MatchSession: 3 files / 34 tests PASS.
 - affected B01-B05 + movement + game-loop + MatchSession + authoring + replay: 14 files / 143 tests PASS.
+- `npm run typecheck`: PASS.
+- `npm run content:validate`: PASS, 0 blocking issues.
+- `git diff --check`: PASS.
+- frozen material accounting remains `163/944`; formal migration remains `165/944` pending fresh independent R on the successor Candidate.
+## R2 Fresh Reviewer Finding Closure
+
+Fresh independent R on Candidate `8d6502ba57fb51b32c6c057b8d560e4952038e20` returned `IMPLEMENTATION_NEEDS_REVISION` with canonical evidence `https://github.com/binchen648/fd/pull/438#issuecomment-5793144871`. Its single blocking regression is closed in the successor Candidate:
+
+- `MatchSession.dispatchDeployPlayer()` restores the Base behavior for ordinary historical deployment consumers: only battlefield deployments enter the generic authoritative `after_player_deployed_to_battlefield` route.
+- Non-battlefield deployment uses a new bounded server-only support-deployment route that scans and executes only the exact accepted B05 workshop-deployment envelope. It never enters the generic deployment trigger collector, so historical unscoped battlefield-deployment consumers cannot observe Magic Workshop deployment.
+- A real `MatchSession` regression installs both the B05 Edison S2 source and the existing Ereshkigal S2 source, dispatches an opponent deployment to Magic Workshop, and proves the B05 workshop effect resolves while the Ereshkigal battlefield-deployment ability does not fire.
+- The existing deployment-resource regression suite remains green, preserving its historical any-player battlefield-deployment semantics.
+
+R2 verification:
+- B05 focused: 1 file / 11 tests PASS.
+- Reviewer-targeted B05 + deployment-resource + MatchSession: 3 files / 25 tests PASS.
+- affected B01-B05 + deployment-resource + movement + game-loop + MatchSession + authoring + replay: 15 files / 151 tests PASS.
 - `npm run typecheck`: PASS.
 - `npm run content:validate`: PASS, 0 blocking issues.
 - `git diff --check`: PASS.
