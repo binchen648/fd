@@ -305,6 +305,33 @@ describe('P3 F4 B06 card-play/combat/event-burst migration batch', () => {
     expect(queued.session.state.players.find((p) => p.id === 'p3')!.vp).toBe(before);
   });
 
+  it('Mozart standard snapshot rejects a fabricated non-participant loser before any VP mutation', () => {
+    const state = setup([physical('mozart-source', MOZART)], [
+      { locationId: MIYAMA as any, eventCardId: E1, victoryPoints: 2, visibility: { scope: 'public' } },
+    ]);
+    state.players.find((p) => p.id === 'p1')!.locationId = SHINTO as any;
+    state.players.find((p) => p.id === 'p2')!.locationId = MIYAMA as any;
+    state.players.find((p) => p.id === 'p3')!.locationId = MIYAMA as any;
+    rules.playAbilityCardBatch(state, 'p1', [{ cardInstanceId: 'mozart-source' }]);
+    const queued = queueRealBattle(state, MIYAMA);
+    const snapshot = Object.values(queued.session.state.abilityRuntime!.b06BattleEventVpSnapshots!)[0]!;
+    expect(snapshot.battleLogKind).toBe('standard');
+    expect(snapshot.battleParticipantIds).toEqual(['p2', 'p3']);
+    expect(snapshot.loserIds).toEqual(['p3']);
+    const p1Before = queued.session.state.players.find((p) => p.id === 'p1')!.vp;
+    const p3Before = queued.session.state.players.find((p) => p.id === 'p3')!.vp;
+    snapshot.battleParticipantIds.push('p1');
+    snapshot.loserIds.push('p1');
+    const snapshotPayload = queued.session.state.log[snapshot.snapshotLogIndex]!.payload!;
+    snapshotPayload.battleParticipantIds = structuredClone(snapshot.battleParticipantIds);
+    snapshotPayload.loserIds = structuredClone(snapshot.loserIds);
+    expect(() => queued.session.flushPostScoringBattleEvents()).toThrow(/B06_BATTLE_EVENT_VP_STATE_INVALID/);
+    expect(queued.session.state.players.find((p) => p.id === 'p1')!.vp).toBe(p1Before);
+    expect(queued.session.state.players.find((p) => p.id === 'p3')!.vp).toBe(p3Before);
+    const battlePayload = queued.session.state.log[snapshot.battleLogIndex]!.payload!;
+    expect((battlePayload.participantBreakdowns as Array<{ playerId: string }>).map((entry) => entry.playerId)).toEqual(['p2', 'p3']);
+  });
+
   it('Mozart persisted arm rejects retiming away from its trusted source-play round', () => {
     const state = setup([physical('mozart-source', MOZART)]);
     rules.playAbilityCardBatch(state, 'p1', [{ cardInstanceId: 'mozart-source' }]);

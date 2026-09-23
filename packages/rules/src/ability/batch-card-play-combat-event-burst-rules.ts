@@ -202,7 +202,8 @@ function validatedBattleSnapshot(state: GameState, event: AbilityEvent | undefin
       eventParticipants.some((id) => !snapshot.battleParticipantIds.includes(id)) || !sameStrings(snapshot.winners, event.battleResult?.winners ?? []) ||
       eventLosers.some((id) => !snapshot.loserIds.includes(id)) || trusted.resultId !== snapshot.resultId || trusted.battleId !== snapshot.battleId ||
       trusted.battlePhaseResolutionId !== snapshot.battlePhaseResolutionId || trusted.battlefieldId !== snapshot.battlefieldId ||
-      trusted.battleParticipantIds.some((id) => !snapshot.battleParticipantIds.includes(id)) || !sameStrings(trusted.winners, snapshot.winners) ||
+      !sameStrings(trusted.battleParticipantIds, eventParticipants) || !sameStrings(trusted.winners, event.battleResult?.winners ?? []) ||
+      !sameStrings(trusted.loserIds, eventLosers) || trusted.battleParticipantIds.some((id) => !snapshot.battleParticipantIds.includes(id)) ||
       trusted.loserIds.some((id) => !snapshot.loserIds.includes(id)) || !Number.isSafeInteger(snapshot.eventVpTotal) || snapshot.eventVpTotal < 0 ||
       !runtime.processedEvents.includes(event.id)) throw new Error('B06_BATTLE_EVENT_VP_STATE_INVALID');
   const derivedEventVpTotal = snapshot.placementFacts.reduce((sum, entry) => sum + entry.victoryPoints, 0);
@@ -215,8 +216,14 @@ function validatedBattleSnapshot(state: GameState, event: AbilityEvent | undefin
   if (JSON.stringify(currentPlacementFacts) !== JSON.stringify(snapshot.placementFacts)) throw new Error('B06_BATTLE_EVENT_VP_STATE_INVALID');
   const battleLog = state.log[snapshot.battleLogIndex]; const battlePayload = battleLog?.payload ?? {};
   const snapshotLog = state.log[snapshot.snapshotLogIndex]; const snapshotPayload = snapshotLog?.payload ?? {};
+  const standardBreakdowns = Array.isArray(battlePayload.participantBreakdowns)
+    ? battlePayload.participantBreakdowns as Array<Record<string, unknown>> : [];
+  const standardParticipants = standardBreakdowns.map((entry) => String(entry.playerId ?? ''));
+  const standardLosers = standardParticipants.filter((playerId) => !snapshot.winners.includes(playerId));
   const standardBattleLogValid = snapshot.battleLogKind === 'standard' && !snapshot.returnSilenceSourceCardId &&
     battleLog?.type === 'battle_resolved' && battleLog.message === `battlefield:${snapshot.battlefieldId}` &&
+    standardParticipants.every(Boolean) && new Set(standardParticipants).size === standardParticipants.length &&
+    sameStrings(standardParticipants, snapshot.battleParticipantIds) && sameStrings(standardLosers, snapshot.loserIds) &&
     Array.isArray(battlePayload.winnerPlayerIds) && sameStrings(battlePayload.winnerPlayerIds.map(String), snapshot.winners) &&
     battlePayload.printedEventVpTotal === snapshot.eventVpTotal;
   const returnSilenceSource = snapshot.returnSilenceSourceCardId

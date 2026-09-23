@@ -75,3 +75,21 @@ Regression evidence:
 - `git diff --check`: PASS.
 
 Accounting is unchanged by the revision: frozen material remains **165/944** with the same two B06 identities exact-once; formal migration remains **167/944** pending a fresh exact-Candidate `IMPLEMENTATION_ACCEPTED_CANDIDATE` and A synchronization.
+## R2 fresh-review closure
+
+Fresh independent R evidence: https://github.com/binchen648/fd/pull/439#issuecomment-5794439479
+
+The rejected successor Candidate `0bfc0717d4396c576f68ac9b7a6ebb070358786f` exposed one exact-scope persisted-state blocker on the ordinary standard battle lineage: a widened B06 snapshot/snapshot-log could add a non-participant loser while the authoritative `battle_resolved.participantBreakdowns` still named only the real combatants.
+
+The revision keeps historical result-event loss-suppression semantics unchanged while tightening B06 provenance in two places. The generic trusted battle-result root must now match the triggering result event's participant/winner/loser arrays exactly. Separately, for the standard B06 lineage, the persisted snapshot must match the original authoritative `battle_resolved.participantBreakdowns` exactly, and the full loser set is re-derived as those participants minus winners. A fabricated non-participant loser therefore fails closed before any VP mutation. The already-accepted Return Silence lineage remains separately validated and unchanged.
+
+Regression evidence:
+- B06 focused: **16/16 PASS**, including the exact persisted-state widening probe from R2.
+- Reviewer-targeted B06 + Return Silence + MatchSession: **3 files / 32 tests PASS**.
+- Affected B01-B06 + event/deployment + combat/scoring + movement/game-loop + MatchSession + authoring/replay + Return Silence: **19 files / 192 tests PASS**.
+- `npm run typecheck`: PASS.
+- `npm run content:validate`: PASS, 0 blocking issues.
+- `git diff --check`: PASS.
+- frozen material remains **165/944**, duplicate frozen IDs **0**, production identity/name scan **0 hits**.
+
+Accounting is unchanged by this revision: formal migration remains **167/944** pending a fresh exact-Candidate `IMPLEMENTATION_ACCEPTED_CANDIDATE` and A synchronization.
