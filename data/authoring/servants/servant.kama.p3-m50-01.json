@@ -1,0 +1,188 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.kama",
+  "name": "伽摩",
+  "class": "Assassin",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.kama.skill.sc-kama-1",
+      "aliases": [
+        "card.skill.servant.kama.skill.sc-kama-1",
+        "sc_kama_1"
+      ],
+      "legacyId": "sc_kama_1",
+      "name": "持爱却枯，无恋也",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.kama"
+      },
+      "printedText": "无形者-残留：于你的行动阶段选择下列一项效果：\n1.获得3点合计威力。\n2.沿着箭头移动至多两个地点。\n3.同一地点的所有玩家失去2点魔力。\n4.关闭此牌。\n此效果每回合仅可触发一次。每个选项在此牌关闭前仅可被选择一次。",
+      "cardFace": {
+        "cost": 1,
+        "basePower": 2,
+        "attributes": [
+          "迅捷"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 1
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "formless-residual-marker",
+          "printedClause": "无形者-残留",
+          "kind": "residual",
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_active",
+            "cleanup": "remain_active"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "formless-action",
+          "printedClause": "于你的行动阶段选择下列一项效果。此效果每回合仅可触发一次。每个选项在此牌关闭前仅可被选择一次。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "id": "formless-option-choice",
+              "type": "choose_one",
+              "recordChoice": {
+                "scope": "until_source_closed",
+                "key": "formless-options"
+              },
+              "options": [
+                {
+                  "id": "power",
+                  "label": "获得3点合计威力",
+                  "effects": [
+                    {
+                      "type": "combat_power_bonus",
+                      "target": "controller",
+                      "amount": 3
+                    }
+                  ]
+                },
+                {
+                  "id": "move",
+                  "label": "沿箭头移动至多两个地点",
+                  "effects": [
+                    {
+                      "type": "choose_locations",
+                      "allowedLocationIds": [
+                        "workshop",
+                        "mountain",
+                        "city",
+                        "scouting"
+                      ],
+                      "excludeCurrent": true,
+                      "forwardOnly": true,
+                      "minForwardSteps": 1,
+                      "maxForwardSteps": 2,
+                      "minCount": 1,
+                      "maxCount": 1,
+                      "then": [
+                        {
+                          "type": "move_player",
+                          "target": "controller",
+                          "to": "targetLocationId"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "drain",
+                  "label": "同一地点所有玩家失去2点魔力",
+                  "effects": [
+                    {
+                      "type": "lose_mana",
+                      "target": {
+                        "scope": "same_location_players"
+                      },
+                      "amount": 2
+                    }
+                  ]
+                },
+                {
+                  "id": "close",
+                  "label": "关闭此牌",
+                  "effects": [
+                    {
+                      "type": "close_source_card"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/暗匿者/英文版/伽摩.htm",
+          "servant.kama/伽摩"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

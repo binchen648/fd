@@ -1,0 +1,533 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.boudica",
+  "name": "布狄卡",
+  "class": "Rider",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.boudica.skill.sc-boudica-2",
+      "aliases": [
+        "card.skill.servant.boudica.skill.sc-boudica-2",
+        "sc_boudica_2"
+      ],
+      "legacyId": "sc_boudica_2",
+      "name": "无以誓约胜利之剑",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.boudica"
+      },
+      "printedText": "当你输掉一场战斗时，失去1点战果。\n被动/前哨阶段：弃置一张【幸运】，抽一张牌。本回合获得5点合计威力，若你本回合赢得战斗，每有一名回合顺位在你之后的玩家便获得1点战果，若你没有赢得战斗，失去2点战果。",
+      "cardFace": {
+        "typeLabel": "力量/宝具",
+        "cost": 1,
+        "basePower": 5,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "lost-combat-penalty",
+          "printedClause": "当你输掉一场战斗时，失去1点战果。",
+          "kind": "passive",
+          "activation": {
+            "phase": "combat",
+            "trigger": "after_battle_result_determined"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "event_player_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "target": "controller",
+              "amount": 1
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "oathless-sword",
+          "printedClause": "被动/前哨阶段：弃置一张【幸运】，抽一张牌。本回合获得5点合计威力，若你本回合赢得战斗，每有一名回合顺位在你之后的玩家便获得1点战果，若你没有赢得战斗，失去2点战果。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "advance",
+            "opens": "controller_action_window"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "phase_is",
+              "phase": "advance"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "target": "controller",
+              "zone": "hand",
+              "definitionIds": [
+                "card.cardluck"
+              ],
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "discardInstanceIds",
+              "then": [
+                {
+                  "type": "move_selected_cards",
+                  "payloadKey": "discardInstanceIds",
+                  "count": 1,
+                  "destination": "discard"
+                }
+              ]
+            },
+            {
+              "type": "draw_cards",
+              "target": "controller",
+              "amount": 1
+            },
+            {
+              "type": "combat_power_bonus",
+              "target": "controller",
+              "amount": 5
+            },
+            {
+              "type": "set_player_flag",
+              "target": "controller",
+              "key": "boudicaOathlessSwordRound",
+              "value": {
+                "type": "current_round"
+              }
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "oathless-sword-win",
+          "printedClause": "本回合获得5点合计威力，若你本回合赢得战斗，每有一名回合顺位在你之后的玩家便获得1点战果，若你没有赢得战斗，失去2点战果。",
+          "kind": "passive",
+          "activation": {
+            "phase": "combat",
+            "trigger": "after_battle_result_determined"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "player_flag_number_current_round",
+              "key": "boudicaOathlessSwordRound"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points_per_target",
+              "target": "controller",
+              "countTarget": {
+                "scope": "turn_order_after_controller"
+              },
+              "amountPerTarget": 1
+            },
+            {
+              "type": "set_player_flag",
+              "target": "controller",
+              "key": "boudicaOathlessSwordWonRound",
+              "value": {
+                "type": "current_round"
+              }
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "oathless-sword-no-win",
+          "printedClause": "当你输掉一场战斗时，失去1点战果。",
+          "kind": "passive",
+          "activation": {
+            "phase": "combat",
+            "trigger": "round_end"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "player_flag_number_equals_event_field",
+              "key": "boudicaOathlessSwordRound",
+              "field": "round"
+            },
+            {
+              "type": "player_flag_number_not_event_field",
+              "key": "boudicaOathlessSwordWonRound",
+              "field": "round"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "target": "controller",
+              "amount": 2
+            },
+            {
+              "type": "clear_player_flag",
+              "target": "controller",
+              "key": "boudicaOathlessSwordRound"
+            },
+            {
+              "type": "clear_player_flag",
+              "target": "controller",
+              "key": "boudicaOathlessSwordWonRound"
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "oathless-sword-cleanup",
+          "printedClause": "当你输掉一场战斗时，失去1点战果。\n被动/前哨阶段：弃置一张【幸运】，抽一张牌。本回合获得5点合计威力，若你本回合赢得战斗，每有一名回合顺位在你之后的玩家便获得1点战果，若你没有赢得战斗，失去2点战果。",
+          "kind": "passive",
+          "activation": {
+            "phase": "combat",
+            "trigger": "round_end"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "player_flag_number_equals_event_field",
+              "key": "boudicaOathlessSwordRound",
+              "field": "round"
+            },
+            {
+              "type": "player_flag_number_equals_event_field",
+              "key": "boudicaOathlessSwordWonRound",
+              "field": "round"
+            }
+          ],
+          "effects": [
+            {
+              "type": "clear_player_flag",
+              "target": "controller",
+              "key": "boudicaOathlessSwordRound"
+            },
+            {
+              "type": "clear_player_flag",
+              "target": "controller",
+              "key": "boudicaOathlessSwordWonRound"
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "布狄卡.htm",
+            "locator": "从者/骑兵/英文版/布狄卡.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/布狄卡.png",
+            "locator": "servant.boudica/布狄卡"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    },
+    {
+      "id": "servant.boudica.skill.sc-boudica-1",
+      "aliases": [
+        "card.skill.servant.boudica.skill.sc-boudica-1",
+        "sc_boudica_1"
+      ],
+      "legacyId": "sc_boudica_1",
+      "name": "无以誓约守护之车轮",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.boudica"
+      },
+      "printedText": "【真名解放】 <每局游戏限一次>\n残留：对手不能关闭你的牌。\n战斗阶段：花费2点魔力，沿着箭头移动一步。\n战斗阶段：获得5点合计威力，战斗阶段结束后关闭此牌。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "cost": 4,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "residual-guard",
+          "kind": "passive",
+          "printedClause": "残留：对手不能关闭你的牌。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "info_note",
+              "note": "由 protectsControllerCardsFromOpponents 执行：此牌激活时，对手不能关闭控制者拥有的牌。"
+            }
+          ],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "wheel-forward",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "printedClause": "战斗阶段：花费2点魔力，沿着箭头移动一步。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_locations",
+              "forwardOnly": true,
+              "minForwardSteps": 1,
+              "maxForwardSteps": 1,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "targetLocationId",
+              "then": [
+                {
+                  "type": "move_player",
+                  "target": "controller",
+                  "to": "targetLocationId"
+                }
+              ]
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "wheel-power",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "printedClause": "战斗阶段：获得5点合计威力，战斗阶段结束后关闭此牌。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "amount": 5
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "combat-end-close",
+          "kind": "passive",
+          "activation": {
+            "phase": "combat",
+            "trigger": "after_battle_result_determined"
+          },
+          "printedClause": "战斗阶段结束后关闭此牌。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "close_owned_active_cards_by_definition",
+              "definitionId": "self",
+              "count": 1
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "布狄卡.htm",
+            "locator": "从者/骑兵/英文版/布狄卡.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/布狄卡.png",
+            "locator": "servant.boudica/布狄卡"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

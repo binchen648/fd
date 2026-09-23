@@ -78,6 +78,7 @@ function authoringFiles(dir: string): string[] {
 }
 function materialIds(): string[] {
   return [...authoringFiles('data/authoring/masters'), ...authoringFiles('data/authoring/servants')]
+    .filter((file) => !file.endsWith('.p3-m50-01.json'))
     .flatMap((file) => (raw(file).cards ?? []).map((card: any) => String(card.id)));
 }
 function frozenIds(): Set<string> {

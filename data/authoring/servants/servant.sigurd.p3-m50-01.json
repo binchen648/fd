@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.sigurd",
+  "name": "齐格鲁德",
+  "class": "Saber",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.sigurd.skill.sc-sigurd-3",
+      "aliases": [
+        "card.skill.servant.sigurd.skill.sc-sigurd-3",
+        "sc_sigurd_3"
+      ],
+      "legacyId": "sc_sigurd_3",
+      "name": "里迪尔·赫萝蒂",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.sigurd"
+      },
+      "printedText": "此牌需追加打出。\n当【坏劫之天轮】展示后，此牌获得迅捷属性。\n当【破灭之黎明】展示后，此牌获得魔术属性。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "cost": 3,
+        "basePower": 5,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 3
+        }
+      ],
+      "abilities": [
+        {
+          "id": "ridill-hrotti-types",
+          "kind": "passive",
+          "printedClause": "While Bölverk Gram is revealed this card gains Agility; while Gram II is revealed this card gains Magic.",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "conditions": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "Sigurd.htm",
+            "locator": "从者/剑士/英文版/Sigurd.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/齐格鲁德.png",
+            "locator": "servant.sigurd/齐格鲁德"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

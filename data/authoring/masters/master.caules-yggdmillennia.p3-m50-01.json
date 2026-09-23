@@ -1,0 +1,249 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.caules-yggdmillennia",
+  "name": "考列斯·千界树",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.caules-yggdmillennia.skill.s1a",
+      "aliases": [
+        "card.skill.master.caules-yggdmillennia.skill.s1a",
+        "s1a"
+      ],
+      "legacyId": "s1a",
+      "name": "电流术理",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.caules-yggdmillennia"
+      },
+      "printedText": "游戏开始与每回合结束时，【绞首刑之雷】更改为未激活状态（【绞首刑之雷】视为技能）。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "reset-thunder",
+          "printedClause": "游戏开始与每回合结束时，【绞首刑之雷】更改为未激活状态（【绞首刑之雷】视为技能）。",
+          "kind": "passive",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [],
+          "effects": [
+            {
+              "type": "deactivate_owned_skill_card",
+              "definitionId": "master.caules-yggdmillennia.skill.s3"
+            }
+          ],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/考列斯·千界树.png",
+            "locator": "master.caules-yggdmillennia/考列斯·千界树"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.caules-yggdmillennia/s1a"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    },
+    {
+      "id": "master.caules-yggdmillennia.skill.s2",
+      "aliases": [
+        "card.skill.master.caules-yggdmillennia.skill.s2",
+        "s2"
+      ],
+      "legacyId": "s2",
+      "name": "巴格达电池",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.caules-yggdmillennia"
+      },
+      "printedText": "充电-前哨阶段：若你于前哨阶段部署于魔术工房，选择下列一项：1.获得1点魔力。2.花费2点魔力，你于本回合无视【败北】状态。\n起载-前哨阶段：若你于前哨阶段部署于战场，激活【绞首刑之雷】。",
+      "cardFace": {
+        "typeLabel": "前哨",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "charge",
+          "printedClause": "充电-前哨阶段：若你于前哨阶段部署于魔术工房，选择下列一项：1.获得1点魔力。2.花费2点魔力，你于本回合无视【败北】状态。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "advance",
+            "opens": "controller_action_window"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "phase_is",
+              "phase": "advance"
+            },
+            {
+              "type": "player_flag_equals",
+              "key": "deploymentLocationId",
+              "value": "workshop"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_one",
+              "id": "charge-choice",
+              "options": [
+                {
+                  "id": "gain-mana",
+                  "label": "选项",
+                  "effects": [
+                    {
+                      "type": "gain_mana",
+                      "target": "controller",
+                      "amount": 1
+                    }
+                  ]
+                },
+                {
+                  "id": "ignore-defeat",
+                  "label": "2.花费2点魔力，你于本回合无视【败北】状态。",
+                  "effects": [
+                    {
+                      "type": "pay_mana",
+                      "amount": 2
+                    },
+                    {
+                      "type": "set_player_flag",
+                      "target": "controller",
+                      "key": "ignoreDefeat",
+                      "value": true,
+                      "lifecycle": {
+                        "duration": "this_round"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "start-thunder",
+          "printedClause": "起载-前哨阶段：若你于前哨阶段部署于战场，激活【绞首刑之雷】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "advance",
+            "opens": "controller_action_window"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "phase_is",
+              "phase": "advance"
+            },
+            {
+              "type": "at_battlefield"
+            }
+          ],
+          "effects": [
+            {
+              "type": "activate_owned_skill_card",
+              "definitionId": "master.caules-yggdmillennia.skill.s3"
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/考列斯·千界树.png",
+            "locator": "master.caules-yggdmillennia/考列斯·千界树"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.caules-yggdmillennia/s2"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

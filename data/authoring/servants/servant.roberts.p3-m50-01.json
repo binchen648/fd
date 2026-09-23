@@ -1,0 +1,161 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.roberts",
+  "name": "巴沙洛缪·罗伯茨",
+  "class": "Rider",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.roberts.skill.sc-roberts-2",
+      "aliases": [
+        "card.skill.servant.roberts.skill.sc-roberts-2",
+        "sc_roberts_2"
+      ],
+      "legacyId": "sc_roberts_2",
+      "name": "高贵海盗准男爵的咆哮",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.roberts"
+      },
+      "printedText": "【真名解放】\n被动/行动阶段：花费3点魔力，若你使用【会谈】时至少有一名其他玩家拒绝支付，将此牌加入攻击。\n行动阶段：沿/逆着箭头移动至下一地点。",
+      "cardFace": {
+        "cost": 5,
+        "basePower": 9,
+        "attributes": [
+          "力量",
+          "宝具"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 9
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "baronet-roar-after-refusal",
+          "printedClause": "被动/行动阶段：花费3点魔力，若你使用【会谈】时至少有一名其他玩家拒绝支付，将此牌加入攻击。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "player_flag_number_current_round",
+              "key": "robertsParleyRefusedRound"
+            }
+          ],
+          "effects": [
+            {
+              "type": "pay_mana",
+              "amount": 3
+            },
+            {
+              "type": "return_card_by_definition",
+              "linkedSkillId": "servant.roberts.skill.sc-roberts-2",
+              "fromZone": "skill",
+              "destination": "attack_area",
+              "face": "up",
+              "active": true,
+              "residual": false
+            }
+          ],
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {}
+        },
+        {
+          "id": "baronet-roar-adjacent-move",
+          "printedClause": "行动阶段：沿/逆着箭头移动至下一地点。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_locations",
+              "allowedLocationIds": [
+                "workshop",
+                "mountain",
+                "city",
+                "scouting"
+              ],
+              "excludeCurrent": true,
+              "adjacentOnly": true,
+              "minCount": 1,
+              "maxCount": 1,
+              "then": [
+                {
+                  "type": "move_player",
+                  "target": "controller",
+                  "adjacentOnly": true,
+                  "to": "targetLocationId"
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/骑兵/英文版/巴沙洛缪·罗伯茨.htm",
+          "servant.roberts/巴沙洛缪·罗伯茨"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

@@ -194,7 +194,7 @@ describe('P3 S R113 Helena s1 consumer migration', () => {
     expect(state.cards.find((card) => card.instanceId === 'eligible')!.zone).toBe('attack_area');
   });
 
-  it('adds exactly one frozen material identity and preserves Helena S3 exactly once', () => {
+  it('preserves Helena S1/S3 exactly once against the pre-M50 material baseline', () => {
     const inventory = JSON.parse(readFileSync(resolve(ROOT, 'data/phase3/full-roster-ability-inventory.json'), 'utf8'));
     const frozen = new Set<string>();
     const collectFrozen = (value: any): void => {
@@ -204,13 +204,13 @@ describe('P3 S R113 Helena s1 consumer migration', () => {
     };
     collectFrozen(inventory);
     const material: string[] = [];
-    for (const file of authoringFiles(resolve(ROOT, 'data/authoring'))) {
+    for (const file of authoringFiles(resolve(ROOT, 'data/authoring')).filter((entry) => !entry.endsWith('.p3-m50-01.json'))) {
       const raw = JSON.parse(readFileSync(file, 'utf8').replace(/^\uFEFF/, ''));
       for (const card of raw.cards ?? []) if (frozen.has(card.id)) material.push(card.id);
     }
     const unique = new Set(material);
     expect(frozen.size).toBe(944);
-    expect(unique.size).toBe(151);
+    expect(unique.size).toBe(165);
     expect(material.length).toBe(unique.size);
     expect(material.filter((id) => id === ID)).toHaveLength(1);
     expect(material.filter((id) => id === S3)).toHaveLength(1);

@@ -1,0 +1,178 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.lionking",
+  "name": "伦戈米尼亚德",
+  "class": "Lancer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.lionking.skill.sc-lionking-3",
+      "aliases": [
+        "card.skill.servant.lionking.skill.sc-lionking-3",
+        "sc_lionking_3"
+      ],
+      "legacyId": "sc_lionking_3",
+      "name": "闪耀于终焉之枪",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.lionking"
+      },
+      "printedText": "【真名解放】\n若你获得胜利，将你所在战场的事件牌移除游戏。当你以此效果移除游戏的事件牌印刷战果数总和大于12点时，你获得游戏胜利，此效果不能被任何方法阻止。",
+      "cardFace": {
+        "cost": 9,
+        "basePower": 12,
+        "attributes": [
+          "力量",
+          "宝具"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 9
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "rhongo-true-name-release",
+          "printedClause": "【真名解放】",
+          "markers": [
+            "真名解放",
+            "m50_structured_v1"
+          ],
+          "kind": "forced_trigger",
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "conditions": [
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_face_is",
+              "face": "up"
+            }
+          ],
+          "effects": [
+            {
+              "type": "info_note"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "on_card_played"
+          },
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {}
+        },
+        {
+          "id": "rhongo-event-annihilation-victory",
+          "printedClause": "若你获得胜利，将你所在战场的事件牌移除游戏。当你以此效果移除游戏的事件牌印刷战果数总和大于12点时，你获得游戏胜利，此效果不能被任何方法阻止。",
+          "kind": "residual",
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "event_player_won_combat"
+            },
+            {
+              "type": "event_location_equals_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "add_player_flag_number",
+              "target": "controller",
+              "key": "lionKingRhongomyniadRemovedEventVictoryPoints",
+              "amount": {
+                "type": "metric",
+                "metric": "matching_event_victory_points",
+                "source": "controller",
+                "sourceZone": "current",
+                "locationId": "controller_location"
+              }
+            },
+            {
+              "type": "move_matching_events",
+              "sourceZone": "current",
+              "locationId": "controller_location",
+              "destination": "removed_from_game"
+            },
+            {
+              "type": "if_condition",
+              "conditions": [
+                {
+                  "type": "player_flag_number_at_least",
+                  "key": "lionKingRhongomyniadRemovedEventVictoryPoints",
+                  "value": 13
+                }
+              ],
+              "then": [
+                {
+                  "type": "finish_game",
+                  "target": "controller",
+                  "reason": "lionking-rhongomyniad-event-threshold",
+                  "unpreventable": true
+                }
+              ]
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_active",
+            "starts": "immediate",
+            "cleanup": "remain_active"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "after_battle_result_determined"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/枪兵/英文版/伦戈米尼亚德.htm",
+          "servant.lionking/伦戈米尼亚德"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

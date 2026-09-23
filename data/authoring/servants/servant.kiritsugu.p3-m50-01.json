@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.kiritsugu",
+  "name": "卫宫切嗣",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.kiritsugu.skill.sc-kiritsugu-3",
+      "aliases": [
+        "card.skill.servant.kiritsugu.skill.sc-kiritsugu-3",
+        "sc_kiritsugu_3"
+      ],
+      "legacyId": "sc_kiritsugu_3",
+      "name": "花开堪折直须折",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.kiritsugu"
+      },
+      "printedText": "【真名解放】\n行动阶段：计算你的合计威力（不计算未触发的战斗阶段能力加成）。如果超过12，获得你所在战场上的一张事件牌的战果，然后弃置该事件牌。",
+      "cardFace": {
+        "cost": 5,
+        "basePower": 7,
+        "attributes": [
+          "迅捷",
+          "宝具"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 8
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "seize-the-day-event",
+          "printedClause": "行动阶段：计算你的合计威力（不计算未触发的战斗阶段能力加成）。如果超过12，获得你所在战场上的一张事件牌的战果，然后弃置该事件牌。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "at_battlefield"
+            },
+            {
+              "type": "metric_compare",
+              "left": {
+                "type": "metric",
+                "metric": "combat_power",
+                "source": "controller"
+              },
+              "operator": "gt",
+              "right": 12
+            },
+            {
+              "type": "event_count_at_least",
+              "sourceZone": "current",
+              "locationId": "controller_location",
+              "value": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_events",
+              "sourceZone": "current",
+              "locationId": "controller_location",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedEventIds"
+            },
+            {
+              "type": "gain_victory_points",
+              "target": "controller",
+              "amount": {
+                "type": "metric",
+                "metric": "selected_event_victory_points",
+                "source": "controller",
+                "payloadKey": "selectedEventIds"
+              }
+            },
+            {
+              "type": "move_selected_events",
+              "payloadKey": "selectedEventIds",
+              "destination": "discard"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "servant.kiritsugu/卫宫切嗣",
+          "servant/servant.kiritsugu/sc_kiritsugu_3"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

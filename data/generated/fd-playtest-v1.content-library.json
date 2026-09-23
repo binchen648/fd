@@ -5036,6 +5036,9 @@
             "id": "sc-artoriac-1.true-name-release",
             "kind": "declaration_reveal",
             "printedClause": "【真名解放】",
+            "markers": [
+              "真名解放"
+            ],
             "activation": {
               "trigger": "on_use_declared"
             },
@@ -5484,6 +5487,9 @@
             "id": "sc-artoriac-3.conditional-true-name-release",
             "kind": "conditional_reveal",
             "printedClause": "当X大于0时，【真名解放】。",
+            "markers": [
+              "真名解放"
+            ],
             "activation": {
               "trigger": "when_formula_condition_met",
               "opens": "immediate",
@@ -6993,6 +6999,9 @@
             "id": "sc-artoria-alt-1.true-name-release",
             "kind": "declaration_reveal",
             "printedClause": "【真名解放】",
+            "markers": [
+              "真名解放"
+            ],
             "activation": {
               "trigger": "on_use_declared"
             },
@@ -7811,6 +7820,9 @@
             "id": "sc-ereshkigal-3.true-name-release",
             "kind": "declaration_reveal",
             "printedClause": "【真名解放】",
+            "markers": [
+              "真名解放"
+            ],
             "activation": {
               "trigger": "on_use_declared"
             },
@@ -8185,6 +8197,9 @@
             "id": "sc-tomoe-3.true-name-release",
             "kind": "declaration_reveal",
             "printedClause": "【真名解放】",
+            "markers": [
+              "真名解放"
+            ],
             "activation": {
               "trigger": "on_use_declared"
             },
@@ -8292,6 +8307,9 @@
             "id": "sc-kintoki-1.true-name-release",
             "kind": "declaration_reveal",
             "printedClause": "【真名解放】",
+            "markers": [
+              "真名解放"
+            ],
             "activation": {
               "trigger": "on_use_declared"
             },
@@ -8488,6 +8506,9 @@
             "id": "sc-kintoki-2.true-name-release",
             "kind": "declaration_reveal",
             "printedClause": "【真名解放】",
+            "markers": [
+              "真名解放"
+            ],
             "activation": {
               "trigger": "on_use_declared"
             },
@@ -8688,6 +8709,9 @@
             "id": "sc-kintoki-3.true-name-release",
             "kind": "declaration_reveal",
             "printedClause": "【真名解放】",
+            "markers": [
+              "真名解放"
+            ],
             "activation": {
               "trigger": "on_use_declared"
             },
@@ -11119,11 +11143,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "aff68677dd8409dfc69792ed792da6a482127984b3476775948e0b46a7f915dd",
+    "definitionHash": "0d1a6f484855b58976ee29efb1c9676b8f5666998ef32337c756fd455072281d",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "aff68677dd8409dfc69792ed792da6a482127984b3476775948e0b46a7f915dd"
+      "definitionHash": "0d1a6f484855b58976ee29efb1c9676b8f5666998ef32337c756fd455072281d"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

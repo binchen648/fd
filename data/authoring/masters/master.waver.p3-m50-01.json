@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.waver",
+  "name": "韦伯·维尔维特",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.waver.skill.s3",
+      "aliases": [
+        "card.skill.master.waver.skill.s3",
+        "s3"
+      ],
+      "legacyId": "s3",
+      "name": "调查",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.waver"
+      },
+      "printedText": "查看一位玩家的手牌。你可选择其中一张牌放于其拥有的牌库顶部，若如此，下回合你不可进行【调查】。",
+      "cardFace": {
+        "typeLabel": "前哨阶段",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "investigate",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "advance",
+            "opens": "controller_action_window"
+          },
+          "printedClause": "查看一位玩家的手牌。你可选择其中一张牌放于其拥有的牌库顶部，若如此，下回合你不可进行【调查】。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "player_flag_number_not_current_round",
+              "key": "investigationBlockedRound"
+            }
+          ],
+          "targets": [
+            {
+              "id": "targetPlayerId",
+              "type": "player",
+              "scope": "all_players"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "target": {
+                "scope": "selected_any_player"
+              },
+              "zone": "hand",
+              "visibility": "private_to_controller",
+              "minCount": 0,
+              "maxCount": 1,
+              "then": [
+                {
+                  "type": "move_selected_cards",
+                  "target": {
+                    "scope": "selected_any_player"
+                  },
+                  "zone": "hand",
+                  "destination": "deck",
+                  "position": "top",
+                  "count": 1
+                },
+                {
+                  "type": "set_player_flag",
+                  "key": "investigationBlockedRound",
+                  "value": {
+                    "type": "current_round",
+                    "offset": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/韦伯·维尔维特.png",
+            "locator": "master.waver/韦伯·维尔维特"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.waver/s3"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

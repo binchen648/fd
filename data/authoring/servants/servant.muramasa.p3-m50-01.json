@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.muramasa",
+  "name": "千子村正",
+  "class": "Alterego",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.muramasa.skill.sc-muramasa-1",
+      "aliases": [
+        "card.skill.servant.muramasa.skill.sc-muramasa-1",
+        "sc_muramasa_1"
+      ],
+      "legacyId": "sc_muramasa_1",
+      "name": "无元剑制",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.muramasa"
+      },
+      "printedText": "【真名解放】 <每局游戏限一次>\n此牌不能同其他牌一起打出，是你本回合打出唯一的一张牌。\nX等于你本局游戏中通过【试斩】移除的所有牌的基本威力之和。",
+      "cardFace": {
+        "typeLabel": "力量/宝具",
+        "cost": 9,
+        "basePower": null,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 9
+        }
+      ],
+      "abilities": [
+        {
+          "id": "round-exclusive-play",
+          "kind": "passive",
+          "printedClause": "此牌不能同其他牌一起打出，是你本回合打出唯一的一张牌。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "conditions": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "sword-trial-total-power",
+          "kind": "passive",
+          "printedClause": "X等于你本局游戏中通过【试斩】移除的所有牌的基本威力之和。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "conditions": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "千子村正.htm",
+            "locator": "从者/他人格/英文版/千子村正.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/千子村正.png",
+            "locator": "servant.muramasa/千子村正"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

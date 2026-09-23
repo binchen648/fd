@@ -1,0 +1,247 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.frank",
+  "name": "弗兰肯斯坦",
+  "class": "Berserker",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.frank.skill.sc-frank-1",
+      "aliases": [
+        "card.skill.servant.frank.skill.sc-frank-1",
+        "sc_frank_1"
+      ],
+      "legacyId": "sc_frank_1",
+      "name": "少女贞洁",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.frank"
+      },
+      "printedText": "你拥有的魔力少于8点也可使用此牌。战斗阶段：关闭任意一张与你同一地点的魔术属性基础牌。若你成功使其无效，获得等同于该牌基本威力的魔力。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "cost": 0,
+        "basePower": 3,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "galvanism",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat",
+            "requiresSourceState": "active",
+            "opens": "controller_combat_action_window"
+          },
+          "printedClause": "你拥有的魔力少于8点也可使用此牌。战斗阶段：关闭任意一张与你同一地点的魔术属性基础牌。若你成功使其无效，获得等同于该牌基本威力的魔力。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "close_selected_card",
+              "target": {
+                "scope": "selected_same_location_player"
+              },
+              "payloadKey": "targetInstanceId",
+              "zone": "attack_area",
+              "ownerScope": "same_location_players",
+              "basicOnly": true,
+              "attributes": [
+                "魔术"
+              ]
+            },
+            {
+              "type": "gain_mana_from_selected_card_base_power",
+              "payloadKey": "targetInstanceId"
+            }
+          ],
+          "creates": [],
+          "conditions": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "弗兰肯斯坦.htm",
+            "locator": "从者/狂战士/英文版/弗兰肯斯坦.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/弗兰肯斯坦.png",
+            "locator": "servant.frank/弗兰肯斯坦"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    },
+    {
+      "id": "servant.frank.skill.sc-frank-3",
+      "aliases": [
+        "card.skill.servant.frank.skill.sc-frank-3",
+        "sc_frank_3"
+      ],
+      "legacyId": "sc_frank_3",
+      "name": "磔刑之雷树",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.frank"
+      },
+      "printedText": "【真名解放】死亡与新生-你无视【败北】效果。在下回合开始时你【败北】。",
+      "cardFace": {
+        "typeLabel": "魔术/宝具",
+        "cost": 7,
+        "basePower": 7,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "death-and-rebirth",
+          "printedClause": "【真名解放】死亡与新生-你无视【败北】效果。在下回合开始时你【败北】。",
+          "activation": {
+            "phase": "action",
+            "trigger": "on_card_played"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "set_player_flag",
+              "target": "controller",
+              "key": "ignoreDefeat",
+              "value": true,
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            },
+            {
+              "type": "schedule_effect",
+              "abilityId": "next-round-defeat-self",
+              "triggerEventType": "round.started",
+              "triggerRoundOffset": 1
+            }
+          ],
+          "kind": "forced_trigger",
+          "conditions": [
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_face_is",
+              "face": "up"
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "next-round-defeat-self",
+          "printedClause": "在下回合开始时你【败北】。",
+          "kind": "passive",
+          "activation": {
+            "phase": "preparation",
+            "trigger": "m50_round_started"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [],
+          "effects": [
+            {
+              "type": "defeat_player",
+              "target": "controller"
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "弗兰肯斯坦.htm",
+            "locator": "从者/狂战士/英文版/弗兰肯斯坦.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/弗兰肯斯坦.png",
+            "locator": "servant.frank/弗兰肯斯坦"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

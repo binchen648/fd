@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.caligula",
+  "name": "卡利古拉",
+  "class": "Berserker",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.caligula.skill.sc-caligula-1",
+      "aliases": [
+        "card.skill.servant.caligula.skill.sc-caligula-1",
+        "sc_caligula_1"
+      ],
+      "legacyId": "sc_caligula_1",
+      "name": "皎皎明月",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.caligula"
+      },
+      "printedText": "被动/行动阶段：局势牌不会禁止你使用宝具，若禁止使用宝具的局势牌正生效，你可以追加打出【吞噬吾心吧，月光】。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "bright-moon-ignore-situation-np-ban",
+          "printedClause": "被动/行动阶段：局势牌不会禁止你使用宝具，若禁止使用宝具的局势牌正生效，你可以追加打出【吞噬吾心吧，月光】。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "ignore-situation-np-ban",
+              "operation": "ignore",
+              "rule": "situation_card_play",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "attributesAny": [
+                    "宝具"
+                  ]
+                }
+              },
+              "lifecycle": {
+                "duration": "permanent"
+              },
+              "priority": {
+                "tier": "card_text",
+                "specificity": "explicit_exception"
+              },
+              "conflictPolicy": "explicit_exception_over_general"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "bright-moon-append-moonlight",
+          "printedClause": "被动/行动阶段：局势牌不会禁止你使用宝具，若禁止使用宝具的局势牌正生效，你可以追加打出【吞噬吾心吧，月光】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "situation_forbids_attribute",
+              "attribute": "宝具"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "target": "controller",
+              "zone": "skill",
+              "linkedSkillId": "servant.caligula.skill.sc-caligula-3",
+              "playableOnly": true,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedInstanceIds"
+            },
+            {
+              "type": "play_selected_cards",
+              "target": "controller",
+              "sourceZones": [
+                "skill"
+              ],
+              "payCost": true,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedInstanceIds"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/狂战士/英文版/卡利古拉.htm",
+          "servant.caligula/卡利古拉"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

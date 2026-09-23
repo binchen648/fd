@@ -15,7 +15,7 @@ export interface AdapterReportEntry {
   reason: string; suggestedImplementation: string;
 }
 export interface AuthoringAbility {
-  id: string; kind: string; printedClause: string; activation: RuleNode;
+  id: string; kind: string; printedClause: string; markers?: string[]; activation: RuleNode;
   conditions: RuleNode[]; targets: RuleNode[]; effects: RuleNode[]; cost: RuleNode[];
   ruleModifiers: RuleNode[]; creates: RuleNode[]; lifecycle: RuleNode;
   responseWindow: RuleNode; limit: RuleNode; visibility: RuleNode;
@@ -107,6 +107,9 @@ export interface AbilityEvent {
   revealedKind?: 'situation' | 'event';
   revealedId?: string;
   locationId?: string;
+  /** Authoritative scouting reward facts attached to the single post-scoring combat result that paid scouting this round. */
+  scoutingPlayerId?: PlayerId;
+  victoryPoints?: Record<PlayerId, number>;
   resource?: 'victory_points';
   delta?: number;
   before?: number;
@@ -329,6 +332,24 @@ export interface AbilityRuntime {
   cardState: Record<string, CardRuntimeState>;
   /** Server-owned opaque player-status keys. This is distinct from PlayerState active/eliminated status. */
   playerStatusKeysByPlayer?: Record<PlayerId, string[]>;
+  /** M50 identity-free structured-skill flags. Values are server-owned and serialized with AbilityRuntime. */
+  structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
+  /** M50 server-owned round-local eliminations captured at authoritative scoring time. */
+  structuredRoundEliminations?: { round: number; entries: Array<{ playerId: PlayerId; locationId?: string }> };
+  /** Round marker for structured flags whose Reference lifecycle is exactly this_round. */
+  structuredRoundFlagKeysByPlayer?: Record<PlayerId, Record<string, number>>;
+  /** M50 server-owned structured schedules. Targets are same-card abilities and are never dispatched unless this receipt is due. */
+  structuredScheduledEffects?: Array<{ sourceCardId: string; sourceDefinitionId: string; controllerId: PlayerId; armAbilityId: string; targetAbilityId: string; triggerEventType: string; armedRound: number; triggerRound: number; once: true; variables?: Record<string, number> }>;
+  /** M50 instant-win settlement fact. MatchSession treats this as authoritative terminal state. */
+  structuredInstantVictory?: { winnerIds: PlayerId[]; reason: string; sourceCardId: string; abilityId: string; unpreventable: boolean; round: number };
+  /** M50 one-shot next-round positive VP multipliers armed by elimination replacement. */
+  structuredNextRoundVpGainMultipliers?: Record<PlayerId, { round: number; multiplier: number; sourceCardId: string }>;
+  /** Generic round-scoped defeat state for structured self-defeat and future identity-free consumers. */
+  structuredDefeatRoundByPlayer?: Record<PlayerId, number>;
+  /** Identity-free lifecycle receipts for generated temporary cards. */
+  structuredTemporaryGeneratedCards?: Array<{ instanceId: string; createdRound: number; sourceCardId: string }>;
+  /** Authoritative once-per-round scouting reward receipt, produced by the battle settlement path. */
+  structuredScoutingReward?: { round: number; playerId: PlayerId; victoryPoints: number };
   /** Narrow identity-free last combat-win round ledger, written only from authoritative battle-result events. */
   combatWinRoundByPlayer?: Record<PlayerId, number>;
   /** FB2-54 transient server-owned provenance for authoritative movement/deployment entry events. */

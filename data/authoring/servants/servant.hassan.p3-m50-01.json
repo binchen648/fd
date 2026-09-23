@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.hassan",
+  "name": "哈桑·萨巴赫(咒腕)",
+  "class": "Assassin",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.hassan.skill.sc-hassan-2",
+      "aliases": [
+        "card.skill.servant.hassan.skill.sc-hassan-2",
+        "sc_hassan_2"
+      ],
+      "legacyId": "sc_hassan_2",
+      "name": "自我改造",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.hassan"
+      },
+      "printedText": "打出时：隐藏真名并获得2点战果。\n残留：若与你进行交战的玩家本回合被淘汰时，此牌获得威力+1。",
+      "cardFace": {
+        "typeLabel": "迅捷",
+        "cost": 1,
+        "basePower": 2,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 1
+        }
+      ],
+      "abilities": [
+        {
+          "id": "self-modification-play",
+          "kind": "forced_trigger",
+          "activation": {
+            "eventType": "card.played",
+            "trigger": "on_card_played"
+          },
+          "printedClause": "打出时：隐藏真名并获得2点战果。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_face_is",
+              "face": "up"
+            }
+          ],
+          "effects": [
+            {
+              "type": "hide_servant_true_name"
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 2
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "self-modification-growth",
+          "kind": "residual",
+          "activation": {
+            "eventType": "round.ended",
+            "requiresSourceState": "active"
+          },
+          "printedClause": "残留：若与你进行交战的玩家本回合被淘汰时，此牌获得威力+1。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "event_eliminated_same_battlefield_player"
+            }
+          ],
+          "effects": [
+            {
+              "type": "source_card_power_bonus",
+              "amount": 1,
+              "duration": "game"
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "哈桑·萨巴赫(咒腕).htm",
+            "locator": "从者/暗匿者/英文版/哈桑·萨巴赫(咒腕).htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/哈桑·萨巴赫(咒腕).png",
+            "locator": "servant.hassan/哈桑·萨巴赫(咒腕)"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

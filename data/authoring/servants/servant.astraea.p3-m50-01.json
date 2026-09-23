@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.astraea",
+  "name": "阿斯特蕾亚",
+  "class": "Ruler",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.astraea.skill.sc-astraea-1",
+      "aliases": [
+        "card.skill.servant.astraea.skill.sc-astraea-1",
+        "sc_astraea_1"
+      ],
+      "legacyId": "sc_astraea_1",
+      "name": "裁决之时正是此刻，告此汝之名",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.astraea"
+      },
+      "printedText": "【真名解放】战斗阶段：移除所有玩家的【谴责】，每有一名被移除【谴责】的玩家，此牌+4威力（至多+8威力）。",
+      "cardFace": {
+        "typeLabel": "魔术/宝具",
+        "cost": 2,
+        "basePower": 4,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "judgment-time",
+          "printedClause": "【真名解放】战斗阶段：移除所有玩家的【谴责】，每有一名被移除【谴责】的玩家，此牌+4威力（至多+8威力）。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "phase_is",
+              "phase": "combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "clear_player_status_and_source_card_power_bonus",
+              "target": {
+                "scope": "all_players"
+              },
+              "status": "谴责",
+              "flagKey": "condemned",
+              "amountPerTarget": 4,
+              "maxAmount": 8
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "阿斯特蕾亚.htm",
+            "locator": "从者/裁定者/英文版/阿斯特蕾亚.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/阿斯特蕾亚.png",
+            "locator": "servant.astraea/阿斯特蕾亚"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

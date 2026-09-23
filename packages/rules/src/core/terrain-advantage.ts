@@ -60,15 +60,18 @@ function isTerrainSuppressedByAuthoredDuel(state: GameState, battlefieldId: Loca
   return false;
 }
 
-export function assignedTerrainSlotIndex(state: GameState, battlefieldId: LocationId, playerId: string): number | undefined {
+export function assignedTerrainSlotIndexes(state: GameState, battlefieldId: LocationId, playerId: string): number[] {
   const assignments = modeState(state).terrainAssignments;
-  if (!assignments || typeof assignments !== 'object') return undefined;
+  if (!assignments || typeof assignments !== 'object') return [];
   const assigned = (assignments as Partial<Record<string, string[]>>)[battlefieldId];
-  if (!Array.isArray(assigned)) return undefined;
-  const index = assigned.indexOf(playerId);
-  if (index < 0) return undefined;
+  if (!Array.isArray(assigned)) return [];
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
-  return index < (location?.terrainBonuses?.length ?? 0) ? index : undefined;
+  const slotCount = location?.terrainBonuses?.length ?? 0;
+  return assigned.flatMap((id, index) => id === playerId && index < slotCount ? [index] : []);
+}
+
+export function assignedTerrainSlotIndex(state: GameState, battlefieldId: LocationId, playerId: string): number | undefined {
+  return assignedTerrainSlotIndexes(state, battlefieldId, playerId)[0];
 }
 
 export function terrainBonusAt(
@@ -90,9 +93,32 @@ export function currentDeploymentBonus(state: GameState, playerId: string): numb
   if (!battlefieldId) return 0;
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   if (!location?.tags.includes('battlefield')) return 0;
-  const terrainSlotIndex = assignedTerrainSlotIndex(state, battlefieldId, playerId);
-  if (terrainSlotIndex === undefined) {
+  const terrainSlotIndexes = assignedTerrainSlotIndexes(state, battlefieldId, playerId);
+  if (!terrainSlotIndexes.length) {
     return b03DeploymentAdvantageBonus(state, playerId) * terrainMultiplierForPlayer(state, playerId);
   }
-  return terrainBonusAt(state, battlefieldId, playerId, terrainSlotIndex) ?? 0;
+  if (isTerrainSuppressedByAuthoredDuel(state, battlefieldId, playerId)) return 0;
+  const printed = terrainSlotIndexes.reduce((sum, index) => {
+    const value = location.terrainBonuses?.[index];
+    return sum + (typeof value === 'number' ? value : 0);
+  }, 0);
+  return (printed + b03DeploymentAdvantageBonus(state, playerId)) * terrainMultiplierForPlayer(state, playerId);
+}
+
+/** Multiply the currently authoritative deployment advantage without changing slot ownership. */
+export function multiplyDeploymentBonus(state: GameState, playerId: string, multiplier: number): number {
+  if (!Number.isSafeInteger(multiplier) || multiplier < 1) throw new Error('DEPLOYMENT_ADVANTAGE_MULTIPLIER_INVALID');
+  const current = currentDeploymentBonus(state, playerId);
+  if (!Number.isSafeInteger(current) || current <= 0) throw new Error('DEPLOYMENT_ADVANTAGE_BONUS_UNAVAILABLE');
+  const next = current * multiplier;
+  if (!Number.isSafeInteger(next) || next <= 0) throw new Error('DEPLOYMENT_ADVANTAGE_MULTIPLIER_OVERFLOW');
+
+  const host = state as unknown as { modeState?: Record<string, unknown> };
+  host.modeState ??= {};
+  const existing = host.modeState.terrainMultipliers;
+  if (existing !== undefined && !Array.isArray(existing)) throw new Error('DEPLOYMENT_ADVANTAGE_MULTIPLIER_STATE_INVALID');
+  const entries = (existing ?? []) as Array<{ playerId: string; multiplier: number }>;
+  if (existing === undefined) host.modeState.terrainMultipliers = entries;
+  entries.push({ playerId, multiplier });
+  return next;
 }

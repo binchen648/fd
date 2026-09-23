@@ -6268,3 +6268,15 @@ Read: `docs/reports/2026-09-23-p3-a-r121-f4-b06-acceptance-synchronization.md`
 Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #439 exact Candidate `3fefa0cdb02cf9ff81cec64732cb67e5d6513549`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/439#issuecomment-5794812500`. Exact material accounting is `163/944 -> 165/944`, with exact fresh additions `servant.mozart.skill.sc-mozart-2` and `servant.amakusa.skill.sc-amakusa-1`, zero removals and zero duplicate frozen IDs. The final evidence comment repairs the same completed review attempt and does not create a second review.
 
 Formal project migration advances exactly two fresh identities to **`169/944`**, with **`775`** remaining; material authoring overlap is **`165/944`**. PR #439 remains OPEN, unmerged and unretargeted. Continue user-authorized F4 using **50-skill macro-batches by default**: one Base/Candidate, one PR and one fresh independent R per macro-batch; internal capability subgroups are allowed, targeted source-grounding may fill the batch, and the workflow must not regress to two-skill/per-skill review cadence.
+
+## TASK P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH
+
+Owner: Codex Batch
+Status: `READY_FOR_FRESH_R`
+Branch: `codex/batch-p3-f4-m50-01-50-skill-macro`
+Base: exact R121 F4 B06 acceptance synchronization `b4589eebbd09409458cf7b49d7fb7d9af6469f07`
+Prior reviewed Candidate: `12efa4d292a04a5b592b965b44dde67d1ad6b9da` -> `IMPLEMENTATION_NEEDS_REVISION`
+Reviewer finding relay: `https://github.com/binchen648/fd/pull/440#issuecomment-5804342795`
+Read: `docs/reports/2026-09-24-p3-f4-m50-01-50-skill-macro-batch-result.md`
+
+Result required: fresh independent R reviews the exact revised PR #440 head as one 50-skill macro-batch. Frozen material accounting remains exact `165/944 -> 215/944`, +50 additions, zero removals and zero duplicate frozen IDs. The R1 successor closes the single Araya zero-target finding with an identity-free bounded card-count precondition plus focused zero-target/one-target regressions. Formal migration remains **`169/944`** until exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization; only then may the batch award +50 => **`219/944`**, **`725`** remaining. Do not split the macro-batch, merge, retarget, or reuse the rejected Candidate as acceptance evidence.

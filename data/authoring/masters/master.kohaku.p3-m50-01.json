@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.kohaku",
+  "name": "琥珀",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.kohaku.skill.s1a",
+      "aliases": [
+        "card.skill.master.kohaku.skill.s1a",
+        "s1a"
+      ],
+      "legacyId": "s1a",
+      "name": "共感者",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.kohaku"
+      },
+      "printedText": "行动阶段：弃置一张与你控制的攻击完全相同的手牌，获得+2合计威力和1点魔力。\n【魔力猛攻】为牌库牌，抽到手牌后于战斗时打出。",
+      "cardFace": {
+        "typeLabel": "行动",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "empath",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "printedClause": "行动阶段：弃置一张与你控制的攻击完全相同的手牌，获得+2合计威力和1点魔力。\n【魔力猛攻】为牌库牌，抽到手牌后于战斗时打出。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "target": "controller",
+              "zone": "hand",
+              "matchesControlledAttack": true,
+              "visibility": "private_to_controller",
+              "minCount": 1,
+              "maxCount": 1,
+              "then": [
+                {
+                  "type": "move_selected_cards",
+                  "target": "controller",
+                  "zone": "hand",
+                  "matchesControlledAttack": true,
+                  "destination": "discard",
+                  "count": 1
+                },
+                {
+                  "type": "combat_power_bonus",
+                  "amount": 2
+                },
+                {
+                  "type": "gain_mana",
+                  "amount": 1
+                }
+              ]
+            }
+          ],
+          "creates": [],
+          "conditions": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/琥珀.png",
+            "locator": "master.kohaku/琥珀"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.kohaku/s1a"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

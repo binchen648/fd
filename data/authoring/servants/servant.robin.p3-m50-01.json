@@ -1,0 +1,280 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.robin",
+  "name": "罗宾汉",
+  "class": "Archer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.robin.skill.sc-robin-2",
+      "aliases": [
+        "card.skill.servant.robin.skill.sc-robin-2",
+        "sc_robin_2"
+      ],
+      "legacyId": "sc_robin_2",
+      "name": "无貌之王",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.robin"
+      },
+      "printedText": "你拥有的魔力少于8也可使用此牌。\n你不能将此牌与其他技能同时打出。隐藏真名，本牌获得以下效果：“行动阶段：沿着箭头移动至下一地点”或“行动阶段：将你的地利翻倍，战斗阶段：如果你赢得本场战斗获得2战果。”",
+      "cardFace": {
+        "typeLabel": "迅捷",
+        "cost": 2,
+        "basePower": 1,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "faceless-king-select-mode",
+          "kind": "forced_trigger",
+          "printedClause": "你拥有的魔力少于8也可使用此牌。你不能将此牌与其他技能同时打出。隐藏真名，本牌获得以下效果之一。",
+          "conditions": [
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_face_is",
+              "face": "up"
+            }
+          ],
+          "effects": [
+            {
+              "type": "hide_servant_true_name",
+              "target": "controller"
+            },
+            {
+              "type": "choose_one",
+              "key": "faceless-king-mode",
+              "options": [
+                {
+                  "id": "move",
+                  "label": "沿着箭头移动至下一地点",
+                  "effects": [
+                    {
+                      "type": "set_player_flag",
+                      "target": "controller",
+                      "key": "robinFacelessKingMode",
+                      "value": "move"
+                    }
+                  ]
+                },
+                {
+                  "id": "advantage",
+                  "label": "地利翻倍；本场战斗获胜后获得2战果",
+                  "effects": [
+                    {
+                      "type": "set_player_flag",
+                      "target": "controller",
+                      "key": "robinFacelessKingMode",
+                      "value": "advantage"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "on_card_played"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "faceless-king-move",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：沿着箭头移动至下一地点。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "player_flag_equals",
+              "key": "robinFacelessKingMode",
+              "value": "move"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_locations",
+              "forwardOnly": true,
+              "minForwardSteps": 1,
+              "maxForwardSteps": 1,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "targetLocationId",
+              "then": [
+                {
+                  "type": "move_player",
+                  "target": "controller",
+                  "to": "targetLocationId"
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "faceless-king-double-advantage",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：将你的地利翻倍。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "player_flag_equals",
+              "key": "robinFacelessKingMode",
+              "value": "advantage"
+            },
+            {
+              "type": "metric_compare",
+              "left": {
+                "type": "metric",
+                "metric": "deployment_bonus",
+                "source": "controller"
+              },
+              "operator": "gt",
+              "right": 0
+            }
+          ],
+          "effects": [
+            {
+              "type": "multiply_deployment_bonus",
+              "target": "controller",
+              "multiplier": 2
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "faceless-king-win-reward",
+          "kind": "passive",
+          "printedClause": "战斗阶段：如果你赢得本场战斗获得2战果。",
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "player_flag_equals",
+              "key": "robinFacelessKingMode",
+              "value": "advantage"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "target": "controller",
+              "amount": 2
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "after_battle_result_determined"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "罗宾汉.htm",
+            "locator": "从者/弓兵/英文版/罗宾汉.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/罗宾汉.png",
+            "locator": "servant.robin/罗宾汉"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

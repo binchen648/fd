@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.kagekiyo",
+  "name": "平景清",
+  "class": "Avenger",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.kagekiyo.skill.sc-kagekiyo-2",
+      "aliases": [
+        "card.skill.servant.kagekiyo.skill.sc-kagekiyo-2",
+        "sc_kagekiyo_2"
+      ],
+      "legacyId": "sc_kagekiyo_2",
+      "name": "忘却补正",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.kagekiyo"
+      },
+      "printedText": "被动：当你输掉一场战斗时，你可将牌库中的一张【复仇者】加入攻击或者抽2张牌然后将它们暗置加入攻击。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "oblivion-correction-after-loss",
+          "printedClause": "被动：当你输掉一场战斗时，你可将牌库中的一张【复仇者】加入攻击或者抽2张牌然后将它们暗置加入攻击。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "event_location_equals_controller"
+            },
+            {
+              "type": "event_player_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_one",
+              "allowCancel": true,
+              "options": [
+                {
+                  "id": "avenger-from-deck",
+                  "label": "将牌库中的一张【复仇者】加入攻击",
+                  "conditions": [
+                    {
+                      "type": "card_count_at_least",
+                      "target": "controller",
+                      "zone": "deck",
+                      "definitionId": "card.card-avenger",
+                      "value": 1
+                    }
+                  ],
+                  "effects": [
+                    {
+                      "type": "choose_cards",
+                      "target": "controller",
+                      "zone": "deck",
+                      "definitionId": "card.card-avenger",
+                      "minCount": 1,
+                      "maxCount": 1,
+                      "payloadKey": "selectedInstanceIds"
+                    },
+                    {
+                      "type": "transfer_selected_cards",
+                      "target": "controller",
+                      "payloadKey": "selectedInstanceIds",
+                      "destination": "attack_area",
+                      "face": "up",
+                      "active": true
+                    }
+                  ]
+                },
+                {
+                  "id": "draw-two-facedown",
+                  "label": "抽2张牌并暗置加入攻击",
+                  "effects": [
+                    {
+                      "type": "draw_cards",
+                      "target": "controller",
+                      "amount": 2,
+                      "destination": "attack_area",
+                      "face": "down",
+                      "active": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "after_battle_result_determined"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/复仇者/英文版/平景清.htm",
+          "servant.kagekiyo/平景清"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

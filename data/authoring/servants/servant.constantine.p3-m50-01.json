@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.constantine",
+  "name": "君士坦丁十一世",
+  "class": "Rider",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.constantine.skill.sc-constantine-2",
+      "aliases": [
+        "card.skill.servant.constantine.skill.sc-constantine-2",
+        "sc_constantine_2"
+      ],
+      "legacyId": "sc_constantine_2",
+      "name": "落日帝国",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.constantine"
+      },
+      "printedText": "尽归尘土-被动：当你即将被淘汰时，改为将此牌移除游戏并令你于下回合获得的战果翻倍。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "empire-to-dust",
+          "kind": "passive",
+          "printedClause": "尽归尘土-被动：当你即将被淘汰时，改为将此牌移除游戏并令你于下回合获得的战果翻倍。",
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "ruleModifiers": [
+            {
+              "id": "empire-elimination-replacement",
+              "operation": "replace",
+              "rule": "elimination",
+              "scope": {
+                "subject": "controller",
+                "replacement": "remove_source_card",
+                "nextRoundVictoryPointGainMultiplier": 2
+              },
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "君士坦丁十一世.htm",
+            "locator": "从者/骑兵/英文版/君士坦丁十一世.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/君士坦丁十一世.png",
+            "locator": "servant.constantine/君士坦丁十一世"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

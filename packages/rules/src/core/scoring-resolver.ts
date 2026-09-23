@@ -1,7 +1,7 @@
 import type { GameState, PlayerScoringBreakdown } from "../schema/game";
 import type { ResolverResult } from "./resolver-contracts";
 import { resolveEliminationBatch } from "./elimination-resolver";
-import { consumeB02EliminationReplacement } from "../ability/batch-owned-passive-rules";
+import { consumeB02EliminationReplacement, consumeM50NextRoundVpEliminationReplacement } from "../ability/batch-owned-passive-rules";
 
 export const ELIMINATION_MILITARY_THRESHOLD = -8;
 
@@ -186,7 +186,7 @@ export function applyBattleScoring(state: GameState): ResolverResult {
         const militaryResult = nextPlayer.militaryResult + adjustment.delta;
         const reachedEliminationThreshold = militaryResult <= ELIMINATION_MILITARY_THRESHOLD;
         const replacementConsumed = reachedEliminationThreshold && nextPlayer.status !== "eliminated"
-          ? consumeB02EliminationReplacement(replacementState, nextPlayer.id)
+          ? (consumeB02EliminationReplacement(replacementState, nextPlayer.id) || consumeM50NextRoundVpEliminationReplacement(replacementState, nextPlayer.id))
           : false;
         const eliminated = reachedEliminationThreshold && !replacementConsumed;
         const newlyEliminated = eliminated && nextPlayer.status !== "eliminated";
@@ -231,6 +231,19 @@ export function applyBattleScoring(state: GameState): ResolverResult {
   });
 
   const resolvedEliminations = resolveEliminationBatch(eliminationCandidates);
+  if (replacementState.abilityRuntime && resolvedEliminations.length > 0) {
+    const round = state.round.roundNumber; const runtime = replacementState.abilityRuntime;
+    const existing = runtime.structuredRoundEliminations;
+    if (existing && existing.round > round) throw new Error('M50_ROUND_ELIMINATION_LEDGER_FUTURE');
+    const entries = existing?.round === round ? [...existing.entries] : [];
+    for (const eliminated of resolvedEliminations) {
+      const locationId = state.players.find((candidate) => candidate.id === eliminated.playerId)?.locationId;
+      const prior = entries.find((entry) => entry.playerId === eliminated.playerId);
+      if (prior) { if (prior.locationId !== locationId) throw new Error('M50_ROUND_ELIMINATION_LEDGER_COLLISION'); continue; }
+      entries.push({ playerId: eliminated.playerId, ...(locationId ? { locationId } : {}) });
+    }
+    runtime.structuredRoundEliminations = { round, entries };
+  }
   const eliminationOrderByPlayerId = new Map(
     resolvedEliminations.map((candidate) => [candidate.playerId, candidate.eliminationOrder]),
   );

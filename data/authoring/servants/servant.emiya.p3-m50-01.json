@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.emiya",
+  "name": "卫宫",
+  "class": "Archer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.emiya.skill.sc-emiya-np",
+      "aliases": [
+        "card.skill.servant.emiya.skill.sc-emiya-np",
+        "sc_emiya_np"
+      ],
+      "legacyId": "sc_emiya_np",
+      "name": "无限剑制",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.emiya"
+      },
+      "printedText": "【真名解放】\n打出时：以你打出的牌、手牌、牌库和弃牌堆任意组建一组至多12张牌的手牌。\n残留：你的常规出牌改为打出0~4张牌，你不能抽牌，当你的手牌数为0时，关闭此牌。",
+      "cardFace": {
+        "cost": 8,
+        "basePower": 0,
+        "attributes": [
+          "特殊"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 8
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "unlimited-blade-works-rebuild-hand",
+          "printedClause": "打出时：以你打出的牌、手牌、牌库和弃牌堆任意组建一组至多12张牌的手牌。",
+          "markers": [
+            "真名解放",
+            "m50_structured_v1"
+          ],
+          "kind": "forced_trigger",
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "target": "controller",
+              "zones": [
+                "hand",
+                "deck",
+                "discard",
+                "attack_area"
+              ],
+              "attackZoneActiveOnly": true,
+              "attackZoneNonSkillOnly": true,
+              "minCount": 0,
+              "maxCount": 12,
+              "payloadKey": "selectedInstanceIds"
+            },
+            {
+              "type": "move_selected_cards",
+              "target": "controller",
+              "zones": [
+                "hand",
+                "deck",
+                "discard",
+                "attack_area"
+              ],
+              "attackZoneActiveOnly": true,
+              "attackZoneNonSkillOnly": true,
+              "minCount": 0,
+              "maxCount": 12,
+              "payloadKey": "selectedInstanceIds",
+              "destination": "hand"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "conditions": [],
+          "activation": {
+            "trigger": "on_card_played"
+          },
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {}
+        },
+        {
+          "id": "unlimited-blade-works-residual",
+          "printedClause": "残留：你的常规出牌改为打出0~4张牌，你不能抽牌，当你的手牌数为0时，关闭此牌。",
+          "kind": "residual",
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "replace-standard-attack-card-count",
+              "printedClause": "你的常规出牌改为打出0~4张牌",
+              "operation": "replace",
+              "rule": "standard_attack_card_count",
+              "scope": {
+                "subject": "controller",
+                "minCount": 0,
+                "maxCount": 4,
+                "closeSourceWhenHandEmpty": true
+              },
+              "priority": {
+                "tier": "card_text",
+                "specificity": "explicit_exception"
+              },
+              "conflictPolicy": "explicit_exception_over_general"
+            },
+            {
+              "id": "forbid-card-draw",
+              "printedClause": "你不能抽牌",
+              "operation": "forbid",
+              "rule": "card_draw",
+              "scope": {
+                "subject": "controller"
+              },
+              "priority": {
+                "tier": "card_text",
+                "specificity": "specific"
+              },
+              "conflictPolicy": "forbid_over_allow"
+            }
+          ],
+          "lifecycle": {
+            "duration": "until_card_closed"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "servant.emiya/卫宫",
+          "从者/弓兵/英文版/卫宫.htm"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

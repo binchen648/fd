@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.merlin",
+  "name": "梅林",
+  "class": "Caster",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-01 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.merlin.skill.sc-merlin-3",
+      "aliases": [
+        "card.skill.servant.merlin.skill.sc-merlin-3",
+        "sc_merlin_3"
+      ],
+      "legacyId": "sc_merlin_3",
+      "name": "永世隔绝的理想乡",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.merlin"
+      },
+      "printedText": "【真名解放】\n被动：从侦察处额外获得1点战果和2点魔力。\n行动阶段：将你所在战场的所有事件牌移除游戏。",
+      "cardFace": {
+        "cost": 7,
+        "basePower": 0,
+        "attributes": [
+          "宝具"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 8
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "avalon-scouting-bonus",
+          "printedClause": "被动：从侦察处额外获得1点战果和2点魔力",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "event_scouting_rewarded_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_victory_points",
+              "target": "controller",
+              "amount": 1
+            },
+            {
+              "type": "gain_mana",
+              "target": "controller",
+              "amount": 2
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "after_battle_result_determined"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "avalon-remove-events",
+          "printedClause": "行动阶段：将你所在战场的所有事件牌移除游戏",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "at_battlefield"
+            },
+            {
+              "type": "event_count_at_least",
+              "sourceZone": "current",
+              "locationId": "controller_location",
+              "value": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_matching_events",
+              "sourceZone": "current",
+              "locationId": "controller_location",
+              "destination": "removed_from_game"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/魔术师/英文版/梅林.htm",
+          "servant.merlin/梅林"
+        ],
+        "macroBatch": "P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}
