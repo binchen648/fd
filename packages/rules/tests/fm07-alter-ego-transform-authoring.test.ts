@@ -100,8 +100,10 @@ describe('P3-FM07 exact ten-member Alter Ego transform migration', () => {
       const raw = readArchive(ownerId, ownerType);
       expect(raw.id).toBe(ownerId);
       expect(raw.class).toBe(expectedClass);
-      expect(raw.cards).toHaveLength(1);
-      const selected = raw.cards[0];
+      const matches = raw.cards.filter((card: any) => card.id === cardId);
+      expect(matches).toHaveLength(1);
+      if (ownerId !== 'servant.mechaeli') expect(raw.cards).toHaveLength(1);
+      const selected = matches[0];
       expect(selected.id).toBe(cardId);
       expect(selected.legacyId).toBe(legacyId);
       expect(selected.aliases).toContain(legacyId);

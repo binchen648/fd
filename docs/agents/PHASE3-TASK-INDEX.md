@@ -6135,3 +6135,16 @@ Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDAT
 FB2-54 earns zero migration credit. Formal migration remains **`156/944`**, with **`788`** remaining; material authoring overlap remains **`151/944`**. PR #433 remains OPEN, unmerged and unretargeted.
 
 Next action follows the user's latest BATCH-FIRST F4 authorization: reuse existing F1/capability evidence, do not redo whole-roster classification, select the largest mechanically coherent current-baseline consumer batch, implement shared bounded runtime support once where needed, migrate all compatible consumers in that batch, and submit one exact batch Candidate for one fresh independent R.
+
+
+## TASK P3-F4-B01-PASSIVE-MODIFIER-MIGRATION-BATCH
+
+Owner: Codex Batch
+Status: `READY_FOR_FRESH_R`
+Branch: `codex/batch-p3-f4-b01-passive-modifier-migrations`
+Base: exact R115 FB2-54 acceptance synchronization `27cc057893738e0c64a1db0148b9132c9b4429e2`
+Read: `docs/reports/2026-09-23-p3-f4-b01-passive-modifier-migrations-result.md`
+
+Result required: review one BATCH-FIRST Candidate containing four material identities: fresh-credit candidates `servant.mechaeli.skill.sc-mechaeli-2`, `servant.atalanta.skill.sc-atalanta-1`, and `servant.gorgon.skill.sc-gorgon-2`, plus exact historical material reconciliation `servant.ibaraki.skill.sc-ibaraki-1`. Ibaraki was already independently accepted on PR #381 Candidate `78ab99ce3136f654e53ec922466c26d4751b1917` and historically credited through `51f8af150f10a249ba471aaa65d7d7b49cabc98e`; it earns **zero new formal credit** here.
+
+Candidate material accounting must be exact `151/944 -> 155/944`, zero removals and zero duplicate frozen IDs. Formal migration remains `156/944` before fresh R. On exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, award exactly +3 fresh formal identities => `159/944`, `785` remaining. Do not merge/retarget, do not double-credit Ibaraki, and do not split the exact batch into per-skill reviews.

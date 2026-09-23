@@ -86,6 +86,17 @@ import {
   isEventPowerUncontestedWinRewardCandidate,
 } from './event-power-uncontested-win-reward';
 import {
+  BATCH_EVENT_BATTLEFIELD_EQUALS_CONTROLLER,
+  BATCH_EVENT_BATTLE_OPPONENT_COUNT_AT_LEAST,
+  cardRequiresSoloPlay,
+  isAcceptedBatchPassiveFamilyAbility,
+  isAcceptedCrowdedBattleCloseAbility,
+  isBatchPassiveFamilyCandidate,
+  ownedDefinitionCardRuleAdjustment,
+  skillDefinitionForbiddenByOwnedDefinitionCardRule,
+  trustedCrowdedBattleEventMatches,
+} from './batch-passive-card-rules';
+import {
   advanceOpponentCloseToOneServerAuthority,
   clearOpponentCloseToOneServerAuthority,
   copyOpponentCloseToOneServerAuthority,
@@ -568,6 +579,11 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  const ownedDefinitionAdjustment = ownedDefinitionCardRuleAdjustment(s, sourceId);
+  if (ownedDefinitionAdjustment.power !== 0) {
+    result.value += ownedDefinitionAdjustment.power;
+    result.lines.push({ label: 'active_source_owned_definition_base_power', value: result.value });
+  }
   for (const modifier of ((source as unknown as { powerModifiers?: Array<Record<string, unknown>> }).powerModifiers ?? [])) {
     const value = Number(modifier.value ?? 0);
     if (!Number.isFinite(value)) reject('invalid_modifier', 'Card power modifier must be finite');
@@ -891,6 +907,16 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
       if (cardDef && hasPlayRuleException(cardDef, 'skill_zone_mana_at_least')) return true;
       return card(s, ctx.sourceCardId).zone !== 'skill' || p.mana >= Number(c.value);
     }
+    case BATCH_EVENT_BATTLEFIELD_EQUALS_CONTROLLER: {
+      const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      if (!isAcceptedCrowdedBattleCloseAbility(ability)) reject('unsupported', 'Battlefield/controller relation requires exact F4 B01 crowded-battle parent');
+      return trustedCrowdedBattleEventMatches(s, ctx.controllerId, ctx.event);
+    }
+    case BATCH_EVENT_BATTLE_OPPONENT_COUNT_AT_LEAST: {
+      const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      if (c.count !== 2 || !isAcceptedCrowdedBattleCloseAbility(ability)) reject('unsupported', 'Battle opponent-count condition requires exact F4 B01 crowded-battle parent');
+      return trustedCrowdedBattleEventMatches(s, ctx.controllerId, ctx.event);
+    }
     case 'event_location_is_source_event_battlefield': return !!ctx.eventSource &&
       (ctx.event?.locationId ?? ctx.event?.battlefieldId) === ctx.eventSource.locationId;
     case 'combat_occurs_at_source_event_battlefield': return !!ctx.eventSource &&
@@ -1098,6 +1124,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) return false;
   if (isBasicStrengthOpponentSkillFaceDownCandidate(a) && !isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled')) return false;
   if (isEventPowerUncontestedWinRewardCandidate(a) && !isAcceptedEventPowerUncontestedWinRewardAbility(a, 'compiled')) return false;
+  if (isBatchPassiveFamilyCandidate(a) && !isAcceptedBatchPassiveFamilyAbility(a)) return false;
   if (isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled') &&
       !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
   if (hasControllerMasterSkillDefinitionReturnCandidate(a) && !isAcceptedOpponentRoundVpGainThresholdAbility(a, 'compiled')) return false;
@@ -1107,6 +1134,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     if (controller.status !== 'active' || !isBattlefield(s, controller.locationId)) return false;
   }
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
+  const sourceDefinitionForForbid = definition(s, sourceId);
+  if (sourceDefinitionForForbid && skillDefinitionForbiddenByOwnedDefinitionCardRule(s, card(s, sourceId).controllerPlayerId, sourceDefinitionForForbid.id)) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
   if (activationPhase && activationPhase !== phase(s)) return false;
   if (definition(s, sourceId)?.cardType === 'command_spell' &&
@@ -1228,7 +1257,9 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
     str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && hasPlayRuleException(d, 'skill_zone_mana_at_least')));
   if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
   
-  if (!ignoreManaCost && !faceDown && player(s, p).mana < Number(d.cardFace.cost ?? 0)) return 'insufficient_mana';
+  const effectiveManaCost = Number(d.cardFace.cost ?? 0) + ownedDefinitionCardRuleAdjustment(s, sourceId).cost;
+  if (!Number.isSafeInteger(effectiveManaCost) || effectiveManaCost < 0) return 'invalid_cost';
+  if (!ignoreManaCost && !faceDown && player(s, p).mana < effectiveManaCost) return 'insufficient_mana';
   const unconfirmed = d.abilities.find(a => ['unsupported', 'text_unconfirmed'].includes(a.execution.mode));
   if (unconfirmed) return unconfirmed.execution.mode;
   if (!faceDown) {
@@ -4953,6 +4984,9 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
 function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false): void {
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
+  if (choices.length > 1 && choices.some((choice) => cardRequiresSoloPlay(s, choice.cardInstanceId))) {
+    reject('play_forbidden', 'This card must be played alone');
+  }
   const faceUpChoiceCount = choices.filter((choice) => choice.faceDown !== true).length;
   if (faceUpChoiceCount > 0 && faceUpCardPlayLimitReached(s, playerId, faceUpChoiceCount)) {
     reject('face_up_card_play_limit_reached', 'Face-up card play limit reached for this round');
@@ -4974,7 +5008,8 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
     const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost);
     if (failure) reject(failure, 'Card cannot be played in this batch');
-    const paidMana = !waiveManaCost && !c.faceDown ? Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0) : 0;
+    const printedCost = Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0);
+    const paidMana = !waiveManaCost && !c.faceDown ? printedCost + ownedDefinitionCardRuleAdjustment(s, c.cardInstanceId).cost : 0;
     if (!Number.isSafeInteger(paidMana) || paidMana < 0) reject('invalid_cost', 'Card paid mana provenance must be a nonnegative safe integer');
     paidManaByCard.set(c.cardInstanceId, paidMana);
     cost += paidMana;
@@ -4995,7 +5030,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     if (d && !c.faceDown) {
       const attributes = Array.isArray(d.cardFace.attributes) ? d.cardFace.attributes : [];
       if (attributes.includes('宝具')) {
-        const cardCost = Number(d.cardFace.cost ?? 0);
+        const cardCost = paidManaByCard.get(c.cardInstanceId) ?? Number(d.cardFace.cost ?? 0);
         if (!runtime(s).noblePhantasmCostsThisRound[playerId]) {
           runtime(s).noblePhantasmCostsThisRound[playerId] = [];
         }

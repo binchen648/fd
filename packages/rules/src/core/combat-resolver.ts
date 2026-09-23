@@ -18,6 +18,7 @@ import { roundTotalPowerAdjustment } from '../ability/outer-god-life';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { logicalDayForPlayer } from './rule-overrides';
 import { situationBenefitsSuppressedForPlayer } from '../ability/next-round-situation-benefit-suppression';
+import { controllerHasActiveDefeatIgnore } from '../ability/batch-passive-card-rules';
 import { assignedTerrainSlotIndex, hasRemoteOperationBonus, terrainBonusAt } from './terrain-advantage';
 
 export interface CombatParticipantInput {
@@ -198,7 +199,8 @@ function hasActiveBasicCardAtBattlefield(
 }
 
 function ignoresBattleLossEffects(state: GameState, playerId: string, battlefieldId: CombatResolutionInput["battlefieldId"]): boolean {
-  return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, "basic.luck");
+  return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, "basic.luck") ||
+    controllerHasActiveDefeatIgnore(state, playerId);
 }
 
 function returnSilenceSources(state: GameState): Array<{ sourceCardId: string; playerId: string }> {
