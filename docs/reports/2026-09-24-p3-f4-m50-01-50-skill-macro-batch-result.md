@@ -3,7 +3,7 @@
 Task: `P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH`
 Branch: `codex/batch-p3-f4-m50-01-50-skill-macro`
 Base: exact R121 acceptance synchronization `b4589eebbd09409458cf7b49d7fb7d9af6469f07`
-Candidate: the single commit containing this report; its exact SHA is recorded mechanically in the PR and fresh-R handoff after commit creation.
+Initial Candidate: `12efa4d292a04a5b592b965b44dde67d1ad6b9da`; fresh R returned `IMPLEMENTATION_NEEDS_REVISION`. The revised Candidate is the direct successor containing the R1 closure below; its exact SHA is recorded mechanically in PR #440 and the fresh-R handoff after commit creation.
 Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 Mode: user-authorized F4 50-skill macro-batch
 
@@ -136,6 +136,37 @@ Two added `printedClause` mentions are structural authoring fields/type preserva
 - generated fixture SHA-256: `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`
 - generated evidence-report SHA-256: `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`
 - `git diff --check`: **PASS**.
+
+## R1 revision closure — Araya zero-target semantics
+
+Fresh independent R on exact initial Candidate `12efa4d292a04a5b592b965b44dde67d1ad6b9da` returned `IMPLEMENTATION_NEEDS_REVISION`. The Reviewer could not write its own GitHub comment because its transport returned HTTP 403, so the already-completed R finding was relayed without re-review at <https://github.com/binchen648/fd/pull/440#issuecomment-5804342795>.
+
+The single blocking finding was `master.araya.skill.s1a` / `origin-stillness-combat-end`: the initial encoding allowed `choose_cards` to write an empty payload through `skipIfNoCandidates`, then a fixed `move_selected_cards count: 1` consumed that empty payload and rejected a legal no-target battle-end state.
+
+The revised Candidate uses the Reviewer's explicitly allowed equivalent bounded semantic encoding:
+
+- the ability now requires `card_count_at_least` one controller-owned active `basic_attack` in `attack_area` before opening its response/choice path;
+- the choice itself is exact-one and no longer uses `skipIfNoCandidates`;
+- generic `card_count_at_least` now honors the already-validated identity-free `basicOnly` structural filter;
+- no consumer identity/name routing or text parsing was added.
+
+Focused regression coverage drives the real battle-terminal response path:
+
+- zero active basic attacks => Araya is not offered in the response window and the battle-end state is a legal no-op;
+- one active basic attack => Araya response -> exact-one structured choice -> selected attack returns to deck -> controller gains exactly twice its printed mana cost.
+
+Successor verification after the revision:
+
+- source-controlled selected probe: **50 PASS / 0 FAIL**;
+- M50 focused suite: **1 file / 8 tests PASS**;
+- affected M50 + B06 + Helena + Ruler suites: **4 files / 36 tests PASS**;
+- frozen material remains **215/944**, exact batch +50, duplicate frozen IDs **0**;
+- `npm run typecheck`: **PASS**;
+- `npm run content:validate`: **PASS** (`7 masters, 7 servants, 20 events, 0 blocking issues`);
+- `npm run verify:generated-content`: **PASS** with the same three deterministic hashes recorded above;
+- `git diff --check`: **PASS**.
+
+The narrow successor does not rerun the full 1494-test CI suite; the exact initial Candidate's full CI result remains historical evidence, while this NEEDS_REVISION cycle follows the repository rule to run affected focused tests plus the relevant compile/validation/determinism/diff gates.
 
 ## Credit / review gate
 

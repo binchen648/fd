@@ -9,6 +9,7 @@ import { createSeededGameState } from '../src/tools/seeded-state';
 const ROOT = resolve('.');
 const LOCKED_REFERENCE = 'b2f9fa15fba07c63530bbf4612b03b8b704755f9';
 const BATCH = 'P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH';
+const ARAYA = 'master.araya.skill.s1a';
 const LEONIDAS = 'servant.leonidas.skill.sc-leonidas-2';
 const VALKYRIE = 'servant.valkyrie.skill.sc-valkyrie-3';
 const COMMANDER = 'card.x-commanderortlinde';
@@ -32,6 +33,13 @@ function compiledAttack(id: string, basePower: number, abilities: AuthoringAbili
     playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], mode: 'automatic', abilities,
   } as AuthoringCard;
 }
+function compiledBasicAttack(id: string, cost: number): AuthoringCard {
+  return {
+    id, name: id, cardType: 'basic_attack',
+    cardFace: { typeLabel: 'fixture', attributes: ['力量'], cost, basePower: 2 },
+    playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], mode: 'automatic', abilities: [],
+  } as AuthoringCard;
+}
 function automaticOnPlayMana(amount: number): AuthoringAbility {
   return {
     id: 'fixture-on-play-mana', kind: 'forced_trigger', printedClause: 'fixture', activation: { trigger: 'on_card_played' },
@@ -53,6 +61,17 @@ function setupFromArchive(path: string, sourceDefinitionId: string, sourceInstan
 function choose(state: GameState, selectedIds: string[]) {
   const decision = state.abilityRuntime!.pendingDecision!;
   return rules.dispatchAbilityCommand(state, decision.controllerId, { type: 'choose_target', decisionId: decision.id, selectedIds });
+}
+function terminalEvent(id: string) {
+  return {
+    id,
+    type: 'after_battle_ended' as const,
+    battlePhaseResolutionId: `battle-phase:${id}`,
+    battleIds: [`battle-phase:${id}:battle:miyama_town:1`],
+    resultIds: [`battle-phase:${id}:battle:miyama_town:1:result`],
+    scoringReceiptIds: [`battle-phase:${id}:score:miyama_town`],
+    battleParticipantIds: ['p1', 'p2'],
+  };
 }
 
 describe('P3 F4 M50-01 50-skill macro-batch', () => {
@@ -92,6 +111,38 @@ describe('P3 F4 M50-01 50-skill macro-batch', () => {
     const manifest = readFileSync(resolve(ROOT, 'data/packs/fd-playtest-v1/pack.json'), 'utf8');
     expect(manifest).not.toContain('.p3-m50-01.json');
     for (const file of batchFiles()) expect(manifest).not.toContain(file.replaceAll('\\', '/').split('/data/authoring/')[1]!);
+  });
+
+  it('treats Araya battle-end with zero active basic attacks as a legal no-op', () => {
+    const state = setupFromArchive('data/authoring/masters/master.araya.p3-m50-01.json', ARAYA, 'araya-source', 'battle');
+    state.players[0]!.mana = 1;
+    const beforeCards = structuredClone(state.cards);
+    const event = terminalEvent('araya-empty');
+    expect(rules.collectTriggeredAbilities(state, event).filter((entry) => entry.abilityId === 'origin-stillness-combat-end')).toEqual([]);
+    rules.processAbilityEvent(state, event);
+    expect(state.abilityRuntime!.pendingDecision).toBeUndefined();
+    expect(state.players[0]!.mana).toBe(1);
+    expect(state.cards).toEqual(beforeCards);
+  });
+
+  it('returns one active basic attack for Araya and grants twice its printed mana cost', () => {
+    const state = setupFromArchive('data/authoring/masters/master.araya.p3-m50-01.json', ARAYA, 'araya-source', 'battle');
+    const pack: any = state.abilityRuntime!.pack;
+    pack.cards['fixture.basic.attack'] = compiledBasicAttack('fixture.basic.attack', 3);
+    state.cards.push({ instanceId: 'araya-basic', definitionId: 'fixture.basic.attack', ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'attack_area', visibility: { scope: 'public' } });
+    state.abilityRuntime!.cardState['araya-basic'] = { active: true, faceDown: false, playedRound: state.round.roundNumber };
+    state.players[0]!.mana = 1;
+
+    const event = terminalEvent('araya-one');
+    expect(rules.collectTriggeredAbilities(state, event)).toEqual(expect.arrayContaining([expect.objectContaining({ cardInstanceId: 'araya-source', abilityId: 'origin-stillness-combat-end' })]));
+    rules.processAbilityEvent(state, event);
+    const window = state.abilityRuntime!.responseWindows[0]!;
+    expect(window.choices).toEqual(expect.arrayContaining([expect.objectContaining({ cardInstanceId: 'araya-source', abilityId: 'origin-stillness-combat-end' })]));
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'resolve_response', windowId: window.id, cardInstanceId: 'araya-source', abilityId: 'origin-stillness-combat-end' }).ok).toBe(true);
+    expect(state.abilityRuntime!.pendingDecision?.candidates).toEqual(['araya-basic']);
+    expect(choose(state, ['araya-basic']).ok).toBe(true);
+    expect(state.cards.find((card) => card.instanceId === 'araya-basic')?.zone).toBe('deck');
+    expect(state.players[0]!.mana).toBe(7);
   });
 
   it('captures an opponent attack power at selection time and applies that exact payload next round', () => {

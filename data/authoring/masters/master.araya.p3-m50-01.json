@@ -41,6 +41,14 @@
           "conditions": [
             {
               "type": "source_owned"
+            },
+            {
+              "type": "card_count_at_least",
+              "target": "controller",
+              "zone": "attack_area",
+              "basicOnly": true,
+              "activeOnly": true,
+              "value": 1
             }
           ],
           "effects": [
@@ -52,8 +60,7 @@
               "activeOnly": true,
               "minCount": 1,
               "maxCount": 1,
-              "payloadKey": "selectedInstanceIds",
-              "skipIfNoCandidates": true
+              "payloadKey": "selectedInstanceIds"
             },
             {
               "type": "move_selected_cards",

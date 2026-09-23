@@ -1265,6 +1265,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
       const count = s.cards.filter((entry) => {
         if (entry.ownerPlayerId !== targetIds[0] || entry.zone !== zone) return false;
         if (definitionIds.size && !definitionIds.has(entry.definitionId)) return false;
+        if (c.basicOnly === true && definition(s, entry.instanceId)?.cardType !== 'basic_attack') return false;
         if (c.activeOnly === true && !active(s, entry.instanceId)) return false;
         if (face === 'up' && runtime(s).cardState[entry.instanceId]?.faceDown === true) return false;
         if (face === 'down' && runtime(s).cardState[entry.instanceId]?.faceDown !== true) return false;
