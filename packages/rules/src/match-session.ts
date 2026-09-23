@@ -19,7 +19,7 @@ import { clearTransientCardTransformState } from './ability/card-instance-state'
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './ability/deployment-destinations';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
-import { rememberB03BattleAttributeSnapshot } from './ability/batch-modifier-lifecycle-rules';
+import { advanceB03RoundSchedules, rememberB03BattleAttributeSnapshot } from './ability/batch-modifier-lifecycle-rules';
 import type {
   AbilityCommand,
   AbilityEvent,
@@ -813,8 +813,7 @@ export class MatchSession {
           this.ensureFinalScoring();
           return this.pause('match_complete');
         }
-        this.state.round.roundNumber += 1;
-        this.startRound(this.state.round.roundNumber);
+        this.startRound(this.state.round.roundNumber + 1);
         continue;
       }
       return reason;
@@ -1261,8 +1260,10 @@ export class MatchSession {
   }
 
   private startRound(round: number, targetState = this.state): void {
+    const priorRound = targetState.round.roundNumber;
     if (targetState.abilityRuntime) {
       targetState.abilityRuntime.roundPositiveVictoryPointGain = { round, byPlayer: {} };
+      if (round > priorRound) advanceB03RoundSchedules(targetState, round);
     }
     targetState.round = { roundNumber: round, activePhase: 'preparation', prioritySeat: 1 };
     for (const player of targetState.players) {
@@ -1327,7 +1328,7 @@ export class MatchSession {
       const terminalParticipants = battle.participantBreakdowns?.map((participant) => participant.playerId) ?? participants;
       battleParticipantIds.push(...terminalParticipants);
       if (battle.participantAttackAttributes) {
-        rememberB03BattleAttributeSnapshot(this.state, battlePhaseResolutionId, battleId, resultId, battle.battlefieldId, participants, terminalParticipants, battle.participantAttackAttributes);
+        rememberB03BattleAttributeSnapshot(this.state, battlePhaseResolutionId, battleId, resultId, battle.battlefieldId, terminalParticipants, terminalParticipants, battle.participantAttackAttributes);
       }
       const resultEvent: AbilityEvent = {
         id: resultId,

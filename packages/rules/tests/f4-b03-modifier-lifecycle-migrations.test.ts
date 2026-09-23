@@ -173,6 +173,27 @@ describe('P3 F4 B03 modifier/lifecycle migration batch', () => {
     expect(() => rules.calculateCardPower(duplicateActive, 'requiem')).toThrow(/B03_ACTIVE_BOOST_DUPLICATE/);
   });
 
+  it('promotes and expires Mozart next-round +3 through the real MatchSession round transition', () => {
+    const state = setup([
+      physical('source', MOZART), physical('requiem', REQUIEM, 'p1', 'hand'), physical('requiem-alias', REQUIEM_ALIAS, 'p1', 'hand'),
+    ]);
+    activate(state, 'source', 'serenade-arm-next-round-requiem');
+    state.cards.find((card) => card.instanceId === 'source')!.zone = 'skill';
+    state.abilityRuntime!.cardState.source!.active = false;
+    const session = bridgeSession(state);
+
+    session.state.round.activePhase = 'round_end';
+    session.runFullMatch({ maxRounds: 2 });
+    expect(session.state.round.roundNumber).toBe(2);
+    expect(rules.calculateCardPower(session.state, 'requiem').value).toBe(7);
+    expect(rules.calculateCardPower(session.state, 'requiem-alias').value).toBe(7);
+
+    session.state.round.activePhase = 'round_end';
+    session.runFullMatch({ maxRounds: 3 });
+    expect(session.state.round.roundNumber).toBe(3);
+    expect(rules.calculateCardPower(session.state, 'requiem').value).toBe(4);
+  });
+
   it('sets only same-battlefield opponent magic/Luck power to zero and restores it when source is inactive', () => {
     const state = setup([
       physical('source', EDISON), physical('magic', MAGIC, 'p2'), physical('luck', LUCK, 'p2'), physical('other', OTHER, 'p2'), physical('own-magic', MAGIC, 'p1'),
@@ -217,6 +238,23 @@ describe('P3 F4 B03 modifier/lifecycle migration batch', () => {
     normalSession.queuePostScoringBattleEvents(resolvedNormal.battles, resolvedNormal.freshLogs);
     normalSession.flushPostScoringBattleEvents();
     expect(normalSession.state.abilityRuntime!.cardState.source!.active).toBe(true);
+  });
+
+  it('closes W·F·D when its controller really fought with Magic even if their loss effects were suppressed', () => {
+    const state = setup([physical('source', EDISON), physical('luck-protection', LUCK)]);
+    state.round.activePhase = 'battle';
+    const resolved = rules.resolveBattlefield(state, { battlefieldId: BATTLEFIELD, participants: [
+      { playerId: 'p1', totalPower: 4, attackTags: [] },
+      { playerId: 'p2', totalPower: 9, attackTags: ['魔术'] },
+    ] }).nextState;
+    const battle = resolved.battleResults.at(-1)!;
+    expect(battle.lossEffectSuppressedPlayerIds ?? []).toContain('p1');
+    const priorLogLength = resolved.log.length;
+    const scored = rules.applyBattleScoring(resolved).nextState;
+    const session = bridgeSession(scored);
+    session.queuePostScoringBattleEvents([battle], scored.log.slice(priorLogLength));
+    session.flushPostScoringBattleEvents();
+    expect(session.state.abilityRuntime!.cardState.source).toMatchObject({ active: false, faceDown: false });
   });
 
   it('rejects forged/tampered battle-root provenance for the combat-attribute close', () => {

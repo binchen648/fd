@@ -321,8 +321,8 @@ function validatedB03BattleAttributeSnapshot(state: GameState, event: AbilityEve
   const rootParticipants = event.battleParticipantIds;
   const exactRootParticipants = trusted.battleParticipantIds.length === rootParticipants.length &&
     trusted.battleParticipantIds.every((id, index) => id === rootParticipants[index]);
-  const exactFrozenRoot = snapshot.rootParticipantIds.length === rootParticipants.length &&
-    snapshot.rootParticipantIds.every((id, index) => id === rootParticipants[index]);
+  const exactFrozenRoot = snapshot.rootParticipantIds.length === participants.length &&
+    snapshot.rootParticipantIds.every((id, index) => id === participants[index]);
   if (snapshot.battlePhaseResolutionId !== event.battlePhaseResolutionId || snapshot.battleId !== event.battleId ||
       snapshot.resultId !== event.resultId || snapshot.battlefieldId !== event.battlefieldId || trusted.battlefieldId !== event.battlefieldId ||
       trusted.resultId !== event.resultId || trusted.battleId !== event.battleId || trusted.battlePhaseResolutionId !== event.battlePhaseResolutionId ||

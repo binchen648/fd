@@ -62,3 +62,31 @@ Pre-B03 synchronized baseline:
 This Candidate changes material overlap exactly `157/944 -> 159/944` with zero removals and zero duplicate frozen IDs.
 
 Before fresh independent R, formal migration remains `161/944`. Only an exact fresh independent `IMPLEMENTATION_ACCEPTED_CANDIDATE` for this Candidate plus A synchronization may award the two fresh identities, advancing formal migration to `163/944` with `781` remaining. No merge or retarget is authorized.
+## R1 Revision Closure
+
+Rejected Candidate: `b7697943fba9d88dafde77fe5eb04118e4068903`
+Reviewer evidence: `https://github.com/binchen648/fd/pull/436#issuecomment-5789777778`
+Verdict: `IMPLEMENTATION_NEEDS_REVISION`
+
+Both exact-scope blocking findings are closed in one successor revision:
+
+1. **Real MatchSession next-round promotion**
+   - `runFullMatch` no longer mutates `roundNumber` before `startRound` observes the transition.
+   - `startRound` preserves the previous round and advances B03 schedule state exactly once on an old->new boundary while keeping the existing phase-event/setup ordering.
+   - production-path regression uses `MatchSession.runFullMatch` to prove Mozart's armed +3 is active in the exact next round and expires after that round.
+
+2. **Loss-suppressed controller remains a real B03 battle participant**
+   - ordinary result/loss triggers keep the existing suppression-filtered loser semantics.
+   - B03 combat-attribute provenance now freezes the authoritative full `participantBreakdowns` participant set independently of the suppression-filtered result-event participant set.
+   - production-path regression uses active Basic Luck to suppress the W·F·D controller's loss effects while still proving W·F·D closes when the same frozen battle contains Magic.
+
+Revision validation:
+- B03 focused: **1 file / 11 tests PASS**.
+- Reviewer-targeted B03 + MatchSession + FB2-47 + B01: **4 files / 57 tests PASS**.
+- affected movement / terrain / combat / game-loop / replay / MatchSession / B01-B02-B03: **19 files / 188 tests PASS**.
+- `npm run typecheck`: PASS.
+- `npm run content:validate`: PASS, `0 blocking issues`.
+- `git diff --check`: PASS.
+- frozen material recount remains **159/944**, zero duplicate frozen IDs.
+
+Accounting is unchanged until fresh independent review of the successor Candidate: formal migration remains **161/944**, with **783** remaining. Exact acceptance plus A synchronization may award only the same two fresh B03 identities, advancing formal migration to **163/944**.
