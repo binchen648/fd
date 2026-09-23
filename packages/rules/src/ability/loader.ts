@@ -85,7 +85,11 @@ import {
 import {
   B04_FIRST_MOVEMENT_SOURCE_POWER_EFFECT, B04_EVENT_PLAYER_MANA_EFFECT, B04_FIRST_MOVEMENT_CONDITION, B04_ROUND_DOUBLE_EFFECT, B04_SAME_LOCATION_MANA_EFFECT,
   isAcceptedB04EventSourcePowerAbility, isAcceptedB04ControllerDefeatManaReleaseAbility, isB04EventSourcePowerCandidate,
-} from './batch-event-source-power-rules';
+} from './batch-event-source-power-rules';import {
+  B05_CONTROLLER_MANA_BELOW_TWO_CONDITION, B05_EVENT_LOCATION_IS_WORKSHOP_CONDITION, B05_OTHER_NON_WORKSHOP_BATTLEFIELD_ENTRY_CONDITION,
+  B05_DEPLOYMENT_RESOURCE_EXCHANGE_EFFECT, B05_TRANSFER_VP_ARM_ROUND_CLOSE_EFFECT, B05_SOURCE_TRIGGERED_THIS_ROUND_CONDITION, B05_CLOSE_TRIGGERED_SOURCE_EFFECT,
+  isAcceptedB05EventResourceLifecycleAbility, isB05EventResourceLifecycleCandidate,
+} from './batch-event-resource-lifecycle-rules';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -268,6 +272,9 @@ const supportedTypes = new Set([
   B03_SCHEDULE_EFFECT, B03_EVENT_COMBAT_HAS_ATTRIBUTE,
   // F4 B04 bounded event/source-power/resource vocabulary; whole-envelope gated below.
   B04_FIRST_MOVEMENT_CONDITION, B04_FIRST_MOVEMENT_SOURCE_POWER_EFFECT, B04_ROUND_DOUBLE_EFFECT, B04_EVENT_PLAYER_MANA_EFFECT, B04_SAME_LOCATION_MANA_EFFECT,
+  // F4 B05 bounded event/resource/lifecycle vocabulary; whole-envelope gated below.
+  B05_CONTROLLER_MANA_BELOW_TWO_CONDITION, B05_EVENT_LOCATION_IS_WORKSHOP_CONDITION, B05_OTHER_NON_WORKSHOP_BATTLEFIELD_ENTRY_CONDITION,
+  B05_DEPLOYMENT_RESOURCE_EXCHANGE_EFFECT, B05_TRANSFER_VP_ARM_ROUND_CLOSE_EFFECT, B05_SOURCE_TRIGGERED_THIS_ROUND_CONDITION, B05_CLOSE_TRIGGERED_SOURCE_EFFECT,
   // FB2-32 source-state conditions
   'source_active', 'source_owned',
   // FB2-33 event combat outcome conditions
@@ -722,6 +729,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (isB04EventSourcePowerCandidate(a as unknown as AuthoringAbility) &&
           !isAcceptedB04EventSourcePowerAbility(a as unknown as AuthoringAbility)) {
         issue('batchEventSourcePower.gateway', 'Unsupported F4 B04 event/source-power/resource semantic shape', id);
+      }      if (isB05EventResourceLifecycleCandidate(a as unknown as AuthoringAbility) &&
+          !isAcceptedB05EventResourceLifecycleAbility(a as unknown as AuthoringAbility)) {
+        issue('batchEventResourceLifecycle.gateway', 'Unsupported F4 B05 event/resource/lifecycle semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

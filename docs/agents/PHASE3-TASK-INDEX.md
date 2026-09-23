@@ -6225,3 +6225,12 @@ Read: `docs/reports/2026-09-23-p3-a-r119-f4-b04-acceptance-synchronization.md`
 Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #437 exact Candidate `aebb2581b7172ca213371580e30c0c7e958606f8`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/437#issuecomment-5791124950`. Exact material accounting is `159/944 -> 161/944`, with exact fresh additions `servant.albion.skill.sc-albion-2` and `servant.ozymandias.skill.sc-ozymandias-2`, zero removals and zero duplicate frozen IDs.
 
 Formal project migration advances exactly two fresh identities to **`165/944`**, with **`779`** remaining; material authoring overlap is **`161/944`**. PR #437 remains OPEN, unmerged and unretargeted. Continue user-authorized BATCH-FIRST F4 from this synchronized baseline: reuse existing F1/capability evidence, prioritize adjacent accepted event/resource/lifecycle capability families, do not redo whole-roster classification, and submit the next coherent multi-consumer batch as one Candidate for one fresh independent R.
+## TASK P3-F4-B05-EVENT-RESOURCE-LIFECYCLE-MIGRATION-BATCH
+
+Owner: Codex Batch
+Status: `READY_FOR_FRESH_R`
+Branch: `codex/batch-p3-f4-b05-event-resource-lifecycle-migrations`
+Base: exact R119 F4 B04 acceptance synchronization `1f5e929def8e2d51893ab5ad86041faed0a74a7e`
+Read: `docs/reports/2026-09-23-p3-f4-b05-event-resource-lifecycle-migrations-result.md`
+
+Result required: review one BATCH-FIRST Candidate containing exactly two fresh frozen identities, `servant.edison.skill.sc-edison-2` and `servant.kama.skill.sc-kama-2`, implemented through bounded identity-free trusted event/resource/lifecycle gateways. Candidate frozen material accounting must be exact `161/944 -> 163/944`, zero removals and zero duplicate frozen IDs. Formal migration remains `165/944` before fresh R. On exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, award exactly +2 fresh formal identities => `167/944`, `777` remaining. Do not merge/retarget and do not split the exact batch into per-skill reviews.

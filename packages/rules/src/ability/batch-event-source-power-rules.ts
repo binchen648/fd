@@ -205,6 +205,29 @@ export function installB04RoundDouble(state: GameState, controllerId: string, so
   bonuses.push({ sourceCardId, sourceDefinitionId: source.definitionId, controllerId, abilityId: ability.id, rootEventId: event.id, round: trustedPlay.round, amount: base });
 }
 
+export function validatedB04MovementReceipt(state: GameState, rootEventId: string) {
+  const runtime = state.abilityRuntime;
+  const receipt = runtime?.b04MovementEventReceipts?.[rootEventId];
+  if (!runtime || !receipt) throw new Error('B04_MOVEMENT_RECEIPT_STATE_INVALID');
+  const log = state.log[receipt.movementLogIndex]; const payload = log?.payload ?? {};
+  const derivedDistance = authoritativeMovementDistance(state, receipt.fromLocationId, receipt.toLocationId);
+  const derivedCumulative = authoritativeRoundMovementDistanceThroughLog(state, receipt.playerId, receipt.round, receipt.movementLogIndex);
+  const canonicalId = /^(?:enter-location|ruler-seal-enter-location)-[1-9]\d*$/.test(rootEventId);
+  const duplicateLog = Object.entries(runtime.b04MovementEventReceipts ?? {}).some(([id, other]) =>
+    id !== rootEventId && other.movementLogIndex === receipt.movementLogIndex);
+  if (rootEventId !== receipt.eventId || receipt.eventType !== 'after_controller_enters_location' || !canonicalId || duplicateLog ||
+      !runtime.processedEvents.includes(rootEventId) || !state.players.some((player) => player.id === receipt.playerId) ||
+      !receipt.fromLocationId || !receipt.toLocationId || receipt.fromLocationId === receipt.toLocationId || !Number.isSafeInteger(receipt.distance) || receipt.distance < 1 ||
+      !Number.isSafeInteger(receipt.cumulativeDistance) || receipt.cumulativeDistance < receipt.distance || !Number.isSafeInteger(receipt.round) || receipt.round < 1 ||
+      (receipt.movementKind !== 'normal' && receipt.movementKind !== 'effect') || !Number.isSafeInteger(receipt.manaSpent) || receipt.manaSpent < 0 ||
+      !Number.isSafeInteger(receipt.movementLogIndex) || receipt.movementLogIndex < 0 || log?.type !== 'movement' ||
+      log.message !== `player:${receipt.playerId}:${receipt.movementKind}_move:${receipt.fromLocationId}->${receipt.toLocationId}` ||
+      payload.playerId !== receipt.playerId || payload.from !== receipt.fromLocationId || payload.to !== receipt.toLocationId ||
+      payload.movementKind !== receipt.movementKind || payload.manaSpent !== receipt.manaSpent || payload.roundNumber !== receipt.round ||
+      derivedDistance !== receipt.distance || derivedCumulative !== receipt.cumulativeDistance) throw new Error('B04_MOVEMENT_RECEIPT_STATE_INVALID');
+  return receipt;
+}
+
 function validatePowerState(state: GameState): void {
   const runtime = state.abilityRuntime; if (!runtime) return;
   const seenMovement = new Set<string>(); const seenMovementLogs = new Set<number>();
