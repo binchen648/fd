@@ -6256,3 +6256,15 @@ Base: exact R120 F4 B05 acceptance synchronization `819f88e84148513d87766cf39db7
 Read: `docs/reports/2026-09-23-p3-f4-b06-card-play-combat-event-burst-migrations-result.md`
 
 Result required: review one BATCH-FIRST Candidate containing exactly two fresh frozen identities, `servant.mozart.skill.sc-mozart-2` and `servant.amakusa.skill.sc-amakusa-1`, implemented through bounded identity-free trusted source-play / combat-result / event-burst gateways. Candidate frozen material accounting must be exact `163/944 -> 165/944`, zero removals and zero duplicate frozen IDs. Formal migration remains `167/944` before fresh R. On exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, award exactly +2 fresh formal identities => `169/944`, `775` remaining. Do not merge/retarget and do not split the exact batch into per-skill reviews.
+
+## TASK P3-A-R121-F4-B06-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r121-f4-b06-acceptance-sync`
+Base: exact accepted Candidate `3fefa0cdb02cf9ff81cec64732cb67e5d6513549`
+Read: `docs/reports/2026-09-23-p3-a-r121-f4-b06-acceptance-synchronization.md`
+
+Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #439 exact Candidate `3fefa0cdb02cf9ff81cec64732cb67e5d6513549`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/439#issuecomment-5794812500`. Exact material accounting is `163/944 -> 165/944`, with exact fresh additions `servant.mozart.skill.sc-mozart-2` and `servant.amakusa.skill.sc-amakusa-1`, zero removals and zero duplicate frozen IDs. The final evidence comment repairs the same completed review attempt and does not create a second review.
+
+Formal project migration advances exactly two fresh identities to **`169/944`**, with **`775`** remaining; material authoring overlap is **`165/944`**. PR #439 remains OPEN, unmerged and unretargeted. Continue user-authorized F4 using **50-skill macro-batches by default**: one Base/Candidate, one PR and one fresh independent R per macro-batch; internal capability subgroups are allowed, targeted source-grounding may fill the batch, and the workflow must not regress to two-skill/per-skill review cadence.
