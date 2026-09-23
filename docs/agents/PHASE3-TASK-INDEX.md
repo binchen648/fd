@@ -6234,3 +6234,15 @@ Base: exact R119 F4 B04 acceptance synchronization `1f5e929def8e2d51893ab5ad8604
 Read: `docs/reports/2026-09-23-p3-f4-b05-event-resource-lifecycle-migrations-result.md`
 
 Result required: review one BATCH-FIRST Candidate containing exactly two fresh frozen identities, `servant.edison.skill.sc-edison-2` and `servant.kama.skill.sc-kama-2`, implemented through bounded identity-free trusted event/resource/lifecycle gateways. Candidate frozen material accounting must be exact `161/944 -> 163/944`, zero removals and zero duplicate frozen IDs. Formal migration remains `165/944` before fresh R. On exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization, award exactly +2 fresh formal identities => `167/944`, `777` remaining. Do not merge/retarget and do not split the exact batch into per-skill reviews.
+
+## TASK P3-A-R120-F4-B05-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r120-f4-b05-acceptance-sync`
+Base: exact accepted Candidate `14aee956ac561c4460dd7923d6155b26b7ee822c`
+Read: `docs/reports/2026-09-23-p3-a-r120-f4-b05-acceptance-synchronization.md`
+
+Result: synchronize formal fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #438 exact Candidate `14aee956ac561c4460dd7923d6155b26b7ee822c`, backed by canonical GitHub evidence `https://github.com/binchen648/fd/pull/438#issuecomment-5793354298`. Exact material accounting is `161/944 -> 163/944`, with exact fresh additions `servant.edison.skill.sc-edison-2` and `servant.kama.skill.sc-kama-2`, zero removals and zero duplicate frozen IDs. The final accepted Candidate also preserves historical battlefield-only deployment consumers while routing Magic Workshop support deployment only through the bounded exact B05 consumer path.
+
+Formal project migration advances exactly two fresh identities to **`167/944`**, with **`777`** remaining; material authoring overlap is **`163/944`**. PR #438 remains OPEN, unmerged and unretargeted. Continue user-authorized BATCH-FIRST F4 from this synchronized baseline: reuse existing F1/capability evidence, prioritize adjacent accepted event/resource/lifecycle capability families, do not redo whole-roster classification, and submit the next coherent multi-consumer batch as one Candidate for one fresh independent R.
