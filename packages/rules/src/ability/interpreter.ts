@@ -103,6 +103,13 @@ import {
   isAcceptedB03CombatAttributeCloseAbility, isAcceptedB03ModifierLifecycleAbility, isB03ModifierLifecycleCandidate,
 } from './batch-modifier-lifecycle-rules';
 import {
+  B04_FIRST_MOVEMENT_SOURCE_POWER_EFFECT, B04_EVENT_PLAYER_MANA_EFFECT, B04_FIRST_MOVEMENT_CONDITION, B04_ROUND_DOUBLE_EFFECT, B04_SAME_LOCATION_MANA_EFFECT,
+  b04EntryLocationEqualsController, b04FirstMovementCondition, b04SameLocationDefeatPlayerIds, b04SourcePowerBonus, b04TrustedControllerDefeat, b04TrustedOpponentEntry,
+  installB04FirstMovementSourcePower, installB04RoundDouble, isAcceptedB04FirstMovementSourcePowerAbility, isAcceptedB04EventSourcePowerAbility,
+  isAcceptedB04ControllerDefeatManaReleaseAbility, isAcceptedB04OpponentEntryManaDrainAbility, isAcceptedB04SourcePlayRoundDoubleAbility, isB04EventSourcePowerCandidate,
+  rememberB04MovementReceipt,
+} from './batch-event-source-power-rules';
+import {
   advanceOpponentCloseToOneServerAuthority,
   clearOpponentCloseToOneServerAuthority,
   copyOpponentCloseToOneServerAuthority,
@@ -606,6 +613,8 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   }
   const scheduledB03Bonus = b03ScheduledCardPowerBonus(s, sourceId);
   if (scheduledB03Bonus !== 0) { result.value += scheduledB03Bonus; result.lines.push({ label: 'f4_b03_scheduled_card_power', value: result.value }); }
+  const b04Bonus = b04SourcePowerBonus(s, sourceId);
+  if (b04Bonus !== 0) { result.value += b04Bonus; result.lines.push({ label: 'f4_b04_source_power', value: result.value }); }
   const modifiers = liveOngoing(s).flatMap(o => o.ruleModifiers).sort((a, b) =>
     Number(node(a.definition.priority).tier === 'explicit_exception') - Number(node(b.definition.priority).tier === 'explicit_exception'));
   for (const modifier of modifiers) {
@@ -965,6 +974,11 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'event_round_victory_points_gain_crosses': return roundVpGainCrossingCondition(s, ctx, c);
     case 'source_active':
     case 'source_owned': return sourceStateCondition(s, ctx, c);
+    case B04_FIRST_MOVEMENT_CONDITION: {
+      const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      if (!isAcceptedB04FirstMovementSourcePowerAbility(ability) || Object.keys(c).some((key) => key !== 'type')) reject('unsupported', 'Unsupported F4 B04 first-movement condition shape');
+      return b04FirstMovementCondition(s, ctx.controllerId, ctx.sourceCardId, ability, ctx.event);
+    }
     case 'event_player_won_combat':
     case 'event_player_lost_combat': return eventCombatOutcomeCondition(s, ctx, c);
     case B03_EVENT_COMBAT_HAS_ATTRIBUTE: {
@@ -980,6 +994,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
       }
       const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
       if (isAcceptedB03CombatAttributeCloseAbility(ability)) return b03TrustedBattlefieldEqualsController(s, ctx.controllerId, ctx.event);
+      if (isAcceptedB04OpponentEntryManaDrainAbility(ability)) return b04EntryLocationEqualsController(s, ctx.controllerId, ability, ctx.event);
       return isAcceptedEventPowerUncontestedWinRewardAbility(ability, 'compiled')
         ? fb254LocationCondition(s, ctx, ability)
         : eventLocationEqualsController(s, ctx.controllerId, ctx.event);
@@ -1131,7 +1146,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'compiled')) return false;
   if (isBattleLossVpWinnerRewardCandidate(a) && !isAcceptedBattleLossVpWinnerRewardAbility(a, 'compiled')) return false;
-  if (isControllerDefeatedVpRewardCandidate(a) && !isAcceptedControllerDefeatedVpRewardAbility(a, 'compiled')) return false;
+  if (isControllerDefeatedVpRewardCandidate(a) && !isAcceptedControllerDefeatedVpRewardAbility(a, 'compiled') && !isAcceptedB04ControllerDefeatManaReleaseAbility(a)) return false;
   if (isCombatOpponentPowerVpRewardCandidate(a) && !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) return false;
   if (isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled') &&
     !trustedCombatOpponentPowerRewardFacts(s, card(s, sourceId).controllerPlayerId, event)) return false;
@@ -1367,7 +1382,8 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
   for (const c of s.cards) {
     if (!battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId)) continue;
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
-      const matches = a.activation.trigger === event.type || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
+      const b04DeploymentEntryAlias = event.type === 'after_player_deployed_to_battlefield' && isAcceptedB04OpponentEntryManaDrainAbility(a);
+      const matches = a.activation.trigger === event.type || b04DeploymentEntryAlias || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
       if (event.type === 'while_active') {
         const transformed = runtime(s).transformedReturnSilenceSourceCardIds?.includes(c.instanceId) === true;
         const isSoulDragState = a.effects.some((effect) => effect.type === 'soul_drag_power_bonus');
@@ -1526,15 +1542,21 @@ function shortestPath(s: GameState, from: string, to: string): string[] {
   }
   return [from, to];
 }
-function recordMovementForAbilityRuntime(s: GameState, playerId: string, from: string | undefined, to: string | undefined): void {
-  if (!from || !to || from === to) return;
+function recordMovementForAbilityRuntime(s: GameState, playerId: string, from: string | undefined, to: string | undefined, movementKind = 'effect', appendLog = true): number {
+  if (!from || !to || from === to) return 0;
   const path = shortestPath(s, from, to);
   const distance = Math.max(0, path.length - 1);
   const r = runtime(s);
   r.movementDistanceThisRound[playerId] = (r.movementDistanceThisRound[playerId] ?? 0) + distance;
   const battlefields = path.slice(1).filter(locationId => isBattlefield(s, locationId)).length;
   r.battlefieldsPassedOrStayedThisRound[playerId] = (r.battlefieldsPassedOrStayedThisRound[playerId] ?? 0) + battlefields;
-  s.log.push({ type: 'movement', message: `player:${playerId}:effect_move:${from}->${to}`, payload: { playerId, from, to, movementKind: 'effect', manaSpent: 0, roundNumber: s.round.roundNumber } });
+  if (appendLog) s.log.push({ type: 'movement', message: `player:${playerId}:effect_move:${from}->${to}`, payload: { playerId, from, to, movementKind, manaSpent: 0, roundNumber: s.round.roundNumber } });
+  return distance;
+}
+function processTrustedMovementEntryEvent(s: GameState, event: AbilityEvent, from: string, to: string, movementKind = 'effect', appendLog = true): void {
+  const distance = recordMovementForAbilityRuntime(s, event.playerId!, from, to, movementKind, appendLog);
+  rememberB04MovementReceipt(s, event, from, to, distance);
+  processTrustedFb254EntryEvent(s, event);
 }
 function lifecycleTransitions(s: GameState) {
   const r = runtime(s);
@@ -1969,6 +1991,30 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       armB03NextRoundCardPowerSchedule(s, ctx.sourceCardId, ctx.controllerId, a, effect);
       break;
     }
+    case B04_FIRST_MOVEMENT_SOURCE_POWER_EFFECT: {
+      if (!isAcceptedB04FirstMovementSourcePowerAbility(a) || Object.keys(effect).some((key) => key !== 'type')) reject('resolution_failed', 'Unsupported F4 B04 first-movement source-power envelope');
+      try { installB04FirstMovementSourcePower(s, ctx.controllerId, ctx.sourceCardId, a, ctx.event); } catch (error) { reject('invalid_state', error instanceof Error ? error.message : 'F4 B04 first-movement source-power install failed'); }
+      break;
+    }
+    case B04_ROUND_DOUBLE_EFFECT: {
+      if (!isAcceptedB04SourcePlayRoundDoubleAbility(a) || effect.amount !== 'printed_base_power' || Object.keys(effect).some((key) => !['type', 'amount'].includes(key))) reject('resolution_failed', 'Unsupported F4 B04 round-double envelope');
+      try { installB04RoundDouble(s, ctx.controllerId, ctx.sourceCardId, a, ctx.event); } catch (error) { reject('invalid_state', error instanceof Error ? error.message : 'F4 B04 round-double install failed'); }
+      break;
+    }
+    case B04_EVENT_PLAYER_MANA_EFFECT: {
+      if (!isAcceptedB04OpponentEntryManaDrainAbility(a) || effect.amount !== -2 || Object.keys(effect).some((key) => !['type', 'amount'].includes(key))) reject('resolution_failed', 'Unsupported F4 B04 event-player mana envelope');
+      const affectedId = b04TrustedOpponentEntry(s, ctx.controllerId, a, ctx.event);
+      if (!affectedId) reject('resolution_failed', 'F4 B04 opponent entry lacks authoritative provenance');
+      const affected = player(s, affectedId); affected.mana = Math.max(0, affected.mana - 2);
+      break;
+    }
+    case B04_SAME_LOCATION_MANA_EFFECT: {
+      if (!isAcceptedB04ControllerDefeatManaReleaseAbility(a) || effect.amount !== 3 || Object.keys(effect).some((key) => !['type', 'amount'].includes(key)) || !b04TrustedControllerDefeat(s, ctx.controllerId, a, ctx.event)) {
+        reject('resolution_failed', 'F4 B04 defeat release lacks authoritative provenance');
+      }
+      for (const playerId of b04SameLocationDefeatPlayerIds(s, ctx.controllerId, a, ctx.event)) grantMana(s, playerId, 3, { source: 'generic' });
+      break;
+    }
     case SOURCE_CARD_COMBAT_POWER_BONUS_EFFECT: {
       if (classifyAcceptedEventPowerUncontestedWinRewardAbility(a, 'compiled') !== 'opponent_entry_power' ||
           effect.amount !== 2 || Object.keys(effect).some((key) => !['type', 'amount'].includes(key)) ||
@@ -2114,8 +2160,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       if (to) {
         const from = p.locationId;
         p.locationId = to as LocationId;
-        recordMovementForAbilityRuntime(s, p.id, from, to);
-        processTrustedFb254EntryEvent(s, { id: nextId(s, 'enter-location'), type: 'after_controller_enters_location', playerId: p.id, locationId: to });
+        processTrustedMovementEntryEvent(s, { id: nextId(s, 'enter-location'), type: 'after_controller_enters_location', playerId: p.id, locationId: to }, from!, to);
       }
       break;
     }
@@ -3762,9 +3807,8 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
           const fromLocationId = movingPlayer.locationId;
           if (!fromLocationId || fromLocationId === toLocationId) reject('resolution_failed', 'Movement requires a different current location.');
           movingPlayer.locationId = toLocationId as LocationId;
-          recordMovementForAbilityRuntime(state, playerId, fromLocationId, toLocationId);
           const enterEventId = nextId(state, 'enter-location');
-          processTrustedFb254EntryEvent(state, { id: enterEventId, type: 'after_controller_enters_location', playerId, locationId: toLocationId });
+          processTrustedMovementEntryEvent(state, { id: enterEventId, type: 'after_controller_enters_location', playerId, locationId: toLocationId }, fromLocationId, toLocationId);
           return { fromLocationId, toLocationId, movedCount: 1, emittedEventIds: [enterEventId] };
         },
         playSelectedCards: ({ state, playerId, cardInstanceIds, faceDown }) => {
@@ -4145,6 +4189,9 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isB03ModifierLifecycleCandidate(a) && !isAcceptedB03ModifierLifecycleAbility(a)) {
     reject('resolution_failed', 'Unsupported F4 B03 modifier/lifecycle semantic shape');
   }
+  if (isB04EventSourcePowerCandidate(a) && !isAcceptedB04EventSourcePowerAbility(a)) {
+    reject('resolution_failed', 'Unsupported F4 B04 event/source-power semantic shape');
+  }
   if (isNextRoundSituationBenefitSuppressionCandidate(a) && !isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported next-round situation-benefit suppression semantic shape');
   }
@@ -4171,7 +4218,7 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isBattleLossVpWinnerRewardCandidate(a) && !isAcceptedBattleLossVpWinnerRewardAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported battle-loss VP winner-reward semantic shape');
   }
-  if (isControllerDefeatedVpRewardCandidate(a) && !isAcceptedControllerDefeatedVpRewardAbility(a, 'compiled')) {
+  if (isControllerDefeatedVpRewardCandidate(a) && !isAcceptedControllerDefeatedVpRewardAbility(a, 'compiled') && !isAcceptedB04ControllerDefeatManaReleaseAbility(a)) {
     reject('resolution_failed', 'Unsupported controller-defeated VP reward semantic shape');
   }
   if (isCombatOpponentPowerVpRewardCandidate(a) && !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) {
@@ -4452,6 +4499,24 @@ export function processAbilitySystemEvent(s: GameState, label: string, event: Om
   else processEvent(copy, fullEvent);
   runtime(copy).revision++;
   Object.assign(s, copy);
+}
+/** Trusted backend producer for an already-applied player movement. Records movement metrics and exact B04 provenance before dispatch. */
+export function processAuthoritativeMovementAbilityEvent(s: GameState, event: Omit<AbilityEvent, 'id'>, fromLocationId: string, toLocationId: string, movementKind = 'normal'): void {
+  if (event.type !== 'after_controller_enters_location' || !event.playerId || event.locationId !== toLocationId || !fromLocationId || fromLocationId === toLocationId) reject('invalid_event', 'Authoritative movement event is malformed');
+  const affected = s.players.find((candidate) => candidate.id === event.playerId);
+  const lastLog = s.log.at(-1);
+  const payload = lastLog?.payload as Record<string, unknown> | undefined;
+  const expectedMessage = `player:${event.playerId}:${movementKind}_move:${fromLocationId}->${toLocationId}`;
+  if (!affected || affected.locationId !== toLocationId || lastLog?.type !== 'movement' || lastLog.message !== expectedMessage ||
+      payload?.playerId !== event.playerId || payload.from !== fromLocationId || payload.to !== toLocationId ||
+      payload.movementKind !== movementKind || !Number.isSafeInteger(payload.manaSpent) || Number(payload.manaSpent) < 0) {
+    reject('invalid_event', 'Authoritative movement event lacks the exact applied movement receipt');
+  }
+  const copy = structuredClone(s);
+  delete runtime(copy).trustedEntryEventSnapshots;
+  const fullEvent = { ...event, id: nextId(copy, 'enter-location') } as AbilityEvent;
+  processTrustedMovementEntryEvent(copy, fullEvent, fromLocationId, toLocationId, movementKind, false);
+  runtime(copy).revision++; Object.assign(s, copy);
 }
 /** FB2-54 trusted backend producer for an already-applied exact movement/deployment entry. */
 export function processAuthoritativeEntryAbilityEvent(s: GameState, event: AbilityEvent): void {
@@ -4899,8 +4964,8 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           const occupyingPlayerIds = s.players.filter((candidate) => candidate.id !== meta.boundPlayerId && candidate.status === 'active' && candidate.locationId === to).map((candidate) => candidate.id);
           if (!canOccupyLocation({ map: s.map, config: s.locationConfig, locationId: to, movingPlayerId: meta.boundPlayerId, occupyingPlayerIds,
             ...(s.ruleOverrides ? { ruleOverrides: s.ruleOverrides } : {}) })) reject('illegal_target', 'Ruler seal movement destination is not occupiable');
-          delete r.pendingDecision; targetPlayer.locationId = to; recordMovementForAbilityRuntime(s, meta.boundPlayerId, from, to);
-          processTrustedFb254EntryEvent(s, { id: nextId(s, 'ruler-seal-enter-location'), type: 'after_controller_enters_location', playerId: meta.boundPlayerId, locationId: to });
+          delete r.pendingDecision; targetPlayer.locationId = to;
+          processTrustedMovementEntryEvent(s, { id: nextId(s, 'ruler-seal-enter-location'), type: 'after_controller_enters_location', playerId: meta.boundPlayerId, locationId: to }, from, to);
           break;
         }
         if (meta.kind === 'ruler_seal_free_play_v1') {
