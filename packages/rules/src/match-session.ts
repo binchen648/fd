@@ -19,6 +19,7 @@ import { clearTransientCardTransformState } from './ability/card-instance-state'
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './ability/deployment-destinations';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
+import { rememberB03BattleAttributeSnapshot } from './ability/batch-modifier-lifecycle-rules';
 import type {
   AbilityCommand,
   AbilityEvent,
@@ -1325,6 +1326,9 @@ export class MatchSession {
       const participants = [...new Set([...battle.winnerPlayerIds, ...loserIds])];
       const terminalParticipants = battle.participantBreakdowns?.map((participant) => participant.playerId) ?? participants;
       battleParticipantIds.push(...terminalParticipants);
+      if (battle.participantAttackAttributes) {
+        rememberB03BattleAttributeSnapshot(this.state, battlePhaseResolutionId, battleId, resultId, battle.battlefieldId, participants, terminalParticipants, battle.participantAttackAttributes);
+      }
       const resultEvent: AbilityEvent = {
         id: resultId,
         type: 'after_battle_result_determined',
