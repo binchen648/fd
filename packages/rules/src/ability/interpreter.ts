@@ -9,8 +9,10 @@ import { clearTransientCardTransformState, getEffectiveCardAttributes } from './
 import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, situationForbidsAttribute } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
+import { isSetupCreateToSkillCandidate, isSetupCreateToSkillSemantic } from './setup-create-to-skill';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
+export { isSetupCreateToSkillSemantic } from './setup-create-to-skill';
 import {
   DataFlowValidationError,
   normalizeResolutionDataFlowNodes,
@@ -2459,6 +2461,11 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isSetupCreateToSkillSemantic(a)) {
+    executeResolutionEffects(s, ctx, effects);
+    return;
+  }
+  if (isSetupCreateToSkillCandidate(a)) reject('resolution_failed', 'Unsupported setup create-to-skill semantic shape.');
   if (isPlayActionStructuralCandidate(a)) reject('resolution_failed', 'Unsupported play action semantic shape.');
   if (isPlaySourceCardWithCostResponseStructuralCandidate(a)) reject('resolution_failed', 'Unsupported source-card response play semantic shape.');
   if (isAddToAttackStructuralCandidate(a)) reject('resolution_failed', 'Unsupported add-to-attack semantic shape.');
@@ -2482,6 +2489,9 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
+  if (isSetupCreateToSkillCandidate(a) && !isSetupCreateToSkillSemantic(a)) {
+    reject('resolution_failed', 'Unsupported setup create-to-skill semantic shape.');
+  }
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) {
     reject('resolution_failed', 'Unsupported fixed controller advance-draw semantic shape');
   }
@@ -2539,7 +2549,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     });
     return;
   }
-  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isAnyLocationExceptWorkshopMovementSemantic(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a)) {
+  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isAnyLocationExceptWorkshopMovementSemantic(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a) || isSetupCreateToSkillSemantic(a)) {
     try {
       normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     } catch (error) {

@@ -325,6 +325,33 @@ describe('ExecutableCardPack compiler', () => {
   });
 
   it.each([
+    ['wrong kind', (ability: any) => { ability.kind = 'optional_trigger'; }],
+    ['wrong trigger', (ability: any) => { ability.activation = { trigger: 'after_controller_wins_battle' }; }],
+    ['extra cost', (ability: any) => { ability.cost = [{ type: 'pay_mana', amount: 1 }]; }],
+    ['extra target', (ability: any) => { ability.targets = [{ id: 'target', type: 'player' }]; }],
+    ['nested continuation', (ability: any) => { ability.effects[0].then = [{ type: 'draw_cards', count: 1 }]; }],
+    ['wrong destination', (ability: any) => { ability.effects[0].to = { zone: 'deck' }; }],
+  ])('rejects malformed setup create-to-skill %s before executable output', (_name, mutate) => {
+    const input = sourceInput();
+    const ability = input.rules.archives.find((archive) => archive.id === 'master.maiya')!
+      .cards.find((card) => card.id === 'master.maiya.skill.military')!
+      .abilities!.find((candidate) => candidate.id === 'military.has-support-shot')!;
+    mutate(ability);
+
+    expect(() => compileExecutableCardPack(input)).toThrow(/Unsupported setup create-to-skill semantic shape|Executable compilation rejected unsupported semantics/);
+  });
+
+  it('rejects a setup create-to-skill target absent from the compiled pack', () => {
+    const input = sourceInput();
+    const ability = input.rules.archives.find((archive) => archive.id === 'master.olga-marie')!
+      .cards.find((card) => card.id === 'master.olga-marie.skill.astronomical-science')!
+      .abilities!.find((candidate) => candidate.id === 'astronomical-science.has-chaldeas')!;
+    ability.effects![0]!.cardId = 'missing.setup.definition';
+
+    expect(() => compileExecutableCardPack(input)).toThrow(/missing setup create-to-skill target definition|references missing (?:target|card)/i);
+  });
+
+  it.each([
     ['private target visibility drift', (ability: any) => { ability.targets[0].visibility = 'public'; }],
     ['optional target max drift', (ability: any) => { ability.targets[0].count.max = 2; }],
     ['hand scope drift', (ability: any) => { ability.targets[0].scope.zone = 'discard'; }],

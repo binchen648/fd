@@ -5,6 +5,7 @@ import type {
 
 import { loadAuthoringJson, node, nodes, str } from './loader';
 import { gameStartSkillProvisioningTargetDefinitionIds, isGameStartSkillProvisioningCandidate } from './game-start-skill-provisioning';
+import { isSetupCreateToSkillCandidate, isSetupCreateToSkillSemantic } from './setup-create-to-skill';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import { sha256Hex } from './portable-sha256';
 import {
@@ -344,11 +345,20 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
   }
 }
 
-function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition): void {
+function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition, cards: Record<string, ExecutableCardDefinition>): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
-    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isBattleLossResourceTriggerRouteCandidate(ability) && !isBattleLossServantRevealRouteCandidate(ability) && !isSharedVictoryVpTriggerRouteCandidate(ability) && !isBattleEndSourceReturnRouteCandidate(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability)) continue;
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
+    if (isSetupCreateToSkillCandidate(ability) && !isSetupCreateToSkillSemantic(ability)) {
+      throw new Error(`Unsupported setup create-to-skill semantic shape at ${path}`);
+    }
+    if (isSetupCreateToSkillSemantic(ability)) {
+      const targetDefinitionId = ability.effects[0]!.cardId;
+      if (typeof targetDefinitionId !== 'string' || !cards[targetDefinitionId]) {
+        throw new Error(`Missing setup create-to-skill target definition '${String(targetDefinitionId)}' at ${path}`);
+      }
+    }
+    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isBattleLossResourceTriggerRouteCandidate(ability) && !isBattleLossServantRevealRouteCandidate(ability) && !isSharedVictoryVpTriggerRouteCandidate(ability) && !isBattleEndSourceReturnRouteCandidate(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability) && !isSetupCreateToSkillSemantic(ability)) continue;
     try {
       validateResolutionDataFlowNodes(effects, path);
     } catch (error) {
@@ -644,7 +654,7 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
     if (['servant_skill', 'master_skill', 'command_spell'].includes(card.cardType) && !deferred.has(card.id)) card.initialZone = 'skill';
     validateCardReferences(card.abilities, cards, `cards.${card.id}.abilities`);
     validateAbilityTargetReferences(card, cards);
-    validateAbilityResolutionDataFlow(card);
+    validateAbilityResolutionDataFlow(card, cards);
   }
 
   const executableWithoutHash = {

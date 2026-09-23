@@ -1141,7 +1141,6 @@ describe('complex master and session regressions', () => {
     const drain = add(state, 'master.shinji.skill.drain-command', 'skill');
     const useless = add(state, 'master.shinji.skill.useless-person', 'skill');
     const clown = add(state, 'master.shinji.skill.clown', 'skill');
-    const book = add(state, 'master.shinji.skill.false-attendant-book', 'skill');
 
     state.players[0]!.mana = 4;
     rules.processAbilityEvent(state, { id: 'shinji-enter-miyama', type: 'after_controller_enters_location', playerId: 'p1', locationId: 'miyama_town' });
