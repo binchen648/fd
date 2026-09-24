@@ -6272,7 +6272,7 @@ Formal project migration advances exactly two fresh identities to **`169/944`**,
 ## TASK P3-F4-M50-01-50-SKILL-MACRO-MIGRATION-BATCH
 
 Owner: Codex Batch
-Status: `READY_FOR_FRESH_R`
+Status: `REVIEW_ACCEPTED`
 Branch: `codex/batch-p3-f4-m50-01-50-skill-macro`
 Base: exact R121 F4 B06 acceptance synchronization `b4589eebbd09409458cf7b49d7fb7d9af6469f07`
 Prior reviewed Candidate: `12efa4d292a04a5b592b965b44dde67d1ad6b9da` -> `IMPLEMENTATION_NEEDS_REVISION`
@@ -6280,3 +6280,27 @@ Reviewer finding relay: `https://github.com/binchen648/fd/pull/440#issuecomment-
 Read: `docs/reports/2026-09-24-p3-f4-m50-01-50-skill-macro-batch-result.md`
 
 Result required: fresh independent R reviews the exact revised PR #440 head as one 50-skill macro-batch. Frozen material accounting remains exact `165/944 -> 215/944`, +50 additions, zero removals and zero duplicate frozen IDs. The R1 successor closes the single Araya zero-target finding with an identity-free bounded card-count precondition plus focused zero-target/one-target regressions. Formal migration remains **`169/944`** until exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` plus A synchronization; only then may the batch award +50 => **`219/944`**, **`725`** remaining. Do not split the macro-batch, merge, retarget, or reuse the rejected Candidate as acceptance evidence.
+## TASK P3-A-R122-F4-M50-01-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r122-f4-m50-01-acceptance-sync`
+Base: exact accepted Candidate `f0e5554e3210e721ae98faa29fc5241b410c5b72`
+Read: `docs/reports/2026-09-24-p3-a-r122-f4-m50-01-acceptance-synchronization.md`
+
+Result: synchronize the exact fresh independent R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #440 revised Candidate `f0e5554e3210e721ae98faa29fc5241b410c5b72`, backed by bounded-relay canonical GitHub evidence `https://github.com/binchen648/fd/pull/440#issuecomment-5805914781`. The relay contains the Reviewer-supplied complete evidence body from the same already-completed fresh review attempt after Reviewer GitHub write returned 403; it is not a Coordinator review or second R.
+
+Exact material accounting is `165/944 -> 215/944`, exactly +50 fresh frozen additions, zero removals and zero duplicate frozen IDs. The sole prior Araya zero-target P1 was independently verified closed in the revised Candidate with bounded identity-free semantics and focused zero-target/one-target regressions.
+
+Formal project migration advances exactly +50 to **`219/944`**, with **`725`** remaining; material authoring overlap is **`215/944`**. PR #440 remains OPEN, unmerged and unretargeted.
+
+## TASK P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH
+
+Owner: Codex Batch
+Status: `READY`
+Branch: `codex/batch-p3-f4-m50-02-50-skill-macro`
+Base: exact P3-A-R122-F4-M50-01-ACCEPTANCE-SYNC commit carrying this task block
+
+Result required: migrate the next **exact 50** previously unmaterialized frozen skills from the synchronized `219/944` formal / `215/944` material baseline. This is a macro-batch, not a single-family size cap: combine multiple mechanically isolated, source-grounded compatible subgroups as needed to fill exactly 50. Reuse accepted shared runtime primitives and existing F1/capability evidence; do not redo whole-roster classification. If an individual selected skill is truly blocked, replace it with another eligible frozen skill where possible so the non-tail batch remains exactly 50. Only the final project tail may contain fewer than 50.
+
+The batch must produce one exact Base/Candidate, one PR and one fresh independent R for the whole 50-skill Candidate. Runtime capability scaffolding remains zero-credit; only exact migrated frozen identities accepted by fresh R and synchronized by A receive formal credit. Pre-review verification is focused/affected plus necessary typecheck/content validation/determinism/diff checks; full convergence gates remain mandatory at F4/F5 closure. Do not merge/retarget, do not create per-skill R, and do not shrink the batch merely because an individual capability family has fewer than 50 consumers.
